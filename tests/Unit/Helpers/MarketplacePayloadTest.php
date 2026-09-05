@@ -51,6 +51,46 @@ class MarketplacePayloadTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_down_the_mark_a_section_carries(): void
+    {
+        $section = Section::factory()->marked('health', '#4f8a49')->create(['name' => 'Medical follow up']);
+        $version = SectionVersion::factory()->create(['section_id' => $section->id]);
+        Field::factory()->create([
+            'account_id' => $section->account_id,
+            'section_version_id' => $version->id,
+            'key' => 'diagnosis',
+            'label' => 'Diagnosis',
+            'position' => 1,
+        ]);
+        $this->publish($section, $version);
+
+        $payload = MarketplacePayload::of($section);
+
+        $this->assertEquals('health', $payload['section']['icon']);
+        $this->assertEquals('#4f8a49', $payload['section']['colour']);
+    }
+
+    #[Test]
+    public function it_writes_down_an_empty_mark_for_a_section_carrying_none(): void
+    {
+        $section = Section::factory()->create(['name' => 'Medical follow up']);
+        $version = SectionVersion::factory()->create(['section_id' => $section->id]);
+        Field::factory()->create([
+            'account_id' => $section->account_id,
+            'section_version_id' => $version->id,
+            'key' => 'diagnosis',
+            'label' => 'Diagnosis',
+            'position' => 1,
+        ]);
+        $this->publish($section, $version);
+
+        $payload = MarketplacePayload::of($section);
+
+        $this->assertNull($payload['section']['icon']);
+        $this->assertNull($payload['section']['colour']);
+    }
+
+    #[Test]
     public function it_writes_down_a_template_with_every_page_and_what_sits_on_it(): void
     {
         $template = Template::factory()->create(['name' => 'Patient']);

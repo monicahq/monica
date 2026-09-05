@@ -76,6 +76,69 @@ class SectionImportControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_imports_the_section_wearing_the_mark_it_was_exported_with(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $file = $this->exportedSection($user);
+        [$template, $page] = $this->draft($user);
+
+        $this->actingAs($user)->post(route('settings.sectionImport.create', [$template, $page]), ['file' => $file])
+            ->assertRedirect();
+
+        /* Two sections named the same now, the one exported from and the copy.
+           The copy is the one the draft carries. */
+        $copy = TemplateVersionSection::query()
+            ->where('template_version_page_id', $page->id)
+            ->sole()
+            ->sectionVersion
+            ->section;
+
+        $this->assertEquals('health', $copy->icon);
+        $this->assertEquals('#4f8a49', $copy->colour);
+    }
+
+    #[Test]
+    public function it_imports_a_section_carrying_no_mark_onto_the_defaults(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $file = $this->exportedSection($user, marked: false);
+        [$template, $page] = $this->draft($user);
+
+        $this->actingAs($user)->post(route('settings.sectionImport.create', [$template, $page]), ['file' => $file])
+            ->assertRedirect();
+
+        $copy = TemplateVersionSection::query()
+            ->where('template_version_page_id', $page->id)
+            ->sole()
+            ->sectionVersion
+            ->section;
+
+        $this->assertNull($copy->icon);
+        $this->assertNull($copy->colour);
+    }
+
+    #[Test]
+    public function it_refuses_a_section_file_asking_for_a_mark_this_version_does_not_offer(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $file = json_decode($this->exportedSection($user), true);
+        $file['section']['icon'] = 'chevron-down';
+        [$template, $page] = $this->draft($user);
+
+        $this->actingAs($user)->post(route('settings.sectionImport.create', [$template, $page]), [
+            'file' => json_encode($file),
+        ])->assertRedirect()->assertSessionHasErrors('file');
+
+        $this->assertEquals(0, TemplateVersionSection::query()->where('template_version_page_id', $page->id)->count());
+    }
+
+    #[Test]
     public function it_refuses_a_file_that_does_not_read_and_writes_nothing(): void
     {
         Queue::fake();
@@ -121,9 +184,9 @@ class SectionImportControllerTest extends TestCase
         $this->actingAs($user)->get(route('settings.sectionImport.new', [$template, $page]))->assertNotFound();
     }
 
-    private function exportedSection(User $user): string
+    private function exportedSection(User $user, bool $marked = true): string
     {
-        $template = $this->publishedTemplate($user);
+        $template = $this->publishedTemplate($user, $marked);
 
         return StructureFile::encode(StructureFile::ofSection($template->publishedVersion->assembly->first()));
     }
@@ -143,7 +206,7 @@ class SectionImportControllerTest extends TestCase
         return [$template, $version->pages()->firstOrFail()];
     }
 
-    private function publishedTemplate(User $user): Template
+    private function publishedTemplate(User $user, bool $marked = true): Template
     {
         $template = Template::factory()->create([
             'account_id' => $user->account_id,
@@ -158,6 +221,8 @@ class SectionImportControllerTest extends TestCase
         $section = Section::factory()->create([
             'account_id' => $user->account_id,
             'name' => 'Personal details',
+            'icon' => $marked ? 'health' : null,
+            'colour' => $marked ? '#4f8a49' : null,
         ]);
 
         $sectionVersion = SectionVersion::factory()->create([

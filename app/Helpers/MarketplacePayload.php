@@ -168,6 +168,7 @@ class MarketplacePayload
             'name_translation_key' => $section->name_translation_key,
             'description' => $section->description,
             'icon' => $section->icon,
+            'colour' => $section->colour,
             'locale' => $section->locale,
             'version_number' => $sectionVersion->version_number,
             'fields' => $sectionVersion->fields

@@ -75,7 +75,7 @@
       @endif
 
       @forelse ($sections as $section)
-        <x-panel :title="$section['name']" :flush="true">
+        <x-panel :title="$section['name']" :icon="$section['icon']" :tint="$section['tint']" :flush="true">
           <dl class="grid gap-0">
             @foreach ($section['fields'] as $field)
               <div class="grid grid-cols-[minmax(0,170px)_minmax(0,1fr)] items-baseline gap-4 border-b border-hairline px-4.5 py-3 last:border-b-0 max-[560px]:grid-cols-1 max-[560px]:gap-0.5">

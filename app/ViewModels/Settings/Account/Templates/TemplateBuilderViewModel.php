@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace App\ViewModels\Settings\Account\Templates;
 
 use App\Enums\RepetitionOrderEnum;
+use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Field;
+use App\Models\Section;
 use App\Models\Template;
 use App\Models\TemplateVersion;
 use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as Support;
+use Illuminate\Support\Facades\DB;
 
 /**
  * One version of a template, the sections it carries, the fields inside them,
@@ -228,6 +232,124 @@ class TemplateBuilderViewModel
     }
 
     /**
+     * How many other templates the mark on this section would reach.
+     *
+     * Read for the whole page in one query rather than per section, since a page
+     * of a dozen sections would otherwise be a dozen round trips for a sentence.
+     * Distinct templates rather than rows: a section placed twice on the same
+     * template is still one template that would see the change.
+     *
+     * @return array<int, int>
+     */
+    private function otherTemplateCounts(): array
+    {
+        return once(function (): array {
+            $version = $this->version();
+            $page = $this->selectedPage();
+
+            if ($version === null || $page === null) {
+                return [];
+            }
+
+            $sectionIds = $version->assembly
+                ->where('template_version_page_id', $page->id)
+                ->map(fn (TemplateVersionSection $row): int => $row->sectionVersion->section_id)
+                ->unique()
+                ->all();
+
+            if ($sectionIds === []) {
+                return [];
+            }
+
+            /*
+             * Distinct pairs read back and counted here rather than with a
+             * grouped count in SQL, because `count(distinct ...)` has to be a
+             * raw expression and a raw expression cannot be plucked by name.
+             * A section sits on a handful of templates, never thousands, so the
+             * rows are few and the query stays one round trip either way.
+             */
+            return DB::table('template_version_sections')
+                ->join('section_versions', 'section_versions.id', '=', 'template_version_sections.section_version_id')
+                ->join('template_versions', 'template_versions.id', '=', 'template_version_sections.template_version_id')
+                ->whereIn('section_versions.section_id', $sectionIds)
+                ->where('template_versions.template_id', '!=', $this->template->id)
+                ->distinct()
+                ->get(['section_versions.section_id', 'template_versions.template_id'])
+                ->groupBy('section_id')
+                ->map(fn (Support $rows): int => $rows->pluck('template_id')->unique()->count())
+                ->all();
+        });
+    }
+
+    /**
+     * What the edit panel says about the reach of the mark, before it is
+     * changed rather than after.
+     *
+     * The heading beside it is this template's alone and the mark is not, which
+     * is the one thing about the panel somebody could get wrong, so the sentence
+     * is about the difference rather than about the section.
+     */
+    private function markReach(TemplateVersionSection $row): string
+    {
+        $others = $this->otherTemplateCounts()[$row->sectionVersion->section_id] ?? 0;
+
+        if ($others === 0) {
+            return __('No other template carries this section, so the mark stays here.');
+        }
+
+        return trans_choice(
+            'The mark also changes on :count other template carrying this section.|The mark also changes on :count other templates carrying this section.',
+            $others,
+        );
+    }
+
+    /**
+     * The glyphs a section may be marked with, in the order the picker draws
+     * them. The name travels rather than the drawing, and the component beside
+     * it does the drawing.
+     *
+     * @return list<string>
+     */
+    public function glyphs(): array
+    {
+        return Section::ICONS;
+    }
+
+    /**
+     * The colours on offer, neutral first because it is the default and because
+     * it is what clearing the mark returns to.
+     *
+     * The label is what somebody using a screen reader hears, since a hex code
+     * read out is not a colour anybody recognises. The tint is what the swatch
+     * and the preview are drawn with, so the picker and the header cannot
+     * disagree about what a colour looks like.
+     *
+     * @return array<int, array{value: string|null, label: string, tint: string, swatch: string|null}>
+     */
+    public function colours(): array
+    {
+        $neutral = [[
+            'value' => null,
+            'label' => __('Neutral'),
+            'tint' => VaultColourEnum::neutralTint(),
+            'swatch' => null,
+        ]];
+
+        return array_merge($neutral, array_map(
+            fn (VaultColourEnum $colour): array => [
+                'value' => $colour->value,
+                'label' => __($colour->label()),
+                'tint' => $colour->tint(),
+                /* The swatch is a solid square of the hue, which is how a vault
+                   and a kind of record are already picked. The tint is the pair
+                   the header ends up drawn in, and is too pale to pick from. */
+                'swatch' => $colour->value,
+            ],
+            VaultColourEnum::cases(),
+        ));
+    }
+
+    /**
      * The sections on the open page, in order, each with the fields inside it.
      * The other pages of the version are not read: what the screen shows is one
      * tab at a time.
@@ -248,6 +370,12 @@ class TemplateBuilderViewModel
             ->map(fn (TemplateVersionSection $row): array => [
                 'id' => $row->id,
                 'name' => $row->title_override ?? $row->sectionVersion->section->name,
+                /* The mark belongs to the section rather than to this placement,
+                   so it is the same wherever the section is carried, unlike the
+                   heading right above it. */
+                'icon' => $row->sectionVersion->section->icon,
+                'colour' => $row->sectionVersion->section->colour,
+                'markReach' => $this->markReach($row),
                 'isMine' => ! $row->sectionVersion->section->is_system,
                 'willBeCopied' => $this->willBeCopied($row),
                 'fieldLabel' => self::fieldLabel($row->sectionVersion->fields->count()),

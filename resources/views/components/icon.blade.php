@@ -99,6 +99,23 @@
     'divider' => '<rect x="2.4" y="2.6" width="11.2" height="3.2" rx="1"></rect><line x1="1.8" y1="8" x2="14.2" y2="8"></line><rect x="2.4" y="10.2" width="11.2" height="3.2" rx="1"></rect>',
     'heading' => '<line x1="3" y1="4.8" x2="9.6" y2="4.8"></line><line x1="3" y1="8.4" x2="13" y2="8.4"></line><line x1="3" y1="11.6" x2="13" y2="11.6"></line>',
     'swatch' => '<circle cx="8" cy="8" r="5.6"></circle><path d="M8 2.4a5.6 5.6 0 0 1 0 11.2Z" fill="currentColor" stroke="none"></path>',
+
+    /* The thirteen a section may be marked with that nothing else needed: the
+       subjects people keep records about, rather than the things the interface
+       does. Same grid, same stroke, so they sit beside the rest unnoticed. */
+    'home' => '<path d="M2.6 7.4 8 3.2l5.4 4.2"></path><path d="M4 8.6v4.8h8V8.6"></path><path d="M6.8 13.4V10h2.4v3.4"></path>',
+    'health' => '<path d="M6.5 2.6h3v3.9h3.9v3h-3.9v3.9h-3V9.5H2.6v-3h3.9z"></path>',
+    'briefcase' => '<rect x="2.2" y="4.8" width="11.6" height="8.4" rx="1.5"></rect><path d="M6 4.8V3.6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.2"></path><line x1="2.2" y1="8.4" x2="13.8" y2="8.4"></line>',
+    'graduation' => '<path d="M1.8 6.4 8 3.4l6.2 3-6.2 3z"></path><path d="M4.6 7.8v3.3c0 1 1.5 1.8 3.4 1.8s3.4-.8 3.4-1.8V7.8"></path>',
+    'car' => '<path d="M2.4 10.6V8.2l1.4-3.2a1.2 1.2 0 0 1 1.1-.7h6.2a1.2 1.2 0 0 1 1.1.7l1.4 3.2v2.4"></path><line x1="2.6" y1="8.2" x2="13.4" y2="8.2"></line><circle cx="4.9" cy="10.9" r="1.2"></circle><circle cx="11.1" cy="10.9" r="1.2"></circle>',
+    'plane' => '<path d="M13.6 2.6 2.4 7.1l4.3 1.6 1.5 4.4z"></path><path d="M6.7 8.7 13.6 2.6"></path>',
+    'globe' => '<circle cx="8" cy="8" r="5.6"></circle><ellipse cx="8" cy="8" rx="2.4" ry="5.6"></ellipse><line x1="2.7" y1="6.2" x2="13.3" y2="6.2"></line><line x1="2.7" y1="9.8" x2="13.3" y2="9.8"></line>',
+    'food' => '<path d="M4.6 2.6v3.3a1.5 1.5 0 0 1-3 0V2.6"></path><line x1="3.1" y1="6.4" x2="3.1" y2="13.4"></line><path d="M10.4 2.6c1.7 1.3 2.6 3 2.6 4.9h-2.6z"></path><line x1="11.7" y1="7.5" x2="11.7" y2="13.4"></line>',
+    'music' => '<circle cx="4.4" cy="11.4" r="1.9"></circle><circle cx="11.4" cy="10.2" r="1.9"></circle><line x1="6.3" y1="11.4" x2="6.3" y2="4.4"></line><line x1="13.3" y1="10.2" x2="13.3" y2="3.2"></line><path d="M6.3 4.4 13.3 3.2"></path>',
+    'ball' => '<circle cx="8" cy="8" r="5.6"></circle><path d="M4 4a7.6 7.6 0 0 1 0 8"></path><path d="M12 4a7.6 7.6 0 0 0 0 8"></path>',
+    'book' => '<path d="M3.4 2.6h7.2a2 2 0 0 1 2 2v8.8H5.4a2 2 0 0 1-2-2z"></path><line x1="5.4" y1="11.2" x2="12.6" y2="11.2"></line>',
+    'phone' => '<path d="M5.2 2.8h1.9l1 2.6-1.4 1a6.4 6.4 0 0 0 2.9 2.9l1-1.4 2.6 1v1.9a1.3 1.3 0 0 1-1.4 1.3A9.5 9.5 0 0 1 3.9 4.2a1.3 1.3 0 0 1 1.3-1.4Z"></path>',
+    'target' => '<circle cx="8" cy="8" r="5.6"></circle><circle cx="8" cy="8" r="2.6"></circle><circle cx="8" cy="8" r="0.6" fill="currentColor" stroke="none"></circle>',
   ];
 
   $glyph = $paths[$name] ?? $paths['profile'];

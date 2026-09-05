@@ -24,6 +24,7 @@
   x-merge="replace"
   :title="$section['name']"
   :icon="$section['icon']"
+  :tint="$section['tint']"
   flush
   class="[&[aria-busy]]:opacity-60"
 >

@@ -29,6 +29,7 @@
   @var string|null $title
   @var string|null $subtitle
   @var string|null $icon
+  @var string|null $tint
   @var bool $flush
   @var string $variant
   @var string $tone
@@ -39,6 +40,7 @@
   'title' => null,
   'subtitle' => null,
   'icon' => null,
+  'tint' => null,
   'flush' => false,
   'variant' => 'default',
   'tone' => 'default',
@@ -50,7 +52,12 @@
   $surface = $variant === 'inset' ? 'bg-card' : 'bg-canvas';
   $edge = $danger ? 'border-error-edge' : 'border-hairline';
   $band = $danger ? 'border-error-edge bg-error-tint' : 'border-hairline';
-  $mark = $danger ? 'border-transparent bg-error text-white' : 'border-hairline bg-card text-body';
+  /*
+   * A section that carries a colour hands its tint in, so the record draws the
+   * same mark the template builder does. The danger tone still wins: a panel
+   * that ends something is red whatever it is about.
+   */
+  $mark = $danger ? 'border-transparent bg-error text-white' : ($tint ?? 'border-hairline bg-card text-body');
 
   // A title on its own line sits beside the mark, so the three parts of the
   // header centre on each other. A title with a subtitle under it is a block two

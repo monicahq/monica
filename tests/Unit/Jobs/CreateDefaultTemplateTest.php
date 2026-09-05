@@ -6,6 +6,7 @@ namespace Tests\Unit\Jobs;
 
 use App\Actions\CreateDefaultValueLists;
 use App\Enums\DefaultFieldEnum;
+use App\Enums\DefaultPageEnum;
 use App\Enums\DefaultSectionEnum;
 use App\Enums\DefaultTemplateEnum;
 use App\Enums\FieldTypeEnum;
@@ -140,6 +141,64 @@ class CreateDefaultTemplateTest extends TestCase
 
         foreach ($pages as $page) {
             $this->assertEquals(range(1, $page->assembly->count()), $page->assembly->pluck('position')->all());
+        }
+    }
+
+    #[Test]
+    public function it_seeds_every_section_wearing_its_mark(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        foreach (DefaultSectionEnum::cases() as $case) {
+            $this->assertDatabaseHas('sections', [
+                'account_id' => $user->account_id,
+                'slug' => $case->value,
+                'icon' => $case->icon(),
+                'colour' => $case->colour()->value,
+            ]);
+        }
+    }
+
+    #[Test]
+    public function it_seeds_no_section_grey_so_the_mark_is_discoverable(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        $this->assertEquals(
+            0,
+            Section::query()->where('account_id', $user->account_id)->whereNull('colour')->count(),
+        );
+        $this->assertEquals(
+            0,
+            Section::query()->where('account_id', $user->account_id)->whereNull('icon')->count(),
+        );
+    }
+
+    #[Test]
+    public function it_gives_the_two_sections_that_share_a_page_different_marks(): void
+    {
+        foreach (DefaultPageEnum::cases() as $page) {
+            $glyphs = array_map(fn (DefaultSectionEnum $case): string => $case->icon(), $page->sections());
+            $colours = array_map(fn (DefaultSectionEnum $case): string => $case->colour()->value, $page->sections());
+
+            $this->assertSame(array_unique($glyphs), $glyphs, "Two sections on {$page->value} share a glyph.");
+            $this->assertSame(array_unique($colours), $colours, "Two sections on {$page->value} share a colour.");
+        }
+    }
+
+    #[Test]
+    public function it_seeds_no_glyph_a_section_may_not_be_marked_with(): void
+    {
+        foreach (DefaultSectionEnum::cases() as $case) {
+            $this->assertContains($case->icon(), Section::ICONS, "{$case->value} asks for a glyph outside the set.");
         }
     }
 

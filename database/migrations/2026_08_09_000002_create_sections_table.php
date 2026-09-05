@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('description')->nullable()->comment('what the section is for, shown in the picker');
             $table->string('slug', 64)->comment('stable identifier used by the API, unique within the account');
             $table->string('icon', 64)->nullable()->comment('icon shown in the section header');
+            $table->string('colour', 7)->nullable()->comment('hue the section header mark is drawn in, one of the vault colours, null for neutral');
             $table->boolean('is_system')->default(false)->comment('whether the product supplied it at account creation');
             $table->boolean('is_active')->default(true)->comment('whether it can still be added to a template');
             $table->unsignedBigInteger('published_version_id')->nullable()->comment('version offered by default when adding it, null while only drafts exist');

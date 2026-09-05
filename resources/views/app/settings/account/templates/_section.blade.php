@@ -8,14 +8,22 @@
 
   When the section is one this template cannot write to, because it has been
   published or because another template carries it too, the row says so. The
-  first edit will give the section a new version, and having read that
+  first edit to a field will give the section a new version, and having read that
   beforehand is the difference between a feature and a surprise.
+
+  The mark is the exception, and the notice says "a field" rather than "anything"
+  for that reason. A glyph and a colour decide nothing about what the section
+  asks for, so changing one gives the section no new version. It does reach every
+  template carrying the section, which the heading beside it does not, and the
+  panel that edits them says so.
 
   @var array $section
   @var \App\Models\Template $template
   @var bool $isEditable
   @var bool $isShareable
   @var array<int, array{id: int, uuid: string, label: string}> $otherPages
+  @var array<int, string> $glyphs
+  @var array<int, array{value: string|null, label: string, tint: string}> $colours
 --}}
 <div data-row-id="{{ $section['id'] }}" class="relative">
   <div
@@ -34,7 +42,15 @@
       @dragend="stop()"
       :class="draggingId === {{ $section['id'] }} && 'opacity-40'"
     @endif
-    x-data="{ renaming: false }"
+    {{--
+      One scope for the whole row, holding whether it is being renamed and the
+      mark being picked. Both belong here rather than on the form, because the
+      Rename button reaches for the name field by ref and a ref belongs to the
+      component it was declared in: a second `x-data` on the form would put that
+      field in a scope this button cannot see, and focusing it would throw.
+    --}}
+    x-data="{ renaming: false, icon: @js($section['icon'] ?? ''), colour: @js($section['colour'] ?? ''), open: false }"
+    @ajax:before.window="open = false"
     class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-panel "
   >
     <header class="flex min-h-12 items-center gap-2.5 border-b border-hairline px-4 py-3.5">
@@ -52,6 +68,8 @@
       @endif
 
       <div x-show="! renaming" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2.5 gap-y-1.5">
+        <x-section-mark :icon="$section['icon']" :colour="$section['colour']" :size="26" />
+
         <h2 class="truncate text-card-title text-ink">{{ $section['name'] }}</h2>
 
         @if ($section['isMine'])
@@ -135,12 +153,28 @@
 
       @if ($isEditable)
         <div x-cloak x-show="renaming" class="min-w-0 flex-1">
+          {{--
+            Two scopes in one row, which is the one thing about it somebody
+            could get wrong. The heading belongs to this template and the mark
+            belongs to the section, and the count of what the mark would reach
+            says so from inside the panel that sets it, beside the decision
+            rather than above it.
+          --}}
           <x-form
             method="put"
             :action="route('settings.templateSections.update', [$template, $section['id']])"
             x-target="builder"
             class="flex flex-wrap items-end gap-3"
           >
+            @include('app.settings.account.templates._section-mark-picker', [
+              'id' => 'section-'.$section['id'],
+              'glyphs' => $glyphs,
+              'colours' => $colours,
+              'icon' => $section['icon'],
+              'colour' => $section['colour'],
+              'reach' => $section['markReach'],
+            ])
+
             <x-input
               :id="'section-'.$section['id'].'-title'"
               name="title_override"
@@ -148,7 +182,6 @@
               size="small"
               :value="$section['name']"
               :aria-label="__('Heading on this template')"
-              :help="__('Only this template sees it.')"
               class="max-w-72"
               maxlength="255"
             />
@@ -165,7 +198,7 @@
 
     @if ($section['willBeCopied'] && $isEditable)
       <p class="px-4 py-2.5 text-xs text-pretty text-muted border-b border-hairline bg-sunken">
-        {{ __('This section is published or shared with another template. Changing anything in it here gives the section a new version, and leaves the other templates exactly as they are.') }}
+        {{ __('This section is published or shared with another template. Changing a field in it here gives the section a new version, and leaves the other templates exactly as they are.') }}
       </p>
     @endif
 

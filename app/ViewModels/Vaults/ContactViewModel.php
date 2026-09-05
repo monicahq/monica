@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\FieldValueFormatter;
 use App\Models\Contact;
@@ -12,6 +13,7 @@ use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\RecordSnapshot;
 use App\Models\Reminder;
+use App\Models\Section;
 use App\Models\TemplateVersion;
 use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
@@ -581,7 +583,12 @@ class ContactViewModel
                every other block alone. */
             'regionId' => "section-{$row->id}",
             'name' => $this->nameOf($row),
-            'icon' => $row->sectionVersion->section->icon ?? 'note',
+            /* The glyph and the tint come off the section rather than off this
+               placement, so a block reads the same on every template carrying
+               it. A section that was never marked falls back to the blank page
+               and the neutral pair rather than to nothing. */
+            'icon' => $this->glyphOf($row),
+            'tint' => VaultColourEnum::tintFor($row->sectionVersion->section->colour),
             'fields' => $fields,
             'isEditing' => $this->editingSection !== null && $this->editingSection->is($row),
             'isEditable' => collect($fields)->contains(fn (array $field): bool => $field['isEditable']),
@@ -610,6 +617,17 @@ class ContactViewModel
 
         return $field->type->isRepeater()
             && $field->children->contains(fn (Field $child): bool => $child->type->holdsAFile());
+    }
+
+    /**
+     * The glyph a block is marked with, which is the section's own, or the blank
+     * page when it has none or holds a name a section may not use.
+     */
+    private function glyphOf(TemplateVersionSection $row): string
+    {
+        $icon = $row->sectionVersion->section->icon;
+
+        return in_array($icon, Section::ICONS, true) ? $icon : Section::DEFAULT_ICON;
     }
 
     /**

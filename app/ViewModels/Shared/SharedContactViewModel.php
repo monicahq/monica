@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Shared;
 
+use App\Enums\VaultColourEnum;
 use App\Helpers\FieldValueFormatter;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\Section;
 use App\Models\ShareLink;
 use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
@@ -154,7 +156,7 @@ class SharedContactViewModel
      * panel with nothing in it says as little as an empty tab and raises the same
      * question.
      *
-     * @return array<int, array{name: string, fields: array<int, array{label: string, value: string}>}>
+     * @return array<int, array{name: string, icon: string, tint: string, fields: array<int, array{label: string, value: string}>}>
      */
     public function sections(): array
     {
@@ -167,6 +169,13 @@ class SharedContactViewModel
         return $this->includedSectionsOn($page)
             ->map(fn (TemplateVersionSection $row): array => [
                 'name' => $row->title_override ?? $row->sectionVersion->section->name,
+                /* The mark is display only and says nothing about the record,
+                   so a private link carries it: a reader sees the section the
+                   way the account does. */
+                'icon' => in_array($row->sectionVersion->section->icon, Section::ICONS, true)
+                    ? $row->sectionVersion->section->icon
+                    : Section::DEFAULT_ICON,
+                'tint' => VaultColourEnum::tintFor($row->sectionVersion->section->colour),
                 'fields' => $this->fieldsIn($row),
             ])
             ->filter(fn (array $section): bool => $section['fields'] !== [])

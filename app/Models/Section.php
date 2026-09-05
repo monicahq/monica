@@ -42,6 +42,7 @@ use Override;
  * @property string|null $description
  * @property string $slug
  * @property string|null $icon
+ * @property string|null $colour
  * @property bool $is_system
  * @property bool $is_active
  * @property int|null $published_version_id
@@ -60,6 +61,7 @@ use Override;
     'description',
     'slug',
     'icon',
+    'colour',
     'is_system',
     'is_active',
     'published_version_id',
@@ -79,6 +81,31 @@ class Section extends Model
      * builds one has to respect while it is still making it unique.
      */
     public const int SLUG_LENGTH = 64;
+
+    /**
+     * The glyphs a section may be marked with. Names rather than markup, so the
+     * drawing lives in the icon component and a section stores a word.
+     *
+     * These are subjects somebody keeps records about, which is why the list is
+     * not the whole icon set: a chevron or a grip marks a control, never a
+     * section. The order is the order the picker draws them in, commonest first,
+     * so the fourteen that fit without scrolling are the fourteen most asked for.
+     *
+     * @var list<string>
+     */
+    public const array ICONS = [
+        'profile', 'note', 'relationship', 'family', 'timeline', 'calendar', 'reminder',
+        'tasks', 'memory', 'journal', 'file', 'mail', 'phone', 'place',
+        'home', 'briefcase', 'organization', 'graduation', 'health', 'activity', 'ball',
+        'food', 'gift', 'pet', 'plane', 'globe', 'book', 'music',
+        'coin', 'car', 'target', 'tag', 'heart', 'lock', 'layers',
+    ];
+
+    /**
+     * What a section with no glyph of its own is drawn with. It is the blank
+     * page, which says nothing about the contents and so cannot mislead.
+     */
+    public const string DEFAULT_ICON = 'note';
 
     /**
      * Get the attributes that should be cast.

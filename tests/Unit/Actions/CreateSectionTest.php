@@ -145,4 +145,41 @@ class CreateSectionTest extends TestCase
                 && $job->parameters === ['name' => 'Address'];
         });
     }
+
+    #[Test]
+    public function it_stores_the_mark_it_is_given(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        $section = new CreateSection(
+            user: $user,
+            name: 'Health',
+            icon: 'health',
+            colour: '#4f8a49',
+        )->execute();
+
+        $this->assertDatabaseHas('sections', [
+            'id' => $section->id,
+            'icon' => 'health',
+            'colour' => '#4f8a49',
+        ]);
+    }
+
+    #[Test]
+    public function it_leaves_the_mark_empty_when_it_is_given_none(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        $section = new CreateSection(user: $user, name: 'Health')->execute();
+
+        $this->assertDatabaseHas('sections', [
+            'id' => $section->id,
+            'icon' => null,
+            'colour' => null,
+        ]);
+    }
 }

@@ -7,6 +7,7 @@ namespace App\Helpers;
 use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
 use App\Enums\TemplateAppliesToEnum;
+use App\Enums\VaultColourEnum;
 use App\Exceptions\StructureFileIsNotReadable;
 use App\Models\EntityType;
 use App\Models\Field;
@@ -372,7 +373,7 @@ class StructureFileReader
     private function section(mixed $node, string $path): array
     {
         $section = $this->object($node, $path, [
-            'slug', 'name', 'name_translation_key', 'description', 'icon', 'locale',
+            'slug', 'name', 'name_translation_key', 'description', 'icon', 'colour', 'locale',
             'version_number', 'fields',
         ], ['fields']);
 
@@ -382,11 +383,30 @@ class StructureFileReader
             $this->refuse(__('The header is right, but a section in this file holds no field, so there is nothing in it to build.'));
         }
 
+        /*
+         * The mark is checked against the set rather than only for shape. A
+         * glyph this version cannot draw would render as the blank page, and a
+         * colour outside the eight has no foreground picked for the dark theme,
+         * so either would arrive as something the product cannot show.
+         */
+        $icon = $this->identifier($section, 'icon', $path, 64);
+
+        if ($icon !== null && ! in_array($icon, Section::ICONS, true)) {
+            $this->refuse(__('A section in this file asks for a glyph this version does not have.'));
+        }
+
+        $colour = $this->nullableString($section, 'colour', $path, 7);
+
+        if ($colour !== null && ! in_array(mb_strtolower($colour), VaultColourEnum::values(), true)) {
+            $this->refuse(__('A section in this file asks for a colour this version does not offer.'));
+        }
+
         return [
             'slug' => $this->identifier($section, 'slug', $path, Section::SLUG_LENGTH),
             'name' => $this->word($section, 'name', 'name_translation_key', $path, 255),
             'description' => $this->nullableString($section, 'description', $path, 65535),
-            'icon' => $this->identifier($section, 'icon', $path, 64),
+            'icon' => $icon,
+            'colour' => $colour === null ? null : mb_strtolower($colour),
             'locale' => $this->locale($section, $path),
             'fields' => $fields,
         ];

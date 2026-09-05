@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Views\Components;
 
+use App\Enums\VaultColourEnum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -75,5 +76,31 @@ class PanelTest extends TestCase
 
         $this->blade('<x-panel :flush="true">Rows</x-panel>')
             ->assertDontSee('<div class="p-4">', escape: false);
+    }
+
+    #[Test]
+    public function it_tints_its_mark_when_a_tint_is_handed_in(): void
+    {
+        $this->blade('<x-panel title="Health" icon="health" :tint="$tint">Body</x-panel>', [
+            'tint' => VaultColourEnum::Green->tint(),
+        ])->assertSee(VaultColourEnum::Green->tint(), escape: false);
+    }
+
+    #[Test]
+    public function it_leaves_its_mark_untinted_when_none_is_handed_in(): void
+    {
+        $this->blade('<x-panel title="Health" icon="health">Body</x-panel>')
+            ->assertSee('bg-card text-body', escape: false);
+    }
+
+    #[Test]
+    public function it_keeps_the_danger_mark_red_whatever_tint_is_handed_in(): void
+    {
+        $rendered = $this->blade('<x-panel title="Delete" icon="lock" tone="danger" :tint="$tint">Body</x-panel>', [
+            'tint' => VaultColourEnum::Green->tint(),
+        ])->__toString();
+
+        $this->assertStringContainsString('bg-error', $rendered);
+        $this->assertStringNotContainsString('bg-[#4f8a49]/12', $rendered);
     }
 }

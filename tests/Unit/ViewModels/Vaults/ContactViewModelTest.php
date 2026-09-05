@@ -7,6 +7,7 @@ namespace Tests\Unit\ViewModels\Vaults;
 use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
+use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
@@ -93,6 +94,47 @@ class ContactViewModelTest extends TestCase
         $this->assertSame('Ongoing', $sections[0]['name']);
         $this->assertSame('Knee', $sections[0]['fields'][0]['label']);
         $this->assertSame('Practitioners', $sections[1]['name']);
+    }
+
+    #[Test]
+    public function a_block_wears_the_mark_of_the_section_it_draws(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $contact = $this->contact($user, $version);
+        $version->assembly->first()->sectionVersion->section->update(['icon' => 'health', 'colour' => '#4f8a49']);
+
+        $sections = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health'))->sections();
+
+        $this->assertSame('health', $sections[0]['icon']);
+        $this->assertSame(VaultColourEnum::Green->tint(), $sections[0]['tint']);
+    }
+
+    #[Test]
+    public function a_block_on_an_unmarked_section_falls_back_to_the_blank_page_and_the_neutral_pair(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $contact = $this->contact($user, $version);
+
+        $sections = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health'))->sections();
+
+        $this->assertSame(Section::DEFAULT_ICON, $sections[0]['icon']);
+        $this->assertSame(VaultColourEnum::neutralTint(), $sections[0]['tint']);
+    }
+
+    #[Test]
+    public function a_block_falls_back_when_the_section_holds_a_glyph_it_may_not_use(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $contact = $this->contact($user, $version);
+        $version->assembly->first()->sectionVersion->section->update(['icon' => 'chevron-down', 'colour' => '#ff0000']);
+
+        $sections = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health'))->sections();
+
+        $this->assertSame(Section::DEFAULT_ICON, $sections[0]['icon']);
+        $this->assertSame(VaultColourEnum::neutralTint(), $sections[0]['tint']);
     }
 
     #[Test]

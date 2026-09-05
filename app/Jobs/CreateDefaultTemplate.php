@@ -52,6 +52,11 @@ use Illuminate\Support\Facades\DB;
  * read in the language of whoever is looking, which is what keeps a template
  * seeded in English readable to somebody who later switches to French.
  *
+ * The sections arrive marked, with a glyph and a colour off
+ * {@see DefaultSectionEnum}. An account that started with six grey pages would
+ * never find out the mark is there to be changed, and the two sections sharing
+ * a page are deliberately given hues nowhere near each other.
+ *
  * The value lists have to exist before this runs, since two of the fields read
  * their choices from them.
  *
@@ -189,7 +194,8 @@ class CreateDefaultTemplate implements ShouldQueue
             'name_translation_key' => $case->label(),
             'description' => null,
             'slug' => $case->value,
-            'icon' => null,
+            'icon' => $case->icon(),
+            'colour' => $case->colour()->value,
             'is_system' => true,
             'is_active' => true,
             'published_version_id' => null,

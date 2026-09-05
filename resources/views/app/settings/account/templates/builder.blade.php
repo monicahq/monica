@@ -133,6 +133,8 @@
             'isEditable' => $viewModel->isEditable(),
             'isShareable' => $viewModel->isShareable(),
             'otherPages' => $viewModel->otherPages(),
+            'glyphs' => $viewModel->glyphs(),
+            'colours' => $viewModel->colours(),
           ])
         @empty
           <x-panel variant="inset" class="border-dashed">
@@ -143,7 +145,13 @@
         @endforelse
 
         @if ($viewModel->isEditable())
-          <div x-data="{ adding: false }">
+          {{--
+            One scope for the block, holding whether it is open and the mark
+            being picked. The mark cannot go on the form: the button below
+            reaches for the name field by ref, and a second `x-data` there would
+            put that field in a scope this button cannot see.
+          --}}
+          <div x-data="{ adding: false, icon: '', colour: '', open: false }" @ajax:before.window="open = false">
             <button
               x-show="! adding"
               type="button"
@@ -163,6 +171,15 @@
               class="flex flex-wrap items-end gap-3 rounded-lg border border-dashed border-hairline-strong p-4"
             >
               <input type="hidden" name="page" value="{{ $viewModel->selectedPage()?->uuid }}" />
+
+              @include('app.settings.account.templates._section-mark-picker', [
+                'id' => 'section-new',
+                'glyphs' => $viewModel->glyphs(),
+                'colours' => $viewModel->colours(),
+                'icon' => null,
+                'colour' => null,
+                'reach' => __('It marks this section on every template carrying it.'),
+              ])
 
               <x-input
                 id="section-name"

@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\RepetitionOrderEnum;
+use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
@@ -15,6 +16,8 @@ use App\Models\TemplateVersion;
 use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
+use DOMDocument;
+use DOMXPath;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -393,5 +396,350 @@ class TemplateBuilderControllerTest extends TestCase
             'template_version_page_id' => $page->id,
             'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
         ]);
+    }
+
+    #[Test]
+    public function it_offers_the_mark_picker_on_the_add_block(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        TemplateVersion::factory()->create(['template_id' => $template->id]);
+
+        $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
+
+        $response->assertStatus(200);
+        $response->assertSee('name="icon"', escape: false);
+        $response->assertSee('name="colour"', escape: false);
+        $response->assertSee('aria-controls="section-new-mark-picker"', escape: false);
+    }
+
+    #[Test]
+    public function it_names_every_glyph_and_colour_in_the_picker_so_they_can_be_heard(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        TemplateVersion::factory()->create(['template_id' => $template->id]);
+
+        $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
+
+        /* Every option is a button carrying its own pressed state, which is what
+           makes the row reachable and readable rather than a strip of colour.
+           Clearing is the thirty-sixth button and reads the state the other way
+           round, so it is counted separately. */
+        $this->assertSame(35, mb_substr_count($response->getContent(), 'aria-pressed="icon ==='));
+        $this->assertSame(1, mb_substr_count($response->getContent(), 'aria-pressed="! icon'));
+        $response->assertSee('>No glyph<', escape: false);
+
+        foreach (VaultColourEnum::cases() as $colour) {
+            $response->assertSee(">{$colour->label()}<", escape: false);
+        }
+
+        $response->assertSee('>Neutral<', escape: false);
+    }
+
+    #[Test]
+    public function it_draws_the_picker_only_where_the_version_can_be_changed(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $published = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $template->update(['published_version_id' => $published->id]);
+
+        $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template->fresh()));
+
+        $response->assertStatus(200);
+        $response->assertDontSee('aria-controls="section-new-mark-picker"', escape: false);
+    }
+
+    #[Test]
+    public function it_offers_the_mark_picker_on_each_section_as_well_as_the_add_block(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Health']);
+        $row = TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
+
+        $response->assertSee('aria-controls="section-new-mark-picker"', escape: false);
+        $response->assertSee("aria-controls=\"section-{$row->id}-mark-picker\"", escape: false);
+        $response->assertSee('No other template carries this section, so the mark stays here.', escape: false);
+    }
+
+    #[Test]
+    public function it_never_leaves_the_mark_as_the_only_difference_between_two_sections(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+
+        foreach ([['Health', 'health', '#4f8a49'], ['Work', 'briefcase', '#2f7f86']] as [$name, $icon, $colour]) {
+            $section = Section::factory()->marked($icon, $colour)->create([
+                'account_id' => $user->account_id,
+                'name' => $name,
+            ]);
+            TemplateVersionSection::factory()->create([
+                'template_version_id' => $version->id,
+                'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
+            ]);
+        }
+
+        $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
+
+        /* Each block is named in words and drawn with a different glyph, so the
+           two are told apart with the colour taken away. The tile itself is
+           hidden from a screen reader, since the heading already names it. */
+        $response->assertSee('>Health<', escape: false);
+        $response->assertSee('>Work<', escape: false);
+        $this->assertGreaterThanOrEqual(2, mb_substr_count($response->getContent(), 'aria-hidden="true"'));
+    }
+
+    #[Test]
+    public function it_pins_the_mark_picker_out_of_the_flow_so_the_section_card_cannot_clip_it(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        TemplateVersion::factory()->create(['template_id' => $template->id]);
+
+        $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
+
+        /* A section is drawn in a card that hides what overflows it, so a panel
+           positioned inside one is cut off at its edge. */
+        $response->assertSee('x-anchor.bottom-start.offset.6="$refs.trigger"', escape: false);
+        $response->assertDontSee('absolute top-full', escape: false);
+    }
+
+    #[Test]
+    public function it_closes_the_mark_picker_when_a_save_is_on_its_way(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        TemplateVersion::factory()->create(['template_id' => $template->id]);
+
+        $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
+
+        /* The builder is one region that morphs back into place, so a panel left
+           open would still be hanging there after the save. */
+        $response->assertSee('@ajax:before.window="open = false"', escape: false);
+    }
+
+    #[Test]
+    public function it_leaves_exactly_one_glyph_showing_in_the_tile_before_alpine_boots(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $section = Section::factory()->marked('profile', '#3f5fd0')->create(['account_id' => $user->account_id]);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
+        ]);
+
+        $content = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))->getContent();
+
+        /* `[x-cloak]` hides with `!important`, so which glyph starts visible is
+           decided on the server rather than left to Alpine. The marked section
+           shows its own; the add block, which has no mark, shows the default. */
+        foreach ($this->tilesIn($content) as $where => $visible) {
+            $this->assertCount(1, $visible, "The {$where} tile shows ".count($visible).' glyphs.');
+        }
+
+        $this->assertSame(
+            ["icon === 'profile'", '! icon'],
+            array_values(array_map(fn (array $visible): string => $visible[0], $this->tilesIn($content))),
+        );
+    }
+
+    #[Test]
+    public function it_picks_a_colour_from_a_solid_swatch_rather_than_from_the_pale_pair_it_draws(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        TemplateVersion::factory()->create(['template_id' => $template->id]);
+
+        $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
+
+        foreach (VaultColourEnum::cases() as $colour) {
+            $response->assertSee("background: {$colour->value}", escape: false);
+        }
+    }
+
+    /**
+     * Which glyph each trigger tile has showing, in the order the tiles appear.
+     * A span the server marked hidden is not counted, so what comes back is what
+     * somebody sees on the first paint.
+     *
+     * @return array<string, list<string>>
+     */
+    private function tilesIn(string $content): array
+    {
+        $tiles = [];
+        $segments = explode('x-data="{ tints:', $content);
+        array_shift($segments);
+
+        foreach ($segments as $index => $segment) {
+            $tile = mb_substr($segment, 0, (int) mb_strpos($segment, 'sr-only'));
+
+            preg_match_all(
+                '/<span\s+x-show="(icon === \'[a-z]+\'|! icon)"\s*(style="display: none")?/',
+                $tile,
+                $matches,
+                PREG_SET_ORDER,
+            );
+
+            $tiles["tile {$index}"] = array_values(array_map(
+                fn (array $match): string => $match[1],
+                array_filter($matches, fn (array $match): bool => ($match[2] ?? '') === ''),
+            ));
+        }
+
+        return $tiles;
+    }
+
+    #[Test]
+    public function it_keeps_the_mark_picker_open_while_a_glyph_and_a_colour_are_being_picked(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $section = Section::factory()->create(['account_id' => $user->account_id]);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
+        ]);
+
+        $content = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))->getContent();
+
+        /* The panel is picked from twice, a glyph and then a colour. Hanging the
+           outside click on the tile instead would shut it on the first of the
+           two, which reads as the click having done nothing.
+           Scoped to the two tiles and the two panels: half the components on
+           this page open something on a click, so counting these patterns over
+           the whole document would be counting somebody else's menu. */
+        $this->assertCount(2, $this->markTriggersIn($content));
+
+        foreach ($this->markTriggersIn($content) as $where => $trigger) {
+            $this->assertStringContainsString('@click.stop="open = ! open"', $trigger, "The {$where} tile does not stop its own click.");
+            $this->assertStringNotContainsString('@click.outside', $trigger, "The {$where} tile shuts the panel on the first pick.");
+        }
+
+        foreach ($this->panelsIn($content) as $where => $panel) {
+            $this->assertStringContainsString('@click.outside="open = false"', $panel, "The {$where} panel does not close on an outside click.");
+        }
+    }
+
+    #[Test]
+    public function it_posts_the_stored_mark_even_before_alpine_has_bound_the_fields(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $section = Section::factory()->marked('profile', '#3f5fd0')->create(['account_id' => $user->account_id]);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
+
+        /* A binding on its own leaves the field empty until Alpine boots, so a
+           save that landed first would clear the mark rather than keep it. */
+        $response->assertSee('name="icon" value="profile" :value="icon"', escape: false);
+        $response->assertSee('name="colour" value="#3f5fd0" :value="colour"', escape: false);
+    }
+
+    /**
+     * The tile that opens each mark panel, by the id it points at.
+     *
+     * @return array<string, string>
+     */
+    private function markTriggersIn(string $content): array
+    {
+        preg_match_all('/<button\\b[^>]*aria-controls="([^"]+)-mark-picker"[^>]*>/s', $content, $matches, PREG_SET_ORDER);
+
+        $triggers = [];
+
+        foreach ($matches as $match) {
+            $triggers[$match[1]] = $match[0];
+        }
+
+        return $triggers;
+    }
+
+    /**
+     * The mark panels on the page, by the id each is addressed as.
+     *
+     * @return array<string, string>
+     */
+    private function panelsIn(string $content): array
+    {
+        preg_match_all('/<div\s+x-cloak\s+x-show="open"[^>]*id="([^"]+)-mark-picker"/s', $content, $matches, PREG_SET_ORDER);
+
+        $panels = [];
+
+        foreach ($matches as $match) {
+            $panels[$match[1]] = $match[0];
+        }
+
+        return $panels;
+    }
+
+    #[Test]
+    public function it_declares_every_ref_in_the_scope_that_reaches_for_it(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $section = Section::factory()->marked('profile', '#3f5fd0')->create(['account_id' => $user->account_id]);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
+        ]);
+
+        $content = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))->getContent();
+
+        /*
+         * A ref belongs to the component it was declared in, so an `x-data` put
+         * between a button and the field it focuses moves that field into a
+         * scope the button cannot see, and reaching for it throws. Nothing about
+         * the markup looks wrong when that happens, which is why this is checked
+         * rather than read.
+         */
+        $document = new DOMDocument;
+        libxml_use_internal_errors(true);
+        $document->loadHTML($content);
+        libxml_clear_errors();
+
+        $xpath = new DOMXPath($document);
+        $unreachable = [];
+
+        foreach ($xpath->query('//*[@*[contains(., "$refs.")]]') as $consumer) {
+            $scope = $xpath->query('ancestor-or-self::*[@x-data][1]', $consumer)->item(0);
+
+            foreach ($consumer->attributes as $attribute) {
+                preg_match_all('/\$refs\.([A-Za-z0-9_]+)/', $attribute->value, $matches);
+
+                foreach ($matches[1] as $ref) {
+                    $declared = $xpath->query("//*[@x-ref='{$ref}']");
+                    $reachable = false;
+
+                    foreach ($declared as $element) {
+                        if ($xpath->query('ancestor::*[@x-data][1]', $element)->item(0)?->isSameNode($scope) === true) {
+                            $reachable = true;
+                        }
+                    }
+
+                    if (! $reachable) {
+                        $unreachable[] = $ref;
+                    }
+                }
+            }
+        }
+
+        $this->assertSame([], array_values(array_unique($unreachable)));
     }
 }

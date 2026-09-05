@@ -473,6 +473,54 @@ class StructureFileReaderTest extends TestCase
         StructureFileReader::read(json_encode($file));
     }
 
+    #[Test]
+    public function it_refuses_a_section_asking_for_a_glyph_this_version_does_not_have(): void
+    {
+        $file = $this->file();
+        $file['template']['pages'][0]['sections'][0]['section']['icon'] = 'chevron-down';
+
+        $this->expectException(StructureFileIsNotReadable::class);
+
+        StructureFileReader::read(StructureFile::encode($file));
+    }
+
+    #[Test]
+    public function it_refuses_a_section_asking_for_a_colour_this_version_does_not_offer(): void
+    {
+        $file = $this->file();
+        $file['template']['pages'][0]['sections'][0]['section']['colour'] = '#ff0000';
+
+        $this->expectException(StructureFileIsNotReadable::class);
+
+        StructureFileReader::read(StructureFile::encode($file));
+    }
+
+    #[Test]
+    public function it_reads_the_mark_a_section_arrives_wearing(): void
+    {
+        $file = $this->file();
+        $file['template']['pages'][0]['sections'][0]['section']['icon'] = 'health';
+        $file['template']['pages'][0]['sections'][0]['section']['colour'] = '#4F8A49';
+
+        $read = StructureFileReader::read(StructureFile::encode($file));
+        $section = $read['template']['pages'][0]['sections'][0]['section'];
+
+        $this->assertEquals('health', $section['icon']);
+        /* Written back in lower case, so two files naming one colour in two
+           cases do not become two colours. */
+        $this->assertEquals('#4f8a49', $section['colour']);
+    }
+
+    #[Test]
+    public function it_reads_a_section_carrying_no_mark(): void
+    {
+        $read = StructureFileReader::read(StructureFile::encode($this->file()));
+        $section = $read['template']['pages'][0]['sections'][0]['section'];
+
+        $this->assertNull($section['icon']);
+        $this->assertNull($section['colour']);
+    }
+
     /**
      * The smallest file the reader accepts, which every refusal above breaks in
      * exactly one way.

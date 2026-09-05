@@ -30,6 +30,7 @@ class SectionFactory extends Factory
             'description' => fake()->sentence(),
             'slug' => Str::slug(fake()->unique()->words(3, true)),
             'icon' => null,
+            'colour' => null,
             'is_system' => false,
             'is_active' => true,
             'published_version_id' => null,
@@ -47,6 +48,18 @@ class SectionFactory extends Factory
             'name' => null,
             'name_translation_key' => 'Address',
             'is_system' => true,
+        ]);
+    }
+
+    /**
+     * Indicate that the section carries a mark, which is what a test needs when
+     * it is the drawing rather than the absence of one that is in question.
+     */
+    public function marked(string $icon = 'health', string $colour = '#4f8a49'): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'icon' => $icon,
+            'colour' => $colour,
         ]);
     }
 

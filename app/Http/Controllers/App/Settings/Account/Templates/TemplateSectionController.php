@@ -7,9 +7,12 @@ namespace App\Http\Controllers\App\Settings\Account\Templates;
 use App\Actions\AddSectionToTemplateVersion;
 use App\Actions\CreateSection;
 use App\Actions\RemoveSectionFromTemplateVersion;
+use App\Actions\UpdateSection;
 use App\Actions\UpdateTemplateVersionSection;
+use App\Enums\VaultColourEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Controllers\Controller;
+use App\Models\Section;
 use App\Models\Template;
 use App\Models\TemplateVersionSection;
 use Illuminate\Http\RedirectResponse;
@@ -41,6 +44,8 @@ class TemplateSectionController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'icon' => ['nullable', 'string', Rule::in(Section::ICONS)],
+            'colour' => ['nullable', 'string', Rule::in(VaultColourEnum::values())],
             'page' => [
                 'nullable',
                 'string',
@@ -53,6 +58,8 @@ class TemplateSectionController extends Controller
         $section = new CreateSection(
             user: $request->user(),
             name: $validated['name'],
+            icon: $validated['icon'] ?? null,
+            colour: $validated['colour'] ?? null,
         )->execute();
 
         new AddSectionToTemplateVersion(
@@ -66,13 +73,32 @@ class TemplateSectionController extends Controller
             ->with('status', __('The section is added.'));
     }
 
+    /**
+     * The heading and the mark are saved together and stored apart. The heading
+     * belongs to this placement, so changing it reaches no other template; the
+     * mark belongs to the section, so changing it reaches all of them. One form
+     * asks for both because they are one gesture to whoever is looking at the
+     * row, and the screen says which is which.
+     */
     public function update(Request $request, Template $template, TemplateVersionSection $templateVersionSection): RedirectResponse
     {
         abort_unless($templateVersionSection->isReachableThrough($request->user(), $template), 404);
 
         $validated = $request->validate([
             'title_override' => ['nullable', 'string', 'max:255'],
+            'icon' => ['nullable', 'string', Rule::in(Section::ICONS)],
+            'colour' => ['nullable', 'string', Rule::in(VaultColourEnum::values())],
         ]);
+
+        /*
+         * The mark sits on the section, so writing it never touches the pivot
+         * and never trips the guard that model keeps. Asking here is what stops
+         * a published version being changed through the one half of this form
+         * that would otherwise reach past it.
+         */
+        if (! $templateVersionSection->templateVersion->status->isEditable()) {
+            return $this->refuse($template);
+        }
 
         try {
             new UpdateTemplateVersionSection(
@@ -81,6 +107,17 @@ class TemplateSectionController extends Controller
                 titleOverride: $validated['title_override'] ?? null,
                 isCollapsedByDefault: $templateVersionSection->is_collapsed_by_default,
             )->execute();
+
+            $section = $templateVersionSection->sectionVersion->section;
+
+            new UpdateSection(
+                user: $request->user(),
+                section: $section,
+                name: $section->getRawOriginal('name') ?? $section->name,
+                description: $section->description,
+                icon: $validated['icon'] ?? null,
+                colour: $validated['colour'] ?? null,
+            )->execute();
         } catch (PublishedVersionIsFrozen) {
             return $this->refuse($template);
         }
@@ -88,7 +125,7 @@ class TemplateSectionController extends Controller
         return redirect()->route('settings.templateBuilder.index', [
             'template' => $template,
             'page' => $templateVersionSection->templateVersionPage->key,
-        ])->with('status', __('The heading is saved.'));
+        ])->with('status', __('The section is saved.'));
     }
 
     public function destroy(Request $request, Template $template, TemplateVersionSection $templateVersionSection): RedirectResponse

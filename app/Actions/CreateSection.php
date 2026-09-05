@@ -38,6 +38,7 @@ class CreateSection
         private ?string $description = null,
         private ?string $slug = null,
         private ?string $icon = null,
+        private ?string $colour = null,
         private readonly ?string $locale = null,
         private readonly bool $isActive = true,
     ) {}
@@ -57,6 +58,7 @@ class CreateSection
         $this->description = TextSanitizer::nullablePlainText($this->description);
         $this->slug = TextSanitizer::nullablePlainText($this->slug);
         $this->icon = TextSanitizer::nullablePlainText($this->icon);
+        $this->colour = TextSanitizer::nullablePlainText($this->colour);
     }
 
     private function create(): void
@@ -69,6 +71,7 @@ class CreateSection
                 'description' => $this->description,
                 'slug' => $this->slug(),
                 'icon' => $this->icon,
+                'colour' => $this->colour,
                 'is_system' => false,
                 'is_active' => $this->isActive,
                 'published_version_id' => null,

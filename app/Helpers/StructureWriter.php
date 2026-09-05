@@ -121,6 +121,7 @@ class StructureWriter
                     ->exists(),
             ),
             'icon' => TextSanitizer::nullablePlainText($payload['icon']),
+            'colour' => TextSanitizer::nullablePlainText($payload['colour'] ?? null),
             'is_system' => false,
             'is_active' => true,
             'published_version_id' => null,

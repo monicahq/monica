@@ -84,4 +84,40 @@ class SectionTest extends TestCase
 
         $this->assertNotNull($section->uuid);
     }
+
+    #[Test]
+    public function it_offers_thirty_five_glyphs(): void
+    {
+        $this->assertCount(35, Section::ICONS);
+        $this->assertSame(array_values(array_unique(Section::ICONS)), Section::ICONS);
+    }
+
+    #[Test]
+    public function it_offers_no_glyph_the_icon_component_cannot_draw(): void
+    {
+        /*
+         * A name the component has no path for is drawn as the default instead,
+         * so a name that is only offered and never drawn is invisible on its
+         * own. What gives it away is the collision: it renders identically to
+         * the default. Thirty-five distinct drawings is therefore the assertion,
+         * and it is why this compares the set against itself rather than against
+         * a name nothing answers to, which is the default's own drawing.
+         */
+        $drawn = [];
+
+        foreach (Section::ICONS as $icon) {
+            $drawn[$icon] = $this->blade('<x-icon :name="$icon" />', ['icon' => $icon])->__toString();
+        }
+
+        $duplicates = array_keys(array_diff_key($drawn, array_unique($drawn)));
+
+        $this->assertSame([], $duplicates, implode(', ', $duplicates).' offered to a section but not drawn.');
+        $this->assertCount(35, array_unique($drawn));
+    }
+
+    #[Test]
+    public function it_defaults_to_a_glyph_it_offers(): void
+    {
+        $this->assertContains(Section::DEFAULT_ICON, Section::ICONS);
+    }
 }
