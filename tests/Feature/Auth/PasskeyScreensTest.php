@@ -11,14 +11,6 @@ use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * What the two screens show about passkeys.
- *
- * The suite runs over http on a host that is not localhost, so the unavailable
- * branch is what renders by default. Every test that wants the control has to
- * ask for a secure context, which is worth knowing: it is the same condition a
- * real deployment has to meet.
- */
 class PasskeyScreensTest extends TestCase
 {
     use RefreshDatabase;
@@ -30,11 +22,6 @@ class PasskeyScreensTest extends TestCase
         return $this;
     }
 
-    /**
-     * The other half of the pair. Leaving the scheme to `APP_URL` made these
-     * tests answer to the address in a developer's own `.env` rather than to the
-     * branch they are about.
-     */
     private function insecure(): self
     {
         URL::forceScheme('http');
@@ -108,13 +95,6 @@ class PasskeyScreensTest extends TestCase
         $response->assertDontSee('Somebody else laptop');
     }
 
-    /**
-     * A Blade directive is not compiled inside the attribute of a component tag:
-     * the component compiler takes the attributes before directives are handled,
-     * so `@js(...)` lands in the page verbatim and Alpine chokes on the `@`. It
-     * happened once, on both these screens, and the whole component silently
-     * failed to initialise. This is the guard.
-     */
     #[Test]
     public function neither_screen_embeds_an_uncompiled_blade_directive(): void
     {

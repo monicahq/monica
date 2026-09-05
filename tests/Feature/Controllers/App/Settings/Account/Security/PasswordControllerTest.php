@@ -150,7 +150,6 @@ class PasswordControllerTest extends TestCase
     {
         Queue::fake();
 
-        // Say the scheme rather than inheriting it from `APP_URL`.
         URL::forceScheme('http');
 
         $user = User::factory()->create();

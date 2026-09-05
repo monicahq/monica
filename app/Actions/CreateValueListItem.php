@@ -14,12 +14,7 @@ use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Add a choice to a list. This is the half of section 5.4 that makes the
- * others worth having: a supplied list is a starting point, and everybody
- * finishes it themselves.
- *
- * A list that does not take values of its own refuses, since its choices mean
- * something to the product and not only to the person reading them.
+ * Add a choice to a list.
  */
 class CreateValueListItem
 {

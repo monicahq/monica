@@ -12,14 +12,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Take a contact out of the main lists without deleting them. It is what a
- * colleague from two jobs ago is for: nothing about them is lost, and they stop
- * getting in the way of the people currently in a life.
- *
- * An archived contact is also silent: no reminder about them fires while they
- * are archived. That is the only thing archiving does, so a rule that went on
- * firing would defeat it. Every rule about them is silenced with the reason, and
- * {@see UnarchiveContact} brings back exactly those.
+ * Take a contact out of the main lists without deleting them.
  */
 class ArchiveContact
 {

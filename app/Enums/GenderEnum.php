@@ -15,10 +15,6 @@ enum GenderEnum: string implements SuppliedValueListItem
     case PreferNotToSay = 'prefer_not_to_say';
     case Other = 'other';
 
-    /**
-     * What the gender is called on the screen where somebody picks one. The
-     * word doubles as the translation key.
-     */
     #[Override]
     public function label(): string
     {
@@ -31,11 +27,7 @@ enum GenderEnum: string implements SuppliedValueListItem
         };
     }
 
-    /**
-     * The name this item is seeded with.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

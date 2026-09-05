@@ -13,55 +13,20 @@ use RecursiveIteratorIterator;
 use RegexIterator;
 use SplFileInfo;
 
-/**
- * Collect every string the application asks to be translated and write it to
- * the locale files, so nobody has to keep those files in step by hand.
- *
- * The English file is the source: its keys are the sentences themselves, and
- * every value is its own key. The other files hold only what has been
- * translated. A missing key is not a hole, since Laravel falls back to the key,
- * which is the English sentence; the count of what is missing is reported
- * instead, and `--check` turns that count into a failure.
- *
- * The files are read as text rather than parsed, since a Blade file is not PHP
- * until it is compiled. Their comments are taken out first all the same: this
- * codebase explains itself in long comments, and a call written in one as an
- * example is not a string anybody has to translate.
- */
 class LocalizeCommand extends Command
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $signature = 'monica:localize {--check : Report what is out of date, and write nothing}';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $description = 'Collect the strings to translate and write them to the locale files';
 
-    /**
-     * The calls that mark a string as one to translate. Anything an enum
-     * carries is found through the Translatable contract instead, since those
-     * strings are wrapped where they are read rather than where they live.
-     *
-     * @var list<string>
-     */
+    /** @var list<string> */
     private const array FUNCTIONS = ['__', 'trans', 'trans_choice', '@lang'];
 
-    /**
-     * What a phrase says to declare that its wording does not change with the
-     * number it shows. Laravel reads it as a range covering every number, and
-     * strips it before the reader sees it.
-     */
     private const string COVERS_EVERY_NUMBER = '[0,*]';
 
-    /**
-     * How each broken rule is described. The wordings name the language rather
-     * than assume it, since the rules themselves are declared by the locale.
-     *
-     * @var array<string, string>
-     */
+    /** @var array<string, string> */
     private const array TYPOGRAPHY_REPORTS = [
         'apostrophe' => '%s has %d value(s) written with an apostrophe it does not use:',
         'space_before' => '%s has %d value(s) missing the space it writes before a punctuation mark:',
@@ -69,23 +34,10 @@ class LocalizeCommand extends Command
         'forbidden_words' => '%s has %d value(s) addressing the reader the way it does not address them:',
     ];
 
-    /**
-     * Every character a language might write an apostrophe with. A locale names
-     * the one it uses and the rest become wrong for it, so no locale has to list
-     * what it forbids and none can forbid what it requires.
-     *
-     * @var list<string>
-     */
+    /** @var list<string> */
     private const array APOSTROPHES = ["\u{0027}", "\u{2019}", "\u{2018}", "\u{00B4}", "\u{0060}"];
 
-    /**
-     * Every character a language might open or close a quotation with. Single
-     * quotes are deliberately absent: U+2019 closes a quotation in some
-     * languages and is the apostrophe in others, and a character cannot be
-     * required by one rule and forbidden by another.
-     *
-     * @var list<string>
-     */
+    /** @var list<string> */
     private const array DOUBLE_QUOTES = ["\u{0022}", "\u{201C}", "\u{201D}", "\u{201E}", "\u{00AB}", "\u{00BB}"];
 
     private const string SINGLE_QUOTED = '\'((?:\\\\.|[^\'\\\\])*)\'';
@@ -94,19 +46,10 @@ class LocalizeCommand extends Command
 
     private int $filesRead = 0;
 
-    /**
-     * The places where a number is shown without the wordings that go with it,
-     * found while the files are read for strings.
-     *
-     * @var list<string>
-     */
+    /** @var list<string> */
     private array $misuses = [];
 
-    /**
-     * How many wordings each language needs, worked out once per locale.
-     *
-     * @var array<string, int>
-     */
+    /** @var array<string, int> */
     private array $wordingsPerLocale = [];
 
     public function handle(): int
@@ -180,14 +123,7 @@ class LocalizeCommand extends Command
         return self::SUCCESS;
     }
 
-    /**
-     * Say what is about to change, or what would change under --check. The
-     * strings that arrived and the ones that left are the two things worth
-     * reading: an arrival needs translating, and a departure takes every
-     * translation of it with it.
-     *
-     * @param  list<string>  $keys
-     */
+    /** @param  list<string>  $keys */
     private function report(array $keys): bool
     {
         $known = array_keys($this->existingTranslations($this->sourceLocale()));
@@ -219,13 +155,7 @@ class LocalizeCommand extends Command
         return $arrived !== [] || $left !== [];
     }
 
-    /**
-     * Say which phrases that show a number are missing a wording, or carry one
-     * too many. Turkish needs one and everywhere else needs two, so a phrase
-     * that looks complete in one locale can be wrong in another.
-     *
-     * @param  array<string, list<string>>  $incomplete
-     */
+    /** @param  array<string, list<string>>  $incomplete */
     private function reportIncomplete(array $incomplete): void
     {
         if ($incomplete === []) {
@@ -249,13 +179,7 @@ class LocalizeCommand extends Command
         $this->newLine();
     }
 
-    /**
-     * Say which wordings show a number without saying where it goes. This is the
-     * one that English can never reveal: "1 personne|:count personnes" reads
-     * correctly at one and at two, and renders "1 personne" at zero.
-     *
-     * @param  array<string, list<string>>  $uncounted
-     */
+    /** @param  array<string, list<string>>  $uncounted */
     private function reportUncounted(array $uncounted): void
     {
         if ($uncounted === []) {
@@ -278,14 +202,7 @@ class LocalizeCommand extends Command
         $this->newLine();
     }
 
-    /**
-     * Say which values are written the way their language does not write things.
-     * Each rule is named separately, so a value breaking two of them is listed
-     * under both and the reader is told what to change rather than that
-     * something is wrong.
-     *
-     * @param  array<string, array<string, list<string>>>  $typography
-     */
+    /** @param  array<string, array<string, list<string>>>  $typography */
     private function reportTypography(array $typography): void
     {
         if ($typography === []) {
@@ -304,16 +221,7 @@ class LocalizeCommand extends Command
         }
     }
 
-    /**
-     * The rules of its own language that one translation breaks.
-     *
-     * The rules are read from the locale rather than known here, so this says
-     * nothing about French and a language that declares nothing is not checked.
-     * That is what keeps the eight locales whose conventions nobody has written
-     * down from failing over conventions nobody has written down.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     private function typographyRulesBrokenBy(string $translation, string $locale): array
     {
         $rules = config("monica.locales.{$locale}.typography", []);
@@ -351,16 +259,7 @@ class LocalizeCommand extends Command
         return array_values(array_unique($broken));
     }
 
-    /**
-     * Whether a mark this language puts a space before is written without one,
-     * or with a different one.
-     *
-     * The space it asks for cannot be broken across a line, which is the whole
-     * point: an ordinary space lets the mark be pushed onto the next line on its
-     * own, and a reader sees a question mark opening a line.
-     *
-     * @param  array<string, string>  $spaces
-     */
+    /** @param  array<string, string>  $spaces */
     private function missesASpaceBeforeAMark(string $prose, array $spaces): bool
     {
         foreach ($spaces as $mark => $space) {
@@ -378,16 +277,7 @@ class LocalizeCommand extends Command
         return false;
     }
 
-    /**
-     * Whether the value spaces its quotation marks the way this language does
-     * not space them.
-     *
-     * Only French writes a space inside its guillemets. A language that declares
-     * no inner space has nothing to check here, and its quotation is judged by
-     * which characters it uses rather than by what sits next to them.
-     *
-     * @param  array{open: string, close: string, inner_space?: string}  $quotes
-     */
+    /** @param  array{open: string, close: string, inner_space?: string}  $quotes */
     private function quotesTheWrongWay(string $prose, array $quotes): bool
     {
         if (! isset($quotes['inner_space'])) {
@@ -414,8 +304,6 @@ class LocalizeCommand extends Command
     }
 
     /**
-     * The characters of a family that this language does not use.
-     *
      * @param  list<string>  $family
      * @param  array<array-key, string>  $used
      * @return list<string>
@@ -425,16 +313,7 @@ class LocalizeCommand extends Command
         return array_values(array_diff($family, $used));
     }
 
-    /**
-     * Whether the value uses a word this language has decided against.
-     *
-     * The words are matched whole, so a word that merely holds those letters is
-     * left alone: "statut" is not a reader being addressed as "tu". Which words
-     * a language lists is its own business, and French lists only the pronouns
-     * that can mean nothing else, because a false positive here has no way out.
-     *
-     * @param  list<string>  $words
-     */
+    /** @param  list<string>  $words */
     private function usesAForbiddenWord(string $prose, array $words): bool
     {
         $pattern = '/\b('.implode('|', array_map('preg_quote', $words)).')\b/iu';
@@ -442,13 +321,7 @@ class LocalizeCommand extends Command
         return preg_match($pattern, $prose) === 1;
     }
 
-    /**
-     * Every place one string sits inside another, counted in characters rather
-     * than in bytes, since the characters these rules are about are multi-byte
-     * and a byte offset would point into the middle of one.
-     *
-     * @return list<int>
-     */
+    /** @return list<int> */
     private function positionsOf(string $haystack, string $needle): array
     {
         $positions = [];
@@ -462,20 +335,6 @@ class LocalizeCommand extends Command
         return $positions;
     }
 
-    /**
-     * One wording with everything that is not prose taken out of it, which today
-     * means its placeholders.
-     *
-     * A placeholder carries a colon that belongs to the framework rather than to
-     * the sentence, and French puts a space before a colon. Left in, ":name"
-     * would be read as punctuation missing its space, which is the mistake that
-     * made the first count of this file eight times too high.
-     *
-     * A span between backticks is code, and code is written the same way in every
-     * language. A JSON sample quotes its keys with the straight double quote and
-     * separates them from their values with an unspaced colon, and no language
-     * gets to punctuate that differently without breaking it.
-     */
     private function proseOf(string $wording): string
     {
         $withoutCode = preg_replace('/`[^`]*`/', 'x', $wording) ?? $wording;
@@ -484,9 +343,6 @@ class LocalizeCommand extends Command
     }
 
     /**
-     * Write one locale file, keeping the translations it already holds and
-     * dropping what the code no longer asks for.
-     *
      * @param  list<string>  $keys
      * @return array{translated: int, missing: int, changed: bool, incomplete: list<string>, uncounted: list<string>, typography: array<string, list<string>>}
      */
@@ -528,11 +384,6 @@ class LocalizeCommand extends Command
 
             $translations[$key] = $translation;
 
-            // A phrase translated with the wrong number of wordings is not
-            // translated: the extra ones are text no number will reach, and a
-            // missing one leaves a number reading in the wrong language. The
-            // value is kept all the same, so nobody's work is thrown away
-            // between running this and correcting it.
             if ($this->isCountedPhrase($key) && $this->wordingsIn($translation) !== $this->wordingsExpected($key, $locale)) {
                 $missing++;
                 $incomplete[] = $key;
@@ -573,12 +424,7 @@ class LocalizeCommand extends Command
         ];
     }
 
-    /**
-     * Every string the application asks to be translated, sorted so the files
-     * come out the same whatever order the disk hands the files over in.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     private function stringsToTranslate(): array
     {
         $keys = [];
@@ -603,8 +449,6 @@ class LocalizeCommand extends Command
             }
         }
 
-        // A key that reads as a number comes back out of an array as an int,
-        // since PHP coerces numeric string keys.
         $keys = array_map(strval(...), array_keys($keys));
 
         sort($keys, SORT_STRING);
@@ -612,9 +456,7 @@ class LocalizeCommand extends Command
         return $keys;
     }
 
-    /**
-     * @return list<SplFileInfo>
-     */
+    /** @return list<SplFileInfo> */
     private function files(): array
     {
         $files = [];
@@ -637,11 +479,6 @@ class LocalizeCommand extends Command
         return $files;
     }
 
-    /**
-     * What a file says once its comments are gone. A Blade file cannot go
-     * through the tokenizer, since it only becomes PHP once compiled, so its
-     * own comment syntax is taken out instead.
-     */
     private function codeOf(SplFileInfo $file): string
     {
         $contents = (string) file_get_contents($file->getPathname());
@@ -663,9 +500,7 @@ class LocalizeCommand extends Command
         return $code;
     }
 
-    /**
-     * @return list<string>
-     */
+    /** @return list<string> */
     private function keysIn(string $contents): array
     {
         $keys = [];
@@ -683,17 +518,6 @@ class LocalizeCommand extends Command
         return $keys;
     }
 
-    /**
-     * The two ways a phrase that shows a number goes wrong: asked for with a
-     * call that cannot vary its wording, or picked by comparing the count to
-     * one, which is a rule that holds in English and nowhere near everywhere.
-     *
-     * The first of those has three shapes, and each is reported as itself. A
-     * phrase naming the count, a phrase carrying a condition, and a phrase
-     * carrying several wordings all go wrong by being asked for the wrong way,
-     * and a report that named only one of them would send somebody to fix the
-     * phrase when the call is what is wrong.
-     */
     private function recordMisuses(SplFileInfo $file, string $code): void
     {
         $where = str_replace(base_path().'/', '', $file->getPathname());
@@ -716,9 +540,6 @@ class LocalizeCommand extends Command
                         continue;
                     }
 
-                    // A wording said to apply to certain numbers, asked for by a
-                    // call that does not read conditions. Only trans_choice takes
-                    // the condition off, so here it reaches the reader as text.
                     if ($this->carriesACondition($phrase)) {
                         $this->misuses[] = sprintf(
                             '%s asks for "%s" with %s(), which leaves the condition in the sentence for the reader to see. Use trans_choice().',
@@ -730,10 +551,6 @@ class LocalizeCommand extends Command
                         continue;
                     }
 
-                    // Several wordings offered to a call that picks none of them.
-                    // Without the count placeholder or a condition, the two rules
-                    // above both miss it, and what a reader gets is every wording
-                    // at once with the pipes still between them.
                     if ($this->wordingsIn($phrase) > 1) {
                         $this->misuses[] = sprintf(
                             '%s asks for "%s" with %s(), which picks none of its wordings and prints them all, pipes included. Use trans_choice().',
@@ -748,10 +565,6 @@ class LocalizeCommand extends Command
 
         $this->recordUnguardedPins($where, $code);
 
-        // An equality against one, not an inequality, and not any comparison at
-        // all unless what follows chooses between phrases one of which shows a
-        // number. Without that second condition every `preg_match(...) !== 1`
-        // and every choice between two unrelated sentences reads as a misuse.
         preg_match_all('/(?<![!<>=])(?:===|==)(?!=)\s*1\b/', $code, $matches, PREG_OFFSET_CAPTURE);
 
         foreach ($matches[0] as [$match, $offset]) {
@@ -773,23 +586,6 @@ class LocalizeCommand extends Command
         }
     }
 
-    /**
-     * A wording pinned to a single number cannot serve zero: "Opened once" and
-     * "One section" name one thing, and zero is not one thing. Laravel's {1}
-     * matches one and nothing else, so at zero the phrase falls through to the
-     * plural rules and lands on the first wording, which is the pinned one. A
-     * French reader sees the singular there, since French groups zero with one.
-     *
-     * So a phrase with a pinned wording is only safe where zero cannot reach it,
-     * and this looks for the guard that keeps it away. Read as text, from the
-     * call back to the start of its function, which is why it can be spelled
-     * around and why the report says so.
-     *
-     * A view has no function to read back to, and a guard written there belongs
-     * to the screen rather than to the phrase, which is the thing that has to be
-     * safe wherever it is shown. A pinned wording in a view is therefore refused
-     * outright: it belongs in whatever builds the screen's words.
-     */
     private function recordUnguardedPins(string $where, string $code): void
     {
         foreach ([self::SINGLE_QUOTED, self::DOUBLE_QUOTED] as $quoted) {
@@ -828,11 +624,6 @@ class LocalizeCommand extends Command
         }
     }
 
-    /**
-     * Whether anything between the start of the enclosing function and this
-     * point deals with zero, whether by comparing to it, by asking for more
-     * than none, or by finding an empty list.
-     */
     private function guardsZeroBefore(string $code, int $offset): bool
     {
         $start = mb_strrpos(mb_strcut($code, 0, $offset), 'function ');
@@ -844,11 +635,6 @@ class LocalizeCommand extends Command
         return preg_match('/(?:===|==|!==|!=)\s*0\b|>\s*0\b|(?:===|!==)\s*\[\]|empty\(/', $body) === 1;
     }
 
-    /**
-     * Say where a number is shown without the wordings that go with it. The
-     * second check reads text rather than parsing it, so a report is proof that
-     * something is wrong and an empty report is not proof that nothing is.
-     */
     private function reportMisuses(): bool
     {
         if ($this->misuses === []) {
@@ -869,11 +655,6 @@ class LocalizeCommand extends Command
         return true;
     }
 
-    /**
-     * A phrase that shows a number carries one wording per plural category of
-     * the language, separated by a pipe, and is asked for with trans_choice.
-     * One that shows a number its wording does not depend on says so instead.
-     */
     private function isCountedPhrase(string $key): bool
     {
         return str_contains($key, '|') || $this->coversEveryNumber($key);
@@ -884,11 +665,6 @@ class LocalizeCommand extends Command
         return str_starts_with($key, self::COVERS_EVERY_NUMBER);
     }
 
-    /**
-     * How many wordings this phrase needs in this locale. A phrase that covers
-     * every number needs the one it has, whatever the language would otherwise
-     * ask for.
-     */
     private function wordingsExpected(string $key, string $locale): int
     {
         if ($this->coversEveryNumber($key)) {
@@ -898,11 +674,6 @@ class LocalizeCommand extends Command
         return $this->wordingsNeeded($locale);
     }
 
-    /**
-     * How many wordings a language needs, asked of the same function that will
-     * pick one at render time. A table kept here could disagree with what a
-     * reader sees; this cannot.
-     */
     private function wordingsNeeded(string $locale): int
     {
         if (isset($this->wordingsPerLocale[$locale])) {
@@ -924,19 +695,7 @@ class LocalizeCommand extends Command
         return count(explode('|', $phrase));
     }
 
-    /**
-     * The wordings that show a number without saying where it goes. Writing the
-     * digit instead of the placeholder is what makes a French reader see
-     * "1 personne" at a count of zero, since French groups zero with the
-     * singular and reads the singular wording there.
-     *
-     * A wording pinned to a single number is exempt, because there the number is
-     * already known and spelling it as a word is a copy choice. A wording that
-     * covers more than one number is not: "[0,*]1 gadget" reads "1 gadget" at
-     * every number, which is the same defect wearing a condition.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     private function wordingsMissingTheCount(string $phrase): array
     {
         $missing = [];
@@ -956,20 +715,11 @@ class LocalizeCommand extends Command
         return $missing;
     }
 
-    /**
-     * Whether a wording opens with a condition saying which numbers it applies
-     * to. The shape is the framework's own, so a sentence that merely starts with
-     * a bracket, such as "[Draft] something", is not mistaken for one.
-     */
     private function carriesACondition(string $wording): bool
     {
         return preg_match('/^[{\[][-?\d|*,.]*[}\]]/', $wording) === 1;
     }
 
-    /**
-     * Whether a wording applies to exactly one number, written either as {1} or
-     * as a range whose ends meet.
-     */
     private function isPinnedToOneNumber(string $wording): bool
     {
         if (preg_match('/^\{\s*(-?\d+)\s*\}/', $wording) === 1) {
@@ -983,13 +733,7 @@ class LocalizeCommand extends Command
         return $ends[1] === $ends[2];
     }
 
-    /**
-     * The enums that carry words for a screen. They are found by what they
-     * implement rather than by a list kept here, so a new one is picked up by
-     * being written.
-     *
-     * @return list<class-string<Translatable&\UnitEnum>>
-     */
+    /** @return list<class-string<Translatable&\UnitEnum>> */
     private function translatableEnums(): array
     {
         $enums = [];
@@ -1005,9 +749,7 @@ class LocalizeCommand extends Command
         return $enums;
     }
 
-    /**
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     private function existingTranslations(string $locale): array
     {
         $path = lang_path($locale.'.json');
@@ -1021,15 +763,11 @@ class LocalizeCommand extends Command
         return is_array($decoded) ? $decoded : [];
     }
 
-    /**
-     * @return list<string>
-     */
+    /** @return list<string> */
     private function locales(): array
     {
         $locales = array_keys(config('monica.locales'));
 
-        // The source comes first, since it is the one the others are measured
-        // against and the one somebody reads first.
         usort($locales, fn (string $locale): int => $locale === $this->sourceLocale() ? -1 : 1);
 
         return $locales;

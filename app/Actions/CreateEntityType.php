@@ -12,24 +12,8 @@ use App\Models\EntityType;
 use App\Models\User;
 
 /**
- * Declare a kind of object the account wants to keep, when nothing the product
- * ships with fits: Animal, Company, Recipe, Wine bottle.
- *
- * This writes down the noun and nothing else. What one of them holds is a
- * template, and it is described afterwards, which is why a type can exist for
- * a while with no structure to show.
- *
- * Both names are asked for rather than one being made from the other, since a
- * plural derived in English is wrong in most other languages.
- *
- * The slug is settled here and never rebuilt. It travels in URLs and through
- * the API, so a rename must not break a link that already went out. Whoever
- * declares the type may choose it; what they give is cleaned the same way a
- * derived one is, so nothing can put a space or an accent in a URL. Left out,
- * it is made from the singular name.
- *
- * A type can be declared inactive from the start, for somebody setting up the
- * account before anybody is meant to file anything under it.
+ * Declare a kind of object the account wants to keep, when nothing the product ships with fits:
+ * Animal, Company, Recipe, Wine bottle.
  */
 class CreateEntityType
 {
@@ -85,10 +69,6 @@ class CreateEntityType
         ]);
     }
 
-    /**
-     * Settle the slug. A deleted type does not release its own, so a link that
-     * already went out cannot later land on something else.
-     */
     private function slug(): string
     {
         return SlugBuilder::build(

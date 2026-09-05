@@ -72,10 +72,6 @@ class ShareLinkFormViewModelTest extends TestCase
         $this->assertSame('thirty_days', collect($options)->firstWhere('isSelected', true)['value']);
     }
 
-    /**
-     * A stored date cannot be read back as one of the four spans without guessing,
-     * so the form offers to leave it where it is rather than moving it silently.
-     */
     #[Test]
     public function an_existing_end_date_is_offered_as_itself(): void
     {
@@ -217,9 +213,7 @@ class ShareLinkFormViewModelTest extends TestCase
         ]);
     }
 
-    /**
-     * @param  list<string>  $sections
-     */
+    /** @param  list<string>  $sections */
     private function page(TemplateVersion $version, string $label, array $sections): void
     {
         $page = TemplateVersionPage::factory()->create([

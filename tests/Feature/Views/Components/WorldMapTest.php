@@ -81,11 +81,6 @@ class WorldMapTest extends TestCase
             }
         }
 
-        // The widest step real coastline needs is 25 of the box's 1000 units. A
-        // ring left whole across the antimeridian jumps the full 1000, and one
-        // closed by a chord rather than down the seam jumped 194, so the line is
-        // drawn at 100: four times the headroom the geometry asks for, and well
-        // under either way of getting it wrong.
         $this->assertLessThan(100.0, $longest);
     }
 

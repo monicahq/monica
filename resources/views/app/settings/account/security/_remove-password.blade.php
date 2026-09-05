@@ -1,15 +1,5 @@
-{{--
-  Giving the password up, and setting one again.
-
-  Which of the two is offered depends on whether there is a password. An account
-  that has given it up sees a way back, because FR-026 says this is never a
-  one-way door.
-
-  Removing it is destructive in the way that matters: it takes away a way into
-  the account. So it says what will still work before it asks, and it asks.
-
-  @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel
---}}
+{{-- Giving the password up, and setting one again. --}}
+{{-- @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel --}}
 @if ($viewModel->usesPasswordlessSignIn())
   <x-form method="post" :action="route('settings.password.create')">
     <x-panel>

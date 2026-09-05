@@ -1,17 +1,5 @@
+{{-- A titled panel. --}}
 {{--
-  A titled panel. The title, the description and the additional information can be
-  given either as an attribute or as a named slot. Attributes land on the panel
-  itself, not on the wrapper, so <x-box class="text-center"> styles the content.
-
-  The title is a plain escaped string, so the "?" that explains the box cannot
-  ride inside it. It goes in the `help` slot instead, and lands beside the title.
-
-  A panel filled with <x-box.row> often needs one last line that is not a row:
-  the link that loads the next page, or the one that leads to the full list. It
-  goes in the `footer` slot, which draws it centred at the foot of the panel and
-  takes the bottom rounding off the last row's hands. The slot passes its own
-  attributes through, so a caller can put an id on it and aim ajax at it.
-
   @var string|null $title
   @var string|null $description
   @var string|null $additionalInfo

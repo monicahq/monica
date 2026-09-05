@@ -75,10 +75,6 @@ class RejectMarketplaceListingVersionTest extends TestCase
         $this->assertEquals('Michael Scott', $listing->moderated_by);
     }
 
-    /**
-     * A bad fifth version is no reason to take a good fourth one away from
-     * everybody looking at it.
-     */
     #[Test]
     public function it_leaves_a_published_listing_on_the_version_people_are_installing(): void
     {

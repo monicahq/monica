@@ -17,28 +17,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-/**
- * Move one deadline to a later instant.
- *
- * A deadline of another account or of another vault never reaches here: the
- * route binding refuses it, so there is nothing left for this controller to
- * check.
- *
- * The instant is built in the zone frozen on the rule, not in the reader's. A
- * rule made in Paris fires at nine in Paris, and somebody putting it off from
- * Toronto is moving a Paris deadline. Reading the typed date against their own
- * clock would land it on a different hour than the dialog promised.
- *
- * Two refusals come back as messages rather than as errors: an instant already
- * past, and a deadline somebody has since dealt with in another tab. Both are
- * things a person can do by accident, and neither is a bug to be reported.
- *
- * Every answer lands back where the request came from. The same deadline is
- * offered on the list and on the screen of the rule behind it, and somebody who
- * moved one from the second wants to see it move there rather than be taken to
- * the first. The list is the fallback for a request that arrived without a
- * referrer, which is the only address that is right for a request from nowhere.
- */
 class ReminderOccurrencePostponementController extends Controller
 {
     public function update(Request $request, Vault $vault, ReminderOccurrence $reminderOccurrence): RedirectResponse
@@ -71,12 +49,7 @@ class ReminderOccurrencePostponementController extends Controller
             ->with('status_description', __('The reminder will come back at the moment you chose.'));
     }
 
-    /**
-     * The instant to move to: a preset resolved against the rule, or the date
-     * and time somebody typed, read in the rule's own zone.
-     *
-     * @param  array<string, mixed>  $validated
-     */
+    /** @param  array<string, mixed>  $validated */
     private function instantFrom(array $validated, ReminderOccurrence $occurrence): ?CarbonImmutable
     {
         $rule = $occurrence->reminder;

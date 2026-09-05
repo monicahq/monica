@@ -12,25 +12,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-/**
- * The keys somebody has minted, which is how a key is rotated without opening
- * the application.
- *
- * A key acts as one person, so a caller reaches their own and nobody else's.
- * Asking for somebody else's by its identifier finds nothing rather than
- * refusing, which is the same answer a key that never existed gets.
- *
- * Minting one here is deliberate rather than an oversight. There is no stronger
- * credential to demand, and every creation and revocation is written to the
- * journal, so a key that mints other keys is visible afterwards.
- */
 class ApiKeyController extends Controller
 {
-    /**
-     * The page is shaped by hand rather than left to the framework, because the
-     * reference promises `page`, `per_page` and `total` and nothing else, and a
-     * promise made to a caller before the first list existed is still a promise.
-     */
     public function index(Request $request): JsonResponse
     {
         $perPage = max(1, min(
@@ -59,10 +42,6 @@ class ApiKeyController extends Controller
         return new ApiKeyResource($key)->response()->setStatusCode(200);
     }
 
-    /**
-     * The readable key rides beside the envelope rather than inside it, so that
-     * the shape describing a key stays one that can never carry a secret.
-     */
     public function create(Request $request): JsonResponse
     {
         $validated = $request->validate([

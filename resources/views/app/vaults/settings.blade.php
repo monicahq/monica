@@ -1,13 +1,5 @@
-{{--
-  The settings of one vault. Three things for now: what it is called, what a
-  contact written down here starts from, and the way to be rid of the vault.
-
-  The template section only asks a question when there is one to ask. An account
-  with a single contact template has nothing to choose between, so the screen
-  names what the vault uses and points at where more templates are made.
-
-  @var \App\ViewModels\Vaults\VaultSettingsViewModel $viewModel
---}}
+{{-- The settings of one vault. --}}
+{{-- @var \App\ViewModels\Vaults\VaultSettingsViewModel $viewModel --}}
 @php
   $vault = $viewModel->vault();
   $values = $viewModel->values();
@@ -17,23 +9,12 @@
     <x-breadcrumb :items="[['label' => $vault->name, 'url' => route('vaults.show', $vault)], ['label' => __('Settings')]]" />
   </x-slot:breadcrumb>
 
-  {{--
-    Nothing in the dock is current. The settings of a vault are not one of the
-    four destinations: you get here from the menu behind the chip, and marking
-    one of the four would claim otherwise.
-  --}}
   <x-slot:sidebar>
     <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="vault-settings" />
   </x-slot:sidebar>
 
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
-  {{--
-    The wording of the vault. The preview beside the swatches follows what is
-    being typed rather than what has been saved, so it is held in the browser;
-    the colour travels in a hidden field the swatches write to, since a row of
-    buttons is not a field.
-  --}}
   <div
     x-data="{
       name: @js($values['name']),
@@ -71,11 +52,6 @@
             :error="$errors->get('description')"
           />
 
-          {{--
-            The swatches are buttons rather than radios, so what says what they
-            are is a group with a name of its own: a label pointing at the hidden
-            field the buttons write to would point at nothing anybody can see.
-          --}}
           <div class="flex flex-col gap-2">
             <span class="text-label text-ink">{{ __('Colour') }}</span>
 
@@ -130,14 +106,6 @@
     :subtitle="__('Every contact added to this vault begins with this template. The ones already here keep the version they were written on.')"
     icon="people"
   >
-    {{--
-      Every version of every template, offered even when the account has one of
-      each: a select showing the one thing on offer says what the vault does,
-      which a sentence about there being no choice does not.
-
-      The versions sit under the template they belong to, because "Version 2" on
-      its own is only half an answer.
-    --}}
     @if ($viewModel->templates() !== [])
       <x-form method="put" :action="$viewModel->defaultTemplateAction()" class="flex flex-col gap-4">
         <x-select
@@ -178,10 +146,6 @@
     @endif
   </x-panel>
 
-  {{--
-    The destructive half. It asks twice: the button raises the card, and the
-    card says what the vault holds before it goes.
-  --}}
   <x-panel :title="__('Delete this vault')" icon="vault" tone="danger">
     <div class="flex flex-wrap items-center gap-3.5">
       <div class="flex max-w-[60ch] flex-col gap-2 text-sm text-pretty text-muted">
@@ -206,11 +170,6 @@
           <p>{{ $viewModel->deletionConsequence() }}</p>
         @endif
 
-        {{--
-          The last vault of an account is always the default one, so the two
-          sentences never both apply: either something else takes the title
-          on, or there is nothing left to take it.
-        --}}
         @if ($viewModel->isTheLastVault())
           <p>{{ __('This is the only vault you have, so your account is left holding nothing and you go back to the start.') }}</p>
 

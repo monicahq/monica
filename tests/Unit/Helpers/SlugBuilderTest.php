@@ -54,10 +54,6 @@ class SlugBuilderTest extends TestCase
         $this->assertEquals('animal-3', $slug);
     }
 
-    /**
-     * A name written in a script Str::slug leaves nothing of would otherwise
-     * produce an empty slug.
-     */
     #[Test]
     public function it_falls_back_to_a_word_when_the_name_leaves_nothing(): void
     {
@@ -98,10 +94,6 @@ class SlugBuilderTest extends TestCase
         $this->assertNotEquals($first, $second);
     }
 
-    /**
-     * A field key is read by code rather than by a person, so it joins its
-     * words with an underscore.
-     */
     #[Test]
     public function it_joins_the_words_with_whatever_it_is_told_to(): void
     {

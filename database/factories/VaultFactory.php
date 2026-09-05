@@ -9,16 +9,12 @@ use App\Models\Vault;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<Vault>
- */
+/** @extends Factory<Vault> */
 class VaultFactory extends Factory
 {
     protected $model = Vault::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -33,9 +29,6 @@ class VaultFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that new records land in this vault when no vault is chosen.
-     */
     public function default(): static
     {
         return $this->state(fn (array $attributes): array => [

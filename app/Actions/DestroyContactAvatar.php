@@ -13,11 +13,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Take the picture off a contact, falling them back to their initials.
- *
- * The file is let go and not deleted. Detaching stamps the moment nothing
- * pointed at it any more, and the sweep comes for it once the grace period has
- * run out, which is what lets an older state of the record be restored with the
- * picture it had.
  */
 class DestroyContactAvatar
 {

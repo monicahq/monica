@@ -1,38 +1,5 @@
+{{-- The card that stands in front of the screen and asks before something is destroyed. --}}
 {{--
-  The card that stands in front of the screen and asks before something is
-  destroyed. Nothing in the application deletes on the first click, and this is
-  what the second click looks like.
-
-  The caller writes its own trigger in the `trigger` slot, since a button in a
-  row and a button in a heading are not styled alike. Anything in that slot sits
-  inside the component's scope, so `@click="open = true"` is all it takes to
-  raise the card.
-
-  Attributes land on the form rather than on the wrapper, so a caller can aim
-  ajax at a region with `x-target` the way it does with any other form.
-
-  `x-trap` is what makes the card a dialog rather than a card that happens to be on
-  top: the tab key stays inside it, the button that keeps the thing takes focus on
-  open, the trigger gets focus back on close, and `.inert` puts the rest of the page
-  beyond the reach of both the pointer and a screen reader.
-
-  The wrapper is `display: contents`, so it takes no room and the trigger lays
-  out exactly where it would have without it.
-
-  Usage:
-    <x-modal.warning
-      :title="__('Delete this?')"
-      :confirm="__('Delete it')"
-      :action="route('...')"
-      x-target="the-region"
-    >
-      <x-slot:trigger>
-        <button type="button" @click="open = true">{{ __('Delete') }}</button>
-      </x-slot:trigger>
-
-      {{ __('What is about to be lost.') }}
-    </x-modal.warning>
-
   @var string|null $title
   @var string|null $confirm
   @var string|null $cancel

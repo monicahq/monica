@@ -1,33 +1,5 @@
+{{-- The column beside the screens of one vault: what it holds, and the way into another. --}}
 {{--
-  The column beside the screens of one vault: what the vault holds, and the way
-  out of it into another one.
-
-  The switcher at the top is the only way across the boundary, which is why it
-  sits above the navigation rather than in it. It lists every vault of the
-  account, and the one being looked at is marked rather than repeated as a link
-  to where you already are.
-
-  The navigation is about the vault and nothing else. What belongs to the
-  account is reached from the row at the foot of the column, which is who you
-  are signed in as and is the way into your own settings: the whole row is the
-  link, and it lights up under the pointer like any entry above it.
-
-  Some of the navigation points nowhere yet. The tasks and the files are each
-  their own screen and neither exists, so those entries are drawn and not offered:
-  a link that leads nowhere is worse than a word that does not move.
-
-  The reminders carry a count of what that vault will remind somebody about
-  inside the window deadlines are generated for. It is one more query on every
-  screen of a vault, which is the price of the number being right rather than
-  stale.
-
-  This component asks the account for its vaults itself, rather than being handed
-  them. It is on every screen inside a vault and none of those screens is about
-  it, so the alternative was the same two queries in thirty view models.
-
-  Below lg the column becomes a drawer over the screen, opened from the bar,
-  which is the layout's doing rather than this component's.
-
   @var \App\Models\User $user
   @var \App\Models\Vault $vault
   @var string $current
@@ -169,12 +141,6 @@
           @endif
         </a>
       @else
-        {{--
-          A section with no screen of its own is drawn quiet and does nothing.
-          It can still be where you are: writing a contact down is a contacts
-          screen even though the list of them is not built, and a nav that
-          highlights nothing while you stand on it says you are nowhere.
-        --}}
         <span
           aria-disabled="true"
           @if ($current === $section['key']) aria-current="page" @endif

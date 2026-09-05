@@ -114,11 +114,6 @@ class SidebarTest extends TestCase
         $rendered->assertSee('aria-current="page"', escape: false);
     }
 
-    /**
-     * The logs are what you did, so they sit with you rather than with what the
-     * account holds. A template describes a kind of record, so the kinds come
-     * before the templates.
-     */
     #[Test]
     public function the_settings_column_puts_every_destination_in_its_group_and_its_order(): void
     {
@@ -194,12 +189,6 @@ class SidebarTest extends TestCase
         }
     }
 
-    /**
-     * The column sits in the flow of the shell's grid on a wide screen and fills
-     * its cell, which is what keeps it and its foot where they are while the
-     * screen beside it scrolls. Below the wide breakpoint it comes out of the
-     * flow and slides in over the screen instead.
-     */
     #[Test]
     public function both_columns_sit_in_the_flow_and_fill_their_cell_on_a_wide_screen(): void
     {

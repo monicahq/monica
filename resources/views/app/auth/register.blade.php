@@ -1,8 +1,5 @@
-{{--
-  Where somebody creates an account and the first user in it.
-
-  @var \App\ViewModels\Auth\RegisterViewModel $viewModel
---}}
+{{-- Where somebody creates an account and the first user in it. --}}
+{{-- @var \App\ViewModels\Auth\RegisterViewModel $viewModel --}}
 @php
   $linkClasses = 'font-medium text-ink underline underline-offset-2 hover:decoration-ink';
   $terms = '<a href="'.e($viewModel->termsUrl()).'" target="_blank" rel="noopener" class="'.$linkClasses.'">'.e(__('terms of use')).'</a>';
@@ -28,29 +25,11 @@
 
         <x-status :message="session('status')" />
 
-        {{-- The submit button stays greyed out until the terms are ticked. The
-             server refuses the form all the same, so a browser without javascript
-             still gets a working page and a clear error. --}}
-        {{--
-          Two routes through one form. A passkey is what the screen leads with,
-          because it is what the account should end up with; a password is one
-          link away for whoever wants it, or whoever is on a device that cannot
-          make a passkey. The fields nobody should have to type twice, name and
-          email, are shared, so switching route loses nothing.
-
-          `mode` starts on the password route when a passkey cannot be made here,
-          or when the last attempt came back with errors from that route.
-        --}}
         <div x-data="{
           terms: @js((bool) old('terms')),
           mode: {{ \Illuminate\Support\Js::from(! $viewModel->passkeysAreAvailable() || $errors->has('password') ? 'password' : 'passkey') }},
         }">
           @if ($viewModel->passkeysAreAvailable())
-            {{--
-              What a passkey is, in one sentence, before the device is asked for
-              anything. Said in terms of unlocking a phone rather than in terms of
-              cryptography. Inside the component, because it reads `mode`.
-            --}}
             <p class="mb-4 text-sm text-pretty text-muted" x-show="mode === 'passkey'">{{ __('You will sign in with a passkey, unlocked by your fingerprint, your face or your device PIN. Nothing to remember, nothing to type.') }}</p>
           @endif
           <x-box>
@@ -105,9 +84,6 @@
               />
 
               <div x-cloak x-show="mode === 'password'" class="space-y-1.5">
-              {{-- new-password on both, and passwordrules stating the floor the server
-                   actually enforces, so a password manager offers to generate one that
-                   will pass rather than filling an existing password in. --}}
                 <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <x-input
                     type="password"
@@ -135,10 +111,6 @@
                 <p class="text-xs text-muted">{{ __('Minimum 8 characters.') }}</p>
               </div>
 
-              {{-- The browser is the only thing that knows where somebody is, and every
-                   date in the application is written in that time zone afterwards. A
-                   browser that will not say leaves the field empty, and the server falls
-                   back to the time zone of the instance. --}}
               <input type="hidden" name="timezone" x-data x-init="$el.value = Intl.DateTimeFormat().resolvedOptions().timeZone ?? ''">
 
               <x-checkbox id="terms" x-model="terms" :checked="(bool) old('terms')" :error="$errors->get('terms')" required>
@@ -147,10 +119,6 @@
 
               <x-turnstile data-size="flexible" />
 
-              {{--
-                "Create a passkey" is the platform's own wording, so the button and
-                the prompt that follows it say the same thing.
-              --}}
               <x-button class="w-full" x-bind:disabled="! terms">
                 <span x-show="mode === 'passkey'">{{ __('Create a passkey') }}</span>
                 <span x-cloak x-show="mode === 'password'">{{ __('Next step: validate your email address') }}</span>

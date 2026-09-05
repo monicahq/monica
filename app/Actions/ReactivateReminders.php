@@ -18,23 +18,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Bring back the reminder rules one cause silenced, now that the cause has been
- * reversed.
- *
- * The reason is the whole point. Unarchiving a contact reverses archiving and
- * nothing else, so a rule quiet because the field it read has left the structure
- * stays quiet and goes on saying so. Reviving every quiet rule would be undoing
- * something nobody undid, and would leave the explanation on a rule that is
- * firing again.
- *
- * A rule somebody removed by unticking the box is not here at all: that is a
- * soft delete, and it comes back by being restored rather than by being
- * reactivated.
- *
- * The deadlines come back the same way, matched on the same reason and only
- * where their instant has not gone by in the meantime. Whatever the window now
- * needs and nothing put back is generated afresh, so a rule quiet for a year
- * does not come back with a gap in front of it.
+ * Bring back the reminder rules one cause silenced, now that the cause has been reversed.
  */
 class ReactivateReminders
 {
@@ -46,9 +30,6 @@ class ReactivateReminders
         private readonly ReminderInactiveReasonEnum $reason,
     ) {}
 
-    /**
-     * How many rules came back.
-     */
     public function execute(): int
     {
         $this->validate();
@@ -87,9 +68,7 @@ class ReactivateReminders
         });
     }
 
-    /**
-     * @return Builder<Reminder>
-     */
+    /** @return Builder<Reminder> */
     private function rules(): Builder
     {
         $query = Reminder::query()
@@ -126,10 +105,6 @@ class ReactivateReminders
         )->onQueue('low');
     }
 
-    /**
-     * What the line in the journal calls the thing this was about: a field by its
-     * label, a rule by the record it is about, and a record by its own name.
-     */
     private function name(): string
     {
         if ($this->subject instanceof Field) {

@@ -15,18 +15,8 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Send each account that asked for one its daily summary, at the hour it chose.
- *
- * It runs every hour and decides per account, because the hour somebody chose is
- * local to them and there is no single moment in the day when every account's
- * summary is due.
- *
- * The chosen hour is never held by quiet hours. It is an explicit setting, and
- * an implicit one silently overruling it would mean a summary that somebody
- * scheduled for six in the evening arriving whenever the product felt able.
- *
- * A day the account excluded is skipped, which is what sparing the weekend
- * means, and a second summary on a day that already had one is not sent.
+ * Send each account that asked for one its daily summary, at the hour it chose. It runs every hour
+ * and decides per account, because that hour is local to them.
  */
 class SendNotificationDigests implements ShouldQueue
 {
@@ -56,10 +46,6 @@ class SendNotificationDigests implements ShouldQueue
         Log::info('Sent the daily notification summaries.', ['digests' => $sent, 'notifications' => $folded]);
     }
 
-    /**
-     * Whether this account's summary is due: the hour it chose has come round
-     * today, the day is one it wanted, and it has not had one already.
-     */
     private function isDue(NotificationPreference $preference): bool
     {
         $local = CarbonImmutable::now($preference->timezone);

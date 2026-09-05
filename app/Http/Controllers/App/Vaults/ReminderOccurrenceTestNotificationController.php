@@ -11,12 +11,6 @@ use App\Models\Vault;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-/**
- * Send one reminder now, to the person asking, so they can see it arrive.
- *
- * A deadline of another account or of another vault never reaches here: the
- * route binding refuses it.
- */
 class ReminderOccurrenceTestNotificationController extends Controller
 {
     public function create(Request $request, Vault $vault, ReminderOccurrence $reminderOccurrence): RedirectResponse

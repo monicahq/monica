@@ -1,14 +1,5 @@
+{{-- How a contact is shown: their picture when there is one, their initials otherwise. --}}
 {{--
-  How a contact is shown: the picture somebody chose for them when there is one,
-  and their initials otherwise.
-
-  It takes the address of the picture rather than the contact, because the lists
-  are built from arrays a view model assembled and a component that queried the
-  database would query it once a row.
-
-  The picture is one square file read through the application, so nothing here
-  asks for a size: the browser draws it at the size the page gives it.
-
   @var string $name
   @var string|null $url
   @var int $size

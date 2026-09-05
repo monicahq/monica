@@ -1,20 +1,5 @@
-{{--
-  Finding the account somebody is writing in about.
-
-  A full address, part of one, or part of a name all work, because an operator is
-  handed whatever the person happened to include in their message. With nothing
-  typed the screen shows the most recent accounts, which is the useful default on a
-  fresh instance and harmless on a busy one.
-
-  A search that matches nothing says so. An empty table with no explanation reads
-  as a broken screen, and the operator wonders whether they typed it wrong or
-  whether the account is gone.
-
-  The results carry a name, an address and a date. Nothing about a vault appears
-  here, not even a count: that is on the account itself, and only as a number.
-
-  @var \App\ViewModels\Admin\AccountsViewModel $viewModel
---}}
+{{-- Finding the account somebody is writing in about. --}}
+{{-- @var \App\ViewModels\Admin\AccountsViewModel $viewModel --}}
 <x-admin-layout :title="__('Accounts')">
   <header class="flex flex-col gap-2">
     <h1 class="text-page-title text-ink">{{ __('Accounts') }}</h1>

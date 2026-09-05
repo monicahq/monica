@@ -12,19 +12,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * The web order, proved through real requests rather than by calling the
- * resolver. What the unit test asserts in isolation, this asserts a reader
- * actually gets.
- */
 class WebLocaleResolutionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Every screen resolves, whether or not the route asked for it, which is why
-     * the middleware sits on the group instead of on the routes.
-     */
     #[Test]
     #[DataProvider('screensOpenToAnybody')]
     public function it_puts_every_screen_in_the_readers_language_without_the_route_asking(string $route): void
@@ -96,7 +87,6 @@ class WebLocaleResolutionTest extends TestCase
         $this->assertSame('it_IT', App::getLocale());
     }
 
-    /** A first visit, which is the one behaviour a reader will notice. */
     #[Test]
     public function a_first_time_visitor_lands_in_the_language_their_browser_announces(): void
     {
@@ -138,10 +128,6 @@ class WebLocaleResolutionTest extends TestCase
         $this->assertSame('en', App::getLocale());
     }
 
-    /**
-     * A language nobody picked is worked out again next time rather than kept on
-     * their device, so a visitor who never chose anything is left with nothing.
-     */
     #[Test]
     public function it_keeps_nothing_on_the_device_of_a_visitor_who_never_chose_a_language(): void
     {

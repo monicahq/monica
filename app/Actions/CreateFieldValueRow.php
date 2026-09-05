@@ -17,14 +17,6 @@ use InvalidArgumentException;
 
 /**
  * Add one repetition to a repeater: a second phone number, a third address.
- *
- * The row exists so that the values inside it belong together. Without it, the
- * values of a repeater are a flat bag and nothing says which number goes with
- * which label.
- *
- * The repetition is added at the end. Where it sits afterwards is
- * {@see UpdateFieldValueRowPosition}, which is a different question from
- * whether there is room for it at all.
  */
 class CreateFieldValueRow
 {

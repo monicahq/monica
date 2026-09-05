@@ -116,10 +116,6 @@ class SharedContactViewModelTest extends TestCase
         $this->assertSame([], $this->viewModel($link, $contact)->tabs());
     }
 
-    /**
-     * One page left is nothing to choose between, so the rail goes the way it does
-     * on the private record.
-     */
     #[Test]
     public function one_page_left_means_no_tab_list(): void
     {
@@ -229,9 +225,7 @@ class SharedContactViewModelTest extends TestCase
         );
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function linkOnto(Contact $contact, array $attributes = []): ShareLink
     {
         return ShareLink::factory()->for($contact, 'shareable')->create([
@@ -271,9 +265,7 @@ class SharedContactViewModelTest extends TestCase
         return $contact;
     }
 
-    /**
-     * @param  array<string, array<int, array{0: string, 1: bool}>>  $sections
-     */
+    /** @param  array<string, array<int, array{0: string, 1: bool}>>  $sections */
     private function page(TemplateVersion $version, string $label, array $sections): void
     {
         $page = TemplateVersionPage::factory()->create([

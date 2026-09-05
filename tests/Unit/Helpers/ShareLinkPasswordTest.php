@@ -50,10 +50,6 @@ class ShareLinkPasswordTest extends TestCase
         $this->assertNull(ShareLinkPassword::remembered($request, 'a-token'));
     }
 
-    /**
-     * The token never appears in the session, only its hash, so an address that
-     * opens something is never written down beside the password that unlocks it.
-     */
     #[Test]
     public function it_writes_the_hash_of_the_token_rather_than_the_token(): void
     {

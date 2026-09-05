@@ -1,14 +1,5 @@
-{{--
-  What somebody can change about the way they sign in: their password, whether a
-  code is asked for on top of it, and the API keys that let something other than
-  a browser act as them.
-
-  Three sections, in the order somebody would ask about them: the thing everybody
-  has, the thing that makes it stronger, and the thing only a few people want. Each
-  one is kept in a partial beside this file.
-
-  @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel
---}}
+{{-- What somebody can change about the way they sign in: password, two factor, API keys. --}}
+{{-- @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel --}}
 <x-shell :title="__('Security and access')">
   <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">

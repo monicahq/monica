@@ -1,19 +1,5 @@
-{{--
-  One thing that happened on the account, as a row in a list.
-
-  The address is what makes this screen worth reading: the entry that came from
-  somewhere you have never been is the one to find. There is none when the
-  application acted on its own, and the row says so rather than leaving a gap.
-
-  The action is the name the code gave the event, so it is set in mono. Everything
-  else here is a sentence somebody wrote, so nothing else is.
-
-  The row hangs its mark from the top rather than centring it, because a
-  description can run to two lines and a mark halfway down a paragraph reads as a
-  mistake.
-
-  @var \App\Models\Log $log
---}}
+{{-- One thing that happened on the account, as a row in a list. --}}
+{{-- @var \App\Models\Log $log --}}
 <div class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0">
   <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-forest-tint text-forest">
     <x-icon name="timeline" :size="18" :stroke-width="1.5" />

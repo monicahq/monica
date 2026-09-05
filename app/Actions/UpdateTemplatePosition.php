@@ -13,13 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Move a template in the picker, so the ones reached for daily come first.
- *
- * The template is taken out and put back at the position asked for, and every
- * template is then numbered from one again. A position past the end puts it
- * last.
- *
- * Inactive templates are numbered along with the rest, since one that is
- * offered again has to find the place it had.
  */
 class UpdateTemplatePosition
 {

@@ -41,10 +41,6 @@ class CreateApiKeyTest extends TestCase
         ]);
     }
 
-    /**
-     * The key comes back whole, while only its hash is written down, so a lost
-     * key is replaced rather than read back out of the table.
-     */
     #[Test]
     public function it_returns_the_key_in_plain_text_and_stores_only_its_hash(): void
     {
@@ -61,10 +57,6 @@ class CreateApiKeyTest extends TestCase
         $this->assertSame(hash('sha256', $key), $stored);
     }
 
-    /**
-     * The row comes back beside the value, so whoever mints a key can describe
-     * it without asking the database for what it has just written.
-     */
     #[Test]
     public function it_returns_the_row_it_wrote(): void
     {

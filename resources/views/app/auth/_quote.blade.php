@@ -1,8 +1,5 @@
-{{--
-  The panel on the side of the guest screens, carrying one line from The Office.
-
-  @var array{text: string, author: string, source: string} $quote
---}}
+{{-- The panel on the side of the guest screens, carrying one line from The Office. --}}
+{{-- @var array{text: string, author: string, source: string} $quote --}}
 <aside class="hidden items-center justify-center border-l border-hairline bg-[linear-gradient(155deg,var(--quote-bands))] p-15 lg:flex">
   <div class="w-full max-w-lg">
     <figure class="space-y-5 rounded-lg border border-hairline bg-canvas px-6 pt-6 pb-6 shadow-quote">

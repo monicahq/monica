@@ -10,14 +10,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Say that one fewer thing points at a file.
- *
- * Detaching never deletes. The moment the last thing lets go is written down
- * instead, and the sweep comes for it once the grace period has run out. That
- * gap is the whole point: restoring a record to how it looked an hour ago has
- * to find the file it pointed at still on the disk.
- *
- * The count never goes below nought, since a count of minus one would keep a
- * file alive that nothing has pointed at for a year.
  */
 class DetachFile
 {

@@ -15,10 +15,6 @@ enum DateFormatEnum: string implements Translatable
     case YearFirst = 'Y-m-d';
     case MonthSpelled = 'j F Y';
 
-    /**
-     * What the format is called on the screen where somebody chooses it. The
-     * sentence doubles as the translation key.
-     */
     public function label(): string
     {
         return match ($this) {
@@ -29,11 +25,6 @@ enum DateFormatEnum: string implements Translatable
         };
     }
 
-    /**
-     * The same day written this way, shown beside the name so nobody has to work
-     * out which order they mean. It is the twenty first of the month on purpose,
-     * since a day the month could also be would read the same in two of these.
-     */
     public function example(): string
     {
         return $this->format(now()->setDay(21));
@@ -44,21 +35,12 @@ enum DateFormatEnum: string implements Translatable
         return self::write($date, $this->value);
     }
 
-    /**
-     * A date written in a format nobody chose, which is the one the interface
-     * language reads dates in. The month is spelled in that language too, so
-     * the formatting has to go through the translated formatter either way.
-     */
     public static function write(CarbonInterface $date, string $format): string
     {
         return $date->locale(app()->getLocale())->translatedFormat($format);
     }
 
-    /**
-     * The name of this case, which the screen that offers the choice reads.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

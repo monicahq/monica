@@ -14,16 +14,6 @@ use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * The `users` provider is the only one this application has, and it is back on
- * the framework's own `eloquent` driver: `laravel/passkeys` authenticates the
- * user itself rather than replacing the provider, so a password sign in no
- * longer travels through anything a package supplied.
- *
- * Nothing here is about passkeys. This file exists so that a mistake in that
- * configuration is caught by a failing test naming the credential it broke,
- * rather than by nobody being able to sign in.
- */
 class ProviderRegressionTest extends TestCase
 {
     use RefreshDatabase;

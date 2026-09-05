@@ -13,11 +13,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Override;
 
-/**
- * Tell somebody a passkey was removed from their account. A way in disappearing
- * is worth an email for the same reason one appearing is: if somebody else did
- * it, this is how it is noticed.
- */
 class PasskeyRemoved extends Notification implements HasEmailType, ShouldQueue
 {
     use Queueable;
@@ -28,9 +23,7 @@ class PasskeyRemoved extends Notification implements HasEmailType, ShouldQueue
         $this->onQueue('high');
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function via(User $notifiable): array
     {
         return ['mail'];

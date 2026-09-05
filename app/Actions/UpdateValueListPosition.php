@@ -12,11 +12,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Move a list on the settings screen, so the ones somebody edits often are the
- * ones they reach first.
- *
- * The list is taken out and put back at the position asked for, and every list
- * is then numbered from one again. A position past the end puts it last.
+ * Move a list on the settings screen, so the ones somebody edits often are the ones they reach
+ * first.
  */
 class UpdateValueListPosition
 {

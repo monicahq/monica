@@ -14,12 +14,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Delete a record. The deletion is soft, and {@see RestoreEntity} brings it back
- * with everything it was part of.
- *
- * Nothing the record took part in is destroyed. Activities and files outlive it,
- * because they describe things that happened rather than the row itself, and a
- * value pointing at it is kept and rendered as unavailable rather than nulled.
+ * Delete a record.
  */
 class DestroyEntity
 {

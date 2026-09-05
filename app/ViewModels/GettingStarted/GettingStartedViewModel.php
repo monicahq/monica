@@ -9,19 +9,8 @@ use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 
-/**
- * The screen somebody lands on before they have made anything: a letter, and
- * the short list of what people usually do first. Each step reads the account
- * and says what it finds, so the list cannot claim something was done that
- * was not, and cannot ask for something twice.
- */
 class GettingStartedViewModel
 {
-    /**
-     * The photographs beside the letter, dropped into `public/images`. The
-     * signature reads perfectly well without them, so a missing file costs the
-     * screen nothing but a circle.
-     */
     public const array PORTRAITS = [
         'Regis' => 'images/regis.jpg',
         'Alexis' => 'images/alexis.jpg',
@@ -44,11 +33,7 @@ class GettingStartedViewModel
         return __('Nothing is here yet. Before you start, a word from the two people who build this.');
     }
 
-    /**
-     * The letter, one paragraph at a time.
-     *
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function letter(): array
     {
         return [
@@ -68,11 +53,7 @@ class GettingStartedViewModel
         return __('The two of us build :app', ['app' => config('app.name')]);
     }
 
-    /**
-     * One circle each, in the order they are named in the signature.
-     *
-     * @return array<int, array{name: string, url: string}>
-     */
+    /** @return array<int, array{name: string, url: string}> */
     public function portraits(): array
     {
         return array_map(
@@ -88,10 +69,6 @@ class GettingStartedViewModel
     }
 
     /**
-     * Adding somebody has no screen to send anyone to yet, so that step names
-     * what comes next and points nowhere rather than promising a page that
-     * does not exist.
-     *
      * @return array<int, array{title: string, description: string, action: string|null, url: string|null, done: bool}>
      */
     public function steps(): array
@@ -160,11 +137,6 @@ class GettingStartedViewModel
         return Contact::query()->where('account_id', $this->user->account_id)->exists();
     }
 
-    /**
-     * Whether the account went past the template it was given. A supplied
-     * template nobody has looked at says nothing about whether anybody decided
-     * what a contact should hold; one they built themselves does.
-     */
     private function hasATemplateOfTheirOwn(): bool
     {
         return Template::query()

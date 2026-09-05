@@ -60,10 +60,6 @@ class WithdrawMarketplaceListingTest extends TestCase
         $this->assertFalse($version->status->isInstallable());
     }
 
-    /**
-     * What an installer holds is their own copy, so pulling the listing takes
-     * nothing away from them.
-     */
     #[Test]
     public function it_leaves_everybody_who_already_installed_it_alone(): void
     {
@@ -99,11 +95,6 @@ class WithdrawMarketplaceListingTest extends TestCase
         $this->assertEquals(3, $category->fresh()->listing_count);
     }
 
-    /**
-     * The tally is a count kept beside the thing it counts, so it can drift,
-     * and the column is unsigned. Nobody pulling their own work should be the
-     * one to discover a counter was already off.
-     */
     #[Test]
     public function it_never_takes_a_category_tally_below_zero(): void
     {

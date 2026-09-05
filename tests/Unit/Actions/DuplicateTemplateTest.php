@@ -61,10 +61,6 @@ class DuplicateTemplateTest extends TestCase
         $this->assertEquals('contact-mine', $copy->slug);
     }
 
-    /**
-     * A template the product supplied cannot be edited in place, and the copy
-     * has to be an ordinary template of the user's from the first moment.
-     */
     #[Test]
     public function it_copies_a_supplied_template_into_an_ordinary_one(): void
     {
@@ -80,10 +76,6 @@ class DuplicateTemplateTest extends TestCase
         $this->assertNull($copy->name_translation_key);
     }
 
-    /**
-     * Nothing is published on somebody's behalf: the copy has to be looked at
-     * first, which is also the moment to notice what needs changing.
-     */
     #[Test]
     public function it_leaves_the_copy_as_an_unpublished_draft(): void
     {
@@ -102,10 +94,6 @@ class DuplicateTemplateTest extends TestCase
         $this->assertNull($version->previous_version_id);
     }
 
-    /**
-     * A section is frozen and can sit in any number of template versions, so the copy points
-     * at the same rows rather than at copies of them.
-     */
     #[Test]
     public function it_carries_the_same_sections_rather_than_copies_of_them(): void
     {
@@ -131,10 +119,6 @@ class DuplicateTemplateTest extends TestCase
         $this->assertEquals($before + 1, $sectionVersion->fresh()->usage_count);
     }
 
-    /**
-     * A page describes one template version and cannot be shared with another,
-     * so the copy gets rows of its own carrying the same words.
-     */
     #[Test]
     public function it_gives_the_copy_pages_of_its_own(): void
     {

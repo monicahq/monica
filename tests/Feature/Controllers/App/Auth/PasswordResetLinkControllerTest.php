@@ -49,8 +49,6 @@ class PasswordResetLinkControllerTest extends TestCase
         $response = $this->from(route('auth.password.new'))
             ->post(route('auth.password.create'), ['email' => 'nobody@dundermifflin.com']);
 
-        // Identical to the answer above, so this form cannot be used to find
-        // out who has an account here.
         $response->assertRedirect(route('auth.password.new'));
         $response->assertSessionHas('status');
         $response->assertSessionHasNoErrors();

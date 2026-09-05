@@ -89,11 +89,6 @@ class FieldValueRowTest extends TestCase
         $this->assertSame(3, $row->fresh()->position);
     }
 
-    /**
-     * Reading sorts by the place a repetition holds. Two that hold the same
-     * place are separated by identity, so the same record reads the same way
-     * twice rather than in whatever order a driver happened to return.
-     */
     #[Test]
     public function it_reads_the_same_way_twice_when_two_repetitions_hold_one_place(): void
     {

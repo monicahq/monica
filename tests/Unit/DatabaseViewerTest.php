@@ -9,12 +9,6 @@ use LaraDb\LaraDbServiceProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * The database viewer reads every row of every table, so what keeps it out of
- * anywhere it does not belong is worth asserting rather than assuming. It is a
- * development dependency, so a production install built with --no-dev does not
- * carry it at all, and these are the controls that hold everywhere else.
- */
 class DatabaseViewerTest extends TestCase
 {
     #[Test]

@@ -1,28 +1,5 @@
-{{--
-  The screen that makes a link onto somebody's page, and the same screen again when
-  what an existing link shows is being changed.
-
-  It is written the way the promise is. Sections arrive ticked because holding the
-  whole page back would leave nothing to share; everything else arrives off, and
-  the panel under the sections says what stays here whatever is ticked. Most of
-  that list is not a choice anybody made: it is what the product cannot hand to a
-  link at all yet, and saying so is better than letting somebody assume it went.
-
-  Only two questions on this form change what a recipient sees, because only two of
-  them can be honoured today. The five other inclusions a link stores point at
-  things that do not exist, and a control for one of them would be a promise the
-  page cannot keep.
-
-  The sections are submitted as the ones going out rather than the ones held back,
-  since a box nobody ticks sends nothing at all. The column stores the exclusions,
-  and the controller turns one into the other.
-
-  The count beside the submit button is the only piece of client state on the
-  screen. It reads the checkboxes rather than being told what they are, so it cannot
-  drift out of step with them.
-
-  @var \App\ViewModels\Vaults\ShareLinkFormViewModel $viewModel
---}}
+{{-- Makes a link onto somebody's page, and changes what an existing link shows. --}}
+{{-- @var \App\ViewModels\Vaults\ShareLinkFormViewModel $viewModel --}}
 @php
   $pages = $viewModel->pages();
   $sectionCount = $viewModel->sectionCount();

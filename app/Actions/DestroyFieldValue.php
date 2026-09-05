@@ -13,12 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Empty one field of one record. Somebody clearing what they typed is not the
- * same thing as a field leaving the structure, so the row goes rather than
- * being set aside: there is nothing to explain and nothing to restore.
- *
- * A file the value held is detached rather than deleted, and the counts the
- * value was holding on the items of a value list are given back.
+ * Empty one field of one record.
  */
 class DestroyFieldValue
 {

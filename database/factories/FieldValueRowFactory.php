@@ -10,19 +10,12 @@ use App\Models\FieldValueRow;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<FieldValueRow>
- */
+/** @extends Factory<FieldValueRow> */
 class FieldValueRowFactory extends Factory
 {
     protected $model = FieldValueRow::class;
 
-    /**
-     * The account is taken from the record the repetition sits on, since a row
-     * belonging to a different account than its record is nothing.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {

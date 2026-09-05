@@ -11,16 +11,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
-/**
- * Everything the account has to describe a record with, split into what
- * somebody here built and what the product supplied. A supplied template
- * cannot be edited in place, so which side of the line it falls on is what
- * tells somebody whether to open it or copy it first.
- *
- * The screen says nothing about how many records use a template. Records and
- * vault defaults are later models, and a column reading `no records` on every
- * row for months would be read as a fault rather than as an absence.
- */
 class TemplatesViewModel
 {
     public const string FILTER_ALL = 'all';
@@ -37,12 +27,7 @@ class TemplatesViewModel
         private readonly string $filter = self::FILTER_ALL,
     ) {}
 
-    /**
-     * The templates somebody here built, which are theirs to change, version
-     * and publish.
-     *
-     * @return array<int, array<string, mixed>>
-     */
+    /** @return array<int, array<string, mixed>> */
     public function ownTemplates(): array
     {
         return $this->matching()->reject(fn (Template $template): bool => $template->is_system)
@@ -51,12 +36,7 @@ class TemplatesViewModel
             ->all();
     }
 
-    /**
-     * The templates the product supplied, which work out of the box and are
-     * copied rather than edited.
-     *
-     * @return array<int, array<string, mixed>>
-     */
+    /** @return array<int, array<string, mixed>> */
     public function suppliedTemplates(): array
     {
         return $this->matching()->filter(fn (Template $template): bool => $template->is_system)
@@ -65,12 +45,7 @@ class TemplatesViewModel
             ->all();
     }
 
-    /**
-     * The chips that narrow the list, each knowing whether it is the one in
-     * force.
-     *
-     * @return array<int, array{key: string, label: string, isCurrent: bool}>
-     */
+    /** @return array<int, array{key: string, label: string, isCurrent: bool}> */
     public function filters(): array
     {
         $labels = [
@@ -87,10 +62,6 @@ class TemplatesViewModel
         ], array_keys($labels));
     }
 
-    /**
-     * What was typed in the box that narrows the list, so the field keeps it
-     * after the list has been redrawn.
-     */
     public function query(): string
     {
         return $this->query;
@@ -103,10 +74,6 @@ class TemplatesViewModel
             : self::FILTER_ALL;
     }
 
-    /**
-     * How much of the list is showing, so nobody has to count the rows to know
-     * whether a filter hid something.
-     */
     public function summary(): string
     {
         $showing = $this->matching()->count();
@@ -124,9 +91,7 @@ class TemplatesViewModel
         return $this->user;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function row(Template $template): array
     {
         $shown = $template->publishedVersion ?? $template->versions->first();
@@ -149,9 +114,6 @@ class TemplatesViewModel
         ];
     }
 
-    /**
-     * How many sections a template carries, in words.
-     */
     private static function sectionLabel(int $count): string
     {
         if ($count === 0) {
@@ -161,10 +123,6 @@ class TemplatesViewModel
         return trans_choice(':count section|:count sections', $count);
     }
 
-    /**
-     * The line under the version number, which says what state that version is
-     * in and, for a draft, what it was made from.
-     */
     private static function versionSubLabel(Template $template, ?TemplateVersion $shown): string
     {
         if ($shown === null) {
@@ -186,9 +144,7 @@ class TemplatesViewModel
             : __('draft, based on v:version', ['version' => $previous->version_number]);
     }
 
-    /**
-     * @return Collection<int, Template>
-     */
+    /** @return Collection<int, Template> */
     private function matching(): Collection
     {
         $query = mb_strtolower(mb_trim($this->query));
@@ -210,17 +166,13 @@ class TemplatesViewModel
             });
     }
 
-    /**
-     * @return Collection<int, Template>
-     */
+    /** @return Collection<int, Template> */
     private function all(): Collection
     {
         return once(fn (): Collection => $this->templates()->get());
     }
 
-    /**
-     * @return Builder<Template>
-     */
+    /** @return Builder<Template> */
     private function templates(): Builder
     {
         return Template::query()

@@ -14,18 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Queue\Queueable;
 
 /**
- * Write down that an administrator did something. Every action in the admin
- * space dispatches this, and none of them may decide not to.
- *
- * It reads the address and the subject in the constructor for the same two
- * reasons {@see LogUserAction} does: by the time the queue reaches the handler
- * there is no request to ask, and half of what is worth writing down is about
- * something that has just stopped existing.
- *
- * An administrator of null means the command line acted, which is how the first
- * administrator of an instance is designated and how an instance with none is
- * recovered. An account of null means the action was not about one, which is
- * true of every marketplace decision.
+ * Write down that an administrator did something. Every action in the admin space dispatches this,
+ * and none of them may decide not to.
  */
 class LogAdministratorAction implements ShouldQueue
 {
@@ -37,9 +27,7 @@ class LogAdministratorAction implements ShouldQueue
 
     public int|string|null $subjectId = null;
 
-    /**
-     * @param  array<string, mixed>|null  $parameters
-     */
+    /** @param  array<string, mixed>|null  $parameters */
     public function __construct(
         public ?User $administrator,
         public AdministratorActionEnum $action,
@@ -56,10 +44,6 @@ class LogAdministratorAction implements ShouldQueue
         }
     }
 
-    /**
-     * Whether the entry is about the given row. It is asked this way rather than
-     * by handing the row back, because the job does not keep one.
-     */
     public function isAbout(Model $model): bool
     {
         return $this->subjectType === $model->getMorphClass()

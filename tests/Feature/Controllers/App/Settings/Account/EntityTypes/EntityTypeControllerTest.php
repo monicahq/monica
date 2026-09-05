@@ -196,10 +196,6 @@ class EntityTypeControllerTest extends TestCase
         ])->assertSessionHasErrors('slug');
     }
 
-    /**
-     * A deleted type keeps its slug, so a link that already went out cannot
-     * later land on something else.
-     */
     #[Test]
     public function it_refuses_a_slug_a_deleted_type_still_holds(): void
     {
@@ -257,10 +253,6 @@ class EntityTypeControllerTest extends TestCase
             ->assertSee('It cannot be changed now the type exists');
     }
 
-    /**
-     * The slug is settled when the type is declared and is not among the fields
-     * the update route reads, so a request that carries one changes nothing.
-     */
     #[Test]
     public function it_ignores_a_slug_sent_to_the_update_route(): void
     {
@@ -366,10 +358,6 @@ class EntityTypeControllerTest extends TestCase
         $this->assertEquals('animals', $entityType->slug);
     }
 
-    /**
-     * The checkbox on the form and the pair of actions behind it have to agree,
-     * so saving the form is what turns a type off and on.
-     */
     #[Test]
     public function it_turns_a_type_off_and_on_from_the_form(): void
     {
@@ -438,10 +426,6 @@ class EntityTypeControllerTest extends TestCase
             ->assertSee('This type cannot be deleted while records are filed under it.');
     }
 
-    /**
-     * The slug is only unique within an account, so two accounts may both hold
-     * "animals" and each must be shown its own.
-     */
     #[Test]
     public function it_finds_the_type_of_the_signed_in_account_when_two_share_a_slug(): void
     {

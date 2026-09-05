@@ -62,10 +62,6 @@ class ContactShareLinksViewModelTest extends TestCase
         $this->assertFalse($link['isLive']);
     }
 
-    /**
-     * A revoked link that had not run out yet still reads as revoked, since that
-     * is the thing somebody did rather than something that happened.
-     */
     #[Test]
     public function it_reads_a_revoked_link_as_revoked(): void
     {
@@ -120,10 +116,6 @@ class ContactShareLinksViewModelTest extends TestCase
         $this->assertSame('Opened once', $this->only($user, $contact)['opened']);
     }
 
-    /**
-     * The confirmation has to say what was lost as well as what stops, since the
-     * whole point of keeping the row is that the visits are the record.
-     */
     #[Test]
     public function the_confirmation_says_what_stops_and_what_stays(): void
     {
@@ -155,9 +147,7 @@ class ContactShareLinksViewModelTest extends TestCase
         $this->assertSame([], $viewModel->links());
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function only(User $user, Contact $contact): array
     {
         $links = new ContactShareLinksViewModel(user: $user, vault: $contact->vault, contact: $contact)->links();

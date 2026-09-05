@@ -11,19 +11,12 @@ use App\Models\TemplateVersion;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<RecordSnapshot>
- */
+/** @extends Factory<RecordSnapshot> */
 class RecordSnapshotFactory extends Factory
 {
     protected $model = RecordSnapshot::class;
 
-    /**
-     * The account, the vault and the structure are taken from the record
-     * captured, since a snapshot of a record in another compartment is nothing.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -42,10 +35,6 @@ class RecordSnapshotFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the snapshot was taken because the record was about to move
-     * onto another structure, which is the one the product promises.
-     */
     public function beforeAStructureChange(?TemplateVersion $templateVersion = null): static
     {
         return $this->state(fn (array $attributes): array => array_filter([
@@ -54,12 +43,7 @@ class RecordSnapshotFactory extends Factory
         ], fn (mixed $value): bool => $value !== null));
     }
 
-    /**
-     * Indicate that the snapshot names files, which keeps the orphan sweep off
-     * them.
-     *
-     * @param  list<int>  $fileIds
-     */
+    /** @param  list<int>  $fileIds */
     public function holding(array $fileIds): static
     {
         return $this->state(fn (array $attributes): array => [

@@ -11,14 +11,6 @@ use App\Models\User;
 
 /**
  * Change how much an account is allowed to hold, or lift the ceiling entirely.
- *
- * A limit below what the account already holds is allowed, and deletes nothing.
- * The check that refuses an upload lives where uploads happen, so lowering the
- * limit stops the next file and leaves every file already there exactly as it
- * is. Deleting somebody's documents to make a number fit is not a decision this
- * product takes on their behalf.
- *
- * A null limit means no ceiling.
  */
 class UpdateAccountStorageLimit
 {

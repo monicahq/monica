@@ -1,12 +1,5 @@
+{{-- One line of the menu a <x-button.split> opens: a glyph, then what it does. --}}
 {{--
-  One line of the menu a <x-button.split> opens: a glyph, then what it does.
-
-  It is an anchor rather than a button because the split button is used inside a
-  form, and the menu of one cannot hold a form of its own. An item that has to
-  post therefore goes to a screen that asks first, which is what these actions
-  want anyway: they are the ones somebody reaches for rather than the one they
-  came to press.
-
   @var string $href
   @var string $icon
 --}}

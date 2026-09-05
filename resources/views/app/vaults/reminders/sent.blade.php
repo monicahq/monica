@@ -1,18 +1,5 @@
-{{--
-  What this vault has already told somebody about.
-
-  It is the answer to "did that reminder actually go out", which is the question
-  the list beside it cannot answer: that one is about what is coming. A row here
-  exists because a deadline was notified, so a row survives the deletion of the
-  rule that produced it, and a test send, which never sets that mark, cannot
-  appear here at all.
-
-  The history has no horizon, unlike the ninety days next door, so it is paged
-  rather than bounded, and the page grows in place the way every other long list
-  in the application does.
-
-  @var \App\ViewModels\Vaults\VaultRemindersSentViewModel $viewModel
---}}
+{{-- What this vault has already told somebody about. --}}
+{{-- @var \App\ViewModels\Vaults\VaultRemindersSentViewModel $viewModel --}}
 @php
   $rows = $viewModel->rows();
 @endphp

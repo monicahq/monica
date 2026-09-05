@@ -1,17 +1,5 @@
-{{--
-  Every template this record has rendered from, and when each was applied.
-
-  Nothing here happened on its own. Publishing a new version of a template moves
-  nobody, so each line is a version somebody applied to this person on purpose,
-  and the timeline says who and when.
-
-  What changed between one version and the next is not on the line, because the
-  product cannot yet say it. What it can say is the note the person who published
-  the version wrote, which is the only account of the change anybody made, and
-  that is what each card carries.
-
-  @var \App\ViewModels\Vaults\ContactViewModel $viewModel
---}}
+{{-- Every template this record has rendered from, and when each was applied. --}}
+{{-- @var \App\ViewModels\Vaults\ContactViewModel $viewModel --}}
 @php
   $current = $viewModel->currentVersion();
   $setAside = $viewModel->setAsideCount();
@@ -34,11 +22,6 @@
 </div>
 
 <div class="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-  {{--
-    The rail runs behind the nodes rather than between them, so a card of any
-    height keeps the line unbroken. The last node draws no rail: the line stops
-    at the day the record was written down, because nothing came before it.
-  --}}
   <ol class="flex list-none flex-col">
     @foreach ($viewModel->versionHistory() as $entry)
       <li class="grid grid-cols-[92px_36px_minmax(0,1fr)] gap-x-3.5 max-[560px]:grid-cols-[28px_minmax(0,1fr)]">
@@ -90,11 +73,6 @@
             <span class="text-xs text-muted">{{ $entry['span'] }}</span>
 
             @if ($entry['goBack'])
-              {{--
-                Going back is the same act as applying: it moves the record onto
-                another version, saves the state first, and lands as a new line
-                on this timeline rather than erasing the one above it.
-              --}}
               <x-form method="put" :action="$entry['goBack']['url']" class="ml-auto">
                 <input type="hidden" name="template_version_id" value="{{ $entry['goBack']['versionId'] }}" />
 
@@ -148,11 +126,6 @@
       </x-notice>
     @endif
 
-    {{--
-      What the moves cost, and the way to what is being kept. The link is offered
-      only when there is something behind it, which is the rule the tab strip used
-      to keep when the link lived there.
-    --}}
     <x-notice tone="warning">
       {{ $viewModel->setAsideLine() }}
 

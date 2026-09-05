@@ -1,14 +1,5 @@
-{{--
-  Deleting a kind of record. It is only offered while the type holds nothing:
-  once records exist, they go first and deliberately, because taking a hundred
-  animals down with the word "Animal" is not something one button should do.
-
-  A type that holds something says so in place of the button, so the screen
-  explains the refusal rather than hiding the option and leaving somebody
-  looking for it.
-
-  @var \App\ViewModels\Settings\Account\EntityTypes\EntityTypeFormViewModel $viewModel
---}}
+{{-- Deleting a kind of record. --}}
+{{-- @var \App\ViewModels\Settings\Account\EntityTypes\EntityTypeFormViewModel $viewModel --}}
 @if ($viewModel->canBeDeleted())
   <x-modal.warning
     :title="__('Delete “:name”?', ['name' => $viewModel->entityType()->name_plural])"

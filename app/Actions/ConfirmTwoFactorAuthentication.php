@@ -13,15 +13,6 @@ use PragmaRX\Google2FA\Google2FA;
 
 /**
  * Finish enrolling somebody in two factor authentication.
- *
- * The code they typed is checked against the secret EnableTwoFactorAuthentication
- * wrote down. Only if it matches is the account marked as protected, which is
- * what makes the challenge appear the next time they sign in. Checking first
- * means nobody can lock themselves out with an app that was never set up
- * properly.
- *
- * Passing also mints the recovery codes, since they are only worth having for
- * an account that can be locked out of.
  */
 class ConfirmTwoFactorAuthentication
 {

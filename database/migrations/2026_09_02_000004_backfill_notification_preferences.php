@@ -7,18 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
-    /**
-     * Give every account that already exists the preferences a new one is now
-     * created with.
-     *
-     * Delivery reads this row on every send and is written on the promise that
-     * it is there, so an account made before the feature existed cannot be left
-     * without one. It is a migration rather than a command because it has to run
-     * exactly once, everywhere, without anybody remembering to run it.
-     *
-     * It reads and writes through the query builder rather than through the
-     * models, so that a later change to either leaves this untouched.
-     */
     public function up(): void
     {
         $now = now();
@@ -56,10 +44,6 @@ return new class extends Migration
             });
     }
 
-    /**
-     * The zone of the one user the account holds, and UTC for an account that
-     * somehow holds none.
-     */
     private function zoneOf(int $accountId): string
     {
         $zone = DB::table('users')

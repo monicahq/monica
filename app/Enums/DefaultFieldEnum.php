@@ -4,27 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use App\Actions\CreateFile;
 use App\Contracts\Translatable;
 use Override;
 
-/**
- * The fields the template an account starts with asks for.
- *
- * The backing value is the `key` column of the field, which is what an import,
- * an export or an API caller holds on to. Everything else here, the label
- * included, is the user's to change the moment the account exists.
- *
- * None of them is required. A contact somebody met once is worth writing down
- * with nothing but a name, and a form that refuses a birthday nobody knows is a
- * form people stop using.
- *
- * Three of them are repeaters, since a contact carries as many documents, as
- * many photographs and as many notes as they carry, and a field holding one of
- * each would be a field somebody outgrows on the second passport. What sits
- * inside a repeater is its children, and a repeater inside a repeater is
- * refused, so the nesting here is one level and stays that way.
- */
 enum DefaultFieldEnum: string implements Translatable
 {
     case Category = 'category';
@@ -43,10 +25,6 @@ enum DefaultFieldEnum: string implements Translatable
     case Notes = 'notes';
     case Note = 'note';
 
-    /**
-     * What the field is called next to its input. The label doubles as the
-     * translation key.
-     */
     public function label(): string
     {
         return match ($this) {
@@ -68,10 +46,6 @@ enum DefaultFieldEnum: string implements Translatable
         };
     }
 
-    /**
-     * What kind of input the field is, which is what decides how it renders,
-     * how it is stored and what may be searched on it.
-     */
     public function type(): FieldTypeEnum
     {
         return match ($this) {
@@ -93,19 +67,7 @@ enum DefaultFieldEnum: string implements Translatable
         };
     }
 
-    /**
-     * What a repeater asks for on each repetition, and nothing for every other
-     * field. One document is a file and a line saying what it is, which is what
-     * makes the block worth repeating rather than an upload repeated on its own.
-     * One note is the note, and nothing else: what somebody wrote down about a
-     * person is the whole of it, and a second box beside it would be a question
-     * nobody asked to answer.
-     *
-     * A repeater cannot sit inside another, so this never goes deeper than one
-     * level.
-     *
-     * @return list<self>
-     */
+    /** @return list<self> */
     public function children(): array
     {
         return match ($this) {
@@ -116,17 +78,7 @@ enum DefaultFieldEnum: string implements Translatable
         };
     }
 
-    /**
-     * The settings the type reads, which for a file is what may be uploaded
-     * into it. Nothing interprets them yet: they are written so the row says
-     * what the field is for rather than leaving it to whoever renders it.
-     *
-     * No ceiling on the size of one file, because the product has none. What it
-     * has is the storage an account is allowed, and {@see CreateFile} refuses an
-     * upload that would go past it.
-     *
-     * @return array<string, list<string>>|null
-     */
+    /** @return array<string, list<string>>|null */
     public function options(): ?array
     {
         return match ($this) {
@@ -149,9 +101,6 @@ enum DefaultFieldEnum: string implements Translatable
         };
     }
 
-    /**
-     * The list the choices come from, which only a choice field has.
-     */
     public function valueList(): ?ValueListEnum
     {
         return match ($this) {
@@ -161,16 +110,6 @@ enum DefaultFieldEnum: string implements Translatable
         };
     }
 
-    /**
-     * Which end of a repeater a new repetition is added at, and nothing for
-     * every other field.
-     *
-     * Notes are the one that differs. Adding one is how somebody records what
-     * they just learned, and reading them is how they catch up on a person, so
-     * the newest belongs where they are already looking. Documents and
-     * photographs are a collection somebody builds up, and reversing a set
-     * nobody asked to have reversed would be a change made on their behalf.
-     */
     public function repetitionOrder(): ?RepetitionOrderEnum
     {
         return match ($this) {
@@ -179,26 +118,12 @@ enum DefaultFieldEnum: string implements Translatable
         };
     }
 
-    /**
-     * Whether the field is worth reading at a glance, above everything else the
-     * contact holds. How close somebody is and when their birthday falls are
-     * the two the rest of the page is read in the light of.
-     */
     public function isHighlighted(): bool
     {
         return in_array($this, [self::Category, self::Birthday], true);
     }
 
-    /**
-     * The label this field is seeded with.
-     *
-     * Nothing seeds a line of help under it. A field carries its help as words
-     * rather than as a translation key, and a sentence written here in English
-     * would stay English for somebody reading in French, which is the one thing
-     * the seeding is careful never to do.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

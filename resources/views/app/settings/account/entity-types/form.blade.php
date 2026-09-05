@@ -1,28 +1,8 @@
-{{--
-  The form that declares a kind of record, and the same form that changes one.
-  Naming a type and renaming it ask for the same things, so there is one screen
-  and the view model decides what it says.
-
-  It moves onto the new shell with the list, because "Create a type" and every
-  row's Edit lead straight here.
-
-  Everything the preview shows is held in the browser, since it has to follow
-  the typing rather than the saving. The slug shown while creating is a guess
-  at what the server will settle on; the field is read only either way, because
-  the slug is derived on creation and fixed afterwards.
-
-  The row of buttons at the foot sits outside the form rather than inside it,
-  since deleting the type is a form of its own and forms do not nest. The save
-  button reaches back into the form by id, which is what the `form` attribute
-  is for, and the alpine state wraps both so the button can read the fields.
-
-  @var \App\ViewModels\Settings\Account\EntityTypes\EntityTypeFormViewModel $viewModel
---}}
+{{-- The form that declares a kind of record, and the same form that changes one. --}}
+{{-- @var \App\ViewModels\Settings\Account\EntityTypes\EntityTypeFormViewModel $viewModel --}}
 @php
   $values = $viewModel->values();
 
-  /* The swatch both pickers are built out of: a square that fills with ink when it
-     is the one in force, which is how every toggle in the system says so. */
   $swatch = 'flex size-9 cursor-pointer items-center justify-center rounded-sm border transition-colors duration-150';
   $swatchOn = "'border-ink bg-ink text-canvas'";
   $swatchOff = "'border-hairline-strong bg-canvas text-muted hover:bg-hover'";
@@ -98,12 +78,6 @@
             </div>
 
             @if ($viewModel->slugIsEditable())
-              {{--
-                Blanking the field puts it back under the name's control, which is why
-                the flag is read from what was typed rather than merely set. Tidying
-                happens on the way out rather than on every key, since stripping the
-                dash somebody just typed makes the field impossible to use.
-              --}}
               <x-input
                 id="slug"
                 x-model="slug"
@@ -118,11 +92,6 @@
                 class="font-mono"
               />
             @else
-              {{--
-                Once the slug is settled it stops being a field. A disabled box invites
-                clicking and submits nothing, so what is shown instead is the value
-                itself, in mono, the way every machine value in the product is written.
-              --}}
               <div class="flex flex-col gap-1.5">
                 <p class="flex items-baseline gap-1.5 text-label text-ink">{{ __('Slug') }}</p>
 
@@ -154,7 +123,6 @@
 
         <x-panel>
           <div class="flex flex-col gap-5">
-            {{-- What the two pickers add up to, following the typing rather than the saving. --}}
             <div class="flex w-full items-center gap-3 rounded-md border border-hairline bg-sunken px-3 py-2.5 text-left">
               <span
                 class="flex size-8 shrink-0 items-center justify-center rounded-sm"

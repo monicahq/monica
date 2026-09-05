@@ -1,19 +1,5 @@
+{{-- One line of a list: a coloured mark, a name, a sentence, and whatever belongs at the far end. --}}
 {{--
-  One line of a list: a mark in the colour of the kind of thing it is, what it is
-  called, a sentence saying what it holds, and whatever belongs at the far end.
-
-  Lists are rows separated by hairlines rather than a grid of little cards, because
-  a row can be read down a column and a card cannot. The last row in a panel drops
-  its rule, so the panel's own border is the only line at the bottom.
-
-  A row with an `href` is the link, all of it, and takes the pointer and focus
-  treatment. A row without one is a plain division: it is still drawn, but nothing
-  suggests it can be pressed. That is how a destination which has not been built
-  yet appears. A link that leads nowhere is worse than a word that does not move.
-
-  `meta` is a short machine-ish value at the end (a count, a state). The `end` slot
-  is for anything richer: a chevron, a button, a form.
-
   @var string|null $title
   @var string|null $description
   @var string|null $icon
@@ -69,7 +55,6 @@
   </div>
 
   @php
-    /* A row given an empty `end` slot must not draw the box for it. */
     $hasEnd = isset($end) && $end->isNotEmpty();
   @endphp
 

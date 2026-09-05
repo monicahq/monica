@@ -7,10 +7,6 @@ namespace App\ViewModels\Auth;
 use App\Helpers\PasskeyAvailability;
 use App\Models\User;
 
-/**
- * What the step after account creation shows: whether the credential this
- * account was meant to have actually exists yet.
- */
 class RegisterPasskeyViewModel extends GuestViewModel
 {
     public function __construct(
@@ -27,10 +23,6 @@ class RegisterPasskeyViewModel extends GuestViewModel
         return $this->user->hasPasskeys();
     }
 
-    /**
-     * Whether the account is currently reachable only by a link sent to its
-     * address, which is what an abandoned prompt leaves behind.
-     */
     public function hasNoCredentialAtAll(): bool
     {
         return $this->user->usesPasswordlessSignIn() && ! $this->user->hasPasskeys();

@@ -5,33 +5,15 @@ declare(strict_types=1);
 namespace App\ViewModels\Settings\Account\Templates;
 
 use App\Helpers\StructureFile;
-use App\Helpers\StructureFileReader;
 use App\Models\EntityType;
 use App\Models\Template;
 use App\Models\TemplateVersionPage;
 use App\Models\User;
 use App\Models\ValueList;
 
-/**
- * A file on its way in, and what checking it found.
- *
- * One view model serves both doors, because both screens read the same thing: a
- * box somebody pasted into, and a verdict on what is in it. What differs is
- * where the file is allowed to land, and that is one template and one page or
- * neither. Building the two screens out of two classes would be two chances for
- * them to describe the same file differently, which on a screen whose whole
- * purpose is to say what a file will do would be worse than a little branching
- * here.
- *
- * Nothing here decides anything. The verdict is handed in already made by
- * {@see StructureFileReader}, and what is on this screen is never
- * what the import trusts: it reads the file again for itself.
- */
 class ImportFileViewModel
 {
-    /**
-     * @param  array<string, mixed>|null  $checked
-     */
+    /** @param  array<string, mixed>|null  $checked */
     public function __construct(
         private readonly User $user,
         private readonly ?Template $template = null,
@@ -51,11 +33,6 @@ class ImportFileViewModel
         return $this->template;
     }
 
-    /**
-     * Whether this door takes one section rather than a whole template. A
-     * section has to land somewhere that already exists, so the door that takes
-     * one is the one that was opened from a page.
-     */
     public function isForASection(): bool
     {
         return $this->template !== null && $this->page !== null;
@@ -75,9 +52,7 @@ class ImportFileViewModel
             : __('Anything exported out of Monica can come back in. Paste the file below and it lands in this account as a draft, so nothing on your records changes until you decide to use it.');
     }
 
-    /**
-     * @return array<int, array{label: string, url?: string}>
-     */
+    /** @return array<int, array{label: string, url?: string}> */
     public function breadcrumb(): array
     {
         if (! $this->isForASection()) {
@@ -98,21 +73,11 @@ class ImportFileViewModel
         return $this->raw;
     }
 
-    /**
-     * Which reading of the format this application writes and reads. It is on
-     * the screen because a file that will not come in is quite often a file
-     * from a newer Monica, and knowing the number is how somebody knows what to
-     * ask for.
-     */
     public function formatVersion(): int
     {
         return StructureFile::FORMAT_VERSION;
     }
 
-    /**
-     * How much was pasted, which is the one thing somebody can check at a
-     * glance against the file they meant to paste.
-     */
     public function counterLabel(): string
     {
         if (mb_trim($this->raw) === '') {
@@ -147,13 +112,7 @@ class ImportFileViewModel
             : __('Every section, field and list of choices in it is one this account knows how to render.');
     }
 
-    /**
-     * What is in the file, in the order somebody would ask: what it is, what it
-     * will be called, how much of it there is, and what it will add here beyond
-     * itself.
-     *
-     * @return array<int, array{label: string, value: string}>
-     */
+    /** @return array<int, array{label: string, value: string}> */
     public function found(): array
     {
         if ($this->checked === null) {
@@ -172,9 +131,7 @@ class ImportFileViewModel
         return $rows;
     }
 
-    /**
-     * @return array<int, array{label: string, value: string}>
-     */
+    /** @return array<int, array{label: string, value: string}> */
     private function foundInATemplate(): array
     {
         $sections = 0;
@@ -198,9 +155,7 @@ class ImportFileViewModel
         ];
     }
 
-    /**
-     * @return array<int, array{label: string, value: string}>
-     */
+    /** @return array<int, array{label: string, value: string}> */
     private function foundInASection(): array
     {
         $from = $this->checked['from_template'];
@@ -215,12 +170,6 @@ class ImportFileViewModel
         ];
     }
 
-    /**
-     * How the lists of choices in the file will be settled here. A list the
-     * product supplies is recognised by its key, so somebody importing a
-     * template built around "Countries" ends up pointing at the one they
-     * already curate rather than at a third copy of it.
-     */
     private function valueListsLabel(): string
     {
         $total = count($this->checked['value_lists']);
@@ -246,11 +195,6 @@ class ImportFileViewModel
         ]);
     }
 
-    /**
-     * How many kinds of record this file will have to declare here. It is said
-     * out loud before anything is written, because declaring one is the only
-     * thing an import does beyond the structure itself.
-     */
     private function entityTypesLabel(): string
     {
         $slugs = $this->entityTypeSlugs();
@@ -274,9 +218,7 @@ class ImportFileViewModel
         return trans_choice(':count will be added|:count will be added', $missing);
     }
 
-    /**
-     * @return list<string>
-     */
+    /** @return list<string> */
     private function entityTypeSlugs(): array
     {
         $slugs = [];
@@ -300,13 +242,7 @@ class ImportFileViewModel
         return array_values(array_unique($slugs));
     }
 
-    /**
-     * The three things that happen, said before any of them does. The middle
-     * one is the whole feature: the file is read against the format, and a file
-     * that fails leaves nothing behind.
-     *
-     * @return array<int, array{title: string, text: string}>
-     */
+    /** @return array<int, array{title: string, text: string}> */
     public function steps(): array
     {
         return [
@@ -348,10 +284,6 @@ class ImportFileViewModel
             : route('settings.templates.index');
     }
 
-    /**
-     * A file that reads, for somebody who has never seen one. It is the format
-     * written out small: a header saying what it is, and then the shape.
-     */
     public function example(): string
     {
         $section = [

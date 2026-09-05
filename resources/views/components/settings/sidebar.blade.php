@@ -1,23 +1,5 @@
+{{-- The column beside the settings screens, and the way back out of them. --}}
 {{--
-  The column beside the settings screens: the way back out of them, what you can
-  change about your own account, and who you are signed in as.
-
-  Settings are somewhere you go and then leave, so the way out sits above the
-  navigation rather than in it, the same way the vault switcher does in the
-  other column.
-
-  An entry under the pointer takes on the raised card the current one wears,
-  minus its weight: the weight is what says where you are, and putting it on
-  hover would shift the words sideways under the pointer. `aria-current` says the
-  same thing to somebody who is listening rather than looking.
-
-  Below lg the column has nowhere to go, so it becomes a drawer that slides in
-  over the screen, opened by the button in the bar.
-
-  The closed state is a plain class rather than a binding, since alpine only
-  starts once the page has been painted and a bound one would let the drawer
-  flash open on every load.
-
   @var \App\Models\User $user
   @var string $current
 --}}

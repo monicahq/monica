@@ -18,24 +18,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Delete a vault and everything it separates from the rest. It is the most
- * destructive thing somebody can do short of deleting the account, so the
- * screen that calls this has to say what the vault holds before it does.
- *
- * The deletion is soft, and the vault can be brought back with
- * {@see RestoreVault} while it is still there to bring back. What the vault
- * held goes with it and comes back with it: the contacts and the records of the
- * invented kinds are marked as having left with the vault, which is how a
- * restore later tells them from something deleted on its own beforehand.
- *
- * The last vault of an account goes too. An account with no vault is a state
- * the product already knows, since it is the one every account starts in, and
- * whoever asked is taken back to it. The next vault they create is the default
- * one, because there is nothing else to be it.
- *
- * A vault that was the default gives the title up before leaving, both because
- * exactly one vault holds it and because a vault brought back later must not
- * come back holding it while another one does.
+ * Delete a vault and everything it separates from the rest.
  */
 class DestroyVault
 {
@@ -80,19 +63,6 @@ class DestroyVault
         });
     }
 
-    /**
-     * Send the contacts out at the same moment as the vault, and give back the
-     * counts they were holding on the versions they render from, exactly as
-     * deleting one of them by hand does.
-     *
-     * They are marked as having left with the vault, so that a restore later
-     * brings back these and not somebody who was deleted on their own an hour
-     * earlier. The moment alone would not say it: two deletions a second apart
-     * are written to the same second.
-     *
-     * Somebody already deleted is outside the soft delete scope and is not
-     * touched, and comes back only on their own terms.
-     */
     private function takeTheContactsWithIt(): void
     {
         $counts = Contact::query()
@@ -116,15 +86,6 @@ class DestroyVault
             ]);
     }
 
-    /**
-     * Send the records of the invented kinds out with the vault too, and give
-     * back the counts they were holding, both on the versions they render from
-     * and on the types they are records of.
-     *
-     * They are marked the same way the contacts are, for the same reason: a
-     * restore later brings back these and not something deleted on its own an
-     * hour earlier.
-     */
     private function takeTheEntitiesWithIt(): void
     {
         $this->giveTheCountsBack('template_version_id', TemplateVersion::class, 'record_count');
@@ -138,9 +99,7 @@ class DestroyVault
             ]);
     }
 
-    /**
-     * @param  class-string<Model>  $model
-     */
+    /** @param  class-string<Model>  $model */
     private function giveTheCountsBack(string $column, string $model, string $counter): void
     {
         $counts = Entity::query()
@@ -157,15 +116,6 @@ class DestroyVault
         }
     }
 
-    /**
-     * Close every private link into the compartment: the ones onto the vault
-     * itself and the ones onto the contacts it holds, which all carry its id.
-     * The deletion is soft, so a link left alone would go on opening what the
-     * vault was supposed to have taken with it.
-     *
-     * Revocation is permanent, and restoring the vault later does not undo it.
-     * Whoever brings a vault back decides again who may read it.
-     */
     private function revokeTheLinksOntoIt(): void
     {
         ShareLink::query()
@@ -174,11 +124,6 @@ class DestroyVault
             ->update(['revoked_at' => now()]);
     }
 
-    /**
-     * Hand the title to the first vault left, when there is one left to hand it
-     * to. An account with no vault has no default, and needs none: nothing can
-     * be created without a vault to create it in.
-     */
     private function promoteTheFirstVaultLeft(): void
     {
         $vault = Vault::query()

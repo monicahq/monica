@@ -11,11 +11,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-/**
- * Copying a template is what somebody does with one the product supplied, since
- * a supplied template cannot be edited in place. The copy is theirs from the
- * first moment, and it lands as a draft nobody has published.
- */
 class TemplateCopyController extends Controller
 {
     public function create(Request $request, Template $template): RedirectResponse|View

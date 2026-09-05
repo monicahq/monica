@@ -1,8 +1,5 @@
-{{--
-  The shell of every screen a visitor sees before they sign in.
-
-  @var string|null $title
---}}
+{{-- The shell of every screen a visitor sees before they sign in. --}}
+{{-- @var string|null $title --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>

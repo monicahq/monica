@@ -10,23 +10,13 @@ use App\Enums\TimeFormatEnum;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 
-/**
- * What the preferences screen shows: the language the interface is in, the
- * clock times are written on, the order dates read in, the separators numbers
- * are written with, and the shell around it.
- */
 class PreferencesViewModel
 {
     public function __construct(
         private readonly User $user,
     ) {}
 
-    /**
-     * Every language the interface is translated into, ready for the menu that
-     * picks one.
-     *
-     * @return array<int, array{value: string, label: string, hint: string, selected: bool}>
-     */
+    /** @return array<int, array{value: string, label: string, hint: string, selected: bool}> */
     public function locales(): array
     {
         $current = $this->locale();
@@ -42,21 +32,12 @@ class PreferencesViewModel
             ->all();
     }
 
-    /**
-     * The name of the language the interface is in, shown on the button that
-     * opens the menu.
-     */
     public function localeLabel(): string
     {
         return config('monica.locales')[$this->locale()]['label'];
     }
 
-    /**
-     * Both ways of writing the time, each next to the same afternoon hour so
-     * the difference between them is on the screen rather than in the name.
-     *
-     * @return array<int, array{value: string, label: string, hint: string, selected: bool}>
-     */
+    /** @return array<int, array{value: string, label: string, hint: string, selected: bool}> */
     public function timeFormats(): array
     {
         return collect(TimeFormatEnum::cases())
@@ -74,24 +55,12 @@ class PreferencesViewModel
         return __($this->timeFormat()->label());
     }
 
-    /**
-     * The time it is now, written the way the account asked for, so somebody
-     * can see what they picked before they leave the screen. Read in the zone
-     * the account is in rather than the instance's, because a preview of a
-     * clock that is not the reader's clock previews nothing.
-     */
     public function timePreview(): string
     {
         return $this->timeFormat()->format($this->now());
     }
 
-    /**
-     * Every order a date can read in, each next to the same day written that
-     * way. The first entry is the way out of the choice: it hands the decision
-     * back to the language, which is where somebody starts.
-     *
-     * @return array<int, array{value: string, label: string, hint: string, selected: bool}>
-     */
+    /** @return array<int, array{value: string, label: string, hint: string, selected: bool}> */
     public function dateFormats(): array
     {
         $current = $this->dateFormat();
@@ -115,20 +84,11 @@ class PreferencesViewModel
         return $formats;
     }
 
-    /**
-     * What the button that opens the menu says. It shows the day rather than
-     * the name of the order, since the point of the choice is what it looks
-     * like and the names all read alike.
-     */
     public function dateFormatLabel(): string
     {
         return $this->dateFormat()?->example() ?? $this->languageDateExample();
     }
 
-    /**
-     * Today written the way the account asked for, so somebody can see what
-     * they picked before they leave the screen.
-     */
     public function datePreview(): string
     {
         $format = $this->dateFormat();
@@ -138,31 +98,17 @@ class PreferencesViewModel
             : $format->format($this->now());
     }
 
-    /**
-     * The time zone section, which is its own block: it carries a search index
-     * of four hundred entries and a position on a map, and none of that belongs
-     * beside the four format rows.
-     */
     public function timezone(bool $isGuess = false): TimezonePanel
     {
         return new TimezonePanel(user: $this->user, isGuess: $isGuess);
     }
 
-    /**
-     * Now, where the account is. Every preview on this screen reads through it.
-     */
     private function now(): CarbonImmutable
     {
         return CarbonImmutable::now($this->user->timezone);
     }
 
-    /**
-     * Every set of separators a number can be written with, each next to the
-     * same number written that way. As with the dates, the first entry hands
-     * the decision back to the language.
-     *
-     * @return array<int, array{value: string, label: string, hint: string, selected: bool}>
-     */
+    /** @return array<int, array{value: string, label: string, hint: string, selected: bool}> */
     public function numberFormats(): array
     {
         $current = $this->numberFormat();
@@ -186,10 +132,6 @@ class PreferencesViewModel
         return $formats;
     }
 
-    /**
-     * What the button that opens the menu says. It shows the number rather than
-     * the name of the separators, for the same reason the date menu shows a day.
-     */
     public function numberFormatLabel(): string
     {
         return ($this->numberFormat() ?? $this->languageNumberFormat())->example();
@@ -200,12 +142,6 @@ class PreferencesViewModel
         return $this->user;
     }
 
-    /**
-     * What the middleware settled on rather than only what the account asks
-     * for, so somebody who switched language from a guest screen sees that
-     * choice here. Each row saves on its own, so the row that does not own
-     * this value still has to send it along.
-     */
     public function locale(): string
     {
         $locale = app()->getLocale();
@@ -220,18 +156,11 @@ class PreferencesViewModel
         return $this->user->time_format ?? TimeFormatEnum::TwentyFourHour;
     }
 
-    /**
-     * The order the account reads dates in, null while it follows the language.
-     */
     public function dateFormat(): ?DateFormatEnum
     {
         return $this->user->date_format;
     }
 
-    /**
-     * The order the language being read writes dates in, which is what somebody
-     * who has never touched this setting gets.
-     */
     private function languageDateFormat(): string
     {
         return config('monica.locales')[$this->locale()]['date_format'];
@@ -242,19 +171,11 @@ class PreferencesViewModel
         return DateFormatEnum::write(now()->setDay(21), $this->languageDateFormat());
     }
 
-    /**
-     * The separators the account writes numbers with, null while it follows the
-     * language.
-     */
     public function numberFormat(): ?NumberFormatEnum
     {
         return $this->user->number_format;
     }
 
-    /**
-     * The separators the language being read writes numbers with, which is what
-     * somebody who has never touched this setting gets.
-     */
     private function languageNumberFormat(): NumberFormatEnum
     {
         return NumberFormatEnum::from(config('monica.locales')[$this->locale()]['number_format']);

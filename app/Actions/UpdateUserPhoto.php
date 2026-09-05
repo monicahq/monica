@@ -14,20 +14,10 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 /**
- * Set the photo a user shows. Two square versions are written, one at the size
- * the app displays and one at twice it, so a dense screen has a sharp one to
- * pick from. Somebody may only do this to their own profile, so the action
- * edits whoever is signed in.
- *
- * A user only ever has one photo, so an earlier one is removed once the new one
- * is in place.
+ * Set the photo a user shows.
  */
 class UpdateUserPhoto
 {
-    /**
-     * The mime types we accept. Anything else is rejected, whatever the
-     * extension of the uploaded file claims.
-     */
     private const array ALLOWED_MIME_TYPES = [
         'image/jpeg',
         'image/png',
@@ -56,10 +46,6 @@ class UpdateUserPhoto
         return $this->user;
     }
 
-    /**
-     * The file is checked here as well as in the controller, on what it
-     * actually is rather than on what its name claims.
-     */
     private function validate(): void
     {
         if (! in_array($this->file->getMimeType(), self::ALLOWED_MIME_TYPES, true)) {
@@ -71,10 +57,6 @@ class UpdateUserPhoto
         }
     }
 
-    /**
-     * The name the user gave the file never reaches the disk: we generate a
-     * random one instead, and the two versions are named after it.
-     */
     private function store(): void
     {
         $this->previousPath = $this->user->photo_path;
@@ -103,11 +85,6 @@ class UpdateUserPhoto
         $this->user->save();
     }
 
-    /**
-     * The files of the earlier photo are only removed once the new one is
-     * saved, so a failure halfway through leaves the user with a working photo
-     * rather than none.
-     */
     private function removePrevious(): void
     {
         if ($this->previousPath === null) {
@@ -119,9 +96,6 @@ class UpdateUserPhoto
         }
     }
 
-    /**
-     * The disk lives here alone so it can be swapped in one place.
-     */
     private function diskName(): string
     {
         return (string) config('filesystems.default');

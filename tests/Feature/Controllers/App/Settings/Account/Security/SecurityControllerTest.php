@@ -132,10 +132,6 @@ class SecurityControllerTest extends TestCase
             ->assertSee('window.copyText(codes.join(', escape: false);
     }
 
-    /**
-     * A button that confirmed an empty clipboard would be the lie the control
-     * exists to avoid.
-     */
     #[Test]
     public function it_does_not_offer_to_copy_recovery_codes_that_are_all_spent(): void
     {

@@ -12,15 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Set or change the password of a user. A user who signs in through SSO has no
- * password and cannot be given one here.
- *
- * Setting a first password and changing an existing one are the same write and
- * two different events. An account that had none was reachable only by passkey
- * or by an emailed link, so gaining a password is a new way in, and the person
- * hears about it. Changing one they already had is not, and sending an email
- * every time somebody rotates their password would teach them to ignore the
- * ones that matter.
+ * Set or change the password of a user.
  */
 class UpdateUserPassword
 {
@@ -42,9 +34,6 @@ class UpdateUserPassword
         return $this->user;
     }
 
-    /**
-     * Whether there was a password, read before the new one overwrites it.
-     */
     private function remember(): void
     {
         $this->wasSetForTheFirstTime = $this->user->password === null;

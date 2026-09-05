@@ -1,17 +1,5 @@
-{{--
-  Setting up two factor authentication: pair an authenticator app with the
-  account, then prove it worked by typing back what the app is showing.
-
-  It moves onto the new shell with the security screen rather than after it,
-  because "Turn it on" leads straight here: a flow that changes design halfway
-  through is worse than either design.
-
-  Nothing is protected until that code is accepted, so somebody who closes the
-  tab here is left exactly as they were, and the screen says so where somebody
-  would worry about it.
-
-  @var \App\ViewModels\Settings\Account\Security\TwoFactorEnrolmentViewModel $viewModel
---}}
+{{-- Setting two factor up: pair an authenticator app, then type back what it is showing. --}}
+{{-- @var \App\ViewModels\Settings\Account\Security\TwoFactorEnrolmentViewModel $viewModel --}}
 <x-shell :title="__('Two factor authentication')">
   <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.security.index')" data-turbo="true" size="small">
@@ -49,7 +37,6 @@
           </div>
         </div>
 
-        {{-- The square has to stay black on white to be readable, so it carries its own background in either theme. --}}
         <div class="mx-auto rounded-lg border border-hairline bg-white p-3">
           {{ $viewModel->qrCode() }}
         </div>
@@ -77,7 +64,6 @@
           autofocus
         />
 
-        {{-- The pair stacks on a narrow screen, primary first, so the thumb lands on the one that goes through. --}}
         <x-slot:footer>
           <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
             <x-button.secondary size="small" :href="route('settings.security.index')" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>

@@ -9,16 +9,12 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<Administrator>
- */
+/** @extends Factory<Administrator> */
 class AdministratorFactory extends Factory
 {
     protected $model = Administrator::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -28,10 +24,6 @@ class AdministratorFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that another administrator granted the capacity, rather than the
-     * console designating them.
-     */
     public function grantedBy(User $administrator): static
     {
         return $this->state(fn (array $attributes): array => [

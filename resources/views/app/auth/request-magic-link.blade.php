@@ -1,8 +1,5 @@
-{{--
-  Where somebody asks for a link that signs them in without a password.
-
-  @var \App\ViewModels\Auth\MagicLinkViewModel $viewModel
---}}
+{{-- Where somebody asks for a link that signs them in without a password. --}}
+{{-- @var \App\ViewModels\Auth\MagicLinkViewModel $viewModel --}}
 <x-guest-layout :title="__('Get a link to sign in')">
   <div class="grid min-h-screen grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)]">
     <main class="flex min-w-0 flex-col justify-center px-6 py-10 sm:px-15">

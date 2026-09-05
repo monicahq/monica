@@ -81,9 +81,7 @@ class SectionImportCheckControllerTest extends TestCase
         return StructureFile::encode(StructureFile::ofSection($template->publishedVersion->assembly->first()));
     }
 
-    /**
-     * @return array{Template, TemplateVersionPage}
-     */
+    /** @return array{Template, TemplateVersionPage} */
     private function draft(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);

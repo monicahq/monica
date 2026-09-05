@@ -1,16 +1,5 @@
-{{--
-  The form that names a template, and the same form that renames one.
-
-  It moves onto the new shell with the list, because "Create a template" leads
-  straight here.
-
-  What the template applies to is asked for once, while it is being created. A
-  template describes a kind of record, and pointing an existing one somewhere
-  else would leave every record already on it rendering something never meant
-  for it, so the choice disappears once it has been made.
-
-  @var \App\ViewModels\Settings\Account\Templates\TemplateFormViewModel $viewModel
---}}
+{{-- The form that names a template, and the same form that renames one. --}}
+{{-- @var \App\ViewModels\Settings\Account\Templates\TemplateFormViewModel $viewModel --}}
 @php
   $values = $viewModel->values();
 @endphp
@@ -81,11 +70,6 @@
                 class="font-mono"
               />
             @else
-              {{--
-                Once the slug is settled it stops being a field. A disabled box invites
-                clicking and submits nothing, so what is shown instead is the value
-                itself, in mono, the way every machine value in the product is written.
-              --}}
               <div class="flex flex-col gap-1.5">
                 <p class="flex items-baseline gap-1.5 text-label text-ink">{{ __('Slug') }}</p>
 

@@ -26,10 +26,6 @@ class FieldCatalogueViewModelTest extends TestCase
         }
     }
 
-    /**
-     * The catalogue and the enum must not drift: a type the enum does not know
-     * cannot be picked, and every type the enum knows has to be offered.
-     */
     #[Test]
     public function it_marks_as_available_exactly_what_the_enum_ships(): void
     {

@@ -1,13 +1,5 @@
-{{--
-  The passkeys on the account, and the way to add one.
-
-  Adding a passkey is the browser's job once it starts, so the button hands over
-  to the Alpine component and then gets out of the way. Everything the component
-  has to say goes into the live region below it: a device prompt somebody cancels
-  changes nothing on the page, so announcing it is the only way it is noticed.
-
-  @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel
---}}
+{{-- The passkeys on the account, and the way to add one. --}}
+{{-- @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel --}}
 @php($passkeys = $viewModel->passkeys())
 
 <div id="passkeys" x-merge="replace" class="transition-opacity [&[aria-busy]]:opacity-60">
@@ -43,11 +35,6 @@
             class="w-48"
           />
 
-          {{--
-            Hidden rather than disabled when the browser cannot do passkeys. A
-            disabled button is a dead control that explains nothing; the message
-            below says why instead.
-          --}}
           <x-button.secondary
             size="small"
             type="button"
@@ -58,12 +45,6 @@
         </div>
       </div>
 
-      {{--
-        The live region stays in the DOM whether or not there is anything to say.
-        A region that is added, or un-hidden, at the moment its text changes is
-        not reliably announced: several screen readers only watch regions that
-        were already there. So it is always present and simply empty.
-      --}}
       <p
         x-text="message"
         role="status"

@@ -1,9 +1,5 @@
-{{--
-  Shown after asking for a sign-in link, whether or not the address had an
-  account behind it.
-
-  @var \App\ViewModels\Auth\MagicLinkViewModel $viewModel
---}}
+{{-- Shown after asking for a sign-in link, whether or not the address had an account behind it. --}}
+{{-- @var \App\ViewModels\Auth\MagicLinkViewModel $viewModel --}}
 <x-guest-layout :title="__('Check your inbox')">
   <div class="grid min-h-screen grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)]">
     <main class="flex min-w-0 flex-col justify-center px-6 py-10 sm:px-15">

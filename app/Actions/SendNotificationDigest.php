@@ -14,19 +14,6 @@ use Illuminate\Support\Collection;
 
 /**
  * Fold everything an account has waiting into one message.
- *
- * Nothing is dropped by folding. Each notification keeps its own row, its own
- * words and its own record of when it was due, and gains a pointer to the
- * summary that carried it, so the history of what somebody was told stays
- * complete and a screen can still show the deadlines one by one.
- *
- * A summary with nothing in it is not sent. There is no news in "nothing
- * happened today", and an empty message every evening is how somebody learns to
- * ignore the ones that matter.
- *
- * The summary is about several things at once, so it is about nothing in
- * particular: it carries no notifiable, which is also what keeps it out of the
- * index that stops anybody being told twice.
  */
 class SendNotificationDigest
 {
@@ -34,10 +21,6 @@ class SendNotificationDigest
         private readonly Account $account,
     ) {}
 
-    /**
-     * How many notifications were folded into the summary, and zero when there
-     * was nothing to say.
-     */
     public function execute(): int
     {
         $user = $this->account->user;
@@ -63,9 +46,7 @@ class SendNotificationDigest
         return $waiting->count();
     }
 
-    /**
-     * @return Collection<int, Notification>
-     */
+    /** @return Collection<int, Notification> */
     private function waitingFor(User $user): Collection
     {
         return Notification::query()
@@ -76,9 +57,7 @@ class SendNotificationDigest
             ->get();
     }
 
-    /**
-     * @param  Collection<int, Notification>  $waiting
-     */
+    /** @param  Collection<int, Notification>  $waiting */
     private function write(User $user, Collection $waiting): Notification
     {
         $locale = $user->locale ?? (string) config('app.locale');

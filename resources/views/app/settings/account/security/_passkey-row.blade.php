@@ -1,16 +1,5 @@
-{{--
-  One passkey, with the two things somebody can do to it.
-
-  A passkey nobody has used yet says so, rather than leaving the line blank,
-  because "not used yet" and "we lost track of it" are different things and only
-  one of them is true.
-
-  Removing one is destructive and irreversible: the device holding it cannot be
-  made to sign in again, and a new passkey has to be created on it instead. So
-  the button asks first, and says what the removal costs before it happens.
-
-  @var array{id: int, name: string, addedAt: string, lastUsedAt: ?string} $passkey
---}}
+{{-- One passkey, with the two things somebody can do to it. --}}
+{{-- @var array{id: int, name: string, addedAt: string, lastUsedAt: ?string} $passkey --}}
 <x-row
   :title="$passkey['name']"
   :description="$passkey['lastUsedAt']
@@ -59,11 +48,6 @@
 
       <div x-cloak x-show="confirming" class="flex flex-wrap items-center justify-end gap-2.5">
         @if ($lastOneOnAPasswordlessAccount ?? false)
-          {{--
-            FR-033. Removing this passkey is not refused, because refusing would
-            leave somebody holding a passkey they cannot revoke. It is said out
-            loud instead, and setting a password is offered as the alternative.
-          --}}
           <p class="text-xs text-error text-pretty">{{ __('This is your last passkey and you have no password. A link sent to your email address would become the only way in. Set a password instead?') }}</p>
         @else
           <p class="text-xs text-error">{{ __('This device will no longer sign you in. Sure?') }}</p>

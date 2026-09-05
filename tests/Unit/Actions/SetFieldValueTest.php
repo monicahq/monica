@@ -751,9 +751,7 @@ class SetFieldValueTest extends TestCase
         ]);
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function fieldOf(User $user, array $attributes = []): Field
     {
         return Field::factory()->create(array_merge(['account_id' => $user->account_id], $attributes));

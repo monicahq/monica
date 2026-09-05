@@ -74,10 +74,6 @@ class CreateShareLinkTest extends TestCase
         $this->assertEquals($vault->id, $shareLink->vault_id);
     }
 
-    /**
-     * A database dump must not yield a working link, so what is written down is
-     * the hash and the token itself is handed back once.
-     */
     #[Test]
     public function it_writes_down_the_hash_of_the_token_and_never_the_token(): void
     {
@@ -97,10 +93,6 @@ class CreateShareLinkTest extends TestCase
         $this->assertDatabaseMissing('share_links', ['token' => $shareLink->plainToken]);
     }
 
-    /**
-     * The owner opts in, never out, so a link made in a hurry shows the least
-     * rather than the most.
-     */
     #[Test]
     public function it_shows_nothing_sensitive_unless_it_is_asked_to(): void
     {

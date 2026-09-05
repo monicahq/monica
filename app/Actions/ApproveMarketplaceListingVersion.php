@@ -16,19 +16,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Let a version into the catalogue.
- *
- * From here the payload never changes again, which is what makes the checksum
- * an install verifies worth anything, and it is the version everybody
- * installing from now on receives.
- *
- * Approving a later version does not touch anybody who installed an earlier
- * one. They are told, and they decide. That is the whole of it, and it is the
- * rule the rest of the marketplace is built to keep.
- *
- * The listing keeps a name rather than a foreign key for who decided, because
- * the catalogue is public and a moderator is a name to the people reading it.
- * The administrator is still handed in whole: the record of what operators do
- * has to point at a person, and a name is not a person.
  */
 class ApproveMarketplaceListingVersion
 {
@@ -51,12 +38,6 @@ class ApproveMarketplaceListingVersion
         return $this->version;
     }
 
-    /**
-     * Hold the row for the rest of the transaction, then read back what it
-     * actually says. Two administrators opening the same submission and
-     * deciding a moment apart would otherwise both pass the check below, and
-     * the second decision would quietly replace the first.
-     */
     private function lock(): void
     {
         MarketplaceListingVersion::query()
@@ -97,10 +78,6 @@ class ApproveMarketplaceListingVersion
         }
     }
 
-    /**
-     * An account whose person was deleted has nobody to tell. The decision
-     * still stands, since the catalogue is not the author's to hold up.
-     */
     private function tellTheAuthor(): void
     {
         $listing = $this->version->listing;

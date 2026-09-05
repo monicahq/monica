@@ -13,11 +13,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Override;
 
-/**
- * Tell somebody their account was signed in to from somewhere we have not seen
- * before. Travelling, a VPN or a new browser all cause this, so the wording
- * asks rather than accuses.
- */
 class UserIpChanged extends Notification implements HasEmailType, ShouldQueue
 {
     use Queueable;
@@ -29,9 +24,7 @@ class UserIpChanged extends Notification implements HasEmailType, ShouldQueue
         $this->onQueue('high');
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function via(User $notifiable): array
     {
         return ['mail'];

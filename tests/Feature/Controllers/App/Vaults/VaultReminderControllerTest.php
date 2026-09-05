@@ -40,10 +40,6 @@ class VaultReminderControllerTest extends TestCase
         $response->assertSee(route('reminders.byContact', $vault), escape: false);
     }
 
-    /**
-     * A reader who cannot tell the warning tint from the ordinary one still has
-     * the heading, the elapsed wording and the sentence behind the date.
-     */
     #[Test]
     public function it_says_a_reminder_is_late_with_more_than_a_colour(): void
     {
@@ -172,10 +168,6 @@ class VaultReminderControllerTest extends TestCase
         $this->get(route('reminders.index', $vault))->assertRedirect(route('auth.login.new'));
     }
 
-    /**
-     * The row asks for the rule, the person, their avatar and the field, so a
-     * screen that loaded them per row would grow its queries with its rows.
-     */
     #[Test]
     public function it_does_not_ask_more_of_the_database_as_the_list_grows(): void
     {
@@ -226,10 +218,6 @@ class VaultReminderControllerTest extends TestCase
         $this->assertSame($one, $many);
     }
 
-    /**
-     * The screen's own content is asserted here rather than in a view test of its
-     * own, because that is where every other screen in this suite is asserted.
-     */
     #[Test]
     public function it_draws_the_stamp_the_cadence_the_count_and_the_exact_instant(): void
     {
@@ -276,11 +264,6 @@ class VaultReminderControllerTest extends TestCase
         $response->assertSee("/reminders/occurrences/{$occurrence->uuid}/postponement", escape: false);
     }
 
-    /**
-     * Each preset names the instant it lands on, worked out in the zone frozen
-     * on the rule rather than the reader's, and the dialog says which zone that
-     * is.
-     */
     #[Test]
     public function the_postpone_dialog_names_every_instant_and_the_zone_they_are_read_in(): void
     {
@@ -298,10 +281,6 @@ class VaultReminderControllerTest extends TestCase
         $response->assertSee('Europe/Paris');
     }
 
-    /**
-     * The head of the dialog is the reminder itself: whose it is, what it says,
-     * and where it stands before anything is moved.
-     */
     #[Test]
     public function the_postpone_dialog_opens_on_the_reminder_and_where_it_stands(): void
     {
@@ -364,10 +343,6 @@ class VaultReminderControllerTest extends TestCase
         $response->assertSee('Nothing has been sent yet');
     }
 
-    /**
-     * The history is what somebody consults after the fact, so it cannot depend
-     * on the rule that produced it still being there.
-     */
     #[Test]
     public function a_sent_row_survives_the_rule_that_made_it(): void
     {
@@ -452,10 +427,6 @@ class VaultReminderControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * A deadline that has already reached somebody, which is what the Sent tab
-     * keys off.
-     */
     private function sent(Reminder $rule, string $when): ReminderOccurrence
     {
         $occurrence = $this->deadline($rule, $when);

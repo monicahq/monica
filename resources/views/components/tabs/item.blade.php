@@ -1,21 +1,5 @@
+{{-- One tab in an <x-tabs> row. --}}
 {{--
-  One tab in an <x-tabs> row.
-
-  It renders an anchor when it is given an href, since a tab that has a URL can be
-  linked to, shared and reached by the back button. A tab that only opens something
-  on the page, which is what the one that adds a page is, is a button instead.
-
-  `count` is the number of things behind the tab, drawn as a small round mark after
-  the label. It takes a ground only on the tab you are on: a row of filled marks
-  would compete with the rule for saying which tab that is. `countLabel` is what the
-  mark is called for somebody who cannot see that it is a count, and a caller
-  passing `count` without it is passing a number nobody can read.
-
-  `action` is for the one thing in the row that is not a destination, which is the
-  control that adds another tab. It is drawn like a tab because it sits on the same
-  rule, and it is not announced as one, because a tab that selects nothing is a lie
-  told to whoever is listening rather than looking.
-
   @var string|null $href
   @var bool $selected
   @var bool $action

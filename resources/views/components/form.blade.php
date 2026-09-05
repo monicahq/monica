@@ -1,7 +1,5 @@
+{{-- A form carrying the csrf token and the method spoofing field, so no screen remembers either. --}}
 {{--
-  A form that carries the csrf token and the method spoofing field, so no screen
-  has to remember either.
-
   @var string $method
   @var string $action
   @var bool $upload

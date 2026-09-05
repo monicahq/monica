@@ -1,31 +1,5 @@
+{{-- A menu that picks one value out of a few and saves it there and then. --}}
 {{--
-  A menu that picks one value out of a few and saves it there and then.
-
-  The button shows what is chosen now. Opening it lists the choices, each with a
-  hint on the right that says what picking it would look like, and a tick beside
-  the one already in force. The chosen one is also heavier and sits on a tint, so
-  it is not the tick alone that has to be spotted.
-
-  Every choice is a submit button carrying the field name and its value, so the
-  menu has to sit inside an <x-form>, and picking one saves without a separate
-  button to press. That also means it still works with javascript switched off:
-  all Alpine does here is open and close the panel.
-
-  The panel is pinned to the button by `x-anchor`, which takes it out of the flow
-  to do so. It has to be: these sit inside a panel, and a panel clips what
-  overflows it, so a menu positioned inside one would be cut off at its edge. It
-  hangs from the button's right, since these sit at the right hand edge of the rows
-  they belong to.
-
-  Without javascript the panel is not positioned and simply follows the button in
-  the flow, which still reads and still submits. The choices are real submit
-  buttons, so the only thing Alpine does here is open, close and place the panel.
-
-  Usage:
-    <x-form method="put" :action="route('...')">
-      <x-dropdown name="locale" :label="$current" :options="$locales" :title="__('Language')" />
-    </x-form>
-
   @var string $name
   @var string $label
   @var array<int, array{value: string, label: string, hint: string, selected: bool}> $options
@@ -40,19 +14,7 @@
   'monospacedHints' => false,
 ])
 
-{{--
-  A menu inside a form that saves over ajax is morphed back into place rather
-  than replaced, so `open` survives the save and the panel would stay hanging
-  there. Closing it once the request is on its way puts that right. The event
-  is listened for on the window because it is fired on the form, which is a
-  parent of this, and events do not travel downwards.
---}}
 <div x-data="{ open: false }" @ajax:before.window="open = false" {{ $attributes->class([]) }}>
-  {{--
-    The double colon on `aria-expanded` is what stops Blade from reading the Alpine
-    expression after it as php. The trigger is a secondary button, so it is the
-    component rather than its utilities written again here.
-  --}}
   <x-button.secondary
     type="button"
     x-ref="trigger"

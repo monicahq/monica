@@ -12,15 +12,6 @@ use App\Models\Contact;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-/**
- * Whether a contact sits at the top of the list.
- *
- * The request carries the state it wants rather than asking for a toggle. Two
- * callers acting on a stale reading would otherwise each invert what the other
- * had just written, and neither would end up with what it asked for. Sending the
- * state makes the request idempotent, so the worst a repeat can do is confirm
- * what is already stored.
- */
 class ContactFavouriteController extends Controller
 {
     public function update(Request $request, string $vault, string $contact): JsonResponse

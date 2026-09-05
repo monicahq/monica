@@ -1,14 +1,5 @@
-{{--
-  The same two ways out, scoped to one section.
-
-  A section is the unit people actually reuse, because the rest of somebody's
-  template is usually nobody else's business. That is the argument the screen
-  makes, and it is why the list of what is going out sits at the top rather than
-  behind a link: three field names is short enough to read, and reading them is
-  how somebody notices they named a field after a person.
-
-  @var \App\ViewModels\Settings\Account\Templates\ShareSectionViewModel $viewModel
---}}
+{{-- The same two ways out, scoped to one section. --}}
+{{-- @var \App\ViewModels\Settings\Account\Templates\ShareSectionViewModel $viewModel --}}
 @php
   $template = $viewModel->template();
 @endphp

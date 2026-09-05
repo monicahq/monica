@@ -13,14 +13,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-/**
- * The one thing about a contact the product imposes rather than the template,
- * since sorting, searching, headers and initials are all built from it.
- *
- * The form is drawn by {@see ContactController::edit()} and this is only the
- * write. The contact representing the user is renamed like any other. What it
- * cannot do is disappear.
- */
 class ContactNameController extends Controller
 {
     public function update(Request $request, Vault $vault, Contact $contact): RedirectResponse

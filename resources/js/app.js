@@ -11,17 +11,8 @@ import passkey from './passkey';
 
 window.Turbo = Turbo;
 
-/*
- * Turbo only takes over the links that ask for it, with data-turbo="true". Everything
- * else, every form included, keeps the browser's own behaviour. Turning a screen into a
- * Turbo one is therefore a deliberate act, rather than something that happens to it.
- */
 Turbo.session.drive = false;
 
-/*
- * The passkey component wraps @laravel/passkeys. It is registered as data
- * rather than a plugin because it is one screen's behaviour, not a global.
- */
 Alpine.data('passkey', passkey);
 
 window.Alpine = Alpine;
@@ -29,44 +20,15 @@ window.Alpine = Alpine;
 Alpine.plugin(morph);
 Alpine.plugin(ajax);
 
-/*
- * `x-trap` keeps the tab key inside whatever is open over the page, hands focus to
- * the first thing in it, gives it back to whatever opened it on the way out, and
- * with `.inert` marks the rest of the document as neither reachable nor read. A
- * dialog with a scrim over it has to do all four, or the pointer is held back while
- * the keyboard walks out behind it.
- */
 Alpine.plugin(focus);
 
-/*
- * `x-anchor` pins a panel to the control that opened it and takes it out of the
- * flow to do so. A panel is nearly always inside something that clips what
- * overflows it: a card with rounded corners has to, or a row's hover tint would
- * square off the corner it sits in. A menu that opened inside that would be cut
- * off at the card's edge, so it is positioned against the window instead.
- */
 Alpine.plugin(anchor);
 
-/*
- * Morph patches the DOM that is already there instead of replacing it, so the Alpine state
- * hanging off a node survives an update, and a form nested inside the region it refreshes
- * stays connected once that region has been updated.
- */
 ajax.configure({ mergeStrategy: 'morph' });
 
-/*
- * The files in `fileList` bigger than maxKilobytes. An upload form uses it to
- * turn an oversized picture away in the browser, with something readable to
- * say, rather than letting the request go and bounce off the web server.
- */
 window.oversizedFiles = (fileList, maxKilobytes) =>
     Array.from(fileList ?? []).filter((file) => file.size > maxKilobytes * 1024);
 
-/*
- * The slug a name would be given, for a form that wants to show one before the
- * server has settled it. It mirrors Laravel's `Str::slug` closely enough for a
- * preview, accents included; what is stored is always what the server decides.
- */
 window.slugify = (value) =>
     (value ?? '')
         .normalize('NFD')
@@ -77,15 +39,6 @@ window.slugify = (value) =>
         .replace(/^-+|-+$/g, '')
         .slice(0, 64);
 
-/*
- * Put text on the clipboard, and say whether it managed.
- *
- * `navigator.clipboard` only exists in a secure context, so a self hosted
- * instance reached over plain http does not have it at all. Optional chaining
- * past it would leave a button saying it had copied something when nothing had
- * been copied, so there is a fallback that works anywhere, and the answer is
- * reported rather than assumed.
- */
 window.copyText = async (text) => {
     if (window.isSecureContext && navigator.clipboard) {
         try {
@@ -93,7 +46,6 @@ window.copyText = async (text) => {
 
             return true;
         } catch {
-            // The browser refused, so fall through to the textarea below.
         }
     }
 
@@ -120,23 +72,6 @@ window.copyText = async (text) => {
     return copied;
 };
 
-/*
- * Dragging the rows of one list into another order. Any screen whose rows are
- * numbered by a position can use it. The component sits on the
- * container of the rows and only keeps track of what is being dragged and what
- * it is hovering over, so the panel can grey the row that left and draw the line
- * where it would land.
- *
- * Saving is left to Blade: every row carries a hidden form aimed at the position
- * route, and the drop writes the position into it and submits it. That keeps the
- * csrf token, the method spoofing and the ajax target where the rest of the app
- * puts them.
- *
- * The rows are reached from the dropped-on element rather than from `$el`. Every
- * row declares an `x-data` of its own for the field it opens, so an expression
- * written in a row runs in a scope stack whose `$el` is that row, not the
- * container these methods belong to.
- */
 Alpine.data('sortableRows', () => ({
     draggingId: null,
     hoveringId: null,
@@ -174,25 +109,12 @@ Alpine.data('sortableRows', () => ({
             return;
         }
 
-        /*
-         * A row always lands in front of the one it was dropped on. The server
-         * takes it out of the list before putting it back, so the position it is
-         * asked for is where the target sits once the dragged row is gone.
-         */
         const form = rows.querySelector(`[data-position-form="${draggedId}"]`);
         form.querySelector('input[name="position"]').value = to > from ? to : to + 1;
         form.requestSubmit();
     },
 }));
 
-/*
- * The theme the visitor picked, kept in local storage so it survives a reload.
- * The `.dark` class on <html> is what every token in app.css reads, and the
- * inline script in partials/meta sets it before the first paint so there is no
- * flash of the wrong theme. This store only has to keep the two in sync.
- *
- * Turbo never replaces <html>, so the theme also survives a Turbo navigation.
- */
 Alpine.store('theme', {
     dark: document.documentElement.classList.contains('dark'),
 
@@ -203,7 +125,6 @@ Alpine.store('theme', {
         try {
             localStorage.setItem('theme', dark ? 'dark' : 'light');
         } catch (e) {
-            // Local storage is unavailable in private mode on some browsers.
         }
     },
 
@@ -212,23 +133,6 @@ Alpine.store('theme', {
     },
 });
 
-/*
- * Turbo fires turbo:load on the first paint as well as after every navigation it
- * drives. The first one starts Alpine; every one of them walks the body, which is
- * either the whole page or the one Turbo has just swapped in.
- *
- * The first one has to walk it too, and that is easy to miss. Starting Alpine only
- * visits the x-data roots, so <body> is left unmarked, and Alpine ignores the removal
- * of a node it never marked: the body Turbo takes away is dropped without any of the
- * teardown its components registered ever running. Walking it here marks it, which is
- * what lets that teardown happen. Alpine skips whatever it has already seen, so this
- * costs a walk and initialises nothing twice.
- *
- * What went wrong without it was the launcher. It holds the page still while it is
- * open by setting an overflow on <html>, and gives it back when it closes. Following
- * a link out of it never closed it, it was thrown away instead, and the overflow
- * stayed behind on the one element Turbo never replaces.
- */
 document.addEventListener('turbo:load', () => {
     if (! document.documentElement.dataset.alpine) {
         document.documentElement.dataset.alpine = 'started';

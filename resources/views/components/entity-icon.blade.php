@@ -1,13 +1,5 @@
+{{-- The glyph an entity type is marked with, drawn from the name the type stores. --}}
 {{--
-  The glyph an entity type is marked with, drawn from the name the type stores.
-
-  A type keeps a word rather than any markup, so the drawing lives here and
-  here only: the picker on the form, the row on the list and the navigation all
-  ask this component for the same name and get the same glyph.
-
-  A name nothing answers to falls back to the default rather than drawing
-  nothing, since an empty square beside a row reads as a bug.
-
   @var string|null $name
   @var int $size
 --}}

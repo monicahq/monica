@@ -9,13 +9,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-/**
- * Say whether this instance is up, and which release it is running.
- *
- * Nothing here needs a token. It is meant for a monitor, and for the first call
- * somebody makes while wiring up a client, so it has to answer before there is
- * any credential to answer with.
- */
 class StatusController extends Controller
 {
     public function show(): JsonResponse

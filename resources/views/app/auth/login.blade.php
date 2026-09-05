@@ -1,8 +1,5 @@
-{{--
-  Where somebody who already has an account signs back in.
-
-  @var \App\ViewModels\Auth\LoginViewModel $viewModel
---}}
+{{-- Where somebody who already has an account signs back in. --}}
+{{-- @var \App\ViewModels\Auth\LoginViewModel $viewModel --}}
 <x-guest-layout :title="__('Welcome back')">
   <div class="grid min-h-screen grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)]">
     <main class="flex min-w-0 flex-col justify-center px-6 py-10 sm:px-15">
@@ -59,26 +56,12 @@
         </x-box>
 
         @if (! $viewModel->passkeysAreAvailable())
-          {{--
-            Why the passkey control is not here. Said in its place rather than
-            beside it: a reason somebody can act on is worth more than a button
-            that would fail.
-          --}}
           <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">
             {{ __('Passkeys need a secure connection. Reach this instance over https and you can sign in with one.') }}
           </x-box>
         @endif
 
         @if ($viewModel->passkeysAreAvailable())
-          {{--
-            Signing in with a passkey. Nothing is typed here on purpose: the
-            browser offers whatever passkey it holds for this instance, and the
-            credential that comes back is what says who is signing in.
-
-            The control is hidden when the browser cannot do passkeys, which only
-            the browser knows. When the instance cannot, the server has already
-            replaced this block with the reason.
-          --}}
           <x-box
             padding="p-4"
             class="rounded-lg"
@@ -99,11 +82,6 @@
                 @click="signIn()"
               >{{ __('Sign in with a passkey') }}</x-button.secondary>
 
-              {{--
-                Always in the DOM, empty when there is nothing to say. A live
-                region that appears at the same moment as its text is not
-                reliably announced.
-              --}}
               <p
                 x-text="message"
                 role="status"
@@ -115,8 +93,6 @@
           </x-box>
         @endif
 
-        {{-- The shortcut that signs the seeded account in, only ever on a machine
-             somebody develops on, and only once that account has been seeded --}}
         @env(config('login-link.allowed_environments'))
           @if ($viewModel->exampleAccountEmail() !== null)
             <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">

@@ -37,10 +37,6 @@ class ExampleAccountSeederTest extends TestCase
         ]);
     }
 
-    /**
-     * Every signed in screen sits behind the verified middleware, so an account
-     * whose address is unconfirmed is one nobody can use.
-     */
     #[Test]
     public function it_confirms_her_address_so_the_account_can_be_used(): void
     {
@@ -117,10 +113,6 @@ class ExampleAccountSeederTest extends TestCase
         $this->assertEquals([$family->id], $category->value_list_item_ids);
     }
 
-    /**
-     * A birthday nobody in the show ever states is left empty rather than made
-     * up, since an invented date reads exactly like a real one afterwards.
-     */
     #[Test]
     public function it_leaves_the_birthday_empty_for_somebody_the_show_never_dates(): void
     {
@@ -172,10 +164,6 @@ class ExampleAccountSeederTest extends TestCase
         $this->assertFalse(Reminder::query()->where('remindable_id', $monica->id)->exists());
     }
 
-    /**
-     * The wordings and the moments differ from one rule to the next, so the
-     * screens are not eight copies of the same reminder.
-     */
     #[Test]
     public function it_varies_what_the_reminders_say_and_when_they_warn(): void
     {
@@ -187,11 +175,6 @@ class ExampleAccountSeederTest extends TestCase
         $this->assertGreaterThan(1, $reminders->pluck('moments')->map(fn (array $moments): string => json_encode($moments))->unique()->count());
     }
 
-    /**
-     * Deadlines are only generated ninety days ahead, and the birthdays the
-     * show gives are clustered in spring and autumn, so the months sampled here
-     * are the ones a naive set of moments leaves empty.
-     */
     #[Test]
     #[DataProvider('monthsToSeedIn')]
     public function it_has_something_due_whatever_month_it_is_seeded_in(string $today): void
@@ -203,9 +186,7 @@ class ExampleAccountSeederTest extends TestCase
         $this->assertTrue(ReminderOccurrence::query()->exists());
     }
 
-    /**
-     * @return array<string, array<int, string>>
-     */
+    /** @return array<string, array<int, string>> */
     public static function monthsToSeedIn(): array
     {
         return [
@@ -218,13 +199,6 @@ class ExampleAccountSeederTest extends TestCase
         ];
     }
 
-    /**
-     * The template new contacts start from is written by a queued job, so a
-     * contributor whose queue connection is the database and who has no worker
-     * running would otherwise be handed an account nothing can be written in.
-     * The suite runs on the sync connection, which is why this one says
-     * otherwise before seeding.
-     */
     #[Test]
     public function it_seeds_with_nothing_working_the_queue(): void
     {

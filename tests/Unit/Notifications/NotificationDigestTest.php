@@ -38,10 +38,6 @@ class NotificationDigestTest extends TestCase
         $this->assertStringContainsString('It is today.', $rendered);
     }
 
-    /**
-     * The lines were worded when each deadline came due, in the language the
-     * reader had then, so they reach the email exactly as they were written.
-     */
     #[Test]
     public function it_sets_the_wording_of_each_reminder_apart_from_what_it_is_about(): void
     {

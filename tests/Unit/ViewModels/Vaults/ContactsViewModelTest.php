@@ -367,9 +367,7 @@ class ContactsViewModelTest extends TestCase
         $this->assertTrue($missed->noResults());
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function contact(Vault $vault, string $firstName, string $lastName, array $attributes = []): Contact
     {
         return Contact::factory()->create([
@@ -492,9 +490,7 @@ class ContactsViewModelTest extends TestCase
         return $user;
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     private function surnamesOrderedFor(User $user, Vault $vault, string $direction = ContactsViewModel::DIRECTION_ASC): array
     {
         $viewModel = new ContactsViewModel(user: $user, vault: $vault, direction: $direction);
@@ -653,9 +649,7 @@ class ContactsViewModelTest extends TestCase
         $this->assertSame(['Scott'], $this->surnamesMatching($user, $vault, 'prison'));
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     private function surnamesMatching(User $user, Vault $vault, string $term): array
     {
         $viewModel = new ContactsViewModel(user: $user, vault: $vault, query: $term);

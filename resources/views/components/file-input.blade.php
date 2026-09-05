@@ -1,12 +1,5 @@
+{{-- A file field, with its label, its hint and its validation messages. --}}
 {{--
-  A file field, with its label, its hint and its validation messages. It is a
-  sibling of x-input rather than a branch inside it, because a file field has no
-  value to carry and takes an accept list instead.
-
-  The id is also the name of the input, so one prop drives both. A screen that
-  names it after something it holds rather than after itself, as a repeating
-  block does, gives `name` separately, exactly as <x-input> does.
-
   @var string|null $id
   @var string|null $name
   @var string|null $label
@@ -32,12 +25,6 @@
 @endphp
 
 @php
-  /*
-   * A file field is the browser's own control, because nothing hand-built opens a
-   * file picker as reliably. What is drawn is the native button dressed as a small
-   * secondary one, with the chosen file's name beside it as a caption. So the well
-   * is dropped here: there is no text being typed into it.
-   */
   $control = 'cursor-pointer text-xs text-muted '
     .'file:mr-3 file:h-8 file:cursor-pointer file:rounded-md file:border file:border-hairline '
     .'file:bg-canvas file:px-3 file:font-sans file:text-sm file:font-medium file:text-ink '

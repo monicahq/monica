@@ -13,20 +13,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-/**
- * One reminder, on a screen of its own.
- *
- * A reminder of another account never reaches here, because
- * `resolveRouteBinding()` refuses it. The vault is this controller's to check:
- * the binding proves the reminder belongs to the account, and nothing in it
- * proves the reminder belongs to the vault the address names, so a reminder of
- * another vault of the same account would otherwise be readable through the
- * wrong compartment.
- *
- * Deleting is the same gesture as unticking the box under the date, and it reaches
- * the same action. The screen warns first, because a reminder carries a history
- * nothing else holds; the date it read is untouched either way.
- */
 class ReminderController extends Controller
 {
     public function show(Request $request, Vault $vault, Reminder $reminder): View

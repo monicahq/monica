@@ -49,9 +49,7 @@ class IconTest extends TestCase
             ->assertDontSee('<circle cx="8" cy="6" r="2.6">', escape: false);
     }
 
-    /**
-     * @return array<int, array<int, string>>
-     */
+    /** @return array<int, array<int, string>> */
     public static function provideTheMarksTheFieldTypeCatalogueAsksFor(): array
     {
         return [

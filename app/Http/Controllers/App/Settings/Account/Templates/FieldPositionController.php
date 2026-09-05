@@ -15,11 +15,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-/**
- * Where a field sits inside its section. Like every other write in the builder,
- * it goes through the section being made editable first, and the field is found
- * again by key when that meant copying the section.
- */
 class FieldPositionController extends Controller
 {
     public function update(Request $request, Template $template, TemplateVersionSection $templateVersionSection, Field $field): RedirectResponse

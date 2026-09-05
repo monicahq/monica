@@ -130,9 +130,7 @@ class DestroyFieldValueTest extends TestCase
         ]);
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function valueOn(User $user, Contact $contact, array $attributes = []): FieldValue
     {
         return FieldValue::factory()->create(array_merge([

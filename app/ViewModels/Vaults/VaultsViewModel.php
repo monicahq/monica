@@ -7,16 +7,6 @@ namespace App\ViewModels\Vaults;
 use App\Models\User;
 use App\Models\Vault;
 
-/**
- * The compartments the account is divided into, and the way into each. The
- * one somebody was last in comes first, because the reason to be on this
- * screen is almost always to go back where you were.
- *
- * The card says the three things that tell one vault from another: what it is
- * called, what it is for, and how many people are in it. Everything else the
- * design asks for needs a model that does not exist, and an invented sentence
- * about a real person is worse than a shorter card.
- */
 class VaultsViewModel
 {
     public function __construct(
@@ -33,10 +23,6 @@ class VaultsViewModel
         return __('A vault keeps one part of your life separate from the others. People, notes and reminders never cross between them.');
     }
 
-    /**
-     * The line beside the heading of the list. It says what the order is, which
-     * is the one thing about this list somebody cannot work out by reading it.
-     */
     public function orderNote(): string
     {
         return __('The one you were last in is first.');
@@ -48,14 +34,6 @@ class VaultsViewModel
     }
 
     /**
-     * Every vault of the account, the most recently opened first. A vault
-     * nobody has opened yet falls in behind the ones that were, said here
-     * rather than left to the database: Postgres ranks null above everything
-     * on a descending order and MySQL and SQLite rank it below.
-     *
-     * The mark on a card takes the colour somebody chose for the vault rather
-     * than one derived from its name.
-     *
      * @return array<int, array{name: string, initial: string, description: string|null, colour: string, tint: string, contactCount: string, isDefault: bool, isLastOpened: bool, url: string}>
      */
     public function vaults(): array

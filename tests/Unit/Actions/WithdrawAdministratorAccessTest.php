@@ -85,7 +85,6 @@ class WithdrawAdministratorAccessTest extends TestCase
         try {
             new WithdrawAdministratorAccess(user: $michael, administrator: $michael)->execute();
         } catch (AdministratorCannotLockThemselvesOut) {
-            // The refusal is the point, and what it protects is asserted below.
         }
 
         $this->assertTrue($michael->refresh()->isAdministrator());
@@ -121,7 +120,6 @@ class WithdrawAdministratorAccessTest extends TestCase
         try {
             new WithdrawAdministratorAccess(user: $michael, administrator: $dwight)->execute();
         } catch (InstanceMustKeepAnAdministrator) {
-            // The second withdrawal has to be the one that fails.
         }
 
         $this->assertDatabaseCount('administrators', 1);

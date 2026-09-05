@@ -13,15 +13,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Change how somebody is called. Every part is optional on its own, and a
- * contact left with none of them is refused by the model, since the product
- * sorts, searches and builds initials out of the name.
- *
- * The string the lists sort on is rewritten by the model on save, so nothing
- * here has to remember to keep it in step.
- *
- * The contact representing the user is renamed like any other: what it cannot
- * do is disappear.
+ * Change how somebody is called.
  */
 class UpdateContactName
 {

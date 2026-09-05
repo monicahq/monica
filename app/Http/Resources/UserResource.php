@@ -9,25 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
 
-/**
- * The user a token acts as, as the API hands it out.
- *
- * The envelope is the one every resource here will use: a type, an id, the
- * attributes, and a link back to the thing itself. The id is a string because
- * it is an identifier rather than a number to do arithmetic with, and the
- * timestamps are Unix integers because they carry no zone of their own and a
- * client can put them in whichever one its reader is sitting in.
- *
- * Credentials never appear. Not the password, not the token, not the second
- * factor, not the address the last sign in came from.
- *
- * @mixin User
- */
+/** @mixin User */
 class UserResource extends JsonResource
 {
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function toArray(Request $request): array
     {

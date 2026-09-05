@@ -23,18 +23,8 @@ use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 /**
- * Write down one of the things an account invented: a specific dog, a specific
- * company, a specific bottle. The name is all the product imposes, and
- * everything else the page will hold comes from the template version the record
- * is put on.
- *
- * The version is the vault's default for this type unless the caller names
- * another one. A type belongs to the account and is visible in every vault;
- * whether it is used in a given vault is decided there, by whether a default
- * template is set for it, so a vault with none refuses rather than guesses.
- *
- * A deactivated type takes nothing new. That is the whole difference between
- * deactivating it and deleting it: what exists stays readable and editable.
+ * Write down one of the things an account invented: a specific dog, a specific company, a specific
+ * bottle.
  */
 class CreateEntity
 {
@@ -62,12 +52,6 @@ class CreateEntity
         return $this->entity;
     }
 
-    /**
-     * Find the structure the vault starts a record of this type on, unless the
-     * caller named one. The vault and the type are checked here rather than in
-     * the validation that follows, since reading the default of a vault in
-     * another account would answer a question nobody is allowed to ask.
-     */
     private function readTheVaultDefault(): void
     {
         if ($this->vault->account_id !== $this->user->account_id) {

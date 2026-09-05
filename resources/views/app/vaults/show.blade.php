@@ -1,30 +1,10 @@
-{{--
-  One vault, opened: a box for every part of it.
-
-  The screen is a map rather than a summary. Five boxes, each in the colour that
-  part of the product answers to, each the way into it. Two of them are real, the
-  people and the settings, and the other three are drawn as what will land in them:
-  the tasks, the reminders and the files are each their own model and none of them
-  has been written. Those three are not links. A word that does not move is better
-  than a link that leads nowhere.
-
-  Two things the design asks for are not here. The star beside the title marks a
-  favourite vault, which is not something a vault can be. The search field in the
-  bar reads every field of every record, which needs an index that does not exist,
-  and the launcher behind the dock already answers to the same keystroke.
-
-  @var \App\ViewModels\Vaults\VaultDashboardViewModel $viewModel
---}}
+{{-- One vault, opened: a box for every part of it. --}}
+{{-- @var \App\ViewModels\Vaults\VaultDashboardViewModel $viewModel --}}
 @php
   $vault = $viewModel->vault();
   $people = $viewModel->people();
 @endphp
 <x-shell :title="$viewModel->title()" wide>
-  {{--
-    The dashboard is where the vault's own trail starts, so its last step is the
-    vault and there is nothing after it. The way out to the other vaults is in the
-    switcher at the top of the column, which is where crossing that boundary lives.
-  --}}
   <x-slot:breadcrumb>
     <x-breadcrumb :items="[['label' => $vault->name]]" />
   </x-slot:breadcrumb>
@@ -78,11 +58,6 @@
           </x-empty-state>
         </div>
       @else
-        {{--
-          Each row is the link to that person, and the line at the foot is the
-          link to all of them. The box used to be one anchor covering both,
-          which it could be while a person had no page of their own.
-        --}}
         <div class="overflow-hidden rounded-lg border border-hairline bg-canvas flex flex-1 flex-col">
           @foreach ($people as $person)
             <a
@@ -134,9 +109,6 @@
     @endforeach
 
     <section class="flex min-w-0 flex-col gap-2.5">
-      {{-- The only heading with no hue: the settings are not a kind of thing the
-           vault holds, they are the vault itself. It is a shade softer than the
-           others rather than a colour, which is what says so without competing. --}}
       <h2 class="px-0.5 text-section-title text-ink-soft">{{ __('Vault settings') }}</h2>
 
       <a

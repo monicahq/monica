@@ -1,16 +1,5 @@
-{{--
-  The reference as plain text, for a reader that is not a browser.
-
-  It is a Blade template rather than string building in PHP because that is what
-  keeps the view model a view model: it reads the definition files and hands
-  them over, and the shaping happens here, where every other rendering in this
-  application happens.
-
-  Everything is printed raw. This is a markdown document, not a web page, and
-  the copy in it is ours rather than anything somebody typed into the product.
-
-  @var list<\App\ViewModels\Docs\ApiDocsSection> $sections
---}}
+{{-- The reference as plain text, for a reader that is not a browser. --}}
+{{-- @var list<\App\ViewModels\Docs\ApiDocsSection> $sections --}}
 @php
   $blocks = [];
 

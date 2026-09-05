@@ -12,12 +12,6 @@ use App\Models\TemplateVersionPage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-/**
- * Where a page sits in the row of tabs, which is the order a record is read in.
- *
- * The tabs are dragged, so what arrives here is the place the page landed in
- * rather than a direction, and the action renumbers the rest around it.
- */
 class TemplatePagePositionController extends Controller
 {
     public function update(Request $request, Template $template, TemplateVersionPage $templateVersionPage): RedirectResponse

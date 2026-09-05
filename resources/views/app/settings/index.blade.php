@@ -1,20 +1,5 @@
-{{--
-  The home of the settings: what belongs to you, what belongs to the account, and
-  the two ways of leaving.
-
-  It is a list of rows rather than a grid of cards on purpose. Every row is one
-  sentence about what is behind it, which is what somebody arriving here actually
-  needs. The names alone ("Templates", "Entity types") say almost nothing about which
-  one to open.
-
-  Deleting the account is the last thing on the page and it is not a row. It is a
-  sentence that says what goes with it, and the words that do it are the last three
-  of that sentence, so nobody reaches them without having read the rest. The
-  confirmation itself lives on the profile screen and asks for the address to be
-  typed out.
-
-  @var \App\ViewModels\Settings\SettingsViewModel $viewModel
---}}
+{{-- The home of the settings: what belongs to you, what belongs to the account, and the way out. --}}
+{{-- @var \App\ViewModels\Settings\SettingsViewModel $viewModel --}}
 <x-shell :title="__('Settings')">
   <x-slot:breadcrumb>
     <x-button.bar :href="route('vaults.index')" data-turbo="true" size="small">
@@ -71,7 +56,6 @@
         @endforeach
       </x-panel>
 
-      {{-- The only thing on this screen that cannot be undone, under the rows that can. --}}
       @if ($loop->last)
         <p class="px-0.5 text-xs text-pretty text-muted">
           {{ __('Deleting the account removes every vault, every person in them and every note you have written. It cannot be undone.') }}

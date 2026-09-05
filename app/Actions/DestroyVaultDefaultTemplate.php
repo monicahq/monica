@@ -13,16 +13,7 @@ use App\Models\VaultDefaultTemplate;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Stop offering a structure by default for a kind of record in a vault. The
- * kind of record is not forbidden there: whoever creates one simply picks a
- * template themselves.
- *
- * The contact default cannot go. Every vault has one, and a vault where writing
- * somebody down asks which template to use first is a vault that has forgotten
- * what it is for.
- *
- * Nothing already created is touched. A record keeps the version it renders
- * from whether or not the vault still points at it.
+ * Stop offering a structure by default for a kind of record in a vault.
  */
 class DestroyVaultDefaultTemplate
 {

@@ -13,25 +13,18 @@ use App\Http\Controllers\App\Auth\RegistrationPasskeyController;
 use App\Http\Controllers\App\Auth\TwoFactorChallengeController;
 use Illuminate\Support\Facades\Route;
 
-// Creating an account.
 Route::middleware(['guest'])->group(function (): void {
     Route::get('register', [RegistrationController::class, 'new'])->name('auth.register.new');
     Route::post('register', [RegistrationController::class, 'create'])->name('auth.register.create');
 
-    // Creating an account whose only credential is a passkey. Two routes rather than
-    // one because a passkey is created against an account that already exists: the
-    // first makes the account, the second asks the device for the credential.
     Route::post('register/passkey', [RegistrationPasskeyController::class, 'create'])->name('auth.registerPasskey.create');
 
-    // Choosing the language of the interface, signed in or not.
     Route::put('locale', [LocaleController::class, 'update'])
         ->name('auth.locale.update');
 
-    // Signing in with an email address and a password.
     Route::get('login', [LoginController::class, 'new'])->name('auth.login.new');
     Route::post('login', [LoginController::class, 'create'])->name('auth.login.create');
 
-    // Signing in without a password, through a link sent by email.
     Route::get('send-magic-link', [MagicLinkController::class, 'new'])->name('auth.magicLink.new');
     Route::post('send-magic-link', [MagicLinkController::class, 'create'])
         ->middleware('throttle:6,1')
@@ -41,7 +34,6 @@ Route::middleware(['guest'])->group(function (): void {
         ->where('token', '[A-Za-z0-9]{64}')
         ->name('auth.magicLink.show');
 
-    // Asking for a new password, and choosing it.
     Route::get('forgot-password', [PasswordResetLinkController::class, 'new'])->name('auth.password.new');
     Route::post('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->middleware('throttle:6,1')
@@ -51,18 +43,15 @@ Route::middleware(['guest'])->group(function (): void {
         ->name('auth.password.edit');
     Route::post('reset-password', [NewPasswordController::class, 'update'])->name('auth.password.update');
 
-    // Answering the two factor challenge, once a password was accepted.
     Route::get('two-factor-challenge', [TwoFactorChallengeController::class, 'new'])->name('auth.twoFactor.new');
     Route::post('two-factor-challenge', [TwoFactorChallengeController::class, 'create'])
         ->middleware('throttle:6,1')
         ->name('auth.twoFactor.create');
-
 });
 
 Route::middleware(['auth'])->group(function (): void {
     Route::get('register/passkey', [RegistrationPasskeyController::class, 'new'])->name('auth.registerPasskey.new');
 
-    // Confirming the email address of a brand new account.
     Route::get('verify-email', [EmailVerificationController::class, 'show'])->name('auth.verification.notice');
     Route::get('verify-email/{id}/{hash}', [EmailVerificationController::class, 'update'])
         ->middleware(['signed', 'throttle:6,1'])
@@ -73,7 +62,6 @@ Route::middleware(['auth'])->group(function (): void {
         ->middleware('throttle:6,1')
         ->name('auth.verification.send');
 
-    // Signing out.
     Route::post('logout', [LoginController::class, 'destroy'])
         ->name('auth.login.destroy');
 });

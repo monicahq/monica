@@ -13,11 +13,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Override;
 
-/**
- * Tell somebody their account was signed in to without a password, through a
- * link they asked for by email. A password sign-in does not send this, since it
- * would arrive every single time.
- */
 class NewLoginDetected extends Notification implements HasEmailType, ShouldQueue
 {
     use Queueable;
@@ -28,9 +23,7 @@ class NewLoginDetected extends Notification implements HasEmailType, ShouldQueue
         $this->onQueue('high');
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function via(User $notifiable): array
     {
         return ['mail'];

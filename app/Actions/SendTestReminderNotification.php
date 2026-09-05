@@ -13,22 +13,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Send one reminder to whoever asked, right now, to show what it will look like.
- *
- * It answers "will this actually reach me" before the date arrives, which is
- * otherwise only answerable by waiting for it.
- *
- * The deadline is not touched. `notified_at`, `status` and `scheduled_for` all
- * stay as they were, so the real delivery still happens on the day and the Sent
- * tab, which keys off `notified_at`, never shows a test. Calling
- * {@see NotifyReminderOccurrence} instead would consume the deadline and the
- * real one would never arrive.
- *
- * Quiet hours are ignored on purpose. They exist to stop the product waking
- * somebody up; a person pressing a button at two in the morning has asked for
- * this one.
- *
- * The wording is the deadline's own, so the test says exactly what the real
- * message will say rather than something built for the occasion.
  */
 class SendTestReminderNotification
 {

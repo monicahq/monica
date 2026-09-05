@@ -1,9 +1,4 @@
-{{--
-  What somebody sees when a code is not asked for on top of their password.
-
-  The screen it leads to is built on this same layout, so it is handed to turbo
-  and only the body changes hands.
---}}
+{{-- What somebody sees when a code is not asked for on top of their password. --}}
 <x-row
   :title="__('Authenticator app')"
   :description="__('Ask us for a code from your authenticator app every time you sign in, on top of your password. Any app works.')"

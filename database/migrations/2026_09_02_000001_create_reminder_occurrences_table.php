@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('reminder_occurrences', function (Blueprint $table): void {
@@ -37,21 +34,12 @@ return new class extends Migration
             $table->string('cancelled_reason', 32)->nullable()->comment('why it was cancelled, a ReminderOccurrenceCancelledReasonEnum value, so nothing vanishes unexplained');
             $table->timestamps();
 
-            /* Has this deadline already been generated? It is what makes two
-               workers racing over the same window a no-op rather than a pair of
-               duplicate rows. */
             $table->unique(['reminder_id', 'generation_key']);
 
-            /* Which deadlines are due now, and which of one rule's are still
-               ahead. Every sweep asks the first and every reconciliation asks
-               the second. */
             $table->index(['status', 'scheduled_for']);
             $table->index(['reminder_id', 'status', 'scheduled_for'], 'reminder_occurrences_rule_state_index');
             $table->index(['account_id', 'local_date']);
 
-            /* Which reminders one vault has already sent, newest first. The
-               three above answer the engine's questions; this one answers the
-               screen's, and nothing else indexes the vault on its own. */
             $table->index(['vault_id', 'notified_at']);
 
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();

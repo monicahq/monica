@@ -255,9 +255,7 @@ class RecordEmailDeliveryOutcomeTest extends TestCase
         $this->assertNull($emailSent->fresh()?->delivered_at);
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function report(string $type, string $emailId): array
     {
         return [

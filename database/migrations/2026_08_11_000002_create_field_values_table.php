@@ -9,18 +9,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        /*
-         * MySQL caps an index at 3072 bytes, and a column of 1024 characters
-         * spends 4096 of them on its own in utf8mb4, so the filter on the text
-         * types reads the first 255 characters of the value there. Nothing
-         * filters on more of a value than that, and the databases with no such
-         * cap index the column whole.
-         */
         $filterableString = Schema::getConnection()->getDriverName() === 'mysql'
             ? new Expression('value_string(255)')
             : 'value_string';
@@ -54,12 +44,6 @@ return new class extends Migration
 
             $table->index(['valuable_type', 'valuable_id', 'field_id'], 'field_values_record_field_index');
 
-            /*
-             * Filtering on any field with no configuration at all is what
-             * section 13 promises, and these are what make it a query rather
-             * than a scan of the largest table in the product. The vault comes
-             * first in each of them, since no filter ever crosses one.
-             */
             $table->index(['vault_id', 'field_id', $filterableString], 'field_values_filter_string_index');
             $table->index(['vault_id', 'field_id', 'value_number'], 'field_values_filter_number_index');
             $table->index(['vault_id', 'field_id', 'value_boolean'], 'field_values_filter_boolean_index');
@@ -72,11 +56,6 @@ return new class extends Migration
             $table->foreign('field_value_row_id')->references('id')->on('field_value_rows')->cascadeOnDelete();
             $table->foreign('value_list_item_id')->references('id')->on('value_list_items')->nullOnDelete();
             $table->foreign('value_file_id')->references('id')->on('files')->nullOnDelete();
-            /*
-             * A value pointing at a record that has gone is kept and rendered
-             * as unavailable rather than nulled, so neither of these releases
-             * what it points at.
-             */
             $table->foreign('related_contact_id')->references('id')->on('contacts');
             $table->foreign('related_entity_id')->references('id')->on('entities');
         });

@@ -20,21 +20,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Make a copy of a template to change without touching the original.
- *
- * This is what somebody does with a template the product supplied: they cannot
- * edit it in place and would not want to, so they take a copy and make it
- * theirs. The copy is an ordinary template of their own from the first moment,
- * with its own slug, its own versions and nothing marking it as supplied.
- *
- * What is copied is one version, and it arrives as a draft. Nothing is
- * published on somebody's behalf: the copy has to be looked at and published
- * deliberately, which is also the moment to notice what needs changing.
- *
- * The pages are copied, since a page describes one template version and cannot
- * be shared with another. The sections themselves are not. A section version is
- * frozen and can sit in any number of template versions, so the copy carries
- * the same rows the original does, on pages of its own, and changing one of
- * them means drafting a new version of that section.
  */
 class DuplicateTemplate
 {
@@ -134,13 +119,7 @@ class DuplicateTemplate
         });
     }
 
-    /**
-     * Copy the pages of the source onto the copy, and say which new one each
-     * old one became so the sections can be put back where they were. A page
-     * belongs to one version, so these are new rows carrying the same words.
-     *
-     * @return array<int, int>
-     */
+    /** @return array<int, int> */
     private function copyThePages(TemplateVersion $version): array
     {
         $pages = [];

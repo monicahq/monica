@@ -28,10 +28,6 @@ class IconButtonTest extends TestCase
         $rendered->assertDontSee('<button', escape: false);
     }
 
-    /**
-     * The name is the whole point of the component: a glyph with nothing said
-     * about it is a control nobody listening can use.
-     */
     #[Test]
     public function it_says_its_name_to_a_screen_reader_and_shows_it_to_everybody_else(): void
     {

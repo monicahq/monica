@@ -11,8 +11,7 @@ use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Offer a choice again, in the place it always had. Disabling one is meant to
- * be undone as easily as it was done, which is why the position survives it.
+ * Offer a choice again, in the place it always had.
  */
 class EnableValueListItem
 {

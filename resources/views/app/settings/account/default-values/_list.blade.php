@@ -1,23 +1,5 @@
-{{--
-  One value list, and everything that can be done to it: renamed, thrown away,
-  added to, and its values renamed, reordered and retired.
-
-  A list the product supplied cannot be thrown away, since the product itself
-  reads from it. Emptying it is how somebody says they do not want it, and the
-  values inside it are theirs to remove like any other.
-
-  The whole panel is the target of every form inside it, so any of those swaps
-  this block and leaves the other lists on the screen where they were. The swap
-  replaces rather than morphs, because the flags that open a field in place are
-  set in the browser and have to come back from the server closed: morphing
-  would keep them, and the field would never shut.
-
-  Each form is validated into a bag of its own, since every list on the screen
-  has a field called `name` and every value one called `label`. Reading the bag
-  is what reopens the one field that was rejected, and only that one.
-
-  @var array $list
---}}
+{{-- One value list, and everything that can be done to it and to the values in it. --}}
+{{-- @var array $list --}}
 @php
   $listErrors = $errors->getBag('list'.$list['id']);
   $newValueErrors = $errors->getBag('newValue'.$list['id']);

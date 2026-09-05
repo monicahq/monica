@@ -15,18 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Give a record the answers its structure says it starts with.
- *
- * A field can carry a default, and until now it was handed to nobody: every
- * record began completely empty whatever its template said. Writing them here,
- * at creation, rather than pre-filling the form later, is what makes the
- * default true rather than merely suggested. Somebody who never opens the page
- * still has the answer the template promised, and the page shows the same thing
- * the API and an export do.
- *
- * A default that cannot be written is skipped rather than guessed at: the
- * shapes a `default_value` may take for a relation, a repeater or a file are
- * not settled, and writing something plausible into one of them would be
- * inventing the answer rather than reading it.
  */
 class WriteDefaultValues
 {
@@ -37,9 +25,6 @@ class WriteDefaultValues
         private readonly Contact|Entity $record,
     ) {}
 
-    /**
-     * How many answers the record started with.
-     */
     public function execute(): int
     {
         DB::transaction(function (): void {
@@ -51,13 +36,7 @@ class WriteDefaultValues
         return $this->written;
     }
 
-    /**
-     * Every field the structure asks directly, on every page of it. A field
-     * inside a repeater is left out: its default belongs to a repetition, and a
-     * record starts with none.
-     *
-     * @return Collection<int, Field>
-     */
+    /** @return Collection<int, Field> */
     private function fields(): Collection
     {
         return $this->record->templateVersion->assembly
@@ -72,9 +51,6 @@ class WriteDefaultValues
     {
         $default = $field->default_value;
 
-        /* The column is json, so a default written as a bare scalar arrives
-           wrapped in nothing and one written as a list arrives as a list. What
-           a choice field means by either is the id of an item. */
         $value = is_array($default) ? $default : [$default];
 
         if ($value === [] || $value[0] === null) {
@@ -84,10 +60,6 @@ class WriteDefaultValues
         $item = $this->chosenItem($field, $value[0]);
         $items = $this->chosenItems($field, $value);
 
-        /* A default naming an item the list has stopped offering is dropped
-           rather than written. The template says what a record starts with, and
-           the list says what may be chosen; where the two disagree the record
-           starts with nothing, which somebody can see and correct. */
         if ($field->type->usesValueList() && $item === null && $items === []) {
             return;
         }

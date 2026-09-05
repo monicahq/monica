@@ -46,10 +46,6 @@ class TemplateBuilderControllerTest extends TestCase
             ->assertSee('Weight');
     }
 
-    /**
-     * The whole row is what drags, and until now nothing said so. The grip is
-     * the affordance, and the form beside each row is what a drop submits.
-     */
     #[Test]
     public function it_says_that_a_section_and_a_field_can_be_dragged(): void
     {
@@ -72,11 +68,6 @@ class TemplateBuilderControllerTest extends TestCase
         $response->assertSee(route('settings.fieldPosition.update', [$template, $row->id, $field->id]), escape: false);
     }
 
-    /**
-     * The grip is hidden from a screen reader. Dragging is not how anybody using
-     * one reorders anything, and announcing a handle they cannot work is worse
-     * than announcing nothing.
-     */
     #[Test]
     public function it_hides_the_grip_from_a_screen_reader(): void
     {
@@ -141,11 +132,6 @@ class TemplateBuilderControllerTest extends TestCase
         $onThePlainField->assertDontSee('New repetitions');
     }
 
-    /**
-     * A repeater collecting at the end is what every repeater does, so a badge
-     * for it would sit on almost every row and say nothing. Only the other
-     * direction is worth a word.
-     */
     #[Test]
     public function it_marks_a_repeater_on_the_list_only_when_it_collects_at_the_front(): void
     {
@@ -195,11 +181,6 @@ class TemplateBuilderControllerTest extends TestCase
             ->assertSee(__('Delete the field'));
     }
 
-    /**
-     * The bug this replaced: opening a field from a second tab used to send the
-     * screen back to the first one, because the address said nothing about
-     * which page was open.
-     */
     #[Test]
     public function it_stays_on_the_page_a_field_was_opened_from(): void
     {
@@ -281,11 +262,6 @@ class TemplateBuilderControllerTest extends TestCase
             ->assertSee('This page has nothing on it yet');
     }
 
-    /**
-     * The card asking for a name has to come back holding what was typed, and
-     * the builder around it carries a form editing a field with a label of its
-     * own, so the two do not share an error bag.
-     */
     #[Test]
     public function it_reopens_the_card_that_asks_for_a_page_name_when_it_was_rejected(): void
     {
@@ -355,10 +331,6 @@ class TemplateBuilderControllerTest extends TestCase
             ->assertSee('Move to');
     }
 
-    /**
-     * A template whose only version was thrown away still has to open, with the
-     * way forward on the screen rather than a crash.
-     */
     #[Test]
     public function it_opens_a_template_that_has_no_version_at_all(): void
     {
@@ -422,10 +394,6 @@ class TemplateBuilderControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
 
-        /* Every option is a button carrying its own pressed state, which is what
-           makes the row reachable and readable rather than a strip of colour.
-           Clearing is the thirty-sixth button and reads the state the other way
-           round, so it is counted separately. */
         $this->assertSame(35, mb_substr_count($response->getContent(), 'aria-pressed="icon ==='));
         $this->assertSame(1, mb_substr_count($response->getContent(), 'aria-pressed="! icon'));
         $response->assertSee('>No glyph<', escape: false);
@@ -490,9 +458,6 @@ class TemplateBuilderControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
 
-        /* Each block is named in words and drawn with a different glyph, so the
-           two are told apart with the colour taken away. The tile itself is
-           hidden from a screen reader, since the heading already names it. */
         $response->assertSee('>Health<', escape: false);
         $response->assertSee('>Work<', escape: false);
         $this->assertGreaterThanOrEqual(2, mb_substr_count($response->getContent(), 'aria-hidden="true"'));
@@ -507,8 +472,6 @@ class TemplateBuilderControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
 
-        /* A section is drawn in a card that hides what overflows it, so a panel
-           positioned inside one is cut off at its edge. */
         $response->assertSee('x-anchor.bottom-start.offset.6="$refs.trigger"', escape: false);
         $response->assertDontSee('absolute top-full', escape: false);
     }
@@ -522,8 +485,6 @@ class TemplateBuilderControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
 
-        /* The builder is one region that morphs back into place, so a panel left
-           open would still be hanging there after the save. */
         $response->assertSee('@ajax:before.window="open = false"', escape: false);
     }
 
@@ -541,9 +502,6 @@ class TemplateBuilderControllerTest extends TestCase
 
         $content = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))->getContent();
 
-        /* `[x-cloak]` hides with `!important`, so which glyph starts visible is
-           decided on the server rather than left to Alpine. The marked section
-           shows its own; the add block, which has no mark, shows the default. */
         foreach ($this->tilesIn($content) as $where => $visible) {
             $this->assertCount(1, $visible, "The {$where} tile shows ".count($visible).' glyphs.');
         }
@@ -568,13 +526,7 @@ class TemplateBuilderControllerTest extends TestCase
         }
     }
 
-    /**
-     * Which glyph each trigger tile has showing, in the order the tiles appear.
-     * A span the server marked hidden is not counted, so what comes back is what
-     * somebody sees on the first paint.
-     *
-     * @return array<string, list<string>>
-     */
+    /** @return array<string, list<string>> */
     private function tilesIn(string $content): array
     {
         $tiles = [];
@@ -614,12 +566,6 @@ class TemplateBuilderControllerTest extends TestCase
 
         $content = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))->getContent();
 
-        /* The panel is picked from twice, a glyph and then a colour. Hanging the
-           outside click on the tile instead would shut it on the first of the
-           two, which reads as the click having done nothing.
-           Scoped to the two tiles and the two panels: half the components on
-           this page open something on a click, so counting these patterns over
-           the whole document would be counting somebody else's menu. */
         $this->assertCount(2, $this->markTriggersIn($content));
 
         foreach ($this->markTriggersIn($content) as $where => $trigger) {
@@ -646,17 +592,11 @@ class TemplateBuilderControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
 
-        /* A binding on its own leaves the field empty until Alpine boots, so a
-           save that landed first would clear the mark rather than keep it. */
         $response->assertSee('name="icon" value="profile" :value="icon"', escape: false);
         $response->assertSee('name="colour" value="#3f5fd0" :value="colour"', escape: false);
     }
 
-    /**
-     * The tile that opens each mark panel, by the id it points at.
-     *
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     private function markTriggersIn(string $content): array
     {
         preg_match_all('/<button\\b[^>]*aria-controls="([^"]+)-mark-picker"[^>]*>/s', $content, $matches, PREG_SET_ORDER);
@@ -670,11 +610,7 @@ class TemplateBuilderControllerTest extends TestCase
         return $triggers;
     }
 
-    /**
-     * The mark panels on the page, by the id each is addressed as.
-     *
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     private function panelsIn(string $content): array
     {
         preg_match_all('/<div\s+x-cloak\s+x-show="open"[^>]*id="([^"]+)-mark-picker"/s', $content, $matches, PREG_SET_ORDER);
@@ -702,13 +638,6 @@ class TemplateBuilderControllerTest extends TestCase
 
         $content = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))->getContent();
 
-        /*
-         * A ref belongs to the component it was declared in, so an `x-data` put
-         * between a button and the field it focuses moves that field into a
-         * scope the button cannot see, and reaching for it throws. Nothing about
-         * the markup looks wrong when that happens, which is why this is checked
-         * rather than read.
-         */
         $document = new DOMDocument;
         libxml_use_internal_errors(true);
         $document->loadHTML($content);

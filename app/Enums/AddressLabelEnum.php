@@ -15,10 +15,6 @@ enum AddressLabelEnum: string implements SuppliedValueListItem
     case Previous = 'previous';
     case Other = 'other';
 
-    /**
-     * What the address is, shown beside it on a record. The word doubles as the
-     * translation key.
-     */
     #[Override]
     public function label(): string
     {
@@ -31,11 +27,7 @@ enum AddressLabelEnum: string implements SuppliedValueListItem
         };
     }
 
-    /**
-     * The label this item is seeded with.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

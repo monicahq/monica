@@ -1,54 +1,5 @@
+{{-- The reminder a date field may carry, asked for under the date itself. --}}
 {{--
-  The reminder a date field may carry, asked for under the date itself.
-
-  A date on its own is only a record. This is the box that turns it into
-  something somebody will actually hear about, and it sits under the control
-  holding the date because the rule is an answer about that date rather than a
-  screen of its own. It is written by the block's own save, so Cancel throws it
-  away with everything else typed in that block.
-
-  Everything the panel holds is drawn whether the box is ticked or not, and the
-  panel is shown rather than built when the box is ticked. The box is a real
-  checkbox that says it controls a region and whether that region is open, which
-  is the disclosure pattern.
-
-  What is shown and hidden is `x-show` with `x-cloak` beside it, and never the
-  `hidden` attribute. `hidden` comes from the browser's own stylesheet, so any
-  `flex` or `grid` class on the same element beats it and the thing stays on the
-  screen; `x-show` writes an inline style, which nothing beats.
-
-  Nothing inside the panel is revealed by choosing between two things that are
-  always both on offer. The cadence and its rhythm are the case: they sit in the
-  flow at all times and go inert when the rule fires once, because showing them
-  on the choice would move every control below them each time somebody changed
-  their mind about it.
-
-  Every moment is drawn by the server, blanks included, and revealed one at a
-  time. The same reason <x-field-repetitions> does it: a row is three controls
-  whose options are translated, and the browser has no business rebuilding them.
-  A moment somebody removes is hidden and disabled, so the save sees an absence.
-
-  The wording under each moment and the sentence at the foot describe what
-  somebody is typing rather than what is saved, so they are assembled in the
-  browser. The words they are assembled from are translated in
-  {@see \App\ViewModels\Vaults\ContactReminderBlock} and handed over whole, so
-  the two assemblers read the same strings. Each comes in two wordings, which is
-  enough for every locale this product ships in and would not be for a language
-  with more than two plural categories.
-
-  What is not assembled in the browser is the next date. It needs real calendar
-  arithmetic, it belongs to {@see \App\Helpers\ReminderSchedule}, and it
-  describes the rule as saved.
-
-  A rule that has gone quiet is drawn here too, with the reason in words.
-  Nothing about a reminder disappears without an explanation, and this is where
-  the explanation is read. Unticking the box over a rule that exists says what
-  the save is about to remove, before it removes it.
-
-  What a refused save said is given rather than read off the session, the same
-  way every input in this system takes its own messages. It is what lets the
-  panel be drawn on its own, and it is why there is no `$errors` in here.
-
   @var \App\Models\Field $field
   @var array<string, mixed> $reminder  what the view model assembled for this date
   @var string $name  the prefix the inputs are named by, which says which date they belong to
@@ -71,12 +22,8 @@
 
   $panelId = $id.'-panel';
 
-  /* How many blank moments one save may add. Each is a full row of controls, so
-     this is a real cost on the page rather than a round number. */
   $blanks = 3;
 
-  /* The ceiling on a moment, per unit, so the control offers what the rule
-     accepts rather than one number that is wrong for two of the three. */
   $maximums = collect(ReminderMomentUnitEnum::cases())
       ->mapWithKeys(fn (ReminderMomentUnitEnum $unit): array => [$unit->value => $unit->maximumAmount()])
       ->all();
@@ -96,9 +43,6 @@
     ReminderMomentUnitEnum::Months->value => __('months'),
   ];
 
-  /* One entry per drawn row, held ones first. A blank starts as a nudge before
-     the date, since that is what somebody adding a second moment usually wants
-     and it is the one shape that needs no thought to accept. */
   $rows = [];
 
   foreach ($held as $moment) {
@@ -138,10 +82,6 @@
     zone: @js($reminder['timezone']),
     words: @js($reminder['words']),
     maximums: @js($maximums),
-    /* How far a moment may reach depends on what it counts in, so the ceiling
-       on the input follows the unit beside it. The action refuses anything past
-       it either way; this is so the control does not invite a number that is
-       going to come back refused. */
     maximumFor(index) {
       return this.maximums[this.rows[index].unit] ?? 1;
     },
@@ -210,9 +150,6 @@
   @endif
 
   @if ($reminder['isOn'])
-    {{-- Unticking the box takes a rule away, and a save that removes something
-         has to say so before it happens rather than after. The date is named
-         because that is the thing somebody will be afraid of losing. --}}
     <x-notice tone="danger" x-cloak x-show="! on">
       {{ __('Saving now removes this reminder. The date itself stays exactly where it is.') }}
     </x-notice>
@@ -265,10 +202,6 @@
         >{{ __('Every time it comes round') }}</x-option-row>
       </div>
 
-      {{-- The cadence and its rhythm stay in the flow whether the rule comes
-           back or not, and go inert when it does not. Revealing them would move
-           everything below this point the moment somebody changed their mind,
-           which is a form rearranging itself under the person filling it in. --}}
       <div
         @class([
           'flex flex-wrap items-end gap-2.5 pt-0.5',

@@ -18,16 +18,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Bring a deleted vault back, with everything it held still inside it.
- *
- * Deleting a vault is the most destructive thing somebody can do short of
- * deleting the account, which is why it is reversible. It comes back where it
- * was in the list, and with the contacts and the records that left with it:
- * those are the ones the deletion marked as having gone with it, and anything
- * deleted on its own beforehand stays deleted.
- *
- * It comes back as the default only when the account has nobody else to be it,
- * which is what happens when it was the last vault. Otherwise another vault
- * took the title on when this one left, and exactly one holds it.
  */
 class RestoreVault
 {
@@ -102,9 +92,7 @@ class RestoreVault
             ]);
     }
 
-    /**
-     * @param  class-string<Model>  $model
-     */
+    /** @param  class-string<Model>  $model */
     private function giveTheCountsBack(string $column, string $model, string $counter): void
     {
         $counts = Entity::query()

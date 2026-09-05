@@ -1,11 +1,5 @@
-{{--
-  What comes back, and with which status.
-
-  An endpoint that answers nothing says so in words rather than showing an empty
-  box, which reads as something that failed to load.
-
-  @var \App\ViewModels\Docs\ApiDocsSection $section
---}}
+{{-- What comes back, and with which status. --}}
+{{-- @var \App\ViewModels\Docs\ApiDocsSection $section --}}
 @props(['section'])
 
 @php
@@ -38,8 +32,6 @@
     @if ($lines === [])
       <p class="font-mono text-[12.5px] text-muted">No content.</p>
     @else
-      {{-- No whitespace inside the line: the box preserves it, so a newline or an
-           indent in this template would be printed as part of the response. --}}
       @foreach ($lines as $line)
         <div class="font-mono text-[12.5px] leading-[1.75] whitespace-pre">@foreach ($line['parts'] as $part)<span class="{{ $part['colour'] === 'brand' ? 'text-ink' : 'text-muted' }}">{{ $part['text'] }}</span>@endforeach</div>
       @endforeach

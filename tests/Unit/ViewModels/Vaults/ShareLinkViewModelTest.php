@@ -121,10 +121,6 @@ class ShareLinkViewModelTest extends TestCase
         $this->assertSame('Opened 6 times', $this->viewModel($user, $contact, $often)->visitsHeader());
     }
 
-    /**
-     * Nothing resolves an address to a country yet, so the address is what the row
-     * has to say about where a visit came from.
-     */
     #[Test]
     public function a_visit_reads_as_its_country_when_there_is_one_and_its_address_when_there_is_not(): void
     {

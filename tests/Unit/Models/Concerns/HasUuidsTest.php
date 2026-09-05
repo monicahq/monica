@@ -55,14 +55,7 @@ class HasUuidsTest extends TestCase
         $this->assertTrue(Schema::hasColumn($instance->getTable(), 'uuid'));
     }
 
-    /**
-     * Every model that uses the trait, read off the folder rather than listed
-     * here, so a model added tomorrow is covered without anybody remembering to
-     * come back. A data provider runs before the application does, which is why
-     * the path is built by hand instead of with `app_path()`.
-     *
-     * @return array<string, array{string}>
-     */
+    /** @return array<string, array{string}> */
     public static function modelsThatUseIt(): array
     {
         $models = [];

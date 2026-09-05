@@ -14,10 +14,6 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-/**
- * One section as a file, read first and then downloaded. It works the way the
- * whole template does, one section deep.
- */
 class SectionExportController extends Controller
 {
     public function index(Request $request, Template $template, TemplateVersionSection $templateVersionSection): View

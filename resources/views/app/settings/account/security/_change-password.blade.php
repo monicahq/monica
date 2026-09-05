@@ -1,15 +1,6 @@
-{{--
-  The password half of the security screen. Somebody who signs in through an
-  identity provider has no password to change here, so they are told as much.
-
-  The form asks for the screen again and swaps itself for what comes back, so a
-  mistyped current password lands under its field without the page moving, and
-  a save that works comes back with empty fields.
-
-  @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel
---}}
+{{-- The password half of the security screen. --}}
+{{-- @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel --}}
 @if ($viewModel->usesPasswordlessSignIn())
-  {{-- Setting one again lives in the partial below, which knows both directions. --}}
 @elseif ($viewModel->usesSingleSignOn())
   <x-notice icon="lock">{{ __('You sign in through your identity provider, so there is no password to change here.') }}</x-notice>
 @else

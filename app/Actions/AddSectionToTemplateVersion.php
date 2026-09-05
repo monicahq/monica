@@ -20,20 +20,6 @@ use InvalidArgumentException;
 
 /**
  * Put a section on a page of a template version, at the end of that page.
- * Somebody who does not say which page means the first one, which is the whole
- * template until a second page exists.
- *
- * What is placed is an exact version of the section, never the section itself.
- * That one foreign key is what makes freezing a template version mean anything:
- * a frozen version holds frozen section versions, which hold frozen fields.
- *
- * The same section version cannot go on one template version twice. Two copies
- * would give two fields the same identity, and a value written into either
- * would have nowhere to go.
- *
- * The title override is display only. It exists so a shared section can be
- * reused under a heading that suits this template, without anybody having to
- * duplicate the section just to rename it.
  */
 class AddSectionToTemplateVersion
 {
@@ -91,11 +77,6 @@ class AddSectionToTemplateVersion
         $this->page = $this->page();
     }
 
-    /**
-     * Settle which page the section lands on. Somebody who does not say lands
-     * on the first one, which is the whole template for as long as nobody has
-     * made a second page.
-     */
     private function page(): TemplateVersionPage
     {
         if ($this->templateVersionPage === null) {

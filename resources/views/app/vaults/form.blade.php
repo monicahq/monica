@@ -1,14 +1,5 @@
-{{--
-  The form that opens a new compartment in the account.
-
-  The preview beside the swatches, the sentence under the checkbox and the state
-  of the save button all follow what is being typed rather than what has been
-  saved, so they are held in the browser. Nothing here is submitted twice: the
-  colour travels in a hidden field the swatches write to, since a row of buttons
-  is not a field.
-
-  @var \App\ViewModels\Vaults\VaultFormViewModel $viewModel
---}}
+{{-- The form that opens a new compartment in the account. --}}
+{{-- @var \App\ViewModels\Vaults\VaultFormViewModel $viewModel --}}
 @php
   $values = $viewModel->values();
 @endphp
@@ -108,12 +99,6 @@
 
       <x-box :title="__('Where things land')" :description="__('One vault in your account is the default. Anything created without a vault chosen goes there.')">
         <div class="space-y-2">
-          {{--
-            The first vault of an account is the default whatever anybody ticks,
-            so the box is ticked and left alone. A disabled checkbox sends
-            nothing, and nothing is what the creation needs: it makes the first
-            vault the default on its own.
-          --}}
           <x-checkbox
             id="is_default"
             x-model="isDefault"

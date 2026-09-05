@@ -73,11 +73,6 @@ class ReminderRowTest extends TestCase
         $this->assertSame('Every 3 years', $this->rowFor($user, $rule, '2027-05-12 07:00:00')['cadence']);
     }
 
-    /**
-     * The instant is due at nine in Paris, which is where the rule was made. A
-     * reader in Toronto sees the Paris hour, because that is when the reminder
-     * actually fires.
-     */
     #[Test]
     public function it_names_the_instant_in_the_zone_frozen_on_the_rule(): void
     {
@@ -171,9 +166,7 @@ class ReminderRowTest extends TestCase
         ]);
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function rowFor(User $user, Reminder $rule, string $instant): array
     {
         return (new ReminderRow(

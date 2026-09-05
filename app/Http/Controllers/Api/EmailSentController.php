@@ -9,24 +9,8 @@ use App\Http\Resources\EmailSentResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-/**
- * Every email we sent on behalf of an account, most recently sent first.
- *
- * The record belongs to the account rather than to the person, which is the
- * same choice the journal makes: an email sent to an address nobody has an
- * account for still left on the account's behalf, and scoping to the person
- * would hide it.
- *
- * There is nothing here but reading. The record is written as mail leaves and
- * updated only by delivery reports, so there is nothing for a caller to write.
- */
 class EmailSentController extends Controller
 {
-    /**
-     * The page is shaped by hand for the same reason as everywhere else in this
-     * API: the reference promises `page`, `per_page` and `total`, and nothing
-     * more.
-     */
     public function index(Request $request): JsonResponse
     {
         $perPage = max(1, min(

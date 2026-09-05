@@ -14,22 +14,9 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 
 /**
- * The sweep that makes a deadline reach somebody.
- *
- * Two steps, in this order and for a reason. First every deadline whose instant
- * has arrived becomes the notifications that will carry it, so that quiet hours
- * are read against the instant the deadline was really due. Then everything
- * quiet hours now allow out is handed to its channel.
- *
- * Five minutes is the cadence, because a reminder that arrives an hour after it
- * was due is a reminder somebody stops trusting.
- *
- * An account that folds everything into a daily summary is skipped in the second
- * step. Its notifications are made here like everybody else's and wait for
- * {@see SendNotificationDigests} to carry them, which is why they are left
- * alone rather than filtered out of existence.
- *
- * It holds no rules of its own beyond that ordering.
+ * The sweep that makes a deadline reach somebody, every five minutes. Deadlines that have arrived
+ * become notifications first, so that quiet hours are read against the instant a deadline was
+ * really due, and only then is everything quiet hours allow out handed to its channel.
  */
 class DeliverDueNotifications implements ShouldQueue
 {

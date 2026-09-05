@@ -1,15 +1,5 @@
+{{-- The password a protected link asks for before the page behind it opens. --}}
 {{--
-  The password a protected link asks for before the page behind it opens.
-
-  The screen says nothing about what is behind it. Not whose page, not what kind of
-  record: an address that is worth guessing at should not also announce what
-  guessing it would be worth.
-
-  A refusal says only that the password does not open this link, and never whether
-  the address itself is real. The attempt is written down on the owner's side, since
-  a run of them is the only signal they ever get that the link may have gone
-  somewhere they did not send it.
-
   @var string $token
   @var bool $wrong
 --}}

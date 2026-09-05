@@ -10,11 +10,6 @@ use App\Models\User;
 
 /**
  * Revoke an API key, which stops working the moment this runs.
- *
- * The key is looked for among the ones this person owns, so asking for somebody
- * else's by its id finds nothing rather than revoking it. Its name is read
- * before it goes, since the log entry says which key was revoked and there is
- * nothing left to read it from afterwards.
  */
 class DestroyApiKey
 {

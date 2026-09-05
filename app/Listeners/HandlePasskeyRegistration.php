@@ -11,13 +11,6 @@ use App\Models\User;
 use App\Notifications\PasskeyAdded;
 use Laravel\Passkeys\Events\PasskeyRegistered;
 
-/**
- * Record and announce a passkey somebody just added.
- *
- * The email is not a courtesy. A passkey added to an account is a new way into
- * it, so the person who owns the address hears about it whether or not they are
- * the one who added it.
- */
 class HandlePasskeyRegistration
 {
     public function handle(PasskeyRegistered $event): void

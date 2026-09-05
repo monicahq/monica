@@ -14,19 +14,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-/**
- * The picture of a contact, which is not a field: it is what the product asks
- * about somebody whatever template they are on.
- *
- * The upload arrives as multipart form data on a POST rather than a PUT, because
- * PHP fills in an uploaded file on a POST and on nothing else. That is why the
- * browser path posts it too.
- *
- * The picture becomes a file of the vault, so it counts against the account's
- * storage, and an upload that would take the account past it is refused as
- * invalid rather than failing. Taking a picture off lets the file behind it go
- * rather than deleting it, because a vault's files outlive what pointed at them.
- */
 class ContactAvatarController extends Controller
 {
     public function update(Request $request, string $vault, string $contact): JsonResponse

@@ -6,41 +6,9 @@ namespace App\ViewModels\Settings\Account\Templates;
 
 use App\Enums\FieldTypeEnum;
 
-/**
- * The catalogue somebody picks a field type from. The type is the one
- * decision about a field that cannot be taken back later, so the screen says
- * what each one is for, gives an example, and draws the field the type
- * produces, rather than listing bare names. That copy lives here rather than
- * on the enum: the enum says what a type does, and this says what it is for.
- *
- * The families the first version does not ship are listed too, marked as not
- * available. Whether a type can actually be picked is asked of
- * `FieldTypeEnum`, so the two cannot drift.
- *
- * Three things about the shape of an entry are worth knowing before editing it.
- *
- * The mark is the name of a glyph in the icon component, and it draws the
- * control the type produces rather than the subject it is about, because that
- * is what tells two neighbours apart: a short text and a long text are both
- * text, and what differs is the box. A mark may be used twice, since the label
- * beside it carries the meaning and the mark only helps somebody find a card
- * again.
- *
- * The preview is the shape of an illustration, not the illustration itself. It
- * names one of nine kinds and carries only what that kind draws, and
- * `_field-type-preview.blade.php` is what turns it into markup.
- *
- * Every sample value inside a preview goes through `__()`, including the ones
- * that look like data rather than prose. A date, a number and an amount are
- * written differently in every locale, so the only way a translator can get
- * them right is to be handed them. An email address, a domain and a pair of
- * coordinates stay as they are, because an address is not translated.
- */
 class FieldCatalogueViewModel
 {
     /**
-     * Every family, in the order the picker shows them.
-     *
      * @return array<int, array{name: string, blurb: string, types: array<int, array{key: string, label: string, description: string, example: string, mark: string, preview: array<string, mixed>, isAvailable: bool}>}>
      */
     public function families(): array
@@ -53,9 +21,6 @@ class FieldCatalogueViewModel
     }
 
     /**
-     * Every type, in the same order, with the families flattened away. The
-     * panel draws one illustration per type and has no use for the grouping.
-     *
      * @return array<int, array{key: string, label: string, description: string, example: string, mark: string, preview: array<string, mixed>, isAvailable: bool}>
      */
     public function types(): array
@@ -66,22 +31,12 @@ class FieldCatalogueViewModel
         ));
     }
 
-    /**
-     * How many types the catalogue names, which is not how many the enum ships.
-     */
     public function total(): int
     {
         return count($this->types());
     }
 
-    /**
-     * What the filter matches a query against, by key. Lowercased here and
-     * lowercased again in the browser, the same way the API reference filters
-     * its endpoints, so both sides agree without either of them holding a copy
-     * of the other's rules.
-     *
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     public function searchIndex(): array
     {
         $index = [];
@@ -95,16 +50,7 @@ class FieldCatalogueViewModel
         return $index;
     }
 
-    /**
-     * The count line, once for every count it could show.
-     *
-     * The number changes in the browser and the wording depends on the number,
-     * so the server writes every wording the screen might need and the browser
-     * picks one by index. Pluralising in JavaScript would put a grammar rule
-     * somewhere no translator can reach it.
-     *
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function countPhrases(): array
     {
         $total = $this->total();
@@ -115,22 +61,12 @@ class FieldCatalogueViewModel
         );
     }
 
-    /**
-     * The count line with no filter applied, which says how many there are
-     * rather than how many of them are showing.
-     */
     public function totalPhrase(): string
     {
         return trans_choice(':count type|:count types', $this->total());
     }
 
-    /**
-     * One sentence per type, for the region that tells a screen reader what the
-     * panel is previewing. A panel swapped behind `x-show` is not announced on
-     * its own.
-     *
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     public function sentences(): array
     {
         $sentences = [];
@@ -144,15 +80,7 @@ class FieldCatalogueViewModel
         return $sentences;
     }
 
-    /**
-     * What the footer says once a type is chosen, one sentence per type.
-     *
-     * The label is quoted rather than dropped into the sentence bare. A type is
-     * named with a capital letter, and lowercasing one in the browser is how a
-     * Turkish label loses its dot.
-     *
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     public function footerLines(string $section): array
     {
         $lines = [];
@@ -167,13 +95,7 @@ class FieldCatalogueViewModel
         return $lines;
     }
 
-    /**
-     * The types that cannot be added without saying which list their choices
-     * come from, so the picker can ask for one at the same time rather than
-     * refusing afterwards.
-     *
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function typesNeedingAValueList(): array
     {
         return array_values(array_map(
@@ -182,11 +104,6 @@ class FieldCatalogueViewModel
         ));
     }
 
-    /**
-     * What a type is called, for the field list and the inspector. A type the
-     * catalogue has no words for reads as its own key, which only happens while
-     * a type is being added to the enum and the copy has not caught up.
-     */
     public static function labelFor(FieldTypeEnum $type): string
     {
         foreach (self::catalogue() as $family) {

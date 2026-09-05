@@ -13,17 +13,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-/**
- * A whole template, coming back in.
- *
- * The import reads the pasted text itself rather than anything the checking
- * screen concluded about it. What is checked has to be the bytes that are acted
- * on, or checking is a formality a second request walks straight past.
- *
- * A refused file comes back to the same screen with the text still in the box,
- * since the next thing somebody does with a file that will not read is look at
- * it.
- */
 class TemplateImportController extends Controller
 {
     public function new(Request $request): View

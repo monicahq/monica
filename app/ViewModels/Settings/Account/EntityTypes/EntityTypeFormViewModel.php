@@ -7,11 +7,6 @@ namespace App\ViewModels\Settings\Account\EntityTypes;
 use App\Models\EntityType;
 use App\Models\User;
 
-/**
- * The form that declares a kind of record, or changes one that exists: naming
- * and renaming ask for the same things. What was typed wins over what is
- * stored, so a form that came back rejected shows the words somebody wrote.
- */
 class EntityTypeFormViewModel
 {
     public function __construct(
@@ -62,8 +57,6 @@ class EntityTypeFormViewModel
     }
 
     /**
-     * What the fields start out holding.
-     *
      * @return array{nameSingular: string, namePlural: string, slug: string, description: string, icon: string, colour: string, isActive: bool}
      */
     public function values(): array
@@ -82,9 +75,6 @@ class EntityTypeFormViewModel
     }
 
     /**
-     * What the fields hold before anybody has typed: a type that exists, or
-     * the defaults a new one starts on.
-     *
      * @return array{name_singular: string, name_plural: string, slug: string, description: string, icon: string, colour: string, is_active: bool}
      */
     private function stored(): array
@@ -112,11 +102,6 @@ class EntityTypeFormViewModel
         ];
     }
 
-    /**
-     * A checkbox nobody ticked sends nothing at all, so `old('is_active')`
-     * reads the same whether it was cleared or never asked for. Whether there
-     * is any old input at all is what tells the two apart.
-     */
     private function isActive(bool $stored): bool
     {
         if (session()->hasOldInput()) {
@@ -126,20 +111,11 @@ class EntityTypeFormViewModel
         return $stored;
     }
 
-    /**
-     * The slug a type already has. A type being created has none: the server
-     * settles it on save, and the screen shows a guess until then.
-     */
     public function slug(): ?string
     {
         return $this->entityType?->slug;
     }
 
-    /**
-     * Whether the slug can still be typed. It can be chosen while the type is
-     * being declared and never again, since it is what URLs and the API were
-     * given and a link that already went out has to keep working.
-     */
     public function slugIsEditable(): bool
     {
         return $this->entityType === null;
@@ -154,11 +130,7 @@ class EntityTypeFormViewModel
         return __('Used in URLs and by the API. It cannot be changed now the type exists, so the links that already went out keep working.');
     }
 
-    /**
-     * The glyphs on offer, with the one in use marked.
-     *
-     * @return array<int, array{name: string, selected: bool}>
-     */
+    /** @return array<int, array{name: string, selected: bool}> */
     public function icons(): array
     {
         $current = $this->values()['icon'];
@@ -169,11 +141,7 @@ class EntityTypeFormViewModel
         );
     }
 
-    /**
-     * The colours on offer, with the one in use marked.
-     *
-     * @return array<int, array{value: string, selected: bool}>
-     */
+    /** @return array<int, array{value: string, selected: bool}> */
     public function colours(): array
     {
         $current = $this->values()['colour'];
@@ -184,10 +152,6 @@ class EntityTypeFormViewModel
         );
     }
 
-    /**
-     * The two things about a type that exist only once it does: how much it
-     * holds, and the identifier the API knows it by.
-     */
     public function recordCount(): ?string
     {
         if ($this->entityType === null) {
@@ -202,10 +166,6 @@ class EntityTypeFormViewModel
         return $this->entityType?->uuid;
     }
 
-    /**
-     * Whether the type may be deleted, which it may only be while it holds
-     * nothing. Otherwise the records go first, deliberately.
-     */
     public function canBeDeleted(): bool
     {
         return $this->entityType !== null && $this->entityType->entity_count === 0;

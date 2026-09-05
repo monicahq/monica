@@ -1,13 +1,5 @@
-{{--
-  What somebody sees before they have made anything: a letter from whoever
-  writes the product, and the short list of what people usually do first.
-
-  Nothing on the list is ticked by hand. Each box says what the account already
-  holds, so it is drawn rather than offered, and a step nobody can act on yet
-  names what is coming instead of pointing at a page that does not exist.
-
-  @var \App\ViewModels\GettingStarted\GettingStartedViewModel $viewModel
---}}
+{{-- What somebody sees before they have made anything: a welcome, and what people do first. --}}
+{{-- @var \App\ViewModels\GettingStarted\GettingStartedViewModel $viewModel --}}
 <x-account-layout :title="$viewModel->greeting()">
   <div class="space-y-2">
     <div class="space-y-0.5">
@@ -24,12 +16,6 @@
       </div>
 
       <div class="flex flex-wrap items-center gap-3.5 border-t border-hairline-soft pt-5">
-        {{--
-          Two of them, overlapping by a third of a circle, so the pair reads as
-          one signature rather than as two people who happen to be next to each
-          other. Each carries a ring in the panel's own colour, which is what
-          keeps the one behind from bleeding into the one in front.
-        --}}
         <div class="flex shrink-0 -space-x-4">
           @foreach ($viewModel->portraits() as $portrait)
             <x-image

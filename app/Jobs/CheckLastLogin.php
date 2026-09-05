@@ -10,9 +10,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
 /**
- * Compare where the user just signed in from with where they signed in last
- * time, and warn them when it moved. The very first sign-in has nothing to
- * compare against, so it records the address and says nothing.
+ * Compare where the user just signed in from with where they signed in last time, and warn them
+ * when it moved. The very first sign-in has nothing to compare against, so it records the address
+ * and says nothing.
  */
 class CheckLastLogin implements ShouldQueue
 {

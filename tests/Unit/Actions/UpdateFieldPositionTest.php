@@ -57,10 +57,6 @@ class UpdateFieldPositionTest extends TestCase
         $this->assertEquals(2, $street->fresh()->position);
     }
 
-    /**
-     * A field inside a repeater is ordered against the other fields in that
-     * repeater, not against the whole section.
-     */
     #[Test]
     public function it_moves_a_field_among_its_own_siblings_only(): void
     {

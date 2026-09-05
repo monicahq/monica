@@ -44,31 +44,16 @@ return Application::configure(basePath: dirname(__DIR__))
             SubstituteBindings::class,
         ]);
 
-        // The api group has no session and no cookies, so it reads the language
-        // somewhere else and in another order, which is a second middleware
-        // rather than a condition inside the first.
         $middleware->api(prepend: [
             SetApiLocale::class,
         ]);
 
-        // The framework looks for routes literally named `login` and `home`.
-        // Ours are named after the domain they belong to, so it has to be told
-        // where to send somebody who is signed in when they should not be, and
-        // somebody who is not when they should be.
         $middleware->redirectGuestsTo(fn (): string => route('auth.login.new'));
         $middleware->redirectUsersTo(fn (): string => route('home.index'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        // Errors are rendered as JSON only where something other than a browser
-        // is asking. The passkey routes are the second such place: the whole
-        // exchange is fetch calls from one Alpine component, so a refusal has to
-        // come back as a body it can read and show, not as a redirect carrying
-        // the message in a session it never looks at.
-        // The ceremony endpoints are named one by one rather than matched by
-        // prefix. Removing a passkey lives under the same prefix and is an
-        // ordinary form submission, so a guest reaching it has to be redirected
-        // to the sign in screen like anywhere else, not handed a 401 body that
-        // no browser would render.
+        // The passkey ceremony endpoints are named one by one rather than matched by prefix, because
+        // removing a passkey sits under the same prefix and is an ordinary form submission.
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*')
                 || $request->is('passkeys/*')

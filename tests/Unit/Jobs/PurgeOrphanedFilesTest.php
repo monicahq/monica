@@ -41,10 +41,6 @@ class PurgeOrphanedFilesTest extends TestCase
         Storage::disk('local')->assertMissing($file->path);
     }
 
-    /**
-     * The gap exists so that restoring a record to how it looked an hour ago
-     * still finds the file it pointed at.
-     */
     #[Test]
     public function it_leaves_a_file_still_inside_its_grace_period(): void
     {
@@ -80,10 +76,6 @@ class PurgeOrphanedFilesTest extends TestCase
         $this->assertNotSoftDeleted('files', ['id' => $file->id]);
     }
 
-    /**
-     * A snapshot naming a file is somebody who may still ask for the state that
-     * held it, which is exactly what the grace period was for.
-     */
     #[Test]
     public function it_leaves_a_file_a_snapshot_still_names(): void
     {

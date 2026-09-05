@@ -137,8 +137,6 @@ class PreferenceControllerTest extends TestCase
 
         $response->assertRedirect(route('settings.preferences.index'));
 
-        // The message is written in the language that was just chosen, rather
-        // than the one being left behind.
         $response->assertSessionHas('status', 'Vos préférences sont enregistrées.');
 
         $user->refresh();

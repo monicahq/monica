@@ -15,14 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Put back on the page everything a field held before it left the structure.
- *
- * It is the other half of {@see DetachFieldValues}, and the reason values are
- * set aside rather than deleted: putting a field back has to bring back what
- * was written in it, or removing one would be a deletion with a longer name.
- *
- * The files the values held are pointed at again, which takes them back out of
- * the sweep, and the reminder rules the field's departure silenced start again.
- * Only those: a rule quiet because its record is archived stays quiet.
  */
 class ReattachFieldValues
 {

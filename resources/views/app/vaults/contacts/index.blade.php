@@ -1,24 +1,5 @@
-{{--
-  Everybody in one vault, on one list.
-
-  The list is rows in a panel rather than a table. There are three things worth
-  putting beside a name and a table of three columns is a list with lines drawn
-  on it. In name order the rows are grouped under the letter they begin with,
-  which is what makes a long list something to be scanned.
-
-  Searching, narrowing and ordering all go through the URL and redraw the region
-  below the header over ajax, so a narrowed list comes back the same after a
-  reload and the back button undoes what the last chip did.
-
-  Neither form submits on its own. A select that reloads the list the moment it
-  is touched changes the screen under somebody's feet, which is the one thing
-  this product never does, so both of them have a button.
-
-  The whole row is the link to that person's page, rather than the name inside
-  it: a row somebody has to aim at three words of is a row they miss.
-
-  @var \App\ViewModels\Vaults\ContactsViewModel $viewModel
---}}
+{{-- Everybody in one vault, on one list. --}}
+{{-- @var \App\ViewModels\Vaults\ContactsViewModel $viewModel --}}
 @php
   $vault = $viewModel->vault();
 @endphp

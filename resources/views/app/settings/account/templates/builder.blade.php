@@ -1,26 +1,5 @@
-{{--
-  Where a template is actually built: the sections it carries, the fields inside
-  them, and one field open for editing.
-
-  This is the one settings screen that asks for `wide`. It has two columns of its
-  own, and the reading width the rest of them use would stack the inspector under
-  the sections and put the field being edited a screen away from the list it was
-  picked from.
-
-  Everything saves as it is done. There is no save button and no unsaved state,
-  which is how the rest of the settings screens work and the only way a screen
-  this long stays trustworthy.
-
-  What is open in the inspector travels in the query string, so the screen
-  somebody is looking at has a URL. The whole builder is one ajax region, since
-  most changes here move two things at once: adding a field changes the list on
-  the left and opens it on the right.
-
-  A published version opens read only. That is section 6 made visible rather
-  than a limitation: records are relying on what it says.
-
-  @var \App\ViewModels\Settings\Account\Templates\TemplateBuilderViewModel $viewModel
---}}
+{{-- Where a template is built: its sections, their fields, and one field open for editing. --}}
+{{-- @var \App\ViewModels\Settings\Account\Templates\TemplateBuilderViewModel $viewModel --}}
 @php
   $template = $viewModel->template();
   $version = $viewModel->version();
@@ -56,12 +35,6 @@
       </div>
 
       <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full">
-        {{--
-          A section arrives on the page that is open, which is why the button is
-          here rather than on a screen that would have to ask which page. Only a
-          draft takes one: a published version is frozen, and a section landing
-          in one would change what records already render.
-        --}}
         @if ($viewModel->isEditable() && $viewModel->selectedPage() !== null)
           <x-button.secondary
             :href="route('settings.sectionImport.new', [$template, $viewModel->selectedPage()])"
@@ -85,14 +58,6 @@
             <x-button class="max-sm:w-full">{{ __('Publish this version') }}</x-button>
           </x-form>
         @else
-          {{--
-            Sharing hangs off the button that makes the next version rather than
-            standing beside it, because it is the one thing somebody does with a
-            template once it is finished, and a template nobody can get out of the
-            account it was built in is a template that dies with the account. It
-            is offered only on the version the template actually stands behind, so
-            a template with no published version gets the button on its own.
-          --}}
           <x-form method="post" :action="route('settings.templateVersions.create', $template)" x-target="builder" class="max-sm:w-full">
             <x-button.split :label="__('Create a new version')" class="max-sm:w-full">
               <x-slot:menu>
@@ -145,12 +110,6 @@
         @endforelse
 
         @if ($viewModel->isEditable())
-          {{--
-            One scope for the block, holding whether it is open and the mark
-            being picked. The mark cannot go on the form: the button below
-            reaches for the name field by ref, and a second `x-data` there would
-            put that field in a scope this button cannot see.
-          --}}
           <div x-data="{ adding: false, icon: '', colour: '', open: false }" @ajax:before.window="open = false">
             <button
               x-show="! adding"

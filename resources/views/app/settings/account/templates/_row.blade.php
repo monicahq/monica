@@ -1,15 +1,5 @@
-{{--
-  One template on the list.
-
-  The version and what state it is in sit together at the end, because they are one
-  fact: "v4, draft" and "v4, published" mean very different things about whether
-  anybody is relying on it.
-
-  The name is the link, and the button beside it says the same thing in words, since
-  a row whose only way in is its title is a row somebody has to guess at.
-
-  @var array $template
---}}
+{{-- One template on the list. --}}
+{{-- @var array $template --}}
 <div class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0">
   <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-card text-body">
     <x-icon name="file" :size="18" :stroke-width="1.5" />

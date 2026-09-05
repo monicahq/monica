@@ -12,15 +12,6 @@ use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * Deleting an account takes its passkeys with it, and no code in this
- * application does that: `webauthn_keys.user_id` cascades from `users.id`, which
- * cascades from `accounts.id`, and DestroyAccount hard deletes the account.
- *
- * It is a test rather than a comment because the whole chain is database
- * behaviour, and the index on the credential column is the one thing in this
- * feature that differs by driver.
- */
 class PasskeyAccountDeletionTest extends TestCase
 {
     use RefreshDatabase;

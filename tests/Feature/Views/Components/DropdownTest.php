@@ -9,9 +9,7 @@ use Tests\TestCase;
 
 class DropdownTest extends TestCase
 {
-    /**
-     * @return array<int, array{value: string, label: string, hint: string, selected: bool}>
-     */
+    /** @return array<int, array{value: string, label: string, hint: string, selected: bool}> */
     private function formats(): array
     {
         return [

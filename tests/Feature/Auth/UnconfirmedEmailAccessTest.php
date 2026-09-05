@@ -14,13 +14,7 @@ class UnconfirmedEmailAccessTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * One screen from each area the signed in application is made of. The gate is
-     * on the group rather than on any one screen, so a story that adds an area
-     * adds it here.
-     *
-     * @return array<string, array{string}>
-     */
+    /** @return array<string, array{string}> */
     public static function everyGatedScreen(): array
     {
         return [

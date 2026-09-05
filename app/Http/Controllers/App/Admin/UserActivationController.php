@@ -44,10 +44,6 @@ class UserActivationController extends Controller
             ->with('status_description', __('Any session they had open has stopped working. Nothing they own has been deleted.'));
     }
 
-    /**
-     * An account whose person was deleted has nobody to activate or deactivate,
-     * and there is no screen to reach this from either.
-     */
     private function userOn(Account $account): User
     {
         $user = $account->user;

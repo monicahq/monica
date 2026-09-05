@@ -1,19 +1,5 @@
-{{--
-  One submission, with everything its author sent in.
-
-  The payload is on the screen in full rather than summarised. It is the structure
-  that will be copied into other people's accounts once this is approved, and a
-  decision taken on a name and a description is not a decision.
-
-  Approving is one click because approving is the ordinary case. Refusing takes a
-  reason, which is not a courtesy: the author is the one who has to act on it, and
-  a refusal they cannot read is a refusal they cannot answer.
-
-  A submission somebody else has already decided shows what stands instead of
-  controls that would fail.
-
-  @var \App\ViewModels\Admin\ModerationSubmissionViewModel $viewModel
---}}
+{{-- One submission, with everything its author sent in. --}}
+{{-- @var \App\ViewModels\Admin\ModerationSubmissionViewModel $viewModel --}}
 <x-admin-layout :title="$viewModel->listing()->name">
   <header class="flex flex-col gap-2">
     <x-link :href="route('admin.moderation.index')" data-turbo="true">{{ __('Back to moderation') }}</x-link>

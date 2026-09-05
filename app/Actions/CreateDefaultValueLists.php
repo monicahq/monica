@@ -12,20 +12,8 @@ use App\Models\ValueList;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Give a fresh account the value lists it starts with, so the first field
- * somebody builds has something to offer.
- *
- * Nothing here is protected. Every list and every item is ordinary data from
- * the moment it is written: it can be renamed, reordered, added to, disabled
- * or thrown away. What the `key` buys is the ability to find a list again, not
- * a promise that it still looks the way it was seeded.
- *
- * The names are not translated here. They are stored as translation keys and
- * read in the language of whoever is looking, which is what keeps a list
- * seeded in English readable to somebody who later switches to French.
- *
- * One entry goes in the log for the whole seeding rather than one per list,
- * since this happens once and nobody asked for it line by line.
+ * Give a fresh account the value lists it starts with, so the first field somebody builds has
+ * something to offer.
  */
 class CreateDefaultValueLists
 {
@@ -33,9 +21,7 @@ class CreateDefaultValueLists
         private readonly User $user,
     ) {}
 
-    /**
-     * @return list<ValueList>
-     */
+    /** @return list<ValueList> */
     public function execute(): array
     {
         $lists = DB::transaction(fn (): array => $this->create());
@@ -45,9 +31,7 @@ class CreateDefaultValueLists
         return $lists;
     }
 
-    /**
-     * @return list<ValueList>
-     */
+    /** @return list<ValueList> */
     private function create(): array
     {
         $lists = [];

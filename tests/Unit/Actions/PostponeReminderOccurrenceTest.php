@@ -212,9 +212,7 @@ class PostponeReminderOccurrenceTest extends TestCase
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderOccurrencePostponement);
     }
 
-    /**
-     * @return array{0: User, 1: ReminderOccurrence}
-     */
+    /** @return array{0: User, 1: ReminderOccurrence} */
     private function deadline(): array
     {
         $reminder = Reminder::factory()->create();
@@ -228,9 +226,7 @@ class PostponeReminderOccurrenceTest extends TestCase
         return [$user, $occurrence];
     }
 
-    /**
-     * @return array{0: User, 1: ReminderOccurrence, 2: ReminderOccurrence}
-     */
+    /** @return array{0: User, 1: ReminderOccurrence, 2: ReminderOccurrence} */
     private function deadlineWithSibling(): array
     {
         [$user, $occurrence] = $this->deadline();

@@ -49,10 +49,6 @@ class UpdateEntityTypeTest extends TestCase
         ]);
     }
 
-    /**
-     * A rename is a change of wording, not a change of thing, so every link
-     * that already went out has to keep working.
-     */
     #[Test]
     public function it_leaves_the_slug_alone(): void
     {

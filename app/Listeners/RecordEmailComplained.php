@@ -8,9 +8,6 @@ use App\Actions\RecordEmailDeliveryOutcome;
 use App\Enums\EmailDeliveryStatusEnum;
 use Resend\Laravel\Events\EmailComplained;
 
-/**
- * Note that a recipient marked one of our emails as spam.
- */
 class RecordEmailComplained
 {
     public function handle(EmailComplained $event): void

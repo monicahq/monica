@@ -86,10 +86,6 @@ class VaultRemindersSentViewModelTest extends TestCase
         $this->assertEquals(['In the app', 'By email'], $rows[0]['channels']);
     }
 
-    /**
-     * One deadline that reached somebody twice over is one thing that happened,
-     * so it is one row with two marks rather than two rows.
-     */
     #[Test]
     public function a_deadline_sent_on_two_channels_is_still_one_row(): void
     {
@@ -121,10 +117,6 @@ class VaultRemindersSentViewModelTest extends TestCase
         $this->assertEquals(['Still open', 'warning'], [$rows[2]['outcome'], $rows[2]['tone']]);
     }
 
-    /**
-     * The product has no notion of a reminder being completed, so no wording
-     * here may claim one.
-     */
     #[Test]
     public function it_never_says_a_reminder_was_completed(): void
     {

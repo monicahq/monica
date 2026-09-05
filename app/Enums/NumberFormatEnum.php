@@ -14,11 +14,6 @@ enum NumberFormatEnum: string implements Translatable
     case SpaceAndComma = 'space_comma';
     case NoSeparator = 'no_separator';
 
-    /**
-     * What the format is called on the screen where somebody chooses it. The
-     * separators are named in the order they appear, thousands then decimal.
-     * The sentence doubles as the translation key.
-     */
     public function label(): string
     {
         return match ($this) {
@@ -29,11 +24,6 @@ enum NumberFormatEnum: string implements Translatable
         };
     }
 
-    /**
-     * The same number written this way, shown beside the name so nobody has to
-     * picture what the separators do. It runs past a thousand and past the
-     * decimal point on purpose, since that is where the formats differ.
-     */
     public function example(): string
     {
         return $this->format(1234.56);
@@ -49,7 +39,6 @@ enum NumberFormatEnum: string implements Translatable
         return match ($this) {
             self::CommaAndDot => ',',
             self::DotAndComma => '.',
-            // A plain space would let a number break across two lines.
             self::SpaceAndComma => "\u{00A0}",
             self::NoSeparator => '',
         };
@@ -63,11 +52,7 @@ enum NumberFormatEnum: string implements Translatable
         };
     }
 
-    /**
-     * The name of this case, which the screen that offers the choice reads.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

@@ -10,14 +10,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Say that one more thing points at a file.
- *
- * Whatever attaches it, a value on a record or an activity, calls this rather
- * than writing the count itself, so the number the quota and the sweep read is
- * maintained in one place.
- *
- * A file something points at is not an orphan, so the moment it went orphan is
- * forgotten. Detaching it later starts the grace period again from that later
- * moment, which is what makes the period mean what it says.
  */
 class AttachFile
 {

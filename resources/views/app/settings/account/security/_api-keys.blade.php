@@ -1,28 +1,5 @@
-{{--
-  The API keys somebody has minted, and the two things they can do about them:
-  make another, and revoke one.
-
-  A key is shown exactly once, in the block at the top, because only a hash of
-  it is written down. Somebody who does not copy it there and then has to make
-  another rather than look this one up, which is what the block says.
-
-  Making a key needs a name, which the button alone cannot ask for, so it opens
-  a field in place instead of leading to a screen of its own. A name that comes
-  back rejected reopens it, which is what the `creating` flag reads from the
-  errors rather than starting closed and hiding the message.
-
-  Revoking asks before it acts, the way the two factor buttons above do: the
-  button swaps itself for what is about to be lost and the button that goes
-  through with it.
-
-  Both forms ask for the screen again and swap this block for what comes back,
-  so making a key and revoking one leave the rest of the page where it was. The
-  swap replaces the block rather than morphing it, the way the rest of the app
-  does, because `creating` has to come back from the server: morphing keeps the
-  flag that was set when the field was opened, and the field never closes.
-
-  @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel
---}}
+{{-- The API keys somebody has minted, with the way to make another and the way to revoke one. --}}
+{{-- @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel --}}
 <div
   id="api-keys"
   x-merge="replace"
@@ -30,16 +7,6 @@
   class="transition-opacity [&[aria-busy]]:opacity-60"
 >
   @if (session('apiKey'))
-    {{--
-      Both wordings sit in the x-data of this div rather than on the button that
-      sets them, because Blade does not compile a directive written inside an
-      attribute of a component tag.
-
-      The key is read back out of the box it is printed in, so that what reaches
-      the clipboard is what somebody can see. That is why the value stays tight
-      against its tags below: textContent would otherwise carry this template's
-      newline and indentation into the copy.
-    --}}
     <div
       class="flex flex-col gap-2 border-b border-hairline bg-sunken px-4 py-3.5"
       x-data="{
@@ -57,11 +24,6 @@
 
       <p x-ref="key" class="rounded-md border border-hairline bg-canvas px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ session('apiKey') }}</p>
 
-      {{--
-        The region is here whether or not it has something to say, so that a
-        screen reader is already watching it when the answer arrives, and so the
-        panel does not move when it does.
-      --}}
       <div class="flex flex-wrap items-center gap-2.5">
         <x-button
           type="button"

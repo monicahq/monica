@@ -1,18 +1,5 @@
-{{--
-  One listing in the catalogue.
-
-  It is an article rather than a link, because there is nowhere for it to lead
-  yet: the screen that shows a listing on its own is not written. A card that
-  went nowhere would be worse than a card that says so by not being clickable.
-
-  The mark and the word above the name say what kind of thing it is, in the hue
-  that kind of thing is drawn in everywhere else: a template is indigo, a section
-  is forest. The line under the hairline says what is inside it, which is the
-  question somebody actually has, and the last line says who wrote it and how
-  many people took it.
-
-  @var array<string, mixed> $listing
---}}
+{{-- One listing in the catalogue. --}}
+{{-- @var array<string, mixed> $listing --}}
 <article class="flex flex-col gap-2.25 rounded-lg border border-hairline bg-canvas p-4 ">
   <div class="flex min-w-0 items-center gap-2">
     <span class="flex size-6.5 shrink-0 items-center justify-center rounded-sm bg-card text-muted">

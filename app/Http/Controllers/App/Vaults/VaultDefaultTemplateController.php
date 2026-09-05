@@ -18,12 +18,6 @@ use Illuminate\Validation\Rule;
 
 class VaultDefaultTemplateController extends Controller
 {
-    /**
-     * The rule asks the versions table rather than trusting the select, and
-     * checks which template the version belongs to: a version describing
-     * something other than a contact would write a default this screen never
-     * showed.
-     */
     public function update(Request $request, Vault $vault): RedirectResponse
     {
         $contactTemplates = Template::query()

@@ -1,12 +1,5 @@
-{{--
-  What one endpoint takes, one row per parameter.
-
-  Whether a parameter is required is written out as a word as well as coloured,
-  because a reader who has to guess which of two greys means mandatory will get
-  it wrong.
-
-  @var \App\ViewModels\Docs\ApiDocsSection $section
---}}
+{{-- What one endpoint takes, one row per parameter. --}}
+{{-- @var \App\ViewModels\Docs\ApiDocsSection $section --}}
 @props(['section'])
 
 @if ($section->hasParams())

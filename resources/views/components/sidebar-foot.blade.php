@@ -1,15 +1,5 @@
+{{-- The foot of both navigation columns: who is signed in, their settings, and the way out. --}}
 {{--
-  The row at the foot of both navigation columns: who is signed in, and, behind a
-  click on that row, the way into their own settings and the way out of the
-  product.
-
-  It is one component rather than a block copied into each column, because the
-  avatar in it is the target of the Ajax form on the profile screen. There can be
-  one `shell-avatar` in a document, so there has to be one definition of it.
-
-  The menu hangs above the row rather than below it, since the row is the last
-  thing in the column and there is nothing under it.
-
   @var \App\Models\User $user
   @var string $item
 --}}
@@ -50,10 +40,6 @@
     </form>
   </div>
 
-  {{--
-    The double colon on `aria-expanded` is what stops Blade from reading the
-    Alpine expression after it as php.
-  --}}
   <button
     type="button"
     @click="open = ! open"

@@ -26,8 +26,6 @@ class PasswordResetLinkController extends Controller
             'email' => ['required', 'string', 'email', 'max:255'],
         ]);
 
-        // The answer is the same whether the address is known or not, so this
-        // form cannot be used to find out who has an account here.
         Password::sendResetLink(['email' => mb_strtolower($validated['email'])]);
 
         return back()->with('status', __('If that address has an account, a link to choose a new password is on its way.'));

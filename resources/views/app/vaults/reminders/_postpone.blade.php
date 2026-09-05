@@ -1,20 +1,5 @@
-{{--
-  The dialog that moves one deadline to a later instant.
-
-  The head of it is the reminder itself: whose it is, what it says, and where it
-  stands now. The choice underneath is then made against something rather than
-  in the abstract.
-
-  Each preset shows the instant it lands on. Those are worked out on the server,
-  in the zone frozen on the rule, because that is the zone the reminder fires in
-  and it is not necessarily the reader's. The zone is named under the fields for
-  the same reason.
-
-  The card handles the dialog behaviour itself: the tab key stays inside it, the
-  first field takes focus, Escape closes it and the trigger gets focus back.
-
-  @var array<string, mixed> $row
---}}
+{{-- The dialog that moves one deadline to a later instant. --}}
+{{-- @var array<string, mixed> $row --}}
 <x-modal.form
   :title="$row['text']"
   :confirm="__('Move it')"

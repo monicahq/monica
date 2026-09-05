@@ -13,10 +13,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Override;
 
-/**
- * A change to the ways into an account, told to the person who owns the address.
- * Whether they made it or somebody else did, this is how it is noticed.
- */
 class PasswordSet extends Notification implements HasEmailType, ShouldQueue
 {
     use Queueable;
@@ -26,9 +22,7 @@ class PasswordSet extends Notification implements HasEmailType, ShouldQueue
         $this->onQueue('high');
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function via(User $notifiable): array
     {
         return ['mail'];

@@ -159,10 +159,6 @@ class TemplateBuilderViewModelTest extends TestCase
         $this->assertEquals('Where they live', $sections[0]['name']);
     }
 
-    /**
-     * The warning on the section is what makes the copy on write something
-     * somebody has read about rather than something that happens to them.
-     */
     #[Test]
     public function it_warns_that_a_shared_section_will_be_copied(): void
     {
@@ -192,10 +188,6 @@ class TemplateBuilderViewModelTest extends TestCase
         $this->assertTrue($viewModel->sections()[0]['fields'][0]['isSelected']);
     }
 
-    /**
-     * A field id somebody typed into the URL must not open a field from another
-     * template, and must not open one from another account at all.
-     */
     #[Test]
     public function it_ignores_a_field_that_is_not_on_this_template(): void
     {
@@ -267,9 +259,6 @@ class TemplateBuilderViewModelTest extends TestCase
         $this->assertEquals([], $viewModel->sections());
     }
 
-    /**
-     * A tab that has gone is not worth an error page of its own.
-     */
     #[Test]
     public function it_falls_back_to_the_first_page_when_the_one_asked_for_is_not_on_this_version(): void
     {
@@ -405,9 +394,6 @@ class TemplateBuilderViewModelTest extends TestCase
         $user = User::factory()->create();
         [$template, $row] = $this->templateCarryingASection($user);
 
-        /* One template, two of its versions, both carrying the section. The
-           pivot allows a section version only once per template version, so
-           this is what carrying it twice actually looks like. */
         $other = Template::factory()->create(['account_id' => $user->account_id]);
 
         foreach (range(1, 2) as $number) {
@@ -425,9 +411,6 @@ class TemplateBuilderViewModelTest extends TestCase
         $this->assertEquals('The mark also changes on 1 other template carrying this section.', $sections[0]['markReach']);
     }
 
-    /**
-     * The page is named only when it is not the tab somebody is looking at.
-     */
     #[Test]
     public function it_names_the_page_of_a_field_that_is_open_from_another_tab(): void
     {
@@ -494,9 +477,7 @@ class TemplateBuilderViewModelTest extends TestCase
         $this->assertEquals([['id' => $events->id, 'uuid' => $events->uuid, 'label' => 'Life events']], $others);
     }
 
-    /**
-     * @return array{0: Template, 1: TemplateVersionSection}
-     */
+    /** @return array{0: Template, 1: TemplateVersionSection} */
     private function templateCarryingASection(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);

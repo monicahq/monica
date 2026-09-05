@@ -278,7 +278,6 @@ class ImportTemplateTest extends TestCase
         try {
             new ImportTemplate(user: $user, raw: 'Michael Scott')->execute();
         } catch (StructureFileIsNotReadable) {
-            // The refusal is the point; what matters is what it left behind.
         }
 
         $this->assertEquals($templates, Template::query()->count());
@@ -306,11 +305,6 @@ class ImportTemplateTest extends TestCase
         return StructureFile::encode(StructureFile::ofTemplate($this->publishedTemplate($user)));
     }
 
-    /**
-     * A published template holding one of everything worth reading back: a
-     * plain field, a choice pointing at a supplied list, a repeater and a field
-     * inside it.
-     */
     private function publishedTemplate(User $user): Template
     {
         $template = Template::factory()->create([

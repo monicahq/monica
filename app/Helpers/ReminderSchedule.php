@@ -10,42 +10,14 @@ use App\Models\Reminder;
 use Carbon\CarbonImmutable;
 
 /**
- * When a rule falls next, and when each of its moments does.
- *
- * It lives here rather than on the model or in a view model because two very
- * different callers need it. A screen shows the next date while somebody is
- * setting the rule up, and the job that generates concrete deadlines will read
- * exactly the same arithmetic once {@see Reminder} grows
- * occurrences. A view model may not be consumed outside Blade, so it cannot be
- * the home of a calculation a queued job depends on.
- *
- * Two questions, not one. A screen asks when the rule falls next, and answers it
- * from the rule alone. The generator asks something different: every deadline
- * whose instant falls inside a window, which is what {@see occurrencesBetween()}
- * enumerates, and which reaches into cycles outside the window in both
- * directions because a moment can.
- *
- * Two properties are worth stating, because getting either wrong is the classic
- * bug in date arithmetic. Every candidate is computed from the anchor in one
- * step rather than by stepping repeatedly, so a rule anchored on 29 February
- * lands on 29 February again in a leap year instead of drifting to the 28th for
- * ever. And every step is taken without overflow, so a rule anchored on the
- * 31st lands on the last day of a shorter month rather than in the next one.
+ * Every candidate is computed from the anchor in one step rather than by stepping repeatedly, so a
+ * rule anchored on 29 February does not drift to the 28th, and every step is taken without overflow,
+ * so a rule anchored on the 31st lands on the last day of a shorter month.
  */
 class ReminderSchedule
 {
-    /**
-     * The most cycles one window is expanded into. A weekly rule over the
-     * longest sensible window is a few hundred, so this is a stop against a
-     * rule nobody meant rather than a limit anybody reaches.
-     */
     private const int MAXIMUM_CYCLES = 1000;
 
-    /**
-     * The next day the rule falls on, in its own frozen zone, or null when it
-     * has nothing ahead of it: a rule that fires once and whose day has gone,
-     * or a rule whose value has been cleared.
-     */
     public static function nextDate(Reminder $reminder, ?CarbonImmutable $from = null): ?CarbonImmutable
     {
         $anchor = self::anchor($reminder, $from);
@@ -64,11 +36,6 @@ class ReminderSchedule
     }
 
     /**
-     * Every moment of the rule, each with the day it falls on, in the order
-     * somebody put them in. A rule with nothing ahead of it has moments with no
-     * date, since the moments are still what it says and only the day is
-     * unknown.
-     *
      * @return list<array{direction: ReminderMomentDirectionEnum, amount: int|null, unit: ReminderMomentUnitEnum|null, date: CarbonImmutable|null}>
      */
     public static function momentDates(Reminder $reminder, ?CarbonImmutable $from = null): array
@@ -101,24 +68,6 @@ class ReminderSchedule
     }
 
     /**
-     * Every deadline the rule produces whose instant falls inside the window,
-     * in the order the cycles come and, within a cycle, the order somebody put
-     * the moments in.
-     *
-     * A moment reaches outside the window in both directions, so the cycles
-     * expanded run from the start of the window minus the furthest moment after
-     * a date to the end of it plus the furthest moment before one. Both reaches
-     * are bounded generously, a month counted as thirty-one days, because a
-     * slightly wide scan costs a few candidates that are thrown away and a
-     * narrow one loses deadlines outright.
-     *
-     * The instant is where the zone frozen on the rule finally matters. A local
-     * time that does not exist, because the clocks went forward through it, is
-     * moved past the gap; one that happens twice, because they went back,
-     * resolves to the later of its two instants. Both are what PHP does with a
-     * local time in a zone, and both are pinned by a test rather than
-     * reimplemented here.
-     *
      * @return list<array{source_local_date: CarbonImmutable, direction: ReminderMomentDirectionEnum, amount: int|null, unit: ReminderMomentUnitEnum|null, local_date: CarbonImmutable, scheduled_for: CarbonImmutable}>
      */
     public static function occurrencesBetween(Reminder $reminder, CarbonImmutable $from, CarbonImmutable $to): array
@@ -168,9 +117,6 @@ class ReminderSchedule
         return $occurrences;
     }
 
-    /**
-     * The instant a local day of this rule falls at, in UTC.
-     */
     public static function instantOf(Reminder $reminder, CarbonImmutable $localDate): CarbonImmutable
     {
         $time = mb_substr($reminder->time_of_day, 0, 5);
@@ -179,9 +125,6 @@ class ReminderSchedule
     }
 
     /**
-     * The rule's moments with their direction and unit read, and anything
-     * unreadable dropped. It is what both the screen and the generator expand.
-     *
      * @return list<array{direction: ReminderMomentDirectionEnum, amount: int|null, unit: ReminderMomentUnitEnum|null}>
      */
     private static function normalisedMoments(Reminder $reminder): array
@@ -208,8 +151,6 @@ class ReminderSchedule
     }
 
     /**
-     * How many days the moments reach either side of the date, generously.
-     *
      * @param  list<array{direction: ReminderMomentDirectionEnum, amount: int|null, unit: ReminderMomentUnitEnum|null}>  $moments
      * @return array{before: int, after: int}
      */
@@ -235,13 +176,7 @@ class ReminderSchedule
         return $reach;
     }
 
-    /**
-     * Every local date the cadence falls on between the two days given, counted
-     * from the anchor in one step each time so a rule anchored on 29 February
-     * does not drift.
-     *
-     * @return list<CarbonImmutable>
-     */
+    /** @return list<CarbonImmutable> */
     private static function cycles(Reminder $reminder, CarbonImmutable $anchor, CarbonImmutable $scanStart, CarbonImmutable $scanEnd): array
     {
         if (! $reminder->cadence->recurs()) {
@@ -270,15 +205,6 @@ class ReminderSchedule
         return $cycles;
     }
 
-    /**
-     * The day the rule reads, moved onto a year it can actually be counted
-     * from.
-     *
-     * A date whose year nobody knows is stored under a placeholder year, and
-     * counting a rhythm of three years from 1900 would be counting from a year
-     * nobody entered. The day and the month are what somebody typed, so the
-     * anchor takes those and the current year.
-     */
     private static function anchor(Reminder $reminder, ?CarbonImmutable $from): ?CarbonImmutable
     {
         $value = $reminder->fieldValue;
@@ -298,27 +224,16 @@ class ReminderSchedule
         return $date->setDate($year, $date->month, min($date->day, CarbonImmutable::create($year, $date->month, 1)->daysInMonth));
     }
 
-    /**
-     * Today where the rule thinks it lives, which is the zone frozen on it and
-     * never the reader's current one.
-     */
     private static function today(Reminder $reminder): CarbonImmutable
     {
         return CarbonImmutable::now($reminder->timezone)->startOfDay();
     }
 
-    /**
-     * The first candidate on or after the day given, counted from the anchor in
-     * one step.
-     */
     private static function step(CarbonImmutable $anchor, CarbonImmutable $from, string $cadence, int $interval): CarbonImmutable
     {
         return self::add($anchor, $cadence, self::stepsUntil($anchor, $from, $cadence, $interval) * $interval);
     }
 
-    /**
-     * How many whole cadences from the anchor land on or after the day given.
-     */
     private static function stepsUntil(CarbonImmutable $anchor, CarbonImmutable $from, string $cadence, int $interval): int
     {
         $elapsed = match ($cadence) {
@@ -329,9 +244,6 @@ class ReminderSchedule
 
         $steps = max(0, intdiv($elapsed, $interval));
 
-        /* One extra step is taken rather than predicted. Whether the candidate
-           has already gone depends on the day the anchor lands on after
-           clamping, which is only known once the step has been made. */
         return self::add($anchor, $cadence, $steps * $interval)->lessThan($from)
             ? $steps + 1
             : $steps;
@@ -346,9 +258,6 @@ class ReminderSchedule
         };
     }
 
-    /**
-     * One moment's day, counted from the day the rule falls on.
-     */
     private static function shift(CarbonImmutable $date, ReminderMomentDirectionEnum $direction, ?int $amount, ?ReminderMomentUnitEnum $unit): CarbonImmutable
     {
         if (! $direction->needsAnAmount() || $amount === null || $unit === null) {

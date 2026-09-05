@@ -15,31 +15,6 @@ use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 
-/**
- * One reminder, explained.
- *
- * The screen exists because a reminder was only ever visible as a checkbox under
- * a date on a record, and as deadlines on a list. Neither says what the rule is,
- * and a rule somebody cannot read is a rule they cannot trust.
- *
- * It is the rule that is drawn here, not a deadline, which is the opposite of
- * the list beside it: the list is deadlines because three of the four things it
- * offers act on one instant, and this page is the rule because everything it
- * explains belongs to the rule. The deadlines still appear, in their own panel,
- * and the row they are drawn as is the list's, so a deadline reads the same way
- * in both places.
- *
- * Two blocks are their own objects, {@see ReminderHistory} and
- * {@see ReminderDelivery}, because a rich page keeps its panels in small objects
- * beside it. Everything else is here.
- *
- * Every instant is read in the zone frozen on the rule and says so. That zone is
- * not necessarily the reader's, and a page that quietly translated into the
- * reader's would promise an hour the engine does not hold.
- *
- * Nothing here writes. Pausing, resuming and deleting are actions the controllers
- * call; this only says where those live and whether they are on offer.
- */
 class ReminderViewModel
 {
     public function __construct(
@@ -73,11 +48,6 @@ class ReminderViewModel
         return route('reminders.index', $this->vault);
     }
 
-    /**
-     * Where the rule is read from, said as a sentence rather than as a field and
-     * a date side by side: what somebody wants to know is that this reminder
-     * follows that date, and will follow it wherever it moves.
-     */
     public function builtFrom(): string
     {
         $date = $this->reminder->fieldValue?->value_date;
@@ -109,13 +79,6 @@ class ReminderViewModel
     }
 
     /**
-     * Whether the rule is firing, and if not, why.
-     *
-     * `canResume` is the whole reason the reason is kept. Only what somebody
-     * chose is theirs to undo: a rule quiet because its record is archived comes
-     * back by unarchiving the record, and offering to reactivate it here would
-     * offer something this screen cannot do.
-     *
      * @return array{isActive: bool, tone: string, icon: string, label: string, quietBecause: string|null, canResume: bool}
      */
     public function state(): array
@@ -132,10 +95,6 @@ class ReminderViewModel
         ];
     }
 
-    /**
-     * Why the rule has gone quiet, in words. Nothing about a reminder disappears
-     * without an explanation, and this is where the explanation is read.
-     */
     private function quietBecause(): string
     {
         return match ($this->reminder->inactive_reason) {
@@ -148,15 +107,7 @@ class ReminderViewModel
         };
     }
 
-    /**
-     * What happens next, or what is not happening.
-     *
-     * A paused rule keeps its schedule, so the sentence here is about what
-     * resuming would restore rather than about a date, which is what makes
-     * pausing legible as something reversible.
-     *
-     * @return array{isScheduled: bool, overline: string, date: string, note: string, tone: string}
-     */
+    /** @return array{isScheduled: bool, overline: string, date: string, note: string, tone: string} */
     public function next(): array
     {
         if (! $this->reminder->is_active) {
@@ -200,12 +151,6 @@ class ReminderViewModel
     }
 
     /**
-     * The rule in four facts and its moments.
-     *
-     * The four are the four somebody checks when a reminder surprises them: how
-     * often, off which date, at what hour, and in whose zone. The zone is the one
-     * that surprises people, so it says whose it is.
-     *
      * @return array{fields: list<array{label: string, value: string, note: string}>, moments: list<array{label: string, date: string|null}>}
      */
     public function schedule(): array
@@ -243,11 +188,7 @@ class ReminderViewModel
         ];
     }
 
-    /**
-     * Every moment the rule fires at, with the day each falls on next.
-     *
-     * @return list<array{label: string, date: string|null}>
-     */
+    /** @return list<array{label: string, date: string|null}> */
     private function moments(): array
     {
         return array_map(fn (array $moment): array => [
@@ -266,25 +207,13 @@ class ReminderViewModel
         return new ReminderDelivery(user: $this->user, reminder: $this->reminder)->get();
     }
 
-    /**
-     * @return list<array{date: string, time: string, title: string, note: string, tone: string}>
-     */
+    /** @return list<array{date: string, time: string, title: string, note: string, tone: string}> */
     public function history(): array
     {
         return new ReminderHistory(user: $this->user, reminder: $this->reminder)->get();
     }
 
-    /**
-     * The deadlines still ahead, drawn as the list draws them so that one
-     * deadline reads the same way in both places.
-     *
-     * A rule that is not firing produces nothing, and its deadlines are cancelled
-     * anyway. Asking after the rule as well is what keeps the screen right in the
-     * moment between the two, which is the same guard
-     * {@see ReminderOccurrence::scopeUpcomingInVault()} carries for the list.
-     *
-     * @return list<array<string, mixed>>
-     */
+    /** @return list<array<string, mixed>> */
     public function occurrences(): array
     {
         if (! $this->reminder->is_active) {
@@ -304,11 +233,6 @@ class ReminderViewModel
             ->all();
     }
 
-    /**
-     * What the panel of deadlines says when it holds none, which is two different
-     * things: a rule that is firing has simply not reached far enough ahead yet,
-     * and a rule that is quiet is not going to.
-     */
     public function stillToComeEmptyLine(): string
     {
         if (! $this->reminder->is_active) {
@@ -319,13 +243,6 @@ class ReminderViewModel
     }
 
     /**
-     * The record the reminder is about, or null for a rule about something that
-     * has no screen yet.
-     *
-     * Three facts and no more. The design asked for a group, a place and the last
-     * conversation, and this product has none of the three, so the card carries
-     * what is true instead of what was drawn.
-     *
      * @return array{name: string, url: string, avatarUrl: string|null, initials: string, reminderCount: int, reminderCountLine: string}|null
      */
     public function contact(): ?array
@@ -353,14 +270,6 @@ class ReminderViewModel
         ];
     }
 
-    /**
-     * Where the rule is changed, which is the block under the date it reads and
-     * not this screen.
-     *
-     * A reminder is written by the save of the record's own block, so a second
-     * editing surface here would be two places to change one rule. Landing on the
-     * page carrying that field is as close as a link can get.
-     */
     public function editUrl(): string
     {
         $contact = $this->reminder->remindable;
@@ -376,14 +285,6 @@ class ReminderViewModel
         ]));
     }
 
-    /**
-     * Which page of the record's template holds the section the field is in, or
-     * null to land on the overview.
-     *
-     * It is asked of the record's own template version rather than of the field,
-     * because a field belongs to a section and a section is placed on a page once
-     * per template that carries it.
-     */
     private function pageCarryingTheField(Contact $contact): ?string
     {
         $placement = TemplateVersionSection::query()
@@ -410,10 +311,6 @@ class ReminderViewModel
         return route('reminders.destroy', ['vault' => $this->vault, 'reminder' => $this->reminder]);
     }
 
-    /**
-     * The deadline the next notification will come from, which is the first one
-     * still ahead that nobody has finished with.
-     */
     private function nextOccurrence(): ?ReminderOccurrence
     {
         return $this->reminder->occurrences()

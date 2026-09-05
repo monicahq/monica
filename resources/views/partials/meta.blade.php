@@ -1,7 +1,5 @@
+{{-- The charset, the viewport and the csrf token every layout opens its <head> with. --}}
 {{--
-  Every layout opens its <head> with this partial, so the charset, the viewport and the
-  csrf token live here and nowhere else. A layout that repeats them ships them twice.
-
   @var string|null $title
   @var string|null $description
 --}}
@@ -21,7 +19,6 @@
 
 <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="32x32" />
 
-{{-- Apply the saved theme before paint, so the page never flashes the wrong one. --}}
 <script>
   (function () {
     try {

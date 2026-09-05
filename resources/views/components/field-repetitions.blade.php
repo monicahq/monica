@@ -1,24 +1,5 @@
+{{-- The control for a field the template says there may be several of. --}}
 {{--
-  The control for a field that is filled in over and over: a document, a
-  photograph, anything the template says there may be several of.
-
-  Adding and removing a repetition happens on the page and is written by the
-  block's own save, never before it. The block promises that nothing is written
-  until it is saved, and an "add another" that reached the database as it was
-  clicked would break that promise and leave Cancel with nothing to undo.
-
-  So a repetition somebody removes is hidden and its controls disabled, which is
-  what keeps it out of the request; the save then sees a repetition it holds and
-  was not sent, and takes it away. Until then it is a click from coming back,
-  and the line in its place says plainly that it is going.
-
-  The blank repetitions are drawn by the server and revealed one at a time
-  rather than built in the browser, because a repetition is made of whatever
-  fields the template put in it and the browser has no way to know how to draw a
-  choice, a date or an upload. That is why there are only a few of them: the
-  count is deliberately visible, and the sentence at the end says what to do
-  when they run out rather than leaving the button quietly dead.
-
   @var \App\Models\Field $field
   @var array<int, array{id: int, fields: array<int, array<string, mixed>>}> $rows
   @var string|array<int, string>|null $error
@@ -30,9 +11,6 @@
 ])
 
 @php
-  /* How many blank repetitions one save may add. Each one is a full copy of the
-     repetition's controls, so this is a real cost on the page rather than a
-     round number. */
   $atATime = 3;
 
   $children = $field->children->filter(
@@ -46,11 +24,6 @@
 
   $repetition = 'flex flex-col gap-4 rounded-md border border-hairline bg-canvas p-3.5';
 
-  /* Which end a new repetition is drawn at. Two things follow from it, and both
-     matter. The blanks are drawn before what is already there, because somebody
-     should type where the thing they are writing will appear. And the index each
-     repetition is named by is shifted to match, because that index is the whole
-     of what tells the save which order somebody was looking at. */
   $atTheFront = $field->repetition_order?->addsToTheFront() ?? false;
 
   $rowOffset = $atTheFront ? $blanks : 0;
@@ -65,18 +38,11 @@
   @endif
 
   <div class="flex flex-col gap-2.5 pt-0.5">
-    {{-- Both blocks are written once and the order they are drawn in is chosen
-         here, because the order of the markup is the order a screen reader reads
-         and the order somebody tabs through. It has to be the order they see,
-         rather than something a stylesheet rearranges afterwards. --}}
     @foreach ($atTheFront ? ['blanks', 'held'] : ['held', 'blanks'] as $part)
       @if ($part === 'held')
       @foreach ($rows as $index => $row)
         <div x-data="{ removed: false }">
           <fieldset x-show="! removed" :disabled="removed" class="{{ $repetition }}">
-            {{-- What says this is a repetition the record already holds rather
-                 than one somebody has just added. Disabled with the rest of them,
-                 so a removal arrives as an absence. --}}
             <input type="hidden" name="fields[{{ $field->id }}][{{ $rowOffset + $index }}][id]" value="{{ $row['id'] }}" />
 
             @foreach ($row['fields'] as $answer)

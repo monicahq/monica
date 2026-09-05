@@ -13,34 +13,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Create an account, the one user in it, the vault their contacts go in, and
- * the value lists the fields of that vault pick from. The user is returned
- * rather than the account, because whoever asks for an account next has to sign
- * that person in.
- *
- * The product has to be usable in the first minute, so none of the seeding is
- * optional and none of it is asked for. Everything it writes is ordinary data
- * the user renames, reorders or throws away.
- *
- * Nobody should have to open a vault before writing anybody down, so the first
- * one is made here. It is the default one, being the only one, and an account
- * that later deletes every vault it has simply starts over from the screen it
- * started on. It is named in the language the account was created in, unlike
- * the value lists,
- * which are stored as translation keys and follow the interface language.
- *
- * The password is optional. An account created with a passkey has none from the
- * outset, which is the same state an account reaches by giving its password up
- * later, and CreateUser already leaves password_changed_at null to match.
- *
- * How the account wants to be told things is made here too, for the same
- * reason the vault is: nothing that reads it should ever have to handle its
- * absence.
- *
- * The template a contact is written down with is asked for rather than written
- * here, since nobody is looking at it while the sign-up page is still open. It
- * is asked for once the rows above are committed, so that a worker reaching for
- * the user cannot arrive before the user exists.
+ * Create an account, the one user in it, the vault their contacts go in, and the value lists the
+ * fields of that vault pick from.
  */
 class CreateAccount
 {
@@ -113,20 +87,11 @@ class CreateAccount
         new CreateDefaultValueLists(user: $this->user)->execute();
     }
 
-    /**
-     * How the account wants to be told things, made here rather than the first
-     * time somebody opens a settings screen. Delivery reads it on every send and
-     * is written on the promise that it is there.
-     */
     private function createNotificationPreference(): void
     {
         new CreateNotificationPreference(account: $this->account)->execute();
     }
 
-    /**
-     * The template comes after the lists, since two of its fields read their
-     * choices from them.
-     */
     private function createDefaultTemplate(): void
     {
         CreateDefaultTemplate::dispatch(user: $this->user)->onQueue('high');

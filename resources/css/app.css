@@ -5,57 +5,14 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
-/* Class-based dark mode: the `.dark` class on <html> drives every `dark:` variant. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/*
- * This file is the design system's configuration and nothing else. The system
- * itself is written as Tailwind utilities in the Blade components, so a button
- * or a row is one string in one file rather than a rule here and a class name
- * there. What is left below is what Tailwind cannot express on a tag: the
- * tokens, the palette and the dark counterpart it flips to.
- *
- * The direction is the one shadcn set. A white page, cool grey neutrals, a
- * hairline around everything that is a surface, corners of 6 and 8, and no
- * accent colour at all: a link is near black and so is a focus ring, and the
- * only saturated colour left in the product says a thing succeeded, needs
- * attention or failed. Hierarchy is carried by weight and space, and a control
- * is set in medium rather than semibold, so a page reads as text and not as a
- * row of labels shouting at each other.
- *
- * The names below are the ones this codebase has always used. They are not
- * shadcn's own (`background`, `foreground`, `border`, `accent`), because
- * renaming them would touch nine hundred call sites to change nothing anybody
- * sees. The values are shadcn's; the vocabulary is ours.
- */
 @theme {
-    /*
-     * Nothing is downloaded. The interface is set in whatever the machine already
-     * has, asked for in the order each platform prefers, so a page paints on the
-     * first frame and no visitor is announced to a font service. The design this
-     * system was drawn from sets everything in Geist through a font CDN; we take
-     * its sizes, its weights and its tracking, and leave the request behind.
-     *
-     * There is no display face: a page title is set in the same face as everything
-     * else, at a larger size and a heavier weight. The monospace stack is for
-     * machine values (ids, keys, slugs, shortcuts) and never for a name or a date,
-     * which is the one job a second family earns.
-     */
     --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
         sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono',
         'Courier New', monospace;
 
-    /*
-     * The type scale. Each step carries its own leading, weight and tracking, so a
-     * heading is one utility rather than four that have to be copied correctly every
-     * time.
-     *
-     * It is denser than it was. Running text is 13.5px and the page title is 28px,
-     * which is the widest gap in the product: everything between them is within
-     * three pixels of everything else, and what separates a card title from the
-     * sentence under it is weight and colour rather than size.
-     */
     --text-page-title: 28px;
     --text-page-title--line-height: 1.15;
     --text-page-title--font-weight: 600;
@@ -88,14 +45,6 @@
     --text-nav--line-height: 1;
     --text-nav--font-weight: 500;
 
-    /*
-     * Tailwind merges its own scale into this one rather than being replaced by it,
-     * so a step this file says nothing about keeps the framework's default. Three of
-     * them are in use and all three would sit at the size they had when running text
-     * was 15px: `text-2xl` on the eleven credentials headings, `text-lg` inside
-     * <x-box>, `text-xl` once. They are pinned here to the steps above so a heading
-     * moves with the scale whichever of the two names it was written with.
-     */
     --text-2xl: var(--text-page-title);
     --text-2xl--line-height: 1.15;
     --text-2xl--font-weight: 600;
@@ -111,10 +60,8 @@
     --text-lg--font-weight: 600;
     --text-lg--letter-spacing: -0.02em;
 
-    /* The one piece of tracking that is not part of a step: the uppercase headings. */
     --tracking-caption: 0.08em;
 
-    /* Semantic surfaces and text. They resolve to the runtime variables below, which flip for dark. */
     --color-page: var(--page);
     --color-canvas: var(--canvas);
     --color-card: var(--card);
@@ -134,7 +81,6 @@
     --color-muted-soft: var(--muted-soft);
     --color-placeholder: var(--placeholder);
 
-    /* The world map on the time zone screen. Four surfaces, no other user. */
     --color-map-water: var(--map-water);
     --color-map-land: var(--map-land);
     --color-map-coast: var(--map-coast);
@@ -146,41 +92,13 @@
     --color-link: var(--text-link);
     --color-link-hover: var(--text-link-hover);
 
-    /*
-     * The bar at the top is the page colour at 85% with a blur behind it, so what
-     * scrolls under it stays legible instead of disappearing. The navigation column
-     * has no tokens of its own any more: it is a tinted panel beside the page and it
-     * reads `card`, `hairline` and the ordinary text ramp like everything else.
-     */
     --color-topbar: var(--topbar);
     --color-topbar-hairline: var(--topbar-hairline);
 
-    /*
-     * The filled button is ink, so it inverts with the theme rather than keeping a
-     * colour of its own. There is no accent to keep: a link, a focus ring and the
-     * filled button are all the same near black, and what tells them apart is
-     * where they are and what they are doing.
-     */
     --color-action-primary: var(--action-primary);
     --color-action-primary-hover: var(--action-primary-hover);
     --color-action-primary-text: var(--action-primary-text);
 
-    /*
-     * Semantic colours. They are runtime variables rather than fixed values because
-     * a colour that reads as text on paper does not read as text on a dark ground.
-     * Every one below is measured at 4.5:1 or better against the page, the canvas
-     * and the card, in the theme it belongs to.
-     *
-     * Each comes in three parts, which is what a badge is built from: the word, the
-     * ground it sits on and the hairline around it.
-     *
-     * Warning carries a fourth, the ring, and error carries its own fourth in the
-     * hover. The edge is measured as a hairline: one pixel around a badge, where
-     * being barely there is the point. Drawn instead as a ring two pixels thick and
-     * a hundred across, the same colour disappears. The ring is the weight that
-     * reads at that size, and it exists because the favourite mark on a contact is
-     * drawn around the avatar rather than beside a word.
-     */
     --color-success: var(--success);
     --color-success-tint: var(--success-tint);
     --color-success-edge: var(--success-edge);
@@ -193,52 +111,19 @@
     --color-error-tint: var(--danger-tint);
     --color-error-edge: var(--danger-edge);
 
-    /* Primary button tokens follow the primary, so they invert in dark. */
-
-    /*
-     * Corners are two numbers. 6 is a control: a button, a field, a nav row, a menu
-     * item. 8 is a surface: a card, a panel, a menu, a dialog. 4 is left for the few
-     * marks small enough that 6 reads as a circle. A badge is not on this scale at
-     * all, because a badge is fully round.
-     */
     --radius-xs: 4px;
     --radius-sm: 6px;
     --radius-md: 6px;
     --radius-lg: 8px;
     --radius-xl: 8px;
 
-    /*
-     * There is barely an elevation layer. A card takes a single pixel of shadow
-     * under its hairline, which is not lift so much as the line given a little
-     * weight now that the page behind it is white. The active navigation row takes
-     * the same pixel and a ring drawn inside it, which is how a small raised card is
-     * built without a second border.
-     *
-     * Anything that genuinely floats over the page rather than sitting in it, which
-     * is a menu and a dialog, takes `pop`. The quote card on the credentials screens
-     * takes `quote`, because it is a card lying on a gradient rather than a surface
-     * in a stack, and a border alone does not lift it off one.
-     */
     --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.04);
     --shadow-nav-active: inset 0 0 0 1px var(--hairline), 0 1px 2px rgb(0 0 0 / 0.04);
     --shadow-pop: 0 10px 24px -8px var(--pop-shadow);
     --shadow-quote: 0 18px 40px -22px var(--quote-shadow);
 
-    /*
-     * Motion is short and plain, and there is one easing, so Tailwind's own
-     * `ease-out` is replaced rather than sat beside.
-     */
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
-    /*
-     * The toast that confirms a save. It rises into place, draws its check mark,
-     * pulses a ring behind the icon once, drains a bar along its bottom edge, and
-     * collapses out of the stack.
-     *
-     * The 4500ms of the bar is the same number as the auto-dismiss timeout in
-     * components/toaster.blade.php. The bar reaching zero and the toast leaving
-     * have to be the same moment, so the two must be changed together.
-     */
     --animate-toast-in: toast-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
     --animate-toast-out: toast-out 200ms ease-in forwards;
     --animate-toast-tick: toast-tick 420ms 90ms ease-out both;
@@ -299,27 +184,7 @@
     }
 }
 
-/*
- * The palette. Cool greys, and nothing else until something has gone right or
- * wrong. A colour never decorates here: it says a thing succeeded, needs
- * attention or failed, or it is content the user chose themselves, which is what
- * a vault colour and an entity type colour are.
- *
- * The text ramp is measured rather than eyeballed. `ink`, `ink-soft`, `body`,
- * `muted` and `placeholder` each meet 4.5:1 against the page, the canvas and the
- * card, so any of the five may set running text. `muted-soft` sits below that and
- * is therefore for marks that are not text, never for a sentence. The design this
- * was drawn from sets its help text in `muted-soft`; we set it in `muted`, which
- * is the one place the accessibility contract in this file outranks the drawing.
- */
 :root {
-    /*
-     * The page is white and a panel on it is white too. What separates them is the
-     * hairline and the single pixel of shadow under it, which is the whole idea:
-     * a surface is a line around some space, not a lighter rectangle. The tinted
-     * step below the page, `card`, is what a header band, a sidebar and an icon
-     * tile are drawn in.
-     */
     --page: #ffffff;
     --canvas: #ffffff;
     --card: #fafafa;
@@ -339,35 +204,9 @@
     --muted-soft: #a1a1aa;
     --placeholder: #71717a;
 
-    /*
-     * Two different jobs, two names, and in this system the same colour. `--focus`
-     * is the border a field takes while it is being typed in; `--focus-ring` is the
-     * ring every focusable element draws when the keyboard reaches it. Both are near
-     * black, which is why the ring is drawn two pixels wide and two pixels clear of
-     * the element: a near black ring touching a near black button would be invisible,
-     * and the offset is what makes it unmistakable instead.
-     */
     --focus: #09090b;
     --focus-ring: #09090b;
 
-    /*
-     * The map, which is a map before it is part of this interface and so keeps
-     * the warm ground and the darker land of the design it came from rather than
-     * the zinc the rest of the screen is drawn in. Land is the darker of the two,
-     * the way an atlas draws it, and the borders between countries are stroked in
-     * the water colour, so a hairline of sea reads as a border without a third
-     * colour being introduced.
-     *
-     * The blue is the one colour on the screen, and it is here because it is the
-     * only thing on the map that means anything: where the pin is, and which hour
-     * of the world it falls in. It is a map token rather than a brand colour,
-     * because the application does not have one and this does not give it one.
-     *
-     * Land against water measures 1.3:1, which is the design's own figure and is
-     * below what a graphic carrying information needs. It carries none: the
-     * continents are there to aim at, and every answer the screen gives is in the
-     * words beside the map and in the list the search field filters.
-     */
     --map-water: #f3f1ec;
     --map-land: #d6d3cb;
     --map-coast: #f3f1ec;
@@ -381,11 +220,6 @@
     --action-primary-hover: #27272a;
     --action-primary-text: #fafafa;
 
-    /*
-     * There is no brand colour any more. `--text-link` is kept because <x-link> asks
-     * for it by name, and it resolves to the same near black as everything else,
-     * which is how a link ends up with a grey underline rather than a blue word.
-     */
     --text-link: #09090b;
     --text-link-hover: #09090b;
 
@@ -401,44 +235,22 @@
     --danger-tint: #fef2f2;
     --danger-edge: #fecaca;
 
-    /* The bar. It is the page colour, drawn at 85% with a blur behind it. */
     --topbar: #ffffff;
     --topbar-hairline: #e4e4e7;
 
-    /*
-     * Motion is short and plain. 150ms feedback, 170ms menus, 220ms panels. Nothing
-     * bounces, scales or overshoots.
-     *
-     * Tailwind has no theme namespace for a duration, so these are read on a tag as
-     * `duration-(--duration-fast)`. Keeping them as variables is also what makes the
-     * reduced-motion block below a single rule rather than a variant on every
-     * element in the product that moves.
-     */
     --duration-fast: 150ms;
     --duration-standard: 170ms;
     --duration-slow: 220ms;
     --press-translate: 0px;
 
-    /*
-     * Tailwind resolves a `--shadow-*` token once, at build time, so a colour written
-     * into one would never flip for dark. Written as a variable it survives into the
-     * utility and the dark block below can change it.
-     */
     --pop-shadow: rgba(9, 9, 11, 0.16);
     --quote-shadow: rgba(9, 9, 11, 0.14);
 
-    /* The bands of the gradient behind the quote, from top left to bottom right. */
     --quote-bands: #f4f4f5, #efeff2, #eceaef, #f0edee, #f4f2f0, #fafafa;
 
     color-scheme: light;
 }
 
-/*
- * The same neutral ramp inverted. The three semantic colours are not the light ones
- * repeated: a green that reads as text on paper is 3.9:1 on a dark ground and a red
- * is 2.4:1, so each is lifted until it measures 4.5:1 or better on the page, the
- * canvas and the card.
- */
 .dark {
     --page: #09090b;
     --canvas: #09090b;
@@ -462,14 +274,6 @@
     --focus: #d4d4d8;
     --focus-ring: #d4d4d8;
 
-    /*
-     * The same map at night. Water drops below the land rather than above it,
-     * which is the one thing that has to flip: land darker than water works on
-     * paper and disappears on a dark ground. The borders stay stroked in the
-     * water colour, so they are now dark lines inside lighter land, and the blue
-     * lifts to the lighter of the two the design carries so it still reads as
-     * the only colour on the map.
-     */
     --map-water: #17171a;
     --map-land: #35343a;
     --map-coast: #17171a;
@@ -509,11 +313,6 @@
     color-scheme: dark;
 }
 
-/*
- * Somebody who asked for less motion gets no motion, rather than faster motion.
- * Turning the tokens off here is what saves a `motion-reduce:` variant on every
- * element in the product that moves.
- */
 @media (prefers-reduced-motion: reduce) {
     :root {
         --duration-fast: 0ms;
@@ -536,7 +335,6 @@
     color: var(--ink);
 }
 
-/* Alpine hides what it has not walked yet with an attribute, which no utility reaches. */
 @layer utilities {
     [x-cloak] {
         display: none !important;

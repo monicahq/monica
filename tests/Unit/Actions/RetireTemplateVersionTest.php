@@ -39,10 +39,6 @@ class RetireTemplateVersionTest extends TestCase
         $this->assertNotNull($version->retired_at);
     }
 
-    /**
-     * Retiring is neither deleting nor editing: every record already on the
-     * version stays on it and renders what it always did.
-     */
     #[Test]
     public function it_leaves_the_records_already_on_it_where_they_are(): void
     {

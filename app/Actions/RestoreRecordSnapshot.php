@@ -24,19 +24,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Put a record back the way it was at a moment.
- *
- * Restoring takes a snapshot of the present first, always, so a restore can be
- * undone by the same gesture that performed it. Somebody who goes back to
- * yesterday and finds today was better has to be able to say so.
- *
- * It refuses rather than restores something partial. If the structure the
- * snapshot came from is no longer there, or a field it wrote into has gone,
- * half a record put back is worse than a record left alone, because nobody can
- * tell which half.
- *
- * The files come back with it. A file detached a moment ago is still on the
- * disk, which is the entire reason the sweep waits out a grace period, and the
- * snapshot naming it is what kept it there.
  */
 class RestoreRecordSnapshot
 {
@@ -84,12 +71,6 @@ class RestoreRecordSnapshot
         $this->record = $record;
     }
 
-    /**
-     * Refuse when the structure the snapshot came from cannot be found again.
-     * A published version is frozen and its fields cannot be deleted, so this
-     * should not happen; it is checked all the same, because the alternative to
-     * checking is writing values into fields that are not there.
-     */
     private function refuseWhenTheStructureIsGone(): void
     {
         $version = TemplateVersion::query()->find($this->snapshot->template_version_id);
@@ -126,10 +107,6 @@ class RestoreRecordSnapshot
         });
     }
 
-    /**
-     * Take away what the record holds at this moment. Nothing is lost by it:
-     * the snapshot taken a line earlier is holding all of it.
-     */
     private function clearWhatIsThereNow(): void
     {
         $values = FieldValue::query()
@@ -157,11 +134,6 @@ class RestoreRecordSnapshot
             ->delete();
     }
 
-    /**
-     * Put the record itself back: the name it read as, how it was drawn, and
-     * the structure it rendered from. The counts on the versions move with it,
-     * since a record is on exactly one of them.
-     */
     private function putTheRecordBack(): void
     {
         $payload = $this->snapshot->payload['record'] ?? [];
@@ -192,11 +164,6 @@ class RestoreRecordSnapshot
         TemplateVersion::query()->whereKey($this->version->id)->increment('record_count');
     }
 
-    /**
-     * Put the repetitions back, keeping a note of which new row stands for
-     * which old one, so the values land in the repetition they were filled in
-     * on rather than in whichever one comes first.
-     */
     private function putTheRepetitionsBack(): void
     {
         foreach ($this->snapshot->payload['rows'] ?? [] as $row) {
@@ -255,9 +222,6 @@ class RestoreRecordSnapshot
     }
 
     /**
-     * Move the count of what points at each item of a value list, in whichever
-     * direction the values are going.
-     *
      * @param  Collection<int, int|string|null>  $single
      * @param  Collection<int, array<int, int|string>|null>  $several
      */

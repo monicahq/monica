@@ -10,13 +10,6 @@ use App\Models\Passkey;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-/**
- * Renaming a passkey.
- *
- * Adding one, removing one and signing in with one all go through the package,
- * which fires events this application listens to. It offers no route for a
- * rename, so that one operation stays here.
- */
 class PasskeyController extends Controller
 {
     public function update(Request $request, Passkey $passkey): RedirectResponse

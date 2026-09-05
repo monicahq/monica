@@ -14,10 +14,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Spend a magic link and sign its owner in.
- *
- * The link burns on first use. An unknown, expired, already spent or suspended
- * link all raise the same exception, so the screen has nothing to report back
- * beyond "this link no longer works".
  */
 class ConsumeMagicLink
 {
@@ -75,10 +71,6 @@ class ConsumeMagicLink
         )->onQueue('low');
     }
 
-    /**
-     * A password sign-in is not worth an email every time, but getting in
-     * without one is, so this is the path that sends it.
-     */
     private function notify(): void
     {
         $this->user->notify(new NewLoginDetected(ip: $this->ip ?? ''));

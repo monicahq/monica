@@ -174,9 +174,7 @@ class UpdateNotificationPreferenceTest extends TestCase
         )->execute();
     }
 
-    /**
-     * @return array{0: User, 1: NotificationPreference}
-     */
+    /** @return array{0: User, 1: NotificationPreference} */
     private function preference(): array
     {
         $account = Account::factory()->create();

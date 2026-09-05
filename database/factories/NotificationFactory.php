@@ -13,16 +13,12 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<Notification>
- */
+/** @extends Factory<Notification> */
 class NotificationFactory extends Factory
 {
     protected $model = Notification::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -51,10 +47,6 @@ class NotificationFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the notification goes out by email rather than appearing in
-     * the application.
-     */
     public function email(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -62,10 +54,6 @@ class NotificationFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that quiet hours are holding the notification until the time
-     * given.
-     */
     public function heldUntil(string $when): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -73,9 +61,6 @@ class NotificationFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the notification has gone out.
-     */
     public function sent(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -84,10 +69,6 @@ class NotificationFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the notification is a summary rather than one of the things
-     * summarised, which is why it is about nothing in particular.
-     */
     public function digest(): static
     {
         return $this->state(fn (array $attributes): array => [

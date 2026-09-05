@@ -16,19 +16,6 @@ use InvalidArgumentException;
 
 /**
  * Say which structure a new record starts on in this vault.
- *
- * What kind of record the default is for is read off the version rather than
- * asked for. A template already knows whether it describes a contact or one of
- * the kinds of record the account invented, and asking twice only creates a way
- * for the two answers to disagree.
- *
- * There is one default per vault and per kind of record, so setting it again
- * replaces what was there. Records already created keep the version they were
- * created on: moving those is a deliberate act of its own, which takes a
- * snapshot first.
- *
- * The version has to be published, for the same reason a record can only be put
- * on a published one: a draft is something somebody is still editing.
  */
 class SetVaultDefaultTemplate
 {

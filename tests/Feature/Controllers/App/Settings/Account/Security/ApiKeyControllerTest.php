@@ -34,10 +34,6 @@ class ApiKeyControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * The key rides back on the session so the screen can print it, and is gone
-     * by the next request.
-     */
     #[Test]
     public function it_hands_the_key_over_once(): void
     {
@@ -59,10 +55,6 @@ class ApiKeyControllerTest extends TestCase
             ->assertDontSee('Your new API key', escape: false);
     }
 
-    /**
-     * The value sits tight against its tags because the copy reads it back out
-     * of the box, and `select-all` is what makes one click take all of it.
-     */
     #[Test]
     public function it_prints_the_new_key_in_a_box_a_click_selects_whole(): void
     {
@@ -87,10 +79,6 @@ class ApiKeyControllerTest extends TestCase
             ->assertSee('x-text="messages[state]', escape: false);
     }
 
-    /**
-     * The control reads the key back out of the box it is printed in, and goes
-     * through the helper that says whether the clipboard took it.
-     */
     #[Test]
     public function it_offers_to_copy_the_new_key_and_says_when_it_did(): void
     {
@@ -105,10 +93,6 @@ class ApiKeyControllerTest extends TestCase
             ->assertSee('select-all">dunder-mifflin-infinity</p>', escape: false);
     }
 
-    /**
-     * A browser with no clipboard, which is every instance reached over plain
-     * http, has to be told about rather than confirmed at.
-     */
     #[Test]
     public function it_says_when_the_copy_did_not_happen(): void
     {

@@ -21,18 +21,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Capture the complete state of a record, so somebody can come back to it.
- *
- * It is taken before a structure change, before a merge and before an import
- * overwrites anything, and it can be taken by hand. Restoring is itself an
- * action that takes one first, so a restore can be undone.
- *
- * The payload is self contained, which is the whole difficulty. It carries the
- * pages, the section placements and the fields as they read at the time, and
- * not only the values, because the structure it came from may have been retired
- * by the time anybody wants it back. What it does keep of the structure are the
- * identifiers as well as the labels: a published version is frozen and its
- * fields cannot be deleted, so the identifiers are what puts the values back,
- * and the labels are what makes the payload readable without it.
  */
 class CreateRecordSnapshot
 {
@@ -84,12 +72,7 @@ class CreateRecordSnapshot
         ]);
     }
 
-    /**
-     * What the record itself is, which for a contact is every part of the name
-     * and for an entity is the one it has.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function record(): array
     {
         $common = [
@@ -122,12 +105,7 @@ class CreateRecordSnapshot
         ]);
     }
 
-    /**
-     * The structure as it read at the time: the pages, what sat on each of
-     * them, and the fields inside those.
-     *
-     * @return array<int, array<string, mixed>>
-     */
+    /** @return array<int, array<string, mixed>> */
     private function structure(): array
     {
         $version = $this->record->templateVersion;
@@ -165,12 +143,7 @@ class CreateRecordSnapshot
             ->all();
     }
 
-    /**
-     * The repetitions of every repeater on the record, so that what went
-     * together goes back together.
-     *
-     * @return array<int, array<string, mixed>>
-     */
+    /** @return array<int, array<string, mixed>> */
     private function rows(): array
     {
         return FieldValueRow::query()
@@ -187,14 +160,7 @@ class CreateRecordSnapshot
             ->all();
     }
 
-    /**
-     * Everything written on the record, the values set aside included. A value
-     * that was detached when the snapshot was taken has to come back detached,
-     * or restoring would quietly put back on the page something the structure
-     * had taken off it.
-     *
-     * @return array<int, array<string, mixed>>
-     */
+    /** @return array<int, array<string, mixed>> */
     private function values(): array
     {
         return FieldValue::query()
@@ -227,10 +193,6 @@ class CreateRecordSnapshot
     }
 
     /**
-     * The files the snapshot names, which the orphan sweep reads before it
-     * takes anything. The avatar counts: a record put back looking like
-     * somebody else is not the record put back.
-     *
      * @param  array<int, array<string, mixed>>  $values
      * @return list<int>
      */

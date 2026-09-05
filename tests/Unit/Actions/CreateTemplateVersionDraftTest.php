@@ -42,10 +42,6 @@ class CreateTemplateVersionDraftTest extends TestCase
         $this->assertEquals(0, $draft->record_count);
     }
 
-    /**
-     * The point of drafting is that the published version keeps rendering
-     * exactly what it did while the changes happen beside it.
-     */
     #[Test]
     public function it_leaves_the_published_version_exactly_as_it_was(): void
     {
@@ -89,10 +85,6 @@ class CreateTemplateVersionDraftTest extends TestCase
         $this->assertTrue($row->is_collapsed_by_default);
     }
 
-    /**
-     * A page belongs to one version, so the draft gets rows of its own carrying
-     * the same words, and the sections land on the page they were on.
-     */
     #[Test]
     public function it_copies_the_pages_and_puts_each_section_back_on_its_own(): void
     {

@@ -13,25 +13,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
 /**
- * Sweep up the files nothing points at any more.
- *
- * A file goes orphan the moment the last thing holding it lets go, and it is
- * left alone for a grace period after that. The period exists so that restoring
- * a record to how it looked before still finds the file it pointed at; it is
- * configuration, and it has to stay longer than the window in which a record
- * can be restored.
- *
- * Anything that has been pointed at again since is skipped: the count is what
- * decides, and the date is only what says how long it has been that way.
- *
- * A file a snapshot still names is skipped whatever its count says. That is the
- * grace period keeping its own promise: restoring an older state of a record has
- * to find the file it pointed at still on the disk, and a snapshot is exactly
- * the thing saying somebody may still ask for that state back.
- *
- * One entry goes in the log per account rather than one per file, since nobody
- * asked for this and a hundred lines saying the same thing is not a record of
- * anything.
+ * Sweep up the files nothing points at any more, once they have sat orphaned for the grace period.
+ * That period has to outlast the window in which a record can be restored, so restoring one still
+ * finds the file it pointed at.
  */
 class PurgeOrphanedFiles implements ShouldQueue
 {

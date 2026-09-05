@@ -62,9 +62,7 @@ class FieldPositionControllerTest extends TestCase
             ->assertNotFound();
     }
 
-    /**
-     * @return array{0: Template, 1: TemplateVersionSection}
-     */
+    /** @return array{0: Template, 1: TemplateVersionSection} */
     private function templateCarryingASection(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);

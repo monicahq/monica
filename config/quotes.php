@@ -2,17 +2,6 @@
 
 declare(strict_types=1);
 
-/*
-|--------------------------------------------------------------------------
-| Quotes
-|--------------------------------------------------------------------------
-|
-| The lines shown on the side of the guest screens. One is picked at random on
-| every visit. They are not translated, because a dubbed sitcom line rarely
-| survives the trip.
-|
-*/
-
 return [
     [
         'text' => 'Dwight has catalogued all four hundred of his beets. I have catalogued one stapler. Condition: suspended in gelatin.',

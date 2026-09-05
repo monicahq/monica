@@ -1,16 +1,5 @@
-{{--
-  One email we sent, as a row in a list. Clicking it opens the copy that was
-  sent, so somebody can tell what an email actually said rather than only that
-  it left. Shown by both the logs screen and the page that holds every email.
-
-  The delivery is a badge rather than a coloured dot. A dot with the word hidden
-  behind `sr-only` is colour alone for anybody who can see it, which is the one
-  thing the system does not allow: the four states are four words, and the tint
-  behind each only repeats what the word already says. Two of them share a tint,
-  which is why the word has to carry the difference.
-
-  @var \App\Models\EmailSent $emailSent
---}}
+{{-- One email we sent, as a row in a list. --}}
+{{-- @var \App\Models\EmailSent $emailSent --}}
 @use('App\Enums\EmailDeliveryStatusEnum')
 @php
   [$tone, $deliveryLabel] = match ($emailSent->delivery_status) {
@@ -66,7 +55,6 @@
   <div x-cloak x-show="open" x-transition class="border-t border-hairline bg-sunken px-4 py-3.5">
     <p class="text-center italic text-xs text-pretty text-muted">{{ __('We remove the links from this copy, since they have probably expired.') }}</p>
 
-    {{-- Purify leaves bare paragraphs behind, so the spacing between them is ours to give. --}}
     <div class="mt-3 flex flex-col gap-2 text-sm leading-relaxed text-body">{!! $emailSent->body !!}</div>
   </div>
 </div>

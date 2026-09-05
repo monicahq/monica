@@ -13,19 +13,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Override;
 
-/**
- * @extends Factory<Field>
- */
+/** @extends Factory<Field> */
 class FieldFactory extends Factory
 {
     protected $model = Field::class;
 
-    /**
-     * The account is taken from the section the field sits in, since a field
-     * belonging to a different account than its section is nothing.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -56,10 +49,6 @@ class FieldFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the field picks from a set of choices defined once for the
-     * whole account.
-     */
     public function choice(?ValueList $valueList = null): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -69,10 +58,6 @@ class FieldFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the field is a date that comes round again, which is the
-     * kind whose year may be unknown.
-     */
     public function recurringDate(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -81,9 +66,6 @@ class FieldFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the field is a section that can be filled several times over.
-     */
     public function repeater(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -93,9 +75,6 @@ class FieldFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the field points at another record.
-     */
     public function relation(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -105,9 +84,6 @@ class FieldFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the field draws a line on the page and stores nothing.
-     */
     public function layout(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -116,9 +92,6 @@ class FieldFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the value is masked on screen and kept out of a share link.
-     */
     public function sensitive(): static
     {
         return $this->state(fn (array $attributes): array => [

@@ -12,12 +12,6 @@ use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * The API order, which puts what the caller announced ahead of what the token's
- * user prefers. The opposite of the web order, and deliberately so: naming a
- * language on a request is asking for it, where a browser announcing one has
- * only ever been configured.
- */
 class ApiLocaleResolutionTest extends TestCase
 {
     use RefreshDatabase;
@@ -82,10 +76,6 @@ class ApiLocaleResolutionTest extends TestCase
         $this->assertSame('fr_FR', App::getLocale());
     }
 
-    /**
-     * The routes that create an account and sign in carry no token, so there is no
-     * preference to read and the header is all there is.
-     */
     #[Test]
     public function a_caller_with_no_token_is_answered_in_the_language_they_announce(): void
     {
@@ -106,12 +96,6 @@ class ApiLocaleResolutionTest extends TestCase
         $this->assertSame('en', App::getLocale());
     }
 
-    /**
-     * The message really is translated, not merely resolved. Asserted on a message
-     * this product writes, rather than on one the framework ships: only the former
-     * is translated here, `lang/` holding one json file per locale and no
-     * `validation.php`.
-     */
     #[Test]
     public function it_returns_a_translated_message_in_the_language_the_caller_asked_for(): void
     {
@@ -144,7 +128,6 @@ class ApiLocaleResolutionTest extends TestCase
         $this->assertSame('pt_PT', App::getLocale());
     }
 
-    /** An api request carries no session, and reading one that never started must not raise. */
     #[Test]
     public function a_request_carrying_no_session_resolves_without_raising(): void
     {
@@ -155,7 +138,6 @@ class ApiLocaleResolutionTest extends TestCase
         $this->assertFalse($response->baseResponse->headers->has('Set-Cookie'));
     }
 
-    /** Answering a call leaves nothing behind, on the device or in a session. */
     #[Test]
     public function answering_a_call_keeps_nothing_on_the_callers_device(): void
     {
@@ -181,12 +163,6 @@ class ApiLocaleResolutionTest extends TestCase
         $this->assertSame('de_DE', App::getLocale());
     }
 
-    /**
-     * A caller who announces no language at all, which has to be said out loud:
-     * the test client sends an Accept-Language of its own naming English, and
-     * English is one of the nine, so a test that says nothing is testing a caller
-     * who asked for English rather than one who asked for nothing.
-     */
     private function announcingNothing(): static
     {
         return $this->withHeader('Accept-Language', '');

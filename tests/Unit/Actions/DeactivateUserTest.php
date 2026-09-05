@@ -80,7 +80,6 @@ class DeactivateUserTest extends TestCase
         try {
             new DeactivateUser(user: $michael, administrator: $michael)->execute();
         } catch (AdministratorCannotLockThemselvesOut) {
-            // The refusal is the point, and what it protects is asserted below.
         }
 
         $this->assertTrue($michael->refresh()->is_active);

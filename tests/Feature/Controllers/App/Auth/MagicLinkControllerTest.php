@@ -78,8 +78,6 @@ class MagicLinkControllerTest extends TestCase
             'email' => 'nobody@dundermifflin.com',
         ]);
 
-        // Identical to the answer above, so this form cannot be used to find
-        // out who has an account here.
         $response->assertStatus(200);
         $response->assertSee('Check your inbox');
 

@@ -16,28 +16,8 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Str;
 
 /**
- * Turn one deadline that has fallen due into the notifications that will carry
- * it, one per channel the account has switched on.
- *
- * The moment is not applied again here. A rule's moments became separate
- * deadlines long before this point, each already at the instant it names, so a
- * notification copies its deadline's instant and shifts nothing.
- *
- * Quiet hours are read here and hold the notification rather than the deadline.
- * `scheduled_for` keeps saying when the thing was really due and `held_until`
- * says when it may go out, and the two are never conflated: moving the deadline
- * would corrupt the record of when things were actually due.
- *
- * The deadline moves to notified once this has run, even on an account that has
- * asked for silence and where there was nothing to make. That is what stops the
- * sweep finding the same deadline every five minutes for ever. Whether anything
- * actually went out is `notified_at`, which {@see DeliverNotification} writes and
- * which stays null when nothing did.
- *
- * Running it twice tells nobody twice. The unique index carries the instant the
- * deadline was due, so a second run over an unchanged deadline collides and
- * writes nothing, while a deadline somebody put off has a new instant and is
- * therefore told about again, which is the whole of what putting one off means.
+ * Turn one deadline that has fallen due into the notifications that will carry it, one per channel
+ * the account has switched on.
  */
 class NotifyReminderOccurrence
 {
@@ -47,9 +27,6 @@ class NotifyReminderOccurrence
         private readonly ReminderOccurrence $occurrence,
     ) {}
 
-    /**
-     * How many notifications were made.
-     */
     public function execute(): int
     {
         if (! $this->occurrence->status->awaitsDelivery()) {

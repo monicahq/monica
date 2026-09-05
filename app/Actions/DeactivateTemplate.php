@@ -12,10 +12,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Stop a template being offered when a new record is created.
- *
- * This is the answer to a template somebody has finished with, and it is a
- * different thing from deleting it. Every record already on it stays readable
- * and editable, rendering exactly the version it was made with.
  */
 class DeactivateTemplate
 {

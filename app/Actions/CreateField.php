@@ -22,26 +22,6 @@ use InvalidArgumentException;
 
 /**
  * Add a field to a section: "Street", "Shoe size", "Diet", "Birthday".
- *
- * Only to a draft. On a published section the model refuses it, because a field
- * appearing on a template version somebody published last month is exactly what publication
- * rules out.
- *
- * The key is settled here and never rebuilt. It is what an import, an export or
- * an API caller holds on to, so renaming "Shoe size" to "Size of shoe" leaves
- * it alone. It reads in underscores rather than dashes, since what reads it is
- * code rather than a person.
- *
- * Several settings on the row only mean something for certain types, and this
- * is where that is settled rather than left to whoever fills the form. A field
- * that is not a choice carries no value list and one that is not a relation
- * points at nothing. Storing a setting the type cannot honour would be storing
- * a lie, which is also why nothing here says whether the field drives a
- * reminder: the type answers that on its own.
- *
- * A repeater holds ordinary fields and nothing else. Nesting one inside another
- * would compound the hardest accessibility problem in the builder for no stated
- * need.
  */
 class CreateField
 {
@@ -168,11 +148,6 @@ class CreateField
         ]);
     }
 
-    /**
-     * Settle the key, keeping it unique within the section. It is checked against
-     * every field in the section rather than only against its siblings, since a
-     * field moving in or out of a repeater must not have to change identity.
-     */
     private function key(): string
     {
         return SlugBuilder::build(

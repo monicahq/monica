@@ -1,18 +1,5 @@
-{{--
-  The band across the top of the catalogue: four counts and a year of
-  installations.
-
-  It is there so that somebody arriving can tell whether the place is worth
-  searching. A catalogue with no sense of scale reads the same whether it holds
-  four listings or four hundred.
-
-  The chart is drawn from spans rather than from an image, and it is hidden from
-  screen readers: a row of twelve unlabelled bars says nothing when it is read
-  out. The three lines under it carry the same information in words, which is why
-  they are not a caption but the point.
-
-  @var \App\ViewModels\Marketplace\MarketplaceStatistics $statistics
---}}
+{{-- The band across the top of the catalogue: four counts and a year of installations. --}}
+{{-- @var \App\ViewModels\Marketplace\MarketplaceStatistics $statistics --}}
 @php
   $months = $statistics->installationsPerMonth();
   $tile = 'flex flex-col gap-0.5 bg-canvas px-4.5 py-4';

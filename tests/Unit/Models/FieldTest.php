@@ -157,10 +157,6 @@ class FieldTest extends TestCase
         $field->delete();
     }
 
-    /**
-     * The key is what an import, an export or an API caller holds on to, so two
-     * fields in one section may never answer to the same one.
-     */
     #[Test]
     public function it_refuses_two_fields_with_the_same_key_in_one_section(): void
     {

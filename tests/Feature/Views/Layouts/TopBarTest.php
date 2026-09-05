@@ -45,12 +45,6 @@ class TopBarTest extends TestCase
         $rendered->assertSee('Switch between the light and dark theme');
     }
 
-    /**
-     * The bar says where you are, which is worth reading on arrival and not
-     * worth 56px of every screen thereafter. It scrolls away with the screen, so
-     * it is a solid strip rather than the page seen through a blur, and it covers
-     * nothing a screen sticks to the top of its own scroll region.
-     */
     #[Test]
     public function the_bar_scrolls_away_with_the_screen_rather_than_sticking_to_it(): void
     {
@@ -155,15 +149,6 @@ class TopBarTest extends TestCase
             ->assertSee('px-4 pt-6 sm:px-6 sm:pt-7', escape: false);
     }
 
-    /**
-     * The window is exactly as tall as the viewport and never scrolls. The
-     * screen on the right is the one thing that does, which is what keeps the
-     * navigation column and its foot where they are however much or little a
-     * screen holds, and whatever a screen opens or closes inside itself.
-     *
-     * It is one layout and not two: a wide screen scrolls in the same place as
-     * every other one, and used to arrange its own.
-     */
     #[Test]
     public function the_screen_is_the_one_thing_that_scrolls(): void
     {
@@ -177,14 +162,6 @@ class TopBarTest extends TestCase
         }
     }
 
-    /**
-     * The `relative` on the scroll region is what stops the window scrolling,
-     * and it is easy to lose because nothing on the screen shows it doing its
-     * work. An `sr-only` element is absolutely positioned, so without it the
-     * element is laid out against the document instead of against the region,
-     * the document grows taller than the window, and the window scrolling lifts
-     * the whole window-height layout with the navigation column inside it.
-     */
     #[Test]
     public function the_scroll_region_is_positioned_so_nothing_inside_it_can_grow_the_document(): void
     {
@@ -193,11 +170,6 @@ class TopBarTest extends TestCase
         $rendered->assertSee('class="relative min-w-0 overflow-y-auto"', escape: false);
     }
 
-    /**
-     * The scrim over the drawer catches a click and not a wheel or a swipe, so
-     * the screen behind it is what has to stop scrolling. It is said on the
-     * screen rather than on the body, which is not what scrolls.
-     */
     #[Test]
     public function the_open_drawer_stops_the_screen_behind_it_scrolling(): void
     {

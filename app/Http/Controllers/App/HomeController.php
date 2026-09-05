@@ -9,11 +9,6 @@ use App\Models\Vault;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-/**
- * The front door. It shows nothing of its own: somebody who is not signed in is
- * sent to the sign in screen, an account holding nothing to the screen that
- * explains what to do first, and an account holding a vault to its vaults.
- */
 class HomeController extends Controller
 {
     public function index(Request $request): RedirectResponse

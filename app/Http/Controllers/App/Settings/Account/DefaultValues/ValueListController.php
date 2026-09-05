@@ -26,11 +26,6 @@ class ValueListController extends Controller
         ]);
     }
 
-    /**
-     * Every rename field on the screen is called `name`, so each form is
-     * validated into a bag of its own and a rejection reopens the field it
-     * came from rather than every field on the page.
-     */
     public function create(Request $request): RedirectResponse
     {
         $validated = $request->validateWithBag('newList', [
@@ -66,11 +61,6 @@ class ValueListController extends Controller
             ->with('status_description', __('It now reads the same in every language.'));
     }
 
-    /**
-     * The screen only offers a deletion for a list somebody made, so a refusal
-     * here means the request came from somewhere else. Saying so is better
-     * than a stack trace, and the reloaded screen shows what it should have.
-     */
     public function destroy(Request $request, ValueList $valueList): RedirectResponse
     {
         try {

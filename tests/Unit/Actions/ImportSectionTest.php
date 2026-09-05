@@ -178,7 +178,6 @@ class ImportSectionTest extends TestCase
         try {
             new ImportSection(user: $user, template: $template, page: $page, raw: 'Michael Scott')->execute();
         } catch (StructureFileIsNotReadable) {
-            // The refusal is the point; what matters is what it left behind.
         }
 
         $this->assertEquals($sections, Section::query()->count());
@@ -209,12 +208,7 @@ class ImportSectionTest extends TestCase
         return StructureFile::encode(StructureFile::ofSection($template->publishedVersion->assembly->first()));
     }
 
-    /**
-     * A template with a draft version and one empty page, which is the state a
-     * section is imported into.
-     *
-     * @return array{Template, TemplateVersionPage}
-     */
+    /** @return array{Template, TemplateVersionPage} */
     private function draft(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);

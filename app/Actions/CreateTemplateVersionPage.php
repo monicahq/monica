@@ -16,19 +16,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Add a page to a template version, at the end of it. A record made from a
- * version with several of them reads as tabs, in this order.
- *
- * The key is settled here and never rebuilt. It is what a record URL carries
- * and what every later draft copied from this version keeps, so renaming
- * "Health" to "Medical" leaves it alone and a link that already went out still
- * lands on the right tab.
- *
- * Two pages of one version cannot read the same, since the label is the only
- * thing telling one tab from another for whoever navigates by name.
- *
- * Only on a draft: the pages of a published version are part of what was
- * published, and the model refuses the write.
+ * Add a page to a template version, at the end of it.
  */
 class CreateTemplateVersionPage
 {
@@ -87,15 +75,7 @@ class CreateTemplateVersionPage
         ]);
     }
 
-    /**
-     * The pages of the version, read now rather than off the model.
-     *
-     * A supplied page reads by its translation key, so what is compared is the
-     * label as somebody sees it rather than the column, and that comparison
-     * happens here rather than in the query.
-     *
-     * @return Collection<int, TemplateVersionPage>
-     */
+    /** @return Collection<int, TemplateVersionPage> */
     private function pagesOfTheVersion(): Collection
     {
         return TemplateVersionPage::query()
@@ -103,11 +83,6 @@ class CreateTemplateVersionPage
             ->get();
     }
 
-    /**
-     * Settle the key, keeping it unique within the version. It reads in dashes
-     * rather than underscores, unlike the key of a field: this one is read by a
-     * person, in the address bar.
-     */
     private function key(): string
     {
         return SlugBuilder::build(

@@ -92,10 +92,6 @@ class LogControllerTest extends TestCase
         $response->assertJsonPath('meta.total', 0);
     }
 
-    /**
-     * An entry nobody is behind is exactly the one worth reading, so it is in
-     * the journal rather than filtered out of it.
-     */
     #[Test]
     public function it_lists_what_the_application_did_on_its_own(): void
     {
@@ -217,9 +213,6 @@ class LogControllerTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        // The empty header is the point rather than noise. A caller naming a
-        // language outranks the account, so the account only answers a caller
-        // who named none, and the test client names English unless told not to.
         $this->withHeader('Accept-Language', '')
             ->json('GET', "/api/v1/logs/{$log->id}")
             ->assertOk()
@@ -249,11 +242,6 @@ class LogControllerTest extends TestCase
             ->assertJsonPath('data.attributes.description', 'A créé la clé API appelée Dundie awards bot');
     }
 
-    /**
-     * A value somebody marked sensitive records that it changed and not what
-     * to, and until the specification settles how those are kept the column
-     * stays out of the API altogether.
-     */
     #[Test]
     public function it_does_not_hand_out_what_changed(): void
     {
@@ -281,9 +269,7 @@ class LogControllerTest extends TestCase
         $this->json($method, $url)->assertUnauthorized();
     }
 
-    /**
-     * @return array<string, array{string, string}>
-     */
+    /** @return array<string, array{string, string}> */
     public static function endpoints(): array
     {
         return [

@@ -20,17 +20,6 @@ use InvalidArgumentException;
 
 /**
  * Put a record on another structure.
- *
- * A snapshot is written first, always. That guarantee is what makes changing
- * structures safe enough to offer casually, and it is not conditional on the
- * change looking harmless: the whole point is that nobody has to work out in
- * advance whether they will regret it.
- *
- * Nothing written is destroyed by the move. A value whose field the new
- * structure does not carry is set aside, kept and explained, and a value set
- * aside by an earlier move comes back the moment its field is carried again.
- * That is the same promise the product makes when a field is taken out of a
- * structure, made here for a whole page at once.
  */
 class MoveRecordToTemplateVersion
 {
@@ -109,11 +98,7 @@ class MoveRecordToTemplateVersion
         });
     }
 
-    /**
-     * The fields the structure the record now renders from asks for.
-     *
-     * @return list<int>
-     */
+    /** @return list<int> */
     private function fieldsCarriedNow(): array
     {
         return $this->templateVersion->assembly

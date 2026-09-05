@@ -55,12 +55,6 @@ class VaultController extends Controller
         ]);
     }
 
-    /**
-     * The two things the form asks about the vault rather than about its
-     * wording are each their own action, since both are decisions about the
-     * account. Creating the vault already gives it the supplied template, so
-     * the first only runs when somebody picked another.
-     */
     public function create(Request $request): RedirectResponse
     {
         $validated = $request->validate($this->rules($request));
@@ -83,11 +77,6 @@ class VaultController extends Controller
             ->with('status_description', __('Everything you put in it stays in it.'));
     }
 
-    /**
-     * The wording of the vault, and nothing else about it. What it holds, where
-     * it sits in the list and whether it is the default one are each settled
-     * somewhere else.
-     */
     public function update(Request $request, Vault $vault): RedirectResponse
     {
         $validated = $request->validate([
@@ -108,11 +97,6 @@ class VaultController extends Controller
             ->with('status', __('The vault is saved.'));
     }
 
-    /**
-     * An account with no vault left is in the state every account starts in,
-     * so it goes back to the screen that explains what to do first rather
-     * than to a list with nothing on it.
-     */
     public function destroy(Request $request, Vault $vault): RedirectResponse
     {
         new DestroyVault(
@@ -135,13 +119,7 @@ class VaultController extends Controller
             ->with('status_description', __('Everything it held went with it.'));
     }
 
-    /**
-     * The template is offered as the published version of one of the account's
-     * contact templates, which is exactly what the vault stores, so the rule
-     * asks the templates table for it rather than trusting the select.
-     *
-     * @return array<string, array<int, mixed>>
-     */
+    /** @return array<string, array<int, mixed>> */
     private function rules(Request $request): array
     {
         return [

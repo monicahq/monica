@@ -61,10 +61,6 @@ class VaultRemindersViewModelTest extends TestCase
         $this->assertSame(['Later this month'], array_column($groups, 'title'));
     }
 
-    /**
-     * Every boundary is measured from one instant, so a deadline due exactly now
-     * lands in one bucket and not in two.
-     */
     #[Test]
     public function it_puts_a_deadline_due_exactly_now_in_one_bucket_only(): void
     {

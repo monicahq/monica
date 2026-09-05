@@ -1,30 +1,5 @@
+{{-- A control that is a glyph and nothing else, with the words it stands for. --}}
 {{--
-  A control that is a glyph and nothing else, with the words it stands for.
-
-  A row of these is unreadable without them, so the name is not optional: it is
-  what a screen reader announces, and it is what the bubble says to everybody
-  else. Both come from the same prop, so they cannot drift apart.
-
-  It renders an anchor when it is given an href, and a button otherwise, the same
-  way <x-button> does. A control that goes somewhere has to be a link: the middle
-  click, the context menu and "open in a new tab" all belong to the browser, and a
-  button that navigates takes them away.
-
-  The bubble opens on focus as well as under the pointer. A sentence only a
-  pointer can reach is a sentence nobody working from the keyboard ever gets.
-
-  It is not <x-tooltip> around a button. That component is `role="img"`, which
-  takes everything inside it out of the accessibility tree, and a button in
-  there stops existing for anybody listening. Putting the tooltip inside the
-  button instead fixes that and breaks the other half, since `focusin` travels
-  up from the button and never reaches a listener below it. So the state lives
-  on the button here, which is the one element that is both the target and the
-  thing being explained.
-
-  `align` says which edge of the bubble is pinned to the button. A control at
-  the right edge of a row centres its bubble half off the page, so a cluster of
-  them there asks for `right` and the bubble grows inwards instead.
-
   @var string $label
   @var string $icon
   @var string|null $href
@@ -46,10 +21,6 @@
     'focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none',
   ];
 
-  /* The bubble is the same in both forms, and it is the reason this markup is
-     assembled here rather than written twice: the two branches differ by one
-     element and one attribute, and a second copy of the bubble is a second
-     thing to keep in step. */
   $hover = [
     'x-data' => '{ shown: false }',
     '@mouseenter' => 'shown = true',

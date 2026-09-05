@@ -10,16 +10,12 @@ use App\Models\ValueList;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<ValueList>
- */
+/** @extends Factory<ValueList> */
 class ValueListFactory extends Factory
 {
     protected $model = ValueList::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -35,10 +31,6 @@ class ValueListFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the product supplied the list, which reads by its
-     * translation key until the user renames it.
-     */
     public function supplied(ValueListEnum $list = ValueListEnum::PhoneLabels): static
     {
         return $this->state(fn (array $attributes): array => [

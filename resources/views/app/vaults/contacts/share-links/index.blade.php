@@ -1,20 +1,5 @@
-{{--
-  Every link ever opened onto one person's page.
-
-  The ones that were ended stay on the list, and the aside at the foot says why
-  before anybody wonders whether revoking worked. The question this screen answers
-  is who could see what, and when, and removing a row would remove the answer.
-
-  Revoking asks first, in the warning card, because it cannot be undone and there
-  is no path back: somebody who needs access again gets a new link. The card aims
-  its form at the list, so ending one leaves the rest of the page where it was.
-
-  A row leads to the link rather than straight to its form, since what somebody
-  wants after making a link is the address and the visits, and changing what it
-  shows is the rarer of the two.
-
-  @var \App\ViewModels\Vaults\ContactShareLinksViewModel $viewModel
---}}
+{{-- Every link ever opened onto one person's page. --}}
+{{-- @var \App\ViewModels\Vaults\ContactShareLinksViewModel $viewModel --}}
 @php
   $links = $viewModel->links();
 @endphp
@@ -40,12 +25,6 @@
     </x-button>
   </div>
 
-  {{--
-    The whole list is one region and revoking replaces it, rather than each row
-    being its own: a revoked row changes what it says, what it offers and where it
-    sits in the reading of the list, so swapping the row alone would leave a list
-    that disagrees with itself.
-  --}}
   <div id="share-links" x-merge="replace" class="transition-opacity [&[aria-busy]]:opacity-60">
     <x-panel :flush="true">
       @forelse ($links as $link)

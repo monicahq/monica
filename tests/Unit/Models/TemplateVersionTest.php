@@ -77,10 +77,6 @@ class TemplateVersionTest extends TestCase
         $version->save();
     }
 
-    /**
-     * Retiring and counting records are things that happen to a published
-     * version rather than changes to what it renders, so neither is refused.
-     */
     #[Test]
     public function it_still_lets_a_published_version_be_retired_and_counted(): void
     {

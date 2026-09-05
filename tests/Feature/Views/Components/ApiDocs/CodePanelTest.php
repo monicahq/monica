@@ -77,11 +77,7 @@ class CodePanelTest extends TestCase
         $panel->assertSee('aria-pressed', escape: false);
     }
 
-    /**
-     * The text of every code line in a panel, as a reader would see it.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     private function lines(TestView $panel): array
     {
         preg_match_all('/<div class="font-mono[^"]*">(.*?)<\/div>/s', (string) $panel, $matches);

@@ -1,16 +1,5 @@
-{{--
-  The file, in full, before it goes anywhere.
-
-  Showing it is the whole point of this screen. The promise on the share screen
-  is that nothing anybody wrote into a record leaves, and the only honest way to
-  make that promise is to put the bytes on the screen and let somebody read
-  them. A download that cannot be read first asks to be trusted.
-
-  What is shown and what is downloaded are the same text, formatting included,
-  so reading it proves something.
-
-  @var \App\ViewModels\Settings\Account\Templates\ShareTemplateViewModel $viewModel
---}}
+{{-- The file, in full, before it goes anywhere. --}}
+{{-- @var \App\ViewModels\Settings\Account\Templates\ShareTemplateViewModel $viewModel --}}
 @php
   $template = $viewModel->template();
 @endphp

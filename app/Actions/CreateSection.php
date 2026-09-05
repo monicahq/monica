@@ -16,17 +16,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Define a reusable section: "Address", "Social networks", "Medical follow up".
- *
- * A section is its own thing rather than a grouping inside one template, so that
- * somebody who built a good one can put it on several templates, or offer it to
- * other people, without dragging a whole page around it.
- *
- * It starts with a first draft version, since a section with no version is a name
- * that asks for nothing. The fields go into that version, and the section becomes
- * usable when it is published.
- *
- * A section carries no position. Where it sits is decided by the template version it is put
- * on, and the same section sits in a different place on each of them.
  */
 class CreateSection
 {
@@ -93,10 +82,6 @@ class CreateSection
         });
     }
 
-    /**
-     * Settle the slug. A deleted section does not release its own, so a link
-     * that already went out cannot later land on something else.
-     */
     private function slug(): string
     {
         return SlugBuilder::build(

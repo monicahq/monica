@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Actions\CreateVault;
 use App\Enums\DefaultFieldEnum;
 use App\Enums\DefaultSectionEnum;
 use App\Enums\DefaultTemplateEnum;
@@ -29,39 +28,9 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Give a fresh account the template it starts with, so the first contact
- * somebody writes down has somewhere to go.
- *
- * This is a job rather than part of creating the account, because it writes a
- * couple of dozen rows nobody is looking at yet. Whoever just signed up is waiting on a
- * page, and the first thing they see is not a contact form. The account, the
- * user, the vault and the value lists are written before the request comes
- * back; this arrives a moment later.
- *
- * It is published straight away rather than left as a draft. A draft is a
- * template nothing can be created from, and an account whose only template has
- * to be published before it does anything is an account that starts with
- * homework.
- *
- * Nothing here is protected. The template, its sections and every field are
- * ordinary rows from the moment they are written: they can be renamed,
- * reordered, added to or thrown away, and changing any of them means a new
- * version exactly as it does for a template somebody built themselves.
- *
- * The names are not translated here. They are stored as translation keys and
- * read in the language of whoever is looking, which is what keeps a template
- * seeded in English readable to somebody who later switches to French.
- *
- * The sections arrive marked, with a glyph and a colour off
- * {@see DefaultSectionEnum}. An account that started with six grey pages would
- * never find out the mark is there to be changed, and the two sections sharing
- * a page are deliberately given hues nowhere near each other.
- *
- * The value lists have to exist before this runs, since two of the fields read
- * their choices from them.
- *
- * One entry goes in the log for the whole seeding rather than one per section,
- * since this happens once and nobody asked for it line by line.
+ * Give a fresh account the template it starts with, so the first contact somebody writes down has
+ * somewhere to go. It is a job rather than part of creating the account, because it writes a couple
+ * of dozen rows nobody is looking at yet.
  */
 class CreateDefaultTemplate implements ShouldQueue
 {
@@ -71,11 +40,7 @@ class CreateDefaultTemplate implements ShouldQueue
 
     private TemplateVersion $version;
 
-    /**
-     * The id of each of the account's value lists, by key.
-     *
-     * @var array<string, int>
-     */
+    /** @var array<string, int> */
     private array $valueLists;
 
     public function __construct(
@@ -136,15 +101,6 @@ class CreateDefaultTemplate implements ShouldQueue
         ]);
     }
 
-    /**
-     * Lay the template out: a page per tab, and on each of them the sections it
-     * is read in the order of.
-     *
-     * The positions of the sections start again on every page, since that is
-     * what a position on a page means. Nothing here is protected: every page,
-     * every section and every field is the user's to rename, reorder or throw
-     * away from the first minute.
-     */
     private function createPages(): void
     {
         $pagePosition = 1;
@@ -182,10 +138,6 @@ class CreateDefaultTemplate implements ShouldQueue
         }
     }
 
-    /**
-     * Build one section, fill it and freeze it. The fields go in while the
-     * version is still a draft, since a published one refuses them.
-     */
     private function createSection(DefaultSectionEnum $case): SectionVersion
     {
         $section = Section::query()->create([
@@ -228,16 +180,7 @@ class CreateDefaultTemplate implements ShouldQueue
         return $version;
     }
 
-    /**
-     * Write what the section asks for, and then what each of its repeaters asks
-     * for on every repetition.
-     *
-     * The positions start again inside a repeater, since a position is read
-     * among siblings. Nothing recurses further than this: a repeater inside a
-     * repeater is refused, and the fields the product supplies keep to that.
-     *
-     * @param  list<DefaultFieldEnum>  $fields
-     */
+    /** @param  list<DefaultFieldEnum>  $fields */
     private function createFields(SectionVersion $version, array $fields, ?Field $parent = null): void
     {
         $position = 1;
@@ -296,12 +239,6 @@ class CreateDefaultTemplate implements ShouldQueue
         $this->template->save();
     }
 
-    /**
-     * Point every vault of the account at the version that was just published.
-     * The vaults of a fresh account are made before this job runs, so nothing
-     * else can have given them a default; {@see CreateVault} gives
-     * one to every vault opened afterwards.
-     */
     private function seedTheVaultDefaults(): void
     {
         Vault::query()

@@ -15,13 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Throw away a draft of a template.
- *
- * A draft is work in progress and nothing points at it, so it goes freely. A
- * published version does not: it is retired instead, and the model refuses the
- * deletion rather than trusting this action to remember.
- *
- * The assembly goes with it, and every section it carried is now in one template version
- * fewer.
  */
 class DestroyTemplateVersion
 {

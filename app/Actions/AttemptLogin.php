@@ -18,16 +18,6 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * Sign somebody in with their email address and their password.
- *
- * Every refusal reports the same message. Telling an attacker the difference
- * between a wrong password, a suspended account and an address that does not
- * exist hands them a way to find out who has an account here.
- *
- * The API signs nobody in, it hands out a token, so it asks for the same rules
- * without the session: `stateless` checks the credentials and stops there. The
- * rate limit, the warning email, the identical refusal, the stamp and the
- * journal entry are the same either way, which is the point of asking here
- * rather than writing a second way to sign in.
  */
 class AttemptLogin
 {
@@ -59,10 +49,6 @@ class AttemptLogin
         $this->email = mb_strtolower($this->email);
     }
 
-    /**
-     * Refuse to even try once too many attempts came from this address and this
-     * place, so a password cannot be guessed one request at a time.
-     */
     private function validate(): void
     {
         if (! RateLimiter::tooManyAttempts($this->throttleKey(), self::MAX_ATTEMPTS)) {
@@ -84,11 +70,6 @@ class AttemptLogin
     {
         $candidate = User::query()->where('email', $this->email)->first();
 
-        // A null password used to mean one thing, an SSO account. It now also
-        // means somebody gave their password up in favour of passkeys, and
-        // either way there is nothing here to check: handing a null hash to the
-        // guard is not a comparison, it is an error. It sits in the shared
-        // refusal so that the stateless path below is covered too.
         if ($candidate === null
             || ! $candidate->is_active
             || $candidate->usesSingleSignOn()
@@ -96,9 +77,6 @@ class AttemptLogin
             $this->fail($candidate);
         }
 
-        // A token is not a session. The API wants the credentials checked and
-        // nothing else begun, so it validates them and keeps the user it has
-        // already looked up, rather than signing anybody in.
         if ($this->stateless) {
             if (! Auth::guard('web')->validate(['email' => $this->email, 'password' => $this->password])) {
                 $this->fail($candidate);
@@ -113,9 +91,6 @@ class AttemptLogin
 
         $guard = Auth::guard('web');
 
-        // The screen promises a number of days, so the guard is told to honour
-        // exactly that rather than the five years Laravel defaults to. Only the
-        // session guard knows how to be told, which is the only one we use.
         if ($guard instanceof SessionGuard) {
             $guard->setRememberDuration((int) config('monica.remember_duration_days') * 24 * 60);
         }
@@ -129,10 +104,6 @@ class AttemptLogin
         $this->user = Auth::guard('web')->user();
     }
 
-    /**
-     * Count the attempt, warn the owner of the address when there is one, and
-     * report the same thing whatever went wrong.
-     */
     private function fail(?User $candidate): void
     {
         RateLimiter::hit($this->throttleKey());

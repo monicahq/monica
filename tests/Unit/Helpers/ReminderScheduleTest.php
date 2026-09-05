@@ -303,9 +303,7 @@ class ReminderScheduleTest extends TestCase
         return ReminderSchedule::nextDate($reminder, CarbonImmutable::parse($from, 'Europe/Paris'))->format('Y-m-d');
     }
 
-    /**
-     * @return list<string>
-     */
+    /** @return list<string> */
     private function between(Reminder $reminder, string $from, string $to): array
     {
         $occurrences = ReminderSchedule::occurrencesBetween(
@@ -320,25 +318,19 @@ class ReminderScheduleTest extends TestCase
         );
     }
 
-    /**
-     * @return array{direction: string, amount: null, unit: null}
-     */
+    /** @return array{direction: string, amount: null, unit: null} */
     private function onTheDay(): array
     {
         return ['direction' => ReminderMomentDirectionEnum::On->value, 'amount' => null, 'unit' => null];
     }
 
-    /**
-     * @return array{direction: string, amount: int, unit: string}
-     */
+    /** @return array{direction: string, amount: int, unit: string} */
     private function before(int $amount, ReminderMomentUnitEnum $unit): array
     {
         return ['direction' => ReminderMomentDirectionEnum::Before->value, 'amount' => $amount, 'unit' => $unit->value];
     }
 
-    /**
-     * @return array{direction: string, amount: int, unit: string}
-     */
+    /** @return array{direction: string, amount: int, unit: string} */
     private function after(int $amount, ReminderMomentUnitEnum $unit): array
     {
         return ['direction' => ReminderMomentDirectionEnum::After->value, 'amount' => $amount, 'unit' => $unit->value];

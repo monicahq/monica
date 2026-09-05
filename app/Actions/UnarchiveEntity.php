@@ -12,9 +12,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Put a record back into the main lists, and with it the reminders archiving
- * silenced. Only those: a rule quiet because the field it read has left the
- * structure stays quiet and goes on saying so.
+ * Put a record back into the main lists, and with it the reminders archiving silenced.
  */
 class UnarchiveEntity
 {

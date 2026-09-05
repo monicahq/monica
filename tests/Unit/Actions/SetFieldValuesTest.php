@@ -233,7 +233,6 @@ class SetFieldValuesTest extends TestCase
                 values: [$city->id => 'Scranton', $required->id => ''],
             )->execute();
         } catch (FieldIsRequired) {
-            // The refusal is the point; what matters is what it left behind.
         }
 
         $this->assertSame(0, FieldValue::query()->count());
@@ -299,11 +298,6 @@ class SetFieldValuesTest extends TestCase
         )->execute();
     }
 
-    /**
-     * The section is the unit, so a question in another block is not this save's
-     * business. Refusing here would be refusing somebody's edit because of a
-     * field they were never shown.
-     */
     #[Test]
     public function it_lets_a_section_be_saved_while_another_holds_a_required_field(): void
     {
@@ -351,11 +345,6 @@ class SetFieldValuesTest extends TestCase
         $this->assertDatabaseHas('field_values', ['field_id' => $description->id, 'value_string' => 'The insurance']);
     }
 
-    /**
-     * Somebody who adds a repetition, thinks better of it and saves has added
-     * nothing. Writing the empty row anyway would leave one behind every time
-     * the block was opened.
-     */
     #[Test]
     public function it_adds_no_repetition_for_one_nobody_filled_in(): void
     {
@@ -407,10 +396,6 @@ class SetFieldValuesTest extends TestCase
         $this->assertDatabaseHas('field_values', ['field_id' => $description->id, 'value_string' => 'The lease, signed']);
     }
 
-    /**
-     * What arrives for a repeater is the whole of it, so a repetition the record
-     * holds and the save was not told about is one somebody took away.
-     */
     #[Test]
     public function it_takes_away_a_repetition_that_did_not_come_back(): void
     {
@@ -472,11 +457,6 @@ class SetFieldValuesTest extends TestCase
         $this->assertDatabaseHas('field_values', ['field_id' => $file->id, 'value_file_id' => $stored->id]);
     }
 
-    /**
-     * No browser hands a file back to a page, so a file box comes back empty
-     * every time the block is drawn. Clearing on that would take somebody's
-     * document away the moment they corrected the description beside it.
-     */
     #[Test]
     public function it_leaves_a_file_alone_when_nothing_was_uploaded_over_it(): void
     {
@@ -545,11 +525,6 @@ class SetFieldValuesTest extends TestCase
         )->execute();
     }
 
-    /**
-     * User Story 2. Two repeaters in one section, one collecting at each end,
-     * saved in one request. Each obeys its own direction and neither disturbs
-     * the other.
-     */
     #[Test]
     public function it_lets_two_repeaters_in_one_section_collect_at_different_ends(): void
     {
@@ -586,8 +561,6 @@ class SetFieldValuesTest extends TestCase
         $keptNote = FieldValueRow::query()->where('field_id', $notes->id)->sole();
         $keptDocument = FieldValueRow::query()->where('field_id', $documents->id)->sole();
 
-        /* The block is drawn with the notes blank first and the documents blank
-           last, which is what these indices stand for. */
         new SetFieldValues(
             user: $user,
             record: $contact,
@@ -614,12 +587,6 @@ class SetFieldValuesTest extends TestCase
         );
     }
 
-    /**
-     * Two blanks filled in one save. The form draws them in order, so the upper
-     * one arrives first and stays above the lower one. This is the case that
-     * rules out placing each new repetition at the front as it is created, which
-     * would put the second above the first.
-     */
     #[Test]
     public function it_keeps_two_repetitions_added_in_one_save_in_the_order_they_were_typed(): void
     {
@@ -661,15 +628,6 @@ class SetFieldValuesTest extends TestCase
         );
     }
 
-    /**
-     * The one that matters. A save understands a repetition that does not arrive
-     * as one somebody took away, so a block drawn in one order and matched in
-     * another does not produce a muddled list. It deletes.
-     *
-     * So: one repetition the record already holds, one somebody added and one
-     * somebody removed, all in the same save, on a repeater that collects at the
-     * front. Every survivor has to come back as itself.
-     */
     #[Test]
     public function it_loses_nothing_when_a_repeater_that_collects_at_the_front_is_saved(): void
     {
@@ -698,8 +656,6 @@ class SetFieldValuesTest extends TestCase
         $held = FieldValueRow::query()->orderBy('position')->orderBy('id')->get();
         $this->assertCount(2, $held);
 
-        /* The block is drawn newest first, so a blank comes before what is
-           already there, and what is already there arrives after it. */
         new SetFieldValues(
             user: $user,
             record: $contact,
@@ -718,10 +674,6 @@ class SetFieldValuesTest extends TestCase
         $this->assertSame([1, 2], FieldValueRow::query()->orderBy('position')->pluck('position')->all());
     }
 
-    /**
-     * The place a repetition holds is the order it appears in, so a save gives
-     * each one the place matching the order it arrived in.
-     */
     #[Test]
     public function it_numbers_the_repetitions_in_the_order_they_arrived(): void
     {
@@ -821,11 +773,6 @@ class SetFieldValuesTest extends TestCase
         $this->assertSame(['First', 'Third'], $this->descriptionsIn($contact, $documents, $description));
     }
 
-    /**
-     * The numbering reads the order off the index the form names each repetition
-     * by, so a body whose parts arrive out of order still numbers the way the
-     * block was drawn.
-     */
     #[Test]
     public function it_reads_the_order_off_the_index_rather_than_off_the_body(): void
     {
@@ -1067,8 +1014,6 @@ class SetFieldValuesTest extends TestCase
     }
 
     /**
-     * What the panel under a date sends when somebody has ticked the box.
-     *
      * @param  array<string, mixed>  $changes
      * @return array<string, mixed>
      */
@@ -1104,13 +1049,7 @@ class SetFieldValuesTest extends TestCase
         ]);
     }
 
-    /**
-     * Put a field inside a repeater, which is where a repetition's questions
-     * live. The section version has to be drafted again to take it, the way the
-     * builder does it.
-     *
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function childOf(Field $repeater, array $attributes = []): Field
     {
         $sectionVersion = $repeater->sectionVersion()->first();
@@ -1131,10 +1070,6 @@ class SetFieldValuesTest extends TestCase
         return $child;
     }
 
-    /**
-     * The assembly row a field ends up drawn in, which is the block a save is
-     * asked for.
-     */
     private function sectionOf(Field $field): TemplateVersionSection
     {
         return TemplateVersionSection::query()
@@ -1142,25 +1077,13 @@ class SetFieldValuesTest extends TestCase
             ->firstOrFail();
     }
 
-    /**
-     * Put a field on the structure the contact renders from, the way the builder
-     * does it: on a draft, which is then published.
-     *
-     * Each field lands in a section of its own unless `beside` names one it
-     * should share, since what a save may write is now decided by the section
-     * and a test about two fields at once has to put them in the same one.
-     *
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function fieldOn(Contact $contact, array $attributes = [], ?SectionVersion $beside = null): Field
     {
         $version = $contact->templateVersion;
         $version->status = VersionStatusEnum::Draft;
         $version->save();
 
-        /* Read again before touching it: a section version handed back from a
-           field created earlier still remembers the draft it was then, and
-           setting it back to draft would be dirtying nothing. */
         $sectionVersion = $beside === null
             ? SectionVersion::factory()->create(['account_id' => $version->account_id])
             : $beside->refresh();
@@ -1193,11 +1116,7 @@ class SetFieldValuesTest extends TestCase
         return $field;
     }
 
-    /**
-     * What one repeater holds, in the order somebody would read it.
-     *
-     * @return list<string|null>
-     */
+    /** @return list<string|null> */
     #[Test]
     public function it_replaces_the_deadlines_ahead_when_somebody_corrects_the_date(): void
     {

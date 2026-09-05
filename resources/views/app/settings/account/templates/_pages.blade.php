@@ -1,25 +1,5 @@
+{{-- The row of tabs a record is read in, and what can be done to the tab that is open. --}}
 {{--
-  The row of tabs a record is read in, and underneath it the handful of things
-  that can be done to the tab which is open.
-
-  A tab is a link rather than a button, so the page somebody is looking at has
-  an address and the browser remembers where they were. It swaps the builder
-  region rather than reloading, which is how the field links already work.
-
-  Adding one asks in a card rather than in the strip itself. A form unfolding
-  between the tabs pushes the whole row about, and naming a page is a decision
-  of its own rather than something typed in passing.
-
-  The order is changed by dragging a tab onto another, exactly as sections are
-  reordered below: a hidden form per tab carries the place it landed in, and the
-  drag handler submits the one belonging to the tab that moved. Dragging is not
-  something a screen announces, and it is not something everybody can do, so
-  "Reorder" opens the same move written out as buttons.
-
-  Removing is offered only for a page that can actually go. A page holding
-  sections, and the last page of a version, both stay, and the word is left in
-  place saying why rather than becoming a button that comes back refused.
-
   @var \App\ViewModels\Settings\Account\Templates\TemplateBuilderViewModel $viewModel
   @var \App\Models\Template $template
   @var bool $isEditable
@@ -34,12 +14,6 @@
   <div x-data="sortableRows" data-sortable>
     <x-tabs>
       @foreach ($pages as $page)
-        {{--
-          A component tag is parsed before the directives inside it are, so what a
-          plain tag can wrap in a condition has to be a bag here. Blade only spreads
-          a bag whose variable name starts with the word attributes, which is what
-          the name below is for.
-        --}}
         @php
           $attributesForDragging = $isEditable
             ? new \Illuminate\View\ComponentAttributeBag([
@@ -115,11 +89,6 @@
               <p>{{ __('It holds nothing, so nothing goes with it. The tabs left keep their order.') }}</p>
             </x-modal.warning>
           @else
-            {{--
-              Left in place rather than taken away, so the row reads the same
-              whichever tab is open. A page holding sections, and the last page
-              of a version, both stay.
-            --}}
             <span
               aria-disabled="true"
               class="inline-flex h-8.5 cursor-default items-center rounded-md px-3.25 font-sans text-[13.5px] font-semibold text-placeholder opacity-50"

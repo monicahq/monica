@@ -13,12 +13,6 @@ use App\ViewModels\Settings\Account\Templates\ImportFileViewModel;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-/**
- * Reading a section file without putting it anywhere.
- *
- * The same promise as the other door: nothing is written, so a file can be
- * looked at as many times as somebody likes before any of it exists.
- */
 class SectionImportCheckController extends Controller
 {
     public function create(Request $request, Template $template, TemplateVersionPage $templateVersionPage): View

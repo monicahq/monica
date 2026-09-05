@@ -12,11 +12,6 @@ use App\Models\ValueList;
 
 /**
  * Define a new set of choices for the fields of the account to draw from.
- *
- * It goes at the end of the settings screen, and it starts empty: the items
- * are added one at a time afterwards. A list somebody made themselves carries
- * no key, since a key is what the product uses to find back a list it supplied
- * and there is nothing to find back here.
  */
 class CreateValueList
 {

@@ -14,23 +14,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Set aside everything ever written into a field, because the field has left
- * the structure.
- *
- * Nothing is destroyed. A field removed from a new version takes its values off
- * the page and off nothing else: they are listed on a screen of their own with
- * an explanation, and {@see ReattachFieldValues} brings them back the day
- * somebody puts the field back. Silent deletion is exactly what the product
- * refuses to do.
- *
- * A reminder rule reading the field goes quiet for the same reason and in the
- * same way. It says the field has left the structure rather than disappearing,
- * which is what section 3.3 asks of it by name.
- *
- * The files the values held are let go of, so a value set aside and never
- * restored does not hold a file alive for ever. Letting go is not deleting: the
- * grace period is what makes restoring an older version of a record find its
- * file still on the disk.
+ * Set aside everything ever written into a field, because the field has left the structure.
  */
 class DetachFieldValues
 {

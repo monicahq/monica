@@ -12,9 +12,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Stop offering a section when somebody assembles a template.
- *
- * Every template version already carrying it is untouched and goes on rendering it. What
- * stops is the section turning up in the list of things to add.
  */
 class DeactivateSection
 {

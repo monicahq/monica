@@ -1,44 +1,4 @@
-{{--
-  The world, once, so that a click on it can become a time zone.
-
-  The geometry is Natural Earth 1:110m, by way of `world-atlas@2.0.2`
-  (`countries-110m.json`), converted offline and written out here. It is the
-  country outlines rather than a merged silhouette, so the one stroke that draws
-  the coast draws the borders as well.
-
-  It arrives projected. The conversion is equirectangular, into a box a thousand
-  wide, clipped to latitude 84 in the north and -58 in the south, which drops the
-  empty top of the Arctic and the Antarctic coast nobody sets a clock by. That
-  window is 142 degrees of 360, so the box is 394.44 tall and the aspect is the
-  geometry's own. Nothing is letterboxed, and a pixel maps to a degree by one
-  division:
-
-
-    lon = x / 1000 * 360 - 180        x = (lon + 180) / 360 * 1000
-    lat = 84 - y / 394.44 * 142       y = (84 - lat) / 142 * 394.44
-
-  Three rings cross the antimeridian, Russia's being the one anybody would
-  notice, and a ring that runs off one edge and reappears at the other draws a
-  straight line across the whole map if it is left whole. Each is cut at the seam
-  and pinned to the edge it leaves through, which is what a clipped projection
-  does and what the 288 subpaths below are for. Every ring here is closed, so the
-  tail and the head of a cut one are joined back together: that is what leaves
-  each fragment beginning and ending on the seam, and so closing down the edge of
-  the map rather than as a chord across Siberia.
-
-  Coordinates are one decimal place and the segments are relative, which is what
-  takes the path from 120 KB to 91 KB, about 27 KB on the wire. Geometry south of
-  -58 is still in the path and is clipped by the viewBox instead, which draws the
-  same straight edge as clipping the geometry would.
-
-  To regenerate: fetch that file, decode the topology arcs, project each ring
-  with the formula above, and round as described. There is no build step and no
-  library here on purpose, so the map costs a self-hosted install nothing and
-  works with no network at all.
-
-  The graticule is every fifteen degrees of longitude, an hour of the world each,
-  which is the only reason a flat map belongs on this screen at all.
---}}
+{{-- The world, once, so that a click on it can become a time zone. --}}
 @php
   $hours = range(-180, 180, 15);
 @endphp

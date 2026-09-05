@@ -13,12 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Move one repetition of a repeater above or below the others.
- *
- * The repetition is taken out and put back at the position asked for, and the
- * rest are numbered from one again. A position past the end puts it last.
- *
- * It touches the order and nothing else. What was filled in stays where it was,
- * and no value changes which repetition it belongs to.
  */
 class UpdateFieldValueRowPosition
 {

@@ -1,11 +1,5 @@
-{{--
-  The short confirmation shown after something went right. It is announced on
-  its own, rather than read as loose text, because it appears after the page
-  has already been read. It stays in the page while there is nothing to say, so
-  a screen reader is already watching it when a message arrives.
-
-  @var string|null $message
---}}
+{{-- The short confirmation shown after something went right. --}}
+{{-- @var string|null $message --}}
 @props([
   'message' => null,
 ])

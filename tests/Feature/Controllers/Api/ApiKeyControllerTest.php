@@ -216,10 +216,6 @@ class ApiKeyControllerTest extends TestCase
         $this->assertModelExists($apiKey);
     }
 
-    /**
-     * The value is handed over once and never again, so every other answer has
-     * to be free of it, and of the hash it is kept as.
-     */
     #[Test]
     public function it_never_hands_the_key_itself_back_after_the_creation(): void
     {
@@ -270,9 +266,7 @@ class ApiKeyControllerTest extends TestCase
         $this->json($method, $url)->assertUnauthorized();
     }
 
-    /**
-     * @return array<string, array{string, string}>
-     */
+    /** @return array<string, array{string, string}> */
     public static function endpoints(): array
     {
         return [

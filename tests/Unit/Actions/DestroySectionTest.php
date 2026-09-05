@@ -38,10 +38,6 @@ class DestroySectionTest extends TestCase
         $this->assertSoftDeleted($section);
     }
 
-    /**
-     * Taking a section out from under a published template version would change what it
-     * renders, which is the one thing publication rules out.
-     */
     #[Test]
     public function it_refuses_while_a_published_template_version_carries_one_of_its_versions(): void
     {
@@ -62,10 +58,6 @@ class DestroySectionTest extends TestCase
         new DestroySection(user: $user, section: $section)->execute();
     }
 
-    /**
-     * Nothing has been promised about a draft, so a section sitting only in one
-     * goes freely.
-     */
     #[Test]
     public function it_deletes_a_section_that_sits_only_in_a_draft(): void
     {

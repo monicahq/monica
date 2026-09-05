@@ -112,10 +112,6 @@ class SubmitMarketplaceListingTest extends TestCase
         $this->assertEquals('Took the pharmacy fields out.', $second->change_note);
     }
 
-    /**
-     * The note is what every installer reads before deciding whether to move,
-     * and the first version has nothing to have changed from.
-     */
     #[Test]
     public function it_asks_for_a_change_note_from_the_second_version_on(): void
     {

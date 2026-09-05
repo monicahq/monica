@@ -20,27 +20,12 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Read one section out of a file and put it on a page of a template.
- *
- * A section is the useful unit far more often than a whole template is: the
- * medical follow up block somebody worked out drops straight into what somebody
- * else has already built, while the rest of their template is nobody's
- * business. This is the other end of that, and it is why the import is reached
- * from the page it lands on rather than from a screen that has to ask.
- *
- * It lands at the end of the open page of a draft. A published version is
- * frozen by definition, and a section arriving into one would change what
- * records already render, which is exactly what publication rules out.
- *
- * As with a whole template, the file is read here from the raw text rather than
- * from anything the checking screen concluded about it.
  */
 class ImportSection
 {
     private TemplateVersionSection $row;
 
-    /**
-     * @var array<string, mixed>
-     */
+    /** @var array<string, mixed> */
     private array $file;
 
     public function __construct(
@@ -50,9 +35,7 @@ class ImportSection
         private readonly string $raw,
     ) {}
 
-    /**
-     * @throws StructureFileIsNotReadable
-     */
+    /** @throws StructureFileIsNotReadable */
     public function execute(): TemplateVersionSection
     {
         $this->validate();

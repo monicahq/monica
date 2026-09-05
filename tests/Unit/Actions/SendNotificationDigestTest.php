@@ -90,9 +90,7 @@ class SendNotificationDigestTest extends TestCase
         $this->assertSame(1, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
     }
 
-    /**
-     * @return array{0: Account, 1: User}
-     */
+    /** @return array{0: Account, 1: User} */
     private function account(): array
     {
         $account = Account::factory()->create();

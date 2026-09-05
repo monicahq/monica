@@ -1,13 +1,5 @@
-{{--
-  The request, ready to run, in whichever of the three languages the reader
-  works in.
-
-  The colouring is decided in the view model rather than here, so this only
-  prints spans. The language tabs are real buttons in a named group, and the one
-  in use says so with aria-pressed rather than only by being darker.
-
-  @var \App\ViewModels\Docs\ApiDocsSection $section
---}}
+{{-- The request, ready to run, in whichever of the three languages the reader works in. --}}
+{{-- @var \App\ViewModels\Docs\ApiDocsSection $section --}}
 @props(['section'])
 
 @php
@@ -44,8 +36,6 @@
 
   @foreach ($samples as $key => $sample)
     <div x-show="lang === '{{ $key }}'" class="overflow-x-auto px-4 py-3.5">
-      {{-- No whitespace inside the line: the box preserves it, so a newline or an
-           indent in this template would be printed as part of the sample. --}}
       @foreach ($sample['lines'] as $line)
         <div class="font-mono text-[12.5px] leading-[1.75] whitespace-pre">@foreach ($line['parts'] as $part)<span class="{{ $part['colour'] === 'brand' ? 'text-ink' : 'text-muted' }}">{{ $part['text'] }}</span>@endforeach</div>
       @endforeach

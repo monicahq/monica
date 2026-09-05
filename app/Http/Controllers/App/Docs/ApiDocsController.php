@@ -9,14 +9,6 @@ use App\ViewModels\Docs\ApiDocsViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-/**
- * The API reference. One endpoint to a page, each with an address of its own,
- * so a link to one of them opens that one rather than a long page scrolled to
- * the middle of it.
- *
- * /docs/api itself is the way in rather than a page, and it leads to whatever
- * the reference opens with.
- */
 class ApiDocsController extends Controller
 {
     public function index(): RedirectResponse

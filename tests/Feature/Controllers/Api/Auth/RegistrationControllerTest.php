@@ -14,9 +14,7 @@ class RegistrationControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function payload(array $overrides = []): array
     {
         return array_merge([
@@ -47,12 +45,6 @@ class RegistrationControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * The token used to come back as the whole object behind it, which put the
-     * readable value at token.plainTextToken and carried the row it belongs to,
-     * its abilities and what it is attached to, beside it. Signing in has always
-     * answered with the string, and the reference has always promised one.
-     */
     #[Test]
     public function it_hands_the_token_back_as_a_string_and_nothing_else(): void
     {

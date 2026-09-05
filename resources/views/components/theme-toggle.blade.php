@@ -1,22 +1,5 @@
-{{--
-  The light and dark switch. It writes to the Alpine theme store, which puts the
-  class on <html> and remembers the choice.
-
-  Which glyph shows is decided in css rather than by a binding, because the inline
-  script in partials/meta has already put the class on <html> before the first
-  paint, while Alpine only starts once the page is on the screen. A bound icon would
-  show the wrong one for that gap.
-
-  For the same reason the name it carries covers both states rather than naming the
-  one it would switch to: a label that has to be corrected after paint is a label a
-  screen reader may have already read out.
-
-  `tone="inverted"` is for the one on the admin bar. That bar is the primary colour
-  rather than the page, so the switch on it cannot take its colours from the theme
-  the way the rest of the interface does.
-
-  @var string $tone
---}}
+{{-- The light and dark switch. --}}
+{{-- @var string $tone --}}
 @props([
   'tone' => 'default',
 ])
@@ -33,10 +16,6 @@
   @click="$store.theme.toggle()"
   aria-label="{{ __('Switch between the light and dark theme') }}"
   title="{{ __('Switch between the light and dark theme') }}"
-  {{--
-    The square after it widens what a thumb has to hit without widening what is
-    drawn.
-  --}}
   {{
     $attributes->class([
       'relative inline-flex size-8 cursor-pointer items-center justify-center rounded-md',

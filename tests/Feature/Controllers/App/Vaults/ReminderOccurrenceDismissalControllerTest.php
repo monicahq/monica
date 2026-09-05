@@ -34,10 +34,6 @@ class ReminderOccurrenceDismissalControllerTest extends TestCase
         $this->assertNotNull($occurrence->dismissed_at);
     }
 
-    /**
-     * Being done with this year's birthday does not switch the rule off, so
-     * next year still arrives.
-     */
     #[Test]
     public function it_leaves_the_rule_producing(): void
     {

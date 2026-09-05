@@ -1,12 +1,5 @@
+{{-- A checkbox and the sentence that goes with it. --}}
 {{--
-  A checkbox and the sentence that goes with it. The real input is hidden behind
-  the drawn box, which the peer variants fill in when it is checked, so there is
-  no javascript involved and the keyboard still works.
-
-  The id is also the name of the box, so one prop drives both. A screen that
-  repeats the same box down a list, or names it after something it holds rather
-  than after itself, gives `name` separately, exactly as <x-input> does.
-
   @var string $id
   @var string|null $name
   @var string $value

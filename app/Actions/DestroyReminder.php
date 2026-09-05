@@ -14,22 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Stop being reminded of a date, without touching the date.
- *
- * It is what unticking the box means, and it is deliberately not the same as
- * silencing a rule. Silencing is what the product does when something else
- * happened; this is somebody saying they no longer want the reminder, which is
- * the one gesture that removes it.
- *
- * The row survives anyway, because section 3.3 does not make an exception for a
- * removal somebody asked for: an accidental untick has to be undoable, and a
- * rule taken away is restorable rather than gone.
- *
- * The value it read is left exactly as it was. Somebody who no longer wants to
- * hear about a birthday has not forgotten when it is.
- *
- * The deadlines ahead of it go quiet with it, saying the rule was switched off,
- * and the ones behind it stay exactly as they are. Restoring the rule brings
- * back the ones that have not gone by in the meantime.
  */
 class DestroyReminder
 {
@@ -60,10 +44,6 @@ class DestroyReminder
         }
     }
 
-    /**
-     * The line is written before the row goes, so the label and the name it
-     * reads are still there to be read.
-     */
     private function log(): void
     {
         LogUserAction::dispatch(

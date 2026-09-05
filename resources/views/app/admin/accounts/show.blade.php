@@ -1,18 +1,5 @@
-{{--
-  One account, as the operator sees it.
-
-  Everything on this screen is about the account and the person who signs into it.
-  Vaults and contacts are numbers, and there is no link, no name and no preview of
-  anything inside them. That boundary is the product's promise to the people using
-  it, and this screen is where it would be easiest to break, so it is written
-  plainly rather than enforced somewhere else.
-
-  Facts that only mean something on the hosted instance read as not applicable on a
-  self hosted one. Blank would read as missing, and missing sends somebody looking
-  for data that was never supposed to be there.
-
-  @var \App\ViewModels\Admin\AccountViewModel $viewModel
---}}
+{{-- One account, as the operator sees it. --}}
+{{-- @var \App\ViewModels\Admin\AccountViewModel $viewModel --}}
 <x-admin-layout :title="$viewModel->user()?->name ?? __('Account :id', ['id' => $viewModel->account()->id])">
   <header class="flex flex-col gap-2">
     <x-link :href="route('admin.accounts.index')" data-turbo="true">{{ __('Back to accounts') }}</x-link>

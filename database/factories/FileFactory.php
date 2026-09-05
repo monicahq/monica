@@ -10,16 +10,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Override;
 
-/**
- * @extends Factory<File>
- */
+/** @extends Factory<File> */
 class FileFactory extends Factory
 {
     protected $model = File::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -43,10 +39,6 @@ class FileFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that something points at the file, which is what keeps the
-     * sweep away from it.
-     */
     public function used(int $times = 1): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -55,9 +47,6 @@ class FileFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the file is an image, which is what carries dimensions.
-     */
     public function image(): static
     {
         return $this->state(fn (array $attributes): array => [

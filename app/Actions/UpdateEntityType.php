@@ -13,14 +13,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Rename a kind of object, say what it is for, or change how it is drawn.
- *
- * The slug is deliberately left alone. It is the identifier URLs and the API
- * were given, and a rename is a change of wording rather than a change of
- * thing: "Animal" becoming "Pet" is the same type, and every link to it has to
- * keep working.
- *
- * Nothing here touches what a record of the type holds either. The structure
- * belongs to the template, and renaming the noun says nothing about it.
  */
 class UpdateEntityType
 {

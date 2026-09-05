@@ -8,13 +8,6 @@ use App\Http\Controllers\Controller;
 use App\ViewModels\Docs\ApiDocsViewModel;
 use Illuminate\Http\Response;
 
-/**
- * The same reference, as plain text, for a reader that is not a browser.
- *
- * Whole at /docs/api.md, one endpoint at a time at /docs/api/{section}.md. It
- * is the same source either way, so the text can never say something the page
- * does not.
- */
 class ApiDocsMarkdownController extends Controller
 {
     public function index(): Response

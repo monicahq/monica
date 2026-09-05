@@ -51,10 +51,6 @@ class UpdateShareLinkTest extends TestCase
         $this->assertEquals([12], $shareLink->refresh()->excluded_section_ids);
     }
 
-    /**
-     * The boxes are written as a whole, so leaving one unticked closes what it
-     * names rather than leaving it as it was.
-     */
     #[Test]
     public function it_closes_what_the_owner_stopped_asking_for(): void
     {
@@ -194,9 +190,7 @@ class UpdateShareLinkTest extends TestCase
         });
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function shareLink(User $user, array $attributes = []): ShareLink
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);

@@ -21,11 +21,6 @@ class DestroyUserPasswordTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * A secure request, because the action refuses on an instance where a passkey
-     * could not be used. Set on the request rather than through URL generation:
-     * nothing here goes through the HTTP kernel.
-     */
     private function overASecureConnection(): void
     {
         $this->app['request']->server->set('HTTPS', 'on');
@@ -111,9 +106,6 @@ class DestroyUserPasswordTest extends TestCase
     {
         Queue::fake();
 
-        // Say the scheme rather than inheriting it. The container's request is
-        // built from `APP_URL` in a test, so leaving this implicit made the
-        // refusal depend on the address in a developer's own `.env`.
         $this->app['request']->server->set('HTTPS', 'off');
 
         $user = User::factory()->create();

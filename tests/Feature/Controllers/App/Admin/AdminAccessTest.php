@@ -15,12 +15,7 @@ class AdminAccessTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Every screen of the admin space. A story that adds one adds it here, since
-     * the promise is about the area and not about any one screen of it.
-     *
-     * @return array<string, array{string}>
-     */
+    /** @return array<string, array{string}> */
     public static function everyAdminUrl(): array
     {
         return [

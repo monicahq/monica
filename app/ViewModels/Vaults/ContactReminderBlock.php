@@ -16,27 +16,6 @@ use App\Models\Reminder;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 
-/**
- * What the reminder panel under one date needs in order to be drawn.
- *
- * It sits beside {@see ContactViewModel} rather than inside it, for the reason a
- * rich page keeps its blocks in small objects: this is one region of one control
- * of one section, and the screen's own view model has a page to assemble.
- *
- * A date with no rule still gets everything. The panel is drawn whether the box
- * is ticked or not, so the defaults have to be real: a rule nobody has set up yet
- * reads as one moment on the day, coming round every year, at nine in the
- * morning, in the zone the person's preferences carry.
- *
- * The sentence at the foot is assembled here and again in the browser, out of the
- * same translated fragments. That is deliberate and it is the only duplication in
- * the panel: what somebody is typing has to be described as they type it, and
- * what the page arrives holding has to be described before any of it runs.
- *
- * The one thing the browser is not asked to work out is the next date. It needs a
- * calendar rather than string assembly, so it describes the rule as saved and
- * says so.
- */
 class ContactReminderBlock
 {
     public function __construct(
@@ -46,9 +25,7 @@ class ContactReminderBlock
         private readonly ?Reminder $reminder,
     ) {}
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function get(): array
     {
         $rule = $this->reminder;
@@ -76,22 +53,6 @@ class ContactReminderBlock
         ];
     }
 
-    /**
-     * What the mark beside the date says when the page is being read rather
-     * than edited, or null for a date that carries no mark.
-     *
-     * It is the reading state's whole account of the reminder, so it is asked
-     * for on its own and not out of {@see get()}: the panel that explains a rule
-     * is behind the Edit button, and a date that says nothing looks exactly like
-     * a date nobody set anything on.
-     *
-     * It says the sentence the panel says rather than the words "reminder set",
-     * because the glyph is never the only carrier of the meaning and the
-     * sentence is what somebody actually wants to know.
-     *
-     * A rule that has gone quiet gets no mark. It is not firing, and a mark
-     * beside its date would say the opposite of what the panel explains.
-     */
     public function mark(): ?string
     {
         $rule = $this->reminder;
@@ -103,18 +64,7 @@ class ContactReminderBlock
         return $this->summary($rule);
     }
 
-    /**
-     * The words the browser assembles the same sentences from while somebody is
-     * typing, with `:n` where the number goes.
-     *
-     * They are built here rather than in the panel so the two assemblers read
-     * the same strings. Each pair is asked for at one and at two, which is a
-     * literal number choosing a wording rather than a count compared to one, and
-     * it is enough for every locale this product ships in: none of the nine has
-     * more than two plural categories, and no amount here is ever zero.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function words(): array
     {
         return [
@@ -138,12 +88,7 @@ class ContactReminderBlock
         ];
     }
 
-    /**
-     * One counted phrase in both of its wordings, with `:n` left where the
-     * number goes.
-     *
-     * @return array{one: string, other: string}
-     */
+    /** @return array{one: string, other: string} */
     private function pair(string $phrase): array
     {
         return [
@@ -152,20 +97,11 @@ class ContactReminderBlock
         ];
     }
 
-    /**
-     * What the reminder is called when nobody words it, which is what the field
-     * and the record already say between them.
-     */
     private function placeholder(): string
     {
         return __(':label — :name', ['label' => $this->field->label, 'name' => $this->contact->name]);
     }
 
-    /**
-     * The cadence the select opens on. A rule that fires once still has to leave
-     * the select on something, and a yearly date is what a date on a record
-     * almost always is.
-     */
     private function cadence(?Reminder $rule): string
     {
         if ($rule === null || ! $rule->cadence->recurs()) {
@@ -175,10 +111,6 @@ class ContactReminderBlock
         return $rule->cadence->value;
     }
 
-    /**
-     * The zone the panel shows: the one frozen on the rule, and otherwise the
-     * one the person's preferences carry.
-     */
     private function zone(?Reminder $rule): string
     {
         return $rule instanceof Reminder ? $rule->timezone : $this->user->timezone;
@@ -193,14 +125,7 @@ class ContactReminderBlock
         return mb_substr((string) $rule->time_of_day, 0, 5);
     }
 
-    /**
-     * Every zone the product knows, described in the language being read. It is
-     * the list the preferences screen searches, offered here as a plain menu
-     * because a reminder is set once and the zone is nearly always the one
-     * already filled in.
-     *
-     * @return list<array{timezone: string, label: string}>
-     */
+    /** @return list<array{timezone: string, label: string}> */
     private function zones(): array
     {
         return array_map(fn (array $zone): array => [
@@ -218,13 +143,7 @@ class ContactReminderBlock
         return __('Frozen when the reminder was made. Changing your preferences does not shift it.');
     }
 
-    /**
-     * The moments the rule fires at, each with the words that describe it. A
-     * rule nobody has set up yet has one, on the day itself, which is the moment
-     * somebody who ticks the box and saves would have meant.
-     *
-     * @return list<array{direction: string, amount: int|null, unit: string|null, phrase: string}>
-     */
+    /** @return list<array{direction: string, amount: int|null, unit: string|null, phrase: string}> */
     private function moments(?Reminder $rule): array
     {
         if ($rule === null) {
@@ -267,12 +186,6 @@ class ContactReminderBlock
         ]);
     }
 
-    /**
-     * The day the rule falls on next, said only once there is a rule to say it
-     * about. A rule nobody has saved yet has no next day, and guessing one from
-     * controls nobody has submitted would be describing something that does not
-     * exist.
-     */
     private function nextLine(?Reminder $rule): ?string
     {
         if ($rule === null) {
@@ -288,10 +201,6 @@ class ContactReminderBlock
         return __('Next: :date.', ['date' => $next->isoFormat('LL')]);
     }
 
-    /**
-     * Why the rule has gone quiet, in words. Nothing about a reminder disappears
-     * without an explanation, and a rule still firing has nothing to explain.
-     */
     private function quietBecause(?Reminder $rule): ?string
     {
         if ($rule === null || $rule->is_active) {

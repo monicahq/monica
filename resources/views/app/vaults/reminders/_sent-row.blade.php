@@ -1,20 +1,5 @@
-{{--
-  One reminder this vault has already sent.
-
-  Four things, in the order somebody reads them when they are checking whether a
-  reminder arrived: when it went out, who it was about and what it said, how it
-  reached them, and what became of it.
-
-  The outcome never says a reminder was completed. The product has no such state,
-  and a word here claiming one would be describing something nothing can produce.
-  Dismissed, put off, and otherwise still open is the whole set.
-
-  The channel marks say how it arrived. A deadline that reached somebody in the
-  app and by email is one row with two marks rather than two rows, because it is
-  one thing that happened.
-
-  @var array<string, mixed> $row
---}}
+{{-- One reminder this vault has already sent. --}}
+{{-- @var array<string, mixed> $row --}}
 <div class="flex w-full flex-wrap items-start gap-x-4 gap-y-2.5 border-b border-hairline px-4 py-3.5 last:border-b-0">
   <div class="flex min-w-0 flex-1 items-center gap-2.25">
     @if ($row['contactName'] !== null)

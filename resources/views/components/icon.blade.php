@@ -1,29 +1,5 @@
+{{-- One glyph of the icon language. --}}
 {{--
-  One glyph of the icon language.
-
-  Every glyph is drawn on a 16px grid with a 1.4 stroke, round caps and joins, and
-  about 2px of optical padding, so any two of them sit beside each other without
-  one looking heavier than the other. Almost nothing here is filled: the stroke is
-  `currentColor`, which is what lets a row tint its mark by setting a colour on the
-  wrapper rather than by asking for a different drawing.
-
-  One glyph is filled, and it is the exception that says why the rule exists.
-  `star-filled` declares `fill="currentColor"` on its own path, so a favourite
-  reads as a different shape and not as a different tint, which is what stops the
-  state of that control being carried by colour alone. The fill is `currentColor`
-  like the stroke, so the wrapper still tints it, and the `<svg>` still says
-  `fill="none"` so no other glyph is touched.
-
-  A glyph is decoration by default and is hidden from screen readers, because the
-  thing beside it is already named. One that is the only content of a control is
-  given a `label` instead, and then it becomes an image with a title.
-
-  A name nothing answers to falls back to the default rather than drawing nothing,
-  since an empty square beside a row reads as a bug.
-
-  This is the whole set. There is no icon font, no third-party pack and no emoji:
-  a glyph that does not exist here has to be drawn here.
-
   @var string $name
   @var int $size
   @var float $strokeWidth
@@ -77,15 +53,7 @@
     'arrow-right' => '<line x1="2.8" y1="8" x2="12.8" y2="8"></line><path d="M9.2 4.4 12.8 8l-3.6 3.6"></path>',
     'sun' => '<circle cx="8" cy="8" r="3"></circle><line x1="8" y1="1.6" x2="8" y2="3"></line><line x1="8" y1="13" x2="8" y2="14.4"></line><line x1="1.6" y1="8" x2="3" y2="8"></line><line x1="13" y1="8" x2="14.4" y2="8"></line>',
     'moon' => '<path d="M13 9.6A5.6 5.6 0 0 1 6.4 3a5.6 5.6 0 1 0 6.6 6.6"></path>',
-    /* Six dots, the one shape everybody reads as "this can be dragged". Drawn
-       as filled circles rather than strokes, since a stroked dot at this size is
-       a smudge. */
     'grip' => '<circle cx="6" cy="4" r="1" fill="currentColor" stroke="none"></circle><circle cx="10" cy="4" r="1" fill="currentColor" stroke="none"></circle><circle cx="6" cy="8" r="1" fill="currentColor" stroke="none"></circle><circle cx="10" cy="8" r="1" fill="currentColor" stroke="none"></circle><circle cx="6" cy="12" r="1" fill="currentColor" stroke="none"></circle><circle cx="10" cy="12" r="1" fill="currentColor" stroke="none"></circle>',
-    /* The marks the field type catalogue asks for. Each one draws the control
-       the type produces rather than the thing it is about, because that is what
-       tells two neighbouring types apart: a short text and a long text are both
-       text, and what differs is the box you type into. Nothing here carries a
-       letter or a currency sign, since neither survives being translated. */
     'text' => '<rect x="2.4" y="5.4" width="11.2" height="5.2" rx="1.5"></rect><line x1="4.8" y1="8" x2="8.4" y2="8"></line>',
     'text-lines' => '<rect x="2.4" y="3.4" width="11.2" height="9.2" rx="1.5"></rect><line x1="4.6" y1="6.4" x2="11.4" y2="6.4"></line><line x1="4.6" y1="8.6" x2="11.4" y2="8.6"></line><line x1="4.6" y1="10.8" x2="8.6" y2="10.8"></line>',
     'hash' => '<line x1="6.4" y1="2.8" x2="5" y2="13.2"></line><line x1="11" y1="2.8" x2="9.6" y2="13.2"></line><line x1="2.8" y1="6.2" x2="13.2" y2="6.2"></line><line x1="2.4" y1="9.8" x2="12.8" y2="9.8"></line>',
@@ -100,9 +68,6 @@
     'heading' => '<line x1="3" y1="4.8" x2="9.6" y2="4.8"></line><line x1="3" y1="8.4" x2="13" y2="8.4"></line><line x1="3" y1="11.6" x2="13" y2="11.6"></line>',
     'swatch' => '<circle cx="8" cy="8" r="5.6"></circle><path d="M8 2.4a5.6 5.6 0 0 1 0 11.2Z" fill="currentColor" stroke="none"></path>',
 
-    /* The thirteen a section may be marked with that nothing else needed: the
-       subjects people keep records about, rather than the things the interface
-       does. Same grid, same stroke, so they sit beside the rest unnoticed. */
     'home' => '<path d="M2.6 7.4 8 3.2l5.4 4.2"></path><path d="M4 8.6v4.8h8V8.6"></path><path d="M6.8 13.4V10h2.4v3.4"></path>',
     'health' => '<path d="M6.5 2.6h3v3.9h3.9v3h-3.9v3.9h-3V9.5H2.6v-3h3.9z"></path>',
     'briefcase' => '<rect x="2.2" y="4.8" width="11.6" height="8.4" rx="1.5"></rect><path d="M6 4.8V3.6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.2"></path><line x1="2.2" y1="8.4" x2="13.8" y2="8.4"></line>',

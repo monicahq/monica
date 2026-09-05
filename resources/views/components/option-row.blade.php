@@ -1,26 +1,5 @@
+{{-- One option of a choice, drawn as a row that is itself the target. --}}
 {{--
-  One option of a choice, drawn as a row that is itself the target.
-
-  It replaces a hollow 16px ring with a label beside it. Three things were wrong
-  with that: the target was the ring rather than the whole line, the selected
-  option was told apart by colour alone, and a list of six of them was as tall as
-  the block it sat in. Here the row is 42px and clickable end to end, selection
-  fills both the mark and the row so it survives being printed in grey, and the
-  caller can put the rows in two columns.
-
-  The shape of the mark says how many may be picked before anybody tries: round
-  for one of a list, square for as many as apply. That is the whole reason `type`
-  is a prop and not an implementation detail.
-
-  The mark is filled in ink, the same as the plain <x-checkbox>. There is one
-  near black in this system and every mark in it is drawn in that, so a page of
-  these reads as a page of marks rather than as a page of colours.
-
-  The real input is hidden behind the drawn mark, exactly as <x-checkbox> does,
-  so there is no javascript involved and the keyboard still works. A row of
-  radios keyed by the same name is a group the arrow keys walk through, which is
-  what the browser gives for free and what a <button> would have thrown away.
-
   @var string $id
   @var string $name
   @var string $value

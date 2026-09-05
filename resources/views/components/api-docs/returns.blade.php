@@ -1,17 +1,5 @@
-{{--
-  What one endpoint answers with: a sentence, then one row per field.
-
-  A field is named by its whole path rather than by its own last word, and that
-  is the point of this block rather than a detail of it. The indentation says
-  which parent a field belongs to only for somebody who can see it; the path says
-  it to everybody, in this rendering and in the plain text one, which has no
-  indentation to lean on. The indentation is therefore computed from the path,
-  so the two can never disagree, and it is decoration.
-
-  The type is a word. Nothing here is told apart by colour.
-
-  @var \App\ViewModels\Docs\ApiDocsSection $section
---}}
+{{-- What one endpoint answers with: a sentence, then one row per field. --}}
+{{-- @var \App\ViewModels\Docs\ApiDocsSection $section --}}
 @props(['section'])
 
 @php

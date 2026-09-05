@@ -11,19 +11,12 @@ use App\Models\Vault;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<Entity>
- */
+/** @extends Factory<Entity> */
 class EntityFactory extends Factory
 {
     protected $model = Entity::class;
 
-    /**
-     * A record in one account living in the vault of another is nothing, so the
-     * account is taken from the vault rather than made beside it.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -40,10 +33,6 @@ class EntityFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the record is hidden from the main lists without having
-     * been deleted.
-     */
     public function archived(): static
     {
         return $this->state(fn (array $attributes): array => [

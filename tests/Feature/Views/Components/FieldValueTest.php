@@ -97,10 +97,6 @@ class FieldValueTest extends TestCase
             ->assertSee(route('files.show', ['vault' => $file->vault, 'file' => $file]), escape: false);
     }
 
-    /**
-     * A photograph reads as the photograph. A file name is what a document has
-     * to be read as, and what an image never should be.
-     */
     #[Test]
     public function a_photograph_reads_as_the_photograph(): void
     {
@@ -136,10 +132,6 @@ class FieldValueTest extends TestCase
             ->assertSee('The insurance');
     }
 
-    /**
-     * A gap the product left is not a gap the reader left, and "not recorded"
-     * would tell them it was.
-     */
     #[Test]
     public function a_type_nothing_can_fill_in_yet_says_that_rather_than_reading_as_empty(): void
     {

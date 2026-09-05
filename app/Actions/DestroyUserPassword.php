@@ -13,15 +13,6 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * Give up a password in favour of passkeys.
- *
- * This is the only thing in the feature that takes a way in away rather than
- * adding one, so it refuses in three cases rather than trusting the screen.
- *
- * Without a passkey there would be nothing left but an emailed link, which is
- * not a credential somebody chose. On an instance where passkeys cannot be used
- * the passkeys they hold are unusable, so removing the password would strand
- * them; a disabled button is not a refusal, and this is where the refusal lives.
- * And an SSO account has no password to remove in the first place.
  */
 class DestroyUserPassword
 {

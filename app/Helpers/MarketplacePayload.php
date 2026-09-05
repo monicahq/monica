@@ -14,66 +14,23 @@ use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use Illuminate\Support\Str;
 
-/**
- * Writes down everything an account needs to build its own copy of something
- * published to the marketplace.
- *
- * The payload is self contained, and that is the whole difficulty. Installing
- * is copying, and the copy has to stand alone: it can never reach back into the
- * account of the author, which may have moved on, been deleted, or never have
- * been reachable in the first place. So nothing here is an identifier from
- * somewhere else. A field names its value list by a reference resolved inside
- * the payload, a nested field names its parent by key, and a relation carries
- * the kind of record it points at rather than a row number nobody else has.
- *
- * What is read is the frozen version and never the live structure. For a
- * template that means the section versions its assembly pins, which are not
- * necessarily what those sections have published since, and the value lists
- * those versions were frozen with. A catalogue that quietly followed the latest
- * state of somebody's account would offer something nobody moderated.
- */
 class MarketplacePayload
 {
-    /**
-     * The lists the fields point at, by the reference they are named by.
-     *
-     * @var array<string, array<string, mixed>>
-     */
+    /** @var array<string, array<string, mixed>> */
     private array $valueLists = [];
 
-    /**
-     * The reference each list of the author was given, by its id there. The id
-     * never travels; it is only how the same list is recognised across the
-     * several sections of one template.
-     *
-     * @var array<int, string>
-     */
+    /** @var array<int, string> */
     private array $references = [];
 
     private function __construct() {}
 
-    /**
-     * Write down what is published, which is a template with its pages or a
-     * section on its own.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public static function of(Template|Section $listable): array
     {
         return new self()->build($listable);
     }
 
-    /**
-     * Write down one precise state of a section, rather than whatever that
-     * section has published since.
-     *
-     * A template version pins the section version it carries, and that pinned
-     * one is what the builder shows and what a record renders. It can be older
-     * than the section's own published version, so anything writing down what
-     * is on the screen has to name the version rather than the section.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public static function ofSectionVersion(SectionVersion $sectionVersion): array
     {
         $payload = new self;
@@ -82,19 +39,13 @@ class MarketplacePayload
         return ['type' => 'section', 'section' => $section, 'value_lists' => $payload->valueLists];
     }
 
-    /**
-     * Hash a payload, so an install can prove it got what was approved.
-     *
-     * @param  array<string, mixed>  $payload
-     */
+    /** @param  array<string, mixed>  $payload */
     public static function checksum(array $payload): string
     {
         return hash('sha256', json_encode($payload, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function build(Template|Section $listable): array
     {
         if ($listable->publishedVersion === null) {
@@ -112,9 +63,7 @@ class MarketplacePayload
         return ['type' => 'template', 'template' => $template, 'value_lists' => $this->valueLists];
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function template(Template $template): array
     {
         $version = $template->publishedVersion;
@@ -153,9 +102,7 @@ class MarketplacePayload
         ];
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function section(SectionVersion $sectionVersion): array
     {
         $this->collectValueLists($sectionVersion);
@@ -178,9 +125,7 @@ class MarketplacePayload
         ];
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function field(Field $field, SectionVersion $sectionVersion): array
     {
         $parent = $field->parent_field_id === null
@@ -212,12 +157,7 @@ class MarketplacePayload
         ];
     }
 
-    /**
-     * Write down the kind of record something points at, since an entity type
-     * invented in one account exists nowhere else.
-     *
-     * @return array<string, mixed>|null
-     */
+    /** @return array<string, mixed>|null */
     private function entityType(?EntityType $entityType): ?array
     {
         if ($entityType === null) {
@@ -234,12 +174,6 @@ class MarketplacePayload
         ];
     }
 
-    /**
-     * Take the lists this section version was frozen with, rather than the ones
-     * its account holds today. They were copied at publication precisely so
-     * that somebody renaming an option later cannot change what was published,
-     * and that copy is what travels.
-     */
     private function collectValueLists(SectionVersion $sectionVersion): void
     {
         foreach ($sectionVersion->resolved_value_lists ?? [] as $list) {
@@ -260,13 +194,7 @@ class MarketplacePayload
         }
     }
 
-    /**
-     * Name a list inside the payload. A list the product supplies has a key
-     * everywhere, which is what lets an installer recognise their own
-     * "Countries"; one somebody invented has none, so it is named after itself.
-     *
-     * @param  array<string, mixed>  $list
-     */
+    /** @param  array<string, mixed>  $list */
     private function referenceFor(array $list): string
     {
         $id = (int) $list['id'];

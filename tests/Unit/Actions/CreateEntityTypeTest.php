@@ -97,11 +97,6 @@ class CreateEntityTypeTest extends TestCase
         $this->assertEquals('cellar', $entityType->slug);
     }
 
-    /**
-     * The screen checks a slug is free before it ever gets here, so this is
-     * about an action called from somewhere else: it produces a type rather
-     * than refusing, and the counter keeps the account consistent.
-     */
     #[Test]
     public function it_counts_up_when_the_slug_it_is_given_is_taken(): void
     {
@@ -153,10 +148,6 @@ class CreateEntityTypeTest extends TestCase
         $this->assertEquals('animal-3', $third->slug);
     }
 
-    /**
-     * The slug is unique within the account, so another account is free to
-     * have the obvious one too.
-     */
     #[Test]
     public function it_leaves_the_slug_of_another_account_alone(): void
     {
@@ -171,10 +162,6 @@ class CreateEntityTypeTest extends TestCase
         $this->assertEquals('animal', $beets->slug);
     }
 
-    /**
-     * A soft deleted type keeps its slug, so a link that already went out
-     * cannot later land on a different type.
-     */
     #[Test]
     public function it_does_not_hand_out_the_slug_of_a_deleted_type(): void
     {

@@ -24,15 +24,6 @@ use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use InvalidArgumentException;
 
-/**
- * The fields inside one section of one template.
- *
- * Every write goes through the section being made editable first. A section
- * that is published, or shared with another template, gets a new version and
- * this template starts pointing at the copy. The field the URL names then
- * belongs to the version left behind, so it is found again by key, which is
- * what survives the copy.
- */
 class FieldController extends Controller
 {
     public function new(Request $request, Template $template, TemplateVersionSection $templateVersionSection): View
@@ -121,8 +112,6 @@ class FieldController extends Controller
                 isRequired: $request->boolean('is_required'),
                 isSensitive: $request->boolean('is_sensitive'),
                 isHighlighted: $request->boolean('is_highlighted'),
-                /* Sent by the panel whenever the field is a repeater, so a save
-                   that changes a label cannot quietly take the direction off. */
                 repetitionOrder: RepetitionOrderEnum::tryFrom((string) ($validated['repetition_order'] ?? '')),
                 valueList: $target->valueList,
             )->execute();
@@ -157,11 +146,6 @@ class FieldController extends Controller
             ->with('status_description', __('Nothing had been written in it.'));
     }
 
-    /**
-     * When the section had to be copied, the field the URL names belongs to
-     * the version left behind, and its twin in the copy answers to the same
-     * key.
-     */
     private function editable(Request $request, TemplateVersionSection $row, Field $field): Field
     {
         if ($field->section_version_id !== $row->section_version_id) {

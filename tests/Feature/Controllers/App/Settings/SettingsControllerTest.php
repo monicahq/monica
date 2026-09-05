@@ -71,11 +71,6 @@ class SettingsControllerTest extends TestCase
         $response->assertSee('Notifications', escape: false);
         $response->assertSee('Export everything', escape: false);
 
-        /*
-          The bar carries two links to screens that do not exist yet, and it sits
-          inside <main>, so this looks at what comes after it rather than at the
-          whole page.
-        */
         $content = str($response->getContent())->after('</header>')->before('</main>')->toString();
 
         $this->assertStringNotContainsString('href="#"', $content);

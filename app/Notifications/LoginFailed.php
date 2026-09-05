@@ -13,11 +13,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Override;
 
-/**
- * Tell somebody that a sign in on their account was attempted and refused. It
- * deliberately says nothing about what was tried, since the person reading it
- * may not be the person who tried.
- */
 class LoginFailed extends Notification implements HasEmailType, ShouldQueue
 {
     use Queueable;
@@ -27,9 +22,7 @@ class LoginFailed extends Notification implements HasEmailType, ShouldQueue
         $this->onQueue('high');
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function via(User $notifiable): array
     {
         return ['mail'];

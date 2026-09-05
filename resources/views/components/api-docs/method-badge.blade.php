@@ -1,10 +1,5 @@
+{{-- The verb an endpoint answers to. --}}
 {{--
-  The verb an endpoint answers to.
-
-  The word is the signal, exactly as it is on a badge. The colour agrees with it
-  and never replaces it, so the sidebar still says which entry deletes something
-  for somebody who cannot tell the red from the green.
-
   @var string $method
   @var bool $tinted
 --}}

@@ -1,11 +1,5 @@
+{{-- How somebody is shown: the photo they uploaded when they have one, and their initials otherwise. --}}
 {{--
-  How somebody is shown: the photo they uploaded when they have one, and their
-  initials otherwise.
-
-  The photo is served at the size it is displayed at and at twice it, so a dense
-  screen picks the sharp one out of the srcset. Both of those sizes are written
-  to disk on upload, so nothing here can ask for a size that does not exist.
-
   @var \App\Models\User $user
   @var int $size
 --}}

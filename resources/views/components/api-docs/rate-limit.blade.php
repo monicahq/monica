@@ -1,9 +1,5 @@
-{{--
-  How often one endpoint may be called, said on the endpoint rather than only in
-  the guide, because somebody reading about one call is not reading the guide.
-
-  @var \App\ViewModels\Docs\ApiDocsSection $section
---}}
+{{-- How often one endpoint may be called, said on the endpoint rather than only in the guide. --}}
+{{-- @var \App\ViewModels\Docs\ApiDocsSection $section --}}
 @props(['section'])
 
 <div class="mt-9 rounded-lg border border-hairline bg-card p-4">

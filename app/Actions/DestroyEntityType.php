@@ -13,14 +13,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Delete a kind of object, which is only allowed while no record of it exists.
- *
- * A type that still holds records refuses to go, and the answer is to delete
- * those records first, deliberately, or to deactivate the type and keep them.
- * Taking a hundred animals down with the word "Animal" is not something a
- * single button should be able to do.
- *
- * The deletion is soft, and the slug is not released with it: a link that went
- * out pointing at this type must not later land on a different one.
  */
 class DestroyEntityType
 {

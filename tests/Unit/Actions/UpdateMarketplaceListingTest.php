@@ -214,10 +214,6 @@ class UpdateMarketplaceListingTest extends TestCase
         )->execute();
     }
 
-    /**
-     * A category deactivated after something was filed there keeps what it
-     * holds, so editing the copy of one of those listings has to stay possible.
-     */
     #[Test]
     public function it_lets_a_listing_already_filed_in_a_closed_category_be_edited(): void
     {

@@ -62,11 +62,6 @@ class ContactTemplateVersionControllerTest extends TestCase
             ->assertDontSee('Apply version 2');
     }
 
-    /**
-     * The way back from the version history, which is the same act as applying
-     * and therefore the same route: it names the version instead of leaving the
-     * choice to the template.
-     */
     #[Test]
     public function it_puts_the_contact_back_on_a_version_it_names(): void
     {

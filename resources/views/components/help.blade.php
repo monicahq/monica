@@ -1,19 +1,5 @@
+{{-- Inline help. --}}
 {{--
-  Inline help. A "?" badge next to a heading or a label that reveals a short
-  explanation. Hovering previews it, clicking pins it open, and escape or a
-  click elsewhere closes it again.
-
-  The copy is given as the slot. There is no help library behind this yet, so
-  every caller writes its own text.
-
-  On a narrow screen the card is wider than the room left beside a badge that
-  sits well into the row, so below sm it leaves the badge behind and settles at
-  the foot of the screen instead, where it always fits and a thumb can reach it.
-  The caret goes with it, having nothing left to point at.
-
-  Usage: <x-help :title="__('Details')">What this box is for.</x-help>
-  Pass align="right" when the badge sits near the right edge of its container.
-
   @var string|null $title
   @var string $align
 --}}
@@ -59,7 +45,6 @@
     @if ($title) aria-label="{{ $title }}" @endif
     class="z-70 text-left max-sm:fixed max-sm:inset-x-3 max-sm:top-auto max-sm:bottom-3 max-sm:w-auto max-sm:max-w-none sm:absolute sm:top-full sm:w-80 sm:max-w-[calc(100vw-2rem)] sm:pt-3 {{ $align === 'right' ? 'sm:-right-2' : 'sm:-left-2' }}"
   >
-    {{-- The caret pointing back at the badge. --}}
     <div class="absolute top-1 size-3 rotate-45 border-t border-l border-hairline bg-canvas max-sm:hidden {{ $align === 'right' ? 'right-4' : 'left-4' }}" aria-hidden="true"></div>
 
     <div class="relative overflow-hidden rounded-lg border border-hairline bg-canvas shadow-pop">

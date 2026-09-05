@@ -9,16 +9,12 @@ use App\Models\MarketplaceCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<MarketplaceCategory>
- */
+/** @extends Factory<MarketplaceCategory> */
 class MarketplaceCategoryFactory extends Factory
 {
     protected $model = MarketplaceCategory::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -34,10 +30,6 @@ class MarketplaceCategoryFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the category takes no new publication, while everything
-     * already filed under it stays reachable.
-     */
     public function inactive(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -45,9 +37,6 @@ class MarketplaceCategoryFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the category sits under another one.
-     */
     public function under(MarketplaceCategory $parent): static
     {
         return $this->state(fn (array $attributes): array => [

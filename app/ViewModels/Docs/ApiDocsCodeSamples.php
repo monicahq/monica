@@ -4,15 +4,6 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Docs;
 
-/**
- * The ready to run requests shown beside one endpoint, in the three languages
- * somebody is most likely to reach for first.
- *
- * A sample is a list of lines, and a line is a list of coloured parts, because
- * the page has no syntax highlighter in it: the colouring is decided here and
- * the template only prints spans. What gets coloured is quoted text, which is
- * enough to make a request legible without pretending to parse three languages.
- */
 class ApiDocsCodeSamples
 {
     private const LABELS = [
@@ -49,12 +40,7 @@ class ApiDocsCodeSamples
         return $samples;
     }
 
-    /**
-     * Split one line into coloured parts. Anything inside quotes is the value
-     * somebody is going to change, so that is what carries the colour.
-     *
-     * @return array{parts: list<array{text: string, colour: string}>}
-     */
+    /** @return array{parts: list<array{text: string, colour: string}>} */
     public static function highlight(string $line): array
     {
         $parts = [];
@@ -83,8 +69,6 @@ class ApiDocsCodeSamples
     }
 
     /**
-     * Pretty print a response body and colour it the same way as the samples.
-     *
      * @param  array<string, mixed>  $response
      * @return list<array{parts: list<array{text: string, colour: string}>}>
      */
@@ -95,9 +79,7 @@ class ApiDocsCodeSamples
         return array_map(self::highlight(...), explode("\n", (string) $encoded));
     }
 
-    /**
-     * @return list<string>
-     */
+    /** @return list<string> */
     private function curl(): array
     {
         $lines = ['curl '.$this->url().' \\'];
@@ -129,9 +111,7 @@ class ApiDocsCodeSamples
         return $lines;
     }
 
-    /**
-     * @return list<string>
-     */
+    /** @return list<string> */
     private function javascript(): array
     {
         $options = [];
@@ -165,8 +145,6 @@ class ApiDocsCodeSamples
             $options[] = '  }),';
         }
 
-        // Nothing comes back from a 204, so a sample that read a body would
-        // fail for anybody who copied it.
         $read = $this->section->responseStatus === 204
             ? []
             : ['const data = await response.json()'];
@@ -186,9 +164,7 @@ class ApiDocsCodeSamples
         ];
     }
 
-    /**
-     * @return list<string>
-     */
+    /** @return list<string> */
     private function php(): array
     {
         $call = mb_strtolower($this->section->method);

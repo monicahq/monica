@@ -21,23 +21,6 @@ use InvalidArgumentException;
 
 /**
  * Freeze a draft and make it the version a new record is given.
- *
- * This is the moment everything else leans on. From here the version never
- * changes again: not the assembly, not the sections it carries, not the fields
- * inside them. Any further edit starts a new draft beside it.
- *
- * Every section it carries has to be published first. Freezing a version that
- * still points at a section somebody is editing would freeze nothing, so the
- * refusal is explicit rather than quietly publishing those sections on
- * somebody's behalf.
- *
- * The same goes for its pages: a version with none renders nothing, and one
- * with several cannot leave a tab that opens on nothing. Both are refused
- * rather than quietly repaired.
- *
- * A change note is required from the second version on, because the note is
- * what somebody deciding whether to move their records reads. The first version
- * has nothing to have changed from.
  */
 class PublishTemplateVersion
 {
@@ -88,12 +71,6 @@ class PublishTemplateVersion
         $this->validateThePages();
     }
 
-    /**
-     * A version with no page renders nothing, and a tab that opens on nothing
-     * is a dead end for whoever clicks it. One page on its own may be empty: a
-     * record whose only content is the name imposed on it is still worth
-     * writing down.
-     */
     private function validateThePages(): void
     {
         $pages = $this->templateVersion->pages;

@@ -75,6 +75,38 @@ guidelines, this file wins. The precedence order is in `CLAUDE.md`.
 
 ## Comments
 
+The default is no comment. A comment earns its place only where something is complex or needs an
+explanation the code cannot give, and a class or a method that says what it does through its name and
+its signature gets none. Five exceptions, and nothing else.
+
+- **Docblocks that carry a type.** `@param`, `@return`, `@var`, `@template`, `@throws`, `@mixin`,
+  `@use`: static analysis reads them and they stay. Write the tags and no prose above them. A
+  docblock left with one tag goes on one line.
+- **`app/Models`.** Its docblocks are the model's documentation and are written in full.
+- **`app/Actions`.** One class docblock of a sentence or two saying what the action does. Its private
+  methods get none.
+- **`app/Jobs`.** The same: one class docblock of a sentence or two, saying what the job does and,
+  where it is not obvious, why the work is on a queue at all or what its cadence has to guarantee.
+
+Blade is the fifth. Every template opens with one `{{-- --}}` comment of a single short line saying
+what the view is, on the very first line of the file and under 110 characters including the markers.
+Below it, and only below it, comes the `@var` block: one `@var` per prop for a component, the view
+model for a screen. Nothing else. A second sentence belongs in neither, and a template with props but
+nothing to say about itself is still missing its first line.
+
+```blade
+{{-- Where somebody lands after signing in: the compartments their account is divided into. --}}
+{{-- @var \App\ViewModels\Vaults\VaultsViewModel $viewModel --}}
+```
+
+```blade
+{{-- A short word about the state or the kind of something. --}}
+{{--
+  @var string $tone
+  @var string|null $icon
+--}}
+```
+
 - Minimize comments by writing expressive code. Adding a comment should never be the first tactic to make code readable.
 - Comments often become outdated and mislead over time, so be critical about adding them.
 - Only explain *why* something non-obvious is done, never *what* the code does.

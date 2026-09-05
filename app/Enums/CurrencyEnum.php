@@ -7,13 +7,6 @@ namespace App\Enums;
 use App\Contracts\SuppliedValueListItem;
 use Override;
 
-/**
- * The currencies somebody is most likely to write an amount in.
- *
- * The name carries its ISO 4217 code because half of them are called dollar,
- * and a list offering three of those with nothing to tell them apart is worse
- * than no list. The code is in the key as well, where the product reads it.
- */
 enum CurrencyEnum: string implements SuppliedValueListItem
 {
     case UsDollar = 'usd';
@@ -27,10 +20,6 @@ enum CurrencyEnum: string implements SuppliedValueListItem
     case IndianRupee = 'inr';
     case ChineseYuan = 'cny';
 
-    /**
-     * The name of the currency and its code, which doubles as the translation
-     * key.
-     */
     #[Override]
     public function label(): string
     {
@@ -48,11 +37,7 @@ enum CurrencyEnum: string implements SuppliedValueListItem
         };
     }
 
-    /**
-     * The name this item is seeded with.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

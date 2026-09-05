@@ -36,9 +36,6 @@ class PreferenceController extends Controller
             'number_format' => ['nullable', 'string', Rule::enum(NumberFormatEnum::class)],
         ]);
 
-        // An empty date or number format reaches here as null, and stays null:
-        // it is how somebody says those follow the language rather than a
-        // format they picked.
         new UpdatePreferences(
             user: $request->user(),
             locale: $validated['locale'],
@@ -47,11 +44,6 @@ class PreferenceController extends Controller
             numberFormat: NumberFormatEnum::tryFrom($validated['number_format'] ?? ''),
         )->execute();
 
-        // The session holds whatever language was last asked for and wins over the
-        // one on the account, so leaving it behind would show the screen in the
-        // old language and make the change look as if it had not saved. The
-        // middleware settled the language before any of this ran, so the message
-        // below would come out in the language being left behind too.
         LocaleResolution::remember($validated['locale']);
 
         return redirect()->route('settings.preferences.index')

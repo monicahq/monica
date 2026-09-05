@@ -1,13 +1,5 @@
-{{--
-  Where somebody edits their own profile: the name they go by, the address they
-  sign in with, and the photo shown beside them.
-
-  Each section says what it is for beside its heading rather than repeating that in a
-  column of prose next to the fields. The fields get the whole width of the panel,
-  which is what a form wants.
-
-  @var \App\ViewModels\Settings\Account\Profile\ProfileViewModel $viewModel
---}}
+{{-- Where somebody edits their own profile: their name, their address and their photo. --}}
+{{-- @var \App\ViewModels\Settings\Account\Profile\ProfileViewModel $viewModel --}}
 <x-shell :title="__('Profile')">
   <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
@@ -33,17 +25,6 @@
       <p class="text-sm text-pretty text-muted">{{ __('Shown next to your name everywhere in the application.') }}</p>
     </div>
 
-    {{--
-      These two forms reload the page rather than updating it in place, the way the
-      form below does. A picture is not a field: it is read, turned upright, cropped
-      and written twice before there is anything to show, and the screen is better
-      off asking the server for the whole thing once that is done.
-
-      The wording lives in the x-data of this div rather than in the handlers that
-      use it, because Blade does not compile a directive written inside an attribute
-      of a component tag: @js() would reach the browser as itself and Alpine would
-      refuse the whole expression.
-    --}}
     <x-panel>
       <div
         class="flex flex-wrap items-center gap-5"
@@ -62,11 +43,6 @@
             class="flex flex-wrap items-center gap-2.5"
             x-on:submit="if (tooBig) $event.preventDefault()"
           >
-            {{--
-              The field carries its name rather than a visible label: what is drawn
-              beside it is the browser's own button, which is already worded and
-              already translated, and a label above it would be read twice.
-            --}}
             <x-file-input
               id="photo"
               accept="image/jpeg,image/png,image/webp"
@@ -83,12 +59,6 @@
           <p x-show="tooBig" x-cloak x-text="tooBigMessage" class="text-xs text-error"></p>
 
           @if ($viewModel->hasPhoto())
-            {{--
-              Two steps rather than one, so a photo is never removed by a slip. The
-              two wordings sit on this div rather than on the button, since the
-              button is a component tag and a directive written in one of those is
-              not compiled.
-            --}}
             <div
               x-data="{
                 confirming: false,
@@ -171,13 +141,6 @@
     </x-form>
   </section>
 
-  {{--
-    The one thing on this screen that cannot be undone. It asks twice: the button
-    opens the form rather than sending it, and the form only goes through once the
-    address has been typed out, which is hard to do by accident.
-
-    The id is what the warning at the foot of the settings home links to.
-  --}}
   <section id="delete-your-account" class="flex scroll-mt-20 flex-col gap-3">
     <div class="px-0.5">
       <h2 class="text-section-title text-ink">{{ __('Delete your account') }}</h2>

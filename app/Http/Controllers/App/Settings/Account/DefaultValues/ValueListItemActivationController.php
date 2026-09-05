@@ -11,14 +11,6 @@ use App\Models\ValueListItem;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-/**
- * Whether a value is still offered. This is what a value in use gets instead
- * of a deletion, which `DestroyValueListItem` refuses: it keeps its place in
- * the list, and every record that has it keeps it.
- *
- * The flag is a resource of its own rather than `enable` and `disable`
- * routes, so the screen stays on the CRUD words the project keeps to.
- */
 class ValueListItemActivationController extends Controller
 {
     public function update(Request $request, ValueListItem $valueListItem): RedirectResponse

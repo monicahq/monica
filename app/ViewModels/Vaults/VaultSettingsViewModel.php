@@ -14,15 +14,6 @@ use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Illuminate\Database\Eloquent\Collection;
 
-/**
- * What a vault is called, what a contact written down here starts from, and
- * the way to be rid of it altogether.
- *
- * Only the contact default is offered: a vault holds one per kind of record,
- * but the other kinds are reached from the entity type and none of those
- * screens exists. An account always keeps a vault, so the last one is shown
- * as something that stays rather than as a button that would be refused.
- */
 class VaultSettingsViewModel
 {
     /** @var Collection<int, Template>|null */
@@ -55,12 +46,7 @@ class VaultSettingsViewModel
         ]);
     }
 
-    /**
-     * What the naming form starts on, which is what was typed if it came back
-     * rejected and what the vault holds otherwise.
-     *
-     * @return array{name: string, description: string, colour: string}
-     */
+    /** @return array{name: string, description: string, colour: string} */
     public function values(): array
     {
         return [
@@ -70,12 +56,7 @@ class VaultSettingsViewModel
         ];
     }
 
-    /**
-     * The colours on offer, each with the name somebody using a screen reader
-     * hears instead of a hex code.
-     *
-     * @return array<int, array{value: string, label: string}>
-     */
+    /** @return array<int, array{value: string, label: string}> */
     public function colours(): array
     {
         return array_map(
@@ -104,17 +85,7 @@ class VaultSettingsViewModel
         return route('vaults.destroy', $this->vault);
     }
 
-    /**
-     * Every published version of every contact template the account has,
-     * under the template it belongs to. The option is a version rather than a
-     * template because that is what the vault stores.
-     *
-     * Every published version is offered rather than only the newest: which
-     * shape a vault starts its contacts on is the vault's decision, and a
-     * vault is entitled to stay on an older one.
-     *
-     * @return array<int, array{name: string, versions: array<int, array{id: int, label: string}>}>
-     */
+    /** @return array<int, array{name: string, versions: array<int, array{id: int, label: string}>}> */
     public function templates(): array
     {
         return $this->contactTemplates()
@@ -133,10 +104,6 @@ class VaultSettingsViewModel
             ->all();
     }
 
-    /**
-     * What the select starts on, which is what was typed if the form came back
-     * rejected and what the vault holds otherwise.
-     */
     public function currentTemplateVersionId(): string
     {
         $current = $this->contactDefault()?->template_version_id;
@@ -144,21 +111,11 @@ class VaultSettingsViewModel
         return (string) old('template_version_id', $current === null ? '' : (string) $current);
     }
 
-    /**
-     * What the vault currently starts its contacts on, said by name. A vault
-     * always has one, but a vault whose default was deleted from underneath it
-     * has none to name.
-     */
     public function currentTemplateName(): ?string
     {
         return $this->contactDefault()?->templateVersion->template->name;
     }
 
-    /**
-     * Whether this is the only vault the account has. It goes like any other,
-     * and the card that asks says what taking it leaves behind: an account
-     * holding nothing, back at the screen it started on.
-     */
     public function isTheLastVault(): bool
     {
         return Vault::query()
@@ -171,11 +128,6 @@ class VaultSettingsViewModel
         return $this->vault->contact_count;
     }
 
-    /**
-     * What deleting the vault takes with it, said only when there is somebody to
-     * lose. The wording at exactly one names one contact, so it cannot stand in
-     * for none, and the panel already says what a vault takes with it.
-     */
     public function deletionConsequence(): string
     {
         if ($this->contactCount() === 0) {
@@ -196,13 +148,7 @@ class VaultSettingsViewModel
             ->first();
     }
 
-    /**
-     * The account's contact templates, each carrying the versions somebody may
-     * start a contact on, newest first. A template nobody has published
-     * anything for offers nothing and is left out rather than shown empty.
-     *
-     * @return Collection<int, Template>
-     */
+    /** @return Collection<int, Template> */
     private function contactTemplates(): Collection
     {
         return $this->contactTemplates ??= Template::query()

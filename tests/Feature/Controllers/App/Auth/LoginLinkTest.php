@@ -41,11 +41,6 @@ class LoginLinkTest extends TestCase
         $response->assertSee(ExampleAccountSeeder::EMAIL);
     }
 
-    /**
-     * A login link is configured not to invent a user, so a shortcut pointing at
-     * an address nobody seeded throws when it is clicked. Not offering it is the
-     * better answer.
-     */
     #[Test]
     public function it_hides_the_shortcut_when_the_example_account_was_never_seeded(): void
     {

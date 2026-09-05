@@ -15,15 +15,6 @@ use InvalidArgumentException;
 
 /**
  * Stop offering a version of a template to new records.
- *
- * Retiring is not deleting and it is not editing. Every record already on the
- * version stays on it and renders exactly what it always did. What stops is the
- * version being handed to anything new.
- *
- * A retired version cannot go on being the one the template offers by default,
- * so the template stops pointing at it. Until another version is published,
- * that template has nothing to give a new record, which is deliberate: it is
- * visible, and the way out is to publish something.
  */
 class RetireTemplateVersion
 {

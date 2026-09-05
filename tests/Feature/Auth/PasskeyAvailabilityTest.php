@@ -10,21 +10,10 @@ use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * What each screen says when a passkey cannot be used here, and that no way in
- * is taken away when one can.
- */
 class PasskeyAvailabilityTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Force the scheme rather than leaning on whatever `APP_URL` happens to be.
-     * Passkeys are offered on a secure connection and withheld otherwise, so a
-     * test that asserts either branch has to say which one it is in. Reading it
-     * from configuration made these tests pass or fail according to the address
-     * in a developer's own `.env`.
-     */
     private function overHttp(): self
     {
         URL::forceScheme('http');

@@ -12,17 +12,7 @@ use App\Notifications\MagicLinkCreated;
 use Illuminate\Support\Str;
 
 /**
- * Create a link that signs somebody in without a password, and email it to
- * them.
- *
- * Only the hash of the token reaches the database, so somebody who can read the
- * table still cannot sign in as anybody. The plain token exists just long enough
- * to be put in the email, where it travels inside a URL signed with the
- * application key that runs out when the row does.
- *
- * An address with no active account behind it raises ModelNotFoundException,
- * which the caller is expected to swallow: the screen must look the same either
- * way, or this form becomes a way to find out who has an account here.
+ * Create a link that signs somebody in without a password, and email it to them.
  */
 class CreateMagicLink
 {

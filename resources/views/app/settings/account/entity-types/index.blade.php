@@ -1,13 +1,5 @@
-{{--
-  The kinds of record the account invented, beyond the people every account
-  keeps. This screen names them and orders them; what one of them holds is a
-  template, and that is described elsewhere.
-
-  The whole list is one ajax target, since dragging a row renumbers every row
-  around it and a swap of the panel is what shows that.
-
-  @var \App\ViewModels\Settings\Account\EntityTypes\EntityTypesViewModel $viewModel
---}}
+{{-- The kinds of record the account invented, beyond the people every account keeps. --}}
+{{-- @var \App\ViewModels\Settings\Account\EntityTypes\EntityTypesViewModel $viewModel --}}
 <x-shell :title="__('Entity types')">
   <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">

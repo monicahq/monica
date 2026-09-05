@@ -13,17 +13,6 @@ use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Illuminate\Database\Eloquent\Collection;
 
-/**
- * The form that writes somebody down. It asks for a name and nothing else:
- * everything the contact page eventually holds belongs to the template, and
- * is filled in once the contact exists.
- *
- * What was typed wins over what the form starts on. An account with one
- * contact template has nothing to choose between, so the select is left out
- * rather than shown holding a single option. The screen speaks only when it
- * cannot do its job, which is when the vault has nothing for a contact to
- * start from.
- */
 class ContactFormViewModel
 {
     /** @var Collection<int, Template>|null */
@@ -59,19 +48,12 @@ class ContactFormViewModel
         return route('contacts.create', $this->vault);
     }
 
-    /**
-     * The list this form adds to, which is the step above it in the trail and
-     * the one place both the bar and Cancel lead. Two ways out of a form that
-     * land on different screens is a small trap.
-     */
     public function contactsUrl(): string
     {
         return route('contacts.index', $this->vault);
     }
 
     /**
-     * What the fields start out holding.
-     *
      * @return array{prefix: string, firstName: string, middleName: string, lastName: string, suffix: string, nickname: string, maidenName: string, nameOrder: string, templateVersionId: string, isFavourite: bool, isPartial: bool, keepGoing: bool}
      */
     public function values(): array
@@ -92,14 +74,7 @@ class ContactFormViewModel
         ];
     }
 
-    /**
-     * The account's contact templates that are still offered and have
-     * something published to point at. The option is the published version
-     * rather than the template, because that is what the contact stores: it
-     * follows the version it was given and never the latest one.
-     *
-     * @return array<int, array{id: int, name: string}>
-     */
+    /** @return array<int, array{id: int, name: string}> */
     public function templates(): array
     {
         return $this->contactTemplates()
@@ -110,24 +85,12 @@ class ContactFormViewModel
             ->all();
     }
 
-    /**
-     * Whether the screen asks which template the contact starts from. One
-     * template is not a choice, and a select holding a single option only
-     * invites somebody to wonder what else there was.
-     */
     public function showsTemplates(): bool
     {
         return count($this->templates()) > 1;
     }
 
-    /**
-     * The empty one comes first and is what a contact is created on unless
-     * somebody says otherwise: a name follows the reader's own preference
-     * until the contact needs its own, which is what the nullable column
-     * means.
-     *
-     * @return array<int, array{value: string, label: string}>
-     */
+    /** @return array<int, array{value: string, label: string}> */
     public function nameOrders(): array
     {
         $orders = [['value' => '', 'label' => __('Follow your own preference')]];
@@ -139,14 +102,7 @@ class ContactFormViewModel
         return $orders;
     }
 
-    /**
-     * Being the contact that represents you is not offered here. A vault
-     * holds one, a second is refused, and turning an ordinary new contact
-     * into it by ticking a box is not what somebody opening this screen came
-     * to do.
-     *
-     * @return array<int, array{id: string, name: string, help: string, checked: bool}>
-     */
+    /** @return array<int, array{id: string, name: string, help: string, checked: bool}> */
     public function flags(): array
     {
         $values = $this->values();
@@ -167,11 +123,6 @@ class ContactFormViewModel
         ];
     }
 
-    /**
-     * What stands between this form and a contact, when anything does. Nothing
-     * is said when the form works: a screen that explains itself while it is
-     * behaving is a screen somebody stops reading.
-     */
     public function blocker(): ?string
     {
         if ($this->canCreate()) {
@@ -181,22 +132,11 @@ class ContactFormViewModel
         return __('This vault has no template for new contacts to start from. Give it one in the vault settings, and this form will work.');
     }
 
-    /**
-     * Whether the form can be submitted at all. A vault with no contact default
-     * and an account with no published contact template are the same problem
-     * seen from two ends, and either of them makes the button a lie.
-     */
     public function canCreate(): bool
     {
         return $this->startingVersion() !== null;
     }
 
-    /**
-     * Whichever the select is showing, or the vault's default when there is
-     * no select. The account is checked even though the id came from a select
-     * the screen itself drew, since what comes back from a rejected form is
-     * whatever was posted.
-     */
     private function startingVersion(): ?TemplateVersion
     {
         $chosen = (int) $this->values()['templateVersionId'];
@@ -210,10 +150,6 @@ class ContactFormViewModel
             ->find($chosen);
     }
 
-    /**
-     * The version the vault starts its contacts on, which is what the select
-     * opens on when there is one.
-     */
     private function defaultTemplateVersionId(): string
     {
         $version = VaultDefaultTemplate::query()
@@ -224,11 +160,6 @@ class ContactFormViewModel
         return $version === null ? '' : (string) $version;
     }
 
-    /**
-     * Whether a checkbox starts ticked. A checkbox nobody ticked sends nothing
-     * at all, so whether there is any old input to speak of is what tells a
-     * cleared box from a form nobody has submitted yet.
-     */
     private function ticked(string $field): bool
     {
         if (! session()->hasOldInput()) {
@@ -238,12 +169,7 @@ class ContactFormViewModel
         return session()->hasOldInput($field);
     }
 
-    /**
-     * The templates read once and kept, since the screen asks two questions of
-     * the same list: what to offer, and whether to offer anything at all.
-     *
-     * @return Collection<int, Template>
-     */
+    /** @return Collection<int, Template> */
     private function contactTemplates(): Collection
     {
         return $this->contactTemplates ??= Template::query()

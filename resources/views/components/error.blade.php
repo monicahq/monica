@@ -1,12 +1,5 @@
-{{--
-  The validation messages of a field. Takes a single message or a list of them,
-  and renders nothing at all when there is none.
-
-  Each message carries a glyph as well as the colour, because a red sentence is
-  not a signal to somebody who cannot see that it is red.
-
-  @var string|array<int, string>|null $messages
---}}
+{{-- The validation messages of a field. --}}
+{{-- @var string|array<int, string>|null $messages --}}
 @props([
   'messages',
 ])

@@ -38,10 +38,6 @@ class RemoveSectionFromTemplateVersionTest extends TestCase
         $this->assertModelMissing($row);
     }
 
-    /**
-     * The section is not owned by this template, and every other version
-     * carrying it goes on as before.
-     */
     #[Test]
     public function it_leaves_the_section_itself_alone(): void
     {
@@ -60,11 +56,6 @@ class RemoveSectionFromTemplateVersionTest extends TestCase
         $this->assertEquals(2, $sectionVersion->fresh()->usage_count);
     }
 
-    /**
-     * The column is unsigned, so a count that has drifted out of step must not
-     * be taken below zero: mysql refuses the write outright, and the drivers
-     * that allow it store a negative count nothing can read sensibly.
-     */
     #[Test]
     public function it_never_takes_the_count_below_zero(): void
     {
@@ -82,10 +73,6 @@ class RemoveSectionFromTemplateVersionTest extends TestCase
         $this->assertEquals(0, $sectionVersion->fresh()->usage_count);
     }
 
-    /**
-     * The refusal has to come before anything is written, not after a counter
-     * has already moved and the transaction has to undo it.
-     */
     #[Test]
     public function it_leaves_the_count_alone_when_it_refuses(): void
     {
@@ -104,7 +91,6 @@ class RemoveSectionFromTemplateVersionTest extends TestCase
         try {
             new RemoveSectionFromTemplateVersion(user: $user, row: $row->fresh())->execute();
         } catch (PublishedVersionIsFrozen) {
-            // the refusal is what the test beside this one asserts
         }
 
         $this->assertEquals(3, $sectionVersion->fresh()->usage_count);

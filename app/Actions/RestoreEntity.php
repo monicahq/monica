@@ -14,8 +14,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Bring a deleted record back, on the version it was rendering from before it
- * went. The counts it was taken out of are given back to it.
+ * Bring a deleted record back, on the version it was rendering from before it went.
  */
 class RestoreEntity
 {
@@ -42,7 +41,6 @@ class RestoreEntity
 
     private function restore(): void
     {
-        // Restoring something that never left would count it twice.
         if (! $this->entity->trashed()) {
             return;
         }

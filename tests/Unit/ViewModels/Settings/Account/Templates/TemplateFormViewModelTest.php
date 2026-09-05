@@ -55,10 +55,6 @@ class TemplateFormViewModelTest extends TestCase
         $this->assertEquals('contact', $values['appliesTo']);
     }
 
-    /**
-     * Renaming is only reached from the builder, so cancelling a rename goes
-     * back to the template rather than to the list.
-     */
     #[Test]
     public function it_sends_cancel_back_to_where_the_form_was_opened_from(): void
     {
@@ -76,10 +72,6 @@ class TemplateFormViewModelTest extends TestCase
         );
     }
 
-    /**
-     * The slug travels in URLs and through the API, so it is settled once and
-     * shown read only afterwards.
-     */
     #[Test]
     public function it_only_offers_the_slug_while_the_template_is_being_created(): void
     {
@@ -111,10 +103,6 @@ class TemplateFormViewModelTest extends TestCase
         $this->assertFalse((new TemplateFormViewModel(user: $user))->hasEntityTypes());
     }
 
-    /**
-     * A type this template already names stays on the list even when it has
-     * been turned off, so that saving does not quietly point it elsewhere.
-     */
     #[Test]
     public function it_keeps_the_kind_of_record_the_template_already_names(): void
     {

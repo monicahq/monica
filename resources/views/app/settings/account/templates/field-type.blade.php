@@ -1,32 +1,5 @@
+{{-- Picking what kind of field to add. --}}
 {{--
-  Picking what kind of field to add.
-
-  The type is the one decision about a field that cannot be taken back, so this
-  is a screen of its own rather than a dropdown, and it is built around one
-  question: what will this actually look like once somebody fills it in? The
-  catalogue answers it in a panel that draws the field the previewed type
-  produces, and the cards themselves stay to one line each so a family can be
-  read at a glance.
-
-  Two things drive the panel, and they are deliberately not the same thing.
-  `type` is what will be submitted, and only a radio moves it. `peek` is what
-  the pointer or the keyboard is currently resting on, and it moves constantly.
-  The panel shows `peek || type`, so somebody can read every type in a family
-  without committing to any of them, and what they chose is still there when
-  they stop.
-
-  The cards are labels wrapping a real radio, as they have always been. That is
-  what gives the group its arrow keys, its required state and its announcement
-  for free. The radio itself is hidden and the chosen card carries a check mark,
-  so the choice is a shape rather than a shade.
-
-  The types the first version does not ship are shown and cannot be picked, but
-  they can be focused, so somebody working from the keyboard can still read what
-  money or a rating would be for. Reading that money is coming beats inventing a
-  workaround nobody will revisit.
-
-  It asks for `wide` because the catalogue and the panel sit side by side.
-
   @var \App\Models\Template $template
   @var \App\Models\TemplateVersionSection $row
   @var string $sectionName
@@ -53,17 +26,6 @@
     <x-settings.sidebar :user="$user" current="templates" />
   </x-slot:sidebar>
 
-  {{--
-    The bar belongs to the shell rather than to the form, because a `wide` screen
-    scrolls the region between the two bars and not the window: a bar written at
-    the end of the form can only ever pin to the end of the form, which is inside
-    that region. The shell draws it outside, at the foot of the window.
-
-    That puts it beyond the form, so the button says which form it submits, and
-    the two carry the chosen type between them over one event rather than sharing
-    a scope they no longer have. Both sides start from `old('type')`, so they
-    agree before anything is dispatched.
-  --}}
   <x-slot:footer>
     <div
       x-data="{

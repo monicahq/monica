@@ -1,15 +1,5 @@
-{{--
-  What somebody sees once a code is asked for on top of their password: that it is
-  on, the way back out, and the codes that get them in if they ever lose the phone.
-
-  Each destructive button swaps itself for what is about to be lost and the button
-  that goes through with it, so nothing here acts on the first click.
-
-  The codes sit in their own row rather than in the one above, because they are a
-  thing you keep rather than a setting you changed.
-
-  @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel
---}}
+{{-- What somebody sees once a code is asked for on top of their password. --}}
+{{-- @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel --}}
 <x-row
   :title="__('Authenticator app')"
   :description="__('Turned on :time. We ask for a code every time you sign in.', ['time' => $viewModel->twoFactorConfirmedAt()])"
@@ -69,9 +59,6 @@
 </div>
 
 @if ($viewModel->recoveryCodes() !== [])
-  {{-- Nothing to copy once every code has been spent, and a button that
-       confirmed an empty clipboard would be the lie this control exists to
-       avoid. --}}
   <div
     class="flex flex-wrap items-center gap-2.5 px-4 pbe-3.5"
     x-data="{

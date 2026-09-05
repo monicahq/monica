@@ -9,11 +9,6 @@ use App\ViewModels\Marketplace\MarketplaceViewModel;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-/**
- * The catalogue, which is the one screen of the product somebody can read
- * without an account. A link to a template has to work when it is pasted into a
- * forum, so the user is whoever happens to be signed in and may be nobody.
- */
 class MarketplaceController extends Controller
 {
     public function index(Request $request): View

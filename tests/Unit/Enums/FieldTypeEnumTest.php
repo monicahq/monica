@@ -86,10 +86,6 @@ class FieldTypeEnumTest extends TestCase
         $this->assertTrue(FieldTypeEnum::Image->hasAnInput());
     }
 
-    /**
-     * An avatar is the one file type nothing asks for: a contact carries its own
-     * and is not asked for it twice.
-     */
     #[Test]
     public function it_says_which_types_hold_a_file(): void
     {

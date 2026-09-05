@@ -13,9 +13,7 @@ class GuestScreenTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @return array<string, array{string}>
-     */
+    /** @return array<string, array{string}> */
     public static function guestScreens(): array
     {
         return [

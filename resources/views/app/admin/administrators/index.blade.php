@@ -1,20 +1,5 @@
-{{--
-  Who runs this instance.
-
-  Both changes here are warned about first, because both change who can reach
-  every screen in this area. Granting is as consequential as withdrawing, and a
-  grant made by a mis-typed address is a stranger in the admin space.
-
-  Somebody holding the capacity who cannot sign in is marked as such. It is a real
-  state, it follows from deactivating an administrator, and a list that showed them
-  as active would tell an operator they have cover they do not have.
-
-  The withdrawal is not offered on the last remaining administrator, and never on
-  yourself. Both would be refused, and a control that always fails is worse than no
-  control at all.
-
-  @var \App\ViewModels\Admin\AdministratorsViewModel $viewModel
---}}
+{{-- Who runs this instance. --}}
+{{-- @var \App\ViewModels\Admin\AdministratorsViewModel $viewModel --}}
 <x-admin-layout :title="__('Administrators')">
   <header class="flex flex-col gap-2">
     <h1 class="text-page-title text-ink">{{ __('Administrators') }}</h1>

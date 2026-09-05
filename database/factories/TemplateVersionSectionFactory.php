@@ -11,19 +11,12 @@ use App\Models\TemplateVersionSection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<TemplateVersionSection>
- */
+/** @extends Factory<TemplateVersionSection> */
 class TemplateVersionSectionFactory extends Factory
 {
     protected $model = TemplateVersionSection::class;
 
-    /**
-     * The account is taken from the template version the section is placed in, since an
-     * assembly belonging to a different account than its template version is nothing.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -38,12 +31,6 @@ class TemplateVersionSectionFactory extends Factory
         ];
     }
 
-    /**
-     * The page the section lands on, which is the first page of its version.
-     * Every version has one, and a version built without going through its own
-     * factory is given one here rather than left holding a section that sits on
-     * nothing.
-     */
     private function firstPageOf(int $templateVersionId): int
     {
         $page = TemplateVersionPage::query()
@@ -56,9 +43,6 @@ class TemplateVersionSectionFactory extends Factory
         ])->id;
     }
 
-    /**
-     * Indicate that the section starts folded, so a long page stays readable.
-     */
     public function collapsed(): static
     {
         return $this->state(fn (array $attributes): array => [

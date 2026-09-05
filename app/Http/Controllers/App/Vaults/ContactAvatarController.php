@@ -13,18 +13,6 @@ use App\Models\Vault;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-/**
- * The picture of a contact, which is not a field: it is what the product asks
- * about somebody whatever template they are on. The form is drawn by {@see
- * ContactController::edit()} and this is only the write. The upload becomes a
- * file of the vault, and taking it off lets that file go rather than deleting
- * it.
- *
- * Becoming a file of the vault is also what makes the account's storage apply to
- * it, and running out of storage is a refusal about the account rather than a
- * question about the input, so it is caught here rather than in the validator and
- * sent back to the form the picture was chosen on.
- */
 class ContactAvatarController extends Controller
 {
     public function update(Request $request, Vault $vault, Contact $contact): RedirectResponse

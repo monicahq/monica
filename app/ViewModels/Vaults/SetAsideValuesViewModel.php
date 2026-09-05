@@ -10,15 +10,6 @@ use App\Models\FieldValue;
 use App\Models\User;
 use App\Models\Vault;
 
-/**
- * Removing a field from a structure does not delete what people wrote in it.
- * The values are set aside: taken off the page, kept, and explained here,
- * since a value nobody can see is not meaningfully kept.
- *
- * Nothing on this screen writes. Putting a field back is what brings its
- * values back, and that is done on the template rather than on one person:
- * the field belongs to the structure and so does the decision.
- */
 class SetAsideValuesViewModel
 {
     public function __construct(
@@ -57,9 +48,6 @@ class SetAsideValuesViewModel
         return route('settings.templateBuilder.index', $this->contact->templateVersion->template);
     }
 
-    /**
-     * The sentence at the top, which has to explain a state nobody asked for.
-     */
     public function intro(): string
     {
         return __('These answers were written down for questions :name is no longer asked. Nothing has been deleted. Put the field back on the template and its answers come back with it.', [
@@ -74,13 +62,7 @@ class SetAsideValuesViewModel
         ]);
     }
 
-    /**
-     * Every value the structure stopped asking for, newest first. The label
-     * is the one the field carries now, with the key beside it: a field
-     * renamed since is best recognised by the name that never changes.
-     *
-     * @return array<int, array{label: string, key: string, value: string|null, when: string}>
-     */
+    /** @return array<int, array{label: string, key: string, value: string|null, when: string}> */
     public function values(): array
     {
         $formatter = new FieldValueFormatter($this->user);

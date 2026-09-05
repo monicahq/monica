@@ -14,11 +14,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-/**
- * Which page a section sits on. A section on the wrong tab is moved rather
- * than taken off and built again, which would give it a new placement and
- * lose the heading this template gave it.
- */
 class TemplateSectionPageController extends Controller
 {
     public function update(Request $request, Template $template, TemplateVersionSection $templateVersionSection): RedirectResponse

@@ -8,16 +8,12 @@ use App\Models\Account;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<Account>
- */
+/** @extends Factory<Account> */
 class AccountFactory extends Factory
 {
     protected $model = Account::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -29,10 +25,6 @@ class AccountFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the account runs on a self hosted instance, where nothing
-     * is metered.
-     */
     public function selfHosted(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -41,9 +33,6 @@ class AccountFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the one time purchase was made.
-     */
     public function withLifetimeAccess(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -53,9 +42,6 @@ class AccountFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the account finished the first run.
-     */
     public function onboarded(): static
     {
         return $this->state(fn (array $attributes): array => [

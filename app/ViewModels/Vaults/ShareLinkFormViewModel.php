@@ -12,23 +12,6 @@ use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 
-/**
- * The screen that makes a link onto somebody's page, and the same screen again
- * when what an existing link shows is being changed.
- *
- * The form is written the way the promise is: nothing is shared until it is
- * ticked. Sections start included because holding back the whole page would
- * leave nothing to share, and every other question on the screen starts closed.
- *
- * What the form asks about is only what the product can honour. Five of the
- * seven inclusions the link stores point at things that do not exist yet, so
- * they are not drawn as controls a recipient would never feel: the screen says
- * instead that they stay here, which is true and stays true.
- *
- * The sections are submitted as the ones going out rather than the ones held
- * back, because a box nobody ticks sends nothing at all and the column stores
- * the exclusions. The controller turns one into the other.
- */
 class ShareLinkFormViewModel
 {
     public function __construct(
@@ -82,11 +65,6 @@ class ShareLinkFormViewModel
         return __('A private link to this one page, the way you would share a document. Whoever opens it needs no account, joins nothing, and can change nothing. Everything sensitive starts out held back, and you decide what to let through.');
     }
 
-    /**
-     * What a link can never do, whatever this form says. It is on the screen
-     * because the fear somebody has about sharing a page is rarely about the
-     * boxes they are ticking.
-     */
     public function neverLine(): string
     {
         return __('Write anything, reach anything outside this page, or turn into an account. A field you marked sensitive stays hidden even inside a section you shared. Anything attached as a file stays here. Notifications never reach whoever holds the link. If you delete :name, the link stops working rather than pointing at nothing.', [
@@ -180,13 +158,7 @@ class ShareLinkFormViewModel
         return $this->shareLink?->isProtectedByAPassword() ?? false;
     }
 
-    /**
-     * The four spans the screen offers, plus the one an existing link needs:
-     * a stored date cannot be read back as one of the four without guessing, so
-     * the honest fifth option is to leave it where it is.
-     *
-     * @return array<int, array{value: string, label: string, help: string, isSelected: bool}>
-     */
+    /** @return array<int, array{value: string, label: string, help: string, isSelected: bool}> */
     public function expiryOptions(): array
     {
         $keeps = $this->shareLink !== null && $this->shareLink->expires_at !== null;
@@ -214,12 +186,6 @@ class ShareLinkFormViewModel
     }
 
     /**
-     * The pages of the record and the sections on each of them, with the ones
-     * this link lets through already ticked. A new link lets everything through.
-     *
-     * A page carrying no section is left off. There is nothing to decide about it,
-     * and it is already invisible on the record itself.
-     *
      * @return array<int, array{key: string, label: string, sections: array<int, array{id: int, name: string, isIncluded: bool}>}>
      */
     public function pages(): array
@@ -250,11 +216,6 @@ class ShareLinkFormViewModel
         return $this->contact->templateVersion->assembly->count();
     }
 
-    /**
-     * Why holding back every section of a page is a decision rather than a
-     * mistake: the page goes, rather than arriving as an empty tab that tells
-     * the recipient there is something they are not being shown.
-     */
     public function sectionsLine(): string
     {
         return __('Their page is laid out by :template. Hold a section back and it is gone. A page whose sections are all held back does not appear as an empty tab.', [

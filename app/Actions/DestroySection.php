@@ -14,19 +14,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Delete a section, which is only allowed while no published template version
- * carries one of its versions.
- *
- * A published version is frozen. Taking a section out from under it would
- * change what it renders, which is the one thing publication promises will not
- * happen, so the deletion is refused. Deactivating the section instead stops it
- * being added to anything new and leaves every version that already has it
- * alone.
- *
- * A section sitting only in somebody's draft is a different matter and goes
- * freely: nothing has been promised about a draft.
- *
- * The deletion is soft and the slug is not released with it.
+ * Delete a section, which is only allowed while no published template version carries one of its
+ * versions.
  */
 class DestroySection
 {

@@ -15,14 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Start a new draft of a section, copied from a version that already exists.
- *
- * This is what changing a published section means: adding a field to one, taking
- * one out, renaming a label. The published version is left alone and every template version
- * carrying it goes on rendering exactly what it did.
- *
- * Every field is copied, since fields belong to the version and never to the
- * section. Repeaters are copied first and what sits inside them afterwards, so
- * each child finds its new parent rather than the old one.
  */
 class CreateSectionVersionDraft
 {

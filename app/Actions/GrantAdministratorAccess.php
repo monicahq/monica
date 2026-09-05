@@ -12,16 +12,6 @@ use App\Models\User;
 
 /**
  * Let somebody run the instance.
- *
- * The administrator granting it may be nobody, which is the console designating
- * the first administrator of an instance, or recovering one left with none. That
- * is the only route in that does not already require the capacity, and it
- * requires a shell on the server instead.
- *
- * A user who cannot sign in may be granted it. It buys them nothing, since
- * {@see User::isAdministrator()} asks whether they are active as well, and the
- * list of administrators says so plainly. Refusing the grant instead would mean
- * a deactivation silently undoing a decision somebody made on purpose.
  */
 class GrantAdministratorAccess
 {

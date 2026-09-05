@@ -15,19 +15,12 @@ use App\Models\Reminder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<Reminder>
- */
+/** @extends Factory<Reminder> */
 class ReminderFactory extends Factory
 {
     protected $model = Reminder::class;
 
-    /**
-     * Everything about where the rule lives is read off the value it reads,
-     * since a rule in a different compartment than its own source is nothing.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -64,9 +57,6 @@ class ReminderFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the rule fires once and is then done with.
-     */
     public function once(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -74,10 +64,6 @@ class ReminderFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the rule comes back on a rhythm somebody set themselves,
-     * which is the yearly cadence with the interval spaced out.
-     */
     public function everyFewYears(int $interval = 3): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -86,9 +72,6 @@ class ReminderFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the rule has gone quiet, for the reason given.
-     */
     public function inactive(ReminderInactiveReasonEnum $reason = ReminderInactiveReasonEnum::RecordArchived): static
     {
         return $this->state(fn (array $attributes): array => [

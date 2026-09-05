@@ -14,16 +14,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Rename a page.
- *
- * The key is left exactly as it is. It is what record URLs carry and what later
- * drafts keep, and a tab that changes address because somebody preferred
- * another word is a link that stops working.
- *
- * A page the product supplied reads by its translation key until this action
- * runs. From the moment somebody renames it, it reads in their words in every
- * language, which is what renaming means.
- *
- * Only on a draft, which the model enforces.
  */
 class UpdateTemplateVersionPage
 {

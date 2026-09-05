@@ -12,20 +12,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Override;
 
-/**
- * @extends Factory<ShareLink>
- */
+/** @extends Factory<ShareLink> */
 class ShareLinkFactory extends Factory
 {
     protected $model = ShareLink::class;
 
-    /**
-     * The account and the vault are taken from what is shared, since a link to
-     * something in another compartment is nothing. Everything sensitive is out,
-     * which is the state a link is really born in.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -55,9 +47,6 @@ class ShareLinkFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the link is onto a whole vault rather than onto one page.
-     */
     public function forVault(?Vault $vault = null): static
     {
         return $this->state(function (array $attributes) use ($vault): array {
@@ -72,9 +61,6 @@ class ShareLinkFactory extends Factory
         });
     }
 
-    /**
-     * Indicate that the link asks for a password before it opens.
-     */
     public function withPassword(string $password = 'bears beets battlestar'): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -82,9 +68,6 @@ class ShareLinkFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the link has stopped working on its own.
-     */
     public function expired(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -92,9 +75,6 @@ class ShareLinkFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the link was revoked, which is immediate and permanent.
-     */
     public function revoked(): static
     {
         return $this->state(fn (array $attributes): array => [

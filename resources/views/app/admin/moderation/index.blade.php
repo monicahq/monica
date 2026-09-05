@@ -1,15 +1,5 @@
-{{--
-  Every marketplace submission waiting for a decision, oldest first.
-
-  Oldest first is not a preference. A queue ordered any other way is a queue where
-  the author who has waited longest is the one nobody reaches, and waiting without
-  an answer is the thing this screen exists to end.
-
-  Each row says how long it has waited out loud, because a date does not read as a
-  delay and a delay is what a moderator has to act on.
-
-  @var \App\ViewModels\Admin\ModerationQueueViewModel $viewModel
---}}
+{{-- Every marketplace submission waiting for a decision, oldest first. --}}
+{{-- @var \App\ViewModels\Admin\ModerationQueueViewModel $viewModel --}}
 <x-admin-layout :title="__('Moderation')">
   <header class="flex flex-col gap-2">
     <h1 class="text-page-title text-ink">{{ __('Moderation') }}</h1>

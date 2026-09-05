@@ -10,16 +10,9 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Translation\PotentiallyTranslatedString;
 use Override;
 
-/**
- * Check the token the Turnstile widget put in the form against Cloudflare. A
- * call that fails for any reason fails the rule, so a challenge that cannot be
- * verified never counts as passed.
- */
 class Turnstile implements ValidationRule
 {
-    /**
-     * @param  Closure(string, string|null=): PotentiallyTranslatedString  $fail
-     */
+    /** @param  Closure(string, string|null=): PotentiallyTranslatedString  $fail */
     #[Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {

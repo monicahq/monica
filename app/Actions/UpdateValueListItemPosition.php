@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Move a choice inside its list, so the ones picked most often come first.
- *
- * Disabled items are numbered along with the rest, because a disabled item
- * keeps its place and has to find it again when it is offered anew.
  */
 class UpdateValueListItemPosition
 {

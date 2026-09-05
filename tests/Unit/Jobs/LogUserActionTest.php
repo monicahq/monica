@@ -87,12 +87,6 @@ class LogUserActionTest extends TestCase
         $this->assertEquals(['last_name' => ['before' => 'Levinson', 'after' => 'Levinson-Gould']], $log->changes);
     }
 
-    /**
-     * Half of what is worth writing down is a deletion, and by the time the
-     * queue reaches the job the row it names is gone. A job that went looking
-     * for it on the way out of the queue would lose the record of every deletion
-     * the product performs.
-     */
     #[Test]
     public function it_still_writes_the_entry_when_what_it_is_about_has_gone(): void
     {
@@ -111,8 +105,6 @@ class LogUserActionTest extends TestCase
 
         $vault->forceDelete();
 
-        /* Round trip it the way a queue does, which is what used to go looking
-           for the row and fail. */
         unserialize(serialize($job))->handle();
 
         $log = Log::query()->latest()->first();

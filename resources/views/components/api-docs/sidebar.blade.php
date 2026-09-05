@@ -1,14 +1,5 @@
+{{-- The way around the reference. --}}
 {{--
-  The way around the reference.
-
-  Every entry is a link to a page of its own, so the reference behaves like a
-  set of documents rather than one long one: a link opens what it names, the
-  back button walks between endpoints, and none of it depends on the scripting.
-  The script only narrows the list as somebody types.
-
-  Which entry is the one being read is decided here rather than in the browser,
-  because the server already knows.
-
   @var array $navigation
   @var string $current
 --}}

@@ -1,26 +1,5 @@
-{{--
-  One reminder, explained.
-
-  The list beside this screen draws deadlines, because three of the four things
-  it offers act on one instant. This screen draws the rule, because everything it
-  explains belongs to the rule: the cadence, the moments, the hour, the zone and
-  the date it reads. The deadlines still appear, in a panel of their own, drawn
-  by the list's own row so that one deadline reads the same way in both places.
-
-  Every instant on the page is read in the zone frozen on the rule, and the
-  schedule panel says whose zone that is. It is not necessarily the reader's, and
-  the one thing that surprises somebody about a reminder is the hour it arrived.
-
-  A reminder that has gone quiet is drawn in full, with the reason in words and
-  no date claimed as next. Nothing about a reminder disappears without an
-  explanation, and this is where the explanation is read.
-
-  Editing is a link out. A reminder is written by the save of the record's own
-  block, under the date it reads, so a form here would be a second place to
-  change one rule.
-
-  @var \App\ViewModels\Vaults\ReminderViewModel $viewModel
---}}
+{{-- One reminder, explained. --}}
+{{-- @var \App\ViewModels\Vaults\ReminderViewModel $viewModel --}}
 @php
   $state = $viewModel->state();
   $next = $viewModel->next();
@@ -68,10 +47,6 @@
       </div>
     </div>
 
-    {{-- Pausing is not destructive and is undone by the button that replaces it,
-         so neither warns first. Starting again is offered only for a reminder
-         somebody paused: one the system silenced comes back by reversing what
-         silenced it, which is not something this screen can do. --}}
     <div class="flex shrink-0 items-center gap-2">
       @if ($state['isActive'])
         <x-form method="put" :action="$viewModel->pauseUrl()" class="contents">
@@ -87,11 +62,6 @@
     </div>
   </div>
 
-  {{--
-    What happens next, or what is not happening. A reminder that has gone quiet
-    keeps this block and fills it with the reason, because an empty space where a
-    date should be reads as something broken rather than as something paused.
-  --}}
   <div
     @class([
       'flex flex-wrap items-center gap-x-6 gap-y-3 rounded-lg border px-5 py-4',
@@ -113,10 +83,6 @@
       <span class="text-sm text-pretty text-body">{{ $next['note'] }}</span>
     </div>
 
-    {{-- The two things somebody does about what is coming, offered where they
-         have just read what is coming. They act on that one deadline and leave
-         the rule producing, so neither warns first. A reminder that is not
-         firing has no deadline to act on and is offered neither. --}}
     @if ($next['isScheduled'] && $nextRow !== null)
       <div class="flex flex-none items-center gap-1.5">
         @include('app.vaults.reminders._postpone', ['row' => $nextRow])
@@ -182,11 +148,6 @@
     </dl>
   </x-panel>
 
-  {{--
-    What is still ahead, drawn by the list's own row. A rule whose next date lies
-    beyond the window deadlines are generated for has nothing here, and the empty
-    state says that rather than letting a blank panel read as breakage.
-  --}}
   <x-panel :title="__('Still to come')" :subtitle="__('The deadlines this reminder has produced and not yet finished with.')" icon="reminder" :flush="true">
     @forelse ($occurrences as $row)
       <div class="border-t border-hairline px-4 py-3.5 first:border-t-0">
@@ -211,9 +172,6 @@
     </x-panel>
   @endif
 
-  {{-- The one thing on the page that cannot be undone, so it is the one thing
-       that asks twice. What it takes and what it leaves are both named, because
-       "delete the reminder" is easy to read as "delete the birthday". --}}
   <x-panel :title="__('Delete this reminder')" tone="danger" icon="info">
     <div class="flex flex-wrap items-center justify-between gap-5">
       <p class="max-w-[60ch] text-sm leading-relaxed text-pretty text-body">

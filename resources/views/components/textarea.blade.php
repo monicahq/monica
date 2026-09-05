@@ -1,8 +1,5 @@
+{{-- A multi-line text field, with its label, its hint and its validation messages. --}}
 {{--
-  A multi-line text field, with its label, its hint and its validation
-  messages. It is <x-input> with room for more than one line, and it reads the
-  same props so a form can swap one for the other.
-
   @var string|null $id
   @var string|null $name
   @var string|null $label
@@ -32,7 +29,6 @@
   $errorId = $error ? $id.'-error' : null;
   $describedBy = trim(($helpId ?? '').' '.($errorId ?? ''));
 
-  /* The same well <x-input> draws, grown to hold more than one line. */
   $control = 'w-full rounded-md border border-hairline-strong bg-input px-3 py-2.75 font-sans text-ink '
     .'transition-[border-color,box-shadow] duration-(--duration-fast) ease-out '
     .'placeholder:text-placeholder hover:border-muted-soft '

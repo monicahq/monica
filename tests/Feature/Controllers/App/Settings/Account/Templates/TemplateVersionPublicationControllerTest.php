@@ -36,11 +36,6 @@ class TemplateVersionPublicationControllerTest extends TestCase
         $this->assertEquals($draft->id, $template->fresh()->published_version_id);
     }
 
-    /**
-     * A template version cannot be frozen while it points at a section somebody
-     * is still editing, and the user has no separate screen for a section, so
-     * the sections go with it.
-     */
     #[Test]
     public function it_publishes_the_sections_it_carries(): void
     {

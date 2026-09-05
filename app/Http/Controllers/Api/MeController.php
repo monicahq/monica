@@ -10,10 +10,6 @@ use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-/**
- * The user the token belongs to. A token acts as one person, so there is
- * nobody else to ask for here and no identifier in the URL.
- */
 class MeController extends Controller
 {
     public function show(Request $request): UserResource

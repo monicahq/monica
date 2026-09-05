@@ -16,14 +16,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-/**
- * One section, coming back in onto the page it should land on.
- *
- * The page is in the address rather than asked for on the screen, because the
- * import is reached from the builder and the builder is already showing one
- * page of one version. Somebody who got this far has already answered the
- * question a screen would have had to ask.
- */
 class SectionImportController extends Controller
 {
     public function new(Request $request, Template $template, TemplateVersionPage $templateVersionPage): View

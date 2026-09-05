@@ -1,15 +1,5 @@
+{{-- A text field, with its label, its hint and its validation messages. --}}
 {{--
-  A text field, with its label, its hint and its validation messages. The id is
-  also the name of the field, so one prop drives both.
-
-  A screen that repeats the same field on every row of a list gives `name`
-  separately, since the name is the same on each of them and the id cannot be.
-
-  `required` makes the browser refuse an empty field; `requiredMark` writes the
-  word beside the label. They are separate because most forms here require most
-  of their fields, and a badge on nearly every line says nothing. A form where
-  almost everything is optional asks for the mark on the one field that is not.
-
   @var string $type
   @var string|null $id
   @var string|null $name
@@ -23,9 +13,6 @@
   @var string|null $autocomplete
   @var bool $required
   @var bool $autofocus
-  A field in a bar rather than in a form is drawn small, which is the only size
-  besides the default one and lines up with a small button beside it.
-
   @var bool $disabled
   @var bool $allowPasswordManager
   @var string $size
@@ -50,24 +37,10 @@
 ])
 
 @php
-  /* The hint and the errors are announced with the field rather than read as
-     loose text somewhere after it, so they are pointed at by id. */
   $helpId = $help ? $id.'-help' : null;
   $errorId = $error ? $id.'-error' : null;
   $describedBy = trim(($helpId ?? '').' '.($errorId ?? ''));
 
-  /*
-   * A control is a white box inside a hairline. Focus darkens that hairline to
-   * near black and lays a soft ring of the same colour outside it, so which field
-   * is being typed in is plain at a glance down a long form, and the ring is the
-   * same shape a button draws when the keyboard reaches it.
-   *
-   * Safari on iOS zooms the page in whenever a field it is given is under 16px, so
-   * every control is 16px on a phone and back down to its own size from sm up.
-   *
-   * <x-textarea> and <x-select> carry the same string. Three tags cannot share one
-   * definition without a wrapper that hides which tag is being drawn.
-   */
   $control = 'w-full rounded-md border border-hairline-strong bg-input px-3 font-sans text-ink '
     .'transition-[border-color,box-shadow] duration-(--duration-fast) ease-out '
     .'placeholder:text-placeholder hover:border-muted-soft '

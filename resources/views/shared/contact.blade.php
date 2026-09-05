@@ -1,24 +1,5 @@
-{{--
-  Somebody's page as whoever holds a link to it sees it.
-
-  It is not the private record with things taken off it. The bar at the top is dark
-  and says who shared this and on what terms, so the page never reads as an
-  application somebody has been let into: it is a document, and it is signed.
-
-  There is no photograph, no dock, no search and no way anywhere else. The avatar is
-  drawn from initials rather than from the file, because a file is a file and files
-  stay behind whatever a link says.
-
-  Nothing here is a form. That is the rule the whole feature rests on, and the reason
-  this file has no <x-form> in it and never may.
-
-  The tabs are the pages that still have something on them. A page whose every
-  section was held back is not a tab at all: an empty tab would tell somebody that
-  there is something they are not being shown, which is a leak of a kind even though
-  it carries no value.
-
-  @var \App\ViewModels\Shared\SharedContactViewModel $viewModel
---}}
+{{-- Somebody's page as whoever holds a link to it sees it. --}}
+{{-- @var \App\ViewModels\Shared\SharedContactViewModel $viewModel --}}
 @php
   $tabs = $viewModel->tabs();
   $sections = $viewModel->sections();

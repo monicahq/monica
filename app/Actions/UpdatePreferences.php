@@ -13,15 +13,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Change what somebody chose about the way the application reads to them: the
- * language of the interface, the clock times are written on, the order dates
- * read in, and the separators numbers are written with.
- *
- * These belong to the account rather than to the browser, so they follow the
- * person to every device they sign in from.
- *
- * A null date or number format is a choice rather than an omission: it means
- * those follow whatever the interface language writes them as.
+ * Change what somebody chose about the way the application reads to them: the language of the
+ * interface, the clock times are written on, the order dates read in, and the separators numbers
+ * are written with.
  */
 class UpdatePreferences
 {
@@ -45,12 +39,6 @@ class UpdatePreferences
         return $this->user;
     }
 
-    /**
-     * The keys every list is ordered on describe the language chosen before this,
-     * so they are written again in the same transaction as the choice. A list
-     * ordered on keys half in one language and half in another can show a row
-     * twice or miss it. If this cannot finish, the language stays as it was.
-     */
     private function reorder(): void
     {
         (new RebuildOrderingKeys(

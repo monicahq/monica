@@ -12,25 +12,6 @@ use Throwable;
 
 /**
  * Hand one notification to the channel it is meant to go out on.
- *
- * Everything about it is written to be run twice safely. A notification already
- * sent, already abandoned or still held goes nowhere and says so by returning
- * false, so a sweep that overlaps with itself, or a worker that picks the same
- * row up twice, tells nobody twice.
- *
- * The world is checked again in the instant before anything goes out, and that
- * check is the point of the whole method. Quiet hours can hold a notification
- * for hours, and a deadline due at 3am on a contact archived at 7am must not
- * arrive at 8am. When the check fails, nothing is sent and the row stays with
- * the reason written on it, because a notification silently dropped is
- * indistinguishable from one that was never scheduled.
- *
- * A channel that refuses is tried again. Only after the configured number of
- * attempts is the notification abandoned, and abandoning it means writing why on
- * the row rather than removing it.
- *
- * The in-app channel has nothing to hand anything to: the row is the
- * notification, and sending it is saying so.
  */
 class DeliverNotification
 {
@@ -38,9 +19,6 @@ class DeliverNotification
         private readonly Notification $notification,
     ) {}
 
-    /**
-     * Whether the notification went out.
-     */
     public function execute(): bool
     {
         if (! $this->mayGoOut()) {
@@ -76,10 +54,6 @@ class DeliverNotification
             && ! $this->notification->held_until->isFuture();
     }
 
-    /**
-     * Whether anything should still be said. A notification about something
-     * other than a reminder deadline has nothing to check, so it goes out.
-     */
     private function isStillWarranted(): bool
     {
         $occurrence = $this->notification->notifiable;
@@ -105,11 +79,6 @@ class DeliverNotification
         )->locale($this->notification->locale));
     }
 
-    /**
-     * Record that it went out, and tell the deadline it is about that something
-     * finally reached somebody. Only the first one to arrive writes that, since
-     * it is when the person was told rather than when the last channel finished.
-     */
     private function markSent(): void
     {
         $this->notification->sent_at = now();
@@ -123,10 +92,6 @@ class DeliverNotification
         }
     }
 
-    /**
-     * One failed attempt. It is abandoned once there have been enough of them,
-     * and left alone to be tried again until there have.
-     */
     private function stumble(Throwable $e): void
     {
         if ($this->notification->attempts >= (int) config('monica.notification_maximum_attempts')) {

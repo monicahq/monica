@@ -17,9 +17,6 @@ class AccountController extends Controller
     {
         $user = $request->user();
 
-        // Somebody typing their address in the case they read it in should not
-        // be told they got it wrong, so the comparison happens on the lowercase
-        // form the column already holds.
         $request->merge(['confirm_email' => mb_strtolower(trim((string) $request->input('confirm_email')))]);
 
         $request->validate([

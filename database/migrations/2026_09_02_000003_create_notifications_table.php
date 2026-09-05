@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('notifications', function (Blueprint $table): void {
@@ -37,13 +34,8 @@ return new class extends Migration
             $table->unsignedBigInteger('digest_id')->nullable()->comment('summary it was folded into, null when it went out on its own');
             $table->timestamps();
 
-            /* Has this person already been told about this thing falling due at
-               this instant, on this channel? The instant is in the key because
-               putting a deadline off moves it, and somebody who asked to be told
-               later has to be told later: without it, a postponed deadline could
-               never produce a second notification. A digest leaves the first two
-               columns null, and a null collides with nothing on any of the three
-               drivers, so one index covers both shapes. */
+            // The instant is in the key because putting a deadline off moves it, and somebody who
+            // asked to be told later has to be told a second time.
             $table->unique(['notifiable_type', 'notifiable_id', 'channel', 'user_id', 'scheduled_for'], 'notifications_told_once_unique');
 
             $table->index(['held_until', 'sent_at']);

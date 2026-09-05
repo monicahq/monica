@@ -12,16 +12,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Override;
 
-/**
- * @extends Factory<Template>
- */
+/** @extends Factory<Template> */
 class TemplateFactory extends Factory
 {
     protected $model = Template::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -41,10 +37,6 @@ class TemplateFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the template describes a kind of record the account
-     * invented rather than a contact.
-     */
     public function forEntity(?EntityType $entityType = null): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -54,10 +46,6 @@ class TemplateFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the product supplied the template, which reads by its
-     * translation key until the user renames it.
-     */
     public function supplied(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -67,10 +55,6 @@ class TemplateFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the template is no longer offered for a new record, while
-     * every record already on it stays readable and editable.
-     */
     public function inactive(): static
     {
         return $this->state(fn (array $attributes): array => [

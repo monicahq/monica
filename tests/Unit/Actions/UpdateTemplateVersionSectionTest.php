@@ -46,10 +46,6 @@ class UpdateTemplateVersionSectionTest extends TestCase
         $this->assertTrue($row->is_collapsed_by_default);
     }
 
-    /**
-     * The heading a template version gives a section does not rename the section for anybody
-     * else who carries it.
-     */
     #[Test]
     public function it_leaves_the_name_of_the_section_itself_alone(): void
     {

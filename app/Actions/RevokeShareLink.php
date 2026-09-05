@@ -12,16 +12,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Close a private link. It stops working at once, and it never works again.
- *
- * There is no undoing this and no reactivating: somebody revoking a link
- * believes it has gone somewhere it should not have, and a link that could come
- * back would make that belief wrong. What they get instead is a new link, with
- * a new token, which whoever held the old one does not have.
- *
- * The link itself stays, and so does every visit written against it. The point
- * of revoking something is often to find out what was read before it was
- * revoked, and a row deleted here would take that answer with it.
+ * Close a private link.
  */
 class RevokeShareLink
 {

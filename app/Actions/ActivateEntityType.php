@@ -11,9 +11,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Allow records of a kind to be created again, in the place the type always
- * had. Deactivating one is meant to be undone as easily as it was done, which
- * is why the position survives it.
+ * Allow records of a kind to be created again, in the place the type always had.
  */
 class ActivateEntityType
 {

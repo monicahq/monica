@@ -32,10 +32,6 @@ class FileControllerTest extends TestCase
         $this->assertStringContainsString('lease.pdf', (string) $response->headers->get('content-disposition'));
     }
 
-    /**
-     * The vault is the compartment, so a file of one vault is not merely
-     * forbidden through another: it is not found.
-     */
     #[Test]
     public function it_does_not_find_a_file_kept_in_another_vault(): void
     {
@@ -64,11 +60,6 @@ class FileControllerTest extends TestCase
             ->assertNotFound();
     }
 
-    /**
-     * A row pointing at bytes that are gone is a 404 rather than an error page:
-     * the sweep may have taken them, and there is nothing to hand back either
-     * way.
-     */
     #[Test]
     public function it_does_not_find_a_file_whose_bytes_have_gone(): void
     {

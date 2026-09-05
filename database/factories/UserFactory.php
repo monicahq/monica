@@ -14,21 +14,14 @@ use Illuminate\Support\Str;
 use Override;
 use PragmaRX\Google2FA\Google2FA;
 
-/**
- * @extends Factory<User>
- */
+/** @extends Factory<User> */
 class UserFactory extends Factory
 {
     protected $model = User::class;
 
-    /**
-     * The current password being used by the factory.
-     */
     private static string $password;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -49,9 +42,6 @@ class UserFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the email address of the user is not verified.
-     */
     public function unverified(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -59,9 +49,6 @@ class UserFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the user signs in through an SSO provider.
-     */
     public function singleSignOn(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -71,9 +58,6 @@ class UserFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the user reads their name family name first.
-     */
     public function familyNameFirst(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -81,9 +65,6 @@ class UserFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the user is suspended.
-     */
     public function inactive(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -91,10 +72,6 @@ class UserFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the user finished enrolling in two factor authentication.
-     * The secret is a real one, so a test can generate a code that verifies.
-     */
     public function twoFactor(?string $secret = null): static
     {
         return $this->state(fn (array $attributes): array => [

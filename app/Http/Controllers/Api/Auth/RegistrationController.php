@@ -13,18 +13,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
 
-/**
- * Open an account from outside the browser.
- *
- * The account this builds is the account the sign up screen builds, down to the
- * first vault and the lists it starts with, because it asks the same action for
- * it. The terms are asked for here too: the screen refuses to create an account
- * without them, so a second way in that skipped them would be a way around
- * them rather than a convenience.
- *
- * The bot challenge the screen carries is a browser thing and has no meaning
- * over the API. What stands in its place is the rate limit on this route.
- */
 class RegistrationController extends Controller
 {
     public function store(Request $request): JsonResponse
@@ -60,11 +48,6 @@ class RegistrationController extends Controller
         ], 201);
     }
 
-    /**
-     * Name the key after whatever asked for it, so the list on the security
-     * screen says which integration each one belongs to. A key nobody named is
-     * still identifiable by the date it was made, so an unnamed one is allowed.
-     */
     private function keyName(?string $deviceName): string
     {
         $deviceName = TextSanitizer::plainText((string) $deviceName);

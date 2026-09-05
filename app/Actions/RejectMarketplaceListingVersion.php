@@ -18,16 +18,6 @@ use InvalidArgumentException;
 
 /**
  * Refuse a version, and say why.
- *
- * The reason is not optional. A refusal without one tells the author nothing
- * they can act on, and the specification asks for refusals to be explained and
- * communicated rather than silent.
- *
- * What happens to the listing depends on whether it had already made it in. One
- * that never did is refused with the version, and the author sees the reason on
- * it. One already in the catalogue stays exactly where it is, on the version
- * people are installing: a bad fifth version is no reason to take away a good
- * fourth one from everybody looking at it.
  */
 class RejectMarketplaceListingVersion
 {
@@ -58,11 +48,6 @@ class RejectMarketplaceListingVersion
         $this->reason = TextSanitizer::plainText($this->reason);
     }
 
-    /**
-     * Hold the row for the rest of the transaction, then read back what it
-     * actually says, so two administrators deciding at the same moment produce
-     * exactly one decision.
-     */
     private function lock(): void
     {
         MarketplaceListingVersion::query()
@@ -101,10 +86,6 @@ class RejectMarketplaceListingVersion
         $listing->save();
     }
 
-    /**
-     * An account whose person was deleted has nobody to tell. The reason stays
-     * on the version either way, which is where the author would read it.
-     */
     private function tellTheAuthor(): void
     {
         $listing = $this->version->listing;

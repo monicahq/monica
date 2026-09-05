@@ -15,10 +15,6 @@ enum PhoneLabelEnum: string implements SuppliedValueListItem
     case Fax = 'fax';
     case Other = 'other';
 
-    /**
-     * What the number is for, shown beside it on a record. The word doubles as
-     * the translation key.
-     */
     #[Override]
     public function label(): string
     {
@@ -31,11 +27,7 @@ enum PhoneLabelEnum: string implements SuppliedValueListItem
         };
     }
 
-    /**
-     * The label this item is seeded with.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

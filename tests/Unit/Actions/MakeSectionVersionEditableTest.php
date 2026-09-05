@@ -20,10 +20,6 @@ class MakeSectionVersionEditableTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * The ordinary case: a section somebody has just added to their own draft,
-     * which nothing else is carrying.
-     */
     #[Test]
     public function it_hands_back_a_draft_nobody_else_carries(): void
     {
@@ -62,10 +58,6 @@ class MakeSectionVersionEditableTest extends TestCase
         $this->assertEquals($sectionVersion->id, $result->previous_version_id);
     }
 
-    /**
-     * A draft a second template is carrying is as untouchable as a published
-     * one: editing it would change what that other template asks for.
-     */
     #[Test]
     public function it_gives_a_shared_draft_a_new_version(): void
     {
@@ -123,10 +115,6 @@ class MakeSectionVersionEditableTest extends TestCase
         $this->assertEquals(['Street'], $result->fields->pluck('label')->all());
     }
 
-    /**
-     * The published version keeps everything it had, which is the whole reason
-     * for making a copy rather than writing to it.
-     */
     #[Test]
     public function it_leaves_the_published_version_untouched(): void
     {

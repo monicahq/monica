@@ -13,8 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Bring a deleted contact back, on the version they were rendering from before
- * they went. The counts they were taken out of are given back to them.
+ * Bring a deleted contact back, on the version they were rendering from before they went.
  */
 class RestoreContact
 {
@@ -41,7 +40,6 @@ class RestoreContact
 
     private function restore(): void
     {
-        // Restoring somebody who never left would count them twice.
         if (! $this->contact->trashed()) {
             return;
         }

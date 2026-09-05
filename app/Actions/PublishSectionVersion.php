@@ -17,12 +17,8 @@ use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 /**
- * Freeze a draft of a section, so template versions can be built on something that will not
- * move under them.
- *
- * Publishing also takes a copy of every value list the fields here read from,
- * which is what stops the freeze at the edge of this table from meaning
- * nothing. What that copy holds and why is explained where it is taken.
+ * Freeze a draft of a section, so template versions can be built on something that will not move
+ * under them.
  */
 class PublishSectionVersion
 {

@@ -83,11 +83,6 @@ class ContactSectionControllerTest extends TestCase
             ->assertSee('Allergies');
     }
 
-    /**
-     * A field the template marks as highlighted is drawn beside the photograph
-     * as well, so a save that replaced only the panel would leave the header
-     * stating the answer it used to hold.
-     */
     #[Test]
     public function saving_a_block_reaches_the_facts_beside_the_photograph_too(): void
     {
@@ -193,11 +188,6 @@ class ContactSectionControllerTest extends TestCase
         $this->assertSame(0, FieldValue::query()->count());
     }
 
-    /**
-     * The placeholder year is what makes a birthday with no year storable, and
-     * it must never reach a screen: not as text on the page, and not sitting in
-     * the date control either, where it would read as a fact somebody entered.
-     */
     #[Test]
     public function it_never_puts_the_placeholder_year_on_the_screen(): void
     {
@@ -379,11 +369,6 @@ class ContactSectionControllerTest extends TestCase
         $this->assertDatabaseHas('field_values', ['field_id' => $description->id, 'value_string' => 'The lease']);
     }
 
-    /**
-     * The queue is deliberately real here. Removing a repetition writes a
-     * journal entry about a row that no longer exists, and faking the queue is
-     * exactly what hid that from every test in the suite.
-     */
     #[Test]
     public function it_takes_away_a_repetition_somebody_removed(): void
     {
@@ -406,8 +391,6 @@ class ContactSectionControllerTest extends TestCase
 
         $stored = File::query()->sole();
 
-        /* A removed repetition arrives as an absence: its controls were
-           disabled, so nothing about it is sent. */
         $this->actingAs($user)->put($url, [])
             ->assertSessionHasNoErrors()
             ->assertRedirect(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'information']));
@@ -415,8 +398,6 @@ class ContactSectionControllerTest extends TestCase
         $this->assertSame(0, FieldValueRow::query()->count());
         $this->assertDatabaseMissing('field_values', ['field_id' => $description->id]);
 
-        /* The file is let go of rather than deleted, so restoring an older
-           version of the record still finds it on the disk. */
         $this->assertSame(0, $stored->refresh()->reference_count);
         $this->assertNotNull($stored->orphaned_at);
     }
@@ -447,10 +428,6 @@ class ContactSectionControllerTest extends TestCase
         $this->assertSame(0, File::query()->count());
     }
 
-    /**
-     * The repetition is what the read half draws, and what it draws is the
-     * document itself rather than a count of them.
-     */
     #[Test]
     public function it_reads_a_repetition_back_as_what_it_holds(): void
     {
@@ -484,11 +461,6 @@ class ContactSectionControllerTest extends TestCase
             ->assertSee(route('files.show', ['vault' => $vault, 'file' => $stored]), false);
     }
 
-    /**
-     * A document with a file in it means the form has to be able to carry one.
-     * Without the encoding the upload arrives as the name of the file and
-     * nothing else, and nothing says why.
-     */
     #[Test]
     public function a_block_that_takes_a_file_says_so_on_its_form(): void
     {
@@ -505,12 +477,7 @@ class ContactSectionControllerTest extends TestCase
             ->assertSee('enctype="multipart/form-data"', false);
     }
 
-    /**
-     * A repeater carrying a file and a line of text, which is the shape the
-     * shipped template gives Documents and Photos.
-     *
-     * @return array{0: Field, 1: Field, 2: Field}
-     */
+    /** @return array{0: Field, 1: Field, 2: Field} */
     #[Test]
     public function it_offers_a_reminder_under_every_date_it_draws(): void
     {
@@ -751,12 +718,7 @@ class ContactSectionControllerTest extends TestCase
             ->assertDontSee('M8 6.6V9.2l1.9 1.3', false);
     }
 
-    /**
-     * A structure holding one date, which is what a reminder needs to exist at
-     * all.
-     *
-     * @return array{0: TemplateVersion, 1: Field}
-     */
+    /** @return array{0: TemplateVersion, 1: Field} */
     #[Test]
     #[DataProvider('badMoments')]
     public function it_sends_the_block_back_open_when_the_moments_say_nothing_usable(array $moments): void
@@ -785,9 +747,7 @@ class ContactSectionControllerTest extends TestCase
         $this->assertDatabaseCount('reminders', 0);
     }
 
-    /**
-     * @return array<string, array{0: array<int, array<string, string|null>>}>
-     */
+    /** @return array<string, array{0: array<int, array<string, string|null>>}> */
     public static function badMoments(): array
     {
         return [
@@ -879,8 +839,6 @@ class ContactSectionControllerTest extends TestCase
     }
 
     /**
-     * What the panel under a date sends when the box is ticked.
-     *
      * @param  array<string, mixed>  $changes
      * @return array<string, mixed>
      */
@@ -915,9 +873,7 @@ class ContactSectionControllerTest extends TestCase
         return [$documents, $file, $this->childOf($documents, 'Description')];
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function childOf(Field $repeater, string $label, array $attributes = []): Field
     {
         $sectionVersion = $repeater->sectionVersion()->first();
@@ -936,14 +892,7 @@ class ContactSectionControllerTest extends TestCase
         return $child;
     }
 
-    /**
-     * A published version carrying one page and, on it, one section per name
-     * given with one field inside each. It is assembled while the version is
-     * still a draft, because a published one is frozen and refuses every one of
-     * these rows.
-     *
-     * @param  array<string, string>  $sections  the field label, keyed by the section name
-     */
+    /** @param  array<string, string>  $sections  the field label, keyed by the section name */
     private function versionWithSections(User $user, string $pageLabel, array $sections): TemplateVersion
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
@@ -983,9 +932,7 @@ class ContactSectionControllerTest extends TestCase
             ->first(fn (TemplateVersionSection $row): bool => $row->sectionVersion->section->name === $name);
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function contact(Vault $vault, string $firstName, string $lastName, array $attributes = []): Contact
     {
         return Contact::factory()->create([

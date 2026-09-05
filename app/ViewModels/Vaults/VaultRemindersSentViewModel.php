@@ -10,28 +10,6 @@ use App\Models\Vault;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Pagination\Paginator;
 
-/**
- * What this vault has already told somebody about.
- *
- * It answers a different question from the list beside it, and it is the first
- * place to look when a reminder seems not to have arrived: the Active tab says
- * what is coming, this says what went out.
- *
- * A row is a deadline that was notified, not a notification, because a deadline
- * that reached somebody in the app and by email is one thing that happened and
- * would otherwise be listed twice. The channels it went out on are read off the
- * notifications underneath it and drawn as marks on the one row.
- *
- * It keys off `notified_at` rather than off status, and that has two
- * consequences worth stating. A row survives the deletion of the rule that made
- * it, which is what Principle VIII asks of history. And a test send, which
- * deliberately leaves `notified_at` alone, never appears here, so pressing that
- * button cannot pollute the record of what actually reached somebody.
- *
- * The history is unbounded, unlike the ninety day window next door, so it
- * paginates. It is drawn the way every other long list in this application is,
- * as a page with a way to ask for the next one.
- */
 class VaultRemindersSentViewModel
 {
     public const int PER_PAGE = 25;
@@ -64,11 +42,7 @@ class VaultRemindersSentViewModel
         return __('Every reminder this vault has actually sent, newest first, and what became of it afterwards.');
     }
 
-    /**
-     * The rows of this page, newest first.
-     *
-     * @return array<int, array<string, mixed>>
-     */
+    /** @return array<int, array<string, mixed>> */
     public function rows(): array
     {
         return array_map(
@@ -110,10 +84,6 @@ class VaultRemindersSentViewModel
         return route('reminders.sent', $this->vault);
     }
 
-    /**
-     * How many deadlines are still coming, for the tab beside this one. It is
-     * counted rather than listed, since this screen never draws them.
-     */
     public function activeCount(): int
     {
         return ReminderOccurrence::query()
@@ -129,9 +99,7 @@ class VaultRemindersSentViewModel
         return ReminderOccurrence::query()->sentInVault($this->vault)->count();
     }
 
-    /**
-     * @return Paginator<int, ReminderOccurrence>
-     */
+    /** @return Paginator<int, ReminderOccurrence> */
     private function occurrences(): Paginator
     {
         return $this->occurrences ??= ReminderOccurrence::query()

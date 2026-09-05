@@ -1,22 +1,5 @@
-{{--
-  The form that writes somebody down.
-
-  It asks for a name and nothing else. Everything the contact page eventually
-  holds comes from the template, and is filled in on the contact once it exists,
-  so asking for any of it here would be asking twice.
-
-  The preview under the name order follows what is being typed rather than what
-  has been saved, so it is held in the browser.
-
-  The actions sit at the end of the form rather than in a bar pinned to the foot
-  of the window, which is what the v2 shell gave them. The dock lives down there
-  now, and two rows of controls stacked at the bottom edge is one too many. The
-  row is outside the form element and reaches back into it by id, which is what
-  lets the "create another one" box travel with the buttons instead of being
-  stranded three sections above them.
-
-  @var \App\ViewModels\Vaults\ContactFormViewModel $viewModel
---}}
+{{-- The form that writes somebody down. --}}
+{{-- @var \App\ViewModels\Vaults\ContactFormViewModel $viewModel --}}
 @use('App\Enums\NameOrderEnum')
 @php
   $vault = $viewModel->vault();
@@ -212,13 +195,6 @@
       @endif
     </x-form>
 
-    {{--
-      Nothing disables the button for an empty name: the field is required, so the
-      browser refuses the submission and points at the field, which says more than
-      a button that has quietly gone grey. The button is only refused when the
-      vault has nothing for a contact to start from, which is the one thing
-      filling the form in cannot fix.
-    --}}
     <div class="flex flex-wrap items-center gap-x-6 gap-y-3.5">
       <x-checkbox id="keep_going" form="contact-form" :checked="$values['keepGoing']">
         {{ __('Create another one after this') }}

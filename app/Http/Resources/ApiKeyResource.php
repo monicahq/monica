@@ -9,24 +9,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Laravel\Sanctum\PersonalAccessToken;
 use Override;
 
-/**
- * A key somebody minted, as the API hands it out.
- *
- * What is missing from it is the point: the key itself never appears here, in
- * any form. Only a hash of it is written down, and even that is not something
- * the API says out loud. The one response that carries the readable value is
- * the one that created it, and it carries it beside this envelope rather than
- * inside it, so that no listing can ever be made to leak one.
- *
- * The model the key acts as is left out too. It is always the caller.
- *
- * @mixin PersonalAccessToken
- */
+/** @mixin PersonalAccessToken */
 class ApiKeyResource extends JsonResource
 {
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function toArray(Request $request): array
     {

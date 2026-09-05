@@ -9,25 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
 
-/**
- * One email we sent, as the API hands it out.
- *
- * The four timestamps are all here, and so is the one word that reads them,
- * because a caller wanting to know whether an email arrived should not have to
- * work out that a bounce beats a delivery. That rule lives on the model, which
- * is also where the screen listing these reads it, so the two cannot disagree.
- *
- * The copy of the email is carried only when one email is asked for. A page of
- * twenty five emails is a list somebody is scanning, and putting the full body
- * of each one in it turns a list into a download.
- *
- * @mixin EmailSent
- */
+/** @mixin EmailSent */
 class EmailSentResource extends JsonResource
 {
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function toArray(Request $request): array
     {

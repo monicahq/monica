@@ -67,4 +67,7 @@ description: Conventions for defining views. Use when the user wants to create o
   what it takes with `@props([...])`, and document it in a `{{-- --}}` block at the top with one
   `@var` per prop, as 46 of the 51 components do. A component class belongs in `app/View/Components`
   only for a layout (`Shell`, `AccountLayout`, `AdminLayout`, `GuestLayout`, `MarketplaceLayout`).
+- Every template, a component included, MUST open with a one line `{{-- --}}` comment saying what the
+  view is, before the `@var` block. The rule and its examples are in
+  [code-style.md](../../rules/code-style.md).
 - As soon as you notice that a piece of view is repeated in multiple places, you MUST create a component for it.

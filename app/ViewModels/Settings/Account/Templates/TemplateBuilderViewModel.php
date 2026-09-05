@@ -18,19 +18,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as Support;
 use Illuminate\Support\Facades\DB;
 
-/**
- * One version of a template, the sections it carries, the fields inside them,
- * and whatever field is open in the inspector.
- *
- * It opens the draft, since that is the only thing anybody can change; a
- * template with nothing but published versions opens read only. A section
- * carried here may be published or sitting on somebody else's template, and
- * the screen says so on the section itself, because the first edit will
- * quietly give it a new version.
- *
- * The version is read one page at a time, and which page travels in the
- * address beside the field that is open.
- */
 class TemplateBuilderViewModel
 {
     public function __construct(
@@ -50,11 +37,6 @@ class TemplateBuilderViewModel
         return $this->user;
     }
 
-    /**
-     * The version on the screen: the draft if there is one, and otherwise
-     * whatever the template offers, so that opening a published template shows
-     * what it holds rather than an empty page.
-     */
     public function version(): ?TemplateVersion
     {
         return once(fn (): ?TemplateVersion => $this->template->versions->firstWhere('status', VersionStatusEnum::Draft)
@@ -62,27 +44,11 @@ class TemplateBuilderViewModel
             ?? $this->template->versions->first());
     }
 
-    /**
-     * Whether what is on the screen can be changed. Everything the builder
-     * offers is hidden behind this, and the model refuses the write underneath
-     * it in any case.
-     */
     public function isEditable(): bool
     {
         return $this->version()?->status->isEditable() === true;
     }
 
-    /**
-     * Whether what is on the screen can leave the account.
-     *
-     * Only the version the template actually offers can. A draft has nothing
-     * frozen to write down, and an older published version is not what the
-     * template stands behind, so neither is worth handing anybody a file of.
-     *
-     * The same answer governs the sections on the screen: publishing a template
-     * version refuses to carry a draft section, so every section version pinned
-     * by the published one is itself frozen.
-     */
     public function isShareable(): bool
     {
         return $this->template->published_version_id !== null
@@ -114,10 +80,6 @@ class TemplateBuilderViewModel
         };
     }
 
-    /**
-     * When the version last changed. Every edit in the builder saves as it is
-     * made, so this is what stands in for a save button.
-     */
     public function savedLabel(): string
     {
         $version = $this->version();
@@ -129,10 +91,6 @@ class TemplateBuilderViewModel
         return __('Saved :when', ['when' => $version->updated_at?->diffForHumans() ?? '']);
     }
 
-    /**
-     * The line at the foot, which says what publishing would and would not do
-     * to the records already on the template.
-     */
     public function publishingNote(): string
     {
         $published = $this->template->publishedVersion;
@@ -144,12 +102,7 @@ class TemplateBuilderViewModel
         return __('Records already on v:version stay on it until you move them deliberately.', ['version' => $published->version_number]);
     }
 
-    /**
-     * The tabs at the top: one per page of the version, in the order they are
-     * read in, each counting the fields somebody would find on it.
-     *
-     * @return array<int, array<string, mixed>>
-     */
+    /** @return array<int, array<string, mixed>> */
     public function pages(): array
     {
         $version = $this->version();
@@ -172,11 +125,6 @@ class TemplateBuilderViewModel
             ->all();
     }
 
-    /**
-     * The page the screen is showing. An address naming a page that is not on
-     * this version, or naming none at all, opens the first one rather than
-     * refusing: a tab that has gone is not an error worth a page of its own.
-     */
     public function selectedPage(): ?TemplateVersionPage
     {
         return once(function (): ?TemplateVersionPage {
@@ -190,11 +138,6 @@ class TemplateBuilderViewModel
         });
     }
 
-    /**
-     * Whether the open page can go. Both refusals belong to the action, and
-     * asking them here is what lets the screen explain instead of offering
-     * something that comes back refused.
-     */
     public function canRemovePage(): bool
     {
         $page = $this->selectedPage();
@@ -206,11 +149,7 @@ class TemplateBuilderViewModel
         return $this->version()?->assembly->where('template_version_page_id', $page->id)->isEmpty() === true;
     }
 
-    /**
-     * The pages a section on the open one could be moved to.
-     *
-     * @return array<int, array{id: int, uuid: string, label: string}>
-     */
+    /** @return array<int, array{id: int, uuid: string, label: string}> */
     public function otherPages(): array
     {
         $version = $this->version();
@@ -231,16 +170,7 @@ class TemplateBuilderViewModel
             ->all();
     }
 
-    /**
-     * How many other templates the mark on this section would reach.
-     *
-     * Read for the whole page in one query rather than per section, since a page
-     * of a dozen sections would otherwise be a dozen round trips for a sentence.
-     * Distinct templates rather than rows: a section placed twice on the same
-     * template is still one template that would see the change.
-     *
-     * @return array<int, int>
-     */
+    /** @return array<int, int> */
     private function otherTemplateCounts(): array
     {
         return once(function (): array {
@@ -261,13 +191,6 @@ class TemplateBuilderViewModel
                 return [];
             }
 
-            /*
-             * Distinct pairs read back and counted here rather than with a
-             * grouped count in SQL, because `count(distinct ...)` has to be a
-             * raw expression and a raw expression cannot be plucked by name.
-             * A section sits on a handful of templates, never thousands, so the
-             * rows are few and the query stays one round trip either way.
-             */
             return DB::table('template_version_sections')
                 ->join('section_versions', 'section_versions.id', '=', 'template_version_sections.section_version_id')
                 ->join('template_versions', 'template_versions.id', '=', 'template_version_sections.template_version_id')
@@ -281,14 +204,6 @@ class TemplateBuilderViewModel
         });
     }
 
-    /**
-     * What the edit panel says about the reach of the mark, before it is
-     * changed rather than after.
-     *
-     * The heading beside it is this template's alone and the mark is not, which
-     * is the one thing about the panel somebody could get wrong, so the sentence
-     * is about the difference rather than about the section.
-     */
     private function markReach(TemplateVersionSection $row): string
     {
         $others = $this->otherTemplateCounts()[$row->sectionVersion->section_id] ?? 0;
@@ -303,29 +218,13 @@ class TemplateBuilderViewModel
         );
     }
 
-    /**
-     * The glyphs a section may be marked with, in the order the picker draws
-     * them. The name travels rather than the drawing, and the component beside
-     * it does the drawing.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     public function glyphs(): array
     {
         return Section::ICONS;
     }
 
-    /**
-     * The colours on offer, neutral first because it is the default and because
-     * it is what clearing the mark returns to.
-     *
-     * The label is what somebody using a screen reader hears, since a hex code
-     * read out is not a colour anybody recognises. The tint is what the swatch
-     * and the preview are drawn with, so the picker and the header cannot
-     * disagree about what a colour looks like.
-     *
-     * @return array<int, array{value: string|null, label: string, tint: string, swatch: string|null}>
-     */
+    /** @return array<int, array{value: string|null, label: string, tint: string, swatch: string|null}> */
     public function colours(): array
     {
         $neutral = [[
@@ -340,22 +239,13 @@ class TemplateBuilderViewModel
                 'value' => $colour->value,
                 'label' => __($colour->label()),
                 'tint' => $colour->tint(),
-                /* The swatch is a solid square of the hue, which is how a vault
-                   and a kind of record are already picked. The tint is the pair
-                   the header ends up drawn in, and is too pale to pick from. */
                 'swatch' => $colour->value,
             ],
             VaultColourEnum::cases(),
         ));
     }
 
-    /**
-     * The sections on the open page, in order, each with the fields inside it.
-     * The other pages of the version are not read: what the screen shows is one
-     * tab at a time.
-     *
-     * @return array<int, array<string, mixed>>
-     */
+    /** @return array<int, array<string, mixed>> */
     public function sections(): array
     {
         $version = $this->version();
@@ -370,9 +260,6 @@ class TemplateBuilderViewModel
             ->map(fn (TemplateVersionSection $row): array => [
                 'id' => $row->id,
                 'name' => $row->title_override ?? $row->sectionVersion->section->name,
-                /* The mark belongs to the section rather than to this placement,
-                   so it is the same wherever the section is carried, unlike the
-                   heading right above it. */
                 'icon' => $row->sectionVersion->section->icon,
                 'colour' => $row->sectionVersion->section->colour,
                 'markReach' => $this->markReach($row),
@@ -390,9 +277,6 @@ class TemplateBuilderViewModel
     }
 
     /**
-     * One field on the list, with whatever sits inside it when it is a repeater.
-     * A repeater cannot hold another, so this goes one level down and stops.
-     *
      * @param  Collection<int, Field>  $siblings
      * @return array<string, mixed>
      */
@@ -403,9 +287,6 @@ class TemplateBuilderViewModel
             'label' => $field->label,
             'help' => $field->help_text,
             'typeLabel' => FieldCatalogueViewModel::labelFor($field->type),
-            /* Said on the row only when it is worth saying. A repeater
-               collecting at the end is what every repeater does, so a badge for
-               it would be a badge on almost every row. */
             'repetitionLabel' => $field->repetition_order?->addsToTheFront() === true
                 ? $field->repetition_order->label()
                 : null,
@@ -424,12 +305,7 @@ class TemplateBuilderViewModel
         ];
     }
 
-    /**
-     * The field open in the inspector, if the one asked for belongs to this
-     * template at all.
-     *
-     * @return array<string, mixed>|null
-     */
+    /** @return array<string, mixed>|null */
     public function selectedField(): ?array
     {
         $field = $this->findSelectedField();
@@ -457,11 +333,6 @@ class TemplateBuilderViewModel
         ];
     }
 
-    /**
-     * Where the open field sits, said as somebody would say it. The page is
-     * named only when it is not the one on the screen, since repeating the tab
-     * they are looking at tells them nothing.
-     */
     private function pathTo(?TemplateVersionSection $row): string
     {
         if ($row === null) {
@@ -485,11 +356,6 @@ class TemplateBuilderViewModel
             ->sum(fn (TemplateVersionSection $row): int => $row->sectionVersion->fields->count()) ?? 0);
     }
 
-    /**
-     * What deleting the open field would cost. Nothing has ever been written in
-     * a field yet, since records are a later model, and saying so plainly beats
-     * a count that is always nought.
-     */
     public function usageNote(): string
     {
         return __('Nothing has been written in this field yet, so deleting it removes nothing.');
@@ -500,11 +366,6 @@ class TemplateBuilderViewModel
         return $this->findSelectedField()?->id;
     }
 
-    /**
-     * Whether editing anything in this section will give the section a new
-     * version first: it will, unless the version here is a draft this template
-     * is alone in carrying.
-     */
     private function willBeCopied(TemplateVersionSection $row): bool
     {
         $version = $row->sectionVersion;

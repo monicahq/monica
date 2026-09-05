@@ -13,24 +13,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Override;
 
-/**
- * Tell somebody a deadline has come round.
- *
- * Everything it says is handed in rather than read off the deadline, so the
- * email renders long after a queue has carried it and nothing has to be reloaded
- * to send it. It is also why what the reminder said is the wording frozen on the
- * rule at the moment the deadline was notified, rather than whatever the rule
- * says by the time the worker gets to it.
- *
- * The date it names is the date the reminder is about, which is not the same as
- * the day the email arrives. A moment seven days before a birthday arrives a
- * week early on purpose, and an email that only said "today" would be saying the
- * one thing that is not true.
- *
- * The wording somebody gave the reminder is the subject and the heading both. It
- * is what they wrote to recognise it by, and repeating it is what makes the
- * email recognisable from the inbox list.
- */
 class ReminderDue extends Notification implements HasEmailType, ShouldQueue
 {
     use Queueable;
@@ -44,9 +26,7 @@ class ReminderDue extends Notification implements HasEmailType, ShouldQueue
         $this->onQueue('high');
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function via(User $notifiable): array
     {
         return ['mail'];

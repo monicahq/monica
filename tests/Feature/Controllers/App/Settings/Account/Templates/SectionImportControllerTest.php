@@ -87,8 +87,6 @@ class SectionImportControllerTest extends TestCase
         $this->actingAs($user)->post(route('settings.sectionImport.create', [$template, $page]), ['file' => $file])
             ->assertRedirect();
 
-        /* Two sections named the same now, the one exported from and the copy.
-           The copy is the one the draft carries. */
         $copy = TemplateVersionSection::query()
             ->where('template_version_page_id', $page->id)
             ->sole()
@@ -191,9 +189,7 @@ class SectionImportControllerTest extends TestCase
         return StructureFile::encode(StructureFile::ofSection($template->publishedVersion->assembly->first()));
     }
 
-    /**
-     * @return array{Template, TemplateVersionPage}
-     */
+    /** @return array{Template, TemplateVersionPage} */
     private function draft(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);

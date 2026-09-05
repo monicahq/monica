@@ -17,17 +17,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Delete a contact. The deletion is soft, and {@see RestoreContact} brings them
- * back with everything they were part of.
- *
- * Nothing the contact took part in is destroyed. Relationships, activities and
- * files outlive them, because they describe things that happened rather than
- * the row itself. The reminders about them go quiet with the reason rather than
- * disappearing, and {@see RestoreContact} brings back exactly those.
- *
- * The contact representing the user never goes. Relationships and activities
- * are written from its point of view, and a vault that lost it would be talking
- * about nobody.
+ * Delete a contact.
  */
 class DestroyContact
 {
@@ -83,12 +73,6 @@ class DestroyContact
         });
     }
 
-    /**
-     * Close the private links opened onto the page. A link left pointing at
-     * somebody deleted is worse than a dead one: the deletion is soft, so it
-     * would keep working. Revocation is permanent, so bringing the contact back
-     * does not bring the links back with them.
-     */
     private function revokeTheLinksOntoThem(): void
     {
         ShareLink::query()

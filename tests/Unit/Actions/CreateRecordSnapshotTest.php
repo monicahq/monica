@@ -266,12 +266,7 @@ class CreateRecordSnapshotTest extends TestCase
         ]);
     }
 
-    /**
-     * Put a field on the page the contact renders from, the way the builder
-     * does it: on a draft, which is then published.
-     *
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function fieldOnThePageOf(Contact $contact, array $attributes = []): Field
     {
         $version = $contact->templateVersion;

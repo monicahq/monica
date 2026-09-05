@@ -1,21 +1,5 @@
+{{-- One block of the record, in one of its two states. --}}
 {{--
-  One block of the record, in one of its two states.
-
-  Reading is the resting state. A page of forty inputs is a page nobody can read,
-  and looking somebody up is the thing this screen is for far more often than
-  changing what it says about them. So each block draws what it holds, and offers
-  a button that turns that one block into a form.
-
-  The block is its own region. Opening it, cancelling it and saving it each
-  replace this panel and nothing else, which is how two blocks can be open at the
-  same time: a response carrying every block in its resting state only ever has
-  the one this panel asked for taken out of it.
-
-  The merge is a replacement rather than the morph the rest of the product
-  defaults to. Reading and editing are not two states of the same markup, they
-  are a list of sentences and a form; morphing one onto the other is how a value
-  somebody abandoned survives into the next reading of the page.
-
   @var array<string, mixed> $section
   @var \App\ViewModels\Vaults\ContactViewModel $viewModel
 --}}
@@ -30,11 +14,6 @@
 >
   <x-slot:action>
     @if ($section['isEditing'])
-      {{--
-        The header says which block is open, since the page can have two of them
-        open at once and the buttons at the foot of a long form are not always on
-        the screen at the same time as the heading they belong to.
-      --}}
       <span class="text-xs tracking-caption text-muted uppercase">{{ __('Editing') }}</span>
     @elseif ($section['isEditable'])
       <x-button.secondary
@@ -46,12 +25,6 @@
   </x-slot:action>
 
   @if ($section['isEditing'])
-    {{--
-      Saving aims at two regions: this panel, and the facts beside the
-      photograph. A field the template marks as highlighted is drawn up there as
-      well, so writing it and replacing only the panel would leave the header
-      stating the old answer.
-    --}}
     <x-form
       method="put"
       :action="$section['saveUrl']"
@@ -59,11 +32,6 @@
       :x-target="$section['regionId'].' contact-facts'"
       class="flex flex-col gap-5 bg-page p-4.5"
     >
-      {{--
-        The refusals that are about the vault rather than about one input land
-        here as a sentence. Which control they belong to is not always the one
-        somebody just typed in, so they are said once at the top of the block.
-      --}}
       @if ($errors->has('fields'))
         <x-notice tone="danger">{{ $errors->first('fields') }}</x-notice>
       @endif

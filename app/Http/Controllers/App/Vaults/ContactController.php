@@ -67,11 +67,6 @@ class ContactController extends Controller
         ]);
     }
 
-    /**
-     * The contact representing whoever is looking cannot go. The screen does not
-     * offer the button, and the refusal is not a question about the input, so it
-     * is caught here rather than in the validator.
-     */
     public function destroy(Request $request, Vault $vault, Contact $contact): RedirectResponse
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
@@ -102,15 +97,6 @@ class ContactController extends Controller
         ]);
     }
 
-    /**
-     * Somebody working through a list of people ticks the box and is handed the
-     * empty form again. Everybody else lands on the list of contacts, and never
-     * on the new record: it holds only what the form was just filled in with, so
-     * it would read as the same screen with fewer places to type.
-     *
-     * A partial contact is kept off that list until somebody fills them in, so
-     * the message has to say so or the screen shows a list they are not on.
-     */
     public function create(Request $request, Vault $vault): RedirectResponse
     {
         $validated = $request->validate($this->rules($request));
@@ -143,16 +129,7 @@ class ContactController extends Controller
                 : __('The rest of the page is yours to fill in whenever you know it.'));
     }
 
-    /**
-     * The template rule asks the templates table rather than trusting the
-     * select, since what a contact stores is the published version of one of
-     * the account's own contact templates.
-     *
-     * Only the first name is required: somebody met once is worth writing down
-     * with nothing else, and a form that refuses that is one people work around.
-     *
-     * @return array<string, array<int, mixed>>
-     */
+    /** @return array<string, array<int, mixed>> */
     private function rules(Request $request): array
     {
         return [
@@ -178,14 +155,6 @@ class ContactController extends Controller
         ];
     }
 
-    /**
-     * Nothing at all when the screen offered no choice: the action reads the
-     * vault's default in that case.
-     *
-     * It is read off the request rather than out of the validated array because
-     * `integer` is a rule about what arrived rather than a cast, and validation
-     * has already run.
-     */
     private function versionAskedFor(Request $request): ?TemplateVersion
     {
         if (! $request->filled('template_version_id')) {

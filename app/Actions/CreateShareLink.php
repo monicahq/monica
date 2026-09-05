@@ -17,21 +17,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * Open a private link onto one contact page or one whole vault, the way a
- * document is shared.
- *
- * What comes back is the link, with the token that goes in the URL on
- * `plainToken`. It is the only time that token exists in that form: only its
- * hash is written down, so a database dump yields no working link and a link
- * whoever made it fails to copy is lost rather than recoverable.
- *
- * Everything sensitive is out unless it is asked for here. The flags all
- * default to false, and that is not a convenience: the owner opts in, never
- * out, so a link made in a hurry shows the least rather than the most.
- *
- * The recipient never becomes a user of the account, and nothing this opens
- * leads to a write. A link is a way to let somebody read one thing, and it is
- * not the multi user product this one refuses to be.
+ * Open a private link onto one contact page or one whole vault, the way a document is shared.
  */
 class CreateShareLink
 {

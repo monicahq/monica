@@ -59,10 +59,6 @@ class PublishTemplateVersionTest extends TestCase
         $this->assertEquals($version->id, $template->fresh()->published_version_id);
     }
 
-    /**
-     * The note is what somebody deciding whether to move their records reads,
-     * and the first version has nothing to have changed from.
-     */
     #[Test]
     public function it_asks_for_a_change_note_from_the_second_version_on(): void
     {
@@ -105,10 +101,6 @@ class PublishTemplateVersionTest extends TestCase
         $this->assertEquals('Added the section about allergies', $second->fresh()->change_note);
     }
 
-    /**
-     * Freezing a template version that still points at a section somebody is editing would
-     * freeze nothing at all.
-     */
     #[Test]
     public function it_refuses_while_the_template_version_carries_a_section_nobody_published(): void
     {
@@ -147,9 +139,6 @@ class PublishTemplateVersionTest extends TestCase
         $this->assertEquals(VersionStatusEnum::Published, $version->fresh()->status);
     }
 
-    /**
-     * A tab that opens on nothing is a dead end for whoever clicks it.
-     */
     #[Test]
     public function it_refuses_while_one_of_several_pages_has_nothing_on_it(): void
     {
@@ -170,10 +159,6 @@ class PublishTemplateVersionTest extends TestCase
         new PublishTemplateVersion(user: $user, templateVersion: $version)->execute();
     }
 
-    /**
-     * A record whose only content is the name imposed on it is still a record
-     * worth writing down.
-     */
     #[Test]
     public function it_publishes_a_version_whose_single_page_is_empty(): void
     {

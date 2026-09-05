@@ -1,17 +1,5 @@
-{{--
-  The two ways a template leaves an account, side by side.
-
-  They are drawn as two equal cards rather than one button and a link, because
-  they are two different decisions and not a choice with a default. A file
-  involves nobody. A listing involves everybody. Somebody who has only ever seen
-  one of them would never think to look for the other.
-
-  The panel at the foot is the one thing on the screen that is not about the
-  choice. It is the promise the whole feature rests on, and it is repeated on
-  both paths because it applies to both.
-
-  @var \App\ViewModels\Settings\Account\Templates\ShareTemplateViewModel $viewModel
---}}
+{{-- The two ways a template leaves an account, side by side. --}}
+{{-- @var \App\ViewModels\Settings\Account\Templates\ShareTemplateViewModel $viewModel --}}
 @php
   $template = $viewModel->template();
 @endphp

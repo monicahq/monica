@@ -13,24 +13,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Change how an account wants to be told things.
- *
- * Every channel off is allowed and is not a mistake. Somebody who wants silence
- * should not have to go and disable every rule they ever made to get it, and a
- * rule left alone is a rule that starts telling them again the moment they
- * change their mind.
- *
- * Quiet hours are either both given or neither. A window with one end is not a
- * window, and a delivery reading it would have to invent the other end.
- *
- * Nothing here moves a deadline. Quiet hours hold a notification and the
- * deadline goes on saying when it was really due, which is what keeps the
- * history of when things were actually due honest.
  */
 class UpdateNotificationPreference
 {
-    /**
-     * @param  list<int>|null  $digestWeekdays
-     */
+    /** @param  list<int>|null  $digestWeekdays */
     public function __construct(
         private readonly User $user,
         private readonly NotificationPreference $preference,

@@ -10,16 +10,7 @@ use App\Models\Account;
 use App\Models\User;
 
 /**
- * Give an account the full product, as though the one time purchase had been
- * made.
- *
- * This exists for the purchase that did not register, which is the case support
- * cannot answer without it. It takes payment from nobody and refunds nobody:
- * billing is somewhere else entirely.
- *
- * A purchase date already on the account is left alone. Whatever happened, it
- * happened on the day it happened, and an operator granting access today is not
- * a reason to rewrite that.
+ * Give an account the full product, as though the one time purchase had been made.
  */
 class GrantLifetimeAccess
 {

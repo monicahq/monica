@@ -10,16 +10,12 @@ use App\Models\NotificationPreference;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<NotificationPreference>
- */
+/** @extends Factory<NotificationPreference> */
 class NotificationPreferenceFactory extends Factory
 {
     protected $model = NotificationPreference::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -39,11 +35,6 @@ class NotificationPreferenceFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the account does not want to be disturbed between the two
-     * local times given, which cross midnight by default because that is the
-     * setting the naive comparison gets wrong.
-     */
     public function quietBetween(string $start = '22:00', string $end = '08:00'): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -53,9 +44,6 @@ class NotificationPreferenceFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that everything is folded into one summary at the hour given.
-     */
     public function digestAt(string $time = '18:00'): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -64,10 +52,6 @@ class NotificationPreferenceFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the account wants silence, which is allowed and is not the
-     * same as having no rules.
-     */
     public function silent(): static
     {
         return $this->state(fn (array $attributes): array => [

@@ -18,10 +18,6 @@ use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * The whole feature, from the template an account is given to what somebody sees
- * on a contact after they write a second note.
- */
 class NotesNewestFirstTest extends TestCase
 {
     use RefreshDatabase;
@@ -50,8 +46,6 @@ class NotesNewestFirstTest extends TestCase
         $this->actingAs($user)->put(route('contacts.sections.update', [$vault, $contact, $section]),
             ['fields' => [$notes->id => [['values' => [$note->id => 'Where we met']]]]])->assertRedirect();
 
-        /* The block draws its blank first, so the new note arrives before the one
-           the record already holds. */
         $held = $contact->fieldValueRows()->where('field_id', $notes->id)->sole();
 
         $this->actingAs($user)->put(route('contacts.sections.update', [$vault, $contact, $section]), ['fields' => [$notes->id => [

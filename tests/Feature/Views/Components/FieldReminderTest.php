@@ -33,11 +33,6 @@ class FieldReminderTest extends TestCase
         $rendered->assertSee('id="field-panel"', escape: false);
     }
 
-    /**
-     * `x-show` rather than the `hidden` attribute, because `hidden` comes from
-     * the browser's own stylesheet and any `flex` class on the same element
-     * beats it.
-     */
     #[Test]
     public function the_panel_is_closed_until_the_box_is_ticked(): void
     {
@@ -63,10 +58,6 @@ class FieldReminderTest extends TestCase
         $rendered->assertSee('Add another moment', escape: false);
     }
 
-    /**
-     * Revealing the cadence on the choice between two things always on offer
-     * moved every control below it, so it stays in the flow and goes inert.
-     */
     #[Test]
     public function the_cadence_stays_in_the_flow_whether_the_rule_comes_back_or_not(): void
     {
@@ -80,9 +71,6 @@ class FieldReminderTest extends TestCase
     #[Test]
     public function it_draws_the_cadence_inert_for_a_rule_that_fires_once(): void
     {
-        /* The dimming is asserted through the class attribute it lands in
-           rather than by name, because the Alpine binding beside it carries the
-           same class name as a string whatever the rule says. */
         $dimmed = 'duration-(--duration-fast) opacity-55';
 
         $this->render($this->rule(['cadence' => ReminderCadenceEnum::Once]))
@@ -231,9 +219,7 @@ class FieldReminderTest extends TestCase
         );
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function rule(array $attributes = []): Reminder
     {
         $user = User::factory()->create();

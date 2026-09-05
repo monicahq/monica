@@ -45,9 +45,7 @@ class TranslatableEnumsTest extends TestCase
         }
     }
 
-    /**
-     * @return list<class-string<\UnitEnum>>
-     */
+    /** @return list<class-string<\UnitEnum>> */
     private function enums(): array
     {
         $enums = [];

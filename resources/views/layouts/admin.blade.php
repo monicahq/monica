@@ -1,25 +1,5 @@
-{{--
-  The shell of the admin space, which is the area for whoever runs the instance.
-
-  It is a layout of its own rather than the account shell with a flag, because an
-  administrator has to know which of the two products they are in at a glance.
-  Somebody deactivating a user believing they are editing their own profile is the
-  failure this exists to prevent. There is no accent colour left to spend on it, so
-  the bar is inverted instead: it is the primary colour rather than the page, in
-  both themes. It says what the area is in words, and it carries a way out to the
-  ordinary application on the right.
-
-  There is no dock and no link into a vault. The dock points into one vault, and
-  the admin space never reaches inside one: what an administrator sees is accounts,
-  never the people documented in them. A layout with no way in is the cheapest
-  place to enforce that.
-
-  The navigation is a list rather than a set of anchors, so a screen arriving later
-  is one entry rather than a new block of markup. `current` is the route name of the
-  screen showing, which is the screen's business rather than the shell's.
-
-  @var string|null $title
---}}
+{{-- The shell of the admin space, which is the area for whoever runs the instance. --}}
+{{-- @var string|null $title --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>

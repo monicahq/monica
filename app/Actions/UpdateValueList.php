@@ -12,13 +12,7 @@ use App\Models\ValueList;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Rename a list, say what it is for, or decide whether somebody may add their
- * own choices to it.
- *
- * A list the product supplied is renamed like any other. Giving it a name of
- * its own is what takes it off its translation key, so it stops following the
- * interface language and starts saying what the user called it, in every
- * language.
+ * Rename a list, say what it is for, or decide whether somebody may add their own choices to it.
  */
 class UpdateValueList
 {

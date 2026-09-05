@@ -15,17 +15,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Write one section of a template out as a file, on its own.
- *
- * A section is the useful unit far more often than a whole template is. The
- * rest of somebody's template is usually nobody else's business, while the
- * medical follow up block they worked out drops straight into whatever
- * somebody else has already built. That is the reason a section is its own
- * object in the first place, and this is where that reason pays.
- *
- * The section is named through the row that places it, rather than on its own,
- * so what is written down is the version this template pins. That version can
- * be older than what the section has published since, and what the file says
- * has to be what the screen it was exported from says.
  */
 class ExportSection
 {
@@ -35,9 +24,7 @@ class ExportSection
         private readonly TemplateVersionSection $row,
     ) {}
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function execute(): array
     {
         $this->validate();

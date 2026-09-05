@@ -41,11 +41,6 @@ class TemplateController extends Controller
         ]);
     }
 
-    /**
-     * A template is created with an empty draft, and the only thing worth doing
-     * next is filling it, so this lands on the builder rather than back on the
-     * list.
-     */
     public function create(Request $request): RedirectResponse
     {
         $validated = $request->validate(
@@ -102,11 +97,6 @@ class TemplateController extends Controller
             ->with('status_description', __('Its slug is untouched, so old links still work.'));
     }
 
-    /**
-     * The screen only offers a deletion for a template nothing renders, so a
-     * refusal here means a record landed between the page being drawn and the
-     * button being pressed.
-     */
     public function destroy(Request $request, Template $template): RedirectResponse
     {
         try {
@@ -136,13 +126,7 @@ class TemplateController extends Controller
             ->find($request->integer('entity_type_id'));
     }
 
-    /**
-     * The slug is only asked for while a template is being created. Once one
-     * exists the field is read only, because the slug is what URLs and the API
-     * were given and a link that already went out has to keep working.
-     *
-     * @return array<int, mixed>
-     */
+    /** @return array<int, mixed> */
     private function slugRules(Request $request): array
     {
         return [
@@ -154,9 +138,7 @@ class TemplateController extends Controller
         ];
     }
 
-    /**
-     * @return array<string, array<int, mixed>>
-     */
+    /** @return array<string, array<int, mixed>> */
     private function rules(Request $request): array
     {
         return [

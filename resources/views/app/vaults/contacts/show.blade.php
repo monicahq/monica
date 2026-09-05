@@ -1,31 +1,10 @@
-{{--
-  One person, and everything written down about them.
-
-  The name is set at display size and is the only thing on the screen that is,
-  because the whole page is about one person and saying so once is enough. The
-  facts beside the photograph are the three you would want before picking up the
-  phone; everything longer waits for a panel.
-
-  The tabs are the pages of the template the contact renders from, with an
-  overview in front of them that belongs to no template. The overview is the
-  same on everybody: what you have written about them down one column, what you
-  know about them down the other.
-
-  Half of what is drawn here has no model behind it. Those panels are drawn
-  rather than left out, because the shape of the page is what is being decided,
-  and each of them says what will land in it. The controls that would write any
-  of it are drawn and not offered, the way the dock draws a destination that
-  does not exist: a button that comes back doing nothing is worse than one that
-  visibly does not move yet.
-
-  @var \App\ViewModels\Vaults\ContactViewModel $viewModel
---}}
+{{-- One person, and everything written down about them. --}}
+{{-- @var \App\ViewModels\Vaults\ContactViewModel $viewModel --}}
 @php
   $vault = $viewModel->vault();
   $contact = $viewModel->contact();
   $unbuilt = $viewModel->unbuilt();
 
-  /* Drawn and not offered. It keeps the shape of the control it will become. */
   $inert = 'inline-flex h-8.5 cursor-default items-center gap-2 rounded-md border border-hairline px-3.25 '
     .'font-sans text-[13.5px] font-semibold text-placeholder';
 @endphp
@@ -39,10 +18,6 @@
     <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="contacts" />
   </x-slot:sidebar>
 
-  {{--
-    The way back is a plain anchor rather than <x-link>, which is for a link
-    inside running text and arrives underlined and in the link colour.
-  --}}
   <a
     href="{{ $viewModel->peopleUrl() }}"
     data-turbo="true"
@@ -53,24 +28,6 @@
   </a>
 
   <header class="flex flex-wrap items-start gap-5.5">
-    {{--
-      The favourite state is said three times, deliberately. The ring around the
-      avatar carries it from across the page, where a 26px mark is too small to
-      read, the medallion at the corner is the control you press, and the toast
-      says what just changed, because a mark that changes without moving is easy
-      to miss. Three signals, one state.
-
-      The ring is drawn in both states and only changes colour, so nothing moves
-      when it is pressed. The medallion changes shape as well as tint, an outline
-      star against a filled one, because a state carried by colour alone is a state
-      some readers do not have.
-
-      The whole block is the region that redraws, and not just the button, because
-      the ring is part of the answer. It submits the state it wants rather than
-      asking for a toggle, which is what keeps a page left open overnight from
-      inverting a mark somebody changed elsewhere. With scripting off the same
-      request is an ordinary post that lands back on this page.
-    --}}
     <div
       id="contact-favourite"
       x-merge="replace"
@@ -113,11 +70,6 @@
         @endif
       </p>
 
-      {{--
-        A region of its own, because the facts beside the photograph are fields
-        from the template and saving the block one of them sits in has to change
-        it here too. Its id is what the block's form aims at alongside itself.
-      --}}
       <ul id="contact-facts" x-merge="replace" class="mt-4 flex list-none flex-wrap gap-x-5.5 gap-y-2">
         @foreach ($viewModel->headerFacts() as $fact)
           <li class="flex items-center gap-1.75 text-sm text-body">
@@ -134,19 +86,6 @@
       </ul>
     </div>
 
-    {{--
-      One way in rather than a button for each thing that can be done to the row.
-      The page is about a person, and a header of three controls was a header
-      about the record: two of them were drawn and not offered, and the third was
-      the name.
-
-      Sharing is the second, and it is not a third way to edit the record. It
-      answers who may read this, which is a different question from what it says,
-      and it is the only one of the two that reaches outside the account. The
-      count is on the button when there is one, because a page that is already
-      being read by somebody should say so where the record is, not two clicks
-      away.
-    --}}
     <div class="ml-auto flex flex-wrap items-center gap-2.5">
       <x-button.secondary :href="$viewModel->shareLinksUrl()" data-turbo="true" size="small">
         <x-icon name="link" :size="15" :stroke-width="1.6" />
@@ -160,20 +99,6 @@
     </div>
   </header>
 
-  {{--
-    The pages of the record. The rule runs the whole width and the tab you are on
-    thickens its own piece of it.
-  --}}
-  {{--
-    Version history is pinned to the far end of the rule rather than sitting
-    among the pages, because it is not one of them: the pages are what the
-    template asks about the person, and that tab is about the template.
-
-    Which values are set aside used to be a link here. It has moved onto the
-    version history, where the note explaining why anything is set aside already
-    is: what is being kept out of sight is the cost of the moves that history
-    lists.
-  --}}
   <x-tabs>
     @foreach ($viewModel->pages() as $page)
       <x-tabs.item
@@ -188,19 +113,6 @@
     @endforeach
   </x-tabs>
 
-  {{--
-    A newer version of the template is waiting. It sits above the tabs' content
-    rather than on one of them, because which version the record renders from is
-    a fact about the whole record, and it is the one line of machinery on this
-    screen that earns its place: nothing else would say a template has changed.
-
-    It offers the one thing there is to do. There is nothing to dismiss, because
-    the banner goes the moment it is applied, and nothing to preview, because
-    what changed between two versions is not something the product can yet say.
-
-    The version history says the same thing in its own words, in a panel beside
-    the timeline, so the banner stays off that tab.
-  --}}
   @if (! $viewModel->onVersionHistory() && $update = $viewModel->templateUpdate())
     <x-notice tone="info" icon="file" :title="$update['title']">
       {{ $update['body'] }}
@@ -240,11 +152,6 @@
             <p class="text-sm text-pretty text-muted">{{ $viewModel->historyNote() }}</p>
           </div>
 
-          {{--
-            The rail the entries hang from. The dot of each one sits on top of it
-            and takes a plate in the page's own colour, so the line reads as
-            passing behind rather than stopping at every entry.
-          --}}
           <ol class="relative list-none pl-7.5 before:absolute before:top-1.5 before:bottom-1.5 before:left-2.75 before:w-0.5 before:rounded-[1px] before:bg-hairline before:content-['']">
             @foreach ($viewModel->history() as $entry)
               <li class="relative pb-6 last:pb-0">

@@ -8,18 +8,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Laravel\Passkeys\Contracts\PasskeyDeletedResponse as PasskeyDeletedResponseContract;
 
-/**
- * What the security screen says once a passkey has been removed.
- *
- * The package answers with a status key and nothing else. Removing a way into
- * your own account is the moment to be told what is left, not the moment to go
- * looking, so the message naming what still signs somebody in is built here.
- */
 class PasskeyDeletedResponse implements PasskeyDeletedResponseContract
 {
-    /**
-     * @param  Request  $request
-     */
+    /** @param  Request  $request */
     public function toResponse($request): RedirectResponse
     {
         return redirect()->route('settings.security.index')

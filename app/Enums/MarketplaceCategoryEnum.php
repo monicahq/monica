@@ -7,24 +7,6 @@ namespace App\Enums;
 use App\Contracts\Translatable;
 use Override;
 
-/**
- * The categories the catalogue is filed under.
- *
- * The list is ours and there is no free tagging. A catalogue with open keywords
- * becomes unreadable, and the whole value of the marketplace is that somebody
- * can find the medical follow up block without wading through forty near
- * duplicates.
- *
- * It is deliberately short. A category nobody publishes into is a dead corner
- * of the catalogue, and there is no way to tell in advance which ones those
- * would be, so the list grows from what people actually publish rather than
- * from what we imagine they will.
- *
- * The cases run by how close a subject sits to the person the record is about,
- * from their body outwards, which is also the order they are listed in. The
- * backing value is the `key` column, and it is the only part anything may rely
- * on: the name and the description are read through the locale files.
- */
 enum MarketplaceCategoryEnum: string implements Translatable
 {
     case Health = 'health';
@@ -36,10 +18,6 @@ enum MarketplaceCategoryEnum: string implements Translatable
     case Hobbies = 'hobbies';
     case Travel = 'travel';
 
-    /**
-     * What the category is called in the catalogue. The name doubles as the
-     * translation key.
-     */
     public function label(): string
     {
         return match ($this) {
@@ -54,10 +32,6 @@ enum MarketplaceCategoryEnum: string implements Translatable
         };
     }
 
-    /**
-     * What belongs in it, shown under the name so nobody has to open the
-     * category to know whether what they built goes there.
-     */
     public function description(): string
     {
         return match ($this) {
@@ -72,9 +46,6 @@ enum MarketplaceCategoryEnum: string implements Translatable
         };
     }
 
-    /**
-     * The glyph on the category card, taken from the icon language.
-     */
     public function icon(): string
     {
         return match ($this) {
@@ -89,12 +60,7 @@ enum MarketplaceCategoryEnum: string implements Translatable
         };
     }
 
-    /**
-     * The name and the description, which are the two strings the catalogue
-     * reads in the language of whoever is browsing it.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

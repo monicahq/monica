@@ -13,10 +13,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Override;
 
-/**
- * Tell somebody a passkey was added to their account. A passkey is a way in, so
- * one appearing is worth an email even when they added it themselves.
- */
 class PasskeyAdded extends Notification implements HasEmailType, ShouldQueue
 {
     use Queueable;
@@ -27,9 +23,7 @@ class PasskeyAdded extends Notification implements HasEmailType, ShouldQueue
         $this->onQueue('high');
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function via(User $notifiable): array
     {
         return ['mail'];

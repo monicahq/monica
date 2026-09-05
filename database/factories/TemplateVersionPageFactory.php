@@ -10,23 +10,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Override;
 
-/**
- * @extends Factory<TemplateVersionPage>
- */
+/** @extends Factory<TemplateVersionPage> */
 class TemplateVersionPageFactory extends Factory
 {
     protected $model = TemplateVersionPage::class;
 
-    /**
-     * The account is taken from the template version the page is part of, since
-     * a page belonging to a different account than its version is nothing.
-     *
-     * A version arrives from its own factory already carrying the page the
-     * product supplies, so a page built here is another one beside it: it takes
-     * a label of its own and the next place in the row of tabs.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {

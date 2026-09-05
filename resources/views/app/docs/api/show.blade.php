@@ -1,14 +1,5 @@
+{{-- One endpoint of the API reference, at /docs/api/{section}, open to anybody. --}}
 {{--
-  One endpoint of the API reference, at /docs/api/{section}, open to anybody.
-
-  Each endpoint is a page of its own rather than an anchor into a long one, so a
-  link to it opens it, the browser's back button walks between endpoints, and
-  every page is one document with one heading.
-
-  The chrome around it is deliberately thin. There is no marketing site to hang
-  this off yet, so it signs itself, offers the theme switch, and gets out of the
-  way.
-
   @var array $navigation
   @var \App\ViewModels\Docs\ApiDocsSection $section
 --}}

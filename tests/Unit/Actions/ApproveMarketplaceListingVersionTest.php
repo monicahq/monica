@@ -83,10 +83,6 @@ class ApproveMarketplaceListingVersionTest extends TestCase
         $this->assertEquals(4, $category->fresh()->listing_count);
     }
 
-    /**
-     * A listing is one entry in the catalogue however many versions it goes
-     * through, so only the first approval counts.
-     */
     #[Test]
     public function it_counts_the_listing_once_however_many_versions_follow(): void
     {

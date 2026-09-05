@@ -13,10 +13,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Rename a vault, say what it is for, or change the colour it is told apart by.
- *
- * What the vault holds is not touched, and neither is its place in the list,
- * whether it is the default one, or the fact that it exists at all. Those are
- * each their own action.
  */
 class UpdateVault
 {

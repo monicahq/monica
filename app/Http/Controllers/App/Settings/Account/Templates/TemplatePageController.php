@@ -17,19 +17,8 @@ use App\Models\TemplateVersionPage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-/**
- * The pages of one template: adding a tab, renaming one, taking one off. A
- * page belongs to one version and only a draft may be changed, so each of
- * these acts on the version the builder has open. The action's refusals are
- * caught here rather than left to become a stack trace.
- */
 class TemplatePageController extends Controller
 {
-    /**
-     * The label is validated into a bag of its own, since the card that asks
-     * for it has to reopen holding what was typed, and the builder around it
-     * carries a form editing a field with a label of its own.
-     */
     public function create(Request $request, Template $template): RedirectResponse
     {
         $validated = $request->validateWithBag('newPage', [
@@ -86,11 +75,6 @@ class TemplatePageController extends Controller
             ->with('status', __('The page is renamed.'));
     }
 
-    /**
-     * The screen only offers this for a page that can go, so a refusal here
-     * means something landed on the page between it being drawn and the button
-     * being pressed.
-     */
     public function destroy(Request $request, Template $template, TemplateVersionPage $templateVersionPage): RedirectResponse
     {
         abort_unless($templateVersionPage->isReachableThrough($request->user(), $template), 404);

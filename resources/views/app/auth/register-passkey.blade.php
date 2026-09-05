@@ -1,15 +1,5 @@
-{{--
-  The step right after the account was made, where the device is asked for the
-  credential this account is meant to sign in with.
-
-  It exists because the order is forced: a passkey is created against an account
-  that already exists. So by the time this screen is reached the account is real,
-  and the person is signed in. If they walk away here, they have an account that
-  only a link sent to their address reaches, which is why this screen says that
-  out loud rather than leaving it to be discovered at the next sign in.
-
-  @var \App\ViewModels\Auth\RegisterPasskeyViewModel $viewModel
---}}
+{{-- Asks the device for the credential the new account will sign in with. --}}
+{{-- @var \App\ViewModels\Auth\RegisterPasskeyViewModel $viewModel --}}
 <x-guest-layout :title="__('Create your passkey')">
   <div class="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-6 py-10">
     <div class="space-y-6">
@@ -20,7 +10,6 @@
       </div>
 
       @if ($viewModel->hasPasskeys())
-        {{-- Confirmed rather than assumed: this is the only credential the account has. --}}
         <x-box padding="p-4" class="rounded-lg">
           <div class="space-y-3">
             <x-notice tone="success" icon="check-circle">{{ __('Your passkey is created. It is what signs you in from now on.') }}</x-notice>
@@ -60,11 +49,6 @@
               @click="register()"
             >{{ __('Create a passkey') }}</x-button>
 
-            {{--
-              Always in the DOM, empty when there is nothing to say. A live region
-              that appears at the same moment as its text is not reliably
-              announced.
-            --}}
             <p
               x-text="message"
               role="status"

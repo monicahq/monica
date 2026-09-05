@@ -1,15 +1,5 @@
-{{--
-  Every email we sent to the person signed in, a page at a time.
-
-  It shares its rows with the logs screen, which is why it moves onto the new shell
-  at the same time: one partial cannot be two designs at once.
-
-  The list grows in place: the link at the bottom asks for the next page,
-  alpine-ajax appends the rows that come back, and swaps the link for the one
-  that came with them, or drops it on the last page.
-
-  @var \App\ViewModels\Settings\Account\Logs\EmailsSentViewModel $viewModel
---}}
+{{-- Every email we sent to the person signed in, a page at a time. --}}
+{{-- @var \App\ViewModels\Settings\Account\Logs\EmailsSentViewModel $viewModel --}}
 <x-shell :title="__('Emails sent')">
   <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.logs.index')" data-turbo="true" size="small">

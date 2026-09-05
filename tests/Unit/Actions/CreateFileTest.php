@@ -50,9 +50,6 @@ class CreateFileTest extends TestCase
         Storage::disk('local')->assertExists($file->path);
     }
 
-    /**
-     * The name somebody's machine gave the file never reaches the disk.
-     */
     #[Test]
     public function it_writes_it_under_the_account_and_the_vault(): void
     {
@@ -144,10 +141,6 @@ class CreateFileTest extends TestCase
         $this->assertNull($file->height);
     }
 
-    /**
-     * The refusal happens before a byte is written, so the disk is never left
-     * holding something the account was told it could not have.
-     */
     #[Test]
     public function it_refuses_a_file_the_account_has_no_room_for(): void
     {

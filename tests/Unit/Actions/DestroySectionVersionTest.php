@@ -52,9 +52,6 @@ class DestroySectionVersionTest extends TestCase
         new DestroySectionVersion(user: $user, sectionVersion: $version)->execute();
     }
 
-    /**
-     * Deleting it would leave a template version with a hole where a section used to be.
-     */
     #[Test]
     public function it_refuses_to_throw_away_a_draft_a_template_version_already_points_at(): void
     {

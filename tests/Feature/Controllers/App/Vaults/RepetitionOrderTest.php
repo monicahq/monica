@@ -18,13 +18,6 @@ use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * Which end of a repeater a blank repetition is drawn at, on the real screen.
- *
- * The index each repetition is named by is what carries the order to the save,
- * so this reads those indices out of the rendered form rather than trusting the
- * markup to look right.
- */
 class RepetitionOrderTest extends TestCase
 {
     use RefreshDatabase;
@@ -73,10 +66,6 @@ class RepetitionOrderTest extends TestCase
         }
     }
 
-    /**
-     * FR-005. What somebody edits has to be what they were looking at, so the
-     * block reads in the same order whether it is being read or filled in.
-     */
     #[Test]
     public function it_reads_a_block_in_the_same_order_it_offers_it_as_a_form(): void
     {
@@ -110,10 +99,6 @@ class RepetitionOrderTest extends TestCase
         }
     }
 
-    /**
-     * FR-004 and User Story 2. A repeater that says nothing keeps collecting at
-     * the end, so a collection nobody asked to have reversed is not reversed.
-     */
     #[Test]
     public function it_puts_a_new_document_last_on_the_template_an_account_starts_with(): void
     {
@@ -138,12 +123,7 @@ class RepetitionOrderTest extends TestCase
         );
     }
 
-    /**
-     * A contact on the template an account starts with, holding one document, so
-     * that the block has something already in it as well as a blank.
-     *
-     * @return array{0: User, 1: Vault, 2: Contact, 3: Field}
-     */
+    /** @return array{0: User, 1: Vault, 2: Contact, 3: Field} */
     private function aContactWithADocument(): array
     {
         Queue::fake();
@@ -172,15 +152,6 @@ class RepetitionOrderTest extends TestCase
         return [$user, $vault, $contact->refresh(), $repeater];
     }
 
-    /**
-     * Say which end the repeater collects at, as a field seeded that way would
-     * have been.
-     *
-     * Written straight to the column rather than through the model, because a
-     * published structure is frozen and the model refuses, which is exactly the
-     * behaviour FR-010 asks for. This is not a way round the rule: it stands in
-     * for a field that carried the direction from the moment it was created.
-     */
     private function declare(Field $repeater, RepetitionOrderEnum $order): void
     {
         Field::query()->whereKey($repeater->id)->update(['repetition_order' => $order->value]);
@@ -207,9 +178,7 @@ class RepetitionOrderTest extends TestCase
         return $response->getContent();
     }
 
-    /**
-     * @return array{existing: list<int>, blank: list<int>}
-     */
+    /** @return array{existing: list<int>, blank: list<int>} */
     private function indicesOn(User $user, Vault $vault, Contact $contact, Field $repeater): array
     {
         $html = $this->formFor($user, $vault, $contact, $repeater);

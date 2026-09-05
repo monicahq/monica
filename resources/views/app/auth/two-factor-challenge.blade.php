@@ -1,9 +1,5 @@
-{{--
-  The second step of signing in, for somebody who enrolled in two factor
-  authentication.
-
-  @var \App\ViewModels\Auth\TwoFactorViewModel $viewModel
---}}
+{{-- The second step of signing in, for somebody who enrolled in two factor authentication. --}}
+{{-- @var \App\ViewModels\Auth\TwoFactorViewModel $viewModel --}}
 <x-guest-layout :title="__('One more step')">
   <div class="grid min-h-screen grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)]">
     <main class="flex min-w-0 flex-col justify-center px-6 py-10 sm:px-15">

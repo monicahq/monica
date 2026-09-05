@@ -1,16 +1,5 @@
-{{--
-  Everything the account has to describe a record with, split into what somebody
-  here built and what the product supplied.
-
-  The split is the point of the screen: a supplied template cannot be edited in
-  place, so which side of the line a template falls on is what tells somebody
-  whether to open it or copy it first.
-
-  The filter is a plain GET form so the narrowed list has a URL, and the region
-  it redraws is the one both the chips and the panels aim at.
-
-  @var \App\ViewModels\Settings\Account\Templates\TemplatesViewModel $viewModel
---}}
+{{-- Everything the account describes a record with, split into what it built and what we supplied. --}}
+{{-- @var \App\ViewModels\Settings\Account\Templates\TemplatesViewModel $viewModel --}}
 <x-shell :title="__('Templates')">
   <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
@@ -30,11 +19,6 @@
       <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('A template decides what a record looks like: which sections it carries, and which fields sit in them. Records keep the version they were made with until you move them.') }}</p>
     </div>
 
-    {{--
-      Importing sits beside creating rather than in a menu, because a template
-      arriving as a file is one of the two ways somebody gets a template at all,
-      and the other one is right here.
-    --}}
     <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full">
       <x-button.secondary :href="route('settings.templateImport.new')" data-turbo="true" class="max-sm:w-full">
         {{ __('Import a file') }}

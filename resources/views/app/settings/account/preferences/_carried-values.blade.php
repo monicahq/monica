@@ -1,8 +1,5 @@
+{{-- The values a row does not own. --}}
 {{--
-  The values a row does not own. Every row saves the whole set, so a row that
-  sent only its own value would blank the others. Naming the one it owns is
-  enough to carry the rest.
-
   @var \App\ViewModels\Settings\Account\Preferences\PreferencesViewModel $viewModel
   @var string $owns
 --}}

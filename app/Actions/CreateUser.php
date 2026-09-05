@@ -10,8 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * Create a user. A user always belongs to an account. The password is null when
- * the user signs in through an SSO provider.
+ * Create a user.
  */
 class CreateUser
 {

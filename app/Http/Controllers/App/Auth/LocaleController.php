@@ -18,8 +18,6 @@ class LocaleController extends Controller
             'locale' => ['required', 'string', Rule::in(array_keys(config('monica.locales')))],
         ]);
 
-        // The session, the device and the screen being returned to, in one call,
-        // so the language cannot be showing one thing and stored as another.
         LocaleResolution::remember($validated['locale']);
 
         return back();

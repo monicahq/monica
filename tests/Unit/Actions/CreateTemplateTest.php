@@ -53,9 +53,6 @@ class CreateTemplateTest extends TestCase
         ]);
     }
 
-    /**
-     * A template with no version at all is a name nothing can be done with.
-     */
     #[Test]
     public function it_starts_the_template_with_an_empty_draft(): void
     {
@@ -75,9 +72,6 @@ class CreateTemplateTest extends TestCase
         ]);
     }
 
-    /**
-     * A version with no page has nowhere to put a section.
-     */
     #[Test]
     public function it_starts_the_draft_with_the_page_the_product_supplies(): void
     {

@@ -92,10 +92,6 @@ class TemplateSectionControllerTest extends TestCase
         $this->assertDatabaseCount('template_version_sections', 0);
     }
 
-    /**
-     * A section is a thing the account keeps, not something owned by the
-     * template it was made on, so it arrives with a version of its own.
-     */
     #[Test]
     public function it_gives_the_new_section_a_draft_version(): void
     {
@@ -142,10 +138,6 @@ class TemplateSectionControllerTest extends TestCase
         $this->assertDatabaseMissing('sections', ['account_id' => $user->account_id, 'name' => 'Health']);
     }
 
-    /**
-     * The heading is this template's alone. Renaming here must not reach into
-     * another template carrying the same section.
-     */
     #[Test]
     public function it_retitles_the_section_on_this_template_only(): void
     {
@@ -204,9 +196,7 @@ class TemplateSectionControllerTest extends TestCase
             ->assertNotFound();
     }
 
-    /**
-     * @return array{0: Template, 1: TemplateVersionSection, 2: Section}
-     */
+    /** @return array{0: Template, 1: TemplateVersionSection, 2: Section} */
     private function templateCarryingASection(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
@@ -311,8 +301,6 @@ class TemplateSectionControllerTest extends TestCase
 
         $this->assertEquals('home', $section->icon);
         $this->assertEquals('#2f7f86', $section->colour);
-        /* The heading is this template's and the mark is the section's, which is
-           the whole point of the two living in different places. */
         $this->assertEquals('Where they live', $row->fresh()->title_override);
     }
 
@@ -386,9 +374,6 @@ class TemplateSectionControllerTest extends TestCase
         $user = User::factory()->create();
         [$template, $row, $section] = $this->templateCarryingASection($user);
 
-        /* The row has to be put on the version while it is still a draft: the
-           pivot refuses to be written at all once the version is published,
-           which is the same guard the controller is being asked about here. */
         $row->templateVersion->update(['status' => VersionStatusEnum::Published]);
 
         $this->actingAs($user)->put(route('settings.templateSections.update', [$template, $row]), [

@@ -164,10 +164,6 @@ class ContactControllerTest extends TestCase
         $this->actingAs($user)->get(route('contacts.index', $vault))
             ->assertSee('>S</h2>', escape: false);
 
-        /*
-          The column beside the screen has headings of its own, so this looks at
-          what comes after the bar rather than at the whole page.
-        */
         $content = str($this->actingAs($user)
             ->get(route('contacts.index', ['vault' => $vault, 'sort' => 'added', 'direction' => 'desc']))
             ->assertSee('Michael Scott')
@@ -230,12 +226,6 @@ class ContactControllerTest extends TestCase
             ->assertSee('<option value="asc" selected>A to Z</option>', escape: false);
     }
 
-    /**
-     * The page of one person sits under the same path, so a word the list does
-     * not answer to has to stop before it is taken for somebody's uuid. Postgres
-     * refuses to compare a uuid column against a word at all, so without the
-     * constraint on the route this is a 500 rather than a 404.
-     */
     #[Test]
     public function it_does_not_answer_to_a_chip_it_never_offered(): void
     {
@@ -546,10 +536,6 @@ class ContactControllerTest extends TestCase
         $this->assertDatabaseHas('contacts', ['vault_id' => $vault->id, 'first_name' => 'Dwight']);
     }
 
-    /**
-     * The chosen version arrives as a string, which is what a select sends and
-     * what the `integer` rule lets through without converting.
-     */
     #[Test]
     public function it_starts_the_contact_on_the_template_that_was_asked_for(): void
     {
@@ -744,10 +730,6 @@ class ContactControllerTest extends TestCase
             ->assertSee(route('contacts.avatar.destroy', ['vault' => $vault, 'contact' => $michael]), false);
     }
 
-    /**
-     * The contact representing whoever is looking is renamed like any other.
-     * What it cannot do is disappear, so the way out is not drawn for it.
-     */
     #[Test]
     public function the_edit_screen_offers_no_way_out_of_the_contact_that_represents_you(): void
     {
@@ -863,10 +845,6 @@ class ContactControllerTest extends TestCase
             ->assertDontSee('History');
     }
 
-    /**
-     * The page reads until somebody asks for a block of it. What it offers is
-     * therefore a way in rather than a control, and no control at all.
-     */
     #[Test]
     public function it_draws_no_control_until_a_block_is_opened(): void
     {
@@ -1003,10 +981,6 @@ class ContactControllerTest extends TestCase
             ->assertSee('A version only decides what this page shows.');
     }
 
-    /**
-     * The banner and the panel beside the timeline say the same thing, so only
-     * one of them says it.
-     */
     #[Test]
     public function the_version_history_keeps_the_banner_off_its_own_tab(): void
     {
@@ -1028,11 +1002,6 @@ class ContactControllerTest extends TestCase
             ->assertSee('Apply version 2');
     }
 
-    /**
-     * A published version carrying one page, one section on it and one field
-     * inside that. It is assembled while the version is still a draft, because
-     * a published one is frozen and refuses every one of these rows.
-     */
     private function versionWithAPage(User $user, string $pageLabel, string $sectionName, string $fieldLabel): TemplateVersion
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
@@ -1061,11 +1030,6 @@ class ContactControllerTest extends TestCase
         return $version->refresh();
     }
 
-    /**
-     * Which route a path lands on, or null when none of them takes it. It is
-     * asked here rather than through a request, because the answer has to be
-     * the same on a database that would have tolerated the lookup.
-     */
     private function routeNameFor(string $path): ?string
     {
         $request = Request::create($path, 'GET');
@@ -1079,9 +1043,7 @@ class ContactControllerTest extends TestCase
         return null;
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     #[Test]
     public function it_offers_the_star_to_a_contact_who_is_not_a_favourite(): void
     {

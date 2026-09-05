@@ -7,13 +7,6 @@ namespace App\Enums;
 use App\Contracts\Translatable;
 use Override;
 
-/**
- * The orders a list of contacts can be read in.
- *
- * The value is what the address carries and the column is kept apart from it, so
- * the address never names the schema. Both the people screen and the API offer
- * these four, and neither may invent a fifth on its own.
- */
 enum ContactSortEnum: string implements Translatable
 {
     case Name = 'name';
@@ -24,9 +17,6 @@ enum ContactSortEnum: string implements Translatable
 
     case Added = 'added';
 
-    /**
-     * What the control offering this order is called.
-     */
     public function label(): string
     {
         return match ($this) {
@@ -37,13 +27,6 @@ enum ContactSortEnum: string implements Translatable
         };
     }
 
-    /**
-     * The column the order reads.
-     *
-     * The name orders on `sort_key`, not `sort_name`: ordered as bytes, Élodie
-     * lands after Z for a French reader. Comparing keys byte by byte gives that
-     * language's order on a database that knows no language.
-     */
     public function column(): string
     {
         return match ($this) {
@@ -54,10 +37,6 @@ enum ContactSortEnum: string implements Translatable
         };
     }
 
-    /**
-     * Whether a contact may have nothing in this order's column, which is what
-     * makes it necessary to say where the unknowns go.
-     */
     public function canBeUnknown(): bool
     {
         return match ($this) {
@@ -66,10 +45,6 @@ enum ContactSortEnum: string implements Translatable
         };
     }
 
-    /**
-     * Whether this order is about time, which decides whether its two directions
-     * are called newest and oldest or A to Z.
-     */
     public function isChronological(): bool
     {
         return match ($this) {
@@ -78,25 +53,18 @@ enum ContactSortEnum: string implements Translatable
         };
     }
 
-    /**
-     * The order a value names, or by name when it names none.
-     */
     public static function fromValueOrName(?string $value): self
     {
         return self::tryFrom((string) $value) ?? self::Name;
     }
 
-    /**
-     * @return list<string>
-     */
+    /** @return list<string> */
     public static function values(): array
     {
         return array_column(self::cases(), 'value');
     }
 
-    /**
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

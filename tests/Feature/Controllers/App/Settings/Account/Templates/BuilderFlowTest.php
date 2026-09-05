@@ -16,14 +16,6 @@ use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * The builder end to end: create a template, put a section on it, add a field,
- * edit it, publish, and edit again on a fresh draft.
- *
- * This is the one test that walks the whole path rather than a single screen,
- * because most of what can go wrong in the builder is a step handing the wrong
- * thing to the next one.
- */
 class BuilderFlowTest extends TestCase
 {
     use RefreshDatabase;
@@ -112,10 +104,6 @@ class BuilderFlowTest extends TestCase
             ->assertDontSee(__('Add a section'));
     }
 
-    /**
-     * The whole point of the copy on write: a section somebody else is carrying
-     * gets a new version rather than being edited underneath them.
-     */
     #[Test]
     public function it_gives_a_shared_section_its_own_version_before_editing_it(): void
     {
@@ -137,7 +125,6 @@ class BuilderFlowTest extends TestCase
         $field = Field::query()->where('account_id', $user->account_id)->firstOrFail();
         $sectionVersion = $row->fresh()->sectionVersion;
 
-        // Somebody else's template starts carrying the very same section version.
         $other = Template::factory()->create(['account_id' => $user->account_id]);
         $otherVersion = TemplateVersion::factory()->create(['template_id' => $other->id]);
         TemplateVersionSection::factory()->create([

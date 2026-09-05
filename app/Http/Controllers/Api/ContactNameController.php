@@ -13,20 +13,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-/**
- * The one thing about a contact the product imposes rather than the template,
- * since sorting, searching, headers and initials are all built from it.
- *
- * This replaces rather than patches, which is why every part is demanded even
- * when the answer is null. The operation underneath writes a part it is not
- * given as empty, so a caller sending nothing but a new last name would erase
- * the prefix, the nickname and the rest. Nothing may disappear without being
- * said.
- *
- * Every part may be null, including all of them at once. A contact reduced to no
- * name still has to sort, search and draw initials, and the model supplies what
- * it always supplies rather than the request being refused.
- */
 class ContactNameController extends Controller
 {
     public function update(Request $request, string $vault, string $contact): JsonResponse

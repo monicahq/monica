@@ -18,13 +18,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Change what the catalogue says about a listing.
- *
- * Only the copy and the category, never the structure. What people install is
- * the payload of an approved version and is frozen; fixing a typo in a
- * description has nothing to do with it and must not need moderating again.
- *
- * Refiling under another category is allowed for the same reason: it changes
- * where somebody looks for the thing and not what they get.
  */
 class UpdateMarketplaceListing
 {
@@ -85,14 +78,6 @@ class UpdateMarketplaceListing
         });
     }
 
-    /**
-     * Move the tally with the listing. Only a public listing counts towards a
-     * category, so a draft changing category moves nothing.
-     *
-     * The column is unsigned and the count can drift, so the decrement is
-     * guarded: refiling must not fail because a tally somewhere was already
-     * wrong.
-     */
     private function refile(): void
     {
         if ($this->category->id === $this->listing->marketplace_category_id) {

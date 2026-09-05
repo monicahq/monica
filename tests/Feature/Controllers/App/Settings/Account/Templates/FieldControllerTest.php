@@ -245,11 +245,6 @@ class FieldControllerTest extends TestCase
         $this->assertTrue($field->is_sensitive);
     }
 
-    /**
-     * Which end a repeater collects at is settled here, beside its label. It
-     * says where a new repetition lands and nothing about where an existing one
-     * may be moved to.
-     */
     #[Test]
     public function it_saves_which_end_a_repeater_collects_at(): void
     {
@@ -292,10 +287,6 @@ class FieldControllerTest extends TestCase
         ])->assertSessionHasErrors('repetition_order');
     }
 
-    /**
-     * A field that is not a repeater has no direction to keep, so storing one
-     * would be storing a setting its type cannot honour.
-     */
     #[Test]
     public function it_keeps_no_end_on_a_field_that_is_not_a_repeater(): void
     {
@@ -317,10 +308,6 @@ class FieldControllerTest extends TestCase
         $this->assertNull($field->refresh()->repetition_order);
     }
 
-    /**
-     * The key is what an export or an API caller holds on to, so it survives a
-     * rename untouched.
-     */
     #[Test]
     public function it_leaves_the_key_alone_when_the_label_changes(): void
     {
@@ -377,10 +364,6 @@ class FieldControllerTest extends TestCase
         $this->assertModelMissing($field);
     }
 
-    /**
-     * Editing a section a published template carries must not reach the
-     * published version: it gets a copy, and the frozen one stays frozen.
-     */
     #[Test]
     public function it_copies_a_published_section_rather_than_writing_to_it(): void
     {
@@ -413,11 +396,6 @@ class FieldControllerTest extends TestCase
         $this->actingAs($michael)->get(route('settings.fields.new', [$template, $row]))->assertNotFound();
     }
 
-    /**
-     * The row is addressed by its own number under the template it sits on, and
-     * neither half can be trusted on its own: a row of the user's own but on a
-     * different template must not be reachable through this URL.
-     */
     #[Test]
     public function it_refuses_an_assembly_that_is_not_on_this_template(): void
     {
@@ -437,9 +415,7 @@ class FieldControllerTest extends TestCase
         $this->assertDatabaseMissing('fields', ['label' => 'Sneaky']);
     }
 
-    /**
-     * @return array{0: Template, 1: TemplateVersionSection}
-     */
+    /** @return array{0: Template, 1: TemplateVersionSection} */
     private function templateCarryingASection(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);

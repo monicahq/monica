@@ -1,16 +1,5 @@
-{{--
-  What somebody sees when the address they were sent does not open anything.
-
-  It says the same thing whether the link never existed, ran out on its own, or
-  was revoked, because the action behind it refuses all three identically: telling
-  them apart would let somebody trying addresses work out which ones are real.
-
-  There is nothing to do here and nothing is offered. No sign in, no sign up, no
-  way to ask for another link. Whoever sent the address is the only person who can
-  make a new one, and the sentence says so.
-
-  @var string|null $line
---}}
+{{-- What somebody sees when the address they were sent does not open anything. --}}
+{{-- @var string|null $line --}}
 <x-guest-layout :title="__('This link no longer works')">
   <main class="flex min-h-screen flex-col items-center justify-center gap-6 px-6 py-10">
     <x-logo :size="34" />

@@ -12,12 +12,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Put an archived contact back in the main lists, and with them the reminders
- * archiving silenced.
- *
- * Only those. A rule quiet because the field it read has left the structure
- * stays quiet and goes on saying so, since unarchiving reverses archiving and
- * nothing else.
+ * Put an archived contact back in the main lists, and with them the reminders archiving silenced.
  */
 class UnarchiveContact
 {

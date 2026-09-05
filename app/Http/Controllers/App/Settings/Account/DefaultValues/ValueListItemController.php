@@ -16,11 +16,6 @@ use Illuminate\Http\Request;
 
 class ValueListItemController extends Controller
 {
-    /**
-     * Every rename field on the screen is called `label`, so each form is
-     * validated into a bag of its own and a rejection reopens the field it
-     * came from rather than every field on the page.
-     */
     public function create(Request $request, ValueList $valueList): RedirectResponse
     {
         $validated = $request->validateWithBag("newValue{$valueList->id}", [
@@ -58,11 +53,6 @@ class ValueListItemController extends Controller
             ->with('status_description', __('Everything offering it says the new name straight away.'));
     }
 
-    /**
-     * The screen only offers a deletion for a value nothing points at, so a
-     * refusal here means something started using it since the page was drawn.
-     * Saying so beats a stack trace.
-     */
     public function destroy(Request $request, ValueListItem $valueListItem): RedirectResponse
     {
         try {

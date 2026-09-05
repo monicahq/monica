@@ -1,7 +1,4 @@
-{{--
-  The Cloudflare Turnstile widget, and nothing at all on an instance that has not
-  turned it on. Every guest form can therefore carry it unconditionally.
---}}
+{{-- The Cloudflare Turnstile widget, and nothing at all on an instance that has not turned it on. --}}
 @if (config('turnstile.enabled'))
   @once
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

@@ -8,9 +8,6 @@ use App\Actions\RecordEmailDeliveryOutcome;
 use App\Enums\EmailDeliveryStatusEnum;
 use Resend\Laravel\Events\EmailDelivered;
 
-/**
- * Note that the provider delivered one of our emails.
- */
 class RecordEmailDelivered
 {
     public function handle(EmailDelivered $event): void

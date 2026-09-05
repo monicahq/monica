@@ -362,10 +362,6 @@ class VaultControllerTest extends TestCase
         $this->assertTrue($existing->fresh()->is_default);
     }
 
-    /**
-     * The chosen version arrives as a string, which is what a select sends and
-     * what the `integer` rule lets through without converting.
-     */
     #[Test]
     public function it_starts_the_contacts_of_the_vault_on_the_template_that_was_picked(): void
     {

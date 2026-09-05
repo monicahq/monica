@@ -35,10 +35,6 @@ class DestroyTemplateTest extends TestCase
         $this->assertSoftDeleted($template);
     }
 
-    /**
-     * Taking two hundred contacts down with the word "Contact" is not something
-     * a single button should be able to do.
-     */
     #[Test]
     public function it_refuses_while_records_still_point_at_one_of_its_versions(): void
     {

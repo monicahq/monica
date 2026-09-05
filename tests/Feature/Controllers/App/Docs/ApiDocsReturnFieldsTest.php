@@ -27,23 +27,6 @@ use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * The reference says what each endpoint returns, field by field. This calls every
- * one of them and checks that it was telling the truth.
- *
- * The comparison is an equality in both directions, per endpoint: a field the
- * answer carries and the reference does not mention is a caller left guessing,
- * and a field the reference names and no answer carries is a caller building on
- * something that will never arrive. Neither is allowed.
- *
- * Every endpoint arranges its own state, in its own arm, sharing nothing with any
- * other. That is deliberate. One arm standing in for two endpoints would prove
- * that they answer the same way, which is the thing most likely to stop being
- * true, and it would be exactly the shape of mistake this test exists to catch.
- *
- * What it cannot do is read. It compares names, never meanings, so a description
- * that is plausible and wrong passes here. That half is guarded by review.
- */
 class ApiDocsReturnFieldsTest extends TestCase
 {
     use RefreshDatabase;
@@ -60,11 +43,6 @@ class ApiDocsReturnFieldsTest extends TestCase
         $this->assertSame([], $problems, "The reference and the endpoints disagree:\n\n".implode("\n", $problems));
     }
 
-    /**
-     * The loop above proves the fields are right. This proves there are some: an
-     * endpoint added later with no field list would be an endpoint the loop skips
-     * over quietly, which is the one way this whole check could be made useless.
-     */
     #[Test]
     public function every_endpoint_that_answers_with_a_body_documents_its_fields(): void
     {
@@ -87,11 +65,6 @@ class ApiDocsReturnFieldsTest extends TestCase
         $this->assertSame([], $unexpected, 'These endpoints answer with no body and document fields anyway: '.implode(', ', $unexpected));
     }
 
-    /**
-     * Not looking inside a field is a decision, and it should stay a rare one. It
-     * is turned on for exactly one field today, and a second would mean somebody
-     * had chosen to stop checking a shape rather than describe it.
-     */
     #[Test]
     public function it_leaves_exactly_one_field_unchecked_on_purpose(): void
     {
@@ -111,9 +84,7 @@ class ApiDocsReturnFieldsTest extends TestCase
         ], $opaque);
     }
 
-    /**
-     * @return list<string>
-     */
+    /** @return list<string> */
     private function check(ApiDocsSection $section): array
     {
         $documented = array_column($section->returnFields, 'name');
@@ -128,16 +99,10 @@ class ApiDocsReturnFieldsTest extends TestCase
             return ["{$section->id}: its arm got {$response->status()} where the reference promises {$section->responseStatus}, so there is nothing worth comparing. Fix the arm.".PHP_EOL.$response->content()];
         }
 
-        // An endpoint that answers with nothing has no JSON to decode, and asking
-        // for it anyway is an error rather than an empty answer.
         $body = $response->content() === '' ? [] : ($response->json() ?? []);
 
         $actual = $this->paths($body, $section);
 
-        // A list that came back empty has no record to look inside, so every field
-        // of a record would go unchecked and this would pass while proving nothing
-        // about them. Said once, and on its own, because the fifteen rows it would
-        // otherwise report as missing are noise around the one thing to fix.
         foreach ($documented as $field) {
             if (str_ends_with($field, '[]') && ! in_array($field, $actual, true)) {
                 return ["{$section->id}: `{$field}` stands for a record in a list, and the list came back empty, so nothing inside a record was checked. Arrange at least one record in its arm."];
@@ -158,16 +123,6 @@ class ApiDocsReturnFieldsTest extends TestCase
     }
 
     /**
-     * Every path the answer carries.
-     *
-     * An object contributes its own path and then its children. A list of records
-     * contributes its own path, a `[]` row standing for one of them, and then the
-     * paths of the first one. A scalar, and a null, contribute only themselves.
-     *
-     * The walk stops at a field the reference marked as one it does not look
-     * inside, because such a field holds whatever something else put there and
-     * its keys are not the reference's to promise.
-     *
      * @param  array<array-key, mixed>  $answer
      * @return list<string>
      */
@@ -211,9 +166,7 @@ class ApiDocsReturnFieldsTest extends TestCase
         return $paths;
     }
 
-    /**
-     * @return list<ApiDocsSection>
-     */
+    /** @return list<ApiDocsSection> */
     private function endpoints(): array
     {
         $sections = [];
@@ -231,15 +184,6 @@ class ApiDocsReturnFieldsTest extends TestCase
         return $sections;
     }
 
-    /**
-     * One arm per endpoint. Each arranges what it needs and calls the thing.
-     *
-     * They all run inside one test and so share one database, which is why no two
-     * of them write the same email address.
-     *
-     * A list arm creates at least one record, or the fields of a row would go
-     * unverified and this test would pass while proving nothing about them.
-     */
     private function answer(string $id): ?TestResponse
     {
         Queue::fake();
@@ -258,8 +202,6 @@ class ApiDocsReturnFieldsTest extends TestCase
 
             'login-store' => $this->loggingIn(),
 
-            // Signing out revokes the token it was called with, so this one needs a
-            // real token rather than the stand in Sanctum::actingAs mints.
             'logout-destroy' => $this->withHeader('Authorization', 'Bearer '.User::factory()->create()->createToken('Dundie awards bot')->plainTextToken)
                 ->json('DELETE', '/api/v1/logout'),
 
@@ -498,13 +440,7 @@ class ApiDocsReturnFieldsTest extends TestCase
         };
     }
 
-    /**
-     * @param  callable(User): TestResponse  $call
-     */
-    /**
-     * A vault a contact can be written down in, which means one holding a
-     * published contact template for a new contact to start from.
-     */
+    /** @param  callable(User): TestResponse  $call */
     private function vaultReadyForContacts(User $user): Vault
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -524,10 +460,6 @@ class ApiDocsReturnFieldsTest extends TestCase
         return $vault;
     }
 
-    /**
-     * A contact carrying a picture, because a contact drawn as its initials
-     * answers a null `avatar` and the two fields inside it would go unchecked.
-     */
     private function contactWithAPicture(Vault $vault): Contact
     {
         $file = File::factory()->create([
@@ -565,10 +497,6 @@ class ApiDocsReturnFieldsTest extends TestCase
         ]);
     }
 
-    /**
-     * A log entry that carries something in its parameters, so that the field the
-     * reference does not look inside is exercised rather than assumed.
-     */
     private function aLog(User $user): Log
     {
         return Log::factory()->create([
@@ -578,10 +506,6 @@ class ApiDocsReturnFieldsTest extends TestCase
         ]);
     }
 
-    /**
-     * An email that arrived, so that the moments it carries are numbers rather
-     * than nothing on both of the endpoints that describe it.
-     */
     private function anEmail(User $user): EmailSent
     {
         return EmailSent::factory()->delivered()->create([

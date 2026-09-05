@@ -108,7 +108,6 @@ class LocaleResolutionTest extends TestCase
         $this->assertNull($this->resolutionFor(cookies: [LocaleResolution::COOKIE_NAME => 'sv_SE']));
     }
 
-    /** The table in data-model.md, one case per row. */
     #[Test]
     #[DataProvider('announcedLanguages')]
     public function it_matches_what_a_device_announces_to_a_language_the_product_ships(string $header, ?string $expected): void
@@ -243,11 +242,7 @@ class LocaleResolutionTest extends TestCase
         $this->assertSame('de_DE', LocaleResolution::forApi($request));
     }
 
-    /**
-     * A request carrying an Accept-Language header, and whatever the device holds.
-     *
-     * @param  array<string, string>  $cookies
-     */
+    /** @param  array<string, string>  $cookies */
     private function requestAnnouncing(string $header, array $cookies = []): Request
     {
         $request = Request::create('/', 'GET', [], $cookies, [], ['HTTP_ACCEPT_LANGUAGE' => $header]);
@@ -257,9 +252,7 @@ class LocaleResolutionTest extends TestCase
         return $request;
     }
 
-    /**
-     * @param  array<string, string>  $cookies
-     */
+    /** @param  array<string, string>  $cookies */
     private function resolutionFor(array $cookies): ?string
     {
         $this->requestAnnouncing('', $cookies);

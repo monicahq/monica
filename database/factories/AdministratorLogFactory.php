@@ -11,16 +11,12 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<AdministratorLog>
- */
+/** @extends Factory<AdministratorLog> */
 class AdministratorLogFactory extends Factory
 {
     protected $model = AdministratorLog::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -34,10 +30,6 @@ class AdministratorLogFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the command line took the action, which is how the first
-     * administrator of an instance is designated.
-     */
     public function byTheConsole(): static
     {
         return $this->state(fn (array $attributes): array => [

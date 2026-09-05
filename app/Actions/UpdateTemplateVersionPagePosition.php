@@ -13,13 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Move a page left or right, which is to say move its tab.
- *
- * The page is taken out and put back at the position asked for, and every page
- * of that version is then numbered from one again. A position past the end puts
- * it last.
- *
- * Only on a draft: the order of the tabs of a published version is part of what
- * was published.
  */
 class UpdateTemplateVersionPagePosition
 {

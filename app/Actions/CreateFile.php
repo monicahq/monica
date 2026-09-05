@@ -18,24 +18,6 @@ use Illuminate\Support\Str;
 
 /**
  * Put an uploaded file where it belongs and write down that it is there.
- *
- * The row is what the product knows about the file, and it is what makes the
- * quota, the sweep and the grace period possible. A path written into whatever
- * points at the file would tell nobody how many bytes the account is using or
- * what is safe to remove.
- *
- * Room is checked before a byte is written. An upload that would take the
- * account past its ceiling is refused outright, rather than written and then
- * discovered to be one file too many.
- *
- * The name the file came with never reaches the disk: it is kept on the row so
- * somebody downloading it gets their own name back, and what is written is the
- * uuid. The path is the account, then the vault, then that name, which is the
- * prefix everything serving a file checks before it serves anything.
- *
- * It arrives pointing at nothing. Attaching it to a value or an activity is
- * {@see AttachFile}, and until something does the file is an orphan on its
- * grace period.
  */
 class CreateFile
 {
@@ -110,12 +92,7 @@ class CreateFile
         });
     }
 
-    /**
-     * How big the picture is, for a file that is one. Anything else has no
-     * dimensions to speak of, and asking would only produce a warning.
-     *
-     * @return array{0: int|null, 1: int|null}
-     */
+    /** @return array{0: int|null, 1: int|null} */
     private function dimensions(): array
     {
         if (! str_starts_with((string) $this->upload->getMimeType(), 'image/')) {

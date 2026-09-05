@@ -95,11 +95,6 @@ class CreateDefaultTemplateTest extends TestCase
         }
     }
 
-    /**
-     * A tab is seeded only when there is something to put on it. Everything
-     * else a contact page eventually holds is its own model with its own
-     * screens, and a tab opening on nothing would be worse than no tab.
-     */
     #[Test]
     public function it_reads_the_template_in_the_pages_the_product_supplies(): void
     {
@@ -283,10 +278,6 @@ class CreateDefaultTemplateTest extends TestCase
         );
     }
 
-    /**
-     * The whole point of notes reading newest first: somebody adding one sees it
-     * without scrolling past everything they wrote before.
-     */
     #[Test]
     public function it_makes_the_notes_collect_at_the_top_and_leaves_the_rest_collecting_at_the_end(): void
     {
@@ -307,10 +298,6 @@ class CreateDefaultTemplateTest extends TestCase
         $this->assertNull($orderOf(DefaultFieldEnum::Photo));
     }
 
-    /**
-     * A direction on a field that is not a repeater would be a setting its type
-     * cannot honour.
-     */
     #[Test]
     public function it_gives_no_direction_to_a_field_that_is_not_a_repeater(): void
     {
@@ -330,11 +317,6 @@ class CreateDefaultTemplateTest extends TestCase
         $this->assertSame([], $notRepeaters);
     }
 
-    /**
-     * The point of the change that made this a repeater: somebody keeps learning
-     * things about a person, and one box would mean editing what they wrote last
-     * time in order to write down what they learned this time.
-     */
     #[Test]
     public function it_lets_a_contact_hold_as_many_notes_as_somebody_writes(): void
     {

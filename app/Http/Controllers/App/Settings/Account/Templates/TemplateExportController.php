@@ -13,17 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-/**
- * The file, read first and then downloaded.
- *
- * Reading has an address of its own because the promise the share screen makes
- * is that nothing about anybody's records leaves, and the only way to keep that
- * promise honestly is to show the whole file before it goes. A download that
- * cannot be read first asks to be trusted.
- *
- * `show` is where the export is actually performed and logged. Looking at the
- * screen is not exporting.
- */
 class TemplateExportController extends Controller
 {
     public function index(Request $request, Template $template): View

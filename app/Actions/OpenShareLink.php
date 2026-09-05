@@ -14,22 +14,6 @@ use Illuminate\Support\Facades\Hash;
 
 /**
  * Open a private link, from the side of whoever received it.
- *
- * It is the only action with no user behind it, and that is the feature rather
- * than an omission: the recipient needs no account, is never asked to make one,
- * and never becomes a user of the account they are looking into. Nothing here
- * writes to what is shared, and nothing built on top of it ever may.
- *
- * An unknown, expired or revoked token all come back as the same not found, so
- * whoever is trying tokens learns nothing from the difference. A link asking
- * for a password and given none is not a failure but the normal first step, and
- * writes nothing down; a wrong password is written down before it is refused,
- * because a run of those is the only signal the owner ever gets that a link may
- * have leaked.
- *
- * What a successful open records is coarse on purpose. The visitor never agreed
- * to anything with us, so it is enough to answer "was this opened, roughly
- * when, roughly from where" and no more.
  */
 class OpenShareLink
 {
@@ -95,10 +79,6 @@ class OpenShareLink
         });
     }
 
-    /**
-     * Write the opening down. The counters on the link are what survive the
-     * pruning of these rows later, which is why both exist.
-     */
     private function writeTheVisit(bool $failed): void
     {
         ShareLinkVisit::query()->create([

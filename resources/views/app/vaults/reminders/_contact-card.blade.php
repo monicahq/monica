@@ -1,15 +1,5 @@
+{{-- Who the reminder is about, at the head of its screen. --}}
 {{--
-  Who the reminder is about, at the head of its screen.
-
-  It carries the name, the face, where the date is read from and how many other
-  reminders the same person has. The design asked for a group, a place and the
-  last conversation as well; this product has none of the three, and a card that
-  invented them would be a card that lies about what is stored.
-
-  The count is the reason the card is worth its space: somebody arriving from a
-  list of deadlines wants to know whether this person is reminded about once or
-  five times, and that is not on the list.
-
   @var array<string, mixed> $contact
   @var string $builtFrom
 --}}

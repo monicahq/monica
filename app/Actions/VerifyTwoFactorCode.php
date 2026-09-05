@@ -9,9 +9,8 @@ use App\Models\User;
 use PragmaRX\Google2FA\Google2FA;
 
 /**
- * Check the code somebody typed at the two factor challenge, against the code
- * their authenticator app is showing, and failing that against their recovery
- * codes. A recovery code is spent the moment it works.
+ * Check the code somebody typed at the two factor challenge, against the code their authenticator
+ * app is showing, and failing that against their recovery codes.
  */
 class VerifyTwoFactorCode
 {

@@ -163,11 +163,6 @@ class MarketplacePayloadTest extends TestCase
         $this->assertEquals('Sales', $payload['value_lists']['departments']['items'][0]['label']);
     }
 
-    /**
-     * An identifier from the account of the author means nothing to whoever
-     * installs, so a nested field names its parent the only way that survives
-     * the copy.
-     */
     #[Test]
     public function it_names_the_parent_of_a_nested_field_by_key(): void
     {
@@ -223,10 +218,6 @@ class MarketplacePayloadTest extends TestCase
         $this->assertNotEquals(MarketplacePayload::checksum($before), MarketplacePayload::checksum($after));
     }
 
-    /**
-     * Freeze what the test built and make it what the structure offers, since
-     * the payload reads the published version and nothing else.
-     */
     private function publish(Template|Section $listable, TemplateVersion|SectionVersion $version): void
     {
         $version->status = VersionStatusEnum::Published;

@@ -44,11 +44,6 @@ class PublishSectionVersionTest extends TestCase
         $this->assertEquals($version->id, $section->fresh()->published_version_id);
     }
 
-    /**
-     * Without the copy the freeze would stop at the edge of the section:
-     * somebody renaming an option on the settings screen would change what a
-     * section published last month says.
-     */
     #[Test]
     public function it_takes_a_copy_of_the_lists_the_fields_read_from(): void
     {
@@ -109,10 +104,6 @@ class PublishSectionVersionTest extends TestCase
         $this->assertEquals([], $version->fresh()->resolved_value_lists);
     }
 
-    /**
-     * Translating on the way in would bake the language of whoever pressed the
-     * button into the snapshot.
-     */
     #[Test]
     public function it_keeps_a_supplied_label_as_a_translation_key(): void
     {

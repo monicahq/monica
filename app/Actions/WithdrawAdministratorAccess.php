@@ -15,15 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Take the administrator capacity off somebody.
- *
- * Two rules hold this together, and both exist so an instance cannot be left
- * with nobody able to moderate. Nobody may do this to themselves, which is the
- * same rule as deactivation and for the same reason. And the last administrator
- * cannot be withdrawn at all.
- *
- * The count is taken under a lock, because the interesting failure is two
- * administrators withdrawing each other at the same moment. Both would read two
- * and both would pass, and the instance would end up with none.
  */
 class WithdrawAdministratorAccess
 {

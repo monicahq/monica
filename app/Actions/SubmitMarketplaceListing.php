@@ -24,22 +24,6 @@ use InvalidArgumentException;
 
 /**
  * Send a listing in for review, with the structure as it stands frozen into it.
- *
- * This is one action and not two, because sending in the first version and
- * sending in the fifth are the same act for whoever performs them. What differs
- * is only what happens to the listing while it waits: one that has never been
- * published has nothing to show and stops being visible as anything, and one
- * already in the catalogue stays on the version people are installing until the
- * new one is approved.
- *
- * A change note is required from the second version on. It is what every
- * installer reads before deciding whether to move, and a version that arrives
- * without one leaves them nothing to decide with. The first has nothing to have
- * changed from.
- *
- * The payload is taken here rather than at approval, so that what is moderated
- * is exactly what was sent, and not whatever the author has done to their
- * account in the meantime.
  */
 class SubmitMarketplaceListing
 {
@@ -112,11 +96,6 @@ class SubmitMarketplaceListing
         });
     }
 
-    /**
-     * Get what the listing publishes. A template and a section are the two
-     * things the payload knows how to write down; an activity type will be the
-     * third when there is one to publish.
-     */
     private function listable(): Template|Section
     {
         $listable = $this->listing->listable;

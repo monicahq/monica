@@ -18,10 +18,6 @@ class AccountStorageLimitController extends Controller
             'storage_limit_in_bytes' => ['nullable', 'integer', 'min:0'],
         ]);
 
-        // A form sends every field as text, and the integer rule checks the value
-        // without changing its type, so what arrives here is the string "1048576"
-        // rather than the number. An empty field is already null by the time it
-        // reaches this, which is what tells no limit apart from a limit of zero.
         $limit = $validated['storage_limit_in_bytes'] ?? null;
 
         new UpdateAccountStorageLimit(

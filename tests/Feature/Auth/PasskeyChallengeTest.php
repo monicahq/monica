@@ -10,11 +10,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * The challenge a passkey sign-in answers. Nothing here signs anybody in: it
- * proves the options the server offers are the ones the specification needs,
- * because everything downstream depends on their shape.
- */
 class PasskeyChallengeTest extends TestCase
 {
     use RefreshDatabase;

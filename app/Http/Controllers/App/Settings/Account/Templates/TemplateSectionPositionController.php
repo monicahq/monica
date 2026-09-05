@@ -12,10 +12,6 @@ use App\Models\TemplateVersionSection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-/**
- * Where a section sits on the page. The order is part of what gets published,
- * so it moves only while the version is a draft.
- */
 class TemplateSectionPositionController extends Controller
 {
     public function update(Request $request, Template $template, TemplateVersionSection $templateVersionSection): RedirectResponse

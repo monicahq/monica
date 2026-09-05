@@ -1,5 +1,5 @@
+{{-- Laravel's notification email, published so every line of it goes through the translations. --}}
 <x-mail::message>
-{{-- Greeting --}}
 @if (! empty($greeting))
 # {{ $greeting }}
 @else
@@ -10,13 +10,11 @@
 @endif
 @endif
 
-{{-- Intro Lines --}}
 @foreach ($introLines as $line)
 {{ $line }}
 
 @endforeach
 
-{{-- Action Button --}}
 @isset($actionText)
 <?php
     $color = match ($level) {
@@ -29,20 +27,17 @@
 </x-mail::button>
 @endisset
 
-{{-- Panel --}}
 @if (! empty($panel))
 <x-mail::panel>
 {{ $panel }}
 </x-mail::panel>
 @endif
 
-{{-- Outro Lines --}}
 @foreach ($outroLines as $line)
 {{ $line }}
 
 @endforeach
 
-{{-- Salutation --}}
 @if (! empty($salutation))
 {{ $salutation }}
 @else
@@ -50,7 +45,6 @@
 {{ config('app.name') }}
 @endif
 
-{{-- Subcopy --}}
 @isset($actionText)
 <x-slot:subcopy>
 {{ __(

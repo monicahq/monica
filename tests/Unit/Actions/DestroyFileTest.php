@@ -36,10 +36,6 @@ class DestroyFileTest extends TestCase
         Storage::disk('local')->assertMissing($file->path);
     }
 
-    /**
-     * What was uploaded, by whom and when is history. The bytes go and the row
-     * stays.
-     */
     #[Test]
     public function it_keeps_the_row_that_says_the_file_was_there(): void
     {
@@ -112,9 +108,6 @@ class DestroyFileTest extends TestCase
         new DestroyFile(account: $user->account, file: $file, user: $user)->execute();
     }
 
-    /**
-     * The sweep acts on the account's behalf rather than anybody's.
-     */
     #[Test]
     public function it_is_taken_by_nobody_in_particular_when_the_sweep_does_it(): void
     {

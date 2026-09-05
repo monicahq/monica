@@ -12,12 +12,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Change what a record is called. It is the one thing about an entity the
- * product imposes, since it lists it, searches it and draws initials from it,
- * and a record left with nothing is refused by the model.
- *
- * The string the lists sort on is rewritten by the model on save, so nothing
- * here has to remember to keep it in step.
+ * Change what a record is called.
  */
 class UpdateEntityName
 {

@@ -78,10 +78,6 @@ class VaultTest extends TestCase
         $this->assertTrue($default->is($vault->defaultTemplates->first()));
     }
 
-    /**
-     * The links onto one of its contacts are not these: they hang off the
-     * contact and carry the vault only to say where that contact lives.
-     */
     #[Test]
     public function it_holds_the_private_links_opened_onto_itself(): void
     {

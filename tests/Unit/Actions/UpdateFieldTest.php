@@ -52,10 +52,6 @@ class UpdateFieldTest extends TestCase
         $this->assertTrue($field->is_sensitive);
     }
 
-    /**
-     * The key is what an import, an export or an API caller holds on to, so it
-     * survives every rename.
-     */
     #[Test]
     public function it_leaves_the_key_alone_when_the_label_changes(): void
     {

@@ -29,10 +29,6 @@ class DetachFileTest extends TestCase
         $this->assertNull($file->fresh()->orphaned_at);
     }
 
-    /**
-     * Letting go never deletes. The moment the last thing let go is written
-     * down instead, and the sweep comes for it later.
-     */
     #[Test]
     public function it_starts_the_grace_period_when_the_last_thing_lets_go(): void
     {

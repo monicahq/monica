@@ -1,25 +1,6 @@
-{{--
-  What somebody chose about the way the application reads to them: the language
-  of the interface, the clock times are written on, the order dates read in, and
-  the separators numbers are written with.
-
-  Four rows, and each one is its own form: there is no Save on this screen because
-  picking a value is the save. That is the one place the system allows a control to
-  act on being touched, and it is allowed here because every one of these is
-  reversible by picking again.
-
-  Each row carries the other rows' current values along so that saving one never
-  quietly resets the others, which the partial below does for all of them. Which
-  also means a row that saves has to refresh the rows carrying the value it just
-  changed, and by now that is every other row. The formats save over ajax; the
-  language reloads the page, since every word on it is drawn in it, the examples
-  included.
-
-  @var \App\ViewModels\Settings\Account\Preferences\PreferencesViewModel $viewModel
---}}
+{{-- What somebody chose about how the application reads to them: language, clock, dates, numbers. --}}
+{{-- @var \App\ViewModels\Settings\Account\Preferences\PreferencesViewModel $viewModel --}}
 @php
-  // The time zone panel shows a clock, so a change to the clock's format has to
-  // redraw it too, which is why it is in the set every format row refreshes.
   $rows = 'language-form time-format-form date-format-form number-format-form preview timezone-panel';
 @endphp
 <x-shell :title="__('Preferences')">
@@ -129,11 +110,6 @@
         </x-slot:end>
       </x-row>
 
-      {{--
-        What the four choices add up to, in one sentence. It is the point of the
-        screen: nobody picks a date format for its name, they pick it for what a
-        date then looks like.
-      --}}
       <x-slot:footer id="preview">
         {{ __('It is :time on :date where you are, in :language.', ['time' => $viewModel->timePreview(), 'date' => $viewModel->datePreview(), 'language' => $viewModel->localeLabel()]) }}
       </x-slot:footer>

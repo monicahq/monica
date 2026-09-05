@@ -8,10 +8,6 @@ use App\Models\EntityType;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
-/**
- * What the entity types screen shows: every kind of record the account
- * invented, in the order they appear in the vault navigation.
- */
 class EntityTypesViewModel
 {
     public function __construct(
@@ -19,11 +15,6 @@ class EntityTypesViewModel
     ) {}
 
     /**
-     * The types of the account, in navigation order.
-     *
-     * The numeric id travels with each row because the drag keeps its
-     * bookkeeping in numbers, while every link and every form goes by slug.
-     *
      * @return array<int, array{id: int, slug: string, nameSingular: string, namePlural: string, description: ?string, icon: string, colour: string, tint: string, isActive: bool, countLabel: string}>
      */
     public function types(): array
@@ -46,10 +37,6 @@ class EntityTypesViewModel
             ->all();
     }
 
-    /**
-     * The line beside the heading, which says how much the account keeps
-     * without making somebody add the rows up.
-     */
     public function summary(): string
     {
         $types = $this->query()->count();
@@ -66,18 +53,11 @@ class EntityTypesViewModel
         return $this->user;
     }
 
-    /**
-     * The disc a glyph sits on: the colour of the type, thinned down far
-     * enough to read as a background in both themes.
-     */
     public static function tint(string $colour): string
     {
         return "color-mix(in srgb, {$colour} 12%, transparent)";
     }
 
-    /**
-     * How many records a type holds, in words.
-     */
     public static function countLabel(int $count): string
     {
         if ($count === 0) {
@@ -87,9 +67,7 @@ class EntityTypesViewModel
         return trans_choice(':count record|:count records', $count);
     }
 
-    /**
-     * @return Builder<EntityType>
-     */
+    /** @return Builder<EntityType> */
     private function query(): Builder
     {
         return EntityType::query()->where('account_id', $this->user->account_id);

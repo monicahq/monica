@@ -16,19 +16,6 @@ use Illuminate\Support\Facades\Hash;
 
 /**
  * Change what an existing link shows, and to whom.
- *
- * Everything the owner decided when they made it can be decided again: the
- * label, who it was meant for, when it stops working, the password, and every
- * inclusion. What cannot change is what the link points at, since a link
- * quietly repointed at somebody else is the accident this product cannot
- * afford, and the token, which stays what was sent out.
- *
- * The inclusions are written as a whole rather than merged, so the screen sends
- * the state of every box and a box left unticked closes what it names. Anything
- * still shown through the link stops being shown the moment this returns.
- *
- * A revoked link is not edited. Revocation is permanent, and the answer to
- * wanting a revoked link back is a new link.
  */
 class UpdateShareLink
 {
@@ -100,12 +87,6 @@ class UpdateShareLink
         $this->shareLink->save();
     }
 
-    /**
-     * Settle the password. Sending a new one replaces whatever was there,
-     * asking for it to be removed takes it away, and saying nothing about it
-     * leaves it alone, so editing the label of a protected link does not
-     * quietly unprotect it.
-     */
     private function passwordHash(): ?string
     {
         if ($this->removesPassword) {

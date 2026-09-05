@@ -11,19 +11,12 @@ use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<FieldValue>
- */
+/** @extends Factory<FieldValue> */
 class FieldValueFactory extends Factory
 {
     protected $model = FieldValue::class;
 
-    /**
-     * The account and the vault are taken from the record the value was written
-     * on, since a value in a different compartment than its record is nothing.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -54,10 +47,6 @@ class FieldValueFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the value is a date that comes round again, with the year
-     * known. It is the shape a reminder rule reads from.
-     */
     public function recurringDate(string $date = '1984-02-03'): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -67,10 +56,6 @@ class FieldValueFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the value is a date that comes round again, whose year
-     * nobody knows.
-     */
     public function recurringDateWithoutAYear(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -81,9 +66,6 @@ class FieldValueFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the value points at an item of a value list.
-     */
     public function choice(?ValueListItem $item = null): static
     {
         $item ??= ValueListItem::factory()->create();
@@ -95,10 +77,6 @@ class FieldValueFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the field left the structure, which hides the value from
-     * the page without destroying it.
-     */
     public function detached(): static
     {
         return $this->state(fn (array $attributes): array => [

@@ -13,18 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Move a section from the page it sits on to another page of the same template
- * version. It arrives last on the page it lands on, and the page it left is
- * numbered from one again so no gap is left behind.
- *
- * A page of another template version is refused rather than followed. The
- * placement names both the version and the page, and the two disagreeing would
- * put a section on a version it does not belong to.
- *
- * Reordering within a page is {@see UpdateTemplateVersionSectionPosition}: this
- * action only answers which page a section is on.
- *
- * Only on a draft, which the model enforces.
+ * Move a section from the page it sits on to another page of the same template version.
  */
 class MoveSectionToTemplateVersionPage
 {

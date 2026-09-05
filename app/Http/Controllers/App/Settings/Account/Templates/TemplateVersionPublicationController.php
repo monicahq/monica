@@ -15,14 +15,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 
-/**
- * Freezing a draft: from here the version never changes again.
- *
- * The sections it carries are published first, in the same request. They were
- * assembled here and have no screen of their own, so asking for each by hand
- * would be asking about a distinction nobody can act on. What is being
- * accepted is spelled out on the button.
- */
 class TemplateVersionPublicationController extends Controller
 {
     public function update(Request $request, Template $template, TemplateVersion $templateVersion): RedirectResponse
@@ -56,11 +48,6 @@ class TemplateVersionPublicationController extends Controller
             ->with('status_description', __('It is frozen now. Any further change starts a new draft beside it.'));
     }
 
-    /**
-     * A version cannot be frozen while it points at a section somebody is
-     * still editing. A section already published is left alone: it is frozen
-     * and shared, and nothing here has any business making a version of it.
-     */
     private function publishTheSectionsItCarries(Request $request, TemplateVersion $templateVersion): void
     {
         foreach ($templateVersion->assembly as $row) {

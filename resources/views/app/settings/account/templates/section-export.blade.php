@@ -1,9 +1,5 @@
-{{--
-  One section as a file, in full. It works the way the whole template does, one
-  section deep, and it is short enough to read in one go.
-
-  @var \App\ViewModels\Settings\Account\Templates\ShareSectionViewModel $viewModel
---}}
+{{-- One section as a file, in full. --}}
+{{-- @var \App\ViewModels\Settings\Account\Templates\ShareSectionViewModel $viewModel --}}
 @php
   $template = $viewModel->template();
 @endphp

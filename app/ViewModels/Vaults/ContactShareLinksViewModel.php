@@ -10,19 +10,6 @@ use App\Models\ShareLink;
 use App\Models\User;
 use App\Models\Vault;
 
-/**
- * Every link ever opened onto one person's page, including the ones that were
- * ended.
- *
- * A revoked link keeps its row on purpose. The question this screen answers is
- * who could see what, and when, and deleting the row would delete the answer.
- * So nothing here removes anything: a link is either working, finished on its
- * own, or ended by hand, and all three are part of the same history.
- *
- * The state of a link is worked out here rather than stored on it. Live, expired
- * and revoked are three readings of two nullable dates, and a screen is the only
- * thing that needs the reading.
- */
 class ContactShareLinksViewModel
 {
     public function __construct(
@@ -51,10 +38,6 @@ class ContactShareLinksViewModel
         return __('Links to :name’s page', ['name' => $this->contact->first_name ?? $this->contact->name]);
     }
 
-    /**
-     * The sentence at the top, which has to say why the ended links are still
-     * on the list before somebody wonders whether revoking worked.
-     */
     public function intro(): string
     {
         return __('Every link ever made for them, including the ones you ended. Kept so you can always answer the question of who could see what, and when.');
@@ -110,10 +93,6 @@ class ContactShareLinksViewModel
             ->all();
     }
 
-    /**
-     * Who it was for and when it was made, which is what tells two links apart
-     * when they were given the same name.
-     */
     private function metaOf(ShareLink $link): string
     {
         if ($link->recipient_hint === null) {
@@ -161,10 +140,6 @@ class ContactShareLinksViewModel
         return trans_choice('{1}Opened once|Opened :count times', $link->view_count);
     }
 
-    /**
-     * What the confirmation has to say before it ends a link: what stops
-     * working, and what stays.
-     */
     private function revokeLine(ShareLink $link): string
     {
         if ($link->view_count === 0) {

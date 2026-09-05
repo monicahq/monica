@@ -1,12 +1,5 @@
+{{-- An inline message attached to the thing it is about, rather than a banner at the top. --}}
 {{--
-  An inline message attached to the thing it is about, rather than a banner at the
-  top of a screen saying something about somewhere else.
-
-  The glyph carries the tone alongside the tint, so a notice still reads as a
-  warning rather than as decoration for somebody who cannot see the colour. `quiet`
-  is the one with nothing to say about tone: an aside that is neither good news nor
-  bad, which is what most of them are.
-
   @var string $tone
   @var string|null $title
   @var string|null $icon
@@ -27,12 +20,6 @@
     'quiet' => 'info',
   ];
 
-  /*
-   * The ground and the edge are the tone's own tint and edge, so a notice reads as
-   * one object whichever tone it carries. The glyph beside the text is what actually
-   * says which tone it is, and it says it without the colour, which is what lets the
-   * two tones that have no colour left tell themselves apart by their ground.
-   */
   $tints = [
     'info' => 'bg-canvas border-hairline',
     'success' => 'bg-success-tint border-success-edge',

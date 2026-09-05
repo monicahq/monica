@@ -57,10 +57,6 @@ class AddSectionToTemplateVersionTest extends TestCase
         ]);
     }
 
-    /**
-     * Somebody who does not say which page means the first one, which is the
-     * whole template until a second page exists.
-     */
     #[Test]
     public function it_puts_a_section_on_the_first_page_when_nobody_says_which(): void
     {
@@ -185,10 +181,6 @@ class AddSectionToTemplateVersionTest extends TestCase
         $this->assertEquals(1, $sectionVersion->fresh()->usage_count);
     }
 
-    /**
-     * Two copies of one section would give two fields the same identity, and a
-     * value written into either would have nowhere to go.
-     */
     #[Test]
     public function it_refuses_the_same_section_twice_on_one_template_version(): void
     {
@@ -249,10 +241,6 @@ class AddSectionToTemplateVersionTest extends TestCase
         )->execute();
     }
 
-    /**
-     * A draft section on a draft template version is how somebody assembles one. The refusal
-     * comes later, when the template version is published.
-     */
     #[Test]
     public function it_accepts_a_section_that_is_still_a_draft(): void
     {

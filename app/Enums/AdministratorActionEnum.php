@@ -7,14 +7,6 @@ namespace App\Enums;
 use App\Contracts\Translatable;
 use Override;
 
-/**
- * What an administrator did in the admin space.
- *
- * It is deliberately not {@see UserActionEnum}. That one describes what
- * somebody did inside their own account, and this one what an operator did to
- * an account or to a marketplace submission. The two are read on different
- * screens by different people, and a case belongs to exactly one of them.
- */
 enum AdministratorActionEnum: string implements Translatable
 {
     case MarketplaceVersionApproved = 'marketplace_version_approved';
@@ -27,11 +19,6 @@ enum AdministratorActionEnum: string implements Translatable
     case AdministratorAccessGranted = 'administrator_access_granted';
     case AdministratorAccessWithdrawn = 'administrator_access_withdrawn';
 
-    /**
-     * What the action reads as in the record, written about the administrator
-     * who took it. The sentence doubles as the translation key, and its
-     * placeholders are filled with the parameters the action was recorded with.
-     */
     public function description(): string
     {
         return match ($this) {
@@ -47,11 +34,7 @@ enum AdministratorActionEnum: string implements Translatable
         };
     }
 
-    /**
-     * The sentence this action reads as in the record.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

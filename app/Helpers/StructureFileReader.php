@@ -18,55 +18,10 @@ use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use JsonException;
 
-/**
- * Reads a file back, and refuses it when it is not exactly what it claims.
- *
- * This is the only place in the application where text somebody else wrote
- * becomes rows describing what every record renders, so it is written as a
- * doorman rather than as a parser. Nothing is guessed at, nothing is repaired,
- * and nothing is let through on the grounds that it looks harmless: a name this
- * version does not know is a refusal rather than something to ignore, because a
- * file carrying a name we do not know is a file we do not understand. What
- * carries forward compatibility instead is the format version, which is checked
- * first and which is the whole reason the file says what it is.
- *
- * Nothing here touches the database and nothing here creates anything. A
- * refusal therefore means nothing happened, which is what lets a screen offer
- * to check a file as a step of its own.
- *
- * Some of what a file says is read and then deliberately dropped:
- *
- * - Every translation key. An imported structure is never a supplied one, so
- *   the word is resolved once and stored as a sentence. No row of an imported
- *   structure can end up pointing into the catalogue the product ships.
- * - The slug, which is a wish rather than a fact. A slug is an address inside
- *   the account, and {@see SlugBuilder} decides it, so a file cannot take one
- *   that already belongs to something else.
- * - The whole `validation` blob. Nothing reads that column (see
- *   {@see FieldValueRules}), so a file has no business writing it.
- * - Everything in `options` except the accepted mime types, which is the one
- *   part of it anything reads.
- * - A default value on a field that offers choices. What is written down there
- *   is the id of an item in the account it came from, and the file carries no
- *   ids to match it against, so there is nothing here it could mean.
- *
- * The refusals name where in the file the trouble is and do not quote what is
- * in it, so nothing a file says can be made to appear on the screen as though
- * the application were saying it.
- */
 class StructureFileReader
 {
-    /**
-     * How much text is worth looking at. A real export of a large template is a
-     * few tens of kilobytes, and the ceiling is checked on the bytes before
-     * anything tries to parse them.
-     */
     public const int MAX_BYTES = 524288;
 
-    /**
-     * How deeply a file may nest. The format bottoms out well before this, and
-     * the limit is what stops a file built to be expensive to read.
-     */
     public const int MAX_DEPTH = 32;
 
     public const int MAX_PAGES = 25;
@@ -85,11 +40,6 @@ class StructureFileReader
 
     public const int MAX_DEFAULT_VALUES = 50;
 
-    /**
-     * A key, a slug or a reference: lowercase words joined by a dash or an
-     * underscore and nothing else. Every identifier the format carries was
-     * built by {@see SlugBuilder} and looks like this.
-     */
     private const string IDENTIFIER = '/^[a-z0-9]+([_-][a-z0-9]+)*$/';
 
     private const string COLOUR = '/^#[0-9a-f]{6}$/';
@@ -98,36 +48,17 @@ class StructureFileReader
 
     private const string MIME_TYPE = '#^[a-z0-9!\#$&^_.+-]+/[a-z0-9!\#$&^_.+-]+$#';
 
-    /**
-     * How many fields the whole file holds, counted while walking it so that a
-     * file made of a thousand small sections is refused as surely as one made
-     * of a single enormous one.
-     */
     private int $fieldCount = 0;
 
-    /**
-     * The lists the file declares, by the reference its fields name them by.
-     *
-     * @var array<string, array<string, mixed>>
-     */
+    /** @var array<string, array<string, mixed>> */
     private array $valueLists = [];
 
     private int $formatVersion = StructureFile::FORMAT_VERSION;
 
-    /**
-     * @param  array<string, mixed>  $file
-     */
+    /** @param  array<string, mixed>  $file */
     private function __construct(private readonly array $file) {}
 
     /**
-     * Read a file and hand back what it says, checked.
-     *
-     * Whoever is reading usually knows which of the two kinds of file they are
-     * standing in front of, since the two arrive through different doors. They
-     * say so, and a file of the other kind is refused here rather than by each
-     * caller in its own words, so that the screen offering to check a file and
-     * the action importing it can never disagree about what they would do.
-     *
      * @return array<string, mixed>
      *
      * @throws StructureFileIsNotReadable
@@ -147,12 +78,7 @@ class StructureFileReader
         return $read;
     }
 
-    /**
-     * The text, as far as being text goes: not empty, not enormous, valid
-     * UTF-8, valid JSON, and a block rather than a list or a bare word.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private static function decode(string $raw): array
     {
         if (mb_trim($raw) === '') {
@@ -182,9 +108,7 @@ class StructureFileReader
         return $decoded;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function check(): array
     {
         $format = $this->header();
@@ -208,11 +132,6 @@ class StructureFileReader
         ];
     }
 
-    /**
-     * What the file says it is, which is the first thing read and the only
-     * thing a file from a future version is guaranteed to still say the same
-     * way.
-     */
     private function header(): string
     {
         $node = $this->file['monica'] ?? null;
@@ -244,10 +163,6 @@ class StructureFileReader
     }
 
     /**
-     * Where a section file was cut from. It is provenance and nothing else:
-     * nothing here is resolved against anything, and nothing is written down
-     * from it.
-     *
      * @param  array<string, mixed>  $file
      * @return array<string, mixed>|null
      */
@@ -265,9 +180,7 @@ class StructureFileReader
         ];
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function template(mixed $node): array
     {
         $template = $this->object($node, 'template', [
@@ -306,9 +219,7 @@ class StructureFileReader
         ];
     }
 
-    /**
-     * @return list<array<string, mixed>>
-     */
+    /** @return list<array<string, mixed>> */
     private function pages(mixed $node): array
     {
         $rows = $this->collection($node, 'template.pages', self::MAX_PAGES);
@@ -340,12 +251,7 @@ class StructureFileReader
         return $pages;
     }
 
-    /**
-     * The sections a page carries, each with what the page says about how it
-     * sits there rather than about what it is.
-     *
-     * @return list<array<string, mixed>>
-     */
+    /** @return list<array<string, mixed>> */
     private function assembly(mixed $node, string $parentPath): array
     {
         $rows = $this->collection($node, "{$parentPath}.sections", self::MAX_SECTIONS_PER_PAGE);
@@ -367,9 +273,7 @@ class StructureFileReader
         return $assembly;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function section(mixed $node, string $path): array
     {
         $section = $this->object($node, $path, [
@@ -383,12 +287,6 @@ class StructureFileReader
             $this->refuse(__('The header is right, but a section in this file holds no field, so there is nothing in it to build.'));
         }
 
-        /*
-         * The mark is checked against the set rather than only for shape. A
-         * glyph this version cannot draw would render as the blank page, and a
-         * colour outside the eight has no foreground picked for the dark theme,
-         * so either would arrive as something the product cannot show.
-         */
         $icon = $this->identifier($section, 'icon', $path, 64);
 
         if ($icon !== null && ! in_array($icon, Section::ICONS, true)) {
@@ -412,9 +310,7 @@ class StructureFileReader
         ];
     }
 
-    /**
-     * @return list<array<string, mixed>>
-     */
+    /** @return list<array<string, mixed>> */
     private function fields(mixed $node, string $parentPath): array
     {
         $rows = $this->collection($node, "{$parentPath}.fields", self::MAX_FIELDS_PER_SECTION);
@@ -447,19 +343,13 @@ class StructureFileReader
         return $fields;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function field(mixed $node, string $path, int $index): array
     {
         $field = $this->object($node, $path, [
             'key', 'type', 'label', 'label_translation_key', 'help_text', 'placeholder', 'position',
             'is_required', 'is_sensitive', 'is_highlighted', 'is_unique', 'is_repeatable',
             'repeat_min', 'repeat_max', 'is_reminder_source', 'default_value', 'options', 'validation',
-            /* `is_reminder_source` is a key this product no longer has. It stays
-               allowed and is read by nothing, because whether a field drives a
-               reminder is now answered by its type, and refusing the key would
-               refuse every file exported before that changed. */
             'parent_field_key', 'value_list_reference', 'relation_target', 'relation_entity_type',
         ], ['type']);
 
@@ -535,12 +425,7 @@ class StructureFileReader
         ];
     }
 
-    /**
-     * Which repeater each field sits in, checked once the whole section is
-     * known, since a field may name one written after it in the file.
-     *
-     * @param  list<array<string, mixed>>  $fields
-     */
+    /** @param  list<array<string, mixed>>  $fields */
     private function checkTheRepeaters(array $fields): void
     {
         $repeaters = [];
@@ -572,11 +457,6 @@ class StructureFileReader
         }
     }
 
-    /**
-     * The lists of choices the file carries, named by the reference the fields
-     * point at rather than by any number, since a number out of another account
-     * means nothing here.
-     */
     private function readTheValueLists(): void
     {
         $node = $this->file['value_lists'] ?? [];
@@ -610,9 +490,7 @@ class StructureFileReader
         }
     }
 
-    /**
-     * @return list<array<string, mixed>>
-     */
+    /** @return list<array<string, mixed>> */
     private function valueListItems(mixed $node, string $parentPath): array
     {
         $rows = $this->collection($node, "{$parentPath}.items", self::MAX_ITEMS_PER_LIST);
@@ -648,12 +526,7 @@ class StructureFileReader
         return $items;
     }
 
-    /**
-     * A kind of record, described rather than pointed at, since one invented in
-     * an account exists nowhere else.
-     *
-     * @return array<string, mixed>|null
-     */
+    /** @return array<string, mixed>|null */
     private function entityType(mixed $node, string $path): ?array
     {
         if ($node === null) {
@@ -687,9 +560,7 @@ class StructureFileReader
         ];
     }
 
-    /**
-     * @param  array<string, mixed>  $field
-     */
+    /** @param  array<string, mixed>  $field */
     private function relationTarget(array $field, string $path, FieldTypeEnum $type): ?string
     {
         $word = $this->nullableString($field, 'relation_target', $path, 32);
@@ -712,10 +583,6 @@ class StructureFileReader
     }
 
     /**
-     * What a record starts with in this field. It is stored as free json, so
-     * what is allowed is one answer or a flat list of them, and never a shape
-     * of its own.
-     *
      * @param  array<string, mixed>  $field
      * @return list<mixed>|null
      */
@@ -747,9 +614,6 @@ class StructureFileReader
     }
 
     /**
-     * What a field says about itself beyond its kind. Only the accepted mime
-     * types are read, because they are the only part of it anything reads.
-     *
      * @param  array<string, mixed>  $field
      * @return array<string, mixed>|null
      */
@@ -780,8 +644,6 @@ class StructureFileReader
     }
 
     /**
-     * A block, holding what it is allowed to hold and nothing else.
-     *
      * @param  list<string>  $allowed
      * @param  list<string>  $required
      * @return array<string, mixed>
@@ -809,11 +671,7 @@ class StructureFileReader
         return $node;
     }
 
-    /**
-     * A list of blocks, of a length worth reading.
-     *
-     * @return list<mixed>
-     */
+    /** @return list<mixed> */
     private function collection(mixed $node, string $path, int $ceiling): array
     {
         if (! is_array($node) || ! array_is_list($node)) {
@@ -831,9 +689,7 @@ class StructureFileReader
         return $node;
     }
 
-    /**
-     * @param  array<string, mixed>  $node
-     */
+    /** @param  array<string, mixed>  $node */
     private function string(array $node, string $key, string $path, int $max, ?string $whenMissing = null): string
     {
         $value = $this->nullableString($node, $key, $path, $max);
@@ -849,9 +705,7 @@ class StructureFileReader
         $this->refuse(__('The file says nothing about :path, which it has to.', ['path' => "{$path}.{$key}"]));
     }
 
-    /**
-     * @param  array<string, mixed>  $node
-     */
+    /** @param  array<string, mixed>  $node */
     private function nullableString(array $node, string $key, string $path, int $max): ?string
     {
         $value = $node[$key] ?? null;
@@ -881,11 +735,7 @@ class StructureFileReader
         return $value;
     }
 
-    /**
-     * A key, a slug or a reference, which is a word rather than a sentence.
-     *
-     * @param  array<string, mixed>  $node
-     */
+    /** @param  array<string, mixed>  $node */
     private function identifier(array $node, string $key, string $path, int $max): ?string
     {
         $value = $this->nullableString($node, $key, $path, $max);
@@ -903,9 +753,7 @@ class StructureFileReader
         return $value;
     }
 
-    /**
-     * @param  array<string, mixed>  $node
-     */
+    /** @param  array<string, mixed>  $node */
     private function integer(array $node, string $key, string $path, int $min, int $max, ?int $whenMissing = null): int
     {
         $value = $this->nullableInteger($node, $key, $path, $min, $max);
@@ -921,9 +769,7 @@ class StructureFileReader
         $this->refuse(__('The file says nothing about :path, which it has to.', ['path' => "{$path}.{$key}"]));
     }
 
-    /**
-     * @param  array<string, mixed>  $node
-     */
+    /** @param  array<string, mixed>  $node */
     private function nullableInteger(array $node, string $key, string $path, int $min, int $max): ?int
     {
         $value = $node[$key] ?? null;
@@ -943,9 +789,7 @@ class StructureFileReader
         return $value;
     }
 
-    /**
-     * @param  array<string, mixed>  $node
-     */
+    /** @param  array<string, mixed>  $node */
     private function boolean(array $node, string $key, string $path, bool $whenMissing = false): bool
     {
         $value = $node[$key] ?? null;
@@ -961,13 +805,7 @@ class StructureFileReader
         return $value;
     }
 
-    /**
-     * The language the structure was written in. One this account has never
-     * heard of is dropped rather than refused: it says nothing about what the
-     * structure is, and the account it lands in has a language of its own.
-     *
-     * @param  array<string, mixed>  $node
-     */
+    /** @param  array<string, mixed>  $node */
     private function locale(array $node, string $path): ?string
     {
         $locale = $this->nullableString($node, 'locale', $path, 5);
@@ -979,16 +817,7 @@ class StructureFileReader
         return array_key_exists($locale, (array) config('monica.locales')) ? $locale : null;
     }
 
-    /**
-     * The word a thing is called, whether the file wrote it down or named a
-     * translation of it.
-     *
-     * A file naming a translation describes a structure the product supplied
-     * somewhere else. What comes in is never supplied here, so the translation
-     * is read once, now, and what is kept is the sentence rather than the key.
-     *
-     * @param  array<string, mixed>  $node
-     */
+    /** @param  array<string, mixed>  $node */
     private function word(array $node, string $key, string $translationKey, string $path, int $max): string
     {
         $literal = $this->nullableString($node, $key, $path, $max);
@@ -1012,11 +841,6 @@ class StructureFileReader
         return Str::limit(mb_trim($translated), $max, '');
     }
 
-    /**
-     * A word out of the file, made safe to put in a sentence on the screen.
-     * Anything that is not already a plain short word is left out entirely,
-     * since a refusal reads perfectly well without it.
-     */
     private function safe(string $word): string
     {
         return preg_match('/^[A-Za-z0-9_.-]{1,40}$/', $word) === 1 ? $word : '…';

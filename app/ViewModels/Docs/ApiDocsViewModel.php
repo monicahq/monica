@@ -6,18 +6,6 @@ namespace App\ViewModels\Docs;
 
 use Illuminate\Support\Facades\Route;
 
-/**
- * Everything the API reference at /docs/api shows.
- *
- * It reads the definition files under resources/docs/api, in filename order,
- * and turns each one into a sidebar group. It asks the database nothing: the
- * reference is copy, and the only thing it is checked against is the route
- * table, which the tests do rather than the page.
- *
- * A group marked as a guide renders under Getting started as plain prose with
- * no verb beside it, and its sections are illustrative rather than real
- * endpoints, so they are left out of the comparison against the routes.
- */
 class ApiDocsViewModel
 {
     /** @var list<array{name: string, guide: bool, sections: list<ApiDocsSection>}>|null */
@@ -28,9 +16,7 @@ class ApiDocsViewModel
         return rtrim((string) config('app.url'), '/').'/api/v1';
     }
 
-    /**
-     * @return list<array{name: string, guide: bool, sections: list<ApiDocsSection>}>
-     */
+    /** @return list<array{name: string, guide: bool, sections: list<ApiDocsSection>}> */
     public function groups(): array
     {
         if ($this->groups !== null) {
@@ -56,11 +42,7 @@ class ApiDocsViewModel
         return $this->groups;
     }
 
-    /**
-     * Every section, in the order the sidebar lists them.
-     *
-     * @return list<ApiDocsSection>
-     */
+    /** @return list<ApiDocsSection> */
     public function sections(): array
     {
         $sections = [];
@@ -86,9 +68,6 @@ class ApiDocsViewModel
     }
 
     /**
-     * The sidebar: the guide pages first, then the resources, each with the
-     * verb the entry answers to.
-     *
      * @return array{guides: list<array{id: string, label: string}>, resources: list<array{name: string, items: list<array{id: string, label: string, method: string}>}>}
      */
     public function navigation(): array
@@ -118,13 +97,6 @@ class ApiDocsViewModel
         return ['guides' => $guides, 'resources' => $resources];
     }
 
-    /**
-     * The whole reference as plain text, or one section of it.
-     *
-     * The shaping is a Blade template like every other rendering here, which is
-     * what keeps this class a view model rather than a second thing that also
-     * writes documents.
-     */
     public function markdown(?ApiDocsSection $section = null): string
     {
         $sections = $section === null ? $this->sections() : [$section];
@@ -132,12 +104,7 @@ class ApiDocsViewModel
         return trim(view('app.docs.api.markdown', ['sections' => $sections])->render())."\n";
     }
 
-    /**
-     * The endpoints the reference claims exist. Guide sections show
-     * illustrative requests and are not part of this list.
-     *
-     * @return list<array{method: string, path: string}>
-     */
+    /** @return list<array{method: string, path: string}> */
     public function documentedRoutes(): array
     {
         $routes = [];
@@ -155,12 +122,7 @@ class ApiDocsViewModel
         return $routes;
     }
 
-    /**
-     * The endpoints that actually exist, written the way a definition file
-     * writes them, so the two lists can be compared as they are.
-     *
-     * @return list<array{method: string, path: string}>
-     */
+    /** @return list<array{method: string, path: string}> */
     public function registeredRoutes(): array
     {
         $routes = [];

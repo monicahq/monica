@@ -19,27 +19,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Silence every reminder rule a subject carries, for the reason given.
- *
- * Nothing is deleted and nothing is hidden. A rule that stops applying says
- * which of the things that can silence it happened, and {@see
- * ReactivateReminders} brings back exactly the rules silenced by the cause being
- * reversed. That is section 3.3 applied to reminders: an archived contact is a
- * silent contact, and a field that has left the structure takes its rules quiet
- * with it, but in both cases the rule is still there to be explained.
- *
- * The subject is whatever the thing that happened was about. A contact or an
- * entity silences the rules about it, a field silences the rules reading it
- * wherever they are, and one rule silences only itself, which is what a date
- * somebody cleared needs: the value is gone and the rule that read it is quiet,
- * while every other rule on the record goes on firing.
- *
- * A rule already quiet for another reason is left exactly as it is. Overwriting
- * its reason would lose the first explanation and make the wrong reversal bring
- * it back.
- *
- * Silencing a rule takes its deadlines ahead away too, under the reason matching
- * the one that silenced it, so that reversing the cause brings back exactly what
- * it silenced. What is behind is history and is never touched.
  */
 class DeactivateReminders
 {
@@ -51,9 +30,6 @@ class DeactivateReminders
         private readonly ReminderInactiveReasonEnum $reason,
     ) {}
 
-    /**
-     * How many rules went quiet.
-     */
     public function execute(): int
     {
         $this->validate();
@@ -90,9 +66,7 @@ class DeactivateReminders
         });
     }
 
-    /**
-     * @return Builder<Reminder>
-     */
+    /** @return Builder<Reminder> */
     private function rules(): Builder
     {
         $query = Reminder::query()
@@ -128,10 +102,6 @@ class DeactivateReminders
         )->onQueue('low');
     }
 
-    /**
-     * What the line in the journal calls the thing this was about: a field by its
-     * label, a rule by the record it is about, and a record by its own name.
-     */
     private function name(): string
     {
         if ($this->subject instanceof Field) {

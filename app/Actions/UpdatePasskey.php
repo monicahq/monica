@@ -11,11 +11,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Rename a passkey. Only the person it belongs to may do so.
- *
- * A rename sends no email. The list of ways into the account has not changed,
- * which is what the other two notifications are about, and an email for every
- * relabelling would teach people to ignore the ones that matter.
+ * Rename a passkey.
  */
 class UpdatePasskey
 {

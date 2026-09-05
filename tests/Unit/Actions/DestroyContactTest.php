@@ -103,10 +103,6 @@ class DestroyContactTest extends TestCase
         new DestroyContact(user: $user, contact: $contact)->execute();
     }
 
-    /**
-     * The deletion is soft, so a link left alone would go on opening the page
-     * of somebody who was deleted.
-     */
     #[Test]
     public function it_revokes_the_links_opened_onto_the_contact(): void
     {

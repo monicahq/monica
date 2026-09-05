@@ -10,19 +10,12 @@ use App\Models\SectionVersion;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<SectionVersion>
- */
+/** @extends Factory<SectionVersion> */
 class SectionVersionFactory extends Factory
 {
     protected $model = SectionVersion::class;
 
-    /**
-     * A version detached from the account of its section describes nothing, so
-     * the account is taken from the section rather than made beside it.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -40,10 +33,6 @@ class SectionVersionFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the version has been frozen. Nothing may be added to it,
-     * changed in it or taken out of it from then on.
-     */
     public function published(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -52,10 +41,6 @@ class SectionVersionFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the version is no longer offered when somebody assembles a
-     * template, while every template already containing it is untouched.
-     */
     public function retired(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -65,10 +50,6 @@ class SectionVersionFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that template versions contain the section, which is what stops
-     * the section being deleted.
-     */
     public function used(int $times = 3): static
     {
         return $this->state(fn (array $attributes): array => [

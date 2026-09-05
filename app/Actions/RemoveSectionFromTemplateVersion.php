@@ -15,12 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Take a section off a template version.
- *
- * Only off a draft: the model refuses it on anything published, since a version
- * losing a section is exactly the kind of change publication rules out.
- *
- * The section itself is untouched. It is not owned by this template, and every
- * other version carrying it goes on as before.
  */
 class RemoveSectionFromTemplateVersion
 {

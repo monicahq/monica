@@ -57,10 +57,6 @@ class CreateSectionVersionDraftTest extends TestCase
         $this->assertEquals(['Street', 'City'], $draft->fields->pluck('label')->all());
     }
 
-    /**
-     * A child copied before its repeater would find the old parent, and the two
-     * versions would end up sharing a field.
-     */
     #[Test]
     public function it_points_a_copied_field_at_its_new_repeater(): void
     {

@@ -12,16 +12,12 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<Log>
- */
+/** @extends Factory<Log> */
 class LogFactory extends Factory
 {
     protected $model = Log::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -36,10 +32,6 @@ class LogFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the application performed the action on its own, rather
-     * than somebody asking it to.
-     */
     public function bySystem(): static
     {
         return $this->state(fn (array $attributes): array => [

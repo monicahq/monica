@@ -14,13 +14,7 @@ use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 
 /**
- * Open a new compartment in the account. Nothing is put in it beyond the
- * template new contacts start from: a vault is a boundary, and it starts empty.
- *
- * It goes at the end of the list, since the order vaults appear in is the
- * user's to decide and a new one has not been placed yet. The very first vault
- * of an account becomes the default one, because exactly one vault is where
- * records land when nobody says which, and there is nothing else to be it.
+ * Open a new compartment in the account.
  */
 class CreateVault
 {
@@ -67,12 +61,6 @@ class CreateVault
         ]);
     }
 
-    /**
-     * Give the vault the template new contacts in it start from. The very first
-     * vault of an account is made before that template exists, since it is
-     * seeded by a job a moment later; that job gives the vault its default when
-     * it arrives.
-     */
     private function seedTheContactDefault(): void
     {
         $template = Template::query()

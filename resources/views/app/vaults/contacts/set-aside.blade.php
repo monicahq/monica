@@ -1,17 +1,5 @@
-{{--
-  The answers a record still holds for questions its structure no longer asks.
-
-  It is a screen of its own rather than a section of the record, because it is
-  about what is not on the record. Somebody reaches it when they wonder where a
-  field went, and what they need is the reassurance that nothing was thrown away
-  and the sentence that says how to get it back.
-
-  Nothing here writes. Putting a field back on the template is what brings its
-  answers back, and that decision belongs to the structure rather than to one
-  person.
-
-  @var \App\ViewModels\Vaults\SetAsideValuesViewModel $viewModel
---}}
+{{-- The answers a record still holds for questions its structure no longer asks. --}}
+{{-- @var \App\ViewModels\Vaults\SetAsideValuesViewModel $viewModel --}}
 @php
   $values = $viewModel->values();
 @endphp

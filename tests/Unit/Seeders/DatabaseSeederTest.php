@@ -18,12 +18,6 @@ class DatabaseSeederTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Run the whole thing the way `db:seed` does, rather than each seeder on its
-     * own. A contact takes the name it is sorted by from a saving event, so a
-     * seeder that switches model events off writes the categories and then
-     * fails on the first person, which is a failure only this test sees.
-     */
     #[Test]
     public function it_seeds_the_catalogue_and_the_example_account_together(): void
     {

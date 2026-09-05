@@ -10,9 +10,7 @@ use Tests\TestCase;
 
 class ReturnsTest extends TestCase
 {
-    /**
-     * @param  array<string, mixed>  $overrides
-     */
+    /** @param  array<string, mixed>  $overrides */
     private function section(array $overrides = []): ApiDocsSection
     {
         return new ApiDocsSection(array_merge([

@@ -10,10 +10,6 @@ use App\Models\User;
 
 /**
  * Let somebody sign in again.
- *
- * Nothing was taken away while they could not, so there is nothing to put back.
- * Deactivating is a door being held shut and never a deletion, which is what
- * makes this the whole of the reversal.
  */
 class ActivateUser
 {

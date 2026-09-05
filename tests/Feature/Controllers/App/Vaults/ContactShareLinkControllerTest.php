@@ -304,10 +304,6 @@ class ContactShareLinkControllerTest extends TestCase
         $this->assertTrue($link->refresh()->expires_at->equalTo($ends));
     }
 
-    /**
-     * The action writes the inclusions as a whole, so a form that does not ask
-     * about one must send back what the link already said about it.
-     */
     #[Test]
     public function it_leaves_the_inclusions_the_form_does_not_ask_about_alone(): void
     {
@@ -478,10 +474,6 @@ class ContactShareLinkControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * A record laid out over two pages, one of which carries a single section, so
-     * a test can hold back everything on one page without touching the other.
-     */
     private function versionWithTwoPages(Vault $vault): TemplateVersion
     {
         $template = Template::factory()->create(['account_id' => $vault->account_id]);
@@ -495,9 +487,7 @@ class ContactShareLinkControllerTest extends TestCase
         return $version->refresh();
     }
 
-    /**
-     * @param  array<string, string>  $sections
-     */
+    /** @param  array<string, string>  $sections */
     private function page(TemplateVersion $version, string $label, array $sections): TemplateVersionPage
     {
         $page = TemplateVersionPage::factory()->create([

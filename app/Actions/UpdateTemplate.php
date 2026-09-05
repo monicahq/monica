@@ -12,19 +12,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Rename a template, say what it is for, or change the language it is written
- * in.
- *
- * The slug is not touched. It travels in URLs and through the API, so renaming
- * "Pet" to "Companion animal" leaves every link that already went out working.
- *
- * What the template applies to is not touched either. A template describes a
- * kind of record, and pointing it at a different kind would leave every record
- * already on it rendering something that was never meant for it. That is a new
- * template, not an edit.
- *
- * A name given here is stored as given, which is how a template the product
- * supplied stops following the interface language.
+ * Rename a template, say what it is for, or change the language it is written in.
  */
 class UpdateTemplate
 {

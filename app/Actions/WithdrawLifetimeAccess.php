@@ -11,10 +11,6 @@ use App\Models\User;
 
 /**
  * Take the full product back off an account.
- *
- * The purchase date stays where it is. Access being withdrawn today does not
- * unmake a purchase that was made, and an operator looking at this account in a
- * year has to be able to see that one happened.
  */
 class WithdrawLifetimeAccess
 {

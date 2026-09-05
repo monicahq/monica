@@ -35,10 +35,6 @@ class FileTest extends TestCase
         $this->assertTrue($file->vault->is($vault));
     }
 
-    /**
-     * A user photo belongs to the account rather than to one of its
-     * compartments.
-     */
     #[Test]
     public function it_belongs_to_no_vault_when_it_is_the_accounts_own(): void
     {

@@ -33,10 +33,6 @@ class DeactivateEntityTypeTest extends TestCase
         $this->assertFalse($entityType->refresh()->is_active);
     }
 
-    /**
-     * The records that already exist are the reason the type is deactivated
-     * rather than deleted, so nothing about them may move.
-     */
     #[Test]
     public function it_leaves_the_records_the_type_holds_alone(): void
     {

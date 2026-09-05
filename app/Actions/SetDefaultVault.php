@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Choose the vault a record lands in when nobody says which one.
- *
- * Exactly one vault per account is the default, so the one that held the title
- * loses it in the same breath. A deleted vault cannot take it: records would be
- * created in a compartment that is on its way out.
  */
 class SetDefaultVault
 {

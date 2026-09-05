@@ -12,10 +12,6 @@ use Illuminate\Http\Request;
 
 class ApiKeyController extends Controller
 {
-    /**
-     * The key itself rides back on the session rather than being written down,
-     * so the screen can print it once and never again.
-     */
     public function create(Request $request): RedirectResponse
     {
         $validated = $request->validate([

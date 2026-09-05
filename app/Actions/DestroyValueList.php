@@ -14,17 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Delete a value list, and the choices it held with it.
- *
- * The deletion is soft, and it takes the items down with it so a list cannot
- * come back half empty.
- *
- * Only a list somebody made can go. A supplied one is what the product itself
- * reads from, and an account that does not track genders empties that list
- * rather than deleting it: an empty list offers nothing, which is the same
- * outcome without leaving the product pointing at nothing.
- *
- * Once fields exist, a list that one of them points at is disabled rather than
- * deleted, and the field says why. There is no field yet to ask.
  */
 class DestroyValueList
 {

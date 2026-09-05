@@ -16,15 +16,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Take a listing out of the catalogue.
- *
- * It stops being offered and its published version stops being installable.
- * Everybody who already installed it keeps exactly what they have, untouched
- * and unaware, because what they hold is their own copy and never a link back
- * here. Their installations are deliberately left alone.
- *
- * The listing is not deleted and its slug is not released. A withdrawn listing
- * is the answer to why an address people had stopped working, and handing that
- * address to somebody else's work would be worse than a dead link.
  */
 class WithdrawMarketplaceListing
 {
@@ -53,13 +44,6 @@ class WithdrawMarketplaceListing
         }
     }
 
-    /**
-     * The tally is guarded rather than decremented outright. It is a count kept
-     * beside the thing it counts, so it can drift, and the column is unsigned:
-     * taking one off a category already at zero would refuse the write and take
-     * the whole withdrawal down with it. Somebody pulling their own work is not
-     * the person who should discover a counter is off.
-     */
     private function withdraw(): void
     {
         DB::transaction(function (): void {

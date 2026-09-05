@@ -11,18 +11,6 @@ use App\Models\User;
 use App\Notifications\PasskeyRemoved;
 use Laravel\Passkeys\Events\PasskeyDeleted;
 
-/**
- * Record and announce a passkey somebody just revoked.
- *
- * The email is not a courtesy, for the same reason the one announcing a new
- * passkey is not: a way into the account has changed, and the person who owns
- * the address hears about it whether or not they are the one who did it.
- *
- * The event fires after the row is gone, which is why the activity entry takes
- * the name from the event rather than reading it back. `LogUserAction` accepts
- * what it is about in its constructor precisely so a queued job never has to go
- * looking for a record that has been deleted.
- */
 class HandlePasskeyRemoval
 {
     public function handle(PasskeyDeleted $event): void

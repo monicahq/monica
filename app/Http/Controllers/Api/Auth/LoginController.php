@@ -16,17 +16,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
-/**
- * Trade an email address and a password for a token, and give the token back.
- *
- * The rules are not written here. `AttemptLogin` holds them, the sign in screen
- * asks it the same thing, and it is asked without a session because a token is
- * not one. All that is left here is turning its refusal into the answer an API
- * client expects, which is a 401 rather than the field error a form wants.
- *
- * A second factor is checked before any token exists. Skipping it would make
- * this endpoint a way around the second factor rather than another way in.
- */
 class LoginController extends Controller
 {
     public function store(Request $request): JsonResponse
@@ -78,11 +67,6 @@ class LoginController extends Controller
         return response()->noContent(204);
     }
 
-    /**
-     * Somebody who has not turned the second factor on has nothing to prove.
-     * Somebody who has must prove it here, with the code their authenticator is
-     * showing or with one of their recovery codes.
-     */
     private function passesSecondFactor(User $user, ?string $code): bool
     {
         if ($user->two_factor_confirmed_at === null) {

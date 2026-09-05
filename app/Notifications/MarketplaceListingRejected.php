@@ -13,13 +13,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Override;
 
-/**
- * Tell an author their version was refused, and why.
- *
- * The reason is the point of this email. A refusal the author cannot read is a
- * refusal they cannot act on, which is why the action that rejects will not do
- * so without one.
- */
 class MarketplaceListingRejected extends Notification implements HasEmailType, ShouldQueue
 {
     use Queueable;
@@ -32,9 +25,7 @@ class MarketplaceListingRejected extends Notification implements HasEmailType, S
         $this->onQueue('high');
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function via(User $notifiable): array
     {
         return ['mail'];

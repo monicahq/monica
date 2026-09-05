@@ -17,19 +17,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Start a new draft of a template, copied from a version that already exists.
- *
- * This is what editing a published version means. The published one is left
- * exactly as it is, records keep rendering with it, and the changes happen
- * beside it on something nobody is using yet. Publishing the draft is a
- * separate act afterwards.
- *
- * The pages are copied first, keeping their key, their label and their place,
- * since a page belongs to one version and the published one must not share a
- * row the draft can move. The assembly is then copied row for row onto the
- * matching new page, pointing at the same section versions rather than at
- * copies of them. A section version is frozen and shareable, so two versions
- * carrying the same section carry the same rows, and the count of template
- * versions containing it goes up.
  */
 class CreateTemplateVersionDraft
 {
@@ -93,16 +80,7 @@ class CreateTemplateVersionDraft
         });
     }
 
-    /**
-     * Copy the pages, and say which new one each old one became so the sections
-     * can be put back where they were.
-     *
-     * A page keeps its key, its label and its place. The key is what a record
-     * URL carries, and a draft that renumbered its tabs would break every link
-     * to the version it came from the moment it was published.
-     *
-     * @return array<int, int>
-     */
+    /** @return array<int, int> */
     private function copyThePages(): array
     {
         $pages = [];

@@ -15,9 +15,7 @@ class RegistrationPasskeyControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     private function payload(array $overrides = []): array
     {
         return array_merge([

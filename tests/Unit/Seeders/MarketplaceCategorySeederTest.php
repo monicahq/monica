@@ -48,11 +48,6 @@ class MarketplaceCategorySeederTest extends TestCase
         $this->assertCount(count(MarketplaceCategoryEnum::cases()), MarketplaceCategory::all());
     }
 
-    /**
-     * The tally belongs to the listings filed under the category, and a
-     * category somebody closed stays closed, so a deployment cannot undo
-     * either.
-     */
     #[Test]
     public function it_leaves_the_tally_and_the_state_of_a_category_alone(): void
     {

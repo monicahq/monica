@@ -10,23 +10,8 @@ use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 
-/**
- * One box for every part of a vault, so the screen is a map of it rather than
- * a summary.
- *
- * Two of the five parts exist. The tasks, the reminders and the files are each
- * their own model and none has been written, so those three boxes say what will
- * land in them and are not offered as somewhere to go. Filling them with
- * invented rows read as somebody else's life, and made the three that do not
- * work look exactly like the two that do.
- */
 class VaultDashboardViewModel
 {
-    /**
-     * How many people the box shows before it gives up and points at the whole
-     * list. Enough to recognise the vault, few enough that the box stays the
-     * height of the ones beside it.
-     */
     private const int PEOPLE_SHOWN = 5;
 
     public function __construct(
@@ -54,10 +39,6 @@ class VaultDashboardViewModel
         return $this->vault->description;
     }
 
-    /**
-     * The line above the title: whose vault it is and how many people are in
-     * it. It is what tells two vaults of the same shape apart at a glance.
-     */
     public function overline(): string
     {
         return "{$this->user->name} · {$this->contactCount()}";
@@ -83,12 +64,7 @@ class VaultDashboardViewModel
         return route('vaults.settings.index', $this->vault);
     }
 
-    /**
-     * The people the box shows: the last ones written down, since the reason to
-     * open a vault is usually the thing you were last doing in it.
-     *
-     * @return array<int, array{name: string, nickname: string, avatarUrl: string|null, url: string}>
-     */
+    /** @return array<int, array{name: string, nickname: string, avatarUrl: string|null, url: string}> */
     public function people(): array
     {
         return $this->vault
@@ -109,10 +85,6 @@ class VaultDashboardViewModel
             ->all();
     }
 
-    /**
-     * The line beside the heading of the people box, which is the count of
-     * them, and the line at the foot of it, which is the way to all of them.
-     */
     public function peopleCaption(): string
     {
         return $this->contactCount();
@@ -127,12 +99,7 @@ class VaultDashboardViewModel
         return trans_choice(':count person|All :count people', $this->vault->contact_count);
     }
 
-    /**
-     * The design asks for two more, who else can see the vault and what it is
-     * called, and neither has anything behind it yet.
-     *
-     * @return array<int, array{title: string, line: string}>
-     */
+    /** @return array<int, array{title: string, line: string}> */
     public function settingsRows(): array
     {
         return [
@@ -148,11 +115,6 @@ class VaultDashboardViewModel
     }
 
     /**
-     * Each is drawn as what it will eventually hold, and none of them is a link:
-     * a word that does not move is better than a link that leads nowhere. They are
-     * told apart by their heading and their place on the dashboard rather than by a
-     * colour, because a colour that says nothing is decoration.
-     *
      * @return array<int, array{title: string, caption: string, icon: string, emptyTitle: string, emptyText: string}>
      */
     public function unbuiltSections(): array
@@ -182,11 +144,6 @@ class VaultDashboardViewModel
         ];
     }
 
-    /**
-     * How many people are in the vault, said the way somebody would say it.
-     * The count is kept on the vault rather than counted here, so a list of
-     * vaults does not aggregate once per row.
-     */
     private function contactCount(): string
     {
         if ($this->vault->contact_count === 0) {
@@ -196,11 +153,6 @@ class VaultDashboardViewModel
         return trans_choice(':count person|:count people', $this->vault->contact_count);
     }
 
-    /**
-     * What deleting the vault would take with it. The consequence is named
-     * rather than counted at the reader, so the row says what goes before the
-     * screen that asks does.
-     */
     private function deletionConsequence(): string
     {
         if ($this->vault->contact_count === 0) {
@@ -210,11 +162,6 @@ class VaultDashboardViewModel
         return trans_choice('{1}Takes the one person in it and everything written about them.|Takes :count people and everything written about them.', $this->vault->contact_count);
     }
 
-    /**
-     * What the vault currently starts its contacts on, said by name. A vault
-     * always has one, but a vault whose default was deleted from underneath it
-     * has none to name.
-     */
     private function currentTemplateName(): ?string
     {
         return VaultDefaultTemplate::query()

@@ -1,22 +1,7 @@
-{{--
-  The rows of the list, in runs under the letter they begin with.
-
-  It is its own file because the next page is appended to the one before it: what
-  comes back over ajax is this fragment again, starting wherever the last page
-  stopped, and a run that was cut in half by the pagination comes back without a
-  heading so it reads as the rest of itself.
-
-  A run with no letter is drawn without a heading. That is the continuation above,
-  and every run of a list ordered by something a letter says nothing about.
-
-  @var \App\ViewModels\Vaults\ContactsViewModel $viewModel
---}}
+{{-- The rows of the list, in runs under the letter they begin with. --}}
+{{-- @var \App\ViewModels\Vaults\ContactsViewModel $viewModel --}}
 @foreach ($viewModel->groups() as $group)
   @if ($group['letter'] !== null)
-    {{--
-      The letter sits on the inset shade rather than on the canvas the rows use, so
-      it reads as a divider between two runs and not as a row with one word in it.
-    --}}
     <h2 class="flex items-center gap-2.5 border-b border-hairline bg-card px-4.5 py-2.25 uppercase text-xs tracking-caption text-muted">{{ $group['letter'] }}</h2>
   @endif
 

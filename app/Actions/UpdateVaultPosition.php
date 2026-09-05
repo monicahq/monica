@@ -12,12 +12,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Move a vault in the list, so the one somebody lives in is the one they reach
- * first.
- *
- * The vault is taken out of the list and put back at the position asked for,
- * and every vault is then numbered from one again. A position past the end puts
- * it last, which is what dropping something at the bottom of a list means.
+ * Move a vault in the list, so the one somebody lives in is the one they reach first.
  */
 class UpdateVaultPosition
 {

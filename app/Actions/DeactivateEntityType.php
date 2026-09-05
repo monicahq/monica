@@ -11,15 +11,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Stop new records of a kind being created, without touching one that already
- * exists.
- *
- * This is what a type in use gets instead of a deletion. Every record of it
- * stays readable and stays editable: an account that has finished cataloguing
- * its wine bottles wants the bottles, not the button that adds another.
- *
- * The place the type has in the navigation is kept, so activating it again
- * puts it back where it was.
+ * Stop new records of a kind being created, without touching one that already exists.
  */
 class DeactivateEntityType
 {

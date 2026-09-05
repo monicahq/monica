@@ -19,21 +19,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-/**
- * The sections on one template: putting one there, retitling it, taking it
- * off.
- *
- * Adding makes a section of its own rather than something this template owns,
- * since a section is reusable and may end up on several. Retitling changes
- * the heading this template shows and nothing else, which is what stops a
- * rename here from reaching into somebody else's template.
- */
 class TemplateSectionController extends Controller
 {
-    /**
-     * The section lands on the page the builder had open. Nobody chooses it
-     * separately: the tab somebody is looking at is the tab they mean.
-     */
     public function create(Request $request, Template $template): RedirectResponse
     {
         $version = $template->versions()->first();
@@ -73,13 +60,6 @@ class TemplateSectionController extends Controller
             ->with('status', __('The section is added.'));
     }
 
-    /**
-     * The heading and the mark are saved together and stored apart. The heading
-     * belongs to this placement, so changing it reaches no other template; the
-     * mark belongs to the section, so changing it reaches all of them. One form
-     * asks for both because they are one gesture to whoever is looking at the
-     * row, and the screen says which is which.
-     */
     public function update(Request $request, Template $template, TemplateVersionSection $templateVersionSection): RedirectResponse
     {
         abort_unless($templateVersionSection->isReachableThrough($request->user(), $template), 404);
@@ -90,12 +70,6 @@ class TemplateSectionController extends Controller
             'colour' => ['nullable', 'string', Rule::in(VaultColourEnum::values())],
         ]);
 
-        /*
-         * The mark sits on the section, so writing it never touches the pivot
-         * and never trips the guard that model keeps. Asking here is what stops
-         * a published version being changed through the one half of this form
-         * that would otherwise reach past it.
-         */
         if (! $templateVersionSection->templateVersion->status->isEditable()) {
             return $this->refuse($template);
         }

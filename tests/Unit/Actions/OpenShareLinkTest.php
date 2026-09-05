@@ -100,10 +100,6 @@ class OpenShareLinkTest extends TestCase
         new OpenShareLink(token: (string) $shareLink->plainToken)->execute();
     }
 
-    /**
-     * Asking for the password is the normal first step rather than a failure,
-     * so nothing is written down and nothing is counted.
-     */
     #[Test]
     public function it_asks_for_the_password_when_the_link_is_protected(): void
     {
@@ -136,10 +132,6 @@ class OpenShareLinkTest extends TestCase
         ]);
     }
 
-    /**
-     * A run of these is the only signal the owner ever gets that a link may
-     * have leaked, so the attempt is written down before it is refused.
-     */
     #[Test]
     public function it_records_the_attempt_that_failed_on_the_password(): void
     {

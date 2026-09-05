@@ -23,21 +23,7 @@ use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 /**
- * Write somebody down. The name is all the product imposes, and everything else
- * the page will hold comes from the template version the contact is put on.
- *
- * The version is the vault's contact default unless the caller names another
- * one. The default is a version and never a template, so a contact written down
- * today does not silently follow whatever gets published tomorrow.
- *
- * The version has to be published. A draft is something somebody is still
- * editing, and a contact rendering from it would change under them; a retired
- * one is no longer offered for anything new.
- *
- * The three flags are the state the contact is born in, written in the same
- * insert as the rest of it. Changing any of them afterwards is its own action,
- * which is a different question from what somebody ticked on the form that
- * wrote them down.
+ * Write somebody down.
  */
 class CreateContact
 {
@@ -84,12 +70,6 @@ class CreateContact
         $this->nickname = TextSanitizer::nullablePlainText($this->nickname);
     }
 
-    /**
-     * Find the structure the vault starts a contact on, unless the caller named
-     * one. The vault is checked here rather than in the validation that follows,
-     * since reading the default of a vault in another account would answer a
-     * question nobody is allowed to ask.
-     */
     private function readTheVaultDefault(): void
     {
         if ($this->vault->account_id !== $this->user->account_id) {

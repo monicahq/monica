@@ -1,19 +1,5 @@
-{{--
-  The lists an account picks its values from, and everything somebody can do to
-  them. Each list is a panel of its own, kept in a partial beside this file.
-
-  The stack of panels is one ajax target, so adding a list and deleting one
-  redraw the whole stack. Everything that happens inside a list redraws that
-  list alone, which is why each panel carries an id of its own.
-
-  The button that adds a list sits beside the title, where every other screen
-  keeps the one thing it makes, and raises a card to ask for the name. The card
-  is inside the target: adding a list has to leave it closed, and the flag that
-  opens it is set in the browser, so it has to come back closed from the server.
-  A rejected name is what reopens it, which is why it reads the error bag.
-
-  @var \App\ViewModels\Settings\Account\DefaultValues\DefaultValuesViewModel $viewModel
---}}
+{{-- The lists an account picks its values from, and everything somebody can do to them. --}}
+{{-- @var \App\ViewModels\Settings\Account\DefaultValues\DefaultValuesViewModel $viewModel --}}
 @php
   $newListErrors = $errors->getBag('newList');
 @endphp

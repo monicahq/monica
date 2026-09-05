@@ -11,8 +11,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Pin a contact to the top of the list, for the handful of people somebody
- * opens every week.
+ * Pin a contact to the top of the list, for the handful of people somebody opens every week.
  */
 class FavouriteContact
 {

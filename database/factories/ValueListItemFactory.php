@@ -12,16 +12,12 @@ use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<ValueListItem>
- */
+/** @extends Factory<ValueListItem> */
 class ValueListItemFactory extends Factory
 {
     protected $model = ValueListItem::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -41,10 +37,6 @@ class ValueListItemFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the product supplied the item, which reads by its
-     * translation key until the user renames it.
-     */
     public function supplied(SuppliedValueListItem $item = PhoneLabelEnum::Mobile): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -55,10 +47,6 @@ class ValueListItemFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the item is no longer offered, while every record that
-     * already uses it keeps it.
-     */
     public function disabled(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -66,10 +54,6 @@ class ValueListItemFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that records point at the item, which is what stops it from
-     * being deleted.
-     */
     public function used(int $times = 3): static
     {
         return $this->state(fn (array $attributes): array => [

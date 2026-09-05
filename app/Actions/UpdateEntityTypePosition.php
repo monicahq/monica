@@ -12,14 +12,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Move a kind of object in the navigation, so the ones somebody opens daily
- * are the ones they reach first.
- *
- * The type is taken out and put back at the position asked for, and every type
- * is then numbered from one again. A position past the end puts it last.
- *
- * Inactive types are numbered along with the rest, since one that is offered
- * again has to find the place it had.
+ * Move a kind of object in the navigation, so the ones somebody opens daily are the ones they
+ * reach first.
  */
 class UpdateEntityTypePosition
 {

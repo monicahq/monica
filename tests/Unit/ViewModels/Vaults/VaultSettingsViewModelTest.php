@@ -140,11 +140,6 @@ class VaultSettingsViewModelTest extends TestCase
         $this->assertEquals('Work contact', $templates[1]['name']);
     }
 
-    /**
-     * A vault is entitled to start its contacts on a shape the account has since
-     * moved on from, so every published version is on offer and the newest is
-     * only the first of them.
-     */
     #[Test]
     public function it_offers_every_published_version_of_a_template_newest_first(): void
     {

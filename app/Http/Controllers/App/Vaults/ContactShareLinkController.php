@@ -22,17 +22,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-/**
- * The links somebody has opened onto one person's page.
- *
- * Sharing is not editing, so it is its own screen reached from the record rather
- * than a section of it. Nothing here writes to the record: what is decided on
- * these screens is who may read it.
- *
- * The address of a link is shown once, by `show`, out of a flash the create
- * response puts there. Only a hash of the token is stored, so there is no second
- * chance to look it up and the screen says as much rather than pretending.
- */
 class ContactShareLinkController extends Controller
 {
     public function index(Request $request, Vault $vault, Contact $contact): View
@@ -119,11 +108,6 @@ class ContactShareLinkController extends Controller
         ]);
     }
 
-    /**
-     * The action writes the inclusions and the exclusions as a whole rather than
-     * merging them, so the five inclusions this form does not ask about are sent
-     * back as they are. A form that does not ask must not answer.
-     */
     public function update(Request $request, Vault $vault, Contact $contact, ShareLink $shareLink): RedirectResponse
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
@@ -163,11 +147,6 @@ class ContactShareLinkController extends Controller
             ->with('status_description', __('Whoever holds it sees the change on their next click. The address itself is the same.'));
     }
 
-    /**
-     * Revoking, which the row calls what it is. It is a delete in HTTP terms and
-     * nothing in the sense that matters: the row stays on the list with its
-     * visits, because that history is the answer to who could see what.
-     */
     public function destroy(Request $request, Vault $vault, Contact $contact, ShareLink $shareLink): RedirectResponse
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
@@ -187,9 +166,7 @@ class ContactShareLinkController extends Controller
             ->with('status_description', __('The address stopped working. Its row stays on the list with the visits it had.'));
     }
 
-    /**
-     * @return array<string, array<int, string>>
-     */
+    /** @return array<string, array<int, string>> */
     private function rules(Contact $contact, bool $editing = false): array
     {
         $spans = array_map(fn (ShareLinkExpiryEnum $case): string => $case->value, ShareLinkExpiryEnum::cases());
@@ -210,11 +187,6 @@ class ContactShareLinkController extends Controller
         ];
     }
 
-    /**
-     * `keep` is what the edit form offers instead of guessing which of the four
-     * spans a stored date came from, and it can only mean the date already on
-     * the link.
-     */
     private function expiresAt(Request $request, ?ShareLink $shareLink): ?CarbonImmutable
     {
         $expiry = $request->string('expiry')->toString();
@@ -226,14 +198,7 @@ class ContactShareLinkController extends Controller
         return ShareLinkExpiryEnum::from($expiry)->expiresAt();
     }
 
-    /**
-     * The form sends the sections going out, since a box nobody ticks sends
-     * nothing at all, and the column stores the ones held back. Everything the
-     * record carries and the form did not name is held back, which also means an
-     * id from another template cannot let anything through.
-     *
-     * @return list<int>
-     */
+    /** @return list<int> */
     private function excludedSectionIds(Request $request, Contact $contact): array
     {
         $included = array_map('intval', $request->input('sections', []));

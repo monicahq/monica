@@ -12,10 +12,6 @@ enum NameOrderEnum: string implements Translatable
     case GivenFirst = 'given_first';
     case FamilyFirst = 'family_first';
 
-    /**
-     * What the order is called on the screen where somebody chooses it. The
-     * sentence doubles as the translation key.
-     */
     public function label(): string
     {
         return match ($this) {
@@ -24,10 +20,6 @@ enum NameOrderEnum: string implements Translatable
         };
     }
 
-    /**
-     * A name written in this order. The two parts are joined by a space, which
-     * is what every locale the interface is translated into expects.
-     */
     public function format(string $firstName, string $lastName): string
     {
         return match ($this) {
@@ -36,11 +28,7 @@ enum NameOrderEnum: string implements Translatable
         };
     }
 
-    /**
-     * The name of this case, which the screen that offers the choice reads.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

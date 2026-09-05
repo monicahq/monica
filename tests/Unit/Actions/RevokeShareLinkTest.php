@@ -36,10 +36,6 @@ class RevokeShareLinkTest extends TestCase
         $this->assertFalse($shareLink->isUsable());
     }
 
-    /**
-     * The point of revoking something is often to find out what was read
-     * before it was revoked.
-     */
     #[Test]
     public function it_keeps_every_visit_written_against_it(): void
     {
@@ -98,9 +94,7 @@ class RevokeShareLinkTest extends TestCase
         });
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function shareLink(User $user, array $attributes = []): ShareLink
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);

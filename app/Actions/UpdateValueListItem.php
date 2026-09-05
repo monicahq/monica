@@ -13,14 +13,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Rename a choice, or change how it is drawn.
- *
- * Renaming an item never changes what a published section means, because a
- * published section stores the item it resolved to rather than a pointer to
- * it. Everything reading the list live, on the other hand, reads the new name
- * straight away, which is the point of renaming.
- *
- * Giving a supplied item a label of its own takes it off its translation key,
- * so it stops following the interface language.
  */
 class UpdateValueListItem
 {

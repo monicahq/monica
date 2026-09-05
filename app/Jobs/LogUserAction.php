@@ -15,24 +15,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Queue\Queueable;
 
 /**
- * Write down that something happened. Every action that changes state dispatches
- * this, and none of them may decide not to.
- *
- * The address the action came from is read in the constructor rather than in
- * the handler, since by then the job is on a queue with no request behind it.
- * Nothing needs to ask whether there is one: a request built from a command
- * line has no address to give, and the column is null for exactly that case.
- *
- * What the entry is about is read there for the same reason, and for a sharper
- * one: half of what is worth writing down is a deletion, and by the time the
- * queue reaches the job the thing it names is gone. A job holding the row itself
- * would go looking for it on the way out of the queue and fail, which would lose
- * the record of every deletion the product performs. So the type and the number
- * are taken while the row is still in hand, and the job carries nothing that has
- * to survive it.
- *
- * A user of null means the application acted on its own, and a vault of null
- * that the action was not performed inside one.
+ * Write down that something happened. Every action that changes state dispatches this, and the
+ * address and the subject are read in the constructor, since the queue has no request behind it and
+ * half of what is worth recording is a deletion.
  */
 class LogUserAction implements ShouldQueue
 {
@@ -68,19 +53,12 @@ class LogUserAction implements ShouldQueue
         }
     }
 
-    /**
-     * Whether the entry is about the given row. It is asked this way rather than
-     * by handing the row back, because the job does not keep one.
-     */
     public function isAbout(Model $model): bool
     {
         return $this->loggableType === $model->getMorphClass()
             && $this->loggableId === $model->getKey();
     }
 
-    /**
-     * Log the action in the logs table.
-     */
     public function handle(): void
     {
         Log::query()->create([

@@ -1,7 +1,5 @@
+{{-- The picker for the language of the interface. --}}
 {{--
-  The picker for the language of the interface. It opens upwards, because it sits
-  at the bottom of the guest screens.
-
   @var array<int, array{code: string, label: string, region: string, flag: string}> $locales
   @var string $current
 --}}

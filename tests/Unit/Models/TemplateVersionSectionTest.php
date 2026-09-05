@@ -94,10 +94,6 @@ class TemplateVersionSectionTest extends TestCase
         $row->delete();
     }
 
-    /**
-     * The same section twice on one template version would give two fields the same identity,
-     * and a value written into either would have nowhere to go.
-     */
     #[Test]
     public function it_refuses_to_place_the_same_section_twice_on_one_template_version(): void
     {

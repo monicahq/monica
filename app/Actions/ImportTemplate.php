@@ -22,31 +22,12 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Read a template out of a file and build it here.
- *
- * This is the way back in for everything the export screens hand out. It is
- * what carries a template between two accounts of the same person, what lets
- * one friend send another the shape they spent an afternoon getting right, and
- * what makes a file kept in a downloads folder worth anything at all.
- *
- * The file is read twice over the course of one import: once by the screen that
- * offers to check it, and once here. Nothing the check concluded is carried
- * forward. What is checked has to be the bytes that are acted on, or checking
- * is a formality that a second request can walk straight past.
- *
- * What lands is a draft. Nothing is published on somebody's behalf, so nothing
- * a file describes reaches a record until somebody has read it and decided it
- * should. The sections inside it arrive frozen, because they arrived frozen:
- * they are versions somebody else finished rather than versions being argued
- * with here, and publishing the template is then one press rather than one
- * press per section.
  */
 class ImportTemplate
 {
     private Template $template;
 
-    /**
-     * @var array<string, mixed>
-     */
+    /** @var array<string, mixed> */
     private array $file;
 
     private StructureWriter $writer;
@@ -56,9 +37,7 @@ class ImportTemplate
         private readonly string $raw,
     ) {}
 
-    /**
-     * @throws StructureFileIsNotReadable
-     */
+    /** @throws StructureFileIsNotReadable */
     public function execute(): Template
     {
         $this->validate();
@@ -121,9 +100,7 @@ class ImportTemplate
         });
     }
 
-    /**
-     * @param  array<string, mixed>  $payload
-     */
+    /** @param  array<string, mixed>  $payload */
     private function page(TemplateVersion $version, array $payload): void
     {
         $page = TemplateVersionPage::query()->create([
@@ -152,11 +129,6 @@ class ImportTemplate
         }
     }
 
-    /**
-     * The slug the file asks for, if nothing here already answers to it. A file
-     * carries the address the template had where it was built, and two accounts
-     * can perfectly well hold a template called the same thing.
-     */
     private function slug(string $name, ?string $wanted): string
     {
         return SlugBuilder::build(

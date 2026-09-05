@@ -1,21 +1,5 @@
+{{-- The primary button: near black, one per region. --}}
 {{--
-  The primary button: near black, one per region. It renders an anchor when it is
-  given an href, and a button otherwise. The icon slot sits before the label.
-
-  It is flat. There is no bottom edge, no shadow and no press that moves it: what
-  answers a pointer is the fill going one step lighter, and what answers a
-  keyboard is a ring drawn three pixels clear of the button so it reads against
-  the page rather than against the fill.
-
-  The label is set in medium rather than semibold. A page of semibold buttons
-  reads as a row of labels shouting, and the weight is not what says a button is
-  a button; the fill and the border are.
-
-  This file also carries the other four variants, because the anchor-or-button
-  markup and every utility except the fill are the same for all five. Callers
-  reach them through <x-button.secondary>, <x-button.bar>, <x-button.ghost> and
-  <x-button.danger> rather than by naming a variant here.
-
   @var string|null $href
   @var string $type
   @var string $size
@@ -37,8 +21,6 @@
     .'aria-disabled:pointer-events-none aria-disabled:cursor-default aria-disabled:opacity-50 aria-disabled:shadow-none';
 
   $fill = match ($variant) {
-    // A button in a bar and a button beside a primary one are now drawn the same
-    // way, because the bar is the same white as the page it sits on.
     'secondary', 'bar' => 'border-hairline bg-canvas text-ink hover:bg-hover',
     'ghost' => 'text-body hover:bg-hover hover:text-ink',
     'danger' => 'bg-error text-white hover:bg-error-hover',

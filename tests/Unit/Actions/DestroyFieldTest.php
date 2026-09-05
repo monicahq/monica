@@ -54,10 +54,6 @@ class DestroyFieldTest extends TestCase
         $this->assertModelMissing($child);
     }
 
-    /**
-     * The published version that still carries the field is untouched, and
-     * every record on it goes on showing what it always showed.
-     */
     #[Test]
     public function it_refuses_to_take_a_field_out_of_a_published_section(): void
     {

@@ -39,8 +39,6 @@ class UpdateUserPhotoTest extends TestCase
         $this->assertInstanceOf(User::class, $result);
         $this->assertStringStartsWith('photos/'.$user->id.'/', (string) $result->photo_path);
 
-        // The name somebody gave the file never reaches the disk, and the base
-        // path carries no extension of its own.
         $this->assertStringNotContainsString('dwight', (string) $result->photo_path);
         $this->assertStringNotContainsString('.webp', (string) $result->photo_path);
 

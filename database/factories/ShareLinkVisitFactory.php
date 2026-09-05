@@ -9,16 +9,12 @@ use App\Models\ShareLinkVisit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<ShareLinkVisit>
- */
+/** @extends Factory<ShareLinkVisit> */
 class ShareLinkVisitFactory extends Factory
 {
     protected $model = ShareLinkVisit::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -34,10 +30,6 @@ class ShareLinkVisitFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that somebody gave the wrong password, which is the only signal
-     * the owner ever gets that a link may have leaked.
-     */
     public function passwordFailed(): static
     {
         return $this->state(fn (array $attributes): array => [

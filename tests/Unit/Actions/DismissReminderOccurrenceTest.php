@@ -153,9 +153,7 @@ class DismissReminderOccurrenceTest extends TestCase
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderOccurrenceDismissal);
     }
 
-    /**
-     * @return array{0: User, 1: ReminderOccurrence}
-     */
+    /** @return array{0: User, 1: ReminderOccurrence} */
     private function deadline(): array
     {
         $reminder = Reminder::factory()->create();

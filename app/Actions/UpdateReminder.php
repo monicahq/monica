@@ -21,35 +21,12 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Change what a reminder says and when it fires.
- *
- * What it does not change is what the rule reads. The value, the field and the
- * record are settled when the rule is made, and correcting the date is a change
- * to the value rather than to the rule: the rule goes on pointing at the same
- * answer and simply reads a different day out of it.
- *
- * The zone moves only when somebody moves it. Leaving it out keeps whatever was
- * frozen, which is the whole of Principle VI here: a preference changed later
- * must not shift a reminder already set, and neither may a save that never
- * mentioned the zone.
- *
- * A change to the schedule takes the deadlines ahead of it away and makes new
- * ones. What is behind is left exactly as it was, because it is the record of
- * what somebody was actually told. The cancelled rows say the rule changed and
- * are never brought back: the replacements are the deadlines the new schedule
- * defines, and reviving the old ones would fire reminders for a schedule nobody
- * asked for any more.
- *
- * Renaming the reminder changes none of that. The wording is not the schedule,
- * so nothing is cancelled and nothing is regenerated, and a deadline somebody
- * has already put off survives being renamed.
  */
 class UpdateReminder
 {
     private string $wording;
 
-    /**
-     * @param  array<int, array<array-key, mixed>>  $moments
-     */
+    /** @param  array<int, array<array-key, mixed>>  $moments */
     public function __construct(
         private readonly User $user,
         private readonly Reminder $reminder,
@@ -80,10 +57,6 @@ class UpdateReminder
         return $this->reminder;
     }
 
-    /**
-     * Whether this save moves anything a deadline is computed from. The wording
-     * is not one of those things.
-     */
     private function scheduleIsMoving(): bool
     {
         return $this->reminder->cadence !== $this->cadence
@@ -98,12 +71,6 @@ class UpdateReminder
         return $this->cadence->recurs() ? $this->frequencyInterval : 1;
     }
 
-    /**
-     * Take the deadlines still ahead away and make the ones the new schedule
-     * defines. The revision is bumped first, so every new deadline is written
-     * under an identity nothing has held before and cannot collide with a row
-     * just cancelled.
-     */
     private function rebuildTheDeadlines(): void
     {
         new CancelReminderOccurrences(

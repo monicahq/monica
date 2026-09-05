@@ -13,13 +13,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Override;
 
-/**
- * Tell an author their version made it into the catalogue.
- *
- * The listing name and the version number are handed in rather than the version
- * itself, so the email can be rendered long after a queue has carried it and
- * nothing has to be reloaded to send it.
- */
 class MarketplaceListingApproved extends Notification implements HasEmailType, ShouldQueue
 {
     use Queueable;
@@ -32,9 +25,7 @@ class MarketplaceListingApproved extends Notification implements HasEmailType, S
         $this->onQueue('high');
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function via(User $notifiable): array
     {
         return ['mail'];

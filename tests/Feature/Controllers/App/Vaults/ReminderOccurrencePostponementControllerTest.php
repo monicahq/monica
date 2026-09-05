@@ -64,10 +64,6 @@ class ReminderOccurrencePostponementControllerTest extends TestCase
         );
     }
 
-    /**
-     * The typed instant is read in the zone frozen on the rule, not the
-     * reader's, because that is the zone the reminder fires in.
-     */
     #[Test]
     public function it_reads_the_typed_instant_in_the_rules_zone(): void
     {
@@ -147,10 +143,6 @@ class ReminderOccurrencePostponementControllerTest extends TestCase
             ->assertSessionHasErrors('postponement');
     }
 
-    /**
-     * Moving one deadline moves that deadline. The sibling made by another
-     * moment of the same cycle stays where it is.
-     */
     #[Test]
     public function it_leaves_the_sibling_deadline_where_it_is(): void
     {

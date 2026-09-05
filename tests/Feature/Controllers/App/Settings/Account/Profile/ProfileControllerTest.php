@@ -100,11 +100,6 @@ class ProfileControllerTest extends TestCase
             ->assertDontSee('id="photo-delete-form"', escape: false);
     }
 
-    /**
-     * The button says what it does before Alpine has run, since a directive
-     * written inside an attribute of a component tag is not compiled and would
-     * leave it blank.
-     */
     #[Test]
     public function the_button_that_removes_the_photo_is_worded(): void
     {

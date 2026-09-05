@@ -1,24 +1,5 @@
-{{--
-  How the instance is doing, and the first thing an administrator sees.
-
-  Every figure says what period it covers. A count with no period is a count
-  somebody reads as whatever they were expecting it to be, and two of these cover
-  a window rather than the whole history.
-
-  An empty instance shows zeros and says it is empty. Zeros with no explanation
-  read as a screen that failed to load, and the first thing somebody does after
-  installing this is open it.
-
-  The submissions waiting is the only figure here that is a job rather than a fact,
-  so it is the only one that leads anywhere.
-
-  The emails have a section of their own because they are one figure split four
-  ways rather than four unrelated figures, and a total sitting in the grid beside
-  its own parts reads as a fifth part. Each state is named in words, never by a
-  tint, so the breakdown carries no meaning an administrator has to see in colour.
-
-  @var \App\ViewModels\Admin\OverviewViewModel $viewModel
---}}
+{{-- How the instance is doing, and the first thing an administrator sees. --}}
+{{-- @var \App\ViewModels\Admin\OverviewViewModel $viewModel --}}
 @use('App\Enums\EmailDeliveryStatusEnum')
 <x-admin-layout :title="__('Overview')">
   <header class="flex flex-col gap-2">

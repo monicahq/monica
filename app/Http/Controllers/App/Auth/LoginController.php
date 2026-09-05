@@ -42,9 +42,6 @@ class LoginController extends Controller
             ip: $request->ip(),
         )->execute();
 
-        // Somebody who enrolled in two factor authentication is not signed in
-        // until they answer the challenge, so the session only remembers who
-        // they claim to be.
         if ($user->usesTwoFactorAuthentication()) {
             Auth::guard('web')->logout();
             $request->session()->put('twoFactor.user.id', $user->id);

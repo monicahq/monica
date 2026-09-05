@@ -63,10 +63,6 @@ class CreateFieldTest extends TestCase
         ]);
     }
 
-    /**
-     * The key is what an export or an API caller holds on to, so it reads in
-     * underscores rather than dashes.
-     */
     #[Test]
     public function it_takes_the_key_it_is_given(): void
     {
@@ -199,11 +195,6 @@ class CreateFieldTest extends TestCase
         $this->assertEquals(5, $field->repeat_max);
     }
 
-    /**
-     * Which end a repeater collects at, beside how many it takes. It says where
-     * a new repetition lands and nothing about where an existing one may be
-     * moved to.
-     */
     #[Test]
     public function it_takes_the_end_a_repeater_collects_at(): void
     {
@@ -241,10 +232,6 @@ class CreateFieldTest extends TestCase
         $this->assertNull($field->refresh()->repetition_order);
     }
 
-    /**
-     * Storing a setting the type cannot honour would be storing a lie, which is
-     * the same reason the repetition limits are dropped.
-     */
     #[Test]
     public function it_drops_the_end_on_a_field_that_is_not_a_repeater(): void
     {
@@ -264,9 +251,6 @@ class CreateFieldTest extends TestCase
         $this->assertNull($field->refresh()->repetition_order);
     }
 
-    /**
-     * Storing a setting the type cannot honour would be storing a lie.
-     */
     #[Test]
     public function it_drops_repetition_limits_on_a_field_that_is_not_a_repeater(): void
     {
@@ -428,10 +412,6 @@ class CreateFieldTest extends TestCase
         $this->assertNull($field->relation_entity_type_id);
     }
 
-    /**
-     * Whether a field drives a reminder is a property of its type and is never
-     * stored beside it, so nothing a caller passes can make the two disagree.
-     */
     #[Test]
     public function it_lets_the_type_alone_say_whether_a_field_drives_a_reminder(): void
     {

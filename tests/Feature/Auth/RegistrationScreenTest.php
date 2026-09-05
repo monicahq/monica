@@ -11,12 +11,6 @@ use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * What the registration screen leads with. The passkey is meant to be the
- * primary action and the password an alternative one link away, so both the
- * presence of the passkey route and the demotion of the password one are worth
- * holding to.
- */
 class RegistrationScreenTest extends TestCase
 {
     use RefreshDatabase;
@@ -28,10 +22,6 @@ class RegistrationScreenTest extends TestCase
         return $this;
     }
 
-    /**
-     * The other half of the pair. Leaving the scheme to `APP_URL` made these
-     * tests answer to the address in a developer's own `.env`.
-     */
     private function insecure(): self
     {
         URL::forceScheme('http');
@@ -58,11 +48,6 @@ class RegistrationScreenTest extends TestCase
         $response->assertSee("mode === 'password'", escape: false);
     }
 
-    /**
-     * The two actions are embedded through Js::from, which escapes the slashes,
-     * so the raw urls are compared against markup with the escaping undone rather
-     * than against the escaping itself, which is not what this test is about.
-     */
     #[Test]
     public function it_can_post_to_either_route(): void
     {

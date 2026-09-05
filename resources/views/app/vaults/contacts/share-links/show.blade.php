@@ -1,20 +1,5 @@
-{{--
-  One link: its address, what it shows, and every time it was opened.
-
-  The address is on the screen exactly once, in the response to the request that
-  minted it, because only a hash of the token is written down. Coming back here
-  later is coming back to everything except that, and the panel says so rather
-  than looking like something failed to load. A link nobody copied is replaced, not
-  recovered.
-
-  The visits are what makes the feature feel safe enough to use, and what they hold
-  is deliberately coarse. There is no account behind a visitor, so the list answers
-  "was it opened, roughly when, roughly from where" and stops. A failed password is
-  in the list too: a run of those is the only signal the owner ever gets that the
-  address may have gone somewhere they did not send it.
-
-  @var \App\ViewModels\Vaults\ShareLinkViewModel $viewModel
---}}
+{{-- One link: its address, what it shows, and every time it was opened. --}}
+{{-- @var \App\ViewModels\Vaults\ShareLinkViewModel $viewModel --}}
 @php
   $url = session('shareLinkUrl');
   $visits = $viewModel->visits();

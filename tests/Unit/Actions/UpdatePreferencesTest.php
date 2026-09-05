@@ -158,7 +158,6 @@ class UpdatePreferencesTest extends TestCase
             )->execute();
             $this->fail('The rebuild was expected to fail.');
         } catch (RuntimeException) {
-            // the rollback is what the assertions below are about
         }
 
         $this->assertSame('fr_FR', $user->fresh()->locale);

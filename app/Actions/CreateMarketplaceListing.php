@@ -20,23 +20,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Prepare something built in an account to be offered to everybody else.
- *
- * Nothing reaches the catalogue by being good. It reaches it because somebody
- * decided to offer it, and this is that decision written down. The listing
- * starts as a draft, which is the state of having decided to share without
- * having sent anything yet, and nobody outside the account sees it.
- *
- * A section can be listed on its own, with no template or page around it. That
- * is what lowers the barrier to contributing, and it is why what is listed is a
- * template or a section rather than only the bigger of the two.
- *
- * What travels is a frozen version, so something that only exists as a draft
- * has nothing to send and is refused here rather than at submission, where the
- * author would have written the whole description first.
- *
- * The name, the summary and the description are the catalogue copy and are not
- * the internal ones. Somebody may well call a template "v3 final" in their own
- * account and something readable in public.
  */
 class CreateMarketplaceListing
 {
@@ -107,12 +90,6 @@ class CreateMarketplaceListing
         ]);
     }
 
-    /**
-     * Settle the slug. It is unique across the whole catalogue rather than
-     * within an account, since the catalogue is one public place and a link
-     * that already went out cannot later land on somebody else's work. A
-     * withdrawn listing keeps its own for the same reason.
-     */
     private function slug(): string
     {
         return SlugBuilder::build(

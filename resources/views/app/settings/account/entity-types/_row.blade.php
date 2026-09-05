@@ -1,24 +1,6 @@
-{{--
-  One kind of record, on the list that orders them.
-
-  The row is draggable as a whole rather than by the handle alone, so the whole
-  height of it is a target. The attribute is written out rather than bound, so
-  the row is draggable from the first paint. It keeps a hover tint even though it
-  is not a link, because it is the one row in the application that responds to
-  being pushed around.
-
-  The hidden form at the foot is what the drag saves through. It is here rather
-  than in the sortable component so that the csrf token, the method spoofing
-  and the ajax target are written the way every other form on the screen does.
-
-  @var array $type
---}}
+{{-- One kind of record, on the list that orders them. --}}
+{{-- @var array $type --}}
 <div data-row-id="{{ $type['id'] }}" class="relative border-b border-hairline last:border-b-0">
-  {{--
-    The line showing where the dragged row would land. It is taken out of the
-    flow, since a row that grows by two pixels under the pointer moves the row
-    the pointer is on and the drag flickers between the two.
-  --}}
   <div
     x-cloak
     x-show="hoveringId === {{ $type['id'] }} && draggingId !== {{ $type['id'] }}"

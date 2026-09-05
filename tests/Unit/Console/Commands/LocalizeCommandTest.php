@@ -637,17 +637,13 @@ class LocalizeCommandTest extends TestCase
         PHP);
     }
 
-    /**
-     * @param  array<string, string>  $translations
-     */
+    /** @param  array<string, string>  $translations */
     private function writeTranslations(string $locale, array $translations): void
     {
         File::put($this->langPath.'/'.$locale.'.json', json_encode($translations, JSON_UNESCAPED_UNICODE));
     }
 
-    /**
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     private function translations(string $locale): array
     {
         return json_decode(File::get($this->langPath.'/'.$locale.'.json'), true);

@@ -12,12 +12,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Change how a section reads on one particular template version: the heading
- * shown above it, and whether it starts folded.
- *
- * Both are display only and neither changes any identity. A section folded on
- * one template can be open on another, and the heading a template gives it does
- * not rename the section for anybody else.
+ * Change how a section reads on one particular template version: the heading shown above it, and
+ * whether it starts folded.
  */
 class UpdateTemplateVersionSection
 {

@@ -40,10 +40,6 @@ class UpdateTemplateTest extends TestCase
         $this->assertEquals('Everything the vet asks', $template->description);
     }
 
-    /**
-     * The slug travels in URLs and through the API, so a rename leaves every
-     * link that already went out working.
-     */
     #[Test]
     public function it_leaves_the_slug_alone_when_the_name_changes(): void
     {

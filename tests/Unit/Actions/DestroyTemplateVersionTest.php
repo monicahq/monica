@@ -71,10 +71,6 @@ class DestroyTemplateVersionTest extends TestCase
         $this->assertEquals(2, $sectionVersion->fresh()->usage_count);
     }
 
-    /**
-     * The column is unsigned, so a count that has drifted out of step must not
-     * be taken below zero.
-     */
     #[Test]
     public function it_never_takes_the_count_below_zero(): void
     {

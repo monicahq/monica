@@ -12,15 +12,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Take a record out of the main lists without deleting it. It is what a company
- * nobody deals with any more is for: nothing about it is lost, and it stops
- * getting in the way of what is current.
- *
- * An archived record is also silent: no reminder driven by its own date fields
- * fires while it is archived. A contract renewal on a company nobody deals with
- * any more is exactly the reason somebody archives it. No screen writes a rule
- * about an entity yet, since entities have no screens at all, so this silences
- * nothing today and will silence the right thing the day one does.
+ * Take a record out of the main lists without deleting it.
  */
 class ArchiveEntity
 {

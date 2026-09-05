@@ -1,27 +1,5 @@
-{{--
-  Everything one vault will remind somebody about.
-
-  The line under the title says how far ahead the list looks, and it is not a
-  detail. Deadlines exist only inside the window they are generated for, so a
-  yearly birthday eight months off has produced nothing yet and is genuinely not
-  here. Stating the stretch of time is what stops a short list reading as a list
-  that has lost things, and it is why the empty state below has two wordings
-  rather than one.
-
-  Each grouping is an address of its own, so one can be linked to and the back
-  button moves between them. Clicking one swaps the list in place and pushes its
-  address, rather than drawing the whole screen again. Which grouping somebody
-  chose is not remembered between visits: it is a glance, not a preference.
-
-  Both groupings share one row partial. A row that read differently depending on
-  how the list was grouped would be two answers to one question.
-
-  The tab beside this one lists what the vault has already sent. The two answer
-  different questions rather than one narrowing the other, so each is an address
-  of its own and the bar carries the count behind each.
-
-  @var \App\ViewModels\Vaults\VaultRemindersViewModel $viewModel
---}}
+{{-- Everything one vault will remind somebody about. --}}
+{{-- @var \App\ViewModels\Vaults\VaultRemindersViewModel $viewModel --}}
 @php
   $groups = $viewModel->groups();
   $byContact = $viewModel->groupBy() === \App\ViewModels\Vaults\VaultRemindersViewModel::GroupByContact;
@@ -65,11 +43,6 @@
       </x-empty-state>
     </x-panel>
   @else
-    {{--
-      The toggle swaps with the list, not beside it. Regrouping changes which of
-      the two is the current one, so a swap that left the toggle alone would show
-      a list grouped one way under a control claiming the other.
-    --}}
     <div id="reminders-toggle" x-merge="replace" class="flex items-center gap-2">
       <span id="reminders-grouping" class="text-[12.5px] text-muted">{{ __('Grouped by') }}</span>
 
@@ -86,12 +59,6 @@
       </div>
     </div>
 
-    {{--
-      The whole list is one region and regrouping replaces it, rather than each
-      group being its own: regrouping changes how many groups there are and what
-      each is called, so swapping them one by one would leave a list that
-      disagrees with itself.
-    --}}
     <div id="reminders-list" x-merge="replace" class="flex flex-col gap-9 transition-opacity [&[aria-busy]]:opacity-60">
       @foreach ($groups as $group)
         <section

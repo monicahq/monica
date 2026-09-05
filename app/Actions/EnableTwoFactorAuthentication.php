@@ -12,18 +12,8 @@ use BaconQrCode\Writer;
 use PragmaRX\Google2FA\Google2FA;
 
 /**
- * Start enrolling somebody in two factor authentication: mint the secret their
- * authenticator app will share with us, and draw the square they point their
- * camera at.
- *
- * The secret is written down straight away, because the code they type back has
- * to be checked against it, but their account is not protected yet. Only
- * ConfirmTwoFactorAuthentication does that, once they have proved the app is
- * showing the right numbers. Somebody who walks away halfway through is left
- * exactly as they were.
- *
- * Each run mints a new secret, so leaving the screen and coming back gives a
- * fresh square rather than one an old, half configured app might answer.
+ * Start enrolling somebody in two factor authentication: mint the secret their authenticator app
+ * will share with us, and draw the square they point their camera at.
  */
 class EnableTwoFactorAuthentication
 {
@@ -35,9 +25,7 @@ class EnableTwoFactorAuthentication
         private readonly User $user,
     ) {}
 
-    /**
-     * @return array{secret: string, qrCode: string}
-     */
+    /** @return array{secret: string, qrCode: string} */
     public function execute(): array
     {
         $this->generate();
@@ -58,14 +46,6 @@ class EnableTwoFactorAuthentication
         $this->user->save();
     }
 
-    /**
-     * The square, as svg written into the page rather than a file to fetch: it
-     * carries a secret, so it has no business sitting at a url of its own.
-     *
-     * The declaration the writer puts at the top belongs to a document, not to
-     * a fragment of one, and a browser reading it inside html would show it, so
-     * it is cut off here.
-     */
     private function draw(): string
     {
         $url = new Google2FA()->getQRCodeUrl(

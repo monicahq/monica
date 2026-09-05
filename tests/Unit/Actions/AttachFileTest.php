@@ -28,10 +28,6 @@ class AttachFileTest extends TestCase
         $this->assertEquals(3, $file->fresh()->reference_count);
     }
 
-    /**
-     * A file something points at is not an orphan, so the clock that would
-     * have taken it away is stopped.
-     */
     #[Test]
     public function it_stops_the_grace_period_of_a_file_somebody_picked_up_again(): void
     {

@@ -179,11 +179,6 @@ class ContactViewModelTest extends TestCase
         $this->assertFalse($sections[1]['isEditing']);
     }
 
-    /**
-     * A block made entirely of types nothing can fill in yet has nothing to
-     * open, and a button leading to a form of read-only sentences is worse than
-     * no button.
-     */
     #[Test]
     public function a_block_with_nothing_fillable_in_it_is_not_offered_an_edit(): void
     {
@@ -405,11 +400,6 @@ class ContactViewModelTest extends TestCase
         $this->assertNull(new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->templateUpdate());
     }
 
-    /**
-     * A record deliberately put on an earlier version is not asked about it
-     * every time somebody opens it, and neither is one on a template nobody has
-     * published anything for.
-     */
     #[Test]
     public function nothing_is_offered_when_the_published_version_is_not_newer(): void
     {
@@ -432,10 +422,6 @@ class ContactViewModelTest extends TestCase
         $this->assertNull(new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact->refresh())->templateUpdate());
     }
 
-    /**
-     * A contact nobody has moved has been on one version, since the day it was
-     * written down, and nobody applied it.
-     */
     #[Test]
     public function the_history_of_a_contact_nobody_has_moved_is_one_line(): void
     {
@@ -454,10 +440,6 @@ class ContactViewModelTest extends TestCase
         $this->assertStringContainsString('and counting', $history[0]['span']);
     }
 
-    /**
-     * A snapshot records the version the record was leaving, so a move is read
-     * from the snapshot before it and the version after it.
-     */
     #[Test]
     public function every_move_is_a_line_saying_who_applied_it_and_when(): void
     {
@@ -620,10 +602,6 @@ class ContactViewModelTest extends TestCase
         $this->assertSame([], $viewModel->sections());
     }
 
-    /**
-     * Record the move the way the product does: a snapshot of the state being
-     * left, then the record on the version it moved to.
-     */
     private function moved(Contact $contact, TemplateVersion $from, TemplateVersion $to, User $by, CarbonImmutable $when): void
     {
         RecordSnapshot::factory()->beforeAStructureChange($from)->create([
@@ -837,8 +815,6 @@ class ContactViewModelTest extends TestCase
     }
 
     /**
-     * One date field on one contact, with the rule described or none at all.
-     *
      * @param  array<string, mixed>|null  $rule
      * @return array<string, mixed>
      */
@@ -893,20 +869,12 @@ class ContactViewModelTest extends TestCase
         ]);
     }
 
-    /**
-     * A published version carrying the pages, sections and fields described.
-     * It is assembled while the version is still a draft, because a published
-     * one is frozen and refuses every one of these rows.
-     *
-     * @param  array<string, array<string, array<int, string>>>  $shape
-     */
+    /** @param  array<string, array<string, array<int, string>>>  $shape */
     private function version(User $user, array $shape, string $templateName = 'Basic contact'): TemplateVersion
     {
         $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => $templateName]);
         $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
 
-        /* The factory hands over the page the product supplies; the shape asked
-           for here is the whole version rather than an addition to it. */
         $version->pages()->delete();
 
         foreach ($shape as $pageLabel => $sections) {
@@ -938,9 +906,7 @@ class ContactViewModelTest extends TestCase
         return $version->refresh();
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     #[Test]
     public function it_points_the_star_at_the_route_that_changes_the_mark(): void
     {

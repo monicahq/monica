@@ -52,10 +52,6 @@ class SendTestReminderNotificationTest extends TestCase
         });
     }
 
-    /**
-     * The real delivery still has to happen on the day, so nothing about the
-     * deadline may move.
-     */
     #[Test]
     public function it_leaves_the_deadline_exactly_as_it_was(): void
     {
@@ -78,10 +74,6 @@ class SendTestReminderNotificationTest extends TestCase
         $this->assertEquals($was['scheduled_for'], $occurrence->scheduled_for->format('Y-m-d H:i:s'));
     }
 
-    /**
-     * Quiet hours stop the product waking somebody up. Somebody pressing the
-     * button at two in the morning has asked for this one.
-     */
     #[Test]
     public function it_goes_out_during_quiet_hours(): void
     {
@@ -100,10 +92,6 @@ class SendTestReminderNotificationTest extends TestCase
         Notification::assertSentTo($user, ReminderDue::class);
     }
 
-    /**
-     * Nothing is written to the record of what actually reached somebody, since
-     * the Sent tab keys off the deadline's own mark and this leaves it alone.
-     */
     #[Test]
     public function it_never_reaches_the_list_of_what_was_sent(): void
     {

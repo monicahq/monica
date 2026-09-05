@@ -87,7 +87,6 @@ class LoginControllerTest extends TestCase
         $response->assertRedirect(route('auth.twoFactor.new'));
         $response->assertSessionHas('twoFactor.user.id', $user->id);
 
-        // Knowing the password is not enough on its own.
         $this->assertGuest();
     }
 

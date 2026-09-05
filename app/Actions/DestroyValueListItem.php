@@ -12,9 +12,7 @@ use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Remove a choice from a list, which is only allowed while nothing points at
- * it. Once something does, the answer is to stop offering it instead, and the
- * screen says how many records are concerned before asking.
+ * Remove a choice from a list, which is only allowed while nothing points at it.
  */
 class DestroyValueListItem
 {

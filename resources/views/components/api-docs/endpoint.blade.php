@@ -1,13 +1,5 @@
-{{--
-  One endpoint: what it does on the left, what to send and what comes back on
-  the right.
-
-  The two columns wrap into one on a narrow screen, and the right one stops
-  being sticky there, because a panel that follows the scroll on a phone covers
-  the thing somebody is reading.
-
-  @var \App\ViewModels\Docs\ApiDocsSection $section
---}}
+{{-- One endpoint: what it does on the left, what to send and what comes back on the right. --}}
+{{-- @var \App\ViewModels\Docs\ApiDocsSection $section --}}
 @props(['section'])
 
 @php

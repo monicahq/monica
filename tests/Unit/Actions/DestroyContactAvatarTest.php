@@ -66,7 +66,6 @@ class DestroyContactAvatarTest extends TestCase
         $this->assertEquals(0, $file->reference_count);
         $this->assertNotNull($file->orphaned_at);
 
-        // The sweep is the only thing that takes bytes off the disk.
         Storage::disk('local')->assertExists($file->path);
 
         Queue::assertPushedOn(

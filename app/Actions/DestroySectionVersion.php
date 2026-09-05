@@ -13,11 +13,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Throw away a draft of a section, and the fields in it.
- *
- * A published version does not go this way, and neither does a draft some template version
- * already points at: the model refuses both rather than leaving a template version with a
- * hole where a section used to be. Retiring is what a published version gets
- * instead.
  */
 class DestroySectionVersion
 {

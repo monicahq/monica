@@ -27,24 +27,6 @@ use App\Models\Vault;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 
-/**
- * An account somebody can sign in to and read, rather than an empty one they
- * have to fill before any screen shows anything.
- *
- * The account is Monica Geller's and the vault holds the people around her,
- * with the dates, addresses and notes the show gives them. Made up data would
- * do the same job, but data somebody recognises is data they can tell is wrong,
- * which is what makes a seeded screen worth looking at.
- *
- * Everything goes through the actions the product uses. A seeder writing rows
- * itself would drift from what the application does the moment an action gains
- * a rule, and the counters, the logs and the reminder deadlines would all have
- * to be kept in step by hand.
- *
- * Where the show never says when somebody was born, nothing is written. An
- * invented birthday reads exactly like a real one and there would be no way to
- * tell them apart afterwards.
- */
 class ExampleAccountSeeder extends Seeder
 {
     public const string FIRST_NAME = 'Monica';
@@ -59,11 +41,7 @@ class ExampleAccountSeeder extends Seeder
 
     private Vault $vault;
 
-    /**
-     * The fields of the vault's contact template, by key.
-     *
-     * @var array<string, Field>
-     */
+    /** @var array<string, Field> */
     private array $fields = [];
 
     public function run(): void
@@ -74,15 +52,8 @@ class ExampleAccountSeeder extends Seeder
             return;
         }
 
-        /* The template new contacts start from is seeded by a job, and the
-           first vault is deliberately made before it exists. Nothing here can
-           write a contact until that job has run, and a contributor with no
-           queue worker running would otherwise get an empty account. */
         config(['queue.default' => 'sync']);
 
-        /* Creating an account fires Registered, which Laravel answers with a
-           verification email. Seeding must not try to send one to somebody who
-           does not exist. */
         config(['mail.default' => 'log']);
 
         $this->createAccount();
@@ -101,18 +72,11 @@ class ExampleAccountSeeder extends Seeder
             password: self::PASSWORD,
         )->execute();
 
-        /* Every signed in screen sits behind the verified middleware, so an
-           account whose address is unconfirmed is an account nobody can use
-           without going hunting in the mail log. */
         $this->user->markEmailAsVerified();
 
         $this->vault = $this->user->account->vaults()->firstOrFail();
     }
 
-    /**
-     * Every field of the structure new contacts in the vault start from, by
-     * key, so that writing a value is a lookup rather than a query.
-     */
     private function readTheFields(): void
     {
         $version = $this->vault->defaultTemplates()->firstOrFail()->templateVersion;
@@ -148,13 +112,7 @@ class ExampleAccountSeeder extends Seeder
         }
     }
 
-    /**
-     * Fill the contact in, and hand back the birthday so a reminder can be hung
-     * off it. The values are written one at a time because that is how somebody
-     * filling a page in writes them.
-     *
-     * @param  array<string, mixed>  $person
-     */
+    /** @param  array<string, mixed>  $person */
     private function writeValues(Contact $contact, array $person): ?FieldValue
     {
         $this->writeChoice($contact, DefaultFieldEnum::Category, ValueListEnum::ContactCategories, $person['category']->value);
@@ -183,11 +141,6 @@ class ExampleAccountSeeder extends Seeder
         )->execute();
     }
 
-    /**
-     * Pick an item off one of the account's lists. A category is a field
-     * somebody may answer several times over and a gender is one they answer
-     * once, and the two read the choice from different arguments.
-     */
     private function writeChoice(Contact $contact, DefaultFieldEnum $field, ValueListEnum $list, string $key): void
     {
         $target = $this->fields[$field->value];
@@ -212,10 +165,6 @@ class ExampleAccountSeeder extends Seeder
         )->execute();
     }
 
-    /**
-     * The note goes in a repetition of its own, since the notes field is a
-     * repeater and every answer inside one belongs to a repetition.
-     */
     private function writeNote(Contact $contact, string $note): void
     {
         $row = new CreateFieldValueRow(
@@ -256,48 +205,19 @@ class ExampleAccountSeeder extends Seeder
             ->firstOrFail();
     }
 
-    /**
-     * A moment on the day the date falls, or a number of days, weeks or months
-     * before it.
-     *
-     * @return array<array-key, mixed>
-     */
+    /** @return array<array-key, mixed> */
     private function on(): array
     {
         return ['direction' => ReminderMomentDirectionEnum::On->value, 'amount' => null, 'unit' => null];
     }
 
-    /**
-     * @return array<array-key, mixed>
-     */
+    /** @return array<array-key, mixed> */
     private function before(int $amount, ReminderMomentUnitEnum $unit): array
     {
         return ['direction' => ReminderMomentDirectionEnum::Before->value, 'amount' => $amount, 'unit' => $unit->value];
     }
 
-    /**
-     * Who is in the vault, and what the show says about them.
-     *
-     * The order is the order somebody would have written them down in: Monica
-     * first because the vault is hers, then the other five, then everybody
-     * around them.
-     *
-     * The birthdays of the six are the dates the audience settled on rather
-     * than dates the scripts state, which they never do consistently. Ben's and
-     * Emma's are the days the episodes they were born in put them. The rest of
-     * the cast has no birthday anywhere, so they carry none, and a person with
-     * no date carries no reminder either.
-     *
-     * The moments are deliberately spread out, and the three month ones are
-     * load bearing rather than decorative. Deadlines are only generated ninety
-     * days ahead, and eight birthdays clustered in spring and autumn would
-     * leave the reminder screens with nothing on them for a whole summer. The
-     * furthest moment of any rule is never more than eighty three days from the
-     * nearest moment of another, so whatever month somebody seeds in, something
-     * is due.
-     *
-     * @return list<array<string, mixed>>
-     */
+    /** @return list<array<string, mixed>> */
     private function cast(): array
     {
         $apartment20 = ['street' => '90 Bedford Street, apartment 20', 'city' => 'New York', 'postcode' => 'NY 10014', 'country' => 'United States'];

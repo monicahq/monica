@@ -7,16 +7,6 @@ namespace App\Enums;
 use App\Contracts\Translatable;
 use Override;
 
-/**
- * The colours a vault may be told apart by.
- *
- * A short list rather than a free colour, so that a switcher holding half a
- * dozen vaults stays readable and every one of them reads against both themes.
- * The colour carries no meaning of its own: it is there to be recognised at a
- * glance, which is why each has a name somebody can hear read out.
- *
- * The backing value is the `colour` column of the vault.
- */
 enum VaultColourEnum: string implements Translatable
 {
     case Blue = '#3f5fd0';
@@ -28,10 +18,6 @@ enum VaultColourEnum: string implements Translatable
     case Plum = '#a8447a';
     case Slate = '#4a4a52';
 
-    /**
-     * What the colour is called, which is what somebody using a screen reader
-     * hears instead of a hex code. The name doubles as the translation key.
-     */
     public function label(): string
     {
         return match ($this) {
@@ -46,33 +32,12 @@ enum VaultColourEnum: string implements Translatable
         };
     }
 
-    /**
-     * Every colour on offer, as the hex codes the column holds.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     public static function values(): array
     {
         return array_column(self::cases(), 'value');
     }
 
-    /**
-     * The utilities that draw something in this colour: the hue at a twelfth of
-     * itself behind, and a foreground picked per theme.
-     *
-     * The foreground is not the hue. A hue chosen to read as a vault's mark on
-     * paper is too dark on a dark ground, so each is darkened for the light
-     * theme and lifted for the dark one. Skipping that step measures 2.15:1 for
-     * Slate, which is why the pair is a table rather than a formula.
-     *
-     * The ground is an alpha rather than a mix with a named colour, so it
-     * composites over whatever is behind it and needs no second value per theme.
-     *
-     * Each pair names its own border colour. Two `border-*` utilities in one
-     * class attribute are not resolved by their order in that attribute but by
-     * their order in the generated stylesheet, so a caller cannot lay a default
-     * border down and count on the tint to cover it.
-     */
     public function tint(): string
     {
         return match ($this) {
@@ -87,13 +52,7 @@ enum VaultColourEnum: string implements Translatable
         };
     }
 
-    /**
-     * The same pair as raw hexes, which is what a contrast check needs and what
-     * a Tailwind class string cannot give it. The background is the hue and the
-     * proportion it is drawn at, since the ground it lands on decides the rest.
-     *
-     * @return array{light: string, dark: string, hue: string, alpha: float}
-     */
+    /** @return array{light: string, dark: string, hue: string, alpha: float} */
     public function measurable(): array
     {
         return [
@@ -104,9 +63,6 @@ enum VaultColourEnum: string implements Translatable
         ];
     }
 
-    /**
-     * What the glyph is drawn in on a light ground.
-     */
     public function foreground(): string
     {
         return match ($this) {
@@ -121,9 +77,6 @@ enum VaultColourEnum: string implements Translatable
         };
     }
 
-    /**
-     * What it is drawn in on a dark one.
-     */
     public function liftedForeground(): string
     {
         return match ($this) {
@@ -138,29 +91,17 @@ enum VaultColourEnum: string implements Translatable
         };
     }
 
-    /**
-     * The utilities for a mark carrying no colour, which is the default and the
-     * ninth thing the picker offers.
-     */
     public static function neutralTint(): string
     {
         return 'border-hairline bg-card text-body';
     }
 
-    /**
-     * The tint for a stored value, falling back to neutral for null and for
-     * anything the set does not hold.
-     */
     public static function tintFor(?string $colour): string
     {
         return self::tryFrom((string) $colour)?->tint() ?? self::neutralTint();
     }
 
-    /**
-     * The name of this colour, which the picker reads.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

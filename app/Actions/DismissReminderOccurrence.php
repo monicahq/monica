@@ -14,16 +14,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Stop one deadline from interrupting somebody again without switching its
- * rule off.
- *
- * Dismissing this year's birthday does not remove next year's, and that is the
- * distinction the whole model exists to make: the rule goes on producing, and
- * one deadline it produced is closed.
- *
- * Dismissal says nothing about whether some action was done. The row stays,
- * because a dismissed deadline that vanished would be indistinguishable from
- * one that was never generated.
+ * Stop one deadline from interrupting somebody again without switching its rule off.
  */
 class DismissReminderOccurrence
 {
@@ -64,11 +55,6 @@ class DismissReminderOccurrence
         $this->occurrence->save();
     }
 
-    /**
-     * Quiet hours or a queued channel may still be holding a delivery. Closing
-     * the occurrence closes those rows too; notifications already sent remain
-     * untouched as history.
-     */
     private function abandonPendingNotifications(): void
     {
         $this->occurrence->notifications()

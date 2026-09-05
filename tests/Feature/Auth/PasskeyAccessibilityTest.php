@@ -11,15 +11,6 @@ use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * The parts of WCAG 2.2 AA that can be held to by looking at the markup. The
- * rest of the pass, keyboard order, contrast, zoom and phone width, is done by
- * hand and cannot be asserted here.
- *
- * The live region is the one worth a test of its own. A cancelled device prompt
- * changes nothing visible on the page, so announcing it is the only way somebody
- * using a screen reader learns that nothing happened.
- */
 class PasskeyAccessibilityTest extends TestCase
 {
     use RefreshDatabase;

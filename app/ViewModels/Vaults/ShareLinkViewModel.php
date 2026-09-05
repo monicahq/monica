@@ -12,20 +12,6 @@ use App\Models\ShareLinkVisit;
 use App\Models\User;
 use App\Models\Vault;
 
-/**
- * One link: what it shows, and every time it was opened.
- *
- * It is the screen somebody lands on straight after making a link, which is the
- * only moment the address can be shown at all. Only a hash of the token is
- * written down, so the address exists once, in the response to the request that
- * minted it. Coming back to this screen later is coming back to everything
- * except that: a link nobody copied is replaced rather than recovered, and the
- * screen says so instead of pretending to look it up.
- *
- * The visits are the reason the feature feels safe enough to use. What they hold
- * is deliberately coarse: the visitor never agreed to anything with us, so the
- * page answers "was this opened, roughly when, roughly from where" and stops.
- */
 class ShareLinkViewModel
 {
     public function __construct(
@@ -65,10 +51,6 @@ class ShareLinkViewModel
         return $this->shareLink->isUsable();
     }
 
-    /**
-     * What the screen says above the address, which is different the first time
-     * and every time after it.
-     */
     public function heading(): string
     {
         if (! $this->isLive()) {
@@ -131,12 +113,7 @@ class ShareLinkViewModel
         ]);
     }
 
-    /**
-     * What this link shows, said in full, with the way back to the form beside
-     * each line.
-     *
-     * @return array<int, array{label: string, value: string}>
-     */
+    /** @return array<int, array{label: string, value: string}> */
     public function recap(): array
     {
         return [
@@ -181,9 +158,7 @@ class ShareLinkViewModel
         return __('Nothing has opened this address. Every visit lands here with its date, its time and roughly where from, and nothing about the person, because there is no account to know anything about.');
     }
 
-    /**
-     * @return array<int, array{when: string, where: string, agent: string, failed: bool}>
-     */
+    /** @return array<int, array{when: string, where: string, agent: string, failed: bool}> */
     public function visits(): array
     {
         return $this->shareLink
@@ -199,11 +174,6 @@ class ShareLinkViewModel
             ->all();
     }
 
-    /**
-     * The country when something resolved one, the address when it did not.
-     * Nothing resolves an address to a country yet, so today this is the
-     * address, and the column is there for when something does.
-     */
     private function whereFrom(ShareLinkVisit $visit): string
     {
         $country = $visit->country === null ? null : CountryEnum::tryFrom(mb_strtolower($visit->country));

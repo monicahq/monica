@@ -36,10 +36,6 @@ class TemplateCopyControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * A supplied template cannot be edited in place, so copying is the way in.
-     * The copy has to be an ordinary template of the user's.
-     */
     #[Test]
     public function it_copies_a_supplied_template_into_an_ordinary_one(): void
     {

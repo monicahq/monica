@@ -1,19 +1,5 @@
-{{--
-  The screen somebody lands on after signing in: the compartments their account is
-  divided into, and the way into each.
-
-  It is the one screen with no dock. The dock's four destinations point into a
-  single vault, and this is where you choose which, so a dock here would be
-  pointing somewhere before the choice had been made. That also means it is the
-  one screen that needs its own way to the settings, which is the link in the bar.
-
-  The cards are cards rather than rows, which is the only place in the product they
-  are. A vault is not one of a long list to be scanned down a column: there are
-  three or four of them, they are picked by recognition, and each carries a
-  sentence about what it is for that a row would have to truncate.
-
-  @var \App\ViewModels\Vaults\VaultsViewModel $viewModel
---}}
+{{-- Where somebody lands after signing in: the compartments their account is divided into. --}}
+{{-- @var \App\ViewModels\Vaults\VaultsViewModel $viewModel --}}
 <x-account-layout :title="$viewModel->title()">
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
     <div class="flex min-w-0 flex-col gap-2">
@@ -33,11 +19,6 @@
     </div>
   </header>
 
-  {{--
-    An account with no vault is normally sent to the getting started screen, so this
-    is reached by typing the address. It still has to read sensibly: there is no
-    order to explain and nothing to start "another" of.
-  --}}
   @if ($viewModel->vaults() === [])
     <x-panel>
       <x-empty-state :title="__('No vault yet')">
@@ -93,8 +74,6 @@
               @endif
             </span>
 
-            {{-- The sentence keeps its room whether it is there or not, so a card
-                 without one does not stand shorter than the cards beside it. --}}
             <span class="block text-sm text-pretty text-muted min-h-10">{{ $vault['description'] }}</span>
           </a>
         @endforeach

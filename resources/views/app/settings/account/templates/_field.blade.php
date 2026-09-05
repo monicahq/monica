@@ -1,22 +1,5 @@
+{{-- One field on the list, and underneath it whatever a repeater asks for on every repetition. --}}
 {{--
-  One field on the list, and underneath it whatever a repeater asks for on every
-  repetition. A repeater cannot hold another, so the indent only ever goes one
-  step in.
-
-  The field open in the inspector carries a border and a tint as well as
-  `aria-current`, since which one is being edited is the only thing telling
-  somebody what the panel on the right is about.
-
-  A field is dragged to reorder it, the same way a section is, and the grip is
-  what says so. Only the fields directly in the section take part: what a
-  repeater asks on each repetition is an indented list of its own, and dropping
-  one of those among its aunts would be asking the server to move a child out of
-  its parent, which is a different operation from reordering.
-
-  The grip is hidden from a screen reader on purpose. Dragging is not how
-  anybody using one reorders anything, and announcing a handle they cannot work
-  is worse than announcing nothing.
-
   @var array $field
   @var \App\Models\Template|null $template
   @var int|null $sectionId

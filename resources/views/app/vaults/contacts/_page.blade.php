@@ -1,17 +1,5 @@
-{{--
-  One page of the record: the sections the template puts on it, each drawn as a
-  block that reads what it holds until somebody asks to edit it.
-
-  The page used to be one form with one save at the foot of it. It is not any
-  more, and the reason is that looking somebody up is what this screen is for
-  most of the time: a page that is always a form is a page that always looks like
-  work. What replaced it is in `_section`, and the unit of writing moved with it
-  from the page to the block.
-
-  It is its own file because it is the half of the screen the tabs swap.
-
-  @var \App\ViewModels\Vaults\ContactViewModel $viewModel
---}}
+{{-- One page of the record: the sections the template puts on it, each read until asked to edit. --}}
+{{-- @var \App\ViewModels\Vaults\ContactViewModel $viewModel --}}
 @php
   $sections = $viewModel->sections();
 @endphp

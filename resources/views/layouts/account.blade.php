@@ -1,18 +1,5 @@
+{{-- The shell of the screens that stand outside any one vault. --}}
 {{--
-  The shell of the screens that stand outside any one vault: the list of them,
-  the form that opens one, and the screen somebody lands on before they have
-  made anything. There is no column of links, because none of those screens is
-  inside anything to navigate, and what they need to say about where you are
-  fits in one line under the bar. Once you are in a vault the sidebar shell
-  takes over, with the vault's own navigation down the left.
-
-  The bar carries the mark, the way out to the docs and the marketplace, the way
-  to the settings, and the light and dark switch. It does not say who is signed
-  in: an avatar with nothing behind it is decoration, and the one place that
-  answer belongs is the foot of the navigation column, where a click on it does
-  something. The strip under the bar carries the breadcrumb, and a screen that
-  has nowhere to come back from may leave it out.
-
   @var string|null $title
   @var \Illuminate\View\ComponentSlot|null $breadcrumb
 --}}
@@ -45,10 +32,6 @@
       </div>
     @endisset
 
-    {{--
-      A screen with a breadcrumb already has a strip between it and the bar, so
-      it starts closer to the top than one that opens on its own title.
-    --}}
     <main class="mx-auto max-w-240 space-y-8 px-4 pb-22 sm:px-6 {{ isset($breadcrumb) ? 'pt-7.5' : 'pt-14' }}">
       {{ $slot }}
     </main>

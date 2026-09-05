@@ -1,16 +1,5 @@
+{{-- The panel that edits whatever field is open. --}}
 {{--
-  The panel that edits whatever field is open.
-
-  It sticks to the top of the window on a wide screen, so picking a field far down
-  a long section does not leave the panel about it off the screen.
-
-  The type is shown and not offered. It is the one decision about a field that
-  cannot be taken back: it decides what a stored value means, and changing it
-  under values already written would quietly turn them into something else. The
-  way to change a type is to remove the field and add the one that was wanted,
-  which is what the line under it says. It is a value rather than a disabled box,
-  for the same reason a settled slug is.
-
   @var \App\ViewModels\Settings\Account\Templates\TemplateBuilderViewModel $viewModel
   @var \App\Models\Template $template
 --}}
@@ -79,12 +68,6 @@
             :disabled="! $viewModel->isEditable()"
           />
 
-          {{--
-            Only a repeater has a direction, so only a repeater is asked. It says
-            where a new repetition lands and nothing about where an existing one
-            may be moved to, which is why the sentence under it talks about what
-            somebody will see rather than about sorting.
-          --}}
           @if ($field['isRepeater'])
             <x-select
               id="repetition_order"

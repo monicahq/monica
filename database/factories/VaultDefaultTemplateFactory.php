@@ -12,19 +12,12 @@ use App\Models\VaultDefaultTemplate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<VaultDefaultTemplate>
- */
+/** @extends Factory<VaultDefaultTemplate> */
 class VaultDefaultTemplateFactory extends Factory
 {
     protected $model = VaultDefaultTemplate::class;
 
-    /**
-     * A default applying in the vault of another account is nothing, so the
-     * account is taken from the vault rather than made beside it.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -37,10 +30,6 @@ class VaultDefaultTemplateFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the default is for a kind of record the account invented
-     * rather than for a contact.
-     */
     public function forEntity(?EntityType $entityType = null): static
     {
         return $this->state(fn (array $attributes): array => [

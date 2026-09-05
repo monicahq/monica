@@ -9,18 +9,6 @@ use App\Models\Template;
 use App\Models\User;
 use Illuminate\Support\Number;
 
-/**
- * The two ways a template leaves an account, and the file that is one of them.
- *
- * One view model serves both screens because they read the same thing. What the
- * share screen quotes about the file (its name, its weight, how much structure
- * is in it) is what the export screen shows in full, and building the payload
- * twice from two classes would be two chances for the two screens to disagree
- * about what is about to leave.
- *
- * Everything here is read from the published version. A draft has nothing
- * frozen to send, and the screens are not reachable without one.
- */
 class ShareTemplateViewModel
 {
     public function __construct(
@@ -38,23 +26,12 @@ class ShareTemplateViewModel
         return $this->template;
     }
 
-    /**
-     * The file itself. It is built once per request: the payload walks every
-     * page, every section version and every field, and both screens ask for it
-     * more than once.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function file(): array
     {
         return once(fn (): array => StructureFile::ofTemplate($this->template));
     }
 
-    /**
-     * The file as text, which is the same text the download hands over. What is
-     * read on the screen has to be what lands on the disk, or reading it first
-     * proves nothing.
-     */
     public function json(): string
     {
         return once(fn (): string => StructureFile::encode($this->file()));
@@ -79,10 +56,6 @@ class ShareTemplateViewModel
         );
     }
 
-    /**
-     * What is in the file, counted. It is the one thing somebody can check at a
-     * glance against what they think they built.
-     */
     public function structureLabel(): string
     {
         return __(':sections, :fields, :lists', [
@@ -102,12 +75,7 @@ class ShareTemplateViewModel
         ]);
     }
 
-    /**
-     * The rows of the panel that says what is in the file, in the order
-     * somebody would ask: what shape, which version, in what format, how heavy.
-     *
-     * @return array<int, array{label: string, value: string}>
-     */
+    /** @return array<int, array{label: string, value: string}> */
     public function inFile(): array
     {
         return [
@@ -118,11 +86,6 @@ class ShareTemplateViewModel
         ];
     }
 
-    /**
-     * How many records are on the published version. The share screen says the
-     * number out loud beside the promise that none of them travels: a count is
-     * harder to disbelieve than a reassurance.
-     */
     public function recordCountLabel(): string
     {
         $count = $this->template->publishedVersion->record_count;

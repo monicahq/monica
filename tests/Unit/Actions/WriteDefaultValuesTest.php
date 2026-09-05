@@ -140,9 +140,7 @@ class WriteDefaultValuesTest extends TestCase
         ]);
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function fieldOn(Contact $contact, array $attributes = []): Field
     {
         $version = $contact->templateVersion;

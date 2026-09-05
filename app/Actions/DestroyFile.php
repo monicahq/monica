@@ -15,16 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Take a file off the disk and give its bytes back to the account.
- *
- * A file something still points at stays. The count is what a record, a value
- * or an activity leans on, and taking the file out from under one of them would
- * leave it showing a pointer to nothing.
- *
- * The bytes go and the row stays, soft deleted. What was uploaded, by whom and
- * when is history, and section 3.3 says nothing disappears silently.
- *
- * The user may be nobody: the sweep that comes for orphans acts on the
- * account's behalf rather than anybody's, and the log says so.
  */
 class DestroyFile
 {

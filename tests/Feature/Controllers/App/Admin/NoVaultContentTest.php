@@ -14,14 +14,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * The promise the product makes to the people using it: whoever runs the
- * instance sees accounts, never the people documented inside them.
- *
- * This is the test for that promise rather than for any one screen, which is why
- * it sets up a vault holding a name, a value and a file and then goes looking for
- * all three everywhere in the admin space.
- */
 class NoVaultContentTest extends TestCase
 {
     use RefreshDatabase;

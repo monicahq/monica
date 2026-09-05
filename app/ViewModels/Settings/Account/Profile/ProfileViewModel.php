@@ -6,21 +6,13 @@ namespace App\ViewModels\Settings\Account\Profile;
 
 use App\Models\User;
 
-/**
- * What the profile screen shows: who is signed in, the details they are
- * editing, and the shell around it.
- */
 class ProfileViewModel
 {
     public function __construct(
         private readonly User $user,
     ) {}
 
-    /**
-     * The fields of the details box.
-     *
-     * @return array{first_name: string|null, last_name: string|null, email: string|null}
-     */
+    /** @return array{first_name: string|null, last_name: string|null, email: string|null} */
     public function details(): array
     {
         return [
@@ -50,10 +42,6 @@ class ProfileViewModel
         return $this->user->email;
     }
 
-    /**
-     * How long ago the profile was last saved, in words, or null when it never
-     * has been, so the screen can leave the line out entirely.
-     */
     public function lastSavedAt(): ?string
     {
         return $this->user->last_saved_at?->diffForHumans();

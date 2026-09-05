@@ -1,20 +1,5 @@
-{{--
-  A file on its way in, read before it becomes anything.
-
-  The screen is built around the step in the middle. Somebody pastes text that
-  came from outside the account, presses check, and is told exactly what the
-  file holds and what importing it would add here, all of it before a single row
-  exists. A file that will not read says which part of it is wrong and leaves
-  nothing behind.
-
-  Checking and importing are two requests on purpose, and the import reads the
-  file again for itself rather than trusting what the check concluded.
-
-  The same screen serves both doors. What differs is where the file may land,
-  and the view model holds that.
-
-  @var \App\ViewModels\Settings\Account\Templates\ImportFileViewModel $viewModel
---}}
+{{-- A file on its way in, read before it becomes anything. --}}
+{{-- @var \App\ViewModels\Settings\Account\Templates\ImportFileViewModel $viewModel --}}
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:breadcrumb>
     <x-breadcrumb :items="$viewModel->breadcrumb()" />

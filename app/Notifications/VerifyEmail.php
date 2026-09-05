@@ -11,10 +11,6 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
 
-/**
- * Ask somebody who just signed up to prove the address they gave is theirs. The
- * link is signed and expires, so it cannot be forged and cannot be kept.
- */
 class VerifyEmail extends Notification implements ShouldQueue
 {
     use Queueable;
@@ -24,9 +20,7 @@ class VerifyEmail extends Notification implements ShouldQueue
         $this->onQueue('high');
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function via(User $notifiable): array
     {
         return ['mail'];

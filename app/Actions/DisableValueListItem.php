@@ -11,13 +11,7 @@ use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Stop offering a choice, without touching a single record that already uses
- * it.
- *
- * This is the required behaviour of section 3.3, not a way of dodging a
- * deletion: the item disappears from every picker and every stored value that
- * points at it stays exactly as readable as it was. Its place in the list is
- * kept, so offering it again puts it back where it was.
+ * Stop offering a choice, without touching a single record that already uses it.
  */
 class DisableValueListItem
 {

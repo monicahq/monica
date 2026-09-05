@@ -211,9 +211,7 @@ class FieldValueFormatterTest extends TestCase
         ));
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function value(User $user, FieldTypeEnum $type, array $attributes): FieldValue
     {
         $field = Field::factory()->create(['account_id' => $user->account_id, 'type' => $type]);

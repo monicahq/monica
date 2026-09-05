@@ -245,8 +245,6 @@ class LoginControllerTest extends TestCase
             ->json('DELETE', '/api/v1/logout')
             ->assertNoContent();
 
-        // The guard resolved the caller during the request above and would hand
-        // the same user back without looking at the token again.
         $this->app['auth']->forgetGuards();
 
         $this->withHeader('Authorization', 'Bearer '.$token->plainTextToken)

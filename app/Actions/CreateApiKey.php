@@ -11,16 +11,6 @@ use Laravel\Sanctum\NewAccessToken;
 
 /**
  * Mint an API key for somebody, which acts as them and nobody else.
- *
- * What comes back holds both halves of the new key: the plain text value, which
- * is the only time it exists in that form, and the row that was written. Only a
- * hash of the value is kept, so a key somebody fails to copy is lost rather than
- * recoverable, and has to be made again.
- *
- * Callers that only need the value read `->plainTextToken`. The endpoint that
- * hands a key out also has to describe it, its identifier and the moment it was
- * made, and reads `->accessToken` for that rather than going back to the
- * database for a row it has just written.
  */
 class CreateApiKey
 {

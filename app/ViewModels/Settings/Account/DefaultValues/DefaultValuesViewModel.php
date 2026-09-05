@@ -8,15 +8,6 @@ use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 
-/**
- * Every list the account draws its choices from, and inside each of them the
- * choices themselves, in the order they are offered.
- *
- * A choice nothing points at can be deleted outright; one that records
- * already use is stopped from being offered instead, which is why the two
- * counts travel with every row. A list the product supplied cannot be deleted
- * at all.
- */
 class DefaultValuesViewModel
 {
     public function __construct(
@@ -24,8 +15,6 @@ class DefaultValuesViewModel
     ) {}
 
     /**
-     * The lists of the account, each with the choices it offers.
-     *
      * @return array<int, array{id: int, name: string, description: ?string, allowsUserValues: bool, canBeDeleted: bool, countLabel: string, values: array<int, array{id: int, label: string, isActive: bool, canBeDeleted: bool, usageLabel: string}>}>
      */
     public function lists(): array
@@ -60,9 +49,6 @@ class DefaultValuesViewModel
         return $this->user;
     }
 
-    /**
-     * The line beside the name of a list, so nobody has to count the rows.
-     */
     private function countLabel(int $count): string
     {
         if ($count === 0) {
@@ -72,10 +58,6 @@ class DefaultValuesViewModel
         return trans_choice(':count value|:count values', $count);
     }
 
-    /**
-     * How much a choice is leaned on, which is what tells somebody whether
-     * deleting it is free or whether it has to be retired instead.
-     */
     private function usageLabel(ValueListItem $item): string
     {
         if ($item->usage_count === 0) {

@@ -103,11 +103,6 @@ class ExportTemplateTest extends TestCase
         });
     }
 
-    /**
-     * A template with one page, one section on it and one field in that
-     * section, published in that order: everything refuses to be written once
-     * the version it hangs from is frozen.
-     */
     private function publishedTemplate(User $user): Template
     {
         $template = Template::factory()->create([

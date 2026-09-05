@@ -81,15 +81,11 @@ use App\Http\Controllers\App\Vaults\VaultReminderController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
 use Illuminate\Support\Facades\Route;
 
-// Shows nothing of its own: signed in goes wherever the account is up to, everybody
-// else to the sign in screen.
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
-// The api reference, open to anybody, signed in or not.
 Route::get('docs/api', [ApiDocsController::class, 'index'])
     ->name('docs.api.index');
 
-// The same reference as plain text, whole and one endpoint at a time.
 Route::get('docs/api.md', [ApiDocsMarkdownController::class, 'index'])
     ->name('docs.api.markdown.index');
 
@@ -97,19 +93,13 @@ Route::get('docs/api/{section}.md', [ApiDocsMarkdownController::class, 'show'])
     ->where('section', '[a-z0-9\-]+')
     ->name('docs.api.markdown.show');
 
-// One endpoint to a page, so a link to one of them opens that one.
 Route::get('docs/api/{section}', [ApiDocsController::class, 'show'])
     ->where('section', '[a-z0-9\-]+')
     ->name('docs.api.show');
 
-// Public on purpose: a link to something published here has to open for somebody
-// who never signed up. The facets combine freely, so they travel in the query string.
 Route::get('marketplace', [MarketplaceController::class, 'index'])
     ->name('marketplace.index');
 
-// Public by design: whoever opens it has no account here and never gets one. Only a
-// hash of the token is stored, so there is no binding, and the pattern keeps a
-// mistyped address a 404. Throttled, because the link is a secret in an address.
 Route::get('s/{token}/{page?}', [SharedContactController::class, 'show'])
     ->middleware(['throttle:60,1'])
     ->where('token', '[A-Za-z0-9]{64}')
@@ -120,7 +110,6 @@ Route::post('s/{token}', [SharedContactPasswordController::class, 'create'])
     ->where('token', '[A-Za-z0-9]{64}')
     ->name('share.password.create');
 
-// The screens where somebody looks after their vaults.
 Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->group(function (): void {
     Route::get('getting-started', [GettingStartedController::class, 'index'])->name('gettingStarted.index');
 
@@ -131,7 +120,6 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('vaults/{vault}', [VaultController::class, 'update'])->name('vaults.update');
     Route::delete('vaults/{vault}', [VaultController::class, 'destroy'])->name('vaults.destroy');
 
-    // Served through the app: a document is as private as the record it sits on.
     Route::get('vaults/{vault}/files/{file}', [FileController::class, 'show'])
         ->whereUuid('file')
         ->name('files.show');
@@ -139,20 +127,14 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('vaults/{vault}/contacts/new', [ContactController::class, 'new'])->name('contacts.new');
     Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
 
-    // The filter is in the address so the chips read as places. The constraint keeps
-    // this route off `contacts/new`.
     Route::get('vaults/{vault}/contacts/{filter?}', [ContactController::class, 'index'])
         ->whereIn('filter', [ContactGroupingEnum::Favourites->value, ContactGroupingEnum::Archived->value])
         ->name('contacts.index');
 
-    // Above the page route, so a template page keyed the same word is shadowed. The
-    // uuid constraint keeps a mistyped word a 404: postgres will not compare a uuid
-    // column against a word, so without it that is a 500.
     Route::get('vaults/{vault}/contacts/{contact}/set-aside', [SetAsideValueController::class, 'index'])
         ->whereUuid('contact')
         ->name('contacts.setAside.index');
 
-    // One screen for what the template has no say over: name, picture, presence.
     Route::get('vaults/{vault}/contacts/{contact}/edit', [ContactController::class, 'edit'])
         ->whereUuid('contact')
         ->name('contacts.edit');
@@ -177,14 +159,10 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->whereUuid('contact')
         ->name('contacts.destroy');
 
-    // Onto the published version, one record at a time. Publishing moves nobody by
-    // itself, and nothing travels in the request: the template says where it can go.
     Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactTemplateVersionController::class, 'update'])
         ->whereUuid('contact')
         ->name('contacts.templateVersion.update');
 
-    // Which block is open is the address rather than client state, so cancelling
-    // really throws away what was typed. The page is left out: the section knows it.
     Route::get('vaults/{vault}/contacts/{contact}/sections/{templateVersionSection}/edit', [ContactSectionController::class, 'edit'])
         ->whereUuid('contact')
         ->whereNumber('templateVersionSection')
@@ -195,8 +173,6 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->whereNumber('templateVersionSection')
         ->name('contacts.sections.update');
 
-    // Above the page route with the others. A link is addressed by its uuid: the token
-    // that opens it would otherwise sit in the address of the screen managing it.
     Route::get('vaults/{vault}/contacts/{contact}/share-links', [ContactShareLinkController::class, 'index'])
         ->whereUuid('contact')
         ->name('contacts.shareLinks.index');
@@ -224,7 +200,6 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->whereUuid('shareLink')
         ->name('contacts.shareLinks.update');
 
-    // Revoking keeps the row: a link that is gone is still part of who saw this page.
     Route::delete('vaults/{vault}/contacts/{contact}/share-links/{shareLink}', [ContactShareLinkController::class, 'destroy'])
         ->whereUuid('contact')
         ->whereUuid('shareLink')
@@ -234,18 +209,6 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->whereUuid('contact')
         ->name('contacts.show');
 
-    // Everything this vault will remind somebody about, and everything it has
-    // already sent. How the list is grouped is part of the address rather than a
-    // query string, so a grouping can be linked to and the back button moves
-    // between the two. Only the grouping that is not the default earns a
-    // segment, which leaves the list one canonical address.
-    //
-    // Every literal segment stays declared before `reminders/{reminder}`, so a
-    // one segment address reads as the tab it is rather than as a reminder
-    // nobody can find. The binding matching only a uuid says the same thing a
-    // second time, on purpose: the order here is easy to break by adding a tab
-    // in the wrong place, and the constraint is what makes that a 404 rather
-    // than a tab that stops working.
     Route::get('vaults/{vault}/reminders', [VaultReminderController::class, 'index'])->name('reminders.index');
     Route::get('vaults/{vault}/reminders/by-contact', [VaultReminderController::class, 'byContact'])->name('reminders.byContact');
     Route::get('vaults/{vault}/reminders/sent', [VaultReminderController::class, 'sent'])->name('reminders.sent');
@@ -262,9 +225,6 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('vaults/{vault}/reminders/{reminder}', [ReminderController::class, 'show'])
         ->whereUuid('reminder')
         ->name('reminders.show');
-    // A pause is a thing that exists rather than a flag: it is put there and taken
-    // away, so each address says what it does and two tabs cannot flip a rule past
-    // each other.
     Route::delete('vaults/{vault}/reminders/{reminder}', [ReminderController::class, 'destroy'])
         ->whereUuid('reminder')
         ->name('reminders.destroy');
@@ -278,7 +238,6 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');
 
-    // The screens where somebody looks after their own account.
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
 
     Route::get('settings/account/profile', [ProfileController::class, 'index'])->name('settings.profile.index');
@@ -319,10 +278,6 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::post('settings/account/templates/{template}/copy', [TemplateCopyController::class, 'create'])->name('settings.templateCopy.create');
     Route::put('settings/account/templates/{template}/active', [TemplateActivationController::class, 'update'])->name('settings.templateActivation.update');
 
-    // `export` is the screen and `export/file` the bytes; `import/check` reads a file
-    // and writes nothing. Each gets its own address, so what leaves or arrives can be
-    // read first, and the check is never carried into the import. Sections hang under
-    // a template, which is what pins the version.
     Route::get('settings/account/templates/import', [TemplateImportController::class, 'new'])->name('settings.templateImport.new');
     Route::post('settings/account/templates/import/check', [TemplateImportCheckController::class, 'create'])->middleware('throttle:20,1')->name('settings.templateImportCheck.create');
     Route::post('settings/account/templates/import', [TemplateImportController::class, 'create'])->middleware('throttle:20,1')->name('settings.templateImport.create');
@@ -373,8 +328,6 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::post('settings/account/security/recovery-codes', [RecoveryCodeController::class, 'create'])->name('settings.recoveryCodes.create');
 
-    // Adding a passkey, removing one and signing in with one all belong to the
-    // package. It offers no route for a rename, so that one is ours.
     Route::put('settings/account/security/passkeys/{passkey}', [PasskeyController::class, 'update'])->whereNumber('passkey')->name('settings.passkeys.update');
 
     Route::post('settings/account/security/api-keys', [ApiKeyController::class, 'create'])->name('settings.apiKeys.create');
@@ -385,40 +338,25 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('settings/account/profile/photo/{user}/{size}', [PhotoController::class, 'show'])->whereNumber(['user', 'size'])->name('settings.photo.show');
 });
 
-// The admin space, for whoever runs the instance.
-//
-// No `auth` on purpose: its redirect would confirm the address is real. The
-// middleware answers a flat 404 to a guest, to a user without the capacity and to an
-// inactive holder alike. Search and filters travel in the query string, so a lookup
-// can be sent to a colleague.
 Route::middleware(['administrator'])->group(function (): void {
-    // The root of the area: how the instance is doing before anything is done to it.
     Route::get('admin', [OverviewController::class, 'index'])->name('admin.overview.index');
 
     Route::get('admin/logs', [AdministratorLogController::class, 'index'])->name('admin.logs.index');
 
-    // A decision is a POST onto a noun rather than a PATCH: approving and refusing
-    // must not be read off one payload.
     Route::get('admin/moderation', [ModerationController::class, 'index'])->name('admin.moderation.index');
     Route::get('admin/moderation/{version}', [ModerationController::class, 'show'])->whereNumber('version')->name('admin.moderation.show');
     Route::post('admin/moderation/{version}/approval', [ModerationApprovalController::class, 'create'])->whereNumber('version')->name('admin.moderation.approval.create');
     Route::post('admin/moderation/{version}/rejection', [ModerationRejectionController::class, 'create'])->whereNumber('version')->name('admin.moderation.rejection.create');
 
-    // Accounts only. No route here takes a vault, a contact or a file, which is what
-    // keeps everything written inside a vault unreachable from here.
     Route::get('admin/accounts', [AdminAccountController::class, 'index'])->name('admin.accounts.index');
     Route::get('admin/accounts/{account}', [AdminAccountController::class, 'show'])->whereNumber('account')->name('admin.accounts.show');
 
-    // What support needs. Each sits behind a warning and is written down against the
-    // administrator who did it.
     Route::put('admin/accounts/{account}/storage-limit', [AccountStorageLimitController::class, 'update'])->whereNumber('account')->name('admin.accounts.storageLimit.update');
     Route::post('admin/accounts/{account}/lifetime-access', [AccountLifetimeAccessController::class, 'create'])->whereNumber('account')->name('admin.accounts.lifetimeAccess.create');
     Route::delete('admin/accounts/{account}/lifetime-access', [AccountLifetimeAccessController::class, 'destroy'])->whereNumber('account')->name('admin.accounts.lifetimeAccess.destroy');
     Route::post('admin/accounts/{account}/activation', [UserActivationController::class, 'create'])->whereNumber('account')->name('admin.accounts.activation.create');
     Route::delete('admin/accounts/{account}/activation', [UserActivationController::class, 'destroy'])->whereNumber('account')->name('admin.accounts.activation.destroy');
 
-    // The grant takes an email address: the operator already knows who they are
-    // promoting, rather than going looking in a list.
     Route::get('admin/administrators', [AdministratorController::class, 'index'])->name('admin.administrators.index');
     Route::post('admin/administrators', [AdministratorController::class, 'create'])->name('admin.administrators.create');
     Route::delete('admin/administrators/{user}', [AdministratorController::class, 'destroy'])->whereNumber('user')->name('admin.administrators.destroy');

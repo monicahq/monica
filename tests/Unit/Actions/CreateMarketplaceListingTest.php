@@ -60,10 +60,6 @@ class CreateMarketplaceListingTest extends TestCase
         ]);
     }
 
-    /**
-     * A section on its own is what lowers the barrier to contributing, so it is
-     * listable without a template around it.
-     */
     #[Test]
     public function it_prepares_a_section_published_on_its_own(): void
     {
@@ -108,10 +104,6 @@ class CreateMarketplaceListingTest extends TestCase
         $this->assertNull($listing->first_published_at);
     }
 
-    /**
-     * The catalogue is one public place, so two authors cannot both own the
-     * address a link already went out to.
-     */
     #[Test]
     public function it_gives_the_listing_a_slug_nothing_else_in_the_catalogue_answers_to(): void
     {
@@ -198,10 +190,6 @@ class CreateMarketplaceListingTest extends TestCase
         )->execute();
     }
 
-    /**
-     * What travels is a frozen version, so a template nobody has published has
-     * nothing to send.
-     */
     #[Test]
     public function it_refuses_a_structure_that_only_exists_as_a_draft(): void
     {

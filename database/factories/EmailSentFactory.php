@@ -11,16 +11,12 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<EmailSent>
- */
+/** @extends Factory<EmailSent> */
 class EmailSentFactory extends Factory
 {
     protected $model = EmailSent::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -36,9 +32,6 @@ class EmailSentFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the email was sent to someone who has no account.
-     */
     public function withoutUser(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -46,9 +39,6 @@ class EmailSentFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the email arrived.
-     */
     public function delivered(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -56,9 +46,6 @@ class EmailSentFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the email came back.
-     */
     public function bounced(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -66,9 +53,6 @@ class EmailSentFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the recipient marked the email as spam.
-     */
     public function complained(): static
     {
         return $this->state(fn (array $attributes): array => [

@@ -25,22 +25,6 @@ use InvalidArgumentException;
 
 /**
  * Write down what somebody typed into one field of one record.
- *
- * It is the only place a value is written, and everything that makes a value
- * interpretable later is settled here. The column is chosen by the type of the
- * field rather than by the caller, since exactly one of them is populated and
- * which one is a property of the type. The key of the field is copied onto the
- * row for the same reason an email address is copied onto a log: the value has
- * to remain readable after the field it came from has left the structure.
- *
- * Writing to a field whose values had been set aside brings this one back. It
- * is the same gesture as re-adding the field, made one value at a time.
- *
- * What it refuses is what would otherwise be stored as a quiet lie: a layout
- * field that stores nothing, a repeater given a value rather than a repetition,
- * a choice that is not on the list the field offers, a relation pointing at the
- * wrong kind of record, or a second record holding a value the field says only
- * one may hold.
  */
 class SetFieldValue
 {
@@ -52,9 +36,7 @@ class SetFieldValue
 
     private mixed $columnValue = null;
 
-    /**
-     * @param  list<ValueListItem>  $valueListItems
-     */
+    /** @param  list<ValueListItem>  $valueListItems */
     public function __construct(
         private readonly User $user,
         private readonly Contact|Entity $valuable,
@@ -106,13 +88,6 @@ class SetFieldValue
         $this->validateTheFile();
     }
 
-    /**
-     * Every value inside a repeater carries the repetition it belongs to, and
-     * every value outside one carries none. Neither half is optional: a value
-     * with no repetition would be a phone number belonging to no line, and a
-     * value with one that is not the repetition of its own repeater would
-     * belong to somebody else's.
-     */
     private function validateTheRow(): void
     {
         $sitsInARepeater = $this->field->parent_field_id !== null;
@@ -163,12 +138,6 @@ class SetFieldValue
         }
     }
 
-    /**
-     * A relation points at exactly one record, of exactly the kind the field
-     * says it points at, living in the same vault as the record holding it. The
-     * vault is a compartment, and a value crossing one would be a way of
-     * reading what is on the other side of it.
-     */
     private function validateTheRelation(): void
     {
         if (! $this->field->type->isRelation()) {
@@ -211,11 +180,6 @@ class SetFieldValue
         }
     }
 
-    /**
-     * Find what this field already holds on this record, in this repetition.
-     * One field on one record in one repetition holds one value, so writing
-     * again replaces rather than adds.
-     */
     private function readTheExistingValue(): void
     {
         $this->existing = FieldValue::query()
@@ -254,12 +218,6 @@ class SetFieldValue
         };
     }
 
-    /**
-     * Read the date, with the year replaced by a placeholder when nobody knows
-     * it. Rewriting it here rather than trusting the caller is what makes the
-     * promise that the year is never rendered true everywhere: nothing
-     * downstream can read a year out of the column and believe it.
-     */
     private function readTheDate(): mixed
     {
         if ($this->value === null || ! $this->missesPart($this->yearIsUnknown)) {
@@ -272,25 +230,11 @@ class SetFieldValue
             ->format('Y-m-d');
     }
 
-    /**
-     * Whether a part of the date is genuinely missing. Only a date that comes
-     * round again may have one, so the flag is dropped rather than stored on
-     * anything else: a setting a type cannot honour is a setting that lies.
-     *
-     * The two parts are independent. A birthday whose year nobody knows and a
-     * date somebody remembers only the year of are both normal cases.
-     */
     private function missesPart(bool $flag): bool
     {
         return $flag && $this->field->type->mayHaveAnUnknownPart();
     }
 
-    /**
-     * Refuse a value another record in the same vault already holds, when the
-     * field says only one of them may. A field holding several values at once
-     * is skipped: uniqueness across sets is a different question, and not one
-     * the specification asks.
-     */
     private function refuseADuplicate(): void
     {
         if (! $this->field->is_unique || $this->columnValue === null || is_array($this->columnValue)) {
@@ -336,12 +280,7 @@ class SetFieldValue
         });
     }
 
-    /**
-     * Every column the value is not written into, so that replacing a value
-     * never leaves the leftovers of what was there before beside it.
-     *
-     * @return array<string, null>
-     */
+    /** @return array<string, null> */
     private function emptyColumns(): array
     {
         $columns = [
@@ -353,11 +292,6 @@ class SetFieldValue
         return array_fill_keys(array_diff($columns, [$this->column]), null);
     }
 
-    /**
-     * Hand the reference over from the file that was there to the one that is
-     * now. Detaching never deletes, so a file nothing points at any more waits
-     * out the grace period before the sweep takes it.
-     */
     private function moveTheFileCount(): void
     {
         $before = $this->existing?->value_file_id;
@@ -376,11 +310,6 @@ class SetFieldValue
         }
     }
 
-    /**
-     * Keep the count of what points at each item of a value list in step. It is
-     * what somebody about to disable an item is shown, and counting on read
-     * would mean aggregating the largest table in the product.
-     */
     private function moveTheChoiceCounts(): void
     {
         $before = collect([$this->existing?->value_list_item_id])

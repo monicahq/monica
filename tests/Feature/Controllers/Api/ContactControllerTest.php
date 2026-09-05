@@ -542,10 +542,6 @@ class ContactControllerTest extends TestCase
         $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/".fake()->uuid())->assertUnauthorized();
     }
 
-    /**
-     * A vault a contact can be written down in, which means one holding a
-     * published contact template for a new contact to start from.
-     */
     private function vaultReadyForContacts(User $user): Vault
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);

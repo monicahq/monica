@@ -13,27 +13,13 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Write every ordering key in an account again, for a language, the keys being
- * derived from the language the account reads in.
- *
- * Opens no transaction of its own: the caller wraps this and the language change
- * together, because a list ordered on keys half in one language and half in
- * another can show a row twice or miss it, and nobody can see that happen.
- *
- * Written through the query builder so the saving hooks do not fire. They read
- * the language from the account, which is the thing being changed.
+ * Write every ordering key in an account again, for a language, the keys being derived from the
+ * language the account reads in.
  */
 class RebuildOrderingKeys
 {
-    /** Large: reading is one statement whatever it brings back. */
     private const int CHUNK = 500;
 
-    /**
-     * Much smaller, and not the same question. A `case` is evaluated for every
-     * row a statement touches, so work inside a batch grows with the square of
-     * its size while the round trips it saves fall only linearly. Measured over
-     * 5000 rows on SQLite: 35 ms one row at a time, 12 ms at 25, 46 ms at 200.
-     */
     private const int WRITE_BATCH = 25;
 
     public function __construct(
@@ -48,9 +34,6 @@ class RebuildOrderingKeys
     }
 
     /**
-     * Deleted records are rebuilt too: one restored carrying a stale key is filed
-     * where its reader will not look.
-     *
      * @template TRecord of Contact|Entity
      *
      * @param  Builder<TRecord>  $query
@@ -66,16 +49,7 @@ class RebuildOrderingKeys
             });
     }
 
-    /**
-     * One statement a batch rather than one a row, a round trip each being most
-     * of the time spent against a database reached over a socket. Computing the
-     * keys is not what costs: five thousand take about 35 ms.
-     *
-     * The rows are named as the account's between the first and last id of the
-     * batch rather than listed, `chunkById` reading them in that order.
-     *
-     * @param  Collection<int, Contact>|Collection<int, Entity>  $records
-     */
+    /** @param  Collection<int, Contact>|Collection<int, Entity>  $records */
     private function write(string $table, Collection $records): void
     {
         if ($records->isEmpty()) {

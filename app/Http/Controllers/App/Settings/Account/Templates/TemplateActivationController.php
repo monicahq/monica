@@ -11,11 +11,6 @@ use App\Models\Template;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-/**
- * Whether a template is still offered for a new record. This is the answer to
- * one somebody has finished with, and it is a different thing from deleting it:
- * every record already on it stays exactly as it is.
- */
 class TemplateActivationController extends Controller
 {
     public function update(Request $request, Template $template): RedirectResponse

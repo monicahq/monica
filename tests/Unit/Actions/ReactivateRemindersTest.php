@@ -199,11 +199,6 @@ class ReactivateRemindersTest extends TestCase
         ]);
     }
 
-    /**
-     * The whole point of matching on the reason. Resuming what somebody paused
-     * must not undo what archiving the record did, or a reminder would start
-     * firing about a record nobody can see.
-     */
     #[Test]
     public function it_leaves_alone_a_deadline_that_something_else_cancelled(): void
     {

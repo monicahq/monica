@@ -1,16 +1,5 @@
-{{--
-  Everything that has been written down about an account: what its owner has
-  done, and what we have sent them.
-
-  Two lists, so two sections. Neither is something somebody can add to, which is
-  why neither has an action: this is a screen for reading, and the only thing to do
-  on it is ask for more of it.
-
-  The next page of logs is appended in place, and the link that asked for it is
-  replaced by the one that came back, or removed on the last page.
-
-  @var \App\ViewModels\Settings\Account\Logs\LogsViewModel $viewModel
---}}
+{{-- Everything written down about an account: what its owner did, and what we sent them. --}}
+{{-- @var \App\ViewModels\Settings\Account\Logs\LogsViewModel $viewModel --}}
 <x-shell :title="__('Logs')">
   <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">

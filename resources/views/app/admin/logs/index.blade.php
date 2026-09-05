@@ -1,17 +1,5 @@
-{{--
-  Everything anybody with the administrator capacity has done to this instance,
-  newest first.
-
-  It is the operator's own journal, and it is not the one a user reads about their
-  own account. Nothing on this screen can be edited or removed, which is the whole
-  value of it: a record an operator can rewrite says nothing about what happened.
-
-  The filter narrows by administrator, since the question worth asking of a record
-  is usually who. Narrowing to one account arrives in the address rather than from
-  a picker, because a list of every account on the instance is not a filter.
-
-  @var \App\ViewModels\Admin\AdministratorLogsViewModel $viewModel
---}}
+{{-- Everything anybody with the administrator capacity has done to this instance, newest first. --}}
+{{-- @var \App\ViewModels\Admin\AdministratorLogsViewModel $viewModel --}}
 <x-admin-layout :title="__('Record of administrator actions')">
   <header class="flex flex-col gap-2">
     <h1 class="text-page-title text-ink">{{ __('Record of administrator actions') }}</h1>

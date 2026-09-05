@@ -29,9 +29,6 @@ use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-/**
- * Every existing path that changes or silences a rule, seen from the deadlines.
- */
 class ReconcileReminderOccurrencesTest extends TestCase
 {
     use RefreshDatabase;
@@ -239,16 +236,7 @@ class ReconcileReminderOccurrencesTest extends TestCase
             ->count());
     }
 
-    /**
-     * A rule with its deadlines already generated.
-     *
-     * The factories build a field and a record in accounts of their own, which
-     * is enough for everything reached through the record. A path reached
-     * through the field needs the two in the same account, as they always are in
-     * the application, and that is what `oneAccount` builds.
-     *
-     * @return array{0: User, 1: Reminder}
-     */
+    /** @return array{0: User, 1: Reminder} */
     private function ruleWithDeadlines(bool $oneAccount = false): array
     {
         CarbonImmutable::setTestNow('2027-05-01 06:00:00');
@@ -270,9 +258,6 @@ class ReconcileReminderOccurrencesTest extends TestCase
         return [$user, $reminder->refresh()];
     }
 
-    /**
-     * A dated value whose field, vault and record all sit in one account.
-     */
     private function valueInOneAccount(): FieldValue
     {
         $field = Field::factory()->recurringDate()->create();

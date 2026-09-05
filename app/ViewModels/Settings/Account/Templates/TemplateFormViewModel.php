@@ -9,12 +9,6 @@ use App\Models\EntityType;
 use App\Models\Template;
 use App\Models\User;
 
-/**
- * The form that names a template, and the same form that renames one. What a
- * template applies to is asked for only while it is being created: pointing
- * an existing one at a different kind of record would leave everything
- * already on it rendering something never meant for it.
- */
 class TemplateFormViewModel
 {
     public function __construct(
@@ -56,10 +50,6 @@ class TemplateFormViewModel
         return $this->isEdit() ? 'put' : 'post';
     }
 
-    /**
-     * Where Cancel goes back to. Renaming is only reached from the builder, so
-     * it returns there; creating starts on the list, so it returns to the list.
-     */
     public function cancelUrl(): string
     {
         return $this->isEdit()
@@ -67,12 +57,7 @@ class TemplateFormViewModel
             : route('settings.templates.index');
     }
 
-    /**
-     * What the fields start with: what the template says today, or what an
-     * attempt that failed validation was carrying.
-     *
-     * @return array{name: string, description: string, slug: string, appliesTo: string, entityTypeId: string}
-     */
+    /** @return array{name: string, description: string, slug: string, appliesTo: string, entityTypeId: string} */
     public function values(): array
     {
         return [
@@ -84,14 +69,7 @@ class TemplateFormViewModel
         ];
     }
 
-    /**
-     * Only an active type is offered, since describing something nobody can
-     * file anything under is a dead end. A type already named by this
-     * template stays in the list, so editing it does not silently change what
-     * it applies to.
-     *
-     * @return array<int, array{id: int, name: string}>
-     */
+    /** @return array<int, array{id: int, name: string}> */
     public function entityTypes(): array
     {
         return EntityType::query()
@@ -103,19 +81,11 @@ class TemplateFormViewModel
             ->all();
     }
 
-    /**
-     * Whether the account has invented anything a template could describe. With
-     * nothing to point at, the choice is not worth showing.
-     */
     public function hasEntityTypes(): bool
     {
         return $this->entityTypes() !== [];
     }
 
-    /**
-     * The slug is settled when the template is created and never rebuilt, since
-     * it travels in URLs and through the API.
-     */
     public function slugIsEditable(): bool
     {
         return ! $this->isEdit();

@@ -10,13 +10,7 @@ use Tests\TestCase;
 
 class VaultColourEnumTest extends TestCase
 {
-    /**
-     * The grounds a mark drawn in one of these colours can land on: the page and
-     * a panel, in each theme. The tint is an alpha, so the ground is what the
-     * twelfth of the hue composites over, and the ratio differs on each.
-     *
-     * @var array<string, array{ground: string, theme: string}>
-     */
+    /** @var array<string, array{ground: string, theme: string}> */
     private const array GROUNDS = [
         'light canvas' => ['ground' => '#ffffff', 'theme' => 'light'],
         'light card' => ['ground' => '#fafafa', 'theme' => 'light'],
@@ -85,10 +79,6 @@ class VaultColourEnumTest extends TestCase
         $this->assertEquals(VaultColourEnum::Green->tint(), VaultColourEnum::tintFor('#4f8a49'));
     }
 
-    /**
-     * What a hue drawn at a fraction of itself over a ground actually resolves
-     * to, which is the colour the glyph is measured against.
-     */
     private function composite(string $hue, string $ground, float $alpha): string
     {
         [$hr, $hg, $hb] = $this->channels($hue);
@@ -102,11 +92,6 @@ class VaultColourEnumTest extends TestCase
         );
     }
 
-    /**
-     * WCAG 2.2 contrast, which is the ratio of the two relative luminances with
-     * a fifth of a twentieth added to each so that black against black is 1 and
-     * not a division by zero.
-     */
     private function contrast(string $one, string $other): float
     {
         $first = $this->luminance($one);
@@ -128,9 +113,7 @@ class VaultColourEnumTest extends TestCase
         return 0.2126 * $linear[0] + 0.7152 * $linear[1] + 0.0722 * $linear[2];
     }
 
-    /**
-     * @return array{int, int, int}
-     */
+    /** @return array{int, int, int} */
     private function channels(string $colour): array
     {
         $hex = ltrim($colour, '#');

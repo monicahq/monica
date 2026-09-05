@@ -7,14 +7,6 @@ namespace App\Enums;
 use App\Contracts\SuppliedValueListItem;
 use Override;
 
-/**
- * A handful of countries to start from rather than the two hundred that exist.
- * Nobody keeps contacts in every country, and a list of ten somebody adds to is
- * quicker to use than a list of two hundred they have to search.
- *
- * The key is the ISO 3166-1 code, so a country stays recognisable to the
- * product after somebody has renamed it to whatever they call it.
- */
 enum CountryEnum: string implements SuppliedValueListItem
 {
     case UnitedStates = 'us';
@@ -28,9 +20,6 @@ enum CountryEnum: string implements SuppliedValueListItem
     case Brazil = 'br';
     case Australia = 'au';
 
-    /**
-     * The name of the country, which doubles as the translation key.
-     */
     #[Override]
     public function label(): string
     {
@@ -48,11 +37,7 @@ enum CountryEnum: string implements SuppliedValueListItem
         };
     }
 
-    /**
-     * The name this item is seeded with.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

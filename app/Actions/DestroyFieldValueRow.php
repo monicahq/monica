@@ -16,13 +16,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Remove one repetition of a repeater, and what was filled in on it.
- *
- * The values go with the row, since they were only ever an answer to it, and a
- * file one of them held is detached rather than deleted so the sweep can take
- * it once the grace period has run out.
- *
- * The repetitions that follow are renumbered, so the positions stay a sequence
- * rather than a set with a hole in it.
  */
 class DestroyFieldValueRow
 {
@@ -69,11 +62,6 @@ class DestroyFieldValueRow
         });
     }
 
-    /**
-     * Say that one fewer thing points at each file the repetition held. Nothing
-     * is deleted here: the grace period is what makes restoring an older
-     * version of a record find its file still on the disk.
-     */
     private function letGoOfTheFiles(): void
     {
         FieldValue::query()
@@ -99,9 +87,7 @@ class DestroyFieldValueRow
             });
     }
 
-    /**
-     * @return Builder<FieldValueRow>
-     */
+    /** @return Builder<FieldValueRow> */
     private function siblings(): Builder
     {
         return FieldValueRow::query()

@@ -13,15 +13,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Take a field out of a section.
- *
- * Only out of a draft. The published version that still carries it is untouched
- * and every record on it goes on showing what it always showed.
- *
- * Nothing already written is thrown away either. A field disappearing from a
- * newer version leaves its stored values behind, detached and restorable, which
- * is what makes a change to a structure something somebody can undo.
- *
- * What sits inside a repeater goes with the repeater.
  */
 class DestroyField
 {

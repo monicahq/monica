@@ -163,10 +163,6 @@ class ReminderControllerTest extends TestCase
         );
     }
 
-    /**
-     * A reader who cannot tell the green banner from the grey one still has the
-     * badge, the overline and the sentence under the date.
-     */
     #[Test]
     public function it_says_whether_a_reminder_is_firing_with_more_than_a_colour(): void
     {

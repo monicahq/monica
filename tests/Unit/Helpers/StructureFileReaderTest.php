@@ -180,12 +180,6 @@ class StructureFileReaderTest extends TestCase
         StructureFileReader::read(json_encode($file));
     }
 
-    /**
-     * A file exported before whether a field drives a reminder became a property
-     * of its type still carries the key. Refusing it would refuse every
-     * structure already in circulation, so the key is read by nothing and the
-     * file imports.
-     */
     #[Test]
     public function it_still_reads_a_file_carrying_the_reminder_flag_it_no_longer_has(): void
     {
@@ -506,8 +500,6 @@ class StructureFileReaderTest extends TestCase
         $section = $read['template']['pages'][0]['sections'][0]['section'];
 
         $this->assertEquals('health', $section['icon']);
-        /* Written back in lower case, so two files naming one colour in two
-           cases do not become two colours. */
         $this->assertEquals('#4f8a49', $section['colour']);
     }
 
@@ -521,12 +513,7 @@ class StructureFileReaderTest extends TestCase
         $this->assertNull($section['colour']);
     }
 
-    /**
-     * The smallest file the reader accepts, which every refusal above breaks in
-     * exactly one way.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     private function file(): array
     {
         return [
@@ -560,11 +547,6 @@ class StructureFileReaderTest extends TestCase
         ];
     }
 
-    /**
-     * A published template holding one of everything worth reading back: a
-     * plain field, a choice pointing at a supplied list, a repeater and a field
-     * inside it, and a relation pointing at a kind of record.
-     */
     private function publishedTemplate(User $user): Template
     {
         $template = Template::factory()->create([

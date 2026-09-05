@@ -1,7 +1,5 @@
+{{-- A picture whose size is reserved before it arrives, so nothing on the page jumps. --}}
 {{--
-  A picture, with the size it will take reserved before it arrives so nothing
-  on the page jumps once it does.
-
   @var string $src
   @var string $alt
   @var int $width
@@ -18,7 +16,6 @@
   'loading' => 'lazy',
 ])
 
-{{-- The browser defers the download until the image nears the viewport on its own. --}}
 <img
   src="{{ $src }}"
   @if ($srcset) srcset="{{ $srcset }}" @endif

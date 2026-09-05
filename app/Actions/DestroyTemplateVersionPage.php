@@ -16,16 +16,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Take a page off a template version.
- *
- * A page still holding sections stays. Taking it would take everything on it,
- * which is a bigger act than removing a tab, so the sections are moved
- * elsewhere or taken off the template deliberately first.
- *
- * The last page stays too. A version with no page has nowhere to put a section
- * and nothing to render.
- *
- * The pages left are numbered from one again, so the tabs keep a contiguous
- * order. Only on a draft, which the model enforces.
  */
 class DestroyTemplateVersionPage
 {

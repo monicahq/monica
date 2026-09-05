@@ -65,8 +65,6 @@ class ResendWebhookTest extends TestCase
     {
         $emailSent = EmailSent::factory()->create(['uuid' => 'a1b2c3']);
 
-        // Signed correctly, and still worthless: with no secret the route stops
-        // checking, so a well formed report proves nothing about who sent it.
         $request = $this->signedReport('email.delivered', 'a1b2c3');
 
         config(['resend.webhook.secret' => null]);
@@ -133,9 +131,7 @@ class ResendWebhookTest extends TestCase
         $this->assertContains(VerifyWebhookSignature::class, $route->controllerMiddleware());
     }
 
-    /**
-     * @param  array<string, mixed>  $extraData
-     */
+    /** @param  array<string, mixed>  $extraData */
     private function report(string $type, string $emailId, array $extraData = []): TestResponse
     {
         $request = $this->signedReport($type, $emailId, $extraData);
@@ -143,9 +139,7 @@ class ResendWebhookTest extends TestCase
         return $this->send($request->headers(), $request->body());
     }
 
-    /**
-     * @param  array<string, mixed>  $extraData
-     */
+    /** @param  array<string, mixed>  $extraData */
     private function signedReport(string $type, string $emailId, array $extraData = []): SignedWebhookRequest
     {
         return new SignedWebhookRequest(
@@ -162,13 +156,9 @@ class ResendWebhookTest extends TestCase
         );
     }
 
-    /**
-     * @param  array<string, string>  $headers
-     */
+    /** @param  array<string, string>  $headers */
     private function send(array $headers, string $body): TestResponse
     {
-        // The signature covers the exact bytes of the body, so the body cannot
-        // be handed over as an array for the framework to encode again.
         return $this->call(
             'POST',
             'resend/webhook',

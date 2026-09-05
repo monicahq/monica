@@ -13,20 +13,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Override;
 
-/**
- * @extends Factory<MarketplaceListing>
- */
+/** @extends Factory<MarketplaceListing> */
 class MarketplaceListingFactory extends Factory
 {
     protected $model = MarketplaceListing::class;
 
-    /**
-     * A listing detached from the account of what it publishes describes
-     * nothing, so the account is taken from the listable rather than made
-     * beside it.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -51,10 +43,6 @@ class MarketplaceListingFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that what is published is a section on its own, with no template
-     * or page around it.
-     */
     public function forSection(?Section $section = null): static
     {
         $section ??= Section::factory()->create();
@@ -66,9 +54,6 @@ class MarketplaceListingFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the author has sent it in and is waiting on a decision.
-     */
     public function submitted(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -76,9 +61,6 @@ class MarketplaceListingFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the listing is in the catalogue and can be installed.
-     */
     public function published(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -89,9 +71,6 @@ class MarketplaceListingFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that it was refused, with the reason the author is owed.
-     */
     public function rejected(string $reason = 'The description says nothing about what the fields are for.'): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -102,10 +81,6 @@ class MarketplaceListingFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the author pulled it from the catalogue, which changes
-     * nothing for anybody who already installed it.
-     */
     public function withdrawn(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -114,10 +89,6 @@ class MarketplaceListingFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that accounts have installed it, which is the quality signal the
-     * catalogue shows publicly.
-     */
     public function installed(int $times = 12): static
     {
         return $this->state(fn (array $attributes): array => [

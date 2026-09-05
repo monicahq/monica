@@ -196,11 +196,6 @@ class DestroyVaultTest extends TestCase
         new DestroyVault(user: $user, vault: $vault)->execute();
     }
 
-    /**
-     * The links onto the vault and the links onto its contacts all go, since
-     * the deletion is soft and either would go on opening what the vault was
-     * supposed to have taken with it.
-     */
     #[Test]
     public function it_revokes_every_link_into_the_vault(): void
     {

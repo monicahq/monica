@@ -152,10 +152,6 @@ class SharedContactControllerTest extends TestCase
         $this->assertSame(0, $link->refresh()->view_count);
     }
 
-    /**
-     * A password the owner has since changed must not go on writing a failed
-     * visit on every click, so the browsing session forgets it.
-     */
     #[Test]
     public function it_forgets_a_password_that_stopped_working(): void
     {
@@ -307,9 +303,7 @@ class SharedContactControllerTest extends TestCase
             ->assertSee('there is no page for that yet');
     }
 
-    /**
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function linkOnto(Contact $contact, array $attributes = []): ShareLink
     {
         return ShareLink::factory()->for($contact, 'shareable')->create([
@@ -319,10 +313,6 @@ class SharedContactControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * Michael, laid out over two pages, with something filled in on each and one
-     * field the template marks sensitive.
-     */
     private function sharedContact(): Contact
     {
         $user = User::factory()->create();
@@ -358,9 +348,7 @@ class SharedContactControllerTest extends TestCase
         return $contact;
     }
 
-    /**
-     * @param  array<string, array<int, array{0: string, 1: bool}>>  $sections
-     */
+    /** @param  array<string, array<int, array{0: string, 1: bool}>>  $sections */
     private function page(TemplateVersion $version, string $label, array $sections): TemplateVersionPage
     {
         $page = TemplateVersionPage::factory()->create([

@@ -15,13 +15,6 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
 use Override;
 
-/**
- * Carry the link that signs somebody in without a password.
- *
- * It builds the link from the row it is handed and the token that row is the
- * hash of, and signs it to run out at the moment that row does, so the two ways
- * the link can go stale cannot drift apart.
- */
 class MagicLinkCreated extends Notification implements HasEmailType, ShouldQueue
 {
     use Queueable;
@@ -34,9 +27,7 @@ class MagicLinkCreated extends Notification implements HasEmailType, ShouldQueue
         $this->onQueue('high');
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     public function via(User $notifiable): array
     {
         return ['mail'];

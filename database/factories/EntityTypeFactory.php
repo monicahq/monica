@@ -10,16 +10,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Override;
 
-/**
- * @extends Factory<EntityType>
- */
+/** @extends Factory<EntityType> */
 class EntityTypeFactory extends Factory
 {
     protected $model = EntityType::class;
 
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -37,10 +33,6 @@ class EntityTypeFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that no new record of this type may be created, while the ones
-     * that exist stay readable and editable.
-     */
     public function inactive(): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -48,10 +40,6 @@ class EntityTypeFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that records of this type exist, which is what stops it from
-     * being deleted.
-     */
     public function used(int $times = 3): static
     {
         return $this->state(fn (array $attributes): array => [

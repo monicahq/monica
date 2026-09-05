@@ -1,21 +1,5 @@
-{{--
-  Where somebody is, which decides how every time on the screen reads.
-
-  Three ways in, and all three are the same form posting one thing: a name from
-  the search field, a name from the browser, or a point on the map. Picking is
-  the save, as it is for the four format rows above, and for the same reason:
-  every one of these is reversible by picking again.
-
-  Every zone is in the page as a real submit button, all four hundred of them, so
-  there is no separate search index to ship: the line a button is matched on rides
-  on the button. Alpine hides what does not match, which is one handler writing an
-  attribute rather than four hundred expressions each watching a variable.
-
-  Arrowing moves real focus between real buttons, so Enter and Space are the
-  browser's own and nothing here reimplements them.
-
-  @var \App\ViewModels\Settings\Account\Preferences\TimezonePanel $timezone
---}}
+{{-- Where somebody is, which decides how every time on the screen reads. --}}
+{{-- @var \App\ViewModels\Settings\Account\Preferences\TimezonePanel $timezone --}}
 <section class="flex flex-col gap-3">
   <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
     <h2 class="shrink-0 text-section-title text-ink">{{ __('Time zone') }}</h2>
@@ -51,12 +35,6 @@
         reset() { this.query = ''; this.filter() },
         clear() { this.reset(); this.$refs.field.focus() },
         deviceSilent: false,
-        {{--
-          The browser's own answer, which is where sign up got the zone in the
-          first place. It goes through the same field and the same rule as a name
-          picked from the list, so a browser reporting a zone the product does not
-          carry is refused by the endpoint rather than trusted by the screen.
-        --}}
         device(event) {
           let zone = '';
           try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone || '' } catch (e) {}
@@ -64,11 +42,6 @@
           event.currentTarget.value = zone;
           this.$el.requestSubmit(event.currentTarget);
         },
-        {{--
-          A click becomes a latitude and a longitude and nothing more. Which zone
-          that is belongs to the server, where working out the nearest of four
-          hundred, across the antimeridian, is covered by a test.
-        --}}
         point(event) {
           const box = event.currentTarget.getBoundingClientRect();
           if (box.width === 0 || box.height === 0) { return }
@@ -78,14 +51,6 @@
         },
       }"
       x-init="filter()"
-      {{--
-        A pick is a save, and the morph that follows it keeps this component and
-        everything in it, the query included, so the list would sit there open
-        over the answer it just gave. Emptying the query as the request leaves is
-        what closes it, and it is what `x-dropdown` does with its own panel for
-        the same reason. Listened for on the window because the four format rows
-        above aim at this panel too, and their saves should leave it settled as well.
-      --}}
       @ajax:before.window="reset()"
       class="contents"
     >
@@ -123,11 +88,6 @@
 
           <p x-cloak x-show="needle === ''" class="mt-1.5 text-xs text-muted">{{ __('Type a city, or a country to see its cities.') }}</p>
 
-          {{--
-            Hung over what follows rather than pushing it down, the way the
-            dropdowns above this do, so the panel does not change height as
-            somebody types.
-          --}}
           <div
             x-ref="results"
             x-cloak
@@ -177,12 +137,6 @@
         </div>
       </div>
 
-      {{--
-        The aspect is the projection's own, so the drawing is never stretched and
-        a fraction of the box is a fraction of the world. A click is the only way
-        in here, which is why the search field above it is the one that has to be
-        reachable from the keyboard: this is an addition to it, not a substitute.
-      --}}
       <div
         @click="point($event)"
         role="presentation"
@@ -193,17 +147,12 @@
         <input type="hidden" name="latitude" x-ref="latitude" />
         <input type="hidden" name="longitude" x-ref="longitude" />
 
-        {{-- The hour somebody is in, fifteen degrees of it. --}}
         <span
           aria-hidden="true"
           style="left: {{ $timezone->band()['left'] }}%; width: {{ $timezone->band()['width'] }}%"
           class="pointer-events-none absolute inset-y-0 bg-map-band"
         ></span>
 
-        {{--
-          A halo, a ring and a dot. Three shapes, so the pin is found by its form
-          and not only by being the one blue thing on the map.
-        --}}
         <span
           aria-hidden="true"
           style="left: {{ $timezone->marker()['x'] }}%; top: {{ $timezone->marker()['y'] }}%"
@@ -216,12 +165,6 @@
       <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-hairline bg-card px-4 py-3">
         <p class="min-w-0 flex-1 basis-64 text-sm text-pretty text-body">{{ $timezone->sentence() }}</p>
 
-        {{--
-          A zone reached by pointing is the nearest one to wherever the pointer
-          landed, which is a guess. Said in words rather than shown by a tint,
-          because somebody who cannot see the tint is the person most likely to
-          have missed by a few degrees.
-        --}}
         @if ($timezone->isGuess())
           <p class="shrink-0 text-xs text-muted-soft">{{ __('This is the nearest city to where you clicked.') }}</p>
         @endif

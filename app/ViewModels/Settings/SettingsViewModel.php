@@ -9,17 +9,6 @@ use App\Models\EntityType;
 use App\Models\Template;
 use App\Models\User;
 
-/**
- * What the home of the settings shows.
- *
- * Settings are about two things and the screen says so: what belongs to you alone,
- * and what belongs to the account every vault of it is made from. A vault keeps its
- * own settings, on the vault, and is deliberately absent here.
- *
- * A row whose url is null is a screen that has not been built yet. The screen draws
- * it and does not offer it, rather than leaving a hole where somebody will later
- * look for it.
- */
 class SettingsViewModel
 {
     public function __construct(
@@ -50,11 +39,6 @@ class SettingsViewModel
     }
 
     /**
-     * The three groups of rows, in the order they are read.
-     *
-     * A row that carries a `method` is something that changes state rather than
-     * somewhere to go, so its url is where a form is sent and never an href.
-     *
      * @return array<int, array{title: string|null, description: string|null, rows: array<int, array{title: string, description: string, icon: string, meta: string|null, url: string|null, method?: string}>}>
      */
     public function sections(): array
@@ -70,8 +54,6 @@ class SettingsViewModel
                 'description' => __('What every vault in the account is made of, and the record of what has happened in it.'),
                 'rows' => $this->accountRows(),
             ],
-            /* No heading: what it holds is leaving rather than changing, and one
-               over two rows would give them more weight than they want. */
             [
                 'title' => null,
                 'description' => null,
@@ -178,10 +160,6 @@ class SettingsViewModel
         ];
     }
 
-    /**
-     * Deleting the account is not a row but the last three words of a sentence
-     * saying what goes with it, so nobody reaches them without reading the rest.
-     */
     public function deleteUrl(): string
     {
         return route('settings.profile.index').'#delete-your-account';
@@ -194,10 +172,6 @@ class SettingsViewModel
             : __('Two-factor off');
     }
 
-    /**
-     * The two of the four preferences somebody notices without opening the
-     * screen.
-     */
     private function preferencesLabel(): string
     {
         $locale = app()->getLocale();

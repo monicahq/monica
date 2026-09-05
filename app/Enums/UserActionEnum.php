@@ -137,11 +137,6 @@ enum UserActionEnum: string implements Translatable
     case ReminderOccurrencePostponement = 'reminder_occurrence_postponed';
     case ReminderOccurrenceDismissal = 'reminder_occurrence_dismissed';
 
-    /**
-     * What the action reads as in the logs, written about whoever performed it.
-     * The sentence doubles as the translation key, and its placeholders are
-     * filled with the parameters the action was logged with.
-     */
     public function description(): string
     {
         return match ($this) {
@@ -275,11 +270,7 @@ enum UserActionEnum: string implements Translatable
         };
     }
 
-    /**
-     * The sentence this action reads as in the logs.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

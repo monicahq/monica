@@ -33,11 +33,6 @@ class DeactivateTemplateTest extends TestCase
         $this->assertFalse($template->fresh()->is_active);
     }
 
-    /**
-     * Deactivating is the answer to a template somebody has finished with, and
-     * it is a different thing from deleting: the records stay exactly as they
-     * are, on the version they were made with.
-     */
     #[Test]
     public function it_leaves_the_records_already_on_it_alone(): void
     {

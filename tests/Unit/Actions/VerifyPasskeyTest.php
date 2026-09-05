@@ -14,11 +14,6 @@ use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Webauthn\PublicKeyCredential;
 
-/**
- * The lookup half of the action. Which user is allowed through is decided a
- * stage later, inside `validate()`, and that is proved end to end in
- * PasskeyRefusalTest, where a refusal can be watched leaving nothing behind.
- */
 class VerifyPasskeyTest extends TestCase
 {
     use RefreshDatabase;

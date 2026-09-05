@@ -300,10 +300,6 @@ class MoveRecordToTemplateVersionTest extends TestCase
         return TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
     }
 
-    /**
-     * Put a field on a version, the way the builder does it: on a draft, which
-     * is then published.
-     */
     private function fieldCarriedBy(TemplateVersion $version): Field
     {
         $version->status = VersionStatusEnum::Draft;

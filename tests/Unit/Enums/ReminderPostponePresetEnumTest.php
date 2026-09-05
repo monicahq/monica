@@ -40,12 +40,6 @@ class ReminderPostponePresetEnumTest extends TestCase
         $this->assertSame('2026-10-04 07:00:00', $month->format('Y-m-d H:i:s'));
     }
 
-    /**
-     * Toronto is six hours behind Paris on this date, so a reader there pressing
-     * "tomorrow" at 20:00 their time is still moving a Paris deadline to nine in
-     * the morning Paris time. Resolving against their own clock would land it at
-     * nine in Toronto, which is an hour the rule never promised.
-     */
     #[Test]
     public function it_works_in_the_zone_frozen_on_the_rule_and_not_the_readers(): void
     {
@@ -87,12 +81,6 @@ class ReminderPostponePresetEnumTest extends TestCase
         }
     }
 
-    /**
-     * A rule held in memory only. The enum reads its zone and its hour and
-     * nothing else, and `Reminder::factory()` would create a field value, a
-     * contact, a vault and an account to supply columns no assertion here looks
-     * at.
-     */
     private function ruleIn(string $zone, string $at): Reminder
     {
         $reminder = new Reminder;

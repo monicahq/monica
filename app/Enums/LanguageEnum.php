@@ -7,14 +7,6 @@ namespace App\Enums;
 use App\Contracts\SuppliedValueListItem;
 use Override;
 
-/**
- * The languages somebody is most likely to note a contact speaks. Ten to start
- * from, added to by whoever needs an eleventh.
- *
- * The key is the ISO 639-1 code. It has nothing to do with the languages the
- * interface itself is translated into: this is what a contact speaks, not what
- * the person reading the screen does.
- */
 enum LanguageEnum: string implements SuppliedValueListItem
 {
     case English = 'en';
@@ -28,9 +20,6 @@ enum LanguageEnum: string implements SuppliedValueListItem
     case Japanese = 'ja';
     case Arabic = 'ar';
 
-    /**
-     * The name of the language, which doubles as the translation key.
-     */
     #[Override]
     public function label(): string
     {
@@ -48,11 +37,7 @@ enum LanguageEnum: string implements SuppliedValueListItem
         };
     }
 
-    /**
-     * The name this item is seeded with.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

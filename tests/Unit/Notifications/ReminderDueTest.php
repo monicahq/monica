@@ -37,10 +37,6 @@ class ReminderDueTest extends TestCase
         $this->assertStringContainsString('It is in seven days.', $rendered);
     }
 
-    /**
-     * The date the reminder is about, rather than the day the email arrives. A
-     * moment seven days before a birthday arrives a week early on purpose.
-     */
     #[Test]
     public function it_says_which_date_it_is_about_rather_than_todays(): void
     {

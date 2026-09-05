@@ -12,18 +12,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Delete a template, which is only allowed while no record points at any of its
- * versions.
- *
- * A template that still has records refuses to go. Those records would be left
- * with nothing to render with, and taking two hundred contacts down with the
- * word "Contact" is not something a single button should be able to do. The
- * answer is to deactivate it: it stops being offered to anything new and every
- * record already on it is untouched.
- *
- * The deletion is soft, and the slug is not released with it, so a link that
- * went out pointing at this template cannot later land on a different one. The
- * versions stay where they are, which is what makes bringing it back possible.
+ * Delete a template, which is only allowed while no record points at any of its versions.
  */
 class DestroyTemplate
 {

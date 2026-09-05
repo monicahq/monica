@@ -1,20 +1,5 @@
-{{--
-  One illustration of a filled field, drawn from the shape its type carries.
-
-  Nothing here is a real control. It has no name, no input and no value that can
-  be typed into, because it is showing somebody what a type produces before they
-  own one: there is no record, no value list and no vault behind it. That is also
-  why it is hidden from a screen reader as a whole and described in words
-  instead, in the region the picker keeps for the purpose. A screen reader user
-  read "a dropdown showing Dog" from the sentence; being walked through a fake
-  combo box that answers nothing would be worse than useless.
-
-  The nine kinds are the nine ways a value meets a form, and every type in the
-  catalogue names one of them. A kind nothing answers to draws nothing rather
-  than falling back, since a wrong illustration is worse than none.
-
-  @var array<string, mixed> $preview
---}}
+{{-- One illustration of a filled field, drawn from the shape its type carries. --}}
+{{-- @var array<string, mixed> $preview --}}
 @php
   $kind = $preview['kind'];
   $value = $preview['value'] ?? '';

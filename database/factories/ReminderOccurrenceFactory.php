@@ -13,19 +13,12 @@ use App\Models\ReminderOccurrence;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
-/**
- * @extends Factory<ReminderOccurrence>
- */
+/** @extends Factory<ReminderOccurrence> */
 class ReminderOccurrenceFactory extends Factory
 {
     protected $model = ReminderOccurrence::class;
 
-    /**
-     * Where the deadline lives is read off the rule that produced it, since a
-     * deadline in a different compartment than its own rule is nothing.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     #[Override]
     public function definition(): array
     {
@@ -54,10 +47,6 @@ class ReminderOccurrenceFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the deadline came from a moment before the date rather than
-     * from the day itself.
-     */
     public function daysBefore(int $amount = 7): static
     {
         return $this->state(fn (array $attributes): array => [
@@ -68,10 +57,6 @@ class ReminderOccurrenceFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the deadline has already fallen due, which is what every
-     * test of delivery and of what may never be touched again needs.
-     */
     public function past(): static
     {
         $scheduledFor = now()->subDays(3)->startOfHour();
@@ -84,9 +69,6 @@ class ReminderOccurrenceFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the deadline has been cancelled, for the reason given.
-     */
     public function cancelled(
         ReminderOccurrenceCancelledReasonEnum $reason = ReminderOccurrenceCancelledReasonEnum::RecordArchived,
         ReminderOccurrenceStatusEnum $before = ReminderOccurrenceStatusEnum::Pending,
@@ -99,9 +81,6 @@ class ReminderOccurrenceFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the first notification for the deadline has gone out.
-     */
     public function notified(): static
     {
         return $this->state(fn (array $attributes): array => [

@@ -1,13 +1,4 @@
-{{--
-  The bar that says which reference this is, and lets somebody search it.
-
-  The search box carries a real label rather than only a placeholder, which
-  disappears the moment anybody types into it and was never read out to begin
-  with.
-
-  The version beside the name is not decoration. It is in the URL of every
-  endpoint below.
---}}
+{{-- The bar that says which reference this is, and lets somebody search it. --}}
 <div class="sticky top-14 z-4 border-b border-hairline bg-canvas">
   <div class="mx-auto flex h-14 max-w-[97.5rem] items-center gap-5 px-4 sm:px-7">
     <a href="{{ route('docs.api.index') }}" class="flex shrink-0 items-center gap-2.25 text-ink rounded-md focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none">

@@ -252,10 +252,6 @@ class ReminderOccurrenceTest extends TestCase
         $this->assertFalse($found->contains($neverSent->id));
     }
 
-    /**
-     * A reminder that reached somebody really reached them, and deleting the rule
-     * afterwards does not unsend it.
-     */
     #[Test]
     public function it_keeps_what_was_sent_after_its_rule_is_taken_away(): void
     {
@@ -297,14 +293,6 @@ class ReminderOccurrenceTest extends TestCase
         $this->assertFalse($found->contains($ofOther->id));
     }
 
-    /**
-     * A rule about a contact who really lives in the vault named.
-     *
-     * `reminderAbout()` builds its own contact when it is not given one, and that
-     * contact's vault belongs to an account of its own, which leaves the vault and
-     * the records inside it disagreeing about whose they are. Every scope here
-     * asks about both, so the fixture has to be consistent about it.
-     */
     private function ruleIn(User $user, Vault $vault): Reminder
     {
         return $this->reminderAbout(
@@ -313,15 +301,7 @@ class ReminderOccurrenceTest extends TestCase
         );
     }
 
-    /**
-     * One deadline of a rule, due at the moment given.
-     *
-     * The cycle date moves with the instant rather than staying where the factory
-     * put it, because the generation key is built from it and two deadlines of one
-     * rule sharing a key is what the unique index exists to refuse.
-     *
-     * @param  array<string, mixed>  $attributes
-     */
+    /** @param  array<string, mixed>  $attributes */
     private function deadline(Reminder $rule, string $when, array $attributes = []): ReminderOccurrence
     {
         $instant = CarbonImmutable::parse($when);

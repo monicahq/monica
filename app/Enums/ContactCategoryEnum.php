@@ -16,10 +16,6 @@ enum ContactCategoryEnum: string implements SuppliedValueListItem
     case Acquaintance = 'acquaintance';
     case Professional = 'professional';
 
-    /**
-     * How close somebody is, in one word. The word doubles as the translation
-     * key.
-     */
     #[Override]
     public function label(): string
     {
@@ -33,11 +29,7 @@ enum ContactCategoryEnum: string implements SuppliedValueListItem
         };
     }
 
-    /**
-     * The label this item is seeded with.
-     *
-     * @return list<string>
-     */
+    /** @return list<string> */
     #[Override]
     public function translationKeys(): array
     {

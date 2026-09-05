@@ -27,11 +27,6 @@ class LoginViewModelTest extends TestCase
         $this->assertNull($viewModel->passkeysUnavailableReason());
     }
 
-    /**
-     * Say which scheme the request is on rather than inheriting it. In a test
-     * the container's request is built from `APP_URL`, so leaving this implicit
-     * made these assertions answer to the address in a developer's own `.env`.
-     */
     private function overHttp(): void
     {
         $this->app['request']->server->set('HTTPS', 'off');
@@ -71,10 +66,6 @@ class LoginViewModelTest extends TestCase
         $this->assertEquals('Monica Geller', $viewModel->exampleAccountName());
     }
 
-    /**
-     * A login link is configured not to invent a user, so a shortcut pointing at
-     * an address nobody seeded throws when it is clicked.
-     */
     #[Test]
     public function it_offers_nothing_when_the_example_account_was_never_seeded(): void
     {

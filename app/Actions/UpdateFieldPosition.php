@@ -13,13 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Move a field up or down inside its section.
- *
- * It moves among its own siblings only: a field inside a repeater is ordered
- * against the other fields in that repeater, not against the whole section.
- *
- * The field is taken out and put back at the position asked for, and its
- * siblings are then numbered from one again. A position past the end puts it
- * last.
  */
 class UpdateFieldPosition
 {

@@ -13,11 +13,6 @@ use App\Models\TemplateVersion;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-/**
- * Starting a draft of a template, and throwing one away. A published version
- * cannot be edited, so changing a published template means starting a draft
- * beside it.
- */
 class TemplateVersionController extends Controller
 {
     public function create(Request $request, Template $template): RedirectResponse

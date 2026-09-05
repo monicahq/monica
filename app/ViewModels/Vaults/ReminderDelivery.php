@@ -11,23 +11,6 @@ use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 
-/**
- * Where a notification about this reminder goes, and what it says.
- *
- * It sits beside {@see ReminderViewModel} rather than inside it, for the reason a
- * rich page keeps its blocks in small objects: this is one panel of one screen.
- *
- * The channels are what the account has switched on, read now. That is a
- * statement about the future rather than about the past, and it is deliberately
- * not the same question the history panel answers: that one says what a given
- * notification actually went out on, which cannot change afterwards, while this
- * one says where the next one will go and moves the moment somebody changes
- * their preferences.
- *
- * A person who has switched everything off is told so rather than shown an empty
- * line. A reminder with nowhere to arrive is the one thing about this panel worth
- * noticing, and a blank space says nothing.
- */
 class ReminderDelivery
 {
     public function __construct(
@@ -55,10 +38,6 @@ class ReminderDelivery
         ];
     }
 
-    /**
-     * The channels switched on, in the order the enum declares them, so that two
-     * reminders switched on the same two ways read the same way round.
-     */
     private function channels(): string
     {
         $enabled = $this->enabled();
@@ -89,20 +68,12 @@ class ReminderDelivery
         return __('Set for the whole account rather than for this reminder.');
     }
 
-    /**
-     * @return list<NotificationChannelEnum>
-     */
+    /** @return list<NotificationChannelEnum> */
     private function enabled(): array
     {
         return $this->reminder->account->notificationPreference?->enabledChannels() ?? [];
     }
 
-    /**
-     * When something about this reminder last actually reached somebody, or null
-     * when nothing has. It asks the notifications rather than the deadlines,
-     * because a deadline marked notified says one was written and this panel is
-     * about one that went.
-     */
     private function lastSent(): ?string
     {
         $notification = Notification::query()

@@ -21,21 +21,8 @@ use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 /**
- * Describe what a record holds: what a contact page shows, what an Animal is
- * worth writing down about.
- *
- * A template starts with a first draft version and one page on it, because a
- * template with no version at all is a name nothing can be done with, and a
- * version with no page has nowhere to put a section. The page carries the
- * supplied label until somebody renames it. Both are empty and editable, and
- * stay that way until somebody publishes the version. Only then does the
- * template have something to offer a record.
- *
- * A template that describes an entity has to name the type it describes: an
- * entity is whatever the account invented, so "entity" on its own says nothing.
- *
- * The locale is written down because a template is written in one language by
- * one person. It follows whoever created it unless they say otherwise.
+ * Describe what a record holds: what a contact page shows, what an Animal is worth writing down
+ * about.
  */
 class CreateTemplate
 {
@@ -125,10 +112,6 @@ class CreateTemplate
         });
     }
 
-    /**
-     * Settle the slug. A deleted template does not release its own, so a link
-     * that already went out cannot later land on something else.
-     */
     private function slug(): string
     {
         return SlugBuilder::build(

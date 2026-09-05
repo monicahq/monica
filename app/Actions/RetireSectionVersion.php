@@ -15,9 +15,6 @@ use InvalidArgumentException;
 
 /**
  * Stop offering a version of a section when somebody assembles a template version.
- *
- * Every template version already containing it is untouched, and goes on rendering the same
- * fields it always did. The section simply stops being what gets added next time.
  */
 class RetireSectionVersion
 {

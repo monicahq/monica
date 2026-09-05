@@ -1,21 +1,5 @@
-{{--
-  The front of the marketplace: everything published, and the handful of ways of
-  narrowing it down to the one thing somebody came for.
-
-  It reads signed out. Nothing here is private, and a link to the catalogue has to
-  open for somebody who has never signed up.
-
-  Everything that narrows the list sits inside `#listings` and aims at it, so each
-  chip, each category and each select is a real address the back button can return
-  to. The grid inside it appends rather than replaces, which is what lets the
-  button at the foot add a page without throwing away the one already read.
-
-  The two selects sit in the results header but belong to the form at the top of
-  the region, which is what the `form` attribute is for. One control that narrows
-  the list and one button that applies it beats a button beside every facet.
-
-  @var \App\ViewModels\Marketplace\MarketplaceViewModel $viewModel
---}}
+{{-- The front of the marketplace: everything published, and the ways of narrowing it down. --}}
+{{-- @var \App\ViewModels\Marketplace\MarketplaceViewModel $viewModel --}}
 <x-marketplace-layout :title="__('Marketplace')">
   <header class="flex flex-col gap-2.5">
     <h1 class="text-page-title text-ink">{{ __('Marketplace') }}</h1>
@@ -147,7 +131,6 @@
         </div>
       </div>
 
-      {{-- The type and the category travel with the form, so narrowing by one facet keeps the others. --}}
       <input type="hidden" name="type" form="marketplace-filters" value="{{ $viewModel->type() }}" />
       <input type="hidden" name="category" form="marketplace-filters" value="{{ $viewModel->category() }}" />
 

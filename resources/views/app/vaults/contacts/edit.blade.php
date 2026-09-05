@@ -1,15 +1,5 @@
-{{--
-  What the template has no say over about a contact: what they are called, the
-  picture they are drawn as, and whether they are on the record at all.
-
-  None is a field, which is why none is edited among them. The name is there
-  whatever template somebody chose, the picture is drawn wherever the person
-  appears, and deletion is not a question about the person at all. They share a
-  screen because they are the same errand: the record offers one way in, and this
-  is what is behind it.
-
-  @var \App\ViewModels\Vaults\ContactEditViewModel $viewModel
---}}
+{{-- What the template has no say over about a contact: their name, their picture, their existence. --}}
+{{-- @var \App\ViewModels\Vaults\ContactEditViewModel $viewModel --}}
 @php
   $vault = $viewModel->vault();
   $contact = $viewModel->contact();
@@ -27,20 +17,6 @@
 
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
-  {{--
-    The picture, in a panel of its own before the name and outside the form that
-    saves it, since a form cannot hold another.
-
-    Its two forms reload the screen rather than updating it in place, the way the
-    rest of this one does: a picture is read, turned upright, cropped and written
-    before there is anything to show, and the screen is better off asking the
-    server for the whole thing once that is done.
-
-    The message lives in the x-data of this div rather than in the change handler,
-    because Blade does not compile a directive written inside an attribute of a
-    component tag: @js() there would reach the browser as itself and Alpine would
-    refuse the whole expression.
-  --}}
   <x-panel
     :title="__('Picture')"
     :subtitle="$viewModel->avatarDescription()"
@@ -61,11 +37,6 @@
           class="flex flex-wrap items-center gap-2.5"
           x-on:submit="if (tooBig) $event.preventDefault()"
         >
-          {{--
-            The field carries its name rather than a visible label: what is drawn
-            beside it is the browser's own button, which is already worded and
-            already translated.
-          --}}
           <x-file-input
             id="avatar"
             accept="image/jpeg,image/png,image/webp"
@@ -82,11 +53,6 @@
         <p x-show="tooBig" x-cloak x-text="tooBigMessage" class="text-xs text-error"></p>
 
         @if ($viewModel->hasAvatar())
-          {{--
-            The card in front of it is what actually removes the picture, the same
-            way the deletion below asks. Nothing in the product goes on the first
-            click.
-          --}}
           <x-modal.warning
             :title="__('Remove the picture of :name?', ['name' => $contact->name])"
             :confirm="__('Remove the picture')"
@@ -199,14 +165,6 @@
     </div>
   </x-form>
 
-  {{--
-    The way out. It is a panel of its own at the foot of the screen rather than a
-    button beside the one that saves, so that nothing about leaving looks like
-    part of filling in.
-
-    The card in front of it is what actually deletes. Nothing in the product goes
-    on the first click.
-  --}}
   <x-panel :title="__('Delete contact')" icon="people">
     <div class="flex flex-wrap items-center gap-3.5">
       <p class="max-w-[60ch] text-sm text-pretty text-muted">{{ $viewModel->deleteDescription() }}</p>

@@ -40,11 +40,6 @@ class PhotoController extends Controller
             ->with('status_description', __('We show your initials again.'));
     }
 
-    /**
-     * Serve one version of a user's photo. Photos are personal, so they live on
-     * the private disk and are read through here rather than from a public URL,
-     * and only by the people in the same account.
-     */
     public function show(Request $request, User $user, int $size): StreamedResponse
     {
         if ($user->account_id !== $request->user()->account_id) {
@@ -55,8 +50,6 @@ class PhotoController extends Controller
             abort(404);
         }
 
-        // Only the sizes actually written to disk, so this cannot be turned
-        // into an endpoint that resizes whatever it is asked for.
         if (! in_array($size, User::photoPixelSizes(), true)) {
             abort(404);
         }

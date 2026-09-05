@@ -12,21 +12,6 @@ use App\Models\Vault;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-/**
- * Close one deadline without switching its rule off.
- *
- * There is no confirmation. Dismissing this year's birthday leaves the rule
- * producing and next year's deadline scheduled, and the row itself stays, so
- * nothing here is lost and nothing needs a warning.
- *
- * A deadline of another account or of another vault never reaches here: the
- * route binding refuses it.
- *
- * The answer lands back where the request came from. The same deadline is offered
- * on the list and on the screen of the rule behind it, and somebody who closed
- * one from the second wants to stay there. The list is the fallback for a request
- * that arrived without a referrer.
- */
 class ReminderOccurrenceDismissalController extends Controller
 {
     public function update(Request $request, Vault $vault, ReminderOccurrence $reminderOccurrence): RedirectResponse

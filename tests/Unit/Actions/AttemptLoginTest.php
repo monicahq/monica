@@ -176,8 +176,6 @@ class AttemptLoginTest extends TestCase
             }
         }
 
-        // The sixth is refused before the password is even looked at, so even
-        // the right one does not get through.
         try {
             new AttemptLogin(
                 email: 'michael.scott@dundermifflin.com',
@@ -434,11 +432,6 @@ class AttemptLoginTest extends TestCase
         $this->assertGuest();
     }
 
-    /**
-     * The same refusal on the path a token takes. The guard sits in the shared
-     * early return precisely so that both reach it, and an API that handed a null
-     * hash to the guard would be the worse of the two failures.
-     */
     #[Test]
     public function it_refuses_an_account_that_gave_its_password_up_without_a_session(): void
     {

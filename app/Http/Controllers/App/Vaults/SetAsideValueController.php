@@ -11,11 +11,6 @@ use App\ViewModels\Vaults\SetAsideValuesViewModel;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-/**
- * What a record still holds for questions its structure has stopped asking.
- * Its own screen because it is about what is not on the record, and its own
- * controller because it is not one of the things somebody does to a contact.
- */
 class SetAsideValueController extends Controller
 {
     public function index(Request $request, Vault $vault, Contact $contact): View

@@ -15,20 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use InvalidArgumentException;
 
 /**
- * Change what a field asks for and how it asks: its label, its help text, what
- * it insists on.
- *
- * Only on a draft. The model refuses it on a published section.
- *
- * Neither the key nor the type changes here. The key is what an export or an
- * API caller holds on to, so it survives every rename. The type is what decides
- * what a stored value means, and changing it under values already written would
- * quietly turn them into something else: the way to change a type is to remove
- * the field and add the one that was wanted.
- *
- * The list a choice field reads from can change, since swapping one set of
- * options for another is an ordinary thing to want and the values keep meaning
- * what they said.
+ * Change what a field asks for and how it asks: its label, its help text, what it insists on.
  */
 class UpdateField
 {
