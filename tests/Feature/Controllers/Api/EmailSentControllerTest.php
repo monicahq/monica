@@ -31,6 +31,7 @@ class EmailSentControllerTest extends TestCase
                 'sent_at',
                 'delivered_at',
                 'bounced_at',
+                'complained_at',
                 'created_at',
             ],
             'links' => ['self'],
@@ -227,6 +228,39 @@ class EmailSentControllerTest extends TestCase
         $this->json('GET', '/api/v1/emails-sent')
             ->assertOk()
             ->assertJsonPath('data.0.attributes.delivery_status', EmailDeliveryStatusEnum::Bounced->value);
+    }
+
+    #[Test]
+    public function it_reads_a_complaint_over_a_bounce_and_a_delivery(): void
+    {
+        $user = User::factory()->create();
+        EmailSent::factory()->delivered()->bounced()->complained()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', '/api/v1/emails-sent')
+            ->assertOk()
+            ->assertJsonPath('data.0.attributes.delivery_status', EmailDeliveryStatusEnum::Complained->value);
+    }
+
+    #[Test]
+    public function it_carries_the_moment_the_recipient_complained(): void
+    {
+        $user = User::factory()->create();
+        $emailSent = EmailSent::factory()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'complained_at' => '2026-09-04 10:00:00',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', '/api/v1/emails-sent/'.$emailSent->id)
+            ->assertOk()
+            ->assertJsonPath('data.attributes.complained_at', $emailSent->complained_at?->timestamp);
     }
 
     #[Test]

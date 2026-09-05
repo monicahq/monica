@@ -5,8 +5,9 @@
 
   The delivery is a badge rather than a coloured dot. A dot with the word hidden
   behind `sr-only` is colour alone for anybody who can see it, which is the one
-  thing the system does not allow: the three states are three words, and the tint
-  behind each only repeats what the word already says.
+  thing the system does not allow: the four states are four words, and the tint
+  behind each only repeats what the word already says. Two of them share a tint,
+  which is why the word has to carry the difference.
 
   @var \App\Models\EmailSent $emailSent
 --}}
@@ -14,6 +15,7 @@
 @php
   [$tone, $deliveryLabel] = match ($emailSent->delivery_status) {
     EmailDeliveryStatusEnum::Bounced => ['danger', __('Bounced')],
+    EmailDeliveryStatusEnum::Complained => ['danger', __('Marked as spam')],
     EmailDeliveryStatusEnum::Delivered => ['success', __('Delivered')],
     EmailDeliveryStatusEnum::Sent => ['warning', __('On its way')],
   };

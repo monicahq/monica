@@ -3,7 +3,7 @@
   "specName": "Reminders that actually fire",
   "branch": "2026-09-02-reminder-delivery-engine",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -520,7 +520,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-03T01:58:50.129Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-04T16:05:58.434Z"
     }
   ],
-  "currentTask": "T061"
+  "currentTask": "T061",
+  "telemetryInstanceId": "74d999b3-6e33-4c0b-b151-7b044e408ace"
 }

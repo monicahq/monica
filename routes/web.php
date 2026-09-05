@@ -425,3 +425,5 @@ Route::middleware(['administrator'])->group(function (): void {
     Route::post('admin/administrators', [AdministratorController::class, 'create'])->name('admin.administrators.create');
     Route::delete('admin/administrators/{user}', [AdministratorController::class, 'destroy'])->whereNumber('user')->name('admin.administrators.destroy');
 });
+
+require __DIR__.'/auth.php';

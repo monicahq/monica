@@ -3,7 +3,7 @@
   "specName": "Time zone picker",
   "branch": "2026-09-02-timezone",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -288,7 +288,29 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-02T18:44:14.002Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-04T16:05:46.874Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-04T16:06:13.663Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-04T16:06:15.636Z"
     }
   ],
-  "currentTask": "T031"
+  "currentTask": "T031",
+  "telemetryInstanceId": "f7809a79-a96b-4dc2-a029-31470d12b5f5"
 }

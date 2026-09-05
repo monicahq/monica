@@ -24,8 +24,11 @@ return new class extends Migration
             $table->text('body')->nullable()->comment('body of the email, with the links stripped');
             $table->datetime('sent_at')->nullable()->comment('when the email was sent');
             $table->datetime('delivered_at')->nullable()->comment('when the email was delivered');
-            $table->datetime('bounced_at')->nullable()->comment('when the email bounced');
+            $table->datetime('bounced_at')->nullable()->comment('when the email bounced, or when the provider never managed to send it');
+            $table->datetime('complained_at')->nullable()->comment('when the recipient marked the email as spam');
             $table->timestamps();
+
+            $table->index('uuid');
 
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();

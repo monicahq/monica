@@ -65,4 +65,14 @@ class EmailSentFactory extends Factory
             'bounced_at' => now(),
         ]);
     }
+
+    /**
+     * Indicate that the recipient marked the email as spam.
+     */
+    public function complained(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'complained_at' => now(),
+        ]);
+    }
 }

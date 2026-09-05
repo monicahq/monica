@@ -12,7 +12,7 @@ use Override;
 /**
  * One email we sent, as the API hands it out.
  *
- * The three timestamps are all here, and so is the one word that reads them,
+ * The four timestamps are all here, and so is the one word that reads them,
  * because a caller wanting to know whether an email arrived should not have to
  * work out that a bounce beats a delivery. That rule lives on the model, which
  * is also where the screen listing these reads it, so the two cannot disagree.
@@ -43,6 +43,7 @@ class EmailSentResource extends JsonResource
                 'sent_at' => $this->sent_at?->timestamp,
                 'delivered_at' => $this->delivered_at?->timestamp,
                 'bounced_at' => $this->bounced_at?->timestamp,
+                'complained_at' => $this->complained_at?->timestamp,
                 'created_at' => $this->created_at->timestamp,
             ],
             'links' => [

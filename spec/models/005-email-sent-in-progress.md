@@ -21,7 +21,7 @@ subject                     text                            subject line
 body                        text                            body, with the links stripped
 sent_at                     datetime                        when it was sent
 delivered_at                datetime                        when it was delivered
-bounced_at                  datetime                        when it bounced
+bounced_at                  datetime                        when it bounced, or when the provider never managed to send it
 complained_at               datetime                        when the recipient marked it as spam
 created_at                  datetime
 updated_at                  datetime
@@ -31,8 +31,11 @@ updated_at                  datetime
 
 - Rename `uuid` to `provider_uuid`. The column exists today and holds the identifier Resend gave the email. Everywhere else in the product `uuid` now means our own public identifier, so leaving this one named `uuid` would make it the single exception to a rule applied across fifty tables. This is the one existing column this specification renames purely for clarity.
 - Add `locale` (3.7). Every email is rendered in a language and the record should say which, otherwise a translation bug is invisible after the fact.
-- Add `complained_at`. A spam complaint has to stop further sending to that address, and the current columns cannot express it.
-- Extend `EmailType` as the product grows. The reminder ones have arrived: `reminder_due` and `notification_digest` are cases, and both reach the table through `RecordEmailSent` like every other email. Still to come: marketplace update available, webhook subscription disabled, share link expiring.
+- ~~Add `complained_at`.~~ Done. It is written when the provider reports a complaint, and the delivery status reads it above a bounce, since the recipient saying they did not want the email is the stronger statement. Suppressing further sending is still outstanding, and is listed under Rules below.
+- Extend `EmailType` as the product grows: reminder digest, marketplace update available, webhook subscription disabled, share link expiring.
+
+- `bounced_at` now carries two facts, a bounce and a send the provider never managed. They differ in whose fault they are and agree on the one thing the journal has to answer: the email reached nobody. A `failed_at` of its own would need a fourth word in nine locales for a state no screen distinguishes.
+- `uuid` is indexed. Every delivery report is a lookup on it, which nothing did before the webhooks arrived.
 
 ## Relationships
 
@@ -43,7 +46,7 @@ updated_at                  datetime
 
 - `user_id` is nullable and stays that way. A private share link can send an email to somebody with no account (4.4).
 - The body is stored with links stripped. It is a trace, not a copy of a credential. A magic link or a share token must never be readable from this table.
-- A bounce or a complaint marks the address as undeliverable and suppresses further sending to it. Where that suppression is stored is a separate concern and does not belong on this row.
+- A bounce or a complaint marks the address as undeliverable and suppresses further sending to it. Where that suppression is stored is a separate concern and does not belong on this row. **Not built.** The three moments are recorded, and nothing yet reads them to stop sending.
 
 ## Open questions
 

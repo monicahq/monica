@@ -20,6 +20,7 @@ namespace App\Enums;
 enum EmailDeliveryStatusEnum: string
 {
     case Bounced = 'bounced';
+    case Complained = 'complained';
     case Delivered = 'delivered';
     case Sent = 'sent';
 }

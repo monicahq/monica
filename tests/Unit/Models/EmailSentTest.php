@@ -79,4 +79,28 @@ class EmailSentTest extends TestCase
 
         $this->assertSame(EmailDeliveryStatusEnum::Bounced, $emailSent->delivery_status);
     }
+
+    #[Test]
+    public function it_reads_as_complained_once_the_recipient_marked_it_as_spam(): void
+    {
+        $emailSent = EmailSent::factory()->complained()->create();
+
+        $this->assertSame(EmailDeliveryStatusEnum::Complained, $emailSent->delivery_status);
+    }
+
+    #[Test]
+    public function it_reads_as_complained_even_when_it_also_bounced(): void
+    {
+        $emailSent = EmailSent::factory()->bounced()->complained()->create();
+
+        $this->assertSame(EmailDeliveryStatusEnum::Complained, $emailSent->delivery_status);
+    }
+
+    #[Test]
+    public function it_reads_as_complained_even_when_it_was_delivered_first(): void
+    {
+        $emailSent = EmailSent::factory()->delivered()->complained()->create();
+
+        $this->assertSame(EmailDeliveryStatusEnum::Complained, $emailSent->delivery_status);
+    }
 }

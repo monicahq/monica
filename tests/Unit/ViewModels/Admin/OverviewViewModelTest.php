@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Admin;
 
+use App\Enums\EmailDeliveryStatusEnum;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\EmailSent;
 use App\Models\MarketplaceListingVersion;
 use App\Models\Template;
 use App\Models\TemplateVersion;
@@ -99,6 +101,70 @@ class OverviewViewModelTest extends TestCase
         $this->assertEquals(0, $viewModel->accountsCreatedRecently());
         $this->assertEquals(0, $viewModel->awaitingModeration());
         $this->assertEquals('0 B', $viewModel->storageUsed());
+    }
+
+    #[Test]
+    public function it_counts_the_emails_that_left_and_where_each_got_to(): void
+    {
+        EmailSent::factory()->count(2)->delivered()->create();
+        EmailSent::factory()->bounced()->create();
+        EmailSent::factory()->complained()->create();
+        EmailSent::factory()->count(3)->create();
+
+        $viewModel = new OverviewViewModel;
+
+        $this->assertSame([
+            EmailDeliveryStatusEnum::Delivered->value => 2,
+            EmailDeliveryStatusEnum::Bounced->value => 1,
+            EmailDeliveryStatusEnum::Complained->value => 1,
+            EmailDeliveryStatusEnum::Sent->value => 3,
+        ], $viewModel->emailsSentByStatus());
+
+        $this->assertSame(7, $viewModel->emailsSentCount());
+    }
+
+    #[Test]
+    public function it_names_every_state_even_the_ones_nothing_landed_on(): void
+    {
+        EmailSent::factory()->delivered()->create();
+
+        $counts = new OverviewViewModel()->emailsSentByStatus();
+
+        $this->assertCount(count(EmailDeliveryStatusEnum::cases()), $counts);
+
+        foreach (EmailDeliveryStatusEnum::cases() as $case) {
+            $this->assertArrayHasKey($case->value, $counts);
+        }
+    }
+
+    #[Test]
+    public function it_agrees_with_what_each_row_says_about_itself(): void
+    {
+        EmailSent::factory()->delivered()->create();
+        EmailSent::factory()->delivered()->bounced()->create();
+        EmailSent::factory()->bounced()->complained()->create();
+        EmailSent::factory()->delivered()->bounced()->complained()->create();
+        EmailSent::factory()->create();
+
+        $fromTheRows = EmailSent::query()->get()
+            ->countBy(fn (EmailSent $emailSent): string => $emailSent->delivery_status->value)
+            ->all();
+
+        $counted = array_filter(new OverviewViewModel()->emailsSentByStatus());
+
+        ksort($fromTheRows);
+        ksort($counted);
+
+        $this->assertSame($fromTheRows, $counted);
+    }
+
+    #[Test]
+    public function it_counts_no_email_on_an_instance_that_has_sent_none(): void
+    {
+        $viewModel = new OverviewViewModel;
+
+        $this->assertSame(0, $viewModel->emailsSentCount());
+        $this->assertSame([0, 0, 0, 0], array_values($viewModel->emailsSentByStatus()));
     }
 
     #[Test]

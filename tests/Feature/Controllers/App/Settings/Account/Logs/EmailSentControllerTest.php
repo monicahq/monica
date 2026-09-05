@@ -171,4 +171,36 @@ class EmailSentControllerTest extends TestCase
         $response->assertSee('Bounced', escape: false);
         $response->assertDontSee('Delivered', escape: false);
     }
+
+    #[Test]
+    public function it_badges_an_email_the_recipient_marked_as_spam(): void
+    {
+        $user = User::factory()->create();
+        EmailSent::factory()->complained()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Marked as spam', escape: false);
+        $response->assertDontSee('On its way', escape: false);
+    }
+
+    #[Test]
+    public function it_badges_a_complaint_over_a_bounce_and_a_delivery(): void
+    {
+        $user = User::factory()->create();
+        EmailSent::factory()->delivered()->bounced()->complained()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Marked as spam', escape: false);
+        $response->assertDontSee('>Bounced<', escape: false);
+    }
 }

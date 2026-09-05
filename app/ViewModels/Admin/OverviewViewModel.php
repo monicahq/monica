@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Admin;
 
+use App\Enums\EmailDeliveryStatusEnum;
 use App\Enums\MarketplaceVersionStatusEnum;
 use App\Helpers\StorageSize;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\EmailSent;
 use App\Models\MarketplaceListingVersion;
 use App\Models\User;
 use App\Models\Vault;
@@ -17,8 +19,8 @@ use App\Models\Vault;
  *
  * Every figure here is counted when it is asked for. There is no cache and no
  * summary table, because an operator opening this wants to know what is true now
- * rather than what was true when a job last ran, and eight aggregates is a cheap
- * price for that.
+ * rather than what was true when a job last ran, and a dozen aggregates is a
+ * cheap price for that.
  *
  * Each figure carries the period it covers, and the two that cover a window say
  * so out loud. A number on a dashboard without a period is a number somebody
@@ -94,6 +96,52 @@ class OverviewViewModel
         return once(fn (): int => MarketplaceListingVersion::query()
             ->where('status', MarketplaceVersionStatusEnum::Submitted)
             ->count());
+    }
+
+    /**
+     * How many emails left this instance, and where each of them got to.
+     *
+     * Every case of the enum is present, including the ones nothing landed on,
+     * so the screen renders the same shape whatever the instance has done. The
+     * conditions repeat the precedence the model reads off the same three
+     * timestamps, because a count cannot ask a row what it thinks it is. That
+     * duplication is the one risk here, and it is what
+     * `it_agrees_with_what_each_row_says_about_itself` exists to catch.
+     *
+     * @return array<string, int>
+     */
+    public function emailsSentByStatus(): array
+    {
+        return once(fn (): array => [
+            EmailDeliveryStatusEnum::Delivered->value => EmailSent::query()
+                ->whereNull('complained_at')
+                ->whereNull('bounced_at')
+                ->whereNotNull('delivered_at')
+                ->count(),
+            EmailDeliveryStatusEnum::Bounced->value => EmailSent::query()
+                ->whereNull('complained_at')
+                ->whereNotNull('bounced_at')
+                ->count(),
+            EmailDeliveryStatusEnum::Complained->value => EmailSent::query()
+                ->whereNotNull('complained_at')
+                ->count(),
+            EmailDeliveryStatusEnum::Sent->value => EmailSent::query()
+                ->whereNull('complained_at')
+                ->whereNull('bounced_at')
+                ->whereNull('delivered_at')
+                ->count(),
+        ]);
+    }
+
+    /**
+     * How many emails left this instance in all.
+     *
+     * Added up from the figures above rather than counted again, so the total
+     * and its parts cannot disagree on a screen showing both.
+     */
+    public function emailsSentCount(): int
+    {
+        return array_sum($this->emailsSentByStatus());
     }
 
     public function isEmpty(): bool
