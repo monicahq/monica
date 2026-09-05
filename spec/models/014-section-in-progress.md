@@ -22,6 +22,7 @@ name_translation_key        string (255)                    translation key of a
 description                 text                            what the block is for, shown in the picker and on the marketplace
 slug                        string (64)                     stable identifier used by the API, unique within the account
 icon                        string (64)                     icon shown in the section header
+colour                      string (7)                      hue the header mark is drawn in, one of the vault colours, null for neutral
 is_system                   boolean                         whether the product supplied it at account creation
 is_active                   boolean                         whether it can still be added to a template
 published_version_id        int                             version offered by default when adding it, null while only drafts exist
@@ -52,7 +53,7 @@ deleted_at                  datetime
 
 - **Everything the marketplace needs.** `installed_from_listing_version_id` and the `hasOne` [MarketplaceListing](045-marketplace-listing-done.md) are not in the schema, for the same reason they are absent from [Template](012-template-in-progress.md): the tables they point at do not exist. Publishing a section on its own is what section 7 says lowers the barrier to contributing, and it is the first thing the marketplace models should make possible.
 - **Nothing shares a section between templates.** An account is seeded with six of them, all marked as supplied and all carried by the one template that was seeded with them. Reuse is what the model is for and what makes drafting a section version worth the machinery, and no screen offers to put an existing section on another template.
-- **A section has no screen of its own.** It is created, retitled and taken off from inside the builder of the template carrying it, since a section with no template around it is not yet something anybody has a reason to open. The screen that lists sections for their own sake arrives with the marketplace, which is what makes a bare section worth having.
+- **A section has no screen of its own.** It is created, retitled, marked with an icon and a colour, and taken off from inside the builder of the template carrying it, since a section with no template around it is not yet something anybody has a reason to open. The screen that lists sections for their own sake arrives with the marketplace, which is what makes a bare section worth having.
 - **No API.**
 
 ## Decisions taken while building it

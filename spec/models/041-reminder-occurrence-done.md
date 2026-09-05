@@ -15,7 +15,7 @@ Section 10.3 turns that into two distinct actions, and their exact scope is a pr
 
 - **Postpone** means "not now, remind me at this new date". It moves this deadline to an exact future instant and leaves the following ones alone.
 - **Dismiss** means "do not interrupt me about this deadline again". It closes this occurrence without claiming that an action was completed and without disabling the rule. Dismissing this year's birthday does not remove next year's.
-- **Disabling the rule** is the only action on the rule itself that cancels every future deadline, and it lives on [Reminder](040-reminder-in-progress.md).
+- **Disabling the rule** is the only action on the rule itself that cancels every future deadline, and it lives on [Reminder](040-reminder-done.md).
 
 ## Fields
 
@@ -48,7 +48,7 @@ updated_at                  datetime
 ## Relationships
 
 - `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md)
-- `belongsTo` [Reminder](040-reminder-in-progress.md)
+- `belongsTo` [Reminder](040-reminder-done.md)
 - `hasMany` [Notification](042-notification-done.md)
 
 ## Rules
@@ -66,7 +66,7 @@ updated_at                  datetime
 - A cancelled occurrence keeps its reason. Nothing disappears without an explanation (3.3).
 - Deleting or archiving a record cancels its future actionable occurrences and records their previous status. Restoring or unarchiving it restores only occurrences cancelled for that matching reason when their deadline is still ahead, and generates whatever else the rolling window now needs. Past occurrences are kept, because they are history.
 - Correcting the source or changing the cadence, interval, moments, local time or frozen zone cancels future occurrences with `source_changed` or `rule_changed` and generates replacements. Those cancellations are not reversed: the replacement rows are the deadlines defined by the new schedule.
-- Removing the field or clearing its value cancels future occurrences with `field_removed` or `value_cleared`. Putting a field back may restore matching cancellations; typing a value again creates a new rule and therefore new occurrences, as [Reminder](040-reminder-in-progress.md) specifies.
+- Removing the field or clearing its value cancels future occurrences with `field_removed` or `value_cleared`. Putting a field back may restore matching cancellations; typing a value again creates a new rule and therefore new occurrences, as [Reminder](040-reminder-done.md) specifies.
 - An archived [Contact](019-contact-done.md) or [Entity](020-entity-done.md) is due nothing, since archiving is how somebody says they no longer want to hear about a record.
 - Quiet hours are applied at delivery, not here (10.4). An occurrence due at 3am stays due at 3am and its notification is held until 8am. Moving the occurrence itself would corrupt the history of when things were actually due.
 - **Delivery reads `pending` and `postponed`, and writes `notified`.** A deadline somebody put off is still one waiting to happen. `notified` means the notification layer has dealt with the deadline, which is what stops the sweep finding it every five minutes for ever, including on an account that asked for silence and where there was nothing to make. Whether anything actually went out is `notified_at`, which stays null when nothing did.
@@ -75,8 +75,8 @@ updated_at                  datetime
 
 ## Not done yet
 
-- **No screen.** Nothing lists what is coming, nothing shows the history, and the postpone and dismiss actions are reachable only from the actions themselves and their tests. The vault's Reminders page and the due badge are unbuilt.
-- **No API.** Principle X is unmet here for the same reason it is unmet on [Reminder](040-reminder-in-progress.md): a rule created from a value cannot be addressed from outside at all yet. The `uuid` is on the row waiting for it.
+- **The screens read a deadline and never make one.** The vault's Reminders page lists what is coming and what has gone out, the rule's own page shows the history of both, postponing and dismissing are controls on the row, and the sidebar carries the due count. What no screen offers is a deadline of its own: every row here is generated from a rule, and there is no way to add, move or delete one except through the rule that produced it. That is the model working as specified rather than a gap, and it is the reason there is nothing else to build here.
+- **No API.** Principle X is unmet here for the same reason it is unmet on [Reminder](040-reminder-done.md): the value a rule is created from cannot be addressed from outside at all yet. The `uuid` is on the row waiting for it, and the interface already addresses a deadline by it.
 - **No webhook.** Each state change is meant to be listenable and there is no webhook machinery in the product.
 - **No retention.** Nothing prunes what has gone by. See the open question below.
 

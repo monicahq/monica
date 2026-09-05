@@ -7,7 +7,7 @@
 
 The key an external caller authenticates with. Section 3.6 makes this load bearing: everything doable in the interface must be doable through the API, the mobile applications will consume that API, and the official MCP server authenticates the same way and never bypasses it.
 
-The table exists today with `abilities` commented as unused until there is an API to scope. There is still no API, and none of the four changes listed below has been made: this file describes what the model becomes when there is one.
+Version one of the API exists (`routes/api.php`, prefix `v1`), it authenticates with these keys through `auth:sanctum`, and `api-keys` lists, shows, mints and destroys them. What has not moved is the row: `abilities` is still written and never read, and none of the four changes listed below has been made. So there is an API to scope and nothing scoped to it, which is what this file describes closing.
 
 ## Fields
 

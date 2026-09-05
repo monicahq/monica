@@ -60,7 +60,7 @@ updated_at                  datetime
 ## Not done yet
 
 - **Only in-app and email are delivered.** `push` is a channel and a preference with no driver behind it, which the constitution asks for on the server before the native applications arrive. Nothing pretends to deliver it.
-- **The in-app channel has no screen.** The row is the notification, and there is no notification centre to read it in, so today it is visible only by email or in the table.
+- **The in-app channel has no notification centre.** The row is the notification, and there is nowhere to read the unread ones as a list, so `read_at` is written by nothing. What does read the table is the reminder side: the sent tab of the vault's Reminders page draws a mark per channel a deadline went out on, and the rule's own page says how each of its deliveries was carried. So a notification is visible where the thing it is about is, and nowhere on its own.
 - **Only reminders produce one.** A marketplace update and a webhook subscription switched off are both meant to arrive here, and neither is wired.
 - **No API and no webhook.**
 - **No retention.** See the open question below.

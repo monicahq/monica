@@ -31,6 +31,10 @@ updated_at                  datetime
 - Deleting the user deletes the links, which is correct: an unused link to a deleted account must stop working immediately.
 - Expired and used links are pruned on a schedule. They carry nothing worth keeping.
 
+## Not done yet
+
+- **Nothing prunes them.** `model:prune` runs nightly and the model is not prunable, so every link an account has ever been sent stays in the table, used and expired ones included. This is the one rule above that could be enforced today and is not, and it is the whole of what the file name still says is in progress.
+
 ## Open questions
 
-None. This model is settled.
+None. What this model is, is settled.

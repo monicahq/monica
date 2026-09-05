@@ -30,6 +30,8 @@ maiden_name                 string (255)                    name before marriage
 nickname                    string (255)                    what they are actually called
 name_order                  enum (given_first, family_first)  order this particular name reads in, null to follow the user preference
 sort_name                   string (511)                    precomputed string the list sorts on, so sorting never depends on rendering
+sort_key                    binary (2048)                   collation key the list orders and pages on, built for the language of the account and compared byte by byte, so the order reads the same on every database
+search_key                  string (511)                    sort_name folded for the language of the account, so a search folds what that language calls a minor difference and nothing else
 is_me                       boolean                         whether this contact represents the user themselves
 is_partial                  boolean                         whether the contact came from a mention and is not filled in yet
 is_archived                 boolean                         whether the contact is hidden from the main lists without being deleted
@@ -53,7 +55,7 @@ deleted_with_vault          bool                            whether the contact 
 - `hasMany` [Relationship](026-relationship-not-yet.md), from both sides
 - `belongsToMany` [Group](032-group-not-yet.md) through [GroupMember](033-group-member-not-yet.md)
 - `belongsToMany` [Activity](036-activity-not-yet.md) through [ActivityParticipant](037-activity-participant-not-yet.md)
-- `hasMany` [RecordSnapshot](023-record-snapshot-done.md), [Reminder](040-reminder-in-progress.md), [ShareLink](048-share-link-done.md)
+- `hasMany` [RecordSnapshot](023-record-snapshot-done.md), [Reminder](040-reminder-done.md), [ShareLink](048-share-link-done.md)
 
 ## Rules
 
@@ -78,8 +80,8 @@ deleted_with_vault          bool                            whether the contact 
 - **A partial contact is created by passing a flag.** Nothing produces one on its own, since a mention comes from [Relationship](026-relationship-not-yet.md). What exists is the state and the fact that the main lists ignore it.
 - **Merging is not here.** [ContactMerge](034-contact-merge-not-yet.md) is its own model, and with it the rule that a partial contact stops being partial when it is merged.
 - **`name_order` does not fall back to the user preference.** The column says null means "follow the user", and a contact carrying none reads given name first whatever that user chose. The preference is stored on [User](002-user-done.md) and asked for on no screen, so nothing here has anything to follow yet.
-- **Archiving, favouriting and restoring have actions and no screens.** `ArchiveContact`, `UnarchiveContact`, `FavouriteContact`, `UnfavouriteContact` and `RestoreContact` are all written and nothing calls any of them, while the list already offers the favourites and the archived as two of its three places. Both are therefore lists nobody can put anybody on, and the soft deletion is a deletion as far as anybody using the product can tell.
-- **No API.** The screens exist: the list, the form that writes somebody down, the record with a page per template page, the block of the record that opens as a form, the screen that changes the name, sets the picture and deletes the contact, the version history, and the screen listing what a structure has stopped asking for.
+- **Archiving and restoring have actions and no caller.** `ArchiveContact`, `UnarchiveContact` and `RestoreContact` are written and nothing calls any of them, while the list already offers the archived as one of its three places. It is therefore a list nobody can put anybody on, and the soft deletion is a deletion as far as anybody using the product can tell. Favouriting is the one of the five that has come out: `api/v1/vaults/{vault}/contacts/{contact}/favourite` sets it, and no screen does.
+- **The API reads and writes a contact, and not what is written on one.** `api/v1/vaults/{vault}/contacts` lists, searches, sorts, groups and creates, and one contact is read, deleted, renamed, favourited, given or stripped of a picture, and moved to another published template version, each at its own address. What no endpoint touches is the record itself: no field value is read or written over the API, so everything a template asks about somebody is reachable in the interface and nowhere else. Archiving and restoring have no endpoint either.
 
 ## Decisions taken while building it
 
@@ -96,7 +98,7 @@ deleted_with_vault          bool                            whether the contact 
 - **The avatar is one square crop and the original is not kept.** An avatar is drawn in a circle at four sizes between 34 and 104 pixels and nowhere else, so what is kept is a 512 pixel square WebP written on upload by `ResizeImage`, and the file the account is charged for is the one the product actually serves. Keeping the original as well would put a five megabyte photograph behind a forty pixel row and count bytes nothing draws. It follows that the general variant pipeline [File](008-file-in-progress.md) still owes is not what this leans on.
 - **The name, the picture and the deletion share one screen.** The picture is not a field either: no template decides whether somebody has a face, and the product draws one wherever the person appears. It is therefore edited beside the name, on the screen reached from the record's one way in.
 - **Taking the picture off detaches and does not delete.** `DestroyContactAvatar` nulls the column and lets the file go, exactly as replacing one does with the file it replaced. The sweep is the only thing that removes bytes, which is what lets a restored state of a record find the picture it had.
-- **Archiving silences reminders.** The specification does not settle it, and both readings hold together: archiving is about the lists, or archiving is about attention. Attention wins, because being told about somebody is the loudest thing the product does, and a colleague from two jobs ago whose birthday still arrives every year is exactly what somebody archives to stop. Archiving therefore reuses the machinery deletion uses, with its own reason ([Reminder](040-reminder-in-progress.md), [ReminderOccurrence](041-reminder-occurrence-done.md)), so a rule that went quiet can say it is the archiving and not somebody having disabled it. That is now built: `ArchiveContact` silences with `record_archived` and `UnarchiveContact` revives only what that reason silenced.
+- **Archiving silences reminders.** The specification does not settle it, and both readings hold together: archiving is about the lists, or archiving is about attention. Attention wins, because being told about somebody is the loudest thing the product does, and a colleague from two jobs ago whose birthday still arrives every year is exactly what somebody archives to stop. Archiving therefore reuses the machinery deletion uses, with its own reason ([Reminder](040-reminder-done.md), [ReminderOccurrence](041-reminder-occurrence-done.md)), so a rule that went quiet can say it is the archiving and not somebody having disabled it. That is now built: `ArchiveContact` silences with `record_archived` and `UnarchiveContact` revives only what that reason silenced.
 
 ## Open questions
 

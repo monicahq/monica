@@ -1,6 +1,6 @@
 # 040. Reminder
 
-**Status:** exists (`app/Models/Reminder.php`), and now produces deadlines. Built as far as the models it depends on allow
+**Status:** exists (`app/Models/Reminder.php`), produces deadlines, and is read and acted on from screens of its own. Built as far as the models it depends on allow
 **Spec:** 3.2, 10.1, 10.2, 10.3, 10.5
 
 ## What it is
@@ -34,7 +34,7 @@ time_of_day                 time                            local time it fires 
 timezone                    string (64)                     time zone frozen at creation, which later changes to the user preference never move
 schedule_revision           int                             bumped whenever cadence, interval, moments, local time, zone or the value read changes, so a regenerated deadline can never collide with one cancelled under the old schedule
 is_active                   boolean                         whether it still produces occurrences
-inactive_reason             enum (value_cleared, record_archived, record_deleted, field_removed)  why it stopped, so the page can explain instead of hiding it
+inactive_reason             enum (value_cleared, record_archived, record_deleted, field_removed, paused_by_user)  why it stopped, so the page can explain instead of hiding it. Four are things that happened to the rule; the fifth is the only one somebody sets and the only one somebody may lift
 deactivated_at              datetime                        when it stopped
 created_by_user_id          int                             user who created it, null when the system did
 created_at                  datetime
@@ -73,14 +73,14 @@ deleted_at                  datetime
 
 ## Not done yet
 
-- **No screen shows a deadline.** The rule produces [ReminderOccurrence](041-reminder-occurrence-done.md) rows, they become [Notification](042-notification-done.md) rows, and both reach somebody by email or sit in the application waiting for a notification centre that does not exist. The vault's Reminders page, the list of what is coming, the postpone and dismiss controls, the due badge and the notification preferences screen are all unbuilt, and the sidebar entries for Reminders and Notifications still lead nowhere.
+- **The notification preferences have no screen.** Everything else about a rule is now on one. The vault's Reminders page lists what is coming, groups it by date or by contact under a real URL for each, and shows what has already gone out on a third tab; the sidebar entry carries the count of what is due inside the generation window; a deadline can be put off by a preset, dismissed, or sent to the account as a test; and the rule itself has a page saying what it reads, when it fires, how it was delivered and what it has done, with pause, resume and delete on it. What has no screen is [NotificationPreference](043-notification-preference-done.md): the account cannot choose its channels, its quiet hours or its digest from anywhere.
 - **Nine columns the Fields list above does not carry.** `description` has no control on the screen. `activity_type_id` and `inactivity_days` wait for [ActivityType](035-activity-type-not-yet.md), which has no table. `weekdays`, `day_of_month` and `month_of_year` are cadence detail no screen asks for, and `starts_on` and `ends_on` are bounds no screen asks for either; the value the rule reads is where it starts. `last_evaluated_at` is gone from the list for good: the generator is idempotent over a rolling window, so it needs no memory of when it last ran, and a column saying otherwise would be one nothing could be trusted to keep true. Storing a column nothing writes would be storing a lie, and migrations are edited rather than added until production, so each arrives with the screen that fills it.
-- **`source` has one case and `inactive_reason` has four.** A manual entry, an activity and an inactivity are sources the specification names and no screen offers. The specification's fifth reason, the owner switching a rule off by hand, has no producer: unticking the box removes the rule instead, which is a soft delete and restorable.
+- **`source` has one case.** A manual entry, an activity and an inactivity are sources the specification names and no screen offers. `inactive_reason` now has all five: pausing writes `paused_by_user`, which is the only reason a person sets and the only one a person may lift, and it is what makes pausing different from unticking the box on the record, which soft deletes the rule instead.
 - **Only a contact can hold one.** `remindable` is a morph so an [Entity](020-entity-done.md) can carry a rule the day entities have screens. They have none at all today.
 - **A date inside a repetition can hold a rule and no screen offers one.** The rule keys on the value, and a repetition's answer is its own value row, so the model needs nothing added. The panel is drawn only under a date sitting directly in a section, because a second naming scheme in the form is what it would cost.
-- **No API.** Neither `fields` nor `field_values` carries a `uuid`, so a rule created from a value cannot be addressed from outside at all, and the API has not reached contacts either. Principle X is unmet and the debt is recorded.
+- **No API.** The API has reached contacts, but not what is written on one: neither `fields` nor `field_values` carries a `uuid`, so the value a rule is created from cannot be addressed from outside, and no endpoint reads or writes a rule. Principle X is unmet and the debt is recorded.
 - **No webhook.** Each state change is meant to be listenable (14.2), and there is no webhook machinery in the product.
-- **The only source is still a date on a contact.** A manual reminder, one relative to an activity and one watching for silence all wait for screens and for [ActivityType](035-activity-type-not-yet.md). So do several weekdays in one rule, a date inside a repetition, and an [Entity](020-entity-done.md) carrying a rule.
+- **The only source is still a date on a contact.** A manual reminder, one relative to an activity and one watching for silence all wait for screens and for [ActivityType](035-activity-type-not-yet.md). So do several weekdays in one rule, a date inside a repetition, and an [Entity](020-entity-done.md) carrying a rule. The Reminders page therefore lists rules somebody made from a date and nothing else, and offers no way to make one from there.
 - **`DestroyField` is not wired.** It only ever takes a field out of a draft section version, which can hold no values and therefore no rules, so there is nothing there to silence. The path that matters is [FieldValue](022-field-value-done.md) being set aside, which `DetachFieldValues` and `ReattachFieldValues` carry.
 
 ## Decisions taken while building it

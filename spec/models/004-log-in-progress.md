@@ -54,7 +54,7 @@ updated_at                  datetime
 
 - `loggable` is filled by most of the actions there are, and `changes` by six of them. Naming what was acted on is a line in the action and every action that writes to a row now writes it; saying what a value was before it changed is a shape each action has to build for itself, and only the ones that rename something (a vault, a value list and its items, an entity type, a contact, an entity) do. Section 12 is only answered once every action that edits rather than creates does the same.
 - `vault_id` is filled by the actions performed inside a vault, and the model has the relationship. It still carries no foreign key, for the same reason `loggable_id` does not: the log outlives what it describes.
-- `source` is always `web`, since that is the only interface there is. The API, the MCP server, imports, automations and modules each set their own as they arrive.
+- `source` is always `web`. The column and `LogSourceEnum` carry every case, and `LogUserAction` defaults to `web` and is never told otherwise, so version one of the API writes its entries as though a browser had made them. That is the first real gap in the column rather than a case waiting on an interface that does not exist: the API is here. The MCP server, imports, automations and modules each set their own as they arrive.
 - Nothing writes an entry with no user behind it yet. The model and the job handle one, and the first real case is the webhook subscription of 14.4.
 - Nothing reads `changes` back. The log screen lists what was done and by whom; the before and after values sit in the column and no screen unfolds one.
 

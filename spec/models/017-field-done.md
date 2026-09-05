@@ -33,6 +33,7 @@ validation                  json                            extra constraints, e
 is_repeatable               boolean                         whether the field is a repeater, letting the same block be filled several times
 repeat_min                  int                             fewest repetitions allowed, null for no floor
 repeat_max                  int                             most repetitions allowed, null for no ceiling
+repetition_order            enum (newest_last, newest_first)  which end a new repetition is added at, null means the end and means nothing outside a repeater
 parent_field_id             int                             repeater this field sits inside, null when it sits directly in the section
 relation_target             enum (contact, entity)          what a relation field points at, null for other types
 relation_entity_type_id     int                             entity type a relation field points at, null when it points at contacts
@@ -69,7 +70,7 @@ Section 5.5 lists the families. The ones in the first version (15) are marked.
 - `belongsTo` self as the parent repeater
 - `belongsTo` [EntityType](011-entity-type-done.md) as a relation target
 - `hasMany` [FieldValue](022-field-value-done.md)
-- referenced by [Reminder](040-reminder-in-progress.md) as a source
+- referenced by [Reminder](040-reminder-done.md) as a source
 
 ## Rules
 

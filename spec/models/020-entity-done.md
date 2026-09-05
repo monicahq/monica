@@ -20,6 +20,8 @@ entity_type_id              int                             type of object it is
 template_version_id         int                             exact structure version the page renders from
 name                        string (255)                    what the record is called, used in lists, headers and search
 sort_name                   string (255)                    precomputed string the list sorts on
+sort_key                    binary (2048)                   collation key the list orders and pages on, built for the language of the account and compared byte by byte, so the order reads the same on every database
+search_key                  string (511)                    sort_name folded for the language of the account, so a search folds what that language calls a minor difference and nothing else
 avatar_file_id              int                             image standing in for it, null when a generated one is used
 avatar_colour               string (7)                      background colour of the generated avatar
 is_archived                 boolean                         whether it is hidden from the main lists without being deleted
@@ -36,7 +38,7 @@ deleted_with_vault          bool                            whether the record w
 - `belongsTo` [File](008-file-in-progress.md) as avatar
 - `hasMany` [FieldValue](022-field-value-done.md)
 - `belongsToMany` [Activity](036-activity-not-yet.md) through [ActivityParticipant](037-activity-participant-not-yet.md)
-- `hasMany` [RecordSnapshot](023-record-snapshot-done.md), [Reminder](040-reminder-in-progress.md)
+- `hasMany` [RecordSnapshot](023-record-snapshot-done.md), [Reminder](040-reminder-done.md)
 
 ## Rules
 

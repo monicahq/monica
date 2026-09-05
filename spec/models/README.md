@@ -43,8 +43,14 @@ Every file follows the same shape.
 
 Models 007 to 023 exist as well, and so do 040 to 043, the reminder chain: the rule, the concrete
 deadlines it produces, the notifications that carry them and the preferences that say how. It was
-built ahead of the journal it will one day also read from, and ahead of every screen that will show
-it. Each file says how far it is built and what it is waiting on.
+built ahead of the journal it will one day also read from. The screens have since caught up with
+most of it: a vault lists what is coming and what has gone out, and a rule has a page of its own.
+The preferences are the part still without one. Each file says how far it is built and what it is
+waiting on.
+
+Models 024 to 039 and 050 to 054 have no table and no model at all: relations between people,
+groups, duplicates, the journal, webhooks, modules and search are the whole of what is still to be
+started.
 
 ### The compartments and the files
 
@@ -115,7 +121,7 @@ Model 055, [TemplateVersionPage](055-template-version-page-done.md), is a later 
 
 | # | Model | Spec |
 |---|---|---|
-| 040 | [Reminder](040-reminder-in-progress.md) | 10.1, 10.2 |
+| 040 | [Reminder](040-reminder-done.md) | 10.1, 10.2 |
 | 041 | [ReminderOccurrence](041-reminder-occurrence-done.md) | 10.1, 10.3 |
 | 042 | [Notification](042-notification-done.md) | 10.4 |
 | 043 | [NotificationPreference](043-notification-preference-done.md) | 10.4 |

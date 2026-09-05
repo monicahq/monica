@@ -32,7 +32,7 @@ updated_at                  datetime
 - Rename `uuid` to `provider_uuid`. The column exists today and holds the identifier Resend gave the email. Everywhere else in the product `uuid` now means our own public identifier, so leaving this one named `uuid` would make it the single exception to a rule applied across fifty tables. This is the one existing column this specification renames purely for clarity.
 - Add `locale` (3.7). Every email is rendered in a language and the record should say which, otherwise a translation bug is invisible after the fact.
 - Add `complained_at`. A spam complaint has to stop further sending to that address, and the current columns cannot express it.
-- Extend `EmailType` as the product grows: reminder digest, marketplace update available, webhook subscription disabled, share link expiring.
+- Extend `EmailType` as the product grows. The reminder ones have arrived: `reminder_due` and `notification_digest` are cases, and both reach the table through `RecordEmailSent` like every other email. Still to come: marketplace update available, webhook subscription disabled, share link expiring.
 
 ## Relationships
 
