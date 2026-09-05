@@ -69,9 +69,11 @@ use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\ContactShareLinkController;
 use App\Http\Controllers\App\Vaults\ContactTemplateVersionController;
 use App\Http\Controllers\App\Vaults\FileController;
+use App\Http\Controllers\App\Vaults\ReminderController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceDismissalController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrencePostponementController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceTestNotificationController;
+use App\Http\Controllers\App\Vaults\ReminderPauseController;
 use App\Http\Controllers\App\Vaults\SetAsideValueController;
 use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
@@ -238,10 +240,12 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     // between the two. Only the grouping that is not the default earns a
     // segment, which leaves the list one canonical address.
     //
-    // The screen of one reminder is its own piece of work; when it lands, these
-    // literal segments stay declared before `reminders/{reminder}`, so a one
-    // segment address reads as the tab it is rather than as a reminder nobody
-    // can find.
+    // Every literal segment stays declared before `reminders/{reminder}`, so a
+    // one segment address reads as the tab it is rather than as a reminder
+    // nobody can find. The binding matching only a uuid says the same thing a
+    // second time, on purpose: the order here is easy to break by adding a tab
+    // in the wrong place, and the constraint is what makes that a 404 rather
+    // than a tab that stops working.
     Route::get('vaults/{vault}/reminders', [VaultReminderController::class, 'index'])->name('reminders.index');
     Route::get('vaults/{vault}/reminders/by-contact', [VaultReminderController::class, 'byContact'])->name('reminders.byContact');
     Route::get('vaults/{vault}/reminders/sent', [VaultReminderController::class, 'sent'])->name('reminders.sent');
@@ -255,6 +259,21 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->whereUuid('reminderOccurrence')
         ->middleware('throttle:20,1')
         ->name('reminders.occurrences.testNotification.create');
+    Route::get('vaults/{vault}/reminders/{reminder}', [ReminderController::class, 'show'])
+        ->whereUuid('reminder')
+        ->name('reminders.show');
+    // A pause is a thing that exists rather than a flag: it is put there and taken
+    // away, so each address says what it does and two tabs cannot flip a rule past
+    // each other.
+    Route::delete('vaults/{vault}/reminders/{reminder}', [ReminderController::class, 'destroy'])
+        ->whereUuid('reminder')
+        ->name('reminders.destroy');
+    Route::put('vaults/{vault}/reminders/{reminder}/pause', [ReminderPauseController::class, 'update'])
+        ->whereUuid('reminder')
+        ->name('reminders.pause.update');
+    Route::delete('vaults/{vault}/reminders/{reminder}/pause', [ReminderPauseController::class, 'destroy'])
+        ->whereUuid('reminder')
+        ->name('reminders.pause.destroy');
 
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');

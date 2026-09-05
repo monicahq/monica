@@ -6,12 +6,15 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\DeactivateReminders;
 use App\Enums\ReminderInactiveReasonEnum;
+use App\Enums\ReminderOccurrenceCancelledReasonEnum;
+use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -152,6 +155,55 @@ class DeactivateRemindersTest extends TestCase
 
         $this->assertSame(0, $count);
         Queue::assertNotPushed(LogUserAction::class);
+    }
+
+    #[Test]
+    public function it_silences_one_rule_by_hand_and_cancels_what_was_ahead(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->ruleOf($user);
+        $occurrence = ReminderOccurrence::factory()->for($reminder)->create([
+            'account_id' => $reminder->account_id,
+            'vault_id' => $reminder->vault_id,
+        ]);
+
+        $count = new DeactivateReminders(
+            user: $user,
+            subject: $reminder,
+            reason: ReminderInactiveReasonEnum::PausedByUser,
+        )->execute();
+
+        $this->assertSame(1, $count);
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::PausedByUser->value,
+        ]);
+        $this->assertDatabaseHas('reminder_occurrences', [
+            'id' => $occurrence->id,
+            'status' => ReminderOccurrenceStatusEnum::Cancelled->value,
+            'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::RuleDisabled->value,
+        ]);
+    }
+
+    #[Test]
+    public function it_leaves_the_other_rules_about_the_same_record_alone_when_one_is_paused(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->ruleOf($user);
+        $sibling = $this->ruleOf($user);
+
+        new DeactivateReminders(
+            user: $user,
+            subject: $reminder,
+            reason: ReminderInactiveReasonEnum::PausedByUser,
+        )->execute();
+
+        $this->assertDatabaseHas('reminders', ['id' => $sibling->id, 'is_active' => true]);
     }
 
     #[Test]

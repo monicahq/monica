@@ -271,7 +271,7 @@ class VaultRemindersViewModel
                 vault: $this->vault,
                 until: CarbonImmutable::now()->addDays($this->horizonInDays()),
             )
-            ->with(['reminder.remindable.avatar', 'reminder.field'])
+            ->with(['vault', 'reminder.remindable.avatar', 'reminder.field'])
             ->get()
             ->map(fn (ReminderOccurrence $occurrence): ReminderRow => new ReminderRow(
                 user: $this->user,

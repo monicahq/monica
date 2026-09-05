@@ -18,9 +18,11 @@ use App\Models\Reminder;
  * reversed, so unarchiving a contact whose field has also gone leaves the rule
  * quiet and still saying why.
  *
- * The specification's fifth reason, the owner switching a rule off by hand, has
- * no case yet. Unticking the box removes the rule instead, which is a soft
- * delete, so nothing today produces it.
+ * Four of the five are things that happened to the rule. The fifth, somebody
+ * switching it off by hand, is the only one a person sets and the only one a
+ * person may lift, and it is what makes pausing different from removing:
+ * unticking the box on the record soft deletes the rule, while pausing keeps it
+ * whole and keeps its history.
  *
  * The backing value is the `inactive_reason` column of {@see Reminder}, written
  * only by {@see DeactivateReminders}.
@@ -31,6 +33,20 @@ enum ReminderInactiveReasonEnum: string
     case RecordArchived = 'record_archived';
     case RecordDeleted = 'record_deleted';
     case FieldRemoved = 'field_removed';
+    case PausedByUser = 'paused_by_user';
+
+    /**
+     * Whether the person looking at the rule is the one who may lift the reason.
+     *
+     * Only what somebody chose is theirs to undo. A rule quiet because its
+     * record is archived comes back by unarchiving the record, so a screen that
+     * offered to reactivate it would be offering something that cannot be done
+     * from there.
+     */
+    public function isLiftedByUser(): bool
+    {
+        return $this === self::PausedByUser;
+    }
 
     /**
      * @return list<string>

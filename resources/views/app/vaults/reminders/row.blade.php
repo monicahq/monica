@@ -25,15 +25,19 @@
   reader and shown on hover and on focus, since a row of unlabelled glyphs is a
   row nobody can use.
 
-  The fourth control, a link to the reminder's own screen, is not drawn. That
-  screen does not exist yet and a link to a page that answers 404 is worse than
-  no link, which is the same reason the navigation column draws the screens that
-  do not exist without offering them.
+  The fourth control opens the rule behind the deadline, where the cadence, the
+  moments and the zone are explained. It is a link rather than a button, so the
+  middle click and the context menu work on it the way they work on the person's
+  name above. It is left out on the reminder's own screen, where a link to the
+  page somebody is reading says nothing, and on a deadline whose rule has gone:
+  history outlives the rule that made it, and a link to a page that answers 404
+  is worse than no link.
 
   Being done with a reminder asks nothing first. It closes one deadline, leaves
   the rule producing and keeps the row, so there is nothing to warn about.
 
   @var array<string, mixed> $row
+  @var bool $linkToReminder  false on the reminder's own screen, which is where this row is already
 --}}
 <div
   @class([
@@ -111,6 +115,16 @@
     </x-tooltip>
 
     <div class="flex flex-none items-center gap-1.5">
+      @if (($linkToReminder ?? true) && $row['reminderUrl'] !== null)
+        <x-icon-button
+          :href="$row['reminderUrl']"
+          data-turbo="true"
+          icon="reminder"
+          :label="__('Open this reminder')"
+          align="right"
+        />
+      @endif
+
       @include('app.vaults.reminders._postpone', ['row' => $row])
 
       <x-form method="post" :action="$row['testUrl']" class="contents">

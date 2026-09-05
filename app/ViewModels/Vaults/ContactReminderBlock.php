@@ -232,7 +232,7 @@ class ContactReminderBlock
                 'direction' => ReminderMomentDirectionEnum::On->value,
                 'amount' => null,
                 'unit' => null,
-                'phrase' => $this->phrase(ReminderMomentDirectionEnum::On, null, null),
+                'phrase' => ReminderWords::moment(ReminderMomentDirectionEnum::On, null, null),
             ]];
         }
 
@@ -240,63 +240,8 @@ class ContactReminderBlock
             'direction' => $moment['direction']->value,
             'amount' => $moment['amount'],
             'unit' => $moment['unit']?->value,
-            'phrase' => $this->phrase($moment['direction'], $moment['amount'], $moment['unit']),
+            'phrase' => ReminderWords::moment($moment['direction'], $moment['amount'], $moment['unit']),
         ], ReminderSchedule::momentDates($rule));
-    }
-
-    /**
-     * One moment in words.
-     *
-     * The span and the side it falls on are two phrases rather than one, so the
-     * span can be a counted phrase and the language can decide its own wording
-     * per number. Assembling them is what lets the browser write the same
-     * sentence from the same pieces while somebody is typing.
-     */
-    private function phrase(ReminderMomentDirectionEnum $direction, ?int $amount, ?ReminderMomentUnitEnum $unit): string
-    {
-        if (! $direction->needsAnAmount() || $amount === null || $unit === null) {
-            return __('on the day');
-        }
-
-        $span = match ($unit) {
-            ReminderMomentUnitEnum::Days => trans_choice(':count day|:count days', $amount),
-            ReminderMomentUnitEnum::Weeks => trans_choice(':count week|:count weeks', $amount),
-            ReminderMomentUnitEnum::Months => trans_choice(':count month|:count months', $amount),
-        };
-
-        return $direction === ReminderMomentDirectionEnum::Before
-            ? __(':span before', ['span' => $span])
-            : __(':span after', ['span' => $span]);
-    }
-
-    /**
-     * How often the rule fires, in words.
-     *
-     * Each wording is pinned at one, because "every year" reads better than
-     * "every 1 year" and the number is already known there. A pinned wording has
-     * to keep zero away from it, which is what the guard below is for.
-     */
-    private function cadenceWords(?Reminder $rule): string
-    {
-        if ($rule !== null && ! $rule->cadence->recurs()) {
-            return __('once and no more');
-        }
-
-        $interval = $rule instanceof Reminder ? $rule->frequency_interval : 1;
-
-        /* Zero has to be kept away from a wording pinned to one, because several
-           languages group it with the singular and would read "every year" for
-           a rhythm of none. Nothing writes a rule with an interval of zero, and
-           a row holding one describes no rhythm at all. */
-        if ($interval === 0) {
-            return '';
-        }
-
-        return match (ReminderCadenceEnum::from($this->cadence($rule))) {
-            ReminderCadenceEnum::Weekly => trans_choice('{1}every week|every :count weeks', $interval),
-            ReminderCadenceEnum::Monthly => trans_choice('{1}every month|every :count months', $interval),
-            default => trans_choice('{1}every year|every :count years', $interval),
-        };
     }
 
     private function summary(?Reminder $rule): string
@@ -313,7 +258,10 @@ class ContactReminderBlock
 
         return __('You will be reminded :moments, :cadence, at :time :zone.', [
             'moments' => $listed,
-            'cadence' => $this->cadenceWords($rule),
+            'cadence' => ReminderWords::cadence(
+                ReminderCadenceEnum::from($this->cadence($rule)),
+                $rule instanceof Reminder ? $rule->frequency_interval : 1,
+            ),
             'time' => $this->time($rule),
             'zone' => $this->zone($rule),
         ]);
@@ -355,6 +303,7 @@ class ContactReminderBlock
             ReminderInactiveReasonEnum::RecordArchived => __('This reminder is quiet because this record is archived. Unarchive it and the reminder starts again.'),
             ReminderInactiveReasonEnum::RecordDeleted => __('This reminder is quiet because this record was deleted. Restore it and the reminder starts again.'),
             ReminderInactiveReasonEnum::FieldRemoved => __('This reminder is quiet because this field has left the structure. Put the field back and the reminder starts again.'),
+            ReminderInactiveReasonEnum::PausedByUser => __('This reminder is quiet because you paused it. Open its own screen to start it again.'),
             null => __('This reminder is quiet.'),
         };
     }

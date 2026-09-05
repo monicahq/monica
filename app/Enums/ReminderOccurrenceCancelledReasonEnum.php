@@ -61,6 +61,7 @@ enum ReminderOccurrenceCancelledReasonEnum: string
             ReminderInactiveReasonEnum::RecordArchived => self::RecordArchived,
             ReminderInactiveReasonEnum::RecordDeleted => self::RecordDeleted,
             ReminderInactiveReasonEnum::FieldRemoved => self::FieldRemoved,
+            ReminderInactiveReasonEnum::PausedByUser => self::RuleDisabled,
         };
     }
 

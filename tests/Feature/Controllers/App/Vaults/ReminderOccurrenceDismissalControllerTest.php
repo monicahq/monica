@@ -119,6 +119,22 @@ class ReminderOccurrenceDismissalControllerTest extends TestCase
         $this->actingAs($user)->put($this->url($other, $occurrence))->assertStatus(404);
     }
 
+    #[Test]
+    public function it_lands_back_on_the_screen_the_request_came_from(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $rule = $this->rule($vault);
+        $occurrence = $this->deadlineFor($rule, '+2 days', 'on::');
+
+        $from = route('reminders.show', ['vault' => $vault, 'reminder' => $rule]);
+
+        $this->actingAs($user)
+            ->from($from)
+            ->put($this->url($vault, $occurrence))
+            ->assertRedirect($from);
+    }
+
     private function url(Vault $vault, ReminderOccurrence $occurrence): string
     {
         return route('reminders.occurrences.dismissal.update', [

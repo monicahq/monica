@@ -21,6 +21,11 @@ use Illuminate\Http\Request;
  *
  * A deadline of another account or of another vault never reaches here: the
  * route binding refuses it.
+ *
+ * The answer lands back where the request came from. The same deadline is offered
+ * on the list and on the screen of the rule behind it, and somebody who closed
+ * one from the second wants to stay there. The list is the fallback for a request
+ * that arrived without a referrer.
  */
 class ReminderOccurrenceDismissalController extends Controller
 {
@@ -33,12 +38,12 @@ class ReminderOccurrenceDismissalController extends Controller
             )->execute();
         } catch (ReminderOccurrenceIsFinished $e) {
             return redirect()
-                ->route('reminders.index', $vault)
+                ->back(fallback: route('reminders.index', $vault))
                 ->with('error', $e->getMessage());
         }
 
         return redirect()
-            ->route('reminders.index', $vault)
+            ->back(fallback: route('reminders.index', $vault))
             ->with('status', __('Done with it.'))
             ->with('status_description', __('The rule is still on, so the next one is still coming.'));
     }

@@ -136,7 +136,7 @@ class VaultRemindersSentViewModel
     {
         return $this->occurrences ??= ReminderOccurrence::query()
             ->sentInVault($this->vault)
-            ->with(['reminder.remindable.avatar', 'reminder.field', 'notifications'])
+            ->with(['vault', 'reminder.remindable.avatar', 'reminder.field', 'notifications'])
             ->simplePaginate(self::PER_PAGE)
             ->withQueryString();
     }

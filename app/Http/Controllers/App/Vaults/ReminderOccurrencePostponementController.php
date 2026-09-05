@@ -32,6 +32,12 @@ use Illuminate\Validation\Rule;
  * Two refusals come back as messages rather than as errors: an instant already
  * past, and a deadline somebody has since dealt with in another tab. Both are
  * things a person can do by accident, and neither is a bug to be reported.
+ *
+ * Every answer lands back where the request came from. The same deadline is
+ * offered on the list and on the screen of the rule behind it, and somebody who
+ * moved one from the second wants to see it move there rather than be taken to
+ * the first. The list is the fallback for a request that arrived without a
+ * referrer, which is the only address that is right for a request from nowhere.
  */
 class ReminderOccurrencePostponementController extends Controller
 {
@@ -60,7 +66,7 @@ class ReminderOccurrencePostponementController extends Controller
         }
 
         return redirect()
-            ->route('reminders.index', $vault)
+            ->back(fallback: route('reminders.index', $vault))
             ->with('status', __('Put off.'))
             ->with('status_description', __('The reminder will come back at the moment you chose.'));
     }
@@ -99,7 +105,7 @@ class ReminderOccurrencePostponementController extends Controller
     private function refuse(Vault $vault, string $message): RedirectResponse
     {
         return redirect()
-            ->route('reminders.index', $vault)
+            ->back(fallback: route('reminders.index', $vault))
             ->withInput()
             ->withErrors(['postponement' => $message]);
     }

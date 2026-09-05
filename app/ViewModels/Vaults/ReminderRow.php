@@ -44,7 +44,7 @@ class ReminderRow
     ) {}
 
     /**
-     * @return array{uuid: string, day: string, month: string, year: string, cadence: string, cadenceIcon: string, contactName: string|null, contactUrl: string|null, avatarUrl: string|null, text: string, icon: string, relative: string, exact: string, isLate: bool, zone: string, currently: string, dismissUrl: string, testUrl: string, postponeUrl: string, presets: array<int, array{value: string, label: string, hint: string}>}
+     * @return array{uuid: string, day: string, month: string, year: string, cadence: string, cadenceIcon: string, contactName: string|null, contactUrl: string|null, avatarUrl: string|null, text: string, icon: string, relative: string, exact: string, isLate: bool, zone: string, currently: string, dismissUrl: string, testUrl: string, postponeUrl: string, reminderUrl: string|null, presets: array<int, array{value: string, label: string, hint: string}>}
      */
     public function get(): array
     {
@@ -54,17 +54,18 @@ class ReminderRow
             'uuid' => $this->occurrence->uuid,
             'zone' => $this->zone(),
             'dismissUrl' => route('reminders.occurrences.dismissal.update', [
-                'vault' => $this->occurrence->vault_id,
+                'vault' => $this->occurrence->vault,
                 'reminderOccurrence' => $this->occurrence,
             ]),
             'testUrl' => route('reminders.occurrences.testNotification.create', [
-                'vault' => $this->occurrence->vault_id,
+                'vault' => $this->occurrence->vault,
                 'reminderOccurrence' => $this->occurrence,
             ]),
             'postponeUrl' => route('reminders.occurrences.postponement.update', [
-                'vault' => $this->occurrence->vault_id,
+                'vault' => $this->occurrence->vault,
                 'reminderOccurrence' => $this->occurrence,
             ]),
+            'reminderUrl' => $this->reminderUrl(),
             'presets' => $this->presets(),
             'currently' => $this->currently(),
             'day' => $this->dueAt()->translatedFormat('j'),
@@ -209,6 +210,25 @@ class ReminderRow
     }
 
     /**
+     * The screen explaining the rule this deadline came from, or null for a
+     * deadline whose rule has gone: history outlives the rule that made it, and
+     * a link to a page that answers 404 is worse than no link.
+     */
+    private function reminderUrl(): ?string
+    {
+        $rule = $this->occurrence->reminder;
+
+        if ($rule === null) {
+            return null;
+        }
+
+        return route('reminders.show', [
+            'vault' => $this->occurrence->vault,
+            'reminder' => $rule,
+        ]);
+    }
+
+    /**
      * The ready answers to "remind me later", each with the instant it lands on.
      *
      * The instants are worked out here rather than in the browser, because they
@@ -296,7 +316,7 @@ class ReminderRow
             return null;
         }
 
-        return route('contacts.show', ['vault' => $this->occurrence->vault_id, 'contact' => $contact]);
+        return route('contacts.show', ['vault' => $this->occurrence->vault, 'contact' => $contact]);
     }
 
     /**
@@ -309,7 +329,7 @@ class ReminderRow
             return null;
         }
 
-        return route('files.show', ['vault' => $this->occurrence->vault_id, 'file' => $contact->avatar]);
+        return route('files.show', ['vault' => $this->occurrence->vault, 'file' => $contact->avatar]);
     }
 
     /**

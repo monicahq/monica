@@ -7,12 +7,15 @@ namespace Tests\Unit\Actions;
 use App\Actions\DeactivateReminders;
 use App\Actions\ReactivateReminders;
 use App\Enums\ReminderInactiveReasonEnum;
+use App\Enums\ReminderOccurrenceCancelledReasonEnum;
+use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -157,6 +160,110 @@ class ReactivateRemindersTest extends TestCase
             subject: $contact,
             reason: ReminderInactiveReasonEnum::RecordArchived,
         )->execute();
+    }
+
+    #[Test]
+    public function it_brings_back_a_rule_somebody_paused_by_hand(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->ruleOf($user);
+        $occurrence = ReminderOccurrence::factory()->for($reminder)->create([
+            'account_id' => $reminder->account_id,
+            'vault_id' => $reminder->vault_id,
+        ]);
+
+        new DeactivateReminders(
+            user: $user,
+            subject: $reminder,
+            reason: ReminderInactiveReasonEnum::PausedByUser,
+        )->execute();
+
+        $count = new ReactivateReminders(
+            user: $user,
+            subject: $reminder,
+            reason: ReminderInactiveReasonEnum::PausedByUser,
+        )->execute();
+
+        $this->assertSame(1, $count);
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'is_active' => true,
+            'inactive_reason' => null,
+        ]);
+        $this->assertDatabaseHas('reminder_occurrences', [
+            'id' => $occurrence->id,
+            'status' => ReminderOccurrenceStatusEnum::Pending->value,
+            'cancelled_reason' => null,
+        ]);
+    }
+
+    /**
+     * The whole point of matching on the reason. Resuming what somebody paused
+     * must not undo what archiving the record did, or a reminder would start
+     * firing about a record nobody can see.
+     */
+    #[Test]
+    public function it_leaves_alone_a_deadline_that_something_else_cancelled(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->ruleOf($user);
+        $archived = ReminderOccurrence::factory()
+            ->for($reminder)
+            ->cancelled(ReminderOccurrenceCancelledReasonEnum::RecordArchived)
+            ->create([
+                'account_id' => $reminder->account_id,
+                'vault_id' => $reminder->vault_id,
+            ]);
+
+        new DeactivateReminders(
+            user: $user,
+            subject: $reminder,
+            reason: ReminderInactiveReasonEnum::PausedByUser,
+        )->execute();
+
+        new ReactivateReminders(
+            user: $user,
+            subject: $reminder,
+            reason: ReminderInactiveReasonEnum::PausedByUser,
+        )->execute();
+
+        $this->assertDatabaseHas('reminder_occurrences', [
+            'id' => $archived->id,
+            'status' => ReminderOccurrenceStatusEnum::Cancelled->value,
+            'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::RecordArchived->value,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_to_resume_a_rule_the_system_silenced(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->ruleOf($user);
+
+        new DeactivateReminders(
+            user: $user,
+            subject: $reminder,
+            reason: ReminderInactiveReasonEnum::RecordArchived,
+        )->execute();
+
+        $count = new ReactivateReminders(
+            user: $user,
+            subject: $reminder,
+            reason: ReminderInactiveReasonEnum::PausedByUser,
+        )->execute();
+
+        $this->assertSame(0, $count);
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::RecordArchived->value,
+        ]);
     }
 
     private function ruleOf(User $user): Reminder

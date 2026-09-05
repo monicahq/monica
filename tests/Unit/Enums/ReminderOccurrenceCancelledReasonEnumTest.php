@@ -47,6 +47,18 @@ class ReminderOccurrenceCancelledReasonEnumTest extends TestCase
             ReminderOccurrenceCancelledReasonEnum::FieldRemoved,
             ReminderOccurrenceCancelledReasonEnum::forInactiveReason(ReminderInactiveReasonEnum::FieldRemoved),
         );
+        $this->assertSame(
+            ReminderOccurrenceCancelledReasonEnum::RuleDisabled,
+            ReminderOccurrenceCancelledReasonEnum::forInactiveReason(ReminderInactiveReasonEnum::PausedByUser),
+        );
+    }
+
+    #[Test]
+    public function it_brings_back_what_somebody_paused(): void
+    {
+        $this->assertTrue(
+            ReminderOccurrenceCancelledReasonEnum::forInactiveReason(ReminderInactiveReasonEnum::PausedByUser)->isReversible(),
+        );
     }
 
     #[Test]

@@ -5,6 +5,11 @@
   what a screen reader announces, and it is what the bubble says to everybody
   else. Both come from the same prop, so they cannot drift apart.
 
+  It renders an anchor when it is given an href, and a button otherwise, the same
+  way <x-button> does. A control that goes somewhere has to be a link: the middle
+  click, the context menu and "open in a new tab" all belong to the browser, and a
+  button that navigates takes them away.
+
   The bubble opens on focus as well as under the pointer. A sentence only a
   pointer can reach is a sentence nobody working from the keyboard ever gets.
 
@@ -22,33 +27,46 @@
 
   @var string $label
   @var string $icon
+  @var string|null $href
   @var string $type
   @var string $align
 --}}
 @props([
   'label',
   'icon',
+  'href' => null,
   'type' => 'button',
   'align' => 'center',
 ])
 
-<button
-  type="{{ $type }}"
-  x-data="{ shown: false }"
-  @mouseenter="shown = true"
-  @mouseleave="shown = false"
-  @focus="shown = true"
-  @blur="shown = false"
-  @keydown.escape="shown = false"
-  aria-label="{{ $label }}"
-  {{
-    $attributes->class([
-      'relative flex size-7.5 flex-none cursor-pointer items-center justify-center rounded-md border border-hairline bg-canvas text-muted',
-      'transition-colors duration-(--duration-fast) ease-out hover:border-hairline-strong hover:text-ink',
-      'focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none',
-    ])
-  }}
->
+@php
+  $classes = [
+    'relative flex size-7.5 flex-none cursor-pointer items-center justify-center rounded-md border border-hairline bg-canvas text-muted no-underline',
+    'transition-colors duration-(--duration-fast) ease-out hover:border-hairline-strong hover:text-ink',
+    'focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none',
+  ];
+
+  /* The bubble is the same in both forms, and it is the reason this markup is
+     assembled here rather than written twice: the two branches differ by one
+     element and one attribute, and a second copy of the bubble is a second
+     thing to keep in step. */
+  $hover = [
+    'x-data' => '{ shown: false }',
+    '@mouseenter' => 'shown = true',
+    '@mouseleave' => 'shown = false',
+    '@focus' => 'shown = true',
+    '@blur' => 'shown = false',
+    '@keydown.escape' => 'shown = false',
+    'aria-label' => $label,
+  ];
+@endphp
+
+@isset($href)
+  <a href="{{ $href }}" {{ $attributes->merge($hover)->class($classes) }}>
+@else
+  <button type="{{ $type }}" {{ $attributes->merge($hover)->class($classes) }}>
+@endisset
+
   <x-icon :name="$icon" :size="15" :stroke-width="1.6" />
 
   <span
@@ -62,4 +80,9 @@
       'right-0' => $align === 'right',
     ])
   >{{ $label }}</span>
-</button>
+
+@isset($href)
+  </a>
+@else
+  </button>
+@endisset
