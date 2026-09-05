@@ -18,10 +18,24 @@ class PasskeyAvailabilityTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Force the scheme rather than leaning on whatever `APP_URL` happens to be.
+     * Passkeys are offered on a secure connection and withheld otherwise, so a
+     * test that asserts either branch has to say which one it is in. Reading it
+     * from configuration made these tests pass or fail according to the address
+     * in a developer's own `.env`.
+     */
+    private function overHttp(): self
+    {
+        URL::forceScheme('http');
+
+        return $this;
+    }
+
     #[Test]
     public function the_sign_in_screen_says_why_and_offers_no_control(): void
     {
-        $response = $this->get(route('auth.login.new'));
+        $response = $this->overHttp()->get(route('auth.login.new'));
 
         $response->assertStatus(200);
         $response->assertSee('Passkeys need a secure connection');
@@ -31,7 +45,7 @@ class PasskeyAvailabilityTest extends TestCase
     #[Test]
     public function the_security_screen_says_why_and_offers_no_control(): void
     {
-        $response = $this->actingAs(User::factory()->create())->get(route('settings.security.index'));
+        $response = $this->overHttp()->actingAs(User::factory()->create())->get(route('settings.security.index'));
 
         $response->assertStatus(200);
         $response->assertSee('Passkeys need a secure connection');
@@ -39,22 +53,9 @@ class PasskeyAvailabilityTest extends TestCase
     }
 
     #[Test]
-    public function both_screens_say_so_when_the_feature_is_switched_off(): void
-    {
-        URL::forceScheme('https');
-        config(['webauthn.enable' => false]);
-
-        $this->get(route('auth.login.new'))->assertSee('Passkeys are switched off on this instance.');
-
-        $this->actingAs(User::factory()->create())
-            ->get(route('settings.security.index'))
-            ->assertSee('Passkeys are switched off on this instance.');
-    }
-
-    #[Test]
     public function the_sign_in_screen_still_offers_a_password_and_a_link(): void
     {
-        $response = $this->get(route('auth.login.new'));
+        $response = $this->overHttp()->get(route('auth.login.new'));
 
         $response->assertSee('Password');
         $response->assertSee('Send me a link instead');

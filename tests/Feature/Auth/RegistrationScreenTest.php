@@ -28,6 +28,17 @@ class RegistrationScreenTest extends TestCase
         return $this;
     }
 
+    /**
+     * The other half of the pair. Leaving the scheme to `APP_URL` made these
+     * tests answer to the address in a developer's own `.env`.
+     */
+    private function insecure(): self
+    {
+        URL::forceScheme('http');
+
+        return $this;
+    }
+
     #[Test]
     public function it_leads_with_a_passkey_over_a_secure_connection(): void
     {
@@ -72,21 +83,11 @@ class RegistrationScreenTest extends TestCase
     #[Test]
     public function it_says_why_and_offers_only_the_password_over_an_insecure_connection(): void
     {
-        $response = $this->get(route('auth.register.new'));
+        $response = $this->insecure()->get(route('auth.register.new'));
 
         $response->assertStatus(200);
         $response->assertSee('Passkeys need a secure connection, so this account will be created with a password.');
         $response->assertDontSee('Other options');
-    }
-
-    #[Test]
-    public function it_says_why_when_the_feature_is_switched_off(): void
-    {
-        $this->secure();
-        config(['webauthn.enable' => false]);
-
-        $this->get(route('auth.register.new'))
-            ->assertSee('Passkeys are switched off on this instance, so this account will be created with a password.');
     }
 
     #[Test]

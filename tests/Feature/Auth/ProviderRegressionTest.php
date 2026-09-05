@@ -6,19 +6,19 @@ namespace Tests\Feature\Auth;
 
 use App\Models\MagicLink;
 use App\Models\User;
+use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\URL;
-use LaravelWebauthn\Auth\EloquentWebAuthnProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
- * The `users` provider is the only one this application has, and it now runs on
- * the `webauthn` driver, so every sign in travels through
- * `EloquentWebAuthnProvider` whether or not a passkey is involved. That provider
- * only checks a password while `webauthn.fallback` is true.
+ * The `users` provider is the only one this application has, and it is back on
+ * the framework's own `eloquent` driver: `laravel/passkeys` authenticates the
+ * user itself rather than replacing the provider, so a password sign in no
+ * longer travels through anything a package supplied.
  *
  * Nothing here is about passkeys. This file exists so that a mistake in that
  * configuration is caught by a failing test naming the credential it broke,
@@ -168,10 +168,10 @@ class ProviderRegressionTest extends TestCase
     }
 
     #[Test]
-    public function it_uses_the_webauthn_driver_for_the_only_provider_there_is(): void
+    public function it_uses_the_framework_provider_for_the_only_provider_there_is(): void
     {
         $this->assertInstanceOf(
-            EloquentWebAuthnProvider::class,
+            EloquentUserProvider::class,
             Auth::guard('web')->getProvider(),
         );
     }
@@ -199,17 +199,6 @@ class ProviderRegressionTest extends TestCase
 
         $this->assertNotNull($found);
         $this->assertEquals($user->id, $found->id);
-    }
-
-    #[Test]
-    public function it_refuses_a_password_when_the_fallback_is_off(): void
-    {
-        config(['webauthn.fallback' => false]);
-
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-        $provider = Auth::guard('web')->getProvider();
-
-        $this->assertFalse($provider->validateCredentials($user, ['password' => 'password']));
     }
 
     private function signedMagicLinkFor(User $user): string

@@ -27,9 +27,21 @@ class LoginViewModelTest extends TestCase
         $this->assertNull($viewModel->passkeysUnavailableReason());
     }
 
+    /**
+     * Say which scheme the request is on rather than inheriting it. In a test
+     * the container's request is built from `APP_URL`, so leaving this implicit
+     * made these assertions answer to the address in a developer's own `.env`.
+     */
+    private function overHttp(): void
+    {
+        $this->app['request']->server->set('HTTPS', 'off');
+    }
+
     #[Test]
     public function it_says_why_over_a_connection_that_is_not_secure(): void
     {
+        $this->overHttp();
+
         $viewModel = new LoginViewModel;
 
         $this->assertFalse($viewModel->passkeysAreAvailable());
@@ -39,6 +51,8 @@ class LoginViewModelTest extends TestCase
     #[Test]
     public function it_exempts_no_host_at_all_not_even_localhost(): void
     {
+        $this->overHttp();
+
         foreach (['localhost', '127.0.0.1', 'erica.test'] as $host) {
             $this->app['request']->headers->set('host', $host);
 
@@ -67,17 +81,5 @@ class LoginViewModelTest extends TestCase
         User::factory()->create(['email' => 'gunther@centralperk.example']);
 
         $this->assertNull(new LoginViewModel()->exampleAccountEmail());
-    }
-
-    #[Test]
-    public function it_says_why_when_the_feature_is_switched_off(): void
-    {
-        $this->app['request']->server->set('HTTPS', 'on');
-        config(['webauthn.enable' => false]);
-
-        $viewModel = new LoginViewModel;
-
-        $this->assertFalse($viewModel->passkeysAreAvailable());
-        $this->assertEquals(PasskeyAvailability::NOT_ENABLED, $viewModel->passkeysUnavailableReason());
     }
 }

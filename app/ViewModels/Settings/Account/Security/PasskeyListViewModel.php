@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Settings\Account\Security;
 
 use App\Models\User;
-use App\Models\WebauthnKey;
+use Laravel\Passkeys\Passkey;
 
 /**
  * The passkeys on an account, as the security screen shows them.
@@ -27,15 +27,15 @@ class PasskeyListViewModel
     public function passkeys(): array
     {
         return $this->user->passkeys()
-            ->orderByRaw('used_at IS NULL')
-            ->orderByDesc('used_at')
+            ->orderByRaw('last_used_at IS NULL')
+            ->orderByDesc('last_used_at')
             ->orderByDesc('created_at')
             ->get()
-            ->map(fn (WebauthnKey $passkey): array => [
+            ->map(fn (Passkey $passkey): array => [
                 'id' => $passkey->id,
                 'name' => $passkey->name,
                 'addedAt' => $passkey->created_at->diffForHumans(),
-                'lastUsedAt' => $passkey->used_at?->diffForHumans(),
+                'lastUsedAt' => $passkey->last_used_at?->diffForHumans(),
             ])
             ->all();
     }

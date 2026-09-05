@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Auth;
 
 use App\Actions\DestroyAccount;
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
@@ -31,12 +31,12 @@ class PasskeyAccountDeletionTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $passkey = WebauthnKey::factory()->create(['user_id' => $user->id]);
+        $passkey = Passkey::factory()->create(['user_id' => $user->id]);
 
         new DestroyAccount(user: $user, account: $user->account)->execute();
 
         $this->assertModelMissing($passkey);
-        $this->assertDatabaseCount('webauthn_keys', 0);
+        $this->assertDatabaseCount('passkeys', 0);
     }
 
     #[Test]
@@ -45,14 +45,14 @@ class PasskeyAccountDeletionTest extends TestCase
         Queue::fake();
 
         $going = User::factory()->create();
-        WebauthnKey::factory()->create(['user_id' => $going->id]);
+        Passkey::factory()->create(['user_id' => $going->id]);
 
         $staying = User::factory()->create();
-        $kept = WebauthnKey::factory()->create(['user_id' => $staying->id]);
+        $kept = Passkey::factory()->create(['user_id' => $staying->id]);
 
         new DestroyAccount(user: $going, account: $going->account)->execute();
 
         $this->assertModelExists($kept);
-        $this->assertDatabaseCount('webauthn_keys', 1);
+        $this->assertDatabaseCount('passkeys', 1);
     }
 }

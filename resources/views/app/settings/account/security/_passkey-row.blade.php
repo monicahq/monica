@@ -71,7 +71,7 @@
 
         <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep it') }}</x-button.secondary>
 
-        <x-form method="delete" :action="route('settings.passkeys.destroy', $passkey['id'])">
+        <x-form method="delete" :action="route('passkey.destroy', $passkey['id'])">
           <x-button.danger size="small">{{ __('Remove') }}</x-button.danger>
         </x-form>
       </div>

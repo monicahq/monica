@@ -373,11 +373,9 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::post('settings/account/security/recovery-codes', [RecoveryCodeController::class, 'create'])->name('settings.recoveryCodes.create');
 
-    // Adding a passkey and signing in with one belong to the package, which
-    // fires events this application listens to. It fires nothing on a rename or
-    // a deletion, so those two are ours.
+    // Adding a passkey, removing one and signing in with one all belong to the
+    // package. It offers no route for a rename, so that one is ours.
     Route::put('settings/account/security/passkeys/{passkey}', [PasskeyController::class, 'update'])->whereNumber('passkey')->name('settings.passkeys.update');
-    Route::delete('settings/account/security/passkeys/{passkey}', [PasskeyController::class, 'destroy'])->whereNumber('passkey')->name('settings.passkeys.destroy');
 
     Route::post('settings/account/security/api-keys', [ApiKeyController::class, 'create'])->name('settings.apiKeys.create');
     Route::delete('settings/account/security/api-keys/{apiKey}', [ApiKeyController::class, 'destroy'])->whereNumber('apiKey')->name('settings.apiKeys.destroy');

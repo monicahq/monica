@@ -9,7 +9,7 @@
         "@alpinejs/morph": "^3.15.12",
         "@hotwired/turbo": "^8.0.23",
         "@imacrayon/alpine-ajax": "^0.12.7",
-        "@simplewebauthn/browser": "^13.3.0",
+        "@laravel/passkeys": "^0.4.0",
         "alpinejs": "^3.15.12",
         "instant.page": "^5.2.0",
       },
@@ -54,6 +54,8 @@
     "@jridgewell/sourcemap-codec": ["@jridgewell/sourcemap-codec@1.5.5", "", {}, "sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og=="],
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
+
+    "@laravel/passkeys": ["@laravel/passkeys@0.4.0", "", { "dependencies": { "@simplewebauthn/browser": "^13.0.0" }, "peerDependencies": { "react": "^18.0.0 || ^19.0.0", "svelte": "^5.0.0", "vue": "^3.3.0" }, "optionalPeers": ["react", "svelte", "vue"] }, "sha512-59UHJHZPrIT8f5hFQJUR1EXhazWZTg3DcJefxSfA3aRj6xu40I/lYDveUY4oL2/h/crq9jjptSKykZDDold7aA=="],
 
     "@napi-rs/wasm-runtime": ["@napi-rs/wasm-runtime@1.2.1", "", { "dependencies": { "@tybys/wasm-util": "^0.10.3" }, "peerDependencies": { "@emnapi/core": "^1.7.1 || ^2.0.0-alpha.3", "@emnapi/runtime": "^1.7.1 || ^2.0.0-alpha.3" } }, "sha512-KjZdi8Q1wh89gsVmghvbrMgWl6ZWmRmHV6wjB7/g4Zf0dyO+hH3neZUtuDNPO00qq5YE5RITVWvrIZKRaAmzGQ=="],
 

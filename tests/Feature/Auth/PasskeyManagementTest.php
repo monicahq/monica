@@ -6,8 +6,8 @@ namespace Tests\Feature\Auth;
 
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
@@ -24,7 +24,7 @@ class PasskeyManagementTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $passkey = WebauthnKey::factory()->create(['user_id' => $user->id, 'name' => 'Untitled']);
+        $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Untitled']);
 
         $response = $this->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), [
             'name' => 'Michael MacBook',
@@ -42,7 +42,7 @@ class PasskeyManagementTest extends TestCase
         Notification::fake();
 
         $user = User::factory()->create();
-        $passkey = WebauthnKey::factory()->create(['user_id' => $user->id]);
+        $passkey = Passkey::factory()->create(['user_id' => $user->id]);
 
         $this->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), ['name' => 'Renamed']);
 
@@ -60,7 +60,7 @@ class PasskeyManagementTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $passkey = WebauthnKey::factory()->create(['user_id' => $user->id, 'name' => 'Michael MacBook']);
+        $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Michael MacBook']);
 
         $response = $this->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), ['name' => '  ']);
 
@@ -74,7 +74,7 @@ class PasskeyManagementTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $passkey = WebauthnKey::factory()->create(['user_id' => $user->id, 'name' => 'Michael MacBook']);
+        $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Michael MacBook']);
 
         $response = $this->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), [
             'name' => str_repeat('a', 256),
@@ -90,9 +90,9 @@ class PasskeyManagementTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $passkey = WebauthnKey::factory()->create(['user_id' => $user->id]);
+        $passkey = Passkey::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->delete(route('settings.passkeys.destroy', $passkey->id));
+        $response = $this->actingAs($user)->delete(route('passkey.destroy', $passkey->id));
 
         $response->assertRedirect(route('settings.security.index'));
         $this->assertModelMissing($passkey);
@@ -104,10 +104,10 @@ class PasskeyManagementTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $going = WebauthnKey::factory()->create(['user_id' => $user->id]);
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        $going = Passkey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->delete(route('settings.passkeys.destroy', $going->id));
+        $response = $this->actingAs($user)->delete(route('passkey.destroy', $going->id));
 
         $response->assertSessionHas('status_description', 'You still have 1 passkey, your password, and a link sent by email.');
     }
@@ -118,9 +118,9 @@ class PasskeyManagementTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $passkey = WebauthnKey::factory()->create(['user_id' => $user->id]);
+        $passkey = Passkey::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->delete(route('settings.passkeys.destroy', $passkey->id));
+        $response = $this->actingAs($user)->delete(route('passkey.destroy', $passkey->id));
 
         $response->assertSessionHas('status_description', 'Your password and a link sent by email still work.');
     }
@@ -131,9 +131,9 @@ class PasskeyManagementTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create(['password' => null]);
-        $passkey = WebauthnKey::factory()->create(['user_id' => $user->id]);
+        $passkey = Passkey::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->delete(route('settings.passkeys.destroy', $passkey->id));
+        $response = $this->actingAs($user)->delete(route('passkey.destroy', $passkey->id));
 
         $response->assertSessionHas(
             'status_description',
@@ -147,7 +147,7 @@ class PasskeyManagementTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $somebodyElse = WebauthnKey::factory()->create(['name' => 'Not yours']);
+        $somebodyElse = Passkey::factory()->create(['name' => 'Not yours']);
 
         $response = $this->actingAs($user)->put(route('settings.passkeys.update', $somebodyElse->id), [
             'name' => 'Mine now',
@@ -163,9 +163,9 @@ class PasskeyManagementTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $somebodyElse = WebauthnKey::factory()->create();
+        $somebodyElse = Passkey::factory()->create();
 
-        $response = $this->actingAs($user)->delete(route('settings.passkeys.destroy', $somebodyElse->id));
+        $response = $this->actingAs($user)->delete(route('passkey.destroy', $somebodyElse->id));
 
         $response->assertStatus(404);
         $this->assertModelExists($somebodyElse);
@@ -174,12 +174,12 @@ class PasskeyManagementTest extends TestCase
     #[Test]
     public function it_refuses_a_guest(): void
     {
-        $passkey = WebauthnKey::factory()->create();
+        $passkey = Passkey::factory()->create();
 
         $this->put(route('settings.passkeys.update', $passkey->id), ['name' => 'x'])
             ->assertRedirect(route('auth.login.new'));
 
-        $this->delete(route('settings.passkeys.destroy', $passkey->id))
+        $this->delete(route('passkey.destroy', $passkey->id))
             ->assertRedirect(route('auth.login.new'));
 
         $this->assertModelExists($passkey);

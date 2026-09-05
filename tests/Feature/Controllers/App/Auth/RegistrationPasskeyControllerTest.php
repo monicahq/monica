@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Auth;
 
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
@@ -114,7 +114,7 @@ class RegistrationPasskeyControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create(['password' => null]);
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
         $this->actingAs($user)->get(route('auth.registerPasskey.new'))
             ->assertSee('Your passkey is created.');

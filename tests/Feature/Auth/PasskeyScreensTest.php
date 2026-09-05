@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
@@ -30,6 +30,18 @@ class PasskeyScreensTest extends TestCase
         return $this;
     }
 
+    /**
+     * The other half of the pair. Leaving the scheme to `APP_URL` made these
+     * tests answer to the address in a developer's own `.env` rather than to the
+     * branch they are about.
+     */
+    private function insecure(): self
+    {
+        URL::forceScheme('http');
+
+        return $this;
+    }
+
     #[Test]
     public function the_sign_in_screen_offers_a_passkey_over_a_secure_connection(): void
     {
@@ -42,7 +54,7 @@ class PasskeyScreensTest extends TestCase
     #[Test]
     public function the_sign_in_screen_offers_no_passkey_over_an_insecure_connection(): void
     {
-        $response = $this->get(route('auth.login.new'));
+        $response = $this->insecure()->get(route('auth.login.new'));
 
         $response->assertStatus(200);
         $response->assertDontSee('Sign in with a passkey');
@@ -65,7 +77,7 @@ class PasskeyScreensTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
+        $response = $this->insecure()->actingAs($user)->get(route('settings.security.index'));
 
         $response->assertStatus(200);
         $response->assertSee('Passkeys need a secure connection');
@@ -76,7 +88,7 @@ class PasskeyScreensTest extends TestCase
     public function the_security_screen_lists_a_passkey_that_has_never_been_used(): void
     {
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['user_id' => $user->id, 'name' => 'Michael MacBook']);
+        Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Michael MacBook']);
 
         $response = $this->secure()->actingAs($user)->get(route('settings.security.index'));
 
@@ -89,7 +101,7 @@ class PasskeyScreensTest extends TestCase
     public function the_security_screen_shows_no_passkey_from_another_account(): void
     {
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['name' => 'Somebody else laptop']);
+        Passkey::factory()->create(['name' => 'Somebody else laptop']);
 
         $response = $this->secure()->actingAs($user)->get(route('settings.security.index'));
 
@@ -119,7 +131,7 @@ class PasskeyScreensTest extends TestCase
     public function a_passkey_created_at_registration_is_listed_like_any_other(): void
     {
         $user = User::factory()->create(['password' => null]);
-        WebauthnKey::factory()->create(['user_id' => $user->id, 'name' => 'Signed up with this']);
+        Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Signed up with this']);
 
         $response = $this->secure()->actingAs($user)->get(route('settings.security.index'));
 

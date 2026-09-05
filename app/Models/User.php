@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passkeys\Contracts\PasskeyUser;
+use Laravel\Passkeys\PasskeyAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Override;
 
@@ -92,7 +94,7 @@ use Override;
     'two_factor_secret',
     'two_factor_recovery_codes',
 ])]
-class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
+class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail, PasskeyUser
 {
     use HasApiTokens;
 
@@ -100,6 +102,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     use HasFactory;
 
     use Notifiable;
+    use PasskeyAuthenticatable;
     use SoftDeletes;
 
     /**
@@ -153,18 +156,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     public function magicLinks(): HasMany
     {
         return $this->hasMany(MagicLink::class);
-    }
-
-    /**
-     * Get the passkeys the user registered. The order is the caller's business:
-     * the security screen wants the most recently used first, and nothing else
-     * reads them as a list.
-     *
-     * @return HasMany<WebauthnKey, $this>
-     */
-    public function passkeys(): HasMany
-    {
-        return $this->hasMany(WebauthnKey::class);
     }
 
     /**

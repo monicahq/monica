@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Cache;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -23,40 +22,40 @@ class PasskeyChallengeTest extends TestCase
     #[Test]
     public function it_issues_a_challenge_without_being_told_who_is_signing_in(): void
     {
-        $response = $this->postJson(route('webauthn.auth.options'));
+        $response = $this->getJson(route('passkey.login-options'));
 
         $response->assertOk();
-        $response->assertJsonStructure(['publicKey' => ['challenge', 'allowCredentials', 'userVerification']]);
+        $response->assertJsonStructure(['options' => ['challenge', 'allowCredentials', 'userVerification']]);
     }
 
     #[Test]
     public function it_names_no_credential_so_nothing_reveals_who_has_an_account(): void
     {
-        $response = $this->postJson(route('webauthn.auth.options'));
+        $response = $this->getJson(route('passkey.login-options'));
 
-        $this->assertSame([], $response->json('publicKey.allowCredentials'));
+        $this->assertSame([], $response->json('options.allowCredentials'));
     }
 
     #[Test]
     public function it_requires_the_device_to_verify_its_owner(): void
     {
-        $response = $this->postJson(route('webauthn.auth.options'));
+        $response = $this->getJson(route('passkey.login-options'));
 
-        $this->assertSame('required', $response->json('publicKey.userVerification'));
+        $this->assertSame('required', $response->json('options.userVerification'));
     }
 
     #[Test]
     public function it_bounds_how_long_the_challenge_stands(): void
     {
-        $response = $this->postJson(route('webauthn.auth.options'));
+        $response = $this->getJson(route('passkey.login-options'));
 
-        $this->assertSame(60000, $response->json('publicKey.timeout'));
+        $this->assertSame(60000, $response->json('options.timeout'));
     }
 
     #[Test]
     public function it_encodes_the_challenge_the_way_the_browser_library_reads_it(): void
     {
-        $challenge = $this->postJson(route('webauthn.auth.options'))->json('publicKey.challenge');
+        $challenge = $this->getJson(route('passkey.login-options'))->json('options.challenge');
 
         $this->assertIsString($challenge);
         $this->assertMatchesRegularExpression('/^[A-Za-z0-9_-]+$/', $challenge);
@@ -67,15 +66,15 @@ class PasskeyChallengeTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->postJson(route('webauthn.store.options'));
+        $response = $this->actingAs($user)->getJson(route('passkey.registration-options'));
 
         $response->assertOk();
         $response->assertJsonStructure([
-            'publicKey' => ['challenge', 'rp', 'user' => ['id', 'name'], 'pubKeyCredParams', 'authenticatorSelection'],
+            'options' => ['challenge', 'rp', 'user' => ['id', 'name'], 'pubKeyCredParams', 'authenticatorSelection'],
         ]);
 
-        $this->assertMatchesRegularExpression('/^[A-Za-z0-9_-]+$/', $response->json('publicKey.challenge'));
-        $this->assertMatchesRegularExpression('/^[A-Za-z0-9_-]+$/', $response->json('publicKey.user.id'));
+        $this->assertMatchesRegularExpression('/^[A-Za-z0-9_-]+$/', $response->json('options.challenge'));
+        $this->assertMatchesRegularExpression('/^[A-Za-z0-9_-]+$/', $response->json('options.user.id'));
     }
 
     #[Test]
@@ -84,8 +83,8 @@ class PasskeyChallengeTest extends TestCase
         $user = User::factory()->create();
 
         $selection = $this->actingAs($user)
-            ->postJson(route('webauthn.store.options'))
-            ->json('publicKey.authenticatorSelection');
+            ->getJson(route('passkey.registration-options'))
+            ->json('options.authenticatorSelection');
 
         $this->assertSame('required', $selection['residentKey']);
         $this->assertSame('required', $selection['userVerification']);
@@ -95,21 +94,26 @@ class PasskeyChallengeTest extends TestCase
     public function it_tells_the_device_which_credentials_this_account_already_holds(): void
     {
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->postJson(route('webauthn.store.options'));
+        $response = $this->actingAs($user)->getJson(route('passkey.registration-options'));
 
-        $this->assertCount(1, $response->json('publicKey.excludeCredentials'));
+        $this->assertCount(1, $response->json('options.excludeCredentials'));
     }
 
     #[Test]
-    public function the_configured_cache_store_carries_a_challenge_between_two_requests(): void
+    public function the_challenge_is_kept_in_the_session_for_the_request_that_answers_it(): void
     {
-        $this->postJson(route('webauthn.auth.options'))->assertOk();
-        Cache::put('webauthn.publicKeyRequest|probe', 'a-challenge', 60);
+        $this->getJson(route('passkey.login-options'))->assertOk();
 
-        $this->postJson(route('webauthn.auth.options'))->assertOk();
+        $this->assertNotNull(session('passkey.verification_options'));
+    }
 
-        $this->assertEquals('a-challenge', Cache::pull('webauthn.publicKeyRequest|probe'));
+    #[Test]
+    public function adding_a_passkey_needs_no_password_to_be_confirmed_first(): void
+    {
+        $user = User::factory()->create(['password' => null]);
+
+        $this->actingAs($user)->getJson(route('passkey.registration-options'))->assertOk();
     }
 }

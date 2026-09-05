@@ -12,7 +12,6 @@ enum EmailType: string
     case MagicLinkCreated = 'magic_link_created';
     case PasskeyAdded = 'passkey_added';
     case PasskeyRemoved = 'passkey_removed';
-    case PasskeyCounterAnomaly = 'passkey_counter_anomaly';
     case PasswordRemoved = 'password_removed';
     case PasswordSet = 'password_set';
     case EmailVerification = 'email_verification';

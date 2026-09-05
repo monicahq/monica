@@ -23,11 +23,11 @@
     "require": {
         "php": "^8.4",
         "ext-intl": "*",
-        "asbiin/laravel-webauthn": "^6.0",
         "bacon/bacon-qr-code": "^3.1",
         "erag/laravel-disposable-email": "^5.2",
         "intervention/image": "^4.0",
         "laravel/framework": "^13.8",
+        "laravel/passkeys": "^0",
         "laravel/sanctum": "^4.3",
         "laravel/tinker": "^3.0",
         "php-http/discovery": "^1.20",

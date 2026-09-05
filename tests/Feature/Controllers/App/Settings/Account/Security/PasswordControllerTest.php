@@ -6,8 +6,8 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Security;
 
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
@@ -122,7 +122,7 @@ class PasswordControllerTest extends TestCase
         URL::forceScheme('https');
 
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
         $response = $this->actingAs($user)->delete(route('settings.password.destroy'));
 
@@ -150,8 +150,11 @@ class PasswordControllerTest extends TestCase
     {
         Queue::fake();
 
+        // Say the scheme rather than inheriting it from `APP_URL`.
+        URL::forceScheme('http');
+
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
         $response = $this->actingAs($user)->delete(route('settings.password.destroy'));
 

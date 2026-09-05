@@ -8,13 +8,13 @@ use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
 use App\Listeners\HandlePasskeyLogin;
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use App\Notifications\NewLoginDetected;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
-use LaravelWebauthn\Events\WebauthnLogin;
+use Laravel\Passkeys\Events\PasskeyVerified;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -29,7 +29,7 @@ class HandlePasskeyLoginTest extends TestCase
 
         $user = User::factory()->create(['last_login_at' => null]);
 
-        new HandlePasskeyLogin()->handle(new WebauthnLogin($user));
+        new HandlePasskeyLogin()->handle(new PasskeyVerified($user, Passkey::factory()->create(['user_id' => $user->id])));
 
         $this->assertNotNull($user->refresh()->last_login_at);
     }
@@ -41,7 +41,7 @@ class HandlePasskeyLoginTest extends TestCase
 
         $user = User::factory()->create();
 
-        new HandlePasskeyLogin()->handle(new WebauthnLogin($user));
+        new HandlePasskeyLogin()->handle(new PasskeyVerified($user, Passkey::factory()->create(['user_id' => $user->id])));
 
         Queue::assertPushedOn(queue: 'low', job: CheckLastLogin::class);
     }
@@ -52,9 +52,9 @@ class HandlePasskeyLoginTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        WebauthnKey::factory()->used()->create(['user_id' => $user->id, 'name' => 'Dwight iPhone']);
+        $passkey = Passkey::factory()->used()->create(['user_id' => $user->id, 'name' => 'Dwight iPhone']);
 
-        new HandlePasskeyLogin()->handle(new WebauthnLogin($user));
+        new HandlePasskeyLogin()->handle(new PasskeyVerified($user, $passkey));
 
         Queue::assertPushedOn(
             queue: 'low',
@@ -71,7 +71,7 @@ class HandlePasskeyLoginTest extends TestCase
 
         $user = User::factory()->create();
 
-        new HandlePasskeyLogin()->handle(new WebauthnLogin($user));
+        new HandlePasskeyLogin()->handle(new PasskeyVerified($user, Passkey::factory()->create(['user_id' => $user->id])));
 
         Notification::assertSentTo(
             $user,

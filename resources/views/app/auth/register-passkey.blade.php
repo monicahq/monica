@@ -32,11 +32,7 @@
         <x-box padding="p-4" class="rounded-lg">
           <div class="space-y-3">
             <x-notice tone="warning">
-              @if ($viewModel->passkeysUnavailableReason() === \App\Helpers\PasskeyAvailability::NOT_SECURE)
                 {{ __('Passkeys need a secure connection, and this one is not. Set a password instead, and add a passkey later over https.') }}
-              @else
-                {{ __('Passkeys are switched off on this instance. Set a password instead.') }}
-              @endif
             </x-notice>
 
             <x-button.secondary :href="route('settings.security.index')" data-turbo="true" class="w-full">{{ __('Set a password') }}</x-button.secondary>
@@ -47,8 +43,6 @@
           padding="p-4"
           class="rounded-lg"
           x-data="passkey({{ \Illuminate\Support\Js::from([
-            'optionsUrl' => route('webauthn.store.options'),
-            'storeUrl' => route('webauthn.store'),
             'redirectUrl' => route('auth.registerPasskey.new'),
             'text' => [
               'defaultName' => __('This device'),

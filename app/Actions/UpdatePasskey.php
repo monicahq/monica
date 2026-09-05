@@ -6,8 +6,8 @@ namespace App\Actions;
 
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
@@ -21,11 +21,11 @@ class UpdatePasskey
 {
     public function __construct(
         private readonly User $user,
-        private readonly WebauthnKey $passkey,
+        private readonly Passkey $passkey,
         private readonly string $name,
     ) {}
 
-    public function execute(): WebauthnKey
+    public function execute(): Passkey
     {
         $this->validate();
         $this->update();

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
@@ -56,7 +56,7 @@ class PasskeyAccessibilityTest extends TestCase
     public function every_passkey_control_is_a_real_button(): void
     {
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
         $html = $this->secure()->actingAs($user)->get(route('settings.security.index'))->getContent();
 
@@ -83,7 +83,7 @@ class PasskeyAccessibilityTest extends TestCase
     public function the_removal_warning_is_words_and_not_only_a_colour(): void
     {
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
         $this->secure()->actingAs($user)->get(route('settings.security.index'))
             ->assertSee('This device will no longer sign you in. Sure?');
@@ -93,7 +93,7 @@ class PasskeyAccessibilityTest extends TestCase
     public function the_last_passkey_of_a_passwordless_account_says_what_it_costs(): void
     {
         $user = User::factory()->create(['password' => null]);
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
         $this->secure()->actingAs($user)->get(route('settings.security.index'))
             ->assertSee('This is your last passkey and you have no password.', escape: false);

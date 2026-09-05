@@ -1,39 +1,15 @@
-import { startRegistration, startAuthentication, browserSupportsWebAuthn } from '@simplewebauthn/browser';
+import { Passkeys, UserCancelledError, PasskeyExistsError, InvalidDomainError, NotSupportedError } from '@laravel/passkeys';
 
 /*
- * The whole of the browser side. It asks the server for a challenge, hands it to
- * the library, and posts back what comes out. It converts nothing: at version 13
- * the library takes and returns the JSON form of the WebAuthn structures, where
- * every binary field is already a base64url string, so the server's options go
- * straight in and the credential comes straight back out.
+ * The whole of the browser side. `@laravel/passkeys` runs the ceremony and talks
+ * to the endpoints its own server package registers, so there are no URLs here:
+ * it knows them, and it carries the CSRF token itself.
  *
  * Every outcome is written into `message`, which the screen renders inside a live
  * region. A cancelled device prompt changes nothing visible on the page, so
  * announcing it is the only way somebody using a screen reader learns that
  * nothing happened.
  */
-
-const post = async (url, body) => {
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ?? '',
-            'X-Requested-With': 'XMLHttpRequest',
-        },
-        body: JSON.stringify(body ?? {}),
-    });
-
-    return response;
-};
-
-const firstError = (payload, fallback) => {
-    const errors = payload?.errors ?? {};
-    const first = Object.values(errors)[0];
-
-    return (Array.isArray(first) ? first[0] : first) ?? payload?.message ?? fallback;
-};
 
 export default (config) => ({
     busy: false,
@@ -48,7 +24,7 @@ export default (config) => ({
     supported: false,
 
     init() {
-        this.supported = browserSupportsWebAuthn();
+        this.supported = Passkeys.isSupported();
     },
 
     /*
@@ -70,24 +46,7 @@ export default (config) => ({
         this.announce('');
 
         try {
-            const options = await post(config.optionsUrl);
-
-            if (!options.ok) {
-                this.announce(firstError(await options.json().catch(() => null), config.text.failed), true);
-
-                return;
-            }
-
-            const { publicKey } = await options.json();
-            const credential = await startRegistration({ optionsJSON: publicKey });
-
-            const stored = await post(config.storeUrl, { ...credential, name: this.chosenName() });
-
-            if (!stored.ok) {
-                this.announce(firstError(await stored.json().catch(() => null), config.text.failed), true);
-
-                return;
-            }
+            await Passkeys.register({ name: this.chosenName() });
 
             window.location = config.redirectUrl;
         } catch (error) {
@@ -102,33 +61,15 @@ export default (config) => ({
         this.announce('');
 
         try {
-            const options = await post(config.optionsUrl);
-
-            if (!options.ok) {
-                this.announce(firstError(await options.json().catch(() => null), config.text.failed), true);
-
-                return;
-            }
-
-            const { publicKey } = await options.json();
-
             /*
-             * `useBrowserAutofill` stays false. True is the flow where the browser
-             * offers passkeys inside a username field, and this screen has no
-             * username field: nothing is typed. The platform's cross-device flow
-             * needs nothing here, it runs inside this same call.
+             * Autofill is deliberately not used. That is the flow where the
+             * browser offers passkeys inside a username field, and this screen
+             * has no username field: nothing is typed. The platform's
+             * cross-device flow needs nothing here, it runs inside this call.
              */
-            const assertion = await startAuthentication({ optionsJSON: publicKey, useBrowserAutofill: false });
+            const { redirect } = await Passkeys.verify();
 
-            const signedIn = await post(config.loginUrl, assertion);
-
-            if (!signedIn.ok) {
-                this.announce(firstError(await signedIn.json().catch(() => null), config.text.failed), true);
-
-                return;
-            }
-
-            window.location = config.redirectUrl;
+            window.location = redirect ?? config.redirectUrl;
         } catch (error) {
             this.announce(this.explain(error), true);
         } finally {
@@ -137,19 +78,28 @@ export default (config) => ({
     },
 
     /*
-     * The two outcomes worth telling apart from a general failure. Anything else
-     * is reported as a failure, because guessing at a cause somebody cannot act
-     * on is worse than saying it did not work.
+     * The outcomes worth telling apart from a general failure. Anything else is
+     * reported as a failure, because guessing at a cause somebody cannot act on
+     * is worse than saying it did not work.
+     *
+     * The library raises its own error types, so this reads a class rather than
+     * a `name` string. A server-side refusal arrives as the base PasskeyError
+     * carrying the message the server chose, which is more useful than anything
+     * that could be written here, so it is passed straight through.
      */
     explain(error) {
-        if (error?.name === 'NotAllowedError') {
+        if (error instanceof UserCancelledError) {
             return config.text.cancelled;
         }
 
-        if (error?.name === 'InvalidStateError') {
+        if (error instanceof PasskeyExistsError) {
             return config.text.alreadyRegistered;
         }
 
-        return config.text.failed;
+        if (error instanceof InvalidDomainError || error instanceof NotSupportedError) {
+            return config.text.failed;
+        }
+
+        return error?.message || config.text.failed;
     },
 });

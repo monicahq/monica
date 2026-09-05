@@ -3,14 +3,12 @@
   beside it, because a control that fails when used is worse than one that is
   not there.
 
-  @var string $reason
+  A secure connection is the whole of the test, so there is one reason and one
+  sentence. The old package carried a master switch as well; `laravel/passkeys`
+  has none, and no deployment could reach it anyway.
 --}}
 <div class="px-4 py-3.5">
   <x-notice tone="warning">
-    @if ($reason === \App\Helpers\PasskeyAvailability::NOT_SECURE)
-      {{ __('Passkeys need a secure connection. Reach this instance over https and they will work.') }}
-    @else
-      {{ __('Passkeys are switched off on this instance.') }}
-    @endif
+    {{ __('Passkeys need a secure connection. Reach this instance over https and they will work.') }}
   </x-notice>
 </div>

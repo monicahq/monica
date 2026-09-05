@@ -44,10 +44,22 @@ class RefusePasskeyLogin
         return $this->candidate;
     }
 
-    private function fail(): never
+    /**
+     * The one refusal, reachable without a candidate to weigh.
+     *
+     * A credential registered nowhere has no user to judge, and it has to be
+     * turned away in exactly these words anyway: a refusal that reads
+     * differently is a refusal that says whether the credential exists.
+     */
+    public static function refuse(): never
     {
         throw ValidationException::withMessages([
             'passkey' => __('These credentials do not match our records.'),
         ]);
+    }
+
+    private function fail(): never
+    {
+        self::refuse();
     }
 }

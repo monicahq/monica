@@ -65,11 +65,7 @@
             that would fail.
           --}}
           <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">
-            @if ($viewModel->passkeysUnavailableReason() === \App\Helpers\PasskeyAvailability::NOT_SECURE)
-              {{ __('Passkeys need a secure connection. Reach this instance over https and you can sign in with one.') }}
-            @else
-              {{ __('Passkeys are switched off on this instance.') }}
-            @endif
+            {{ __('Passkeys need a secure connection. Reach this instance over https and you can sign in with one.') }}
           </x-box>
         @endif
 
@@ -87,8 +83,6 @@
             padding="p-4"
             class="rounded-lg"
             x-data="passkey({{ \Illuminate\Support\Js::from([
-              'optionsUrl' => route('webauthn.auth.options'),
-              'loginUrl' => route('webauthn.auth'),
               'redirectUrl' => route('home.index'),
               'text' => [
                 'cancelled' => __('Nothing was signed in. The prompt was dismissed.'),

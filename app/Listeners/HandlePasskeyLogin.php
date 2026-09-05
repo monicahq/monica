@@ -8,9 +8,8 @@ use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use App\Notifications\NewLoginDetected;
-use LaravelWebauthn\Events\WebauthnLogin;
+use Laravel\Passkeys\Events\PasskeyVerified;
 
 /**
  * Everything this application does once a passkey has signed somebody in.
@@ -23,10 +22,11 @@ use LaravelWebauthn\Events\WebauthnLogin;
  *
  * The activity entry names which passkey was used, because an account with
  * several of them is the normal case and "signed in" alone would not say enough.
+ * The event carries it, so nothing has to be guessed at.
  */
 class HandlePasskeyLogin
 {
-    public function handle(WebauthnLogin $event): void
+    public function handle(PasskeyVerified $event): void
     {
         $user = $event->user;
 
@@ -46,23 +46,10 @@ class HandlePasskeyLogin
             account: $user->account,
             user: $user,
             action: UserActionEnum::PasskeyLogin,
-            parameters: ['name' => $this->passkeyName($user)],
+            parameters: ['name' => $event->passkey->name],
+            loggable: $event->passkey,
         )->onQueue('low');
 
         $user->notify(new NewLoginDetected(ip: request()->ip() ?? ''));
-    }
-
-    /**
-     * Which passkey just let them in. The event does not carry it, so it is read
-     * back as the one used most recently, which RecordPasskeyUse has just
-     * stamped. A passkey removed between the two is not worth guarding against:
-     * the name is for a sentence in a log, not for a decision.
-     */
-    private function passkeyName(User $user): string
-    {
-        return WebauthnKey::query()
-            ->where('user_id', $user->id)
-            ->orderByDesc('used_at')
-            ->value('name') ?? __('a passkey');
     }
 }

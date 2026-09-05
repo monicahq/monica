@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Settings\Account\Security;
 
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use App\ViewModels\Settings\Account\Security\PasskeyListViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -29,7 +29,7 @@ class PasskeyListViewModelTest extends TestCase
     public function it_states_that_a_passkey_has_never_been_used(): void
     {
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['user_id' => $user->id, 'name' => 'MacBook Pro']);
+        Passkey::factory()->create(['user_id' => $user->id, 'name' => 'MacBook Pro']);
 
         $passkeys = new PasskeyListViewModel(user: $user)->passkeys();
 
@@ -43,9 +43,9 @@ class PasskeyListViewModelTest extends TestCase
     public function it_puts_the_most_recently_used_first(): void
     {
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['user_id' => $user->id, 'name' => 'Never used']);
-        WebauthnKey::factory()->create(['user_id' => $user->id, 'name' => 'Used a week ago', 'used_at' => now()->subWeek()]);
-        WebauthnKey::factory()->create(['user_id' => $user->id, 'name' => 'Used today', 'used_at' => now()]);
+        Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Never used']);
+        Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Used a week ago', 'last_used_at' => now()->subWeek()]);
+        Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Used today', 'last_used_at' => now()]);
 
         $names = array_column(new PasskeyListViewModel(user: $user)->passkeys(), 'name');
 
@@ -56,11 +56,11 @@ class PasskeyListViewModelTest extends TestCase
     public function it_counts_the_passkeys_in_the_header(): void
     {
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
         $this->assertEquals('Active · 1 passkey', new PasskeyListViewModel(user: $user)->header());
 
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
         $this->assertEquals('Active · 2 passkeys', new PasskeyListViewModel(user: $user)->header());
     }
@@ -69,7 +69,7 @@ class PasskeyListViewModelTest extends TestCase
     public function it_shows_no_passkey_from_another_account(): void
     {
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['name' => 'Somebody else']);
+        Passkey::factory()->create(['name' => 'Somebody else']);
 
         $this->assertEquals([], new PasskeyListViewModel(user: $user)->passkeys());
     }

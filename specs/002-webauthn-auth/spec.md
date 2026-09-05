@@ -349,7 +349,9 @@ alone.
 - **FR-011**: The system MUST verify that an assertion was produced for this instance's address and
   for a credential registered here, and MUST refuse it otherwise.
 - **FR-012**: The system MUST refuse a sign in when the credential's use counter has not advanced as
-  expected, and MUST tell the account owner by email that this happened.
+  expected. ~~and MUST tell the account owner by email that this happened.~~ **Repealed in part by
+  [spec 021](../021-adopt-laravel-passkeys/spec.md) FR-009, 2026-09-05**: the refusal stays, and the
+  library still performs it, but the email announcing it is gone.
 - **FR-013**: A passkey sign in MUST be refused for a user who is not active, who signs in through
   an identity provider, or whose record has been deleted, and every refusal MUST read identically to
   the refusal for a wrong password, so nothing reveals whether an account exists.
@@ -455,9 +457,12 @@ alone.
   the feature can be developed and tested without a certificate.
 - **FR-040**: The system MUST refuse to remove a password on an instance where passkeys are
   unavailable, so nobody gives up the credential that works for one that cannot.
-- **FR-041**: When a passkey is presented that was created for a different address than the one the
+- **FR-041**: ~~When a passkey is presented that was created for a different address than the one the
   instance now answers on, the system MUST explain that the passkey no longer applies to this
-  address and point at another way in.
+  address and point at another way in.~~ **Repealed by
+  [spec 021](../021-adopt-laravel-passkeys/spec.md) FR-009, 2026-09-05**: such a passkey now gets the
+  ordinary refusal. The browser-side client raises `InvalidDomainError` for the same case, which is
+  where an explanation would go if one is wanted again.
 - **FR-042**: The system MUST NOT expose any passkey material to the user, to another account, or
   through any export, and MUST NOT provide a way to copy a passkey out of Erica.
 

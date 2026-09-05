@@ -4,106 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f508f6516f5c8e6a56499d2f6d33a11",
+    "content-hash": "e45c86991fb4dcaf1fea2608f5b51ffd",
     "packages": [
-        {
-            "name": "asbiin/laravel-webauthn",
-            "version": "6.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/asbiin/laravel-webauthn.git",
-                "reference": "7c65b5fbde8f081fff11ca0127328bc2dd79bd0e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/7c65b5fbde8f081fff11ca0127328bc2dd79bd0e",
-                "reference": "7c65b5fbde8f081fff11ca0127328bc2dd79bd0e",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "^11.0 || ^12.0 || ^13.0",
-                "php": ">=8.2",
-                "psr/http-factory-implementation": "1.0",
-                "symfony/property-access": "^6.4 || ^7.0",
-                "symfony/property-info": "^6.4 || ^7.0",
-                "symfony/serializer": "^6.4 || ^7.0",
-                "web-auth/cose-lib": "^4.0",
-                "web-auth/webauthn-lib": "^5.3",
-                "web-token/jwt-library": "^3.0 || ^4.0"
-            },
-            "require-dev": {
-                "brainmaestro/composer-git-hooks": "^3.0",
-                "ext-sqlite3": "*",
-                "guzzlehttp/psr7": "^2.1",
-                "larastan/larastan": "^2.0 || ^3.0",
-                "laravel/legacy-factories": "^1.0",
-                "laravel/pint": "^1.13",
-                "ocramius/package-versions": "^2.0",
-                "orchestra/testbench": "^9.0 || ^10.0 || ^11.0",
-                "phpstan/phpstan-deprecation-rules": "^1.0 || ^2.0",
-                "phpstan/phpstan-phpunit": "^1.0 || ^2.0",
-                "phpstan/phpstan-strict-rules": "^1.0 || ^2.0",
-                "phpunit/phpunit": "^10.0 || ^11.0 || ^12.0",
-                "psalm/plugin-laravel": "^2.8 || ^3.0 || ^4.0"
-            },
-            "suggest": {
-                "guzzlehttp/psr7": "To provide a psr/http-factory-implementation implementation",
-                "php-http/discovery": "To find a psr/http-factory-implementation implementation",
-                "psr/http-client-implementation": "Required for the AndroidSafetyNet Attestation Statement support",
-                "symfony/psr-http-message-bridge": "To find a psr/http-factory-implementation implementation"
-            },
-            "type": "library",
-            "extra": {
-                "hooks": {
-                    "config": {
-                        "stop-on-failure": [
-                            "pre-commit"
-                        ]
-                    },
-                    "pre-commit": [
-                        "files=$(git diff --staged --name-only);\"$(dirname \"$0\")/../../vendor/bin/pint\" $files; git add $files"
-                    ]
-                },
-                "laravel": {
-                    "providers": [
-                        "LaravelWebauthn\\WebauthnServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "LaravelWebauthn\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alexis Saettler",
-                    "email": "alexis@saettler.org"
-                }
-            ],
-            "description": "Laravel Webauthn support",
-            "keywords": [
-                "laravel",
-                "php",
-                "security",
-                "webauthn"
-            ],
-            "support": {
-                "issues": "https://github.com/asbiin/laravel-webauthn/issues",
-                "source": "https://github.com/asbiin/laravel-webauthn"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/asbiin",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-06-02T17:36:35+00:00"
-        },
         {
             "name": "bacon/bacon-qr-code",
             "version": "v3.1.1",
@@ -1822,6 +1724,74 @@
                 "source": "https://github.com/laravel/framework"
             },
             "time": "2026-08-25T20:57:16+00:00"
+        },
+        {
+            "name": "laravel/passkeys",
+            "version": "v0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/passkeys-server.git",
+                "reference": "a76656ada41b2b4a591f075eddae5ddc67e8ab9c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/passkeys-server/zipball/a76656ada41b2b4a591f075eddae5ddc67e8ab9c",
+                "reference": "a76656ada41b2b4a591f075eddae5ddc67e8ab9c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^11.0|^12.0|^13.0",
+                "illuminate/database": "^11.0|^12.0|^13.0",
+                "illuminate/http": "^11.0|^12.0|^13.0",
+                "illuminate/routing": "^11.0|^12.0|^13.0",
+                "illuminate/support": "^11.0|^12.0|^13.0",
+                "php": "^8.2",
+                "web-auth/webauthn-lib": "5.3.x"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.28.0",
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "pestphp/pest": "^3.0|^4.0",
+                "phpstan/phpstan": "^2.0",
+                "rector/rector": "^2.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Passkeys\\PasskeysServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Passkeys\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Passwordless authentication using WebAuthn/passkeys for Laravel",
+            "homepage": "https://github.com/laravel/passkeys-server",
+            "keywords": [
+                "Authentication",
+                "Passwordless",
+                "laravel",
+                "passkeys",
+                "webauthn"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/passkeys-server/issues",
+                "source": "https://github.com/laravel/passkeys-server"
+            },
+            "time": "2026-05-18T16:26:00+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -8215,96 +8185,6 @@
                 }
             ],
             "time": "2026-08-20T12:26:01+00:00"
-        },
-        {
-            "name": "web-token/jwt-library",
-            "version": "4.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/web-token/jwt-library.git",
-                "reference": "43f7c7dd6799e3bfeb05276af180be3f9362759e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-library/zipball/43f7c7dd6799e3bfeb05276af180be3f9362759e",
-                "reference": "43f7c7dd6799e3bfeb05276af180be3f9362759e",
-                "shasum": ""
-            },
-            "require": {
-                "brick/math": "^0.12|^0.13|^0.14|^0.15|^0.16|^0.17|^0.18|^0.19",
-                "php": ">=8.2",
-                "psr/clock": "^1.0",
-                "spomky-labs/pki-framework": "^1.2.1",
-                "symfony/deprecation-contracts": "^2.5|^3.0"
-            },
-            "conflict": {
-                "spomky-labs/jose": "*"
-            },
-            "suggest": {
-                "ext-bcmath": "GMP or BCMath is highly recommended to improve the library performance",
-                "ext-gmp": "GMP or BCMath is highly recommended to improve the library performance",
-                "ext-openssl": "For key management (creation, optimization, etc.) and some algorithms (AES, RSA, ECDSA, etc.)",
-                "ext-sodium": "Sodium is required for OKP key creation, EdDSA signature algorithm and ECDH-ES key encryption with OKP keys",
-                "paragonie/sodium_compat": "Sodium is required for OKP key creation, EdDSA signature algorithm and ECDH-ES key encryption with OKP keys",
-                "spomky-labs/aes-key-wrap": "For all Key Wrapping algorithms (AxxxKW, AxxxGCMKW, PBES2-HSxxx+AyyyKW...)",
-                "symfony/console": "Needed to use console commands",
-                "symfony/http-client": "To enable JKU/X5U support."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Jose\\Component\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Florent Morselli",
-                    "homepage": "https://github.com/Spomky"
-                },
-                {
-                    "name": "All contributors",
-                    "homepage": "https://github.com/web-token/jwt-framework/contributors"
-                }
-            ],
-            "description": "JWT library",
-            "homepage": "https://github.com/web-token",
-            "keywords": [
-                "JOSE",
-                "JWE",
-                "JWK",
-                "JWKSet",
-                "JWS",
-                "Jot",
-                "RFC7515",
-                "RFC7516",
-                "RFC7517",
-                "RFC7518",
-                "RFC7519",
-                "RFC7520",
-                "bundle",
-                "jwa",
-                "jwt",
-                "symfony"
-            ],
-            "support": {
-                "issues": "https://github.com/web-token/jwt-library/issues",
-                "source": "https://github.com/web-token/jwt-library/tree/4.2.1"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/Spomky",
-                    "type": "github"
-                },
-                {
-                    "url": "https://www.patreon.com/FlorentMorselli",
-                    "type": "patreon"
-                }
-            ],
-            "time": "2026-08-28T12:44:34+00:00"
         },
         {
             "name": "webmozart/assert",

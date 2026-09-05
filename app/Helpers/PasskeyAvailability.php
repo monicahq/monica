@@ -22,8 +22,6 @@ namespace App\Helpers;
  */
 class PasskeyAvailability
 {
-    public const string NOT_ENABLED = 'not_enabled';
-
     public const string NOT_SECURE = 'not_secure';
 
     public static function onThisInstance(): bool
@@ -33,10 +31,6 @@ class PasskeyAvailability
 
     public static function reason(): ?string
     {
-        if (config('webauthn.enable') !== true) {
-            return self::NOT_ENABLED;
-        }
-
         if (! self::isSecureContext()) {
             return self::NOT_SECURE;
         }

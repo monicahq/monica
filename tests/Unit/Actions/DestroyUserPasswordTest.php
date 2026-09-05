@@ -7,8 +7,8 @@ namespace Tests\Unit\Actions;
 use App\Actions\DestroyUserPassword;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use App\Notifications\PasswordRemoved;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
@@ -36,7 +36,7 @@ class DestroyUserPasswordTest extends TestCase
         $this->overASecureConnection();
 
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
         return $user;
     }
@@ -111,8 +111,13 @@ class DestroyUserPasswordTest extends TestCase
     {
         Queue::fake();
 
+        // Say the scheme rather than inheriting it. The container's request is
+        // built from `APP_URL` in a test, so leaving this implicit made the
+        // refusal depend on the address in a developer's own `.env`.
+        $this->app['request']->server->set('HTTPS', 'off');
+
         $user = User::factory()->create();
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
         $this->expectException(ValidationException::class);
 
@@ -141,7 +146,7 @@ class DestroyUserPasswordTest extends TestCase
         $this->overASecureConnection();
 
         $user = User::factory()->create(['password' => null]);
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
         $this->expectException(ValidationException::class);
 

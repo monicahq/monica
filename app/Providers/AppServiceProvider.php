@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Actions\VerifyPasskey;
 use App\Helpers\LocaleCollation;
-use App\Http\Middleware\EnsurePasskeyLoginIsAllowed;
-use App\Http\Responses\PasskeyLoginViewResponse;
-use App\Http\Responses\PasskeyRegisterViewResponse;
+use App\Http\Responses\PasskeyDeletedResponse;
+use App\Http\Responses\PasskeyLoginResponse;
+use App\Models\Passkey;
+use App\Models\User;
 use Carbon\CarbonImmutable;
-use Cose\Algorithm\ManagerFactory as CoseAlgorithmManagerFactory;
-use Cose\Algorithm\Signature\ECDSA;
-use Cose\Algorithm\Signature\EdDSA;
-use Cose\Algorithm\Signature\RSA;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -22,9 +20,10 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use LaravelWebauthn\Actions\AttemptToAuthenticate;
-use LaravelWebauthn\Actions\PrepareAuthenticatedSession;
-use LaravelWebauthn\Facades\Webauthn;
+use Laravel\Passkeys\Actions\VerifyPasskey as BaseVerifyPasskey;
+use Laravel\Passkeys\Contracts\PasskeyDeletedResponse as PasskeyDeletedResponseContract;
+use Laravel\Passkeys\Contracts\PasskeyLoginResponse as PasskeyLoginResponseContract;
+use Laravel\Passkeys\Passkeys;
 use Override;
 
 class AppServiceProvider extends ServiceProvider
@@ -42,57 +41,27 @@ class AppServiceProvider extends ServiceProvider
     #[Override]
     public function register(): void
     {
-        Webauthn::loginViewResponseUsing(PasskeyLoginViewResponse::class);
-        Webauthn::registerViewResponseUsing(PasskeyRegisterViewResponse::class);
-
-        $this->refuseTheSignatureAlgorithmNobodyShouldUse();
+        $this->configurePasskeys();
     }
 
     /**
-     * Leave RS1 out of the algorithms a passkey may be verified with.
+     * Point the passkey package at this application's own pieces.
      *
-     * RS1 is RSASSA-PKCS1-v1_5 with SHA-1, which `web-auth/cose-lib` refuses to
-     * instantiate from 4.7 onwards without an explicit acknowledgement that it is
-     * insecure. `asbiin/laravel-webauthn` 6.0.0 registers it in its factory
-     * unconditionally, so merely leaving it out of
-     * `webauthn.public_key_credential_parameters`, which this application already
-     * does, is not enough: the factory throws while it is being built.
-     *
-     * The factory exists so the manager can pick from it, and the manager is
-     * generated from the parameters we configure, so registering fourteen
-     * algorithms instead of fifteen changes nothing except that a legacy
-     * signature scheme nobody here wants is never constructed.
-     *
-     * This is a workaround for a bug in the package rather than a decision about
-     * cryptography, and it comes out when the package stops registering RS1.
+     * The model is ours so that a passkey somebody does not own is a 404 rather
+     * than the package's 403. `VerifyPasskey` is ours so that a deactivated user
+     * is refused before the signature is looked at, which the package's own
+     * authorisation callback happens too late to do. The two responses are ours
+     * because the package redirects to a fixed path from config, and this
+     * application redirects to where the person was going.
      */
-    private function refuseTheSignatureAlgorithmNobodyShouldUse(): void
+    private function configurePasskeys(): void
     {
-        $this->app->bind(
-            CoseAlgorithmManagerFactory::class,
-            fn (): CoseAlgorithmManagerFactory => tap(new CoseAlgorithmManagerFactory, function (CoseAlgorithmManagerFactory $factory): void {
-                $algorithms = [
-                    RSA\RS256::class,
-                    RSA\RS384::class,
-                    RSA\RS512::class,
-                    RSA\PS256::class,
-                    RSA\PS384::class,
-                    RSA\PS512::class,
-                    ECDSA\ES256::class,
-                    ECDSA\ES256K::class,
-                    ECDSA\ES384::class,
-                    ECDSA\ES512::class,
-                    EdDSA\Ed256::class,
-                    EdDSA\Ed512::class,
-                    EdDSA\Ed25519::class,
-                    EdDSA\EdDSA::class,
-                ];
+        Passkeys::usePasskeyModel(Passkey::class);
+        Passkeys::useUserModel(User::class);
 
-                foreach ($algorithms as $algorithm) {
-                    $factory->add((string) $algorithm::identifier(), new $algorithm);
-                }
-            }),
-        );
+        $this->app->bind(BaseVerifyPasskey::class, VerifyPasskey::class);
+        $this->app->singleton(PasskeyLoginResponseContract::class, PasskeyLoginResponse::class);
+        $this->app->singleton(PasskeyDeletedResponseContract::class, PasskeyDeletedResponse::class);
     }
 
     /**
@@ -104,30 +73,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->forceSecureUrls();
         $this->configureRateLimiting();
-        $this->configurePasskeyPipeline();
         $this->configureCollation();
         $this->configureDefaultsProduction();
-    }
-
-    /**
-     * The stages a passkey sign-in goes through.
-     *
-     * EnsurePasskeyLoginIsAllowed sits before AttemptToAuthenticate on purpose,
-     * so a deactivated user or one who signs in through an identity provider is
-     * refused before any signature is looked at.
-     *
-     * The package's own throttling stage is deliberately absent: naming a
-     * limiter in config/webauthn.php replaces it with `throttle:login` on the
-     * route, because the package's key is the username and the address, and a
-     * passkey sign-in sends no username.
-     */
-    private function configurePasskeyPipeline(): void
-    {
-        Webauthn::authenticateThrough(fn (): array => [
-            EnsurePasskeyLoginIsAllowed::class,
-            AttemptToAuthenticate::class,
-            PrepareAuthenticatedSession::class,
-        ]);
     }
 
     /**
@@ -147,14 +94,13 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * The limiter the passkey sign-in routes are throttled by, named in
-     * config/webauthn.php.
+     * The limiter the passkey routes are throttled by, named in
+     * config/passkeys.php.
      *
-     * It exists because the package's own limiter keys on the username field and
-     * the address, and a passkey sign-in sends no username. That key would
-     * collapse to the address alone, so everybody behind one address would share
-     * a single allowance. Keying on the credential instead means one passkey
-     * being hammered cannot lock out the person at the next desk.
+     * It exists because the package ships `throttle:6,1`, which keys on the
+     * address alone, so everybody behind one address would share a single
+     * allowance. Keying on the credential instead means one passkey being
+     * hammered cannot lock out the person at the next desk.
      *
      * The options request carries no credential yet, so it falls back to the
      * address, which is the only thing there is to count at that point.
@@ -163,8 +109,8 @@ class AppServiceProvider extends ServiceProvider
     {
         RateLimiter::for('api', fn (Request $request) => Limit::perMinute(60)
             ->by($request->user()?->id ?: $request->ip()));
-        RateLimiter::for('login', fn (Request $request): Limit => Limit::perMinute(self::MAX_LOGIN_ATTEMPTS)
-            ->by($request->string('id')->lower()->toString().'|'.$request->ip()));
+        RateLimiter::for('passkey', fn (Request $request): Limit => Limit::perMinute(self::MAX_LOGIN_ATTEMPTS)
+            ->by($request->string('credential.id')->lower()->toString().'|'.$request->ip()));
     }
 
     /**

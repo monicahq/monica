@@ -18,8 +18,6 @@
   @else
     <div
       x-data="passkey({{ \Illuminate\Support\Js::from([
-        'optionsUrl' => route('webauthn.store.options'),
-        'storeUrl' => route('webauthn.store'),
         'redirectUrl' => route('settings.security.index'),
         'text' => [
           'defaultName' => __('This device'),

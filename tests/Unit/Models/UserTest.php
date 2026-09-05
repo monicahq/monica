@@ -9,8 +9,8 @@ use App\Enums\NameOrderEnum;
 use App\Enums\NumberFormatEnum;
 use App\Models\Account;
 use App\Models\EmailSent;
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -202,7 +202,7 @@ class UserTest extends TestCase
     public function it_has_passkeys(): void
     {
         $user = User::factory()->create();
-        WebauthnKey::factory()->count(2)->create(['user_id' => $user->id]);
+        Passkey::factory()->count(2)->create(['user_id' => $user->id]);
 
         $this->assertTrue($user->passkeys()->exists());
         $this->assertCount(2, $user->passkeys);
@@ -215,7 +215,7 @@ class UserTest extends TestCase
 
         $this->assertFalse($user->hasPasskeys());
 
-        WebauthnKey::factory()->create(['user_id' => $user->id]);
+        Passkey::factory()->create(['user_id' => $user->id]);
 
         $this->assertTrue($user->hasPasskeys());
     }

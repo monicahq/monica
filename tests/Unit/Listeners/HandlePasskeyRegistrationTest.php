@@ -7,13 +7,13 @@ namespace Tests\Unit\Listeners;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Listeners\HandlePasskeyRegistration;
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use App\Notifications\PasskeyAdded;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
-use LaravelWebauthn\Events\WebauthnRegister;
+use Laravel\Passkeys\Events\PasskeyRegistered;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -27,9 +27,9 @@ class HandlePasskeyRegistrationTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $passkey = WebauthnKey::factory()->create(['user_id' => $user->id, 'name' => 'Yubikey in a drawer']);
+        $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Yubikey in a drawer']);
 
-        new HandlePasskeyRegistration()->handle(new WebauthnRegister($passkey));
+        new HandlePasskeyRegistration()->handle(new PasskeyRegistered($passkey->user, $passkey));
 
         Queue::assertPushedOn(
             queue: 'low',
@@ -46,9 +46,9 @@ class HandlePasskeyRegistrationTest extends TestCase
         Notification::fake();
 
         $user = User::factory()->create();
-        $passkey = WebauthnKey::factory()->create(['user_id' => $user->id, 'name' => 'MacBook Pro']);
+        $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => 'MacBook Pro']);
 
-        new HandlePasskeyRegistration()->handle(new WebauthnRegister($passkey));
+        new HandlePasskeyRegistration()->handle(new PasskeyRegistered($passkey->user, $passkey));
 
         Notification::assertSentTo(
             $user,

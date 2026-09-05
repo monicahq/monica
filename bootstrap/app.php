@@ -11,7 +11,6 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -65,8 +64,15 @@ return Application::configure(basePath: dirname(__DIR__))
         // exchange is fetch calls from one Alpine component, so a refusal has to
         // come back as a body it can read and show, not as a redirect carrying
         // the message in a session it never looks at.
+        // The ceremony endpoints are named one by one rather than matched by
+        // prefix. Removing a passkey lives under the same prefix and is an
+        // ordinary form submission, so a guest reaching it has to be redirected
+        // to the sign in screen like anywhere else, not handed a 401 body that
+        // no browser would render.
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*')
-                || $request->is(config('webauthn.prefix', 'webauthn').'/*'),
+                || $request->is('passkeys/*')
+                || $request->is('user/passkeys')
+                || $request->is('user/passkeys/options'),
         );
     })->create();

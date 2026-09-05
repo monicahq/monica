@@ -6,10 +6,10 @@ namespace App\Listeners;
 
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\Passkey;
 use App\Models\User;
-use App\Models\WebauthnKey;
 use App\Notifications\PasskeyAdded;
-use LaravelWebauthn\Events\WebauthnRegister;
+use Laravel\Passkeys\Events\PasskeyRegistered;
 
 /**
  * Record and announce a passkey somebody just added.
@@ -20,17 +20,12 @@ use LaravelWebauthn\Events\WebauthnRegister;
  */
 class HandlePasskeyRegistration
 {
-    public function handle(WebauthnRegister $event): void
+    public function handle(PasskeyRegistered $event): void
     {
-        $passkey = $event->webauthnKey;
+        $passkey = $event->passkey;
+        $user = $event->user;
 
-        if (! $passkey instanceof WebauthnKey) {
-            return;
-        }
-
-        $user = $passkey->user;
-
-        if (! $user instanceof User) {
+        if (! $passkey instanceof Passkey || ! $user instanceof User) {
             return;
         }
 

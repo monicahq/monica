@@ -56,11 +56,7 @@
           <x-box>
             @unless ($viewModel->passkeysAreAvailable())
               <x-notice tone="warning" class="mb-4">
-                @if ($viewModel->passkeysUnavailableReason() === \App\Helpers\PasskeyAvailability::NOT_SECURE)
-                  {{ __('Passkeys need a secure connection, so this account will be created with a password. Reach this instance over https to use one.') }}
-                @else
-                  {{ __('Passkeys are switched off on this instance, so this account will be created with a password.') }}
-                @endif
+                {{ __('Passkeys need a secure connection, so this account will be created with a password. Reach this instance over https to use one.') }}
               </x-notice>
             @endunless
 

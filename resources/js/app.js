@@ -19,7 +19,7 @@ window.Turbo = Turbo;
 Turbo.session.drive = false;
 
 /*
- * The passkey component wraps @simplewebauthn/browser. It is registered as data
+ * The passkey component wraps @laravel/passkeys. It is registered as data
  * rather than a plugin because it is one screen's behaviour, not a global.
  */
 Alpine.data('passkey', passkey);
