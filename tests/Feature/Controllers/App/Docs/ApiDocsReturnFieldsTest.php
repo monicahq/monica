@@ -4,15 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Docs;
 
+use App\Enums\TemplateAppliesToEnum;
+use App\Models\Contact;
 use App\Models\EmailSent;
+use App\Models\File;
 use App\Models\Log;
+use App\Models\Template;
+use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
 use App\ViewModels\Docs\ApiDocsSection;
 use App\ViewModels\Docs\ApiDocsViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
@@ -338,6 +346,100 @@ class ApiDocsReturnFieldsTest extends TestCase
                 ]);
             }),
 
+            'contacts-index' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $this->contactWithAPicture($vault);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts");
+            }),
+
+            'contacts-show' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $contact = $this->contactWithAPicture($vault);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}");
+            }),
+
+            'contacts-create' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = $this->vaultReadyForContacts($user);
+
+                return $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", ['first_name' => 'Pam']);
+            }),
+
+            'contacts-name-update' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $contact = $this->contactWithAPicture($vault);
+
+                return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/name", [
+                    'prefix' => null,
+                    'first_name' => 'Pam',
+                    'middle_name' => null,
+                    'last_name' => 'Halpert',
+                    'suffix' => null,
+                    'maiden_name' => 'Beesly',
+                    'nickname' => 'Pammy',
+                    'name_order' => 'given_first',
+                ]);
+            }),
+
+            'contacts-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}");
+            }),
+
+            'contacts-favourite-update' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $contact = $this->contactWithAPicture($vault);
+
+                return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/favourite", ['favourite' => true]);
+            }),
+
+            'contacts-avatar-update' => $this->asSomebody(function (User $user): TestResponse {
+                Storage::fake('local');
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+                return $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
+                    'avatar' => UploadedFile::fake()->image('pam.jpg', 400, 400),
+                ]);
+            }),
+
+            'contacts-avatar-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $contact = $this->contactWithAPicture($vault);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar");
+            }),
+
+            'contacts-template-version-update' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $template = Template::factory()->create(['account_id' => $user->account_id]);
+                $version = TemplateVersion::factory()->published()->create([
+                    'template_id' => $template->id,
+                    'account_id' => $user->account_id,
+                    'version_number' => 1,
+                ]);
+
+                $template->published_version_id = $version->id;
+                $template->save();
+
+                $file = File::factory()->create([
+                    'account_id' => $vault->account_id,
+                    'vault_id' => $vault->id,
+                    'mime_type' => 'image/webp',
+                ]);
+                $contact = Contact::factory()->create([
+                    'vault_id' => $vault->id,
+                    'account_id' => $user->account_id,
+                    'template_version_id' => $version->id,
+                    'avatar_file_id' => $file->id,
+                ]);
+
+                return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/template-version", []);
+            }),
+
             'vaults-destroy' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
 
@@ -351,6 +453,48 @@ class ApiDocsReturnFieldsTest extends TestCase
     /**
      * @param  callable(User): TestResponse  $call
      */
+    /**
+     * A vault a contact can be written down in, which means one holding a
+     * published contact template for a new contact to start from.
+     */
+    private function vaultReadyForContacts(User $user): Vault
+    {
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Basic contact']);
+        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+
+        $template->published_version_id = $version->id;
+        $template->save();
+
+        VaultDefaultTemplate::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'applies_to' => TemplateAppliesToEnum::Contact,
+            'template_version_id' => $version->id,
+        ]);
+
+        return $vault;
+    }
+
+    /**
+     * A contact carrying a picture, because a contact drawn as its initials
+     * answers a null `avatar` and the two fields inside it would go unchecked.
+     */
+    private function contactWithAPicture(Vault $vault): Contact
+    {
+        $file = File::factory()->create([
+            'account_id' => $vault->account_id,
+            'vault_id' => $vault->id,
+            'mime_type' => 'image/webp',
+        ]);
+
+        return Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'avatar_file_id' => $file->id,
+        ]);
+    }
+
     private function asSomebody(callable $call): TestResponse
     {
         $user = User::factory()->create();

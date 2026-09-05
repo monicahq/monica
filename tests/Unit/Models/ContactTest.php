@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
+use App\Enums\ContactGroupingEnum;
+use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Exceptions\ContactNeedsAName;
 use App\Helpers\LocaleCollation;
@@ -255,6 +257,123 @@ class ContactTest extends TestCase
 
         $this->assertCount(1, $contacts);
         $this->assertTrue($listed->is($contacts->first()));
+    }
+
+    #[Test]
+    public function it_groups_everyone_who_is_neither_archived_nor_partial(): void
+    {
+        $vault = Vault::factory()->create();
+        $beesly = Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Beesly']);
+        $halpert = Contact::factory()->favourite()->create(['vault_id' => $vault->id, 'last_name' => 'Halpert']);
+        Contact::factory()->archived()->create(['vault_id' => $vault->id, 'last_name' => 'Scott']);
+        Contact::factory()->partial()->create(['vault_id' => $vault->id, 'first_name' => 'Jack']);
+
+        $contacts = Contact::query()->inGrouping(ContactGroupingEnum::Everyone)->get();
+
+        $this->assertEqualsCanonicalizing([$beesly->id, $halpert->id], $contacts->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_groups_only_the_favourites(): void
+    {
+        $vault = Vault::factory()->create();
+        $halpert = Contact::factory()->favourite()->create(['vault_id' => $vault->id, 'last_name' => 'Halpert']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Beesly']);
+        Contact::factory()->favourite()->archived()->create(['vault_id' => $vault->id, 'last_name' => 'Scott']);
+
+        $contacts = Contact::query()->inGrouping(ContactGroupingEnum::Favourites)->get();
+
+        $this->assertCount(1, $contacts);
+        $this->assertTrue($halpert->is($contacts->first()));
+    }
+
+    #[Test]
+    public function it_groups_the_archived_apart_from_everybody_else(): void
+    {
+        $vault = Vault::factory()->create();
+        $scott = Contact::factory()->archived()->create(['vault_id' => $vault->id, 'last_name' => 'Scott']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Beesly']);
+        Contact::factory()->archived()->partial()->create(['vault_id' => $vault->id, 'first_name' => 'Jack']);
+
+        $contacts = Contact::query()->inGrouping(ContactGroupingEnum::Archived)->get();
+
+        $this->assertCount(1, $contacts);
+        $this->assertTrue($scott->is($contacts->first()));
+    }
+
+    #[Test]
+    public function it_matches_a_search_term_against_the_name_ignoring_what_the_language_calls_a_minor_difference(): void
+    {
+        $vault = Vault::factory()->create();
+        $halpert = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Élodie', 'last_name' => 'Halpert']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
+
+        $contacts = Contact::query()->matchingSearch('elodie')->get();
+
+        $this->assertCount(1, $contacts);
+        $this->assertTrue($halpert->is($contacts->first()));
+    }
+
+    #[Test]
+    public function it_matches_a_search_term_against_the_nickname_as_it_was_typed(): void
+    {
+        $vault = Vault::factory()->create();
+        $schrute = Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Schrute', 'nickname' => 'Beet Boy']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Scott', 'nickname' => null]);
+
+        $contacts = Contact::query()->matchingSearch('BEET')->get();
+
+        $this->assertCount(1, $contacts);
+        $this->assertTrue($schrute->is($contacts->first()));
+    }
+
+    #[Test]
+    public function it_matches_everybody_when_the_search_term_is_blank(): void
+    {
+        $vault = Vault::factory()->create();
+        Contact::factory()->count(2)->create(['vault_id' => $vault->id]);
+
+        $this->assertCount(2, Contact::query()->matchingSearch('   ')->get());
+    }
+
+    #[Test]
+    public function it_sorts_by_a_column_in_the_direction_asked_for(): void
+    {
+        $vault = Vault::factory()->create();
+        Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
+
+        $descending = Contact::query()->sortedBy(ContactSortEnum::Name, 'desc')->pluck('last_name')->all();
+
+        $this->assertEquals(['Scott', 'Beesly'], $descending);
+    }
+
+    #[Test]
+    public function it_sorts_the_contacts_a_column_says_nothing_about_to_the_end_in_both_directions(): void
+    {
+        $vault = Vault::factory()->create();
+        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Beesly', 'last_activity_at' => null]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Schrute', 'last_activity_at' => CarbonImmutable::parse('2026-01-02')]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Scott', 'last_activity_at' => CarbonImmutable::parse('2026-01-01')]);
+
+        $ascending = Contact::query()->sortedBy(ContactSortEnum::LastSpoke, 'asc')->pluck('last_name')->all();
+        $descending = Contact::query()->sortedBy(ContactSortEnum::LastSpoke, 'desc')->pluck('last_name')->all();
+
+        $this->assertEquals(['Scott', 'Schrute', 'Beesly'], $ascending);
+        $this->assertEquals(['Schrute', 'Scott', 'Beesly'], $descending);
+    }
+
+    #[Test]
+    public function it_ends_every_sort_on_the_identifier_so_a_page_boundary_cannot_move(): void
+    {
+        $vault = Vault::factory()->create();
+        $moment = CarbonImmutable::parse('2026-01-01 09:00:00');
+        $first = Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Scott', 'created_at' => $moment]);
+        $second = Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Scott', 'created_at' => $moment]);
+
+        $order = Contact::query()->sortedBy(ContactSortEnum::Added, 'asc')->pluck('id')->all();
+
+        $this->assertEquals([$first->id, $second->id], $order);
     }
 
     #[Test]

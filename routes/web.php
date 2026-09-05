@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\ContactGroupingEnum;
 use App\Http\Controllers\App\Admin\AccountController as AdminAccountController;
 use App\Http\Controllers\App\Admin\AccountLifetimeAccessController;
 use App\Http\Controllers\App\Admin\AccountStorageLimitController;
@@ -76,7 +77,6 @@ use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
 use App\Http\Controllers\App\Vaults\VaultReminderController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
-use App\ViewModels\Vaults\ContactsViewModel;
 use Illuminate\Support\Facades\Route;
 
 // Shows nothing of its own: signed in goes wherever the account is up to, everybody
@@ -140,7 +140,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     // The filter is in the address so the chips read as places. The constraint keeps
     // this route off `contacts/new`.
     Route::get('vaults/{vault}/contacts/{filter?}', [ContactController::class, 'index'])
-        ->whereIn('filter', [ContactsViewModel::FILTER_FAVOURITES, ContactsViewModel::FILTER_ARCHIVED])
+        ->whereIn('filter', [ContactGroupingEnum::Favourites->value, ContactGroupingEnum::Archived->value])
         ->name('contacts.index');
 
     // Above the page route, so a template page keyed the same word is shadowed. The

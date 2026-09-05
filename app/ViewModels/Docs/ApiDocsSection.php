@@ -167,14 +167,19 @@ class ApiDocsSection
      */
     private function titleForParams(array $section): string
     {
-        if (($section['bodyParams'] ?? []) !== []) {
-            return 'Body parameters';
+        $kinds = array_filter([
+            'Path parameters' => ($section['pathParams'] ?? []) !== [],
+            'Query parameters' => ($section['queryParams'] ?? []) !== [],
+            'Body parameters' => ($section['bodyParams'] ?? []) !== [],
+        ]);
+
+        // The rows of every kind are listed together under one heading, so a
+        // heading naming one kind would mislabel the rows of the other. An
+        // endpoint taking a path and a query at once is the plain word instead.
+        if (count($kinds) !== 1) {
+            return 'Parameters';
         }
 
-        if (($section['queryParams'] ?? []) !== []) {
-            return 'Query parameters';
-        }
-
-        return 'Parameters';
+        return (string) array_key_first($kinds);
     }
 }

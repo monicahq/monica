@@ -84,6 +84,8 @@ class NotificationTest extends TestCase
     #[Test]
     public function it_tells_one_person_about_one_thing_once_per_channel(): void
     {
+        $this->freezeTime();
+
         $notification = Notification::factory()->create();
 
         $written = Notification::query()->insertOrIgnore([

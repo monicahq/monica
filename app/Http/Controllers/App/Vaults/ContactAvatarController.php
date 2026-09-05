@@ -6,6 +6,7 @@ namespace App\Http\Controllers\App\Vaults;
 
 use App\Actions\DestroyContactAvatar;
 use App\Actions\UpdateContactAvatar;
+use App\Exceptions\NotEnoughStorageLeft;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\Vault;
@@ -18,6 +19,11 @@ use Illuminate\Http\Request;
  * ContactController::edit()} and this is only the write. The upload becomes a
  * file of the vault, and taking it off lets that file go rather than deleting
  * it.
+ *
+ * Becoming a file of the vault is also what makes the account's storage apply to
+ * it, and running out of storage is a refusal about the account rather than a
+ * question about the input, so it is caught here rather than in the validator and
+ * sent back to the form the picture was chosen on.
  */
 class ContactAvatarController extends Controller
 {
@@ -29,12 +35,16 @@ class ContactAvatarController extends Controller
             'avatar' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
         ]);
 
-        new UpdateContactAvatar(
-            user: $request->user(),
-            vault: $vault,
-            contact: $contact,
-            upload: $validated['avatar'],
-        )->execute();
+        try {
+            new UpdateContactAvatar(
+                user: $request->user(),
+                vault: $vault,
+                contact: $contact,
+                upload: $validated['avatar'],
+            )->execute();
+        } catch (NotEnoughStorageLeft $e) {
+            return back()->withErrors(['avatar' => $e->getMessage()]);
+        }
 
         return redirect()
             ->route('contacts.edit', ['vault' => $vault, 'contact' => $contact])

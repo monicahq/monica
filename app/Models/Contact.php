@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ContactGroupingEnum;
+use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Exceptions\ContactNeedsAName;
 use App\Helpers\LocaleCollation;
@@ -301,6 +303,91 @@ class Contact extends Model
     public function scopeListed(Builder $query): void
     {
         $query->where('is_archived', false)->where('is_partial', false);
+    }
+
+    /**
+     * Scope the query to the people one chip of the contacts list shows.
+     *
+     * Somebody still waiting to be filled in is out of all three, and somebody
+     * archived is out of every one but their own, which is what makes archived a
+     * grouping rather than an addition to the others.
+     *
+     * This lives here rather than on the screen that first needed it because the
+     * API answers the same three groupings, and a narrowing kept in a view model
+     * is one the two surfaces would sooner or later disagree about.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeInGrouping(Builder $query, ContactGroupingEnum $grouping): void
+    {
+        $query->where('is_partial', false)
+            ->where('is_archived', $grouping === ContactGroupingEnum::Archived)
+            ->when(
+                $grouping === ContactGroupingEnum::Favourites,
+                fn (Builder $query): Builder => $query->where('is_favourite', true),
+            );
+    }
+
+    /**
+     * Scope the query to the people a search term reaches.
+     *
+     * The term meets `search_key` folded for the language given, minus what that
+     * language calls a minor difference. French drops the accent on an e, so
+     * elodie finds Élodie; Spanish keeps its tilde and Turkish its dotless i, so
+     * nunez does not find Ñuñez. It is matched byte for byte, and `sort_name` is
+     * not matched at all, because a database has its own opinion: MySQL's
+     * `utf8mb4_unicode_ci` has no Spanish tailoring and calls n and ñ the same,
+     * which would undo all of the above.
+     *
+     * The term is handed to the fold as it was typed rather than lowercased on
+     * the way, because the fold lowercases with that language's own rules, and
+     * Turkish turns I into a dotless i that `mb_strtolower` never produces. The
+     * nickname is stored as somebody typed it and never folded, so it is matched
+     * case insensitively against the plainly lowercased term instead.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeMatchingSearch(Builder $query, string $term, ?string $locale = null): void
+    {
+        $term = mb_trim($term);
+
+        if ($term === '') {
+            return;
+        }
+
+        $folded = LocaleCollation::foldForSearch($term, $locale);
+        $lowered = mb_strtolower($term);
+
+        $query->where(function (Builder $query) use ($lowered, $folded): void {
+            $query->whereLike('search_key', "%{$folded}%", caseSensitive: true)
+                ->orWhereLike('nickname', "%{$lowered}%", caseSensitive: false);
+        });
+    }
+
+    /**
+     * Order the query the way the contacts list is ordered.
+     *
+     * A column that can be unknown is sorted on twice, the unknowns pushed to
+     * the end first. Postgres ranks null above everything and MySQL and SQLite
+     * rank it below, so saying it here is what keeps the list reading the same
+     * on every installation.
+     *
+     * The order always ends on the primary key, or two people added in the same
+     * second land in whatever order the database felt like and a row appears on
+     * two pages or on none.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeSortedBy(Builder $query, ContactSortEnum $sort, string $direction): void
+    {
+        $column = $sort->column();
+
+        $query->when(
+            $sort->canBeUnknown(),
+            fn (Builder $query): Builder => $query->orderByRaw("{$column} is null"),
+        )
+            ->orderBy($column, $direction === 'desc' ? 'desc' : 'asc')
+            ->orderBy('id');
     }
 
     /**

@@ -1,0 +1,216 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Controllers\Api;
+
+use App\Models\Contact;
+use App\Models\File;
+use App\Models\User;
+use App\Models\Vault;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Sanctum\Sanctum;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class ContactAvatarControllerTest extends TestCase
+{
+    use RefreshDatabase;
+
+    #[Test]
+    public function it_puts_a_picture_on_a_contact(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
+            'avatar' => UploadedFile::fake()->image('pam.jpg', 400, 400),
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.avatar.id', $contact->refresh()->avatar->uuid);
+        $this->assertNotNull($contact->refresh()->avatar_file_id);
+        $this->assertDatabaseHas('files', ['id' => $contact->refresh()->avatar_file_id, 'vault_id' => $vault->id]);
+    }
+
+    #[Test]
+    public function it_lets_the_previous_picture_go_when_a_new_one_arrives(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
+            'avatar' => UploadedFile::fake()->image('first.jpg', 400, 400),
+        ])->assertOk();
+
+        $first = $contact->refresh()->avatar_file_id;
+
+        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
+            'avatar' => UploadedFile::fake()->image('second.jpg', 400, 400),
+        ])->assertOk();
+
+        $this->assertNotEquals($first, $contact->refresh()->avatar_file_id);
+        $this->assertModelExists(File::query()->findOrFail($first));
+    }
+
+    #[Test]
+    public function it_refuses_a_file_that_is_not_a_picture(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
+            'avatar' => UploadedFile::fake()->create('dundies.pdf', 10, 'application/pdf'),
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['avatar']);
+        $this->assertNull($contact->refresh()->avatar_file_id);
+    }
+
+    #[Test]
+    public function it_refuses_a_picture_over_the_size_it_accepts(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
+            'avatar' => UploadedFile::fake()->image('huge.jpg')->size(6000),
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['avatar']);
+        $this->assertNull($contact->refresh()->avatar_file_id);
+    }
+
+    #[Test]
+    public function it_refuses_a_picture_that_would_take_the_account_past_its_storage(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $user->account->update([
+            'is_self_hosted' => false,
+            'storage_limit_in_bytes' => 1024,
+            'storage_used_in_bytes' => 1024,
+        ]);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
+            'avatar' => UploadedFile::fake()->image('pam.jpg', 400, 400),
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['avatar']);
+        $this->assertNull($contact->refresh()->avatar_file_id);
+    }
+
+    #[Test]
+    public function it_takes_a_picture_off_and_draws_the_initials_again(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+        $colour = $contact->avatar_colour;
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
+            'avatar' => UploadedFile::fake()->image('pam.jpg', 400, 400),
+        ])->assertOk();
+
+        $response = $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar");
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.avatar', null);
+        $response->assertJsonPath('data.attributes.avatar_colour', $colour);
+        $this->assertNull($contact->refresh()->avatar_file_id);
+    }
+
+    #[Test]
+    public function it_answers_the_same_way_when_the_contact_had_no_picture(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar");
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.avatar', null);
+    }
+
+    #[Test]
+    public function it_returns_not_found_for_a_contact_of_another_account(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create();
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
+            'avatar' => UploadedFile::fake()->image('pam.jpg', 400, 400),
+        ])->assertNotFound();
+        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar")->assertNotFound();
+        $this->assertNull($contact->refresh()->avatar_file_id);
+    }
+
+    #[Test]
+    public function it_returns_not_found_for_a_contact_reached_through_the_wrong_vault_of_the_same_account(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $other = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', "/api/v1/vaults/{$other->uuid}/contacts/{$contact->uuid}/avatar", [
+            'avatar' => UploadedFile::fake()->image('pam.jpg', 400, 400),
+        ])->assertNotFound();
+        $this->assertNull($contact->refresh()->avatar_file_id);
+    }
+
+    #[Test]
+    public function it_refuses_a_caller_with_no_credential(): void
+    {
+        $vault = Vault::factory()->create();
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar")->assertUnauthorized();
+    }
+}

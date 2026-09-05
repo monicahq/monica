@@ -6,6 +6,8 @@ namespace App\Http\Controllers\App\Vaults;
 
 use App\Actions\CreateContact;
 use App\Actions\DestroyContact;
+use App\Enums\ContactGroupingEnum;
+use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Exceptions\CannotDeleteTheMeContact;
@@ -31,8 +33,8 @@ class ContactController extends Controller
                 user: $request->user(),
                 vault: $vault,
                 query: (string) $request->string('query'),
-                filter: $filter ?? ContactsViewModel::FILTER_ALL,
-                sort: (string) $request->string('sort', ContactsViewModel::SORT_NAME),
+                filter: $filter ?? ContactGroupingEnum::Everyone->value,
+                sort: (string) $request->string('sort', ContactSortEnum::Name->value),
                 direction: (string) $request->string('direction', ContactsViewModel::DIRECTION_ASC),
             ),
         ]);

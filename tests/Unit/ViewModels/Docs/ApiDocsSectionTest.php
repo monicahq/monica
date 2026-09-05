@@ -21,6 +21,30 @@ class ApiDocsSectionTest extends TestCase
     ];
 
     #[Test]
+    public function it_names_the_one_kind_of_parameter_an_endpoint_takes(): void
+    {
+        $param = [['name' => 'vault', 'type' => 'uuid', 'required' => true, 'description' => 'Which one.']];
+
+        $path = new ApiDocsSection([...$this->minimum, 'pathParams' => $param]);
+        $query = new ApiDocsSection([...$this->minimum, 'queryParams' => $param]);
+        $body = new ApiDocsSection([...$this->minimum, 'bodyParams' => $param]);
+
+        $this->assertSame('Path parameters', $path->paramsTitle);
+        $this->assertSame('Query parameters', $query->paramsTitle);
+        $this->assertSame('Body parameters', $body->paramsTitle);
+    }
+
+    #[Test]
+    public function it_falls_back_to_the_plain_word_when_an_endpoint_takes_more_than_one_kind(): void
+    {
+        $param = [['name' => 'vault', 'type' => 'uuid', 'required' => true, 'description' => 'Which one.']];
+
+        $section = new ApiDocsSection([...$this->minimum, 'pathParams' => $param, 'queryParams' => $param]);
+
+        $this->assertSame('Parameters', $section->paramsTitle);
+    }
+
+    #[Test]
     public function it_has_no_return_fields_when_the_definition_names_none(): void
     {
         $section = new ApiDocsSection($this->minimum);

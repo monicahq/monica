@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Enums\ContactGroupingEnum;
+use App\Enums\ContactSortEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Helpers\LocaleCollation;
 use App\Models\Contact;
@@ -114,7 +116,7 @@ class ContactsViewModelTest extends TestCase
         $groups = new ContactsViewModel(
             user: $user,
             vault: $vault,
-            sort: ContactsViewModel::SORT_ADDED,
+            sort: ContactSortEnum::Added->value,
         )->groups();
 
         $this->assertCount(1, $groups);
@@ -201,7 +203,7 @@ class ContactsViewModelTest extends TestCase
             user: $user,
             vault: $vault,
             query: 'schrute',
-            sort: ContactsViewModel::SORT_ADDED,
+            sort: ContactSortEnum::Added->value,
             direction: ContactsViewModel::DIRECTION_DESC,
         );
 
@@ -245,7 +247,7 @@ class ContactsViewModelTest extends TestCase
 
         $this->assertStringEndsWith(
             '/contacts/archived',
-            new ContactsViewModel(user: $user, vault: $vault, filter: ContactsViewModel::FILTER_ARCHIVED)->searchUrl(),
+            new ContactsViewModel(user: $user, vault: $vault, filter: ContactGroupingEnum::Archived->value)->searchUrl(),
         );
     }
 
@@ -263,8 +265,8 @@ class ContactsViewModelTest extends TestCase
             direction: 'sideways',
         );
 
-        $this->assertEquals(ContactsViewModel::FILTER_ALL, $viewModel->filter());
-        $this->assertEquals(ContactsViewModel::SORT_NAME, $viewModel->sort());
+        $this->assertEquals(ContactGroupingEnum::Everyone->value, $viewModel->filter());
+        $this->assertEquals(ContactSortEnum::Name->value, $viewModel->sort());
         $this->assertEquals(ContactsViewModel::DIRECTION_ASC, $viewModel->direction());
     }
 
@@ -323,7 +325,7 @@ class ContactsViewModelTest extends TestCase
         $byDate = collect(new ContactsViewModel(
             user: $user,
             vault: $vault,
-            sort: ContactsViewModel::SORT_LAST_SPOKE,
+            sort: ContactSortEnum::LastSpoke->value,
             direction: ContactsViewModel::DIRECTION_DESC,
         )->directions());
 
@@ -340,7 +342,7 @@ class ContactsViewModelTest extends TestCase
         $sorts = collect(new ContactsViewModel(
             user: $user,
             vault: $vault,
-            sort: ContactsViewModel::SORT_ADDED,
+            sort: ContactSortEnum::Added->value,
         )->sorts());
 
         $this->assertEquals(['name', 'nickname', 'last-spoke', 'added'], $sorts->pluck('value')->all());

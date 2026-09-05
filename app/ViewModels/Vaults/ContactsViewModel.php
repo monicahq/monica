@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Enums\ContactGroupingEnum;
+use App\Enums\ContactSortEnum;
 use App\Helpers\LocaleCollation;
 use App\Models\Contact;
 use App\Models\User;
@@ -20,57 +22,22 @@ use Illuminate\Pagination\Paginator;
  * order there are no letters: a run of names under "F" ordered by when they were
  * added is a heading that lies.
  *
- * Everything the URL carries is checked against the constants below before it
- * reaches the query, so a hand-edited address narrows the list to nothing at
- * worst.
+ * Which people the chips narrow to, and which orders are on offer, are
+ * {@see ContactGroupingEnum} and {@see ContactSortEnum}, because the API answers
+ * the same ones and neither surface may invent one of its own. Everything the
+ * URL carries is checked against them before it reaches the query, so a
+ * hand-edited address narrows the list to nothing at worst.
+ *
+ * The direction stays a pair of plain strings. Two values used inline do not
+ * earn an enum, and unlike the other two it names nothing about a contact.
  */
 class ContactsViewModel
 {
-    public const string FILTER_ALL = 'all';
-
-    public const string FILTER_FAVOURITES = 'favourites';
-
-    public const string FILTER_ARCHIVED = 'archived';
-
-    public const string SORT_NAME = 'name';
-
-    public const string SORT_NICKNAME = 'nickname';
-
-    public const string SORT_LAST_SPOKE = 'last-spoke';
-
-    public const string SORT_ADDED = 'added';
-
     public const string DIRECTION_ASC = 'asc';
 
     public const string DIRECTION_DESC = 'desc';
 
     private const int PER_PAGE = 50;
-
-    /**
-     * Kept apart from the key the URL carries, so the address does not name the
-     * schema.
-     *
-     * The name orders on `sort_key`, not `sort_name`: ordered as bytes, Élodie
-     * lands after Z for a French reader. Comparing keys byte by byte gives that
-     * language's order on a database that knows no language.
-     */
-    private const array SORT_COLUMNS = [
-        self::SORT_NAME => 'sort_key',
-        self::SORT_NICKNAME => 'nickname',
-        self::SORT_LAST_SPOKE => 'last_activity_at',
-        self::SORT_ADDED => 'created_at',
-    ];
-
-    /**
-     * The sorts whose column a contact may have nothing in, and which therefore
-     * need saying where the unknowns go.
-     *
-     * @var list<string>
-     */
-    private const array SORTS_THAT_CAN_BE_UNKNOWN = [
-        self::SORT_NICKNAME,
-        self::SORT_LAST_SPOKE,
-    ];
 
     /** @var Paginator<int, Contact>|null */
     private ?Paginator $contacts = null;
@@ -82,8 +49,8 @@ class ContactsViewModel
         private readonly User $user,
         private readonly Vault $vault,
         private readonly string $query = '',
-        private readonly string $filter = self::FILTER_ALL,
-        private readonly string $sort = self::SORT_NAME,
+        private readonly string $filter = ContactGroupingEnum::Everyone->value,
+        private readonly string $sort = ContactSortEnum::Name->value,
         private readonly string $direction = self::DIRECTION_ASC,
     ) {}
 
@@ -108,7 +75,7 @@ class ContactsViewModel
      */
     public function headcount(): int
     {
-        return $this->countOf(self::FILTER_ALL);
+        return $this->countOf(ContactGroupingEnum::Everyone);
     }
 
     /**
@@ -176,20 +143,14 @@ class ContactsViewModel
      */
     public function filters(): array
     {
-        $chips = [
-            self::FILTER_ALL => ['label' => __('Everyone'), 'icon' => 'people'],
-            self::FILTER_FAVOURITES => ['label' => __('Favourites'), 'icon' => 'star'],
-            self::FILTER_ARCHIVED => ['label' => __('Archived'), 'icon' => 'file'],
-        ];
-
-        return array_map(fn (string $key): array => [
-            'key' => $key,
-            'label' => $chips[$key]['label'],
-            'icon' => $chips[$key]['icon'],
-            'count' => $this->countOf($key) === 0 ? null : $this->countOf($key),
-            'url' => $this->url(filter: $key),
-            'isCurrent' => $key === $this->filter(),
-        ], array_keys($chips));
+        return array_map(fn (ContactGroupingEnum $grouping): array => [
+            'key' => $grouping->value,
+            'label' => __($grouping->label()),
+            'icon' => $grouping->icon(),
+            'count' => $this->countOf($grouping) === 0 ? null : $this->countOf($grouping),
+            'url' => $this->url(filter: $grouping->value),
+            'isCurrent' => $grouping === $this->grouping(),
+        ], ContactGroupingEnum::cases());
     }
 
     /**
@@ -212,7 +173,7 @@ class ContactsViewModel
      */
     public function directions(): array
     {
-        $labels = in_array($this->sort(), [self::SORT_LAST_SPOKE, self::SORT_ADDED], true)
+        $labels = $this->sortOrder()->isChronological()
             ? [self::DIRECTION_DESC => __('Newest first'), self::DIRECTION_ASC => __('Oldest first')]
             : [self::DIRECTION_ASC => __('A to Z'), self::DIRECTION_DESC => __('Z to A')];
 
@@ -318,16 +279,26 @@ class ContactsViewModel
 
     public function filter(): string
     {
-        return in_array($this->filter, [self::FILTER_ALL, self::FILTER_FAVOURITES, self::FILTER_ARCHIVED], true)
-            ? $this->filter
-            : self::FILTER_ALL;
+        return $this->grouping()->value;
     }
 
     public function sort(): string
     {
-        return array_key_exists($this->sort, self::SORT_COLUMNS)
-            ? $this->sort
-            : self::SORT_NAME;
+        return $this->sortOrder()->value;
+    }
+
+    /**
+     * Everything the URL carries is checked here before it reaches the query, so
+     * a hand-edited address narrows the list to nothing at worst.
+     */
+    private function grouping(): ContactGroupingEnum
+    {
+        return ContactGroupingEnum::fromValueOrEveryone($this->filter);
+    }
+
+    private function sortOrder(): ContactSortEnum
+    {
+        return ContactSortEnum::fromValueOrName($this->sort);
     }
 
     public function direction(): string
@@ -359,34 +330,19 @@ class ContactsViewModel
     }
 
     /**
-     * The order always ends on the primary key, or two people added in the same
-     * second land in whatever order the database felt like and a row appears on
-     * two pages or on none.
-     *
-     * A column that can be unknown is sorted on twice, the unknowns pushed to
-     * the end first. Postgres ranks null above everything and MySQL and SQLite
-     * rank it below, so saying it here is what keeps the list reading the same
-     * on every installation.
-     *
      * @return Builder<Contact>
      */
     private function ordered(): Builder
     {
-        $column = self::SORT_COLUMNS[$this->sort()];
-
-        return $this->matching()
-            ->when(
-                in_array($this->sort(), self::SORTS_THAT_CAN_BE_UNKNOWN, true),
-                fn (Builder $query): Builder => $query->orderByRaw("{$column} is null"),
-            )
-            ->orderBy($column, $this->direction())
-            ->orderBy('id');
+        return $this->matching()->sortedBy($this->sortOrder(), $this->direction());
     }
 
     /**
-     * The people the chip and the search box between them leave. A partial
-     * contact is out of every one of these lists until they are filled in, and
-     * archived contacts are out of all but their own chip.
+     * The people the chip and the search box between them leave.
+     *
+     * The narrowing and the ordering are scopes on the model rather than queries
+     * written here, because the API answers the same groupings, the same search
+     * and the same orders, and two copies of this would drift apart in silence.
      *
      * @return Builder<Contact>
      */
@@ -394,38 +350,17 @@ class ContactsViewModel
     {
         return Contact::query()
             ->where('vault_id', $this->vault->id)
-            ->where('is_partial', false)
-            ->where('is_archived', $this->filter() === self::FILTER_ARCHIVED)
-            ->when($this->filter() === self::FILTER_FAVOURITES, fn (Builder $query): Builder => $query->where('is_favourite', true))
-            ->when($this->searchTerm() !== '', fn (Builder $query): Builder => $query->where(function (Builder $query): void {
-                $query->whereLike('search_key', "%{$this->foldedSearchTerm()}%", caseSensitive: true)
-                    ->orWhereLike('nickname', "%{$this->searchTerm()}%", caseSensitive: false);
-            }));
+            ->inGrouping($this->grouping())
+            ->matchingSearch($this->query);
     }
 
     /**
-     * Lowercased and matched case insensitively, which is what reaches a
-     * nickname, stored as somebody typed it and never folded.
+     * Whether anything was typed, once the blank space around it is gone. How
+     * the term is matched is the model's business, not this screen's.
      */
     private function searchTerm(): string
     {
-        return mb_strtolower(mb_trim($this->query));
-    }
-
-    /**
-     * What the reader typed, minus what their language calls a minor difference,
-     * which is what meets `search_key`. French drops the accent on an e, so
-     * elodie finds Élodie; Spanish keeps its tilde and Turkish its dotless i, so
-     * nunez does not find Ñuñez.
-     *
-     * Matched byte for byte, and `sort_name` not matched at all, because a
-     * database has its own opinion: MySQL's `utf8mb4_unicode_ci` has no Spanish
-     * tailoring and calls n and ñ the same, which would undo all of the above.
-     * Both sides are already lowercased, so comparing exactly loses nothing.
-     */
-    private function foldedSearchTerm(): string
-    {
-        return LocaleCollation::foldForSearch(mb_trim($this->query));
+        return mb_trim($this->query);
     }
 
     /**
@@ -437,10 +372,10 @@ class ContactsViewModel
     private static function definitions(): array
     {
         return [
-            ['key' => self::SORT_NAME, 'label' => __('Name')],
-            ['key' => self::SORT_NICKNAME, 'label' => __('Nickname')],
-            ['key' => self::SORT_LAST_SPOKE, 'label' => __('Last spoke')],
-            ['key' => self::SORT_ADDED, 'label' => __('Added')],
+            ['key' => ContactSortEnum::Name->value, 'label' => __('Name')],
+            ['key' => ContactSortEnum::Nickname->value, 'label' => __('Nickname')],
+            ['key' => ContactSortEnum::LastSpoke->value, 'label' => __('Last spoke')],
+            ['key' => ContactSortEnum::Added->value, 'label' => __('Added')],
         ];
     }
 
@@ -450,7 +385,7 @@ class ContactsViewModel
      */
     private function isGrouped(): bool
     {
-        return $this->sort() === self::SORT_NAME;
+        return $this->sortOrder() === ContactSortEnum::Name;
     }
 
     /** Asked of the language the order came from. `mb_strtoupper` cannot answer it. */
@@ -482,13 +417,11 @@ class ContactsViewModel
      * The archived chip is the only one that looks at the archived people,
      * which is what keeps them out of the other two counts.
      */
-    private function countOf(string $filter): int
+    private function countOf(ContactGroupingEnum $grouping): int
     {
-        return $this->counts[$filter] ??= Contact::query()
+        return $this->counts[$grouping->value] ??= Contact::query()
             ->where('vault_id', $this->vault->id)
-            ->where('is_partial', false)
-            ->where('is_archived', $filter === self::FILTER_ARCHIVED)
-            ->when($filter === self::FILTER_FAVOURITES, fn (Builder $query): Builder => $query->where('is_favourite', true))
+            ->inGrouping($grouping)
             ->count();
     }
 
@@ -503,7 +436,7 @@ class ContactsViewModel
 
     private function isNarrowed(): bool
     {
-        return $this->searchTerm() !== '' || $this->filter() !== self::FILTER_ALL;
+        return $this->searchTerm() !== '' || $this->grouping() !== ContactGroupingEnum::Everyone;
     }
 
     /**
@@ -535,6 +468,6 @@ class ContactsViewModel
 
     private function segmentFor(string $filter): ?string
     {
-        return $filter === self::FILTER_ALL ? null : $filter;
+        return $filter === ContactGroupingEnum::Everyone->value ? null : $filter;
     }
 }

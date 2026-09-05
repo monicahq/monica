@@ -1,0 +1,574 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Controllers\Api;
+
+use App\Enums\NameOrderEnum;
+use App\Enums\TemplateAppliesToEnum;
+use App\Models\Contact;
+use App\Models\File;
+use App\Models\Template;
+use App\Models\TemplateVersion;
+use App\Models\User;
+use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
+use Carbon\CarbonImmutable;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class ContactControllerTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /** @var array<string, mixed> */
+    private array $jsonStructure = [
+        'data' => [
+            'type',
+            'id',
+            'attributes' => [
+                'name',
+                'prefix',
+                'first_name',
+                'middle_name',
+                'last_name',
+                'suffix',
+                'maiden_name',
+                'nickname',
+                'name_order',
+                'initials',
+                'avatar_colour',
+                'avatar',
+                'is_favourite',
+                'is_archived',
+                'is_partial',
+                'is_me',
+                'template_version_id',
+                'template_name',
+                'last_activity_at',
+                'created_at',
+                'updated_at',
+            ],
+            'links' => ['self'],
+        ],
+    ];
+
+    #[Test]
+    public function it_lists_the_contacts_of_a_vault_in_name_order(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts");
+
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'data' => [$this->jsonStructure['data']],
+            'meta' => ['page', 'per_page', 'total'],
+        ]);
+        $response->assertJsonCount(2, 'data');
+        $response->assertJsonPath('meta.total', 2);
+        $response->assertJsonPath('data.0.attributes.name', 'Pam Beesly');
+        $response->assertJsonPath('data.1.attributes.name', 'Michael Scott');
+    }
+
+    #[Test]
+    public function it_describes_a_contact_the_way_the_screen_shows_them(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $file = File::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'mime_type' => 'image/webp']);
+        $contact = Contact::factory()->favourite()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $user->account_id,
+            'prefix' => 'Mr',
+            'first_name' => 'Dwight',
+            'middle_name' => 'Kurt',
+            'last_name' => 'Schrute',
+            'nickname' => 'Beet Boy',
+            'name_order' => NameOrderEnum::FamilyFirst,
+            'avatar_file_id' => $file->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}");
+
+        $response->assertOk();
+        $response->assertJsonStructure($this->jsonStructure);
+        $response->assertJsonPath('data.type', 'contact');
+        $response->assertJsonPath('data.id', $contact->uuid);
+        $response->assertJsonPath('data.attributes.name', 'Schrute Dwight Kurt');
+        $response->assertJsonPath('data.attributes.prefix', 'Mr');
+        $response->assertJsonPath('data.attributes.nickname', 'Beet Boy');
+        $response->assertJsonPath('data.attributes.name_order', 'family_first');
+        $response->assertJsonPath('data.attributes.initials', 'DS');
+        $response->assertJsonPath('data.attributes.is_favourite', true);
+        $response->assertJsonPath('data.attributes.avatar.id', $file->uuid);
+    }
+
+    #[Test]
+    public function it_draws_a_contact_without_a_picture_as_their_initials(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}");
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.avatar', null);
+        $response->assertJsonPath('data.attributes.avatar_colour', $contact->avatar_colour);
+    }
+
+    #[Test]
+    public function it_lists_only_the_favourites_when_asked_for_them(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->favourite()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Halpert']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Beesly']);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?filter=favourites");
+
+        $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonPath('data.0.attributes.last_name', 'Halpert');
+    }
+
+    #[Test]
+    public function it_keeps_the_archived_out_of_every_grouping_but_their_own(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->archived()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Scott']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Beesly']);
+
+        Sanctum::actingAs($user);
+
+        $everyone = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts");
+        $archived = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?filter=archived");
+
+        $everyone->assertJsonCount(1, 'data');
+        $everyone->assertJsonPath('data.0.attributes.last_name', 'Beesly');
+        $archived->assertJsonCount(1, 'data');
+        $archived->assertJsonPath('data.0.attributes.last_name', 'Scott');
+    }
+
+    #[Test]
+    public function it_keeps_a_partial_contact_off_every_grouping(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->partial()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Jack']);
+
+        Sanctum::actingAs($user);
+
+        foreach (['all', 'favourites', 'archived'] as $grouping) {
+            $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?filter={$grouping}")->assertJsonCount(0, 'data');
+        }
+    }
+
+    #[Test]
+    public function it_searches_the_name_ignoring_what_the_language_calls_a_minor_difference(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Élodie', 'last_name' => 'Halpert']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?query=elodie");
+
+        $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonPath('data.0.attributes.first_name', 'Élodie');
+    }
+
+    #[Test]
+    public function it_searches_the_nickname_as_it_was_typed(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Schrute', 'nickname' => 'Beet Boy']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Scott', 'nickname' => null]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?query=BEET");
+
+        $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonPath('data.0.attributes.nickname', 'Beet Boy');
+    }
+
+    #[Test]
+    public function it_answers_in_each_of_the_orders_the_screen_offers(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->create([
+            'vault_id' => $vault->id, 'account_id' => $user->account_id,
+            'last_name' => 'Beesly', 'nickname' => 'Zed',
+            'created_at' => CarbonImmutable::parse('2026-01-01'),
+        ]);
+        Contact::factory()->create([
+            'vault_id' => $vault->id, 'account_id' => $user->account_id,
+            'last_name' => 'Scott', 'nickname' => 'Ace',
+            'created_at' => CarbonImmutable::parse('2026-02-01'),
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $byName = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?sort=name&direction=desc");
+        $byNickname = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?sort=nickname");
+        $byAdded = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?sort=added&direction=desc");
+
+        $byName->assertJsonPath('data.0.attributes.last_name', 'Scott');
+        $byNickname->assertJsonPath('data.0.attributes.nickname', 'Ace');
+        $byAdded->assertJsonPath('data.0.attributes.last_name', 'Scott');
+    }
+
+    #[Test]
+    public function it_puts_the_contacts_a_sort_knows_nothing_about_at_the_end(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Beesly', 'last_activity_at' => null]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Scott', 'last_activity_at' => CarbonImmutable::parse('2026-01-01')]);
+
+        Sanctum::actingAs($user);
+
+        $ascending = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?sort=last-spoke&direction=asc");
+        $descending = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?sort=last-spoke&direction=desc");
+
+        $ascending->assertJsonPath('data.1.attributes.last_name', 'Beesly');
+        $descending->assertJsonPath('data.1.attributes.last_name', 'Beesly');
+    }
+
+    #[Test]
+    public function it_refuses_a_grouping_a_sort_or_a_direction_it_does_not_offer(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?filter=everybody&sort=height&direction=sideways");
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['filter', 'sort', 'direction']);
+    }
+
+    #[Test]
+    public function it_answers_an_empty_list_for_a_vault_holding_nobody(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts");
+
+        $response->assertOk();
+        $response->assertJsonCount(0, 'data');
+        $response->assertJsonPath('meta.total', 0);
+    }
+
+    #[Test]
+    public function it_pages_the_list_and_brings_a_page_size_back_into_range(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->count(3)->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $onePage = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?per_page=2");
+        $tooMany = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?per_page=5000");
+
+        $onePage->assertJsonCount(2, 'data');
+        $onePage->assertJsonPath('meta.per_page', 2);
+        $onePage->assertJsonPath('meta.total', 3);
+        $tooMany->assertJsonPath('meta.per_page', 100);
+    }
+
+    #[Test]
+    public function it_does_not_list_the_contacts_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create();
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts")->assertNotFound();
+    }
+
+    #[Test]
+    public function it_returns_not_found_for_a_contact_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create();
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")->assertNotFound();
+    }
+
+    #[Test]
+    public function it_returns_not_found_for_a_contact_reached_through_the_wrong_vault_of_the_same_account(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $other = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$other->uuid}/contacts/{$contact->uuid}")->assertNotFound();
+    }
+
+    #[Test]
+    public function it_returns_not_found_for_a_contact_that_was_deleted(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+        $contact->delete();
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")->assertNotFound();
+    }
+
+    #[Test]
+    public function it_writes_a_contact_down_from_a_first_name_alone(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", ['first_name' => 'Pam']);
+
+        $response->assertCreated();
+        $response->assertJsonStructure($this->jsonStructure);
+        $response->assertJsonPath('data.attributes.name', 'Pam');
+        $response->assertJsonPath('data.attributes.avatar', null);
+        $this->assertDatabaseHas('contacts', [
+            'vault_id' => $vault->id,
+            'account_id' => $user->account_id,
+            'first_name' => 'Pam',
+            'template_version_id' => $vault->defaultTemplates()->sole()->template_version_id,
+        ]);
+    }
+
+    #[Test]
+    public function it_keeps_every_part_of_a_name_it_is_given_and_writes_it_in_the_order_asked_for(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", [
+            'prefix' => 'Mr',
+            'first_name' => 'Dwight',
+            'middle_name' => 'Kurt',
+            'last_name' => 'Schrute',
+            'suffix' => 'Jr',
+            'maiden_name' => 'Beet',
+            'nickname' => 'Beet Boy',
+            'name_order' => 'family_first',
+            'is_favourite' => true,
+        ]);
+
+        $response->assertCreated();
+        $response->assertJsonPath('data.attributes.name', 'Schrute Dwight Kurt');
+        $response->assertJsonPath('data.attributes.prefix', 'Mr');
+        $response->assertJsonPath('data.attributes.suffix', 'Jr');
+        $response->assertJsonPath('data.attributes.maiden_name', 'Beet');
+        $response->assertJsonPath('data.attributes.nickname', 'Beet Boy');
+        $response->assertJsonPath('data.attributes.is_favourite', true);
+    }
+
+    #[Test]
+    public function it_writes_a_contact_down_on_the_structure_it_is_told_to(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $other = $this->publishedContactTemplate($user, 'Colleague');
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", [
+            'first_name' => 'Pam',
+            'template_version_id' => $other->published_version_id,
+        ]);
+
+        $response->assertCreated();
+        $response->assertJsonPath('data.attributes.template_version_id', $other->published_version_id);
+        $response->assertJsonPath('data.attributes.template_name', 'Colleague');
+    }
+
+    #[Test]
+    public function it_refuses_a_structure_belonging_to_another_account(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $stranger = $this->publishedContactTemplate(User::factory()->create(), 'Somebody else');
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", [
+            'first_name' => 'Pam',
+            'template_version_id' => $stranger->published_version_id,
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['template_version_id']);
+        $this->assertDatabaseMissing('contacts', ['first_name' => 'Pam']);
+    }
+
+    #[Test]
+    public function it_refuses_to_write_a_contact_down_with_no_first_name(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", ['last_name' => 'Beesly']);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['first_name']);
+    }
+
+    #[Test]
+    public function it_keeps_a_contact_written_down_as_partial_off_the_lists(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        Sanctum::actingAs($user);
+
+        $created = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", [
+            'first_name' => 'Jack',
+            'is_partial' => true,
+        ]);
+
+        $created->assertCreated();
+        $created->assertJsonPath('data.attributes.is_partial', true);
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts")->assertJsonCount(0, 'data');
+    }
+
+    #[Test]
+    public function it_does_not_write_a_contact_down_in_a_vault_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", ['first_name' => 'Pam'])->assertNotFound();
+        $this->assertDatabaseMissing('contacts', ['first_name' => 'Pam']);
+    }
+
+    #[Test]
+    public function it_deletes_a_contact_and_keeps_what_they_took_part_in(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")->assertNoContent();
+
+        $this->assertSoftDeleted($contact);
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")->assertNotFound();
+    }
+
+    #[Test]
+    public function it_refuses_to_delete_the_contact_representing_the_caller(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $me = Contact::factory()->me()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$me->uuid}");
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['contact']);
+        $this->assertNotSoftDeleted($me);
+    }
+
+    #[Test]
+    public function it_does_not_delete_a_contact_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create();
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")->assertNotFound();
+        $this->assertNotSoftDeleted($contact);
+    }
+
+    #[Test]
+    public function it_refuses_a_caller_with_no_credential(): void
+    {
+        $vault = Vault::factory()->create();
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts")->assertUnauthorized();
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/".fake()->uuid())->assertUnauthorized();
+        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", ['first_name' => 'Pam'])->assertUnauthorized();
+        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/".fake()->uuid())->assertUnauthorized();
+    }
+
+    /**
+     * A vault a contact can be written down in, which means one holding a
+     * published contact template for a new contact to start from.
+     */
+    private function vaultReadyForContacts(User $user): Vault
+    {
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $template = $this->publishedContactTemplate($user, 'Basic contact');
+
+        VaultDefaultTemplate::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'applies_to' => TemplateAppliesToEnum::Contact,
+            'template_version_id' => $template->published_version_id,
+        ]);
+
+        return $vault;
+    }
+
+    private function publishedContactTemplate(User $user, string $name): Template
+    {
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => $name]);
+        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+
+        $template->published_version_id = $version->id;
+        $template->save();
+
+        return $template;
+    }
+}
