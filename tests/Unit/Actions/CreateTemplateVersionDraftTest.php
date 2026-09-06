@@ -76,6 +76,8 @@ class CreateTemplateVersionDraftTest extends TestCase
             'title_override' => 'Where they live',
         ]);
 
+        $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+
         $draft = new CreateTemplateVersionDraft(user: $user, templateVersion: $version)->execute();
         $row = $draft->assembly()->first();
 
@@ -107,6 +109,8 @@ class CreateTemplateVersionDraftTest extends TestCase
             'section_version_id' => $sectionVersion->id,
         ]);
 
+        $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+
         $draft = new CreateTemplateVersionDraft(user: $user, templateVersion: $version)->execute();
         $pages = $draft->pages;
 
@@ -131,6 +135,8 @@ class CreateTemplateVersionDraftTest extends TestCase
             'section_version_id' => $sectionVersion->id,
         ]);
 
+        $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+
         new CreateTemplateVersionDraft(user: $user, templateVersion: $version)->execute();
 
         $this->assertEquals(1, $sectionVersion->fresh()->usage_count);
@@ -144,7 +150,7 @@ class CreateTemplateVersionDraftTest extends TestCase
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
         $first = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 7]);
+        TemplateVersion::factory()->published()->create(['template_id' => $template->id, 'version_number' => 7]);
 
         $draft = new CreateTemplateVersionDraft(user: $user, templateVersion: $first)->execute();
 
@@ -179,5 +185,61 @@ class CreateTemplateVersionDraftTest extends TestCase
             return $job->action === UserActionEnum::TemplateVersionDrafted
                 && $job->parameters === ['name' => 'Contact', 'version' => 2];
         });
+    }
+
+    #[Test]
+    public function it_answers_with_the_draft_that_is_already_open_rather_than_starting_a_second(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $published = TemplateVersion::factory()->published()->create([
+            'template_id' => $template->id,
+            'version_number' => 1,
+        ]);
+
+        $first = new CreateTemplateVersionDraft(user: $user, templateVersion: $published)->execute();
+        $second = new CreateTemplateVersionDraft(user: $user, templateVersion: $published)->execute();
+
+        $this->assertTrue($first->is($second));
+        $this->assertEquals(2, $template->versions()->count());
+        $this->assertEquals(1, $template->versions()->where('status', VersionStatusEnum::Draft)->count());
+    }
+
+    #[Test]
+    public function it_does_not_record_a_second_drafting_when_a_draft_is_already_open(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $published = TemplateVersion::factory()->published()->create([
+            'template_id' => $template->id,
+            'version_number' => 1,
+        ]);
+
+        new CreateTemplateVersionDraft(user: $user, templateVersion: $published)->execute();
+        new CreateTemplateVersionDraft(user: $user, templateVersion: $published)->execute();
+
+        Queue::assertPushed(LogUserAction::class, 1);
+    }
+
+    #[Test]
+    public function it_starts_a_draft_again_once_the_open_one_has_been_published(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $published = TemplateVersion::factory()->published()->create([
+            'template_id' => $template->id,
+            'version_number' => 1,
+        ]);
+
+        $first = new CreateTemplateVersionDraft(user: $user, templateVersion: $published)->execute();
+        $first->update(['status' => VersionStatusEnum::Published]);
+
+        $second = new CreateTemplateVersionDraft(user: $user, templateVersion: $first)->execute();
+
+        $this->assertFalse($first->is($second));
+        $this->assertEquals(3, $second->version_number);
     }
 }

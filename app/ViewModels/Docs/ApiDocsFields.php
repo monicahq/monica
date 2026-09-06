@@ -41,10 +41,28 @@ class ApiDocsFields
     }
 
     /**
+     * The rows for a record that is only ever read inside another one: a page in a
+     * version, a field in a section. It carries no links, because there is no
+     * address it can be read from on its own.
+     *
+     * @param  string  $type  The constant the record's `type` always holds.
+     * @param  string  $singular  What one of these is called, in a sentence.
      * @param  list<array{name: string, type: string, description: string, opaque?: bool}>  $attributes
      * @return list<array{name: string, type: string, description: string, opaque?: bool}>
      */
-    private static function record(string $type, string $prefix, array $attributes): array
+    public static function nested(string $type, string $singular, array $attributes): array
+    {
+        return [
+            ['name' => 'data', 'type' => 'object', 'description' => "The {$singular}."],
+            ...self::record($type, 'data', $attributes, withLinks: false),
+        ];
+    }
+
+    /**
+     * @param  list<array{name: string, type: string, description: string, opaque?: bool}>  $attributes
+     * @return list<array{name: string, type: string, description: string, opaque?: bool}>
+     */
+    private static function record(string $type, string $prefix, array $attributes, bool $withLinks = true): array
     {
         $rows = [
             ['name' => "{$prefix}.type", 'type' => 'string', 'description' => "Always {$type}. It names the kind of record, so a caller holding several kinds can tell them apart without looking at where they came from."],
@@ -56,8 +74,10 @@ class ApiDocsFields
             $rows[] = [...$attribute, 'name' => "{$prefix}.attributes.{$attribute['name']}"];
         }
 
-        $rows[] = ['name' => "{$prefix}.links", 'type' => 'object', 'description' => 'Where to find this record.'];
-        $rows[] = ['name' => "{$prefix}.links.self", 'type' => 'string', 'description' => 'The absolute address this record is read from.'];
+        if ($withLinks) {
+            $rows[] = ['name' => "{$prefix}.links", 'type' => 'object', 'description' => 'Where to find this record.'];
+            $rows[] = ['name' => "{$prefix}.links.self", 'type' => 'string', 'description' => 'The absolute address this record is read from.'];
+        }
 
         return $rows;
     }

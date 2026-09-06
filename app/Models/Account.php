@@ -156,6 +156,30 @@ class Account extends Model
     }
 
     /**
+     * Get the templates the account defined: what a record of a given kind
+     * shows. The template is the stable identity, and what it holds lives in
+     * its versions.
+     *
+     * @return HasMany<Template, $this>
+     */
+    public function templates(): HasMany
+    {
+        return $this->hasMany(Template::class);
+    }
+
+    /**
+     * Get the reusable sections the account defined. A section is not owned by a
+     * template: the same one can be assembled into several, which is why it hangs
+     * off the account rather than off whatever placed it.
+     *
+     * @return HasMany<Section, $this>
+     */
+    public function sections(): HasMany
+    {
+        return $this->hasMany(Section::class);
+    }
+
+    /**
      * Get the actions performed in the account.
      *
      * @return HasMany<Log, $this>

@@ -14,10 +14,23 @@ use App\Http\Controllers\Api\EmailSentController;
 use App\Http\Controllers\Api\EntityTypeActivationController;
 use App\Http\Controllers\Api\EntityTypeController;
 use App\Http\Controllers\Api\EntityTypePositionController;
+use App\Http\Controllers\Api\FieldController;
+use App\Http\Controllers\Api\FieldPositionController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\MeTimezoneController;
 use App\Http\Controllers\Api\StatusController;
+use App\Http\Controllers\Api\TemplateActivationController;
+use App\Http\Controllers\Api\TemplateController;
+use App\Http\Controllers\Api\TemplateDuplicateController;
+use App\Http\Controllers\Api\TemplatePositionController;
+use App\Http\Controllers\Api\TemplateVersionController;
+use App\Http\Controllers\Api\TemplateVersionPageController;
+use App\Http\Controllers\Api\TemplateVersionPagePositionController;
+use App\Http\Controllers\Api\TemplateVersionPublicationController;
+use App\Http\Controllers\Api\TemplateVersionSectionController;
+use App\Http\Controllers\Api\TemplateVersionSectionPageController;
+use App\Http\Controllers\Api\TemplateVersionSectionPositionController;
 use App\Http\Controllers\Api\VaultController;
 use Illuminate\Support\Facades\Route;
 
@@ -59,6 +72,38 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
         Route::put('entity-types/{entityType}/activation', [EntityTypeActivationController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.activation.update');
         Route::put('entity-types/{entityType}/position', [EntityTypePositionController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.position.update');
+
+        Route::get('templates', [TemplateController::class, 'index'])->name('templates');
+        Route::get('templates/{template}', [TemplateController::class, 'show'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.show');
+        Route::post('templates', [TemplateController::class, 'create'])->name('templates.create');
+        Route::put('templates/{template}', [TemplateController::class, 'update'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.update');
+        Route::delete('templates/{template}', [TemplateController::class, 'destroy'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.destroy');
+        Route::put('templates/{template}/activation', [TemplateActivationController::class, 'update'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.activation.update');
+        Route::put('templates/{template}/position', [TemplatePositionController::class, 'update'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.position.update');
+        Route::post('templates/{template}/duplicate', [TemplateDuplicateController::class, 'create'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.duplicate.create');
+
+        Route::get('templates/{template}/versions', [TemplateVersionController::class, 'index'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.versions');
+        Route::get('templates/{template}/versions/{version}', [TemplateVersionController::class, 'show'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*'])->name('templates.versions.show');
+
+        Route::post('templates/{template}/versions', [TemplateVersionController::class, 'create'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.versions.create');
+        Route::put('templates/{template}/versions/{version}/publication', [TemplateVersionPublicationController::class, 'update'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*'])->name('templates.versions.publication.update');
+        Route::delete('templates/{template}/versions/{version}', [TemplateVersionController::class, 'destroy'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*'])->name('templates.versions.destroy');
+
+        Route::post('templates/{template}/versions/{version}/pages', [TemplateVersionPageController::class, 'create'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*'])->name('templates.versions.pages.create');
+        Route::put('templates/{template}/versions/{version}/pages/{page}', [TemplateVersionPageController::class, 'update'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'page' => '[0-9a-fA-F-]{36}'])->name('templates.versions.pages.update');
+        Route::delete('templates/{template}/versions/{version}/pages/{page}', [TemplateVersionPageController::class, 'destroy'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'page' => '[0-9a-fA-F-]{36}'])->name('templates.versions.pages.destroy');
+        Route::put('templates/{template}/versions/{version}/pages/{page}/position', [TemplateVersionPagePositionController::class, 'update'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'page' => '[0-9a-fA-F-]{36}'])->name('templates.versions.pages.position.update');
+
+        Route::post('templates/{template}/versions/{version}/sections', [TemplateVersionSectionController::class, 'create'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*'])->name('templates.versions.sections.create');
+        Route::put('templates/{template}/versions/{version}/sections/{section}', [TemplateVersionSectionController::class, 'update'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'section' => '[1-9][0-9]*'])->name('templates.versions.sections.update');
+        Route::delete('templates/{template}/versions/{version}/sections/{section}', [TemplateVersionSectionController::class, 'destroy'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'section' => '[1-9][0-9]*'])->name('templates.versions.sections.destroy');
+        Route::put('templates/{template}/versions/{version}/sections/{section}/position', [TemplateVersionSectionPositionController::class, 'update'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'section' => '[1-9][0-9]*'])->name('templates.versions.sections.position.update');
+        Route::put('templates/{template}/versions/{version}/sections/{section}/page', [TemplateVersionSectionPageController::class, 'update'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'section' => '[1-9][0-9]*'])->name('templates.versions.sections.page.update');
+
+        Route::post('templates/{template}/versions/{version}/sections/{section}/fields', [FieldController::class, 'create'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'section' => '[1-9][0-9]*'])->name('templates.versions.sections.fields.create');
+        Route::put('templates/{template}/versions/{version}/sections/{section}/fields/{field}', [FieldController::class, 'update'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'section' => '[1-9][0-9]*', 'field' => '[1-9][0-9]*'])->name('templates.versions.sections.fields.update');
+        Route::delete('templates/{template}/versions/{version}/sections/{section}/fields/{field}', [FieldController::class, 'destroy'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'section' => '[1-9][0-9]*', 'field' => '[1-9][0-9]*'])->name('templates.versions.sections.fields.destroy');
+        Route::put('templates/{template}/versions/{version}/sections/{section}/fields/{field}/position', [FieldPositionController::class, 'update'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'section' => '[1-9][0-9]*', 'field' => '[1-9][0-9]*'])->name('templates.versions.sections.fields.position.update');
 
         Route::get('vaults/{vault}/contacts', [ContactController::class, 'index'])->where('vault', '[0-9a-fA-F-]{36}')->name('contacts');
         Route::get('vaults/{vault}/contacts/{contact}', [ContactController::class, 'show'])->where(['vault' => '[0-9a-fA-F-]{36}', 'contact' => '[0-9a-fA-F-]{36}'])->name('contacts.show');

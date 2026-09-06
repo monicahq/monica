@@ -1,0 +1,937 @@
+<?php
+
+declare(strict_types=1);
+
+use App\ViewModels\Docs\ApiDocsFields;
+use App\ViewModels\Docs\ApiDocsViewModel;
+
+$base = ApiDocsViewModel::baseUrl();
+
+$templateId = '7b1c4e92-3d58-4f07-9a26-8c5b0e14d3af';
+$otherTemplateId = 'c9d02a67-4b13-4e85-b7f1-2a6d8e903c54';
+
+$template = [
+    'type' => 'template',
+    'id' => $templateId,
+    'attributes' => [
+        'slug' => 'contact',
+        'name' => 'Contact',
+        'description' => 'What every person in a vault shows.',
+        'applies_to' => 'contact',
+        'entity_type_id' => null,
+        'is_system' => false,
+        'is_active' => true,
+        'position' => 1,
+        'published_version_number' => 3,
+        'created_at' => 1756252800,
+        'updated_at' => 1756339200,
+    ],
+    'links' => ['self' => $base.'/templates/'.$templateId],
+];
+
+$otherTemplate = [
+    'type' => 'template',
+    'id' => $otherTemplateId,
+    'attributes' => [
+        'slug' => 'animal',
+        'name' => 'Animal',
+        'description' => null,
+        'applies_to' => 'entity',
+        'entity_type_id' => '4c2b9f10-5e37-4a6d-8b91-0f7c3d2a8e64',
+        'is_system' => false,
+        'is_active' => false,
+        'position' => 2,
+        'published_version_number' => null,
+        'created_at' => 1756166400,
+        'updated_at' => null,
+    ],
+    'links' => ['self' => $base.'/templates/'.$otherTemplateId],
+];
+
+$versionLink = $base.'/templates/'.$templateId.'/versions/';
+
+$publishedVersion = [
+    'type' => 'template_version',
+    'id' => '312',
+    'attributes' => [
+        'version_number' => 3,
+        'status' => 'published',
+        'change_note' => 'Added the medical page.',
+        'published_at' => 1756339200,
+        'retired_at' => null,
+        'record_count' => 84,
+        'previous_version_number' => 2,
+        'created_at' => 1756335600,
+        'updated_at' => 1756339200,
+    ],
+    'links' => ['self' => $versionLink.'3'],
+];
+
+$draftVersion = [
+    'type' => 'template_version',
+    'id' => '318',
+    'attributes' => [
+        'version_number' => 4,
+        'status' => 'draft',
+        'change_note' => null,
+        'published_at' => null,
+        'retired_at' => null,
+        'record_count' => 0,
+        'previous_version_number' => 3,
+        'created_at' => 1756425600,
+        'updated_at' => null,
+    ],
+    'links' => ['self' => $versionLink.'4'],
+];
+
+$nestedVersion = $publishedVersion;
+$nestedVersion['attributes']['pages'] = [
+    [
+        'type' => 'template_version_page',
+        'id' => 'a1f7b3c8-6e42-4d09-8b57-1c9e0f2a4d36',
+        'attributes' => [
+            'key' => 'general',
+            'label' => 'General',
+            'position' => 1,
+            'sections' => [
+                [
+                    'type' => 'template_version_section',
+                    'id' => '904',
+                    'attributes' => [
+                        'position' => 1,
+                        'title' => 'Where they live',
+                        'title_override' => 'Where they live',
+                        'section_id' => 'd5e8c012-9a34-4b76-8f21-3e7c5a0b1d94',
+                        'section_name' => 'Address',
+                        'section_version_number' => 2,
+                        'section_version_status' => 'published',
+                        'is_collapsed_by_default' => false,
+                        'fields' => [
+                            [
+                                'type' => 'field',
+                                'id' => '5521',
+                                'attributes' => [
+                                    'key' => 'street',
+                                    'type' => 'text',
+                                    'label' => 'Street',
+                                    'help_text' => null,
+                                    'placeholder' => '221B Baker Street',
+                                    'position' => 1,
+                                    'is_required' => false,
+                                    'is_sensitive' => false,
+                                    'is_highlighted' => false,
+                                    'is_unique' => false,
+                                    'is_repeatable' => false,
+                                    'repeat_min' => null,
+                                    'repeat_max' => null,
+                                    'repetition_order' => null,
+                                    'options' => null,
+                                    'validation' => null,
+                                    'default_value' => null,
+                                    'relation_target' => null,
+                                    'created_at' => 1756335600,
+                                    'updated_at' => null,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+];
+
+$pageParams = [
+    ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1'],
+    ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25'],
+];
+
+$templateParam = [
+    'name' => 'template',
+    'type' => 'uuid',
+    'required' => true,
+    'description' => 'The identifier of the template, which is the id it comes back with. A path that is not a uuid answers 404 without a query being run, so neither the slug nor a sequential number reaches anything here.',
+];
+
+$versionParam = [
+    'name' => 'version',
+    'type' => 'integer',
+    'required' => true,
+    'description' => 'The number of the version within its template, counting from 1, which is the number shown in the version history and the number a change note refers to. It is not a row identifier, so version 1 of one template and version 1 of another are different things reached through different templates.',
+];
+
+$templateAttributes = [
+    ['name' => 'slug', 'type' => 'string', 'description' => 'How the template is addressed in the application itself, in lower case letters, numbers and dashes. It is settled when the template is created and never rebuilt, so a link that already went out keeps working through any rename. Use it to build a browser link; use the id for every call here.'],
+    ['name' => 'name', 'type' => 'string', 'description' => 'What the template is called. A template the product supplied answers with the name translated into your language rather than the one stored, so the same template reads differently to two people.'],
+    ['name' => 'description', 'type' => 'string', 'description' => 'What the template is for, or null when nobody said.'],
+    ['name' => 'applies_to', 'type' => 'string', 'description' => 'Either contact or entity. A template describing a contact applies to the people in every vault; one describing an entity applies only to records of the type named in entity_type_id.'],
+    ['name' => 'entity_type_id', 'type' => 'string', 'description' => 'The identifier of the entity type this template describes, or null when it describes contacts. Read that type through the entity types endpoints.'],
+    ['name' => 'is_system', 'type' => 'boolean', 'description' => 'Whether the product supplied the template rather than you. It says where the template came from and locks nothing: a supplied template is renamed, moved, stopped and deleted exactly like one you made. Duplicating it first is usually the better move, because a copy leaves the original for anything already using it.'],
+    ['name' => 'is_active', 'type' => 'boolean', 'description' => 'Whether the template may still be applied to a record. False stops it being offered and touches nothing already using it: every record on it stays readable and stays editable.'],
+    ['name' => 'position', 'type' => 'integer', 'description' => 'Where the template sits in the list on the templates screen, counting from 1. It is the order you arranged, and it is the order the list endpoint answers in.'],
+    ['name' => 'published_version_number', 'type' => 'integer', 'description' => 'The number of the version records are put on when the template is applied today, or null when nothing has been published yet. A template with no published version is one still being designed.'],
+    ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the template was created, as a count of seconds since 1970 rather than a written date.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null if it has not changed since it was created.'],
+];
+
+$versionAttributes = [
+    ['name' => 'version_number', 'type' => 'integer', 'description' => 'Which version this is within its template, counting from 1. It is what the address of this version takes, and what a change note refers to.'],
+    ['name' => 'status', 'type' => 'string', 'description' => 'Either draft or published. A draft is still being designed and may be changed freely. A published version is frozen and never changes again, and stays published after a later version replaces it, so read published_version_number on the template to know which one a new record is put on.'],
+    ['name' => 'change_note', 'type' => 'string', 'description' => 'What changed since the version before, written when this one was published, or null on a draft and on the first version of a template. It is what somebody deciding whether to move their records reads.'],
+    ['name' => 'published_at', 'type' => 'timestamp', 'description' => 'When the version was frozen, as a count of seconds, or null while it is a draft.'],
+    ['name' => 'retired_at', 'type' => 'timestamp', 'description' => 'Always null. Publishing a later version does not retire the one it replaces, because the records still on it go on working exactly as they did.'],
+    ['name' => 'record_count', 'type' => 'integer', 'description' => 'How many records point at this precise version. A record follows the version it was put on until somebody moves it deliberately, so a retired version keeps a count above zero for as long as anything is still on it.'],
+    ['name' => 'previous_version_number', 'type' => 'integer', 'description' => 'The number of the version this one was started from, or null on the first version of a template.'],
+    ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the version was started, as a count of seconds.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null if it has not changed since it was started. A published version never changes, so this stops moving at publication.'],
+];
+
+/**
+ * Every path a nested record puts in the answer: the list, the record, its type,
+ * its id, its attributes object, then one row per attribute. The return fields
+ * test walks the real answer and compares it against this, so an intermediate
+ * left out here fails the suite.
+ */
+$nested = function (string $prefix, string $type, string $singular, string $plural, array $attributes, string $summary): array {
+    $rows = [
+        ['name' => $prefix, 'type' => 'array', 'description' => $summary],
+        ['name' => "{$prefix}[]", 'type' => 'object', 'description' => "One {$singular}."],
+        ['name' => "{$prefix}[].type", 'type' => 'string', 'description' => "Always {$type}. It names the kind of record, so a caller holding several kinds can tell them apart."],
+        ['name' => "{$prefix}[].id", 'type' => 'string', 'description' => "The identifier of the {$singular}, as a string even when it reads as a number."],
+        ['name' => "{$prefix}[].attributes", 'type' => 'object', 'description' => "Everything the {$singular} holds."],
+    ];
+
+    foreach ($attributes as $attribute) {
+        $rows[] = [...$attribute, 'name' => "{$prefix}[].attributes.{$attribute['name']}"];
+    }
+
+    return $rows;
+};
+
+$fieldAttributes = [
+    ['name' => 'key', 'type' => 'string', 'description' => 'How the field is named in an import or an export, settled when the field is added.'],
+    ['name' => 'type', 'type' => 'string', 'description' => 'What kind of thing the field holds: one of text, textarea, number, boolean, url, email, phone, select, multiselect, radio, date, recurring_date, relation, file, image, avatar, address, repeater, divider, heading or help. The last three carry no value and are there to lay the form out.'],
+    ['name' => 'label', 'type' => 'string', 'description' => 'What the field is called on the form.'],
+    ['name' => 'help_text', 'type' => 'string', 'description' => 'A sentence shown under the field, or null when there is none.'],
+    ['name' => 'placeholder', 'type' => 'string', 'description' => 'What the empty box shows as an example, or null.'],
+    ['name' => 'position', 'type' => 'integer', 'description' => 'Where the field sits in its section, counting from 1.'],
+    ['name' => 'is_required', 'type' => 'boolean', 'description' => 'Whether the record refuses to save without it.'],
+    ['name' => 'is_sensitive', 'type' => 'boolean', 'description' => 'Whether the value is hidden until somebody asks to see it.'],
+    ['name' => 'is_highlighted', 'type' => 'boolean', 'description' => 'Whether the value is repeated at the top of the record.'],
+    ['name' => 'is_unique', 'type' => 'boolean', 'description' => 'Whether two records of this template may hold the same value.'],
+    ['name' => 'is_repeatable', 'type' => 'boolean', 'description' => 'Whether the field holds several values rather than one. It follows from the type and is settled when the field is added.'],
+    ['name' => 'repeat_min', 'type' => 'integer', 'description' => 'The fewest repetitions allowed, or null when there is no floor.'],
+    ['name' => 'repeat_max', 'type' => 'integer', 'description' => 'The most repetitions allowed, or null when there is no ceiling.'],
+    ['name' => 'repetition_order', 'type' => 'string', 'description' => 'How several values are ordered against each other, or null when the field holds one.'],
+    ['name' => 'options', 'type' => 'object', 'description' => 'Settings belonging to this kind of field alone, or null. What it holds depends on the type.'],
+    ['name' => 'validation', 'type' => 'object', 'description' => 'Extra rules a value has to satisfy, or null.'],
+    ['name' => 'default_value', 'type' => 'object', 'description' => 'What the field starts filled with, or null.'],
+    ['name' => 'relation_target', 'type' => 'string', 'description' => 'What a relation field points at, or null when the field is not a relation. It is settled when the field is added.'],
+    ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the field was added, as a count of seconds since 1970.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null.'],
+];
+
+$sectionAttributes = [
+    ['name' => 'position', 'type' => 'integer', 'description' => 'Where the block sits on its page, counting from 1 again on each page.'],
+    ['name' => 'title', 'type' => 'string', 'description' => 'What the block is headed: the override when there is one, and the name of the section otherwise. It is what to show a reader.'],
+    ['name' => 'title_override', 'type' => 'string', 'description' => 'The heading chosen for this placement alone, or null when the section name is used. What a section is called here belongs to the assembly rather than to the section.'],
+    ['name' => 'section_id', 'type' => 'string', 'description' => 'The identifier of the reusable section behind the placement. The same section may appear in several templates and in several versions of one template.'],
+    ['name' => 'section_name', 'type' => 'string', 'description' => 'What the section is called in the section library.'],
+    ['name' => 'section_version_number', 'type' => 'integer', 'description' => 'Which version of the section is placed here. A placement names a version and not a section, which is what stops a change made through another template reaching this one.'],
+    ['name' => 'section_version_status', 'type' => 'string', 'description' => 'One of draft, published or retired, for the section version rather than the template version. A template version cannot be published while a section it carries is still a draft.'],
+    ['name' => 'is_collapsed_by_default', 'type' => 'boolean', 'description' => 'Whether the block starts folded shut when somebody opens the record.'],
+];
+
+$pageAttributes = [
+    ['name' => 'key', 'type' => 'string', 'description' => 'How the page is addressed in a browser link. It is settled when the page is added and survives every rename.'],
+    ['name' => 'label', 'type' => 'string', 'description' => 'What the tab says. A page the product supplied answers with the label translated into your language.'],
+    ['name' => 'position', 'type' => 'integer', 'description' => 'Where the tab sits, counting from 1.'],
+];
+
+$fieldRows = $nested(
+    'pages[].attributes.sections[].attributes.fields',
+    'field',
+    'field',
+    'fields',
+    $fieldAttributes,
+    'What the section collects, in the order it is shown. Fields belong to the section version, never to the section, which is what makes freezing reach all the way down.',
+);
+
+$sectionRows = [
+    ...$nested(
+        'pages[].attributes.sections',
+        'template_version_section',
+        'placement',
+        'placements',
+        $sectionAttributes,
+        'The blocks placed on this page, in the order they are shown.',
+    ),
+    ...$fieldRows,
+];
+
+$structureAttributes = [
+    ...$versionAttributes,
+    ...$nested(
+        'pages',
+        'template_version_page',
+        'page',
+        'pages',
+        $pageAttributes,
+        'The tabs the version is divided into, in the order they are shown. Present only when one version is read on its own, never in the list.',
+    ),
+    ...$sectionRows,
+];
+
+$pageId = 'a1f7b3c8-6e42-4d09-8b57-1c9e0f2a4d36';
+
+$pageParam = [
+    'name' => 'page',
+    'type' => 'uuid',
+    'required' => true,
+    'description' => 'The identifier of the page, which is the id it comes back with.',
+];
+
+$sectionParam = [
+    'name' => 'section',
+    'type' => 'integer',
+    'required' => true,
+    'description' => 'The identifier of the placement, which is not the identifier of the section. It is the id a placement comes back with when a version is read.',
+];
+
+$fieldParam = [
+    'name' => 'field',
+    'type' => 'integer',
+    'required' => true,
+    'description' => 'The identifier of the field. It changes the first time a published section is changed, because the change opens a draft of the section and the fields are copied into it. The key does not change, and the answer carries the new id.',
+];
+
+$pageExample = [
+    'type' => 'template_version_page',
+    'id' => $pageId,
+    'attributes' => [
+        'key' => 'medical',
+        'label' => 'Medical',
+        'position' => 2,
+        'sections' => [],
+    ],
+];
+
+$placementExample = [
+    'type' => 'template_version_section',
+    'id' => '904',
+    'attributes' => [
+        'position' => 1,
+        'title' => 'Where they live',
+        'title_override' => 'Where they live',
+        'section_id' => 'd5e8c012-9a34-4b76-8f21-3e7c5a0b1d94',
+        'section_name' => 'Address',
+        'section_version_number' => 2,
+        'section_version_status' => 'published',
+        'is_collapsed_by_default' => false,
+        'fields' => [],
+    ],
+];
+
+$fieldExample = [
+    'type' => 'field',
+    'id' => '5521',
+    'attributes' => [
+        'key' => 'nickname',
+        'type' => 'text',
+        'label' => 'Nickname',
+        'help_text' => null,
+        'placeholder' => null,
+        'position' => 1,
+        'is_required' => false,
+        'is_sensitive' => false,
+        'is_highlighted' => false,
+        'is_unique' => false,
+        'is_repeatable' => false,
+        'repeat_min' => null,
+        'repeat_max' => null,
+        'repetition_order' => null,
+        'options' => null,
+        'validation' => null,
+        'default_value' => null,
+        'relation_target' => null,
+        'created_at' => 1756335600,
+        'updated_at' => null,
+    ],
+];
+
+$pageOnly = [
+    ['name' => 'key', 'type' => 'string', 'description' => 'How the page is addressed in a browser link. It is settled when the page is added and survives every rename.'],
+    ['name' => 'label', 'type' => 'string', 'description' => 'What the tab says.'],
+    ['name' => 'position', 'type' => 'integer', 'description' => 'Where the tab sits, counting from 1.'],
+    ['name' => 'sections', 'type' => 'array', 'description' => 'The blocks placed on this page. Empty here, since these endpoints answer with the page itself rather than with what is on it. Read the version to get the whole structure.'],
+];
+
+$placementOnly = [
+    ...$sectionAttributes,
+    ['name' => 'fields', 'type' => 'array', 'description' => 'What the section collects. Empty here, since these endpoints answer with the placement rather than with the section contents. Read the version to get the whole structure.'],
+];
+
+return [
+    'name' => 'Templates',
+    'sections' => [
+        [
+            'id' => 'templates-index',
+            'returnFields' => ApiDocsFields::page('template', 'template', 'templates', $templateAttributes),
+            'title' => 'List templates',
+            'label' => 'List templates',
+            'method' => 'GET',
+            'path' => '/templates',
+            'description' => 'List the templates your account holds, in the order you arranged them.',
+            'body' => [
+                'A template decides what a record shows. It is the definition behind a contact page, or behind everything the account keeps about an Animal. It belongs to your account rather than to one vault, so a template defined once can be used in every vault you hold.',
+                'The template itself holds no fields. What it holds is versions, and what a version holds is pages, sections and fields. That split is what keeps records stable while structures change: a record points at a precise version and follows it until somebody moves it deliberately.',
+                'Templates that may no longer be applied are listed with the rest, because one that is off is meant to be found again and switched back on. Templates the product supplied are listed too, marked with is_system. A deleted template is never listed, and an account answers with an empty list rather than an error when it holds none.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'queryParams' => $pageParams,
+            'returns' => 'A page of template objects, and how many there are in all.',
+            'response' => [
+                'data' => [$template, $otherTemplate],
+                'meta' => ['page' => 1, 'per_page' => 25, 'total' => 2],
+            ],
+        ],
+        [
+            'id' => 'templates-show',
+            'returnFields' => ApiDocsFields::one('template', 'template', $templateAttributes),
+            'title' => 'Get a template',
+            'label' => 'Get a template',
+            'method' => 'GET',
+            'path' => '/templates/{template}',
+            'examplePath' => '/templates/'.$templateId,
+            'description' => 'Retrieve one template: what it is called, what it applies to, and which of its versions is the published one.',
+            'body' => [
+                'This answers with the container and not with the structure. To read what a record on this template actually shows, take published_version_number from here and read that version.',
+                'A template with no published version is one still being designed. It is a valid state, and it is the state every template starts in.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam],
+            'returns' => 'A template object. A template belonging to somebody else answers 404, which is also what a template that never existed answers, and what a deleted one answers.',
+            'response' => ['data' => $template],
+        ],
+        [
+            'id' => 'templates-create',
+            'returnFields' => ApiDocsFields::one('template', 'template', $templateAttributes),
+            'title' => 'Create a template',
+            'label' => 'Create a template',
+            'method' => 'POST',
+            'path' => '/templates',
+            'description' => 'Define a new kind of record: what a contact page shows, or everything the account keeps about one kind of thing.',
+            'body' => [
+                'The template starts empty and goes at the end of your list. It is created with a draft version numbered 1 holding a single page and nothing on it, so there is somewhere to build before anything is published. Until you publish, the template has no published version and cannot be applied to a record.',
+                'The slug is settled here and never rebuilt afterwards, so a link that already went out keeps working through any rename. It is made from the name.',
+                'A template describing an entity has to name the type it describes, and that type has to be one of yours. A template describing a contact names none.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'bodyParams' => [
+                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the template is called. Up to 255 characters. Markup and surrounding blank space are stripped.', 'example' => 'Wine bottle'],
+                ['name' => 'applies_to', 'type' => 'string', 'required' => true, 'description' => 'Either contact or entity.', 'example' => 'contact'],
+                ['name' => 'description', 'type' => 'string', 'required' => false, 'description' => 'What the template is for. Up to 65535 characters. Absent, empty or null all mean it has none.', 'example' => 'Everything the cellar holds.'],
+                ['name' => 'entity_type_id', 'type' => 'uuid', 'required' => false, 'description' => 'The entity type this template describes. Required when applies_to is entity, refused as invalid when the type belongs to somebody else, and ignored when applies_to is contact.'],
+            ],
+            'returns' => 'The template that was created, with its settled slug and no published version.',
+            'responseStatus' => 201,
+            'response' => ['data' => $template],
+        ],
+        [
+            'id' => 'templates-update',
+            'returnFields' => ApiDocsFields::one('template', 'template', $templateAttributes),
+            'title' => 'Update a template',
+            'label' => 'Update a template',
+            'method' => 'PUT',
+            'path' => '/templates/{template}',
+            'examplePath' => '/templates/'.$templateId,
+            'description' => 'Change what a template is called and what it is for.',
+            'body' => [
+                'This is the wording and nothing else. The slug, the place in the order, every version and every record on them are untouched, so renaming a template is safe at any time and breaks no link that already went out.',
+                'What the template applies to cannot be changed. A template that describes contacts describes contacts for good, because records already exist on that promise. Build the other one instead.',
+                'Both fields are sent every time. Sending description as null clears it rather than leaving it alone.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam],
+            'bodyParams' => [
+                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the template is called. Up to 255 characters.', 'example' => 'Person'],
+                ['name' => 'description', 'type' => 'string', 'required' => true, 'description' => 'What the template is for, or null to clear it. The field has to be present even when it is null.', 'example' => 'Anybody the family knows.'],
+            ],
+            'returns' => 'The template as it now stands. A template belonging to somebody else answers 404.',
+            'response' => ['data' => $template],
+        ],
+        [
+            'id' => 'templates-destroy',
+            'title' => 'Delete a template',
+            'label' => 'Delete a template',
+            'method' => 'DELETE',
+            'path' => '/templates/{template}',
+            'examplePath' => '/templates/'.$templateId,
+            'description' => 'Delete a template that no record is rendered from.',
+            'body' => [
+                'A template still rendering records is refused rather than deleted, and the answer says how many are on it. Move those records to another template first, or stop offering this one instead, which takes it out of the way without touching anything already using it.',
+                'The deletion is recoverable, and the slug stays taken so a link that already went out cannot later land on a different template.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam],
+            'returns' => 'Nothing. A template still rendering records answers 422, and one belonging to somebody else answers 404.',
+            'responseStatus' => 204,
+        ],
+        [
+            'id' => 'templates-activation-update',
+            'returnFields' => ApiDocsFields::one('template', 'template', $templateAttributes),
+            'title' => 'Offer or stop offering a template',
+            'label' => 'Offer a template',
+            'method' => 'PUT',
+            'path' => '/templates/{template}/activation',
+            'examplePath' => '/templates/'.$templateId.'/activation',
+            'description' => 'Say whether a template may still be applied to a record.',
+            'body' => [
+                'Send the state you want rather than asking for a toggle, so sending the same state twice confirms it instead of inverting it, and a retried request cannot leave a template in the state you did not ask for.',
+                'Stopping a template touches nothing already using it. Every record on it stays readable and stays editable, and the template keeps the place it had, so one switched back on returns where it was rather than to the end.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam],
+            'bodyParams' => [
+                ['name' => 'is_active', 'type' => 'boolean', 'required' => true, 'description' => 'True to offer the template, false to stop offering it.', 'example' => false],
+            ],
+            'returns' => 'The template as it now stands. A template belonging to somebody else answers 404.',
+            'response' => ['data' => $template],
+        ],
+        [
+            'id' => 'templates-position-update',
+            'returnFields' => ApiDocsFields::one('template', 'template', $templateAttributes),
+            'title' => 'Move a template in the order',
+            'label' => 'Move a template',
+            'method' => 'PUT',
+            'path' => '/templates/{template}/position',
+            'examplePath' => '/templates/'.$templateId.'/position',
+            'description' => 'Put a template at a given place in the list, counting from 1.',
+            'body' => [
+                'Every template of the account is numbered from 1 again afterwards, so the positions stay a run of whole numbers with no gaps in it. A place past the end puts the template last rather than being refused.',
+                'The order is what the templates screen shows and what the list endpoint answers in. It has no other meaning: nothing about a record depends on where its template sits.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam],
+            'bodyParams' => [
+                ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where to put the template, counting from 1.', 'example' => 1],
+            ],
+            'returns' => 'The template with the place it now holds. A template belonging to somebody else answers 404.',
+            'response' => ['data' => $template],
+        ],
+        [
+            'id' => 'templates-duplicate-create',
+            'returnFields' => ApiDocsFields::one('template', 'template', $templateAttributes),
+            'title' => 'Duplicate a template',
+            'label' => 'Duplicate a template',
+            'method' => 'POST',
+            'path' => '/templates/{template}/duplicate',
+            'examplePath' => '/templates/'.$templateId.'/duplicate',
+            'description' => 'Copy a template and everything it is made of into a separate template of your own.',
+            'body' => [
+                'This is how you build on a template the product supplied without touching it, and how you try a change out without putting the records of the original at risk. The copy is a separate template with its own identifier and its own slug, and nothing about the original moves.',
+                'What is copied is the published version when there is one, and the newest version otherwise. It arrives in the copy as a draft numbered 1, so the copy has nothing published until you publish it. A template with no version at all has nothing to copy and answers 404.',
+                'The copy takes a name and a slug of your choosing, or is given ones derived from the original when you send none.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam],
+            'bodyParams' => [
+                ['name' => 'name', 'type' => 'string', 'required' => false, 'description' => 'What to call the copy. Up to 255 characters. Derived from the original when absent.', 'example' => 'Contact, expanded'],
+                ['name' => 'slug', 'type' => 'string', 'required' => false, 'description' => 'The address of the copy. Cleaned the same way a derived one is, and made unique within your account.', 'example' => 'contact-expanded'],
+            ],
+            'returns' => 'The template that was created. A template belonging to somebody else answers 404, and so does one with no version to copy.',
+            'responseStatus' => 201,
+            'response' => ['data' => $template],
+        ],
+        [
+            'id' => 'template-versions-index',
+            'returnFields' => ApiDocsFields::page('template_version', 'version', 'versions', $versionAttributes),
+            'title' => 'List template versions',
+            'label' => 'List template versions',
+            'method' => 'GET',
+            'path' => '/templates/{template}/versions',
+            'examplePath' => '/templates/'.$templateId.'/versions',
+            'description' => 'List the versions of one template, newest first.',
+            'body' => [
+                'Every change to a structure produces a version rather than editing one, so this is the whole history of the template and the record of what was frozen when. A published version never changes again, which is what lets a record made a year ago go on rendering exactly as it did.',
+                'At most one version is a draft at a time. Publishing a later version does not change an earlier one, so several versions read as published and the template says which one is current. Each keeps its record_count for as long as anything is still on it.',
+                'This answers with the versions and not with what they contain. Read one version to get its pages, its sections and its fields.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam],
+            'queryParams' => $pageParams,
+            'returns' => 'A page of version objects, newest first, and how many there are in all. A template belonging to somebody else answers 404.',
+            'response' => [
+                'data' => [$draftVersion, $publishedVersion],
+                'meta' => ['page' => 1, 'per_page' => 25, 'total' => 2],
+            ],
+        ],
+        [
+            'id' => 'template-versions-create',
+            'returnFields' => ApiDocsFields::one('template_version', 'version', $versionAttributes),
+            'title' => 'Open a draft',
+            'label' => 'Open a draft',
+            'method' => 'POST',
+            'path' => '/templates/{template}/versions',
+            'examplePath' => '/templates/'.$templateId.'/versions',
+            'description' => 'Start a draft of a template, copied from the version it is published at.',
+            'body' => [
+                'A published version never changes again, so changing a structure means opening a draft beside it and working there. The draft arrives carrying a copy of the pages, the section placements and the fields of the version it came from, and the published version goes on serving every record exactly as before until you publish.',
+                'A template has at most one draft at a time. Asking again while one is open answers with that draft and 200 rather than starting a second, so a client that retries a request it is unsure about cannot end up with two.',
+                'The draft is copied from the published version when there is one, and from the newest version otherwise. A template with no version at all has nothing to copy and answers 404.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam],
+            'returns' => 'The draft, with 201 when it was started and 200 when one was already open. A template belonging to somebody else answers 404, and so does one with no version to copy.',
+            'responseStatus' => 201,
+            'response' => ['data' => $draftVersion],
+        ],
+        [
+            'id' => 'template-versions-publication-update',
+            'returnFields' => ApiDocsFields::one('template_version', 'version', $versionAttributes),
+            'title' => 'Publish a version',
+            'label' => 'Publish a version',
+            'method' => 'PUT',
+            'path' => '/templates/{template}/versions/{version}/publication',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/publication',
+            'description' => 'Freeze a draft and make it the version a new record is put on.',
+            'body' => [
+                'This is the moment the structure stops moving. From here the version never changes again, and any further work starts another draft beside it. Records already on an earlier version stay on it and go on working exactly as they did, until somebody moves them deliberately.',
+                'Any section the version carries that is still a draft is published along with it, since a frozen version cannot rest on something that is still moving.',
+                'A change note is required from the second version of a template onwards, because it is what somebody deciding whether to move their records reads. The first version of a template needs none, having replaced nothing.',
+                'A version with no page, or with a page that has nothing on it, is refused: a structure nobody can fill is not one.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam],
+            'bodyParams' => [
+                ['name' => 'change_note', 'type' => 'string', 'required' => false, 'description' => 'What changed since the version before. Up to 65535 characters. Required from the second version of a template onwards.', 'example' => 'Added the medical page.'],
+            ],
+            'returns' => 'The version, now published. A version that is not a draft answers 422, and so does one with an empty page or no page at all. A template belonging to somebody else answers 404.',
+            'response' => ['data' => $publishedVersion],
+        ],
+        [
+            'id' => 'template-versions-destroy',
+            'title' => 'Throw a draft away',
+            'label' => 'Throw a draft away',
+            'method' => 'DELETE',
+            'path' => '/templates/{template}/versions/{version}',
+            'examplePath' => '/templates/'.$templateId.'/versions/4',
+            'description' => 'Discard a draft and everything laid out in it.',
+            'body' => [
+                'Only a draft can be thrown away. A version that has been published is refused, because records point at it and the promise that a published version goes on working is the whole of the versioning design. Stop offering the template instead if you want it out of the way.',
+                'Nothing that was published changes, and the number the draft held is not given out again.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam],
+            'returns' => 'Nothing. A version that is not a draft answers 422, and a template belonging to somebody else answers 404.',
+            'responseStatus' => 204,
+        ],
+        [
+            'id' => 'template-versions-show',
+            'returnFields' => ApiDocsFields::one('template_version', 'version', $structureAttributes),
+            'title' => 'Get a template version',
+            'label' => 'Get a template version',
+            'method' => 'GET',
+            'path' => '/templates/{template}/versions/{version}',
+            'examplePath' => '/templates/'.$templateId.'/versions/3',
+            'description' => 'Retrieve one version and everything it is made of: its pages, the sections placed on each, and the fields of each section.',
+            'body' => [
+                'This is the endpoint that tells you what a record means. A record names the version it sits on, and this answers with the structure that version froze, so a client can render the record without guessing what any of its values are for.',
+                'The whole structure comes back in one answer rather than a page at a time. A structure is one document, and splitting it would make it unreadable.',
+                'The version is named by its number within its template, which is the number the version history shows, and not by a row identifier. Version 3 of one template and version 3 of another are different things reached through different templates.',
+                'A section is placed rather than owned. The same section can sit in several templates, and each placement names a precise version of it, which is what stops a change made through one template reaching another.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam],
+            'returns' => 'A version object carrying its pages, their sections and their fields. A number the template does not have answers 404, and so does a template belonging to somebody else.',
+            'response' => ['data' => $nestedVersion],
+        ],
+        [
+            'id' => 'template-version-pages-create',
+            'returnFields' => ApiDocsFields::nested('template_version_page', 'page', $pageOnly),
+            'title' => 'Add a page',
+            'label' => 'Add a page',
+            'method' => 'POST',
+            'path' => '/templates/{template}/versions/{version}/pages',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/pages',
+            'description' => 'Add a tab to a draft.',
+            'body' => [
+                'A page is a tab on the record, and it exists only inside the version that holds it. It cannot be reused, shared or published on its own, which is why it has no life outside the structure it is part of.',
+                'The key is settled here from the label and never rebuilt, so a browser link to the tab keeps working through any rename. Two pages of the same version cannot read the same thing.',
+                'Only a draft can be laid out. A version that has been published refuses this, and every other write below.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam],
+            'bodyParams' => [
+                ['name' => 'label', 'type' => 'string', 'required' => true, 'description' => 'What the tab says. Up to 255 characters.', 'example' => 'Medical'],
+                ['name' => 'key', 'type' => 'string', 'required' => false, 'description' => 'How the page is addressed in a browser link. Derived from the label when absent, and cleaned either way.'],
+            ],
+            'returns' => 'The page that was added, placed last. A label another page of the version already reads answers 422.',
+            'responseStatus' => 201,
+            'response' => ['data' => $pageExample],
+        ],
+        [
+            'id' => 'template-version-pages-update',
+            'returnFields' => ApiDocsFields::nested('template_version_page', 'page', $pageOnly),
+            'title' => 'Rename a page',
+            'label' => 'Rename a page',
+            'method' => 'PUT',
+            'path' => '/templates/{template}/versions/{version}/pages/{page}',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/pages/'.$pageId,
+            'description' => 'Change what a tab says.',
+            'body' => [
+                'The key the page was settled is left alone, so a browser link that already went out keeps working. Only the wording moves.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam, $pageParam],
+            'bodyParams' => [
+                ['name' => 'label', 'type' => 'string', 'required' => true, 'description' => 'What the tab says. Up to 255 characters.', 'example' => 'Health'],
+            ],
+            'returns' => 'The page as it now stands. A label another page of the version already reads answers 422.',
+            'response' => ['data' => $pageExample],
+        ],
+        [
+            'id' => 'template-version-pages-destroy',
+            'title' => 'Delete a page',
+            'label' => 'Delete a page',
+            'method' => 'DELETE',
+            'path' => '/templates/{template}/versions/{version}/pages/{page}',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/pages/'.$pageId,
+            'description' => 'Remove a tab that holds nothing.',
+            'body' => [
+                'A page that still holds sections is refused, and the answer says how many. Take the sections off first, or move them to another page, so that nothing is lost by accident.',
+                'The last page of a version is refused too. A version with no page could not be published, and a structure nobody can fill is not one.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam, $pageParam],
+            'returns' => 'Nothing. A page that still holds sections, and the last page of a version, both answer 422.',
+            'responseStatus' => 204,
+        ],
+        [
+            'id' => 'template-version-pages-position-update',
+            'returnFields' => ApiDocsFields::nested('template_version_page', 'page', $pageOnly),
+            'title' => 'Move a page',
+            'label' => 'Move a page',
+            'method' => 'PUT',
+            'path' => '/templates/{template}/versions/{version}/pages/{page}/position',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/pages/'.$pageId.'/position',
+            'description' => 'Put a tab at a given place, counting from 1.',
+            'body' => [
+                'Every page of the version is numbered from 1 again afterwards, so the positions stay a run of whole numbers with no gaps. A place past the end puts the page last rather than being refused.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam, $pageParam],
+            'bodyParams' => [
+                ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where to put the page, counting from 1.', 'example' => 1],
+            ],
+            'returns' => 'The page with the place it now holds.',
+            'response' => ['data' => $pageExample],
+        ],
+        [
+            'id' => 'template-version-sections-create',
+            'returnFields' => ApiDocsFields::nested('template_version_section', 'placement', $placementOnly),
+            'title' => 'Place a section',
+            'label' => 'Place a section',
+            'method' => 'POST',
+            'path' => '/templates/{template}/versions/{version}/sections',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/sections',
+            'description' => 'Put a section on a page of a draft.',
+            'body' => [
+                'This places a section that already exists rather than inventing one. A section is reusable and belongs to your account rather than to a template, so the same one can sit in several templates and in several versions of one template, at a different place each time.',
+                'What is placed is a precise version of the section. Say which with section_version_number, or say nothing and the published version is used. That is what stops a change made through one template reaching another: a placement names a version, not a section.',
+                'Where it sits and what it is headed here belong to the placement rather than to the section, so overriding the title changes this template and nothing else. Name a page or leave it out to land on the first one.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam],
+            'bodyParams' => [
+                ['name' => 'section_id', 'type' => 'uuid', 'required' => true, 'description' => 'The section to place. One belonging to somebody else is refused as invalid, and so is one already on this version.', 'example' => 'd5e8c012-9a34-4b76-8f21-3e7c5a0b1d94'],
+                ['name' => 'section_version_number', 'type' => 'integer', 'required' => false, 'description' => 'Which version of the section to place. The published one when absent. A version that is no longer offered is refused.'],
+                ['name' => 'page_id', 'type' => 'uuid', 'required' => false, 'description' => 'The page to place it on. The first page of the version when absent.'],
+                ['name' => 'title_override', 'type' => 'string', 'required' => false, 'description' => 'What to head the block here. The name of the section when absent.', 'example' => 'Where they live'],
+                ['name' => 'is_collapsed_by_default', 'type' => 'boolean', 'required' => false, 'description' => 'Whether the block starts folded shut. False when absent.'],
+            ],
+            'returns' => 'The placement that was created, placed last on its page.',
+            'responseStatus' => 201,
+            'response' => ['data' => $placementExample],
+        ],
+        [
+            'id' => 'template-version-sections-update',
+            'returnFields' => ApiDocsFields::nested('template_version_section', 'placement', $placementOnly),
+            'title' => 'Change a placement',
+            'label' => 'Change a placement',
+            'method' => 'PUT',
+            'path' => '/templates/{template}/versions/{version}/sections/{section}',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/sections/904',
+            'description' => 'Change what a block is headed here and whether it starts folded shut.',
+            'body' => [
+                'This touches the placement and never the section. The section keeps its name, its fields and its version, and every other template placing it is unaffected.',
+                'Sending title_override as null goes back to the name of the section. The field has to be present either way.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam, $sectionParam],
+            'bodyParams' => [
+                ['name' => 'title_override', 'type' => 'string', 'required' => true, 'description' => 'What to head the block here, or null to use the name of the section. The field has to be present even when it is null.', 'example' => 'Where they live'],
+                ['name' => 'is_collapsed_by_default', 'type' => 'boolean', 'required' => false, 'description' => 'Whether the block starts folded shut. False when absent.'],
+            ],
+            'returns' => 'The placement as it now stands.',
+            'response' => ['data' => $placementExample],
+        ],
+        [
+            'id' => 'template-version-sections-destroy',
+            'title' => 'Take a section off',
+            'label' => 'Take a section off',
+            'method' => 'DELETE',
+            'path' => '/templates/{template}/versions/{version}/sections/{section}',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/sections/904',
+            'description' => 'Remove a block from a draft.',
+            'body' => [
+                'This removes the placement. The section itself is untouched and goes on existing for every other template that places it, which is the whole point of a section being its own thing.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam, $sectionParam],
+            'returns' => 'Nothing. A placement on a template belonging to somebody else answers 404.',
+            'responseStatus' => 204,
+        ],
+        [
+            'id' => 'template-version-sections-position-update',
+            'returnFields' => ApiDocsFields::nested('template_version_section', 'placement', $placementOnly),
+            'title' => 'Move a section on its page',
+            'label' => 'Move a section',
+            'method' => 'PUT',
+            'path' => '/templates/{template}/versions/{version}/sections/{section}/position',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/sections/904/position',
+            'description' => 'Put a block at a given place on its page, counting from 1.',
+            'body' => [
+                'Positions start again on each page, so this orders the block against the others on its own page and nothing else. Every one of them is numbered from 1 again afterwards, and a place past the end lands last.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam, $sectionParam],
+            'bodyParams' => [
+                ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where to put the block on its page, counting from 1.', 'example' => 1],
+            ],
+            'returns' => 'The placement with the place it now holds.',
+            'response' => ['data' => $placementExample],
+        ],
+        [
+            'id' => 'template-version-sections-page-update',
+            'returnFields' => ApiDocsFields::nested('template_version_section', 'placement', $placementOnly),
+            'title' => 'Move a section to another page',
+            'label' => 'Move to another page',
+            'method' => 'PUT',
+            'path' => '/templates/{template}/versions/{version}/sections/{section}/page',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/sections/904/page',
+            'description' => 'Move a block from one tab of a draft to another.',
+            'body' => [
+                'The block lands last on the page it arrives at, and the page it left is numbered from 1 again. The section is untouched: only where it sits changes.',
+                'The page has to belong to the same version. One from another version, or another template, answers 404.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam, $sectionParam],
+            'bodyParams' => [
+                ['name' => 'page_id', 'type' => 'uuid', 'required' => true, 'description' => 'The page to move it to, which has to be a page of this version.', 'example' => 'a1f7b3c8-6e42-4d09-8b57-1c9e0f2a4d36'],
+            ],
+            'returns' => 'The placement, now on its new page.',
+            'response' => ['data' => $placementExample],
+        ],
+        [
+            'id' => 'fields-create',
+            'returnFields' => ApiDocsFields::nested('field', 'field', $fieldAttributes),
+            'title' => 'Add a field',
+            'label' => 'Add a field',
+            'method' => 'POST',
+            'path' => '/templates/{template}/versions/{version}/sections/{section}/fields',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/sections/904/fields',
+            'description' => 'Add a piece of data to a section, through the template that places it.',
+            'body' => [
+                'Fields belong to the section version rather than to the section, which is what makes freezing reach all the way down. So if the section placed here has been published, adding a field opens a draft of the section first and adds it there. The published section is untouched, and every other template placing it goes on exactly as before. The answer names the section version that took the change.',
+                'The type is settled here and cannot be changed afterwards, and so is what a relation points at and whether the field repeats, because records get written against those promises. Everything else can be changed later.',
+                'A field offering choices has to say which value list they come from, and a relation field has to say what it points at. Three types carry no value at all and are there to lay the form out: divider, heading and help.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam, $sectionParam],
+            'bodyParams' => [
+                ['name' => 'type', 'type' => 'string', 'required' => true, 'description' => 'What kind of thing the field holds: one of text, textarea, number, boolean, url, email, phone, select, multiselect, radio, date, recurring_date, relation, file, image, avatar, address, repeater, divider, heading or help.', 'example' => 'text'],
+                ['name' => 'label', 'type' => 'string', 'required' => true, 'description' => 'What the field is called on the form. Up to 255 characters.', 'example' => 'Nickname'],
+                ['name' => 'key', 'type' => 'string', 'required' => false, 'description' => 'How the field is named in an import or an export. Derived from the label when absent, and settled once.'],
+                ['name' => 'value_list_id', 'type' => 'integer', 'required' => false, 'description' => 'The list a field offering choices takes them from. Required for select, multiselect and radio.'],
+                ['name' => 'relation_target', 'type' => 'string', 'required' => false, 'description' => 'What a relation field points at: contact or entity. Required for a relation field.'],
+                ['name' => 'relation_entity_type_id', 'type' => 'uuid', 'required' => false, 'description' => 'Which kind of entity a relation field points at. Required when relation_target is entity.'],
+                ['name' => 'parent_id', 'type' => 'integer', 'required' => false, 'description' => 'The repeater this field sits inside. Only a repeater can hold other fields, and a repeater cannot sit inside another.'],
+            ],
+            'returns' => 'The field that was added, placed last in its section, with every setting at its default.',
+            'responseStatus' => 201,
+            'response' => ['data' => $fieldExample],
+        ],
+        [
+            'id' => 'fields-update',
+            'returnFields' => ApiDocsFields::nested('field', 'field', $fieldAttributes),
+            'title' => 'Configure a field',
+            'label' => 'Configure a field',
+            'method' => 'PUT',
+            'path' => '/templates/{template}/versions/{version}/sections/{section}/fields/{field}',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/sections/904/fields/5521',
+            'description' => 'Change what a field is called and how it behaves.',
+            'body' => [
+                'As with adding one, changing a field of a section that has been published opens a draft of the section and changes it there, leaving the published section and every other template placing it alone.',
+                'The type, whether the field repeats, and what a relation points at are settled when the field is added and are not sent here. Everything else is sent every time: a setting left out goes back to its default rather than staying as it was.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam, $sectionParam, $fieldParam],
+            'bodyParams' => [
+                ['name' => 'label', 'type' => 'string', 'required' => true, 'description' => 'What the field is called on the form.', 'example' => 'Street name'],
+                ['name' => 'help_text', 'type' => 'string', 'required' => true, 'description' => 'A sentence shown under the field, or null. The field has to be present even when it is null.', 'example' => 'Including the number.'],
+                ['name' => 'placeholder', 'type' => 'string', 'required' => true, 'description' => 'What the empty box shows as an example, or null. The field has to be present even when it is null.', 'example' => '221B Baker Street'],
+                ['name' => 'is_required', 'type' => 'boolean', 'required' => false, 'description' => 'Whether the record refuses to save without it.'],
+                ['name' => 'is_sensitive', 'type' => 'boolean', 'required' => false, 'description' => 'Whether the value is hidden until somebody asks to see it.'],
+                ['name' => 'is_highlighted', 'type' => 'boolean', 'required' => false, 'description' => 'Whether the value is repeated at the top of the record.'],
+                ['name' => 'is_unique', 'type' => 'boolean', 'required' => false, 'description' => 'Whether two records may hold the same value.'],
+                ['name' => 'value_list_id', 'type' => 'integer', 'required' => false, 'description' => 'The list a field offering choices takes them from.'],
+                ['name' => 'default_value', 'type' => 'object', 'required' => false, 'description' => 'What the field starts filled with.'],
+                ['name' => 'options', 'type' => 'object', 'required' => false, 'description' => 'Settings belonging to this kind of field alone.'],
+                ['name' => 'validation', 'type' => 'object', 'required' => false, 'description' => 'Extra rules a value has to satisfy.'],
+                ['name' => 'repeat_min', 'type' => 'integer', 'required' => false, 'description' => 'The fewest repetitions allowed.'],
+                ['name' => 'repeat_max', 'type' => 'integer', 'required' => false, 'description' => 'The most repetitions allowed.'],
+                ['name' => 'repetition_order', 'type' => 'string', 'required' => false, 'description' => 'How several values are ordered: newest_last or newest_first.'],
+            ],
+            'returns' => 'The field as it now stands, carrying the id it holds in the section version that took the change.',
+            'response' => ['data' => $fieldExample],
+        ],
+        [
+            'id' => 'fields-destroy',
+            'title' => 'Remove a field',
+            'label' => 'Remove a field',
+            'method' => 'DELETE',
+            'path' => '/templates/{template}/versions/{version}/sections/{section}/fields/{field}',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/sections/904/fields/5521',
+            'description' => 'Take a field out of a section.',
+            'body' => [
+                'The values already written under the field are not destroyed. They are detached and kept, so nothing a person typed disappears because somebody changed a structure, and a field put back finds them again.',
+                'As with the other two, a published section is drafted first and the published one is left alone.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam, $sectionParam, $fieldParam],
+            'returns' => 'Nothing. A field of a template belonging to somebody else answers 404.',
+            'responseStatus' => 204,
+        ],
+        [
+            'id' => 'fields-position-update',
+            'returnFields' => ApiDocsFields::nested('field', 'field', $fieldAttributes),
+            'title' => 'Move a field',
+            'label' => 'Move a field',
+            'method' => 'PUT',
+            'path' => '/templates/{template}/versions/{version}/sections/{section}/fields/{field}/position',
+            'examplePath' => '/templates/'.$templateId.'/versions/4/sections/904/fields/5521/position',
+            'description' => 'Put a field at a given place in its section, counting from 1.',
+            'body' => [
+                'Every field of the section is numbered from 1 again afterwards, and a place past the end lands last. A published section is drafted first, exactly as it is for the other changes to a field.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$templateParam, $versionParam, $sectionParam, $fieldParam],
+            'bodyParams' => [
+                ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where to put the field in its section, counting from 1.', 'example' => 1],
+            ],
+            'returns' => 'The field with the place it now holds.',
+            'response' => ['data' => $fieldExample],
+        ],
+    ],
+];

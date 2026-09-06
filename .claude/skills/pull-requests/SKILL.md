@@ -22,6 +22,7 @@ description: Conventions for writing pull requests, including Conventional Commi
 ## Screenshots for a user interface change
 
 - A pull request that changes anything a person sees MUST carry a screenshot. That covers a new screen, a changed layout, spacing, a component, wording drawn on a page, a state (empty, error, loading), and anything else visible in a browser.
+- The API reference portal at `/docs/api` is the one exception, and a change to it MUST NOT carry a screenshot. Its pages are generated from the definition files in `resources/docs/api`, so a shot of one shows the portal rendering exactly as it always renders, and the endpoints and their wording are what a reviewer has to read. Describe them in a bullet instead. A change to the components or the layout the portal is drawn with is a user interface change like any other and still needs one.
 - You MUST take them with the [take-screenshot skill](../take-screenshot/SKILL.md), which uses Iris. The application is served at `http://monica.test`.
 - A screen that already existed MUST show a before and an after, in that order, so a reviewer sees what changed rather than only the result. A screen that did not exist has no before, and carries the after alone.
 - Both shots MUST come from the same URL, at the same size, with the same data. The change is the only thing that may differ between them.

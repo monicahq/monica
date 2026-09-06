@@ -9,6 +9,7 @@ use App\Models\EmailSent;
 use App\Models\Log;
 use App\Models\NotificationPreference;
 use App\Models\ShareLink;
+use App\Models\Template;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\Vault;
@@ -57,6 +58,16 @@ class AccountTest extends TestCase
 
         $this->assertTrue($account->valueLists()->exists());
         $this->assertEquals('Phone labels', $account->valueLists->first()->name);
+    }
+
+    #[Test]
+    public function it_has_many_templates(): void
+    {
+        $account = Account::factory()->create();
+        Template::factory()->create(['account_id' => $account->id, 'name' => 'Schrute Farms guest']);
+
+        $this->assertTrue($account->templates()->exists());
+        $this->assertEquals('Schrute Farms guest', $account->templates->first()->name);
     }
 
     #[Test]

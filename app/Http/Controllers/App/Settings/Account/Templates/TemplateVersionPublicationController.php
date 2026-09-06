@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Settings\Account\Templates;
 
-use App\Actions\PublishSectionVersion;
 use App\Actions\PublishTemplateVersion;
-use App\Exceptions\CannotPublishWhileASectionIsStillADraft;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Controllers\Controller;
 use App\Models\Template;
@@ -23,8 +21,6 @@ class TemplateVersionPublicationController extends Controller
             'change_note' => ['nullable', 'string', 'max:65535'],
         ]);
 
-        $this->publishTheSectionsItCarries($request, $templateVersion);
-
         try {
             new PublishTemplateVersion(
                 user: $request->user(),
@@ -38,32 +34,10 @@ class TemplateVersionPublicationController extends Controller
         } catch (PublishedVersionIsFrozen) {
             return redirect()->route('settings.templateBuilder.index', $template)
                 ->with('error', __('This version has already been published.'));
-        } catch (CannotPublishWhileASectionIsStillADraft) {
-            return redirect()->route('settings.templateBuilder.index', $template)
-                ->with('error', __('One of the sections could not be published.'));
         }
 
         return redirect()->route('settings.templateBuilder.index', $template)
             ->with('status', __('Version :version is published.', ['version' => $templateVersion->version_number]))
             ->with('status_description', __('It is frozen now. Any further change starts a new draft beside it.'));
-    }
-
-    private function publishTheSectionsItCarries(Request $request, TemplateVersion $templateVersion): void
-    {
-        foreach ($templateVersion->assembly as $row) {
-            $sectionVersion = $row->sectionVersion;
-
-            if (! $sectionVersion->status->isEditable()) {
-                continue;
-            }
-
-            new PublishSectionVersion(
-                user: $request->user(),
-                sectionVersion: $sectionVersion,
-                changeNote: $sectionVersion->previous_version_id === null
-                    ? null
-                    : __('Published with the template.'),
-            )->execute();
-        }
     }
 }

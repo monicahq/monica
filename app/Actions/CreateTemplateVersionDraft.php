@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Start a new draft of a template, copied from a version that already exists.
+ *
+ * A template has at most one draft at a time, which is what the builder and the
+ * templates screen both assume when they reach for it with a single lookup. So a
+ * call made while one is already open answers with that draft rather than
+ * starting a second nobody could reach.
  */
 class CreateTemplateVersionDraft
 {
@@ -30,10 +35,26 @@ class CreateTemplateVersionDraft
     public function execute(): TemplateVersion
     {
         $this->validate();
+
+        $open = $this->openDraft();
+
+        if ($open !== null) {
+            return $open;
+        }
+
         $this->create();
         $this->log();
 
         return $this->draft;
+    }
+
+    private function openDraft(): ?TemplateVersion
+    {
+        return TemplateVersion::query()
+            ->where('template_id', $this->templateVersion->template_id)
+            ->where('status', VersionStatusEnum::Draft)
+            ->orderBy('version_number')
+            ->first();
     }
 
     private function validate(): void

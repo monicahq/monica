@@ -8,7 +8,6 @@ use App\Actions\PublishTemplateVersion;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\CannotPublishAnEmptyPage;
-use App\Exceptions\CannotPublishWhileASectionIsStillADraft;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Jobs\LogUserAction;
 use App\Models\SectionVersion;
@@ -102,7 +101,7 @@ class PublishTemplateVersionTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_while_the_template_version_carries_a_section_nobody_published(): void
+    public function it_publishes_the_draft_sections_it_carries(): void
     {
         Queue::fake();
 
@@ -115,9 +114,60 @@ class PublishTemplateVersionTest extends TestCase
             'section_version_id' => $sectionVersion->id,
         ]);
 
-        $this->expectException(CannotPublishWhileASectionIsStillADraft::class);
+        new PublishTemplateVersion(user: $user, templateVersion: $version)->execute();
+
+        $this->assertEquals(VersionStatusEnum::Published, $sectionVersion->fresh()->status);
+        $this->assertEquals(VersionStatusEnum::Published, $version->fresh()->status);
+    }
+
+    #[Test]
+    public function it_says_a_section_it_published_went_out_with_the_template(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $first = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
+        $second = SectionVersion::factory()->create([
+            'account_id' => $user->account_id,
+            'section_id' => $first->section_id,
+            'version_number' => 2,
+            'previous_version_id' => $first->id,
+        ]);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => $second->id,
+        ]);
 
         new PublishTemplateVersion(user: $user, templateVersion: $version)->execute();
+
+        $this->assertEquals('Published with the template.', $second->fresh()->change_note);
+    }
+
+    #[Test]
+    public function it_leaves_the_sections_of_another_account_alone_when_it_refuses_the_version(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $somebodyElse = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $somebodyElse->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $sectionVersion = SectionVersion::factory()->create(['account_id' => $somebodyElse->account_id]);
+        TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+
+        try {
+            new PublishTemplateVersion(user: $user, templateVersion: $version)->execute();
+            $this->fail('The version of another account was published.');
+        } catch (ModelNotFoundException) {
+            //
+        }
+
+        $this->assertEquals(VersionStatusEnum::Draft, $sectionVersion->fresh()->status);
     }
 
     #[Test]

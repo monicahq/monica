@@ -5,13 +5,19 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Docs;
 
 use App\Enums\TemplateAppliesToEnum;
+use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\EmailSent;
 use App\Models\EntityType;
+use App\Models\Field;
 use App\Models\File;
 use App\Models\Log;
+use App\Models\Section;
+use App\Models\SectionVersion;
 use App\Models\Template;
 use App\Models\TemplateVersion;
+use App\Models\TemplateVersionPage;
+use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -289,6 +295,207 @@ class ApiDocsReturnFieldsTest extends TestCase
                 ]);
             }),
 
+            'templates-index' => $this->asSomebody(function (User $user): TestResponse {
+                Template::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('GET', '/api/v1/templates');
+            }),
+
+            'templates-show' => $this->asSomebody(function (User $user): TestResponse {
+                $template = Template::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('GET', "/api/v1/templates/{$template->uuid}");
+            }),
+
+            'templates-create' => $this->asSomebody(fn (): TestResponse => $this->json('POST', '/api/v1/templates', [
+                'name' => 'Wine bottle',
+                'applies_to' => 'contact',
+            ])),
+
+            'templates-update' => $this->asSomebody(function (User $user): TestResponse {
+                $template = Template::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/templates/{$template->uuid}", [
+                    'name' => 'Person',
+                    'description' => 'Anybody the family knows.',
+                ]);
+            }),
+
+            'templates-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $template = Template::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/templates/{$template->uuid}");
+            }),
+
+            'templates-activation-update' => $this->asSomebody(function (User $user): TestResponse {
+                $template = Template::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/templates/{$template->uuid}/activation", ['is_active' => false]);
+            }),
+
+            'templates-position-update' => $this->asSomebody(function (User $user): TestResponse {
+                $template = Template::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/templates/{$template->uuid}/position", ['position' => 1]);
+            }),
+
+            'templates-duplicate-create' => $this->asSomebody(function (User $user): TestResponse {
+                $template = Template::factory()->create(['account_id' => $user->account_id]);
+                TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+
+                return $this->json('POST', "/api/v1/templates/{$template->uuid}/duplicate");
+            }),
+
+            'template-versions-index' => $this->asSomebody(function (User $user): TestResponse {
+                $template = Template::factory()->create(['account_id' => $user->account_id]);
+                TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+
+                return $this->json('GET', "/api/v1/templates/{$template->uuid}/versions");
+            }),
+
+            'template-versions-create' => $this->asSomebody(function (User $user): TestResponse {
+                $template = Template::factory()->create(['account_id' => $user->account_id]);
+                $version = TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+                $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+                $template->update(['published_version_id' => $version->id]);
+
+                return $this->json('POST', "/api/v1/templates/{$template->uuid}/versions");
+            }),
+
+            'template-versions-publication-update' => $this->asSomebody(function (User $user): TestResponse {
+                $template = Template::factory()->create(['account_id' => $user->account_id]);
+                TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+
+                return $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/publication", [
+                    'change_note' => 'The first one.',
+                ]);
+            }),
+
+            'template-versions-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $template = Template::factory()->create(['account_id' => $user->account_id]);
+                TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+
+                return $this->json('DELETE', "/api/v1/templates/{$template->uuid}/versions/1");
+            }),
+
+            'template-versions-show' => $this->asSomebody(function (User $user): TestResponse {
+                $template = Template::factory()->create(['account_id' => $user->account_id]);
+                $version = TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+                $sectionVersion = SectionVersion::factory()->create([
+                    'section_id' => Section::factory()->create(['account_id' => $user->account_id])->id,
+                ]);
+                TemplateVersionSection::factory()->create([
+                    'template_version_id' => $version->id,
+                    'template_version_page_id' => $version->pages()->firstOrFail()->id,
+                    'section_version_id' => $sectionVersion->id,
+                ]);
+                Field::factory()->create(['section_version_id' => $sectionVersion->id]);
+
+                return $this->json('GET', "/api/v1/templates/{$template->uuid}/versions/1");
+            }),
+
+            'template-version-pages-create' => $this->asSomebody(function (User $user): TestResponse {
+                [$template] = $this->aDraft($user);
+
+                return $this->json('POST', "/api/v1/templates/{$template->uuid}/versions/1/pages", ['label' => 'Medical']);
+            }),
+
+            'template-version-pages-update' => $this->asSomebody(function (User $user): TestResponse {
+                [$template, $version] = $this->aDraft($user);
+                $page = $version->pages()->sole();
+
+                return $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/pages/{$page->uuid}", ['label' => 'Health']);
+            }),
+
+            'template-version-pages-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                [$template, $version] = $this->aDraft($user);
+                $page = TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'position' => 2]);
+
+                return $this->json('DELETE', "/api/v1/templates/{$template->uuid}/versions/1/pages/{$page->uuid}");
+            }),
+
+            'template-version-pages-position-update' => $this->asSomebody(function (User $user): TestResponse {
+                [$template, $version] = $this->aDraft($user);
+                $page = $version->pages()->sole();
+
+                return $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/pages/{$page->uuid}/position", ['position' => 1]);
+            }),
+
+            'template-version-sections-create' => $this->asSomebody(function (User $user): TestResponse {
+                [$template] = $this->aDraft($user);
+                $section = Section::factory()->create(['account_id' => $user->account_id]);
+                $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
+                $section->update(['published_version_id' => $sectionVersion->id]);
+
+                return $this->json('POST', "/api/v1/templates/{$template->uuid}/versions/1/sections", [
+                    'section_id' => $section->uuid,
+                    'title_override' => 'Where they live',
+                ]);
+            }),
+
+            'template-version-sections-update' => $this->asSomebody(function (User $user): TestResponse {
+                [$template, , $row] = $this->aPlacement($user);
+
+                return $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}", [
+                    'title_override' => 'Where they live',
+                ]);
+            }),
+
+            'template-version-sections-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                [$template, , $row] = $this->aPlacement($user);
+
+                return $this->json('DELETE', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}");
+            }),
+
+            'template-version-sections-position-update' => $this->asSomebody(function (User $user): TestResponse {
+                [$template, , $row] = $this->aPlacement($user);
+
+                return $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}/position", ['position' => 1]);
+            }),
+
+            'template-version-sections-page-update' => $this->asSomebody(function (User $user): TestResponse {
+                [$template, $version, $row] = $this->aPlacement($user);
+                $page = TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'position' => 2]);
+
+                return $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}/page", [
+                    'page_id' => $page->uuid,
+                ]);
+            }),
+
+            'fields-create' => $this->asSomebody(function (User $user): TestResponse {
+                [$template, , $row] = $this->aPlacement($user);
+
+                return $this->json('POST', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}/fields", [
+                    'type' => 'text',
+                    'label' => 'Nickname',
+                ]);
+            }),
+
+            'fields-update' => $this->asSomebody(function (User $user): TestResponse {
+                [$template, , $row] = $this->aPlacement($user);
+                $field = Field::factory()->create(['section_version_id' => $row->section_version_id, 'position' => 1]);
+
+                return $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}/fields/{$field->id}", [
+                    'label' => 'Street name',
+                    'help_text' => null,
+                    'placeholder' => null,
+                ]);
+            }),
+
+            'fields-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                [$template, , $row] = $this->aPlacement($user);
+                $field = Field::factory()->create(['section_version_id' => $row->section_version_id, 'position' => 1]);
+
+                return $this->json('DELETE', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}/fields/{$field->id}");
+            }),
+
+            'fields-position-update' => $this->asSomebody(function (User $user): TestResponse {
+                [$template, , $row] = $this->aPlacement($user);
+                $field = Field::factory()->create(['section_version_id' => $row->section_version_id, 'position' => 1]);
+
+                return $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}/fields/{$field->id}/position", ['position' => 1]);
+            }),
+
             'entity-types-index' => $this->asSomebody(function (User $user): TestResponse {
                 EntityType::factory()->create(['account_id' => $user->account_id]);
 
@@ -473,6 +680,29 @@ class ApiDocsReturnFieldsTest extends TestCase
             'account_id' => $vault->account_id,
             'avatar_file_id' => $file->id,
         ]);
+    }
+
+    /** @return array{Template, TemplateVersion} */
+    private function aDraft(User $user): array
+    {
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+
+        return [$template, $version];
+    }
+
+    /** @return array{Template, TemplateVersion, TemplateVersionSection} */
+    private function aPlacement(User $user): array
+    {
+        [$template, $version] = $this->aDraft($user);
+        $row = TemplateVersionSection::factory()->create([
+            'template_version_id' => $version->id,
+            'section_version_id' => SectionVersion::factory()->create([
+                'section_id' => Section::factory()->create(['account_id' => $user->account_id])->id,
+            ])->id,
+        ]);
+
+        return [$template, $version, $row];
     }
 
     private function asSomebody(callable $call): TestResponse

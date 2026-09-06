@@ -7,11 +7,9 @@ namespace App\Actions;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\CannotPublishAnEmptyPage;
-use App\Exceptions\CannotPublishWhileASectionIsStillADraft;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
-use App\Models\SectionVersion;
 use App\Models\TemplateVersion;
 use App\Models\TemplateVersionPage;
 use App\Models\User;
@@ -21,6 +19,11 @@ use InvalidArgumentException;
 
 /**
  * Freeze a draft and make it the version a new record is given.
+ *
+ * A template version cannot be published while a section it carries is still a
+ * draft, so publishing one publishes those sections first. That belongs here
+ * rather than in whatever asked for the publication: the rule is about freezing,
+ * and every caller has to obey it identically or the freeze means nothing.
  */
 class PublishTemplateVersion
 {
@@ -33,11 +36,32 @@ class PublishTemplateVersion
     public function execute(): TemplateVersion
     {
         $this->sanitize();
-        $this->validate();
+        $this->validateTheVersion();
+        $this->publishTheSectionsItCarries();
+        $this->validateThePages();
         $this->publish();
         $this->log();
 
         return $this->templateVersion;
+    }
+
+    private function publishTheSectionsItCarries(): void
+    {
+        foreach ($this->templateVersion->assembly as $row) {
+            $sectionVersion = $row->sectionVersion;
+
+            if (! $sectionVersion->status->isEditable()) {
+                continue;
+            }
+
+            new PublishSectionVersion(
+                user: $this->user,
+                sectionVersion: $sectionVersion,
+                changeNote: $sectionVersion->previous_version_id === null
+                    ? null
+                    : __('Published with the template.'),
+            )->execute();
+        }
     }
 
     private function sanitize(): void
@@ -45,7 +69,12 @@ class PublishTemplateVersion
         $this->changeNote = TextSanitizer::nullablePlainText($this->changeNote);
     }
 
-    private function validate(): void
+    /**
+     * What has to hold before anything is written. It runs before the sections are
+     * published, so a caller who may not touch this version cannot publish the
+     * sections it carries on the way to being refused.
+     */
+    private function validateTheVersion(): void
     {
         if ($this->templateVersion->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This template version is in another account.');
@@ -58,17 +87,6 @@ class PublishTemplateVersion
         if ($this->templateVersion->previous_version_id !== null && $this->changeNote === null) {
             throw new InvalidArgumentException('Publishing a new version of a template needs a note saying what changed.');
         }
-
-        $drafts = SectionVersion::query()
-            ->whereIn('id', $this->templateVersion->assembly->pluck('section_version_id'))
-            ->where('status', VersionStatusEnum::Draft)
-            ->count();
-
-        if ($drafts > 0) {
-            throw new CannotPublishWhileASectionIsStillADraft("This template version carries {$drafts} sections nobody has published yet.");
-        }
-
-        $this->validateThePages();
     }
 
     private function validateThePages(): void

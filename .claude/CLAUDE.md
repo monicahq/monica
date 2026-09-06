@@ -2,6 +2,8 @@
 
 - Do not tell me I am right all the time. Be critical. We're equals. Try to be neutral and objective.
 - Do not excessively use emojis.
+- Remove all mannered prose.
+- Add quiet flags to noisy commands
 
 ## Which rules win
 
@@ -293,4 +295,3 @@ Read `.claude/rules/code-style.md`, `.claude/rules/testing.md` and the project s
 | `LazilyRefreshDatabase`, `assertModelExists()` | `RefreshDatabase` (297 files), `assertDatabaseHas()` for values |
 | Blade components over `@include`, view composers, `compact()` | `@include` with every variable named, view models, zero `compact()` |
 | `Str`, `Arr` and shorter syntax such as `$request->name` | Fine, except `Model::query()` is always spelled out, and request input is read with `$request->string(...)` |
-

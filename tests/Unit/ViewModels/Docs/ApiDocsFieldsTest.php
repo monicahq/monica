@@ -34,6 +34,21 @@ class ApiDocsFieldsTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_the_links_off_a_record_that_is_only_read_inside_another(): void
+    {
+        $fields = ApiDocsFields::nested('field', 'field', $this->attributes);
+
+        $this->assertSame([
+            'data',
+            'data.type',
+            'data.id',
+            'data.attributes',
+            'data.attributes.name',
+            'data.attributes.created_at',
+        ], array_column($fields, 'name'));
+    }
+
+    #[Test]
     public function it_describes_a_page_of_records(): void
     {
         $fields = ApiDocsFields::page('vault', 'vault', 'vaults', $this->attributes);
