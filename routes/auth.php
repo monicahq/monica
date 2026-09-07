@@ -10,6 +10,7 @@ use App\Http\Controllers\App\Auth\NewPasswordController;
 use App\Http\Controllers\App\Auth\PasswordResetLinkController;
 use App\Http\Controllers\App\Auth\RegistrationController;
 use App\Http\Controllers\App\Auth\RegistrationPasskeyController;
+use App\Http\Controllers\App\Auth\ScreenshotLinkController;
 use App\Http\Controllers\App\Auth\TwoFactorChallengeController;
 use Illuminate\Support\Facades\Route;
 
@@ -65,3 +66,15 @@ Route::middleware(['auth'])->group(function (): void {
     Route::post('logout', [LoginController::class, 'destroy'])
         ->name('auth.login.destroy');
 });
+
+/*
+ * The link a screenshot tool follows to reach a screen behind the sign in. It is registered outside
+ * production and nowhere else, and it still has to be switched on, answered on a development host
+ * and signed before it leads anywhere. The controller says the rest.
+ */
+if (app()->environment('local', 'testing')) {
+    Route::get('screenshot-link/{email}', [ScreenshotLinkController::class, 'show'])
+        ->middleware(['signed', 'throttle:20,1'])
+        ->where('email', '[^/]+')
+        ->name('auth.screenshotLink.show');
+}

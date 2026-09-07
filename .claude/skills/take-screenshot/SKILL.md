@@ -59,6 +59,63 @@ iris http://localhost:3000 \
 
 Use `--wait` only when waiting for a selector is not sufficient.
 
+## A screen behind the sign in
+
+Iris opens a URL and nothing else. It carries no cookie and no header, and each capture starts from
+a fresh browser, so signing in and then capturing does not work: the session does not survive from
+one capture to the next.
+
+Mint a signed link instead. It signs the user in and lands on the screen you want, in one URL.
+
+1. Switch it on once, in `.env`:
+
+```dotenv
+MONICA_SCREENSHOT_LINK_ENABLED=true
+```
+
+2. Mint a link for the screen you want:
+
+```bash
+php artisan monica:screenshot-link monica.geller@centralperk.example --to=/settings/account/relationship-types
+```
+
+3. Give the link to Iris, exactly as it was printed:
+
+```bash
+iris --scale 1 --size 1440x1420 '<the link>' -o /tmp/relationship-types.png
+```
+
+The signature covers the host, so `APP_URL` has to name the host you are opening. Herd serves the
+project directory, `http://erica.test`, and a link minted for any other host answers
+`403 Invalid signature`.
+
+The link expires in five minutes, so mint a new one when it goes stale. It only works on a
+development instance: the route is registered outside production only, the setting is off unless
+somebody writes it, the host has to be `localhost`, a loopback address or a `.test` one, and the
+link is signed with the application key, so nobody who cannot already run the application can mint
+one.
+
+Turn the setting back off when you are done anyway. It costs nothing and it is one fewer thing
+resting on the other three.
+
+The example account signs in as `monica.geller@centralperk.example`. Rebuild it with
+`php artisan migrate:fresh --seed` if the instance holds nothing.
+
+## Screens that scroll
+
+The application shell fills the window and scrolls inside itself, so `--full` returns the viewport
+rather than the whole screen. Ask for a viewport tall enough to hold what you want instead:
+
+```bash
+iris --scale 1 --size 1440x1600 '<the link>' -o /tmp/screen.png
+```
+
+Turn the debug bar off first, or it sits across the bottom of every capture:
+
+```dotenv
+DEBUGBAR_ENABLED=false
+```
+
 ## Workflow
 
 When visual validation is required:

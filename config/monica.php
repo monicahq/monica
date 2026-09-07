@@ -167,4 +167,26 @@ return [
 
     'api_maximum_items_per_page' => env('MONICA_API_MAXIMUM_ITEMS_PER_PAGE', 100),
 
+    /*
+     * A signed link that signs somebody in, so a screenshot tool that can only open a URL can reach
+     * a screen behind the sign in.
+     *
+     * Three things have to be true at once for it to work: the environment is a development one,
+     * this setting has been switched on by hand, and the instance answers on a development host.
+     * The host is asked for because `.env.example` ships `APP_ENV=local`, so an instance deployed
+     * from it would otherwise be one forgotten setting away from a way in. Above all that the link
+     * is signed with the application key and expires, so minting one already takes everything an
+     * attacker would need anyway.
+     */
+    'screenshot_link' => [
+        'enabled' => (bool) env('MONICA_SCREENSHOT_LINK_ENABLED', false),
+        'lifetime_in_minutes' => (int) env('MONICA_SCREENSHOT_LINK_LIFETIME_IN_MINUTES', 5),
+        'allowed_hosts' => [
+            'localhost',
+            '127.0.0.1',
+            '[::1]',
+            '*.test',
+        ],
+    ],
+
 ];
