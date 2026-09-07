@@ -7,7 +7,7 @@
 
 The kind of a group: household, family unit, couple, social circle, team.
 
-It is a configurable list like the others in section 5.4, and it is its own model rather than a value list because a group type carries behaviour a plain list item does not: whether it has a single address, whether it caps its membership, whether the product may suggest creating one.
+It is a configurable list like the others in section 5.4, and it is its own model rather than a value list because a group type carries behaviour a plain list item does not: whether it has a single address and whether it caps its membership.
 
 ## Fields
 
@@ -22,7 +22,6 @@ icon                        string (64)                     icon shown next to a
 colour                      string (7)                      hex colour used the same way
 has_shared_address          boolean                         whether the group has one address of its own, as a household does
 max_members                 int                             ceiling on membership, such as two for a couple, null when there is none
-is_suggestible              boolean                         whether the product may propose creating one of these
 is_system                   boolean                         whether the product supplied it
 is_active                   boolean                         whether new groups of this kind can be created
 position                    int                             order it appears in the picker
@@ -39,7 +38,7 @@ deleted_at                  datetime
 ## Rules
 
 - The supplied set covers the five kinds section 8.2 names, and is editable like any other supplied list.
-- `max_members` is a warning, not a wall, in keeping with section 8.3: the product signals what is unusual and blocks only what is impossible. Three people in a group typed as a couple is unusual, not impossible.
+- `max_members` is a warning, not a wall. Three people in a group typed as a couple is unusual, not impossible.
 - Deactivating a type leaves existing groups alone.
 
 ## Open questions

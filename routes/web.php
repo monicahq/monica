@@ -31,6 +31,10 @@ use App\Http\Controllers\App\Settings\Account\Preferences\PreferenceController;
 use App\Http\Controllers\App\Settings\Account\Preferences\TimezoneController;
 use App\Http\Controllers\App\Settings\Account\Profile\PhotoController;
 use App\Http\Controllers\App\Settings\Account\Profile\ProfileController;
+use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipCategoryController;
+use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipCategoryPositionController;
+use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipTypeController;
+use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipTypePositionController;
 use App\Http\Controllers\App\Settings\Account\Security\ApiKeyController;
 use App\Http\Controllers\App\Settings\Account\Security\PasskeyController;
 use App\Http\Controllers\App\Settings\Account\Security\PasswordController;
@@ -269,6 +273,19 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('settings/account/entity-types/{entityType}', [EntityTypeController::class, 'update'])->name('settings.entityTypes.update');
     Route::delete('settings/account/entity-types/{entityType}', [EntityTypeController::class, 'destroy'])->name('settings.entityTypes.destroy');
     Route::put('settings/account/entity-types/{entityType}/position', [EntityTypePositionController::class, 'update'])->name('settings.entityTypePosition.update');
+
+    Route::get('settings/account/relationship-types', [RelationshipTypeController::class, 'index'])->name('settings.relationshipTypes.index');
+    Route::get('settings/account/relationship-types/new', [RelationshipTypeController::class, 'new'])->name('settings.relationshipTypes.new');
+    Route::post('settings/account/relationship-types', [RelationshipTypeController::class, 'create'])->name('settings.relationshipTypes.create');
+    Route::get('settings/account/relationship-types/{relationshipType}/edit', [RelationshipTypeController::class, 'edit'])->whereNumber('relationshipType')->name('settings.relationshipTypes.edit');
+    Route::put('settings/account/relationship-types/{relationshipType}', [RelationshipTypeController::class, 'update'])->whereNumber('relationshipType')->name('settings.relationshipTypes.update');
+    Route::delete('settings/account/relationship-types/{relationshipType}', [RelationshipTypeController::class, 'destroy'])->whereNumber('relationshipType')->name('settings.relationshipTypes.destroy');
+    Route::put('settings/account/relationship-types/{relationshipType}/position', [RelationshipTypePositionController::class, 'update'])->whereNumber('relationshipType')->name('settings.relationshipTypePosition.update');
+
+    Route::post('settings/account/relationship-types/categories', [RelationshipCategoryController::class, 'create'])->name('settings.relationshipCategories.create');
+    Route::put('settings/account/relationship-types/categories/{relationshipCategory}', [RelationshipCategoryController::class, 'update'])->whereNumber('relationshipCategory')->name('settings.relationshipCategories.update');
+    Route::delete('settings/account/relationship-types/categories/{relationshipCategory}', [RelationshipCategoryController::class, 'destroy'])->whereNumber('relationshipCategory')->name('settings.relationshipCategories.destroy');
+    Route::put('settings/account/relationship-types/categories/{relationshipCategory}/position', [RelationshipCategoryPositionController::class, 'update'])->whereNumber('relationshipCategory')->name('settings.relationshipCategoryPosition.update');
 
     Route::get('settings/account/templates', [TemplateController::class, 'index'])->name('settings.templates.index');
     Route::get('settings/account/templates/new', [TemplateController::class, 'new'])->name('settings.templates.new');

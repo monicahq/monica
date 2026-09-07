@@ -52,7 +52,7 @@ deleted_at                  datetime
 
 - An activity may have no participants at all (9.2). A day can be documented without anybody else being involved, and requiring a participant would make the journal half unusable.
 - Two entry paths, one result (9.4). Entering by the day, telling the evening and hooking people into the text, and entering by the person, adding it from their page right after seeing them, produce exactly the same row. `created_from` records which path was used and changes nothing else.
-- Dates may be imprecise (9.4). Rebuilding years of past is a supported use, and the product never forces a precision the user does not have. The same precision vocabulary is used here, on relationship periods and on group memberships, and all three render through the same code.
+- Dates may be imprecise (9.4). Rebuilding years of past is a supported use, and the product never forces a precision the user does not have. Group memberships use the same precision vocabulary. Relationship dates stay simpler in the first version and may adopt it later.
 - An activity whose type counts as an interaction updates `last_activity_at` on every participating contact (9.3, 10.2). Nothing else does.
 - Private by default (9.6). A share link includes an activity only when it is explicitly allowed, and the free narrative only when that is allowed separately. Both default to false, and a field marked sensitive stays excluded even when the activity is shared.
 - Files attach through the type's file fields (9.2). Photos land where they belong: the day they were taken, with the people who were there (9.5).

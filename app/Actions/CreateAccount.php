@@ -13,8 +13,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Create an account, the one user in it, the vault their contacts go in, and the value lists the
- * fields of that vault pick from.
+ * Create an account, the one user in it, the vault their contacts go in, the value lists the
+ * fields of that vault pick from, and the vocabulary its relationships are described with.
  */
 class CreateAccount
 {
@@ -38,6 +38,7 @@ class CreateAccount
             $this->createUser();
             $this->createFirstVault();
             $this->createDefaultValueLists();
+            $this->createDefaultRelationshipTypes();
             $this->createNotificationPreference();
         });
 
@@ -85,6 +86,11 @@ class CreateAccount
     private function createDefaultValueLists(): void
     {
         new CreateDefaultValueLists(user: $this->user)->execute();
+    }
+
+    private function createDefaultRelationshipTypes(): void
+    {
+        new CreateDefaultRelationshipTypes(user: $this->user)->execute();
     }
 
     private function createNotificationPreference(): void

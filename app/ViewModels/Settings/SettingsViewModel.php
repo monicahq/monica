@@ -6,6 +6,7 @@ namespace App\ViewModels\Settings;
 
 use App\Enums\TimeFormatEnum;
 use App\Models\EntityType;
+use App\Models\RelationshipType;
 use App\Models\Template;
 use App\Models\User;
 
@@ -120,6 +121,13 @@ class SettingsViewModel
                 'url' => route('settings.entityTypes.index'),
             ],
             [
+                'title' => __('Relationship types'),
+                'description' => __('The links you can put between two people.'),
+                'icon' => 'relationship',
+                'meta' => $this->relationshipTypeCount(),
+                'url' => route('settings.relationshipTypes.index'),
+            ],
+            [
                 'title' => __('Default values'),
                 'description' => __('The lists the application offers you: relationship kinds, genders, call reasons, activity types.'),
                 'icon' => 'tasks',
@@ -195,6 +203,13 @@ class SettingsViewModel
     private function entityTypeCount(): string
     {
         $count = EntityType::query()->where('account_id', $this->user->account_id)->count();
+
+        return trans_choice(':count type|:count types', $count);
+    }
+
+    private function relationshipTypeCount(): string
+    {
+        $count = RelationshipType::query()->where('account_id', $this->user->account_id)->count();
 
         return trans_choice(':count type|:count types', $count);
     }

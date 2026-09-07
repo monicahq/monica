@@ -7,7 +7,7 @@
 
 A set of contacts that exists independently of the links between them: a household, a couple, a family, a team, a circle of friends. It is in the immutable core (3.2).
 
-Section 8.2 is unusually firm about why this is separate from relationships, and the sentence to keep is "le foyer n'est pas le couple". Two partners may live apart. They may have several households. They may stay co-parents after separating. A household is never derived from a couple, and the product must never infer one from the other. It may suggest creating a group. It may not create one on its own.
+Section 8.2 is unusually firm about why this is separate from relationships, and the sentence to keep is "le foyer n'est pas le couple". Two partners may live apart. They may have several households. They may stay co-parents after separating. A household is never derived or suggested from a couple in the first version.
 
 ## Fields
 
@@ -40,7 +40,7 @@ deleted_at                  datetime
 
 ## Rules
 
-- A group is never created automatically from a relationship (8.2). Suggesting is allowed, creating is not.
+- A group is never created or suggested automatically from a relationship (8.2).
 - A group has its own name and its own timeline, distinct from the timelines of its members.
 - Every member is a contact in the same vault.
 - A contact belongs to as many groups as it needs, including several of the same kind. Two households is the case the specification names.

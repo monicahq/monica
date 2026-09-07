@@ -7,7 +7,7 @@
 
 The record of two contacts being merged into one, kept so the merge can be explained and undone.
 
-Section 15 puts duplicate detection and merging in the first version, with preview, conflict resolution, relationship transfer and full history preservation. Section 8.3 adds what makes it hard: merging transfers relationships, which creates new duplicate relationships, which have to be detected and merged in turn, with their periods combined.
+Section 15 puts duplicate detection and merging in the first version, with preview, conflict resolution, relationship transfer and full history preservation. Transferring relationships may place two identical explicit rows side by side, so the preview has to expose that collision rather than guess what the user meant.
 
 That is too much to do without a trace. This model is the trace.
 
@@ -21,7 +21,7 @@ kept_contact_id             int                             contact that survive
 merged_contact_id           int                             contact that was absorbed, kept soft deleted rather than destroyed
 resolution                  json                            which value was kept for every field where the two disagreed
 transferred                 json                            what moved across, the relationships, activities, groups, files and reminders
-relationship_merges         json                            relationships that became duplicates and were merged, with the periods combined
+relationship_resolutions    json                            user decisions for relationship collisions created by the merge
 snapshot_id                 int                             snapshot of the surviving contact taken before the merge
 merged_by_user_id           int                             user who performed it, null when an import did
 reverted_at                 datetime                        when it was undone, null while it stands
@@ -40,7 +40,7 @@ updated_at                  datetime
 - The absorbed contact is soft deleted, never destroyed (3.3). Every identifier that pointed at it keeps resolving, and the page redirects to the survivor.
 - A snapshot of the survivor is taken before anything is written, so the whole operation can be undone as a unit.
 - Everything moves: relationships, group memberships, activity participations, field values, files, reminders, share links.
-- Relationships that collide after the transfer are merged, their periods combined, and what happened is recorded in `relationship_merges`. Section 8.3 names this specifically, and it is the part most likely to be quietly wrong, so it deserves its own tests.
+- Relationship collisions are shown in the preview. The user chooses whether to keep both rows or remove an exact duplicate, and that choice is recorded in `relationship_resolutions`. Different types or dates are never combined automatically.
 - `Moi` is never absorbed (4.3). It can absorb another contact, never the reverse.
 - A merge is previewed before it runs. Conflicting values are shown side by side and the user chooses. Nothing is resolved silently.
 - The merge writes to [Log](004-log-in-progress.md) and emits a webhook (14.2).

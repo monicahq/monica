@@ -48,6 +48,7 @@
     'check-circle' => '<circle cx="8" cy="8" r="5.6"></circle><path d="m5.4 8.2 1.9 1.9 3.4-3.9"></path>',
     'close' => '<line x1="4" y1="4" x2="12" y2="12"></line><line x1="12" y1="4" x2="4" y2="12"></line>',
     'menu' => '<line x1="2.4" y1="4.4" x2="13.6" y2="4.4"></line><line x1="2.4" y1="8" x2="13.6" y2="8"></line><line x1="2.4" y1="11.6" x2="13.6" y2="11.6"></line>',
+    'chevron-up' => '<path d="M4.4 9.6 8 6l3.6 3.6"></path>',
     'chevron-down' => '<path d="M4.4 6.4 8 10l3.6-3.6"></path>',
     'chevron-right' => '<path d="M6.4 4.4 10 8l-3.6 3.6"></path>',
     'arrow-right' => '<line x1="2.8" y1="8" x2="12.8" y2="8"></line><path d="M9.2 4.4 12.8 8l-3.6 3.6"></path>',

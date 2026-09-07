@@ -48,7 +48,7 @@ most of it: a vault lists what is coming and what has gone out, and a rule has a
 The preferences are the part still without one. Each file says how far it is built and what it is
 waiting on.
 
-Models 024 to 039 and 050 to 054 have no table and no model at all: relations between people,
+Models 024 to 026 and 031 to 039 and 050 to 054 have no table and no model at all: relations between people,
 groups, duplicates, the journal, webhooks, modules and search are the whole of what is still to be
 started.
 
@@ -90,13 +90,9 @@ Model 055, [TemplateVersionPage](055-template-version-page-done.md), is a later 
 
 | # | Model | Spec |
 |---|---|---|
-| 024 | [RelationshipType](024-relationship-type-not-yet.md) | 8.2 |
-| 025 | [RelationshipLabel](025-relationship-label-not-yet.md) | 8.2 |
+| 024 | [RelationshipCategory](024-relationship-category-done.md) | 8.2 |
+| 025 | [RelationshipType](025-relationship-type-done.md) | 8.2, 8.3 |
 | 026 | [Relationship](026-relationship-not-yet.md) | 8.2 |
-| 027 | [RelationshipPeriod](027-relationship-period-not-yet.md) | 8.2 |
-| 028 | [RelationshipQualifier](028-relationship-qualifier-not-yet.md) | 8.2 |
-| 029 | [RelationshipQualifierAssignment](029-relationship-qualifier-assignment-not-yet.md) | 8.2 |
-| 030 | [RelationshipSuggestion](030-relationship-suggestion-not-yet.md) | 8.3 |
 
 ### Groups and duplicates
 
@@ -161,6 +157,7 @@ These appear in the specification but are explicitly out of the first version (s
 - **Calculated fields and aggregations.** Deferred. They are a field type, not a model.
 - **Statistics.** Read from activities, so no storage of their own until the shape of the questions is known.
 - **Mobile applications.** They consume the API, and add no model beyond the push token, which lives on the notification preference.
+- **Advanced relationships.** Labels, qualifiers, repeated periods, recorded certainty, deductions and suggestions are possible later extensions of the explicit relationship graph. They have no model in the first version.
 
 ## Conventions used across the files
 

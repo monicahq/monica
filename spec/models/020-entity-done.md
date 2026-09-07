@@ -43,7 +43,7 @@ deleted_with_vault          bool                            whether the record w
 ## Rules
 
 - An entity never changes type (5.3). It changes its display structure freely, which is a different operation.
-- An entity does not participate in the human relationship system (8.1). That system is deliberately restricted to contacts, because it carries direction, periods, uncertainty, qualifiers and deduction, none of which make sense for a bottle of wine. The link between a contact and their dog is an ordinary relation field ([Field](017-field-done.md), type `relation`).
+- An entity does not participate in the human relationship system (8.1). That system is deliberately restricted to contacts because it carries person-to-person roles, temporal state and the protected semantics used by genealogy and romantic history. The link between a contact and their dog is an ordinary relation field ([Field](017-field-done.md), type `relation`).
 - An entity can take part in an activity (9.2), can be the target of a relation field from a contact or from another entity, and can carry reminders driven by its own date fields (10.2). A contract renewal date on a Company entity is a first class reminder source.
 - An archived entity triggers no reminder, exactly as an archived [Contact](019-contact-done.md) does not. Its rules are deactivated with `record_archived` and come back when it is unarchived. A contract renewal on a company nobody deals with any more is the reason somebody archives it.
 - Changing the applied template version writes a snapshot first, exactly as for a contact.

@@ -40,7 +40,7 @@ updated_at                  datetime
 - A departure before a join is refused. Membership entirely outside the group's own period is warned about, not refused.
 - `is_current` maintains the group's `member_count`.
 - Deleting a contact soft deletes its memberships and restores them if the contact comes back (3.3).
-- Joining and leaving are events on the contact timeline, alongside relationship events and activities (8.4, 9.5).
+- Joining and leaving are events on the contact timeline, alongside relationship events and activities (8.3, 9.5).
 
 ## Open questions
 

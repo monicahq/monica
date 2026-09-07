@@ -303,40 +303,44 @@ The number of installations of an item is displayed publicly, as a quality signa
 
 ### 8.1. Why this is a system of its own
 
-We could have treated "father of", "wife of", "friend of" as one customisable field among others. That is a trap. Real human relationships require things a generic field cannot carry: a direction of reading (parent and child are not interchangeable), periods (we were colleagues between 2012 and 2015), uncertainty (probably his father), nuances (biological parent, adoptive, step-parent, guardian), blended families, and deduction (if A is a parent of B and B is a parent of C, then A is a grandparent of C).
+We could have treated "parent of", "spouse of" and "friend of" as one customisable field among others. That would lose the direction of reading, the history of a relationship and the stable meaning required to draw a family tree. Relationships therefore have their own small model.
 
 Erica therefore makes this a capability of its own belonging to contacts, deliberately **not extended** to custom entities. The link between a contact and their dog stays an ordinary relation field.
 
-### 8.2. What the system can do
+### 8.2. Categories and types
 
-**A relationship is read in both directions.** You never enter the same thing twice. Recording "Ross is Monica's brother" is enough, and each side can carry its own label and its own notes. Ross can call Monica "my little sister" while Monica calls Ross "my brother".
+**Categories organise the vocabulary.** Every account starts with Family, Romantic, Friendship, Professional and Other. The user may create, rename, reorder and deactivate categories. Supplied categories cannot be deleted. A category is only a display group and never gives a relationship product behaviour.
 
-**The label is separate from the structure.** The product knows there is a parent to child link. How to display it (father, mother, parent, dad, mum, stepfather, guardian) is an independent layer, which makes it possible to handle gender, language and family nicknames without multiplying relationship types.
+**Types describe the relationship.** A type belongs to one category and defines the words read from both sides. Friend is symmetric. Parent / Child is directed: A is the parent and B is the child. The user may create, rename, reorder, move and deactivate types. Supplied types cannot be deleted.
 
-**Several relationships can coexist between two people.** Two sisters can also be flatmates and business partners. There is no limit of one relationship per pair.
+The supplied types are Parent / Child, Sibling, Grandparent / Grandchild, Aunt or Uncle / Niece or Nephew, Cousin, Partner, Fiancé, Spouse, Friend and Colleague.
 
-**Time is modelled seriously.** A relationship can have several beginnings and several endings (a couple who separate and get back together), a period in progress, and above all imprecise dates. You can enter "since around 2018" or "since childhood" without being forced to lie about an exact date.
+**A small protected behaviour survives display changes.** Parent / Child is the only supplied type that feeds parentage in the family tree. Partner, Fiancé and Spouse feed romantic history. Renaming or moving these types changes no behaviour. A custom type named Parent or moved into Family remains an ordinary type.
 
-**Uncertainty is accepted.** A relationship can be marked as certain, probable or uncertain. You can note "probably his father" without fixing a false certainty.
+**A relationship is read in both directions.** It is entered once and stored once. Several types may link the same two people: two siblings may also be colleagues.
 
-**Nuances are composable.** Rather than one relationship type per possible combination, the type stays "parent to child" and cumulative qualifiers are added to it: biological, adoptive, step-parent, foster, legal, social. The same relationship can be both legal and adoptive.
+**Time stays simple in the first version.** A relationship is current, ended or unknown and may carry a start and an end date. A renewed relationship is recorded as another row. More precise and repeated periods can be added later without changing the meaning of these rows.
 
 **The household is not the couple.** Two partners can live apart, have several households, remain co-parents after a breakup. The product therefore models **groups** (household, family unit, couple, social circle, team) separately from relationships, with their own dates of entry and exit. A household is never automatically deduced from a couple.
 
 **Mentioned people become real contacts.** When you enter "Monica's son, Jack", Jack becomes a contact in his own right, but a **partial** one: reduced to a first name and a relationship, hidden from the main lists while he stays that way. You enrich him later, or merge him with an existing contact. There is never a parallel free text describing a human without them existing in the graph.
 
-**Groups are distinct objects.** A household, a couple, a family, a team or a social circle has its own name, its own timeline and members whose periods of belonging may differ. A group is not automatically deduced from a relationship, even if Erica can suggest creating one.
+**Groups are distinct objects.** A household, family, team or social circle has its own name and members. It is never created or suggested from a relationship in the first version.
 
-### 8.3. What the system suggests, without ever imposing
+### 8.3. Explicit projections and safeguards
 
-- **It deduces.** From direct relationships, it computes grandparents, grandchildren, uncles, aunts, nephews, nieces and cousins. These deduced relationships do not need to be entered, but they can be explicitly confirmed when the intermediate links are missing.
-- **It suggests.** It proposes probable relationships (two contacts with the same parent are probably siblings), always explaining **where the suggestion comes from** and with what level of confidence. A suggestion is never recorded as confirmed without validation.
-- **It warns.** Some entries are blocked because they are impossible: linking to yourself, creating a genealogical loop, ending a period before its beginning. Others generate only a **non-blocking warning**, because they are unusual but perfectly possible: a parent younger than their child, several simultaneous partners, two overlapping couple periods. The product flags, it does not judge.
-- **It merges cleanly.** Merging duplicates transfers the relationships, detects the duplicates that result, merges the periods and preserves the whole history.
+- **The family tree contains only recorded facts.** It follows non-deleted Parent / Child rows and may show recorded romantic links beside them. Parentage remains in the tree regardless of temporal status: death or estrangement does not erase it. Following a chain places the recorded people in a tree; it does not create a Grandparent, Sibling, Aunt, Uncle or Cousin relationship.
+- **Romantic history contains only recorded facts.** It orders explicit Partner, Fiancé and Spouse rows using their status and known dates. An ended row is the history of an ex relationship; Ex-partner is not a supplied type.
+- **No deduction or suggestion runs in the first version.** The product never guesses a link from names, shared parents, dates, households or other relationships.
+- **Invalid structures are refused.** A contact cannot link to itself, Parent / Child cannot form a cycle, and an end date cannot precede a start date. Checking a cycle validates the row being entered and does not infer another relationship.
+- **History remains visible.** Creating, editing, ending, deleting and restoring a relationship writes to the changelog and may appear on the contacts' timelines.
+- **Merging contacts preserves every explicit relationship.** The preview shows any exact duplicate created by the merge and the user decides what to keep. The merge does not combine different types or histories by guessing that they mean the same thing.
 
-### 8.4. The timeline of a relationship
+### 8.4. Later extensions
 
-Every relationship has its own timeline: created, confirmed, period started, period ended, label changed, qualifier added, merged, deleted, restored. It feeds directly into the contact's timeline, where it mixes with the activities from the journal (see 9.5). It is therefore a visible feature, not merely a technical trace.
+The model may later gain reusable labels, qualifiers such as biological or adoptive, imprecise dates, several periods on one relationship and user-recorded certainty.
+
+A later version may also calculate or suggest relationships from the explicit graph. Such results must live separately from confirmed relationships, retain the recorded links that produced them and never become facts without an explicit user action. None of that engine, storage or interface belongs to the first version.
 
 ---
 
@@ -401,7 +405,7 @@ You can of course fill in a past day, or reconstruct entire years after the fact
 
 This is the whole reason the mechanism exists. Activities are not an isolated module.
 
-- **A contact's timeline.** On somebody's record, activities mix with relationship events (see 8.4) to form a single readable story.
+- **A contact's timeline.** On somebody's record, activities mix with relationship events (see 8.3) to form a single readable story.
 - **Inactivity reminders** (see 10.2). "Tell me if I have had no contact with this person for 90 days" only makes sense if there is a trace of that contact. Without activities, it is a reminder that can measure nothing.
 - **Event relative reminders** (see 10.2), of the kind "14 days after the last lunch".
 - **Statistics**: who I see the most, who I neglect, how it changes over time, the breakdown by activity nature.
@@ -533,7 +537,7 @@ The list of events follows the product, not a sub-part of the product. At minimu
 
 - **Contacts and entities**: creation, modification, deletion, restoration, merge, change of applied structure.
 - **Activities and journal**: an activity is created, modified or deleted, a day is filled in. This is probably the most useful event to listen to, since it allows rebroadcasting your life to any other tool.
-- **Relationships**: creation, confirmation, label change, start and end of a period, deletion.
+- **Relationships**: creation, modification, status change, deletion and restoration.
 - **Reminders**: a deadline arrives, it is postponed or dismissed, a rule is deactivated.
 - **Structures**: a template or a section is created or published, a new version is published.
 - **Marketplace**: an item is installed, an update is available, an update is accepted.
@@ -582,7 +586,7 @@ This is the part that decides whether the feature is usable or not.
 - Custom entities.
 - **The journal and activities** (see 9), with configurable natures, their own fields, the day view, the timeline on a contact's record and quick capture. This is half the product, not a side feature: without it, inactivity reminders and statistics have nothing to measure.
 - The essential field types: text, long text, number, yes or no, web address, email, phone, dropdown, multiple choice, date, recurring date, relation, file, image, repeater, address, layout elements, as well as marking fields as sensitive.
-- The system of human relationships and groups. Its model is complete from the start, even if its interface is delivered in several stages. There is no simplified version that would have to be broken later.
+- The simple system of relationship categories, relationship types and explicit dated relationships, including the family-tree and romantic-history projections described in section 8.
 - Duplicate detection and merging, with preview, conflict resolution, relationship transfer and history preservation.
 - Reminders and notifications.
 - Search.
@@ -604,6 +608,7 @@ This is the part that decides whether the feature is usable or not.
 - Advanced statistics on activities. V1 limits itself to what is directly readable on a record and in the journal.
 - Personalising objects other than the contact and entities (account, vault). The mechanism is designed for it, but it will not be exposed straight away.
 - A complete ecosystem for distributing, rating and automatically updating modules.
+- Relationship labels, qualifiers, imprecise or repeated periods, recorded certainty, and every automatic relationship deduction or suggestion described as a possible extension in section 8.4.
 
 ## 16. What remains to be decided
 

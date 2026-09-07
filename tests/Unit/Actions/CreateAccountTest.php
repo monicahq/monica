@@ -255,4 +255,24 @@ class CreateAccountTest extends TestCase
         $this->assertTrue($withPasskey->account->vaults()->exists());
         $this->assertTrue($withPasskey->account->valueLists()->exists());
     }
+
+    #[Test]
+    public function it_gives_the_account_the_vocabulary_its_relationships_are_written_in(): void
+    {
+        Queue::fake();
+
+        $user = new CreateAccount(
+            firstName: 'Michael',
+            lastName: 'Scott',
+            email: 'michael.scott@dundermifflin.com',
+        )->execute();
+
+        $this->assertCount(5, $user->account->relationshipCategories);
+        $this->assertCount(10, $user->account->relationshipTypes);
+        $this->assertDatabaseHas('relationship_types', [
+            'account_id' => $user->account_id,
+            'key' => 'friend',
+            'is_system' => true,
+        ]);
+    }
 }

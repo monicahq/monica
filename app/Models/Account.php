@@ -156,6 +156,26 @@ class Account extends Model
     }
 
     /**
+     * Get the display groups the relationship vocabulary is filed under.
+     *
+     * @return HasMany<RelationshipCategory, $this>
+     */
+    public function relationshipCategories(): HasMany
+    {
+        return $this->hasMany(RelationshipCategory::class)->orderBy('position');
+    }
+
+    /**
+     * Get the kinds of link the account can put between two people.
+     *
+     * @return HasMany<RelationshipType, $this>
+     */
+    public function relationshipTypes(): HasMany
+    {
+        return $this->hasMany(RelationshipType::class);
+    }
+
+    /**
      * Get the templates the account defined: what a record of a given kind
      * shows. The template is the stable identity, and what it holds lives in
      * its versions.
