@@ -1,6 +1,25 @@
 <!--
 Sync Impact Report
-Version change: 1.4.0 -> 2.0.0
+Version change: 2.0.0 -> 2.0.1
+Rationale: Principle V counted the configured locales in its own text. The count was nine when it was
+written and the codebase is about to make it thirty one, so the sentence was a fact with an expiry
+date sitting inside a principle. Removing it changes no obligation: every configured locale still has
+to be translated, however many there are. PATCH.
+
+Added: none.
+Modified: Principle V, one clause. "in every configured locale, of which there are nine today"
+becomes "in every configured locale".
+Removed: none.
+
+The prompt behind it: feature 025, twenty two new locales. Governance requires the pull request that
+finds the constitution contradicting the codebase to say which is wrong and fix it. Here the
+constitution is wrong, and it would have been wrong again after every future locale.
+
+Documentation that follows, in feature 025 and not here: `.claude/rules/code-style.md` and
+`.claude/skills/add-locale/SKILL.md` both count the locales the same way and are corrected there,
+since neither is governed by this file.
+
+Previous report, for 1.4.0 -> 2.0.0
 Rationale: one product invariant reversed. "There is no subscription and no notion of a plan"
 becomes one free offer and one full access, held either by a purchase made once or by a
 subscription, billed monthly or yearly. Reversing an invariant redefines what the product is and invalidates the two documents
@@ -107,7 +126,7 @@ codebase, and it keeps static analysis and tooling effective.
 
 Every user-facing string MUST be translatable through `__()`. Translations MUST be produced by
 running `php artisan monica:localize` and translating everything it reports as missing, in every
-configured locale, of which there are nine today. Keys in `lang/*.json` MUST NOT be edited by hand.
+configured locale. Keys in `lang/*.json` MUST NOT be edited by hand.
 No text may be hardcoded in one language, and that covers what is easy to forget: date and number
 formats, currencies, plurals, and the order of given name and family name, which varies by culture.
 Screens MUST work in a right to left language. Content a user creates carries the language its
@@ -401,4 +420,4 @@ test and the translations for the change under review, and to say which of the t
 change had to satisfy. Complexity that steps outside these principles MUST be justified in the pull
 request or removed.
 
-**Version**: 2.0.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-06
+**Version**: 2.0.1 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-07
