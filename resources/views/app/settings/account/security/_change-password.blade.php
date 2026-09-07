@@ -15,17 +15,17 @@
       <div class="flex flex-col gap-4.5">
         <p class="text-sm text-pretty text-muted">{{ __('You stay signed in here, and your new password is what you type the next time.') }}</p>
 
-        <x-input
-          type="password"
-          id="current_password"
-          :label="__('Current password')"
-          autocomplete="current-password"
-          :error="$errors->get('current_password')"
-          allowPasswordManager
-          required
-        />
+        <div class="grid gap-4 sm:grid-cols-3">
+          <x-input
+            type="password"
+            id="current_password"
+            :label="__('Current password')"
+            autocomplete="current-password"
+            :error="$errors->get('current_password')"
+            allowPasswordManager
+            required
+          />
 
-        <div class="grid gap-4 sm:grid-cols-2">
           <x-input
             type="password"
             id="new_password"

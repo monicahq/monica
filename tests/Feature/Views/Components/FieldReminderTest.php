@@ -237,7 +237,11 @@ class FieldReminderTest extends TestCase
 
     private function dateOf(User $user): FieldValue
     {
-        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'first_name' => 'Dwight',
+            'last_name' => 'Schrute',
+        ]);
         $field = Field::factory()->recurringDate()->create(['account_id' => $user->account_id]);
 
         return FieldValue::factory()->create([

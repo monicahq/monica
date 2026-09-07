@@ -33,6 +33,17 @@ class SecurityControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_puts_the_three_password_fields_on_one_row_on_a_wide_screen(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('settings.security.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('grid gap-4 sm:grid-cols-3', escape: false);
+    }
+
+    #[Test]
     public function it_says_there_are_no_api_keys_when_none_have_been_made(): void
     {
         $user = User::factory()->create();
