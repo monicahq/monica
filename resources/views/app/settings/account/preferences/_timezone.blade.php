@@ -174,16 +174,19 @@
 
         <p x-cloak x-show="deviceSilent" class="text-xs text-error">{{ __('Your browser did not say where it is. Search for your city instead.') }}</p>
 
-        <button
-          type="submit"
+        <x-button.secondary
+          size="small"
           name="timezone"
           value=""
           @click.prevent="device($event)"
-          class="ml-auto flex shrink-0 items-center gap-2 rounded-md border border-hairline bg-canvas px-3 py-1.5 text-sm text-ink transition-colors hover:bg-hover focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+          class="ml-auto shrink-0"
         >
-          <x-icon name="place" :size="14" :stroke-width="1.6" class="text-muted" />
+          <x-slot:icon>
+            <x-icon name="place" :size="14" :stroke-width="1.6" class="text-muted" />
+          </x-slot:icon>
+
           {{ __('Use my device') }}
-        </button>
+        </x-button.secondary>
       </div>
     </x-form>
   </x-panel>

@@ -119,6 +119,7 @@
     --radius-xl: 8px;
 
     --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.04);
+    --shadow-control: 0 1px 2px rgb(9 9 11 / 0.06);
     --shadow-nav-active: inset 0 0 0 1px var(--hairline), 0 1px 2px rgb(0 0 0 / 0.04);
     --shadow-pop: 0 10px 24px -8px var(--pop-shadow);
     --shadow-quote: 0 18px 40px -22px var(--quote-shadow);

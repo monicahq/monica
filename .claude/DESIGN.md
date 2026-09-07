@@ -131,6 +131,7 @@ There is barely an elevation layer.
 | Shadow | Value | Where |
 | --- | --- | --- |
 | `--shadow-panel` | `0 1px 2px rgb(0 0 0 / 0.04)` | A card, under its hairline |
+| `--shadow-control` | `0 1px 2px rgb(9 9 11 / 0.06)` | A secondary or bar button, under its edge |
 | `--shadow-nav-active` | `inset 0 0 0 1px var(--hairline), 0 1px 2px rgb(0 0 0 / 0.04)` | The navigation row you are on |
 | `--shadow-pop` | `0 10px 24px -8px var(--pop-shadow)` | A menu, a dialog, a toast |
 | `--shadow-quote` | `0 18px 40px -22px var(--quote-shadow)` | The quote card on the guest screens |
@@ -177,7 +178,9 @@ The sidebar is a slot rather than something the layout builds, because which vau
 
 Every shared component is an anonymous Blade component in `resources/views/components`. The house pattern is a `@php` block computing a class string with `match`, merged through `$attributes->class([...])`.
 
-- **Button.** 36px, or 32px small, at weight 500, 6px corners. Five variants: primary (filled `--primary`), secondary and bar (white inside a hairline, drawn identically now that the bar is the same white as the page), ghost, danger. Flat: no bottom edge, no shadow, and nothing moves on press.
+Where that pattern names a colour, the shared base string must not name the same one. Two utilities for one property have the same specificity, so what a browser draws is whichever Tailwind emitted last, and Tailwind orders its own output rather than reading the string. `border-transparent` in a base string beat every variant's border colour for as long as the button component had one, which is how a button with an edge in its class list rendered without one. A colour a variant chooses belongs to the variant, in every branch of the `match`.
+
+- **Button.** 36px, or 32px small, at weight 500, 6px corners. Five variants: primary (filled `--primary`), secondary and bar (white inside `--hairline-strong` over `--shadow-control`, drawn identically now that the bar is the same white as the page), ghost, danger. No bottom edge and nothing moves on press, but the secondary button owns its outline rather than borrowing the panel's: a control edged in the same hairline that separates a panel from the page reads as a bordered area rather than something to press, so it steps up to `--hairline-strong` and takes one pixel of shadow. The face stays the page white, so it gains a body without a second ground, and holds up in a footer strip, a sidebar and a card header alike. A tinted face is what this rules out. `--card` is what a footer and a sidebar are already drawn in, so a button filled that way disappears in both.
 - **Field.** 36px, or 32px small, 6px corners, white inside `--hairline-strong`. 16px on a phone so Safari does not zoom, and back down from `sm` up.
 - **Badge.** A pill. 22px, 11.5px at weight 500. The word carries the state and the tint only agrees with it, so a badge still works with the colour taken away, and a badge with no word in it is a bug.
 - **Chip.** A filter or a scope toggle. A pill that fills with `--primary` when it is in force, and carries `aria-current` or `aria-pressed` so the fill is not the only thing saying so.
@@ -191,11 +194,13 @@ Every shared component is an anonymous Blade component in `resources/views/compo
 
 Every interactive component defines: default, hover, focus-visible, active, selected, disabled, loading, error.
 
-**Hover** is a background change to `--hover`, or one step lighter on a filled button. Colour only. Nothing moves, scales or lifts. Never the only way to find an important action.
+**Hover** is a background change to `--hover`, or one step lighter on a filled button. Colour only. Nothing moves, scales or lifts. Never the only way to find an important action. On a secondary or bar button the edge darkens to `--muted-soft` along with the ground, since the outline is what says it is a control and an edge that does not answer the pointer makes the hover read as a tint that landed on the wrong element.
 
 **Press** does nothing. `--press-translate` is 0.
 
 **Focus** is a 3px ring at 45% of `--focus-ring`, outside the element, plus a 3px ring at 20% and a near-black border on a field. It is near black, which is why it is drawn wide and clear of the element rather than tight against it: a near-black ring touching a near-black button would be invisible. Inside a menu, where an outside ring would be clipped, it is an inset ring instead. Never removed without an equally visible replacement.
+
+A secondary or bar button takes the near-black border too, for the reason a field does: its edge carries the control, so leaving it pale under the ring draws the ring around nothing in particular. The filled variants keep the ring alone, having no edge of their own to darken.
 
 **Selected** in navigation is a fill plus a ring. In chips it is a fill plus `aria-pressed`. Never colour alone.
 
