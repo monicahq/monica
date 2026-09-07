@@ -1,29 +1,35 @@
 <!--
 Sync Impact Report
-Version change: 1.3.0 -> 1.4.0
-Rationale: one principle added, XI, capping the length of the written record. Nothing renamed,
-removed or renumbered, so MINOR.
+Version change: 1.4.0 -> 2.0.0
+Rationale: one product invariant reversed. "There is no subscription and no notion of a plan"
+becomes one free offer and one full access, held either by a purchase made once or by a
+subscription, billed monthly or yearly. Reversing an invariant redefines what the product is and invalidates the two documents
+written against the old wording, so MAJOR. Nothing added, removed or renumbered.
 
-Added: Principle XI, The Written Record Is Short.
-Modified: none. Removed: none.
+Added: none.
+Modified: Product Invariants, the "Self hosted and hosted run the same product" bullet. It now names
+the two ways full access is held, says the two unlock exactly the same product, and moves the
+metered or not decision from a fact stamped on each account to a setting of the instance.
+Removed: none.
 
-The prompt behind it: feature 006 produced 1391 lines of specification prose for 190 lines of code,
-most of it one argument written four times over. The principle sets per artifact line caps and the
-one fact one place rule, with an escape hatch that has to be named in the pull request.
+The prompt behind it: feature 022, the paywall. The hosted version needs subscription prices beside the
+one time purchase, and the specification written for it could not pass its own constitution check
+until this was decided here first. The amendment is its own pull request, as Governance requires,
+and the feature branch stacks on it.
 
-This file is 440 lines and is not itself covered by the caps, which govern `specs/`. Shortening it
-is worth doing and is its own amendment.
+Documentation that follows, in this pull request:
+- `spec/spec.md` §3.4 describes the free offer, the purchase made once and the subscription.
+- `spec/models/001-account-in-progress.md` answers its open cap question, drops `is_self_hosted`
+  and records that the instance setting decides who is metered.
 
-Follow-up TODOs, re-verified against the working tree on 2026-09-01.
+Code that follows, in feature 022 and nowhere before this merges: the `accounts.is_self_hosted`
+column and every reader of it (`Account::isMetered()`, `CreateAccount`, `Admin\AccountViewModel`,
+`AccountFactory::selfHosted()`), the caps, the checkout and the billing package's tables.
 
-Resolved since 1.3.0:
-- The `Api` controller namespace, `routes/api.php` and `app/Http/Resources` all now exist. The
-  former item 2 is retired; MCP and webhooks remain absent and are carried below.
+Follow-up TODOs, re-verified against the working tree on 2026-09-06. Nothing resolved since 1.4.0.
 
-Still open:
-1. `app/Actions/CreateApiKey.php:34` issues a Sanctum token with no abilities, while Principle X
-   requires tokens whose scopes can be limited. The settings screen offers a key that grants
-   everything.
+1. `app/Actions/CreateApiKey.php:24` still issues a Sanctum token with no abilities, while
+   Principle X requires tokens whose scopes can be limited.
 2. No MCP server and no webhook machinery. Principle X and the webhook constraints describe a
    target, and every capability shipped before they exist adds to that debt.
 3. No screen has been audited against WCAG 2.2 AA. Principle IX binds every screen a change touches
@@ -37,11 +43,9 @@ Still open:
 7. Seven view models in `app/ViewModels/Auth` have no test: only `LoginViewModel` and
    `RegisterViewModel` are covered. `Settings/Account/Security/TwoFactorEnrolmentViewModel`,
    `Vaults/ContactEditViewModel` and `Vaults/SetAsideValuesViewModel` are also uncovered.
-8. `.claude/CLAUDE.md` still describes a tree this repository contradicts in several places, and
-   cannot be edited from this command. Two of the nine contradictions listed at 1.3.0 have since
-   been resolved by the API work; the rest stand, including the `tests/Browser` and Pest references
-   when Pest is not installed, the marketing view models and `routes/marketing.php` that do not
-   exist, and the `database/data` folder that does not exist.
+8. `.claude/CLAUDE.md` still describes a tree this repository contradicts, and cannot be edited from
+   this command. Its own TODO of 2026-08-23 says there is no `Api` controller folder and no
+   `routes/api.php`; both exist now, and its `routes` line omits `api.php`.
 -->
 
 # Monica Constitution
@@ -259,9 +263,13 @@ an amendment.
   deliberately not extended to custom entities. The link between a contact and their dog stays an
   ordinary relation field.
 - Self hosted and hosted run the same product. Hosted differences are limited to quotas, rate
-  limits, marketplace moderation and which modules are approved. There is no subscription and no
-  notion of a plan; full access on the hosted version is a one time purchase. A feature MUST NOT
-  exist on one deployment only.
+  limits, marketplace moderation and which modules are approved. The hosted version has a limited
+  free offer and one thing above it, full access, held either by a purchase made once or by a
+  subscription, billed monthly or yearly, that renews until it is cancelled. The two unlock exactly the same product:
+  there are no tiers, no per offer features and no trial, and lifting the caps is all a payment
+  does. Whether an instance meters its accounts at all is a setting of the instance, never a fact
+  stamped on an account, and a self hosted instance meters nobody. A feature MUST NOT exist on one
+  deployment only.
 
 ## Technology and Architecture Constraints
 
@@ -393,4 +401,4 @@ test and the translations for the change under review, and to say which of the t
 change had to satisfy. Complexity that steps outside these principles MUST be justified in the pull
 request or removed.
 
-**Version**: 1.4.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-01
+**Version**: 2.0.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-06

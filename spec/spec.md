@@ -64,7 +64,11 @@ When something disappears (a field removed from a structure, a deleted contact, 
 
 ### 3.4. One tool, two deployment modes
 
-Erica works identically self hosted (free, unlimited) and in the version we host. On the hosted version, a limited free offer coexists with a one time purchase that unlocks full access. There is no subscription, and therefore no notion of a "plan" to manage.
+Erica works identically self hosted (free, unlimited) and in the version we host. On the hosted version, a limited free offer coexists with full access, which is held either by a purchase made once, for good, or by a subscription, billed monthly or yearly, that renews until it is cancelled. The two unlock exactly the same product: there are no tiers, no per offer features and no trial, so the only thing a payment changes is whether the free caps apply.
+
+The free offer caps how many vaults and contacts an account may hold and how much storage it may use. An account that finds itself above a cap, after a refund or a subscription that lapsed, keeps everything it holds and can read and edit all of it. Only adding more is refused, and the refusal names the cap and where to lift it.
+
+Whether an instance meters its accounts at all is decided by the instance, not stamped on each account. A self hosted instance meters nobody and shows no offer, no price and no prompt, and a self hoster cannot turn a paywall on for their own users.
 
 ### 3.5. Accessible to everybody, without exception
 
