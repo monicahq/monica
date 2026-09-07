@@ -66,6 +66,6 @@
       />
     </div>
 
-    <p class="text-xs text-pretty text-muted">{{ __('Times are read in :zone, the zone this reminder fires in.', ['zone' => $row['zone']]) }}</p>
+    <p class="text-xs text-pretty text-muted">{{ __('Times are read in :zone, the time zone this reminder is sent in.', ['zone' => $row['zone']]) }}</p>
   </div>
 </x-modal.form>

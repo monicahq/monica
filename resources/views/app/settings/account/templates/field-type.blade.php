@@ -81,7 +81,7 @@
     <header class="flex flex-col gap-2">
       <h1 class="text-page-title text-ink">{{ __('What goes in :section?', ['section' => $sectionName]) }}</h1>
 
-      <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('The type decides what people can type, how it is checked and how it is searched. Pick the closest one, and the panel shows what it looks like on a record.') }}</p>
+      <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('The type decides what people can write, how it is checked and how it is searched. Pick the closest one. The panel shows how it appears on a record.') }}</p>
     </header>
 
     <section class="flex flex-col gap-3">
@@ -252,12 +252,12 @@
       <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h2 class="shrink-0 text-section-title text-ink">{{ __('Where do the choices come from?') }}</h2>
 
-        <p class="text-sm text-pretty text-muted">{{ __('A field that offers choices reads them from a value list, so the same options can be reused everywhere rather than retyped into every field.') }}</p>
+        <p class="text-sm text-pretty text-muted">{{ __('A field that offers choices reads them from a value list. The same options can then be reused everywhere, instead of retyped into every field.') }}</p>
       </div>
 
       <x-panel>
         @if ($valueLists->isEmpty())
-          <x-notice tone="warning">{{ __('You have no value lists yet. Make one on the default values screen, then come back.') }}</x-notice>
+          <x-notice tone="warning">{{ __('You have no value lists yet. Make one on the value lists screen, then come back.') }}</x-notice>
         @else
           <x-select id="value_list_id" :label="__('Value list')" ::required="offersChoices" class="max-w-96">
             <option value="">{{ __('Pick a list') }}</option>

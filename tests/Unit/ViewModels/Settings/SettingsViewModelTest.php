@@ -51,7 +51,7 @@ class SettingsViewModelTest extends TestCase
         );
 
         $this->assertSame(
-            ['Templates', 'Entity types', 'Relationship types', 'Default values', 'Logs'],
+            ['Templates', 'Kinds of record', 'Relationship types', 'Value lists', 'Logs'],
             array_column($sections[1]['rows'], 'title'),
         );
 

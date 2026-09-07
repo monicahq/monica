@@ -50,6 +50,6 @@ class ReminderPauseController extends Controller
         return redirect()
             ->route('reminders.show', ['vault' => $vault, 'reminder' => $reminder])
             ->with('status', __('Started again.'))
-            ->with('status_description', __('It picks up the schedule it had, so the next notification is where it was.'));
+            ->with('status_description', __('It keeps the schedule it had, so the next notification is unchanged.'));
     }
 }

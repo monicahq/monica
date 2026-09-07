@@ -68,7 +68,7 @@ class StructureFileReader
         $read = new self(self::decode($raw))->check();
 
         if ($expecting === 'template' && $read['format'] !== 'template') {
-            throw new StructureFileIsNotReadable(__('This file holds one section rather than a whole template. Open the template you want it on, and import it from the page it should land on.'));
+            throw new StructureFileIsNotReadable(__('This file holds one section rather than a whole template. Open the template you want it on, and import it from the page it belongs on.'));
         }
 
         if ($expecting === 'section' && $read['format'] !== 'section') {
@@ -86,7 +86,7 @@ class StructureFileReader
         }
 
         if (strlen($raw) > self::MAX_BYTES) {
-            throw new StructureFileIsNotReadable(__('This is larger than a structure file ever is, so it was not read at all. The ceiling is :size.', [
+            throw new StructureFileIsNotReadable(__('This is larger than a structure file ever is, so it was not read at all. The limit is :size.', [
                 'size' => Number::fileSize(self::MAX_BYTES),
             ]));
         }
@@ -98,7 +98,7 @@ class StructureFileReader
         try {
             $decoded = json_decode($raw, true, self::MAX_DEPTH, JSON_THROW_ON_ERROR);
         } catch (JsonException) {
-            throw new StructureFileIsNotReadable(__('This is not readable as JSON. Something is missing, repeated or nested deeper than a structure file ever goes.'));
+            throw new StructureFileIsNotReadable(__('This is not readable as JSON. Something is missing, repeated or nested deeper than a structure file allows.'));
         }
 
         if (! is_array($decoded) || ($decoded !== [] && array_is_list($decoded))) {
@@ -290,7 +290,7 @@ class StructureFileReader
         $icon = $this->identifier($section, 'icon', $path, 64);
 
         if ($icon !== null && ! in_array($icon, Section::ICONS, true)) {
-            $this->refuse(__('A section in this file asks for a glyph this version does not have.'));
+            $this->refuse(__('A section in this file asks for an icon this version does not have.'));
         }
 
         $colour = $this->nullableString($section, 'colour', $path, 7);
@@ -375,7 +375,7 @@ class StructureFileReader
         }
 
         if (! $type->usesValueList() && $reference !== null) {
-            $this->refuse(__('A field in this file names a list of choices although its kind offers none.'));
+            $this->refuse(__('A field in this file names a value list although its kind offers none.'));
         }
 
         $relationTarget = $this->relationTarget($field, $path, $type);
@@ -462,12 +462,12 @@ class StructureFileReader
         $node = $this->file['value_lists'] ?? [];
 
         if (! is_array($node)) {
-            $this->refuse(__('The lists of choices in this file are not written as a block.'));
+            $this->refuse(__('The value lists in this file are not written as a block.'));
         }
 
         if (count($node) > self::MAX_VALUE_LISTS) {
             $this->refuse(trans_choice(
-                'This file carries more than :count list of choices.|This file carries more than :count lists of choices.',
+                'This file carries more than :count value list.|This file carries more than :count value lists.',
                 self::MAX_VALUE_LISTS,
             ));
         }
@@ -476,7 +476,7 @@ class StructureFileReader
             $reference = (string) $name;
 
             if (mb_strlen($reference) > 64 || preg_match(self::IDENTIFIER, $reference) !== 1) {
-                $this->refuse(__('A list of choices in this file is named in a way that is not a reference.'));
+                $this->refuse(__('A value list in this file is named in a way that is not a reference.'));
             }
 
             $path = "value_lists.{$reference}";
@@ -520,7 +520,7 @@ class StructureFileReader
         }
 
         if ($items === []) {
-            $this->refuse(__('A list of choices in this file holds nothing to choose from.'));
+            $this->refuse(__('A value list in this file holds nothing to choose from.'));
         }
 
         return $items;
@@ -538,7 +538,7 @@ class StructureFileReader
         $icon = $this->identifier($entityType, 'icon', $path, 64);
 
         if ($icon !== null && ! in_array($icon, EntityType::ICONS, true)) {
-            $this->refuse(__('A kind of record in this file asks for a glyph this version does not have.'));
+            $this->refuse(__('A kind of record in this file asks for an icon this version does not have.'));
         }
 
         $colour = $this->nullableString($entityType, 'colour', $path, 7);
@@ -656,7 +656,7 @@ class StructureFileReader
 
         foreach (array_keys($node) as $key) {
             if (! in_array((string) $key, $allowed, true)) {
-                $this->refuse(__('The file holds a name this version does not know at :path, so what it means cannot be guessed at.', [
+                $this->refuse(__('The file holds a name this version does not know at :path, so what it means cannot be read.', [
                     'path' => "{$path}.{$this->safe((string) $key)}",
                 ]));
             }

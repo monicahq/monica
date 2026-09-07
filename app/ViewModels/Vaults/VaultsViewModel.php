@@ -20,7 +20,7 @@ class VaultsViewModel
 
     public function description(): string
     {
-        return __('A vault keeps one part of your life separate from the others. People, notes and reminders never cross between them.');
+        return __('A vault keeps one part of your life separate from the others. People, notes and reminders never move between them.');
     }
 
     public function orderNote(): string

@@ -462,7 +462,7 @@ class ContactViewModelTest extends TestCase
         $this->assertSame('Friend, version 1', $history[1]['title']);
         $this->assertSame('First template', $history[1]['badge']);
         $this->assertSame('chosen when they were written down', $history[1]['who']);
-        $this->assertSame('Go back to this', $history[1]['goBack']['label']);
+        $this->assertSame('Move to this version', $history[1]['goBack']['label']);
         $this->assertSame($first->id, $history[1]['goBack']['versionId']);
     }
 
@@ -564,7 +564,7 @@ class ContactViewModelTest extends TestCase
         $viewModel = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact);
 
         $this->assertSame(0, $viewModel->setAsideCount());
-        $this->assertStringContainsString('Nothing is being kept out of sight', $viewModel->setAsideLine());
+        $this->assertStringContainsString('Nothing is hidden', $viewModel->setAsideLine());
 
         $knee = $this->fieldCalled($version, 'Knee');
         $this->write($contact, $knee, 'Sore')->update(['is_detached' => true, 'detached_at' => now()]);

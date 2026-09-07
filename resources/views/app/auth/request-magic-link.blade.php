@@ -13,7 +13,7 @@
             <x-theme-toggle class="ml-auto" />
           </div>
 
-          <p class="text-sm text-body">{{ __('Give us your email address and we will send you a link that signs you straight in.') }}</p>
+          <p class="text-sm text-body">{{ __('Give your email address and we will send you a link that signs you in.') }}</p>
         </div>
 
         <x-box>
@@ -36,7 +36,7 @@
         </x-box>
 
         <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">
-          {{ __('Rather use your password?') }}
+          {{ __('Sign in with your password instead') }}
           <x-link :href="route('auth.login.new')" class="font-semibold text-ink">{{ __('Back to sign in') }}</x-link>
         </x-box>
       </div>

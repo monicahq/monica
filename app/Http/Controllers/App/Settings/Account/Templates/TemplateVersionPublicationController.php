@@ -30,7 +30,7 @@ class TemplateVersionPublicationController extends Controller
         } catch (InvalidArgumentException) {
             return redirect()->route('settings.templateBuilder.index', $template)
                 ->with('error', __('Say what changed before publishing.'))
-                ->with('error_description', __('The note is what somebody deciding whether to move their records reads.'));
+                ->with('error_description', __('The note is read by somebody deciding whether to move their records.'));
         } catch (PublishedVersionIsFrozen) {
             return redirect()->route('settings.templateBuilder.index', $template)
                 ->with('error', __('This version has already been published.'));
@@ -38,6 +38,6 @@ class TemplateVersionPublicationController extends Controller
 
         return redirect()->route('settings.templateBuilder.index', $template)
             ->with('status', __('Version :version is published.', ['version' => $templateVersion->version_number]))
-            ->with('status_description', __('It is frozen now. Any further change starts a new draft beside it.'));
+            ->with('status_description', __('It cannot be changed now. Any further change starts a new draft beside it.'));
     }
 }

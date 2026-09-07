@@ -12,7 +12,7 @@
       <x-button.secondary size="small" type="button" x-show="! confirming" @click="confirming = true">{{ __('Turn it off') }}</x-button.secondary>
 
       <div x-cloak x-show="confirming" class="flex flex-wrap items-center justify-end gap-2.5">
-        <p class="text-xs text-error">{{ __('Your password alone will get you in again. Sure?') }}</p>
+        <p class="text-xs text-error">{{ __('Your password alone will sign you in again, with no code asked for.') }}</p>
 
         <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep it on') }}</x-button.secondary>
 
@@ -34,7 +34,7 @@
       <x-button.secondary size="small" type="button" x-show="! confirming" @click="confirming = true">{{ __('Get new codes') }}</x-button.secondary>
 
       <div x-cloak x-show="confirming" class="flex flex-wrap items-center justify-end gap-2.5">
-        <p class="text-xs text-error">{{ __('The codes below stop working. Sure?') }}</p>
+        <p class="text-xs text-error">{{ __('The codes below stop working, and cannot be used again.') }}</p>
 
         <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep them') }}</x-button.secondary>
 

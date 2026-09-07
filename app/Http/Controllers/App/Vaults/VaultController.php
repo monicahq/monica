@@ -111,12 +111,12 @@ class VaultController extends Controller
         if (! $anyLeft) {
             return redirect()->route('gettingStarted.index')
                 ->with('status', __('The vault is deleted.'))
-                ->with('status_description', __('Your account holds nothing now. The next vault you make is where things land.'));
+                ->with('status_description', __('Your account holds nothing now. New records go to the next vault you make.'));
         }
 
         return redirect()->route('vaults.index')
             ->with('status', __('The vault is deleted.'))
-            ->with('status_description', __('Everything it held went with it.'));
+            ->with('status_description', __('Everything it held was deleted with it.'));
     }
 
     /** @return array<string, array<int, mixed>> */

@@ -64,7 +64,7 @@ class ShareSectionViewModelTest extends TestCase
         $viewModel = $this->viewModel($user);
 
         $this->assertEquals(2, $viewModel->fieldCount());
-        $this->assertEquals('1 section, 2 fields, 0 lists of choices', $viewModel->structureLabel());
+        $this->assertEquals('1 section, 2 fields, 0 value lists', $viewModel->structureLabel());
     }
 
     #[Test]

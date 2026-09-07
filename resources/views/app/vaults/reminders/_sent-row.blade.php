@@ -20,7 +20,7 @@
       </div>
     @else
       <div class="flex min-w-0 flex-col">
-        <span class="text-[13.5px] font-semibold text-muted">{{ __('Somebody who is gone') }}</span>
+        <span class="text-[13.5px] font-semibold text-muted">{{ __('A deleted contact') }}</span>
 
         <span class="flex min-w-0 items-center gap-1.5">
           <x-icon :name="$row['icon']" :size="13" :stroke-width="1.5" class="shrink-0 text-muted" />

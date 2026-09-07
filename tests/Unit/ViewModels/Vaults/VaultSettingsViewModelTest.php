@@ -28,12 +28,12 @@ class VaultSettingsViewModelTest extends TestCase
         $several = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 4]);
 
         $this->assertSame(
-            'The one contact in it goes too, and everything written about them.',
+            'The one contact in it is deleted too, and everything written about them.',
             new VaultSettingsViewModel(user: $user, vault: $one)->deletionConsequence(),
         );
 
         $this->assertSame(
-            'The 4 contacts in it go too, and everything written about them.',
+            'The 4 contacts in it are deleted too, and everything written about them.',
             new VaultSettingsViewModel(user: $user, vault: $several)->deletionConsequence(),
         );
     }

@@ -89,21 +89,21 @@
     </div>
 
     <div class="flex flex-col gap-4">
-      <x-panel :title="__('Sending it on')">
+      <x-panel :title="__('Sending the link')">
         <p class="text-sm text-pretty text-ink-soft">
-          {{ __('Nothing is emailed. You paste the address into whatever you already use to talk to that person, and if you set a password you tell them separately from the address.') }}
+          {{ __('Nothing is emailed. Paste the address into whatever you already use to talk to that person. If you set a password, tell them separately from the address.') }}
         </p>
       </x-panel>
 
       <x-panel :title="__('Anybody holding it can open it')">
         <p class="text-sm text-pretty text-ink-soft">
-          {{ __('There is no account behind the address, so it is the address itself that grants the reading. Send it the way you would send a private document.') }}
+          {{ __('There is no account behind the address, so the address itself gives access. Treat it as a private document.') }}
         </p>
       </x-panel>
 
       <x-panel :title="__('Ending it')" variant="inset">
         <p class="text-sm text-pretty text-ink-soft">
-          {{ __('Revoking works the moment you press it and cannot be undone. If the same person needs access again, you make a new link.') }}
+          {{ __('Revoking takes effect as soon as you press it, and cannot be undone. If the same person needs access again, make a new link.') }}
         </p>
 
         @if ($viewModel->isLive())
@@ -118,7 +118,7 @@
                 <x-button.secondary size="small" type="button" @click="open = true">{{ __('Revoke this link') }}</x-button.secondary>
               </x-slot:trigger>
 
-              {{ __('The address stops working straight away. This page and its visits stay, marked revoked, and a revoked link is never brought back.') }}
+              {{ __('The address stops working straight away. This page and its visits stay, marked revoked. A revoked link never works again.') }}
             </x-modal.warning>
           </div>
         @endif

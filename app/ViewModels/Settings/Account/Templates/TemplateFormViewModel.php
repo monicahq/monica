@@ -30,7 +30,7 @@ class TemplateFormViewModel
     {
         return $this->isEdit()
             ? __('The name and the description are what the picker shows. What the template holds is changed in the builder.')
-            : __('A template decides what a record looks like: which sections it carries, and which fields sit in them. You build it in the next screen.');
+            : __('A template decides what a record shows: which sections it carries, and which fields are in them. You build it in the next screen.');
     }
 
     public function saveLabel(): string
@@ -94,7 +94,7 @@ class TemplateFormViewModel
     public function slugHelp(): string
     {
         return $this->isEdit()
-            ? __('Settled when the template was created, so old links keep working.')
+            ? __('Fixed when the template was created, so old links keep working.')
             : __('Left empty, it is made from the name. Lowercase letters, numbers and dashes.');
     }
 

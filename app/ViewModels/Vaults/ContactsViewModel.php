@@ -154,7 +154,7 @@ class ContactsViewModel
             return '';
         }
 
-        return trans_choice('{1}One person in this vault.|All :count people in this vault, on one scrolling list.', $this->headcount());
+        return trans_choice('{1}One person in this vault.|All :count people in this vault, on a single list.', $this->headcount());
     }
 
     public function endLine(): string
@@ -179,7 +179,7 @@ class ContactsViewModel
     public function emptyLine(): string
     {
         if ($this->waitingCount() === 0) {
-            return __('This vault holds nobody so far. Everybody you write down here shows up on this list, and this is where you come looking for them.');
+            return __('This vault holds nobody so far. Everybody you write down here appears on this list.');
         }
 
         return trans_choice('{1}One person here was written down as a partial contact and stays off this list until they are more than a first name.|:count people here were written down as partial contacts and stay off this list until they are more than a first name.', $this->waitingCount());

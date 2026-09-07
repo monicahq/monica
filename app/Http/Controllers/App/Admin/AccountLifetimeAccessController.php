@@ -22,7 +22,7 @@ class AccountLifetimeAccessController extends Controller
 
         return redirect()->route('admin.accounts.show', ['account' => $account->id])
             ->with('status', __('The account has lifetime access.'))
-            ->with('status_description', __('It takes effect immediately, and the grant is on the record against your name.'));
+            ->with('status_description', __('It takes effect immediately, and the grant is recorded against your name.'));
     }
 
     public function destroy(Request $request, Account $account): RedirectResponse

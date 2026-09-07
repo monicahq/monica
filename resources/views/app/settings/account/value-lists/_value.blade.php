@@ -59,7 +59,7 @@
               <x-button.ghost size="small" type="button" @click="open = true" class="hover:text-error">{{ __('Delete') }}</x-button.ghost>
             </x-slot:trigger>
 
-            <p>{{ __('Nothing uses it yet, so it goes for good and stops being offered anywhere.') }}</p>
+            <p>{{ __('Nothing uses it yet, so it is deleted for good and stops being offered anywhere.') }}</p>
 
             <p>{{ __('This cannot be undone.') }}</p>
           </x-modal.warning>

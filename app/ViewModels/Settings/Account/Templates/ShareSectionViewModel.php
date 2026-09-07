@@ -74,7 +74,7 @@ class ShareSectionViewModel
         return __(':sections, :fields, :lists', [
             'sections' => __('1 section'),
             'fields' => trans_choice(':count field|:count fields', $this->fieldCount()),
-            'lists' => trans_choice(':count list of choices|:count lists of choices', $this->valueListCount()),
+            'lists' => trans_choice(':count value list|:count value lists', $this->valueListCount()),
         ]);
     }
 

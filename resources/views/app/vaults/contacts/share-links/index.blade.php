@@ -86,6 +86,6 @@
   </div>
 
   <x-notice tone="quiet" icon="lock" :title="__('Why revoked links stay on the list')">
-    {{ __('A link that is gone is still part of the history of who saw this page. Removing the row would remove the record. A revoked link never works again and is never brought back.') }}
+    {{ __('A revoked link is still part of the history of who saw this page. Removing the row would remove that history. A revoked link never works again.') }}
   </x-notice>
 </x-shell>

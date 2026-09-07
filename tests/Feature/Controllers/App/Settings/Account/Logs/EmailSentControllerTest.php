@@ -47,8 +47,8 @@ class EmailSentControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Nothing has left our hands yet', escape: false);
-        $response->assertSee('along with whether they arrived', escape: false);
+        $response->assertSee('No email has been sent yet', escape: false);
+        $response->assertSee('with whether they arrived', escape: false);
     }
 
     #[Test]

@@ -198,7 +198,7 @@
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
           <h2 class="shrink-0 text-section-title text-ink">{{ __('Availability') }}</h2>
 
-          <p class="text-sm text-pretty text-muted">{{ __('An active type shows up in every vault in this account. Turn it off and existing records stay where they are, but no new ones can be made.') }}</p>
+          <p class="text-sm text-pretty text-muted">{{ __('An active type appears in every vault in this account. Turn it off and existing records stay as they are, but no new ones can be made.') }}</p>
         </div>
 
         <x-panel>
@@ -225,7 +225,7 @@
       @endif
 
       <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
-        <span x-cloak x-show="! named" class="text-xs text-pretty text-muted">{{ __('Both names are all we really need.') }}</span>
+        <span x-cloak x-show="! named" class="text-xs text-pretty text-muted">{{ __('Both names are enough.') }}</span>
 
         <x-button.secondary :href="route('settings.entityTypes.index')" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 

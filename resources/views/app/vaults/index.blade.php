@@ -26,7 +26,7 @@
           <x-icon name="vault" :size="30" :stroke-width="1.4" />
         </x-slot:icon>
 
-        {{ __('A vault is a sealed compartment for one part of your life. Everything you keep here lives in one, and the first one you make is where things land.') }}
+        {{ __('A vault holds one part of your life. Everything you keep here is in a vault, and new records go to the first one you make.') }}
 
         <x-slot:action>
           <x-button :href="$viewModel->createUrl()" data-turbo="true">

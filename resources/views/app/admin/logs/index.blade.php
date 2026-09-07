@@ -53,7 +53,7 @@
             <x-icon name="timeline" :size="30" :stroke-width="1.4" />
           </x-slot:icon>
 
-          {{ __('As soon as an administrator decides something, it is written down here, with their name and the moment it happened.') }}
+          {{ __('Every decision an administrator makes is written down here, with their name and the time it happened.') }}
         </x-empty-state>
       @endforelse
     </div>

@@ -429,7 +429,7 @@ class TemplateBuilderControllerTest extends TestCase
 
         $this->assertSame(35, mb_substr_count($response->getContent(), 'aria-pressed="icon ==='));
         $this->assertSame(1, mb_substr_count($response->getContent(), 'aria-pressed="! icon'));
-        $response->assertSee('>No glyph<', escape: false);
+        $response->assertSee('>No icon<', escape: false);
 
         foreach (VaultColourEnum::cases() as $colour) {
             $response->assertSee(">{$colour->label()}<", escape: false);

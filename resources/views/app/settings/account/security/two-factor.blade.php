@@ -1,6 +1,6 @@
 {{-- Setting two factor up: pair an authenticator app, then type back what it is showing. --}}
 {{-- @var \App\ViewModels\Settings\Account\Security\TwoFactorEnrolmentViewModel $viewModel --}}
-<x-shell :title="__('Two factor authentication')">
+<x-shell :title="__('Two-factor authentication')">
   <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.security.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
@@ -13,9 +13,9 @@
   </x-slot:sidebar>
 
   <header class="flex flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ __('Turn on two factor authentication') }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Turn on two-factor authentication') }}</h1>
 
-    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Two steps, and you are done. Nothing changes about your account until the code below is accepted, so you cannot lock yourself out here.') }}</p>
+    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Two steps, and you are done. Nothing changes on your account until the code below is accepted, so you cannot lock yourself out here.') }}</p>
   </header>
 
   <section class="flex flex-col gap-3">

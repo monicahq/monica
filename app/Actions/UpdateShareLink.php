@@ -65,7 +65,7 @@ class UpdateShareLink
         }
 
         if ($this->shareLink->revoked_at !== null) {
-            throw new ShareLinkIsRevoked('A revoked link is never brought back. Make a new one instead.');
+            throw new ShareLinkIsRevoked('A revoked link never works again. Make a new one instead.');
         }
     }
 

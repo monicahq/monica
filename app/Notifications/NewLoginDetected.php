@@ -35,7 +35,7 @@ class NewLoginDetected extends Notification implements HasEmailType, ShouldQueue
             ->subject(__('You signed in to :app without a password', ['app' => config('app.name')]))
             ->greeting(__('You signed in without a password'))
             ->line(__('Your account was just signed in to using a link sent by email, from :ip.', ['ip' => $this->ip]))
-            ->panel(__('If this was not you, you should change your password now. The link only works once and has already been used, but whoever used it may have access to your mailbox.'));
+            ->panel(__('If this was not you, change your password now. The link works once and has already been used, but whoever used it may have access to your mailbox.'));
     }
 
     #[Override]

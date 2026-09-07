@@ -23,7 +23,7 @@ class EntityTypeFormViewModelTest extends TestCase
         $viewModel = new EntityTypeFormViewModel(user: $user);
 
         $this->assertFalse($viewModel->isEdit());
-        $this->assertSame('Create an entity type', $viewModel->title());
+        $this->assertSame('Create a kind of record', $viewModel->title());
         $this->assertSame('Create type', $viewModel->saveLabel());
         $this->assertSame('post', $viewModel->method());
         $this->assertNull($viewModel->slug());

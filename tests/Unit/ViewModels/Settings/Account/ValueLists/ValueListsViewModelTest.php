@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\ViewModels\Settings\Account\DefaultValues;
+namespace Tests\Unit\ViewModels\Settings\Account\ValueLists;
 
 use App\Enums\ValueListEnum;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
-use App\ViewModels\Settings\Account\DefaultValues\DefaultValuesViewModel;
+use App\ViewModels\Settings\Account\ValueLists\ValueListsViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class DefaultValuesViewModelTest extends TestCase
+class ValueListsViewModelTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -32,7 +32,7 @@ class DefaultValuesViewModelTest extends TestCase
             'position' => 1,
         ]);
 
-        $lists = new DefaultValuesViewModel(user: $user)->lists();
+        $lists = new ValueListsViewModel(user: $user)->lists();
 
         $this->assertCount(2, $lists);
         $this->assertSame('Job titles', $lists[0]['name']);
@@ -52,7 +52,7 @@ class DefaultValuesViewModelTest extends TestCase
             'position' => 2,
         ]);
 
-        $lists = new DefaultValuesViewModel(user: $user)->lists();
+        $lists = new ValueListsViewModel(user: $user)->lists();
 
         $this->assertFalse($lists[0]['canBeDeleted']);
         $this->assertTrue($lists[1]['canBeDeleted']);
@@ -65,7 +65,7 @@ class DefaultValuesViewModelTest extends TestCase
         $dwight = User::factory()->create();
         ValueList::factory()->create(['account_id' => $dwight->account_id]);
 
-        $this->assertCount(0, new DefaultValuesViewModel(user: $michael)->lists());
+        $this->assertCount(0, new ValueListsViewModel(user: $michael)->lists());
     }
 
     #[Test]
@@ -86,7 +86,7 @@ class DefaultValuesViewModelTest extends TestCase
             'position' => 1,
         ]);
 
-        $values = new DefaultValuesViewModel(user: $user)->lists()[0]['values'];
+        $values = new ValueListsViewModel(user: $user)->lists()[0]['values'];
 
         $this->assertSame('Salesman', $values[0]['label']);
         $this->assertSame('Receptionist', $values[1]['label']);
@@ -103,7 +103,7 @@ class DefaultValuesViewModelTest extends TestCase
         ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $one->id]);
         ValueListItem::factory()->count(3)->create(['account_id' => $user->account_id, 'value_list_id' => $several->id]);
 
-        $lists = new DefaultValuesViewModel(user: $user)->lists();
+        $lists = new ValueListsViewModel(user: $user)->lists();
 
         $this->assertSame($empty->id, $lists[0]['id']);
         $this->assertSame('no values', $lists[0]['countLabel']);
@@ -121,7 +121,7 @@ class DefaultValuesViewModelTest extends TestCase
         ValueListItem::factory()->used(1)->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'position' => 2]);
         ValueListItem::factory()->used(4)->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'position' => 3]);
 
-        $values = new DefaultValuesViewModel(user: $user)->lists()[0]['values'];
+        $values = new ValueListsViewModel(user: $user)->lists()[0]['values'];
 
         $this->assertSame('not used yet', $values[0]['usageLabel']);
         $this->assertSame('used once', $values[1]['usageLabel']);
@@ -137,7 +137,7 @@ class DefaultValuesViewModelTest extends TestCase
         ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'position' => 1]);
         ValueListItem::factory()->used()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'position' => 2]);
 
-        $values = new DefaultValuesViewModel(user: $user)->lists()[0]['values'];
+        $values = new ValueListsViewModel(user: $user)->lists()[0]['values'];
 
         $this->assertTrue($values[0]['canBeDeleted']);
         $this->assertFalse($values[1]['canBeDeleted']);
@@ -152,7 +152,7 @@ class DefaultValuesViewModelTest extends TestCase
         ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'position' => 1]);
         ValueListItem::factory()->disabled()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'position' => 2]);
 
-        $values = new DefaultValuesViewModel(user: $user)->lists()[0]['values'];
+        $values = new ValueListsViewModel(user: $user)->lists()[0]['values'];
 
         $this->assertTrue($values[0]['isActive']);
         $this->assertFalse($values[1]['isActive']);
@@ -163,6 +163,6 @@ class DefaultValuesViewModelTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $this->assertTrue($user->is(new DefaultValuesViewModel(user: $user)->user()));
+        $this->assertTrue($user->is(new ValueListsViewModel(user: $user)->user()));
     }
 }

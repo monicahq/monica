@@ -18,7 +18,7 @@
 
   @if ($values === [])
     <x-panel>
-      <x-empty-state :title="__('Nothing set aside')">
+      <x-empty-state :title="__('No unused answers')">
         <x-slot:icon>
           <x-icon name="file" :size="30" :stroke-width="1.4" />
         </x-slot:icon>
@@ -33,7 +33,7 @@
       </x-empty-state>
     </x-panel>
   @else
-    <x-panel :title="__('Answers nobody is asked for any more')" icon="file" :flush="true">
+    <x-panel :title="__('Answers to questions no longer asked')" icon="file" :flush="true">
       <dl class="grid gap-0">
         @foreach ($values as $value)
           <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-baseline gap-4 border-b border-hairline px-4.5 py-3 last:border-b-0 max-[560px]:grid-cols-1 max-[560px]:gap-0.5">
@@ -48,7 +48,7 @@
                 {{ $value['value'] ?? __('Nothing was written') }}
               </span>
 
-              <span class="text-xs text-muted">{{ __('Set aside on :date', ['date' => $value['when']]) }}</span>
+              <span class="text-xs text-muted">{{ __('Unused since :date', ['date' => $value['when']]) }}</span>
             </dd>
           </div>
         @endforeach

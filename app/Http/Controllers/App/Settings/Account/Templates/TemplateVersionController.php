@@ -31,7 +31,7 @@ class TemplateVersionController extends Controller
 
         return redirect()->route('settings.templateBuilder.index', $template)
             ->with('status', __('A draft is started.'))
-            ->with('status_description', __('The published version is untouched, and every record on it goes on as before.'));
+            ->with('status_description', __('The published version is unchanged, and every record on it works as before.'));
     }
 
     public function destroy(Request $request, Template $template, TemplateVersion $templateVersion): RedirectResponse
@@ -43,12 +43,12 @@ class TemplateVersionController extends Controller
             )->execute();
         } catch (PublishedVersionIsFrozen) {
             return redirect()->route('settings.templateBuilder.index', $template)
-                ->with('error', __('Only a draft can be thrown away.'))
+                ->with('error', __('Only a draft can be deleted.'))
                 ->with('error_description', __('A published version is retired instead, so the records on it keep working.'));
         }
 
         return redirect()->route('settings.templateBuilder.index', $template)
-            ->with('status', __('The draft is thrown away.'))
+            ->with('status', __('The draft is deleted.'))
             ->with('status_description', __('Nothing that was published has changed.'));
     }
 }

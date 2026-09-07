@@ -63,7 +63,7 @@ class PanelTest extends TestCase
     #[Test]
     public function it_keeps_the_mark_level_with_a_title_that_has_a_subtitle_under_it(): void
     {
-        $this->blade('<x-panel title="Picture" subtitle="A photograph helps." icon="profile"><p>Body</p></x-panel>')
+        $this->blade('<x-panel title="Photo" subtitle="A photograph helps." icon="profile"><p>Body</p></x-panel>')
             ->assertSee('min-h-12 items-start', escape: false)
             ->assertSee('A photograph helps.');
     }

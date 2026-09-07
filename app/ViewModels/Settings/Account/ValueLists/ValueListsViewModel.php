@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\ViewModels\Settings\Account\DefaultValues;
+namespace App\ViewModels\Settings\Account\ValueLists;
 
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 
-class DefaultValuesViewModel
+class ValueListsViewModel
 {
     public function __construct(
         private readonly User $user,

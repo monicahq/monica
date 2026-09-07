@@ -77,7 +77,7 @@ class ReminderOccurrenceDismissalControllerTest extends TestCase
 
         $this->actingAs($user)
             ->get(route('reminders.index', $vault))
-            ->assertSee('Nothing due just yet');
+            ->assertSee('Nothing due yet');
     }
 
     #[Test]

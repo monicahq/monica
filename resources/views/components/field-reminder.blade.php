@@ -245,7 +245,7 @@
     <fieldset class="flex flex-col gap-2">
       <legend class="text-label text-ink">{{ __('When to be told') }}</legend>
 
-      <p class="text-xs text-pretty text-muted">{{ __('One or several. A nudge before, on the day, or a follow up after.') }}</p>
+      <p class="text-xs text-pretty text-muted">{{ __('One or several. A reminder before, on the day, or a follow up after.') }}</p>
 
       <div class="flex flex-col gap-2 pt-0.5">
         @foreach ($rows as $index => $row)

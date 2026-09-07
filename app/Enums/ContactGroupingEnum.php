@@ -18,7 +18,7 @@ enum ContactGroupingEnum: string implements Translatable
     public function label(): string
     {
         return match ($this) {
-            self::Everyone => 'Everyone',
+            self::Everyone => 'Everybody',
             self::Favourites => 'Favourites',
             self::Archived => 'Archived',
         };

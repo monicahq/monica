@@ -37,7 +37,7 @@ enum MarketplaceCategoryEnum: string implements Translatable
         return match ($this) {
             self::Health => 'Appointments, treatments and everything worth following about a body',
             self::Family => 'How people are related, and what a household keeps track of',
-            self::Work => 'Colleagues, clients and the shape of a professional life',
+            self::Work => 'Colleagues, clients and the details of a professional life',
             self::Finance => 'Accounts, subscriptions and what money is owed to whom',
             self::Animals => 'Pets and the animals somebody looks after',
             self::Home => 'Places somebody lives in, and what has to be maintained there',

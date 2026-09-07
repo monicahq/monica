@@ -48,11 +48,11 @@
 
       <div class="flex items-center gap-1.5" role="group" aria-labelledby="reminders-grouping">
         @if ($byContact)
-          <x-button.ghost :href="$viewModel->groupedByWhenUrl()" size="small" x-target.push="reminders-toggle reminders-list">{{ __('When it fires') }}</x-button.ghost>
+          <x-button.ghost :href="$viewModel->groupedByWhenUrl()" size="small" x-target.push="reminders-toggle reminders-list">{{ __('When it is sent') }}</x-button.ghost>
 
           <x-button.secondary :href="$viewModel->groupedByContactUrl()" size="small" aria-current="true" x-target.push="reminders-toggle reminders-list">{{ __('Contact') }}</x-button.secondary>
         @else
-          <x-button.secondary :href="$viewModel->groupedByWhenUrl()" size="small" aria-current="true" x-target.push="reminders-toggle reminders-list">{{ __('When it fires') }}</x-button.secondary>
+          <x-button.secondary :href="$viewModel->groupedByWhenUrl()" size="small" aria-current="true" x-target.push="reminders-toggle reminders-list">{{ __('When it is sent') }}</x-button.secondary>
 
           <x-button.ghost :href="$viewModel->groupedByContactUrl()" size="small" x-target.push="reminders-toggle reminders-list">{{ __('Contact') }}</x-button.ghost>
         @endif

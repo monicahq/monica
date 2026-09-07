@@ -27,7 +27,7 @@
     <x-form method="put" :action="$viewModel->updateAction()">
       <x-panel
         :title="__('What this vault is called')"
-        :subtitle="__('The name is what you see in the dock and on the list. The description is for the version of you who comes back in a year.')"
+        :subtitle="__('The name is what you see in the switcher and on the vault list. The description says what the vault holds.')"
         icon="vault"
       >
         <div class="flex flex-col gap-4.5">
@@ -47,7 +47,7 @@
             :label="__('Description')"
             optional
             :value="$values['description']"
-            :placeholder="__('Everyone I am related to, and the people who come with them.')"
+            :placeholder="__('Everybody I am related to, and the people who come with them.')"
             :help="__('One or two sentences.')"
             :error="$errors->get('description')"
           />
@@ -111,7 +111,7 @@
         <x-select
           id="template_version_id"
           :label="__('Default template')"
-          :help="__('An older version is on offer too, so this vault can start its contacts on the shape you want rather than the newest one.')"
+          :help="__('An older version is offered too, so this vault can start its contacts on the version you want rather than the newest one.')"
           :error="$errors->get('template_version_id')"
           class="max-w-105"
         >
@@ -149,9 +149,9 @@
   <x-panel :title="__('Delete this vault')" icon="vault" tone="danger">
     <div class="flex flex-wrap items-center gap-3.5">
       <div class="flex max-w-[60ch] flex-col gap-2 text-sm text-pretty text-muted">
-        <p>{{ __('Everything filed in this vault goes with it: the contacts, and everything written about them.') }}</p>
+        <p>{{ __('Everything filed in this vault is deleted with it: the contacts, and everything written about them.') }}</p>
 
-        <p>{{ __('Nothing in the application brings a vault back, so this is the end of it.') }}</p>
+        <p>{{ __('Nothing in the application restores a vault, so this cannot be undone.') }}</p>
       </div>
 
       <x-modal.warning
@@ -171,11 +171,11 @@
         @endif
 
         @if ($viewModel->isTheLastVault())
-          <p>{{ __('This is the only vault you have, so your account is left holding nothing and you go back to the start.') }}</p>
+          <p>{{ __('This is the only vault you have. Your account will hold nothing, and you start again from the beginning.') }}</p>
 
-          <p>{{ __('The next vault you make becomes the one things land in.') }}</p>
+          <p>{{ __('The next vault you make becomes the one new records go to.') }}</p>
         @elseif ($vault->is_default)
-          <p>{{ __('This is your default vault, so another one takes over as the place things land.') }}</p>
+          <p>{{ __('This is your default vault, so another one becomes the vault new records go to.') }}</p>
         @endif
 
         <p>{{ __('This cannot be undone.') }}</p>

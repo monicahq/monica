@@ -1,6 +1,6 @@
 {{-- The kinds of record the account invented, beyond the people every account keeps. --}}
 {{-- @var \App\ViewModels\Settings\Account\EntityTypes\EntityTypesViewModel $viewModel --}}
-<x-shell :title="__('Entity types')">
+<x-shell :title="__('Kinds of record')">
   <x-slot:breadcrumb>
     <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
       <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
@@ -14,9 +14,9 @@
 
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
     <div class="flex min-w-0 flex-col gap-2">
-      <h1 class="text-page-title text-ink">{{ __('Entity types') }}</h1>
+      <h1 class="text-page-title text-ink">{{ __('Kinds of record') }}</h1>
 
-      <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Beyond people, a vault can hold animals, companies, cars, anything you want to keep track of. You decide what those things are called and where they appear.') }}</p>
+      <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('A vault can hold more than people: animals, companies, cars, anything you want to keep track of. You decide what they are called and where they appear.') }}</p>
     </div>
 
     <x-button :href="route('settings.entityTypes.new')" data-turbo="true" class="max-sm:w-full">

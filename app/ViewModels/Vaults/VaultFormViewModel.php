@@ -27,7 +27,7 @@ class VaultFormViewModel
 
     public function description(): string
     {
-        return __('A vault is a watertight compartment. The contacts, entities and activities you put in one stay in it, and a search in another vault never reaches them.');
+        return __('A vault holds one part of your life. The contacts, records and activities you put in one stay in it, and a search in another vault never reaches them.');
     }
 
     public function action(): string
@@ -96,7 +96,7 @@ class VaultFormViewModel
             return __('This is your first vault, so it is the default until you make another one.');
         }
 
-        return __(':name stops being the default the moment this vault is created.', [
+        return __(':name stops being the default when this vault is created.', [
             'name' => $this->currentDefaultName() ?? __('Your current default vault'),
         ]);
     }

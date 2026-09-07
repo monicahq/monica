@@ -128,9 +128,9 @@ class SidebarTest extends TestCase
             'Preferences',
             'Logs',
             'This account',
-            'Entity types',
+            'Kinds of record',
             'Templates',
-            'Default values',
+            'Value lists',
         ]);
     }
 

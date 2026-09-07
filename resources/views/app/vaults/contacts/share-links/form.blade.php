@@ -107,12 +107,12 @@
         </div>
       </x-panel>
 
-      <x-panel :title="__('What the recipient sees')" :subtitle="__('Off means held back. Nothing here is on unless you turn it on.')">
+      <x-panel :title="__('What the recipient sees')" :subtitle="__('Off means hidden. Nothing here is shown unless you turn it on.')">
         <x-option-row
           id="includes_sensitive_fields"
           name="includes_sensitive_fields"
           :checked="old('includes_sensitive_fields', $viewModel->includesSensitiveFields() ? '1' : null) === '1'"
-          :hint="__('The fields your templates mark sensitive, wherever they appear. Leaving this off is the safe answer.')"
+          :hint="__('The fields your templates mark sensitive, wherever they appear. Leaving this off is safer.')"
         >
           <span class="flex flex-wrap items-center gap-2">
             {{ __('Fields you marked sensitive') }}
@@ -121,7 +121,7 @@
           </span>
         </x-option-row>
 
-        <p class="mt-4 text-xs tracking-(--tracking-caption) text-muted uppercase">{{ __('Held back whatever you tick') }}</p>
+        <p class="mt-4 text-xs tracking-(--tracking-caption) text-muted uppercase">{{ __('Hides whatever you tick') }}</p>
 
         <ul class="mt-2 flex list-none flex-col gap-1.5">
           @foreach ([

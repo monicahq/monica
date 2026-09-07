@@ -64,7 +64,7 @@ class ApiDocsControllerTest extends TestCase
         $response->assertSee('Vaults');
         $response->assertSee('Contacts');
         $response->assertSee('Templates');
-        $response->assertSee('Entity types');
+        $response->assertSee('Kinds of record');
         $response->assertSee('Introduction');
         $response->assertSee('Pagination');
     }

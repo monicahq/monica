@@ -76,7 +76,7 @@ class FieldController extends Controller
         } catch (InvalidArgumentException) {
             return redirect()->route('settings.fields.new', [$template, $templateVersionSection])
                 ->with('error', __('A field that offers choices has to say which list they come from.'))
-                ->with('error_description', __('Make the list on the default values screen first, then come back.'));
+                ->with('error_description', __('Make the list on the value lists screen first, then come back.'));
         }
 
         return redirect()->route('settings.templateBuilder.field', [
@@ -179,6 +179,6 @@ class FieldController extends Controller
     {
         return redirect()->route('settings.templateBuilder.index', $template)
             ->with('error', __('This version has been published and cannot be changed.'))
-            ->with('error_description', __('Start a draft, and the published version goes on serving the records already on it.'));
+            ->with('error_description', __('Start a draft, and the published version keeps serving the records already on it.'));
     }
 }

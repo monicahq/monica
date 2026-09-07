@@ -21,7 +21,7 @@
       <header class="flex max-w-[66ch] flex-col gap-2">
         <h1 class="text-page-title text-ink">{{ __('Export :name', ['name' => $viewModel->name()]) }}</h1>
 
-        <p class="text-base text-pretty text-body">{{ __('One section, cut out of :name. Short enough to read in one go.', ['name' => $template->name]) }}</p>
+        <p class="text-base text-pretty text-body">{{ __('One section, taken from :name. Short enough to read at once.', ['name' => $template->name]) }}</p>
       </header>
 
       <x-panel flush>
@@ -51,7 +51,7 @@
           <span x-cloak x-show="copied">{{ __('Copied') }}</span>
         </x-button.secondary>
 
-        <x-link :href="$viewModel->shareUrl()" turbo class="ml-auto text-sm">{{ __('Back to the two ways') }}</x-link>
+        <x-link :href="$viewModel->shareUrl()" turbo class="ml-auto text-sm">{{ __('Back to the two ways to share') }}</x-link>
       </div>
     </div>
 
@@ -68,10 +68,10 @@
 
       <x-panel>
         <div class="flex flex-col gap-2">
-          <p class="text-base font-semibold text-ink">{{ __('Where it lands') }}</p>
+          <p class="text-base font-semibold text-ink">{{ __('Where it goes') }}</p>
 
           <p class="text-sm text-pretty text-ink-soft">
-            {{ __('A section file is imported from the page it should join, on the draft of whatever template you want it on. It lands at the end of that page, and you move it from there.') }}
+            {{ __('Import a section file from the page it should join, on the draft of the template you want it on. It is added at the end of that page, and you can move it from there.') }}
           </p>
         </div>
       </x-panel>

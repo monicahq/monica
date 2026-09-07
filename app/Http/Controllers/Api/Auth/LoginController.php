@@ -42,7 +42,7 @@ class LoginController extends Controller
 
         if (! $this->passesSecondFactor($user, $validated['code'] ?? null)) {
             return response()->json([
-                'message' => __('That two factor code is not valid.'),
+                'message' => __('That two-factor code is not valid.'),
             ], 401);
         }
 

@@ -43,7 +43,7 @@
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
             <h2 class="shrink-0 text-section-title text-ink">{{ __('What this contact starts from') }}</h2>
 
-            <p class="text-sm text-pretty text-muted">{{ __('The template decides which fields the contact page holds. It is the vault’s own unless you pick another here, and it can be changed on the contact afterwards.') }}</p>
+            <p class="text-sm text-pretty text-muted">{{ __('The template decides which fields the contact page holds. The vault’s own template is used unless you pick another here. It can be changed on the contact afterwards.') }}</p>
           </div>
 
           <x-panel>

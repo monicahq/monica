@@ -103,7 +103,7 @@ class ReminderViewModel
             ReminderInactiveReasonEnum::RecordDeleted => __('The record it is about was deleted. Restore it and this reminder starts again on its own.'),
             ReminderInactiveReasonEnum::FieldRemoved => __('The field it reads has left the structure. Put the field back and this reminder starts again on its own.'),
             ReminderInactiveReasonEnum::PausedByUser => __('You paused it. Nothing is delivered while it is paused, and the schedule is kept exactly as it was.'),
-            null => __('It is not firing.'),
+            null => __('It is stopped.'),
         };
     }
 
@@ -128,7 +128,7 @@ class ReminderViewModel
                 'isScheduled' => false,
                 'overline' => __('Nothing ahead of it'),
                 'date' => __('It has already happened'),
-                'note' => __('This reminder fires once, and its date has passed.'),
+                'note' => __('This reminder is sent once, and its date has passed.'),
                 'tone' => 'neutral',
             ];
         }
@@ -174,14 +174,14 @@ class ReminderViewModel
                 [
                     'label' => __('Time'),
                     'value' => mb_substr($this->reminder->time_of_day, 0, 5),
-                    'note' => __('The hour the reminder fires at.'),
+                    'note' => __('The hour the reminder is sent at.'),
                 ],
                 [
                     'label' => __('Time zone'),
                     'value' => $this->reminder->timezone,
                     'note' => $this->reminder->timezone === $this->user->timezone
-                        ? __('Frozen when the reminder was made, and the same as yours.')
-                        : __('Frozen when the reminder was made. Yours is :zone.', ['zone' => $this->user->timezone]),
+                        ? __('Fixed when the reminder was made, and the same as yours.')
+                        : __('Fixed when the reminder was made. Yours is :zone.', ['zone' => $this->user->timezone]),
                 ],
             ],
             'moments' => $this->moments(),
@@ -236,10 +236,10 @@ class ReminderViewModel
     public function stillToComeEmptyLine(): string
     {
         if (! $this->reminder->is_active) {
-            return __('Nothing is scheduled while this reminder is not firing. Its schedule is kept, so what was ahead comes back with it.');
+            return __('Nothing is scheduled while this reminder is stopped. Its schedule is kept, so it starts again where it was.');
         }
 
-        return __('Deadlines are produced a while before they fall due, so a yearly reminder sits empty here for most of the year. The schedule above is what it will do.');
+        return __('Deadlines are produced shortly before they fall due, so a yearly reminder is empty here for most of the year. The schedule above is what it will do.');
     }
 
     /**

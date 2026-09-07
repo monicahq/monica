@@ -299,7 +299,7 @@ class LogTest extends TestCase
             'parameters' => ['count' => 1, 'label' => 'Nickname'],
         ]);
 
-        $this->assertEquals('Set aside 1 value written in Nickname', $log->description);
+        $this->assertEquals('Marked 1 value written in Nickname as unused', $log->description);
     }
 
     #[Test]

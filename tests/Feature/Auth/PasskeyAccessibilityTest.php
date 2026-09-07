@@ -77,7 +77,7 @@ class PasskeyAccessibilityTest extends TestCase
         Passkey::factory()->create(['user_id' => $user->id]);
 
         $this->secure()->actingAs($user)->get(route('settings.security.index'))
-            ->assertSee('This device will no longer sign you in. Sure?');
+            ->assertSee('This device will no longer sign you in. This cannot be undone.');
     }
 
     #[Test]

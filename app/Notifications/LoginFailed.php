@@ -33,7 +33,7 @@ class LoginFailed extends Notification implements HasEmailType, ShouldQueue
         return new MailMessage()
             ->subject(__('Failed sign-in attempt on your :app account', ['app' => config('app.name')]))
             ->greeting(__('Failed sign-in attempt'))
-            ->line(__('Somebody tried to sign in to your account and gave the wrong password. If that was you, nothing is wrong: try again, or use a sign-in link instead.'))
+            ->line(__('Somebody tried to sign in to your account and gave the wrong password. If that was you, try again, or use a sign-in link instead.'))
             ->panel(__('If it was not you, change your password now. Somebody knows your email address and is guessing.'));
     }
 

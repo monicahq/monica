@@ -125,21 +125,21 @@ class VaultDashboardViewModel
                 'caption' => __('Nothing open'),
                 'icon' => 'tasks',
                 'emptyTitle' => __('Nothing you owe anyone'),
-                'emptyText' => __('Things you said you would do for someone in this vault land here until they are done.'),
+                'emptyText' => __('Things you said you would do for somebody in this vault appear here until they are done.'),
             ],
             [
                 'title' => __('Reminders'),
                 'caption' => __('No dates set'),
                 'icon' => 'reminder',
                 'emptyTitle' => __('No dates to keep'),
-                'emptyText' => __('Birthdays and anything you ask to be told about, so December is not a panic.'),
+                'emptyText' => __('Birthdays and anything else you ask to be told about, in good time.'),
             ],
             [
                 'title' => __('Files'),
                 'caption' => __('No files'),
                 'icon' => 'file',
                 'emptyTitle' => __('No files yet'),
-                'emptyText' => __('Photographs, scans and documents you attach to somebody show up here as well.'),
+                'emptyText' => __('Photographs, scans and documents you attach to somebody appear here as well.'),
             ],
         ];
     }
@@ -159,7 +159,7 @@ class VaultDashboardViewModel
             return __('Takes the vault and everything in it.');
         }
 
-        return trans_choice('{1}Takes the one person in it and everything written about them.|Takes :count people and everything written about them.', $this->vault->contact_count);
+        return trans_choice('{1}Deletes the one person in it and everything written about them.|Deletes :count people and everything written about them.', $this->vault->contact_count);
     }
 
     private function currentTemplateName(): ?string

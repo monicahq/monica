@@ -124,13 +124,13 @@ class VaultReminderControllerTest extends TestCase
         $bare = Vault::factory()->create(['account_id' => $user->account_id]);
         $this->actingAs($user)->get(route('reminders.index', $bare))
             ->assertSee('No reminders in this vault')
-            ->assertSee('built from a date on somebody', escape: false);
+            ->assertSee('built from a date on a contact', escape: false);
 
         $further = Vault::factory()->create(['account_id' => $user->account_id]);
         $this->deadline($this->ruleAbout($user, $further), '+240 days');
 
         $this->actingAs($user)->get(route('reminders.index', $further))
-            ->assertSee('Nothing due just yet')
+            ->assertSee('Nothing due yet')
             ->assertSee('none of them falls in the next 90 days', escape: false);
     }
 
@@ -234,7 +234,7 @@ class VaultReminderControllerTest extends TestCase
         $response->assertSee('Will be sent');
         $response->assertSee('Europe/Paris');
         $response->assertSee('Grouped by');
-        $response->assertSee('When it fires');
+        $response->assertSee('When it is sent');
     }
 
     #[Test]
@@ -356,7 +356,7 @@ class VaultReminderControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('reminders.sent', $vault));
 
         $response->assertStatus(200);
-        $response->assertSee('Somebody who is gone');
+        $response->assertSee('A deleted contact');
     }
 
     #[Test]

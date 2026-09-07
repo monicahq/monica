@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\App\Settings\Account\DefaultValues;
+namespace Tests\Feature\Controllers\App\Settings\Account\ValueLists;
 
 use App\Models\User;
 use App\Models\ValueList;
@@ -149,7 +149,7 @@ class ValueListItemControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('role="dialog"', escape: false)
             ->assertSee('Delete “Salesman”?', escape: false)
-            ->assertSee('Nothing uses it yet, so it goes for good and stops being offered anywhere.');
+            ->assertSee('Nothing uses it yet, so it is deleted for good and stops being offered anywhere.');
     }
 
     #[Test]

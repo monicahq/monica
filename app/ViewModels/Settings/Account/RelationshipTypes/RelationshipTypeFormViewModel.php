@@ -47,10 +47,10 @@ class RelationshipTypeFormViewModel
         }
 
         if ($this->relationshipType->is_system) {
-            return __('You can change the words and where this type is listed. What the product does with it stays the same.');
+            return __('You can change the words and where this type is listed. What the application does with it stays the same.');
         }
 
-        return __('Your own type. Its name and category are yours to change, and they never give it product behaviour.');
+        return __('Your own type. Its name and category are yours to change, and neither changes how the application treats it.');
     }
 
     public function action(): string
@@ -146,8 +146,8 @@ class RelationshipTypeFormViewModel
     public function behaviourBody(): ?string
     {
         return match ($this->relationshipType?->system_behavior) {
-            RelationshipBehaviorEnum::GenealogyParentage => __('The family tree is drawn from the relationships written with this type. Renaming it, moving it to another category or no longer offering it leaves that unchanged.'),
-            RelationshipBehaviorEnum::Romantic => __('Relationships written with this type appear in romantic history, together with their dates. Renaming it, moving it to another category or no longer offering it leaves that unchanged.'),
+            RelationshipBehaviorEnum::GenealogyParentage => __('The family tree is drawn from the relationships written with this type. Renaming it, moving it to another category or no longer offering it does not change that.'),
+            RelationshipBehaviorEnum::Romantic => __('Relationships written with this type appear in romantic history, with their dates. Renaming it, moving it to another category or no longer offering it does not change that.'),
             default => null,
         };
     }
@@ -155,7 +155,7 @@ class RelationshipTypeFormViewModel
     public function availabilityHelp(): string
     {
         if ($this->values()['isActive']) {
-            return __('Turn this off to retire the type. It leaves the picker, and the relationships that already use it keep reading as they do.');
+            return __('Turn this off to retire the type. It leaves the picker, and the relationships that already use it are unchanged.');
         }
 
         return __('This type is not offered for new relationships. The ones that already use it still read as they did.');

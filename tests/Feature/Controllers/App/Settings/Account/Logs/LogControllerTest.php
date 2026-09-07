@@ -82,9 +82,9 @@ class LogControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Nothing has happened yet', escape: false);
-        $response->assertSee('it is written down here', escape: false);
-        $response->assertSee('Nothing has left our hands yet', escape: false);
-        $response->assertSee('along with whether they arrived', escape: false);
+        $response->assertSee('is written down here', escape: false);
+        $response->assertSee('No email has been sent yet', escape: false);
+        $response->assertSee('with whether they arrived', escape: false);
     }
 
     #[Test]

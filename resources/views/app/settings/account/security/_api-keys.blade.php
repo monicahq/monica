@@ -91,7 +91,7 @@
           <x-button.secondary size="small" type="button" x-show="! confirming" @click="confirming = true">{{ __('Revoke') }}</x-button.secondary>
 
           <div x-cloak x-show="confirming" class="flex flex-wrap items-center justify-end gap-2.5">
-            <p class="text-xs text-error">{{ __('Anything still using it stops working. Sure?') }}</p>
+            <p class="text-xs text-error">{{ __('Anything still using it stops working, and the key cannot be recovered.') }}</p>
 
             <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep it') }}</x-button.secondary>
 

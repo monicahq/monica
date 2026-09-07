@@ -60,7 +60,7 @@
         </x-panel>
 
         @if ($viewModel->isRefused())
-          <x-notice tone="danger" :title="__('This file cannot come in yet')">
+          <x-notice tone="danger" :title="__('This file cannot be imported')">
             {{ $viewModel->refusal() }}
 
             <span class="mt-1 block text-xs text-muted">{{ __('Nothing was imported. Fix the file and check it again.') }}</span>
@@ -74,7 +74,7 @@
                 <x-icon name="check-circle" :size="18" :stroke-width="1.6" class="mt-px shrink-0 text-forest-deep" />
 
                 <div class="flex min-w-0 flex-col gap-1">
-                  <p class="text-base font-semibold text-ink">{{ __('This file checks out') }}</p>
+                  <p class="text-base font-semibold text-ink">{{ __('This file can be imported') }}</p>
 
                   <p class="text-sm text-pretty text-ink-soft">{{ $viewModel->summary() }}</p>
                 </div>
@@ -104,7 +104,7 @@
                 </x-form>
 
                 <span class="max-w-[42ch] text-xs text-pretty text-ink-soft">
-                  {{ __('Nothing is published. You look it over, then put the records you choose on it yourself.') }}
+                  {{ __('Nothing is published. You review it, then put the records you choose on it yourself.') }}
                 </span>
               </div>
             </div>
@@ -113,7 +113,7 @@
       </div>
 
       <x-notice tone="quiet" icon="lock">
-        {{ __('A file only carries the shape of things. There is no record, no value, no date and no photo in it, and importing one never touches what you already have.') }}
+        {{ __('A file only carries the structure. It holds no record, no value, no date and no photo. Importing one never touches what you already have.') }}
       </x-notice>
 
       <p class="max-w-[70ch] text-sm text-pretty text-muted">

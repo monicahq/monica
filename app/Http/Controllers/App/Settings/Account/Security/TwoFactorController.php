@@ -46,7 +46,7 @@ class TwoFactorController extends Controller
         }
 
         return redirect()->route('settings.security.index')
-            ->with('status', __('Two factor authentication is on.'))
+            ->with('status', __('Two-factor authentication is on.'))
             ->with('status_description', __('We will ask for a code the next time you sign in.'));
     }
 
@@ -57,7 +57,7 @@ class TwoFactorController extends Controller
         )->execute();
 
         return redirect()->route('settings.security.index')
-            ->with('status', __('Two factor authentication is off.'))
+            ->with('status', __('Two-factor authentication is off.'))
             ->with('status_description', __('Your password is now all it takes to sign in.'));
     }
 }

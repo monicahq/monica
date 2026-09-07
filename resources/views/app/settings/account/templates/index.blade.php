@@ -16,7 +16,7 @@
     <div class="flex min-w-0 flex-col gap-2">
       <h1 class="text-page-title text-ink">{{ __('Templates') }}</h1>
 
-      <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('A template decides what a record looks like: which sections it carries, and which fields sit in them. Records keep the version they were made with until you move them.') }}</p>
+      <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('A template decides what a record shows: which sections it carries, and which fields are in them. Records keep the version they were made with until you move them.') }}</p>
     </div>
 
     <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full">
@@ -86,7 +86,7 @@
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
           <h2 class="shrink-0 text-section-title text-ink">{{ __('Supplied with Monica') }}</h2>
 
-          <p class="text-sm text-pretty text-muted">{{ __('They work out of the box. Copy one to change it.') }}</p>
+          <p class="text-sm text-pretty text-muted">{{ __('They work as they are. Copy one to change it.') }}</p>
         </div>
 
         <x-panel :flush="true">

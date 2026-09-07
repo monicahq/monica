@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\App\Settings\Account\DefaultValues;
+namespace Tests\Feature\Controllers\App\Settings\Account\ValueLists;
 
 use App\Enums\ValueListEnum;
 use App\Models\User;
@@ -48,7 +48,7 @@ class ValueListControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('settings.valueLists.index'))
             ->assertStatus(200)
-            ->assertSeeInOrder(['Default values', 'Add a list', 'Job titles']);
+            ->assertSeeInOrder(['Value lists', 'Add a list', 'Job titles']);
     }
 
     #[Test]
@@ -80,7 +80,7 @@ class ValueListControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('role="dialog"', escape: false)
             ->assertSee('Delete “Job titles”?', escape: false)
-            ->assertSee('The list goes, and every value inside it goes with it.');
+            ->assertSee('The list is deleted, and every value in it with it.');
     }
 
     #[Test]

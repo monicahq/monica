@@ -122,7 +122,7 @@
         </div>
 
         <div>
-          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Two factor authentication') }}</dt>
+          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Two-factor authentication') }}</dt>
           <dd class="text-base text-ink">{{ $viewModel->user()->usesTwoFactorAuthentication() ? __('On') : __('Off') }}</dd>
         </div>
 
@@ -160,7 +160,7 @@
               <x-button.danger type="button" size="small" @click="open = true">{{ __('Deactivate') }}</x-button.danger>
             </x-slot:trigger>
 
-            {{ __('They will not be able to sign in, and any session they have open right now will stop working on their next click. Nothing they own is deleted, and you can undo this at any time.') }}
+            {{ __('They will not be able to sign in. Any session they have open stops working on their next click. Nothing they own is deleted, and you can undo this at any time.') }}
           </x-modal.warning>
         @else
           <x-modal.warning
@@ -195,7 +195,7 @@
             type="number"
             :label="__('Limit in bytes')"
             :value="$viewModel->account()->storage_limit_in_bytes"
-            :help="__('A limit below the :used already held deletes nothing. It refuses the next upload until they are back under it.', ['used' => $viewModel->storageUsed()])"
+            :help="__('A limit below the :used already held deletes nothing. It refuses the next upload until the account is back under the limit.', ['used' => $viewModel->storageUsed()])"
             :error="$errors->first('storage_limit_in_bytes')"
             optional
           />
@@ -231,7 +231,7 @@
 
       @if ($viewModel->user()->is(auth()->user()))
         <x-slot:footer>
-          <p class="text-sm text-body">{{ __('This is your own account. Your own storage limit and your own lifetime access are yours to change, so a single administrator instance is never stuck.') }}</p>
+          <p class="text-sm text-body">{{ __('This is your own account. You can change your own storage limit and your own lifetime access, so an instance with one administrator is never blocked.') }}</p>
         </x-slot:footer>
       @endif
     </x-panel>

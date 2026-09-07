@@ -35,7 +35,7 @@ class MarketplaceListingRejected extends Notification implements HasEmailType, S
     {
         return new MailMessage()
             ->subject(__('About :name in the marketplace', ['name' => $this->listingName]))
-            ->greeting(__('Not this time'))
+            ->greeting(__('Your listing was not accepted'))
             ->line(__('Version :version of :name has not been accepted into the marketplace.', [
                 'version' => $this->versionNumber,
                 'name' => $this->listingName,

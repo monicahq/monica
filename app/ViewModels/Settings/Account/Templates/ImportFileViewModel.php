@@ -48,8 +48,8 @@ class ImportFileViewModel
     public function intro(): string
     {
         return $this->isForASection()
-            ? __('Paste a section file below and it lands at the end of this page, ready to move where you want it. Nothing already on the template is touched.')
-            : __('Anything exported out of Monica can come back in. Paste the file below and it lands in this account as a draft, so nothing on your records changes until you decide to use it.');
+            ? __('Paste a section file below and it is added at the end of this page, ready to move where you want it. Nothing already on the template is touched.')
+            : __('Anything exported out of Monica can be imported again. Paste the file below and it arrives in this account as a draft. Nothing on your records changes until you decide to use it.');
     }
 
     /** @return array<int, array{label: string, url?: string}> */
@@ -109,7 +109,7 @@ class ImportFileViewModel
     {
         return $this->checked !== null && $this->checked['format'] === 'section'
             ? __('Every field in it is one this account knows how to render.')
-            : __('Every section, field and list of choices in it is one this account knows how to render.');
+            : __('Every section, field and value list in it is one this account knows how to render.');
     }
 
     /** @return array<int, array{label: string, value: string}> */
@@ -123,10 +123,10 @@ class ImportFileViewModel
             ? $this->foundInATemplate()
             : $this->foundInASection();
 
-        $rows[] = ['label' => __('Lists of choices'), 'value' => $this->valueListsLabel()];
+        $rows[] = ['label' => __('Value lists'), 'value' => $this->valueListsLabel()];
         $rows[] = ['label' => __('Kinds of record'), 'value' => $this->entityTypesLabel()];
         $rows[] = ['label' => __('Format'), 'value' => __('Monica structure format :version', ['version' => $this->checked['format_version']])];
-        $rows[] = ['label' => __('Records inside'), 'value' => __('None, as always')];
+        $rows[] = ['label' => __('Records inside'), 'value' => __('None')];
 
         return $rows;
     }
@@ -248,17 +248,17 @@ class ImportFileViewModel
         return [
             [
                 'title' => __('You paste the file'),
-                'text' => __('Straight into the box. Nothing leaves this account and nothing is uploaded anywhere.'),
+                'text' => __('Paste it into the box below. Nothing leaves this account and nothing is uploaded anywhere.'),
             ],
             [
                 'title' => __('Monica checks it'),
-                'text' => __('Before anything is written: that it reads as JSON, that the format is one this version understands, and that every name and every kind of field inside it exists here. If something is wrong you are told which part, and nothing is created.'),
+                'text' => __('Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.'),
             ],
             [
                 'title' => __('You use it'),
                 'text' => $this->isForASection()
-                    ? __('The section lands at the end of this page. Move it, rename it, change a field, then publish the version when it looks right.')
-                    : __('The template lands as a draft. Read it, change what you want, publish it, then put the records you choose on it.'),
+                    ? __('The section is added at the end of this page. Move it, rename it, change a field, then publish the version when it is right.')
+                    : __('The template arrives as a draft. Read it, change what you want, publish it, then put the records you choose on it.'),
             ],
         ];
     }

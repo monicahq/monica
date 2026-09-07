@@ -84,8 +84,8 @@
     </header>
 
     @unless ($viewModel->isEditable())
-      <x-notice tone="info" :title="__('This version is published, so it is frozen')">
-        {{ __('Create a new version to make one beside it. Every record on this version goes on rendering exactly what it does now.') }}
+      <x-notice tone="info" :title="__('This version is published, so it cannot be changed')">
+        {{ __('Create a new version to make one beside it. Every record on this version keeps showing exactly what it shows now.') }}
       </x-notice>
     @endunless
 
@@ -181,19 +181,19 @@
       @if ($viewModel->isEditable() && $version?->previous_version_id !== null)
         <div class="ml-auto">
           <x-modal.warning
-            :title="__('Throw this draft away?')"
-            :confirm="__('Throw it away')"
+            :title="__('Delete this draft?')"
+            :confirm="__('Delete it')"
             :action="route('settings.templateVersions.destroy', [$template, $version])"
           >
             <x-slot:trigger>
               <x-button.secondary size="small" type="button" @click="open = true" class="hover:text-error">
-                {{ __('Discard the draft') }}
+                {{ __('Delete the draft') }}
               </x-button.secondary>
             </x-slot:trigger>
 
-            <p>{{ __('Everything changed since the last published version goes with it.') }}</p>
+            <p>{{ __('Everything changed since the last published version is included.') }}</p>
 
-            <p>{{ __('What was published is untouched, and every record on it goes on as before.') }}</p>
+            <p>{{ __('What was published is unchanged, and every record on it works as before.') }}</p>
           </x-modal.warning>
         </div>
       @endif

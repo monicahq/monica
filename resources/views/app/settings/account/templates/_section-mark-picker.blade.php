@@ -65,7 +65,7 @@
       ::class="open && 'rotate-180'"
     />
 
-    <span class="sr-only">{{ __('Choose the glyph and colour for this section') }}</span>
+    <span class="sr-only">{{ __('Choose the icon and colour for this section') }}</span>
   </button>
 </span>
 
@@ -82,7 +82,7 @@
   class="z-40 flex w-72 max-w-[calc(100vw-2rem)] flex-col gap-3.5 rounded-lg border border-hairline bg-canvas p-3.5 shadow-pop"
 >
   <fieldset class="flex flex-col gap-2">
-    <legend class="pb-1 text-xs tracking-caption text-muted uppercase">{{ __('Glyph') }}</legend>
+    <legend class="pb-1 text-xs tracking-caption text-muted uppercase">{{ __('Icon') }}</legend>
 
     <div class="grid grid-cols-7 gap-1.5">
       <button
@@ -94,7 +94,7 @@
       >
         <x-icon name="close" :size="15" :stroke-width="1.6" class="text-muted" />
 
-        <span class="sr-only">{{ __('No glyph') }}</span>
+        <span class="sr-only">{{ __('No icon') }}</span>
       </button>
 
       @foreach ($glyphs as $glyph)

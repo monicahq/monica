@@ -18,7 +18,7 @@
     class="space-y-8.5"
   >
     <x-form id="vault-form" method="post" :action="$viewModel->action()" class="space-y-8.5">
-      <x-box :title="__('What it is for')" :description="__('The name is what you will see in the switcher. The description is shown on the vault list, so write it for the version of you who comes back in a year.')">
+      <x-box :title="__('What it is for')" :description="__('The name is what you see in the switcher and on the vault list. The description says what the vault holds.')">
         <div class="space-y-4">
           <x-input
             id="name"
@@ -38,7 +38,7 @@
             :label="__('Description')"
             optional
             :value="$values['description']"
-            :placeholder="__('Everyone I am related to, and the people who come with them.')"
+            :placeholder="__('Everybody I am related to, and the people who come with them.')"
             :help="__('One or two sentences.')"
             :error="$errors->get('description')"
           />
@@ -97,7 +97,7 @@
         </x-box>
       @endif
 
-      <x-box :title="__('Where things land')" :description="__('One vault in your account is the default. Anything created without a vault chosen goes there.')">
+      <x-box :title="__('Where new records go')" :description="__('One vault in your account is the default. Anything created without a vault chosen goes there.')">
         <div class="space-y-2">
           <x-checkbox
             id="is_default"
@@ -121,7 +121,7 @@
     </x-form>
 
     <div class="flex flex-wrap items-center gap-4 border-t border-hairline pt-5">
-      <p class="max-w-105 text-xs leading-relaxed text-muted-soft">{{ __('You can rename a vault, recolour it and change its description later. Deleting one is the destructive part, and it asks first.') }}</p>
+      <p class="max-w-105 text-xs leading-relaxed text-muted-soft">{{ __('You can rename a vault, recolour it and change its description later. Deleting one cannot be undone, and it asks first.') }}</p>
 
       <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full sm:ml-auto">
         <x-button.secondary :href="$viewModel->backUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>

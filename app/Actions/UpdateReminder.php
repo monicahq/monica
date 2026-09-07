@@ -115,7 +115,7 @@ class UpdateReminder
         }
 
         if ($this->timezone !== null && TimezoneCatalogue::find($this->timezone) === null) {
-            throw new ReminderIsNotValid(__('This is not a time zone the product knows.'));
+            throw new ReminderIsNotValid(__('This is not a time zone the application knows.'));
         }
     }
 

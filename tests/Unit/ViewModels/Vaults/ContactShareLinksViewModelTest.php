@@ -126,7 +126,7 @@ class ContactShareLinksViewModelTest extends TestCase
         $line = $this->only($user, $contact)['revokeLine'];
 
         $this->assertStringContainsString('6 times', $line);
-        $this->assertStringContainsString('never brought back', $line);
+        $this->assertStringContainsString('never works again', $line);
     }
 
     #[Test]

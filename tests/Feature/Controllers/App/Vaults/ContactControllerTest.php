@@ -47,7 +47,7 @@ class ContactControllerTest extends TestCase
             ->assertSee('Dwight Schrute')
             ->assertSee('Prison Mike')
             ->assertSee('Basic contact')
-            ->assertSee('All 2 people in this vault, on one scrolling list.');
+            ->assertSee('All 2 people in this vault, on a single list.');
     }
 
     #[Test]
@@ -182,7 +182,7 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Dwight', 'Schrute');
 
         $this->actingAs($user)->get(route('contacts.index', $vault))
-            ->assertSee('Everyone')
+            ->assertSee('Everybody')
             ->assertSee('Favourites')
             ->assertSee('Archived')
             ->assertSee('<span class="font-mono text-[12px] opacity-70">2</span>', escape: false);
@@ -704,9 +704,9 @@ class ContactControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('contacts.edit', ['vault' => $vault, 'contact' => $michael]))
             ->assertStatus(200)
-            ->assertSee('Picture')
+            ->assertSee('Photo')
             ->assertSee(route('contacts.avatar.update', ['vault' => $vault, 'contact' => $michael]), false)
-            ->assertDontSee('Remove the picture');
+            ->assertDontSee('Remove the photo');
     }
 
     #[Test]
@@ -723,8 +723,8 @@ class ContactControllerTest extends TestCase
         $this->actingAs($user)->get(route('contacts.edit', ['vault' => $vault, 'contact' => $michael]))
             ->assertStatus(200)
             ->assertSee(route('files.show', ['vault' => $vault, 'file' => $file]), false)
-            ->assertSee('Remove the picture')
-            ->assertSee('Remove the picture of Michael Scott?')
+            ->assertSee('Remove the photo')
+            ->assertSee('Remove the photo of Michael Scott?')
             ->assertSee('They are drawn as their initials again.')
             ->assertDontSee('@js(', false)
             ->assertSee(route('contacts.avatar.destroy', ['vault' => $vault, 'contact' => $michael]), false);
@@ -977,7 +977,7 @@ class ContactControllerTest extends TestCase
             ->assertSee('applied by you')
             ->assertSee('chosen when they were written down')
             ->assertSee('Ways to connect is its own section now.')
-            ->assertSee('Go back to this')
+            ->assertSee('Move to this version')
             ->assertSee('A version only decides what this page shows.');
     }
 

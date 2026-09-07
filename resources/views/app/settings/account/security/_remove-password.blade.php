@@ -43,7 +43,7 @@
       </div>
 
       <div x-cloak x-show="confirming" class="flex flex-col gap-3">
-        <x-notice icon="reminder" tone="warning">{{ __('Your password will no longer sign you in. Your passkeys, and a link sent to your email address, still will. You can set a password again later.') }}</x-notice>
+        <x-notice icon="reminder" tone="warning">{{ __('Your password will no longer sign you in. Your passkeys and a link sent to your email address still will. You can set a password again later.') }}</x-notice>
 
         <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep my password') }}</x-button.secondary>

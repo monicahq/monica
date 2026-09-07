@@ -41,7 +41,7 @@ class MarketplaceListingApproved extends Notification implements HasEmailType, S
                 'name' => $this->listingName,
             ]))
             ->action(__('See it in the marketplace'), $this->url)
-            ->line(__('What people install is frozen at the version they install. When you publish a new one, everybody holding an older copy is told and decides for themselves whether to move.'));
+            ->line(__('An installed copy stays on the version it was installed at. When you publish a new one, everybody holding an older copy is told, and decides whether to move.'));
     }
 
     #[Override]

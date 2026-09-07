@@ -44,7 +44,7 @@
       <div class="space-y-0.5">
         <h2 class="text-lg font-semibold text-ink">{{ __('Getting set up') }}</h2>
 
-        <p class="text-sm text-muted">{{ __('None of this is required. It is the short version of what people usually do first.') }}</p>
+        <p class="text-sm text-muted">{{ __('None of this is required. It is what people usually fill in first.') }}</p>
       </div>
 
       <span class="shrink-0 text-xs text-muted-soft">{{ $viewModel->progressLabel() }}</span>

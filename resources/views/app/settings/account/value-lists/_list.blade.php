@@ -32,7 +32,7 @@
               <x-button.ghost size="small" type="button" @click="open = true" class="hover:text-error">{{ __('Delete') }}</x-button.ghost>
             </x-slot:trigger>
 
-            <p>{{ __('The list goes, and every value inside it goes with it.') }}</p>
+            <p>{{ __('The list is deleted, and every value in it with it.') }}</p>
 
             <p>{{ __('This cannot be undone.') }}</p>
           </x-modal.warning>
@@ -74,7 +74,7 @@
 
     <div x-data="sortableRows" data-sortable>
       @forelse ($list['values'] as $value)
-        @include('app.settings.account.default-values._value', ['value' => $value, 'target' => $target])
+        @include('app.settings.account.value-lists._value', ['value' => $value, 'target' => $target])
       @empty
         <x-empty-state :title="__('No values yet')">
           <x-slot:icon>

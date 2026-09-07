@@ -19,11 +19,11 @@
         </div>
 
         <x-notice>
-          {{ __('Nothing in your inbox? It can take a minute, and it sometimes lands in the spam folder.') }}
+          {{ __('Nothing in your inbox? It can take a minute, and it sometimes arrives in the spam folder.') }}
         </x-notice>
 
         <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">
-          {{ __('Rather use your password?') }}
+          {{ __('Sign in with your password instead') }}
           <x-link :href="route('auth.login.new')" class="font-semibold text-ink">{{ __('Back to sign in') }}</x-link>
         </x-box>
       </div>

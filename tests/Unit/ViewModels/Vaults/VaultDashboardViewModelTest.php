@@ -185,7 +185,7 @@ class VaultDashboardViewModelTest extends TestCase
         $this->assertEquals('What a new contact starts from', $rows[0]['title']);
         $this->assertEquals('Colleague', $rows[0]['line']);
         $this->assertEquals('Delete this vault', $rows[1]['title']);
-        $this->assertEquals('Takes 148 people and everything written about them.', $rows[1]['line']);
+        $this->assertEquals('Deletes 148 people and everything written about them.', $rows[1]['line']);
     }
 
     #[Test]
@@ -201,7 +201,7 @@ class VaultDashboardViewModelTest extends TestCase
         );
 
         $this->assertEquals(
-            'Takes the one person in it and everything written about them.',
+            'Deletes the one person in it and everything written about them.',
             new VaultDashboardViewModel(user: $user, vault: $alone)->settingsRows()[1]['line'],
         );
     }

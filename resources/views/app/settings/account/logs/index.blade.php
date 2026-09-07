@@ -35,7 +35,7 @@
               <x-icon name="timeline" :size="30" :stroke-width="1.4" />
             </x-slot:icon>
 
-            {{ __('As soon as you change something on your account, it is written down here, with the moment it happened and the address it came from.') }}
+            {{ __('Every change to your account is written down here, with the time it happened and the address it came from.') }}
           </x-empty-state>
         @endforelse
       </div>
@@ -54,19 +54,19 @@
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
       <h2 class="shrink-0 text-section-title text-ink">{{ __('Emails sent') }}</h2>
 
-      <p class="text-sm text-pretty text-muted">{{ __('If one you expected never arrived, look here first: an entry still on its way means the mail service has not confirmed it yet, and no entry at all means it was never sent.') }}</p>
+      <p class="text-sm text-pretty text-muted">{{ __('If one you expected never arrived, look here first. An entry still on its way means the mail service has not confirmed it yet. No entry at all means it was never sent.') }}</p>
     </div>
 
     <x-panel :flush="true">
       @forelse ($viewModel->emailsSent() as $emailSent)
         @include('app.settings.account.logs._email-sent-row', ['emailSent' => $emailSent])
       @empty
-        <x-empty-state :title="__('Nothing has left our hands yet')">
+        <x-empty-state :title="__('No email has been sent yet')">
           <x-slot:icon>
             <x-icon name="mail" :size="30" :stroke-width="1.4" />
           </x-slot:icon>
 
-          {{ __('The emails we send you, such as sign-in links and password changes, show up here once they do, along with whether they arrived.') }}
+          {{ __('The emails we send you, such as sign-in links and password changes, appear here once they are sent, with whether they arrived.') }}
         </x-empty-state>
       @endforelse
 

@@ -48,9 +48,9 @@
 
       <div x-cloak x-show="confirming" class="flex flex-wrap items-center justify-end gap-2.5">
         @if ($lastOneOnAPasswordlessAccount ?? false)
-          <p class="text-xs text-error text-pretty">{{ __('This is your last passkey and you have no password. A link sent to your email address would become the only way in. Set a password instead?') }}</p>
+          <p class="text-xs text-error text-pretty">{{ __('This is your last passkey and you have no password. A link sent to your email address would be the only way to sign in. Set a password instead?') }}</p>
         @else
-          <p class="text-xs text-error">{{ __('This device will no longer sign you in. Sure?') }}</p>
+          <p class="text-xs text-error">{{ __('This device will no longer sign you in. This cannot be undone.') }}</p>
         @endif
 
         <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep it') }}</x-button.secondary>

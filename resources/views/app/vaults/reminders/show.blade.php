@@ -88,7 +88,7 @@
         @include('app.vaults.reminders._postpone', ['row' => $nextRow])
 
         <x-form method="put" :action="$nextRow['dismissUrl']" class="contents">
-          <x-icon-button type="submit" icon="check" :label="__('I am done with this one')" align="right" />
+          <x-icon-button type="submit" icon="check" :label="__('Dismiss this reminder')" align="right" />
         </x-form>
       </div>
     @endif
@@ -187,7 +187,7 @@
           <x-button.danger type="button" @click="open = true">{{ __('Delete reminder') }}</x-button.danger>
         </x-slot:trigger>
 
-        {{ __('Its history goes with it, and nothing further will be delivered. The date on the record is not touched.') }}
+        {{ __('Its history is deleted with it, and nothing further will be delivered. The date on the record is not touched.') }}
       </x-modal.warning>
     </div>
   </x-panel>

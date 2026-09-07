@@ -126,6 +126,6 @@ class TemplateSectionController extends Controller
     {
         return redirect()->route('settings.templateBuilder.index', $template)
             ->with('error', __('This version has been published and cannot be changed.'))
-            ->with('error_description', __('Start a draft, and the published version goes on serving the records already on it.'));
+            ->with('error_description', __('Start a draft, and the published version keeps serving the records already on it.'));
     }
 }

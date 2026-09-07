@@ -94,7 +94,7 @@
 
             <x-modal.warning
               :title="__('Take “:name” off this template?', ['name' => $section['name']])"
-              :confirm="__('Take it off')"
+              :confirm="__('Remove it')"
               :action="route('settings.templateSections.destroy', [$template, $section['id']])"
               x-target="builder"
             >

@@ -83,9 +83,9 @@ class TopBarTest extends TestCase
         $user = User::factory()->create();
 
         $rendered = $this->actingAs($user)
-            ->blade('<x-shell>Anything<x-slot:actions><span>Add someone</span></x-slot:actions></x-shell>');
+            ->blade('<x-shell>Anything<x-slot:actions><span>Add somebody</span></x-slot:actions></x-shell>');
 
-        $rendered->assertSee('Add someone');
+        $rendered->assertSee('Add somebody');
         $rendered->assertDontSee($user->email);
     }
 

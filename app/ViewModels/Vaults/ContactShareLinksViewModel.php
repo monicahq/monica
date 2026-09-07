@@ -40,12 +40,12 @@ class ContactShareLinksViewModel
 
     public function intro(): string
     {
-        return __('Every link ever made for them, including the ones you ended. Kept so you can always answer the question of who could see what, and when.');
+        return __('Every link ever made for them, including the ones you revoked. They are kept so you can always say who could see what, and when.');
     }
 
     public function emptyLine(): string
     {
-        return __('Nothing is shared. A link opens this one page for somebody who has no account, shows only what you let through, and stops working when you say so.');
+        return __('Nothing is shared. A link opens this one page for somebody who has no account. It shows only what you allow, and stops working when you say so.');
     }
 
     public function contactUrl(): string
@@ -143,11 +143,11 @@ class ContactShareLinksViewModel
     private function revokeLine(ShareLink $link): string
     {
         if ($link->view_count === 0) {
-            return __('The address stops working straight away, and it was never opened. The row stays on this list, marked revoked. A revoked link is never brought back, so somebody who needs access again needs a new one.');
+            return __('The address stops working straight away, and it was never opened. The row stays on this list, marked revoked. A revoked link never works again, so somebody who needs access needs a new one.');
         }
 
         return trans_choice(
-            'The address stops working straight away. It was opened :count time, last :when. The row stays on this list with those visits, marked revoked. A revoked link is never brought back, so somebody who needs access again needs a new one.|The address stops working straight away. It was opened :count times, last :when. The row stays on this list with those visits, marked revoked. A revoked link is never brought back, so somebody who needs access again needs a new one.',
+            'The address stops working straight away. It was opened :count time, last :when. The row stays on this list with those visits, marked revoked. A revoked link never works again, so somebody who needs access needs a new one.|The address stops working straight away. It was opened :count times, last :when. The row stays on this list with those visits, marked revoked. A revoked link never works again, so somebody who needs access needs a new one.',
             $link->view_count,
             ['when' => $link->last_viewed_at?->diffForHumans() ?? __('at some point')],
         );

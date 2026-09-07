@@ -120,7 +120,7 @@ class ReminderRow
     {
         return match ($this->occurrence->status) {
             ReminderOccurrenceStatusEnum::Dismissed => __('Dismissed'),
-            ReminderOccurrenceStatusEnum::Postponed => __('Put off'),
+            ReminderOccurrenceStatusEnum::Postponed => __('Postponed'),
             default => __('Still open'),
         };
     }

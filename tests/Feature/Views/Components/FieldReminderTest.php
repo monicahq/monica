@@ -168,7 +168,7 @@ class FieldReminderTest extends TestCase
             'inactive_reason' => ReminderInactiveReasonEnum::RecordArchived,
         ]));
 
-        $rendered->assertSee('quiet because this record is archived', escape: false);
+        $rendered->assertSee('stopped because this record is archived', escape: false);
     }
 
     #[Test]
@@ -179,7 +179,7 @@ class FieldReminderTest extends TestCase
             'inactive_reason' => ReminderInactiveReasonEnum::ValueCleared,
         ]));
 
-        $rendered->assertSee('quiet because the date it read is gone', escape: false);
+        $rendered->assertSee('stopped because the date it read is gone', escape: false);
     }
 
     #[Test]

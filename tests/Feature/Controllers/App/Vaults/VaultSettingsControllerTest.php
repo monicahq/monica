@@ -60,7 +60,7 @@ class VaultSettingsControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('vaults.settings.index', $vault))
             ->assertStatus(200)
-            ->assertSee('The one contact in it goes too, and everything written about them.');
+            ->assertSee('The one contact in it is deleted too, and everything written about them.');
     }
 
     #[Test]
@@ -128,7 +128,7 @@ class VaultSettingsControllerTest extends TestCase
         $this->actingAs($user)->get(route('vaults.settings.index', $vault))
             ->assertStatus(200)
             ->assertSee('Delete the vault')
-            ->assertSee('your account is left holding nothing', false);
+            ->assertSee('Your account will hold nothing', false);
     }
 
     #[Test]
@@ -141,8 +141,8 @@ class VaultSettingsControllerTest extends TestCase
         $this->actingAs($user)->get(route('vaults.settings.index', $vault))
             ->assertStatus(200)
             ->assertSee('Delete the vault')
-            ->assertSee('another one takes over as the place things land', false)
-            ->assertDontSee('your account is left holding nothing', false);
+            ->assertSee('another one becomes the vault new records go to', false)
+            ->assertDontSee('Your account will hold nothing', false);
     }
 
     #[Test]

@@ -71,7 +71,7 @@ class SettingsViewModel
         return [
             [
                 'title' => __('Profile'),
-                'description' => __('Your name, the address people see, and the photograph on your avatar.'),
+                'description' => __('Your name, the address people see, and your photo.'),
                 'icon' => 'profile',
                 'meta' => null,
                 'url' => route('settings.profile.index'),
@@ -114,7 +114,7 @@ class SettingsViewModel
                 'url' => route('settings.templates.index'),
             ],
             [
-                'title' => __('Entity types'),
+                'title' => __('Kinds of record'),
                 'description' => __('What you can write down beside people.'),
                 'icon' => 'organization',
                 'meta' => $this->entityTypeCount(),
@@ -128,7 +128,7 @@ class SettingsViewModel
                 'url' => route('settings.relationshipTypes.index'),
             ],
             [
-                'title' => __('Default values'),
+                'title' => __('Value lists'),
                 'description' => __('The lists the application offers you: relationship kinds, genders, call reasons, activity types.'),
                 'icon' => 'tasks',
                 'meta' => null,
@@ -152,7 +152,7 @@ class SettingsViewModel
         return [
             [
                 'title' => __('Export everything'),
-                'description' => __('A single file with every vault, person, note and photograph. It is yours to take.'),
+                'description' => __('A single file with every vault, person, note and photograph. It is yours to keep.'),
                 'icon' => 'vault',
                 'meta' => null,
                 'url' => null,

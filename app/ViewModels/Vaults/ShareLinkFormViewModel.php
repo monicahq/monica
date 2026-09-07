@@ -62,12 +62,12 @@ class ShareLinkFormViewModel
 
     public function intro(): string
     {
-        return __('A private link to this one page, the way you would share a document. Whoever opens it needs no account, joins nothing, and can change nothing. Everything sensitive starts out held back, and you decide what to let through.');
+        return __('A private link to this one page. Whoever opens it needs no account, joins nothing, and can change nothing. Everything sensitive starts out hidden, and you decide what to show.');
     }
 
     public function neverLine(): string
     {
-        return __('Write anything, reach anything outside this page, or turn into an account. A field you marked sensitive stays hidden even inside a section you shared. Anything attached as a file stays here. Notifications never reach whoever holds the link. If you delete :name, the link stops working rather than pointing at nothing.', [
+        return __('Write anything, reach anything outside this page, or become an account. A field you marked sensitive stays hidden even inside a section you shared. Anything attached as a file stays here. Notifications never reach whoever holds the link. If you delete :name, the link stops working.', [
             'name' => $this->contact->first_name ?? $this->contact->name,
         ]);
     }
@@ -218,7 +218,7 @@ class ShareLinkFormViewModel
 
     public function sectionsLine(): string
     {
-        return __('Their page is laid out by :template. Hold a section back and it is gone. A page whose sections are all held back does not appear as an empty tab.', [
+        return __('Their page is laid out by :template. Hide a section and it is not shown. A page whose sections are all hidden does not appear as an empty tab.', [
             'template' => $this->templateLine(),
         ]);
     }

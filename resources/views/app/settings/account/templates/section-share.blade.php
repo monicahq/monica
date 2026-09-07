@@ -26,7 +26,7 @@
       <h1 class="text-page-title text-ink">{{ __('Share :name', ['name' => $viewModel->name()]) }}</h1>
 
       <p class="text-base text-pretty text-body">
-        {{ __('The fields of this section and their choices, on their own. A section is the useful unit when the rest of your template is nobody else’s business: somebody can drop it into a template they already have.') }}
+        {{ __('The fields of this section and their choices, on their own. Share a section when the rest of your template is private. Somebody can add it to a template they already have.') }}
       </p>
     </header>
 
@@ -67,11 +67,11 @@
     <x-panel :title="__('Publish the section')" icon="gift">
       <div class="flex flex-col gap-4">
         <p class="text-base text-pretty text-body">
-          {{ __('Sections are their own kind of listing in the marketplace, next to templates. They are the ones people install most, because they fit into whatever somebody already built.') }}
+          {{ __('Sections are their own kind of listing in the marketplace, next to templates. They are installed most often, because they fit into a template somebody already built.') }}
         </p>
 
         <x-notice tone="warning" :title="__('Writing a listing is not open yet')">
-          {{ __('The catalogue is readable today, and publishing your own work into it is the next thing being built. Exporting a file works either way.') }}
+          {{ __('You can read the catalogue today. Publishing your own work into it is the next thing being built. Exporting a file works either way.') }}
         </x-notice>
 
         <div>
@@ -82,6 +82,6 @@
   </div>
 
   <x-notice tone="quiet" icon="lock" :title="__('What never leaves, either way')">
-    {{ __('No contacts, no notes, no reminders, no files, no photos. A field called Nickname travels; the nicknames you wrote in it do not. You can read the whole file before it goes anywhere.') }}
+    {{ __('No contacts, no notes, no reminders, no files, no photos. A field called Nickname is exported; the nicknames you wrote in it are not. You can read the whole file before it goes anywhere.') }}
   </x-notice>
 </x-shell>

@@ -137,10 +137,10 @@ class ContactReminderBlock
     private function zoneNote(?Reminder $rule): string
     {
         if ($rule === null) {
-            return __('Filled in from your preferences. It is stored with the reminder, so moving away later does not shift it.');
+            return __('Filled in from your preferences. It is stored with the reminder, so changing them later does not change it.');
         }
 
-        return __('Frozen when the reminder was made. Changing your preferences does not shift it.');
+        return __('Fixed when the reminder was made. Changing your preferences does not change it.');
     }
 
     /** @return list<array{direction: string, amount: int|null, unit: string|null, phrase: string}> */
@@ -208,12 +208,12 @@ class ContactReminderBlock
         }
 
         return match ($rule->inactive_reason) {
-            ReminderInactiveReasonEnum::ValueCleared => __('This reminder is quiet because the date it read is gone. Fill the date in again to start a new one.'),
-            ReminderInactiveReasonEnum::RecordArchived => __('This reminder is quiet because this record is archived. Unarchive it and the reminder starts again.'),
-            ReminderInactiveReasonEnum::RecordDeleted => __('This reminder is quiet because this record was deleted. Restore it and the reminder starts again.'),
-            ReminderInactiveReasonEnum::FieldRemoved => __('This reminder is quiet because this field has left the structure. Put the field back and the reminder starts again.'),
-            ReminderInactiveReasonEnum::PausedByUser => __('This reminder is quiet because you paused it. Open its own screen to start it again.'),
-            null => __('This reminder is quiet.'),
+            ReminderInactiveReasonEnum::ValueCleared => __('This reminder is stopped because the date it read is gone. Fill the date in again to start a new one.'),
+            ReminderInactiveReasonEnum::RecordArchived => __('This reminder is stopped because this record is archived. Unarchive it and the reminder starts again.'),
+            ReminderInactiveReasonEnum::RecordDeleted => __('This reminder is stopped because this record was deleted. Restore it and the reminder starts again.'),
+            ReminderInactiveReasonEnum::FieldRemoved => __('This reminder is stopped because this field has left the structure. Put the field back and the reminder starts again.'),
+            ReminderInactiveReasonEnum::PausedByUser => __('This reminder is stopped because you paused it. Open its own screen to start it again.'),
+            null => __('This reminder is stopped.'),
         };
     }
 }

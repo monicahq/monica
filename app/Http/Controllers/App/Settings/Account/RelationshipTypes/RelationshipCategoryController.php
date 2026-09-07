@@ -63,7 +63,7 @@ class RelationshipCategoryController extends Controller
         } catch (CannotDeleteARelationshipCategoryInUse) {
             return redirect()->route('settings.relationshipTypes.index')
                 ->with('error', __('The category still holds types and stays.'))
-                ->with('error_description', __('Move them to another category first, and it can go.'));
+                ->with('error_description', __('Move them to another category first, and it can be deleted.'));
         }
 
         return redirect()->route('settings.relationshipTypes.index')

@@ -27,6 +27,37 @@ When two sources disagree, follow this order.
 - When writing code, follow the coding standards in `rules/code-style.md`.
 - ALWAYS warn users before making a destructive action in the UI.
 
+## Naming
+
+Every name you choose—for files, scripts, directories, functions, variables,
+classes, commits, branches, and anything else—must use precise, professional
+vocabulary.
+
+Use terminology that would be appropriate in a formal engineering
+specification. Prefer literal, unambiguous names over slang, casual shorthand,
+cute or clever names, metaphors, or terminology borrowed from chat culture.
+
+Naming should also follow the principles of ASD-STE100 Simplified Technical
+English where applicable:
+
+- Use one word for one meaning.
+- Prefer approved, common, concrete terminology.
+- Avoid synonyms when an established term already exists.
+- Avoid ambiguous words and expressions.
+- Avoid unnecessary abbreviations and contractions.
+- Use verbs that describe the actual operation being performed.
+- Use nouns that identify the actual object or concept.
+- Keep terminology consistent throughout the codebase.
+
+This applies universally, not only to the example that follows.
+
+A script that deploys dashboards is `deploy_dashboards.sh`, not
+`push_dashboards.sh`. `Deploy` describes the operation precisely; `push` is
+informal and can have several meanings.
+
+Treat this example as an illustration of the principle, not as the extent of
+the rule.
+
 ## Tech Stack & Architecture
 
 - Backend: PHP 8.4+ / latest version of Laravel

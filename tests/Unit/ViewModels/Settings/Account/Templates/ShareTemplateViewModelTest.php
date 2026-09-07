@@ -39,7 +39,7 @@ class ShareTemplateViewModelTest extends TestCase
         $this->assertEquals(1, $viewModel->sectionCount());
         $this->assertEquals(2, $viewModel->fieldCount());
         $this->assertEquals(0, $viewModel->valueListCount());
-        $this->assertEquals('1 section, 2 fields, 0 lists of choices', $viewModel->structureLabel());
+        $this->assertEquals('1 section, 2 fields, 0 value lists', $viewModel->structureLabel());
     }
 
     #[Test]

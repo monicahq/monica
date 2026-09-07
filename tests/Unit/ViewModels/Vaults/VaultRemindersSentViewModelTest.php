@@ -113,7 +113,7 @@ class VaultRemindersSentViewModelTest extends TestCase
         $rows = new VaultRemindersSentViewModel(user: $user, vault: $vault)->rows();
 
         $this->assertEquals(['Dismissed', 'neutral'], [$rows[0]['outcome'], $rows[0]['tone']]);
-        $this->assertEquals(['Put off', 'info'], [$rows[1]['outcome'], $rows[1]['tone']]);
+        $this->assertEquals(['Postponed', 'info'], [$rows[1]['outcome'], $rows[1]['tone']]);
         $this->assertEquals(['Still open', 'warning'], [$rows[2]['outcome'], $rows[2]['tone']]);
     }
 

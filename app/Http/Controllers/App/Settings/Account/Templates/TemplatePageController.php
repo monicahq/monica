@@ -40,7 +40,7 @@ class TemplatePageController extends Controller
         } catch (PageLabelIsAlreadyUsed) {
             return redirect()->route('settings.templateBuilder.index', $template)
                 ->with('error', __('This template already has a page reading exactly that.'))
-                ->with('error_description', __('Two tabs reading the same leave nobody able to say which is which.'));
+                ->with('error_description', __('Two tabs reading the same cannot be told apart.'));
         } catch (PublishedVersionIsFrozen) {
             return $this->refuse($template);
         }
@@ -66,7 +66,7 @@ class TemplatePageController extends Controller
         } catch (PageLabelIsAlreadyUsed) {
             return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $templateVersionPage->key])
                 ->with('error', __('This template already has a page reading exactly that.'))
-                ->with('error_description', __('Two tabs reading the same leave nobody able to say which is which.'));
+                ->with('error_description', __('Two tabs reading the same cannot be told apart.'));
         } catch (PublishedVersionIsFrozen) {
             return $this->refuse($template);
         }

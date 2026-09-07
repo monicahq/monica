@@ -22,7 +22,7 @@ class EntityTypeFormViewModel
     public function title(): string
     {
         if ($this->entityType === null) {
-            return __('Create an entity type');
+            return __('Create a kind of record');
         }
 
         return __('Edit :name', ['name' => $this->entityType->name_singular]);
@@ -124,7 +124,7 @@ class EntityTypeFormViewModel
     public function slugHelp(): string
     {
         if ($this->entityType === null) {
-            return __('Lowercase letters, numbers and dashes only: no spaces, no accents, no capitals. It follows the singular name until you change it, and it cannot be changed once the type exists.');
+            return __('Lowercase letters, numbers and dashes only. No spaces, no accents, no capitals. It follows the singular name until you change it, and it cannot be changed once the type exists.');
         }
 
         return __('Used in URLs and by the API. It cannot be changed now the type exists, so the links that already went out keep working.');

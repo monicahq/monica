@@ -71,7 +71,7 @@
     </x-panel>
   @else
     <x-notice>
-      {{ __('This version is :status, so there is nothing to decide. :moderator settled it.', [
+      {{ __('This version is :status, so there is nothing to decide. :moderator decided it.', [
         'status' => $viewModel->version()->status->value,
         'moderator' => $viewModel->listing()->moderated_by ?? __('Somebody else'),
       ]) }}

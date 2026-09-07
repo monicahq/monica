@@ -280,7 +280,7 @@ class ContactsViewModelTest extends TestCase
         $this->contact($vault, 'Dwight', 'Schrute');
 
         $everybody = new ContactsViewModel(user: $user, vault: $vault);
-        $this->assertEquals('All 2 people in this vault, on one scrolling list.', $everybody->resultLine());
+        $this->assertEquals('All 2 people in this vault, on a single list.', $everybody->resultLine());
         $this->assertEquals('End of the list. 2 people, no pages.', $everybody->endLine());
 
         $narrowed = new ContactsViewModel(user: $user, vault: $vault, query: 'schrute');

@@ -51,7 +51,7 @@
           <span x-cloak x-show="copied">{{ __('Copied') }}</span>
         </x-button.secondary>
 
-        <x-link :href="$viewModel->shareUrl()" turbo class="ml-auto text-sm">{{ __('Back to the two ways') }}</x-link>
+        <x-link :href="$viewModel->shareUrl()" turbo class="ml-auto text-sm">{{ __('Back to the two ways to share') }}</x-link>
       </div>
     </div>
 
@@ -71,7 +71,7 @@
           <p class="text-base font-semibold text-ink">{{ __('Not in the file') }}</p>
 
           <p class="text-sm text-pretty text-ink-soft">
-            {{ __('The :records on this template, and everything written in their fields. The file describes the form, never the answers.', ['records' => $viewModel->recordCountLabel()]) }}
+            {{ __('The :records on this template, and everything written in their fields. The file describes the structure, never the answers.', ['records' => $viewModel->recordCountLabel()]) }}
           </p>
         </div>
       </x-panel>

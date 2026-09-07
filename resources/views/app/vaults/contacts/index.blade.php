@@ -20,7 +20,7 @@
         <x-icon name="plus" :size="16" :stroke-width="1.6" />
       </x-slot:icon>
 
-      {{ __('Add someone') }}
+      {{ __('Add somebody') }}
     </x-button>
   </header>
 
@@ -95,7 +95,7 @@
                 <x-icon name="plus" :size="18" :stroke-width="1.6" />
               </x-slot:icon>
 
-              {{ __('Write somebody down') }}
+              {{ __('Add somebody') }}
             </x-button>
           </x-slot:action>
         </x-empty-state>
@@ -103,7 +103,7 @@
         <div class="flex min-h-60 flex-col items-center justify-center gap-3.5 px-8 py-12 text-center">
           <p class="text-section-title text-ink">{{ __('Nothing matches') }}</p>
 
-          <p class="max-w-[44ch] text-base text-pretty text-muted">{{ __('Try a shorter search, or another chip above.') }}</p>
+          <p class="max-w-[44ch] text-base text-pretty text-muted">{{ __('Try a shorter search, or another filter above.') }}</p>
         </div>
       @else
         <div id="contact-rows" x-merge="append">
@@ -122,7 +122,7 @@
               <x-icon name="plus" :size="16" :stroke-width="1.6" />
             </x-slot:icon>
 
-            {{ __('Add someone') }}
+            {{ __('Add somebody') }}
           </x-button.secondary>
         </x-slot:footer>
       @endif

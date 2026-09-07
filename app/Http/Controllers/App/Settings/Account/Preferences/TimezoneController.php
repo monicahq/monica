@@ -19,7 +19,7 @@ class TimezoneController extends Controller
             'latitude' => ['required_without:timezone', 'nullable', 'numeric', 'between:-90,90'],
             'longitude' => ['required_with:latitude', 'nullable', 'numeric', 'between:-180,180'],
         ], [
-            'timezone.timezone' => __('That is not a time zone the product knows. Search for the nearest city instead.'),
+            'timezone.timezone' => __('That is not a time zone the application knows. Search for the nearest city instead.'),
         ]);
 
         $pointedAt = ! array_key_exists('timezone', $validated);

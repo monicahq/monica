@@ -107,7 +107,7 @@
         @endenv
 
         <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">
-          {{ __('Wanna skip the password?') }}
+          {{ __('Sign in without a password?') }}
           <x-link turbo :href="route('auth.magicLink.new')" class="font-semibold text-ink">{{ __('Send me a link instead') }}</x-link>
         </x-box>
 

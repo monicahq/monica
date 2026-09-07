@@ -50,7 +50,7 @@ class AdministratorController extends Controller
 
         return redirect()->route('admin.administrators.index')
             ->with('status', __(':name administers this instance.', ['name' => $user->name]))
-            ->with('status_description', __('They can reach the admin space from now on, and the grant is on the record against your name.'));
+            ->with('status_description', __('They can reach the admin space from now on, and the grant is recorded against your name.'));
     }
 
     public function destroy(Request $request, User $user): RedirectResponse

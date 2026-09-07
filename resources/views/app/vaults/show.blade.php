@@ -29,7 +29,7 @@
         <x-icon name="plus" :size="16" :stroke-width="1.6" />
       </x-slot:icon>
 
-      {{ __('Add someone') }}
+      {{ __('Add somebody') }}
     </x-button>
   </header>
 
@@ -48,7 +48,7 @@
               <x-icon name="people" :size="30" :stroke-width="1.4" />
             </x-slot:icon>
 
-            {{ __('The people this part of your life is made of. Everything else on this screen hangs off them.') }}
+            {{ __('The people this part of your life is made of. Everything else on this screen is attached to them.') }}
 
             <x-slot:action>
               <x-button :href="$viewModel->newContactUrl()" data-turbo="true" size="small">

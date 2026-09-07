@@ -220,6 +220,6 @@ class ContactShareLinkController extends Controller
     {
         return redirect()->route('contacts.shareLinks.index', ['vault' => $vault, 'contact' => $contact])
             ->with('error', __('That link was already revoked.'))
-            ->with('error_description', __('A revoked link is never brought back. Make a new one instead.'));
+            ->with('error_description', __('A revoked link never works again. Make a new one instead.'));
     }
 }

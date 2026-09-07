@@ -159,7 +159,7 @@ class VaultRemindersViewModelTest extends TestCase
         $furtherModel = $this->viewModelFor($user, $further);
 
         $this->assertTrue($furtherModel->hasAnyRule());
-        $this->assertSame('Nothing due just yet', $furtherModel->emptyTitle());
+        $this->assertSame('Nothing due yet', $furtherModel->emptyTitle());
         $this->assertSame([], $furtherModel->groups());
     }
 

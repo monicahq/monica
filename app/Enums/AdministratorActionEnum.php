@@ -30,7 +30,7 @@ enum AdministratorActionEnum: string implements Translatable
             self::LifetimeAccessGranted => 'Granted lifetime access to the account of :name',
             self::LifetimeAccessWithdrawn => 'Withdrew lifetime access from the account of :name',
             self::AdministratorAccessGranted => 'Made :name an administrator',
-            self::AdministratorAccessWithdrawn => 'Withdrew the administrator capacity from :name',
+            self::AdministratorAccessWithdrawn => 'Withdrew administrator access from :name',
         };
     }
 

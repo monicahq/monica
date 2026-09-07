@@ -56,7 +56,7 @@ class TwoFactorControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.security.index'));
-        $response->assertSessionHas('status', 'Two factor authentication is on.');
+        $response->assertSessionHas('status', 'Two-factor authentication is on.');
 
         $this->assertTrue($user->refresh()->usesTwoFactorAuthentication());
     }
@@ -100,7 +100,7 @@ class TwoFactorControllerTest extends TestCase
         $response = $this->actingAs($user)->delete(route('settings.twoFactor.destroy'));
 
         $response->assertRedirect(route('settings.security.index'));
-        $response->assertSessionHas('status', 'Two factor authentication is off.');
+        $response->assertSessionHas('status', 'Two-factor authentication is off.');
 
         $user->refresh();
 

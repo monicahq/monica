@@ -94,7 +94,7 @@ $entityTypeAttributes = [
 ];
 
 return [
-    'name' => 'Entity types',
+    'name' => 'Kinds of record',
     'sections' => [
         [
             'id' => 'entity-types-index',
@@ -141,8 +141,8 @@ return [
         [
             'id' => 'entity-types-create',
             'returnFields' => ApiDocsFields::one('entity_type', 'type', $entityTypeAttributes),
-            'title' => 'Create an entity type',
-            'label' => 'Create an entity type',
+            'title' => 'Create a kind of record',
+            'label' => 'Create a kind of record',
             'method' => 'POST',
             'path' => '/entity-types',
             'description' => 'Declare a kind of object your account wants to keep, when nothing the product ships with fits.',

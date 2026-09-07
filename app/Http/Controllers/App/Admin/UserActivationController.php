@@ -25,7 +25,7 @@ class UserActivationController extends Controller
 
         return redirect()->route('admin.accounts.show', ['account' => $account->id])
             ->with('status', __('They can sign in again.'))
-            ->with('status_description', __('Nothing they own was touched while they could not.'));
+            ->with('status_description', __('Nothing they own was changed while they could not sign in.'));
     }
 
     public function destroy(Request $request, Account $account): RedirectResponse

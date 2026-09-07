@@ -12,7 +12,7 @@
       </x-button.secondary>
     </x-slot:trigger>
 
-    <p>{{ __('Nothing is filed under it, so it goes for good and stops appearing in every vault.') }}</p>
+    <p>{{ __('Nothing is filed under it, so it is deleted for good and stops appearing in every vault.') }}</p>
 
     <p>{{ __('This cannot be undone.') }}</p>
   </x-modal.warning>

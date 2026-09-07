@@ -91,7 +91,7 @@ class SecurityControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.security.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Two factor authentication', escape: false);
+        $response->assertSee('Two-factor authentication', escape: false);
         $response->assertSee('Authenticator app', escape: false);
         $response->assertSee('Turn it on', escape: false);
         $response->assertDontSee('Recovery codes', escape: false);

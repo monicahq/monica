@@ -19,10 +19,6 @@ use App\Http\Controllers\App\GettingStartedController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\Marketplace\MarketplaceController;
 use App\Http\Controllers\App\Settings\Account\AccountController;
-use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListController;
-use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListItemActivationController;
-use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListItemController;
-use App\Http\Controllers\App\Settings\Account\DefaultValues\ValueListItemPositionController;
 use App\Http\Controllers\App\Settings\Account\EntityTypes\EntityTypeController;
 use App\Http\Controllers\App\Settings\Account\EntityTypes\EntityTypePositionController;
 use App\Http\Controllers\App\Settings\Account\Logs\EmailSentController;
@@ -63,6 +59,10 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateShareController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionHistoryController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicationController;
+use App\Http\Controllers\App\Settings\Account\ValueLists\ValueListController;
+use App\Http\Controllers\App\Settings\Account\ValueLists\ValueListItemActivationController;
+use App\Http\Controllers\App\Settings\Account\ValueLists\ValueListItemController;
+use App\Http\Controllers\App\Settings\Account\ValueLists\ValueListItemPositionController;
 use App\Http\Controllers\App\Settings\SettingsController;
 use App\Http\Controllers\App\SharedContactController;
 use App\Http\Controllers\App\SharedContactPasswordController;
@@ -255,16 +255,16 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('settings/account/preferences', [PreferenceController::class, 'update'])->name('settings.preferences.update');
     Route::put('settings/account/preferences/timezone', [TimezoneController::class, 'update'])->name('settings.timezone.update');
 
-    Route::get('settings/account/default-values', [ValueListController::class, 'index'])->name('settings.valueLists.index');
-    Route::post('settings/account/default-values', [ValueListController::class, 'create'])->name('settings.valueLists.create');
-    Route::put('settings/account/default-values/{valueList}', [ValueListController::class, 'update'])->whereNumber('valueList')->name('settings.valueLists.update');
-    Route::delete('settings/account/default-values/{valueList}', [ValueListController::class, 'destroy'])->whereNumber('valueList')->name('settings.valueLists.destroy');
+    Route::get('settings/account/value-lists', [ValueListController::class, 'index'])->name('settings.valueLists.index');
+    Route::post('settings/account/value-lists', [ValueListController::class, 'create'])->name('settings.valueLists.create');
+    Route::put('settings/account/value-lists/{valueList}', [ValueListController::class, 'update'])->whereNumber('valueList')->name('settings.valueLists.update');
+    Route::delete('settings/account/value-lists/{valueList}', [ValueListController::class, 'destroy'])->whereNumber('valueList')->name('settings.valueLists.destroy');
 
-    Route::post('settings/account/default-values/{valueList}/values', [ValueListItemController::class, 'create'])->whereNumber('valueList')->name('settings.valueListItems.create');
-    Route::put('settings/account/default-values/values/{valueListItem}', [ValueListItemController::class, 'update'])->whereNumber('valueListItem')->name('settings.valueListItems.update');
-    Route::delete('settings/account/default-values/values/{valueListItem}', [ValueListItemController::class, 'destroy'])->whereNumber('valueListItem')->name('settings.valueListItems.destroy');
-    Route::put('settings/account/default-values/values/{valueListItem}/position', [ValueListItemPositionController::class, 'update'])->whereNumber('valueListItem')->name('settings.valueListItemPosition.update');
-    Route::put('settings/account/default-values/values/{valueListItem}/active', [ValueListItemActivationController::class, 'update'])->whereNumber('valueListItem')->name('settings.valueListItemActivation.update');
+    Route::post('settings/account/value-lists/{valueList}/values', [ValueListItemController::class, 'create'])->whereNumber('valueList')->name('settings.valueListItems.create');
+    Route::put('settings/account/value-lists/values/{valueListItem}', [ValueListItemController::class, 'update'])->whereNumber('valueListItem')->name('settings.valueListItems.update');
+    Route::delete('settings/account/value-lists/values/{valueListItem}', [ValueListItemController::class, 'destroy'])->whereNumber('valueListItem')->name('settings.valueListItems.destroy');
+    Route::put('settings/account/value-lists/values/{valueListItem}/position', [ValueListItemPositionController::class, 'update'])->whereNumber('valueListItem')->name('settings.valueListItemPosition.update');
+    Route::put('settings/account/value-lists/values/{valueListItem}/active', [ValueListItemActivationController::class, 'update'])->whereNumber('valueListItem')->name('settings.valueListItemActivation.update');
 
     Route::get('settings/account/entity-types', [EntityTypeController::class, 'index'])->name('settings.entityTypes.index');
     Route::get('settings/account/entity-types/new', [EntityTypeController::class, 'new'])->name('settings.entityTypes.new');

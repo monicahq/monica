@@ -142,9 +142,9 @@
             <x-slot:icon><x-icon name="gift" :size="30" :stroke-width="1.4" /></x-slot:icon>
 
             @if ($viewModel->isCatalogueEmpty())
-              {{ __('Nothing has been published yet. The templates and sections people build here land in this catalogue once they are shared and moderated.') }}
+              {{ __('Nothing has been published yet. The templates and sections people build here appear in this catalogue once they are shared and moderated.') }}
             @else
-              {{ __('Nothing published answers to all of those at once. Widen the search, or drop one of the filters.') }}
+              {{ __('Nothing published matches all of those at once. Widen the search, or remove one of the filters.') }}
             @endif
           </x-empty-state>
         </x-panel>

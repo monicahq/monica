@@ -36,7 +36,7 @@ class ContactAvatarController extends Controller
 
         return redirect()
             ->route('contacts.edit', ['vault' => $vault, 'contact' => $contact])
-            ->with('status', __('The picture is saved.'))
+            ->with('status', __('The photo is saved.'))
             ->with('status_description', __('It is what :name is drawn as from now on.', ['name' => $contact->name]));
     }
 
@@ -52,7 +52,7 @@ class ContactAvatarController extends Controller
 
         return redirect()
             ->route('contacts.edit', ['vault' => $vault, 'contact' => $contact])
-            ->with('status', __('The picture is removed.'))
+            ->with('status', __('The photo is removed.'))
             ->with('status_description', __('We draw the initials of :name again.', ['name' => $contact->name]));
     }
 }

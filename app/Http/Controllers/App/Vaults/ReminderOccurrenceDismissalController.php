@@ -29,7 +29,7 @@ class ReminderOccurrenceDismissalController extends Controller
 
         return redirect()
             ->back(fallback: route('reminders.index', $vault))
-            ->with('status', __('Done with it.'))
+            ->with('status', __('The reminder was dismissed.'))
             ->with('status_description', __('The rule is still on, so the next one is still coming.'));
     }
 }

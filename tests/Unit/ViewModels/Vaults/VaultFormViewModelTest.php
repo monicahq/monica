@@ -67,7 +67,7 @@ class VaultFormViewModelTest extends TestCase
         $this->assertFalse($viewModel->values()['isDefault']);
         $this->assertEquals('Personal', $viewModel->currentDefaultName());
         $this->assertEquals(
-            'Personal stops being the default the moment this vault is created.',
+            'Personal stops being the default when this vault is created.',
             $viewModel->defaultHintWhenTicked(),
         );
         $this->assertEquals('Personal stays the default.', $viewModel->defaultHintWhenLeft());

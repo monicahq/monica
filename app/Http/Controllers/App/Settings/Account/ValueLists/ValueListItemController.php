@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\App\Settings\Account\DefaultValues;
+namespace App\Http\Controllers\App\Settings\Account\ValueLists;
 
 use App\Actions\CreateValueListItem;
 use App\Actions\DestroyValueListItem;

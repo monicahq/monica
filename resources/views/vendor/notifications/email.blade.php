@@ -4,7 +4,7 @@
 # {{ $greeting }}
 @else
 @if ($level === 'error')
-# {{ __('Whoops!') }}
+# {{ __('Something went wrong') }}
 @else
 # {{ __('Hello!') }}
 @endif
@@ -48,7 +48,7 @@
 @isset($actionText)
 <x-slot:subcopy>
 {{ __(
-    "If you’re having trouble clicking the \":actionText\" button, copy and paste the URL below into your web browser:",
+    "If the \":actionText\" button does not work, copy and paste the address below into your browser:",
     [
         'actionText' => $actionText,
     ]

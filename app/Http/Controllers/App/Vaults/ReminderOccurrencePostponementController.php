@@ -45,8 +45,8 @@ class ReminderOccurrencePostponementController extends Controller
 
         return redirect()
             ->back(fallback: route('reminders.index', $vault))
-            ->with('status', __('Put off.'))
-            ->with('status_description', __('The reminder will come back at the moment you chose.'));
+            ->with('status', __('The reminder was postponed.'))
+            ->with('status_description', __('The reminder will come back at the time you chose.'));
     }
 
     /** @param  array<string, mixed>  $validated */

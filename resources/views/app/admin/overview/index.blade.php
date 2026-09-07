@@ -5,7 +5,7 @@
   <header class="flex flex-col gap-2">
     <h1 class="text-page-title text-ink">{{ __('Overview') }}</h1>
 
-    <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('Where this instance stands, counted the moment you opened this screen.') }}</p>
+    <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('Where this instance stands, counted when you opened this screen.') }}</p>
   </header>
 
   @if ($viewModel->isEmpty())

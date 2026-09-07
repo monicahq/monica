@@ -65,7 +65,7 @@
     </div>
 
     <x-notice tone="quiet">
-      {{ __('A few supplied types are used by the family tree and by romantic history. You can rename them, and what they mean stays the same. The categories that came with your account cannot be renamed or deleted, and the ones you add are yours to change.') }}
+      {{ __('A few supplied types are used by the family tree and by romantic history. You can rename them, and what they mean stays the same. The categories that came with your account cannot be renamed or deleted. The ones you add are yours to change.') }}
     </x-notice>
   </div>
 </x-shell>

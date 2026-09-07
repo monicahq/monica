@@ -24,9 +24,9 @@
     [
       'title' => __('This account'),
       'entries' => [
-        ['key' => 'entity-types', 'label' => __('Entity types'), 'icon' => 'organization', 'url' => route('settings.entityTypes.index')],
+        ['key' => 'entity-types', 'label' => __('Kinds of record'), 'icon' => 'organization', 'url' => route('settings.entityTypes.index')],
         ['key' => 'templates', 'label' => __('Templates'), 'icon' => 'file', 'url' => route('settings.templates.index')],
-        ['key' => 'value-lists', 'label' => __('Default values'), 'icon' => 'tasks', 'url' => route('settings.valueLists.index')],
+        ['key' => 'value-lists', 'label' => __('Value lists'), 'icon' => 'tasks', 'url' => route('settings.valueLists.index')],
         ['key' => 'relationship-types', 'label' => __('Relationship types'), 'icon' => 'relationship', 'url' => route('settings.relationshipTypes.index')],
       ],
     ],

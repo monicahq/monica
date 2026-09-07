@@ -35,7 +35,7 @@ class ContactAvatarControllerTest extends TestCase
         );
 
         $response->assertRedirect(route('contacts.edit', ['vault' => $vault, 'contact' => $contact]));
-        $response->assertSessionHas('status', 'The picture is saved.');
+        $response->assertSessionHas('status', 'The photo is saved.');
 
         $contact->refresh();
 
@@ -66,7 +66,7 @@ class ContactAvatarControllerTest extends TestCase
         );
 
         $response->assertRedirect(route('contacts.edit', ['vault' => $vault, 'contact' => $contact]));
-        $response->assertSessionHas('status', 'The picture is removed.');
+        $response->assertSessionHas('status', 'The photo is removed.');
 
         $this->assertFalse($contact->refresh()->hasAvatar());
     }

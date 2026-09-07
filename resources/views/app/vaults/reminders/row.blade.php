@@ -47,7 +47,7 @@
             class="truncate text-[13.5px] font-semibold text-ink no-underline transition-colors duration-(--duration-fast) ease-out hover:text-link"
           >{{ $row['contactName'] }}</a>
         @else
-          <span class="text-[13.5px] font-semibold text-muted">{{ __('Somebody who is gone') }}</span>
+          <span class="text-[13.5px] font-semibold text-muted">{{ __('A deleted contact') }}</span>
         @endif
       </div>
 
@@ -86,7 +86,7 @@
       </x-form>
 
       <x-form method="put" :action="$row['dismissUrl']" class="contents">
-        <x-icon-button type="submit" icon="check" :label="__('I am done with this one')" align="right" />
+        <x-icon-button type="submit" icon="check" :label="__('Dismiss this reminder')" align="right" />
       </x-form>
     </div>
   </div>

@@ -53,7 +53,7 @@ class ReminderMoments implements ValidationRule
             $key = self::keyOf($direction, $moment);
 
             if (in_array($key, $seen, true)) {
-                return __('Two of the moments are the same, so one of them would never say anything new.');
+                return __('Two of the moments are the same, so one of them would tell you nothing new.');
             }
 
             $seen[] = $key;

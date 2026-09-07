@@ -41,7 +41,7 @@
       @if ($isEditable)
         <x-modal.form
           :title="__('Add a page')"
-          :description="__('A tab of its own on the record, for the things that only matter when you go looking for them.')"
+          :description="__('A tab of its own on the record, for things you only need when you look for them.')"
           :confirm="__('Add the page')"
           :action="route('settings.templatePages.create', $template)"
           :open="$newPageErrors->has('label')"
@@ -86,7 +86,7 @@
                 <x-button.ghost size="small" type="button" @click="open = true" class="hover:text-error">{{ __('Remove') }}</x-button.ghost>
               </x-slot:trigger>
 
-              <p>{{ __('It holds nothing, so nothing goes with it. The tabs left keep their order.') }}</p>
+              <p>{{ __('It holds nothing, so nothing is deleted with it. The remaining tabs keep their order.') }}</p>
             </x-modal.warning>
           @else
             <span

@@ -185,7 +185,7 @@ class ContactViewModel
                     'number' => $published->version_number,
                     'template' => $current->template->name,
                 ]),
-                'body' => trim(($note === null ? '' : "{$note} ").__('Nothing changes here until you apply it. Applying changes which sections and fields :name shows, and everything already written down stays written down.', [
+                'body' => trim(($note === null ? '' : "{$note} ").__('Nothing changes here until you apply it. Applying it changes which sections and fields :name shows. Everything already written down stays.', [
                     'name' => $this->contact->first_name ?? $this->contact->name,
                 ])),
                 'label' => __('Apply version :number', ['number' => $published->version_number]),
@@ -374,7 +374,7 @@ class ContactViewModel
                 'contact' => $this->contact,
             ]),
             'versionId' => $version->id,
-            'label' => __('Go back to this'),
+            'label' => __('Move to this version'),
         ];
     }
 
@@ -423,10 +423,10 @@ class ContactViewModel
         $invariant = __('A version only decides what this page shows.');
 
         if ($count === 0) {
-            return "{$invariant} ".__('Nothing is being kept out of sight: every answer written here is on a page it can be seen on.');
+            return "{$invariant} ".__('Nothing is hidden. Every answer written here is on a page where it can be seen.');
         }
 
-        return "{$invariant} ".trans_choice('{1}One value written under another version is kept out of sight, and comes back with the version that shows it.|:count values written under other versions are kept out of sight, and come back with the version that shows them.', $count);
+        return "{$invariant} ".trans_choice('{1}One value written under another version is hidden, and comes back with the version that shows it.|:count values written under other versions are hidden, and come back with the version that shows them.', $count);
     }
 
     public function setAsideCount(): int
@@ -574,8 +574,8 @@ class ContactViewModel
         return [[
             'icon' => 'people',
             'when' => $this->contact->created_at->isoFormat('LL'),
-            'title' => __('You wrote :name down', ['name' => $this->contact->name]),
-            'body' => __('Everything you write about them from now on lands here, newest first.'),
+            'title' => __('You added :name', ['name' => $this->contact->name]),
+            'body' => __('Everything you write about them from now on appears here, newest first.'),
         ]];
     }
 
@@ -592,10 +592,10 @@ class ContactViewModel
         $name = $this->contact->first_name ?? $this->contact->name;
 
         return [
-            'compose' => __('A call, a visit, something they said. Writing it down is the next thing this screen learns to do.'),
+            'compose' => __('A call, a visit, something they said. Writing it down is the next thing this screen will do.'),
             'relationships' => __('Who :name is to the other people in this vault, once relationships exist.', ['name' => $name]),
-            'reminders' => __('Birthdays and anything else you ask to be told about, so December is not a panic.'),
-            'tasks' => __('Things you said you would do for :name land here until they are done.', ['name' => $name]),
+            'reminders' => __('Birthdays and anything else you ask to be told about, in good time.'),
+            'tasks' => __('Things you said you would do for :name appear here until they are done.', ['name' => $name]),
         ];
     }
 

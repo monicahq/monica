@@ -203,7 +203,7 @@ class TimezoneControllerTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors([
-            'timezone' => 'That is not a time zone the product knows. Search for the nearest city instead.',
+            'timezone' => 'That is not a time zone the application knows. Search for the nearest city instead.',
         ]);
     }
 

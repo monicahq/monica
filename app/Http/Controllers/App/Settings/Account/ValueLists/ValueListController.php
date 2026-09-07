@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\App\Settings\Account\DefaultValues;
+namespace App\Http\Controllers\App\Settings\Account\ValueLists;
 
 use App\Actions\CreateValueList;
 use App\Actions\DestroyValueList;
@@ -10,7 +10,7 @@ use App\Actions\UpdateValueList;
 use App\Exceptions\CannotDeleteASuppliedList;
 use App\Http\Controllers\Controller;
 use App\Models\ValueList;
-use App\ViewModels\Settings\Account\DefaultValues\DefaultValuesViewModel;
+use App\ViewModels\Settings\Account\ValueLists\ValueListsViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -19,8 +19,8 @@ class ValueListController extends Controller
 {
     public function index(Request $request): View
     {
-        return view('app.settings.account.default-values.index', [
-            'viewModel' => new DefaultValuesViewModel(
+        return view('app.settings.account.value-lists.index', [
+            'viewModel' => new ValueListsViewModel(
                 user: $request->user(),
             ),
         ]);
@@ -71,11 +71,11 @@ class ValueListController extends Controller
         } catch (CannotDeleteASuppliedList) {
             return redirect()->route('settings.valueLists.index')
                 ->with('error', __('This list stays.'))
-                ->with('error_description', __('It is one the product itself reads from. Empty it instead, and it offers nothing.'));
+                ->with('error_description', __('The application itself reads from this list. Empty it instead, and it offers nothing.'));
         }
 
         return redirect()->route('settings.valueLists.index')
             ->with('status', __('The list is deleted.'))
-            ->with('status_description', __('The values it held went with it.'));
+            ->with('status_description', __('The values it held were deleted with it.'));
     }
 }

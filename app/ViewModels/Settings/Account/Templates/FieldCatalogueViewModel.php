@@ -86,7 +86,7 @@ class FieldCatalogueViewModel
         $lines = [];
 
         foreach ($this->types() as $type) {
-            $lines[$type['key']] = __(':section gets a “:type” field. The type is settled once the field is added, and everything else about it can change later.', [
+            $lines[$type['key']] = __(':section gets a “:type” field. The type cannot be changed once the field is added. Everything else about it can.', [
                 'section' => $section,
                 'type' => $type['label'],
             ]);
@@ -146,9 +146,9 @@ class FieldCatalogueViewModel
                 'types' => [
                     ['key' => 'text', 'label' => __('Short text'), 'description' => __('One line of text, up to a length you set.'), 'example' => __('Nickname, microchip number, collar colour'), 'mark' => 'text', 'preview' => ['kind' => 'input', 'value' => __('Biscuit')]],
                     ['key' => 'textarea', 'label' => __('Long text'), 'description' => __('Several lines, for anything that needs a paragraph.'), 'example' => __('What the vet said at the last visit'), 'mark' => 'text-lines', 'preview' => ['kind' => 'textarea']],
-                    ['key' => 'number', 'label' => __('Number'), 'description' => __('A number, with its own floor, ceiling and decimals.'), 'example' => __('Weight in kilograms, 0 to 400, one decimal'), 'mark' => 'hash', 'preview' => ['kind' => 'input', 'value' => __('18.4'), 'mono' => true]],
+                    ['key' => 'number', 'label' => __('Number'), 'description' => __('A number, with its own minimum, maximum and decimals.'), 'example' => __('Weight in kilograms, 0 to 400, one decimal'), 'mark' => 'hash', 'preview' => ['kind' => 'input', 'value' => __('18.4'), 'mono' => true]],
                     ['key' => 'boolean', 'label' => __('Yes or no'), 'description' => __('A single checkbox. Nothing in between.'), 'example' => __('Neutered'), 'mark' => 'check-circle', 'preview' => ['kind' => 'toggle', 'value' => __('Neutered')]],
-                    ['key' => 'url', 'label' => __('URL'), 'description' => __('A web address, checked the same way by the interface and the API.'), 'example' => __('The breeder’s website'), 'mark' => 'link', 'preview' => ['kind' => 'input', 'prefix' => 'https://', 'value' => 'breeder.example', 'mono' => true]],
+                    ['key' => 'url', 'label' => __('URL'), 'description' => __('A web address, checked the same way by the application and the API.'), 'example' => __('The breeder’s website'), 'mark' => 'link', 'preview' => ['kind' => 'input', 'prefix' => 'https://', 'value' => 'breeder.example', 'mono' => true]],
                     ['key' => 'email', 'label' => __('Email'), 'description' => __('An email address, checked before it is saved.'), 'example' => __('The kennel’s booking address'), 'mark' => 'mail', 'preview' => ['kind' => 'input', 'value' => 'bookings@kennel.example', 'mono' => true]],
                     ['key' => 'phone', 'label' => __('Phone'), 'description' => __('A phone number, stored as written.'), 'example' => __('The out of hours clinic'), 'mark' => 'device', 'preview' => ['kind' => 'input', 'value' => __('+44 7700 900461'), 'mono' => true]],
                 ],
@@ -160,7 +160,7 @@ class FieldCatalogueViewModel
                     ['key' => 'select', 'label' => __('Dropdown'), 'description' => __('One option from a value list, in a closed menu.'), 'example' => __('Species: dog, cat, rabbit'), 'mark' => 'chevron-down', 'preview' => ['kind' => 'dropdown', 'value' => __('Dog')]],
                     ['key' => 'multiselect', 'label' => __('Multiple choice'), 'description' => __('Several options from the same value list.'), 'example' => __('Allergies: pollen, chicken, dust'), 'mark' => 'tasks', 'preview' => ['kind' => 'list', 'marker' => 'check', 'options' => [[__('Pollen'), true], [__('Chicken'), true], [__('Dust'), false]]]],
                     ['key' => 'radio', 'label' => __('Radio buttons'), 'description' => __('One option, with all of them visible at once. Best under five.'), 'example' => __('Size: small, medium, large'), 'mark' => 'radio', 'preview' => ['kind' => 'list', 'marker' => 'dot', 'options' => [[__('Small'), false], [__('Medium'), true], [__('Large'), false]]]],
-                    ['key' => 'tags', 'label' => __('Free tags'), 'description' => __('Words typed on the spot, reused across records once they exist.'), 'example' => __('Behaviour notes nobody wants to standardise'), 'mark' => 'tag', 'preview' => ['kind' => 'pills', 'options' => [[__('anxious'), true], [__('good with cats'), true], [__('add a tag'), false]]]],
+                    ['key' => 'tags', 'label' => __('Free tags'), 'description' => __('Words typed directly, reused across records once they exist.'), 'example' => __('Behaviour notes nobody wants to standardise'), 'mark' => 'tag', 'preview' => ['kind' => 'pills', 'options' => [[__('anxious'), true], [__('good with cats'), true], [__('add a tag'), false]]]],
                 ],
             ],
             [
@@ -176,7 +176,7 @@ class FieldCatalogueViewModel
                 'name' => __('Relation'),
                 'blurb' => __('Links to other records in the vault.'),
                 'types' => [
-                    ['key' => 'relation', 'label' => __('Contact or entity relation'), 'description' => __('Points at another record. You choose what kind it may point at.'), 'example' => __('Veterinarian, pointing at a contact'), 'mark' => 'relationship', 'preview' => ['kind' => 'dropdown', 'value' => __('Dr Patel'), 'caption' => __('contact')]],
+                    ['key' => 'relation', 'label' => __('Record relation'), 'description' => __('Points at another record. You choose what kind it may point at.'), 'example' => __('Veterinarian, pointing at a contact'), 'mark' => 'relationship', 'preview' => ['kind' => 'dropdown', 'value' => __('Dr Patel'), 'caption' => __('contact')]],
                     ['key' => 'qualified_relation', 'label' => __('Qualified relation'), 'description' => __('A link that also says what the two are to each other.'), 'example' => __('Sarah, qualified as “walker of”'), 'mark' => 'relationship', 'preview' => ['kind' => 'dropdown', 'value' => __('Sarah Miller'), 'caption' => __('walker of')]],
                 ],
             ],
@@ -185,8 +185,8 @@ class FieldCatalogueViewModel
                 'blurb' => __('Things uploaded rather than typed.'),
                 'types' => [
                     ['key' => 'file', 'label' => __('File'), 'description' => __('Any upload, limited to the file types you accept.'), 'example' => __('Pedigree certificate, PDF'), 'mark' => 'file', 'preview' => ['kind' => 'upload', 'value' => __('Drop a file, or choose one')]],
-                    ['key' => 'image', 'label' => __('Image'), 'description' => __('An upload shown as a picture on the record.'), 'example' => __('Photo of the microchip paperwork'), 'mark' => 'memory', 'preview' => ['kind' => 'upload', 'value' => __('Drop a picture, or choose one')]],
-                    ['key' => 'avatar', 'label' => __('Avatar'), 'description' => __('The single picture shown at the top of the record.'), 'example' => __('The portrait of the animal'), 'mark' => 'profile', 'preview' => ['kind' => 'upload', 'round' => true, 'value' => __('Drop a portrait, or choose one')]],
+                    ['key' => 'image', 'label' => __('Image'), 'description' => __('An upload shown as an image on the record.'), 'example' => __('Photo of the microchip paperwork'), 'mark' => 'memory', 'preview' => ['kind' => 'upload', 'value' => __('Drop an image, or choose one')]],
+                    ['key' => 'avatar', 'label' => __('Profile photo'), 'description' => __('The single photo shown at the top of the record.'), 'example' => __('The photo of the animal'), 'mark' => 'profile', 'preview' => ['kind' => 'upload', 'round' => true, 'value' => __('Drop a photo, or choose one')]],
                 ],
             ],
             [

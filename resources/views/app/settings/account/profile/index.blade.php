@@ -15,12 +15,12 @@
   <header class="flex flex-col gap-2">
     <h1 class="text-page-title text-ink">{{ __('Profile') }}</h1>
 
-    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Your name, the address you sign in with, and the photograph on your avatar.') }}</p>
+    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Your name, the address you sign in with, and your photo.') }}</p>
   </header>
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 text-section-title text-ink">{{ __('Avatar') }}</h2>
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('Profile photo') }}</h2>
 
       <p class="text-sm text-pretty text-muted">{{ __('Shown next to your name everywhere in the application.') }}</p>
     </div>
@@ -28,12 +28,12 @@
     <x-panel>
       <div
         class="flex flex-wrap items-center gap-5"
-        x-data="{ tooBig: false, tooBigMessage: @js(__('The image must be under 5 MB.')) }"
+        x-data="{ tooBig: false, tooBigMessage: @js(__('The photo must be under 5 MB.')) }"
       >
         <x-avatar id="profile-avatar" :user="$viewModel->user()" :size="72" />
 
         <div class="flex min-w-0 flex-1 flex-col gap-3">
-          <p class="text-sm text-pretty text-muted">{{ __('A square image reads best. JPEG, PNG or WebP, up to 5 MB. Without a photo you keep your initials on a warm tint.') }}</p>
+          <p class="text-sm text-pretty text-muted">{{ __('A square photo reads best. JPEG, PNG or WebP, up to 5 MB. Without one you keep your initials on a coloured background.') }}</p>
 
           <x-form
             method="post"
@@ -149,7 +149,7 @@
     <x-panel>
       <div class="flex flex-wrap items-center gap-6" x-data="{ confirming: @js($errors->has('confirm_email')) }">
         <p class="max-w-[46ch] flex-1 text-sm text-pretty text-muted">
-          {{ __('Everything you have put in :app goes with it: every vault, every person in them, every note and every photograph. We keep no copy, so there is nobody to ask afterwards.', ['app' => config('app.name')]) }}
+          {{ __('Everything you have put in :app is deleted with it: every vault, every person in them, every note and every photograph. We keep no copy, so nothing can be recovered afterwards.', ['app' => config('app.name')]) }}
         </p>
 
         <x-button.secondary

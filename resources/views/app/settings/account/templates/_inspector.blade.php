@@ -41,7 +41,7 @@
 
             <p class="rounded-md border border-hairline bg-sunken px-3 py-2 text-sm text-ink">{{ $field['typeLabel'] }}</p>
 
-            <p class="text-xs text-muted">{{ __('Settled when the field was added. To change it, remove the field and add the one you wanted.') }}</p>
+            <p class="text-xs text-muted">{{ __('Fixed when the field was added. To change it, remove the field and add the one you want.') }}</p>
           </div>
 
           <x-input
@@ -98,7 +98,7 @@
             <x-checkbox id="is_sensitive" :checked="$field['isSensitive']">
               <span class="font-semibold text-ink">{{ __('Sensitive') }}</span>
 
-              <span class="block text-muted">{{ __('Masked until revealed, and left out of a share link. It is protection from a glance over the shoulder, not a permission.') }}</span>
+              <span class="block text-muted">{{ __('Hidden until you reveal it, and left out of a share link. It hides the value on screen. It is not a permission.') }}</span>
             </x-checkbox>
 
             <x-checkbox id="is_highlighted" :checked="$field['isHighlighted']">
@@ -131,7 +131,7 @@
                 </x-button.secondary>
               </x-slot:trigger>
 
-              <p>{{ __('It goes off this draft. Anything already published keeps it.') }}</p>
+              <p>{{ __('It is removed from this draft. Anything already published keeps it.') }}</p>
             </x-modal.warning>
           </div>
         @endif

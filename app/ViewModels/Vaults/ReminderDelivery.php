@@ -43,7 +43,7 @@ class ReminderDelivery
         $enabled = $this->enabled();
 
         if ($enabled === []) {
-            return __('Nowhere, for now');
+            return __('No channel');
         }
 
         $words = array_map(fn (NotificationChannelEnum $channel): string => match ($channel) {
@@ -62,7 +62,7 @@ class ReminderDelivery
     private function channelsNote(): string
     {
         if ($this->enabled() === []) {
-            return __('Every channel is switched off, so this reminder will reach nobody. Your notification settings are where that changes.');
+            return __('Every channel is switched off, so this reminder will reach nobody. Change that in your notification settings.');
         }
 
         return __('Set for the whole account rather than for this reminder.');

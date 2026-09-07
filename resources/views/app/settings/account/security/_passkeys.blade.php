@@ -73,7 +73,7 @@
           <x-icon name="key" :size="30" :stroke-width="1.4" />
         </x-slot:icon>
 
-        {{ __('A passkey lives on this device and is unlocked by your fingerprint, your face or your device PIN. There is nothing to type and nothing to remember.') }}
+        {{ __('A passkey is kept on this device and is unlocked by your fingerprint, your face or your device PIN. There is nothing to type and nothing to remember.') }}
       </x-empty-state>
     @endforelse
   @endif

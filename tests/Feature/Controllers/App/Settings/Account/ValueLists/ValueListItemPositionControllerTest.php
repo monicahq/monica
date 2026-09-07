@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Controllers\App\Settings\Account\DefaultValues;
+namespace Tests\Feature\Controllers\App\Settings\Account\ValueLists;
 
 use App\Models\User;
 use App\Models\ValueList;

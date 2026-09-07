@@ -205,7 +205,7 @@ class VaultControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('vaults.show', $vault))
             ->assertStatus(200)
-            ->assertSee('Add someone')
+            ->assertSee('Add somebody')
             ->assertSee(route('contacts.new', $vault));
     }
 

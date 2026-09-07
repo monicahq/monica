@@ -62,7 +62,7 @@ class SetAsideValueControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('contacts.setAside.index', ['vault' => $contact->vault, 'contact' => $contact]))
             ->assertStatus(200)
-            ->assertSee('Nothing set aside');
+            ->assertSee('No unused answers');
     }
 
     #[Test]

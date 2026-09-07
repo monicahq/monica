@@ -29,7 +29,7 @@
     </div>
 
     <x-panel :flush="true">
-      <x-row :title="__('Language')" :description="__('The language the interface is drawn in.')" icon="info">
+      <x-row :title="__('Language')" :description="__('The language the application is shown in.')" icon="info">
         <x-slot:end>
           <x-form method="put" :action="route('settings.preferences.update')" id="language-form">
             @include('app.settings.account.preferences._carried-values', ['owns' => 'locale'])

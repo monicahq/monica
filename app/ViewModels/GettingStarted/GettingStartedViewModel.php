@@ -37,9 +37,9 @@ class GettingStartedViewModel
     public function letter(): array
     {
         return [
-            __('Hi. We are Regis and Alexis, and between us we write Monica, which has been going on and off since 2017, mostly in the evenings. It started because we kept forgetting the things we actually wanted to remember about people: who was going through a hard time, whose kid had just been born, which friend we had not called in a year.'),
-            __('Monica is where you put all of that. It is not a social network and there is nothing to broadcast. It is your own record, kept for you, and you can take it out or delete it whenever you like.'),
-            __('Everything starts with a vault, which is simply a sealed compartment for one part of your life. Make one, put a person in it, and see how it feels. If something is missing or annoys you, write to us. We read every message.'),
+            __('Hi. We are Regis and Alexis, and between us we write Monica. It has been going on and off since 2017, mostly in the evenings. It started because we kept forgetting the things we wanted to remember about people: who was going through a hard time, whose child had just been born, which friend we had not called in a year.'),
+            __('Monica is where you put all of that. It is not a social network, and nothing you write is published. It is your own record. You can export it or delete it whenever you like.'),
+            __('Everything starts with a vault, which holds one part of your life. Make one and put a person in it. If something is missing or wrong, write to us. We read every message.'),
         ];
     }
 
@@ -76,13 +76,13 @@ class GettingStartedViewModel
         return [
             [
                 'title' => __('Create your first vault'),
-                'description' => __('Everything else lives inside one. Name it after the group of people it holds.'),
+                'description' => __('Everything else is kept inside one. Name it after the group of people it holds.'),
                 'action' => __('Create'),
                 'url' => route('vaults.new'),
                 'done' => $this->hasAVault(),
             ],
             [
-                'title' => __('Add someone you know'),
+                'title' => __('Add somebody you know'),
                 'description' => __('A name is enough to start. The rest can be filled in whenever you learn it.'),
                 'action' => null,
                 'url' => null,
@@ -103,8 +103,8 @@ class GettingStartedViewModel
                 'done' => $this->user->hasPhoto(),
             ],
             [
-                'title' => __('Turn on two factor authentication'),
-                'description' => __('This account holds things about other people, which is a good reason to lock it properly.'),
+                'title' => __('Turn on two-factor authentication'),
+                'description' => __('This account holds information about other people, so protect it properly.'),
                 'action' => __('Set up'),
                 'url' => route('settings.security.index'),
                 'done' => $this->user->usesTwoFactorAuthentication(),

@@ -70,10 +70,10 @@ class ImportFileViewModelTest extends TestCase
         $this->assertEquals('A whole template', $found['Kind of file']);
         $this->assertEquals('Basic contact', $found['Name it will take']);
         $this->assertEquals('1 page, 1 section, 2 fields', $found['Structure']);
-        $this->assertEquals('None', $found['Lists of choices']);
+        $this->assertEquals('None', $found['Value lists']);
         $this->assertEquals('None', $found['Kinds of record']);
         $this->assertEquals('Monica structure format '.StructureFile::FORMAT_VERSION, $found['Format']);
-        $this->assertEquals('None, as always', $found['Records inside']);
+        $this->assertEquals('None', $found['Records inside']);
     }
 
     #[Test]
@@ -92,7 +92,7 @@ class ImportFileViewModelTest extends TestCase
 
         $found = collect($viewModel->found())->pluck('value', 'label');
 
-        $this->assertEquals('1 new list, 1 already here', $found['Lists of choices']);
+        $this->assertEquals('1 new list, 1 already here', $found['Value lists']);
     }
 
     #[Test]

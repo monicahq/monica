@@ -77,7 +77,7 @@
                 :value="old('email')"
                 placeholder="john@doe.com"
                 autocomplete="username"
-                :help="__('We will never, ever send you marketing emails.')"
+                :help="__('We never send marketing emails.')"
                 :error="$errors->get('email')"
                 allowPasswordManager
                 required

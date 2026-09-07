@@ -39,7 +39,7 @@ class VaultRemindersSentViewModel
 
     public function intro(): string
     {
-        return __('Every reminder this vault has actually sent, newest first, and what became of it afterwards.');
+        return __('Every reminder this vault has sent, newest first, and what became of it afterwards.');
     }
 
     /** @return array<int, array<string, mixed>> */
@@ -71,7 +71,7 @@ class VaultRemindersSentViewModel
 
     public function emptyLine(): string
     {
-        return __('As soon as a reminder in this vault comes due and reaches you, it is written down here, with the way it arrived and what you did with it.');
+        return __('A reminder that comes due and reaches you is written down here, with the way it arrived and what you did with it.');
     }
 
     public function activeUrl(): string

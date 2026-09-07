@@ -111,7 +111,7 @@ class VaultRemindersViewModel
     public function emptyTitle(): string
     {
         return $this->hasAnyRule()
-            ? __('Nothing due just yet')
+            ? __('Nothing due yet')
             : __('No reminders in this vault');
     }
 
@@ -124,7 +124,7 @@ class VaultRemindersViewModel
             );
         }
 
-        return __('A reminder is built from a date on somebody: open a contact, find a date on their page, and ask to be reminded of it.');
+        return __('A reminder is built from a date on a contact. Open a contact, find a date on their page, and ask to be reminded of it.');
     }
 
     public function peopleUrl(): string
@@ -229,7 +229,7 @@ class VaultRemindersViewModel
 
     private function nobody(): string
     {
-        return __('Somebody who is gone');
+        return __('A deleted contact');
     }
 
     private function horizonInDays(): int

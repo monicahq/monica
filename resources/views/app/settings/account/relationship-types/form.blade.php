@@ -201,7 +201,7 @@
     @if ($viewModel->behaviourTitle())
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ __('What the product does with it') }}</h2>
+          <h2 class="shrink-0 text-section-title text-ink">{{ __('What the application does with it') }}</h2>
         </div>
 
         <x-panel :title="$viewModel->behaviourTitle()" icon="family">

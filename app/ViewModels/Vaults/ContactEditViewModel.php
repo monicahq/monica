@@ -39,14 +39,14 @@ class ContactEditViewModel
 
     public function description(): string
     {
-        return __('What the template has no say over about :name.', [
+        return __('What the template does not decide about :name.', [
             'name' => $this->contact->first_name ?? $this->contact->name,
         ]);
     }
 
     public function nameDescription(): string
     {
-        return __('Every part is optional on its own, and at least one has to be there. It is the one thing the product asks for whatever template :name is on.', [
+        return __('Every part is optional on its own, and at least one has to be filled in. This is asked for whatever template :name is on.', [
             'name' => $this->contact->first_name ?? $this->contact->name,
         ]);
     }
@@ -58,7 +58,7 @@ class ContactEditViewModel
 
     public function avatarDescription(): string
     {
-        return __('A square image reads best. JPEG, PNG or WebP, up to 5 MB. Without one, :name keeps their initials on a warm tint.', [
+        return __('A square photo reads best. JPEG, PNG or WebP, up to 5 MB. Without one, :name keeps their initials on a coloured background.', [
             'name' => $this->contact->first_name ?? $this->contact->name,
         ]);
     }

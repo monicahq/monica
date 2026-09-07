@@ -4,7 +4,7 @@
   <header class="flex flex-col gap-2">
     <h1 class="text-page-title text-ink">{{ __('Administrators') }}</h1>
 
-    <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('Everybody who can reach this area. Nobody can give themselves the capacity, and nobody can take it off themselves.') }}</p>
+    <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('Everybody who can reach this area. Nobody can give themselves this access, and nobody can take it away from themselves.') }}</p>
   </header>
 
   @error('administrator')
@@ -71,7 +71,7 @@
       :open="$errors->has('email')"
     >
       <x-slot:trigger>
-        <x-button type="button" @click="open = true">{{ __('Grant the capacity') }}</x-button>
+        <x-button type="button" @click="open = true">{{ __('Grant administrator access') }}</x-button>
       </x-slot:trigger>
 
       <x-input
@@ -89,7 +89,7 @@
 
   @if ($viewModel->isTheLastOne())
     <x-notice tone="warning">
-      {{ __('There is one administrator on this instance, so the capacity cannot be withdrawn from anybody. Grant it to a second person first.') }}
+      {{ __('There is one administrator on this instance, so access cannot be withdrawn from anybody. Grant it to a second person first.') }}
     </x-notice>
   @endif
 </x-admin-layout>

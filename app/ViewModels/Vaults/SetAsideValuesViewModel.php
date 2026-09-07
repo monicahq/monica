@@ -35,7 +35,7 @@ class SetAsideValuesViewModel
 
     public function title(): string
     {
-        return __('Set aside');
+        return __('Unused answers');
     }
 
     public function contactUrl(): string
@@ -57,7 +57,7 @@ class SetAsideValuesViewModel
 
     public function emptyLine(): string
     {
-        return __('Nothing has been set aside. Everything written about :name is on their pages.', [
+        return __('There are no unused answers. Everything written about :name is on their pages.', [
             'name' => $this->contact->first_name ?? $this->contact->name,
         ]);
     }

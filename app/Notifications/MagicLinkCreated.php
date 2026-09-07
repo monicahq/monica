@@ -38,7 +38,7 @@ class MagicLinkCreated extends Notification implements HasEmailType, ShouldQueue
         return new MailMessage()
             ->subject(__('Your sign-in link for :app', ['app' => config('app.name')]))
             ->greeting(__('Your sign-in link'))
-            ->line(__('Click the button below and you are in. No password needed.'))
+            ->line(__('Click the button below to sign in. No password needed.'))
             ->line(trans_choice('The link works once, and only for the next :count minute.|The link works once, and only for the next :count minutes.', $this->minutes))
             ->action(__('Sign in to :app', ['app' => config('app.name')]), $this->url())
             ->panel(__('If you did not ask for this link, you can ignore this email. Somebody typed your address by mistake, or is trying to find out whether you have an account.'));

@@ -72,12 +72,12 @@ class ShareLinkViewModel
             return __('It stopped working on its own, on the date you gave it. Make a new one if it is still needed.');
         }
 
-        return __('Copy it now. This is the only time it can be shown to you in full: it is not stored anywhere in readable form, so a lost link is replaced rather than recovered.');
+        return __('Copy it now. This is the only time it can be shown in full. It is not stored in readable form, so a lost link is replaced rather than recovered.');
     }
 
     public function lostLine(): string
     {
-        return __('The address cannot be shown again. Only a hash of it is kept, which is what stops a copy of the database from being a set of working links. If it was not copied, revoke this one and make another.');
+        return __('The address cannot be shown again. Only a hash of it is kept, so a copy of the database is not a set of working links. If you did not copy it, revoke this one and make another.');
     }
 
     public function contactUrl(): string
@@ -118,7 +118,7 @@ class ShareLinkViewModel
     {
         return [
             ['label' => __('Shows'), 'value' => ShareLinkSummary::showsLine($this->shareLink, $this->contact)],
-            ['label' => __('Held back'), 'value' => ShareLinkSummary::heldBackLine($this->shareLink, $this->contact)],
+            ['label' => __('Hidden'), 'value' => ShareLinkSummary::heldBackLine($this->shareLink, $this->contact)],
             ['label' => __('Password'), 'value' => $this->shareLink->isProtectedByAPassword()
                 ? __('Asked for before the page opens')
                 : __('None. Anybody holding the address can open it')],
@@ -155,7 +155,7 @@ class ShareLinkViewModel
 
     public function visitsEmptyLine(): string
     {
-        return __('Nothing has opened this address. Every visit lands here with its date, its time and roughly where from, and nothing about the person, because there is no account to know anything about.');
+        return __('Nothing has opened this address. Every visit appears here with its date, its time and roughly where it came from. There is no account behind the link, so nothing about the person is recorded.');
     }
 
     /** @return array<int, array{when: string, where: string, agent: string, failed: bool}> */

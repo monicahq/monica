@@ -32,7 +32,7 @@ class SectionImportCheckControllerTest extends TestCase
 
         $this->actingAs($user)->post(route('settings.sectionImportCheck.create', [$template, $page]), ['file' => $file])
             ->assertStatus(200)
-            ->assertSee('This file checks out')
+            ->assertSee('This file can be imported')
             ->assertSee('One section')
             ->assertSee('Personal details');
     }
@@ -60,7 +60,7 @@ class SectionImportCheckControllerTest extends TestCase
 
         $this->actingAs($user)->post(route('settings.sectionImportCheck.create', [$template, $page]), ['file' => $file])
             ->assertStatus(200)
-            ->assertSee('This file cannot come in yet');
+            ->assertSee('This file cannot be imported');
     }
 
     #[Test]

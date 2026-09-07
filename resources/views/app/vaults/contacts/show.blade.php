@@ -130,7 +130,7 @@
   @elseif ($viewModel->onOverview())
     <div class="grid items-start gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
       <div class="flex flex-col gap-5">
-        <x-panel :title="__('Write something down')" icon="note">
+        <x-panel :title="__('Write a note')" icon="note">
           <x-textarea
             id="entry"
             :placeholder="__('A call, a visit, something they said.')"

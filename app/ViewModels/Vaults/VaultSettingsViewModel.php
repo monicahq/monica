@@ -41,7 +41,7 @@ class VaultSettingsViewModel
 
     public function description(): string
     {
-        return __('What :name is called, what a new contact in it starts from, and how to be rid of it.', [
+        return __('What :name is called, what a new contact in it starts from, and how to delete it.', [
             'name' => $this->vault->name,
         ]);
     }
@@ -135,7 +135,7 @@ class VaultSettingsViewModel
         }
 
         return trans_choice(
-            '{1}The one contact in it goes too, and everything written about them.|The :count contacts in it go too, and everything written about them.',
+            '{1}The one contact in it is deleted too, and everything written about them.|The :count contacts in it are deleted too, and everything written about them.',
             $this->contactCount(),
         );
     }

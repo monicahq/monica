@@ -66,7 +66,7 @@ class EntityTypeControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('settings.entityTypes.new'))
             ->assertStatus(200)
-            ->assertSee('Create an entity type')
+            ->assertSee('Create a kind of record')
             ->assertSee('Create type');
     }
 
@@ -245,7 +245,7 @@ class EntityTypeControllerTest extends TestCase
         $this->actingAs($user)->get(route('settings.entityTypes.new'))
             ->assertStatus(200)
             ->assertSee('name="slug"', escape: false)
-            ->assertSee('no spaces, no accents, no capitals');
+            ->assertSee('No spaces, no accents, no capitals');
 
         $this->actingAs($user)->get(route('settings.entityTypes.edit', $entityType))
             ->assertStatus(200)

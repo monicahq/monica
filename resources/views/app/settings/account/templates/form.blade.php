@@ -97,7 +97,7 @@
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
             <h2 class="shrink-0 text-section-title text-ink">{{ __('What it describes') }}</h2>
 
-            <p class="text-sm text-pretty text-muted">{{ __('Settled now and not changeable later, since every record made with it would be left rendering something else.') }}</p>
+            <p class="text-sm text-pretty text-muted">{{ __('Fixed now and not changeable later. Every record made with it would otherwise show something else.') }}</p>
           </div>
 
           <x-panel :flush="true">
@@ -118,7 +118,7 @@
                   <input type="radio" name="applies_to" value="entity" x-model="appliesTo" class="mt-1" />
 
                   <span class="min-w-0 flex-1">
-                    <span class="block text-base font-semibold text-ink">{{ __('A kind of record you invented') }}</span>
+                    <span class="block text-base font-semibold text-ink">{{ __('A kind of record you created') }}</span>
                     <span class="mt-px block text-sm text-pretty text-muted">{{ __('Animals, companies, wine bottles, whatever you named.') }}</span>
                   </span>
                 </label>
@@ -141,7 +141,7 @@
               </div>
             @else
               <div class="border-t border-hairline px-4 py-4">
-                <x-notice>{{ __('You have not invented any kinds of record yet, so a template can only describe a contact for now.') }}</x-notice>
+                <x-notice>{{ __('You have not created any kinds of record yet, so a template can only describe a contact for now.') }}</x-notice>
               </div>
             @endif
 
@@ -166,7 +166,7 @@
             </x-button.secondary>
           </x-slot:trigger>
 
-          <p>{{ __('Every version of it goes, and the slug stays taken so an old link cannot land on something else.') }}</p>
+          <p>{{ __('Every version of it goes, and the slug stays taken so an old link cannot reach something else.') }}</p>
 
           <p>{{ __('This is refused while any record still points at one of its versions.') }}</p>
         </x-modal.warning>

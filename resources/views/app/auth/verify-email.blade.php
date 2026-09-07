@@ -22,7 +22,7 @@
 
         <x-box class="space-y-4">
           <p class="text-sm leading-relaxed text-body">
-            {{ __('Nothing in your inbox? It can take a minute, and it sometimes lands in the spam folder.') }}
+            {{ __('Nothing in your inbox? It can take a minute, and it sometimes arrives in the spam folder.') }}
           </p>
 
           <x-form method="post" :action="route('auth.verification.send')">

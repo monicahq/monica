@@ -75,7 +75,7 @@ class ShareLinkViewModelTest extends TestCase
         $recap = collect($this->viewModel($user, $contact, $link)->recap())->keyBy('label');
 
         $this->assertSame('Every section of their page', $recap['Shows']['value']);
-        $this->assertStringContainsString('marked sensitive', $recap['Held back']['value']);
+        $this->assertStringContainsString('marked sensitive', $recap['Hidden']['value']);
         $this->assertSame('Asked for before the page opens', $recap['Password']['value']);
         $this->assertSame('Dr Ferrand', $recap['For']['value']);
         $this->assertStringContainsString('by you', $recap['Made']['value']);
@@ -176,7 +176,7 @@ class ShareLinkViewModelTest extends TestCase
         $viewModel = $this->viewModel($user, $contact, $link);
 
         $this->assertSame([], $viewModel->visits());
-        $this->assertStringContainsString('roughly where from', $viewModel->visitsEmptyLine());
+        $this->assertStringContainsString('roughly where it came from', $viewModel->visitsEmptyLine());
     }
 
     private function viewModel(User $user, Contact $contact, ShareLink $link): ShareLinkViewModel

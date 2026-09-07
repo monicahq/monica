@@ -15,7 +15,7 @@
   <header class="flex flex-col gap-2">
     <h1 class="text-page-title text-ink">{{ __('Emails sent') }}</h1>
 
-    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Every email we sent to your account, most recent first. Open one to read the copy that left.') }}</p>
+    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Every email we sent to your account, most recent first. Open one to read what was sent.') }}</p>
   </header>
 
   <x-panel :flush="true">
@@ -23,12 +23,12 @@
       @forelse ($viewModel->emailsSent() as $emailSent)
         @include('app.settings.account.logs._email-sent-row', ['emailSent' => $emailSent])
       @empty
-        <x-empty-state :title="__('Nothing has left our hands yet')">
+        <x-empty-state :title="__('No email has been sent yet')">
           <x-slot:icon>
             <x-icon name="mail" :size="30" :stroke-width="1.4" />
           </x-slot:icon>
 
-          {{ __('The emails we send you, such as sign-in links and password changes, show up here once they do, along with whether they arrived.') }}
+          {{ __('The emails we send you, such as sign-in links and password changes, appear here once they are sent, with whether they arrived.') }}
         </x-empty-state>
       @endforelse
     </div>

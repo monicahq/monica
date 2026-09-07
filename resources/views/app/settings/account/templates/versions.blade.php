@@ -15,7 +15,7 @@
   <header class="flex min-w-0 flex-col gap-2">
     <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
-    <p class="max-w-[62ch] text-base text-pretty text-body">{{ __('Publishing freezes a template exactly as it stands: its pages in their order, the version of each section, and every field. Records made with an older version keep it until you move them.') }}</p>
+    <p class="max-w-[62ch] text-base text-pretty text-body">{{ __('Publishing fixes a template exactly as it is: its pages in their order, the version of each section, and every field. Records made with an older version keep it until you move them.') }}</p>
   </header>
 
   @if ($viewModel->hasVersions())

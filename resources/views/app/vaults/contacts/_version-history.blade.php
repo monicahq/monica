@@ -7,7 +7,7 @@
 
 <div class="flex flex-wrap items-start gap-x-6 gap-y-4">
   <p class="max-w-[64ch] text-sm text-pretty text-muted">
-    {{ __('Every template this contact has been on, and when it changed. Nothing here was automatic: each line is a version somebody applied on purpose.') }}
+    {{ __('Every template this contact has been on, and when it changed. Nothing here was automatic. Each line is a version somebody applied.') }}
   </p>
 
   <dl class="ml-auto flex flex-wrap gap-x-8 gap-y-3">
@@ -116,7 +116,7 @@
 
     @if ($update = $viewModel->templateUpdate())
       <x-notice tone="info" icon="file">
-        {{ __('Version :number exists and this contact is not on it. Applying it lands as a line on this history like any other.', ['number' => $update['number']]) }}
+        {{ __('Version :number exists and this contact is not on it. Applying it is recorded on this history like any other change.', ['number' => $update['number']]) }}
 
         <x-slot:action>
           <x-form method="put" :action="$update['applyUrl']">
@@ -132,7 +132,7 @@
       @if ($setAside > 0)
         <x-slot:action>
           <x-button.secondary :href="$viewModel->setAsideUrl()" data-turbo="true" size="small">
-            {{ __('Set aside') }}
+            {{ __('Unused answers') }}
           </x-button.secondary>
         </x-slot:action>
       @endif

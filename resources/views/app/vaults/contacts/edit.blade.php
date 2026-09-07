@@ -18,13 +18,13 @@
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
   <x-panel
-    :title="__('Picture')"
+    :title="__('Photo')"
     :subtitle="$viewModel->avatarDescription()"
     icon="profile"
   >
     <div
       class="flex flex-wrap items-center gap-5"
-      x-data="{ tooBig: false, tooBigMessage: @js(__('The image must be under 5 MB.')) }"
+      x-data="{ tooBig: false, tooBigMessage: @js(__('The photo must be under 5 MB.')) }"
     >
       <x-contact-avatar :name="$contact->name" :url="$viewModel->avatarUrl()" :size="72" />
 
@@ -43,7 +43,7 @@
             :error="$errors->get('avatar')"
             required
             class="w-auto"
-            aria-label="{{ __('Choose a picture') }}"
+            aria-label="{{ __('Choose a photo') }}"
             x-on:change="tooBig = window.oversizedFiles($event.target.files, 5120).length > 0"
           />
 
@@ -54,13 +54,13 @@
 
         @if ($viewModel->hasAvatar())
           <x-modal.warning
-            :title="__('Remove the picture of :name?', ['name' => $contact->name])"
-            :confirm="__('Remove the picture')"
+            :title="__('Remove the photo of :name?', ['name' => $contact->name])"
+            :confirm="__('Remove the photo')"
             :action="$viewModel->destroyAvatarUrl()"
           >
             <x-slot:trigger>
               <x-button.ghost type="button" size="small" class="self-start" @click="open = true">
-                {{ __('Remove the picture') }}
+                {{ __('Remove the photo') }}
               </x-button.ghost>
             </x-slot:trigger>
 
@@ -181,9 +181,9 @@
             </x-button.secondary>
           </x-slot:trigger>
 
-          <p>{{ __('Everything written on the record goes with them.') }}</p>
+          <p>{{ __('Everything written on the record is deleted with them.') }}</p>
 
-          <p>{{ __('Nothing they took part in is destroyed, and they can be brought back.') }}</p>
+          <p>{{ __('Nothing they took part in is deleted, and they can be restored.') }}</p>
         </x-modal.warning>
       @endif
     </div>

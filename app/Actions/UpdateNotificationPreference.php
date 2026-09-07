@@ -67,7 +67,7 @@ class UpdateNotificationPreference
         }
 
         if ($this->timezone !== null && TimezoneCatalogue::find($this->timezone) === null) {
-            throw new NotificationPreferenceIsNotValid('This is not a time zone the product knows.');
+            throw new NotificationPreferenceIsNotValid('This is not a time zone the application knows.');
         }
     }
 

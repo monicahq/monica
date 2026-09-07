@@ -40,7 +40,7 @@ class ContactFormViewModel
 
     public function description(): string
     {
-        return __('A name is enough to start. Everything else belongs to the template, and you fill it in on the contact itself once it exists.');
+        return __('A name is enough to start. Everything else belongs to the template. You fill it in on the contact once it exists.');
     }
 
     public function action(): string
@@ -117,7 +117,7 @@ class ContactFormViewModel
             [
                 'id' => 'is_partial',
                 'name' => __('Partial contact'),
-                'help' => __('Somebody you only know through another person. They stay out of the lists until you fill them in, and become an ordinary contact the moment you do.'),
+                'help' => __('Somebody you only know through another person. They stay off the lists until you fill them in, and become an ordinary contact as soon as you do.'),
                 'checked' => $values['isPartial'],
             ],
         ];
