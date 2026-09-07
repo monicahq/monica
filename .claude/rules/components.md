@@ -1,8 +1,3 @@
----
-paths:
-  - 'resources/views/components/**'
----
-
 # Components
 
 ## Never name one CSS property in both the base string and a variant
