@@ -23,13 +23,23 @@ You MUST follow these steps, in order:
 3. You MUST translate every key it reports as missing, adding it to `lang/{locale}.json`. Keep the `:placeholders` untouched, and match the plain, calm tone of `lang/en.json`.
 4. You MUST run `php artisan monica:localize` again and confirm the new locale reports nothing missing.
 5. You MUST NOT touch the language pickers or the validation rules. They all read `config('monica.locales')`, so a registered locale shows up on its own.
-6. You MUST run `php artisan test` afterwards, since a test that counts the locales may need updating.
-7. You MUST run `php artisan monica:localize --check` to confirm the new locale is in sync with the code.
+6. You MUST copy `lang/en/` to `lang/{locale}/` and translate the four files it holds. They are the
+   strings the framework supplies, meaning validation, authentication, password reset and pagination,
+   and `monica:localize` does not manage them, so a locale without them shows English the moment a
+   form is rejected.
+7. You MUST fill the new locale's column in the glossary of
+   [`.claude/rules/translations.md`](../../rules/translations.md), and add its row to the table
+   recording which languages a native speaker has read.
+8. You MUST add the locale to `WORDINGS_PER_LOCALE` in
+   `tests/Unit/Translation/CountedPhraseTest.php`, saying how many wordings its plural rules ask for.
+   A locale missing from that table fails the suite.
+9. You MUST run `php artisan test` afterwards, since a test that counts the locales may need updating.
+10. You MUST run `php artisan monica:localize --check` to confirm the new locale is in sync with the code.
 
 You MAY also declare how the new language punctuates, as a `typography` key in the same
 `config/monica.php` entry, and write its section in
 [`.claude/rules/translations.md`](../../rules/translations.md). It is optional: a locale that declares
-nothing is not checked, which is where eight of the nine stand. French is written there in full and is
-the example to copy. Declare it only if you read the language, since the check then refuses every
+nothing is not checked, which is where most shipped locales stand. French is written there in full and
+is the example to copy. Declare it only if you read the language, since the check then refuses every
 value that breaks it, including the ones already translated.
 

@@ -42,27 +42,29 @@
       {{ __('Interface language') }}
     </div>
 
-    <x-form method="put" :action="route('auth.locale.update')">
-      @foreach ($locales as $locale)
-        <button
-          type="submit"
-          name="locale"
-          value="{{ $locale['code'] }}"
-          @if ($locale['code'] === $current) aria-current="true" @endif
-          class="flex w-full cursor-pointer items-center gap-2.5 px-3 py-2 text-left transition-colors hover:bg-hover {{ $locale['code'] === $current ? 'bg-card' : '' }}"
-        >
-          <span class="{{ $flag }}" style="background: {{ $locale['flag'] }};" aria-hidden="true"></span>
-          <span class="flex-1 text-sm text-ink {{ $locale['code'] === $current ? 'font-medium' : '' }}">{{ $locale['label'] }}</span>
-          <span class="text-xs text-muted-soft">{{ $locale['region'] }}</span>
+    <div class="max-h-72 overflow-y-auto overscroll-contain">
+      <x-form method="put" :action="route('auth.locale.update')">
+        @foreach ($locales as $locale)
+          <button
+            type="submit"
+            name="locale"
+            value="{{ $locale['code'] }}"
+            @if ($locale['code'] === $current) aria-current="true" @endif
+            class="flex w-full cursor-pointer items-center gap-2.5 px-3 py-2 text-left transition-colors hover:bg-hover {{ $locale['code'] === $current ? 'bg-card' : '' }}"
+          >
+            <span class="{{ $flag }}" style="background: {{ $locale['flag'] }};" aria-hidden="true"></span>
+            <span class="flex-1 text-sm text-ink {{ $locale['code'] === $current ? 'font-medium' : '' }}">{{ $locale['label'] }}</span>
+            <span class="text-xs text-muted-soft">{{ $locale['region'] }}</span>
 
-          <span class="flex w-3.5 items-center justify-center text-ink {{ $locale['code'] === $current ? '' : 'opacity-0' }}">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
-              <path d="M2.2 6.3 4.7 8.8 9.8 3.4"></path>
-            </svg>
-          </span>
-        </button>
-      @endforeach
-    </x-form>
+            <span class="flex w-3.5 items-center justify-center text-ink {{ $locale['code'] === $current ? '' : 'opacity-0' }}">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+                <path d="M2.2 6.3 4.7 8.8 9.8 3.4"></path>
+              </svg>
+            </span>
+          </button>
+        @endforeach
+      </x-form>
+    </div>
 
     <div class="border-t border-hairline-soft px-3 py-2 text-xs text-muted">
       {{ __('Translations are community-maintained.') }}

@@ -24,7 +24,7 @@ abstract class GuestViewModel
                 'region' => $locale['region'],
                 'flag' => $locale['flag'],
             ])
-            ->values()
+            ->sortByCollator('label')
             ->all();
     }
 

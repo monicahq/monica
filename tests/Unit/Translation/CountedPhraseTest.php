@@ -10,6 +10,41 @@ use Tests\TestCase;
 
 class CountedPhraseTest extends TestCase
 {
+    /** @var array<string, int> */
+    private const array WORDINGS_PER_LOCALE = [
+        'bn_BD' => 2,
+        'ca_ES' => 2,
+        'da_DK' => 2,
+        'de_DE' => 2,
+        'el_GR' => 2,
+        'en' => 2,
+        'es_ES' => 2,
+        'fi_FI' => 2,
+        'fil_PH' => 2,
+        'fr_FR' => 2,
+        'ga_IE' => 3,
+        'hi_IN' => 2,
+        'hu_HU' => 2,
+        'is_IS' => 2,
+        'it_IT' => 2,
+        'ja_JP' => 1,
+        'ko_KR' => 1,
+        'lt_LT' => 3,
+        'nb_NO' => 2,
+        'nl_NL' => 2,
+        'pl_PL' => 3,
+        'pt_BR' => 2,
+        'pt_PT' => 2,
+        'si_LK' => 1,
+        'sv_SE' => 2,
+        'ta_IN' => 2,
+        'th_TH' => 1,
+        'tr_TR' => 1,
+        'uz_UZ' => 1,
+        'vi_VN' => 1,
+        'zh_CN' => 1,
+    ];
+
     private const string PEOPLE = ':count person|:count people';
 
     #[Test]
@@ -104,10 +139,16 @@ class CountedPhraseTest extends TestCase
             return $highest + 1;
         };
 
-        $this->assertSame(1, $needed('tr_TR'));
+        foreach (self::WORDINGS_PER_LOCALE as $locale => $wordings) {
+            $this->assertSame($wordings, $needed($locale), $locale);
+        }
+    }
 
-        foreach (['en', 'fr_FR', 'de_DE', 'es_ES', 'it_IT', 'nl_NL', 'pt_BR', 'pt_PT'] as $locale) {
-            $this->assertSame(2, $needed($locale), $locale);
+    #[Test]
+    public function every_shipped_language_says_how_many_wordings_it_needs(): void
+    {
+        foreach (array_keys(config('monica.locales')) as $locale) {
+            $this->assertArrayHasKey($locale, self::WORDINGS_PER_LOCALE, $locale);
         }
     }
 
@@ -140,7 +181,11 @@ class CountedPhraseTest extends TestCase
     public function every_segment_of_every_counted_phrase_in_the_catalogue_interpolates_the_count(): void
     {
         foreach (array_keys(config('monica.locales')) as $locale) {
-            $translations = json_decode((string) file_get_contents(lang_path($locale.'.json')), true);
+            $path = lang_path($locale.'.json');
+
+            $this->assertFileExists($path, "{$locale} is registered without a translation file");
+
+            $translations = json_decode((string) file_get_contents($path), true);
 
             foreach ($translations as $key => $value) {
                 if (! str_contains((string) $key, '|')) {

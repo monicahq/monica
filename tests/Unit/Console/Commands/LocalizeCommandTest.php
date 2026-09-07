@@ -51,6 +51,32 @@ class LocalizeCommandTest extends TestCase
     }
 
     #[Test]
+    public function it_reports_the_source_language_first_and_the_rest_in_order(): void
+    {
+        $this->app->useLangPath($this->langPath);
+
+        config(['monica.locales' => [
+            'tr_TR' => ['label' => 'Türkçe'],
+            'en' => ['label' => 'English'],
+            'de_DE' => ['label' => 'Deutsch'],
+            'fr_FR' => ['label' => 'Français'],
+        ]]);
+
+        $output = $this->outputOfLocalize();
+
+        $this->assertEquals(
+            ['en', 'de_DE', 'fr_FR', 'tr_TR'],
+            array_values(array_filter(
+                array_map(
+                    fn (string $line): string => trim(explode('|', $line)[1] ?? ''),
+                    explode("\n", $output),
+                ),
+                fn (string $cell): bool => in_array($cell, ['en', 'de_DE', 'fr_FR', 'tr_TR'], true),
+            )),
+        );
+    }
+
+    #[Test]
     public function it_writes_every_string_of_the_code_to_the_english_file(): void
     {
         $this->app->useLangPath($this->langPath);

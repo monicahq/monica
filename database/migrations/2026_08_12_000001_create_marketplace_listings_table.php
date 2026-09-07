@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('name')->comment('name shown in the catalogue, which may differ from the internal name of the author');
             $table->string('summary')->comment('one line describing what it is for, shown on the card');
             $table->text('description')->comment('the full description, shown on the listing page');
-            $table->string('locale', 5)->comment('language the labels inside it are written in, shown and filtered on');
+            $table->string('locale', 12)->comment('language the labels inside it are written in, shown and filtered on');
             $table->string('author_name')->comment('name shown as the author, which need not be the real name of the account holder');
             $table->string('status', 32)->comment('where it is in the publication path');
             $table->unsignedBigInteger('published_version_id')->nullable()->comment('version currently offered for installation, null before the first is approved');

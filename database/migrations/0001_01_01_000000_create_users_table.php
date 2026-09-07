@@ -22,7 +22,7 @@ return new class extends Migration
             $table->datetime('password_changed_at')->nullable()->comment('when the user last changed or set their password, null when the user signs in through SSO');
             $table->string('sso_provider')->nullable()->comment('SSO provider the user signs in with');
             $table->boolean('is_active')->default(true)->comment('whether the user can sign in, so an account can be suspended without being deleted');
-            $table->string('locale', 5)->nullable()->comment('language of the interface, falls back to the language of the application');
+            $table->string('locale', 12)->nullable()->comment('language of the interface, falls back to the language of the application');
             $table->string('timezone', 64)->default('UTC')->comment('IANA time zone every date is rendered in, and the one a new reminder rule is frozen with');
             $table->string('time_format', 2)->default('24')->comment('whether times are shown on a 24 hour or a 12 hour clock');
             $table->string('date_format', 20)->nullable()->comment('order the parts of a date read in, null to follow the locale');

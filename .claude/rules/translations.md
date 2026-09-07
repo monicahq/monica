@@ -144,6 +144,59 @@ separates a suffix from the proper noun it attaches to (`Monica’dan`, `5 MB’
 
 Quotation is `“…”`.
 
+## The glossary
+
+A product noun is translated once per language and then never again. The same English word must reach
+the reader as the same word on every screen, which is what ASD-STE100 calls one word for one meaning,
+and what a reader notices immediately when it is broken. Sixteen nouns carry the product, and around
+800 of the 2,206 strings hold at least one of them.
+
+Fill a column when you translate a language. A blank cell is a language nobody has fixed the words
+for yet, and the first person to translate it decides.
+
+| English | Strings | fr_FR | de_DE | es_ES | it_IT | nl_NL | pt_PT | pt_BR | tr_TR |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| template | 127 | | | | | | | | |
+| account | 119 | | | | | | | | |
+| section | 107 | | | | | | | | |
+| vault | 87 | | | | | | | | |
+| field | 76 | | | | | | | | |
+| reminder | 76 | | | | | | | | |
+| contact | 59 | | | | | | | | |
+| passkey | 49 | | | | | | | | |
+| relationship | 35 | | | | | | | | |
+| value list | 26 | | | | | | | | |
+| marketplace | 17 | | | | | | | | |
+| note | 14 | | | | | | | | |
+| share | 10 | | | | | | | | |
+| API key | 10 | | | | | | | | |
+| group | 5 | | | | | | | | |
+| activity | 2 | | | | | | | | |
+
+Add a column for a language rather than a row for a word. A word that is not a product noun does not
+belong here: this table exists to stop one concept acquiring two names, not to hold a dictionary.
+
+## Which languages a native speaker has read
+
+A locale ships whether or not somebody who reads it has checked it, because holding a translation
+back helps nobody who would rather read it than read English. What must not happen is losing track of
+which is which. This table is that record, and it is the only place the answer lives.
+
+| Locale | Read by a native speaker | Notes |
+| --- | --- | --- |
+| en | Source language | The strings are the keys, written in the code |
+| fr_FR | No | Typography declared in full |
+| de_DE | No | |
+| es_ES | No | |
+| it_IT | No | |
+| nl_NL | No | |
+| pt_PT | No | |
+| pt_BR | No | |
+| tr_TR | No | |
+
+Add a row when a locale is registered. Change a No to a Yes only when somebody who reads the language
+has read the file, and say in the notes what they covered.
+
 ## Writing rules for a language that has none
 
 1. Write its section above, saying what the rule is and why, in the shape the French section uses.

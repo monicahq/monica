@@ -44,7 +44,7 @@ class StructureFileReader
 
     private const string COLOUR = '/^#[0-9a-f]{6}$/';
 
-    private const string LOCALE = '/^[a-z]{2}(_[A-Z]{2})?$/';
+    private const string LOCALE = '/^[a-z]{2,3}(_[A-Z]{2})?$/';
 
     private const string MIME_TYPE = '#^[a-z0-9!\#$&^_.+-]+/[a-z0-9!\#$&^_.+-]+$#';
 
@@ -808,7 +808,7 @@ class StructureFileReader
     /** @param  array<string, mixed>  $node */
     private function locale(array $node, string $path): ?string
     {
-        $locale = $this->nullableString($node, 'locale', $path, 5);
+        $locale = $this->nullableString($node, 'locale', $path, 12);
 
         if ($locale === null || preg_match(self::LOCALE, $locale) !== 1) {
             return null;

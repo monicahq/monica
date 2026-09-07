@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Auth;
 
+use App\Helpers\LocaleCollation;
 use App\ViewModels\Auth\RegisterViewModel;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -31,7 +32,18 @@ class RegisterViewModelTest extends TestCase
             'label' => 'English',
             'region' => 'United Kingdom',
             'flag' => config('monica.locales.en.flag'),
-        ], $locales[0]);
+        ], collect($locales)->firstWhere('code', 'en'));
+    }
+
+    #[Test]
+    public function it_sorts_the_languages_by_the_name_each_one_calls_itself(): void
+    {
+        $labels = collect(new RegisterViewModel()->locales())->pluck('label');
+
+        $this->assertEquals(
+            LocaleCollation::sortByCollator($labels, fn (string $label): string => $label)->all(),
+            $labels->all(),
+        );
     }
 
     #[Test]

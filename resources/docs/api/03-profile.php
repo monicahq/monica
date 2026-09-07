@@ -7,6 +7,11 @@ use App\ViewModels\Docs\ApiDocsViewModel;
 
 $base = ApiDocsViewModel::baseUrl();
 
+$locales = array_keys((array) config('monica.locales'));
+$languages = count($locales) === 1
+    ? $locales[0]
+    : implode(', ', array_slice($locales, 0, -1)).' or '.$locales[count($locales) - 1];
+
 $user = [
     'type' => 'user',
     'id' => '1',
@@ -34,7 +39,7 @@ $userAttributes = [
     ['name' => 'last_name', 'type' => 'string', 'description' => 'The family name, up to 255 characters.'],
     ['name' => 'email', 'type' => 'string', 'description' => 'The address the account signs in with, up to 255 characters, always in lower case. It is unique across the instance.'],
     ['name' => 'email_verified', 'type' => 'boolean', 'description' => 'Whether the address has been confirmed. Worked out from when it was confirmed rather than stored as a flag, so the moment itself is not something the API hands out.'],
-    ['name' => 'locale', 'type' => 'string', 'description' => 'The language the product speaks to this person: one of en, fr_FR, de_DE, es_ES, pt_PT, nl_NL, pt_BR, it_IT or tr_TR. It never affects anything the person themselves wrote.'],
+    ['name' => 'locale', 'type' => 'string', 'description' => "The language the product speaks to this person: one of {$languages}. It never affects anything the person themselves wrote."],
     ['name' => 'timezone', 'type' => 'string', 'description' => 'The zone their times are shown in, as an identifier such as Europe/Paris, up to 64 characters. Every timestamp in this API is a count of seconds regardless, so this is about what a screen shows rather than about what you receive.'],
     ['name' => 'time_format', 'type' => 'string', 'description' => 'Either 24 or 12, saying which clock they read.'],
     ['name' => 'date_format', 'type' => 'string', 'description' => 'How a date is written for them: one of d/m/Y, m/d/Y, Y-m-d or j F Y, or null when they have not chosen and the language decides.'],

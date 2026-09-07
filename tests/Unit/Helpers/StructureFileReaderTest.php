@@ -181,6 +181,30 @@ class StructureFileReaderTest extends TestCase
     }
 
     #[Test]
+    public function it_reads_a_locale_whose_language_is_written_with_three_letters(): void
+    {
+        config(['monica.locales.fil_PH' => ['label' => 'Filipino', 'region' => 'Pilipinas']]);
+
+        $file = $this->file();
+        $file['template']['locale'] = 'fil_PH';
+
+        $read = StructureFileReader::read(json_encode($file));
+
+        $this->assertEquals('fil_PH', $read['template']['locale']);
+    }
+
+    #[Test]
+    public function it_drops_a_locale_the_application_does_not_ship(): void
+    {
+        $file = $this->file();
+        $file['template']['locale'] = 'kl_GL';
+
+        $read = StructureFileReader::read(json_encode($file));
+
+        $this->assertNull($read['template']['locale']);
+    }
+
+    #[Test]
     public function it_still_reads_a_file_carrying_the_reminder_flag_it_no_longer_has(): void
     {
         $file = $this->file();

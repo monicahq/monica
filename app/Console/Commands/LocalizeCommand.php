@@ -767,8 +767,9 @@ class LocalizeCommand extends Command
     private function locales(): array
     {
         $locales = array_keys(config('monica.locales'));
+        $source = $this->sourceLocale();
 
-        usort($locales, fn (string $locale): int => $locale === $this->sourceLocale() ? -1 : 1);
+        usort($locales, fn (string $a, string $b): int => [$a !== $source, $a] <=> [$b !== $source, $b]);
 
         return $locales;
     }

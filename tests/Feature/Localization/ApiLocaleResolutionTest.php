@@ -61,7 +61,7 @@ class ApiLocaleResolutionTest extends TestCase
     {
         Sanctum::actingAs(User::factory()->create(['locale' => 'de_DE']));
 
-        $this->withHeader('Accept-Language', 'sv-SE')->json('GET', route('api.v1.me'))->assertOk();
+        $this->withHeader('Accept-Language', 'kl-GL')->json('GET', route('api.v1.me'))->assertOk();
 
         $this->assertSame('de_DE', App::getLocale());
     }
@@ -71,7 +71,7 @@ class ApiLocaleResolutionTest extends TestCase
     {
         Sanctum::actingAs(User::factory()->create(['locale' => 'de_DE']));
 
-        $this->withHeader('Accept-Language', 'sv-SE,fr;q=0.8')->json('GET', route('api.v1.me'))->assertOk();
+        $this->withHeader('Accept-Language', 'kl-GL,fr;q=0.8')->json('GET', route('api.v1.me'))->assertOk();
 
         $this->assertSame('fr_FR', App::getLocale());
     }

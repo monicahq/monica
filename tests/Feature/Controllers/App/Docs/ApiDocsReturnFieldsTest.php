@@ -38,6 +38,19 @@ class ApiDocsReturnFieldsTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
+    public function it_names_every_language_the_instance_ships_where_it_documents_the_locale(): void
+    {
+        config(['monica.locales.kl_GL' => ['label' => 'Kalaallisut', 'region' => 'Kalaallit Nunaat']]);
+
+        $profile = include base_path('resources/docs/api/03-profile.php');
+        $description = json_encode($profile);
+
+        foreach (array_keys((array) config('monica.locales')) as $locale) {
+            $this->assertStringContainsString($locale, (string) $description, $locale);
+        }
+    }
+
+    #[Test]
     public function it_documents_every_field_every_endpoint_returns(): void
     {
         $problems = [];

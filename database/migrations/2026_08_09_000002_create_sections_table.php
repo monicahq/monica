@@ -23,7 +23,7 @@ return new class extends Migration
             $table->boolean('is_system')->default(false)->comment('whether the product supplied it at account creation');
             $table->boolean('is_active')->default(true)->comment('whether it can still be added to a template');
             $table->unsignedBigInteger('published_version_id')->nullable()->comment('version offered by default when adding it, null while only drafts exist');
-            $table->string('locale', 5)->comment('language the labels inside it are written in');
+            $table->string('locale', 12)->comment('language the labels inside it are written in');
             $table->timestamps();
             $table->softDeletes();
 

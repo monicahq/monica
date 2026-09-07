@@ -287,8 +287,10 @@ return trans_choice(':count person|:count people', $vault->contact_count);
 ```
 
 How many segments a locale needs is a property of its language, worked out from the framework rather
-than written down: two for eight of the nine shipped locales, and one for Turkish, which selects the
-same wording at every number. Supply what the locale asks for and no more.
+than written down. Most shipped locales ask for two. Turkish, Japanese and Chinese ask for one,
+selecting the same wording at every number, and Polish, Lithuanian and Irish ask for three. Supply
+what the locale asks for and no more. `tests/Unit/Translation/CountedPhraseTest.php` records the
+count for every shipped locale, and a locale missing from that table fails the suite.
 
 ## Naming Classes
 

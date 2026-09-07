@@ -102,7 +102,7 @@ class WebLocaleResolutionTest extends TestCase
     {
         config(['app.locale' => 'en']);
 
-        $this->withHeader('Accept-Language', 'sv-SE,fi;q=0.8')->get(route('auth.login.new'));
+        $this->withHeader('Accept-Language', 'kl-GL,mi;q=0.8')->get(route('auth.login.new'));
 
         $this->assertSame('en', App::getLocale());
     }
@@ -112,7 +112,7 @@ class WebLocaleResolutionTest extends TestCase
     {
         config(['app.locale' => 'en']);
 
-        $this->withSession([LocaleResolution::SESSION_KEY => 'sv_SE'])->get(route('auth.login.new'));
+        $this->withSession([LocaleResolution::SESSION_KEY => 'kl_GL'])->get(route('auth.login.new'));
 
         $this->assertSame('en', App::getLocale());
     }
@@ -122,7 +122,7 @@ class WebLocaleResolutionTest extends TestCase
     {
         config(['app.locale' => 'en']);
 
-        $this->withCookie(LocaleResolution::COOKIE_NAME, 'sv_SE')
+        $this->withCookie(LocaleResolution::COOKIE_NAME, 'kl_GL')
             ->get(route('auth.login.new'));
 
         $this->assertSame('en', App::getLocale());

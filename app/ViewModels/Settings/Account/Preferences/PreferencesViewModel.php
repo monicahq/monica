@@ -28,7 +28,7 @@ class PreferencesViewModel
                 'hint' => $locale['region'],
                 'selected' => $code === $current,
             ])
-            ->values()
+            ->sortByCollator('label')
             ->all();
     }
 

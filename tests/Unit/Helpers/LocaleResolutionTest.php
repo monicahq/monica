@@ -59,7 +59,7 @@ class LocaleResolutionTest extends TestCase
     #[Test]
     public function it_refuses_a_session_holding_a_language_the_product_does_not_ship(): void
     {
-        Session::put(LocaleResolution::SESSION_KEY, 'sv_SE');
+        Session::put(LocaleResolution::SESSION_KEY, 'kl_GL');
 
         $this->assertNull(LocaleResolution::fromSession());
     }
@@ -83,7 +83,7 @@ class LocaleResolutionTest extends TestCase
     #[Test]
     public function it_refuses_an_account_holding_a_language_the_product_does_not_ship(): void
     {
-        $michael = User::factory()->create(['locale' => 'sv_SE']);
+        $michael = User::factory()->create(['locale' => 'kl_GL']);
 
         $this->actingAs($michael);
 
@@ -105,7 +105,7 @@ class LocaleResolutionTest extends TestCase
     #[Test]
     public function it_refuses_a_device_holding_a_language_the_product_has_since_withdrawn(): void
     {
-        $this->assertNull($this->resolutionFor(cookies: [LocaleResolution::COOKIE_NAME => 'sv_SE']));
+        $this->assertNull($this->resolutionFor(cookies: [LocaleResolution::COOKIE_NAME => 'kl_GL']));
     }
 
     #[Test]
@@ -126,10 +126,10 @@ class LocaleResolutionTest extends TestCase
             'european portuguese, named' => ['pt-PT', 'pt_PT'],
             'portuguese with no region, which one locale answers for' => ['pt', 'pt_BR'],
             'american english, reaching the one english shipped' => ['en-US', 'en'],
-            'a language not shipped' => ['sv-SE', null],
-            'a bare language not shipped' => ['sv', null],
+            'a language not shipped' => ['kl-GL', null],
+            'a bare language not shipped' => ['kl', null],
             'case is not meaning' => ['FR-fr', 'fr_FR'],
-            'a script the product does not ship' => ['zh-Hans-TW', null],
+            'a script the product does not ship' => ['kl-Latn-GL', null],
             'nothing announced at all' => ['', null],
             'a malformed header' => ['!!!', null],
         ];
@@ -138,7 +138,7 @@ class LocaleResolutionTest extends TestCase
     #[Test]
     public function it_takes_the_first_announced_language_the_product_ships_and_skips_the_ones_it_does_not(): void
     {
-        $request = $this->requestAnnouncing('sv-SE,fr;q=0.8,de;q=0.7');
+        $request = $this->requestAnnouncing('kl-GL,fr;q=0.8,de;q=0.7');
 
         $this->assertSame('fr_FR', LocaleResolution::fromAnnouncedLanguage($request));
     }
@@ -220,7 +220,7 @@ class LocaleResolutionTest extends TestCase
         $kevin = User::factory()->create(['locale' => 'de_DE']);
         $this->actingAs($kevin);
 
-        $this->assertSame('de_DE', LocaleResolution::forApi($this->requestAnnouncing('sv-SE')));
+        $this->assertSame('de_DE', LocaleResolution::forApi($this->requestAnnouncing('kl-GL')));
     }
 
     #[Test]

@@ -43,7 +43,7 @@ class LocaleControllerTest extends TestCase
     #[Test]
     public function it_refuses_a_language_the_interface_does_not_speak(): void
     {
-        $response = $this->put(route('auth.locale.update'), ['locale' => 'sv_SE']);
+        $response = $this->put(route('auth.locale.update'), ['locale' => 'kl_GL']);
 
         $response->assertSessionHasErrors('locale');
         $this->assertNull(session('locale'));

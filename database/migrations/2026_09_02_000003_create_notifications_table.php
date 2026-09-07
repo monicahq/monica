@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('title')->comment('the line the user reads first');
             $table->text('body')->comment('the rest of what it says');
             $table->json('payload')->nullable()->comment('data the interface needs to render it and to offer its actions');
-            $table->string('locale', 5)->comment('language it was rendered in, so a language bug is visible after the fact');
+            $table->string('locale', 12)->comment('language it was rendered in, so a language bug is visible after the fact');
             $table->timestamp('scheduled_for')->comment('when it was due, copied from the deadline and never recomputed');
             $table->timestamp('held_until')->comment('when it may go out, equal to scheduled_for when nothing holds it, so the sweep is one comparison');
             $table->timestamp('sent_at')->nullable()->comment('when it was handed to the channel');
