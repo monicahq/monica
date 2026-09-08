@@ -144,6 +144,13 @@ return [
             'number_format' => 'comma_dot',
             'flag' => 'radial-gradient(circle at 50% 50%, #bc002d 0 35%, #fff 35%)',
         ],
+        'fil_PH' => [
+            'label' => 'Filipino',
+            'region' => 'Pilipinas',
+            'date_format' => 'm/d/Y',
+            'number_format' => 'comma_dot',
+            'flag' => 'radial-gradient(circle at 13% 50%, #fcd116 0 9%, transparent 9%), linear-gradient(to bottom right, #fff 0 40%, transparent 40%) 0 0 / 100% 50% no-repeat, linear-gradient(to top right, #fff 0 40%, transparent 40%) 0 100% / 100% 50% no-repeat, linear-gradient(to bottom, #0038a8 0 50%, #ce1126 50%)',
+        ],
         'ga_IE' => [
             'label' => 'Gaeilge',
             'region' => 'Éire',
