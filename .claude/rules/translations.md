@@ -154,24 +154,24 @@ and what a reader notices immediately when it is broken. Sixteen nouns carry the
 Fill a column when you translate a language. A blank cell is a language nobody has fixed the words
 for yet, and the first person to translate it decides.
 
-| English | Strings | el_GR | ca_ES | lt_LT | fi_FI | is_IS | hu_HU | nb_NO | da_DK | sv_SE | ko_KR | pl_PL | zh_CN | ja_JP | fr_FR | de_DE | es_ES | it_IT | nl_NL | pt_PT | pt_BR | tr_TR |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| template | 127 | πρότυπο | plantilla | šablonas | malli | sniðmát | sablon | mal | skabelon | mall | 템플릿 | szablon | 模板 | テンプレート | | | | | | | |
-| account | 119 | λογαριασμός | compte | paskyra | tili | aðgangur | fiók | konto | konto | konto | 계정 | konto | 账户 | アカウント | | | | | | | |
-| section | 107 | ενότητα | secció | skyrius | osio | hluti | szakasz | seksjon | afsnit | avsnitt | 섹션 | sekcja | 区块 | セクション | | | | | | | |
-| vault | 87 | θησαυροφυλάκιο | caixa forta | seifas | holvi | hvelfing | széf | hvelv | boks | valv | 보관함 | sejf | 保险库 | 保管庫 | | | | | | | |
-| field | 76 | πεδίο | camp | laukas | kenttä | reitur | mező | felt | felt | fält | 필드 | pole | 字段 | フィールド | | | | | | | |
-| reminder | 76 | υπενθύμιση | recordatori | priminimas | muistutus | áminning | emlékeztető | påminnelse | påmindelse | påminnelse | 리마인더 | przypomnienie | 提醒 | リマインダー | | | | | | | |
-| contact | 59 | επαφή | contacte | kontaktas | yhteystieto | tengiliður | névjegy | kontakt | kontakt | kontakt | 연락처 | kontakt | 联系人 | 連絡先 | | | | | | | |
-| passkey | 49 | κλειδί πρόσβασης | clau d’accés | prieigos raktas | avainkoodi | aðgangslykill | azonosítókulcs | passnøkkel | adgangsnøgle | passnyckel | 패스키 | klucz dostępu | 通行密钥 | パスキー | | | | | | | |
-| relationship | 35 | σχέση | relació | ryšys | suhde | tengsl | kapcsolat | relasjon | relation | relation | 관계 | relacja | 关系 | 関係 | | | | | | | |
-| value list | 26 | λίστα τιμών | llista de valors | verčių sąrašas | arvolista | gildalisti | értéklista | verdiliste | værdiliste | värdelista | 값 목록 | lista wartości | 选项列表 | 選択リスト | | | | | | | |
-| marketplace | 17 | αγορά | mercat | prekyvietė | markkinapaikka | markaðstorg | piactér | markedsplass | markedsplads | marknadsplats | 마켓플레이스 | rynek | 市场 | マーケットプレイス | | | | | | | |
-| note | 14 | σημείωση | nota | pastaba | muistiinpano | minnispunktur | jegyzet | notat | note | anteckning | 메모 | notatka | 备注 | メモ | | | | | | | |
-| share | 10 | κοινοποίηση | compartició | bendrinimas | jakaminen | deiling | megosztás | deling | deling | delning | 공유 | udostępnianie | 分享 | 共有 | | | | | | | |
-| API key | 10 | κλειδί API | clau API | API raktas | API-avain | API-lykill | API-kulcs | API-nøkkel | API-nøgle | API-nyckel | API 키 | klucz API | API 密钥 | APIキー | | | | | | | |
-| group | 5 | ομάδα | grup | grupė | ryhmä | hópur | csoport | gruppe | gruppe | grupp | 그룹 | grupa | 群组 | グループ | | | | | | | |
-| activity | 2 | δραστηριότητα | activitat | veikla | aktiviteetti | athöfn | tevékenység | aktivitet | aktivitet | aktivitet | 활동 | aktywność | 活动 | アクティビティ | | | | | | | |
+| English | Strings | ga_IE | vi_VN | th_TH | el_GR | ca_ES | lt_LT | fi_FI | is_IS | hu_HU | nb_NO | da_DK | sv_SE | ko_KR | pl_PL | zh_CN | ja_JP | fr_FR | de_DE | es_ES | it_IT | nl_NL | pt_PT | pt_BR | tr_TR |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| template | 127 | teimpléad | mẫu | เทมเพลต | πρότυπο | plantilla | šablonas | malli | sniðmát | sablon | mal | skabelon | mall | 템플릿 | szablon | 模板 | テンプレート | | | | | | | |
+| account | 119 | cuntas | tài khoản | บัญชี | λογαριασμός | compte | paskyra | tili | aðgangur | fiók | konto | konto | konto | 계정 | konto | 账户 | アカウント | | | | | | | |
+| section | 107 | rannán | mục | ส่วน | ενότητα | secció | skyrius | osio | hluti | szakasz | seksjon | afsnit | avsnitt | 섹션 | sekcja | 区块 | セクション | | | | | | | |
+| vault | 87 | taisceadán | kho | ห้องนิรภัย | θησαυροφυλάκιο | caixa forta | seifas | holvi | hvelfing | széf | hvelv | boks | valv | 보관함 | sejf | 保险库 | 保管庫 | | | | | | | |
+| field | 76 | réimse | trường | ฟิลด์ | πεδίο | camp | laukas | kenttä | reitur | mező | felt | felt | fält | 필드 | pole | 字段 | フィールド | | | | | | | |
+| reminder | 76 | meabhrúchán | lời nhắc | การเตือน | υπενθύμιση | recordatori | priminimas | muistutus | áminning | emlékeztető | påminnelse | påmindelse | påminnelse | 리마인더 | przypomnienie | 提醒 | リマインダー | | | | | | | |
+| contact | 59 | teagmhálaí | liên hệ | ผู้ติดต่อ | επαφή | contacte | kontaktas | yhteystieto | tengiliður | névjegy | kontakt | kontakt | kontakt | 연락처 | kontakt | 联系人 | 連絡先 | | | | | | | |
+| passkey | 49 | paseochair | khóa truy cập | พาสคีย์ | κλειδί πρόσβασης | clau d’accés | prieigos raktas | avainkoodi | aðgangslykill | azonosítókulcs | passnøkkel | adgangsnøgle | passnyckel | 패스키 | klucz dostępu | 通行密钥 | パスキー | | | | | | | |
+| relationship | 35 | gaol | quan hệ | ความสัมพันธ์ | σχέση | relació | ryšys | suhde | tengsl | kapcsolat | relasjon | relation | relation | 관계 | relacja | 关系 | 関係 | | | | | | | |
+| value list | 26 | liosta luachanna | danh sách giá trị | รายการค่า | λίστα τιμών | llista de valors | verčių sąrašas | arvolista | gildalisti | értéklista | verdiliste | værdiliste | värdelista | 값 목록 | lista wartości | 选项列表 | 選択リスト | | | | | | | |
+| marketplace | 17 | margadh | chợ | มาร์เก็ตเพลส | αγορά | mercat | prekyvietė | markkinapaikka | markaðstorg | piactér | markedsplass | markedsplads | marknadsplats | 마켓플레이스 | rynek | 市场 | マーケットプレイス | | | | | | | |
+| note | 14 | nóta | ghi chú | บันทึก | σημείωση | nota | pastaba | muistiinpano | minnispunktur | jegyzet | notat | note | anteckning | 메모 | notatka | 备注 | メモ | | | | | | | |
+| share | 10 | comhroinnt | chia sẻ | การแบ่งปัน | κοινοποίηση | compartició | bendrinimas | jakaminen | deiling | megosztás | deling | deling | delning | 공유 | udostępnianie | 分享 | 共有 | | | | | | | |
+| API key | 10 | eochair API | khóa API | คีย์ API | κλειδί API | clau API | API raktas | API-avain | API-lykill | API-kulcs | API-nøkkel | API-nøgle | API-nyckel | API 키 | klucz API | API 密钥 | APIキー | | | | | | | |
+| group | 5 | grúpa | nhóm | กลุ่ม | ομάδα | grup | grupė | ryhmä | hópur | csoport | gruppe | gruppe | grupp | 그룹 | grupa | 群组 | グループ | | | | | | | |
+| activity | 2 | gníomhaíocht | hoạt động | กิจกรรม | δραστηριότητα | activitat | veikla | aktiviteetti | athöfn | tevékenység | aktivitet | aktivitet | aktivitet | 활동 | aktywność | 活动 | アクティビティ | | | | | | | |
 
 Add a column for a language rather than a row for a word. A word that is not a product noun does not
 belong here: this table exists to stop one concept acquiring two names, not to hold a dictionary.
@@ -185,6 +185,9 @@ which is which. This table is that record, and it is the only place the answer l
 | Locale | Read by a native speaker | Notes |
 | --- | --- | --- |
 | en | Source language | The strings are the keys, written in the code |
+| ga_IE | No | Three wordings for every number: singular, a dual for exactly two, and a plural. Irish inflects further after 3 to 10 and after 7 to 10, which three wordings cannot reach. Declares no typography |
+| vi_VN | No | One wording for every number. Declares no typography |
+| th_TH | No | One wording for every number. Declares no typography |
 | el_GR | No | Two wordings for every number. Declares no typography |
 | ca_ES | No | Two wordings for every number. Declares no typography |
 | lt_LT | No | Three wordings for every number. Declares no typography |

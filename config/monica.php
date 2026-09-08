@@ -144,6 +144,27 @@ return [
             'number_format' => 'comma_dot',
             'flag' => 'radial-gradient(circle at 50% 50%, #bc002d 0 35%, #fff 35%)',
         ],
+        'ga_IE' => [
+            'label' => 'Gaeilge',
+            'region' => 'Éire',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'comma_dot',
+            'flag' => 'linear-gradient(to right, #169b62 0 33%, #fff 33% 66%, #ff883e 66%)',
+        ],
+        'vi_VN' => [
+            'label' => 'Tiếng Việt',
+            'region' => 'Việt Nam',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'dot_comma',
+            'flag' => 'conic-gradient(from 180deg, transparent 0 18deg, #ffff00 18deg 54deg, transparent 54deg 90deg, #ffff00 90deg 126deg, transparent 126deg 162deg, #ffff00 162deg 198deg, transparent 198deg 234deg, #ffff00 234deg 270deg, transparent 270deg 306deg, #ffff00 306deg 342deg, transparent 342deg) 50% 50% / 46% 62% no-repeat, #da251d',
+        ],
+        'th_TH' => [
+            'label' => 'ไทย',
+            'region' => 'ประเทศไทย',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'comma_dot',
+            'flag' => 'linear-gradient(to bottom, #a51931 0 16.66%, #f4f5f8 16.66% 33.33%, #2d2a4a 33.33% 66.66%, #f4f5f8 66.66% 83.33%, #a51931 83.33%)',
+        ],
         'el_GR' => [
             'label' => 'Ελληνικά',
             'region' => 'Ελλάδα',
