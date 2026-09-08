@@ -123,6 +123,13 @@ return [
                 ],
             ],
         ],
+        'zh_CN' => [
+            'label' => '简体中文',
+            'region' => '中国',
+            'date_format' => 'Y-m-d',
+            'number_format' => 'comma_dot',
+            'flag' => 'radial-gradient(circle at 20% 32%, #ffde00 0 22%, transparent 22%), radial-gradient(circle at 40% 15%, #ffde00 0 7%, transparent 7%), radial-gradient(circle at 49% 30%, #ffde00 0 7%, transparent 7%), radial-gradient(circle at 46% 49%, #ffde00 0 7%, transparent 7%), radial-gradient(circle at 35% 61%, #ffde00 0 7%, transparent 7%), #de2910',
+        ],
         'ja_JP' => [
             'label' => '日本語',
             'region' => '日本',

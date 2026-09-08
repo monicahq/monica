@@ -154,24 +154,24 @@ and what a reader notices immediately when it is broken. Sixteen nouns carry the
 Fill a column when you translate a language. A blank cell is a language nobody has fixed the words
 for yet, and the first person to translate it decides.
 
-| English | Strings | ja_JP | fr_FR | de_DE | es_ES | it_IT | nl_NL | pt_PT | pt_BR | tr_TR |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| template | 127 | テンプレート | | | | | | | |
-| account | 119 | アカウント | | | | | | | |
-| section | 107 | セクション | | | | | | | |
-| vault | 87 | 保管庫 | | | | | | | |
-| field | 76 | フィールド | | | | | | | |
-| reminder | 76 | リマインダー | | | | | | | |
-| contact | 59 | 連絡先 | | | | | | | |
-| passkey | 49 | パスキー | | | | | | | |
-| relationship | 35 | 関係 | | | | | | | |
-| value list | 26 | 選択リスト | | | | | | | |
-| marketplace | 17 | マーケットプレイス | | | | | | | |
-| note | 14 | メモ | | | | | | | |
-| share | 10 | 共有 | | | | | | | |
-| API key | 10 | APIキー | | | | | | | |
-| group | 5 | グループ | | | | | | | |
-| activity | 2 | アクティビティ | | | | | | | |
+| English | Strings | zh_CN | ja_JP | fr_FR | de_DE | es_ES | it_IT | nl_NL | pt_PT | pt_BR | tr_TR |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| template | 127 | 模板 | テンプレート | | | | | | | |
+| account | 119 | 账户 | アカウント | | | | | | | |
+| section | 107 | 区块 | セクション | | | | | | | |
+| vault | 87 | 保险库 | 保管庫 | | | | | | | |
+| field | 76 | 字段 | フィールド | | | | | | | |
+| reminder | 76 | 提醒 | リマインダー | | | | | | | |
+| contact | 59 | 联系人 | 連絡先 | | | | | | | |
+| passkey | 49 | 通行密钥 | パスキー | | | | | | | |
+| relationship | 35 | 关系 | 関係 | | | | | | | |
+| value list | 26 | 选项列表 | 選択リスト | | | | | | | |
+| marketplace | 17 | 市场 | マーケットプレイス | | | | | | | |
+| note | 14 | 备注 | メモ | | | | | | | |
+| share | 10 | 分享 | 共有 | | | | | | | |
+| API key | 10 | API 密钥 | APIキー | | | | | | | |
+| group | 5 | 群组 | グループ | | | | | | | |
+| activity | 2 | 活动 | アクティビティ | | | | | | | |
 
 Add a column for a language rather than a row for a word. A word that is not a product noun does not
 belong here: this table exists to stop one concept acquiring two names, not to hold a dictionary.
@@ -185,6 +185,7 @@ which is which. This table is that record, and it is the only place the answer l
 | Locale | Read by a native speaker | Notes |
 | --- | --- | --- |
 | en | Source language | The strings are the keys, written in the code |
+| zh_CN | No | One wording for every number. Declares no typography |
 | ja_JP | No | One wording for every number. Declares no typography |
 | fr_FR | No | Typography declared in full |
 | de_DE | No | |

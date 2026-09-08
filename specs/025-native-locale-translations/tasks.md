@@ -68,7 +68,7 @@ description: "Task list for 025-native-locale-translations"
 Each task registers the locale in `config/monica.php`, writes `lang/<locale>.json` through `php artisan monica:localize`, translates the four files under `lang/<locale>/`, and adds the locale to the review record. The procedure is [quickstart.md](quickstart.md), the config shape is [contracts/locale-registration.md](contracts/locale-registration.md), the wording count is in [research.md](research.md).
 
 - [X] T022 [US1] Add Japanese in `config/monica.php`, `lang/ja_JP.json` and `lang/ja_JP/`
-- [ ] T023 [US1] Add Simplified Chinese in `config/monica.php`, `lang/zh_CN.json` and `lang/zh_CN/`
+- [X] T023 [US1] Add Simplified Chinese in `config/monica.php`, `lang/zh_CN.json` and `lang/zh_CN/`
 - [ ] T024 [US1] Add Korean in `config/monica.php`, `lang/ko_KR.json` and `lang/ko_KR/`
 - [ ] T025 [US1] Add Polish, three wordings, in `config/monica.php`, `lang/pl_PL.json` and `lang/pl_PL/`
 - [ ] T026 [US1] Add Swedish in `config/monica.php`, `lang/sv_SE.json` and `lang/sv_SE/`
