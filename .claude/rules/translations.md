@@ -154,24 +154,24 @@ and what a reader notices immediately when it is broken. Sixteen nouns carry the
 Fill a column when you translate a language. A blank cell is a language nobody has fixed the words
 for yet, and the first person to translate it decides.
 
-| English | Strings | ko_KR | pl_PL | zh_CN | ja_JP | fr_FR | de_DE | es_ES | it_IT | nl_NL | pt_PT | pt_BR | tr_TR |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| template | 127 | 템플릿 | szablon | 模板 | テンプレート | | | | | | | |
-| account | 119 | 계정 | konto | 账户 | アカウント | | | | | | | |
-| section | 107 | 섹션 | sekcja | 区块 | セクション | | | | | | | |
-| vault | 87 | 보관함 | sejf | 保险库 | 保管庫 | | | | | | | |
-| field | 76 | 필드 | pole | 字段 | フィールド | | | | | | | |
-| reminder | 76 | 리마인더 | przypomnienie | 提醒 | リマインダー | | | | | | | |
-| contact | 59 | 연락처 | kontakt | 联系人 | 連絡先 | | | | | | | |
-| passkey | 49 | 패스키 | klucz dostępu | 通行密钥 | パスキー | | | | | | | |
-| relationship | 35 | 관계 | relacja | 关系 | 関係 | | | | | | | |
-| value list | 26 | 값 목록 | lista wartości | 选项列表 | 選択リスト | | | | | | | |
-| marketplace | 17 | 마켓플레이스 | rynek | 市场 | マーケットプレイス | | | | | | | |
-| note | 14 | 메모 | notatka | 备注 | メモ | | | | | | | |
-| share | 10 | 공유 | udostępnianie | 分享 | 共有 | | | | | | | |
-| API key | 10 | API 키 | klucz API | API 密钥 | APIキー | | | | | | | |
-| group | 5 | 그룹 | grupa | 群组 | グループ | | | | | | | |
-| activity | 2 | 활동 | aktywność | 活动 | アクティビティ | | | | | | | |
+| English | Strings | sv_SE | ko_KR | pl_PL | zh_CN | ja_JP | fr_FR | de_DE | es_ES | it_IT | nl_NL | pt_PT | pt_BR | tr_TR |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| template | 127 | mall | 템플릿 | szablon | 模板 | テンプレート | | | | | | | |
+| account | 119 | konto | 계정 | konto | 账户 | アカウント | | | | | | | |
+| section | 107 | avsnitt | 섹션 | sekcja | 区块 | セクション | | | | | | | |
+| vault | 87 | valv | 보관함 | sejf | 保险库 | 保管庫 | | | | | | | |
+| field | 76 | fält | 필드 | pole | 字段 | フィールド | | | | | | | |
+| reminder | 76 | påminnelse | 리마인더 | przypomnienie | 提醒 | リマインダー | | | | | | | |
+| contact | 59 | kontakt | 연락처 | kontakt | 联系人 | 連絡先 | | | | | | | |
+| passkey | 49 | passnyckel | 패스키 | klucz dostępu | 通行密钥 | パスキー | | | | | | | |
+| relationship | 35 | relation | 관계 | relacja | 关系 | 関係 | | | | | | | |
+| value list | 26 | värdelista | 값 목록 | lista wartości | 选项列表 | 選択リスト | | | | | | | |
+| marketplace | 17 | marknadsplats | 마켓플레이스 | rynek | 市场 | マーケットプレイス | | | | | | | |
+| note | 14 | anteckning | 메모 | notatka | 备注 | メモ | | | | | | | |
+| share | 10 | delning | 공유 | udostępnianie | 分享 | 共有 | | | | | | | |
+| API key | 10 | API-nyckel | API 키 | klucz API | API 密钥 | APIキー | | | | | | | |
+| group | 5 | grupp | 그룹 | grupa | 群组 | グループ | | | | | | | |
+| activity | 2 | aktivitet | 활동 | aktywność | 活动 | アクティビティ | | | | | | | |
 
 Add a column for a language rather than a row for a word. A word that is not a product noun does not
 belong here: this table exists to stop one concept acquiring two names, not to hold a dictionary.
@@ -185,6 +185,7 @@ which is which. This table is that record, and it is the only place the answer l
 | Locale | Read by a native speaker | Notes |
 | --- | --- | --- |
 | en | Source language | The strings are the keys, written in the code |
+| sv_SE | No | Two wordings for every number. Declares no typography |
 | ko_KR | No | One wording for every number. Declares no typography |
 | pl_PL | No | Three wordings for every number. Declares no typography |
 | zh_CN | No | One wording for every number. Declares no typography |

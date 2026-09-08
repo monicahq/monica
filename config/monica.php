@@ -144,6 +144,13 @@ return [
             'number_format' => 'comma_dot',
             'flag' => 'radial-gradient(circle at 50% 50%, #bc002d 0 35%, #fff 35%)',
         ],
+        'sv_SE' => [
+            'label' => 'Svenska',
+            'region' => 'Sverige',
+            'date_format' => 'Y-m-d',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, transparent 40%, #fecc00 40% 60%, transparent 60%), linear-gradient(to right, transparent 31%, #fecc00 31% 44%, transparent 44%), #006aa7',
+        ],
         'ko_KR' => [
             'label' => '한국어',
             'region' => '대한민국',
