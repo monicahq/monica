@@ -144,6 +144,27 @@ return [
             'number_format' => 'comma_dot',
             'flag' => 'radial-gradient(circle at 50% 50%, #bc002d 0 35%, #fff 35%)',
         ],
+        'el_GR' => [
+            'label' => 'Ελληνικά',
+            'region' => 'Ελλάδα',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'dot_comma',
+            'flag' => 'linear-gradient(to bottom, #0d5eaf 0 11.11%, #fff 11.11% 22.22%, #0d5eaf 22.22% 33.33%, #fff 33.33% 44.44%, #0d5eaf 44.44% 55.55%, #fff 55.55% 66.66%, #0d5eaf 66.66% 77.77%, #fff 77.77% 88.88%, #0d5eaf 88.88%), linear-gradient(to right, #0d5eaf 0 40%, transparent 40%) 0 0 / 100% 55.55% no-repeat, linear-gradient(to bottom, transparent 11.11%, #fff 11.11% 22.22%, transparent 22.22% 33.33%, #fff 33.33% 44.44%, transparent 44.44%) 0 0 / 40% 55.55% no-repeat, linear-gradient(to right, transparent 16%, #fff 16% 24%, transparent 24%) 0 0 / 40% 55.55% no-repeat',
+        ],
+        'ca_ES' => [
+            'label' => 'Català',
+            'region' => 'Catalunya',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'dot_comma',
+            'flag' => 'linear-gradient(to bottom, #fcdd09 0 11.11%, #da121a 11.11% 22.22%, #fcdd09 22.22% 33.33%, #da121a 33.33% 44.44%, #fcdd09 44.44% 55.55%, #da121a 55.55% 66.66%, #fcdd09 66.66% 77.77%, #da121a 77.77% 88.88%, #fcdd09 88.88%)',
+        ],
+        'lt_LT' => [
+            'label' => 'Lietuvių',
+            'region' => 'Lietuva',
+            'date_format' => 'Y-m-d',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, #fdb913 0 33%, #006a44 33% 66%, #c1272d 66%)',
+        ],
         'fi_FI' => [
             'label' => 'Suomi',
             'region' => 'Suomi',

@@ -77,9 +77,9 @@ Each task registers the locale in `config/monica.php`, writes `lang/<locale>.jso
 - [X] T029 [US1] Add Finnish in `config/monica.php`, `lang/fi_FI.json` and `lang/fi_FI/`
 - [X] T030 [US1] Add Icelandic in `config/monica.php`, `lang/is_IS.json` and `lang/is_IS/`
 - [X] T031 [US1] Add Hungarian in `config/monica.php`, `lang/hu_HU.json` and `lang/hu_HU/`
-- [ ] T032 [US1] Add Greek in `config/monica.php`, `lang/el_GR.json` and `lang/el_GR/`
-- [ ] T033 [US1] Add Catalan in `config/monica.php`, `lang/ca_ES.json` and `lang/ca_ES/`
-- [ ] T034 [US1] Add Lithuanian, three wordings, in `config/monica.php`, `lang/lt_LT.json` and `lang/lt_LT/`
+- [X] T032 [US1] Add Greek in `config/monica.php`, `lang/el_GR.json` and `lang/el_GR/`
+- [X] T033 [US1] Add Catalan in `config/monica.php`, `lang/ca_ES.json` and `lang/ca_ES/`
+- [X] T034 [US1] Add Lithuanian, three wordings, in `config/monica.php`, `lang/lt_LT.json` and `lang/lt_LT/`
 - [ ] T035 [US1] Add Irish, three wordings, in `config/monica.php`, `lang/ga_IE.json` and `lang/ga_IE/`
 - [ ] T036 [US1] Add Vietnamese in `config/monica.php`, `lang/vi_VN.json` and `lang/vi_VN/`
 - [ ] T037 [US1] Add Thai in `config/monica.php`, `lang/th_TH.json` and `lang/th_TH/`
