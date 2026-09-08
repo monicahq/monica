@@ -144,6 +144,27 @@ return [
             'number_format' => 'comma_dot',
             'flag' => 'radial-gradient(circle at 50% 50%, #bc002d 0 35%, #fff 35%)',
         ],
+        'fi_FI' => [
+            'label' => 'Suomi',
+            'region' => 'Suomi',
+            'date_format' => 'j.n.Y',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, transparent 40%, #002f6c 40% 60%, transparent 60%), linear-gradient(to right, transparent 31%, #002f6c 31% 44%, transparent 44%), #fff',
+        ],
+        'is_IS' => [
+            'label' => 'Íslenska',
+            'region' => 'Ísland',
+            'date_format' => 'j.n.Y',
+            'number_format' => 'dot_comma',
+            'flag' => 'linear-gradient(to bottom, transparent 43%, #d72828 43% 57%, transparent 57%), linear-gradient(to right, transparent 33.5%, #d72828 33.5% 41.5%, transparent 41.5%), linear-gradient(to bottom, transparent 36%, #fff 36% 64%, transparent 64%), linear-gradient(to right, transparent 28%, #fff 28% 47%, transparent 47%), #02529c',
+        ],
+        'hu_HU' => [
+            'label' => 'Magyar',
+            'region' => 'Magyarország',
+            'date_format' => 'Y. m. d.',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, #ce2939 0 33%, #fff 33% 66%, #477050 66%)',
+        ],
         'nb_NO' => [
             'label' => 'Norsk bokmål',
             'region' => 'Norge',
