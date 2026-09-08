@@ -144,6 +144,13 @@ return [
             'number_format' => 'comma_dot',
             'flag' => 'radial-gradient(circle at 50% 50%, #bc002d 0 35%, #fff 35%)',
         ],
+        'ko_KR' => [
+            'label' => '한국어',
+            'region' => '대한민국',
+            'date_format' => 'Y. m. d.',
+            'number_format' => 'comma_dot',
+            'flag' => 'linear-gradient(to bottom right, transparent 7%, #000 7% 9.5%, transparent 9.5% 11.5%, #000 11.5% 14%, transparent 14% 16%, #000 16% 18.5%, transparent 18.5% 81.5%, #000 81.5% 84%, transparent 84% 86%, #000 86% 88.5%, transparent 88.5% 90.5%, #000 90.5% 93%, transparent 93%), linear-gradient(to bottom left, transparent 7%, #000 7% 9.5%, transparent 9.5% 11.5%, #000 11.5% 14%, transparent 14% 16%, #000 16% 18.5%, transparent 18.5% 81.5%, #000 81.5% 84%, transparent 84% 86%, #000 86% 88.5%, transparent 88.5% 90.5%, #000 90.5% 93%, transparent 93%), radial-gradient(circle at 50% 50%, transparent 0 27%, #fff 27%), linear-gradient(to bottom right, #cd2e3a 0 50%, #0047a0 50%)',
+        ],
         'tr_TR' => [
             'label' => 'Türkçe',
             'region' => 'Türkiye',
