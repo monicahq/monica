@@ -85,10 +85,10 @@ Each task registers the locale in `config/monica.php`, writes `lang/<locale>.jso
 - [X] T037 [US1] Add Thai in `config/monica.php`, `lang/th_TH.json` and `lang/th_TH/`
 - [X] T038 [US1] Add Filipino in `config/monica.php`, `lang/fil_PH.json` and `lang/fil_PH/`
 - [X] T039 [US1] Add Hindi in `config/monica.php`, `lang/hi_IN.json` and `lang/hi_IN/`
-- [ ] T040 [US1] Add Tamil in `config/monica.php`, `lang/ta_IN.json` and `lang/ta_IN/`
-- [ ] T041 [US1] Add Bengali in `config/monica.php`, `lang/bn_BD.json` and `lang/bn_BD/`
-- [ ] T042 [US1] Add Sinhala in `config/monica.php`, `lang/si_LK.json` and `lang/si_LK/`
-- [ ] T043 [US1] Add Uzbek in `config/monica.php`, `lang/uz_UZ.json` and `lang/uz_UZ/`
+- [X] T040 [US1] Add Tamil in `config/monica.php`, `lang/ta_IN.json` and `lang/ta_IN/`
+- [X] T041 [US1] Add Bengali in `config/monica.php`, `lang/bn_BD.json` and `lang/bn_BD/`
+- [X] T042 [US1] Add Sinhala in `config/monica.php`, `lang/si_LK.json` and `lang/si_LK/`
+- [X] T043 [US1] Add Uzbek in `config/monica.php`, `lang/uz_UZ.json` and `lang/uz_UZ/`
 
 **Checkpoint**: every registered locale reports nothing missing, and each one shipped on the day it was written.
 

@@ -154,24 +154,24 @@ and what a reader notices immediately when it is broken. Sixteen nouns carry the
 Fill a column when you translate a language. A blank cell is a language nobody has fixed the words
 for yet, and the first person to translate it decides.
 
-| English | Strings | hi_IN | fil_PH | ga_IE | vi_VN | th_TH | el_GR | ca_ES | lt_LT | fi_FI | is_IS | hu_HU | nb_NO | da_DK | sv_SE | ko_KR | pl_PL | zh_CN | ja_JP | fr_FR | de_DE | es_ES | it_IT | nl_NL | pt_PT | pt_BR | tr_TR |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| template | 127 | टेम्पलेट | template | teimpléad | mẫu | เทมเพลต | πρότυπο | plantilla | šablonas | malli | sniðmát | sablon | mal | skabelon | mall | 템플릿 | szablon | 模板 | テンプレート | | | | | | | |
-| account | 119 | खाता | account | cuntas | tài khoản | บัญชี | λογαριασμός | compte | paskyra | tili | aðgangur | fiók | konto | konto | konto | 계정 | konto | 账户 | アカウント | | | | | | | |
-| section | 107 | अनुभाग | seksyon | rannán | mục | ส่วน | ενότητα | secció | skyrius | osio | hluti | szakasz | seksjon | afsnit | avsnitt | 섹션 | sekcja | 区块 | セクション | | | | | | | |
-| vault | 87 | तिजोरी | kaban | taisceadán | kho | ห้องนิรภัย | θησαυροφυλάκιο | caixa forta | seifas | holvi | hvelfing | széf | hvelv | boks | valv | 보관함 | sejf | 保险库 | 保管庫 | | | | | | | |
-| field | 76 | फ़ील्ड | field | réimse | trường | ฟิลด์ | πεδίο | camp | laukas | kenttä | reitur | mező | felt | felt | fält | 필드 | pole | 字段 | フィールド | | | | | | | |
-| reminder | 76 | अनुस्मारक | paalala | meabhrúchán | lời nhắc | การเตือน | υπενθύμιση | recordatori | priminimas | muistutus | áminning | emlékeztető | påminnelse | påmindelse | påminnelse | 리마인더 | przypomnienie | 提醒 | リマインダー | | | | | | | |
-| contact | 59 | संपर्क | contact | teagmhálaí | liên hệ | ผู้ติดต่อ | επαφή | contacte | kontaktas | yhteystieto | tengiliður | névjegy | kontakt | kontakt | kontakt | 연락처 | kontakt | 联系人 | 連絡先 | | | | | | | |
-| passkey | 49 | पासकी | passkey | paseochair | khóa truy cập | พาสคีย์ | κλειδί πρόσβασης | clau d’accés | prieigos raktas | avainkoodi | aðgangslykill | azonosítókulcs | passnøkkel | adgangsnøgle | passnyckel | 패스키 | klucz dostępu | 通行密钥 | パスキー | | | | | | | |
-| relationship | 35 | संबंध | relasyon | gaol | quan hệ | ความสัมพันธ์ | σχέση | relació | ryšys | suhde | tengsl | kapcsolat | relasjon | relation | relation | 관계 | relacja | 关系 | 関係 | | | | | | | |
-| value list | 26 | मान सूची | listahan ng halaga | liosta luachanna | danh sách giá trị | รายการค่า | λίστα τιμών | llista de valors | verčių sąrašas | arvolista | gildalisti | értéklista | verdiliste | værdiliste | värdelista | 값 목록 | lista wartości | 选项列表 | 選択リスト | | | | | | | |
-| marketplace | 17 | मार्केटप्लेस | marketplace | margadh | chợ | มาร์เก็ตเพลส | αγορά | mercat | prekyvietė | markkinapaikka | markaðstorg | piactér | markedsplass | markedsplads | marknadsplats | 마켓플레이스 | rynek | 市场 | マーケットプレイス | | | | | | | |
-| note | 14 | नोट | tala | nóta | ghi chú | บันทึก | σημείωση | nota | pastaba | muistiinpano | minnispunktur | jegyzet | notat | note | anteckning | 메모 | notatka | 备注 | メモ | | | | | | | |
-| share | 10 | साझाकरण | pagbabahagi | comhroinnt | chia sẻ | การแบ่งปัน | κοινοποίηση | compartició | bendrinimas | jakaminen | deiling | megosztás | deling | deling | delning | 공유 | udostępnianie | 分享 | 共有 | | | | | | | |
-| API key | 10 | API कुंजी | API key | eochair API | khóa API | คีย์ API | κλειδί API | clau API | API raktas | API-avain | API-lykill | API-kulcs | API-nøkkel | API-nøgle | API-nyckel | API 키 | klucz API | API 密钥 | APIキー | | | | | | | |
-| group | 5 | समूह | grupo | grúpa | nhóm | กลุ่ม | ομάδα | grup | grupė | ryhmä | hópur | csoport | gruppe | gruppe | grupp | 그룹 | grupa | 群组 | グループ | | | | | | | |
-| activity | 2 | गतिविधि | aktibidad | gníomhaíocht | hoạt động | กิจกรรม | δραστηριότητα | activitat | veikla | aktiviteetti | athöfn | tevékenység | aktivitet | aktivitet | aktivitet | 활동 | aktywność | 活动 | アクティビティ | | | | | | | |
+| English | Strings | ta_IN | bn_BD | si_LK | uz_UZ | hi_IN | fil_PH | ga_IE | vi_VN | th_TH | el_GR | ca_ES | lt_LT | fi_FI | is_IS | hu_HU | nb_NO | da_DK | sv_SE | ko_KR | pl_PL | zh_CN | ja_JP | fr_FR | de_DE | es_ES | it_IT | nl_NL | pt_PT | pt_BR | tr_TR |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| template | 127 | வார்ப்புரு | টেমপ্লেট | අච්චුව | shablon | टेम्पलेट | template | teimpléad | mẫu | เทมเพลต | πρότυπο | plantilla | šablonas | malli | sniðmát | sablon | mal | skabelon | mall | 템플릿 | szablon | 模板 | テンプレート | | | | | | | |
+| account | 119 | கணக்கு | অ্যাকাউন্ট | ගිණුම | hisob | खाता | account | cuntas | tài khoản | บัญชี | λογαριασμός | compte | paskyra | tili | aðgangur | fiók | konto | konto | konto | 계정 | konto | 账户 | アカウント | | | | | | | |
+| section | 107 | பகுதி | বিভাগ | කොටස | boʻlim | अनुभाग | seksyon | rannán | mục | ส่วน | ενότητα | secció | skyrius | osio | hluti | szakasz | seksjon | afsnit | avsnitt | 섹션 | sekcja | 区块 | セクション | | | | | | | |
+| vault | 87 | பெட்டகம் | সিন্দুক | සුරක්ෂිතාගාරය | seyf | तिजोरी | kaban | taisceadán | kho | ห้องนิรภัย | θησαυροφυλάκιο | caixa forta | seifas | holvi | hvelfing | széf | hvelv | boks | valv | 보관함 | sejf | 保险库 | 保管庫 | | | | | | | |
+| field | 76 | புலம் | ক্ষেত্র | ක්ෂේත්‍රය | maydon | फ़ील्ड | field | réimse | trường | ฟิลด์ | πεδίο | camp | laukas | kenttä | reitur | mező | felt | felt | fält | 필드 | pole | 字段 | フィールド | | | | | | | |
+| reminder | 76 | நினைவூட்டல் | অনুস্মারক | සිහිකැඳවීම | eslatma | अनुस्मारक | paalala | meabhrúchán | lời nhắc | การเตือน | υπενθύμιση | recordatori | priminimas | muistutus | áminning | emlékeztető | påminnelse | påmindelse | påminnelse | 리마인더 | przypomnienie | 提醒 | リマインダー | | | | | | | |
+| contact | 59 | தொடர்பு | পরিচিতি | සම්බන්ධතාව | kontakt | संपर्क | contact | teagmhálaí | liên hệ | ผู้ติดต่อ | επαφή | contacte | kontaktas | yhteystieto | tengiliður | névjegy | kontakt | kontakt | kontakt | 연락처 | kontakt | 联系人 | 連絡先 | | | | | | | |
+| passkey | 49 | கடவுச்சாவி | পাসকি | මුරයතුර | kirish kaliti | पासकी | passkey | paseochair | khóa truy cập | พาสคีย์ | κλειδί πρόσβασης | clau d’accés | prieigos raktas | avainkoodi | aðgangslykill | azonosítókulcs | passnøkkel | adgangsnøgle | passnyckel | 패스키 | klucz dostępu | 通行密钥 | パスキー | | | | | | | |
+| relationship | 35 | உறவு | সম্পর্ক | බැඳීම | munosabat | संबंध | relasyon | gaol | quan hệ | ความสัมพันธ์ | σχέση | relació | ryšys | suhde | tengsl | kapcsolat | relasjon | relation | relation | 관계 | relacja | 关系 | 関係 | | | | | | | |
+| value list | 26 | மதிப்புப் பட்டியல் | মানের তালিকা | අගය ලැයිස්තුව | qiymatlar roʻyxati | मान सूची | listahan ng halaga | liosta luachanna | danh sách giá trị | รายการค่า | λίστα τιμών | llista de valors | verčių sąrašas | arvolista | gildalisti | értéklista | verdiliste | værdiliste | värdelista | 값 목록 | lista wartości | 选项列表 | 選択リスト | | | | | | | |
+| marketplace | 17 | சந்தை | মার্কেটপ্লেস | වෙළඳපොළ | bozor | मार्केटप्लेस | marketplace | margadh | chợ | มาร์เก็ตเพลส | αγορά | mercat | prekyvietė | markkinapaikka | markaðstorg | piactér | markedsplass | markedsplads | marknadsplats | 마켓플레이스 | rynek | 市场 | マーケットプレイス | | | | | | | |
+| note | 14 | குறிப்பு | নোট | සටහන | qayd | नोट | tala | nóta | ghi chú | บันทึก | σημείωση | nota | pastaba | muistiinpano | minnispunktur | jegyzet | notat | note | anteckning | 메모 | notatka | 备注 | メモ | | | | | | | |
+| share | 10 | பங்கிடல் | ভাগ করা | බෙදාගැනීම | ulashish | साझाकरण | pagbabahagi | comhroinnt | chia sẻ | การแบ่งปัน | κοινοποίηση | compartició | bendrinimas | jakaminen | deiling | megosztás | deling | deling | delning | 공유 | udostępnianie | 分享 | 共有 | | | | | | | |
+| API key | 10 | API சாவி | API কী | API යතුර | API kaliti | API कुंजी | API key | eochair API | khóa API | คีย์ API | κλειδί API | clau API | API raktas | API-avain | API-lykill | API-kulcs | API-nøkkel | API-nøgle | API-nyckel | API 키 | klucz API | API 密钥 | APIキー | | | | | | | |
+| group | 5 | குழு | গোষ্ঠী | කණ්ඩායම | guruh | समूह | grupo | grúpa | nhóm | กลุ่ม | ομάδα | grup | grupė | ryhmä | hópur | csoport | gruppe | gruppe | grupp | 그룹 | grupa | 群组 | グループ | | | | | | | |
+| activity | 2 | செயல்பாடு | কার্যকলাপ | ක්‍රියාකාරකම | faoliyat | गतिविधि | aktibidad | gníomhaíocht | hoạt động | กิจกรรม | δραστηριότητα | activitat | veikla | aktiviteetti | athöfn | tevékenység | aktivitet | aktivitet | aktivitet | 활동 | aktywność | 活动 | アクティビティ | | | | | | | |
 
 Add a column for a language rather than a row for a word. A word that is not a product noun does not
 belong here: this table exists to stop one concept acquiring two names, not to hold a dictionary.
@@ -185,6 +185,10 @@ which is which. This table is that record, and it is the only place the answer l
 | Locale | Read by a native speaker | Notes |
 | --- | --- | --- |
 | en | Source language | The strings are the keys, written in the code |
+| ta_IN | No | Two wordings for every number, grouped as English does. Declares no typography |
+| bn_BD | No | Two wordings for every number, grouped as English does. Declares no typography |
+| si_LK | No | One wording for every number. Declares no typography |
+| uz_UZ | No | One wording for every number. Declares no typography |
 | hi_IN | No | Two wordings for every number, and zero groups with the singular, so the singular wording is what a Hindi reader sees at none. Declares no typography |
 | fil_PH | No | Two wordings for every number, though Filipino nouns do not inflect for number, so both wordings usually read the same. Declares no typography |
 | ga_IE | No | Three wordings for every number: singular, a dual for exactly two, and a plural. Irish inflects further after 3 to 10 and after 7 to 10, which three wordings cannot reach. Declares no typography |
