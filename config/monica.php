@@ -144,6 +144,13 @@ return [
             'number_format' => 'comma_dot',
             'flag' => 'radial-gradient(circle at 50% 50%, #bc002d 0 35%, #fff 35%)',
         ],
+        'hi_IN' => [
+            'label' => 'हिन्दी',
+            'region' => 'भारत',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'comma_dot',
+            'flag' => 'radial-gradient(circle at 50% 50%, transparent 0 5%, #000080 5% 7%, transparent 7%), linear-gradient(to bottom, #ff9933 0 33.33%, #fff 33.33% 66.66%, #138808 66.66%)',
+        ],
         'fil_PH' => [
             'label' => 'Filipino',
             'region' => 'Pilipinas',
