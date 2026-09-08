@@ -144,6 +144,13 @@ return [
             'number_format' => 'comma_dot',
             'flag' => 'radial-gradient(circle at 50% 50%, #bc002d 0 35%, #fff 35%)',
         ],
+        'nb_NO' => [
+            'label' => 'Norsk bokmål',
+            'region' => 'Norge',
+            'date_format' => 'd.m.Y',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, transparent 43%, #00205b 43% 57%, transparent 57%), linear-gradient(to right, transparent 33.5%, #00205b 33.5% 41.5%, transparent 41.5%), linear-gradient(to bottom, transparent 36%, #fff 36% 64%, transparent 64%), linear-gradient(to right, transparent 28%, #fff 28% 47%, transparent 47%), #ba0c2f',
+        ],
         'da_DK' => [
             'label' => 'Dansk',
             'region' => 'Danmark',
