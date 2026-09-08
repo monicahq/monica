@@ -123,6 +123,13 @@ return [
                 ],
             ],
         ],
+        'ja_JP' => [
+            'label' => '日本語',
+            'region' => '日本',
+            'date_format' => 'Y/m/d',
+            'number_format' => 'comma_dot',
+            'flag' => 'radial-gradient(circle at 50% 50%, #bc002d 0 35%, #fff 35%)',
+        ],
         'tr_TR' => [
             'label' => 'Türkçe',
             'region' => 'Türkiye',

@@ -154,24 +154,24 @@ and what a reader notices immediately when it is broken. Sixteen nouns carry the
 Fill a column when you translate a language. A blank cell is a language nobody has fixed the words
 for yet, and the first person to translate it decides.
 
-| English | Strings | fr_FR | de_DE | es_ES | it_IT | nl_NL | pt_PT | pt_BR | tr_TR |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| template | 127 | | | | | | | | |
-| account | 119 | | | | | | | | |
-| section | 107 | | | | | | | | |
-| vault | 87 | | | | | | | | |
-| field | 76 | | | | | | | | |
-| reminder | 76 | | | | | | | | |
-| contact | 59 | | | | | | | | |
-| passkey | 49 | | | | | | | | |
-| relationship | 35 | | | | | | | | |
-| value list | 26 | | | | | | | | |
-| marketplace | 17 | | | | | | | | |
-| note | 14 | | | | | | | | |
-| share | 10 | | | | | | | | |
-| API key | 10 | | | | | | | | |
-| group | 5 | | | | | | | | |
-| activity | 2 | | | | | | | | |
+| English | Strings | ja_JP | fr_FR | de_DE | es_ES | it_IT | nl_NL | pt_PT | pt_BR | tr_TR |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| template | 127 | テンプレート | | | | | | | |
+| account | 119 | アカウント | | | | | | | |
+| section | 107 | セクション | | | | | | | |
+| vault | 87 | 保管庫 | | | | | | | |
+| field | 76 | フィールド | | | | | | | |
+| reminder | 76 | リマインダー | | | | | | | |
+| contact | 59 | 連絡先 | | | | | | | |
+| passkey | 49 | パスキー | | | | | | | |
+| relationship | 35 | 関係 | | | | | | | |
+| value list | 26 | 選択リスト | | | | | | | |
+| marketplace | 17 | マーケットプレイス | | | | | | | |
+| note | 14 | メモ | | | | | | | |
+| share | 10 | 共有 | | | | | | | |
+| API key | 10 | APIキー | | | | | | | |
+| group | 5 | グループ | | | | | | | |
+| activity | 2 | アクティビティ | | | | | | | |
 
 Add a column for a language rather than a row for a word. A word that is not a product noun does not
 belong here: this table exists to stop one concept acquiring two names, not to hold a dictionary.
@@ -185,6 +185,7 @@ which is which. This table is that record, and it is the only place the answer l
 | Locale | Read by a native speaker | Notes |
 | --- | --- | --- |
 | en | Source language | The strings are the keys, written in the code |
+| ja_JP | No | One wording for every number. Declares no typography |
 | fr_FR | No | Typography declared in full |
 | de_DE | No | |
 | es_ES | No | |
