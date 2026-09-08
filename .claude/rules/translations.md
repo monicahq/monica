@@ -154,24 +154,24 @@ and what a reader notices immediately when it is broken. Sixteen nouns carry the
 Fill a column when you translate a language. A blank cell is a language nobody has fixed the words
 for yet, and the first person to translate it decides.
 
-| English | Strings | zh_CN | ja_JP | fr_FR | de_DE | es_ES | it_IT | nl_NL | pt_PT | pt_BR | tr_TR |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| template | 127 | 模板 | テンプレート | | | | | | | |
-| account | 119 | 账户 | アカウント | | | | | | | |
-| section | 107 | 区块 | セクション | | | | | | | |
-| vault | 87 | 保险库 | 保管庫 | | | | | | | |
-| field | 76 | 字段 | フィールド | | | | | | | |
-| reminder | 76 | 提醒 | リマインダー | | | | | | | |
-| contact | 59 | 联系人 | 連絡先 | | | | | | | |
-| passkey | 49 | 通行密钥 | パスキー | | | | | | | |
-| relationship | 35 | 关系 | 関係 | | | | | | | |
-| value list | 26 | 选项列表 | 選択リスト | | | | | | | |
-| marketplace | 17 | 市场 | マーケットプレイス | | | | | | | |
-| note | 14 | 备注 | メモ | | | | | | | |
-| share | 10 | 分享 | 共有 | | | | | | | |
-| API key | 10 | API 密钥 | APIキー | | | | | | | |
-| group | 5 | 群组 | グループ | | | | | | | |
-| activity | 2 | 活动 | アクティビティ | | | | | | | |
+| English | Strings | pl_PL | zh_CN | ja_JP | fr_FR | de_DE | es_ES | it_IT | nl_NL | pt_PT | pt_BR | tr_TR |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| template | 127 | szablon | 模板 | テンプレート | | | | | | | |
+| account | 119 | konto | 账户 | アカウント | | | | | | | |
+| section | 107 | sekcja | 区块 | セクション | | | | | | | |
+| vault | 87 | sejf | 保险库 | 保管庫 | | | | | | | |
+| field | 76 | pole | 字段 | フィールド | | | | | | | |
+| reminder | 76 | przypomnienie | 提醒 | リマインダー | | | | | | | |
+| contact | 59 | kontakt | 联系人 | 連絡先 | | | | | | | |
+| passkey | 49 | klucz dostępu | 通行密钥 | パスキー | | | | | | | |
+| relationship | 35 | relacja | 关系 | 関係 | | | | | | | |
+| value list | 26 | lista wartości | 选项列表 | 選択リスト | | | | | | | |
+| marketplace | 17 | rynek | 市场 | マーケットプレイス | | | | | | | |
+| note | 14 | notatka | 备注 | メモ | | | | | | | |
+| share | 10 | udostępnianie | 分享 | 共有 | | | | | | | |
+| API key | 10 | klucz API | API 密钥 | APIキー | | | | | | | |
+| group | 5 | grupa | 群组 | グループ | | | | | | | |
+| activity | 2 | aktywność | 活动 | アクティビティ | | | | | | | |
 
 Add a column for a language rather than a row for a word. A word that is not a product noun does not
 belong here: this table exists to stop one concept acquiring two names, not to hold a dictionary.
@@ -185,6 +185,7 @@ which is which. This table is that record, and it is the only place the answer l
 | Locale | Read by a native speaker | Notes |
 | --- | --- | --- |
 | en | Source language | The strings are the keys, written in the code |
+| pl_PL | No | Three wordings for every number. Declares no typography |
 | zh_CN | No | One wording for every number. Declares no typography |
 | ja_JP | No | One wording for every number. Declares no typography |
 | fr_FR | No | Typography declared in full |

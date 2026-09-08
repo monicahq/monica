@@ -123,6 +123,13 @@ return [
                 ],
             ],
         ],
+        'pl_PL' => [
+            'label' => 'Polski',
+            'region' => 'Polska',
+            'date_format' => 'd.m.Y',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, #fff 0 50%, #dc143c 50%)',
+        ],
         'zh_CN' => [
             'label' => '简体中文',
             'region' => '中国',

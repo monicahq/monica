@@ -70,7 +70,7 @@ Each task registers the locale in `config/monica.php`, writes `lang/<locale>.jso
 - [X] T022 [US1] Add Japanese in `config/monica.php`, `lang/ja_JP.json` and `lang/ja_JP/`
 - [X] T023 [US1] Add Simplified Chinese in `config/monica.php`, `lang/zh_CN.json` and `lang/zh_CN/`
 - [ ] T024 [US1] Add Korean in `config/monica.php`, `lang/ko_KR.json` and `lang/ko_KR/`
-- [ ] T025 [US1] Add Polish, three wordings, in `config/monica.php`, `lang/pl_PL.json` and `lang/pl_PL/`
+- [X] T025 [US1] Add Polish, three wordings, in `config/monica.php`, `lang/pl_PL.json` and `lang/pl_PL/`
 - [ ] T026 [US1] Add Swedish in `config/monica.php`, `lang/sv_SE.json` and `lang/sv_SE/`
 - [ ] T027 [US1] Add Danish in `config/monica.php`, `lang/da_DK.json` and `lang/da_DK/`
 - [ ] T028 [US1] Add Norwegian Bokmål in `config/monica.php`, `lang/nb_NO.json` and `lang/nb_NO/`
