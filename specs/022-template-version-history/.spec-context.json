@@ -3,7 +3,7 @@
   "specName": "Template version history",
   "branch": "2026-09-05-template-history",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -192,7 +192,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-05T23:19:35.850Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-09T20:01:43.551Z"
     }
   ],
-  "currentTask": "T020"
+  "currentTask": "T020",
+  "telemetryInstanceId": "1984c742-b239-4ad3-a9f0-fc0e8c752823"
 }

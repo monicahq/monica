@@ -3,7 +3,7 @@
   "specName": "Friends seed data",
   "branch": "2026-09-04-friends-seed-data",
   "currentStep": "specify",
-  "status": "specified",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -11,6 +11,13 @@
       "kind": "start",
       "by": "extension",
       "at": "2026-09-04T14:52:17.432Z"
+    },
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-09T20:01:58.184Z"
     }
   ],
   "telemetryInstanceId": "1d684982-f757-4e86-a9e9-657db1007e1b"

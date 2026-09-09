@@ -4,6 +4,27 @@ declare(strict_types=1);
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Supported locales
+    |--------------------------------------------------------------------------
+    |
+    | The languages the interface is translated into. The key is the locale, and
+    | matches the name of the file in the lang folder. The flag is a css value
+    | for the background property, drawn rather than shipped as an image. The
+    | date format is the order that language reads dates in, and the number
+    | format the separators it writes numbers with, both used for whoever has
+    | not picked one of their own.
+    |
+    | The typography is how that language punctuates, read by monica:localize to
+    | refuse a translation written any other way. It is optional: a locale that
+    | declares none is not checked, which is where eight of the nine stand. The
+    | rules themselves are written down in .claude/rules/translations.md. The
+    | characters are escaped rather than pasted, because a non-breaking space is
+    | invisible and an apostrophe has a twin that is wrong.
+    |
+    */
+
     'locales' => [
         'en' => [
             'label' => 'English',
@@ -101,6 +122,7 @@ return [
             'date_format' => 'd/m/Y',
             'number_format' => 'dot_comma',
             'answers_bare_language' => true,
+            /* Four green corners over yellow leave the lozenge, and the disc sits on top of it. */
             'flag' => 'radial-gradient(circle at 50% 50%, #002776 0 28%, transparent 28%), linear-gradient(to bottom right, #009c3b 0 25%, transparent 25%), linear-gradient(to bottom left, #009c3b 0 25%, transparent 25%), linear-gradient(to top right, #009c3b 0 25%, transparent 25%), linear-gradient(to top left, #009c3b 0 25%, transparent 25%), #fedf00',
             'typography' => [
                 'quotes' => [
@@ -282,6 +304,7 @@ return [
             'region' => 'Türkiye',
             'date_format' => 'd.m.Y',
             'number_format' => 'dot_comma',
+            /* The crescent is a red disc laid over a white one, and the star is a dot: at 20 by 14 pixels a five-pointed star drawn in gradients reads as a smudge. */
             'flag' => 'radial-gradient(circle at 62% 50%, #fff 0 9%, transparent 9%), radial-gradient(circle at 46% 50%, #e30a17 0 31%, transparent 31%), radial-gradient(circle at 40% 50%, #fff 0 32%, transparent 32%), #e30a17',
             'typography' => [
                 'apostrophe' => "\u{2019}",
@@ -293,52 +316,195 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Remember me
+    |--------------------------------------------------------------------------
+    |
+    | How long a session survives when somebody ticks "remember me" on the sign
+    | in screen. The screen names this number, so changing it here changes what
+    | the visitor is promised.
+    |
+    */
+
     'remember_duration_days' => env('MONICA_REMEMBER_DURATION_DAYS', 30),
 
     /*
-     * Whether somebody may sign in with a link emailed to them rather than with a password. It is on
-     * unless an instance switches it off, and switching it off takes the request screen, the
-     * submission and the link itself out of the instance rather than merely hiding the offer.
-     */
+    |--------------------------------------------------------------------------
+    | Login using a link
+    |--------------------------------------------------------------------------
+    |
+    | Whether somebody may sign in with a link emailed to them rather than with a password.
+    | Switching it off takes the request screen, the submission and the link itself out of
+    | the instance rather than merely hiding the offer.
+    |
+    */
     'magic_link_enabled' => (bool) env('MONICA_MAGIC_LINK_ENABLED', true),
 
     'magic_link_duration_minutes' => env('MONICA_MAGIC_LINK_DURATION_MINUTES', 5),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Legal pages
+    |--------------------------------------------------------------------------
+    |
+    | Where the terms of use and the privacy policy live. They sit on the public
+    | site rather than in the application, so an instance that runs its own copy
+    | of those documents can point at them here.
+    |
+    */
 
     'terms_url' => env('MONICA_TERMS_URL', 'https://monicahq.com/terms'),
 
     'privacy_url' => env('MONICA_PRIVACY_URL', 'https://monicahq.com/privacy'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Self hosted
+    |--------------------------------------------------------------------------
+    |
+    | Whether this instance runs outside of the cloud one. An account created on
+    | a self hosted instance is never metered: it has no storage ceiling and no
+    | rate limit applies to it.
+    |
+    */
+
     'self_hosted' => env('MONICA_SELF_HOSTED', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Free storage
+    |--------------------------------------------------------------------------
+    |
+    | How many bytes of files an account gets on the free offer of the cloud
+    | instance, before the one time purchase. The ceiling is stored on the
+    | account when it is created, so raising this number here does not raise it
+    | for the accounts that already exist.
+    |
+    */
 
     'free_storage_limit_in_bytes' => env('MONICA_FREE_STORAGE_LIMIT_IN_BYTES', 104857600),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Orphaned files
+    |--------------------------------------------------------------------------
+    |
+    | How many days a file nothing points at is kept before the sweep takes it.
+    | It has to be longer than the window in which a record can be restored to
+    | an earlier version, or a restore recovers a pointer to nothing.
+    |
+    */
+
     'orphaned_file_grace_period_in_days' => env('MONICA_ORPHANED_FILE_GRACE_PERIOD_IN_DAYS', 30),
+
+    /*
+    |--------------------------------------------------------------------------
+    | How far ahead reminder deadlines are generated
+    |--------------------------------------------------------------------------
+    |
+    | A rule is expanded into concrete deadlines over a rolling window rather
+    | than for ever, because a yearly rule multiplied across hundreds of records
+    | would otherwise fill a table nobody reads. Ninety days is long enough that
+    | no realistic outage of the generator loses a deadline, since the sweep runs
+    | daily and only has to have run once inside the window.
+    |
+    | Shortening it below the interval between two runs of the generator loses
+    | deadlines outright.
+    |
+    */
 
     'reminder_generation_window_in_days' => env('MONICA_REMINDER_GENERATION_WINDOW_IN_DAYS', 90),
 
+    /*
+    |--------------------------------------------------------------------------
+    | How many times a notification is attempted
+    |--------------------------------------------------------------------------
+    |
+    | A channel that refuses a notification is tried again, and abandoned after
+    | this many attempts with the reason written on the row. Nothing is deleted
+    | on failure, so a notification nobody received is still visible as one.
+    |
+    */
+
     'notification_maximum_attempts' => env('MONICA_NOTIFICATION_MAXIMUM_ATTEMPTS', 3),
 
+    /*
+    |--------------------------------------------------------------------------
+    | The largest single file
+    |--------------------------------------------------------------------------
+    |
+    | How many kilobytes one upload may weigh. The account's own storage ceiling
+    | is the real limit and is enforced where the file is written; this is here
+    | so a form can refuse an enormous file with a sentence under the control,
+    | rather than letting PHP truncate it and reporting nothing at all.
+    |
+    | It has to stay under `upload_max_filesize` and `post_max_size` in the php
+    | configuration, since neither of those can be argued with from here.
+    |
+    */
+
     'max_file_size_in_kilobytes' => env('MONICA_MAX_FILE_SIZE_IN_KILOBYTES', 10240),
+
+    /*
+    |--------------------------------------------------------------------------
+    | What this instance is, and which release it runs
+    |--------------------------------------------------------------------------
+    |
+    | The status endpoint of the API reports both, so that somebody pointing a
+    | monitor at an instance can tell which one answered and what it was running
+    | when it did. The version is the release rather than a commit: a self hosted
+    | instance is a copy somebody chose to install, and the number they read here
+    | is the number they compare against the changelog.
+    |
+    | The name is the host, and it defaults to the application URL rather than to
+    | a fixed string, so an instance nobody configured still says something true
+    | about itself.
+    |
+    */
 
     'version' => env('MONICA_VERSION', '3.0.0'),
 
     'instance' => env('MONICA_INSTANCE', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+
+    /*
+    |--------------------------------------------------------------------------
+    | How many things one page of an API list holds
+    |--------------------------------------------------------------------------
+    |
+    | Every list the API answers is paginated the same way, which the reference
+    | promises under Getting started: `page` moves through the results and
+    | `per_page` sizes them. The first value here is what a caller gets when it
+    | asks for nothing, and the second is the ceiling: a request for more is
+    | brought back down to it rather than refused, because a page size somebody
+    | typed wrongly is not a reason to fail their call.
+    |
+    | It sits here rather than in the framework's own configuration because the
+    | ceiling is an operator's decision. A hosted instance and a self hosted one
+    | run the same product and differ in quotas, and this is one of them.
+    |
+    */
 
     'api_default_items_per_page' => env('MONICA_API_DEFAULT_ITEMS_PER_PAGE', 25),
 
     'api_maximum_items_per_page' => env('MONICA_API_MAXIMUM_ITEMS_PER_PAGE', 100),
 
     /*
-     * A signed link that signs somebody in, so a screenshot tool that can only open a URL can reach
-     * a screen behind the sign in.
-     *
-     * Three things have to be true at once for it to work: the environment is a development one,
-     * this setting has been switched on by hand, and the instance answers on a development host.
-     * The host is asked for because `.env.example` ships `APP_ENV=local`, so an instance deployed
-     * from it would otherwise be one forgotten setting away from a way in. Above all that the link
-     * is signed with the application key and expires, so minting one already takes everything an
-     * attacker would need anyway.
-     */
+    |--------------------------------------------------------------------------
+    | Screenshot Link
+    |--------------------------------------------------------------------------
+    |
+    | A signed link that signs somebody in, so a screenshot tool that can only open a URL can reach
+    | a screen behind the sign in.
+    |
+    | Three things have to be true at once for it to work: the environment is a development one,
+    | this setting has been switched on by hand, and the instance answers on a development host.
+    | The host is asked for because `.env.example` ships `APP_ENV=local`, so an instance deployed
+    | from it would otherwise be one forgotten setting away from a way in. Above all that the link
+    | is signed with the application key and expires, so minting one already takes everything an
+    | attacker would need anyway.
+    |
+    */
     'screenshot_link' => [
         'enabled' => (bool) env('MONICA_SCREENSHOT_LINK_ENABLED', false),
         'lifetime_in_minutes' => (int) env('MONICA_SCREENSHOT_LINK_LIFETIME_IN_MINUTES', 5),

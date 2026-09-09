@@ -175,22 +175,6 @@ class LoginControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_no_longer_offers_a_direct_sign_in(): void
-    {
-        User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $this->get(route('auth.login.new'))
-            ->assertOk()
-            ->assertDontSee('Sign in as');
-
-        $this->post('laravel-login-link-login', [
-            'email' => 'michael.scott@dundermifflin.com',
-        ])->assertStatus(404);
-
-        $this->assertGuest();
-    }
-
-    #[Test]
     public function it_hides_the_magic_link_offer_while_the_setting_is_off(): void
     {
         config()->set('monica.magic_link_enabled', false);

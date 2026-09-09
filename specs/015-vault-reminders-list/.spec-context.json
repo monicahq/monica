@@ -3,7 +3,7 @@
   "specName": "The vault's reminders, on one screen",
   "branch": "2026-09-04-vault-reminders-list",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -121,7 +121,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-04T14:37:27.236Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-09T20:02:00.099Z"
     }
   ],
-  "currentTask": "T013"
+  "currentTask": "T013",
+  "telemetryInstanceId": "d746ef70-6259-4b24-bac1-deed6ce20797"
 }

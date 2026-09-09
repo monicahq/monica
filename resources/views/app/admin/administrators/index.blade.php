@@ -20,7 +20,7 @@
 
             <p class="text-sm text-muted">
               {{ $administrator->user->email }}
-              &middot;
+              ⋅
               @if ($administrator->grantedBy !== null)
                 {{ __('granted by :name on :date', ['name' => $administrator->grantedBy->name, 'date' => $administrator->created_at->isoFormat('LL')]) }}
               @else

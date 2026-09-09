@@ -3,7 +3,7 @@
   "specName": "Template endpoints",
   "branch": "2026-09-05-api-templates",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -441,7 +441,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-06T17:45:45.229Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-09T20:01:41.626Z"
     }
   ],
-  "currentTask": "T053"
+  "currentTask": "T053",
+  "telemetryInstanceId": "fab2adbb-f5f3-4cc7-a054-37bd137aff40"
 }

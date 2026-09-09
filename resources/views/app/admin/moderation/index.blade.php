@@ -24,8 +24,8 @@
 
             <p class="text-sm text-muted">
               {{ $submission->listing->author_name }}
-              &middot; {{ $submission->listing->category->name }}
-              &middot; {{ __('version :version', ['version' => $submission->version_number]) }}
+              ⋅ {{ $submission->listing->category->name }}
+              ⋅ {{ __('version :version', ['version' => $submission->version_number]) }}
             </p>
           </div>
 

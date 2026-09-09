@@ -3,7 +3,7 @@
   "specName": "Entity type endpoints",
   "branch": "2026-09-05-api-entity-types",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -216,7 +216,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-05T13:09:06.983Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-09T20:01:45.585Z"
     }
   ],
-  "currentTask": "T023"
+  "currentTask": "T023",
+  "telemetryInstanceId": "5c26fd64-c9dc-4b34-82af-3be172b820b4"
 }

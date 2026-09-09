@@ -42,7 +42,7 @@
       </div>
 
       <p class="pt-10 text-center text-xs text-muted-soft">
-        &copy; {{ config('app.name') }} {{ now()->format('Y') }} &middot; {{ __('Open source HR') }}
+        © {{ config('app.name') }} {{ now()->format('Y') }} ⋅ {{ __('Open source HR') }}
       </p>
     </main>
 

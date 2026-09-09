@@ -3,7 +3,7 @@
   "specName": "Contact endpoints",
   "branch": "2026-09-04-api-contact",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -312,7 +312,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-05T01:36:03.726Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-09T20:01:50.200Z"
     }
   ],
-  "currentTask": "T035"
+  "currentTask": "T035",
+  "telemetryInstanceId": "df6072f7-997b-43fa-bebb-a3bfdb406633"
 }

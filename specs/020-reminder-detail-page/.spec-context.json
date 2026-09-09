@@ -3,7 +3,7 @@
   "specName": "Reminder Detail Page",
   "branch": "2026-09-04-api-reminde",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -352,7 +352,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-05T03:08:30.676Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-09T20:01:47.583Z"
     }
   ],
-  "currentTask": "T040"
+  "currentTask": "T040",
+  "telemetryInstanceId": "0681b4ba-1d07-41d9-b4cc-8096432b68ac"
 }

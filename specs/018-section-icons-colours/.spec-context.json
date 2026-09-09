@@ -3,7 +3,7 @@
   "specName": "Section Icons and Colours",
   "branch": "2026-09-04--color-section",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -369,6 +369,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-04T21:10:34.030Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-09T20:01:52.319Z"
     }
   ],
   "currentTask": "T043",

@@ -30,7 +30,7 @@
                 <span>{{ $fact['label'] }} <b class="font-semibold text-body">{{ $fact['value'] }}</b></span>
 
                 @if (! $loop->last)
-                  <span aria-hidden="true">&middot;</span>
+                  <span aria-hidden="true">⋅</span>
                 @endif
               @endforeach
             </p>

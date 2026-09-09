@@ -39,7 +39,7 @@
               {{ $row['email'] }}
 
               @if ($row['state'] !== null)
-                &middot; {{ $row['state'] }}
+                ⋅ {{ $row['state'] }}
               @endif
             </p>
           </div>

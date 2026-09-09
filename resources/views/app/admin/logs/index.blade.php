@@ -41,10 +41,10 @@
             {{ $entry->author }}
 
             @if ($entry->account !== null)
-              &middot; {{ __('account :id', ['id' => $entry->account_id]) }}
+              ⋅ {{ __('account :id', ['id' => $entry->account_id]) }}
             @endif
 
-            &middot; {{ $entry->created_at->diffForHumans() }}
+            ⋅ {{ $entry->created_at->diffForHumans() }}
           </p>
         </div>
       @empty

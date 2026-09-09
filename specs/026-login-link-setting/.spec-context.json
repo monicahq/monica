@@ -3,7 +3,7 @@
   "specName": "Example account sign in shortcut behind one instance setting",
   "branch": "worktree-bridge-cse_012NvJpT9qbf3BZsN83PMSRS",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -264,6 +264,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-09T16:10:14.408Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-09T20:01:35.387Z"
     }
   ],
   "telemetryInstanceId": "c784d2e5-fbe5-41f2-a27a-cff291c040f4",

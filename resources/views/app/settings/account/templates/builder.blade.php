@@ -33,7 +33,7 @@
           <x-link :href="route('settings.templates.edit', $template)" turbo>{{ __('Edit') }}</x-link>
 
           @if ($viewModel->hasHistory())
-            <span class="text-muted-soft" aria-hidden="true">&middot;</span>
+            <span class="text-muted-soft" aria-hidden="true">⋅</span>
 
             <x-link :href="route('settings.templateVersions.index', $template)" turbo>{{ __('Version history') }}</x-link>
           @endif

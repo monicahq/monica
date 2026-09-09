@@ -48,7 +48,7 @@
           <p class="mt-1 text-sm text-pretty text-ink-soft">{{ $link['shows'] }}</p>
 
           <p class="mt-0.5 text-xs text-muted">
-            {{ $link['opened'] }} &middot; {{ $link['lastSeen'] }} &middot; {{ $link['ends'] }}
+            {{ $link['opened'] }} ⋅ {{ $link['lastSeen'] }} ⋅ {{ $link['ends'] }}
           </p>
 
           <x-slot:end>
