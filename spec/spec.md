@@ -319,7 +319,9 @@ The supplied types are Parent / Child, Sibling, Grandparent / Grandchild, Aunt o
 
 **A relationship is read in both directions.** It is entered once and stored once. Several types may link the same two people: two siblings may also be colleagues.
 
-**Time stays simple in the first version.** A relationship is current, ended or unknown and may carry a start and an end date. A renewed relationship is recorded as another row. More precise and repeated periods can be added later without changing the meaning of these rows.
+**A large relationship list remains usable.** On a contact record, relationships can be filtered by category, type, current or ended status, and the role read from that contact's side. Parents and Children are direct filters backed by the protected Parent / Child behaviour and its direction, not by a displayed name. Filtering, counts, sorting and pagination happen in the database, so requesting the children of a contact does not load their other relationships first.
+
+**Time stays simple in the first version.** A relationship is current or ended and may carry a start and an end date. An ended relationship does not require a known end date. A renewed relationship is recorded as another row. More precise and repeated periods can be added later without changing the meaning of these rows.
 
 **The household is not the couple.** Two partners can live apart, have several households, remain co-parents after a breakup. The product therefore models **groups** (household, family unit, couple, social circle, team) separately from relationships, with their own dates of entry and exit. A household is never automatically deduced from a couple.
 
@@ -329,10 +331,10 @@ The supplied types are Parent / Child, Sibling, Grandparent / Grandchild, Aunt o
 
 ### 8.3. Explicit projections and safeguards
 
-- **The family tree contains only recorded facts.** It follows non-deleted Parent / Child rows and may show recorded romantic links beside them. Parentage remains in the tree regardless of temporal status: death or estrangement does not erase it. Following a chain places the recorded people in a tree; it does not create a Grandparent, Sibling, Aunt, Uncle or Cousin relationship.
+- **The family tree is a day-one feature containing only recorded facts.** Starting from any contact, it follows non-deleted Parent / Child rows recursively to show recorded ancestors and descendants, and may show recorded romantic links beside them. Its branches are loaded as needed rather than by loading every relationship in the vault. Parentage remains in the tree regardless of temporal status: death or estrangement does not erase it. Following a chain may place a grandparent, grandchild or sibling in the tree; it does not create or assert a Grandparent, Sibling, Aunt, Uncle or Cousin relationship.
 - **Romantic history contains only recorded facts.** It orders explicit Partner, Fiancé and Spouse rows using their status and known dates. An ended row is the history of an ex relationship; Ex-partner is not a supplied type.
 - **No deduction or suggestion runs in the first version.** The product never guesses a link from names, shared parents, dates, households or other relationships.
-- **Invalid structures are refused.** A contact cannot link to itself, Parent / Child cannot form a cycle, and an end date cannot precede a start date. Checking a cycle validates the row being entered and does not infer another relationship.
+- **Invalid structures are refused.** A contact cannot link to itself, a relationship cannot cross a vault, Parent / Child cannot form a cycle, and an end date cannot precede a start date. Moving one contact is refused when it would make an existing relationship cross a vault. Checking a cycle validates the row being entered and does not infer another relationship.
 - **History remains visible.** Creating, editing, ending, deleting and restoring a relationship writes to the changelog and may appear on the contacts' timelines.
 - **Merging contacts preserves every explicit relationship.** The preview shows any exact duplicate created by the merge and the user decides what to keep. The merge does not combine different types or histories by guessing that they mean the same thing.
 

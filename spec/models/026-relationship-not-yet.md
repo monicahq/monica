@@ -5,9 +5,9 @@
 
 ## What it is
 
-A relationship explicitly entered between two contacts. One row holds both sides and is read from either end.
+A relationship explicitly entered between two contacts. One row holds both sides and is read from either contact's point of view.
 
-The first version deliberately keeps this object small: two people, one type, one temporal state, optional dates and notes. Categories organise the available types. Protected behaviours on supplied types allow a family tree and romantic history without guessing any additional relationship.
+The first version stays small: two people, one type, a current or ended state, optional dates and notes. It must nevertheless support two day-one uses well: filtering a contact's relationships and drawing a family tree from recorded Parent / Child links.
 
 ## Fields
 
@@ -19,47 +19,76 @@ vault_id                    int                             vault both contacts 
 relationship_type_id        int                             structure of the link
 contact_a_id                int                             side carrying role A of a directed type
 contact_b_id                int                             side carrying role B of a directed type
-status                      enum (current, ended, unknown)  whether the relationship applies today
-started_on                  date                            known start date, null when unknown or irrelevant
-ended_on                    date                            known end date, null when current or unknown
-notes                       text                            optional context written by the user
-position                    int                             order it appears in the list on a contact page
+status                      enum (current, ended)           whether the relationship applies today
+started_on                  date, nullable                  known start date
+ended_on                    date, nullable                  known end date
+notes                       text, nullable                  context written by the user
 created_at                  datetime
 updated_at                  datetime
-deleted_at                  datetime
+deleted_at                  datetime, nullable
 ```
 
 ## Relationships
 
-- `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md), [RelationshipType](025-relationship-type-done.md)
+- `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md) and [RelationshipType](025-relationship-type-done.md)
 - `belongsTo` [Contact](019-contact-done.md) twice, as A and as B
+
+## Reading relationships on a contact
+
+- Every relationship is shown using the role read from that contact's side. For Parent / Child, the parent sees Child and the child sees Parent.
+- The list can be filtered by category, type, status and role without loading all of the contact's relationships first.
+- Parents and Children are first-class filters. They use `system_behavior = genealogy_parentage` and the A/B direction, never the displayed name of the type.
+- Filtering, counts, sorting and pagination happen in the database. A contact with 10,000 relationships can request only their children.
+- The default order follows category position, type position and then the other contact's display name. A relationship has no manual position of its own.
+- A deactivated category or type remains readable and filterable on existing relationships.
+
+The database has indexes for looking relationships up from either side, including by type:
+
+```
+(vault_id, contact_a_id, relationship_type_id, deleted_at)
+(vault_id, contact_b_id, relationship_type_id, deleted_at)
+```
+
+## Family tree
+
+- The family tree is available in the first version.
+- Starting from any contact, it follows every non-deleted relationship whose type has `system_behavior = genealogy_parentage`.
+- A is the parent and B is the child. Incoming links find a person's parents; outgoing links find their children.
+- The tree follows those links recursively to show recorded ancestors and descendants. Branches are loaded as needed; the tree is not built by loading every relationship in the vault.
+- Explicit romantic relationships may be displayed beside a person in the tree.
+- Parentage remains in the tree regardless of relationship status: death or estrangement does not erase it.
+- Traversal may place a grandparent, grandchild or sibling in the tree, but it creates no additional relationship and does not claim an inferred relationship type.
+- Renaming or moving the supplied Parent / Child type does not change the tree. A custom type named Parent or placed in Family has no effect on it.
 
 ## Rules
 
-- One row, both directions. Nothing writes a mirror row, and no code path may create one, because two rows drift apart the moment one is edited.
-- For a directed type, A and B are meaningful. Parent is A and child is B for Parent / Child. For a symmetric type, the application stores the lower contact id as A so the same link has one canonical ordering.
-- Several relationships may exist between the same pair. Two siblings may also be colleagues, and two separate Partner rows may record two periods separated by a breakup. There is no unique constraint on the pair.
+- One row represents both directions. The application never writes a mirror row.
+- For a directed type, A carries `role_a` and B carries `role_b`. For a symmetric type, the lower contact id is stored as A to give the pair one canonical order.
+- Several relationship types may link the same pair. Separate rows of the same type may also record separate periods, such as a couple that separated and later reunited. There is no unique constraint on the pair.
 - A contact cannot be linked to itself.
-- Both contacts and the relationship type belong to the same account, and both contacts belong to the relationship's vault. A relationship never crosses the compartment.
-- `ended_on` cannot be before `started_on`. `status = current` requires `ended_on` to be null. Dates remain optional: the temporal state is never guessed from missing dates.
-- A Parent / Child relationship must not create a cycle in the explicitly recorded parentage graph. This is validation of the entered link, not deduction of another relationship.
-- Every relationship row comes from an explicit user or API action. The application creates no inferred relationship, suggestion or probable link in the first version.
-- The family tree follows every non-deleted, explicitly recorded relationship whose type has `system_behavior = genealogy_parentage`. Its inclusion does not depend on `status`: death or estrangement does not erase parentage. Traversing several recorded edges may place an ancestor in the tree, but it does not create or claim a separate Grandparent relationship.
-- Romantic history lists only explicitly recorded relationships whose type has `system_behavior = romantic`, ordered by their known dates. `ended` expresses an ex relationship; Ex-partner is not a separate supplied type.
-- Renaming or moving a supplied type does not change either projection. A custom type named Parent or placed in Family has no effect on the family tree.
-- Every creation, edit, status change, deletion and restoration writes to [Log](004-log-in-progress.md) and appears on the contact timeline beside activities.
-- Deleting is soft, and it emits a webhook (14.2).
+- Both contacts and the relationship type belong to the relationship's account. Both contacts belong to its vault. A relationship never crosses a vault.
+- Moving one contact is refused when it would make a non-deleted relationship cross a vault. Nothing silently moves or deletes the relationship.
+- `status = current` requires `ended_on` to be null. `status = ended` may omit `ended_on` when the date is unknown. When both dates exist, `ended_on` cannot precede `started_on`.
+- A Parent / Child relationship is refused when it would create a cycle in the explicitly recorded parentage graph.
+- Every row comes from an explicit user or API action. The application creates no inferred relationship, suggestion or probable link.
+- Romantic history contains only explicit relationships whose type has `system_behavior = romantic`. An ended row represents an ex relationship; Ex-partner is not a supplied type.
+- Creation, editing, ending, deletion and restoration write to [Log](004-log-in-progress.md) and may appear on both contacts' timelines.
+- Deletion is soft and emits a webhook. Restoration revalidates the account, vault and parentage-cycle rules.
 
-## Open questions
+## Acceptance scenarios
 
-- Whether a relationship can survive a contact moving to another vault. It cannot as specified here, and the specification does not say what should happen instead.
+- Given Alice is A and Bob is B on Parent / Child, Alice's record reads Bob as her child and Bob's record reads Alice as his parent.
+- Given a contact has 10,000 relationships, filtering by Children returns only their explicit children through a paginated database query.
+- Given Alice is Bob's parent and Bob is Chloé's parent, a tree rooted at Alice can display Chloé as a descendant without creating a Grandparent / Grandchild row.
+- Given Alice and Bob share a recorded parent, both can appear in the same tree, but Erica does not create or assert a Sibling relationship.
+- Given a custom type named Parent, relationships using it never appear as parentage in the family tree or in the Parents and Children filters.
+- Given Alice is already an ancestor of Bob, Erica refuses to record Bob as Alice's parent.
+- Given two contacts are in different vaults, Erica refuses to create or restore a relationship between them.
 
 ## Deferred extensions
-
-These may be added in a later version without changing the meaning of existing rows:
 
 - reusable or per-side display labels;
 - qualifiers such as biological, adoptive, step, foster or legal;
 - imprecise dates and several periods on one relationship;
 - certainty recorded by the user;
-- deductions and suggestions computed from the explicit graph, with their evidence kept outside this table.
+- deductions and suggestions computed from the explicit graph, with their evidence stored outside this table.
