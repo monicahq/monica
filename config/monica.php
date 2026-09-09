@@ -295,6 +295,13 @@ return [
 
     'remember_duration_days' => env('MONICA_REMEMBER_DURATION_DAYS', 30),
 
+    /*
+     * Whether somebody may sign in with a link emailed to them rather than with a password. It is on
+     * unless an instance switches it off, and switching it off takes the request screen, the
+     * submission and the link itself out of the instance rather than merely hiding the offer.
+     */
+    'magic_link_enabled' => (bool) env('MONICA_MAGIC_LINK_ENABLED', true),
+
     'magic_link_duration_minutes' => env('MONICA_MAGIC_LINK_DURATION_MINUTES', 5),
 
     'terms_url' => env('MONICA_TERMS_URL', 'https://monicahq.com/terms'),

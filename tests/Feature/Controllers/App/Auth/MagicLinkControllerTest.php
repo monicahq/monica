@@ -22,6 +22,8 @@ class MagicLinkControllerTest extends TestCase
 
     private const TOKEN = 'aaaabbbbccccddddeeeeffffgggghhhhiiiijjjjkkkkllllmmmmnnnnoooopppp';
 
+    private const SESSION_TOKEN = 'a-token-a-browser-would-have-sent';
+
     #[Test]
     public function it_shows_the_page_that_asks_for_a_link(): void
     {
@@ -82,6 +84,8 @@ class MagicLinkControllerTest extends TestCase
         $response->assertSee('Check your inbox');
 
         Notification::assertNothingSent();
+        $this->assertDatabaseCount('users', 0);
+        $this->assertDatabaseMissing('users', ['email' => 'nobody@dundermifflin.com']);
     }
 
     #[Test]
@@ -212,6 +216,78 @@ class MagicLinkControllerTest extends TestCase
 
         $response->assertSessionHasErrors('email');
         Notification::assertNothingSent();
+    }
+
+    #[Test]
+    public function it_works_in_production_on_any_host(): void
+    {
+        Notification::fake();
+
+        $this->app['env'] = 'production';
+        URL::forceRootUrl('https://monica.example.com');
+
+        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $this->get(route('auth.magicLink.new'))->assertStatus(200);
+
+        $response = $this->withSession(['_token' => self::SESSION_TOKEN])
+            ->post(route('auth.magicLink.create'), [
+                '_token' => self::SESSION_TOKEN,
+                'email' => 'michael.scott@dundermifflin.com',
+            ]);
+
+        $response->assertStatus(200);
+        $response->assertSee('Check your inbox');
+
+        Notification::assertSentTo($user, MagicLinkCreated::class);
+    }
+
+    #[Test]
+    public function it_answers_not_found_on_every_route_while_the_setting_is_off(): void
+    {
+        Notification::fake();
+
+        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+        $url = $this->signedUrlFor($this->linkFor($user));
+
+        config()->set('monica.magic_link_enabled', false);
+
+        $this->get(route('auth.magicLink.new'))->assertStatus(404);
+
+        $this->post(route('auth.magicLink.create'), [
+            'email' => 'michael.scott@dundermifflin.com',
+        ])->assertStatus(404);
+
+        $this->get($url)->assertStatus(404);
+
+        Notification::assertNothingSent();
+        $this->assertGuest();
+    }
+
+    #[Test]
+    public function it_does_not_spend_a_link_while_the_setting_is_off(): void
+    {
+        $user = User::factory()->create();
+        $link = $this->linkFor($user);
+        $url = $this->signedUrlFor($link);
+
+        config()->set('monica.magic_link_enabled', false);
+
+        $this->get($url)->assertStatus(404);
+
+        $this->assertNull($link->refresh()->used_at);
+        $this->assertGuest();
+    }
+
+    #[Test]
+    public function it_answers_not_found_before_checking_the_signature_while_off(): void
+    {
+        config()->set('monica.magic_link_enabled', false);
+
+        $response = $this->get(route('auth.magicLink.show', ['token' => self::TOKEN]));
+
+        $response->assertStatus(404);
+        $this->assertGuest();
     }
 
     private function linkFor(User $user, array $overrides = []): MagicLink

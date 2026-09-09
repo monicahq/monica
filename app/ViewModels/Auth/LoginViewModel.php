@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\ViewModels\Auth;
 
 use App\Helpers\PasskeyAvailability;
-use App\Models\User;
-use Database\Seeders\ExampleAccountSeeder;
 
 class LoginViewModel extends GuestViewModel
 {
@@ -20,15 +18,8 @@ class LoginViewModel extends GuestViewModel
         return PasskeyAvailability::reason();
     }
 
-    public function exampleAccountEmail(): ?string
+    public function magicLinkIsEnabled(): bool
     {
-        $exists = User::query()->where('email', ExampleAccountSeeder::EMAIL)->exists();
-
-        return $exists ? ExampleAccountSeeder::EMAIL : null;
-    }
-
-    public function exampleAccountName(): string
-    {
-        return ExampleAccountSeeder::FIRST_NAME.' '.ExampleAccountSeeder::LAST_NAME;
+        return (bool) config('monica.magic_link_enabled');
     }
 }

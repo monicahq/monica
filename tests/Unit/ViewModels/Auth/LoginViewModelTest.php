@@ -5,17 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Auth;
 
 use App\Helpers\PasskeyAvailability;
-use App\Models\User;
 use App\ViewModels\Auth\LoginViewModel;
-use Database\Seeders\ExampleAccountSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LoginViewModelTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     public function it_offers_passkeys_over_a_secure_connection(): void
     {
@@ -56,21 +51,14 @@ class LoginViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_the_seeded_account_to_a_developer(): void
+    public function it_says_whether_the_magic_link_is_enabled(): void
     {
-        User::factory()->create(['email' => ExampleAccountSeeder::EMAIL]);
+        config()->set('monica.magic_link_enabled', true);
 
-        $viewModel = new LoginViewModel;
+        $this->assertTrue(new LoginViewModel()->magicLinkIsEnabled());
 
-        $this->assertEquals(ExampleAccountSeeder::EMAIL, $viewModel->exampleAccountEmail());
-        $this->assertEquals('Monica Geller', $viewModel->exampleAccountName());
-    }
+        config()->set('monica.magic_link_enabled', false);
 
-    #[Test]
-    public function it_offers_nothing_when_the_example_account_was_never_seeded(): void
-    {
-        User::factory()->create(['email' => 'gunther@centralperk.example']);
-
-        $this->assertNull(new LoginViewModel()->exampleAccountEmail());
+        $this->assertFalse(new LoginViewModel()->magicLinkIsEnabled());
     }
 }

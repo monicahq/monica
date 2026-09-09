@@ -26,14 +26,21 @@ Route::middleware(['guest'])->group(function (): void {
     Route::get('login', [LoginController::class, 'new'])->name('auth.login.new');
     Route::post('login', [LoginController::class, 'create'])->name('auth.login.create');
 
-    Route::get('send-magic-link', [MagicLinkController::class, 'new'])->name('auth.magicLink.new');
-    Route::post('send-magic-link', [MagicLinkController::class, 'create'])
-        ->middleware('throttle:6,1')
-        ->name('auth.magicLink.create');
-    Route::get('magic-link/{token}', [MagicLinkController::class, 'show'])
-        ->middleware(['signed', 'throttle:6,1'])
-        ->where('token', '[A-Za-z0-9]{64}')
-        ->name('auth.magicLink.show');
+    /*
+     * Signing in with a link that arrives by email rather than with a password. The whole flow
+     * answers 404 while `monica.magic_link_enabled` is off, the request screen and the link
+     * included, so an instance that switches it off does not carry it at all.
+     */
+    Route::middleware(['magic.link'])->group(function (): void {
+        Route::get('send-magic-link', [MagicLinkController::class, 'new'])->name('auth.magicLink.new');
+        Route::post('send-magic-link', [MagicLinkController::class, 'create'])
+            ->middleware('throttle:6,1')
+            ->name('auth.magicLink.create');
+        Route::get('magic-link/{token}', [MagicLinkController::class, 'show'])
+            ->middleware(['signed', 'throttle:6,1'])
+            ->where('token', '[A-Za-z0-9]{64}')
+            ->name('auth.magicLink.show');
+    });
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'new'])->name('auth.password.new');
     Route::post('forgot-password', [PasswordResetLinkController::class, 'create'])

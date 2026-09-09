@@ -5,11 +5,14 @@ description: Conventions for defining middlewares. Use when the user wants to cr
 
 # Middlewares
 
-- A middleware is for something that applies to a whole route group. The application has three,
-  aliased in `bootstrap/app.php`: `set.locale` on every group, `active` on the signed in groups, and
-  `administrator` on the admin group, which refuses with a 404 anybody who does not run the instance.
+- A middleware is for something that applies to a whole route group. Three are aliased in
+  `bootstrap/app.php`: `active` on the signed in groups, `administrator` on the admin group, which
+  refuses with a 404 anybody who does not run the instance, and `magic.link` on the magic link
+  routes, which refuses with a 404 while the instance has that way of signing in switched off. The
+  other two classes in the folder, `SetLocale` and `SetApiLocale`, are appended to the web group and
+  prepended to the api group instead of being aliased.
 - You MUST register a new middleware in `bootstrap/app.php`, alias it in dotted lower case
-  (`set.locale`), and apply it to a group in the routes file rather than to single routes.
+  (`magic.link`), and apply it to a group in the routes file rather than to single routes.
 - You MUST NOT resolve a model in a middleware. Route parameters are resolved by implicit route
   model binding, and the controller then refuses what the user cannot reach:
 
