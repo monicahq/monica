@@ -1,17 +1,12 @@
 {{-- One submission, with everything its author sent in. --}}
 {{-- @var \App\ViewModels\Admin\ModerationSubmissionViewModel $viewModel --}}
-<x-admin-layout :title="$viewModel->listing()->name">
+<x-admin-layout :title="$viewModel->title()">
   <header class="flex flex-col gap-2">
     <x-link :href="route('admin.moderation.index')" data-turbo="true">{{ __('Back to moderation') }}</x-link>
 
-    <h1 class="text-page-title text-ink">{{ $viewModel->listing()->name }}</h1>
+    <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
-    <p class="text-sm text-muted">
-      {{ $viewModel->listing()->author_name }}
-      &middot; {{ $viewModel->listing()->category->name }}
-      &middot; {{ __('version :version', ['version' => $viewModel->version()->version_number]) }}
-      &middot; {{ __('submitted :date', ['date' => $viewModel->version()->created_at->isoFormat('LL')]) }}
-    </p>
+    <p class="text-sm text-muted">{{ $viewModel->provenance() }}</p>
   </header>
 
   @error('decision')
@@ -22,18 +17,18 @@
     <div class="flex flex-col gap-4">
       <div>
         <p class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Summary') }}</p>
-        <p class="text-base text-pretty text-body">{{ $viewModel->listing()->summary }}</p>
+        <p class="text-base text-pretty text-body">{{ $viewModel->summary() }}</p>
       </div>
 
       <div>
         <p class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Description') }}</p>
-        <p class="text-base text-pretty whitespace-pre-line text-body">{{ $viewModel->listing()->description }}</p>
+        <p class="text-base text-pretty whitespace-pre-line text-body">{{ $viewModel->description() }}</p>
       </div>
 
-      @if ($viewModel->version()->change_note !== null)
+      @if ($viewModel->changeNote() !== null)
         <div>
           <p class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('What changed in this version') }}</p>
-          <p class="text-base text-pretty whitespace-pre-line text-body">{{ $viewModel->version()->change_note }}</p>
+          <p class="text-base text-pretty whitespace-pre-line text-body">{{ $viewModel->changeNote() }}</p>
         </div>
       @endif
     </div>
@@ -46,13 +41,13 @@
   @if ($viewModel->awaitsDecision())
     <x-panel :title="__('Your decision')">
       <div class="flex flex-col gap-6">
-        <x-form :action="route('admin.moderation.approval.create', ['version' => $viewModel->version()->id])" method="post" class="flex flex-col gap-2">
+        <x-form :action="$viewModel->approvalUrl()" method="post" class="flex flex-col gap-2">
           <x-button type="submit">{{ __('Let it into the catalogue') }}</x-button>
 
           <p class="text-sm text-muted">{{ __('The author is told, and anybody can install this version from then on. Nobody holding an earlier version is moved.') }}</p>
         </x-form>
 
-        <x-form :action="route('admin.moderation.rejection.create', ['version' => $viewModel->version()->id])" method="post" class="flex flex-col gap-3 border-t border-hairline pt-6">
+        <x-form :action="$viewModel->rejectionUrl()" method="post" class="flex flex-col gap-3 border-t border-hairline pt-6">
           <x-textarea
             id="reason"
             name="reason"
@@ -71,10 +66,7 @@
     </x-panel>
   @else
     <x-notice>
-      {{ __('This version is :status, so there is nothing to decide. :moderator decided it.', [
-        'status' => $viewModel->version()->status->value,
-        'moderator' => $viewModel->listing()->moderated_by ?? __('Somebody else'),
-      ]) }}
+      {{ $viewModel->decidedLine() }}
     </x-notice>
   @endif
 </x-admin-layout>

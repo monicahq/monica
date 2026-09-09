@@ -41,6 +41,7 @@ return new class extends Migration
 
             $table->index(['vault_id', 'sort_name']);
             $table->index(['vault_id', 'sort_key']);
+            $table->index(['vault_id', 'created_at']);
 
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();

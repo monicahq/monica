@@ -38,14 +38,14 @@ class ReminderRowTest extends TestCase
 
         $row = $this->rowFor($user, $rule, '2027-05-12 07:00:00');
 
-        $this->assertSame('12', $row['day']);
-        $this->assertSame('2027', $row['year']);
-        $this->assertSame('Every year', $row['cadence']);
-        $this->assertSame('calendar-repeat', $row['cadenceIcon']);
-        $this->assertSame($contact->name, $row['contactName']);
-        $this->assertSame(route('contacts.show', ['vault' => $vault, 'contact' => $contact]), $row['contactUrl']);
-        $this->assertNull($row['avatarUrl']);
-        $this->assertFalse($row['isLate']);
+        $this->assertSame('12', $row->day());
+        $this->assertSame('2027', $row->year());
+        $this->assertSame('Every year', $row->cadence());
+        $this->assertSame('calendar-repeat', $row->cadenceIcon());
+        $this->assertSame($contact->name, $row->contactName());
+        $this->assertSame(route('contacts.show', ['vault' => $vault, 'contact' => $contact]), $row->contactUrl());
+        $this->assertNull($row->avatarUrl());
+        $this->assertFalse($row->isLate());
     }
 
     #[Test]
@@ -58,8 +58,8 @@ class ReminderRowTest extends TestCase
 
         $row = $this->rowFor($user, $rule, '2027-05-12 07:00:00');
 
-        $this->assertSame('One time', $row['cadence']);
-        $this->assertSame('calendar', $row['cadenceIcon']);
+        $this->assertSame('One time', $row->cadence());
+        $this->assertSame('calendar', $row->cadenceIcon());
     }
 
     #[Test]
@@ -70,7 +70,7 @@ class ReminderRowTest extends TestCase
         $rule->frequency_interval = 3;
         $rule->save();
 
-        $this->assertSame('Every 3 years', $this->rowFor($user, $rule, '2027-05-12 07:00:00')['cadence']);
+        $this->assertSame('Every 3 years', $this->rowFor($user, $rule, '2027-05-12 07:00:00')->cadence());
     }
 
     #[Test]
@@ -85,10 +85,10 @@ class ReminderRowTest extends TestCase
 
         $row = $this->rowFor($user, $rule, '2027-05-12 07:00:00');
 
-        $this->assertStringContainsString('09:00', $row['exact']);
-        $this->assertStringContainsString('Europe/Paris', $row['exact']);
-        $this->assertStringContainsString('UTC+02:00', $row['exact']);
-        $this->assertStringContainsString('Will be sent', $row['exact']);
+        $this->assertStringContainsString('09:00', $row->exact());
+        $this->assertStringContainsString('Europe/Paris', $row->exact());
+        $this->assertStringContainsString('UTC+02:00', $row->exact());
+        $this->assertStringContainsString('Will be sent', $row->exact());
     }
 
     #[Test]
@@ -99,10 +99,10 @@ class ReminderRowTest extends TestCase
 
         $row = $this->rowFor($user, $rule, CarbonImmutable::now()->subDays(4)->toDateTimeString());
 
-        $this->assertTrue($row['isLate']);
-        $this->assertStringContainsString('Sent', $row['exact']);
-        $this->assertStringNotContainsString('Will be sent', $row['exact']);
-        $this->assertStringContainsString('ago', $row['relative']);
+        $this->assertTrue($row->isLate());
+        $this->assertStringContainsString('Sent', $row->exact());
+        $this->assertStringNotContainsString('Will be sent', $row->exact());
+        $this->assertStringContainsString('ago', $row->relative());
     }
 
     #[Test]
@@ -122,8 +122,8 @@ class ReminderRowTest extends TestCase
         $ofBirthday = $this->rowFor($user, $this->ruleAbout($user, field: $birthday), '2027-05-12 07:00:00');
         $ofInvented = $this->rowFor($user, $this->ruleAbout($user, field: $invented), '2027-05-12 07:00:00');
 
-        $this->assertSame('gift', $ofBirthday['icon']);
-        $this->assertSame('calendar', $ofInvented['icon']);
+        $this->assertSame('gift', $ofBirthday->icon());
+        $this->assertSame('calendar', $ofInvented->icon());
     }
 
     #[Test]
@@ -135,11 +135,11 @@ class ReminderRowTest extends TestCase
 
         $rule->delete();
 
-        $row = (new ReminderRow(user: $user, occurrence: $occurrence->fresh()))->get();
+        $row = new ReminderRow(user: $user, occurrence: $occurrence->fresh());
 
-        $this->assertSame('', $row['cadence']);
-        $this->assertSame('calendar', $row['icon']);
-        $this->assertNotSame('', $row['text']);
+        $this->assertSame('', $row->cadence());
+        $this->assertSame('calendar', $row->icon());
+        $this->assertNotSame('', $row->text());
     }
 
     private function ruleAbout(User $user, ?Contact $contact = null, ?Field $field = null): Reminder
@@ -167,11 +167,11 @@ class ReminderRowTest extends TestCase
     }
 
     /** @return array<string, mixed> */
-    private function rowFor(User $user, Reminder $rule, string $instant): array
+    private function rowFor(User $user, Reminder $rule, string $instant): ReminderRow
     {
-        return (new ReminderRow(
+        return new ReminderRow(
             user: $user,
             occurrence: $this->occurrenceFor($rule, $instant),
-        ))->get();
+        );
     }
 }

@@ -193,6 +193,19 @@ class FieldReminderTest extends TestCase
         $rendered->assertSee("Birthday — {$value->valuable->name}", escape: false);
     }
 
+    #[Test]
+    public function it_hands_the_panel_to_the_registered_component_rather_than_writing_it_in_an_attribute(): void
+    {
+        $rendered = $this->render();
+
+        $rendered->assertSee('x-data="fieldReminder(', escape: false);
+        $rendered->assertSee('locale', escape: false);
+        $rendered->assertSee('listPattern', escape: false);
+        $rendered->assertDontSee('count === 1', escape: false);
+        $rendered->assertDontSee('pair.one', escape: false);
+        $rendered->assertDontSee('phrase(row) {', escape: false);
+    }
+
     private function render(?Reminder $reminder = null): TestView
     {
         if ($reminder instanceof Reminder) {
@@ -211,7 +224,7 @@ class FieldReminderTest extends TestCase
             contact: $value->valuable,
             field: $value->field,
             reminder: $reminder,
-        )->get();
+        );
 
         return $this->blade(
             '<x-field-reminder :field="$field" :reminder="$reminder" name="reminders[7]" id="field" />',

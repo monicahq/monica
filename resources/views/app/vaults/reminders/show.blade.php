@@ -87,7 +87,7 @@
       <div class="flex flex-none items-center gap-1.5">
         @include('app.vaults.reminders._postpone', ['row' => $nextRow])
 
-        <x-form method="put" :action="$nextRow['dismissUrl']" class="contents">
+        <x-form method="put" :action="$nextRow->dismissUrl()" class="contents">
           <x-icon-button type="submit" icon="check" :label="__('Dismiss this reminder')" align="right" />
         </x-form>
       </div>

@@ -35,6 +35,7 @@ return new class extends Migration
 
             $table->index(['listable_type', 'listable_id'], 'marketplace_listings_listable_index');
             $table->index(['marketplace_category_id', 'status']);
+            $table->index(['status', 'updated_at']);
 
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->foreign('marketplace_category_id')->references('id')->on('marketplace_categories');

@@ -26,6 +26,42 @@ class AccountsViewModel
             ->withQueryString());
     }
 
+    /**
+     * One row per account, as the list says it: who is on it, whether they are
+     * still there, and when they joined.
+     *
+     * @return list<array{url: string, name: string, email: string, state: string|null, joined: string}>
+     */
+    public function rows(): array
+    {
+        return array_map(function (Account $account): array {
+            $user = $account->userIncludingDeleted;
+
+            return [
+                'url' => route('admin.accounts.show', ['account' => $account->id]),
+                'name' => $user->name ?? __('Account :id', ['id' => $account->id]),
+                'email' => $user->email ?? __('nobody on this account'),
+                'state' => match (true) {
+                    $user === null => null,
+                    $user->trashed() => __('deleted'),
+                    ! $user->is_active => __('deactivated'),
+                    default => null,
+                },
+                'joined' => __('joined :date', ['date' => $account->created_at->isoFormat('LL')]),
+            ];
+        }, $this->accounts()->items());
+    }
+
+    public function hasMorePages(): bool
+    {
+        return $this->accounts()->hasMorePages();
+    }
+
+    public function nextPageUrl(): ?string
+    {
+        return $this->accounts()->nextPageUrl();
+    }
+
     public function query(): string
     {
         return $this->query;

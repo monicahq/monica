@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Settings\Account\Preferences;
 
 use App\Enums\TimeFormatEnum;
+use App\Helpers\TimezoneCatalogue;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Preferences\TimezonePanel;
 use Carbon\CarbonImmutable;
@@ -89,6 +90,25 @@ class TimezonePanelTest extends TestCase
 
         $this->assertSame('', $panel->place());
         $this->assertStringContainsString('UTC', $panel->sentence());
+    }
+
+    #[Test]
+    public function it_hands_the_picker_the_latitudes_the_map_is_cut_off_at(): void
+    {
+        $projection = new TimezonePanel(user: User::factory()->create())->projection();
+
+        $this->assertSame(TimezoneCatalogue::MAP_NORTH, $projection['north']);
+        $this->assertSame(TimezoneCatalogue::MAP_SOUTH, $projection['south']);
+    }
+
+    #[Test]
+    public function the_latitudes_it_hands_over_are_the_ones_the_marker_is_drawn_with(): void
+    {
+        $panel = new TimezonePanel(user: User::factory()->create());
+        $projection = $panel->projection();
+
+        $this->assertSame(0.0, TimezoneCatalogue::position($projection['north'], 0.0)['y']);
+        $this->assertSame(100.0, TimezoneCatalogue::position($projection['south'], 0.0)['y']);
     }
 
     #[Test]

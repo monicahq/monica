@@ -1,10 +1,10 @@
 {{-- The dialog that moves one deadline to a later instant. --}}
-{{-- @var array<string, mixed> $row --}}
+{{-- @var \App\ViewModels\Vaults\ReminderRow $row --}}
 <x-modal.form
-  :title="$row['text']"
+  :title="$row->text()"
   :confirm="__('Move it')"
   method="put"
-  :action="$row['postponeUrl']"
+  :action="$row->postponeUrl()"
   :open="$errors->has('postponement')"
 >
   <x-slot:trigger>
@@ -13,14 +13,14 @@
 
   <x-slot:header>
     <div class="flex items-start gap-3">
-      @if ($row['contactName'] !== null)
-        <x-contact-avatar :name="$row['contactName']" :url="$row['avatarUrl']" :size="38" />
+      @if ($row->contactName() !== null)
+        <x-contact-avatar :name="$row->contactName()" :url="$row->avatarUrl()" :size="38" />
       @endif
 
       <div class="flex min-w-0 flex-col gap-0.5">
-        <p class="text-card-title text-ink">{{ $row['text'] }}</p>
+        <p class="text-card-title text-ink">{{ $row->text() }}</p>
 
-        <p class="text-sm text-pretty text-muted">{{ $row['currently'] }}</p>
+        <p class="text-sm text-pretty text-muted">{{ $row->currently() }}</p>
       </div>
     </div>
   </x-slot:header>
@@ -30,9 +30,9 @@
   <fieldset class="flex flex-col gap-1.5">
     <legend class="pb-1.5 text-sm font-medium text-ink">{{ __('Move it to') }}</legend>
 
-    @foreach ($row['presets'] as $preset)
+    @foreach ($row->presets() as $preset)
       <x-option-row
-        :id="'preset-'.$row['uuid'].'-'.$preset['value']"
+        :id="'preset-'.$row->uuid().'-'.$preset['value']"
         name="preset"
         type="radio"
         :value="$preset['value']"
@@ -47,7 +47,7 @@
     <div class="flex flex-wrap gap-3">
       <x-input
         type="date"
-        :id="'date-'.$row['uuid']"
+        :id="'date-'.$row->uuid()"
         name="date"
         :label="__('Date')"
         :value="old('date')"
@@ -57,7 +57,7 @@
 
       <x-input
         type="time"
-        :id="'time-'.$row['uuid']"
+        :id="'time-'.$row->uuid()"
         name="time"
         :label="__('Time')"
         :value="old('time')"
@@ -66,6 +66,6 @@
       />
     </div>
 
-    <p class="text-xs text-pretty text-muted">{{ __('Times are read in :zone, the time zone this reminder is sent in.', ['zone' => $row['zone']]) }}</p>
+    <p class="text-xs text-pretty text-muted">{{ __('Times are read in :zone, the time zone this reminder is sent in.', ['zone' => $row->zone()]) }}</p>
   </div>
 </x-modal.form>

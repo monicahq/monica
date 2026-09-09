@@ -12,44 +12,7 @@
       method="put"
       :action="route('settings.timezone.update')"
       x-target="timezone-panel preview"
-      x-data="{
-        query: '',
-        shown: 0,
-        get needle() { return this.query.trim().toLowerCase() },
-        filter() {
-          const limit = 8;
-          let shown = 0;
-          this.$refs.results.querySelectorAll('[data-search]').forEach(row => {
-            const hit = this.needle !== '' && row.dataset.search.includes(this.needle) && shown < limit;
-            row.hidden = ! hit;
-            if (hit) { shown++ }
-          });
-          this.shown = shown;
-        },
-        step(from, by) {
-          const rows = [...this.$refs.results.querySelectorAll('[data-search]:not([hidden]) button')];
-          if (rows.length === 0) { return }
-          const at = rows.indexOf(from);
-          rows[Math.min(rows.length - 1, Math.max(0, at + by))].focus();
-        },
-        reset() { this.query = ''; this.filter() },
-        clear() { this.reset(); this.$refs.field.focus() },
-        deviceSilent: false,
-        device(event) {
-          let zone = '';
-          try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone || '' } catch (e) {}
-          if (zone === '') { this.deviceSilent = true; return }
-          event.currentTarget.value = zone;
-          this.$el.requestSubmit(event.currentTarget);
-        },
-        point(event) {
-          const box = event.currentTarget.getBoundingClientRect();
-          if (box.width === 0 || box.height === 0) { return }
-          this.$refs.longitude.value = ((event.clientX - box.left) / box.width * 360 - 180).toFixed(4);
-          this.$refs.latitude.value = (84 - (event.clientY - box.top) / box.height * 142).toFixed(4);
-          this.$el.requestSubmit();
-        },
-      }"
+      x-data="timezonePicker(@js($timezone->projection()))"
       x-init="filter()"
       @ajax:before.window="reset()"
       class="contents"

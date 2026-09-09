@@ -49,7 +49,7 @@ deleted_at                  datetime
 ## Not done yet
 
 - No API. The settings screens exist: the list that orders the types, and the form that declares one and changes it.
-- `hasMany` [Entity](020-entity-done.md) is now declared and `entity_count` is kept in step by the actions that write a record down, delete one and bring one back, so the guard in `DestroyEntityType` is true rather than merely written, and `CreateEntity` refuses an inactive type. What is still missing is the marketplace side of the type, which belongs to [MarketplaceInstallation](047-marketplace-installation-done.md).
+- `hasMany` [Entity](020-entity-done.md) is declared, and `entity_count` is kept in step by nothing. The actions that wrote a record down, deleted one and brought one back maintained it, and the refusal of an inactive type lived in the first of them; all three had no caller and have been removed. The guard in `DestroyEntityType` therefore reads a count that only `CreateEntityType` and `DestroyVault` write, which makes it written rather than true. What is still missing is the marketplace side of the type, which belongs to [MarketplaceInstallation](047-marketplace-installation-done.md).
 
 ## Decisions taken while building it
 

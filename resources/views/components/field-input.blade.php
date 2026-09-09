@@ -36,7 +36,7 @@
   $type = $field->type;
 
   $items = $type->usesValueList() && $field->valueList
-      ? $field->valueList->items()->where('is_active', true)->orderBy('position')->get()
+      ? $field->valueList->items->where('is_active', true)->sortBy('position')->values()
       : collect();
 
   $chosen = $value?->value_list_item_id;

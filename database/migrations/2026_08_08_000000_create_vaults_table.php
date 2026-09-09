@@ -24,6 +24,8 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->index(['account_id', 'position']);
+
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
         });
     }

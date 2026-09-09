@@ -22,69 +22,63 @@ class ReminderRow
         private readonly ReminderOccurrence $occurrence,
     ) {}
 
-    /**
-     * @return array{uuid: string, day: string, month: string, year: string, cadence: string, cadenceIcon: string, contactName: string|null, contactUrl: string|null, avatarUrl: string|null, text: string, icon: string, relative: string, exact: string, isLate: bool, zone: string, currently: string, dismissUrl: string, testUrl: string, postponeUrl: string, reminderUrl: string|null, presets: array<int, array{value: string, label: string, hint: string}>}
-     */
-    public function get(): array
+    public function uuid(): string
     {
-        $contact = $this->contact();
-
-        return [
-            'uuid' => $this->occurrence->uuid,
-            'zone' => $this->zone(),
-            'dismissUrl' => route('reminders.occurrences.dismissal.update', [
-                'vault' => $this->occurrence->vault,
-                'reminderOccurrence' => $this->occurrence,
-            ]),
-            'testUrl' => route('reminders.occurrences.testNotification.create', [
-                'vault' => $this->occurrence->vault,
-                'reminderOccurrence' => $this->occurrence,
-            ]),
-            'postponeUrl' => route('reminders.occurrences.postponement.update', [
-                'vault' => $this->occurrence->vault,
-                'reminderOccurrence' => $this->occurrence,
-            ]),
-            'reminderUrl' => $this->reminderUrl(),
-            'presets' => $this->presets(),
-            'currently' => $this->currently(),
-            'day' => $this->dueAt()->translatedFormat('j'),
-            'month' => $this->dueAt()->translatedFormat('M'),
-            'year' => $this->dueAt()->translatedFormat('Y'),
-            'cadence' => $this->cadence(),
-            'cadenceIcon' => $this->cadenceIcon(),
-            'contactName' => $contact?->name,
-            'contactUrl' => $this->contactUrl($contact),
-            'avatarUrl' => $this->avatarUrl($contact),
-            'text' => $this->text($contact),
-            'icon' => $this->icon(),
-            'relative' => $this->relative(),
-            'exact' => $this->exact(),
-            'isLate' => $this->isLate(),
-        ];
+        return $this->occurrence->uuid;
     }
 
-    /**
-     * @return array{uuid: string, relative: string, exact: string, iso: string, channels: array<int, string>, contactName: string|null, contactUrl: string|null, avatarUrl: string|null, text: string, icon: string, outcome: string, tone: string}
-     */
-    public function sent(): array
+    public function day(): string
     {
-        $contact = $this->contact();
-        $at = $this->sentAt();
+        return $this->dueAt()->translatedFormat('j');
+    }
 
-        return [
-            'uuid' => $this->occurrence->uuid,
-            'relative' => $at->diffForHumans(),
-            'exact' => __('Sent :date at :time :abbreviation (:zone, UTC:offset)', $this->partsOf($at)),
-            'iso' => $at->toIso8601String(),
-            'channels' => $this->channels(),
-            'contactName' => $contact?->name,
-            'contactUrl' => $this->contactUrl($contact),
-            'avatarUrl' => $this->avatarUrl($contact),
-            'text' => $this->text($contact),
-            'icon' => $this->icon(),
-            'outcome' => $this->outcome(),
-            'tone' => $this->tone(),
-        ];
+    public function month(): string
+    {
+        return $this->dueAt()->translatedFormat('M');
+    }
+
+    public function year(): string
+    {
+        return $this->dueAt()->translatedFormat('Y');
+    }
+
+    public function sentRelative(): string
+    {
+        return $this->sentAt()->diffForHumans();
+    }
+
+    public function sentExact(): string
+    {
+        return __('Sent :date at :time :abbreviation (:zone, UTC:offset)', $this->partsOf($this->sentAt()));
+    }
+
+    public function sentIso(): string
+    {
+        return $this->sentAt()->toIso8601String();
+    }
+
+    public function dismissUrl(): string
+    {
+        return route('reminders.occurrences.dismissal.update', [
+            'vault' => $this->occurrence->vault,
+            'reminderOccurrence' => $this->occurrence,
+        ]);
+    }
+
+    public function testUrl(): string
+    {
+        return route('reminders.occurrences.testNotification.create', [
+            'vault' => $this->occurrence->vault,
+            'reminderOccurrence' => $this->occurrence,
+        ]);
+    }
+
+    public function postponeUrl(): string
+    {
+        return route('reminders.occurrences.postponement.update', [
+            'vault' => $this->occurrence->vault,
+            'reminderOccurrence' => $this->occurrence,
+        ]);
     }
 
     private function sentAt(): CarbonImmutable
@@ -95,7 +89,7 @@ class ReminderRow
     }
 
     /** @return array<int, string> */
-    private function channels(): array
+    public function channels(): array
     {
         $sent = $this->occurrence->notifications->pluck('channel');
 
@@ -116,7 +110,7 @@ class ReminderRow
         return $words;
     }
 
-    private function outcome(): string
+    public function outcome(): string
     {
         return match ($this->occurrence->status) {
             ReminderOccurrenceStatusEnum::Dismissed => __('Dismissed'),
@@ -125,7 +119,7 @@ class ReminderRow
         };
     }
 
-    private function tone(): string
+    public function tone(): string
     {
         return match ($this->occurrence->status) {
             ReminderOccurrenceStatusEnum::Dismissed => 'neutral',
@@ -134,7 +128,7 @@ class ReminderRow
         };
     }
 
-    private function currently(): string
+    public function currently(): string
     {
         $due = $this->dueAt();
 
@@ -144,7 +138,7 @@ class ReminderRow
         ]);
     }
 
-    private function reminderUrl(): ?string
+    public function reminderUrl(): ?string
     {
         $rule = $this->occurrence->reminder;
 
@@ -159,7 +153,7 @@ class ReminderRow
     }
 
     /** @return array<int, array{value: string, label: string, hint: string}> */
-    private function presets(): array
+    public function presets(): array
     {
         $rule = $this->occurrence->reminder;
 
@@ -197,7 +191,7 @@ class ReminderRow
             ->locale(app()->getLocale());
     }
 
-    private function zone(): string
+    public function zone(): string
     {
         return $this->occurrence->reminder->timezone ?? $this->user->timezone;
     }
@@ -209,13 +203,17 @@ class ReminderRow
 
     private function contact(): ?Contact
     {
-        $record = $this->occurrence->reminder?->remindable;
+        return once(function (): ?Contact {
+            $record = $this->occurrence->reminder?->remindable;
 
-        return $record instanceof Contact ? $record : null;
+            return $record instanceof Contact ? $record : null;
+        });
     }
 
-    private function contactUrl(?Contact $contact): ?string
+    public function contactUrl(): ?string
     {
+        $contact = $this->contact();
+
         if ($contact === null) {
             return null;
         }
@@ -223,8 +221,10 @@ class ReminderRow
         return route('contacts.show', ['vault' => $this->occurrence->vault, 'contact' => $contact]);
     }
 
-    private function avatarUrl(?Contact $contact): ?string
+    public function avatarUrl(): ?string
     {
+        $contact = $this->contact();
+
         if ($contact?->avatar === null) {
             return null;
         }
@@ -232,7 +232,7 @@ class ReminderRow
         return route('files.show', ['vault' => $this->occurrence->vault, 'file' => $contact->avatar]);
     }
 
-    private function text(?Contact $contact): string
+    public function text(): string
     {
         $name = $this->occurrence->reminder?->name;
 
@@ -240,10 +240,10 @@ class ReminderRow
             return $name;
         }
 
-        return $contact->name ?? __('A reminder');
+        return $this->contact()->name ?? __('A reminder');
     }
 
-    private function cadence(): string
+    public function cadence(): string
     {
         $rule = $this->occurrence->reminder;
 
@@ -265,24 +265,24 @@ class ReminderRow
         };
     }
 
-    private function cadenceIcon(): string
+    public function cadenceIcon(): string
     {
         return $this->occurrence->reminder?->cadence->recurs() === true ? 'calendar-repeat' : 'calendar';
     }
 
-    private function icon(): string
+    public function icon(): string
     {
         $key = $this->occurrence->reminder?->field?->key;
 
         return $key === DefaultFieldEnum::Birthday->value ? 'gift' : 'calendar';
     }
 
-    private function relative(): string
+    public function relative(): string
     {
         return $this->dueAt()->diffForHumans();
     }
 
-    private function exact(): string
+    public function exact(): string
     {
         $when = $this->partsOf($this->dueAt());
 

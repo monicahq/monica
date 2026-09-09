@@ -22,11 +22,12 @@ class AccountController extends Controller
         ]);
     }
 
-    public function show(Account $account): View
+    public function show(Request $request, Account $account): View
     {
         return view('app.admin.accounts.show', [
             'viewModel' => new AccountViewModel(
                 account: $account,
+                viewer: $request->user(),
             ),
         ]);
     }

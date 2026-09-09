@@ -42,14 +42,14 @@ class VaultRemindersSentViewModel
         return __('Every reminder this vault has sent, newest first, and what became of it afterwards.');
     }
 
-    /** @return array<int, array<string, mixed>> */
+    /** @return list<ReminderRow> */
     public function rows(): array
     {
         return array_map(
-            fn (ReminderOccurrence $occurrence): array => new ReminderRow(
+            fn (ReminderOccurrence $occurrence): ReminderRow => new ReminderRow(
                 user: $this->user,
                 occurrence: $occurrence,
-            )->sent(),
+            ),
             $this->occurrences()->items(),
         );
     }

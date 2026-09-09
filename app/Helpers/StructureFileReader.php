@@ -18,6 +18,25 @@ use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use JsonException;
 
+/**
+ * The gate a pasted template or section has to get through before it becomes
+ * anything.
+ *
+ * Somebody who has arranged a template can export it as a JSON file
+ * ({@see StructureFile}) and carry it to another vault, to another instance, or to
+ * another person. Whoever receives it pastes it into the import screen, and that
+ * screen asks this to read it: they are told whether the file can be imported
+ * before anything is created, and the structure then arrives as a draft holding
+ * none of the records the original had.
+ *
+ * It hands back the same block every time, for ImportTemplate and ImportSection to
+ * build from. A file it cannot read is refused at the first thing that is wrong,
+ * naming the position in the file, because the person who pasted it is the one who
+ * has to fix it.
+ *
+ * This walks the document and decides what it means; {@see StructureFileValues}
+ * reads the values out of it.
+ */
 class StructureFileReader
 {
     public const int MAX_BYTES = 524288;
@@ -40,11 +59,7 @@ class StructureFileReader
 
     public const int MAX_DEFAULT_VALUES = 50;
 
-    private const string IDENTIFIER = '/^[a-z0-9]+([_-][a-z0-9]+)*$/';
-
     private const string COLOUR = '/^#[0-9a-f]{6}$/';
-
-    private const string LOCALE = '/^[a-z]{2,3}(_[A-Z]{2})?$/';
 
     private const string MIME_TYPE = '#^[a-z0-9!\#$&^_.+-]+/[a-z0-9!\#$&^_.+-]+$#';
 
@@ -117,14 +132,14 @@ class StructureFileReader
             ? ['monica', 'exported_at', 'template', 'value_lists']
             : ['monica', 'exported_at', 'from_template', 'section', 'value_lists'];
 
-        $file = $this->object($this->file, 'the file', $allowed, ['monica', $format]);
+        $file = StructureFileValues::object($this->file, 'the file', $allowed, ['monica', $format]);
 
         $this->readTheValueLists();
 
         return [
             'format' => $format,
             'format_version' => $this->formatVersion,
-            'exported_at' => $this->nullableString($file, 'exported_at', 'the file', 64),
+            'exported_at' => StructureFileValues::nullableString($file, 'exported_at', 'the file', 64),
             'from_template' => $format === 'section' ? $this->fromTemplate($file) : null,
             'value_lists' => $this->valueLists,
             'template' => $format === 'template' ? $this->template($file['template']) : null,
@@ -140,9 +155,9 @@ class StructureFileReader
             $this->refuse(__('There is no Monica header in this file, so there is no saying what it holds. A file exported from Monica starts with `"monica": { "format": … }`.'));
         }
 
-        $header = $this->object($node, 'monica', ['format', 'format_version'], ['format', 'format_version']);
+        $header = StructureFileValues::object($node, 'monica', ['format', 'format_version'], ['format', 'format_version']);
 
-        $format = $this->string($header, 'format', 'monica', 32);
+        $format = StructureFileValues::string($header, 'format', 'monica', 32);
 
         if ($format !== 'template' && $format !== 'section') {
             $this->refuse(__('The header says :format. Monica reads two kinds of file: a template and a section.', [
@@ -150,7 +165,7 @@ class StructureFileReader
             ]));
         }
 
-        $this->formatVersion = $this->integer($header, 'format_version', 'monica', 1, 9999);
+        $this->formatVersion = StructureFileValues::integer($header, 'format_version', 'monica', 1, 9999);
 
         if ($this->formatVersion > StructureFile::FORMAT_VERSION) {
             $this->refuse(__('This file was written in format :written, and this account reads format :read. Ask for an export from a Monica of this version, or update yours.', [
@@ -172,23 +187,23 @@ class StructureFileReader
             return null;
         }
 
-        $from = $this->object($file['from_template'], 'from_template', ['name', 'version'], []);
+        $from = StructureFileValues::object($file['from_template'], 'from_template', ['name', 'version'], []);
 
         return [
-            'name' => $this->nullableString($from, 'name', 'from_template', 255),
-            'version' => $this->nullableInteger($from, 'version', 'from_template', 1, 65535),
+            'name' => StructureFileValues::nullableString($from, 'name', 'from_template', 255),
+            'version' => StructureFileValues::nullableInteger($from, 'version', 'from_template', 1, 65535),
         ];
     }
 
     /** @return array<string, mixed> */
     private function template(mixed $node): array
     {
-        $template = $this->object($node, 'template', [
+        $template = StructureFileValues::object($node, 'template', [
             'slug', 'name', 'name_translation_key', 'description', 'applies_to', 'locale',
             'version_number', 'entity_type', 'pages',
         ], ['pages']);
 
-        $appliesTo = $this->string($template, 'applies_to', 'template', 32, TemplateAppliesToEnum::Contact->value);
+        $appliesTo = StructureFileValues::string($template, 'applies_to', 'template', 32, TemplateAppliesToEnum::Contact->value);
 
         if (TemplateAppliesToEnum::tryFrom($appliesTo) === null) {
             $this->refuse(__('The template says it applies to :word, which is not something this version knows about.', [
@@ -209,11 +224,11 @@ class StructureFileReader
         }
 
         return [
-            'slug' => $this->identifier($template, 'slug', 'template', Template::SLUG_LENGTH),
-            'name' => $this->word($template, 'name', 'name_translation_key', 'template', 255),
-            'description' => $this->nullableString($template, 'description', 'template', 65535),
+            'slug' => StructureFileValues::identifier($template, 'slug', 'template', Template::SLUG_LENGTH),
+            'name' => StructureFileValues::word($template, 'name', 'name_translation_key', 'template', 255),
+            'description' => StructureFileValues::nullableString($template, 'description', 'template', 65535),
             'applies_to' => $appliesTo,
-            'locale' => $this->locale($template, 'template'),
+            'locale' => StructureFileValues::locale($template, 'template'),
             'entity_type' => $appliesTo === TemplateAppliesToEnum::Entity->value ? $entityType : null,
             'pages' => $pages,
         ];
@@ -222,16 +237,16 @@ class StructureFileReader
     /** @return list<array<string, mixed>> */
     private function pages(mixed $node): array
     {
-        $rows = $this->collection($node, 'template.pages', self::MAX_PAGES);
+        $rows = StructureFileValues::collection($node, 'template.pages', self::MAX_PAGES);
         $keys = [];
         $pages = [];
 
         foreach ($rows as $index => $row) {
             $path = "template.pages.{$index}";
 
-            $page = $this->object($row, $path, ['key', 'label', 'label_translation_key', 'position', 'sections'], ['sections']);
-            $label = $this->word($page, 'label', 'label_translation_key', $path, 255);
-            $key = $this->identifier($page, 'key', $path, TemplateVersionPage::KEY_LENGTH) ?? Str::slug($label);
+            $page = StructureFileValues::object($row, $path, ['key', 'label', 'label_translation_key', 'position', 'sections'], ['sections']);
+            $label = StructureFileValues::word($page, 'label', 'label_translation_key', $path, 255);
+            $key = StructureFileValues::identifier($page, 'key', $path, TemplateVersionPage::KEY_LENGTH) ?? Str::slug($label);
             $key = $key === '' ? 'page' : $key;
 
             if (in_array($key, $keys, true)) {
@@ -243,7 +258,7 @@ class StructureFileReader
             $pages[] = [
                 'key' => $key,
                 'label' => $label,
-                'position' => $this->integer($page, 'position', $path, 0, 65535, $index + 1),
+                'position' => StructureFileValues::integer($page, 'position', $path, 0, 65535, $index + 1),
                 'sections' => $this->assembly($page['sections'], $path),
             ];
         }
@@ -254,18 +269,18 @@ class StructureFileReader
     /** @return list<array<string, mixed>> */
     private function assembly(mixed $node, string $parentPath): array
     {
-        $rows = $this->collection($node, "{$parentPath}.sections", self::MAX_SECTIONS_PER_PAGE);
+        $rows = StructureFileValues::collection($node, "{$parentPath}.sections", self::MAX_SECTIONS_PER_PAGE);
         $assembly = [];
 
         foreach ($rows as $index => $row) {
             $path = "{$parentPath}.sections.{$index}";
 
-            $placement = $this->object($row, $path, ['position', 'title_override', 'is_collapsed_by_default', 'section'], ['section']);
+            $placement = StructureFileValues::object($row, $path, ['position', 'title_override', 'is_collapsed_by_default', 'section'], ['section']);
 
             $assembly[] = [
-                'position' => $this->integer($placement, 'position', $path, 0, 65535, $index + 1),
-                'title_override' => $this->nullableString($placement, 'title_override', $path, 255),
-                'is_collapsed_by_default' => $this->boolean($placement, 'is_collapsed_by_default', $path),
+                'position' => StructureFileValues::integer($placement, 'position', $path, 0, 65535, $index + 1),
+                'title_override' => StructureFileValues::nullableString($placement, 'title_override', $path, 255),
+                'is_collapsed_by_default' => StructureFileValues::boolean($placement, 'is_collapsed_by_default', $path),
                 'section' => $this->section($placement['section'], "{$path}.section"),
             ];
         }
@@ -276,7 +291,7 @@ class StructureFileReader
     /** @return array<string, mixed> */
     private function section(mixed $node, string $path): array
     {
-        $section = $this->object($node, $path, [
+        $section = StructureFileValues::object($node, $path, [
             'slug', 'name', 'name_translation_key', 'description', 'icon', 'colour', 'locale',
             'version_number', 'fields',
         ], ['fields']);
@@ -287,25 +302,25 @@ class StructureFileReader
             $this->refuse(__('The header is right, but a section in this file holds no field, so there is nothing in it to build.'));
         }
 
-        $icon = $this->identifier($section, 'icon', $path, 64);
+        $icon = StructureFileValues::identifier($section, 'icon', $path, 64);
 
         if ($icon !== null && ! in_array($icon, Section::ICONS, true)) {
             $this->refuse(__('A section in this file asks for an icon this version does not have.'));
         }
 
-        $colour = $this->nullableString($section, 'colour', $path, 7);
+        $colour = StructureFileValues::nullableString($section, 'colour', $path, 7);
 
         if ($colour !== null && ! in_array(mb_strtolower($colour), VaultColourEnum::values(), true)) {
             $this->refuse(__('A section in this file asks for a colour this version does not offer.'));
         }
 
         return [
-            'slug' => $this->identifier($section, 'slug', $path, Section::SLUG_LENGTH),
-            'name' => $this->word($section, 'name', 'name_translation_key', $path, 255),
-            'description' => $this->nullableString($section, 'description', $path, 65535),
+            'slug' => StructureFileValues::identifier($section, 'slug', $path, Section::SLUG_LENGTH),
+            'name' => StructureFileValues::word($section, 'name', 'name_translation_key', $path, 255),
+            'description' => StructureFileValues::nullableString($section, 'description', $path, 65535),
             'icon' => $icon,
             'colour' => $colour === null ? null : mb_strtolower($colour),
-            'locale' => $this->locale($section, $path),
+            'locale' => StructureFileValues::locale($section, $path),
             'fields' => $fields,
         ];
     }
@@ -313,7 +328,7 @@ class StructureFileReader
     /** @return list<array<string, mixed>> */
     private function fields(mixed $node, string $parentPath): array
     {
-        $rows = $this->collection($node, "{$parentPath}.fields", self::MAX_FIELDS_PER_SECTION);
+        $rows = StructureFileValues::collection($node, "{$parentPath}.fields", self::MAX_FIELDS_PER_SECTION);
 
         $this->fieldCount += count($rows);
 
@@ -346,14 +361,14 @@ class StructureFileReader
     /** @return array<string, mixed> */
     private function field(mixed $node, string $path, int $index): array
     {
-        $field = $this->object($node, $path, [
+        $field = StructureFileValues::object($node, $path, [
             'key', 'type', 'label', 'label_translation_key', 'help_text', 'placeholder', 'position',
             'is_required', 'is_sensitive', 'is_highlighted', 'is_unique', 'is_repeatable',
             'repeat_min', 'repeat_max', 'is_reminder_source', 'default_value', 'options', 'validation',
             'parent_field_key', 'value_list_reference', 'relation_target', 'relation_entity_type',
         ], ['type']);
 
-        $word = $this->string($field, 'type', $path, 32);
+        $word = StructureFileValues::string($field, 'type', $path, 32);
         $type = FieldTypeEnum::tryFrom($word);
 
         if ($type === null) {
@@ -362,9 +377,9 @@ class StructureFileReader
             ]));
         }
 
-        $label = $this->word($field, 'label', 'label_translation_key', $path, 255);
-        $key = $this->identifier($field, 'key', $path, Field::KEY_LENGTH) ?? Str::slug($label, '_');
-        $reference = $this->identifier($field, 'value_list_reference', $path, 64);
+        $label = StructureFileValues::word($field, 'label', 'label_translation_key', $path, 255);
+        $key = StructureFileValues::identifier($field, 'key', $path, Field::KEY_LENGTH) ?? Str::slug($label, '_');
+        $reference = StructureFileValues::identifier($field, 'value_list_reference', $path, 64);
 
         if ($reference !== null && ! isset($this->valueLists[$reference])) {
             $this->refuse(__('A field in this file offers choices from a list the file does not carry.'));
@@ -389,14 +404,14 @@ class StructureFileReader
             $this->refuse(__('A relation in this file points at a kind of record without saying which one.'));
         }
 
-        $isRepeatable = $this->boolean($field, 'is_repeatable', $path, $type->isRepeater());
+        $isRepeatable = StructureFileValues::boolean($field, 'is_repeatable', $path, $type->isRepeater());
 
         if ($isRepeatable !== $type->isRepeater()) {
             $this->refuse(__('A field in this file says it repeats although its kind does not, or the other way round.'));
         }
 
-        $repeatMin = $type->isRepeater() ? $this->nullableInteger($field, 'repeat_min', $path, 0, 100) : null;
-        $repeatMax = $type->isRepeater() ? $this->nullableInteger($field, 'repeat_max', $path, 0, 100) : null;
+        $repeatMin = $type->isRepeater() ? StructureFileValues::nullableInteger($field, 'repeat_min', $path, 0, 100) : null;
+        $repeatMax = $type->isRepeater() ? StructureFileValues::nullableInteger($field, 'repeat_max', $path, 0, 100) : null;
 
         if ($repeatMin !== null && $repeatMax !== null && $repeatMin > $repeatMax) {
             $this->refuse(__('A repeater in this file asks for more repetitions at least than it allows at most.'));
@@ -406,19 +421,19 @@ class StructureFileReader
             'key' => $key === '' ? 'field' : $key,
             'type' => $type->value,
             'label' => $label,
-            'help_text' => $this->nullableString($field, 'help_text', $path, 255),
-            'placeholder' => $this->nullableString($field, 'placeholder', $path, 255),
-            'position' => $this->integer($field, 'position', $path, 0, 65535, $index + 1),
-            'is_required' => $this->boolean($field, 'is_required', $path),
-            'is_sensitive' => $this->boolean($field, 'is_sensitive', $path),
-            'is_highlighted' => $this->boolean($field, 'is_highlighted', $path),
-            'is_unique' => $this->boolean($field, 'is_unique', $path),
+            'help_text' => StructureFileValues::nullableString($field, 'help_text', $path, 255),
+            'placeholder' => StructureFileValues::nullableString($field, 'placeholder', $path, 255),
+            'position' => StructureFileValues::integer($field, 'position', $path, 0, 65535, $index + 1),
+            'is_required' => StructureFileValues::boolean($field, 'is_required', $path),
+            'is_sensitive' => StructureFileValues::boolean($field, 'is_sensitive', $path),
+            'is_highlighted' => StructureFileValues::boolean($field, 'is_highlighted', $path),
+            'is_unique' => StructureFileValues::boolean($field, 'is_unique', $path),
             'is_repeatable' => $isRepeatable,
             'repeat_min' => $repeatMin,
             'repeat_max' => $repeatMax,
             'default_value' => $type->usesValueList() ? null : $this->defaultValue($field, $path),
             'options' => $this->options($field, $path),
-            'parent_field_key' => $this->identifier($field, 'parent_field_key', $path, Field::KEY_LENGTH),
+            'parent_field_key' => StructureFileValues::identifier($field, 'parent_field_key', $path, Field::KEY_LENGTH),
             'value_list_reference' => $reference,
             'relation_target' => $relationTarget,
             'relation_entity_type' => $type->isRelation() ? $relationEntityType : null,
@@ -475,16 +490,16 @@ class StructureFileReader
         foreach ($node as $name => $row) {
             $reference = (string) $name;
 
-            if (mb_strlen($reference) > 64 || preg_match(self::IDENTIFIER, $reference) !== 1) {
+            if (mb_strlen($reference) > 64 || preg_match(StructureFileValues::IDENTIFIER, $reference) !== 1) {
                 $this->refuse(__('A value list in this file is named in a way that is not a reference.'));
             }
 
             $path = "value_lists.{$reference}";
-            $list = $this->object($row, $path, ['key', 'name', 'name_translation_key', 'items'], ['items']);
+            $list = StructureFileValues::object($row, $path, ['key', 'name', 'name_translation_key', 'items'], ['items']);
 
             $this->valueLists[$reference] = [
-                'key' => $this->identifier($list, 'key', $path, 64),
-                'name' => $this->word($list, 'name', 'name_translation_key', $path, 255),
+                'key' => StructureFileValues::identifier($list, 'key', $path, 64),
+                'name' => StructureFileValues::word($list, 'name', 'name_translation_key', $path, 255),
                 'items' => $this->valueListItems($list['items'], $path),
             ];
         }
@@ -493,15 +508,15 @@ class StructureFileReader
     /** @return list<array<string, mixed>> */
     private function valueListItems(mixed $node, string $parentPath): array
     {
-        $rows = $this->collection($node, "{$parentPath}.items", self::MAX_ITEMS_PER_LIST);
+        $rows = StructureFileValues::collection($node, "{$parentPath}.items", self::MAX_ITEMS_PER_LIST);
         $items = [];
         $keys = [];
 
         foreach ($rows as $index => $row) {
             $path = "{$parentPath}.items.{$index}";
 
-            $item = $this->object($row, $path, ['key', 'label', 'label_translation_key', 'position', 'is_active'], []);
-            $key = $this->identifier($item, 'key', $path, 64);
+            $item = StructureFileValues::object($row, $path, ['key', 'label', 'label_translation_key', 'position', 'is_active'], []);
+            $key = StructureFileValues::identifier($item, 'key', $path, 64);
 
             if ($key !== null && in_array($key, $keys, true)) {
                 $this->refuse(__('Two choices of one list carry the same key.'));
@@ -513,9 +528,9 @@ class StructureFileReader
 
             $items[] = [
                 'key' => $key,
-                'label' => $this->word($item, 'label', 'label_translation_key', $path, 255),
-                'position' => $this->integer($item, 'position', $path, 0, 65535, $index + 1),
-                'is_active' => $this->boolean($item, 'is_active', $path, true),
+                'label' => StructureFileValues::word($item, 'label', 'label_translation_key', $path, 255),
+                'position' => StructureFileValues::integer($item, 'position', $path, 0, 65535, $index + 1),
+                'is_active' => StructureFileValues::boolean($item, 'is_active', $path, true),
             ];
         }
 
@@ -533,28 +548,28 @@ class StructureFileReader
             return null;
         }
 
-        $entityType = $this->object($node, $path, ['slug', 'name_singular', 'name_plural', 'description', 'icon', 'colour'], ['name_singular', 'name_plural']);
+        $entityType = StructureFileValues::object($node, $path, ['slug', 'name_singular', 'name_plural', 'description', 'icon', 'colour'], ['name_singular', 'name_plural']);
 
-        $icon = $this->identifier($entityType, 'icon', $path, 64);
+        $icon = StructureFileValues::identifier($entityType, 'icon', $path, 64);
 
         if ($icon !== null && ! in_array($icon, EntityType::ICONS, true)) {
             $this->refuse(__('A kind of record in this file asks for an icon this version does not have.'));
         }
 
-        $colour = $this->nullableString($entityType, 'colour', $path, 7);
+        $colour = StructureFileValues::nullableString($entityType, 'colour', $path, 7);
 
         if ($colour !== null && preg_match(self::COLOUR, mb_strtolower($colour)) !== 1) {
             $this->refuse(__('A kind of record in this file asks for a colour that is not written as a hexadecimal one.'));
         }
 
-        $nameSingular = $this->string($entityType, 'name_singular', $path, 255);
-        $slug = $this->identifier($entityType, 'slug', $path, EntityType::SLUG_LENGTH) ?? Str::slug($nameSingular);
+        $nameSingular = StructureFileValues::string($entityType, 'name_singular', $path, 255);
+        $slug = StructureFileValues::identifier($entityType, 'slug', $path, EntityType::SLUG_LENGTH) ?? Str::slug($nameSingular);
 
         return [
             'slug' => $slug === '' ? 'kind' : $slug,
             'name_singular' => $nameSingular,
-            'name_plural' => $this->string($entityType, 'name_plural', $path, 255),
-            'description' => $this->nullableString($entityType, 'description', $path, 65535),
+            'name_plural' => StructureFileValues::string($entityType, 'name_plural', $path, 255),
+            'description' => StructureFileValues::nullableString($entityType, 'description', $path, 65535),
             'icon' => $icon,
             'colour' => $colour === null ? null : mb_strtolower($colour),
         ];
@@ -563,7 +578,7 @@ class StructureFileReader
     /** @param  array<string, mixed>  $field */
     private function relationTarget(array $field, string $path, FieldTypeEnum $type): ?string
     {
-        $word = $this->nullableString($field, 'relation_target', $path, 32);
+        $word = StructureFileValues::nullableString($field, 'relation_target', $path, 32);
 
         if ($word !== null && RelationTargetEnum::tryFrom($word) === null) {
             $this->refuse(__('A relation in this file points at :word, which is not a kind of thing a record can point at.', [
@@ -623,7 +638,7 @@ class StructureFileReader
             return null;
         }
 
-        $options = $this->object($field['options'], "{$path}.options", ['accepted_mime_types'], []);
+        $options = StructureFileValues::object($field['options'], "{$path}.options", ['accepted_mime_types'], []);
         $accepted = $options['accepted_mime_types'] ?? null;
 
         if ($accepted === null) {
@@ -643,211 +658,13 @@ class StructureFileReader
         return $accepted === [] ? null : ['accepted_mime_types' => $accepted];
     }
 
-    /**
-     * @param  list<string>  $allowed
-     * @param  list<string>  $required
-     * @return array<string, mixed>
-     */
-    private function object(mixed $node, string $path, array $allowed, array $required): array
-    {
-        if (! is_array($node)) {
-            $this->refuse(__('The file holds something other than a block at :path.', ['path' => $path]));
-        }
-
-        foreach (array_keys($node) as $key) {
-            if (! in_array((string) $key, $allowed, true)) {
-                $this->refuse(__('The file holds a name this version does not know at :path, so what it means cannot be read.', [
-                    'path' => "{$path}.{$this->safe((string) $key)}",
-                ]));
-            }
-        }
-
-        foreach ($required as $key) {
-            if (($node[$key] ?? null) === null) {
-                $this->refuse(__('The file says nothing about :path, which it has to.', ['path' => "{$path}.{$key}"]));
-            }
-        }
-
-        return $node;
-    }
-
-    /** @return list<mixed> */
-    private function collection(mixed $node, string $path, int $ceiling): array
-    {
-        if (! is_array($node) || ! array_is_list($node)) {
-            $this->refuse(__('The file holds something other than a list at :path.', ['path' => $path]));
-        }
-
-        if (count($node) > $ceiling) {
-            $this->refuse(trans_choice(
-                'The file holds more than :count thing at :path.|The file holds more than :count things at :path.',
-                $ceiling,
-                ['path' => $path],
-            ));
-        }
-
-        return $node;
-    }
-
-    /** @param  array<string, mixed>  $node */
-    private function string(array $node, string $key, string $path, int $max, ?string $whenMissing = null): string
-    {
-        $value = $this->nullableString($node, $key, $path, $max);
-
-        if ($value !== null) {
-            return $value;
-        }
-
-        if ($whenMissing !== null) {
-            return $whenMissing;
-        }
-
-        $this->refuse(__('The file says nothing about :path, which it has to.', ['path' => "{$path}.{$key}"]));
-    }
-
-    /** @param  array<string, mixed>  $node */
-    private function nullableString(array $node, string $key, string $path, int $max): ?string
-    {
-        $value = $node[$key] ?? null;
-
-        if ($value === null) {
-            return null;
-        }
-
-        if (! is_string($value)) {
-            $this->refuse(__('The file holds something other than words at :path.', ['path' => "{$path}.{$key}"]));
-        }
-
-        $value = mb_trim($value);
-
-        if ($value === '') {
-            return null;
-        }
-
-        if (mb_strlen($value) > $max) {
-            $this->refuse(trans_choice(
-                'The file holds more than :count character at :path, which is more than can be stored.|The file holds more than :count characters at :path, which is more than can be stored.',
-                $max,
-                ['path' => "{$path}.{$key}"],
-            ));
-        }
-
-        return $value;
-    }
-
-    /** @param  array<string, mixed>  $node */
-    private function identifier(array $node, string $key, string $path, int $max): ?string
-    {
-        $value = $this->nullableString($node, $key, $path, $max);
-
-        if ($value === null) {
-            return null;
-        }
-
-        if (preg_match(self::IDENTIFIER, $value) !== 1) {
-            $this->refuse(__('The file holds something other than a key at :path. A key is lowercase letters and numbers, joined by dashes or underscores.', [
-                'path' => "{$path}.{$key}",
-            ]));
-        }
-
-        return $value;
-    }
-
-    /** @param  array<string, mixed>  $node */
-    private function integer(array $node, string $key, string $path, int $min, int $max, ?int $whenMissing = null): int
-    {
-        $value = $this->nullableInteger($node, $key, $path, $min, $max);
-
-        if ($value !== null) {
-            return $value;
-        }
-
-        if ($whenMissing !== null) {
-            return $whenMissing;
-        }
-
-        $this->refuse(__('The file says nothing about :path, which it has to.', ['path' => "{$path}.{$key}"]));
-    }
-
-    /** @param  array<string, mixed>  $node */
-    private function nullableInteger(array $node, string $key, string $path, int $min, int $max): ?int
-    {
-        $value = $node[$key] ?? null;
-
-        if ($value === null) {
-            return null;
-        }
-
-        if (! is_int($value) || $value < $min || $value > $max) {
-            $this->refuse(__('The file holds something other than a whole number between :min and :max at :path.', [
-                'min' => $min,
-                'max' => $max,
-                'path' => "{$path}.{$key}",
-            ]));
-        }
-
-        return $value;
-    }
-
-    /** @param  array<string, mixed>  $node */
-    private function boolean(array $node, string $key, string $path, bool $whenMissing = false): bool
-    {
-        $value = $node[$key] ?? null;
-
-        if ($value === null) {
-            return $whenMissing;
-        }
-
-        if (! is_bool($value)) {
-            $this->refuse(__('The file holds something other than a yes or a no at :path.', ['path' => "{$path}.{$key}"]));
-        }
-
-        return $value;
-    }
-
-    /** @param  array<string, mixed>  $node */
-    private function locale(array $node, string $path): ?string
-    {
-        $locale = $this->nullableString($node, 'locale', $path, 12);
-
-        if ($locale === null || preg_match(self::LOCALE, $locale) !== 1) {
-            return null;
-        }
-
-        return array_key_exists($locale, (array) config('monica.locales')) ? $locale : null;
-    }
-
-    /** @param  array<string, mixed>  $node */
-    private function word(array $node, string $key, string $translationKey, string $path, int $max): string
-    {
-        $literal = $this->nullableString($node, $key, $path, $max);
-
-        if ($literal !== null) {
-            return $literal;
-        }
-
-        $reference = $this->nullableString($node, $translationKey, $path, $max);
-
-        if ($reference === null) {
-            $this->refuse(__('The file says nothing about :path, which it has to.', ['path' => "{$path}.{$key}"]));
-        }
-
-        $translated = __($reference);
-
-        if (! is_string($translated) || mb_trim($translated) === '') {
-            return $reference;
-        }
-
-        return Str::limit(mb_trim($translated), $max, '');
-    }
-
     private function safe(string $word): string
     {
-        return preg_match('/^[A-Za-z0-9_.-]{1,40}$/', $word) === 1 ? $word : '…';
+        return StructureFileValues::safe($word);
     }
 
     private function refuse(string $sentence): never
     {
-        throw new StructureFileIsNotReadable($sentence);
+        StructureFileValues::refuse($sentence);
     }
 }

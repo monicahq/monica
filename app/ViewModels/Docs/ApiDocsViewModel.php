@@ -101,7 +101,7 @@ class ApiDocsViewModel
     {
         $sections = $section === null ? $this->sections() : [$section];
 
-        return trim(view('app.docs.api.markdown', ['sections' => $sections])->render())."\n";
+        return new ApiDocsMarkdown($sections)->render();
     }
 
     /** @return list<array{method: string, path: string}> */

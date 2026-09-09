@@ -106,7 +106,7 @@ class TemplatesViewModel
             'hasDraft' => $draft !== null,
             'appliesTo' => $template->applies_to,
             'entityTypeName' => $template->entityType?->name_plural,
-            'sectionLabel' => self::sectionLabel($shown?->assembly->count() ?? 0),
+            'sectionLabel' => self::sectionLabel((int) ($shown->assembly_count ?? 0)),
             'updatedLabel' => __('Updated :date', ['date' => $template->updated_at?->isoFormat('LL') ?? '']),
             'versionLabel' => $shown === null ? '—' : 'v'.$shown->version_number,
             'versionSubLabel' => self::versionSubLabel($template, $shown),
@@ -177,7 +177,11 @@ class TemplatesViewModel
     {
         return Template::query()
             ->where('account_id', $this->user->account_id)
-            ->with(['entityType', 'versions.assembly', 'publishedVersion.assembly'])
+            ->with([
+                'entityType',
+                'versions' => fn ($query) => $query->withCount('assembly'),
+                'publishedVersion' => fn ($query) => $query->withCount('assembly'),
+            ])
             ->orderBy('position');
     }
 }

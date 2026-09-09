@@ -25,7 +25,7 @@
       : route('files.show', ['vault' => $held->vault, 'file' => $held]);
 
   $chosen = $type === FieldTypeEnum::Multiselect && $field->valueList
-      ? $field->valueList->items()->whereIn('id', $value?->value_list_item_ids ?? [])->orderBy('position')->get()
+      ? $field->valueList->items->whereIn('id', $value?->value_list_item_ids ?? [])->sortBy('position')->values()
       : collect();
 @endphp
 

@@ -56,7 +56,10 @@ class ReminderDelivery
             return $words[0];
         }
 
-        return implode(', ', array_slice($words, 0, -1)).' '.__('and').' '.end($words);
+        return __(':list and :last', [
+            'list' => implode(__(', '), array_slice($words, 0, -1)),
+            'last' => end($words),
+        ]);
     }
 
     private function channelsNote(): string

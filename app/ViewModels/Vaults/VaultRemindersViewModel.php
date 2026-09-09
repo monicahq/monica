@@ -88,7 +88,7 @@ class VaultRemindersViewModel
     }
 
     /**
-     * @return array<int, array{title: string, count: string, isOverdue: bool, rows: array<int, array<string, mixed>>}>
+     * @return array<int, array{title: string, count: string, isOverdue: bool, rows: list<ReminderRow>}>
      */
     public function groups(): array
     {
@@ -133,7 +133,7 @@ class VaultRemindersViewModel
     }
 
     /**
-     * @return array<int, array{title: string, count: string, isOverdue: bool, rows: array<int, array<string, mixed>>}>
+     * @return array<int, array{title: string, count: string, isOverdue: bool, rows: list<ReminderRow>}>
      */
     private function byWhen(): array
     {
@@ -148,7 +148,7 @@ class VaultRemindersViewModel
         $buckets = [__('Overdue') => [], ...array_map(fn (): array => [], $boundaries), __('Later') => []];
 
         foreach ($this->rows() as $row) {
-            $buckets[$this->bucketFor($row, $now, $boundaries)][] = $row->get();
+            $buckets[$this->bucketFor($row, $now, $boundaries)][] = $row;
         }
 
         $groups = [];
@@ -186,7 +186,7 @@ class VaultRemindersViewModel
     }
 
     /**
-     * @return array<int, array{title: string, count: string, isOverdue: bool, rows: array<int, array<string, mixed>>}>
+     * @return array<int, array{title: string, count: string, isOverdue: bool, rows: list<ReminderRow>}>
      */
     private function byContact(): array
     {
@@ -196,7 +196,7 @@ class VaultRemindersViewModel
                 'title' => $name,
                 'count' => $this->countLine($rows->count()),
                 'isOverdue' => false,
-                'rows' => $rows->map(fn (ReminderRow $row): array => $row->get())->all(),
+                'rows' => $rows->values()->all(),
             ])
             ->sortByCollator('title')
             ->all();

@@ -213,7 +213,7 @@ class ReminderViewModel
         return new ReminderHistory(user: $this->user, reminder: $this->reminder)->get();
     }
 
-    /** @return list<array<string, mixed>> */
+    /** @return list<ReminderRow> */
     public function occurrences(): array
     {
         if (! $this->reminder->is_active) {
@@ -224,12 +224,12 @@ class ReminderViewModel
             ->whereIn('status', ReminderOccurrenceStatusEnum::actionable())
             ->orderBy('scheduled_for')
             ->get()
-            ->map(fn (ReminderOccurrence $occurrence): array => new ReminderRow(
+            ->map(fn (ReminderOccurrence $occurrence): ReminderRow => new ReminderRow(
                 user: $this->user,
                 occurrence: $occurrence
                     ->setRelation('reminder', $this->reminder)
                     ->setRelation('vault', $this->vault),
-            )->get())
+            ))
             ->all();
     }
 

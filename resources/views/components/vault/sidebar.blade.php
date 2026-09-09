@@ -4,29 +4,12 @@
   @var \App\Models\Vault $vault
   @var string $current
   @var int|null $taskCount
+  @var int $reminderCount
+  @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Vault> $vaults
 --}}
-@props([
-  'user',
-  'vault',
-  'current' => 'dashboard',
-  'taskCount' => null,
-])
 
 @php
   $item = 'flex min-h-8 items-center gap-2.5 rounded-md px-2 py-1.5 text-nav transition-[background-color,box-shadow,color] duration-(--duration-fast) ease-out max-lg:min-h-10';
-
-  $reminderCount = \App\Models\ReminderOccurrence::query()
-    ->upcomingInVault(
-      vault: $vault,
-      until: \Carbon\CarbonImmutable::now()->addDays((int) config('monica.reminder_generation_window_in_days')),
-    )
-    ->count();
-
-  $vaults = \App\Models\Vault::query()
-    ->where('account_id', $user->account_id)
-    ->orderByDesc('is_default')
-    ->orderBy('position')
-    ->get();
 
   $sections = [
     ['key' => 'dashboard', 'label' => __('Dashboard'), 'icon' => 'heart', 'url' => route('vaults.show', $vault), 'badge' => null],

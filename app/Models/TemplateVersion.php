@@ -188,11 +188,27 @@ class TemplateVersion extends Model
      * for its own sections; this relation is for everything that has to touch
      * every row, whichever tab it sits on.
      *
+     * It brings the whole structure with it: the section version, its section,
+     * its fields, the fields nested inside a repeatable one, and the value list
+     * each choice field offers. A row of the assembly says which section
+     * version sits where and nothing about what it holds, so every reader asked
+     * for the rest one row at a time, which cost a query per section and two
+     * more per choice field on the record screen, the busiest read in the
+     * application. The cost of loading it here is the items of every list the
+     * structure names, whether or not the screen draws them. Anything that
+     * wants the rows alone and not their contents counts them with withCount()
+     * rather than loading them.
+     *
      * @return HasMany<TemplateVersionSection, $this>
      */
     public function assembly(): HasMany
     {
         return $this->hasMany(TemplateVersionSection::class)
+            ->with([
+                'sectionVersion.section',
+                'sectionVersion.fields.valueList.items',
+                'sectionVersion.fields.children.valueList.items',
+            ])
             ->orderBy('template_version_page_id')
             ->orderBy('position');
     }

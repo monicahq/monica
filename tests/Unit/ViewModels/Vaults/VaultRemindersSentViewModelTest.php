@@ -37,9 +37,9 @@ class VaultRemindersSentViewModelTest extends TestCase
         $rows = new VaultRemindersSentViewModel(user: $user, vault: $vault)->rows();
 
         $this->assertCount(3, $rows);
-        $this->assertEquals('2027-03-05T09:00:00+00:00', $rows[0]['iso']);
-        $this->assertEquals('2027-03-03T09:00:00+00:00', $rows[1]['iso']);
-        $this->assertEquals('2027-03-01T09:00:00+00:00', $rows[2]['iso']);
+        $this->assertEquals('2027-03-05T09:00:00+00:00', $rows[0]->sentIso());
+        $this->assertEquals('2027-03-03T09:00:00+00:00', $rows[1]->sentIso());
+        $this->assertEquals('2027-03-01T09:00:00+00:00', $rows[2]->sentIso());
     }
 
     #[Test]
@@ -83,7 +83,7 @@ class VaultRemindersSentViewModelTest extends TestCase
 
         $rows = new VaultRemindersSentViewModel(user: $user, vault: $vault)->rows();
 
-        $this->assertEquals(['In the app', 'By email'], $rows[0]['channels']);
+        $this->assertEquals(['In the app', 'By email'], $rows[0]->channels());
     }
 
     #[Test]
@@ -112,9 +112,9 @@ class VaultRemindersSentViewModelTest extends TestCase
 
         $rows = new VaultRemindersSentViewModel(user: $user, vault: $vault)->rows();
 
-        $this->assertEquals(['Dismissed', 'neutral'], [$rows[0]['outcome'], $rows[0]['tone']]);
-        $this->assertEquals(['Postponed', 'info'], [$rows[1]['outcome'], $rows[1]['tone']]);
-        $this->assertEquals(['Still open', 'warning'], [$rows[2]['outcome'], $rows[2]['tone']]);
+        $this->assertEquals(['Dismissed', 'neutral'], [$rows[0]->outcome(), $rows[0]->tone()]);
+        $this->assertEquals(['Postponed', 'info'], [$rows[1]->outcome(), $rows[1]->tone()]);
+        $this->assertEquals(['Still open', 'warning'], [$rows[2]->outcome(), $rows[2]->tone()]);
     }
 
     #[Test]
@@ -128,8 +128,8 @@ class VaultRemindersSentViewModelTest extends TestCase
         }
 
         foreach (new VaultRemindersSentViewModel(user: $user, vault: $vault)->rows() as $row) {
-            $this->assertStringNotContainsStringIgnoringCase('complet', $row['outcome']);
-            $this->assertStringNotContainsStringIgnoringCase('done', $row['outcome']);
+            $this->assertStringNotContainsStringIgnoringCase('complet', $row->outcome());
+            $this->assertStringNotContainsStringIgnoringCase('done', $row->outcome());
         }
     }
 

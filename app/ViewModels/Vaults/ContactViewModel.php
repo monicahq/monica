@@ -620,8 +620,7 @@ class ContactViewModel
             ->all();
     }
 
-    /** @return array<string, mixed>|null */
-    private function reminderFor(Field $field): ?array
+    private function reminderFor(Field $field): ?ContactReminderBlock
     {
         if (! $field->type->canDriveAReminder()) {
             return null;
@@ -632,7 +631,7 @@ class ContactViewModel
             contact: $this->contact,
             field: $field,
             reminder: $this->reminders()->get($field->id),
-        )->get();
+        );
     }
 
     private function reminderMarkOn(Field $field): ?string

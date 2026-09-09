@@ -103,6 +103,135 @@ class ApiDocsReturnFieldsTest extends TestCase
         ], $opaque);
     }
 
+    #[Test]
+    public function every_documented_example_has_the_shape_the_endpoint_answers_with(): void
+    {
+        $problems = [];
+
+        foreach ($this->endpoints() as $section) {
+            if ($section->response === null) {
+                continue;
+            }
+
+            $response = $this->answer($section->id);
+
+            if ($response === null || $response->status() !== $section->responseStatus) {
+                continue;
+            }
+
+            $body = $response->content() === '' ? [] : ($response->json() ?? []);
+
+            $answered = $this->paths($body, $section);
+            $shown = $this->paths($section->response, $section);
+
+            foreach (array_diff($shown, $answered) as $path) {
+                $problems[] = "{$section->id}: the example shows `{$path}` and the answer does not carry it.";
+            }
+
+            foreach (array_diff($answered, $shown) as $path) {
+                $problems[] = "{$section->id}: the answer carries `{$path}` and the example does not show it.";
+            }
+        }
+
+        $this->assertSame([], $problems, "The examples and the endpoints disagree:\n\n".implode("\n", $problems));
+    }
+
+    #[Test]
+    public function every_field_comes_back_as_the_kind_of_thing_it_is_documented_as(): void
+    {
+        $problems = [];
+
+        foreach ($this->endpoints() as $section) {
+            $response = $this->answer($section->id);
+
+            if ($response === null || $response->status() !== $section->responseStatus) {
+                continue;
+            }
+
+            $answered = $response->content() === '' ? [] : ($response->json() ?? []);
+
+            foreach ($section->returnFields as $field) {
+                if ($field['opaque'] ?? false) {
+                    continue;
+                }
+
+                $held = $this->valueAt($answered, $field['name']);
+
+                if ($held === null) {
+                    continue;
+                }
+
+                $kind = $this->kindOf($held);
+
+                if (! in_array($kind, self::ANSWERS_FOR[$field['type']] ?? [], true)) {
+                    $problems[] = "{$section->id}: `{$field['name']}` is documented as {$field['type']} and came back as {$kind}.";
+                }
+            }
+        }
+
+        $this->assertSame([], $problems, "The types and the endpoints disagree:\n\n".implode("\n", $problems));
+    }
+
+    /**
+     * What a documented kind is allowed to come back as. A timestamp is a count
+     * of seconds and a uuid is written out, so both reach the reader as one of
+     * the kinds JSON has.
+     */
+    private const array ANSWERS_FOR = [
+        'string' => ['string'],
+        'uuid' => ['string'],
+        'timestamp' => ['integer'],
+        'integer' => ['integer'],
+        'boolean' => ['boolean'],
+        'object' => ['object'],
+        'array' => ['array'],
+    ];
+
+    /**
+     * The value a documented path names, or null when the answer does not reach
+     * it. A path naming a record inside a list is read on the first record.
+     *
+     * @param  array<array-key, mixed>  $answer
+     */
+    private function valueAt(array $answer, string $path): mixed
+    {
+        $held = $answer;
+
+        foreach (explode('.', $path) as $step) {
+            if (str_ends_with($step, '[]')) {
+                $step = mb_substr($step, 0, -2);
+
+                if (! is_array($held) || ! is_array($held[$step] ?? null) || ($held[$step] === [])) {
+                    return null;
+                }
+
+                $held = $held[$step][0];
+
+                continue;
+            }
+
+            if (! is_array($held) || ! array_key_exists($step, $held)) {
+                return null;
+            }
+
+            $held = $held[$step];
+        }
+
+        return $held;
+    }
+
+    private function kindOf(mixed $value): string
+    {
+        return match (true) {
+            is_bool($value) => 'boolean',
+            is_int($value) => 'integer',
+            is_string($value) => 'string',
+            is_array($value) && array_is_list($value) => 'array',
+            is_array($value) => 'object',
+            default => get_debug_type($value),
+        };
+    }
+
     /** @return list<string> */
     private function check(ApiDocsSection $section): array
     {

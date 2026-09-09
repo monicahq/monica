@@ -16,6 +16,49 @@ class AccountsViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
+    public function it_writes_a_row_saying_who_is_on_the_account_and_when_they_joined(): void
+    {
+        $michael = User::factory()->create([
+            'first_name' => 'Michael',
+            'last_name' => 'Scott',
+            'email' => 'michael.scott@dundermifflin.com',
+        ]);
+
+        $rows = new AccountsViewModel()->rows();
+
+        $this->assertCount(1, $rows);
+        $this->assertSame('Michael Scott', $rows[0]['name']);
+        $this->assertSame('michael.scott@dundermifflin.com', $rows[0]['email']);
+        $this->assertNull($rows[0]['state']);
+        $this->assertStringStartsWith('joined ', $rows[0]['joined']);
+        $this->assertSame(route('admin.accounts.show', ['account' => $michael->account_id]), $rows[0]['url']);
+    }
+
+    #[Test]
+    public function a_row_for_an_account_nobody_is_on_is_named_after_its_number(): void
+    {
+        $account = Account::factory()->create();
+
+        $rows = new AccountsViewModel()->rows();
+
+        $this->assertSame("Account {$account->id}", $rows[0]['name']);
+        $this->assertSame('nobody on this account', $rows[0]['email']);
+        $this->assertNull($rows[0]['state']);
+    }
+
+    #[Test]
+    public function a_row_says_when_the_person_was_deleted_or_deactivated(): void
+    {
+        $deactivated = User::factory()->create(['is_active' => false]);
+
+        $this->assertSame('deactivated', new AccountsViewModel()->rows()[0]['state']);
+
+        $deactivated->delete();
+
+        $this->assertSame('deleted', new AccountsViewModel()->rows()[0]['state']);
+    }
+
+    #[Test]
     public function it_finds_an_account_by_the_whole_address(): void
     {
         $michael = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);

@@ -58,7 +58,9 @@ deleted_at                  datetime
 
 ## What is built
 
-The author path and the moderation path: `CreateMarketplaceListing`, `UpdateMarketplaceListing`, `SubmitMarketplaceListing`, `ApproveMarketplaceListingVersion`, `RejectMarketplaceListingVersion` and `WithdrawMarketplaceListing`.
+The moderation path: `ApproveMarketplaceListingVersion` and `RejectMarketplaceListingVersion`.
+
+The author path is not built. The four actions that created a listing, changed one, submitted one for moderation and withdrew one were written, had no caller and have been removed, so nothing puts a listing in front of the two moderation actions in the first place.
 
 Two things the specification asks for are not built yet and are named here so nobody assumes otherwise. `listable` accepts a template or a section and not an activity type, since [ActivityType](035-activity-type-not-yet.md) does not exist. And moderation has no user behind it: `moderated_by` is written as a name, because there is no instance administrator anywhere in the product yet, so the two moderation actions take one rather than a `User` and check no account.
 

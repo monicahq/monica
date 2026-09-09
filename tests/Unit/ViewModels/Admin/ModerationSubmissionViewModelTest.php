@@ -16,6 +16,52 @@ class ModerationSubmissionViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
+    public function it_says_who_wrote_the_submission_what_it_is_filed_under_and_when_it_arrived(): void
+    {
+        $version = $this->version();
+        $version->listing->update(['author_name' => 'Dwight Schrute', 'name' => 'Beet harvest']);
+
+        $provenance = new ModerationSubmissionViewModel(version: $version->refresh())->provenance();
+
+        $this->assertStringContainsString('Dwight Schrute', $provenance);
+        $this->assertStringContainsString('version '.$version->version_number, $provenance);
+        $this->assertStringContainsString('submitted ', $provenance);
+        $this->assertSame('Beet harvest', new ModerationSubmissionViewModel(version: $version->refresh())->title());
+    }
+
+    #[Test]
+    public function it_says_who_decided_a_version_that_is_no_longer_waiting(): void
+    {
+        $version = $this->version();
+        $version->listing->update(['moderated_by' => 'Michael Scott']);
+
+        $line = new ModerationSubmissionViewModel(version: $version->refresh())->decidedLine();
+
+        $this->assertStringContainsString('Michael Scott decided it.', $line);
+    }
+
+    #[Test]
+    public function it_says_somebody_else_decided_a_version_nobody_signed_for(): void
+    {
+        $version = $this->version();
+        $version->listing->update(['moderated_by' => null]);
+
+        $line = new ModerationSubmissionViewModel(version: $version->refresh())->decidedLine();
+
+        $this->assertStringContainsString('Somebody else decided it.', $line);
+    }
+
+    #[Test]
+    public function it_points_the_two_decisions_at_the_routes_that_take_them(): void
+    {
+        $version = $this->version();
+        $viewModel = new ModerationSubmissionViewModel(version: $version);
+
+        $this->assertSame(route('admin.moderation.approval.create', ['version' => $version->id]), $viewModel->approvalUrl());
+        $this->assertSame(route('admin.moderation.rejection.create', ['version' => $version->id]), $viewModel->rejectionUrl());
+    }
+
+    #[Test]
     public function it_hands_back_the_listing_the_version_belongs_to(): void
     {
         $listing = MarketplaceListing::factory()->submitted()->create(['name' => 'Dundie Awards']);
@@ -52,5 +98,12 @@ class ModerationSubmissionViewModelTest extends TestCase
         $version = MarketplaceListingVersion::factory()->approved()->create();
 
         $this->assertFalse(new ModerationSubmissionViewModel(version: $version)->awaitsDecision());
+    }
+
+    private function version(): MarketplaceListingVersion
+    {
+        $listing = MarketplaceListing::factory()->submitted()->create();
+
+        return MarketplaceListingVersion::factory()->create(['marketplace_listing_id' => $listing->id]);
     }
 }

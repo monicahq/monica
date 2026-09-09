@@ -1,90 +1,37 @@
 {{-- One account, as the operator sees it. --}}
 {{-- @var \App\ViewModels\Admin\AccountViewModel $viewModel --}}
-<x-admin-layout :title="$viewModel->user()?->name ?? __('Account :id', ['id' => $viewModel->account()->id])">
+<x-admin-layout :title="$viewModel->title()">
   <header class="flex flex-col gap-2">
     <x-link :href="route('admin.accounts.index')" data-turbo="true">{{ __('Back to accounts') }}</x-link>
 
-    <h1 class="text-page-title text-ink">
-      {{ $viewModel->user()?->name ?? __('Account :id', ['id' => $viewModel->account()->id]) }}
-    </h1>
+    <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
     <div class="flex flex-wrap items-center gap-2">
-      @if ($viewModel->account()->is_self_hosted)
-        <x-badge>{{ __('Self-hosted') }}</x-badge>
-      @endif
-
-      @if ($viewModel->account()->has_lifetime_access)
-        <x-badge tone="success">{{ __('Lifetime access') }}</x-badge>
-      @endif
-
-      @if (! $viewModel->hasUser())
-        <x-badge tone="danger">{{ __('Nobody on this account') }}</x-badge>
-      @elseif ($viewModel->userWasDeleted())
-        <x-badge tone="danger">{{ __('Person deleted') }}</x-badge>
-      @elseif (! $viewModel->user()->is_active)
-        <x-badge tone="danger">{{ __('Deactivated') }}</x-badge>
-      @endif
+      @foreach ($viewModel->badges() as $badge)
+        <x-badge :tone="$badge['tone']">{{ $badge['label'] }}</x-badge>
+      @endforeach
     </div>
   </header>
 
-  @if ($viewModel->userWasDeleted())
-    <x-notice tone="warning">
-      {{ __('The person on this account was deleted on :date. The account and everything in it is still here.', ['date' => $viewModel->user()->deleted_at->isoFormat('LL')]) }}
-    </x-notice>
+  @if ($viewModel->deletionNotice() !== null)
+    <x-notice tone="warning">{{ $viewModel->deletionNotice() }}</x-notice>
   @endif
 
   <x-panel :title="__('The account')">
     <dl class="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
-      <div>
-        <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Created') }}</dt>
-        <dd class="text-base text-ink">{{ $viewModel->account()->created_at->isoFormat('LL') }}</dd>
-      </div>
-
-      <div>
-        <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Where it runs') }}</dt>
-        <dd class="text-base text-ink">{{ $viewModel->account()->is_self_hosted ? __('Self-hosted') : __('Hosted by us') }}</dd>
-      </div>
-
-      <div>
-        <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Lifetime access') }}</dt>
-        <dd class="text-base text-ink">
-          @if (! $viewModel->isBillable())
-            {{ __('Not applicable') }}
-          @elseif ($viewModel->account()->has_lifetime_access)
-            {{ $viewModel->account()->purchased_at !== null
-              ? __('Yes, bought on :date', ['date' => $viewModel->account()->purchased_at->isoFormat('LL')])
-              : __('Yes') }}
-          @else
-            {{ __('No') }}
-          @endif
-        </dd>
-      </div>
-
-      <div>
-        <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Billing address') }}</dt>
-        <dd class="text-base text-ink">
-          {{ ! $viewModel->isBillable() ? __('Not applicable') : ($viewModel->account()->billing_email ?? __('None given')) }}
-        </dd>
-      </div>
-
-      <div>
-        <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Storage') }}</dt>
-        <dd class="text-base text-ink">
-          @if ($viewModel->hasStorageLimit())
-            {{ __(':used of :limit', ['used' => $viewModel->storageUsed(), 'limit' => $viewModel->storageLimit()]) }}
-          @else
-            {{ __(':used, no limit', ['used' => $viewModel->storageUsed()]) }}
-          @endif
-        </dd>
-      </div>
-
-      <div>
-        <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('What it holds') }}</dt>
-        <dd class="text-base text-ink">
-          {{ trans_choice(':count vault|:count vaults', $viewModel->vaultCount()) }},
-          {{ trans_choice(':count contact|:count contacts', $viewModel->contactCount()) }}
-        </dd>
-      </div>
+      @foreach ([
+        ['label' => __('Created'), 'value' => $viewModel->createdOn()],
+        ['label' => __('Where it runs'), 'value' => $viewModel->whereItRuns()],
+        ['label' => __('Lifetime access'), 'value' => $viewModel->lifetimeAccessLine()],
+        ['label' => __('Billing address'), 'value' => $viewModel->billingAddressLine()],
+        ['label' => __('Storage'), 'value' => $viewModel->storageLine()],
+        ['label' => __('What it holds'), 'value' => $viewModel->vaultsLine().', '.$viewModel->contactsLine()],
+      ] as $fact)
+        <div>
+          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ $fact['label'] }}</dt>
+          <dd class="text-base text-ink">{{ $fact['value'] }}</dd>
+        </div>
+      @endforeach
     </dl>
 
     @if ($viewModel->isOverStorageLimit())
@@ -97,46 +44,20 @@
   @if ($viewModel->hasUser())
     <x-panel :title="__('The person')">
       <dl class="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
-        <div>
-          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Name') }}</dt>
-          <dd class="text-base text-ink">{{ $viewModel->user()->name }}</dd>
-        </div>
-
-        <div>
-          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Address') }}</dt>
-          <dd class="text-base text-ink">{{ $viewModel->user()->email }}</dd>
-        </div>
-
-        <div>
-          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Address confirmed') }}</dt>
-          <dd class="text-base text-ink">{{ $viewModel->user()->hasVerifiedEmail() ? __('Yes') : __('No') }}</dd>
-        </div>
-
-        <div>
-          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('How they sign in') }}</dt>
-          <dd class="text-base text-ink">
-            {{ $viewModel->user()->usesSingleSignOn()
-              ? __('Single sign-on through :provider', ['provider' => $viewModel->user()->sso_provider])
-              : __('With a password') }}
-          </dd>
-        </div>
-
-        <div>
-          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Two-factor authentication') }}</dt>
-          <dd class="text-base text-ink">{{ $viewModel->user()->usesTwoFactorAuthentication() ? __('On') : __('Off') }}</dd>
-        </div>
-
-        <div>
-          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Can sign in') }}</dt>
-          <dd class="text-base text-ink">{{ $viewModel->user()->is_active ? __('Yes') : __('No, deactivated') }}</dd>
-        </div>
-
-        <div>
-          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Last signed in') }}</dt>
-          <dd class="text-base text-ink">
-            {{ $viewModel->user()->last_login_at?->isoFormat('LL') ?? __('Never') }}
-          </dd>
-        </div>
+        @foreach ([
+          ['label' => __('Name'), 'value' => $viewModel->userName()],
+          ['label' => __('Address'), 'value' => $viewModel->userEmail()],
+          ['label' => __('Address confirmed'), 'value' => $viewModel->emailIsConfirmedLine()],
+          ['label' => __('How they sign in'), 'value' => $viewModel->signInLine()],
+          ['label' => __('Two-factor authentication'), 'value' => $viewModel->twoFactorLine()],
+          ['label' => __('Can sign in'), 'value' => $viewModel->canSignInLine()],
+          ['label' => __('Last signed in'), 'value' => $viewModel->lastSignedInLine()],
+        ] as $fact)
+          <div>
+            <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ $fact['label'] }}</dt>
+            <dd class="text-base text-ink">{{ $fact['value'] }}</dd>
+          </div>
+        @endforeach
       </dl>
     </x-panel>
   @endif
@@ -145,16 +66,16 @@
     <x-notice tone="danger">{{ $message }}</x-notice>
   @enderror
 
-  @if ($viewModel->hasUser() && ! $viewModel->userWasDeleted())
+  @if ($viewModel->isActionable())
     <x-panel :title="__('What support can do')" :subtitle="__('Every one of these is written down against your name. None of them deletes anything.')">
       <div class="flex flex-wrap items-center gap-3">
-        @if ($viewModel->user()->is(auth()->user()))
+        @if ($viewModel->isTheViewer())
           <p class="text-sm text-body">{{ __('You cannot deactivate yourself. Another administrator has to do that, so nobody can lock themselves out.') }}</p>
-        @elseif ($viewModel->user()->is_active)
+        @elseif ($viewModel->canSignIn())
           <x-modal.warning
-            :title="__('Stop :name signing in?', ['name' => $viewModel->user()->name])"
+            :title="__('Stop :name signing in?', ['name' => $viewModel->userName()])"
             :confirm="__('Deactivate them')"
-            :action="route('admin.accounts.activation.destroy', ['account' => $viewModel->account()->id])"
+            :action="$viewModel->deactivateUrl()"
           >
             <x-slot:trigger>
               <x-button.danger type="button" size="small" @click="open = true">{{ __('Deactivate') }}</x-button.danger>
@@ -164,10 +85,10 @@
           </x-modal.warning>
         @else
           <x-modal.warning
-            :title="__('Let :name sign in again?', ['name' => $viewModel->user()->name])"
+            :title="__('Let :name sign in again?', ['name' => $viewModel->userName()])"
             :confirm="__('Reactivate them')"
             method="post"
-            :action="route('admin.accounts.activation.create', ['account' => $viewModel->account()->id])"
+            :action="$viewModel->reactivateUrl()"
           >
             <x-slot:trigger>
               <x-button.secondary type="button" size="small" @click="open = true">{{ __('Reactivate') }}</x-button.secondary>
@@ -182,7 +103,7 @@
           :description="__('In bytes. Leave it empty for no limit at all.')"
           :confirm="__('Save the limit')"
           method="put"
-          :action="route('admin.accounts.storageLimit.update', ['account' => $viewModel->account()->id])"
+          :action="$viewModel->storageLimitUrl()"
           :open="$errors->has('storage_limit_in_bytes')"
         >
           <x-slot:trigger>
@@ -194,18 +115,18 @@
             name="storage_limit_in_bytes"
             type="number"
             :label="__('Limit in bytes')"
-            :value="$viewModel->account()->storage_limit_in_bytes"
+            :value="$viewModel->storageLimitInBytes()"
             :help="__('A limit below the :used already held deletes nothing. It refuses the next upload until the account is back under the limit.', ['used' => $viewModel->storageUsed()])"
             :error="$errors->first('storage_limit_in_bytes')"
             optional
           />
         </x-modal.form>
 
-        @if ($viewModel->account()->has_lifetime_access)
+        @if ($viewModel->hasLifetimeAccess())
           <x-modal.warning
             :title="__('Take lifetime access away?')"
             :confirm="__('Withdraw it')"
-            :action="route('admin.accounts.lifetimeAccess.destroy', ['account' => $viewModel->account()->id])"
+            :action="$viewModel->withdrawLifetimeAccessUrl()"
           >
             <x-slot:trigger>
               <x-button.danger type="button" size="small" @click="open = true">{{ __('Withdraw lifetime access') }}</x-button.danger>
@@ -218,7 +139,7 @@
             :title="__('Give this account lifetime access?')"
             :confirm="__('Grant it')"
             method="post"
-            :action="route('admin.accounts.lifetimeAccess.create', ['account' => $viewModel->account()->id])"
+            :action="$viewModel->grantLifetimeAccessUrl()"
           >
             <x-slot:trigger>
               <x-button.secondary type="button" size="small" @click="open = true">{{ __('Grant lifetime access') }}</x-button.secondary>
@@ -229,7 +150,7 @@
         @endif
       </div>
 
-      @if ($viewModel->user()->is(auth()->user()))
+      @if ($viewModel->isTheViewer())
         <x-slot:footer>
           <p class="text-sm text-body">{{ __('This is your own account. You can change your own storage limit and your own lifetime access, so an instance with one administrator is never blocked.') }}</p>
         </x-slot:footer>
@@ -241,7 +162,7 @@
     <p class="text-sm text-body">{{ __('Every action an administrator has taken on this account is in the record.') }}</p>
 
     <x-slot:footer>
-      <x-link :href="route('admin.logs.index', ['account' => $viewModel->account()->id])" data-turbo="true">{{ __('See the record for this account') }}</x-link>
+      <x-link :href="$viewModel->recordUrl()" data-turbo="true">{{ __('See the record for this account') }}</x-link>
     </x-slot:footer>
   </x-panel>
 </x-admin-layout>

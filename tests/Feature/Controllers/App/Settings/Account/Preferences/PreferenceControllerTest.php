@@ -64,6 +64,20 @@ class PreferenceControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_hands_the_map_to_the_registered_picker_rather_than_writing_it_in_an_attribute(): void
+    {
+        $user = User::factory()->create(['timezone' => 'UTC']);
+
+        $response = $this->actingAs($user)->get(route('settings.preferences.index'));
+
+        $response->assertSee('x-data="timezonePicker(', escape: false);
+        $response->assertSee('north', escape: false);
+        $response->assertDontSee('clientX', escape: false);
+        $response->assertDontSee('toFixed', escape: false);
+        $response->assertDontSee('resolvedOptions', escape: false);
+    }
+
+    #[Test]
     public function it_offers_every_zone_as_something_to_pick(): void
     {
         $user = User::factory()->create(['timezone' => 'UTC']);

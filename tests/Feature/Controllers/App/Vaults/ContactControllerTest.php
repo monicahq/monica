@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Vaults;
 
+use App\Enums\FieldTypeEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VersionStatusEnum;
@@ -18,10 +19,13 @@ use App\Models\TemplateVersion;
 use App\Models\TemplateVersionPage;
 use App\Models\TemplateVersionSection;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -1002,6 +1006,38 @@ class ContactControllerTest extends TestCase
             ->assertSee('Apply version 2');
     }
 
+    #[Test]
+    public function it_fills_a_section_in_in_the_same_number_of_queries_however_many_choices_it_offers(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $few = $this->contactOnAVersionOf($user, $vault, sections: 1, choiceFields: 1);
+        $many = $this->contactOnAVersionOf($user, $vault, sections: 1, choiceFields: 7);
+
+        $this->assertSame(
+            $this->queriesEditing($user, $vault, $few),
+            $this->queriesEditing($user, $vault, $many),
+            'Offering a choice must not cost a query per field.',
+        );
+    }
+
+    #[Test]
+    public function it_reads_a_record_in_the_same_number_of_queries_whatever_its_structure_holds(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $small = $this->contactOnAVersionOf($user, $vault, sections: 2);
+        $large = $this->contactOnAVersionOf($user, $vault, sections: 8);
+
+        $this->assertSame(
+            $this->queriesReading($user, $vault, $small),
+            $this->queriesReading($user, $vault, $large),
+            'Reading a record must not cost a query per section.',
+        );
+    }
+
     private function versionWithAPage(User $user, string $pageLabel, string $sectionName, string $fieldLabel): TemplateVersion
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
@@ -1028,6 +1064,88 @@ class ContactControllerTest extends TestCase
         $version->update(['status' => VersionStatusEnum::Published]);
 
         return $version->refresh();
+    }
+
+    private function contactOnAVersionOf(User $user, Vault $vault, int $sections, int $choiceFields = 0): Contact
+    {
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version->pages()->delete();
+
+        $page = TemplateVersionPage::factory()->create([
+            'template_version_id' => $version->id,
+            'account_id' => $version->account_id,
+        ]);
+
+        foreach (range(1, $sections) as $position) {
+            $section = Section::factory()->create(['account_id' => $user->account_id]);
+            $sectionVersion = SectionVersion::factory()->create(['section_id' => $section->id]);
+
+            Field::factory()->count(3)->create(['section_version_id' => $sectionVersion->id]);
+
+            foreach (range(1, $choiceFields) as $choice) {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+
+                ValueListItem::factory()->count(4)->create([
+                    'account_id' => $user->account_id,
+                    'value_list_id' => $list->id,
+                ]);
+
+                Field::factory()->create([
+                    'section_version_id' => $sectionVersion->id,
+                    'type' => FieldTypeEnum::Select,
+                    'value_list_id' => $list->id,
+                    'position' => $choice + 3,
+                ]);
+            }
+
+            TemplateVersionSection::factory()->create([
+                'template_version_id' => $version->id,
+                'template_version_page_id' => $page->id,
+                'section_version_id' => $sectionVersion->id,
+                'position' => $position,
+            ]);
+        }
+
+        $version->update(['status' => VersionStatusEnum::Published]);
+
+        return Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'template_version_id' => $version->refresh()->id,
+        ]);
+    }
+
+    private function queriesEditing(User $user, Vault $vault, Contact $contact): int
+    {
+        $counted = 0;
+        DB::listen(function () use (&$counted): void {
+            $counted++;
+        });
+
+        $this->actingAs($user)
+            ->get(route('contacts.sections.edit', [
+                'vault' => $vault,
+                'contact' => $contact,
+                'templateVersionSection' => $contact->templateVersion->assembly->first()->id,
+            ]))
+            ->assertStatus(200);
+
+        return $counted;
+    }
+
+    private function queriesReading(User $user, Vault $vault, Contact $contact): int
+    {
+        $counted = 0;
+        DB::listen(function () use (&$counted): void {
+            $counted++;
+        });
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $contact]))
+            ->assertStatus(200);
+
+        return $counted;
     }
 
     private function routeNameFor(string $path): ?string

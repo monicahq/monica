@@ -7,13 +7,17 @@ import focus from '@alpinejs/focus';
 import anchor from '@alpinejs/anchor';
 import ajax from '@imacrayon/alpine-ajax';
 
+import fieldReminder from './field-reminder';
 import passkey from './passkey';
+import timezonePicker from './timezone-picker';
 
 window.Turbo = Turbo;
 
 Turbo.session.drive = false;
 
+Alpine.data('fieldReminder', fieldReminder);
 Alpine.data('passkey', passkey);
+Alpine.data('timezonePicker', timezonePicker);
 
 window.Alpine = Alpine;
 

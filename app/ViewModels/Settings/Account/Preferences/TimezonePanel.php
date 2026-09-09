@@ -73,6 +73,21 @@ class TimezonePanel
         return TimezoneCatalogue::position($zone['latitude'], $zone['longitude']);
     }
 
+    /**
+     * The latitudes the map is cut off at, which the picker needs to read a
+     * click back into a place. They are the same two the marker is drawn
+     * with, so a click and the dot it produces agree.
+     *
+     * @return array{north: float, south: float}
+     */
+    public function projection(): array
+    {
+        return [
+            'north' => TimezoneCatalogue::MAP_NORTH,
+            'south' => TimezoneCatalogue::MAP_SOUTH,
+        ];
+    }
+
     /** @return array{left: float, width: float} */
     public function band(): array
     {

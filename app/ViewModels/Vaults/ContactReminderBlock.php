@@ -8,6 +8,7 @@ use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderMomentDirectionEnum;
 use App\Enums\ReminderMomentUnitEnum;
+use App\Helpers\CountedPhraseWordings;
 use App\Helpers\ReminderSchedule;
 use App\Helpers\TimezoneCatalogue;
 use App\Models\Contact;
@@ -18,6 +19,12 @@ use Carbon\CarbonImmutable;
 
 class ContactReminderBlock
 {
+    /** How many blank moments the panel holds ready behind the add button. */
+    private const int BLANKS = 3;
+
+    /** What a blank moment offers before somebody changes it. */
+    private const int BLANK_AMOUNT = 7;
+
     public function __construct(
         private readonly User $user,
         private readonly Contact $contact,
@@ -25,108 +32,211 @@ class ContactReminderBlock
         private readonly ?Reminder $reminder,
     ) {}
 
-    /** @return array<string, mixed> */
-    public function get(): array
+    public function isOn(): bool
     {
-        $rule = $this->reminder;
+        return $this->reminder instanceof Reminder;
+    }
 
+    public function name(): ?string
+    {
+        return $this->reminder?->name;
+    }
+
+    public function recurs(): bool
+    {
+        return $this->reminder === null || $this->reminder->cadence->recurs();
+    }
+
+    public function interval(): int
+    {
+        return $this->reminder instanceof Reminder ? $this->reminder->frequency_interval : 1;
+    }
+
+    public function hint(): string
+    {
+        return $this->isOn()
+            ? __('It reads from this date and nothing else.')
+            : __('Be told about this date, ahead of time, in your own time zone.');
+    }
+
+    public function errorKey(): string
+    {
+        return "reminders.{$this->field->id}";
+    }
+
+    public function blanks(): int
+    {
+        return self::BLANKS;
+    }
+
+    public function minimumAmount(): int
+    {
+        return Reminder::MINIMUM_AMOUNT;
+    }
+
+    public function maximumInterval(): int
+    {
+        return Reminder::MAXIMUM_INTERVAL;
+    }
+
+    /**
+     * Everything the panel needs to say the sentence again as somebody types,
+     * which is the one thing it cannot ask the server for.
+     *
+     * @return array<string, mixed>
+     */
+    public function live(): array
+    {
         return [
-            'isOn' => $rule instanceof Reminder,
-            'name' => $rule?->name,
-            'placeholder' => $this->placeholder(),
-            'recurs' => $rule === null || $rule->cadence->recurs(),
-            'cadence' => $this->cadence($rule),
-            'interval' => $rule instanceof Reminder ? $rule->frequency_interval : 1,
-            'time' => $this->time($rule),
-            'timezone' => $this->zone($rule),
-            'zones' => $this->zones(),
-            'zoneNote' => $this->zoneNote($rule),
-            'moments' => $this->moments($rule),
-            'summary' => $this->summary($rule),
-            'nextLine' => $this->nextLine($rule),
-            'hint' => $rule instanceof Reminder
-                ? __('It reads from this date and nothing else.')
-                : __('Be told about this date, ahead of time, in your own time zone.'),
-            'quietBecause' => $this->quietBecause($rule),
+            'locale' => str_replace('_', '-', app()->getLocale()),
+            'on' => $this->reminder instanceof Reminder,
+            'held' => count($this->moments()),
+            'rows' => $this->rows(),
+            'cadence' => $this->cadence(),
+            'recurs' => $this->reminder === null || $this->reminder->cadence->recurs(),
+            'interval' => $this->reminder instanceof Reminder ? $this->reminder->frequency_interval : 1,
+            'time' => $this->time(),
+            'zone' => $this->timezone(),
+            'maximums' => $this->maximums(),
             'words' => $this->words(),
-            'errorKey' => "reminders.{$this->field->id}",
         ];
+    }
+
+    /**
+     * The moments already held, then the blank ones the panel reveals one at a
+     * time.
+     *
+     * @return array<int, array{direction: string, amount: int, unit: string, removed: bool}>
+     */
+    public function rows(): array
+    {
+        $rows = array_map(fn (array $moment): array => [
+            'direction' => $moment['direction'],
+            'amount' => $moment['amount'] ?? Reminder::MINIMUM_AMOUNT,
+            'unit' => $moment['unit'] ?? ReminderMomentUnitEnum::Days->value,
+            'removed' => false,
+        ], $this->moments());
+
+        for ($blank = 0; $blank < self::BLANKS; $blank++) {
+            $rows[] = [
+                'direction' => ReminderMomentDirectionEnum::Before->value,
+                'amount' => self::BLANK_AMOUNT,
+                'unit' => ReminderMomentUnitEnum::Days->value,
+                'removed' => false,
+            ];
+        }
+
+        return $rows;
+    }
+
+    /** @return array<string, int> */
+    public function maximums(): array
+    {
+        $maximums = [];
+
+        foreach (ReminderMomentUnitEnum::cases() as $unit) {
+            $maximums[$unit->value] = $unit->maximumAmount();
+        }
+
+        return $maximums;
+    }
+
+    /** @return array<string, string> */
+    public function directions(): array
+    {
+        return [
+            ReminderMomentDirectionEnum::On->value => __('On the day'),
+            ReminderMomentDirectionEnum::Before->value => __('Before'),
+            ReminderMomentDirectionEnum::After->value => __('After'),
+        ];
+    }
+
+    /** @return array<string, string> */
+    public function units(): array
+    {
+        return [
+            ReminderMomentUnitEnum::Days->value => __('days'),
+            ReminderMomentUnitEnum::Weeks->value => __('weeks'),
+            ReminderMomentUnitEnum::Months->value => __('months'),
+        ];
+    }
+
+    /** @return array<string, string> */
+    public function cadences(): array
+    {
+        $cadences = [];
+
+        foreach (ReminderCadenceEnum::recurring() as $cadence) {
+            $cadences[$cadence->value] = __($cadence->label());
+        }
+
+        return $cadences;
     }
 
     public function mark(): ?string
     {
-        $rule = $this->reminder;
-
-        if ($rule === null || ! $rule->is_active) {
+        if ($this->reminder === null || ! $this->reminder->is_active) {
             return null;
         }
 
-        return $this->summary($rule);
+        return $this->summary();
     }
 
     /** @return array<string, mixed> */
-    private function words(): array
+    public function words(): array
     {
         return [
             'units' => [
-                ReminderMomentUnitEnum::Days->value => $this->pair(':count day|:count days'),
-                ReminderMomentUnitEnum::Weeks->value => $this->pair(':count week|:count weeks'),
-                ReminderMomentUnitEnum::Months->value => $this->pair(':count month|:count months'),
+                ReminderMomentUnitEnum::Days->value => CountedPhraseWordings::of(':count day|:count days'),
+                ReminderMomentUnitEnum::Weeks->value => CountedPhraseWordings::of(':count week|:count weeks'),
+                ReminderMomentUnitEnum::Months->value => CountedPhraseWordings::of(':count month|:count months'),
             ],
             'intervals' => [
-                ReminderCadenceEnum::Weekly->value => $this->pair('{1}every week|every :count weeks'),
-                ReminderCadenceEnum::Monthly->value => $this->pair('{1}every month|every :count months'),
-                ReminderCadenceEnum::Yearly->value => $this->pair('{1}every year|every :count years'),
+                ReminderCadenceEnum::Weekly->value => CountedPhraseWordings::of('{1}every week|every :count weeks'),
+                ReminderCadenceEnum::Monthly->value => CountedPhraseWordings::of('{1}every month|every :count months'),
+                ReminderCadenceEnum::Yearly->value => CountedPhraseWordings::of('{1}every year|every :count years'),
             ],
             'onTheDay' => __('on the day'),
             'before' => __(':span before'),
             'after' => __(':span after'),
-            'and' => __('and'),
             'once' => __('once and no more'),
             'summary' => __('You will be reminded :moments, :cadence, at :time :zone.'),
             'nothing' => __('Choose at least one moment to be told about.'),
+            'listSeparator' => __(', '),
+            'listPattern' => __(':list and :last'),
         ];
     }
 
-    /** @return array{one: string, other: string} */
-    private function pair(string $phrase): array
-    {
-        return [
-            'one' => trans_choice($phrase, 1, ['count' => ':n']),
-            'other' => trans_choice($phrase, 2, ['count' => ':n']),
-        ];
-    }
-
-    private function placeholder(): string
+    public function placeholder(): string
     {
         return __(':label — :name', ['label' => $this->field->label, 'name' => $this->contact->name]);
     }
 
-    private function cadence(?Reminder $rule): string
+    public function cadence(): string
     {
-        if ($rule === null || ! $rule->cadence->recurs()) {
+        if ($this->reminder === null || ! $this->reminder->cadence->recurs()) {
             return ReminderCadenceEnum::Yearly->value;
         }
 
-        return $rule->cadence->value;
+        return $this->reminder->cadence->value;
     }
 
-    private function zone(?Reminder $rule): string
+    public function timezone(): string
     {
-        return $rule instanceof Reminder ? $rule->timezone : $this->user->timezone;
+        return $this->reminder instanceof Reminder ? $this->reminder->timezone : $this->user->timezone;
     }
 
-    private function time(?Reminder $rule): string
+    public function time(): string
     {
-        if ($rule === null) {
+        if ($this->reminder === null) {
             return Reminder::DEFAULT_TIME;
         }
 
-        return mb_substr((string) $rule->time_of_day, 0, 5);
+        return mb_substr((string) $this->reminder->time_of_day, 0, 5);
     }
 
     /** @return list<array{timezone: string, label: string}> */
-    private function zones(): array
+    public function zones(): array
     {
         return array_map(fn (array $zone): array => [
             'timezone' => $zone['timezone'],
@@ -134,9 +244,9 @@ class ContactReminderBlock
         ], TimezoneCatalogue::all());
     }
 
-    private function zoneNote(?Reminder $rule): string
+    public function zoneNote(): string
     {
-        if ($rule === null) {
+        if ($this->reminder === null) {
             return __('Filled in from your preferences. It is stored with the reminder, so changing them later does not change it.');
         }
 
@@ -144,9 +254,9 @@ class ContactReminderBlock
     }
 
     /** @return list<array{direction: string, amount: int|null, unit: string|null, phrase: string}> */
-    private function moments(?Reminder $rule): array
+    public function moments(): array
     {
-        if ($rule === null) {
+        if ($this->reminder === null) {
             return [[
                 'direction' => ReminderMomentDirectionEnum::On->value,
                 'amount' => null,
@@ -160,12 +270,12 @@ class ContactReminderBlock
             'amount' => $moment['amount'],
             'unit' => $moment['unit']?->value,
             'phrase' => ReminderWords::moment($moment['direction'], $moment['amount'], $moment['unit']),
-        ], ReminderSchedule::momentDates($rule));
+        ], ReminderSchedule::momentDates($this->reminder));
     }
 
-    private function summary(?Reminder $rule): string
+    public function summary(): string
     {
-        $said = array_column($this->moments($rule), 'phrase');
+        $said = array_column($this->moments(), 'phrase');
 
         if ($said === []) {
             return __('Choose at least one moment to be told about.');
@@ -173,26 +283,29 @@ class ContactReminderBlock
 
         $listed = count($said) === 1
             ? $said[0]
-            : implode(', ', array_slice($said, 0, -1)).' '.__('and').' '.end($said);
+            : __(':list and :last', [
+                'list' => implode(__(', '), array_slice($said, 0, -1)),
+                'last' => end($said),
+            ]);
 
         return __('You will be reminded :moments, :cadence, at :time :zone.', [
             'moments' => $listed,
             'cadence' => ReminderWords::cadence(
-                ReminderCadenceEnum::from($this->cadence($rule)),
-                $rule instanceof Reminder ? $rule->frequency_interval : 1,
+                ReminderCadenceEnum::from($this->cadence()),
+                $this->reminder instanceof Reminder ? $this->reminder->frequency_interval : 1,
             ),
-            'time' => $this->time($rule),
-            'zone' => $this->zone($rule),
+            'time' => $this->time(),
+            'zone' => $this->timezone(),
         ]);
     }
 
-    private function nextLine(?Reminder $rule): ?string
+    public function nextLine(): ?string
     {
-        if ($rule === null) {
+        if ($this->reminder === null) {
             return null;
         }
 
-        $next = ReminderSchedule::nextDate($rule);
+        $next = ReminderSchedule::nextDate($this->reminder);
 
         if (! $next instanceof CarbonImmutable) {
             return __('It has nothing ahead of it any more.');
@@ -201,13 +314,13 @@ class ContactReminderBlock
         return __('Next: :date.', ['date' => $next->isoFormat('LL')]);
     }
 
-    private function quietBecause(?Reminder $rule): ?string
+    public function quietBecause(): ?string
     {
-        if ($rule === null || $rule->is_active) {
+        if ($this->reminder === null || $this->reminder->is_active) {
             return null;
         }
 
-        return match ($rule->inactive_reason) {
+        return match ($this->reminder->inactive_reason) {
             ReminderInactiveReasonEnum::ValueCleared => __('This reminder is stopped because the date it read is gone. Fill the date in again to start a new one.'),
             ReminderInactiveReasonEnum::RecordArchived => __('This reminder is stopped because this record is archived. Unarchive it and the reminder starts again.'),
             ReminderInactiveReasonEnum::RecordDeleted => __('This reminder is stopped because this record was deleted. Restore it and the reminder starts again.'),

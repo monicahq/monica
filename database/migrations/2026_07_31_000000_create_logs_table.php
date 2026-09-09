@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('ip_address', 45)->nullable()->comment('address the action came from, null when the system acted');
             $table->timestamps();
 
+            $table->index(['account_id', 'created_at']);
             $table->index(['loggable_type', 'loggable_id']);
 
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();

@@ -28,25 +28,23 @@
 
   <x-panel :flush="true">
     <div id="accounts">
-      @forelse ($viewModel->accounts() as $account)
+      @forelse ($viewModel->rows() as $row)
         <div class="flex flex-col gap-1 border-b border-hairline px-4 py-3 last:border-b-0 sm:flex-row sm:items-center sm:gap-4">
           <div class="grow">
-            <a href="{{ route('admin.accounts.show', ['account' => $account->id]) }}" data-turbo="true" class="font-semibold text-ink no-underline hover:underline">
-              {{ $account->userIncludingDeleted->name ?? __('Account :id', ['id' => $account->id]) }}
+            <a href="{{ $row['url'] }}" data-turbo="true" class="font-semibold text-ink no-underline hover:underline">
+              {{ $row['name'] }}
             </a>
 
             <p class="text-sm text-muted">
-              {{ $account->userIncludingDeleted->email ?? __('nobody on this account') }}
+              {{ $row['email'] }}
 
-              @if ($account->userIncludingDeleted?->trashed())
-                &middot; {{ __('deleted') }}
-              @elseif ($account->userIncludingDeleted !== null && ! $account->userIncludingDeleted->is_active)
-                &middot; {{ __('deactivated') }}
+              @if ($row['state'] !== null)
+                &middot; {{ $row['state'] }}
               @endif
             </p>
           </div>
 
-          <p class="shrink-0 text-sm text-muted">{{ __('joined :date', ['date' => $account->created_at->isoFormat('LL')]) }}</p>
+          <p class="shrink-0 text-sm text-muted">{{ $row['joined'] }}</p>
         </div>
       @empty
         <x-empty-state :title="$viewModel->isSearching() ? __('Nothing matches that') : __('There are no accounts yet')">
@@ -63,10 +61,10 @@
       @endforelse
     </div>
 
-    @if ($viewModel->accounts()->hasMorePages())
+    @if ($viewModel->hasMorePages())
       <x-slot:footer>
         <div class="text-center">
-          <x-link :href="$viewModel->accounts()->nextPageUrl()">{{ __('Load more') }}</x-link>
+          <x-link :href="$viewModel->nextPageUrl()">{{ __('Load more') }}</x-link>
         </div>
       </x-slot:footer>
     @endif

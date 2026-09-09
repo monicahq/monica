@@ -26,6 +26,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index('uuid');
+            $table->index(['account_id', 'sent_at']);
+            $table->index(['user_id', 'sent_at']);
 
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();

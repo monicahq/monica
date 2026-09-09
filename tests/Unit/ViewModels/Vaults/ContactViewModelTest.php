@@ -643,14 +643,14 @@ class ContactViewModelTest extends TestCase
         $date = collect($fields)->firstWhere('label', 'Birthday');
 
         $this->assertNull($knee['reminder']);
-        $this->assertFalse($date['reminder']['isOn']);
-        $this->assertEquals('Birthday — Michael Scott', $date['reminder']['placeholder']);
-        $this->assertEquals('Europe/Paris', $date['reminder']['timezone']);
-        $this->assertEquals('09:00', $date['reminder']['time']);
-        $this->assertTrue($date['reminder']['recurs']);
-        $this->assertEquals('yearly', $date['reminder']['cadence']);
-        $this->assertNull($date['reminder']['nextLine']);
-        $this->assertNull($date['reminder']['quietBecause']);
+        $this->assertFalse($date['reminder']->isOn());
+        $this->assertEquals('Birthday — Michael Scott', $date['reminder']->placeholder());
+        $this->assertEquals('Europe/Paris', $date['reminder']->timezone());
+        $this->assertEquals('09:00', $date['reminder']->time());
+        $this->assertTrue($date['reminder']->recurs());
+        $this->assertEquals('yearly', $date['reminder']->cadence());
+        $this->assertNull($date['reminder']->nextLine());
+        $this->assertNull($date['reminder']->quietBecause());
     }
 
     #[Test]
@@ -659,9 +659,9 @@ class ContactViewModelTest extends TestCase
         $user = User::factory()->create();
         $panel = $this->panelFor($user, null)['reminder'];
 
-        $this->assertCount(1, $panel['moments']);
-        $this->assertEquals('on', $panel['moments'][0]['direction']);
-        $this->assertEquals('on the day', $panel['moments'][0]['phrase']);
+        $this->assertCount(1, $panel->moments());
+        $this->assertEquals('on', $panel->moments()[0]['direction']);
+        $this->assertEquals('on the day', $panel->moments()[0]['phrase']);
     }
 
     #[Test]
@@ -681,19 +681,19 @@ class ContactViewModelTest extends TestCase
             ],
         ])['reminder'];
 
-        $this->assertTrue($panel['isOn']);
-        $this->assertEquals('Ring Michael', $panel['name']);
-        $this->assertEquals('monthly', $panel['cadence']);
-        $this->assertEquals(2, $panel['interval']);
-        $this->assertEquals('18:30', $panel['time']);
-        $this->assertEquals('Asia/Tokyo', $panel['timezone']);
-        $this->assertEquals('1 week before', $panel['moments'][0]['phrase']);
-        $this->assertEquals('on the day', $panel['moments'][1]['phrase']);
+        $this->assertTrue($panel->isOn());
+        $this->assertEquals('Ring Michael', $panel->name());
+        $this->assertEquals('monthly', $panel->cadence());
+        $this->assertEquals(2, $panel->interval());
+        $this->assertEquals('18:30', $panel->time());
+        $this->assertEquals('Asia/Tokyo', $panel->timezone());
+        $this->assertEquals('1 week before', $panel->moments()[0]['phrase']);
+        $this->assertEquals('on the day', $panel->moments()[1]['phrase']);
         $this->assertEquals(
             'You will be reminded 1 week before and on the day, every 2 months, at 18:30 Asia/Tokyo.',
-            $panel['summary'],
+            $panel->summary(),
         );
-        $this->assertStringStartsWith('Next:', $panel['nextLine']);
+        $this->assertStringStartsWith('Next:', $panel->nextLine());
     }
 
     #[Test]
@@ -706,7 +706,7 @@ class ContactViewModelTest extends TestCase
             'inactive_reason' => ReminderInactiveReasonEnum::FieldRemoved,
         ])['reminder'];
 
-        $this->assertStringContainsString('this field has left the structure', $panel['quietBecause']);
+        $this->assertStringContainsString('this field has left the structure', $panel->quietBecause());
     }
 
     #[Test]
@@ -733,9 +733,9 @@ class ContactViewModelTest extends TestCase
             new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health')->sections()[0]['fields'],
         )->firstWhere('label', 'Birthday')['reminder'];
 
-        $this->assertTrue($panel['isOn']);
-        $this->assertStringContainsString('the date it read is gone', $panel['quietBecause']);
-        $this->assertEquals('It has nothing ahead of it any more.', $panel['nextLine']);
+        $this->assertTrue($panel->isOn());
+        $this->assertStringContainsString('the date it read is gone', $panel->quietBecause());
+        $this->assertEquals('It has nothing ahead of it any more.', $panel->nextLine());
     }
 
     #[Test]

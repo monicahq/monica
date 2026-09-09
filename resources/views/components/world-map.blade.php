@@ -1,28 +1,33 @@
 {{-- The world, once, so that a click on it can become a time zone. --}}
 @php
+  use App\Helpers\TimezoneCatalogue;
+
+  $width = TimezoneCatalogue::MAP_WIDTH;
+  $height = TimezoneCatalogue::MAP_HEIGHT;
   $hours = range(-180, 180, 15);
+  $equator = round(TimezoneCatalogue::position(0.0, 0.0)['y'] / 100 * $height, 2);
 @endphp
 
 <svg
-  viewBox="0 0 1000 394.44"
+  viewBox="0 0 {{ $width }} {{ $height }}"
   preserveAspectRatio="none"
   class="block h-full w-full"
   aria-hidden="true"
   focusable="false"
 >
-  <rect width="1000" height="394.44" fill="var(--map-water)" />
+  <rect width="{{ $width }}" height="{{ $height }}" fill="var(--map-water)" />
 
   <g stroke="var(--map-graticule)" stroke-width="1" vector-effect="non-scaling-stroke">
     @foreach ($hours as $degrees)
       <line
-        x1="{{ round(($degrees + 180) / 360 * 1000, 2) }}"
-        x2="{{ round(($degrees + 180) / 360 * 1000, 2) }}"
+        x1="{{ round(($degrees + 180) / 360 * $width, 2) }}"
+        x2="{{ round(($degrees + 180) / 360 * $width, 2) }}"
         y1="0"
-        y2="394.44"
+        y2="{{ $height }}"
       />
     @endforeach
 
-    <line x1="0" x2="1000" y1="{{ round(84 / 142 * 394.44, 2) }}" y2="{{ round(84 / 142 * 394.44, 2) }}" />
+    <line x1="0" x2="{{ $width }}" y1="{{ $equator }}" y2="{{ $equator }}" />
   </g>
 
   <path
