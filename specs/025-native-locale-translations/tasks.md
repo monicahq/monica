@@ -112,9 +112,9 @@ The wording count, `date_format` and `number_format` are part of each registrati
 
 **Independent Test**: a native reviewer reads a sample of a hundred strings for one locale and records how many they would change.
 
-- [ ] T045 [US2] Review `lang/fr_FR.json` and add `lang/fr_FR/`
-- [ ] T046 [US2] Review `lang/de_DE.json` and add `lang/de_DE/`
-- [ ] T047 [US2] Review `lang/es_ES.json` and add `lang/es_ES/`
+- [X] T045 [US2] Review `lang/fr_FR.json` and add `lang/fr_FR/`
+- [X] T046 [US2] Review `lang/de_DE.json` and add `lang/de_DE/`
+- [X] T047 [US2] Review `lang/es_ES.json` and add `lang/es_ES/`
 - [ ] T048 [US2] Review `lang/it_IT.json` and add `lang/it_IT/`
 - [ ] T049 [US2] Review `lang/nl_NL.json` and add `lang/nl_NL/`
 - [ ] T050 [US2] Review `lang/pt_PT.json` and add `lang/pt_PT/`
