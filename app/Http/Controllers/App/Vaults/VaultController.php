@@ -11,6 +11,7 @@ use App\Actions\SetVaultDefaultTemplate;
 use App\Actions\UpdateVault;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VaultColourEnum;
+use App\Exceptions\TooManyVaults;
 use App\Http\Controllers\Controller;
 use App\Jobs\RecordVaultVisit;
 use App\Models\TemplateVersion;
@@ -59,12 +60,16 @@ class VaultController extends Controller
     {
         $validated = $request->validate($this->rules($request));
 
-        $vault = new CreateVault(
-            user: $request->user(),
-            name: $validated['name'],
-            description: $validated['description'] ?? null,
-            colour: $validated['colour'],
-        )->execute();
+        try {
+            $vault = new CreateVault(
+                user: $request->user(),
+                name: $validated['name'],
+                description: $validated['description'] ?? null,
+                colour: $validated['colour'],
+            )->execute();
+        } catch (TooManyVaults $e) {
+            return back()->withErrors(['name' => $e->getMessage()])->withInput();
+        }
 
         $this->settleWhatContactsStartFrom($request, $vault);
 

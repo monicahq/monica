@@ -21,6 +21,10 @@
     <p class="max-w-[56ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
   </header>
 
+  @if ($viewModel->ceilingMessage() !== null)
+    <x-paywall-prompt :message="$viewModel->ceilingMessage()" />
+  @endif
+
   <div
     x-data="{
       firstName: @js($values['firstName']),

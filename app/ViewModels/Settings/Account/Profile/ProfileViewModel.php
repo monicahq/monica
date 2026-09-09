@@ -27,6 +27,14 @@ class ProfileViewModel
         return $this->user;
     }
 
+    /**
+     * Whether a subscription is running, which is what the deletion warning has to say will stop.
+     */
+    public function isSubscribed(): bool
+    {
+        return $this->user->account->subscription()?->valid() === true;
+    }
+
     public function name(): string
     {
         return $this->user->name;

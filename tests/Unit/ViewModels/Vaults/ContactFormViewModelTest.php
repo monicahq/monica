@@ -6,6 +6,7 @@ namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
+use App\Models\Contact;
 use App\Models\Template;
 use App\Models\TemplateVersion;
 use App\Models\User;
@@ -164,5 +165,44 @@ class ContactFormViewModelTest extends TestCase
         $template->save();
 
         return $template;
+    }
+
+    #[Test]
+    public function it_names_the_contact_ceiling_once_the_account_is_at_it(): void
+    {
+        config(['monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $this->assertSame(
+            'The free offer holds 1 contact across every vault, and this account already has it.',
+            new ContactFormViewModel(user: $user, vault: $vault)->ceilingMessage(),
+        );
+    }
+
+    #[Test]
+    public function it_says_nothing_about_the_contact_ceiling_below_it(): void
+    {
+        config(['monica.free_contact_limit' => 30]);
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->assertNull(new ContactFormViewModel(user: $user, vault: $vault)->ceilingMessage());
+    }
+
+    #[Test]
+    public function it_says_nothing_about_a_contact_ceiling_there_is_none_of(): void
+    {
+        config(['monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        $this->subscribeAccount($user->account);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->count(3)->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $this->assertNull(new ContactFormViewModel(user: $user->fresh(), vault: $vault)->ceilingMessage());
     }
 }

@@ -90,18 +90,24 @@ the rule.
   keeps one main view model and delegates its blocks to small objects next to it
   (`MarketplaceStatistics`).
 - `app/View/Components`: the five layout classes (`Shell`, `AccountLayout`, `AdminLayout`, `GuestLayout`, `MarketplaceLayout`). The 51 components under `resources/views/components` are anonymous, with `@props`.
-- `resources/views`: `app` for the logged in screens, `components` for shared UI, `layouts` and `partials` for the shell, `mail` for emails.
+- `resources/views`: `app` for the logged in screens, `components` for shared UI, `layouts` and `partials` for the shell, `shared` for what a private link opens, `vendor` for the views a package publishes, which is where the email templates live.
 - `resources/css` and `resources/js`: the Tailwind theme and the Alpine setup.
-- `routes`: `web.php` (logged in), `auth.php`, `console.php`.
+- `routes`: `web.php` (logged in), `api.php` (the JSON API), `auth.php`, `console.php`.
 - `database`: `migrations`, `factories`, `seeders`.
 - `lang`: one JSON file per locale.
 - `tests`: `Unit` (models, actions, jobs, mails, helpers, view models, enums), `Feature` (controllers and views), `Fixtures` (the classes a test needs). PHPUnit only.
 
-> **TODO (rules, 2026-08-23)**: there is no `Api` controller folder, no `routes/api.php` and no `app/Http/Resources`, yet the
-> `api-writer` and `api-docs-writer` skills describe a whole JSON API, a docs portal under
-> `resources/docs/api` and a `collections` reference implementation. Either build that surface or mark
-> those two skills as not applicable, because as written they will send an agent looking for files that
-> are not there.
+> **TODO (rules, corrected 2026-09-08)**: the API surface those two skills describe exists now. There
+> is an `Api` controller namespace, a `routes/api.php`, an `app/Http/Resources` and a docs portal
+> under `resources/docs/api`, so `api-writer` and `api-docs-writer` apply as written. What is left is
+> their worked example: both use `collections`, and there is no such model, controller or resource
+> here, so an agent following one literally still looks for files that are not there. Point them at a
+> resource that exists, `contacts` or `entity-types`.
+
+> **TODO (rules, 2026-09-08)**: this section describes the repository tree a second time, which the
+> constitution's Governance forbids: it says this file must point at `.specify/memory/constitution.md`
+> rather than repeat it, because two descriptions of one tree is how the first one went stale. That is
+> follow-up 8 in the constitution's own list. Keep the operational notes below, drop the tree.
 
 ## Guidelines for git and Github
 

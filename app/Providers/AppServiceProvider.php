@@ -8,6 +8,7 @@ use App\Actions\VerifyPasskey;
 use App\Helpers\LocaleCollation;
 use App\Http\Responses\PasskeyDeletedResponse;
 use App\Http\Responses\PasskeyLoginResponse;
+use App\Models\Account;
 use App\Models\Passkey;
 use App\Models\User;
 use Carbon\CarbonImmutable;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Cashier\Cashier;
 use Laravel\Passkeys\Actions\VerifyPasskey as BaseVerifyPasskey;
 use Laravel\Passkeys\Contracts\PasskeyDeletedResponse as PasskeyDeletedResponseContract;
 use Laravel\Passkeys\Contracts\PasskeyLoginResponse as PasskeyLoginResponseContract;
@@ -54,6 +56,14 @@ class AppServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
         $this->configureCollation();
         $this->configureDefaultsProduction();
+        $this->configureBilling();
+    }
+
+    private function configureBilling(): void
+    {
+        Cashier::useCustomerModel(Account::class);
+        Cashier::keepPastDueSubscriptionsActive();
+        Cashier::calculateTaxes();
     }
 
     private function forceSecureUrls(): void

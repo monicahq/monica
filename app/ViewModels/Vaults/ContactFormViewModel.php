@@ -48,6 +48,25 @@ class ContactFormViewModel
         return route('contacts.create', $this->vault);
     }
 
+    /**
+     * What the free offer allows, said only when the account is at it. The form still opens and
+     * still edits: it is an addition that is refused, never what is already there.
+     */
+    public function ceilingMessage(): ?string
+    {
+        $limit = $this->user->account->contactLimit();
+
+        if ($limit === null) {
+            return null;
+        }
+
+        if ($this->user->account->contactCount() < $limit) {
+            return null;
+        }
+
+        return trans_choice('The free offer holds :count contact across every vault, and this account already has it.|The free offer holds :count contacts across every vault, and this account already has them.', $limit);
+    }
+
     public function contactsUrl(): string
     {
         return route('contacts.index', $this->vault);

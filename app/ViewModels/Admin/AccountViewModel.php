@@ -6,7 +6,10 @@ namespace App\ViewModels\Admin;
 
 use App\Helpers\StorageSize;
 use App\Models\Account;
+use App\Models\StripeOrder;
 use App\Models\User;
+use Carbon\CarbonImmutable;
+use Laravel\Cashier\Subscription;
 
 class AccountViewModel
 {
@@ -29,11 +32,11 @@ class AccountViewModel
     {
         $badges = [];
 
-        if ($this->account->is_self_hosted) {
+        if ($this->isSelfHosted()) {
             $badges[] = ['label' => __('Self-hosted'), 'tone' => 'neutral'];
         }
 
-        if ($this->account->has_lifetime_access) {
+        if ($this->holdsAccessForGood()) {
             $badges[] = ['label' => __('Lifetime access'), 'tone' => 'success'];
         }
 
@@ -69,28 +72,7 @@ class AccountViewModel
 
     public function whereItRuns(): string
     {
-        return $this->account->is_self_hosted ? __('Self-hosted') : __('Hosted by us');
-    }
-
-    /**
-     * Whether the account holds the one time purchase, and when it was bought
-     * when the date was kept. A self-hosted account is not asked the question.
-     */
-    public function lifetimeAccessLine(): string
-    {
-        if (! $this->isBillable()) {
-            return __('Not applicable');
-        }
-
-        if (! $this->account->has_lifetime_access) {
-            return __('No');
-        }
-
-        if ($this->account->purchased_at === null) {
-            return __('Yes');
-        }
-
-        return __('Yes, bought on :date', ['date' => $this->account->purchased_at->isoFormat('LL')]);
+        return $this->isSelfHosted() ? __('Self-hosted') : __('Hosted by us');
     }
 
     public function billingAddressLine(): string
@@ -124,11 +106,6 @@ class AccountViewModel
     public function storageLimitInBytes(): ?int
     {
         return $this->account->storage_limit_in_bytes;
-    }
-
-    public function hasLifetimeAccess(): bool
-    {
-        return $this->account->has_lifetime_access;
     }
 
     public function userName(): string
@@ -240,9 +217,146 @@ class AccountViewModel
         return $this->user() !== null;
     }
 
+    public function isSelfHosted(): bool
+    {
+        return (bool) config('monica.self_hosted');
+    }
+
     public function isBillable(): bool
     {
-        return ! $this->account->is_self_hosted;
+        return ! $this->isSelfHosted();
+    }
+
+    /**
+     * Whether the account holds full access that does not renew, which is what
+     * the badge and the withdrawal button read.
+     */
+    public function holdsAccessForGood(): bool
+    {
+        return $this->account()->holdsAccessForGood();
+    }
+
+    /**
+     * How that access is held, in one sentence: bought on a day, granted on a
+     * day, or not held at all.
+     */
+    public function accessForGoodLabel(): string
+    {
+        $order = $this->account()->settledOrder();
+
+        if ($order !== null) {
+            return __('Yes, bought on :date', ['date' => $order->created_at->isoFormat('LL')]);
+        }
+
+        $grantedAt = $this->account()->access_granted_at;
+
+        if ($grantedAt !== null) {
+            return __('Yes, granted on :date', ['date' => $grantedAt->isoFormat('LL')]);
+        }
+
+        return __('No');
+    }
+
+    /**
+     * How full access is held, in the words the owner's own screen uses, and the
+     * free offer when it is not held at all.
+     */
+    public function accessKindLabel(): string
+    {
+        return $this->account->accessKind()?->label() ?? __('Free offer');
+    }
+
+    /**
+     * Everything the billing panel shows, in the order it shows it: what access is held and how it
+     * is held, then the order behind a purchase and the subscription behind a renewal, each left
+     * out when there is none.
+     *
+     * @return list<array{label: string, value: string}>
+     */
+    public function billingFacts(): array
+    {
+        $facts = [
+            ['label' => __('Access'), 'value' => $this->accessKindLabel()],
+            ['label' => __('Lifetime access'), 'value' => $this->accessForGoodLabel()],
+        ];
+
+        $order = $this->order();
+
+        if ($order !== null) {
+            $facts[] = ['label' => __('Order'), 'value' => $order->offerKind()?->label() ?? $order->stripe_price];
+            $facts[] = ['label' => __('State at Stripe'), 'value' => $order->stripe_status];
+        }
+
+        $subscription = $this->subscription();
+
+        if ($subscription === null) {
+            return $facts;
+        }
+
+        $facts[] = ['label' => __('Subscription'), 'value' => $this->subscriptionOfferLabel() ?? (string) $subscription->stripe_price];
+
+        if ($this->renewsAt() !== null) {
+            $facts[] = ['label' => __('Renews on'), 'value' => $this->renewsAt()->isoFormat('LL')];
+        }
+
+        if ($this->endsAt() !== null) {
+            $facts[] = ['label' => __('Ends on'), 'value' => $this->endsAt()->isoFormat('LL')];
+        }
+
+        return $facts;
+    }
+
+    /**
+     * The order the screen speaks of, newest first, leaving out one nobody paid,
+     * the same way the owner's screen leaves it out.
+     */
+    public function order(): ?StripeOrder
+    {
+        return once(fn (): ?StripeOrder => $this->account->orders
+            ->first(fn (StripeOrder $order): bool => $order->stripe_status !== StripeOrder::UNPAID));
+    }
+
+    public function subscription(): ?Subscription
+    {
+        return once(fn (): ?Subscription => $this->account->subscription());
+    }
+
+    /**
+     * Which offer the running subscription is on, null when nothing runs or when
+     * the catalogue no longer knows the price it bills.
+     */
+    public function subscriptionOfferLabel(): ?string
+    {
+        return $this->account->subscriptionOfferKind()?->label();
+    }
+
+    public function renewsAt(): ?CarbonImmutable
+    {
+        return $this->account->nextBillingDate();
+    }
+
+    public function endsAt(): ?CarbonImmutable
+    {
+        return $this->subscription()?->onGracePeriod() === true ? $this->subscription()->ends_at : null;
+    }
+
+    /**
+     * The customer as Stripe's own dashboard shows them, null for an account
+     * Stripe has never heard of, which is what a grant and the free offer look
+     * like. Test keys point at the test dashboard, so an operator never lands on
+     * the live customer while working against test data.
+     */
+    public function stripeCustomerUrl(): ?string
+    {
+        $customerId = $this->account->stripe_id;
+
+        if ($customerId === null) {
+            return null;
+        }
+
+        $mode = str_contains((string) config('cashier.secret'), '_test_') ? 'test/' : '';
+
+        return "https://dashboard.stripe.com/{$mode}customers/{$customerId}";
     }
 
     public function vaultCount(): int
@@ -262,21 +376,24 @@ class AccountViewModel
 
     public function hasStorageLimit(): bool
     {
-        return $this->account->storage_limit_in_bytes !== null;
+        return $this->account->storageLimitInBytes() !== null;
     }
 
     public function storageLimit(): ?string
     {
-        if ($this->account->storage_limit_in_bytes === null) {
+        $limit = $this->account->storageLimitInBytes();
+
+        if ($limit === null) {
             return null;
         }
 
-        return StorageSize::readable($this->account->storage_limit_in_bytes);
+        return StorageSize::readable($limit);
     }
 
     public function isOverStorageLimit(): bool
     {
-        return $this->account->storage_limit_in_bytes !== null
-            && $this->account->storage_used_in_bytes > $this->account->storage_limit_in_bytes;
+        $limit = $this->account->storageLimitInBytes();
+
+        return $limit !== null && $this->account->storage_used_in_bytes > $limit;
     }
 }

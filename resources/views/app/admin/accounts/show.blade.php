@@ -22,7 +22,6 @@
       @foreach ([
         ['label' => __('Created'), 'value' => $viewModel->createdOn()],
         ['label' => __('Where it runs'), 'value' => $viewModel->whereItRuns()],
-        ['label' => __('Lifetime access'), 'value' => $viewModel->lifetimeAccessLine()],
         ['label' => __('Billing address'), 'value' => $viewModel->billingAddressLine()],
         ['label' => __('Storage'), 'value' => $viewModel->storageLine()],
         ['label' => __('What it holds'), 'value' => $viewModel->vaultsLine().', '.$viewModel->contactsLine()],
@@ -40,6 +39,25 @@
       </x-slot:footer>
     @endif
   </x-panel>
+
+  @if ($viewModel->isBillable())
+    <x-panel :title="__('Billing')">
+      <dl class="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
+        @foreach ($viewModel->billingFacts() as $fact)
+          <div>
+            <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ $fact['label'] }}</dt>
+            <dd class="text-base text-ink">{{ $fact['value'] }}</dd>
+          </div>
+        @endforeach
+      </dl>
+
+      @if ($viewModel->stripeCustomerUrl() !== null)
+        <p class="mt-4 text-sm">
+          <x-link :href="$viewModel->stripeCustomerUrl()" target="_blank" rel="noopener noreferrer">{{ __('See the customer on Stripe') }}</x-link>
+        </p>
+      @endif
+    </x-panel>
+  @endif
 
   @if ($viewModel->hasUser())
     <x-panel :title="__('The person')">
@@ -122,7 +140,7 @@
           />
         </x-modal.form>
 
-        @if ($viewModel->hasLifetimeAccess())
+        @if ($viewModel->holdsAccessForGood())
           <x-modal.warning
             :title="__('Take lifetime access away?')"
             :confirm="__('Withdraw it')"
@@ -132,7 +150,7 @@
               <x-button.danger type="button" size="small" @click="open = true">{{ __('Withdraw lifetime access') }}</x-button.danger>
             </x-slot:trigger>
 
-            {{ __('The account goes back to what it was before the purchase. If a purchase was made, the date of it stays on the record.') }}
+            {{ __('The account goes back to the free offer. An order that was paid stays on the record, marked as refunded, and nothing is deleted.') }}
           </x-modal.warning>
         @else
           <x-modal.warning

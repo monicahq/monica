@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\GrantLifetimeAccess;
+use App\Enums\AccessKindEnum;
 use App\Jobs\LogAdministratorAction;
 use App\Models\Account;
+use App\Models\StripeOrder;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -23,28 +25,30 @@ class GrantLifetimeAccessTest extends TestCase
         Queue::fake();
 
         $michael = User::factory()->create();
-        $account = Account::factory()->create(['has_lifetime_access' => false, 'purchased_at' => null]);
+        $account = Account::factory()->create();
 
         new GrantLifetimeAccess(account: $account, administrator: $michael)->execute();
 
         $account->refresh();
 
-        $this->assertTrue($account->has_lifetime_access);
-        $this->assertNotNull($account->purchased_at);
+        $this->assertTrue($account->hasFullAccess());
+        $this->assertNotNull($account->access_granted_at);
+        $this->assertSame(AccessKindEnum::Granted, $account->accessKind());
+        $this->assertSame(0, StripeOrder::query()->count());
     }
 
     #[Test]
-    public function it_leaves_a_purchase_date_that_is_already_there_alone(): void
+    public function it_leaves_a_grant_that_is_already_there_alone(): void
     {
         Queue::fake();
 
         $michael = User::factory()->create();
-        $bought = now()->subYears(2)->startOfDay();
-        $account = Account::factory()->create(['has_lifetime_access' => false, 'purchased_at' => $bought]);
+        $granted = now()->subYears(2)->startOfDay();
+        $account = Account::factory()->create(['access_granted_at' => $granted]);
 
         new GrantLifetimeAccess(account: $account, administrator: $michael)->execute();
 
-        $this->assertEquals($bought->toDateString(), $account->refresh()->purchased_at->toDateString());
+        $this->assertEquals($granted->toDateString(), $account->refresh()->access_granted_at->toDateString());
     }
 
     #[Test]
@@ -69,6 +73,6 @@ class GrantLifetimeAccessTest extends TestCase
 
         new GrantLifetimeAccess(account: $michael->account, administrator: $michael)->execute();
 
-        $this->assertTrue($michael->account->refresh()->has_lifetime_access);
+        $this->assertTrue($michael->account->refresh()->hasFullAccess());
     }
 }

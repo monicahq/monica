@@ -8,6 +8,7 @@ use App\Actions\CreateContact;
 use App\Enums\NameOrderEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\ContactNeedsAName;
+use App\Exceptions\TooManyContacts;
 use App\Exceptions\VaultAlreadyHasAMeContact;
 use App\Exceptions\VaultHasNoContactDefault;
 use App\Jobs\LogUserAction;
@@ -421,6 +422,92 @@ class CreateContactTest extends TestCase
                 && $job->isAbout($contact)
                 && $job->parameters === ['name' => 'Michael Scott'],
         );
+    }
+
+    #[Test]
+    public function it_refuses_a_contact_past_the_ceiling_of_the_free_offer(): void
+    {
+        Queue::fake();
+        config(['monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user->account);
+        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $this->expectException(TooManyContacts::class);
+        $this->expectExceptionMessage('Full access lifts the ceiling.');
+
+        new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Pam')->execute();
+    }
+
+    #[Test]
+    public function it_counts_archived_contacts_in_every_vault_of_the_account(): void
+    {
+        Queue::fake();
+        config(['monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user->account);
+        Contact::factory()->archived()->create(['account_id' => $user->account_id, 'vault_id' => $elsewhere->id]);
+
+        $this->expectException(TooManyContacts::class);
+
+        new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Pam')->execute();
+    }
+
+    #[Test]
+    public function it_leaves_the_me_contact_and_partial_contacts_out_of_the_count_and_never_refuses_them(): void
+    {
+        Queue::fake();
+        config(['monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user->account);
+        Contact::factory()->me()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+        Contact::factory()->partial()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $pam = new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Pam')->execute();
+        $partial = new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Bob', isPartial: true)->execute();
+
+        $this->assertInstanceOf(Contact::class, $pam);
+        $this->assertInstanceOf(Contact::class, $partial);
+    }
+
+    #[Test]
+    public function it_lifts_the_ceiling_with_full_access(): void
+    {
+        Queue::fake();
+        config(['monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        $this->subscribeAccount($user->account);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user->account);
+        Contact::factory()->count(2)->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $contact = new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Pam')->execute();
+
+        $this->assertInstanceOf(Contact::class, $contact);
+    }
+
+    #[Test]
+    public function it_never_caps_a_self_hosted_instance(): void
+    {
+        Queue::fake();
+        config(['monica.free_contact_limit' => 1, 'monica.self_hosted' => true]);
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user->account);
+        Contact::factory()->count(2)->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $contact = new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Pam')->execute();
+
+        $this->assertInstanceOf(Contact::class, $contact);
     }
 
     private function publishedContactVersion(Account $account): TemplateVersion

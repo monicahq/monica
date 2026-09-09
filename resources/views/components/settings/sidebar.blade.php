@@ -28,6 +28,7 @@
         ['key' => 'templates', 'label' => __('Templates'), 'icon' => 'file', 'url' => route('settings.templates.index')],
         ['key' => 'value-lists', 'label' => __('Value lists'), 'icon' => 'tasks', 'url' => route('settings.valueLists.index')],
         ['key' => 'relationship-types', 'label' => __('Relationship types'), 'icon' => 'relationship', 'url' => route('settings.relationshipTypes.index')],
+        ...(config('monica.self_hosted') ? [] : [['key' => 'billing', 'label' => __('Billing'), 'icon' => 'coin', 'url' => route('settings.billing.index')]]),
       ],
     ],
   ];

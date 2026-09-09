@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Admin;
 
+use App\Helpers\StripeCatalogue;
 use App\Models\Account;
 use App\Models\Administrator;
+use App\Models\StripeOrder;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -63,8 +65,7 @@ class AccountControllerTest extends TestCase
             'last_login_at' => now()->subDays(2),
         ]);
         $dwight->account->update([
-            'has_lifetime_access' => true,
-            'purchased_at' => now()->subYear(),
+            'access_granted_at' => now()->subYear(),
             'billing_email' => 'accounts@schrutefarms.com',
             'storage_used_in_bytes' => 5 * 1024 * 1024,
             'storage_limit_in_bytes' => 1024 * 1024 * 1024,
@@ -77,7 +78,7 @@ class AccountControllerTest extends TestCase
         $response->assertSee('Dwight Schrute', escape: false);
         $response->assertSee('dwight.schrute@dundermifflin.com', escape: false);
         $response->assertSee('accounts@schrutefarms.com', escape: false);
-        $response->assertSee('5 MB of 1 GB', escape: false);
+        $response->assertSee('5 MB of 10 GB', escape: false);
         $response->assertSee('Lifetime access', escape: false);
     }
 
@@ -95,7 +96,9 @@ class AccountControllerTest extends TestCase
     #[Test]
     public function it_marks_the_facts_that_mean_nothing_on_a_self_hosted_account(): void
     {
-        $account = Account::factory()->create(['is_self_hosted' => true, 'billing_email' => null]);
+        config(['monica.self_hosted' => true]);
+
+        $account = Account::factory()->create(['billing_email' => null]);
 
         $response = $this->actingAs($this->administrator())
             ->get(route('admin.accounts.show', ['account' => $account->id]));
@@ -155,5 +158,41 @@ class AccountControllerTest extends TestCase
         Administrator::factory()->create(['user_id' => $michael->id]);
 
         return $michael;
+    }
+
+    #[Test]
+    public function it_shows_the_order_the_subscription_and_the_way_to_stripe(): void
+    {
+        config(['cashier.secret' => 'sk_test_dundermifflin']);
+        StripeCatalogue::forget();
+        $this->fakeStripe();
+
+        $todd = User::factory()->create();
+        $todd->account->forceFill(['stripe_id' => 'cus_dundermifflin'])->save();
+        StripeOrder::factory()->refunded()->create(['account_id' => $todd->account_id]);
+        $this->subscribeAccount($todd->account);
+
+        $response = $this->actingAs($this->administrator())
+            ->get(route('admin.accounts.show', ['account' => $todd->account_id]));
+
+        $response->assertStatus(200);
+        $response->assertSee(__('Billing'), escape: false);
+        $response->assertSee('refunded', escape: false);
+        $response->assertSee(__('Monthly subscription'), escape: false);
+        $response->assertSee('https://dashboard.stripe.com/test/customers/cus_dundermifflin', escape: false);
+        $response->assertSee(__('See the customer on Stripe'), escape: false);
+    }
+
+    #[Test]
+    public function it_offers_no_way_to_stripe_for_an_account_it_has_never_heard_of(): void
+    {
+        $todd = User::factory()->create();
+        $todd->account->update(['access_granted_at' => now()]);
+
+        $response = $this->actingAs($this->administrator())
+            ->get(route('admin.accounts.show', ['account' => $todd->account_id]));
+
+        $response->assertDontSee(__('See the customer on Stripe'), escape: false);
+        $response->assertSee(__('Billing'), escape: false);
     }
 }

@@ -1,0 +1,52 @@
+{
+  "workflow": "speckit",
+  "specName": "The order behind a purchase",
+  "branch": "2026-09-07-stripe-paywall",
+  "currentStep": "implement",
+  "status": "completed",
+  "history": [
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-08T17:20:22.143Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-08T18:05:41.247Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-08T19:18:38.795Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-08T20:08:05.085Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-08T21:03:07.156Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-08T21:03:22.508Z"
+    }
+  ],
+  "telemetryInstanceId": "67b137ba-204b-4f07-ba3b-699e62702822"
+}

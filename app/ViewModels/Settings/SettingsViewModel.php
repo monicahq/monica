@@ -141,6 +141,13 @@ class SettingsViewModel
                 'meta' => null,
                 'url' => route('settings.logs.index'),
             ],
+            ...(config('monica.self_hosted') ? [] : [[
+                'title' => __('Billing'),
+                'description' => __('The offer this account is on, and how to change it.'),
+                'icon' => 'coin',
+                'meta' => null,
+                'url' => route('settings.billing.index'),
+            ]]),
         ];
     }
 

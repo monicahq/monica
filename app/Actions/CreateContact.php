@@ -8,6 +8,7 @@ use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
+use App\Exceptions\TooManyContacts;
 use App\Exceptions\VaultAlreadyHasAMeContact;
 use App\Exceptions\VaultHasNoContactDefault;
 use App\Helpers\TextSanitizer;
@@ -53,6 +54,7 @@ class CreateContact
         $this->sanitize();
         $this->readTheVaultDefault();
         $this->validate();
+        $this->refuseAboveTheCeiling();
         $this->create();
         $this->log();
 
@@ -120,6 +122,29 @@ class CreateContact
         if ($alreadyThere) {
             throw new VaultAlreadyHasAMeContact('This vault already holds the contact representing you.');
         }
+    }
+
+    private function refuseAboveTheCeiling(): void
+    {
+        if ($this->isMe) {
+            return;
+        }
+
+        if ($this->isPartial) {
+            return;
+        }
+
+        $limit = $this->user->account->contactLimit();
+
+        if ($limit === null) {
+            return;
+        }
+
+        if ($this->user->account->contactCount() < $limit) {
+            return;
+        }
+
+        throw new TooManyContacts(trans_choice('The free offer holds :count contact across every vault, and this account already has it. Full access lifts the ceiling.|The free offer holds :count contacts across every vault, and this account already has them. Full access lifts the ceiling.', $limit));
     }
 
     private function create(): void

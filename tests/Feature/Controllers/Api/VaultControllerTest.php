@@ -282,6 +282,7 @@ class VaultControllerTest extends TestCase
     #[Test]
     public function it_puts_a_new_vault_at_the_end_of_the_list(): void
     {
+        config(['monica.free_vault_limit' => 5]);
         Queue::fake();
 
         $user = User::factory()->create();
@@ -298,6 +299,7 @@ class VaultControllerTest extends TestCase
     #[Test]
     public function it_makes_the_first_vault_of_an_account_the_default_one(): void
     {
+        config(['monica.free_vault_limit' => 5]);
         Queue::fake();
 
         $user = User::factory()->create();
@@ -767,6 +769,7 @@ class VaultControllerTest extends TestCase
     #[Test]
     public function it_takes_the_default_title_off_the_vault_that_held_it(): void
     {
+        config(['monica.free_vault_limit' => 5]);
         Queue::fake();
 
         $user = User::factory()->create();
@@ -788,6 +791,7 @@ class VaultControllerTest extends TestCase
     #[Test]
     public function it_leaves_the_default_alone_when_the_request_says_false(): void
     {
+        config(['monica.free_vault_limit' => 5]);
         Queue::fake();
 
         $user = User::factory()->create();
@@ -809,6 +813,7 @@ class VaultControllerTest extends TestCase
     #[Test]
     public function it_leaves_the_default_alone_when_the_request_says_nothing(): void
     {
+        config(['monica.free_vault_limit' => 5]);
         Queue::fake();
 
         $user = User::factory()->create();
@@ -962,6 +967,7 @@ class VaultControllerTest extends TestCase
     #[Test]
     public function it_writes_each_decision_to_the_journal_as_its_own_entry(): void
     {
+        config(['monica.free_vault_limit' => 5]);
         Queue::fake();
 
         $user = User::factory()->create();
@@ -1016,5 +1022,45 @@ class VaultControllerTest extends TestCase
             ->where('account_id', $user->account_id)
             ->where('is_default', true)
             ->count();
+    }
+
+    #[Test]
+    public function it_refuses_a_vault_past_the_ceiling_with_the_cap_named(): void
+    {
+        Queue::fake();
+        config(['monica.free_vault_limit' => 1]);
+
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', '/api/v1/vaults', ['name' => 'Sabre']);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('name');
+        $this->assertSame(1, $user->account->vaults()->count());
+    }
+
+    #[Test]
+    public function it_still_answers_and_edits_what_an_account_over_the_ceiling_holds(): void
+    {
+        Queue::fake();
+        config(['monica.free_vault_limit' => 1]);
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', '/api/v1/vaults')->assertOk()->assertJsonCount(2, 'data');
+        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}", [
+            'name' => 'Utica',
+            'description' => 'The branch that stayed open.',
+            'colour' => '#9a3f2b',
+        ])->assertOk();
+
+        $this->assertSame('Utica', $vault->refresh()->name);
     }
 }

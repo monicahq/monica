@@ -19,6 +19,14 @@ use App\Http\Controllers\App\GettingStartedController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\Marketplace\MarketplaceController;
 use App\Http\Controllers\App\Settings\Account\AccountController;
+use App\Http\Controllers\App\Settings\Account\Billing\BillingController;
+use App\Http\Controllers\App\Settings\Account\Billing\BillingCurrencyController;
+use App\Http\Controllers\App\Settings\Account\Billing\CheckoutController;
+use App\Http\Controllers\App\Settings\Account\Billing\CheckoutReturnController;
+use App\Http\Controllers\App\Settings\Account\Billing\InvoiceController;
+use App\Http\Controllers\App\Settings\Account\Billing\SubscriptionCancellationController;
+use App\Http\Controllers\App\Settings\Account\Billing\SubscriptionController;
+use App\Http\Controllers\App\Settings\Account\Billing\SubscriptionPortalController;
 use App\Http\Controllers\App\Settings\Account\EntityTypes\EntityTypeController;
 use App\Http\Controllers\App\Settings\Account\EntityTypes\EntityTypePositionController;
 use App\Http\Controllers\App\Settings\Account\Logs\EmailSentController;
@@ -248,6 +256,17 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('settings/account/profile', [ProfileController::class, 'index'])->name('settings.profile.index');
     Route::put('settings/account/profile', [ProfileController::class, 'update'])->name('settings.profile.update');
     Route::delete('settings/account', [AccountController::class, 'destroy'])->name('settings.account.destroy');
+
+    Route::get('settings/account/billing', [BillingController::class, 'index'])->name('settings.billing.index');
+    Route::put('settings/account/billing/currency', [BillingCurrencyController::class, 'update'])->name('settings.billingCurrency.update');
+    Route::post('settings/account/billing/checkout/{price}', [CheckoutController::class, 'store'])->where('price', '[A-Za-z0-9_]+')->name('settings.checkout.store');
+    Route::get('settings/account/billing/checkout/success', [CheckoutReturnController::class, 'show'])->name('settings.checkoutReturn.show');
+    Route::put('settings/account/billing/subscription/{price}', [SubscriptionController::class, 'update'])->where('price', '[A-Za-z0-9_]+')->name('settings.subscription.update');
+    Route::delete('settings/account/billing/subscription', [SubscriptionController::class, 'destroy'])->name('settings.subscription.destroy');
+    Route::delete('settings/account/billing/subscription/cancellation', [SubscriptionCancellationController::class, 'destroy'])->name('settings.subscriptionCancellation.destroy');
+    Route::get('settings/account/billing/subscription/portal', [SubscriptionPortalController::class, 'show'])->name('settings.subscriptionPortal.show');
+    Route::get('settings/account/billing/invoices', [InvoiceController::class, 'index'])->name('settings.invoices.index');
+    Route::get('settings/account/billing/invoices/{payment}', [InvoiceController::class, 'show'])->where('payment', '[A-Za-z0-9_]+')->name('settings.invoices.show');
     Route::get('settings/account/logs', [LogController::class, 'index'])->name('settings.logs.index');
     Route::get('settings/account/logs/emails', [EmailSentController::class, 'index'])->name('settings.emailsSent.index');
 

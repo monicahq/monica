@@ -11,6 +11,7 @@ use App\Actions\SetVaultDefaultTemplate;
 use App\Actions\UpdateVault;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VaultColourEnum;
+use App\Exceptions\TooManyVaults;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\VaultResource;
 use App\Models\TemplateVersion;
@@ -19,6 +20,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class VaultController extends Controller
 {
@@ -57,12 +59,16 @@ class VaultController extends Controller
             'colour' => ['nullable', 'string', Rule::in(VaultColourEnum::values())],
         ], $this->decisionRules($request)));
 
-        $vault = new CreateVault(
-            user: $request->user(),
-            name: $validated['name'],
-            description: $validated['description'] ?? null,
-            colour: $validated['colour'] ?? null,
-        )->execute();
+        try {
+            $vault = new CreateVault(
+                user: $request->user(),
+                name: $validated['name'],
+                description: $validated['description'] ?? null,
+                colour: $validated['colour'] ?? null,
+            )->execute();
+        } catch (TooManyVaults $e) {
+            throw ValidationException::withMessages(['name' => $e->getMessage()]);
+        }
 
         $this->settleTheTwoDecisions($request, $vault);
 

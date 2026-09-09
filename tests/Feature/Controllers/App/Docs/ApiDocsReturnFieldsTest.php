@@ -6,14 +6,17 @@ namespace Tests\Feature\Controllers\App\Docs;
 
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VersionStatusEnum;
+use App\Helpers\StripeCatalogue;
 use App\Models\Contact;
 use App\Models\EmailSent;
 use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\File;
 use App\Models\Log;
+use App\Models\Payment;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StripeOrder;
 use App\Models\Template;
 use App\Models\TemplateVersion;
 use App\Models\TemplateVersionPage;
@@ -354,6 +357,78 @@ class ApiDocsReturnFieldsTest extends TestCase
                 ->json('DELETE', '/api/v1/logout'),
 
             'me-show' => $this->asSomebody(fn (): TestResponse => $this->json('GET', '/api/v1/me')),
+
+            'billing-show' => $this->asSomebody(function (User $user): TestResponse {
+                StripeCatalogue::forget();
+                $this->fakeStripe();
+                $this->subscribeAccount($user->account, 'price_monthly', stripeId: 'sub_docs_show');
+                Payment::factory()->forSubscription()->create(['account_id' => $user->account_id]);
+                StripeOrder::factory()->refunded()->create(['account_id' => $user->account_id]);
+
+                return $this->json('GET', '/api/v1/billing');
+            }),
+
+            'billing-payments-index' => $this->asSomebody(function (User $user): TestResponse {
+                StripeCatalogue::forget();
+                $this->fakeStripe();
+                Payment::factory()->create(['account_id' => $user->account_id, 'stripe_id' => 'in_docs_index']);
+
+                return $this->json('GET', '/api/v1/billing/payments');
+            }),
+
+            'billing-payments-show' => $this->asSomebody(function (User $user): TestResponse {
+                StripeCatalogue::forget();
+                $this->fakeStripe();
+                Payment::factory()->create(['account_id' => $user->account_id, 'stripe_id' => 'in_docs_show']);
+
+                return $this->json('GET', '/api/v1/billing/payments/in_docs_show');
+            }),
+
+            'billing-checkout-sessions-create' => $this->asSomebody(function (User $user): TestResponse {
+                StripeCatalogue::forget();
+                $this->fakeStripe();
+
+                return $this->json('POST', '/api/v1/billing/checkout-sessions', [
+                    'price_id' => 'price_lifetime',
+                ]);
+            }),
+
+            'billing-subscription-update' => $this->asSomebody(function (User $user): TestResponse {
+                StripeCatalogue::forget();
+                $client = $this->fakeStripe();
+                $this->subscribeAccount($user->account, 'price_monthly', stripeId: 'sub_docs_update');
+                Payment::factory()->forSubscription()->create(['account_id' => $user->account_id]);
+                StripeOrder::factory()->refunded()->create(['account_id' => $user->account_id]);
+                $client->respondTo('POST subscriptions/*', $this->stripeSubscription('price_yearly'));
+
+                return $this->json('PUT', '/api/v1/billing/subscription', ['price_id' => 'price_yearly']);
+            }),
+
+            'billing-subscription-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                StripeCatalogue::forget();
+                $this->fakeStripe();
+                $this->subscribeAccount($user->account, 'price_monthly', stripeId: 'sub_docs_destroy');
+
+                return $this->json('DELETE', '/api/v1/billing/subscription');
+            }),
+
+            'billing-subscription-cancellation-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                StripeCatalogue::forget();
+                $this->fakeStripe();
+                $this->subscribeAccount($user->account, 'price_monthly', 'active', now()->addWeek(), 'sub_docs_cancellation');
+                Payment::factory()->forSubscription()->create(['account_id' => $user->account_id]);
+                StripeOrder::factory()->refunded()->create(['account_id' => $user->account_id]);
+
+                return $this->json('DELETE', '/api/v1/billing/subscription/cancellation');
+            }),
+
+            'billing-portal-sessions-create' => $this->asSomebody(function (User $user): TestResponse {
+                StripeCatalogue::forget();
+                $this->fakeStripe();
+                $this->subscribeAccount($user->account, 'price_monthly', stripeId: 'sub_docs_portal');
+
+                return $this->json('POST', '/api/v1/billing/portal-sessions');
+            }),
 
             'me-update' => $this->asSomebody(fn (User $user): TestResponse => $this->json('PUT', '/api/v1/me', [
                 'first_name' => 'Michael',

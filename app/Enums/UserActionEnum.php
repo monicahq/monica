@@ -10,6 +10,13 @@ use Override;
 enum UserActionEnum: string implements Translatable
 {
     case AccountCreation = 'account_created';
+    case FullAccessPurchased = 'full_access_purchased';
+    case SubscriptionStarted = 'subscription_started';
+    case SubscriptionCancelled = 'subscription_cancelled';
+    case SubscriptionUpgraded = 'subscription_upgraded';
+    case SubscriptionResumed = 'subscription_resumed';
+    case FullAccessEnded = 'full_access_ended';
+    case FullAccessRestored = 'full_access_restored';
     case UserProfileUpdate = 'user_profile_updated';
     case UserPhotoUpdate = 'user_photo_updated';
     case UserPhotoDeletion = 'user_photo_deleted';
@@ -150,6 +157,13 @@ enum UserActionEnum: string implements Translatable
     {
         return match ($this) {
             self::AccountCreation => 'Created the account',
+            self::FullAccessPurchased => 'Bought lifetime access',
+            self::SubscriptionStarted => 'Started a subscription',
+            self::SubscriptionCancelled => 'Stopped the subscription renewing',
+            self::SubscriptionUpgraded => 'Moved the subscription up to a longer one',
+            self::SubscriptionResumed => 'Kept the subscription running',
+            self::FullAccessEnded => 'Went back to the free offer',
+            self::FullAccessRestored => 'Got full access back once the money came back to us',
             self::UserProfileUpdate => 'Updated the profile of :name',
             self::UserPhotoUpdate => 'Changed the photo of :name',
             self::UserPhotoDeletion => 'Removed the photo of :name',

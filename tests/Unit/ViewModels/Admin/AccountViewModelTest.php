@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Admin;
 
+use App\Enums\AccessKindEnum;
+use App\Helpers\StripeCatalogue;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\StripeOrder;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Admin\AccountViewModel;
@@ -30,56 +33,29 @@ class AccountViewModelTest extends TestCase
     #[Test]
     public function it_says_where_the_account_runs(): void
     {
-        $hosted = Account::factory()->create(['is_self_hosted' => false]);
-        $itself = Account::factory()->create(['is_self_hosted' => true]);
+        $account = Account::factory()->create();
 
-        $this->assertSame('Hosted by us', new AccountViewModel(account: $hosted)->whereItRuns());
-        $this->assertSame('Self-hosted', new AccountViewModel(account: $itself)->whereItRuns());
+        $this->assertSame('Hosted by us', new AccountViewModel(account: $account)->whereItRuns());
+
+        config(['monica.self_hosted' => true]);
+
+        $this->assertSame('Self-hosted', new AccountViewModel(account: $account)->whereItRuns());
     }
 
     #[Test]
-    public function it_says_the_lifetime_access_was_bought_and_when(): void
+    public function it_does_not_ask_a_self_hosted_account_for_a_billing_address(): void
     {
-        $account = Account::factory()->create([
-            'is_self_hosted' => false,
-            'has_lifetime_access' => true,
-            'purchased_at' => '2026-03-04',
-        ]);
+        config(['monica.self_hosted' => true]);
 
-        $this->assertSame('Yes, bought on March 4, 2026', new AccountViewModel(account: $account)->lifetimeAccessLine());
-    }
+        $account = Account::factory()->create(['billing_email' => 'accounts@dundermifflin.com']);
 
-    #[Test]
-    public function it_says_only_yes_for_lifetime_access_nobody_wrote_a_date_against(): void
-    {
-        $account = Account::factory()->create([
-            'is_self_hosted' => false,
-            'has_lifetime_access' => true,
-            'purchased_at' => null,
-        ]);
-
-        $this->assertSame('Yes', new AccountViewModel(account: $account)->lifetimeAccessLine());
-    }
-
-    #[Test]
-    public function it_asks_a_self_hosted_account_neither_about_lifetime_access_nor_about_billing(): void
-    {
-        $account = Account::factory()->create([
-            'is_self_hosted' => true,
-            'has_lifetime_access' => true,
-            'billing_email' => 'accounts@dundermifflin.com',
-        ]);
-
-        $viewModel = new AccountViewModel(account: $account);
-
-        $this->assertSame('Not applicable', $viewModel->lifetimeAccessLine());
-        $this->assertSame('Not applicable', $viewModel->billingAddressLine());
+        $this->assertSame('Not applicable', new AccountViewModel(account: $account)->billingAddressLine());
     }
 
     #[Test]
     public function it_says_when_a_billable_account_gave_no_address(): void
     {
-        $account = Account::factory()->create(['is_self_hosted' => false, 'billing_email' => null]);
+        $account = Account::factory()->create(['billing_email' => null]);
 
         $this->assertSame('None given', new AccountViewModel(account: $account)->billingAddressLine());
     }
@@ -103,7 +79,10 @@ class AccountViewModelTest extends TestCase
     #[Test]
     public function it_badges_what_the_account_is_and_what_state_its_person_is_in(): void
     {
-        $account = Account::factory()->create(['is_self_hosted' => true, 'has_lifetime_access' => true]);
+        config(['monica.self_hosted' => true]);
+
+        $account = Account::factory()->create();
+        StripeOrder::factory()->settled()->create(['account_id' => $account->id]);
 
         $labels = array_column(new AccountViewModel(account: $account)->badges(), 'label');
 
@@ -294,10 +273,155 @@ class AccountViewModelTest extends TestCase
     #[Test]
     public function it_treats_billing_as_beside_the_point_on_a_self_hosted_account(): void
     {
-        $hosted = Account::factory()->create(['is_self_hosted' => false]);
-        $selfHosted = Account::factory()->create(['is_self_hosted' => true]);
+        $account = Account::factory()->create();
 
-        $this->assertTrue(new AccountViewModel(account: $hosted)->isBillable());
-        $this->assertFalse(new AccountViewModel(account: $selfHosted)->isBillable());
+        $this->assertTrue(new AccountViewModel(account: $account)->isBillable());
+
+        config(['monica.self_hosted' => true]);
+
+        $this->assertFalse(new AccountViewModel(account: $account)->isBillable());
+    }
+
+    #[Test]
+    public function it_shows_the_paid_ceiling_of_an_account_that_holds_full_access(): void
+    {
+        config(['monica.paid_storage_limit_in_bytes' => 10737418240]);
+
+        $account = Account::factory()->create(['storage_limit_in_bytes' => 104857600, 'storage_used_in_bytes' => 5242880]);
+
+        $this->assertSame('100 MB', new AccountViewModel(account: $account)->storageLimit());
+
+        $account->update(['access_granted_at' => now()]);
+
+        $viewModel = new AccountViewModel(account: $account->fresh());
+
+        $this->assertTrue($viewModel->hasStorageLimit());
+        $this->assertSame('10 GB', $viewModel->storageLimit());
+        $this->assertFalse($viewModel->isOverStorageLimit());
+        $this->assertSame(104857600, $account->fresh()->storage_limit_in_bytes);
+    }
+
+    #[Test]
+    public function it_reads_an_account_over_the_paid_ceiling_as_over_it(): void
+    {
+        config(['monica.paid_storage_limit_in_bytes' => 4096]);
+
+        $account = Account::factory()->create([
+            'access_granted_at' => now(),
+            'storage_limit_in_bytes' => 1024,
+            'storage_used_in_bytes' => 8192,
+        ]);
+
+        $this->assertTrue(new AccountViewModel(account: $account)->isOverStorageLimit());
+    }
+
+    #[Test]
+    public function it_reads_the_order_and_the_subscription_the_way_the_owner_screen_does(): void
+    {
+        StripeCatalogue::forget();
+        $this->fakeStripe();
+
+        $account = Account::factory()->create(['stripe_id' => 'cus_dundermifflin']);
+        $order = StripeOrder::factory()->refunded()->create(['account_id' => $account->id]);
+        $this->subscribeAccount($account);
+
+        $viewModel = new AccountViewModel(account: $account->fresh());
+
+        $this->assertSame($order->id, $viewModel->order()?->id);
+        $this->assertSame('refunded', $viewModel->order()?->stripe_status);
+        $this->assertSame('Monthly subscription', $viewModel->subscriptionOfferLabel());
+        $this->assertSame(AccessKindEnum::Subscription->label(), $viewModel->accessKindLabel());
+        $this->assertNotNull($viewModel->renewsAt());
+        $this->assertNull($viewModel->endsAt());
+    }
+
+    #[Test]
+    public function it_speaks_of_no_order_nobody_paid(): void
+    {
+        $account = Account::factory()->create();
+        StripeOrder::factory()->create(['account_id' => $account->id]);
+
+        $viewModel = new AccountViewModel(account: $account->fresh());
+
+        $this->assertNull($viewModel->order());
+        $this->assertSame(__('Free offer'), $viewModel->accessKindLabel());
+    }
+
+    #[Test]
+    public function it_says_when_a_cancelled_subscription_stops(): void
+    {
+        StripeCatalogue::forget();
+        $this->fakeStripe();
+
+        $account = Account::factory()->create(['stripe_id' => 'cus_dundermifflin']);
+        $this->subscribeAccount($account, 'price_monthly', 'active', now()->addWeek());
+
+        $viewModel = new AccountViewModel(account: $account->fresh());
+
+        $this->assertNotNull($viewModel->endsAt());
+    }
+
+    #[Test]
+    public function it_points_at_the_customer_on_the_stripe_dashboard(): void
+    {
+        config(['cashier.secret' => 'sk_test_dundermifflin']);
+
+        $account = Account::factory()->create(['stripe_id' => 'cus_dundermifflin']);
+
+        $this->assertSame(
+            'https://dashboard.stripe.com/test/customers/cus_dundermifflin',
+            new AccountViewModel(account: $account)->stripeCustomerUrl(),
+        );
+
+        config(['cashier.secret' => 'sk_live_dundermifflin']);
+
+        $this->assertSame(
+            'https://dashboard.stripe.com/customers/cus_dundermifflin',
+            new AccountViewModel(account: $account)->stripeCustomerUrl(),
+        );
+    }
+
+    #[Test]
+    public function it_points_nowhere_for_an_account_stripe_has_never_heard_of(): void
+    {
+        $this->assertNull(new AccountViewModel(account: Account::factory()->create())->stripeCustomerUrl());
+    }
+
+    #[Test]
+    public function it_says_the_day_the_purchase_was_ordered(): void
+    {
+        $account = Account::factory()->create();
+        $order = StripeOrder::factory()->settled()->create(['account_id' => $account->id]);
+
+        $viewModel = new AccountViewModel(account: $account->fresh());
+
+        $this->assertTrue($viewModel->holdsAccessForGood());
+        $this->assertSame(
+            __('Yes, bought on :date', ['date' => $order->created_at->isoFormat('LL')]),
+            $viewModel->accessForGoodLabel(),
+        );
+    }
+
+    #[Test]
+    public function it_says_the_day_a_grant_was_made(): void
+    {
+        $account = Account::factory()->withGrantedAccess()->create();
+
+        $viewModel = new AccountViewModel(account: $account->fresh());
+
+        $this->assertTrue($viewModel->holdsAccessForGood());
+        $this->assertStringContainsString('granted on', $viewModel->accessForGoodLabel());
+    }
+
+    #[Test]
+    public function it_says_no_when_nothing_is_held_for_good(): void
+    {
+        $account = Account::factory()->create();
+        StripeOrder::factory()->refunded()->create(['account_id' => $account->id]);
+
+        $viewModel = new AccountViewModel(account: $account->fresh());
+
+        $this->assertFalse($viewModel->holdsAccessForGood());
+        $this->assertSame(__('No'), $viewModel->accessForGoodLabel());
     }
 }

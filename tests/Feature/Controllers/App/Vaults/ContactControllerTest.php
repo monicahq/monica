@@ -1281,4 +1281,39 @@ class ContactControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Dwight Élodie');
     }
+
+    #[Test]
+    public function it_refuses_a_contact_past_the_ceiling_and_names_it(): void
+    {
+        Queue::fake();
+        config(['monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $response = $this->actingAs($user)
+            ->from(route('contacts.new', ['vault' => $vault]))
+            ->post(route('contacts.create', ['vault' => $vault]), ['first_name' => 'Pam']);
+
+        $response->assertRedirect(route('contacts.new', ['vault' => $vault]));
+        $response->assertSessionHasErrors('first_name');
+        $this->assertSame(1, $user->account->contactCount());
+    }
+
+    #[Test]
+    public function it_shows_the_offers_from_the_form_of_an_account_at_the_ceiling(): void
+    {
+        config(['monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $response = $this->actingAs($user)->get(route('contacts.new', ['vault' => $vault]));
+
+        $response->assertStatus(200);
+        $response->assertSee('You are at the ceiling of the free offer', escape: false);
+        $response->assertSee(route('settings.billing.index'), escape: false);
+    }
 }

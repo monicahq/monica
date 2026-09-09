@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Exceptions\ProviderUnreachable;
 use App\Models\Account;
 use App\Models\User;
+use Exception;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
 
 /**
  * Delete an account and everything under it.
+ *
+ * A subscription is stopped at Stripe first, and the deletion is refused outright when Stripe does
+ * not answer: deleting anyway would leave somebody being charged with no account to show them what
+ * for. The period already paid for is not refunded, and the deletion warning says so.
  */
 class DestroyAccount
 {
@@ -23,9 +29,25 @@ class DestroyAccount
     public function execute(): void
     {
         $this->validate();
+        $this->stopTheSubscription();
         $this->destroyPhoto();
         $this->destroyApiKeys();
         $this->destroy();
+    }
+
+    private function stopTheSubscription(): void
+    {
+        $subscription = $this->account->subscription();
+
+        if ($subscription?->valid() !== true) {
+            return;
+        }
+
+        try {
+            $subscription->cancelNow();
+        } catch (Exception $exception) {
+            throw new ProviderUnreachable(__('We could not reach Stripe to stop your subscription, so nothing was deleted. Please try again in a moment.'), 0, $exception);
+        }
     }
 
     private function validate(): void

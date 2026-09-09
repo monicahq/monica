@@ -54,7 +54,7 @@ class CreateFile
 
         $wouldHold = $account->storage_used_in_bytes + (int) $this->upload->getSize();
 
-        if ($wouldHold > $account->storage_limit_in_bytes) {
+        if ($wouldHold > $account->storageLimitInBytes()) {
             throw new NotEnoughStorageLeft('This file would take the account past the storage it is allowed.');
         }
     }

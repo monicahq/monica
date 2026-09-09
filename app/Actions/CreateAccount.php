@@ -52,13 +52,9 @@ class CreateAccount
 
     private function createAccount(): void
     {
-        $isSelfHosted = (bool) config('monica.self_hosted');
-
         $this->account = Account::query()->create([
-            'is_self_hosted' => $isSelfHosted,
-            'has_lifetime_access' => false,
             'storage_used_in_bytes' => 0,
-            'storage_limit_in_bytes' => $isSelfHosted ? null : config('monica.free_storage_limit_in_bytes'),
+            'storage_limit_in_bytes' => config('monica.self_hosted') ? null : config('monica.free_storage_limit_in_bytes'),
         ]);
     }
 

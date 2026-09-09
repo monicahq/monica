@@ -152,6 +152,12 @@
           {{ __('Everything you have put in :app is deleted with it: every vault, every person in them, every note and every photograph. We keep no copy, so nothing can be recovered afterwards.', ['app' => config('app.name')]) }}
         </p>
 
+        @if ($viewModel->isSubscribed())
+          <p class="max-w-[46ch] flex-1 text-sm text-pretty text-muted">
+            {{ __('Your subscription stops the moment the account is gone. The days already paid for are not refunded, and your invoices stay with Stripe.') }}
+          </p>
+        @endif
+
         <x-button.secondary
           type="button"
           size="small"

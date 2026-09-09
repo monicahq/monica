@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\DestroyAccount;
+use App\Exceptions\ProviderUnreachable;
 use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\Log;
 use App\Models\MagicLink;
+use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -94,5 +96,64 @@ class DestroyAccountTest extends TestCase
             user: $stranger,
             account: $account,
         )->execute();
+    }
+
+    #[Test]
+    public function it_stops_a_running_subscription_before_deleting_anything(): void
+    {
+        $this->fakeStripe();
+
+        $michael = User::factory()->create();
+        $subscription = $this->subscribeAccount($michael->account);
+
+        new DestroyAccount(user: $michael, account: $michael->account)->execute();
+
+        $this->assertModelMissing($michael->account);
+        $this->assertModelMissing($subscription);
+    }
+
+    #[Test]
+    public function it_deletes_the_payments_with_the_account(): void
+    {
+        $this->fakeStripe();
+
+        $michael = User::factory()->create();
+        $payment = Payment::factory()->create(['account_id' => $michael->account_id]);
+
+        new DestroyAccount(user: $michael, account: $michael->account)->execute();
+
+        $this->assertModelMissing($payment);
+    }
+
+    #[Test]
+    public function it_deletes_nothing_when_stripe_will_not_stop_the_subscription(): void
+    {
+        $this->expectException(ProviderUnreachable::class);
+
+        $client = $this->fakeStripe();
+        $client->failOn('subscriptions*');
+
+        $michael = User::factory()->create();
+        $this->subscribeAccount($michael->account);
+
+        try {
+            new DestroyAccount(user: $michael, account: $michael->account)->execute();
+        } finally {
+            $this->assertModelExists($michael->account);
+            $this->assertModelExists($michael);
+        }
+    }
+
+    #[Test]
+    public function it_never_asks_stripe_anything_about_an_account_that_never_paid(): void
+    {
+        $client = $this->fakeStripe();
+
+        $michael = User::factory()->create();
+
+        new DestroyAccount(user: $michael, account: $michael->account)->execute();
+
+        $this->assertModelMissing($michael->account);
+        $this->assertSame([], $client->requests());
     }
 }

@@ -129,6 +129,43 @@ class VaultFormViewModelTest extends TestCase
         );
     }
 
+    #[Test]
+    public function it_says_nothing_about_a_ceiling_below_it(): void
+    {
+        config(['monica.free_vault_limit' => 2]);
+
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->assertNull(new VaultFormViewModel(user: $user)->ceilingMessage());
+    }
+
+    #[Test]
+    public function it_names_the_ceiling_once_the_account_is_at_it(): void
+    {
+        config(['monica.free_vault_limit' => 1]);
+
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->assertSame(
+            'The free offer holds 1 vault, and this account already has it.',
+            new VaultFormViewModel(user: $user)->ceilingMessage(),
+        );
+    }
+
+    #[Test]
+    public function it_says_nothing_about_a_ceiling_there_is_none_of(): void
+    {
+        config(['monica.free_vault_limit' => 1]);
+
+        $user = User::factory()->create();
+        $user->account->update(['access_granted_at' => now()]);
+        Vault::factory()->count(3)->create(['account_id' => $user->account_id]);
+
+        $this->assertNull(new VaultFormViewModel(user: $user->fresh())->ceilingMessage());
+    }
+
     private function publishedContactTemplate(User $user, string $name, int $position = 1, bool $system = false): Template
     {
         $template = Template::factory()->create([

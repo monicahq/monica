@@ -15,6 +15,7 @@ use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -566,5 +567,24 @@ class ContactControllerTest extends TestCase
         $template->save();
 
         return $template;
+    }
+
+    #[Test]
+    public function it_refuses_a_contact_past_the_ceiling_with_the_cap_named(): void
+    {
+        Queue::fake();
+        config(['monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", ['first_name' => 'Pam']);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('first_name');
+        $this->assertSame(1, $user->account->contactCount());
     }
 }

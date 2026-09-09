@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\ApiKeyController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegistrationController;
+use App\Http\Controllers\Api\BillingController;
+use App\Http\Controllers\Api\CheckoutSessionController;
 use App\Http\Controllers\Api\ContactAvatarController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContactFavouriteController;
@@ -19,7 +21,11 @@ use App\Http\Controllers\Api\FieldPositionController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\MeTimezoneController;
+use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\PortalSessionController;
 use App\Http\Controllers\Api\StatusController;
+use App\Http\Controllers\Api\SubscriptionCancellationController;
+use App\Http\Controllers\Api\SubscriptionController;
 use App\Http\Controllers\Api\TemplateActivationController;
 use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\TemplateDuplicateController;
@@ -46,6 +52,15 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::get('me', [MeController::class, 'show'])->name('me');
         Route::put('me', [MeController::class, 'update'])->name('me.update');
         Route::put('me/timezone', [MeTimezoneController::class, 'update'])->name('me.timezone.update');
+
+        Route::get('billing', [BillingController::class, 'show'])->name('billing');
+        Route::get('billing/payments', [PaymentController::class, 'index'])->name('billing.payments');
+        Route::get('billing/payments/{payment}', [PaymentController::class, 'show'])->where('payment', '[A-Za-z0-9_]+')->name('billing.payments.show');
+        Route::post('billing/checkout-sessions', [CheckoutSessionController::class, 'store'])->name('billing.checkoutSessions.create');
+        Route::put('billing/subscription', [SubscriptionController::class, 'update'])->name('billing.subscription.update');
+        Route::delete('billing/subscription', [SubscriptionController::class, 'destroy'])->name('billing.subscription.destroy');
+        Route::delete('billing/subscription/cancellation', [SubscriptionCancellationController::class, 'destroy'])->name('billing.subscription.cancellation.destroy');
+        Route::post('billing/portal-sessions', [PortalSessionController::class, 'store'])->name('billing.portalSessions.create');
 
         Route::get('api-keys', [ApiKeyController::class, 'index'])->name('apiKeys');
         Route::get('api-keys/{apiKey}', [ApiKeyController::class, 'show'])->where('apiKey', '[1-9][0-9]*')->name('apiKeys.show');

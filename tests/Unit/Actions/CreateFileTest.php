@@ -9,6 +9,7 @@ use App\Enums\UserActionEnum;
 use App\Exceptions\NotEnoughStorageLeft;
 use App\Jobs\LogUserAction;
 use App\Models\File;
+use App\Models\StripeOrder;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -157,6 +158,50 @@ class CreateFileTest extends TestCase
         } finally {
             $this->assertEquals(0, File::query()->count());
             $this->assertEquals(512, $user->account->fresh()->storage_used_in_bytes);
+        }
+    }
+
+    #[Test]
+    public function it_measures_a_paid_account_against_the_paid_ceiling(): void
+    {
+        Queue::fake();
+        Storage::fake();
+        config(['monica.paid_storage_limit_in_bytes' => 3072]);
+
+        $user = User::factory()->create();
+        $user->account->update([
+            'storage_limit_in_bytes' => 1024,
+            'storage_used_in_bytes' => 512,
+        ]);
+        StripeOrder::factory()->settled()->create(['account_id' => $user->account_id]);
+
+        $file = new CreateFile(user: $user, upload: UploadedFile::fake()->create('scan.pdf', 2))->execute();
+
+        $this->assertInstanceOf(File::class, $file);
+        $this->assertEquals(1024, $user->account->fresh()->storage_limit_in_bytes);
+        $this->assertEquals(3072, $user->account->fresh()->storageLimitInBytes());
+    }
+
+    #[Test]
+    public function it_refuses_a_paid_account_past_the_paid_ceiling(): void
+    {
+        Queue::fake();
+        Storage::fake();
+        config(['monica.paid_storage_limit_in_bytes' => 3072]);
+
+        $this->expectException(NotEnoughStorageLeft::class);
+
+        $user = User::factory()->create();
+        $user->account->update([
+            'storage_limit_in_bytes' => 1024,
+            'storage_used_in_bytes' => 3000,
+        ]);
+        StripeOrder::factory()->settled()->create(['account_id' => $user->account_id]);
+
+        try {
+            new CreateFile(user: $user, upload: UploadedFile::fake()->create('scan.pdf', 2))->execute();
+        } finally {
+            $this->assertEquals(0, File::query()->count());
         }
     }
 

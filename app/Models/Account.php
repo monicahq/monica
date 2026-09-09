@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\AccessKindEnum;
+use App\Enums\OfferKindEnum;
+use App\Helpers\StripeCatalogue;
 use Carbon\CarbonImmutable;
 use Database\Factories\AccountFactory;
+use Exception;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Laravel\Cashier\Billable;
 use Override;
 
 /**
@@ -21,9 +26,11 @@ use Override;
  * is counted against and what a purchase is attached to.
  *
  * @property int $id
- * @property bool $is_self_hosted
- * @property bool $has_lifetime_access
- * @property CarbonImmutable|null $purchased_at
+ * @property string|null $stripe_id
+ * @property string|null $pm_type
+ * @property string|null $pm_last_four
+ * @property CarbonImmutable|null $trial_ends_at
+ * @property CarbonImmutable|null $access_granted_at
  * @property string|null $billing_email
  * @property int $storage_used_in_bytes
  * @property int|null $storage_limit_in_bytes
@@ -32,9 +39,7 @@ use Override;
  * @property CarbonImmutable|null $updated_at
  */
 #[Fillable([
-    'is_self_hosted',
-    'has_lifetime_access',
-    'purchased_at',
+    'access_granted_at',
     'billing_email',
     'storage_used_in_bytes',
     'storage_limit_in_bytes',
@@ -42,6 +47,8 @@ use Override;
 ])]
 class Account extends Model
 {
+    use Billable;
+
     /** @use HasFactory<AccountFactory> */
     use HasFactory;
 
@@ -54,9 +61,7 @@ class Account extends Model
     protected function casts(): array
     {
         return [
-            'is_self_hosted' => 'boolean',
-            'has_lifetime_access' => 'boolean',
-            'purchased_at' => 'datetime',
+            'access_granted_at' => 'datetime',
             'storage_used_in_bytes' => 'integer',
             'storage_limit_in_bytes' => 'integer',
             'onboarding_completed_at' => 'datetime',
@@ -71,6 +76,24 @@ class Account extends Model
     public function user(): HasOne
     {
         return $this->hasOne(User::class);
+    }
+
+    /**
+     * The name Stripe files the customer under. An account has no name of its own,
+     * so it is the name of the person on it.
+     */
+    public function stripeName(): ?string
+    {
+        return $this->user?->name;
+    }
+
+    /**
+     * The address Stripe writes to, which is the address the person on the account
+     * signs in with.
+     */
+    public function stripeEmail(): ?string
+    {
+        return $this->user?->email;
     }
 
     /**
@@ -254,11 +277,253 @@ class Account extends Model
     }
 
     /**
-     * Get whether the account is metered. A self hosted instance never is, and
-     * neither is an account with no ceiling on the cloud one.
+     * Get the payments Stripe confirmed for the account, newest first. Stripe
+     * keeps the invoices; these rows are what a screen reads so that none of
+     * them waits on the provider.
+     *
+     * @return HasMany<Payment, $this>
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class)->orderByDesc('billed_at');
+    }
+
+    /**
+     * Get whether the account is metered. A self hosted instance meters nobody,
+     * which is a setting of the instance and never a fact stamped on a row, and
+     * the hosted one does not meter an account with no ceiling.
      */
     public function isMetered(): bool
     {
-        return ! $this->is_self_hosted && $this->storage_limit_in_bytes !== null;
+        if (config('monica.self_hosted')) {
+            return false;
+        }
+
+        return $this->storage_limit_in_bytes !== null;
+    }
+
+    /**
+     * Get the orders the account placed at Stripe, newest first. An abandoned
+     * checkout leaves one here too, unpaid for good and holding nothing.
+     *
+     * @return HasMany<StripeOrder, $this>
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(StripeOrder::class)->latest();
+    }
+
+    /**
+     * Get the order that holds full access, null when none does. Read off the
+     * loaded relation, so a screen asking several times asks the database once.
+     */
+    public function settledOrder(): ?StripeOrder
+    {
+        return $this->orders->firstWhere('stripe_status', StripeOrder::PAID);
+    }
+
+    /**
+     * Get whether the account holds full access, however it came to hold it:
+     * bought once, granted by an administrator, or through a subscription Stripe
+     * still considers valid. The caps read this and nothing else.
+     */
+    public function hasFullAccess(): bool
+    {
+        if ($this->holdsAccessForGood()) {
+            return true;
+        }
+
+        return $this->subscribed();
+    }
+
+    /**
+     * Get how full access is held, null on the free offer. Each of the three is
+     * written down, so none of them is guessed at.
+     */
+    public function accessKind(): ?AccessKindEnum
+    {
+        if ($this->settledOrder() !== null) {
+            return AccessKindEnum::Lifetime;
+        }
+
+        if ($this->access_granted_at !== null) {
+            return AccessKindEnum::Granted;
+        }
+
+        if ($this->subscribed()) {
+            return AccessKindEnum::Subscription;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get whether the account holds access that never renews, which is what an
+     * order and a grant have in common and what closes the offers.
+     */
+    public function holdsAccessForGood(): bool
+    {
+        return $this->settledOrder() !== null || $this->access_granted_at !== null;
+    }
+
+    /**
+     * Get the offers the account may still take up, out of Stripe's catalogue:
+     * none on a self hosted instance, none once lifetime access is held, and
+     * while a subscription runs only what sits above it, meaning lifetime access
+     * and the subscriptions longer than the current one.
+     *
+     * @return array<int, array{price_id: string, kind: OfferKindEnum, amount: int, currency: string, prices: array<string, int>}>
+     */
+    public function availableOffers(): array
+    {
+        if (config('monica.self_hosted')) {
+            return [];
+        }
+
+        if ($this->holdsAccessForGood()) {
+            return [];
+        }
+
+        $subscription = $this->subscription();
+        $subscribed = $subscription?->valid() === true;
+        $current = $subscribed && ! $subscription->onGracePeriod() ? StripeCatalogue::kindOfSubscription($subscription) : null;
+
+        return array_values(array_filter(StripeCatalogue::offers(), function (array $offer) use ($subscribed, $current): bool {
+            if (! $subscribed) {
+                return true;
+            }
+
+            if (! $offer['kind']->renews()) {
+                return true;
+            }
+
+            return $current !== null && $offer['kind']->isAbove($current);
+        }));
+    }
+
+    /**
+     * Get whether the offers could be read from Stripe. True whenever there is
+     * nothing to sell this account, so a self hosted instance and a lifetime
+     * holder never ask Stripe at all.
+     */
+    public function offersAvailable(): bool
+    {
+        if (config('monica.self_hosted')) {
+            return true;
+        }
+
+        if ($this->holdsAccessForGood()) {
+            return true;
+        }
+
+        return StripeCatalogue::isAvailable();
+    }
+
+    /**
+     * Get which offer the running subscription is on, read off its price, null
+     * when nothing is running or the catalogue does not know the price.
+     */
+    public function subscriptionOfferKind(): ?OfferKindEnum
+    {
+        $subscription = $this->subscription();
+
+        if ($subscription === null) {
+            return null;
+        }
+
+        if (! $subscription->valid()) {
+            return null;
+        }
+
+        return StripeCatalogue::kindOfSubscription($subscription);
+    }
+
+    /**
+     * Get when the subscription next bills, null when nothing renews. Stripe
+     * holds the period rather than the local row, so this is one round trip, and
+     * a Stripe that does not answer costs a date rather than a screen.
+     */
+    public function nextBillingDate(): ?CarbonImmutable
+    {
+        $subscription = $this->subscription();
+
+        if ($subscription === null) {
+            return null;
+        }
+
+        if (! $subscription->valid()) {
+            return null;
+        }
+
+        if ($subscription->onGracePeriod()) {
+            return null;
+        }
+
+        try {
+            $renewsAt = $subscription->currentPeriodEnd();
+        } catch (Exception) {
+            return null;
+        }
+
+        return $renewsAt === null ? null : CarbonImmutable::instance($renewsAt);
+    }
+
+    /**
+     * Get whether the account is on the free offer, which is the one state the
+     * caps apply to: a hosted instance, and no full access.
+     */
+    public function isOnFreeOffer(): bool
+    {
+        if (config('monica.self_hosted')) {
+            return false;
+        }
+
+        return ! $this->hasFullAccess();
+    }
+
+    /**
+     * Get the storage ceiling that applies right now, null when there is none.
+     *
+     * The stamped column is the free ceiling and is never rewritten. Full access
+     * lifts it to the paid figure, so a refund or a lapse has nothing to put back,
+     * and a ceiling an administrator raised above that figure is kept.
+     */
+    public function storageLimitInBytes(): ?int
+    {
+        if (! $this->isMetered()) {
+            return null;
+        }
+
+        if (! $this->hasFullAccess()) {
+            return $this->storage_limit_in_bytes;
+        }
+
+        return max((int) $this->storage_limit_in_bytes, (int) config('monica.paid_storage_limit_in_bytes'));
+    }
+
+    /**
+     * Get how many vaults the account may hold, null when there is no ceiling.
+     */
+    public function vaultLimit(): ?int
+    {
+        return $this->isOnFreeOffer() ? (int) config('monica.free_vault_limit') : null;
+    }
+
+    /**
+     * Get how many contacts the account may hold, null when there is no ceiling.
+     */
+    public function contactLimit(): ?int
+    {
+        return $this->isOnFreeOffer() ? (int) config('monica.free_contact_limit') : null;
+    }
+
+    /**
+     * Count the contacts the cap is measured against: every vault of the account,
+     * archived ones included, leaving out each vault's Me contact and anybody
+     * still waiting to be filled in.
+     */
+    public function contactCount(): int
+    {
+        return $this->contacts()->where('is_me', false)->where('is_partial', false)->count();
     }
 }

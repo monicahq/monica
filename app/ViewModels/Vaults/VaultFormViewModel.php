@@ -40,6 +40,25 @@ class VaultFormViewModel
         return route('vaults.index');
     }
 
+    /**
+     * What the free offer allows, said only when the account is at it. The form still opens and
+     * still edits: it is an addition that is refused, never what is already there.
+     */
+    public function ceilingMessage(): ?string
+    {
+        $limit = $this->user->account->vaultLimit();
+
+        if ($limit === null) {
+            return null;
+        }
+
+        if ($this->user->account->vaults()->count() < $limit) {
+            return null;
+        }
+
+        return trans_choice('The free offer holds :count vault, and this account already has it.|The free offer holds :count vaults, and this account already has them.', $limit);
+    }
+
     /** @return array{name: string, description: string, colour: string, templateVersionId: string, isDefault: bool} */
     public function values(): array
     {

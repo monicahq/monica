@@ -10,7 +10,11 @@ use App\Models\Account;
 use App\Models\User;
 
 /**
- * Give an account the full product, as though the one time purchase had been made.
+ * Give an account the full product without anything being ordered or paid.
+ *
+ * A grant is a dated fact on the account rather than a row among the orders: nothing was ordered at
+ * Stripe, so there is no session, no state and no price to write. Who granted it is in the
+ * administrator log. Granting again leaves the first date alone.
  */
 class GrantLifetimeAccess
 {
@@ -29,8 +33,7 @@ class GrantLifetimeAccess
 
     private function grant(): void
     {
-        $this->account->has_lifetime_access = true;
-        $this->account->purchased_at = $this->account->purchased_at ?? now();
+        $this->account->access_granted_at = $this->account->access_granted_at ?? now();
         $this->account->save();
     }
 

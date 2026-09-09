@@ -11,6 +11,7 @@ use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Exceptions\CannotDeleteTheMeContact;
+use App\Exceptions\TooManyContacts;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
@@ -93,23 +94,27 @@ class ContactController extends Controller
             ],
         ]);
 
-        $contact = new CreateContact(
-            user: $request->user(),
-            vault: $vault,
-            templateVersion: $request->filled('template_version_id')
-                ? TemplateVersion::query()->find($request->integer('template_version_id'))
-                : null,
-            prefix: $validated['prefix'] ?? null,
-            firstName: $validated['first_name'],
-            middleName: $validated['middle_name'] ?? null,
-            lastName: $validated['last_name'] ?? null,
-            suffix: $validated['suffix'] ?? null,
-            maidenName: $validated['maiden_name'] ?? null,
-            nickname: $validated['nickname'] ?? null,
-            nameOrder: isset($validated['name_order']) ? NameOrderEnum::from($validated['name_order']) : null,
-            isPartial: $request->boolean('is_partial'),
-            isFavourite: $request->boolean('is_favourite'),
-        )->execute();
+        try {
+            $contact = new CreateContact(
+                user: $request->user(),
+                vault: $vault,
+                templateVersion: $request->filled('template_version_id')
+                    ? TemplateVersion::query()->find($request->integer('template_version_id'))
+                    : null,
+                prefix: $validated['prefix'] ?? null,
+                firstName: $validated['first_name'],
+                middleName: $validated['middle_name'] ?? null,
+                lastName: $validated['last_name'] ?? null,
+                suffix: $validated['suffix'] ?? null,
+                maidenName: $validated['maiden_name'] ?? null,
+                nickname: $validated['nickname'] ?? null,
+                nameOrder: isset($validated['name_order']) ? NameOrderEnum::from($validated['name_order']) : null,
+                isPartial: $request->boolean('is_partial'),
+                isFavourite: $request->boolean('is_favourite'),
+            )->execute();
+        } catch (TooManyContacts $e) {
+            throw ValidationException::withMessages(['first_name' => $e->getMessage()]);
+        }
 
         return new ContactResource($this->contact($vault, $contact->uuid))->response()->setStatusCode(201);
     }

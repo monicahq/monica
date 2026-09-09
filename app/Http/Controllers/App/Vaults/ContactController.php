@@ -11,6 +11,7 @@ use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Exceptions\CannotDeleteTheMeContact;
+use App\Exceptions\TooManyContacts;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\TemplateVersion;
@@ -102,21 +103,25 @@ class ContactController extends Controller
         $validated = $request->validate($this->rules($request));
         $nameOrder = $validated['name_order'] ?? null;
 
-        $contact = new CreateContact(
-            user: $request->user(),
-            vault: $vault,
-            templateVersion: $this->versionAskedFor($request),
-            prefix: $validated['prefix'] ?? null,
-            firstName: $validated['first_name'],
-            middleName: $validated['middle_name'] ?? null,
-            lastName: $validated['last_name'] ?? null,
-            suffix: $validated['suffix'] ?? null,
-            maidenName: $validated['maiden_name'] ?? null,
-            nickname: $validated['nickname'] ?? null,
-            nameOrder: $nameOrder === null ? null : NameOrderEnum::from($nameOrder),
-            isPartial: $request->boolean('is_partial'),
-            isFavourite: $request->boolean('is_favourite'),
-        )->execute();
+        try {
+            $contact = new CreateContact(
+                user: $request->user(),
+                vault: $vault,
+                templateVersion: $this->versionAskedFor($request),
+                prefix: $validated['prefix'] ?? null,
+                firstName: $validated['first_name'],
+                middleName: $validated['middle_name'] ?? null,
+                lastName: $validated['last_name'] ?? null,
+                suffix: $validated['suffix'] ?? null,
+                maidenName: $validated['maiden_name'] ?? null,
+                nickname: $validated['nickname'] ?? null,
+                nameOrder: $nameOrder === null ? null : NameOrderEnum::from($nameOrder),
+                isPartial: $request->boolean('is_partial'),
+                isFavourite: $request->boolean('is_favourite'),
+            )->execute();
+        } catch (TooManyContacts $e) {
+            return back()->withErrors(['first_name' => $e->getMessage()])->withInput();
+        }
 
         $destination = $request->boolean('keep_going')
             ? redirect()->route('contacts.new', $vault)

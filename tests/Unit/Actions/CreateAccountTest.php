@@ -36,8 +36,6 @@ class CreateAccountTest extends TestCase
         $this->assertInstanceOf(User::class, $user);
         $this->assertDatabaseHas('accounts', [
             'id' => $user->account_id,
-            'is_self_hosted' => false,
-            'has_lifetime_access' => false,
             'storage_used_in_bytes' => 0,
         ]);
         $this->assertDatabaseHas('users', [
@@ -218,7 +216,6 @@ class CreateAccountTest extends TestCase
             password: 'thatswhatshesaid',
         )->execute();
 
-        $this->assertTrue($user->account->is_self_hosted);
         $this->assertNull($user->account->storage_limit_in_bytes);
         $this->assertFalse($user->account->isMetered());
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\App\Settings\Account;
 
 use App\Actions\DestroyAccount;
+use App\Exceptions\ProviderUnreachable;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,7 +26,11 @@ class AccountController extends Controller
             'confirm_email.in' => __('Type your email address exactly as it is shown above.'),
         ]);
 
-        new DestroyAccount(user: $user, account: $user->account)->execute();
+        try {
+            new DestroyAccount(user: $user, account: $user->account)->execute();
+        } catch (ProviderUnreachable $e) {
+            return back()->withErrors(['confirm_email' => $e->getMessage()]);
+        }
 
         Auth::logout();
         $request->session()->invalidate();

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateVault;
+use App\Actions\UpdateVault;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\UserActionEnum;
+use App\Exceptions\TooManyVaults;
 use App\Jobs\LogUserAction;
 use App\Models\Template;
 use App\Models\TemplateVersion;
@@ -51,6 +53,7 @@ class CreateVaultTest extends TestCase
     #[Test]
     public function it_makes_the_first_vault_of_an_account_the_one_records_land_in(): void
     {
+        config(['monica.free_vault_limit' => 5]);
         Queue::fake();
 
         $user = User::factory()->create();
@@ -65,6 +68,7 @@ class CreateVaultTest extends TestCase
     #[Test]
     public function it_puts_a_new_vault_at_the_end_of_the_list(): void
     {
+        config(['monica.free_vault_limit' => 5]);
         Queue::fake();
 
         $user = User::factory()->create();
@@ -183,5 +187,69 @@ class CreateVaultTest extends TestCase
                 && $job->isAbout($vault)
                 && $job->parameters === ['name' => 'Dunder Mifflin'],
         );
+    }
+
+    #[Test]
+    public function it_refuses_a_vault_past_the_ceiling_of_the_free_offer(): void
+    {
+        Queue::fake();
+        config(['monica.free_vault_limit' => 1]);
+
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->expectException(TooManyVaults::class);
+        $this->expectExceptionMessage('Full access lifts the ceiling.');
+
+        new CreateVault(user: $user, name: 'Sabre')->execute();
+    }
+
+    #[Test]
+    public function it_keeps_what_an_account_over_the_ceiling_already_has(): void
+    {
+        Queue::fake();
+        config(['monica.free_vault_limit' => 1]);
+
+        $user = User::factory()->create();
+        $vaults = Vault::factory()->count(3)->create(['account_id' => $user->account_id]);
+
+        try {
+            new CreateVault(user: $user, name: 'Sabre')->execute();
+        } catch (TooManyVaults) {
+        }
+
+        $renamed = new UpdateVault(user: $user, vault: $vaults->first(), name: 'Scranton')->execute();
+
+        $this->assertSame(3, $user->account->vaults()->count());
+        $this->assertSame('Scranton', $renamed->refresh()->name);
+    }
+
+    #[Test]
+    public function it_lifts_the_ceiling_with_full_access(): void
+    {
+        Queue::fake();
+        config(['monica.free_vault_limit' => 1]);
+
+        $user = User::factory()->create();
+        $user->account->update(['access_granted_at' => now()]);
+        Vault::factory()->count(2)->create(['account_id' => $user->account_id]);
+
+        $vault = new CreateVault(user: $user, name: 'Sabre')->execute();
+
+        $this->assertInstanceOf(Vault::class, $vault);
+    }
+
+    #[Test]
+    public function it_never_caps_a_self_hosted_instance(): void
+    {
+        Queue::fake();
+        config(['monica.free_vault_limit' => 1, 'monica.self_hosted' => true]);
+
+        $user = User::factory()->create();
+        Vault::factory()->count(2)->create(['account_id' => $user->account_id]);
+
+        $vault = new CreateVault(user: $user, name: 'Sabre')->execute();
+
+        $this->assertInstanceOf(Vault::class, $vault);
     }
 }

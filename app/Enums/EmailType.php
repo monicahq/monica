@@ -19,4 +19,6 @@ enum EmailType: string
     case MarketplaceListingRejected = 'marketplace_listing_rejected';
     case ReminderDue = 'reminder_due';
     case NotificationDigest = 'notification_digest';
+    case AccessUnlocked = 'access_unlocked';
+    case AccessEnded = 'access_ended';
 }

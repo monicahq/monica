@@ -51,7 +51,7 @@ class SettingsViewModelTest extends TestCase
         );
 
         $this->assertSame(
-            ['Templates', 'Kinds of record', 'Relationship types', 'Value lists', 'Logs'],
+            ['Templates', 'Kinds of record', 'Relationship types', 'Value lists', 'Logs', 'Billing'],
             array_column($sections[1]['rows'], 'title'),
         );
 
@@ -153,6 +153,21 @@ class SettingsViewModelTest extends TestCase
         $this->assertSame(
             route('settings.profile.index').'#delete-your-account',
             new SettingsViewModel(user: $user)->deleteUrl(),
+        );
+    }
+
+    #[Test]
+    public function it_leaves_billing_out_of_the_rows_on_a_self_hosted_instance(): void
+    {
+        config(['monica.self_hosted' => true]);
+
+        $user = User::factory()->create();
+
+        $sections = new SettingsViewModel(user: $user)->sections();
+
+        $this->assertSame(
+            ['Templates', 'Kinds of record', 'Relationship types', 'Value lists', 'Logs'],
+            array_column($sections[1]['rows'], 'title'),
         );
     }
 }

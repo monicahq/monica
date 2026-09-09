@@ -6,6 +6,10 @@
 <x-account-layout :title="$viewModel->title()">
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" class="max-w-140" />
 
+  @if ($viewModel->ceilingMessage() !== null)
+    <x-paywall-prompt :message="$viewModel->ceilingMessage()" class="max-w-140" />
+  @endif
+
   <div
     x-data="{
       name: @js($values['name']),

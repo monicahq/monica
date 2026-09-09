@@ -1,0 +1,196 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\Actions;
+
+use App\Actions\EndAccess;
+use App\Enums\AccessEndReasonEnum;
+use App\Enums\UserActionEnum;
+use App\Helpers\StripeCatalogue;
+use App\Jobs\LogUserAction;
+use App\Models\Account;
+use App\Models\Payment;
+use App\Models\StripeOrder;
+use App\Models\User;
+use App\Notifications\AccessEnded;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class EndAccessTest extends TestCase
+{
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        StripeCatalogue::forget();
+        $this->fakeStripe();
+        Queue::fake();
+        Notification::fake();
+    }
+
+    #[Test]
+    public function it_leaves_the_order_behind_saying_it_was_refunded(): void
+    {
+        $michael = User::factory()->create();
+        $order = StripeOrder::factory()->settled()->create(['account_id' => $michael->account_id]);
+        $payment = Payment::factory()->create(['account_id' => $michael->account_id, 'stripe_subscription_id' => null]);
+
+        new EndAccess(account: $michael->account, reason: AccessEndReasonEnum::Refunded, payment: $payment)->execute();
+
+        $this->assertFalse($michael->account->fresh()->hasFullAccess());
+        $this->assertModelExists($order);
+        $this->assertDatabaseHas('stripe_orders', ['id' => $order->id, 'stripe_status' => StripeOrder::REFUNDED]);
+        $this->assertModelExists($payment);
+        Notification::assertSentTo($michael, AccessEnded::class);
+    }
+
+    #[Test]
+    public function it_leaves_the_order_behind_saying_it_was_disputed(): void
+    {
+        $michael = User::factory()->create();
+        $order = StripeOrder::factory()->settled()->create(['account_id' => $michael->account_id]);
+        $payment = Payment::factory()->create(['account_id' => $michael->account_id, 'stripe_subscription_id' => null]);
+
+        new EndAccess(account: $michael->account, reason: AccessEndReasonEnum::Disputed, payment: $payment)->execute();
+
+        $this->assertDatabaseHas('stripe_orders', ['id' => $order->id, 'stripe_status' => StripeOrder::DISPUTED]);
+
+        $this->assertFalse($michael->account->fresh()->hasFullAccess());
+        Notification::assertSentTo($michael, AccessEnded::class);
+    }
+
+    #[Test]
+    public function it_stops_the_subscription_at_once_when_a_renewal_is_refunded(): void
+    {
+        $michael = User::factory()->create();
+        $subscription = $this->subscribeAccount($michael->account);
+        $payment = Payment::factory()->forSubscription()->create([
+            'account_id' => $michael->account_id,
+            'stripe_subscription_id' => 'sub_dundermifflin',
+        ]);
+
+        new EndAccess(account: $michael->account, reason: AccessEndReasonEnum::Refunded, payment: $payment)->execute();
+
+        $this->assertFalse($subscription->fresh()->valid());
+        $this->assertFalse($michael->account->fresh()->hasFullAccess());
+        Notification::assertSentTo($michael, AccessEnded::class);
+    }
+
+    #[Test]
+    public function it_withdraws_whatever_the_account_holds_when_nothing_names_the_payment(): void
+    {
+        $michael = User::factory()->create();
+        $subscription = $this->subscribeAccount($michael->account);
+
+        new EndAccess(account: $michael->account, reason: AccessEndReasonEnum::Refunded)->execute();
+
+        $this->assertFalse($subscription->fresh()->valid());
+    }
+
+    #[Test]
+    public function it_finds_the_order_through_the_account_when_nothing_names_the_payment(): void
+    {
+        $michael = User::factory()->create();
+        $order = StripeOrder::factory()->settled()->create(['account_id' => $michael->account_id]);
+
+        new EndAccess(account: $michael->account, reason: AccessEndReasonEnum::Refunded)->execute();
+
+        $this->assertDatabaseHas('stripe_orders', ['id' => $order->id, 'stripe_status' => StripeOrder::REFUNDED]);
+        $this->assertFalse($michael->account->fresh()->hasFullAccess());
+    }
+
+    #[Test]
+    public function it_writes_down_money_back_on_an_account_holding_nothing_to_withdraw(): void
+    {
+        Log::spy();
+
+        $michael = User::factory()->create();
+
+        new EndAccess(account: $michael->account, reason: AccessEndReasonEnum::Refunded)->execute();
+
+        Log::shouldHaveReceived('error')->once();
+    }
+
+    #[Test]
+    public function it_takes_nothing_off_when_a_subscription_simply_ended(): void
+    {
+        $michael = User::factory()->create();
+        $this->subscribeAccount($michael->account, 'price_monthly', 'canceled', now()->subDay());
+
+        new EndAccess(account: $michael->account, reason: AccessEndReasonEnum::Cancelled)->execute();
+
+        $this->assertFalse($michael->account->fresh()->hasFullAccess());
+        Notification::assertSentTo($michael, AccessEnded::class);
+    }
+
+    #[Test]
+    public function it_leaves_a_grant_standing_when_a_renewal_is_refunded(): void
+    {
+        $michael = User::factory()->create();
+        $michael->account->update(['access_granted_at' => now()]);
+        $this->subscribeAccount($michael->account);
+        $payment = Payment::factory()->forSubscription()->create([
+            'account_id' => $michael->account_id,
+            'stripe_subscription_id' => 'sub_dundermifflin',
+        ]);
+
+        new EndAccess(account: $michael->account, reason: AccessEndReasonEnum::Refunded, payment: $payment)->execute();
+
+        $this->assertNotNull($michael->account->fresh()->access_granted_at);
+        Notification::assertNothingSent();
+    }
+
+    #[Test]
+    public function it_says_nothing_to_somebody_who_still_holds_access_another_way(): void
+    {
+        $michael = User::factory()->create();
+        $michael->account->update(['access_granted_at' => now()]);
+
+        new EndAccess(account: $michael->account, reason: AccessEndReasonEnum::PaymentFailed)->execute();
+
+        Notification::assertNothingSent();
+        Queue::assertNotPushed(LogUserAction::class);
+    }
+
+    #[Test]
+    public function it_names_the_reason_in_the_email(): void
+    {
+        $michael = User::factory()->create();
+        $this->subscribeAccount($michael->account, 'price_monthly', 'canceled', now()->subDay());
+
+        new EndAccess(account: $michael->account, reason: AccessEndReasonEnum::PaymentFailed)->execute();
+
+        Notification::assertSentTo(
+            $michael,
+            AccessEnded::class,
+            fn (AccessEnded $notification): bool => $notification->reason === AccessEndReasonEnum::PaymentFailed,
+        );
+    }
+
+    #[Test]
+    public function it_tells_nobody_when_there_is_nobody_on_the_account(): void
+    {
+        $account = Account::factory()->create();
+
+        new EndAccess(account: $account, reason: AccessEndReasonEnum::Cancelled)->execute();
+
+        Notification::assertNothingSent();
+    }
+
+    #[Test]
+    public function it_writes_the_end_of_access_into_the_account_journal(): void
+    {
+        $michael = User::factory()->create();
+
+        new EndAccess(account: $michael->account, reason: AccessEndReasonEnum::Cancelled)->execute();
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::FullAccessEnded);
+    }
+}

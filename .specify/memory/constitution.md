@@ -1,51 +1,54 @@
 <!--
 Sync Impact Report
-Version change: 2.0.0 -> 2.0.1
-Rationale: Principle V counted the configured locales in its own text. The count was nine when it was
-written and the codebase is about to make it thirty one, so the sentence was a fact with an expiry
-date sitting inside a principle. Removing it changes no obligation: every configured locale still has
-to be translated, however many there are. PATCH.
+Version change: 2.0.1 -> 2.1.0
+Rationale: the fixed layout is brought back into line with the repository it claims to fix. Two
+folders the application already relies on, `app/Listeners` and `app/Notifications`, were outside the
+list, which put every listener and every email in a folder the layout never permitted. Two that were
+listed, `app/Interfaces` and `app/Mail`, have never existed. Widening the permitted layout is
+materially expanded guidance, so MINOR. No principle is removed, redefined or renumbered.
 
 Added: none.
-Modified: Principle V, one clause. "in every configured locale, of which there are nine today"
-becomes "in every configured locale".
+Modified: Technology and Structure, four bullets and one paragraph.
+- `app/` now lists `Listeners` and `Notifications`, drops `Interfaces` and `Mail`, and names
+  `Resources` and `Responses` under `Http`.
+- `resources/` drops `views/mail`, which does not exist, names `views/vendor` where the email
+  templates published by the framework live, and adds `docs` for the API reference the portal renders.
+- `routes/` adds `api.php`.
+- `app/Http/Controllers` said it held one namespace and that `Api` would arrive one day. It holds two.
+  The paragraph now says so, keeps the rule that logic lives in an action, and reserves `Marketing`.
+- Principle III said "mailable". There is no mailable in the application: every email is a
+  notification, and that is the word the obligation now uses. No email loses its test.
+- The workflow said API coverage was owed later "while there is no `Api` namespace". It exists, so
+  the answer owed is the endpoint and its test.
 Removed: none.
 
-The prompt behind it: feature 025, twenty two new locales. Governance requires the pull request that
-finds the constitution contradicting the codebase to say which is wrong and fix it. Here the
-constitution is wrong, and it would have been wrong again after every future locale.
+The prompt behind it: the plan for feature 025 puts a seventh class in `app/Listeners`, and the
+reviewer note on that plan pointed out the folder was never in the list. Verified against the working
+tree on 2026-09-08 rather than taken from the previous report.
 
-Documentation that follows, in feature 025 and not here: `.claude/rules/code-style.md` and
-`.claude/skills/add-locale/SKILL.md` both count the locales the same way and are corrected there,
-since neither is governed by this file.
+Previous report, for 2.0.0 -> 2.0.1
+Rationale: Principle V counted the configured locales in its own text. The count was nine when it was
+written and the codebase made it thirty one, so the sentence was a fact with an expiry date sitting
+inside a principle. Removing it changed no obligation: every configured locale still has to be
+translated, however many there are. PATCH. `.claude/rules/code-style.md` and
+`.claude/skills/add-locale/SKILL.md` counted them the same way and are corrected in this pull request,
+which is where that report said they would be.
 
 Previous report, for 1.4.0 -> 2.0.0
-Rationale: one product invariant reversed. "There is no subscription and no notion of a plan"
-becomes one free offer and one full access, held either by a purchase made once or by a
-subscription, billed monthly or yearly. Reversing an invariant redefines what the product is and invalidates the two documents
-written against the old wording, so MAJOR. Nothing added, removed or renumbered.
-
-Added: none.
-Modified: Product Invariants, the "Self hosted and hosted run the same product" bullet. It now names
-the two ways full access is held, says the two unlock exactly the same product, and moves the
-metered or not decision from a fact stamped on each account to a setting of the instance.
-Removed: none.
-
-The prompt behind it: feature 022, the paywall. The hosted version needs subscription prices beside the
-one time purchase, and the specification written for it could not pass its own constitution check
-until this was decided here first. The amendment is its own pull request, as Governance requires,
-and the feature branch stacks on it.
+Rationale: one product invariant reversed. "There is no subscription and no notion of a plan" becomes
+one free offer and one full access, held either by a purchase made once or by a subscription, billed
+monthly or yearly. Reversing an invariant redefines what the product is, so MAJOR.
 
 Documentation that follows, in this pull request:
-- `spec/spec.md` §3.4 describes the free offer, the purchase made once and the subscription.
-- `spec/models/001-account-in-progress.md` answers its open cap question, drops `is_self_hosted`
-  and records that the instance setting decides who is metered.
+- `.claude/CLAUDE.md` describes the same tree a second time, which Governance forbids. Its stale
+  claims are corrected in this pull request; the duplication itself stays under TODO 8.
 
-Code that follows, in feature 022 and nowhere before this merges: the `accounts.is_self_hosted`
-column and every reader of it (`Account::isMetered()`, `CreateAccount`, `Admin\AccountViewModel`,
-`AccountFactory::selfHosted()`), the caps, the checkout and the billing package's tables.
+Code that follows: none. Nothing in the application moves, because the amendment describes what is
+already there.
 
-Follow-up TODOs, re-verified against the working tree on 2026-09-06. Nothing resolved since 1.4.0.
+Follow-up TODOs, re-verified against the working tree on 2026-09-08. Items 1, 5, 6 and 7 were checked
+again and still stand exactly as written. Items 2, 3 and 4 are carried over as judgements rather than
+re-verified, except that no webhook or MCP table exists in `database/migrations`.
 
 1. `app/Actions/CreateApiKey.php:24` still issues a Sanctum token with no abilities, while
    Principle X requires tokens whose scopes can be limited.
@@ -62,9 +65,9 @@ Follow-up TODOs, re-verified against the working tree on 2026-09-06. Nothing res
 7. Seven view models in `app/ViewModels/Auth` have no test: only `LoginViewModel` and
    `RegisterViewModel` are covered. `Settings/Account/Security/TwoFactorEnrolmentViewModel`,
    `Vaults/ContactEditViewModel` and `Vaults/SetAsideValuesViewModel` are also uncovered.
-8. `.claude/CLAUDE.md` still describes a tree this repository contradicts, and cannot be edited from
-   this command. Its own TODO of 2026-08-23 says there is no `Api` controller folder and no
-   `routes/api.php`; both exist now, and its `routes` line omits `api.php`.
+8. `.claude/CLAUDE.md` still describes the repository tree a second time, which Governance forbids:
+   it must point at this file instead. Its false statements were corrected on 2026-09-08, so what
+   remains is the duplication, and the next drift it will cause.
 -->
 
 # Monica Constitution
@@ -98,7 +101,7 @@ abstraction costs more in reading time than the duplication it removes.
 
 ### III. Tested Before Merged (NON-NEGOTIABLE)
 
-Every model, controller, action, helper, job, mailable and view model MUST have a corresponding
+Every model, controller, action, helper, job, notification and view model MUST have a corresponding
 test. No change ships without a test covering the behavior it adds or alters, and the full suite
 MUST pass before merge. Tests MUST follow `.claude/rules/testing.md`: strict types declared,
 namespaces mirroring the application, `#[Test]` attributes, snake_case names describing the
@@ -300,25 +303,26 @@ an amendment.
   folder, under `app/` or anywhere else described here, requires an amendment.
   - `app/`: `Actions` (one class per user operation, and where most of the application lives),
     `Console/Commands`, `Contracts`, `Enums`, `Exceptions`, `Helpers`, `Http` (holding
-    `Controllers`, `Middleware` and `Requests`), `Interfaces`, `Jobs`, `Mail`, `Models`,
+    `Controllers`, `Middleware`, `Requests`, `Resources` and `Responses`), `Jobs`, `Listeners`,
+    `Models`, `Notifications` (one class per email the product sends, since there is no mailable),
     `Providers`, `Rules`, `View/Components` (the layout components) and `ViewModels`.
   - `resources/`: `views` (`app` for the signed in screens, `components` for shared UI, `layouts`
-    and `partials` for the shell, `mail` for emails, `shared` for the screens a private link
-    opens), `css` for the Tailwind theme and `js` for the Alpine setup.
-  - `routes/`: `web.php` for the signed in application, `auth.php` for the credentials screens,
-    `console.php` for scheduled work.
+    and `partials` for the shell, `shared` for the screens a private link opens, `vendor` for the
+    views a package publishes, which is where the email templates live), `docs` for the API
+    reference the portal renders, `css` for the Tailwind theme and `js` for the Alpine setup.
+  - `routes/`: `web.php` for the signed in application, `api.php` for the JSON API, `auth.php` for
+    the credentials screens, `console.php` for scheduled work.
   - `database/`: `migrations`, `factories` and `seeders`.
   - `lang/`: one JSON file per locale, written by `php artisan monica:localize` and never by hand.
   - `tests/`: `Unit` mirroring the application namespace, `Feature` for controllers and views, and
     `Fixtures` for any class a test needs. The suite runs on PHPUnit. Pest is not installed, and
     adding it is an amendment.
   - `spec/`: the written product specification. It holds no code.
-- `app/Http/Controllers` holds one namespace today, `App`, for the signed in application. Principle
-  X makes a JSON API part of the product rather than a possibility, so `Api` gets its own namespace
-  beside it, its own route file and its own request and resource classes when it is built, as would
-  a public marketing site under `Marketing`. Until that day nothing is written as though those
-  exist, and any capability added to `App` MUST keep its logic in an action so that the API
-  controller, when it arrives, adds nothing but transport.
+- `app/Http/Controllers` holds two namespaces: `App` for the signed in application, on
+  `routes/web.php`, and `Api` for the JSON API, on `routes/api.php`, with its resource classes in
+  `app/Http/Resources`. A public marketing site would get a third, `Marketing`, which does not exist
+  yet, so nothing is written as though it did. Every capability MUST keep its logic in an action, so
+  that both controllers add nothing but transport and neither can hold a rule the other lacks.
 - Data access MUST be scoped, and the compartmentalisation is by account, then by vault. An action
   reached by a user who is not in the account, or not in the vault, that holds the record MUST fail
   as if the record did not exist, and that failure MUST be covered by a test. The same applies to
@@ -378,9 +382,9 @@ an amendment.
   the keyboard alone and with a screen reader, no information is carried by colour alone, focus is
   visible, it stays readable zoomed to 200%, and it works on desktop, tablet and phone. A reviewer
   who cannot tell MUST ask rather than assume.
-- A change that adds a capability states where its API coverage is. While there is no `Api`
-  namespace, the answer is that the logic sits in an action and the controller adds nothing but
-  transport, so the API can be added later without rework.
+- A change that adds a capability states where its API coverage is, and the `Api` namespace exists,
+  so the answer is the endpoint and its test. A capability that ships without one says why, and its
+  logic still sits in an action so that adding the endpoint later is transport and nothing more.
 - CI is the gate: `semantic.yml` checks the pull request title, `static.yml` runs Pint and PHPStan,
   and `tests.yml` runs the suite across the three database connections. A red pipeline blocks
   merge.
@@ -420,4 +424,4 @@ test and the translations for the change under review, and to say which of the t
 change had to satisfy. Complexity that steps outside these principles MUST be justified in the pull
 request or removed.
 
-**Version**: 2.0.1 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-07
+**Version**: 2.1.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-09

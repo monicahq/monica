@@ -328,6 +328,7 @@ class VaultControllerTest extends TestCase
     #[Test]
     public function it_makes_the_new_vault_the_one_records_land_in_when_it_is_asked_to(): void
     {
+        config(['monica.free_vault_limit' => 5]);
         Queue::fake();
 
         $user = User::factory()->create();
@@ -348,6 +349,7 @@ class VaultControllerTest extends TestCase
     #[Test]
     public function it_leaves_the_default_where_it_is_when_the_box_is_left_alone(): void
     {
+        config(['monica.free_vault_limit' => 5]);
         Queue::fake();
 
         $user = User::factory()->create();
@@ -601,5 +603,61 @@ class VaultControllerTest extends TestCase
         $template->save();
 
         return $template;
+    }
+
+    #[Test]
+    public function it_refuses_a_vault_past_the_ceiling_and_names_it(): void
+    {
+        Queue::fake();
+        config(['monica.free_vault_limit' => 1]);
+
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $response = $this->actingAs($user)
+            ->from(route('vaults.new'))
+            ->post(route('vaults.create'), ['name' => 'Sabre', 'colour' => '#4f8a49']);
+
+        $response->assertRedirect(route('vaults.new'));
+        $response->assertSessionHasErrors('name');
+        $this->assertSame(1, $user->account->vaults()->count());
+    }
+
+    #[Test]
+    public function it_shows_the_offers_from_the_form_of_an_account_at_the_ceiling(): void
+    {
+        config(['monica.free_vault_limit' => 1]);
+
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $response = $this->actingAs($user)->get(route('vaults.new'));
+
+        $response->assertStatus(200);
+        $response->assertSee('You are at the ceiling of the free offer', escape: false);
+        $response->assertSee(route('settings.billing.index'), escape: false);
+    }
+
+    #[Test]
+    public function it_still_lets_an_account_over_the_ceiling_edit_what_it_has(): void
+    {
+        Queue::fake();
+        config(['monica.free_vault_limit' => 1]);
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Scranton']);
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('vaults.show', ['vault' => $vault]))->assertStatus(200);
+
+        $this->actingAs($user)
+            ->put(route('vaults.update', ['vault' => $vault]), [
+                'name' => 'Utica',
+                'description' => 'The branch that stayed open.',
+                'colour' => '#4f8a49',
+            ])
+            ->assertRedirect();
+
+        $this->assertSame('Utica', $vault->refresh()->name);
     }
 }

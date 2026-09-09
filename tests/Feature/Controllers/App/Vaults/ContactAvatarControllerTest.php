@@ -120,7 +120,6 @@ class ContactAvatarControllerTest extends TestCase
 
         $user = User::factory()->create();
         $user->account->update([
-            'is_self_hosted' => false,
             'storage_limit_in_bytes' => 1024,
             'storage_used_in_bytes' => 1024,
         ]);

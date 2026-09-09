@@ -29,6 +29,7 @@ return [
         'en' => [
             'label' => 'English',
             'region' => 'United Kingdom',
+            'currency' => 'gbp',
             'date_format' => 'd/m/Y',
             'number_format' => 'comma_dot',
             'flag' => 'linear-gradient(to bottom, transparent 40%, #C8102E 40% 60%, transparent 60%), linear-gradient(to right, transparent 38%, #C8102E 38% 62%, transparent 62%), linear-gradient(to bottom, transparent 30%, #fff 30% 70%, transparent 70%), linear-gradient(to right, transparent 28%, #fff 28% 72%, transparent 72%), linear-gradient(to bottom right, transparent 44%, #fff 44% 56%, transparent 56%), linear-gradient(to bottom left, transparent 44%, #fff 44% 56%, transparent 56%), #012169',
@@ -43,6 +44,7 @@ return [
         'fr_FR' => [
             'label' => 'Français',
             'region' => 'France',
+            'currency' => 'eur',
             'date_format' => 'd/m/Y',
             'number_format' => 'space_comma',
             'flag' => 'linear-gradient(to right, #002395 0 33%, #fff 33% 66%, #ed2939 66%)',
@@ -65,6 +67,7 @@ return [
         'de_DE' => [
             'label' => 'Deutsch',
             'region' => 'Deutschland',
+            'currency' => 'eur',
             'date_format' => 'd.m.Y',
             'number_format' => 'dot_comma',
             'flag' => 'linear-gradient(to bottom, #000 0 33%, #dd0000 33% 66%, #ffce00 66%)',
@@ -79,6 +82,7 @@ return [
         'es_ES' => [
             'label' => 'Español',
             'region' => 'España',
+            'currency' => 'eur',
             'date_format' => 'd/m/Y',
             'number_format' => 'dot_comma',
             'flag' => 'linear-gradient(to bottom, #aa151b 0 25%, #f1bf00 25% 75%, #aa151b 75%)',
@@ -92,6 +96,7 @@ return [
         'pt_PT' => [
             'label' => 'Português',
             'region' => 'Portugal',
+            'currency' => 'eur',
             'date_format' => 'd/m/Y',
             'number_format' => 'space_comma',
             'flag' => 'linear-gradient(to right, #006600 0 40%, #ff0000 40%)',
@@ -105,6 +110,7 @@ return [
         'nl_NL' => [
             'label' => 'Nederlands',
             'region' => 'Nederland',
+            'currency' => 'eur',
             'date_format' => 'd-m-Y',
             'number_format' => 'dot_comma',
             'typography' => [
@@ -119,6 +125,7 @@ return [
         'pt_BR' => [
             'label' => 'Português',
             'region' => 'Brasil',
+            'currency' => 'brl',
             'date_format' => 'd/m/Y',
             'number_format' => 'dot_comma',
             'answers_bare_language' => true,
@@ -134,6 +141,7 @@ return [
         'it_IT' => [
             'label' => 'Italiano',
             'region' => 'Italia',
+            'currency' => 'eur',
             'date_format' => 'd/m/Y',
             'number_format' => 'dot_comma',
             'flag' => 'linear-gradient(to right, #008c45 0 33%, #fff 33% 66%, #cd212a 66%)',
@@ -302,6 +310,7 @@ return [
         'tr_TR' => [
             'label' => 'Türkçe',
             'region' => 'Türkiye',
+            'currency' => 'try',
             'date_format' => 'd.m.Y',
             'number_format' => 'dot_comma',
             /* The crescent is a red disc laid over a white one, and the star is a dot: at 20 by 14 pixels a five-pointed star drawn in gradients reads as a smudge. */
@@ -384,6 +393,19 @@ return [
     */
 
     'free_storage_limit_in_bytes' => env('MONICA_FREE_STORAGE_LIMIT_IN_BYTES', 104857600),
+
+    'free_vault_limit' => env('MONICA_FREE_VAULT_LIMIT', 1),
+
+    'free_contact_limit' => env('MONICA_FREE_CONTACT_LIMIT', 30),
+
+    'paid_storage_limit_in_bytes' => env('MONICA_PAID_STORAGE_LIMIT_IN_BYTES', 10737418240),
+
+    'offer_tag' => env('MONICA_OFFER_TAG', 'offer'),
+
+    'product_tag' => [
+        'key' => env('MONICA_PRODUCT_TAG_KEY', 'version'),
+        'value' => env('MONICA_PRODUCT_TAG_VALUE'),
+    ],
 
     /*
     |--------------------------------------------------------------------------

@@ -26,6 +26,7 @@
         "bacon/bacon-qr-code": "^3.1",
         "erag/laravel-disposable-email": "^5.2",
         "intervention/image": "^4.0",
+        "laravel/cashier": "^16.8",
         "laravel/framework": "^13.8",
         "laravel/passkeys": "^0",
         "laravel/sanctum": "^4.3",
