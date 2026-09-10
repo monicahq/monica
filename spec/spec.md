@@ -466,7 +466,7 @@ Without that distinction, you can neither postpone a reminder cleanly, nor keep 
 
 How you get notified is configured at the account level:
 
-- the channels enabled (in app, email, push notification);
+- the **channels** switched on. The set is open rather than fixed, and each channel says for itself what it needs before it can carry anything: a destination, a credential, or proof that the destination is really yours;
 - the **quiet hours**, during which nothing may disturb the user. A reminder due at 3am can be delivered at 8am;
 - the **reception mode**: immediate, or grouped into a daily digest;
 - the exceptions defined on a specific rule.
@@ -531,7 +531,7 @@ The intended uses:
 - plugging Erica into a personal automation tool to trigger any reaction whatsoever;
 - syncing in one direction or the other with a calendar, a task list, a notes tool;
 - feeding a dashboard or an external backup without exporting the whole account each time;
-- allowing somebody to build their own notification, on a channel we will never provide.
+- allowing somebody to build their own notification, on a channel the product does not carry itself.
 
 ### 14.2. What can be listened to
 
