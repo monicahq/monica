@@ -7,6 +7,7 @@ namespace App\Actions;
 use App\Enums\NameOrderEnum;
 use App\Enums\UserActionEnum;
 use App\Helpers\TextSanitizer;
+use App\Jobs\DetectDuplicateContacts;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\User;
@@ -39,6 +40,7 @@ class UpdateContactName
         $this->validate();
         $this->update();
         $this->log();
+        $this->lookForDuplicates();
 
         return $this->contact;
     }
@@ -88,6 +90,16 @@ class UpdateContactName
                 $this->changes[$field] = ['before' => $value, 'after' => $this->contact->$field];
             }
         }
+    }
+
+    /**
+     * Detection never runs on this request. The name that was just written is
+     * what decides which contacts this one might duplicate, and working that out
+     * belongs on a queue.
+     */
+    private function lookForDuplicates(): void
+    {
+        DetectDuplicateContacts::dispatch($this->contact)->onQueue('low');
     }
 
     private function log(): void

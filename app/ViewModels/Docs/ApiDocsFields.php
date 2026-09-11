@@ -12,11 +12,11 @@ class ApiDocsFields
      * @param  list<array{name: string, type: string, description: string, opaque?: bool}>  $attributes
      * @return list<array{name: string, type: string, description: string, opaque?: bool}>
      */
-    public static function one(string $type, string $singular, array $attributes): array
+    public static function one(string $type, string $singular, array $attributes, bool $withLinks = true): array
     {
         return [
             ['name' => 'data', 'type' => 'object', 'description' => "The {$singular}."],
-            ...self::record($type, 'data', $attributes),
+            ...self::record($type, 'data', $attributes, $withLinks),
         ];
     }
 
@@ -27,12 +27,12 @@ class ApiDocsFields
      * @param  list<array{name: string, type: string, description: string, opaque?: bool}>  $attributes
      * @return list<array{name: string, type: string, description: string, opaque?: bool}>
      */
-    public static function page(string $type, string $singular, string $plural, array $attributes): array
+    public static function page(string $type, string $singular, string $plural, array $attributes, bool $withLinks = true): array
     {
         return [
             ['name' => 'data', 'type' => 'array', 'description' => "The {$plural} on this page. An empty list rather than an error when there are none."],
             ['name' => 'data[]', 'type' => 'object', 'description' => "One {$singular}."],
-            ...self::record($type, 'data[]', $attributes),
+            ...self::record($type, 'data[]', $attributes, $withLinks),
             ['name' => 'meta', 'type' => 'object', 'description' => 'Where you are in the collection.'],
             ['name' => 'meta.page', 'type' => 'integer', 'description' => 'The page this is, counting from 1.'],
             ['name' => 'meta.per_page', 'type' => 'integer', 'description' => 'How many one page holds, which is the size that was asked for once it has been brought into the allowed range.'],

@@ -12,6 +12,7 @@ use App\Exceptions\TooManyContacts;
 use App\Exceptions\VaultAlreadyHasAMeContact;
 use App\Exceptions\VaultHasNoContactDefault;
 use App\Helpers\TextSanitizer;
+use App\Jobs\DetectDuplicateContacts;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\TemplateVersion;
@@ -57,6 +58,7 @@ class CreateContact
         $this->refuseAboveTheCeiling();
         $this->create();
         $this->log();
+        $this->lookForDuplicates();
 
         return $this->contact;
     }
@@ -173,6 +175,16 @@ class CreateContact
 
             new WriteDefaultValues(user: $this->user, record: $this->contact)->execute();
         });
+    }
+
+    /**
+     * Detection never runs on this request. The name that was just written is
+     * what decides which contacts this one might duplicate, and working that out
+     * belongs on a queue.
+     */
+    private function lookForDuplicates(): void
+    {
+        DetectDuplicateContacts::dispatch($this->contact)->onQueue('low');
     }
 
     private function log(): void

@@ -1,0 +1,357 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\Actions;
+
+use App\Actions\MergeContacts;
+use App\Actions\UndoContactMerge;
+use App\Enums\UserActionEnum;
+use App\Enums\VersionStatusEnum;
+use App\Exceptions\ContactMergeCannotBeUndone;
+use App\Jobs\LogUserAction;
+use App\Models\Contact;
+use App\Models\ContactMerge;
+use App\Models\Field;
+use App\Models\FieldValue;
+use App\Models\File;
+use App\Models\SectionVersion;
+use App\Models\ShareLink;
+use App\Models\Template;
+use App\Models\TemplateVersion;
+use App\Models\TemplateVersionSection;
+use App\Models\User;
+use App\Models\Vault;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class UndoContactMergeTest extends TestCase
+{
+    use RefreshDatabase;
+
+    #[Test]
+    public function it_brings_the_absorbed_contact_back(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertNotSoftDeleted($james);
+        $this->assertDatabaseHas('contact_merges', [
+            'id' => $merge->id,
+            'undone_by_user_id' => $user->id,
+        ]);
+        $this->assertNotNull($merge->fresh()->undone_at);
+    }
+
+    #[Test]
+    public function it_gives_a_moved_value_back(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        [$jim, $james] = $this->twoContactsOf($user, $version);
+        $value = $this->valueFor($james, $field, 'james@dundermifflin.com');
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+        $this->assertEquals($jim->id, $value->fresh()->valuable_id);
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertDatabaseHas('field_values', [
+            'id' => $value->id,
+            'valuable_id' => $james->id,
+            'is_detached' => false,
+        ]);
+    }
+
+    #[Test]
+    public function it_reattaches_the_value_the_survivor_gave_up(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        [$jim, $james] = $this->twoContactsOf($user, $version);
+        $mine = $this->valueFor($jim, $field, 'jim@dundermifflin.com');
+        $theirs = $this->valueFor($james, $field, 'james@dundermifflin.com');
+
+        $merge = new MergeContacts(
+            user: $user,
+            kept: $jim,
+            absorbed: $james,
+            resolutions: [['field_key' => $field->key, 'row' => null, 'keep' => 'other']],
+        )->execute();
+
+        $this->assertTrue($mine->fresh()->is_detached);
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertDatabaseHas('field_values', ['id' => $mine->id, 'valuable_id' => $jim->id, 'is_detached' => false]);
+        $this->assertDatabaseHas('field_values', ['id' => $theirs->id, 'valuable_id' => $james->id]);
+    }
+
+    #[Test]
+    public function it_reattaches_a_value_that_had_been_set_aside(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $mine = $this->publishedContactVersion($user);
+        $theirs = $this->publishedContactVersion($user);
+        $onlyTheirs = $this->fieldCarriedBy($theirs);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = $this->contactIn($vault, $mine, 'Jim', 'Halpert');
+        $james = $this->contactIn($vault, $theirs, 'James', 'Halpert');
+        $value = $this->valueFor($james, $onlyTheirs, 'Loyalty 4471');
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+        $this->assertTrue($value->fresh()->is_detached);
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertDatabaseHas('field_values', [
+            'id' => $value->id,
+            'valuable_id' => $james->id,
+            'is_detached' => false,
+        ]);
+    }
+
+    #[Test]
+    public function it_gives_the_reminders_and_the_share_links_back(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $reminder = $this->reminderAbout($user, $james);
+        $link = ShareLink::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $james->vault_id,
+            'shareable_type' => Contact::class,
+            'shareable_id' => $james->id,
+        ]);
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'remindable_id' => $james->id]);
+        $this->assertDatabaseHas('share_links', ['id' => $link->id, 'shareable_id' => $james->id]);
+    }
+
+    #[Test]
+    public function it_points_other_records_back_at_the_absorbed_contact(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        [$jim, $james] = $this->twoContactsOf($user, $version);
+        $pam = $this->contactIn($jim->vault, $version, 'Pam', 'Beesly');
+
+        $pointer = FieldValue::factory()->create([
+            'valuable_type' => Contact::class,
+            'valuable_id' => $pam->id,
+            'related_contact_id' => $james->id,
+            'value_string' => null,
+        ]);
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertDatabaseHas('field_values', ['id' => $pointer->id, 'related_contact_id' => $james->id]);
+    }
+
+    #[Test]
+    public function it_puts_the_old_photo_back(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $file = File::factory()->create(['account_id' => $user->account_id, 'vault_id' => $james->vault_id]);
+        $james->avatar_file_id = $file->id;
+        $james->save();
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+        $this->assertEquals($file->id, $jim->fresh()->avatar_file_id);
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertNull($jim->fresh()->avatar_file_id);
+    }
+
+    #[Test]
+    public function it_makes_the_survivor_partial_again(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $jim->is_partial = true;
+        $jim->save();
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+        $this->assertFalse($jim->fresh()->is_partial);
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertTrue($jim->fresh()->is_partial);
+    }
+
+    #[Test]
+    public function it_writes_to_the_changelog(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactMergeUndone);
+    }
+
+    #[Test]
+    public function it_refuses_a_merge_that_was_already_undone(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->expectException(ContactMergeCannotBeUndone::class);
+
+        new UndoContactMerge(user: $user, merge: $merge->fresh())->execute();
+    }
+
+    #[Test]
+    public function it_refuses_when_the_absorbed_contact_is_gone_for_good(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        Contact::withTrashed()->whereKey($james->id)->forceDelete();
+
+        $this->expectException(ContactMergeCannotBeUndone::class);
+
+        new UndoContactMerge(user: $user, merge: $merge->fresh())->execute();
+    }
+
+    #[Test]
+    public function it_applies_nothing_when_it_refuses(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $undoneAt = $merge->fresh()->undone_at;
+
+        try {
+            new UndoContactMerge(user: $user, merge: $merge->fresh())->execute();
+        } catch (ContactMergeCannotBeUndone) {
+            // The second undo is refused, which is what this test is about.
+        }
+
+        $this->assertEquals($undoneAt->toIso8601String(), $merge->fresh()->undone_at->toIso8601String());
+    }
+
+    #[Test]
+    public function it_refuses_a_merge_of_another_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $stranger = ContactMerge::factory()->create();
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new UndoContactMerge(user: $user, merge: $stranger)->execute();
+    }
+
+    /** @return array{0: Contact, 1: Contact} */
+    private function twoContactsOf(User $user, ?TemplateVersion $version = null): array
+    {
+        $version ??= $this->publishedContactVersion($user);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        return [
+            $this->contactIn($vault, $version, 'Jim', 'Halpert'),
+            $this->contactIn($vault, $version, 'James', 'Halpert'),
+        ];
+    }
+
+    private function contactIn(Vault $vault, TemplateVersion $version, string $first, string $last): Contact
+    {
+        return Contact::factory()->create([
+            'account_id' => $vault->account_id,
+            'vault_id' => $vault->id,
+            'template_version_id' => $version->id,
+            'first_name' => $first,
+            'last_name' => $last,
+        ]);
+    }
+
+    private function publishedContactVersion(User $user): TemplateVersion
+    {
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+
+        return TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+    }
+
+    private function fieldCarriedBy(TemplateVersion $version): Field
+    {
+        $sectionVersion = SectionVersion::factory()->create(['account_id' => $version->account_id]);
+        $field = Field::factory()->create([
+            'account_id' => $version->account_id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+
+        $version->status = VersionStatusEnum::Draft;
+        $version->save();
+
+        TemplateVersionSection::factory()->create([
+            'account_id' => $version->account_id,
+            'template_version_id' => $version->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+
+        $version->status = VersionStatusEnum::Published;
+        $version->save();
+
+        return $field;
+    }
+
+    private function valueFor(Contact $contact, Field $field, string $value): FieldValue
+    {
+        return FieldValue::factory()->create([
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'field_key' => $field->key,
+            'value_string' => $value,
+        ]);
+    }
+}

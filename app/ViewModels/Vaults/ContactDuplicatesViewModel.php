@@ -1,0 +1,102 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\ViewModels\Vaults;
+
+use App\Models\ContactDuplicateCandidate;
+use App\Models\User;
+use App\Models\Vault;
+use Illuminate\Pagination\Paginator;
+
+class ContactDuplicatesViewModel
+{
+    private const int PER_PAGE = 25;
+
+    public function __construct(
+        private readonly User $user,
+        private readonly Vault $vault,
+    ) {}
+
+    public function user(): User
+    {
+        return $this->user;
+    }
+
+    public function vault(): Vault
+    {
+        return $this->vault;
+    }
+
+    public function title(): string
+    {
+        return __('People who might be the same person');
+    }
+
+    public function intro(): string
+    {
+        return __('Two records for one person happen easily. Nothing here is merged until you say so.');
+    }
+
+    public function emptyLine(): string
+    {
+        return __('Nobody in this vault looks like a duplicate of anybody else.');
+    }
+
+    public function peopleUrl(): string
+    {
+        return route('contacts.index', $this->vault);
+    }
+
+    /** @return Paginator<int, ContactDuplicateCandidate> */
+    public function pairs(): Paginator
+    {
+        return once(fn (): Paginator => ContactDuplicateCandidate::query()
+            ->standing()
+            ->where('vault_id', $this->vault->id)
+            ->with(['contact', 'otherContact'])
+            ->orderByDesc('score')
+            ->orderBy('id')
+            ->simplePaginate(self::PER_PAGE));
+    }
+
+    /**
+     * One pair, as the screen needs it.
+     *
+     * @return array{name: string, other_name: string, why: string, compare_url: string, dismiss_url: string}
+     */
+    public function row(ContactDuplicateCandidate $candidate): array
+    {
+        return [
+            'name' => $candidate->contact->name,
+            'other_name' => $candidate->otherContact->name,
+            'why' => $this->why($candidate),
+            'compare_url' => route('contacts.merge.show', [
+                'vault' => $this->vault,
+                'contact' => $candidate->contact,
+                'other' => $candidate->otherContact,
+            ]),
+            'dismiss_url' => route('vaults.duplicates.dismissal.update', [
+                'vault' => $this->vault,
+                'candidate' => $candidate->id,
+            ]),
+        ];
+    }
+
+    /**
+     * Why the pair is on the screen, in words. Colour says nothing here, so a
+     * reader who cannot see the ordering still learns what matched.
+     */
+    private function why(ContactDuplicateCandidate $candidate): string
+    {
+        $said = [];
+
+        foreach ($candidate->reasons as $reason) {
+            $said[] = $reason['kind'] === 'field'
+                ? __('they share :value', ['value' => $reason['value']])
+                : __('their names are alike');
+        }
+
+        return implode(__(', '), array_unique($said));
+    }
+}

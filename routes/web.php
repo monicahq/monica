@@ -74,9 +74,13 @@ use App\Http\Controllers\App\Settings\Account\ValueLists\ValueListItemPositionCo
 use App\Http\Controllers\App\Settings\SettingsController;
 use App\Http\Controllers\App\SharedContactController;
 use App\Http\Controllers\App\SharedContactPasswordController;
+use App\Http\Controllers\App\Vaults\AbsorbedContactController;
 use App\Http\Controllers\App\Vaults\ContactAvatarController;
 use App\Http\Controllers\App\Vaults\ContactController;
+use App\Http\Controllers\App\Vaults\ContactDuplicateController;
+use App\Http\Controllers\App\Vaults\ContactDuplicateDismissalController;
 use App\Http\Controllers\App\Vaults\ContactFavouriteController;
+use App\Http\Controllers\App\Vaults\ContactMergeController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\ContactShareLinkController;
@@ -92,6 +96,8 @@ use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
 use App\Http\Controllers\App\Vaults\VaultReminderController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
@@ -218,9 +224,33 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->whereUuid('shareLink')
         ->name('contacts.shareLinks.destroy');
 
+    Route::get('vaults/{vault}/contacts/{contact}/merge', [ContactMergeController::class, 'new'])
+        ->whereUuid('contact')
+        ->name('contacts.merge.new');
+
+    Route::get('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'show'])
+        ->whereUuid('contact')
+        ->whereUuid('other')
+        ->name('contacts.merge.show');
+
+    Route::post('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'create'])
+        ->whereUuid('contact')
+        ->whereUuid('other')
+        ->name('contacts.merge.create');
+
     Route::get('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'show'])
         ->whereUuid('contact')
+        ->missing(fn (Request $request): RedirectResponse => new AbsorbedContactController()->show($request))
         ->name('contacts.show');
+
+    Route::delete('vaults/{vault}/merges/{contactMerge}', [ContactMergeController::class, 'destroy'])
+        ->whereUuid('contactMerge')
+        ->name('vaults.merges.destroy');
+
+    Route::get('vaults/{vault}/duplicates', [ContactDuplicateController::class, 'index'])->name('vaults.duplicates.index');
+    Route::put('vaults/{vault}/duplicates/{candidate}/dismissal', [ContactDuplicateDismissalController::class, 'update'])
+        ->whereNumber('candidate')
+        ->name('vaults.duplicates.dismissal.update');
 
     Route::get('vaults/{vault}/reminders', [VaultReminderController::class, 'index'])->name('reminders.index');
     Route::get('vaults/{vault}/reminders/by-contact', [VaultReminderController::class, 'byContact'])->name('reminders.byContact');

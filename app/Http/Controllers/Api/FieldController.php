@@ -86,6 +86,7 @@ class FieldController extends TemplateStructureController
             'is_sensitive' => ['nullable', 'boolean'],
             'is_highlighted' => ['nullable', 'boolean'],
             'is_unique' => ['nullable', 'boolean'],
+            'is_identifying' => ['nullable', 'boolean'],
             'value_list_id' => [
                 'nullable',
                 Rule::exists('value_lists', 'id')->where('account_id', $request->user()->account_id),
@@ -112,6 +113,7 @@ class FieldController extends TemplateStructureController
                 isSensitive: $request->boolean('is_sensitive'),
                 isHighlighted: $request->boolean('is_highlighted'),
                 isUnique: $request->boolean('is_unique'),
+                isIdentifying: $request->boolean('is_identifying'),
                 valueList: $this->valueList($request, $validated['value_list_id'] ?? null),
                 defaultValue: $validated['default_value'] ?? null,
                 options: $validated['options'] ?? null,

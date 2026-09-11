@@ -199,6 +199,7 @@ class CreateDefaultTemplate implements ShouldQueue
                 'is_sensitive' => false,
                 'is_highlighted' => $field->isHighlighted(),
                 'is_unique' => false,
+                'is_identifying' => $field->isIdentifying(),
                 'value_list_id' => $this->valueListId($field),
                 'default_value' => null,
                 'options' => $field->options(),

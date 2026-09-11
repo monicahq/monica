@@ -96,8 +96,25 @@
         <x-icon name="profile" :size="15" :stroke-width="1.6" />
         {{ __('Edit contact') }}
       </x-button.secondary>
+
+      <x-button.secondary :href="$viewModel->mergeUrl()" data-turbo="true" size="small">
+        <x-icon name="contact" :size="15" :stroke-width="1.6" />
+        {{ __('Merge') }}
+      </x-button.secondary>
     </div>
   </header>
+
+  @if ($viewModel->undoMergeUrl() !== null)
+    <x-notice tone="quiet" :title="__('This record absorbed another')">
+      <p class="text-sm">{{ $viewModel->undoMergeLine() }}</p>
+
+      <x-form method="delete" :action="$viewModel->undoMergeUrl()" class="mt-2">
+        <x-button.secondary type="submit" size="small">
+          {{ __('Undo the merge') }}
+        </x-button.secondary>
+      </x-form>
+    </x-notice>
+  @endif
 
   <x-tabs>
     @foreach ($viewModel->pages() as $page)

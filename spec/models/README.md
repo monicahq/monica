@@ -101,7 +101,7 @@ Model 055, [TemplateVersionPage](055-template-version-page-done.md), is a later 
 | 031 | [GroupType](031-group-type-not-yet.md) | 8.2 |
 | 032 | [Group](032-group-not-yet.md) | 8.2 |
 | 033 | [GroupMember](033-group-member-not-yet.md) | 8.2 |
-| 034 | [ContactMerge](034-contact-merge-not-yet.md) | 8.3, 15 |
+| 034 | [ContactMerge](034-contact-merge-done.md) | 8.3, 15 |
 
 ### The journal
 

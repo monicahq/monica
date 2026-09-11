@@ -57,6 +57,7 @@ use Override;
  * @property string $sort_name
  * @property string $sort_key
  * @property string $search_key
+ * @property string $match_key
  * @property bool $is_me
  * @property bool $is_partial
  * @property bool $is_archived
@@ -152,6 +153,7 @@ class Contact extends Model
             $locale = $contact->account->locale();
             $contact->sort_key = LocaleCollation::sortKey($contact->sort_name, $locale);
             $contact->search_key = LocaleCollation::foldForSearch($contact->sort_name, $locale);
+            $contact->match_key = LocaleCollation::matchKey($contact->buildMatchToken(), $locale);
         });
     }
 
@@ -452,6 +454,20 @@ class Contact extends Model
      * another way for others is sorted no way at all, and it is lowercased so
      * the order does not depend on the collation of the database underneath.
      */
+    /**
+     * The one part of the name detection groups contacts by. The family name
+     * where there is one, because that is what two records of the same person
+     * almost always agree on while their first names differ, and the only part
+     * there is otherwise.
+     */
+    private function buildMatchToken(): string
+    {
+        return mb_trim((string) ($this->last_name
+            ?? $this->first_name
+            ?? $this->nickname
+            ?? $this->maiden_name));
+    }
+
     private function buildSortName(): string
     {
         $parts = collect([$this->last_name, $this->first_name, $this->middle_name])

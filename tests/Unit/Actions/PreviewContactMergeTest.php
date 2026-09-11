@@ -1,0 +1,320 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\Actions;
+
+use App\Actions\PreviewContactMerge;
+use App\Enums\VersionStatusEnum;
+use App\Exceptions\CannotAbsorbTheMeContact;
+use App\Exceptions\CannotMergeAContactWithItself;
+use App\Models\Contact;
+use App\Models\Field;
+use App\Models\FieldValue;
+use App\Models\File;
+use App\Models\SectionVersion;
+use App\Models\Template;
+use App\Models\TemplateVersion;
+use App\Models\TemplateVersionSection;
+use App\Models\User;
+use App\Models\Vault;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class PreviewContactMergeTest extends TestCase
+{
+    use RefreshDatabase;
+
+    #[Test]
+    public function it_names_both_contacts(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user);
+        $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+
+        $preview = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertEquals($jim->uuid, $preview['kept']['uuid']);
+        $this->assertEquals($james->uuid, $preview['other']['uuid']);
+    }
+
+    #[Test]
+    public function it_reports_a_differing_value_as_a_conflict_with_both_sides(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+
+        $this->valueFor($jim, $field, 'jim@dundermifflin.com');
+        $this->valueFor($james, $field, 'james@dundermifflin.com');
+
+        $preview = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertCount(1, $preview['conflicts']);
+        $this->assertEquals($field->key, $preview['conflicts'][0]['field_key']);
+        $this->assertEquals('jim@dundermifflin.com', $preview['conflicts'][0]['kept_value']);
+        $this->assertEquals('james@dundermifflin.com', $preview['conflicts'][0]['other_value']);
+    }
+
+    #[Test]
+    public function it_reports_no_conflict_when_only_one_side_holds_a_value(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+
+        $this->valueFor($james, $field, 'james@dundermifflin.com');
+
+        $preview = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertSame([], $preview['conflicts']);
+        $this->assertContains(['kind' => 'field_value', 'count' => 1], $preview['moves']);
+    }
+
+    #[Test]
+    public function it_reports_no_conflict_when_both_sides_hold_the_same_value(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+
+        $this->valueFor($jim, $field, 'jim@dundermifflin.com');
+        $this->valueFor($james, $field, 'jim@dundermifflin.com');
+
+        $preview = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertSame([], $preview['conflicts']);
+    }
+
+    #[Test]
+    public function it_reports_a_photo_on_both_sides_as_a_conflict(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user);
+        $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+
+        $jim->avatar_file_id = File::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id])->id;
+        $jim->save();
+        $james->avatar_file_id = File::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id])->id;
+        $james->save();
+
+        $preview = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertEquals('avatar', $preview['conflicts'][0]['field_key']);
+    }
+
+    #[Test]
+    public function it_lists_a_value_with_nowhere_to_land_as_set_aside(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $mine = $this->publishedContactVersion($user);
+        $theirs = $this->publishedContactVersion($user);
+        $onlyTheirs = $this->fieldCarriedBy($theirs);
+        $jim = $this->contactIn($vault, $mine, 'Jim', 'Halpert');
+        $james = $this->contactIn($vault, $theirs, 'James', 'Halpert');
+
+        $this->valueFor($james, $onlyTheirs, 'Loyalty 4471');
+
+        $preview = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertCount(1, $preview['set_aside']);
+        $this->assertEquals($onlyTheirs->key, $preview['set_aside'][0]['field_key']);
+        $this->assertSame([], $preview['conflicts']);
+    }
+
+    #[Test]
+    public function it_counts_the_reminders_and_share_links_that_would_move(): void
+    {
+        $user = User::factory()->create();
+        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
+        $absorbed = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $contact->vault_id,
+        ]);
+
+        $this->reminderAbout($user, $absorbed);
+
+        $preview = new PreviewContactMerge(user: $user, kept: $contact, absorbed: $absorbed)->execute();
+
+        $this->assertContains(['kind' => 'reminder', 'count' => 1], $preview['moves']);
+    }
+
+    #[Test]
+    public function it_counts_the_pointers_other_contacts_hold_onto_the_absorbed_one(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user);
+        $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+        $pam = $this->contactIn($vault, $version, 'Pam', 'Beesly');
+
+        FieldValue::factory()->create([
+            'valuable_type' => Contact::class,
+            'valuable_id' => $pam->id,
+            'related_contact_id' => $james->id,
+            'value_string' => null,
+        ]);
+
+        $preview = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertContains(['kind' => 'relation_pointer', 'count' => 1], $preview['moves']);
+    }
+
+    #[Test]
+    public function it_changes_its_fingerprint_when_a_value_changes(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+        $value = $this->valueFor($james, $field, 'james@dundermifflin.com');
+
+        $before = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute()['fingerprint'];
+
+        $value->value_string = 'jamesh@dundermifflin.com';
+        $value->save();
+
+        $after = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute()['fingerprint'];
+
+        $this->assertNotEquals($before, $after);
+    }
+
+    #[Test]
+    public function it_refuses_a_contact_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
+        $stranger = Contact::factory()->create();
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new PreviewContactMerge(user: $user, kept: $contact, absorbed: $stranger)->execute();
+    }
+
+    #[Test]
+    public function it_refuses_two_contacts_of_different_vaults(): void
+    {
+        $user = User::factory()->create();
+        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
+        $elsewhere = Contact::factory()->create(['account_id' => $user->account_id]);
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new PreviewContactMerge(user: $user, kept: $contact, absorbed: $elsewhere)->execute();
+    }
+
+    #[Test]
+    public function it_refuses_merging_a_contact_with_itself(): void
+    {
+        $user = User::factory()->create();
+        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
+
+        $this->expectException(CannotMergeAContactWithItself::class);
+
+        new PreviewContactMerge(user: $user, kept: $contact, absorbed: $contact)->execute();
+    }
+
+    #[Test]
+    public function it_refuses_absorbing_the_contact_representing_the_user(): void
+    {
+        $user = User::factory()->create();
+        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
+        $me = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $contact->vault_id,
+            'is_me' => true,
+        ]);
+
+        $this->expectException(CannotAbsorbTheMeContact::class);
+
+        new PreviewContactMerge(user: $user, kept: $contact, absorbed: $me)->execute();
+    }
+
+    #[Test]
+    public function it_lets_the_contact_representing_the_user_absorb_another(): void
+    {
+        $user = User::factory()->create();
+        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
+        $me = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $contact->vault_id,
+            'is_me' => true,
+        ]);
+
+        $preview = new PreviewContactMerge(user: $user, kept: $me, absorbed: $contact)->execute();
+
+        $this->assertEquals($me->uuid, $preview['kept']['uuid']);
+    }
+
+    private function contactIn(Vault $vault, TemplateVersion $version, string $first, string $last): Contact
+    {
+        return Contact::factory()->create([
+            'account_id' => $vault->account_id,
+            'vault_id' => $vault->id,
+            'template_version_id' => $version->id,
+            'first_name' => $first,
+            'last_name' => $last,
+        ]);
+    }
+
+    private function publishedContactVersion(User $user): TemplateVersion
+    {
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+
+        return TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+    }
+
+    private function fieldCarriedBy(TemplateVersion $version): Field
+    {
+        $sectionVersion = SectionVersion::factory()->create(['account_id' => $version->account_id]);
+        $field = Field::factory()->create([
+            'account_id' => $version->account_id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+
+        $version->status = VersionStatusEnum::Draft;
+        $version->save();
+
+        TemplateVersionSection::factory()->create([
+            'account_id' => $version->account_id,
+            'template_version_id' => $version->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+
+        $version->status = VersionStatusEnum::Published;
+        $version->save();
+        $version->refresh();
+
+        return $field;
+    }
+
+    private function valueFor(Contact $contact, Field $field, string $value): FieldValue
+    {
+        return FieldValue::factory()->create([
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'field_key' => $field->key,
+            'value_string' => $value,
+        ]);
+    }
+}

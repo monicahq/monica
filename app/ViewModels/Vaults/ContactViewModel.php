@@ -8,6 +8,7 @@ use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\FieldValueFormatter;
 use App\Models\Contact;
+use App\Models\ContactMerge;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
@@ -139,6 +140,39 @@ class ContactViewModel
     public function shareLinksUrl(): string
     {
         return route('contacts.shareLinks.index', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
+    public function mergeUrl(): string
+    {
+        return route('contacts.merge.new', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
+    /**
+     * The merge this contact most recently absorbed somebody through, while it
+     * can still be undone. Null once there is none, which is the usual case.
+     */
+    public function undoableMerge(): ?ContactMerge
+    {
+        return once(fn (): ?ContactMerge => ContactMerge::query()
+            ->where('kept_contact_id', $this->contact->id)
+            ->whereNull('undone_at')
+            ->latest('id')
+            ->first());
+    }
+
+    public function undoMergeUrl(): ?string
+    {
+        $merge = $this->undoableMerge();
+
+        return $merge === null ? null : route('vaults.merges.destroy', [
+            'vault' => $this->vault,
+            'contactMerge' => $merge,
+        ]);
+    }
+
+    public function undoMergeLine(): string
+    {
+        return __('Absorbed :name into this record.', ['name' => $this->undoableMerge()?->mergedContact->name]);
     }
 
     public function shareLine(): string

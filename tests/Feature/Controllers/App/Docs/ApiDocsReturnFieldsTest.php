@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Docs;
 
+use App\Actions\MergeContacts;
+use App\Enums\FieldTypeEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\StripeCatalogue;
 use App\Models\Contact;
+use App\Models\ContactDuplicateCandidate;
 use App\Models\EmailSent;
 use App\Models\EntityType;
 use App\Models\Field;
+use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\Log;
 use App\Models\Payment;
@@ -333,6 +337,81 @@ class ApiDocsReturnFieldsTest extends TestCase
         }
 
         return $sections;
+    }
+
+    private function candidatePairIn(Vault $vault): ContactDuplicateCandidate
+    {
+        [$one, $two] = $this->twoContactsToMergeIn($vault);
+
+        return ContactDuplicateCandidate::factory()->create([
+            'contact_id' => min($one->id, $two->id),
+            'other_contact_id' => max($one->id, $two->id),
+            'score' => 95,
+            'reasons' => [
+                ['kind' => 'field', 'field_key' => 'email', 'value' => 'jim@dundermifflin.com'],
+                ['kind' => 'name'],
+            ],
+        ]);
+    }
+
+    /** @return array{0: Contact, 1: Contact} */
+    private function twoContactsToMergeIn(Vault $vault): array
+    {
+        $sectionVersion = SectionVersion::factory()->create(['account_id' => $vault->account_id]);
+        $email = Field::factory()->create([
+            'account_id' => $vault->account_id,
+            'section_version_id' => $sectionVersion->id,
+            'type' => FieldTypeEnum::Email,
+            'key' => 'email',
+            'label' => 'Email',
+            'is_identifying' => true,
+        ]);
+        $nickname = Field::factory()->create([
+            'account_id' => $vault->account_id,
+            'section_version_id' => $sectionVersion->id,
+            'key' => 'what_they_go_by',
+            'label' => 'What they go by',
+        ]);
+
+        $template = Template::factory()->create(['account_id' => $vault->account_id, 'name' => 'Basic contact']);
+        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        TemplateVersionSection::factory()->create([
+            'account_id' => $vault->account_id,
+            'template_version_id' => $version->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+        $version->status = VersionStatusEnum::Published;
+        $version->save();
+
+        $kept = Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'template_version_id' => $version->id,
+            'first_name' => 'Jim',
+            'last_name' => 'Halpert',
+        ]);
+        $absorbed = Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'template_version_id' => $version->id,
+            'first_name' => 'Jimmy',
+            'last_name' => 'Halpert',
+        ]);
+
+        $this->valueOf($kept, $email, 'jim@dundermifflin.com');
+        $this->valueOf($absorbed, $email, 'jimmy@dundermifflin.com');
+        $this->valueOf($absorbed, $nickname, 'Big Tuna');
+
+        return [$kept, $absorbed];
+    }
+
+    private function valueOf(Contact $contact, Field $field, string $value): void
+    {
+        FieldValue::factory()->create([
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'field_key' => $field->key,
+            'value_string' => $value,
+        ]);
     }
 
     private function answer(string $id): ?TestResponse
@@ -794,6 +873,49 @@ class ApiDocsReturnFieldsTest extends TestCase
                     'nickname' => 'Pammy',
                     'name_order' => 'given_first',
                 ]);
+            }),
+
+            'duplicates-index' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $this->candidatePairIn($vault);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/duplicates");
+            }),
+
+            'duplicates-dismissal-update' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $candidate = $this->candidatePairIn($vault);
+
+                return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/duplicates/{$candidate->id}/dismissal");
+            }),
+
+            'contacts-merge-show' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                [$kept, $absorbed] = $this->twoContactsToMergeIn($vault);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$kept->uuid}/merge/{$absorbed->uuid}");
+            }),
+
+            'contacts-merge-create' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                [$kept, $absorbed] = $this->twoContactsToMergeIn($vault);
+
+                return $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$kept->uuid}/merge/{$absorbed->uuid}", [
+                    'resolutions' => [['field_key' => 'email', 'row' => null, 'keep' => 'kept']],
+                ]);
+            }),
+
+            'merges-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                [$kept, $absorbed] = $this->twoContactsToMergeIn($vault);
+                $merge = new MergeContacts(
+                    user: $user,
+                    kept: $kept,
+                    absorbed: $absorbed,
+                    resolutions: [['field_key' => 'email', 'row' => null, 'keep' => 'kept']],
+                )->execute();
+
+                return $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/merges/{$merge->uuid}");
             }),
 
             'contacts-destroy' => $this->asSomebody(function (User $user): TestResponse {

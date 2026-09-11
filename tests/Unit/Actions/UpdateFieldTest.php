@@ -26,6 +26,41 @@ class UpdateFieldTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
+    public function it_can_mark_a_field_as_identifying(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $field = Field::factory()->create(['account_id' => $user->account_id, 'label' => 'Email']);
+
+        new UpdateField(
+            user: $user,
+            field: $field,
+            label: 'Email',
+            isIdentifying: true,
+        )->execute();
+
+        $this->assertTrue($field->refresh()->is_identifying);
+    }
+
+    #[Test]
+    public function it_can_stop_a_field_identifying_anybody(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $field = Field::factory()->create([
+            'account_id' => $user->account_id,
+            'label' => 'Email',
+            'is_identifying' => true,
+        ]);
+
+        new UpdateField(user: $user, field: $field, label: 'Email')->execute();
+
+        $this->assertFalse($field->refresh()->is_identifying);
+    }
+
+    #[Test]
     public function it_changes_what_a_field_asks_for(): void
     {
         Queue::fake();

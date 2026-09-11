@@ -30,6 +30,7 @@ class FieldResource extends JsonResource
                 'is_sensitive' => $this->is_sensitive,
                 'is_highlighted' => $this->is_highlighted,
                 'is_unique' => $this->is_unique,
+                'is_identifying' => $this->is_identifying,
                 'is_repeatable' => $this->is_repeatable,
                 'repeat_min' => $this->repeat_min,
                 'repeat_max' => $this->repeat_max,

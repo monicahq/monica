@@ -14,6 +14,9 @@ class LocaleCollation
 {
     public const int SORT_KEY_LENGTH = 2048;
 
+    /** How much of a folded family name is enough to group by. */
+    public const int MATCH_KEY_LENGTH = 64;
+
     public const string OTHER_HEADING = '#';
 
     private const string STRIP_MARKS = 'NFD; [:Nonspacing Mark:] Remove; NFC';
@@ -49,6 +52,17 @@ class LocaleCollation
     public static function sortKey(string $text, ?string $locale = null): string
     {
         return substr((string) self::getCollator($locale)->getSortKey($text), 0, self::SORT_KEY_LENGTH);
+    }
+
+    /**
+     * The key contacts are grouped by before their names are compared. Names
+     * cannot be compared in the database without SQL that only one driver
+     * speaks, so detection narrows the field with this and does the comparing
+     * in PHP.
+     */
+    public static function matchKey(string $text, ?string $locale = null): string
+    {
+        return mb_substr(mb_trim(self::foldForSearch($text, $locale)), 0, self::MATCH_KEY_LENGTH);
     }
 
     public static function foldForSearch(string $text, ?string $locale = null): string

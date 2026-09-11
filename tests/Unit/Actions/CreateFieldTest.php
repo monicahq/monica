@@ -30,6 +30,43 @@ class CreateFieldTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
+    public function it_can_mark_a_field_as_identifying(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+
+        $field = new CreateField(
+            user: $user,
+            sectionVersion: $version,
+            type: FieldTypeEnum::Email,
+            label: 'Email',
+            isIdentifying: true,
+        )->execute();
+
+        $this->assertDatabaseHas('fields', ['id' => $field->id, 'is_identifying' => true]);
+    }
+
+    #[Test]
+    public function it_marks_no_field_as_identifying_unless_it_is_told_to(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+
+        $field = new CreateField(
+            user: $user,
+            sectionVersion: $version,
+            type: FieldTypeEnum::Text,
+            label: 'Shoe size',
+        )->execute();
+
+        $this->assertDatabaseHas('fields', ['id' => $field->id, 'is_identifying' => false]);
+    }
+
+    #[Test]
     public function it_adds_a_field_to_a_section(): void
     {
         Queue::fake();

@@ -135,4 +135,27 @@ class LocaleCollationTest extends TestCase
             LocaleCollation::getCollator('fr_FR'),
         );
     }
+
+    #[Test]
+    public function it_folds_a_family_name_into_a_key_contacts_can_be_grouped_by(): void
+    {
+        $this->assertEquals('halpert', LocaleCollation::matchKey('Halpert'));
+        $this->assertEquals('halpert', LocaleCollation::matchKey('HALPERT'));
+        $this->assertEquals('nunez', LocaleCollation::matchKey('Ñuñez'));
+        $this->assertEquals('beesly', LocaleCollation::matchKey('  Beesly '));
+    }
+
+    #[Test]
+    public function it_gives_an_empty_key_for_an_empty_name(): void
+    {
+        $this->assertEquals('', LocaleCollation::matchKey(''));
+    }
+
+    #[Test]
+    public function it_caps_the_key_it_returns(): void
+    {
+        $key = LocaleCollation::matchKey(str_repeat('a', 200));
+
+        $this->assertEquals(LocaleCollation::MATCH_KEY_LENGTH, mb_strlen($key));
+    }
 }

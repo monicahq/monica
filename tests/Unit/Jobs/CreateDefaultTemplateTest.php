@@ -533,6 +533,36 @@ class CreateDefaultTemplateTest extends TestCase
         $this->assertEquals(0, VaultDefaultTemplate::query()->where('vault_id', $elsewhere->id)->count());
     }
 
+    #[Test]
+    public function it_marks_the_email_and_phone_fields_as_identifying(): void
+    {
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate($user)->handle();
+
+        $email = Field::query()->where('account_id', $user->account_id)->where('type', FieldTypeEnum::Email)->firstOrFail();
+        $phone = Field::query()->where('account_id', $user->account_id)->where('type', FieldTypeEnum::Phone)->firstOrFail();
+
+        $this->assertTrue($email->is_identifying);
+        $this->assertTrue($phone->is_identifying);
+    }
+
+    #[Test]
+    public function it_leaves_every_other_supplied_field_alone(): void
+    {
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate($user)->handle();
+
+        $others = Field::query()
+            ->where('account_id', $user->account_id)
+            ->whereNotIn('type', [FieldTypeEnum::Email->value, FieldTypeEnum::Phone->value])
+            ->get();
+
+        $this->assertTrue($others->isNotEmpty());
+        $this->assertTrue($others->every(fn (Field $field): bool => $field->is_identifying === false));
+    }
+
     private function userWithValueLists(): User
     {
         $user = User::factory()->create();

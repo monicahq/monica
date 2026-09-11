@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\View\Components\Vault;
 
+use App\Models\ContactDuplicateCandidate;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault as VaultModel;
@@ -27,8 +28,21 @@ class Sidebar extends Component
     {
         return view('components.vault.sidebar', [
             'reminderCount' => $this->reminderCount(),
+            'duplicateCount' => $this->duplicateCount(),
             'vaults' => $this->vaults(),
         ]);
+    }
+
+    /**
+     * How many pairs are waiting to be looked at. A dismissed pair is not one of
+     * them, so the badge goes quiet once somebody has been through the screen.
+     */
+    private function duplicateCount(): int
+    {
+        return ContactDuplicateCandidate::query()
+            ->standing()
+            ->where('vault_id', $this->vault->id)
+            ->count();
     }
 
     private function reminderCount(): int

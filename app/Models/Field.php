@@ -51,6 +51,7 @@ use Override;
  * @property bool $is_sensitive
  * @property bool $is_highlighted
  * @property bool $is_unique
+ * @property bool $is_identifying
  * @property int|null $value_list_id
  * @property array<array-key, mixed>|null $default_value
  * @property array<array-key, mixed>|null $options
@@ -84,6 +85,7 @@ use Override;
     'is_sensitive',
     'is_highlighted',
     'is_unique',
+    'is_identifying',
     'value_list_id',
     'default_value',
     'options',
@@ -139,6 +141,7 @@ class Field extends Model
             'is_sensitive' => 'boolean',
             'is_highlighted' => 'boolean',
             'is_unique' => 'boolean',
+            'is_identifying' => 'boolean',
             'default_value' => 'array',
             'options' => 'array',
             'validation' => 'array',

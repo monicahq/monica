@@ -133,6 +133,9 @@ enum UserActionEnum: string implements Translatable
     case FieldValuesReattached = 'field_values_reattached';
     case RecordSnapshotTaken = 'record_snapshot_taken';
     case RecordSnapshotRestored = 'record_snapshot_restored';
+    case ContactsMerged = 'contacts_merged';
+    case ContactMergeUndone = 'contact_merge_undone';
+    case DuplicateCandidateDismissed = 'duplicate_candidate_dismissed';
     case RecordMovedToTemplateVersion = 'record_moved_to_template_version';
     case TemplateExported = 'template_exported';
     case SectionExported = 'section_exported';
@@ -284,6 +287,9 @@ enum UserActionEnum: string implements Translatable
             self::FieldValuesReattached => 'Restored :count value written in :label|Restored :count values written in :label',
             self::RecordSnapshotTaken => 'Saved the state of :name',
             self::RecordSnapshotRestored => 'Put :name back to a saved state',
+            self::ContactsMerged => 'Merged :other into :name',
+            self::ContactMergeUndone => 'Undid the merge of :other into :name',
+            self::DuplicateCandidateDismissed => 'Said :name and :other are two different people',
             self::RecordMovedToTemplateVersion => 'Moved :name onto version :version of its template',
             self::MarketplaceListingCreation => 'Prepared :name for the marketplace',
             self::MarketplaceListingUpdate => 'Updated what the marketplace says about :name',

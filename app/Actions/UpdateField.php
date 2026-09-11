@@ -29,6 +29,7 @@ class UpdateField
         private readonly bool $isSensitive = false,
         private readonly bool $isHighlighted = false,
         private readonly bool $isUnique = false,
+        private readonly bool $isIdentifying = false,
         private readonly ?ValueList $valueList = null,
         private readonly ?array $defaultValue = null,
         private readonly ?array $options = null,
@@ -79,6 +80,7 @@ class UpdateField
         $this->field->is_sensitive = $this->isSensitive;
         $this->field->is_highlighted = $this->isHighlighted;
         $this->field->is_unique = $this->isUnique;
+        $this->field->is_identifying = $this->isIdentifying;
         $this->field->value_list_id = $this->field->type->usesValueList() ? $this->valueList?->id : null;
         $this->field->default_value = $this->defaultValue;
         $this->field->options = $this->options;
