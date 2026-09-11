@@ -21,9 +21,6 @@ class NotificationPreferenceFactory extends Factory
     {
         return [
             'account_id' => Account::factory(),
-            'in_app_is_enabled' => true,
-            'email_is_enabled' => true,
-            'push_is_enabled' => false,
             'quiet_hours_are_enabled' => false,
             'quiet_hours_start' => null,
             'quiet_hours_end' => null,
@@ -49,15 +46,6 @@ class NotificationPreferenceFactory extends Factory
         return $this->state(fn (array $attributes): array => [
             'delivery_mode' => NotificationDeliveryModeEnum::Digest,
             'digest_time' => $time,
-        ]);
-    }
-
-    public function silent(): static
-    {
-        return $this->state(fn (array $attributes): array => [
-            'in_app_is_enabled' => false,
-            'email_is_enabled' => false,
-            'push_is_enabled' => false,
         ]);
     }
 }

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -38,9 +39,17 @@ use Override;
  * quiet hours allow it out. They are equal when nothing holds it, which is what
  * lets the sweep be a single comparison.
  *
- * Nothing here is deleted. A delivery that failed keeps its row and its reason,
- * because a notification silently dropped is indistinguishable from one that was
- * never scheduled.
+ * A delivery that failed keeps its row and its reason, because a notification
+ * silently dropped is indistinguishable from one that was never scheduled.
+ * Nothing is removed here by anything the account does. What does remove a row
+ * is age: past `monica.notification_retention_months` it is pruned, on the
+ * daily `model:prune` the application already runs. That is a stated retention
+ * policy rather than a silent loss, and the period is an instance setting.
+ *
+ * Pruning takes the per channel detail with it. What the deadline itself
+ * records, `reminder_occurrences.notified_at`, is untouched, so the history
+ * still says somebody was told and says plainly that it can no longer say on
+ * which channel.
  *
  * The name is `App\Models\Notification` and has nothing to do with Laravel's own
  * notification system, which lives in `app/Notifications` and is used for the
@@ -102,6 +111,7 @@ class Notification extends Model
     use HasFactory;
 
     use HasUuids;
+    use Prunable;
     use ResolvesModelInAccount;
 
     /**
@@ -175,6 +185,20 @@ class Notification extends Model
     public function folded(): HasMany
     {
         return $this->hasMany(self::class, 'digest_id');
+    }
+
+    /**
+     * The notifications old enough to be removed under the retention policy.
+     *
+     * @return Builder<static>
+     */
+    public function prunable(): Builder
+    {
+        return static::query()->where(
+            'created_at',
+            '<',
+            now()->subMonths(max(1, (int) config('monica.notification_retention_months'))),
+        );
     }
 
     /**

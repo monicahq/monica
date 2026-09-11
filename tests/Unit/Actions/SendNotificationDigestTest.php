@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\SendNotificationDigest;
+use App\Enums\NotificationChannelEnum;
 use App\Enums\NotificationTypeEnum;
 use App\Models\Account;
 use App\Models\Notification;
+use App\Models\NotificationChannel;
 use App\Models\NotificationPreference;
 use App\Models\User;
 use App\Notifications\NotificationDigest;
@@ -25,13 +27,61 @@ class SendNotificationDigestTest extends TestCase
     {
         NotificationFacade::fake();
         [$account, $user] = $this->account();
-        Notification::factory()->count(3)->create(['account_id' => $account->id, 'user_id' => $user->id]);
+        Notification::factory()->count(3)->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
 
         $folded = new SendNotificationDigest(account: $account)->execute();
 
         $this->assertSame(3, $folded);
         NotificationFacade::assertSentTimes(NotificationDigest::class, 1);
         $this->assertSame(1, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
+    }
+
+    #[Test]
+    public function it_writes_one_summary_per_channel_rather_than_one_carrying_them_all(): void
+    {
+        NotificationFacade::fake();
+        [$account, $user] = $this->account();
+        Notification::factory()->count(2)->create(['account_id' => $account->id, 'user_id' => $user->id]);
+        Notification::factory()->count(3)->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
+
+        $this->assertSame(5, new SendNotificationDigest(account: $account)->execute());
+
+        $summaries = Notification::query()->where('type', NotificationTypeEnum::Digest->value)->get();
+
+        $this->assertCount(2, $summaries);
+        $this->assertEqualsCanonicalizing(
+            [NotificationChannelEnum::InApp, NotificationChannelEnum::Email],
+            $summaries->pluck('channel')->all(),
+        );
+    }
+
+    #[Test]
+    public function a_summary_in_the_application_is_its_own_delivery(): void
+    {
+        NotificationFacade::fake();
+        [$account, $user] = $this->account();
+        Notification::factory()->count(2)->create(['account_id' => $account->id, 'user_id' => $user->id]);
+
+        $this->assertSame(2, new SendNotificationDigest(account: $account)->execute());
+
+        NotificationFacade::assertNothingSent();
+        $this->assertSame(1, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
+    }
+
+    #[Test]
+    public function it_folds_nothing_for_a_channel_the_account_has_switched_off(): void
+    {
+        NotificationFacade::fake();
+        [$account, $user] = $this->account();
+        Notification::factory()->count(2)->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
+        NotificationChannel::query()
+            ->where('account_id', $account->id)
+            ->where('channel', NotificationChannelEnum::Email->value)
+            ->update(['is_enabled' => false]);
+
+        $this->assertSame(0, new SendNotificationDigest(account: $account)->execute());
+
+        NotificationFacade::assertNothingSent();
     }
 
     #[Test]

@@ -42,14 +42,20 @@
         "brianium/paratest": "^7.20",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^3.9.2",
+        "laravel-notification-channels/telegram": "^8.0",
         "laravel/boost": "^2.5",
         "laravel/pail": "^1.2.5",
         "laravel/pao": "^1.0.6",
         "laravel/pint": "^1.27",
+        "laravel/vonage-notification-channel": "^3.3",
         "mockery/mockery": "^1.6",
         "monicahq/laradb": "^1.1",
         "nunomaduro/collision": "^8.6",
         "phpunit/phpunit": "^12.5.12"
+    },
+    "suggest": {
+        "laravel-notification-channels/telegram": "Required to send notifications over Telegram. Without it the channel is listed and reports itself unavailable.",
+        "laravel/vonage-notification-channel": "Required to send notifications by text message. Without it the channel is listed and reports itself unavailable."
     },
     "autoload": {
         "psr-4": {

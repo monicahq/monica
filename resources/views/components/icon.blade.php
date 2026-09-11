@@ -63,6 +63,7 @@
     'calendar-repeat' => '<rect x="2.4" y="3.4" width="11.2" height="10.2" rx="1.5"></rect><line x1="2.4" y1="6.4" x2="13.6" y2="6.4"></line><line x1="5.4" y1="2.2" x2="5.4" y2="4.2"></line><line x1="10.6" y1="2.2" x2="10.6" y2="4.2"></line><path d="M5.6 11.4a2.5 2.5 0 0 1 4.2-1.8"></path><path d="M10.1 8.2v1.7H8.4"></path>',
     'clock' => '<circle cx="8" cy="8" r="5.6"></circle><path d="M8 4.9V8l2.4 1.6"></path>',
     'alarm' => '<circle cx="8" cy="9.2" r="4.4"></circle><path d="M8 6.6V9.2l1.9 1.3"></path><path d="M3.7 4.4 5.3 3"></path><path d="M12.3 4.4 10.7 3"></path>',
+    'bell' => '<path d="M4.4 6.9a3.6 3.6 0 0 1 7.2 0c0 2.6.9 3.7 1.4 4.2H3a5.6 5.6 0 0 0 1.4-4.2Z"></path><path d="M6.6 13.1a1.6 1.6 0 0 0 2.8 0"></path>',
     'layers' => '<rect x="2.4" y="2.6" width="11.2" height="4.6" rx="1.4"></rect><rect x="2.4" y="8.8" width="11.2" height="4.6" rx="1.4"></rect><line x1="4.8" y1="4.9" x2="8.4" y2="4.9"></line><line x1="4.8" y1="11.1" x2="8.4" y2="11.1"></line>',
     'coin' => '<rect x="2" y="4.6" width="12" height="6.8" rx="1.4"></rect><circle cx="8" cy="8" r="1.8"></circle>',
     'divider' => '<rect x="2.4" y="2.6" width="11.2" height="3.2" rx="1"></rect><line x1="1.8" y1="8" x2="14.2" y2="8"></line><rect x="2.4" y="10.2" width="11.2" height="3.2" rx="1"></rect>',

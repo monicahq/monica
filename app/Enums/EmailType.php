@@ -21,4 +21,7 @@ enum EmailType: string
     case NotificationDigest = 'notification_digest';
     case AccessUnlocked = 'access_unlocked';
     case AccessEnded = 'access_ended';
+    case ChannelProofCode = 'channel_proof_code';
+    case ChannelDisabled = 'channel_disabled';
+    case ChannelTestMessage = 'channel_test_message';
 }

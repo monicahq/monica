@@ -267,6 +267,21 @@ class Account extends Model
     }
 
     /**
+     * Get every channel the account may be reached on, switched on or not.
+     *
+     * There is one row per channel, made with the account, so a screen listing
+     * them never has to invent the ones that are missing. What a channel needs
+     * before it can carry anything is a fact about the channel and is asked of
+     * `NotificationChannelEnum` rather than read from a column.
+     *
+     * @return HasMany<NotificationChannel, $this>
+     */
+    public function notificationChannels(): HasMany
+    {
+        return $this->hasMany(NotificationChannel::class);
+    }
+
+    /**
      * Get everything the account has been told, on every channel.
      *
      * @return HasMany<Notification, $this>

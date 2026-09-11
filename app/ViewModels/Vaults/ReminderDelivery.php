@@ -7,6 +7,7 @@ namespace App\ViewModels\Vaults;
 use App\Enums\DateFormatEnum;
 use App\Enums\NotificationChannelEnum;
 use App\Models\Notification;
+use App\Models\NotificationChannel;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -46,11 +47,10 @@ class ReminderDelivery
             return __('No channel');
         }
 
-        $words = array_map(fn (NotificationChannelEnum $channel): string => match ($channel) {
-            NotificationChannelEnum::InApp => __('in the app'),
-            NotificationChannelEnum::Email => __('by email'),
-            NotificationChannelEnum::Push => __('pushed to a device'),
-        }, $enabled);
+        $words = array_map(
+            fn (NotificationChannelEnum $channel): string => __($channel->deliveredPhrase()),
+            $enabled,
+        );
 
         if (count($words) === 1) {
             return $words[0];
@@ -74,7 +74,15 @@ class ReminderDelivery
     /** @return list<NotificationChannelEnum> */
     private function enabled(): array
     {
-        return $this->reminder->account->notificationPreference?->enabledChannels() ?? [];
+        return NotificationChannel::query()
+            ->where('account_id', $this->reminder->account_id)
+            ->where('is_enabled', true)
+            ->orderBy('id')
+            ->get()
+            ->filter(fn (NotificationChannel $channel): bool => $channel->mayCarry())
+            ->map(fn (NotificationChannel $channel): NotificationChannelEnum => $channel->channel)
+            ->values()
+            ->all();
     }
 
     private function lastSent(): ?string

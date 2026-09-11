@@ -41,6 +41,25 @@ class ApiDocsFields
     }
 
     /**
+     * The rows for a list that is answered whole rather than a page at a time,
+     * because it can never grow long enough to need paging.
+     *
+     * @param  string  $type  The constant each record's `type` always holds.
+     * @param  string  $singular  What one of these is called, in a sentence.
+     * @param  string  $plural  What several of them are called, in a sentence.
+     * @param  list<array{name: string, type: string, description: string, opaque?: bool}>  $attributes
+     * @return list<array{name: string, type: string, description: string, opaque?: bool}>
+     */
+    public static function all(string $type, string $singular, string $plural, array $attributes): array
+    {
+        return [
+            ['name' => 'data', 'type' => 'array', 'description' => "Every one of the {$plural}, whole rather than a page at a time."],
+            ['name' => 'data[]', 'type' => 'object', 'description' => "One {$singular}."],
+            ...self::record($type, 'data[]', $attributes),
+        ];
+    }
+
+    /**
      * The rows for a record that is only ever read inside another one: a page in a
      * version, a field in a section. It carries no links, because there is no
      * address it can be read from on its own.

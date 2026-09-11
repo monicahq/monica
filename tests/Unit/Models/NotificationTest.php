@@ -107,4 +107,42 @@ class NotificationTest extends TestCase
 
         $this->assertSame(0, $written);
     }
+
+    #[Test]
+    public function it_prunes_what_is_older_than_the_retention_period(): void
+    {
+        $old = Notification::factory()->create(['created_at' => now()->subMonths(13)]);
+        $recent = Notification::factory()->create(['created_at' => now()->subMonths(11)]);
+
+        $prunable = new Notification()->prunable()->pluck('id');
+
+        $this->assertTrue($prunable->contains($old->id));
+        $this->assertFalse($prunable->contains($recent->id));
+    }
+
+    #[Test]
+    public function the_retention_period_is_a_setting_of_the_instance(): void
+    {
+        config(['monica.notification_retention_months' => 1]);
+
+        $notification = Notification::factory()->create(['created_at' => now()->subMonths(2)]);
+
+        $this->assertTrue(new Notification()->prunable()->pluck('id')->contains($notification->id));
+    }
+
+    #[Test]
+    public function pruning_leaves_the_deadline_saying_that_somebody_was_told(): void
+    {
+        $notification = Notification::factory()->create([
+            'created_at' => now()->subMonths(13),
+            'sent_at' => now()->subMonths(13),
+        ]);
+        $occurrence = ReminderOccurrence::query()->findOrFail($notification->notifiable_id);
+        $occurrence->update(['notified_at' => now()->subMonths(13)]);
+
+        new Notification()->prunable()->delete();
+
+        $this->assertModelMissing($notification);
+        $this->assertNotNull($occurrence->refresh()->notified_at);
+    }
 }

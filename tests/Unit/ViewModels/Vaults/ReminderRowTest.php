@@ -6,10 +6,12 @@ namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\DateFormatEnum;
 use App\Enums\DefaultFieldEnum;
+use App\Enums\NotificationChannelEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\TimeFormatEnum;
 use App\Models\Contact;
 use App\Models\Field;
+use App\Models\Notification;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -140,6 +142,32 @@ class ReminderRowTest extends TestCase
         $this->assertSame('', $row->cadence());
         $this->assertSame('calendar', $row->icon());
         $this->assertNotSame('', $row->text());
+    }
+
+    #[Test]
+    public function it_names_every_channel_that_carried_the_deadline(): void
+    {
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $rule = $this->ruleAbout($user);
+        $occurrence = $this->occurrenceFor($rule, '2027-03-01 09:00:00');
+
+        foreach (NotificationChannelEnum::cases() as $channel) {
+            Notification::factory()->create([
+                'account_id' => $rule->account_id,
+                'user_id' => $user->id,
+                'channel' => $channel,
+                'notifiable_type' => ReminderOccurrence::class,
+                'notifiable_id' => $occurrence->id,
+                'sent_at' => now(),
+            ]);
+        }
+
+        $row = new ReminderRow(user: $user, occurrence: $occurrence->refresh());
+
+        $this->assertSame(
+            ['In the app', 'Email', 'Telegram', 'Text message'],
+            $row->channels(),
+        );
     }
 
     private function ruleAbout(User $user, ?Contact $contact = null, ?Field $field = null): Reminder

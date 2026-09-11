@@ -9,6 +9,7 @@ use App\Enums\NotificationTypeEnum;
 use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Helpers\QuietHours;
 use App\Models\Notification;
+use App\Models\NotificationChannel;
 use App\Models\NotificationPreference;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -53,9 +54,29 @@ class NotifyReminderOccurrence
 
         $heldUntil = QuietHours::release($preference, $this->occurrence->scheduled_for);
 
-        foreach ($preference->enabledChannels() as $channel) {
-            $this->written += $this->rowFor($user, $channel, $heldUntil);
+        foreach ($this->channels() as $channel) {
+            $this->written += $this->rowFor($user, $channel->channel, $heldUntil);
         }
+    }
+
+    /**
+     * The channels the account has switched on and finished setting up. A
+     * channel switched on but still missing its destination, its credential or
+     * its proof carries nothing, and writing a row for it would only produce a
+     * failure with nothing behind it.
+     *
+     * @return list<NotificationChannel>
+     */
+    private function channels(): array
+    {
+        return NotificationChannel::query()
+            ->where('account_id', $this->occurrence->account_id)
+            ->where('is_enabled', true)
+            ->orderBy('id')
+            ->get()
+            ->filter(fn (NotificationChannel $channel): bool => $channel->mayCarry())
+            ->values()
+            ->all();
     }
 
     private function rowFor(User $user, NotificationChannelEnum $channel, CarbonImmutable $heldUntil): int

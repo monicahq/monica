@@ -1,0 +1,45 @@
+{
+  "workflow": "speckit",
+  "specName": "More ways for a notification to reach somebody",
+  "branch": "worktree-bridge-cse_017p5bGvqjfE7hzwJusiQp33",
+  "currentStep": "implement",
+  "status": "completed",
+  "history": [
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-09T05:46:20.024Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-09T15:57:44.319Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-09T16:02:54.003Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-10T07:45:22.859Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-11T14:39:47.767Z"
+    }
+  ],
+  "telemetryInstanceId": "69b360a9-50db-459f-897b-f7473c6e698d"
+}

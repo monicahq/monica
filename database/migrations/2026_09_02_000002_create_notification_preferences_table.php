@@ -13,9 +13,6 @@ return new class extends Migration
         Schema::create('notification_preferences', function (Blueprint $table): void {
             $table->id()->comment('primary key');
             $table->unsignedBigInteger('account_id')->comment('account the preferences belong to');
-            $table->boolean('in_app_is_enabled')->default(true)->comment('whether notifications appear inside the application');
-            $table->boolean('email_is_enabled')->default(true)->comment('whether they are also emailed');
-            $table->boolean('push_is_enabled')->default(false)->comment('whether they are also pushed to a device, which nothing delivers yet');
             $table->boolean('quiet_hours_are_enabled')->default(false)->comment('whether quiet hours apply at all');
             $table->time('quiet_hours_start')->nullable()->comment('local time from which nothing may be delivered');
             $table->time('quiet_hours_end')->nullable()->comment('local time from which delivery may resume');

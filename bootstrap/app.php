@@ -25,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->throttleApi();
         $middleware->preventRequestForgery(except: [
             'stripe/*',
+            'telegram/webhook',
         ]);
         $middleware->trustProxies(headers: Request::HEADER_X_FORWARDED_FOR |
             Request::HEADER_X_FORWARDED_HOST |

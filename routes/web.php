@@ -18,6 +18,8 @@ use App\Http\Controllers\App\Docs\ApiDocsMarkdownController;
 use App\Http\Controllers\App\GettingStartedController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\Marketplace\MarketplaceController;
+use App\Http\Controllers\App\NotificationController;
+use App\Http\Controllers\App\NotificationReadController;
 use App\Http\Controllers\App\Settings\Account\AccountController;
 use App\Http\Controllers\App\Settings\Account\Billing\BillingController;
 use App\Http\Controllers\App\Settings\Account\Billing\BillingCurrencyController;
@@ -31,6 +33,11 @@ use App\Http\Controllers\App\Settings\Account\EntityTypes\EntityTypeController;
 use App\Http\Controllers\App\Settings\Account\EntityTypes\EntityTypePositionController;
 use App\Http\Controllers\App\Settings\Account\Logs\EmailSentController;
 use App\Http\Controllers\App\Settings\Account\Logs\LogController;
+use App\Http\Controllers\App\Settings\Account\Notifications\ChannelConnectionController;
+use App\Http\Controllers\App\Settings\Account\Notifications\ChannelProofController;
+use App\Http\Controllers\App\Settings\Account\Notifications\ChannelTestController;
+use App\Http\Controllers\App\Settings\Account\Notifications\NotificationChannelController;
+use App\Http\Controllers\App\Settings\Account\Notifications\TelegramWebhookController;
 use App\Http\Controllers\App\Settings\Account\Preferences\PreferenceController;
 use App\Http\Controllers\App\Settings\Account\Preferences\TimezoneController;
 use App\Http\Controllers\App\Settings\Account\Profile\PhotoController;
@@ -285,6 +292,10 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');
 
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::put('notifications/read', [NotificationReadController::class, 'updateAll'])->name('notifications.readAll.update');
+    Route::put('notifications/{notification}/read', [NotificationReadController::class, 'update'])->whereUuid('notification')->name('notifications.read.update');
+
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
 
     Route::get('settings/account/profile', [ProfileController::class, 'index'])->name('settings.profile.index');
@@ -307,6 +318,14 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('settings/account/preferences', [PreferenceController::class, 'index'])->name('settings.preferences.index');
     Route::put('settings/account/preferences', [PreferenceController::class, 'update'])->name('settings.preferences.update');
     Route::put('settings/account/preferences/timezone', [TimezoneController::class, 'update'])->name('settings.timezone.update');
+
+    Route::get('settings/account/notifications', [NotificationChannelController::class, 'index'])->name('settings.notifications.index');
+    Route::put('settings/account/notifications/{channel}', [NotificationChannelController::class, 'update'])->name('settings.notifications.update');
+    Route::post('settings/account/notifications/{channel}/proof', [ChannelProofController::class, 'create'])->name('settings.notifications.proof.store');
+    Route::put('settings/account/notifications/{channel}/proof', [ChannelProofController::class, 'update'])->name('settings.notifications.proof.update');
+    Route::post('settings/account/notifications/{channel}/test', [ChannelTestController::class, 'create'])->name('settings.notifications.test.store');
+    Route::post('settings/account/notifications/{channel}/connection', [ChannelConnectionController::class, 'create'])->name('settings.notifications.connection.store');
+    Route::post('settings/account/notifications/{channel}/reset', [NotificationChannelController::class, 'reset'])->name('settings.notifications.reset');
 
     Route::get('settings/account/value-lists', [ValueListController::class, 'index'])->name('settings.valueLists.index');
     Route::post('settings/account/value-lists', [ValueListController::class, 'create'])->name('settings.valueLists.create');
@@ -433,5 +452,9 @@ Route::middleware(['administrator'])->group(function (): void {
     Route::post('admin/administrators', [AdministratorController::class, 'create'])->name('admin.administrators.create');
     Route::delete('admin/administrators/{user}', [AdministratorController::class, 'destroy'])->whereNumber('user')->name('admin.administrators.destroy');
 });
+
+if (config('services.telegram.installed') && config('services.telegram.token') !== null) {
+    Route::post('telegram/webhook', [TelegramWebhookController::class, 'handleWebhook'])->name('telegram.webhook');
+}
 
 require __DIR__.'/auth.php';

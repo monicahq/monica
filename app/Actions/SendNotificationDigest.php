@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\NotificationChannelEnum;
 use App\Enums\NotificationTypeEnum;
 use App\Models\Account;
 use App\Models\Notification;
+use App\Models\NotificationChannel;
 use App\Models\User;
 use App\Notifications\NotificationDigest;
 use Illuminate\Support\Collection;
 
 /**
- * Fold everything an account has waiting into one message.
+ * Fold everything an account has waiting into one message per channel.
+ *
+ * One summary carrying every channel could not record what happened to each of
+ * them, and a channel that refused it would take the others down with it. So
+ * each channel gets its own summary row, folding the notifications that were
+ * waiting on that channel and nothing else.
  */
 class SendNotificationDigest
 {
@@ -29,36 +34,56 @@ class SendNotificationDigest
             return 0;
         }
 
-        $waiting = $this->waitingFor($user);
+        $folded = 0;
 
-        if ($waiting->isEmpty()) {
-            return 0;
+        foreach ($this->channels() as $channel) {
+            $waiting = $this->waitingFor($user, $channel);
+
+            if ($waiting->isEmpty()) {
+                continue;
+            }
+
+            $digest = $this->write($user, $channel, $waiting);
+
+            Notification::query()
+                ->whereIn('id', $waiting->pluck('id'))
+                ->update(['digest_id' => $digest->id, 'sent_at' => now(), 'updated_at' => now()]);
+
+            $this->hand($user, $channel, $digest);
+
+            $folded += $waiting->count();
         }
 
-        $digest = $this->write($user, $waiting);
+        return $folded;
+    }
 
-        Notification::query()
-            ->whereIn('id', $waiting->pluck('id'))
-            ->update(['digest_id' => $digest->id, 'sent_at' => now(), 'updated_at' => now()]);
-
-        $this->hand($user, $digest);
-
-        return $waiting->count();
+    /** @return list<NotificationChannel> */
+    private function channels(): array
+    {
+        return NotificationChannel::query()
+            ->where('account_id', $this->account->id)
+            ->where('is_enabled', true)
+            ->orderBy('id')
+            ->get()
+            ->filter(fn (NotificationChannel $channel): bool => $channel->mayCarry())
+            ->values()
+            ->all();
     }
 
     /** @return Collection<int, Notification> */
-    private function waitingFor(User $user): Collection
+    private function waitingFor(User $user, NotificationChannel $channel): Collection
     {
         return Notification::query()
             ->deliverable()
             ->where('user_id', $user->id)
+            ->where('channel', $channel->channel->value)
             ->where('type', '!=', NotificationTypeEnum::Digest->value)
             ->orderBy('scheduled_for')
             ->get();
     }
 
     /** @param  Collection<int, Notification>  $waiting */
-    private function write(User $user, Collection $waiting): Notification
+    private function write(User $user, NotificationChannel $channel, Collection $waiting): Notification
     {
         $locale = $user->locale ?? (string) config('app.locale');
 
@@ -66,7 +91,7 @@ class SendNotificationDigest
             'account_id' => $this->account->id,
             'user_id' => $user->id,
             'type' => NotificationTypeEnum::Digest,
-            'channel' => NotificationChannelEnum::Email,
+            'channel' => $channel->channel,
             'notifiable_type' => null,
             'notifiable_id' => null,
             'title' => trans_choice('You have :count reminder today|You have :count reminders today', $waiting->count(), [], $locale),
@@ -85,7 +110,7 @@ class SendNotificationDigest
         ]);
     }
 
-    private function hand(User $user, Notification $digest): void
+    private function hand(User $user, NotificationChannel $channel, Notification $digest): void
     {
         /** @var list<array{title: string, body: string}> $lines */
         $lines = $digest->payload['lines'] ?? [];
@@ -93,6 +118,7 @@ class SendNotificationDigest
         $user->notify(new NotificationDigest(
             heading: $digest->title,
             lines: $lines,
+            channel: $channel,
         )->locale($digest->locale));
     }
 }

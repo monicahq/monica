@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\DeliverNotification;
+use App\Enums\NotificationChannelEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Models\Contact;
 use App\Models\Notification;
+use App\Models\NotificationChannel;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -17,7 +19,11 @@ use Database\Factories\NotificationFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use PHPUnit\Framework\Attributes\Test;
+use RuntimeException;
 use Tests\TestCase;
+use Throwable;
+use Vonage\Client\Exception\RequestException as VonageRequestException;
+use Vonage\Client\Exception\ServerException as VonageServerException;
 
 class DeliverNotificationTest extends TestCase
 {
@@ -187,6 +193,178 @@ class DeliverNotificationTest extends TestCase
         $notification = $this->notification()->create(['failed_at' => now(), 'failure_reason' => 'Gone']);
 
         $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+    }
+
+    #[Test]
+    public function it_hands_a_telegram_notification_to_the_telegram_channel(): void
+    {
+        NotificationFacade::fake();
+        $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
+        $this->switchOn($notification, NotificationChannelEnum::Telegram);
+
+        $this->assertTrue(new DeliverNotification(notification: $notification)->execute());
+
+        NotificationFacade::assertSentTo(
+            $notification->user,
+            ReminderDue::class,
+            fn (ReminderDue $sent): bool => $sent->channel->channel === NotificationChannelEnum::Telegram
+                && $sent->via($notification->user) === ['telegram'],
+        );
+    }
+
+    #[Test]
+    public function it_abandons_at_once_a_notification_whose_channel_is_no_longer_set_up(): void
+    {
+        NotificationFacade::fake();
+        $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
+
+        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+
+        $notification->refresh();
+
+        $this->assertNotNull($notification->failed_at);
+        $this->assertSame(1, $notification->attempts);
+        NotificationFacade::assertNothingSent();
+    }
+
+    #[Test]
+    public function a_channel_that_refuses_takes_no_other_channel_down_with_it(): void
+    {
+        $this->freezeTime();
+        NotificationFacade::fake();
+        $refused = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
+        $fine = $this->notification()->email()->create([
+            'account_id' => $refused->account_id,
+            'user_id' => $refused->user_id,
+            'notifiable_id' => $refused->notifiable_id,
+        ]);
+
+        $this->assertFalse(new DeliverNotification(notification: $refused)->execute());
+        $this->assertTrue(new DeliverNotification(notification: $fine)->execute());
+
+        $this->assertNotNull($refused->refresh()->failed_at);
+        $this->assertNotNull($fine->refresh()->sent_at);
+    }
+
+    #[Test]
+    public function a_refusal_counts_against_the_channel_it_was_sent_on(): void
+    {
+        NotificationFacade::fake();
+        $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
+
+        new DeliverNotification(notification: $notification)->execute();
+
+        $this->assertSame(1, $this->channelRow($notification, NotificationChannelEnum::Telegram)->consecutive_failures);
+    }
+
+    #[Test]
+    public function a_send_that_worked_forgets_the_refusals_counted_so_far(): void
+    {
+        NotificationFacade::fake();
+        $notification = $this->notification()->email()->create();
+        $row = $this->channelRow($notification, NotificationChannelEnum::Email);
+        $row->update(['consecutive_failures' => 3]);
+
+        new DeliverNotification(notification: $notification)->execute();
+
+        $this->assertSame(0, $row->refresh()->consecutive_failures);
+    }
+
+    #[Test]
+    public function a_service_that_is_merely_busy_is_tried_again(): void
+    {
+        $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
+        $this->switchOn($notification, NotificationChannelEnum::Telegram);
+        $this->refuseWith(new VonageServerException('The service is unavailable.'));
+
+        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+
+        $notification->refresh();
+
+        $this->assertNull($notification->failed_at);
+        $this->assertSame(1, $notification->attempts);
+    }
+
+    #[Test]
+    public function a_service_that_refuses_the_request_itself_is_abandoned_at_once(): void
+    {
+        $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
+        $this->switchOn($notification, NotificationChannelEnum::Telegram);
+        $this->refuseWith(new VonageRequestException('Non-Whitelisted Destination.'));
+
+        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+
+        $this->assertNotNull($notification->refresh()->failed_at);
+    }
+
+    #[Test]
+    public function a_revoked_token_is_abandoned_at_once_rather_than_retried(): void
+    {
+        $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
+        $this->switchOn($notification, NotificationChannelEnum::Telegram);
+        $this->refuseWith(new RuntimeException('token_revoked'));
+
+        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+
+        $notification->refresh();
+
+        $this->assertNotNull($notification->failed_at);
+        $this->assertSame('token_revoked', $notification->failure_reason);
+    }
+
+    #[Test]
+    public function a_telegram_conversation_that_does_not_exist_is_abandoned_at_once(): void
+    {
+        $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
+        $this->switchOn($notification, NotificationChannelEnum::Telegram);
+        $this->refuseWith(new RuntimeException('Bad Request: chat not found'));
+
+        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+
+        $this->assertNotNull($notification->refresh()->failed_at);
+    }
+
+    #[Test]
+    public function a_refusal_nobody_recognises_is_tried_again(): void
+    {
+        $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
+        $this->switchOn($notification, NotificationChannelEnum::Telegram);
+        $this->refuseWith(new RuntimeException('Something nobody has seen before.'));
+
+        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+
+        $this->assertNull($notification->refresh()->failed_at);
+    }
+
+    /**
+     * Stand in for the outbound service, which is not called in a test, and
+     * make it refuse the way that service refuses.
+     */
+    private function refuseWith(Throwable $refusal): void
+    {
+        NotificationFacade::shouldReceive('send')->andThrow($refusal);
+        NotificationFacade::shouldReceive('locale')->andReturnSelf();
+    }
+
+    private function switchOn(Notification $notification, NotificationChannelEnum $channel): NotificationChannel
+    {
+        $row = $this->channelRow($notification, $channel);
+
+        $row->fill([
+            'is_enabled' => true,
+            'destination' => '918273645',
+            'proven_at' => now(),
+        ])->save();
+
+        return $row;
+    }
+
+    private function channelRow(Notification $notification, NotificationChannelEnum $channel): NotificationChannel
+    {
+        return NotificationChannel::query()
+            ->where('account_id', $notification->account_id)
+            ->where('channel', $channel->value)
+            ->firstOrFail();
     }
 
     private function notification(): NotificationFactory

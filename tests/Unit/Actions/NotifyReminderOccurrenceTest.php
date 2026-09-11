@@ -11,6 +11,7 @@ use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Models\Contact;
 use App\Models\Notification;
+use App\Models\NotificationChannel;
 use App\Models\NotificationPreference;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
@@ -85,12 +86,73 @@ class NotifyReminderOccurrenceTest extends TestCase
     }
 
     #[Test]
+    public function it_skips_a_channel_that_is_switched_on_but_not_finished(): void
+    {
+        $occurrence = $this->dueOccurrence();
+        NotificationChannel::query()
+            ->where('account_id', $occurrence->account_id)
+            ->where('channel', NotificationChannelEnum::Telegram->value)
+            ->update(['is_enabled' => true]);
+
+        new NotifyReminderOccurrence(occurrence: $occurrence->refresh())->execute();
+
+        $this->assertDatabaseMissing('notifications', [
+            'notifiable_id' => $occurrence->id,
+            'channel' => NotificationChannelEnum::Telegram->value,
+        ]);
+    }
+
+    #[Test]
+    public function it_writes_a_row_for_a_channel_that_is_switched_on_and_finished(): void
+    {
+        $occurrence = $this->dueOccurrence();
+        NotificationChannel::query()
+            ->where('account_id', $occurrence->account_id)
+            ->where('channel', NotificationChannelEnum::Telegram->value)
+            ->firstOrFail()
+            ->fill([
+                'is_enabled' => true,
+                'destination' => '918273645',
+                'proven_at' => now(),
+            ])
+            ->save();
+
+        new NotifyReminderOccurrence(occurrence: $occurrence->refresh())->execute();
+
+        $this->assertDatabaseHas('notifications', [
+            'notifiable_id' => $occurrence->id,
+            'channel' => NotificationChannelEnum::Telegram->value,
+        ]);
+    }
+
+    #[Test]
+    public function it_writes_nothing_for_a_channel_whose_integration_is_not_installed(): void
+    {
+        config(['services.telegram.installed' => false]);
+
+        $occurrence = $this->dueOccurrence();
+        NotificationChannel::query()
+            ->where('account_id', $occurrence->account_id)
+            ->where('channel', NotificationChannelEnum::Telegram->value)
+            ->firstOrFail()
+            ->fill(['is_enabled' => true, 'destination' => '918273645', 'proven_at' => now()])
+            ->save();
+
+        new NotifyReminderOccurrence(occurrence: $occurrence->refresh())->execute();
+
+        $this->assertDatabaseMissing('notifications', [
+            'notifiable_id' => $occurrence->id,
+            'channel' => NotificationChannelEnum::Telegram->value,
+        ]);
+    }
+
+    #[Test]
     public function it_makes_nothing_for_an_account_that_asked_for_silence(): void
     {
         $occurrence = $this->dueOccurrence();
-        NotificationPreference::query()
+        NotificationChannel::query()
             ->where('account_id', $occurrence->account_id)
-            ->update(['in_app_is_enabled' => false, 'email_is_enabled' => false]);
+            ->update(['is_enabled' => false]);
 
         $written = new NotifyReminderOccurrence(occurrence: $occurrence->refresh())->execute();
 

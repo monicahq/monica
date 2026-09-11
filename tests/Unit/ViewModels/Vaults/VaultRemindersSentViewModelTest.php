@@ -83,7 +83,7 @@ class VaultRemindersSentViewModelTest extends TestCase
 
         $rows = new VaultRemindersSentViewModel(user: $user, vault: $vault)->rows();
 
-        $this->assertEquals(['In the app', 'By email'], $rows[0]->channels());
+        $this->assertEquals(['In the app', 'Email'], $rows[0]->channels());
     }
 
     #[Test]

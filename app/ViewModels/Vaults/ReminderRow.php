@@ -100,11 +100,7 @@ class ReminderRow
                 continue;
             }
 
-            $words[] = match ($channel) {
-                NotificationChannelEnum::InApp => __('In the app'),
-                NotificationChannelEnum::Email => __('By email'),
-                NotificationChannelEnum::Push => __('Pushed'),
-            };
+            $words[] = __($channel->label());
         }
 
         return $words;

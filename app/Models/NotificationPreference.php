@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\NotificationChannelEnum;
 use App\Enums\NotificationDeliveryModeEnum;
 use Carbon\CarbonImmutable;
 use Database\Factories\NotificationPreferenceFactory;
@@ -28,14 +27,16 @@ use Override;
  * instant before delivery begins. Moving a notification earlier here would apply
  * the offset twice.
  *
+ * Which channels are switched on is not here. That is one row per channel in
+ * `notification_channels`, because a channel carries a destination, a
+ * credential and a state of its own, and because adding a channel to the
+ * product must not mean adding a column here.
+ *
  * Turning every channel off is allowed. Somebody who wants silence should not
  * have to go and disable every rule they ever made to get it.
  *
  * @property int $id
  * @property int $account_id
- * @property bool $in_app_is_enabled
- * @property bool $email_is_enabled
- * @property bool $push_is_enabled
  * @property bool $quiet_hours_are_enabled
  * @property string|null $quiet_hours_start
  * @property string|null $quiet_hours_end
@@ -50,9 +51,6 @@ use Override;
  */
 #[Fillable([
     'account_id',
-    'in_app_is_enabled',
-    'email_is_enabled',
-    'push_is_enabled',
     'quiet_hours_are_enabled',
     'quiet_hours_start',
     'quiet_hours_end',
@@ -83,9 +81,6 @@ class NotificationPreference extends Model
     protected function casts(): array
     {
         return [
-            'in_app_is_enabled' => 'boolean',
-            'email_is_enabled' => 'boolean',
-            'push_is_enabled' => 'boolean',
             'quiet_hours_are_enabled' => 'boolean',
             'delivery_mode' => NotificationDeliveryModeEnum::class,
             'digest_weekdays' => 'array',
@@ -101,29 +96,6 @@ class NotificationPreference extends Model
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
-    }
-
-    /**
-     * Whether a channel is switched on and has something behind it. Push can be
-     * switched on and delivers nothing, so asking the preference alone would
-     * make a row nobody can ever send.
-     */
-    public function allows(NotificationChannelEnum $channel): bool
-    {
-        return $channel->isDeliverable() && (bool) $this->{$channel->preferenceColumn()};
-    }
-
-    /**
-     * The channels a notification should be made for.
-     *
-     * @return list<NotificationChannelEnum>
-     */
-    public function enabledChannels(): array
-    {
-        return array_values(array_filter(
-            NotificationChannelEnum::cases(),
-            fn (NotificationChannelEnum $channel): bool => $this->allows($channel),
-        ));
     }
 
     /**

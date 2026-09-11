@@ -451,6 +451,16 @@ return [
 
     'notification_maximum_attempts' => env('MONICA_NOTIFICATION_MAXIMUM_ATTEMPTS', 3),
 
+    'notification_retention_months' => env('MONICA_NOTIFICATION_RETENTION_MONTHS', 12),
+
+    'notification_channel_failure_threshold' => env('MONICA_NOTIFICATION_CHANNEL_FAILURE_THRESHOLD', 5),
+
+    'notification_proof_code_minutes' => env('MONICA_NOTIFICATION_PROOF_CODE_MINUTES', 10),
+
+    'notification_proof_maximum_attempts' => env('MONICA_NOTIFICATION_PROOF_MAXIMUM_ATTEMPTS', 5),
+
+    'notification_proof_maximum_sends' => env('MONICA_NOTIFICATION_PROOF_MAXIMUM_SENDS', 3),
+
     /*
     |--------------------------------------------------------------------------
     | The largest single file

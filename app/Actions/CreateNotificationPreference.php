@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\NotificationChannelEnum;
 use App\Enums\NotificationDeliveryModeEnum;
 use App\Models\Account;
+use App\Models\NotificationChannel;
 use App\Models\NotificationPreference;
 
 /**
- * Give an account the row that says how it wants to be told things.
+ * Give an account the row that says how it wants to be told things, and one row
+ * per channel it could be told them on.
  */
 class CreateNotificationPreference
 {
@@ -19,11 +22,8 @@ class CreateNotificationPreference
 
     public function execute(): NotificationPreference
     {
-        return NotificationPreference::query()->create([
+        $preference = NotificationPreference::query()->create([
             'account_id' => $this->account->id,
-            'in_app_is_enabled' => true,
-            'email_is_enabled' => true,
-            'push_is_enabled' => false,
             'quiet_hours_are_enabled' => false,
             'quiet_hours_start' => null,
             'quiet_hours_end' => null,
@@ -33,6 +33,20 @@ class CreateNotificationPreference
             'timezone' => $this->zone(),
             'type_overrides' => null,
         ]);
+
+        $this->channels();
+
+        return $preference;
+    }
+
+    private function channels(): void
+    {
+        foreach (NotificationChannelEnum::cases() as $channel) {
+            NotificationChannel::query()->firstOrCreate(
+                ['account_id' => $this->account->id, 'channel' => $channel->value],
+                ['is_enabled' => ! $channel->needsDestination()],
+            );
+        }
     }
 
     private function zone(): string

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Notifications;
 
 use App\Enums\EmailType;
+use App\Enums\NotificationChannelEnum;
+use App\Models\NotificationChannel;
 use App\Models\User;
 use App\Notifications\NotificationDigest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -80,6 +82,7 @@ class NotificationDigestTest extends TestCase
         $message = new NotificationDigest(
             heading: 'One reminder today',
             lines: [['title' => 'Birthday, Michael Scott', 'body' => 'It is today.']],
+            channel: $this->channel(NotificationChannelEnum::Email),
         )->toMail($michael);
 
         $this->assertContains('**Birthday, Michael Scott**', $message->introLines);
@@ -100,7 +103,7 @@ class NotificationDigestTest extends TestCase
         $this->assertEquals(EmailType::NotificationDigest, $this->notification()->emailType());
     }
 
-    private function notification(): NotificationDigest
+    private function notification(NotificationChannelEnum $channel = NotificationChannelEnum::Email): NotificationDigest
     {
         return new NotificationDigest(
             heading: 'Two reminders today',
@@ -108,6 +111,33 @@ class NotificationDigestTest extends TestCase
                 ['title' => 'Birthday, Michael Scott', 'body' => 'It is in seven days.'],
                 ['title' => 'Anniversary, Jim Halpert', 'body' => 'It is today.'],
             ],
+            channel: $this->channel($channel),
         );
+    }
+
+    private function channel(NotificationChannelEnum $channel): NotificationChannel
+    {
+        return NotificationChannel::factory()->channel($channel)->enabled()->make();
+    }
+
+    #[Test]
+    public function a_summary_reads_as_one_sentence_on_a_channel_that_carries_nothing_else(): void
+    {
+        $message = $this->notification(NotificationChannelEnum::Telegram)->toTelegram(User::factory()->make());
+
+        $text = (string) $message->toArray()['text'];
+
+        $this->assertStringContainsString('Two reminders today', $text);
+        $this->assertStringContainsString('Birthday, Michael Scott', $text);
+        $this->assertStringContainsString('Anniversary, Jim Halpert', $text);
+    }
+
+    #[Test]
+    public function a_summary_by_text_message_is_shortened_rather_than_dropped(): void
+    {
+        $message = $this->notification(NotificationChannelEnum::Sms)->toVonage(User::factory()->make());
+
+        $this->assertLessThanOrEqual(140, mb_strlen($message->content));
+        $this->assertStringContainsString('Two reminders today', $message->content);
     }
 }

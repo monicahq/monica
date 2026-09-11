@@ -43,6 +43,7 @@ class StripeWebhookTest extends TestCase
 
         $response = $this->call('POST', 'stripe/webhook', [], [], [], $this->server($request->headers()), $request->body());
 
+        $response->dump();
         $response->assertOk();
         $this->assertDatabaseHas('stripe_orders', ['stripe_id' => 'cs_test_scranton', 'stripe_status' => StripeOrder::PAID]);
         $this->assertTrue($michael->account->fresh()->hasFullAccess());

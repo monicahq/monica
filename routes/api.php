@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\ApiKeyController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegistrationController;
 use App\Http\Controllers\Api\BillingController;
+use App\Http\Controllers\Api\ChannelProofController as ApiChannelProofController;
+use App\Http\Controllers\Api\ChannelTestController as ApiChannelTestController;
 use App\Http\Controllers\Api\CheckoutSessionController;
 use App\Http\Controllers\Api\ContactAvatarController;
 use App\Http\Controllers\Api\ContactController;
@@ -24,6 +26,10 @@ use App\Http\Controllers\Api\FieldPositionController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\MeTimezoneController;
+use App\Http\Controllers\Api\NotificationChannelController as ApiNotificationChannelController;
+use App\Http\Controllers\Api\NotificationController as ApiNotificationController;
+use App\Http\Controllers\Api\NotificationPreferenceController as ApiNotificationPreferenceController;
+use App\Http\Controllers\Api\NotificationReadController as ApiNotificationReadController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PortalSessionController;
 use App\Http\Controllers\Api\StatusController;
@@ -69,6 +75,21 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::get('api-keys/{apiKey}', [ApiKeyController::class, 'show'])->where('apiKey', '[1-9][0-9]*')->name('apiKeys.show');
         Route::post('api-keys', [ApiKeyController::class, 'create'])->name('apiKeys.create');
         Route::delete('api-keys/{apiKey}', [ApiKeyController::class, 'destroy'])->where('apiKey', '[1-9][0-9]*')->name('apiKeys.destroy');
+
+        Route::get('notifications', [ApiNotificationController::class, 'index'])->name('notifications');
+        Route::put('notifications/read', [ApiNotificationReadController::class, 'updateAll'])->name('notifications.readAll.update');
+        Route::get('notifications/{notification}', [ApiNotificationController::class, 'show'])->where('notification', '[0-9a-fA-F-]{36}')->name('notifications.show');
+        Route::put('notifications/{notification}/read', [ApiNotificationReadController::class, 'update'])->where('notification', '[0-9a-fA-F-]{36}')->name('notifications.read.update');
+
+        Route::get('notification-channels', [ApiNotificationChannelController::class, 'index'])->name('notificationChannels');
+        Route::get('notification-channels/{channel}', [ApiNotificationChannelController::class, 'show'])->name('notificationChannels.show');
+        Route::put('notification-channels/{channel}', [ApiNotificationChannelController::class, 'update'])->name('notificationChannels.update');
+        Route::post('notification-channels/{channel}/proof', [ApiChannelProofController::class, 'create'])->name('notificationChannels.proof.store');
+        Route::put('notification-channels/{channel}/proof', [ApiChannelProofController::class, 'update'])->name('notificationChannels.proof.update');
+        Route::post('notification-channels/{channel}/test', [ApiChannelTestController::class, 'create'])->name('notificationChannels.test.store');
+
+        Route::get('notification-preferences', [ApiNotificationPreferenceController::class, 'show'])->name('notificationPreferences.show');
+        Route::put('notification-preferences', [ApiNotificationPreferenceController::class, 'update'])->name('notificationPreferences.update');
 
         Route::get('logs', [LogController::class, 'index'])->name('logs');
         Route::get('logs/{log}', [LogController::class, 'show'])->where('log', '[1-9][0-9]*')->name('logs.show');

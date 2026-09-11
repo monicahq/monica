@@ -20,12 +20,19 @@
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="base64:1zIqSKT/IRwsdzeakTeYfC/In+k0BxaCtfnzw9ApxnA="/>
+        <env name="APP_URL" value="http://localhost"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>
         <env name="DB_CONNECTION" value="testing"/>
         <env name="MAIL_MAILER" value="array"/>
+        <env name="VONAGE_KEY" value="testing-key"/>
+        <env name="VONAGE_SECRET" value="testing-secret"/>
+        <env name="VONAGE_SMS_FROM" value="15550000000"/>
+        <env name="TELEGRAM_BOT_TOKEN" value="testing-bot-token"/>
+        <env name="TELEGRAM_BOT_URL" value="https://t.me/DunderMifflinBot"/>
+        <env name="TELEGRAM_BOT_WEBHOOK_SECRET" value="testing-webhook-secret"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="DEBUGBAR_ENABLED" value="false"/>

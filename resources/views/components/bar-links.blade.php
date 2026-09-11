@@ -26,5 +26,7 @@
     </a>
   @endforeach
 
+  <x-notification-bar />
+
   <span aria-hidden="true" class="ml-1.5 h-5.5 w-px bg-hairline-strong"></span>
 </div>

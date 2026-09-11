@@ -155,6 +155,16 @@ enum UserActionEnum: string implements Translatable
     case ReminderReactivation = 'reminders_reactivated';
     case ReminderOccurrencePostponement = 'reminder_occurrence_postponed';
     case ReminderOccurrenceDismissal = 'reminder_occurrence_dismissed';
+    case NotificationChannelEnabled = 'notification_channel_enabled';
+    case NotificationChannelDisabled = 'notification_channel_disabled';
+    case NotificationChannelUpdate = 'notification_channel_updated';
+    case NotificationChannelCredentialRemoved = 'notification_channel_credential_removed';
+    case NotificationChannelProofRequested = 'notification_channel_proof_requested';
+    case NotificationChannelProven = 'notification_channel_proven';
+    case NotificationChannelTested = 'notification_channel_tested';
+    case NotificationChannelConnectionStarted = 'notification_channel_connection_started';
+    case NotificationChannelConnected = 'notification_channel_connected';
+    case NotificationChannelGaveUp = 'notification_channel_gave_up';
 
     public function description(): string
     {
@@ -305,6 +315,16 @@ enum UserActionEnum: string implements Translatable
             self::ReminderReactivation => 'Restored :count reminder about :name|Restored :count reminders about :name',
             self::ReminderOccurrencePostponement => 'Postponed the reminder :name until :date',
             self::ReminderOccurrenceDismissal => 'Dismissed the reminder :name of :date',
+            self::NotificationChannelEnabled => 'Switched :name on for notifications',
+            self::NotificationChannelDisabled => 'Switched :name off for notifications',
+            self::NotificationChannelUpdate => 'Changed the settings of :name',
+            self::NotificationChannelCredentialRemoved => 'Removed the credential of :name',
+            self::NotificationChannelProofRequested => 'Asked for a code to prove their :name destination',
+            self::NotificationChannelProven => 'Proved their :name destination is their own',
+            self::NotificationChannelTested => 'Sent a test message on :name',
+            self::NotificationChannelConnectionStarted => 'Started connecting :name',
+            self::NotificationChannelConnected => 'Connected :name',
+            self::NotificationChannelGaveUp => 'Switched :name off after it stopped accepting anything',
         };
     }
 

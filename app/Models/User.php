@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Actions\SendEmailVerification;
+use App\Contracts\CarriesOnAccountChannel;
 use App\Enums\DateFormatEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\NumberFormatEnum;
@@ -23,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification as LaravelNotification;
 use Laravel\Passkeys\Contracts\PasskeyUser;
 use Laravel\Passkeys\PasskeyAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
@@ -299,5 +301,31 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     public function sendEmailVerificationNotification()
     {
         new SendEmailVerification(user: $this)->execute();
+    }
+
+    /**
+     * The conversation a Telegram notification goes to. The bot token is the
+     * instance's and comes from the configuration, so only the destination is
+     * answered here.
+     */
+    public function routeNotificationForTelegram(?LaravelNotification $notification = null): ?string
+    {
+        return $this->channelBehind($notification)?->destination;
+    }
+
+    /**
+     * The number a text message goes to. The key and the secret travel on the
+     * message, which builds its own client from them.
+     */
+    public function routeNotificationForVonage(?LaravelNotification $notification = null): ?string
+    {
+        return $this->channelBehind($notification)?->destination;
+    }
+
+    private function channelBehind(?LaravelNotification $notification): ?NotificationChannel
+    {
+        return $notification instanceof CarriesOnAccountChannel
+            ? $notification->notificationChannel()
+            : null;
     }
 }

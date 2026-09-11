@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\App\Docs;
 
 use App\Actions\MergeContacts;
 use App\Enums\FieldTypeEnum;
+use App\Enums\NotificationChannelEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\StripeCatalogue;
@@ -17,6 +18,9 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\Log;
+use App\Models\Notification;
+use App\Models\NotificationChannel;
+use App\Models\NotificationPreference;
 use App\Models\Payment;
 use App\Models\Section;
 use App\Models\SectionVersion;
@@ -33,6 +37,7 @@ use App\ViewModels\Docs\ApiDocsViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
@@ -565,6 +570,80 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('GET', "/api/v1/emails-sent/{$email->id}");
             }),
 
+            'notifications-index' => $this->asSomebody(function (User $user): TestResponse {
+                $this->aNotification($user);
+
+                return $this->json('GET', '/api/v1/notifications');
+            }),
+
+            'notifications-show' => $this->asSomebody(function (User $user): TestResponse {
+                $notification = $this->aNotification($user);
+
+                return $this->json('GET', "/api/v1/notifications/{$notification->uuid}");
+            }),
+
+            'notifications-read-update' => $this->asSomebody(function (User $user): TestResponse {
+                $notification = $this->aNotification($user);
+
+                return $this->json('PUT', "/api/v1/notifications/{$notification->uuid}/read");
+            }),
+
+            'notifications-read-all-update' => $this->asSomebody(function (User $user): TestResponse {
+                $this->aNotification($user);
+
+                return $this->json('PUT', '/api/v1/notifications/read');
+            }),
+
+            'notification-channels-index' => $this->asSomebody(fn (User $user): TestResponse => $this->json('GET', '/api/v1/notification-channels')),
+
+            'notification-channels-show' => $this->asSomebody(fn (User $user): TestResponse => $this->json('GET', '/api/v1/notification-channels/telegram')),
+
+            'notification-channels-update' => $this->asSomebody(function (User $user): TestResponse {
+                $this->aConnectedTelegram($user);
+
+                return $this->json('PUT', '/api/v1/notification-channels/telegram', ['is_enabled' => true]);
+            }),
+
+            'notification-channels-proof-store' => $this->asSomebody(function (User $user): TestResponse {
+                $this->aTextMessageAwaitingProof($user);
+
+                return $this->json('POST', '/api/v1/notification-channels/sms/proof');
+            }),
+
+            'notification-channels-proof-update' => $this->asSomebody(function (User $user): TestResponse {
+                $this->aTextMessageAwaitingProof($user)->update([
+                    'proof_code_hash' => Hash::make('123456'),
+                    'proof_expires_at' => now()->addMinutes(10),
+                ]);
+
+                return $this->json('PUT', '/api/v1/notification-channels/sms/proof', ['code' => '123456']);
+            }),
+
+            'notification-channels-test-store' => $this->asSomebody(function (User $user): TestResponse {
+                NotificationFacade::fake();
+                $this->aConnectedTelegram($user);
+
+                return $this->json('POST', '/api/v1/notification-channels/telegram/test');
+            }),
+
+            'notification-preferences-show' => $this->asSomebody(function (User $user): TestResponse {
+                NotificationPreference::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('GET', '/api/v1/notification-preferences');
+            }),
+
+            'notification-preferences-update' => $this->asSomebody(function (User $user): TestResponse {
+                NotificationPreference::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', '/api/v1/notification-preferences', [
+                    'quiet_hours_are_enabled' => true,
+                    'quiet_hours_start' => '22:00',
+                    'quiet_hours_end' => '08:00',
+                    'delivery_mode' => 'immediate',
+                    'timezone' => 'America/New_York',
+                ]);
+            }),
+
             'vaults-index' => $this->asSomebody(function (User $user): TestResponse {
                 Vault::factory()->create(['account_id' => $user->account_id]);
 
@@ -1042,6 +1121,48 @@ class ApiDocsReturnFieldsTest extends TestCase
         ]);
 
         return [$template, $version, $row];
+    }
+
+    private function aNotification(User $user): Notification
+    {
+        return Notification::factory()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'channel' => NotificationChannelEnum::InApp,
+            'sent_at' => now(),
+        ]);
+    }
+
+    private function aConnectedTelegram(User $user): NotificationChannel
+    {
+        $channel = $this->aChannel($user, NotificationChannelEnum::Telegram);
+
+        $channel->fill([
+            'is_enabled' => true,
+            'destination' => '918273645',
+            'proven_at' => now(),
+        ])->save();
+
+        return $channel;
+    }
+
+    private function aTextMessageAwaitingProof(User $user): NotificationChannel
+    {
+        $channel = $this->aChannel($user, NotificationChannelEnum::Sms);
+
+        $channel->fill([
+            'destination' => '+15705550172',
+        ])->save();
+
+        return $channel;
+    }
+
+    private function aChannel(User $user, NotificationChannelEnum $channel): NotificationChannel
+    {
+        return NotificationChannel::query()
+            ->where('account_id', $user->account_id)
+            ->where('channel', $channel->value)
+            ->firstOrFail();
     }
 
     private function asSomebody(callable $call): TestResponse

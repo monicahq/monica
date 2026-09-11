@@ -9,6 +9,7 @@ use App\Models\NotificationPreference;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -27,13 +28,25 @@ class BackfillNotificationPreferencesTest extends TestCase
 
         $this->assertDatabaseHas('notification_preferences', [
             'account_id' => $account->id,
-            'in_app_is_enabled' => true,
-            'email_is_enabled' => true,
-            'push_is_enabled' => false,
             'quiet_hours_are_enabled' => false,
             'delivery_mode' => 'immediate',
             'timezone' => 'America/New_York',
         ]);
+    }
+
+    #[Test]
+    public function it_gives_an_account_made_before_the_feature_one_row_per_channel(): void
+    {
+        $account = Account::factory()->create();
+        User::factory()->create(['account_id' => $account->id]);
+        NotificationPreference::query()->where('account_id', $account->id)->delete();
+        DB::table('notification_channels')->where('account_id', $account->id)->delete();
+
+        $this->migration()->up();
+
+        $this->assertSame(4, DB::table('notification_channels')->where('account_id', $account->id)->count());
+        $this->assertDatabaseHas('notification_channels', ['account_id' => $account->id, 'channel' => 'email', 'is_enabled' => true]);
+        $this->assertDatabaseHas('notification_channels', ['account_id' => $account->id, 'channel' => 'telegram', 'is_enabled' => false]);
     }
 
     #[Test]
@@ -75,6 +88,6 @@ class BackfillNotificationPreferencesTest extends TestCase
 
     private function migration(): Migration
     {
-        return require database_path('migrations/2026_09_02_000004_backfill_notification_preferences.php');
+        return require database_path('migrations/2026_09_02_000006_backfill_notification_preferences.php');
     }
 }

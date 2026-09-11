@@ -71,9 +71,6 @@ class CreateAccountTest extends TestCase
 
         $this->assertDatabaseHas('notification_preferences', [
             'account_id' => $user->account_id,
-            'in_app_is_enabled' => true,
-            'email_is_enabled' => true,
-            'push_is_enabled' => false,
             'quiet_hours_are_enabled' => false,
             'delivery_mode' => 'immediate',
             'timezone' => 'America/New_York',

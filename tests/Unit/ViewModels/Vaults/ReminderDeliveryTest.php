@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Enums\NotificationChannelEnum;
 use App\Models\Notification;
-use App\Models\NotificationPreference;
+use App\Models\NotificationChannel;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -102,14 +103,54 @@ class ReminderDeliveryTest extends TestCase
         $reminder = Reminder::factory()->create();
         $user = $this->userFor($reminder);
 
-        NotificationPreference::query()
+        NotificationChannel::query()
             ->where('account_id', $reminder->account_id)
-            ->update(['in_app_is_enabled' => false, 'email_is_enabled' => false, 'push_is_enabled' => false]);
+            ->update(['is_enabled' => false]);
 
         $delivery = new ReminderDelivery(user: $user, reminder: $reminder->refresh())->get();
 
         $this->assertNotSame('', $delivery['channels']);
         $this->assertTrue($delivery['isSilent']);
+    }
+
+    #[Test]
+    public function it_names_every_channel_that_is_switched_on_and_finished(): void
+    {
+        $reminder = Reminder::factory()->create();
+        $user = $this->userFor($reminder);
+
+        NotificationChannel::query()
+            ->where('account_id', $reminder->account_id)
+            ->where('channel', NotificationChannelEnum::Telegram->value)
+            ->firstOrFail()
+            ->fill([
+                'is_enabled' => true,
+                'destination' => '918273645',
+                'proven_at' => now(),
+            ])
+            ->save();
+
+        $channels = new ReminderDelivery(user: $user, reminder: $reminder->refresh())->get()['channels'];
+
+        $this->assertStringContainsString('in the app', $channels);
+        $this->assertStringContainsString('by email', $channels);
+        $this->assertStringContainsString('on Telegram', $channels);
+    }
+
+    #[Test]
+    public function it_leaves_out_a_channel_that_is_switched_on_but_not_finished(): void
+    {
+        $reminder = Reminder::factory()->create();
+        $user = $this->userFor($reminder);
+
+        NotificationChannel::query()
+            ->where('account_id', $reminder->account_id)
+            ->where('channel', NotificationChannelEnum::Sms->value)
+            ->update(['is_enabled' => true]);
+
+        $channels = new ReminderDelivery(user: $user, reminder: $reminder->refresh())->get()['channels'];
+
+        $this->assertStringNotContainsString('by text message', $channels);
     }
 
     private function userFor(Reminder $reminder): User

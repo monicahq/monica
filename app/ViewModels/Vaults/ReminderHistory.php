@@ -28,6 +28,7 @@ class ReminderHistory
     {
         $events = $this->fromTheJournal()
             ->merge($this->fromWhatWentOut())
+            ->merge($this->fromWhatIsNoLongerKept())
             ->sortByDesc(fn (array $event): CarbonImmutable => $event['at'])
             ->take(self::LIMIT)
             ->values();
@@ -96,6 +97,42 @@ class ReminderHistory
             ]);
     }
 
+    /**
+     * The deadlines that were notified but whose per channel records have been
+     * pruned.
+     *
+     * `notified_at` on the deadline outlives the notifications, so the history
+     * can still say somebody was told. What it cannot say any more is which
+     * channel carried it, and saying so plainly is better than a gap the reader
+     * has to explain to themselves.
+     *
+     * @return Collection<int, array{at: CarbonImmutable, title: string, note: string, tone: string}>
+     */
+    private function fromWhatIsNoLongerKept(): Collection
+    {
+        $stillRecorded = Notification::query()
+            ->where('account_id', $this->reminder->account_id)
+            ->where('notifiable_type', ReminderOccurrence::class)
+            ->whereIn('notifiable_id', $this->reminder->occurrences()->select('id'))
+            ->whereNotNull('sent_at')
+            ->pluck('notifiable_id')
+            ->all();
+
+        return $this->reminder->occurrences()
+            ->whereNotNull('notified_at')
+            ->whereNotIn('id', $stillRecorded)
+            ->latest('notified_at')
+            ->take(self::LIMIT)
+            ->get()
+            ->toBase()
+            ->map(fn (ReminderOccurrence $occurrence): array => [
+                'at' => $this->readable($occurrence->notified_at),
+                'title' => $this->delivered(),
+                'note' => (string) __('Which channel carried it is no longer kept.'),
+                'tone' => 'neutral',
+            ]);
+    }
+
     private function doneBy(Log $log): string
     {
         return __('By :author.', ['author' => $log->author]);
@@ -108,11 +145,7 @@ class ReminderHistory
 
     private function wentOutOn(NotificationChannelEnum $channel): string
     {
-        return match ($channel) {
-            NotificationChannelEnum::InApp => __('It appeared in the application.'),
-            NotificationChannelEnum::Email => __('It went out by email.'),
-            NotificationChannelEnum::Push => __('It was pushed to a device.'),
-        };
+        return __($channel->deliveredSentence());
     }
 
     private function readable(CarbonImmutable $at): CarbonImmutable

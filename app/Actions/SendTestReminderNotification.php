@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\NotificationChannelEnum;
 use App\Models\Contact;
+use App\Models\NotificationChannel;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -41,6 +43,19 @@ class SendTestReminderNotification
             recordName: $record instanceof Contact ? $record->name : '',
             sourceDate: $this->occurrence->source_local_date->format('Y-m-d'),
             whenItIsAbout: $this->occurrence->howFarOff($locale),
+            channel: $this->emailChannel(),
         )->locale($locale));
+    }
+
+    /**
+     * A preview goes out by email whatever the account has switched on, since
+     * that is the channel the address on the user already answers for.
+     */
+    private function emailChannel(): NotificationChannel
+    {
+        return NotificationChannel::query()
+            ->where('account_id', $this->user->account_id)
+            ->where('channel', NotificationChannelEnum::Email->value)
+            ->firstOrFail();
     }
 }
