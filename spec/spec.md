@@ -466,10 +466,25 @@ Without that distinction, you can neither postpone a reminder cleanly, nor keep 
 
 How you get notified is configured at the account level:
 
-- the **channels** switched on. The set is open rather than fixed, and each channel says for itself what it needs before it can carry anything: a destination, a credential, or proof that the destination is really yours;
+- the **channels** switched on. The set is open rather than fixed, and each channel says for itself what it needs before it can carry anything: somewhere to send, or proof that the destination is really yours;
 - the **quiet hours**, during which nothing may disturb the user. A reminder due at 3am can be delivered at 8am;
 - the **reception mode**: immediate, or grouped into a daily digest;
 - the exceptions defined on a specific rule.
+
+**Which channels an instance offers is not fixed by the product.** A channel that reaches an
+outside service needs two things beyond the product itself: the integration installed, and an
+account with that service, held and paid for by whoever runs the instance. A channel missing either
+is still listed, and says plainly that this server cannot send on it and that this is not the
+reader's to fix. It is never offered as a switch that does nothing, and never quietly hidden.
+
+What an account holder supplies is where to send, and, where a wrong destination would be accepted
+without complaint, proof that the destination is theirs. They never supply the service account and
+are never billed for it. Some channels are not even told where to send: the service hands us the
+destination when the account opens a conversation with it.
+
+A channel with nothing behind it at all is not listed. Push notifications for the mobile
+applications are still owed (3.8) and will appear here as a channel once there is something that
+delivers them.
 
 A reminder always belongs to a single account and is never sent to people viewing a private share link.
 

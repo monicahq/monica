@@ -1,73 +1,29 @@
 <!--
 Sync Impact Report
-Version change: 2.0.1 -> 2.1.0
-Rationale: the fixed layout is brought back into line with the repository it claims to fix. Two
-folders the application already relies on, `app/Listeners` and `app/Notifications`, were outside the
-list, which put every listener and every email in a folder the layout never permitted. Two that were
-listed, `app/Interfaces` and `app/Mail`, have never existed. Widening the permitted layout is
-materially expanded guidance, so MINOR. No principle is removed, redefined or renumbered.
+Version change: 2.1.0 -> 2.2.0
+Rationale: an outbound channel that needs a third-party package was a required dependency, which
+made every installation carry the weight of every integration whether or not the operator wanted
+it, and left no answer for what the product should do when one is absent. Two new obligations, so
+MINOR. No principle is removed, redefined or renumbered.
 
-Added: none.
-Modified: Technology and Structure, four bullets and one paragraph.
-- `app/` now lists `Listeners` and `Notifications`, drops `Interfaces` and `Mail`, and names
-  `Resources` and `Responses` under `Http`.
-- `resources/` drops `views/mail`, which does not exist, names `views/vendor` where the email
-  templates published by the framework live, and adds `docs` for the API reference the portal renders.
-- `routes/` adds `api.php`.
-- `app/Http/Controllers` said it held one namespace and that `Api` would arrive one day. It holds two.
-  The paragraph now says so, keeps the rule that logic lives in an action, and reserves `Marketing`.
-- Principle III said "mailable". There is no mailable in the application: every email is a
-  notification, and that is the word the obligation now uses. No email loses its test.
-- The workflow said API coverage was owed later "while there is no `Api` namespace". It exists, so
-  the answer owed is the endpoint and its test.
+Added: Technology and Architecture Constraints, two bullets.
+- An integration package ships as a suggested dependency and stays in the development dependencies,
+so the working path is still covered by the suite. The application boots, renders and passes its
+tests without it, and a channel whose package is missing never names an unregistered delivery
+driver. Presence is read through configuration so that both states are testable.
+- The account with the outside service belongs to the instance rather than the account holder. The
+product does not ask an account holder for a credential of their own and does not store one.
+Modified: none.
 Removed: none.
 
-The prompt behind it: the plan for feature 025 puts a seventh class in `app/Listeners`, and the
-reviewer note on that plan pointed out the folder was never in the list. Verified against the working
-tree on 2026-09-08 rather than taken from the previous report.
+Considered and left standing: the first release bullet still requires push notifications on the
+server side for the mobile applications. The push channel was removed from the code because it
+could never be switched on, which discharges nothing: `spec/spec.md` 10.4 now says the channel
+returns once something delivers it.
 
-Previous report, for 2.0.0 -> 2.0.1
-Rationale: Principle V counted the configured locales in its own text. The count was nine when it was
-written and the codebase made it thirty one, so the sentence was a fact with an expiry date sitting
-inside a principle. Removing it changed no obligation: every configured locale still has to be
-translated, however many there are. PATCH. `.claude/rules/code-style.md` and
-`.claude/skills/add-locale/SKILL.md` counted them the same way and are corrected in this pull request,
-which is where that report said they would be.
-
-Previous report, for 1.4.0 -> 2.0.0
-Rationale: one product invariant reversed. "There is no subscription and no notion of a plan" becomes
-one free offer and one full access, held either by a purchase made once or by a subscription, billed
-monthly or yearly. Reversing an invariant redefines what the product is, so MAJOR.
-
-Documentation that follows, in this pull request:
-- `.claude/CLAUDE.md` describes the same tree a second time, which Governance forbids. Its stale
-  claims are corrected in this pull request; the duplication itself stays under TODO 8.
-
-Code that follows: none. Nothing in the application moves, because the amendment describes what is
-already there.
-
-Follow-up TODOs, re-verified against the working tree on 2026-09-08. Items 1, 5, 6 and 7 were checked
-again and still stand exactly as written. Items 2, 3 and 4 are carried over as judgements rather than
-re-verified, except that no webhook or MCP table exists in `database/migrations`.
-
-1. `app/Actions/CreateApiKey.php:24` still issues a Sanctum token with no abilities, while
-   Principle X requires tokens whose scopes can be limited.
-2. No MCP server and no webhook machinery. Principle X and the webhook constraints describe a
-   target, and every capability shipped before they exist adds to that debt.
-3. No screen has been audited against WCAG 2.2 AA. Principle IX binds every screen a change touches
-   from now on; the existing Blade files are unaudited.
-4. Two of the spec's open questions are governed by principles here and must be answered in the
-   spec before the features they concern are built: how sensitive values behave in the changelog
-   (spec 12), and whether a webhook carries modified values (spec 14.5).
-5. `database/migrations/2026_07_31_000001_create_magic_links_table.php` still defines `down()`,
-   which Principle IV forbids for migrations this project writes.
-6. `app/Actions/ResetPassword.php` still has no test.
-7. Seven view models in `app/ViewModels/Auth` have no test: only `LoginViewModel` and
-   `RegisterViewModel` are covered. `Settings/Account/Security/TwoFactorEnrolmentViewModel`,
-   `Vaults/ContactEditViewModel` and `Vaults/SetAsideValuesViewModel` are also uncovered.
-8. `.claude/CLAUDE.md` still describes the repository tree a second time, which Governance forbids:
-   it must point at this file instead. Its false statements were corrected on 2026-09-08, so what
-   remains is the duplication, and the next drift it will cause.
+Follow-up owed by the pull request that adopts this: move
+`laravel-notification-channels/telegram` and `laravel/vonage-notification-channel` from `require`
+to `require-dev` plus `suggest`, and gate both channels on the package being present.
 -->
 
 # Monica Constitution
@@ -354,6 +310,17 @@ an amendment.
   compatibility. The hosted version runs only modules we approve and operate. The contract, meaning
   format, lifecycle, permissions, compatibility and distribution, is not specified yet, so no module
   code lands before an amendment defines it.
+- An outbound channel that reaches a third-party service MUST ship its integration package as a
+  suggested dependency, never a required one, and MUST keep it in the development dependencies so
+  the working path stays covered by the suite. The application MUST boot, render every screen and
+  pass its tests with the package absent. A channel whose package is missing reports itself
+  unavailable, is refused if somebody tries to switch it on, and MUST NOT name a delivery driver
+  that is not registered. Whether a package is present is read through configuration rather than
+  from a bare `class_exists` at the point of use, so both states are testable.
+- The account with the outside service belongs to the instance, not to the account holder. Whoever
+  runs the server configures it and pays for it. An account holder supplies where to send and,
+  where a wrong destination would be accepted without complaint, proof that it is theirs; the
+  product MUST NOT ask them for a credential of their own, and MUST NOT store one.
 - The first release is the responsive web application, genuinely usable on desktop, tablet and
   phone. Native iOS in Swift and Android in Kotlin come later, and they shape the work now: the API
   has to be complete, push notifications have to exist on the server side, and quick capture is a
@@ -424,4 +391,4 @@ test and the translations for the change under review, and to say which of the t
 change had to satisfy. Complexity that steps outside these principles MUST be justified in the pull
 request or removed.
 
-**Version**: 2.1.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-09
+**Version**: 2.2.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-10
