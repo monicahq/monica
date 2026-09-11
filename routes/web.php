@@ -79,6 +79,7 @@ use App\Http\Controllers\App\Vaults\ContactAvatarController;
 use App\Http\Controllers\App\Vaults\ContactController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateDismissalController;
+use App\Http\Controllers\App\Vaults\ContactDuplicateSearchController;
 use App\Http\Controllers\App\Vaults\ContactFavouriteController;
 use App\Http\Controllers\App\Vaults\ContactMergeController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
@@ -248,6 +249,9 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->name('vaults.merges.destroy');
 
     Route::get('vaults/{vault}/duplicates', [ContactDuplicateController::class, 'index'])->name('vaults.duplicates.index');
+    Route::post('vaults/{vault}/duplicates/search', [ContactDuplicateSearchController::class, 'create'])
+        ->middleware('throttle:10,1')
+        ->name('vaults.duplicates.search.create');
     Route::put('vaults/{vault}/duplicates/{candidate}/dismissal', [ContactDuplicateDismissalController::class, 'update'])
         ->whereNumber('candidate')
         ->name('vaults.duplicates.dismissal.update');

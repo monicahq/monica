@@ -8,13 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
 
-/**
- * What a merge would do, exactly as the action reported it.
- *
- * The resource wraps rather than reshapes, because the screen and this endpoint
- * have to be told the same thing, and the fingerprint has to come back out so a
- * client can hand it in again when it confirms.
- */
 class ContactMergePreviewResource extends JsonResource
 {
     /** @return array<string, mixed> */

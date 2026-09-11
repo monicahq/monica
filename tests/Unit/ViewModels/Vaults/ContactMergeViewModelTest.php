@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Models\Contact;
+use App\Models\File;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactMergeViewModel;
@@ -94,6 +95,51 @@ class ContactMergeViewModelTest extends TestCase
         $this->assertEquals('4 answers come over', $viewModel->movedLine(['kind' => 'field_value', 'count' => 4]));
         $this->assertEquals('0 answers come over', $viewModel->movedLine(['kind' => 'field_value', 'count' => 0]));
         $this->assertEquals('2 reminders come over', $viewModel->movedLine(['kind' => 'reminder', 'count' => 2]));
+    }
+
+    #[Test]
+    public function it_offers_the_way_into_both_records_with_the_one_that_stays_first(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
+        $james = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'James', 'last_name' => 'Halpert']);
+
+        $records = new ContactMergeViewModel(user: $user, vault: $vault, contact: $jim, other: $james)->records();
+
+        $this->assertCount(2, $records);
+        $this->assertEquals('Jim Halpert', $records[0]['name']);
+        $this->assertEquals(route('contacts.show', ['vault' => $vault, 'contact' => $jim]), $records[0]['url']);
+        $this->assertEquals('James Halpert', $records[1]['name']);
+        $this->assertEquals(route('contacts.show', ['vault' => $vault, 'contact' => $james]), $records[1]['url']);
+    }
+
+    #[Test]
+    public function it_says_where_the_picture_of_each_record_is_read_from(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
+        $james = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'James', 'last_name' => 'Halpert']);
+
+        $file = File::factory()->image()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+        $james->avatar_file_id = $file->id;
+        $james->save();
+
+        $records = new ContactMergeViewModel(user: $user, vault: $vault, contact: $jim, other: $james->refresh())->records();
+
+        $this->assertNull($records[0]['avatarUrl']);
+        $this->assertEquals(route('files.show', ['vault' => $vault, 'file' => $file]), $records[1]['avatarUrl']);
+    }
+
+    #[Test]
+    public function it_names_no_record_while_nobody_is_picked(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
+
+        $this->assertSame([], new ContactMergeViewModel(user: $user, vault: $vault, contact: $jim)->records());
     }
 
     #[Test]

@@ -294,6 +294,28 @@ class DetectDuplicateContactsTest extends TestCase
         $this->assertEquals('scranton strangler', $contact->match_key);
     }
 
+    #[Test]
+    public function it_queues_one_pass_per_subject(): void
+    {
+        $vault = Vault::factory()->create();
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+
+        $this->assertEquals(
+            new DetectDuplicateContacts($vault)->uniqueId(),
+            new DetectDuplicateContacts($vault)->uniqueId(),
+        );
+
+        $this->assertNotEquals(
+            new DetectDuplicateContacts($vault)->uniqueId(),
+            new DetectDuplicateContacts($contact)->uniqueId(),
+        );
+
+        $this->assertNotEquals(
+            new DetectDuplicateContacts($vault)->uniqueId(),
+            new DetectDuplicateContacts()->uniqueId(),
+        );
+    }
+
     private function contactIn(Vault $vault, ?string $first, string $last): Contact
     {
         return Contact::factory()->create([

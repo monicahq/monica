@@ -75,6 +75,22 @@ class ContactMergeControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_opens_either_record_from_the_screen(): void
+    {
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+
+        $response = $this->actingAs($user)->get(
+            route('contacts.merge.show', ['vault' => $jim->vault, 'contact' => $jim, 'other' => $james])
+        );
+
+        $response->assertStatus(200);
+        $response->assertSee('The two records');
+        $response->assertSee(route('contacts.show', ['vault' => $jim->vault, 'contact' => $jim]));
+        $response->assertSee(route('contacts.show', ['vault' => $jim->vault, 'contact' => $james]));
+    }
+
+    #[Test]
     public function it_merges_two_contacts(): void
     {
         Queue::fake();

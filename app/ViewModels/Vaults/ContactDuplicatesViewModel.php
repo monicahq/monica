@@ -48,11 +48,17 @@ class ContactDuplicatesViewModel
         return route('contacts.index', $this->vault);
     }
 
+    public function searchUrl(): string
+    {
+        return route('vaults.duplicates.search.create', $this->vault);
+    }
+
     /** @return Paginator<int, ContactDuplicateCandidate> */
     public function pairs(): Paginator
     {
         return once(fn (): Paginator => ContactDuplicateCandidate::query()
             ->standing()
+            ->whereBothContactsExist()
             ->where('vault_id', $this->vault->id)
             ->with(['contact', 'otherContact'])
             ->orderByDesc('score')
@@ -60,11 +66,7 @@ class ContactDuplicatesViewModel
             ->simplePaginate(self::PER_PAGE));
     }
 
-    /**
-     * One pair, as the screen needs it.
-     *
-     * @return array{name: string, other_name: string, why: string, compare_url: string, dismiss_url: string}
-     */
+    /** @return array{name: string, other_name: string, why: string, compare_url: string, dismiss_url: string} */
     public function row(ContactDuplicateCandidate $candidate): array
     {
         return [
@@ -83,10 +85,6 @@ class ContactDuplicatesViewModel
         ];
     }
 
-    /**
-     * Why the pair is on the screen, in words. Colour says nothing here, so a
-     * reader who cannot see the ordering still learns what matched.
-     */
     private function why(ContactDuplicateCandidate $candidate): string
     {
         $said = [];

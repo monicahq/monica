@@ -147,10 +147,6 @@ class ContactViewModel
         return route('contacts.merge.new', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
-    /**
-     * The merge this contact most recently absorbed somebody through, while it
-     * can still be undone. Null once there is none, which is the usual case.
-     */
     public function undoableMerge(): ?ContactMerge
     {
         return once(fn (): ?ContactMerge => ContactMerge::query()

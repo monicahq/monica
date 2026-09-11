@@ -22,19 +22,9 @@ use Illuminate\Validation\ValidationException;
 /**
  * Make two contacts one, keeping everything either of them held.
  *
- * It follows the shape of {@see MoveRecordToTemplateVersion}: capture the state
- * first, then move, then set aside what the surviving structure cannot carry,
- * then log. Nothing is destroyed. The absorbed contact is soft deleted and keeps
- * its rows, so a value the user chose not to bring over is still there rather
- * than gone, and a value the survivor gave up is detached rather than deleted.
- *
- * Every decision the user made arrives in `$resolutions` and must match what
- * {@see PreviewContactMerge} reported, neither missing one nor inventing one.
- * That is what stops a merge being confirmed against a state nobody looked at.
- *
- * Snapshots are deliberately left where they are. A snapshot is the history of
- * the record it captured, not content the record owns, so moving one would put
- * the absorbed contact's past into the survivor's timeline.
+ * It follows the shape of {@see MoveRecordToTemplateVersion}, and destroys nothing: the absorbed
+ * contact is soft deleted and keeps its rows. Every decision arrives in `$resolutions` and must
+ * match what {@see PreviewContactMerge} reported. Snapshots are left where they are.
  */
 class MergeContacts
 {
@@ -104,13 +94,7 @@ class MergeContacts
         }
     }
 
-    /**
-     * Line every decision up against what the preview asked about. A decision
-     * the preview never asked for is refused rather than ignored, because it
-     * means the two are reading different states.
-     *
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     private function decisions(array $preview): array
     {
         $asked = [];
@@ -208,13 +192,6 @@ class MergeContacts
         }
     }
 
-    /**
-     * Every row moves, including one whose field the survivor does not carry. A
-     * row and the values inside it belong to the same record, and leaving the
-     * row behind while its values came over would put a value on one contact and
-     * its row on another. What the structure cannot show is set aside further
-     * down instead.
-     */
     private function takeTheRows(array $decisions): void
     {
         $rows = $this->absorbed->fieldValueRows()->with('field')->get();
@@ -253,11 +230,6 @@ class MergeContacts
         }
     }
 
-    /**
-     * A reminder reads one value. When that value stayed behind, the rule has
-     * nothing left to compute from, so it moves and is deactivated with a reason
-     * rather than pointing at a value on a contact nobody can open.
-     */
     private function takeTheReminders(): void
     {
         $reminders = Reminder::query()

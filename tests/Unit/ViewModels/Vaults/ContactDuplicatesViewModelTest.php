@@ -57,6 +57,19 @@ class ContactDuplicatesViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_out_a_pair_one_of_whose_contacts_is_gone(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $candidate = $this->candidateIn($vault);
+        $candidate->otherContact->delete();
+
+        $pairs = new ContactDuplicatesViewModel(user: $user, vault: $vault)->pairs();
+
+        $this->assertCount(0, $pairs);
+    }
+
+    #[Test]
     public function it_puts_the_strongest_resemblance_first(): void
     {
         $user = User::factory()->create();

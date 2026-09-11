@@ -11,11 +11,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Record that two contacts the product proposed are two different people.
- *
- * A dismissal is permanent. Detection recomputes candidates freely and leaves a
- * dismissed row alone, so the pair never comes back to the screen even when it
- * still resembles itself, which it will.
+ * Record that two contacts the product proposed are two different people. A dismissal is permanent:
+ * detection leaves a dismissed row alone, so the pair never comes back to the screen.
  */
 class DismissDuplicateCandidate
 {
@@ -37,6 +34,10 @@ class DismissDuplicateCandidate
     {
         if ($this->candidate->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This pair is in another account.');
+        }
+
+        if (! $this->candidate->hasBothContacts()) {
+            throw new ModelNotFoundException('One of these two contacts is gone.');
         }
     }
 

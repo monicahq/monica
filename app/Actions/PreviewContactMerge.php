@@ -14,20 +14,11 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Work out what merging one contact into another would do, without doing any of
- * it.
+ * Work out what merging one contact into another would do, without doing any of it.
  *
- * This is an action rather than a view model because both the screen and the API
- * ask it the same question, and a view model may only be read by Blade. Whatever
- * it answers here is what the merge is then allowed to write, so the two stay in
- * step: a resolution the preview never reported is refused.
- *
- * The fingerprint is what makes that promise hold over time. It covers both
- * contacts and every value they carry, so a merge confirmed after somebody
- * edited either of them underneath the preview is refused rather than applied to
- * a state nobody looked at. It hashes the values themselves rather than their
- * timestamps, because two edits inside one second share a timestamp and the
- * second of them would otherwise pass unnoticed.
+ * Whatever it answers is what the merge is then allowed to write. The fingerprint covers both
+ * contacts and every value they carry, so a merge confirmed after somebody edited either of them
+ * underneath the preview is refused.
  */
 class PreviewContactMerge
 {
@@ -150,13 +141,7 @@ class PreviewContactMerge
         return array_values(array_filter($moves, fn (array $move): bool => $move['count'] > 0));
     }
 
-    /**
-     * Repeater rows are appended rather than compared, because two entries in a
-     * repeater are two entries. An exact duplicate is still worth naming, so the
-     * user can drop one instead of keeping the page saying the same thing twice.
-     *
-     * @return list<array{kind: string, field_key: string, row: int}>
-     */
+    /** @return list<array{kind: string, field_key: string, row: int}> */
     private function collisions(): array
     {
         $mine = $this->rows($this->kept)
@@ -220,12 +205,7 @@ class PreviewContactMerge
         return $contact->fieldValues()->attached()->with('field')->get();
     }
 
-    /**
-     * The values that sit directly in a section rather than inside a repeater
-     * row, keyed by field, which is what makes two of them comparable.
-     *
-     * @return array<int, FieldValue>
-     */
+    /** @return array<int, FieldValue> */
     private function singleValues(Contact $contact): array
     {
         return $this->attachedValues($contact)

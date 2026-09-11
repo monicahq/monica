@@ -92,11 +92,6 @@ class UpdateContactName
         }
     }
 
-    /**
-     * Detection never runs on this request. The name that was just written is
-     * what decides which contacts this one might duplicate, and working that out
-     * belongs on a queue.
-     */
     private function lookForDuplicates(): void
     {
         DetectDuplicateContacts::dispatch($this->contact)->onQueue('low');

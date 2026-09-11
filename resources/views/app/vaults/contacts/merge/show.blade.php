@@ -22,6 +22,18 @@
 
   <x-error :messages="$errors->get('fingerprint')" />
 
+  <x-panel :title="__('The two records')" icon="contact" :flush="true">
+    <ul class="grid gap-0">
+      @foreach ($viewModel->records() as $record)
+        <li class="flex items-center gap-3 border-b border-hairline px-4.5 py-3 last:border-b-0">
+          <x-contact-avatar :name="$record['name']" :url="$record['avatarUrl']" :size="38" />
+
+          <x-link :href="$record['url']" target="_blank" rel="noopener" class="text-sm">{{ $record['name'] }}</x-link>
+        </li>
+      @endforeach
+    </ul>
+  </x-panel>
+
   <x-form method="post" :action="$viewModel->confirmUrl()">
     <input type="hidden" name="fingerprint" value="{{ $preview['fingerprint'] }}" />
 

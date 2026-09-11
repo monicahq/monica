@@ -11,13 +11,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
- * Where the address of a contact that was absorbed by a merge lands.
- *
- * A merged contact is soft deleted, so route binding no longer finds it and the
- * page would be a 404. This runs instead: if the uuid belongs to a contact that
- * a merge absorbed and nobody has reversed, the visitor goes to the survivor.
- * Anything else is still not found, so nothing here says whether a uuid ever
- * existed in an account the visitor cannot reach.
+ * Where the address of a contact that a merge absorbed lands. Route binding no longer finds a soft
+ * deleted contact, so this sends the visitor to the survivor, and anything else is still not found.
  */
 class AbsorbedContactController extends Controller
 {

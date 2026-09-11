@@ -21,15 +21,8 @@ use Illuminate\Support\Facades\DB;
 /**
  * Put two merged contacts back the way they were.
  *
- * It replays the merge's own ledger backwards rather than restoring the
- * survivor's snapshot. A snapshot describes one record, and a merge touched two:
- * restoring the survivor alone would leave the absorbed contact's rows sitting
- * on it. The ledger says which row moved and where from, which is exactly what
- * reversing needs.
- *
- * Either the whole thing comes back or nothing does. An undo that cannot be
- * completed is refused before anything is written, so a half-reversed merge is
- * not a state the product can reach.
+ * It replays the merge's own ledger backwards rather than restoring the survivor's snapshot, which
+ * describes one record where a merge touched two. Either the whole thing comes back or nothing does.
  */
 class UndoContactMerge
 {
@@ -89,9 +82,7 @@ class UndoContactMerge
         $this->kept = $kept;
     }
 
-    /**
-     * @param  array<string, mixed>  $entry
-     */
+    /** @param array<string, mixed> $entry */
     private function reverse(array $entry): void
     {
         match ($entry['kind']) {
@@ -157,12 +148,7 @@ class UndoContactMerge
         Reminder::query()->whereKey($entry['id'])->update(['remindable_id' => $this->absorbed->id]);
     }
 
-    /**
-     * A reminder the merge stopped because its value stayed behind starts again,
-     * since that value is back where it was.
-     *
-     * @param  array<string, mixed>  $entry
-     */
+    /** @param array<string, mixed> $entry */
     private function wakeTheReminderUp(array $entry): void
     {
         $reminder = Reminder::query()->find($entry['id']);

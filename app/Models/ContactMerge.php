@@ -18,28 +18,16 @@ use Override;
 /**
  * Class ContactMerge
  *
- * The record of two contacts being made one, kept so the merge can be explained
- * and undone.
+ * The record of two contacts being made one, kept so the merge can be explained and undone. The
+ * absorbed contact is soft deleted rather than destroyed, so every identifier that pointed at it
+ * keeps resolving and its address lands on the survivor.
  *
- * The absorbed contact is soft deleted rather than destroyed, so every
- * identifier that pointed at it keeps resolving and its address lands on the
- * survivor. That is what `merged_contact_id` and `undone_at` are indexed for.
+ * `resolutions` is what the user decided, conflict by conflict. `ledger` is what actually moved,
+ * and is what the undo replays backwards. `snapshot_id` is not how the undo works, since a snapshot
+ * describes one record and a merge touches two, but it is the state an undo can be checked against.
  *
- * Two columns carry the whole operation. `resolutions` is what the user decided,
- * conflict by conflict, and is the answer to why the survivor holds this value
- * rather than that one. `ledger` is what actually moved, row by row, and is what
- * the undo replays backwards. They are kept apart because a decision is the
- * user's and a move is the consequence: replaying the second without the first
- * would restore the rows and lose the reasoning.
- *
- * `snapshot_id` points at the survivor's state before anything was written. It
- * is not how the undo works, since a snapshot describes one record and a merge
- * touches two, but it is the state an undo can be checked against. It goes null
- * if that snapshot is ever pruned, and the merge record stays.
- *
- * Neither contact column carries a foreign key. The record of a merge is history
- * and has to outlive what it names, the same way a log row outlives its subject,
- * so purging a contact for good must not take the explanation with it.
+ * Neither contact column carries a foreign key: the record of a merge is history and has to outlive
+ * what it names.
  *
  * @property int $id
  * @property string $uuid

@@ -272,7 +272,6 @@ class UndoContactMergeTest extends TestCase
         try {
             new UndoContactMerge(user: $user, merge: $merge->fresh())->execute();
         } catch (ContactMergeCannotBeUndone) {
-            // The second undo is refused, which is what this test is about.
         }
 
         $this->assertEquals($undoneAt->toIso8601String(), $merge->fresh()->undone_at->toIso8601String());

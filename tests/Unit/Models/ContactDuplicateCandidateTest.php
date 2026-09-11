@@ -64,6 +64,29 @@ class ContactDuplicateCandidateTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_only_the_pairs_whose_two_contacts_are_still_there(): void
+    {
+        ContactDuplicateCandidate::factory()->create();
+        $gone = ContactDuplicateCandidate::factory()->create();
+        $gone->otherContact->delete();
+
+        $this->assertEquals(1, ContactDuplicateCandidate::query()->whereBothContactsExist()->count());
+        $this->assertEquals(2, ContactDuplicateCandidate::query()->count());
+    }
+
+    #[Test]
+    public function it_knows_whether_both_its_contacts_are_still_there(): void
+    {
+        $candidate = ContactDuplicateCandidate::factory()->create();
+
+        $this->assertTrue($candidate->hasBothContacts());
+
+        $candidate->otherContact->delete();
+
+        $this->assertFalse($candidate->fresh()->hasBothContacts());
+    }
+
+    #[Test]
     public function it_reads_its_reasons_as_a_list(): void
     {
         $candidate = ContactDuplicateCandidate::factory()->sharingAValue()->create();

@@ -17,20 +17,17 @@ use Override;
 /**
  * Class ContactDuplicateCandidate
  *
- * Two contacts of one vault that look like the same person, with the reason for
- * thinking so.
+ * Two contacts of one vault that look like the same person, with the reason for thinking so. The
+ * pair is always stored with the lower id first, which is what makes it one row however it was
+ * found, and a dismissal lives on the row rather than in a table of its own, so it survives every
+ * recomputation.
  *
- * The pair is always stored with the lower id first, which is what makes it one
- * row however it was found. Detection looks from both sides and would otherwise
- * write the pair twice.
+ * A contact is soft deleted, so the row outlives the contact it names until detection next runs.
+ * Both relations are therefore null when the contact behind them is gone, and everything that reads
+ * a pair asks for `whereBothContactsExist()` first.
  *
- * A dismissal lives on this row rather than in a table of its own, so it
- * survives every recomputation: detection updates a pair it still believes in,
- * and deletes only a pair it no longer believes in that nobody has dismissed.
- *
- * `score` is a number between 0 and 100 and orders the screen. It says how
- * strongly the two resemble each other, never how certain the product is: the
- * product never joins two contacts on its own, whatever the score.
+ * `score` is between 0 and 100 and orders the screen. It says how strongly the two resemble each
+ * other, never how certain the product is: the product never joins two contacts on its own.
  *
  * @property int $id
  * @property int $account_id
@@ -46,8 +43,8 @@ use Override;
  * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read Vault $vault
- * @property-read Contact $contact
- * @property-read Contact $otherContact
+ * @property-read Contact|null $contact
+ * @property-read Contact|null $otherContact
  * @property-read User|null $dismissedBy
  */
 #[Fillable([
@@ -144,8 +141,23 @@ class ContactDuplicateCandidate extends Model
         $query->whereNull('dismissed_at');
     }
 
+    /**
+     * Only the pairs whose two contacts are both still there.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeWhereBothContactsExist(Builder $query): void
+    {
+        $query->whereHas('contact')->whereHas('otherContact');
+    }
+
     public function isDismissed(): bool
     {
         return $this->dismissed_at !== null;
+    }
+
+    public function hasBothContacts(): bool
+    {
+        return $this->contact !== null && $this->otherContact !== null;
     }
 }

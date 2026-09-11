@@ -9,6 +9,7 @@ use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\FieldValue;
 use App\Models\Vault;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Queue\Queueable;
@@ -16,33 +17,20 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Work out which contacts of a vault look like the same person.
+ * Work out which contacts of a vault look like the same person. It proposes, and a person decides.
  *
- * It is on a queue because it must never be on the path of a save. Given one
- * contact it looks at that contact alone, which is what runs after somebody
- * creates or renames one. Given a vault it looks at the whole vault, which is
- * what runs nightly and is the only thing that notices a template that has just
- * gained an identifying field, since no contact is written at that moment.
- *
- * Two signals. Names that resemble each other, narrowed in the database by
- * `match_key` and then compared in PHP, because no comparison of two strings by
- * similarity is available in SQLite, MySQL and PostgreSQL alike and the
- * constitution forbids SQL only one of them speaks. And an exact shared value in
- * a field the structure marks as identifying, which is plain portable SQL.
- *
- * Nothing here ever joins two contacts. It proposes, and a person decides.
+ * It is on a queue because it must never be on the path of a save. Given a vault rather than a
+ * contact it looks at the whole vault, which is what runs nightly and is the only thing that
+ * notices a template that has just gained an identifying field.
  */
-class DetectDuplicateContacts implements ShouldQueue
+class DetectDuplicateContacts implements ShouldBeUnique, ShouldQueue
 {
     use Queueable;
 
-    /**
-     * How alike two folded given names have to be before the pair is worth
-     * showing, as a percentage. Measured on the given names alone, because the
-     * block already guarantees the family name matches and comparing the whole
-     * name would let that shared half carry every pair of siblings onto the
-     * screen.
-     */
+    /** How long the lock on a subject may outlive a worker that died holding it. */
+    public int $uniqueFor = 3600;
+
+    /** How alike two folded given names have to be, as a percentage. The block already matches the family name. */
     private const int NAME_THRESHOLD = 60;
 
     private const int NAME_SCORE_FLOOR = 40;
@@ -50,6 +38,15 @@ class DetectDuplicateContacts implements ShouldQueue
     private const int VALUE_SCORE = 95;
 
     public function __construct(private readonly Contact|Vault|null $subject = null) {}
+
+    public function uniqueId(): string
+    {
+        if ($this->subject === null) {
+            return 'everywhere';
+        }
+
+        return $this->subject->getMorphClass().':'.$this->subject->id;
+    }
 
     public function handle(): void
     {
@@ -66,12 +63,6 @@ class DetectDuplicateContacts implements ShouldQueue
         $this->write($found);
     }
 
-    /**
-     * The nightly pass. It runs vault by vault so that one enormous vault does
-     * not hold the whole instance in memory, and it is what notices a template
-     * that has just gained an identifying field, since no contact is written at
-     * that moment.
-     */
     private function everywhere(): void
     {
         $vaults = 0;
@@ -87,8 +78,6 @@ class DetectDuplicateContacts implements ShouldQueue
     }
 
     /**
-     * Every pair worth proposing in one vault, keyed by the two ids in order.
-     *
      * @return array<string, array{vault_id: int, account_id: int, contact_id: int, other_contact_id: int, score: int, reasons: list<array<string, mixed>>}>
      */
     private function acrossTheVault(Vault $vault): array
@@ -107,8 +96,6 @@ class DetectDuplicateContacts implements ShouldQueue
     }
 
     /**
-     * Every pair worth proposing that involves one contact.
-     *
      * @return array<string, array{vault_id: int, account_id: int, contact_id: int, other_contact_id: int, score: int, reasons: list<array<string, mixed>>}>
      */
     private function around(Contact $contact): array
@@ -132,12 +119,7 @@ class DetectDuplicateContacts implements ShouldQueue
         return $found;
     }
 
-    /**
-     * The vault's contacts gathered into groups that share a match key. A group
-     * of one cannot hold a pair, so it never leaves the database.
-     *
-     * @return list<Collection<int, Contact>>
-     */
+    /** @return list<Collection<int, Contact>> */
     private function blocks(Vault $vault): array
     {
         $keys = Contact::query()
@@ -188,11 +170,6 @@ class DetectDuplicateContacts implements ShouldQueue
         }
     }
 
-    /**
-     * The part of the name that is not the family name, folded. Two records of
-     * one person agree on the family name and differ here, which is why this is
-     * what gets compared.
-     */
     private function givenNames(Contact $contact): string
     {
         $parts = collect([$contact->first_name, $contact->middle_name])->filter()->implode(' ');
@@ -209,12 +186,7 @@ class DetectDuplicateContacts implements ShouldQueue
         return once(fn (): string => (string) $this->subject?->account->locale());
     }
 
-    /**
-     * Values held by more than one contact in a field the structure marks as
-     * identifying. Grouped in SQL, which every driver does the same way.
-     *
-     * @return list<array{vault_id: int, field_key: string, value: string, ids: list<int>}>
-     */
+    /** @return list<array{vault_id: int, field_key: string, value: string, ids: list<int>}> */
     private function sharedValues(Vault $vault, ?Contact $around = null): array
     {
         $values = FieldValue::query()
@@ -308,11 +280,7 @@ class DetectDuplicateContacts implements ShouldQueue
         $found[$key]['reasons'][] = $reason;
     }
 
-    /**
-     * How alike two folded names are, as a percentage. `similar_text` is used
-     * rather than a Levenshtein distance because it is not capped at 255 bytes,
-     * which a name in a script wider than Latin passes easily.
-     */
+    /** `similar_text` rather than a Levenshtein distance, which is capped at 255 bytes. */
     private function likeness(string $one, string $two): int
     {
         if ($one === $two) {
@@ -332,9 +300,7 @@ class DetectDuplicateContacts implements ShouldQueue
         return (int) round($percent);
     }
 
-    /**
-     * @param  array<string, array<string, mixed>>  $found
-     */
+    /** @param array<string, array<string, mixed>> $found */
     private function write(array $found): void
     {
         DB::transaction(function () use ($found): void {
@@ -358,12 +324,7 @@ class DetectDuplicateContacts implements ShouldQueue
         });
     }
 
-    /**
-     * A pair that stopped matching is dropped, unless somebody dismissed it. A
-     * dismissal is permanent, so its row stays whatever detection now thinks.
-     *
-     * @param  array<string, array<string, mixed>>  $found
-     */
+    /** @param array<string, array<string, mixed>> $found */
     private function forgetWhatNoLongerMatches(array $found): void
     {
         $keeping = array_map(

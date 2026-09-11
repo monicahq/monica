@@ -68,11 +68,7 @@ enum DefaultFieldEnum: string implements Translatable
     }
 
     /** @return list<self> */
-    /**
-     * Whether two records sharing this value are likely the same record. An
-     * address and a telephone number identify a person; a birthday or a town
-     * does not, since plenty of people share one.
-     */
+    /** Whether two records sharing this value are likely the same record. */
     public function isIdentifying(): bool
     {
         return in_array($this, [self::Email, self::Phone], true);

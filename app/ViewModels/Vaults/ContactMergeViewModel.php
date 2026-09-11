@@ -82,12 +82,20 @@ class ContactMergeViewModel
             ->all();
     }
 
-    /**
-     * What the merge would do, straight from the action, so this screen and the
-     * API are never told two different things.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return list<array{name: string, avatarUrl: string|null, url: string}> */
+    public function records(): array
+    {
+        if (! $this->other instanceof Contact) {
+            return [];
+        }
+
+        return [
+            $this->record($this->contact),
+            $this->record($this->other),
+        ];
+    }
+
+    /** @return array<string, mixed> */
     public function preview(): array
     {
         if (! $this->other instanceof Contact) {
@@ -101,13 +109,7 @@ class ContactMergeViewModel
         )->execute());
     }
 
-    /**
-     * One line of what would come over. Every wording varies with its number,
-     * so each goes through trans_choice and interpolates the count in both
-     * segments, which is what a locale grouping zero with the singular needs.
-     *
-     * @param  array{kind: string, count: int}  $move
-     */
+    /** @param array{kind: string, count: int} $move */
     public function movedLine(array $move): string
     {
         return match ($move['kind']) {
@@ -137,5 +139,17 @@ class ContactMergeViewModel
     public function pickerUrl(): string
     {
         return route('contacts.merge.new', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
+    /** @return array{name: string, avatarUrl: string|null, url: string} */
+    private function record(Contact $contact): array
+    {
+        return [
+            'name' => $contact->name,
+            'avatarUrl' => $contact->avatar === null
+                ? null
+                : route('files.show', ['vault' => $this->vault, 'file' => $contact->avatar]),
+            'url' => route('contacts.show', ['vault' => $this->vault, 'contact' => $contact]),
+        ];
     }
 }

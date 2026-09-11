@@ -45,6 +45,21 @@ class ContactDuplicateControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_opens_when_one_of_a_pair_has_been_deleted(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $candidate = $this->candidateIn($vault, 'Jim', 'Jimmy');
+        $candidate->otherContact->delete();
+
+        $response = $this->actingAs($user)->get(route('vaults.duplicates.index', $vault));
+
+        $response->assertStatus(200);
+        $response->assertDontSee('Jimmy Halpert');
+        $response->assertSee('Nothing looks doubled');
+    }
+
+    #[Test]
     public function it_lists_nothing_from_another_vault(): void
     {
         $user = User::factory()->create();

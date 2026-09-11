@@ -16,7 +16,18 @@
     <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" current="duplicates" />
   </x-slot:sidebar>
 
-  <x-page-header :title="$viewModel->title()" :description="$viewModel->intro()" />
+  <div class="flex flex-wrap items-end gap-4">
+    <div class="min-w-60 flex-1">
+      <x-page-header :title="$viewModel->title()" :description="$viewModel->intro()" />
+    </div>
+
+    <x-form method="post" :action="$viewModel->searchUrl()" class="shrink-0">
+      <x-button size="small">
+        <x-icon name="search" :size="15" :stroke-width="1.8" />
+        {{ __('Look for duplicates') }}
+      </x-button>
+    </x-form>
+  </div>
 
   @if ($pairs->isEmpty())
     <x-panel>

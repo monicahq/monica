@@ -24,6 +24,7 @@ class ContactDuplicateController extends Controller
 
         $candidates = ContactDuplicateCandidate::query()
             ->standing()
+            ->whereBothContactsExist()
             ->where('vault_id', $vault->id)
             ->with(['contact', 'otherContact'])
             ->orderByDesc('score')

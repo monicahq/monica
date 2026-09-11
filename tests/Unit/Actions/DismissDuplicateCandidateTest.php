@@ -99,6 +99,20 @@ class DismissDuplicateCandidateTest extends TestCase
         new DismissDuplicateCandidate(user: $user, candidate: $stranger)->execute();
     }
 
+    #[Test]
+    public function it_refuses_a_pair_one_of_whose_contacts_is_gone(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $candidate = $this->candidateOf($user);
+        $candidate->otherContact->delete();
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new DismissDuplicateCandidate(user: $user, candidate: $candidate->fresh())->execute();
+    }
+
     private function candidateOf(User $user): ContactDuplicateCandidate
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);

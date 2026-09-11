@@ -86,6 +86,35 @@ class ContactDuplicateControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_out_a_pair_one_of_whose_contacts_is_gone(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $candidate = $this->candidateIn($vault);
+        $candidate->otherContact->delete();
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/duplicates")->assertJsonCount(0, 'data');
+    }
+
+    #[Test]
+    public function it_does_not_dismiss_a_pair_one_of_whose_contacts_is_gone(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $candidate = $this->candidateIn($vault);
+        $candidate->otherContact->delete();
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/duplicates/{$candidate->id}/dismissal")
+            ->assertNotFound();
+    }
+
+    #[Test]
     public function it_dismisses_a_pair(): void
     {
         Queue::fake();

@@ -453,13 +453,8 @@ class Contact extends Model
      * the contact reads as, because a list sorted one way for some rows and
      * another way for others is sorted no way at all, and it is lowercased so
      * the order does not depend on the collation of the database underneath.
-     */
-    /**
-     * The one part of the name detection groups contacts by. The family name
-     * where there is one, because that is what two records of the same person
-     * almost always agree on while their first names differ, and the only part
-     * there is otherwise.
-     */
+     * The one part of the name detection groups contacts by: the family name where there is one.
+     **/
     private function buildMatchToken(): string
     {
         return mb_trim((string) ($this->last_name
