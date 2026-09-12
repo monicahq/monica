@@ -20,7 +20,7 @@
           @click="lang = '{{ $key }}'"
           :aria-pressed="lang === '{{ $key }}' ? 'true' : 'false'"
           :class="lang === '{{ $key }}' ? 'bg-primary text-on-primary font-medium' : 'text-body hover:text-ink'"
-          class="cursor-pointer rounded-xs px-2.5 py-1 text-[12px] whitespace-nowrap transition-colors duration-(--duration-fast) ease-out focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+          class="cursor-pointer rounded-xs px-2.5 py-1 text-[12px] whitespace-nowrap transition-colors duration-(--duration-fast) ease-out focus-ring"
         >{{ $sample['label'] }}</button>
       @endforeach
     </div>
@@ -28,7 +28,7 @@
     <button
       type="button"
       @click="window.copyText(samples[lang]).then((ok) => { copied = ok; setTimeout(() => (copied = false), 1600) })"
-      class="ml-auto cursor-pointer rounded-xs px-2 py-1 text-[12px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+      class="ml-auto cursor-pointer rounded-xs px-2 py-1 text-[12px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
       aria-live="polite"
       x-text="copied ? 'Copied' : 'Copy'"
     >Copy</button>

@@ -30,7 +30,7 @@
       'font-sans text-sm font-medium whitespace-nowrap text-body no-underline ',
       'transition-[background-color,border-color,box-shadow] duration-(--duration-fast) ease-out',
       'hover:bg-hover hover:text-ink ',
-      'focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none',
+      'focus-ring',
       'aria-[current=true]:border-primary aria-[current=true]:bg-primary aria-[current=true]:text-on-primary',
       'aria-[pressed=true]:border-primary aria-[pressed=true]:bg-primary aria-[pressed=true]:text-on-primary',
     ])

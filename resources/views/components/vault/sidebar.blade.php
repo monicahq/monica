@@ -38,7 +38,7 @@
       type="button"
       @click="navOpen = false"
       aria-label="{{ __('Close the menu') }}"
-      class="-mr-1 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none lg:hidden"
+      class="-mr-1 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring lg:hidden"
     >
       <x-icon name="close" :size="15" :stroke-width="1.5" />
     </button>
@@ -50,7 +50,7 @@
       @click="open = ! open"
       @click.outside="open = false"
       :aria-expanded="open ? 'true' : 'false'"
-      class="flex w-full cursor-pointer items-center gap-2.5 rounded-md border border-hairline bg-canvas px-2.5 py-2 text-left transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+      class="flex w-full cursor-pointer items-center gap-2.5 rounded-md border border-hairline bg-canvas px-2.5 py-2 text-left transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
     >
       <span
         style="background: {{ $vault->colour }}"
@@ -91,7 +91,7 @@
           <a
             href="{{ route('vaults.show', $option) }}"
             data-turbo="true"
-            class="flex items-center gap-2.5 px-2.5 py-2 transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none"
+            class="flex items-center gap-2.5 px-2.5 py-2 transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset"
           >
             <span style="background: {{ $option->colour }}" class="size-2.5 shrink-0 rounded-sm" aria-hidden="true"></span>
 
@@ -100,7 +100,7 @@
         @endif
       @endforeach
 
-      <a href="{{ route('vaults.index') }}" data-turbo="true" class="block border-t border-hairline px-2.5 py-2 text-[13px] text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none">
+      <a href="{{ route('vaults.index') }}" data-turbo="true" class="block border-t border-hairline px-2.5 py-2 text-[13px] text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring-inset">
         {{ __('All your vaults') }}
       </a>
     </div>
@@ -115,7 +115,7 @@
           href="{{ $section['url'] }}"
           data-turbo="true"
           @if ($current === $section['key']) aria-current="page" @endif
-          class="{{ $item }} {{ $current === $section['key'] ? 'bg-canvas font-medium text-ink shadow-nav-active' : 'text-body hover:bg-hover hover:text-ink' }} focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+          class="{{ $item }} {{ $current === $section['key'] ? 'bg-canvas font-medium text-ink shadow-nav-active' : 'text-body hover:bg-hover hover:text-ink' }} focus-ring"
         >
           <x-icon :name="$section['icon']" :size="16" :stroke-width="1.5" />
           {{ $section['label'] }}

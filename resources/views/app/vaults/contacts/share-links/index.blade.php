@@ -5,7 +5,7 @@
 @endphp
 <x-shell :title="$viewModel->title()">
   <x-slot:breadcrumb>
-    <x-breadcrumb :items="[['label' => $viewModel->vault()->name, 'url' => route('vaults.show', $viewModel->vault())], ['label' => __('People'), 'url' => $viewModel->peopleUrl()],
+    <x-breadcrumb.vault :vault="$viewModel->vault()" :items="[['label' => __('People'), 'url' => $viewModel->peopleUrl()],
         ['label' => $viewModel->contact()->name, 'url' => $viewModel->contactUrl()],
         ['label' => __('Links')],]" />
   </x-slot:breadcrumb>
@@ -25,7 +25,7 @@
     </x-button>
   </div>
 
-  <div id="share-links" x-merge="replace" class="transition-opacity [&[aria-busy]]:opacity-60">
+  <div id="share-links" x-merge="replace" class="dim-when-busy">
     <x-panel :flush="true">
       @forelse ($links as $link)
         <x-row icon="link">

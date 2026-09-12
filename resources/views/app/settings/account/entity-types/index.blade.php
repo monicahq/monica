@@ -1,40 +1,26 @@
 {{-- The kinds of record the account invented, beyond the people every account keeps. --}}
 {{-- @var \App\ViewModels\Settings\Account\EntityTypes\EntityTypesViewModel $viewModel --}}
-<x-shell :title="__('Kinds of record')">
-  <x-slot:breadcrumb>
-    <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ __('Back to settings') }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
+<x-settings.page
+  :title="__('Kinds of record')"
+  :user="$viewModel->user()"
+  current="entity-types"
+>
+  <x-page-header :title="__('Kinds of record')" :description="__('A vault can hold more than people: animals, companies, cars, anything you want to keep track of. You decide what they are called and where they appear.')">
+    <x-slot:actions>
+      <x-button :href="route('settings.entityTypes.new')" data-turbo="true" class="max-sm:w-full">
+        {{ __('Create a type') }}
+      </x-button>
+    </x-slot:actions>
+  </x-page-header>
 
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="entity-types" />
-  </x-slot:sidebar>
-
-  <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
-    <div class="flex min-w-0 flex-col gap-2">
-      <h1 class="text-page-title text-ink">{{ __('Kinds of record') }}</h1>
-
-      <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('A vault can hold more than people: animals, companies, cars, anything you want to keep track of. You decide what they are called and where they appear.') }}</p>
-    </div>
-
-    <x-button :href="route('settings.entityTypes.new')" data-turbo="true" class="max-sm:w-full">
-      {{ __('Create a type') }}
-    </x-button>
-  </header>
-
-  <section class="flex flex-col gap-3">
-    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 text-section-title text-ink">{{ __('Your types') }}</h2>
-
-      <p class="text-sm text-pretty text-muted">{{ __('Drag a row to change the order they appear in the vault navigation.') }}</p>
-
-      <span class="ml-auto text-xs text-pretty text-muted">{{ $viewModel->summary() }}</span>
-    </div>
+  <x-page-section
+    :title="__('Your types')"
+    :description="__('Drag a row to change the order they appear in the vault navigation.')"
+  >
+    <x-slot:aside>{{ $viewModel->summary() }}</x-slot:aside>
 
     <x-panel :flush="true">
-      <div id="entity-types" x-merge="replace" x-data="sortableRows" data-sortable class="transition-opacity [&[aria-busy]]:opacity-60">
+      <div id="entity-types" x-merge="replace" x-data="sortableRows" data-sortable class="dim-when-busy">
         @forelse ($viewModel->types() as $type)
           @include('app.settings.account.entity-types._row', ['type' => $type])
         @empty
@@ -50,5 +36,5 @@
     </x-panel>
 
     <p class="px-0.5 text-xs text-pretty text-muted">{{ __('Turning a type off keeps its records and stops new ones being made.') }}</p>
-  </section>
-</x-shell>
+  </x-page-section>
+</x-settings.page>

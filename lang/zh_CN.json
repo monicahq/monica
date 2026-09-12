@@ -2177,6 +2177,7 @@
     "Ways to connect": "联系方式",
     "We could not copy it. Select the address and copy it by hand.": "我们无法复制。请选中地址并手动复制。",
     "We could not copy it. Select the key and copy it by hand.": "无法复制。请选中密钥并手动复制。",
+    "We could not copy it. Select the text and copy it by hand.": "我们无法复制。请选中文本并手动复制。",
     "We could not copy them. Select the codes and copy them by hand.": "我们无法复制。请选中这些码并手动复制。",
     "We could not reach Stripe just now. Nothing was charged. Please try again in a moment.": "我们此刻无法连上 Stripe。没有收取任何费用。请稍后再试。",
     "We could not reach Stripe to stop your subscription, so nothing was deleted. Please try again in a moment.": "我们无法连上 Stripe 来停止你的订阅，因此没有删除任何内容。请稍后再试。",

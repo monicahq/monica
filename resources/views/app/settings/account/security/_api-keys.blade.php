@@ -4,75 +4,40 @@
   id="api-keys"
   x-merge="replace"
   x-data="{ creating: {{ $errors->has('name') ? 'true' : 'false' }} }"
-  class="transition-opacity [&[aria-busy]]:opacity-60"
+  class="dim-when-busy"
 >
   @if (session('apiKey'))
-    <div
-      class="flex flex-col gap-2 border-b border-hairline bg-sunken px-4 py-3.5"
-      x-data="{
-        state: 'idle',
-        messages: {
-          idle: '',
-          copied: @js(__('Copied')),
-          failed: @js(__('We could not copy it. Select the key and copy it by hand.')),
-        },
-      }"
-    >
+    <div class="flex flex-col gap-2 border-b border-hairline bg-sunken px-4 py-3.5">
       <p class="text-base font-semibold text-ink">{{ __('Your new API key') }}</p>
 
       <p class="text-sm text-pretty text-muted">{{ __('This is the only time we can show it to you. Copy it somewhere safe before you leave this screen.') }}</p>
 
-      <p x-ref="key" class="rounded-md border border-hairline bg-canvas px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ session('apiKey') }}</p>
+      <x-code-value surface="canvas">{{ session('apiKey') }}</x-code-value>
 
       <div class="flex flex-wrap items-center gap-2.5">
-        <x-button
-          type="button"
-          size="small"
-          @click="window.copyText($refs.key.textContent).then((ok) => { state = ok ? 'copied' : 'failed'; if (ok) setTimeout(() => { if (state === 'copied') state = 'idle' }, 2500) })"
-        >{{ __('Copy to the clipboard') }}</x-button>
-
-        <p
-          role="status"
-          aria-live="polite"
-          class="text-sm"
-          :class="{ 'text-success': state === 'copied', 'text-error': state === 'failed' }"
-          x-text="messages[state] ?? ''"
-        ></p>
+        <x-copy-button
+          :text="session('apiKey')"
+          :label="__('Copy to the clipboard')"
+          :failure="__('We could not copy it. Select the key and copy it by hand.')"
+        />
       </div>
     </div>
   @endif
 
-  <div
-    class="flex flex-col gap-2 border-b border-hairline px-4 py-3.5"
-    x-data="{
-      state: 'idle',
-      messages: {
-        idle: '',
-        copied: @js(__('Copied')),
-        failed: @js(__('We could not copy it. Select the address and copy it by hand.')),
-      },
-    }"
-  >
+  <div class="flex flex-col gap-2 border-b border-hairline px-4 py-3.5">
     <p class="text-base font-semibold text-ink">{{ __('Address for a contacts or calendar application') }}</p>
 
     <p class="text-sm text-pretty text-muted">{{ __('Add this address to the contacts or calendar application of a phone or a computer, with your email address and one of the keys below as the password. Your account password will not work.') }}</p>
 
-    <p x-ref="davAddress" class="rounded-md border border-hairline bg-canvas px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ $viewModel->davAddress() }}</p>
+    <x-code-value surface="canvas">{{ $viewModel->davAddress() }}</x-code-value>
 
     <div class="flex flex-wrap items-center gap-2.5">
-      <x-button.secondary
-        type="button"
-        size="small"
-        @click="window.copyText($refs.davAddress.textContent).then((ok) => { state = ok ? 'copied' : 'failed'; if (ok) setTimeout(() => { if (state === 'copied') state = 'idle' }, 2500) })"
-      >{{ __('Copy the address') }}</x-button.secondary>
-
-      <p
-        role="status"
-        aria-live="polite"
-        class="text-sm"
-        :class="{ 'text-success': state === 'copied', 'text-error': state === 'failed' }"
-        x-text="messages[state] ?? ''"
-      ></p>
+      <x-copy-button
+        variant="secondary"
+        :text="$viewModel->davAddress()"
+        :label="__('Copy the address')"
+        :failure="__('We could not copy it. Select the address and copy it by hand.')"
+      />
     </div>
   </div>
 

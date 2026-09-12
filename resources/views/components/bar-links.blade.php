@@ -18,7 +18,7 @@
     <a
       href="{{ $link['href'] }}"
       aria-label="{{ $link['label'] }}"
-      class="flex h-9 items-center gap-1.75 rounded-md px-2.75 text-sm text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+      class="flex h-9 items-center gap-1.75 rounded-md px-2.75 text-sm text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
     >
       <x-icon :name="$link['icon']" :size="18" :stroke-width="1.5" />
 

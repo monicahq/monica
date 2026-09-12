@@ -2177,6 +2177,7 @@
     "Ways to connect": "ช่องทางติดต่อ",
     "We could not copy it. Select the address and copy it by hand.": "เราคัดลอกไม่ได้ กรุณาเลือกที่อยู่และคัดลอกด้วยตนเอง",
     "We could not copy it. Select the key and copy it by hand.": "เราคัดลอกให้ไม่ได้ ให้เลือกคีย์แล้วคัดลอกด้วยมือ",
+    "We could not copy it. Select the text and copy it by hand.": "เราคัดลอกไม่ได้ กรุณาเลือกข้อความและคัดลอกด้วยตนเอง",
     "We could not copy them. Select the codes and copy them by hand.": "เราคัดลอกให้ไม่ได้ เลือกรหัสแล้วคัดลอกด้วยตนเอง",
     "We could not reach Stripe just now. Nothing was charged. Please try again in a moment.": "เราติดต่อ Stripe ไม่ได้ในตอนนี้ ไม่มีการเรียกเก็บ โปรดลองอีกครั้งในอีกสักครู่",
     "We could not reach Stripe to stop your subscription, so nothing was deleted. Please try again in a moment.": "เราติดต่อ Stripe เพื่อหยุดการสมัครของคุณไม่ได้ จึงไม่มีอะไรถูกลบ โปรดลองอีกครั้งในอีกสักครู่",

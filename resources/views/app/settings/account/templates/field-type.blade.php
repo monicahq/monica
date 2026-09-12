@@ -14,18 +14,14 @@
   $footerLines = $catalogue->footerLines($sectionName);
   $nothingPicked = __('Pick a type to carry on.');
 @endphp
-<x-shell :title="__('Add a field')" wide>
-  <x-slot:breadcrumb>
-    <x-button.bar :href="$backToBuilder" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ __('Back to the template') }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$user" current="templates" />
-  </x-slot:sidebar>
-
+<x-settings.page
+  :title="__('Add a field')"
+  :user="$user"
+  current="templates"
+  :back-href="$backToBuilder"
+  :back-label="__('Back to the template')"
+  wide
+>
   <x-slot:footer>
     <div
       x-data="{
@@ -78,11 +74,7 @@
     }"
     class="flex flex-col gap-7"
   >
-    <header class="flex flex-col gap-2">
-      <h1 class="text-page-title text-ink">{{ __('What goes in :section?', ['section' => $sectionName]) }}</h1>
-
-      <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('The type decides what people can write, how it is checked and how it is searched. Pick the closest one. The panel shows how it appears on a record.') }}</p>
-    </header>
+    <x-page-header :title="__('What goes in :section?', ['section' => $sectionName])" :description="__('The type decides what people can write, how it is checked and how it is searched. Pick the closest one. The panel shows how it appears on a record.')" />
 
     <section class="flex flex-col gap-3">
       <h2 class="text-section-title text-ink">{{ __('What is it called?') }}</h2>
@@ -179,7 +171,7 @@
                       @mouseleave="peek = ''"
                       @focus="peek = '{{ $type['key'] }}'"
                       @blur="peek = ''"
-                      class="flex cursor-not-allowed items-center gap-2 rounded-md border border-hairline bg-card px-2.5 py-2 text-left focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+                      class="flex cursor-not-allowed items-center gap-2 rounded-md border border-hairline bg-card px-2.5 py-2 text-left focus-ring"
                     >
                       <x-icon :name="$type['mark']" :size="16" class="text-muted-soft" />
 
@@ -233,7 +225,7 @@
                 <p class="text-sm text-pretty text-body">{{ $type['description'] }}</p>
 
                 <div class="flex flex-col gap-2 rounded-md border border-hairline-soft bg-sunken p-3">
-                  <span class="text-label tracking-caption text-muted uppercase">{{ __('On the record') }}</span>
+                  <x-caption tone="muted">{{ __('On the record') }}</x-caption>
 
                   <span class="text-sm font-semibold text-ink" x-text="labelValue.trim() === '' ? {{ Js::from($type['label']) }} : labelValue.trim()"></span>
 
@@ -271,4 +263,4 @@
     </section>
 
   </x-form>
-</x-shell>
+</x-settings.page>

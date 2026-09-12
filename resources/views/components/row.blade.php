@@ -28,7 +28,7 @@
     $attributes->class([
       'flex w-full items-center gap-3 border-b border-hairline px-4 py-3.5 text-left font-sans no-underline',
       'transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0',
-      'cursor-pointer hover:bg-hover focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none' => (bool) $href,
+      'cursor-pointer hover:bg-hover focus-ring-inset' => (bool) $href,
     ])
   }}
 >

@@ -18,7 +18,7 @@
   @if ($focusable) tabindex="0" @endif
   role="img"
   aria-label="{{ $text }}"
-  {{ $attributes->class(['relative inline-flex items-center', 'rounded-sm focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none' => $focusable]) }}
+  {{ $attributes->class(['relative inline-flex items-center', 'rounded-sm focus-ring' => $focusable]) }}
 >
   {{ $slot }}
 

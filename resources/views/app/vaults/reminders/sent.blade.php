@@ -5,12 +5,7 @@
 @endphp
 <x-shell :title="$viewModel->title()">
   <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => $viewModel->vault()->name, 'url' => route('vaults.show', $viewModel->vault())],
-        ['label' => __('Reminders')],
-      ]"
-    />
+    <x-breadcrumb.vault :vault="$viewModel->vault()" :items="[['label' => __('Reminders')],]" />
   </x-slot:breadcrumb>
 
   <x-slot:sidebar>
@@ -27,27 +22,26 @@
     'current' => 'sent',
   ])
 
-  <x-panel :flush="true">
-    <div id="sent-rows" x-merge="append">
-      @forelse ($rows as $row)
-        @include('app.vaults.reminders._sent-row', ['row' => $row])
-      @empty
-        <x-empty-state :title="$viewModel->emptyTitle()">
-          <x-slot:icon>
-            <x-icon name="reminder" :size="30" :stroke-width="1.4" />
-          </x-slot:icon>
+  <x-list-panel
+    :items="$rows"
+    id="sent-rows"
+    merge="append"
+    target="sent-rows sent-pagination"
+    footer-id="sent-pagination"
+    :next-page-url="$viewModel->hasMorePages() ? $viewModel->nextPageUrl() : null"
+  >
+    <x-slot:empty>
+      <x-empty-state :title="$viewModel->emptyTitle()">
+        <x-slot:icon>
+          <x-icon name="reminder" :size="30" :stroke-width="1.4" />
+        </x-slot:icon>
 
-          {{ $viewModel->emptyLine() }}
-        </x-empty-state>
-      @endforelse
-    </div>
+        {{ $viewModel->emptyLine() }}
+      </x-empty-state>
+    </x-slot:empty>
 
-    @if ($viewModel->hasMorePages())
-      <x-slot:footer id="sent-pagination">
-        <div class="text-center">
-          <x-link x-target="sent-rows sent-pagination" :href="$viewModel->nextPageUrl()">{{ __('Load more') }}</x-link>
-        </div>
-      </x-slot:footer>
-    @endif
-  </x-panel>
+    @foreach ($rows as $row)
+      @include('app.vaults.reminders._sent-row', ['row' => $row])
+    @endforeach
+  </x-list-panel>
 </x-shell>

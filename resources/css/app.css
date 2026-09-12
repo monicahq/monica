@@ -342,3 +342,19 @@
         display: none !important;
     }
 }
+
+@utility focus-ring {
+    @apply focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none;
+}
+
+@utility focus-ring-inset {
+    @apply focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none;
+}
+
+@utility dim-when-busy {
+    @apply transition-opacity;
+
+    &[aria-busy] {
+        @apply opacity-60;
+    }
+}

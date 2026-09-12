@@ -7,7 +7,7 @@
 @endphp
 <x-shell :title="$viewModel->title()">
   <x-slot:breadcrumb>
-    <x-breadcrumb :items="[['label' => $vault->name, 'url' => route('vaults.show', $vault)], ['label' => __('People'), 'url' => $viewModel->contactsUrl()],
+    <x-breadcrumb.vault :vault="$vault" :items="[['label' => __('People'), 'url' => $viewModel->contactsUrl()],
         ['label' => $viewModel->title()],]" />
   </x-slot:breadcrumb>
 
@@ -15,11 +15,7 @@
     <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="contacts" />
   </x-slot:sidebar>
 
-  <header class="flex flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
-
-    <p class="max-w-[56ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
-  </header>
+  <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
   @if ($viewModel->ceilingMessage() !== null)
     <x-paywall-prompt :message="$viewModel->ceilingMessage()" />
@@ -43,13 +39,7 @@
   >
     <x-form id="contact-form" method="post" :action="$viewModel->action()" class="flex flex-col gap-8">
       @if ($viewModel->showsTemplates())
-        <section class="flex flex-col gap-3">
-          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-            <h2 class="shrink-0 text-section-title text-ink">{{ __('What this contact starts from') }}</h2>
-
-            <p class="text-sm text-pretty text-muted">{{ __('The template decides which fields the contact page holds. The vault’s own template is used unless you pick another here. It can be changed on the contact afterwards.') }}</p>
-          </div>
-
+        <x-page-section :title="__('What this contact starts from')" :description="__('The template decides which fields the contact page holds. The vault’s own template is used unless you pick another here. It can be changed on the contact afterwards.')">
           <x-panel>
             <x-select
               id="template_version_id"
@@ -62,16 +52,10 @@
               @endforeach
             </x-select>
           </x-panel>
-        </section>
+        </x-page-section>
       @endif
 
-      <section class="flex flex-col gap-3">
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ __('Name') }}</h2>
-
-          <p class="text-sm text-pretty text-muted">{{ __('Only the first name is needed. The rest is there for the people whose name does not fit in two boxes.') }}</p>
-        </div>
-
+      <x-page-section :title="__('Name')" :description="__('Only the first name is needed. The rest is there for the people whose name does not fit in two boxes.')">
         <x-panel>
           <div class="flex flex-col gap-4.5">
             <div class="grid gap-4 sm:grid-cols-2">
@@ -172,15 +156,9 @@
             </x-select>
           </div>
         </x-panel>
-      </section>
+      </x-page-section>
 
-      <section class="flex flex-col gap-3">
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ __('This contact') }}</h2>
-
-          <p class="text-sm text-pretty text-muted">{{ __('Two things you can say about them now. Both are yours to change from their page later.') }}</p>
-        </div>
-
+      <x-page-section :title="__('This contact')" :description="__('Two things you can say about them now. Both are yours to change from their page later.')">
         <x-panel>
           <div class="flex flex-col gap-4">
             @foreach ($viewModel->flags() as $flag)
@@ -192,7 +170,7 @@
             @endforeach
           </div>
         </x-panel>
-      </section>
+      </x-page-section>
 
       @if ($viewModel->blocker())
         <x-notice tone="warning">{{ $viewModel->blocker() }}</x-notice>

@@ -2177,6 +2177,7 @@
     "Ways to connect": "Tapoja pitää yhteyttä",
     "We could not copy it. Select the address and copy it by hand.": "Emme voineet kopioida sitä. Valitse osoite ja kopioi se käsin.",
     "We could not copy it. Select the key and copy it by hand.": "Emme voineet kopioida sitä. Valitse avain ja kopioi se käsin.",
+    "We could not copy it. Select the text and copy it by hand.": "Emme voineet kopioida sitä. Valitse teksti ja kopioi se käsin.",
     "We could not copy them. Select the codes and copy them by hand.": "Emme voineet kopioida niitä. Valitse koodit ja kopioi ne käsin.",
     "We could not reach Stripe just now. Nothing was charged. Please try again in a moment.": "Stripeä ei juuri nyt saatu kiinni. Mitään ei veloitettu. Yritä hetken päästä uudelleen.",
     "We could not reach Stripe to stop your subscription, so nothing was deleted. Please try again in a moment.": "Stripeä ei saatu kiinni tilauksesi lopettamiseksi, joten mitään ei poistettu. Yritä hetken päästä uudelleen.",

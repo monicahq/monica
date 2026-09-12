@@ -1,22 +1,11 @@
 {{-- Every payment the account made, each with the invoice Stripe issued for it. --}}
 {{-- @var \App\ViewModels\Settings\Account\Billing\InvoicesViewModel $viewModel --}}
-<x-shell :title="__('Invoices')">
-  <x-slot:breadcrumb>
-    <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ __('Back to settings') }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="billing" />
-  </x-slot:sidebar>
-
-  <header class="flex flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ __('Invoices') }}</h1>
-
-    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Every payment Stripe confirmed, newest first, with the invoice it issued.') }}</p>
-  </header>
+<x-settings.page
+  :title="__('Invoices')"
+  :user="$viewModel->user()"
+  current="billing"
+>
+  <x-page-header :title="__('Invoices')" :description="__('Every payment Stripe confirmed, newest first, with the invoice it issued.')" />
 
   @include('app.settings.account.billing._tabs', ['current' => 'invoices', 'paymentCount' => $viewModel->payments()->count()])
 
@@ -33,7 +22,7 @@
       <ul class="divide-y divide-hairline">
         @foreach ($viewModel->payments() as $payment)
           <li class="flex flex-wrap items-baseline gap-x-4 gap-y-1 px-4 py-3.5">
-            <time datetime="{{ $payment->billed_at->toIso8601String() }}" class="text-sm text-muted">{{ $payment->billed_at->isoFormat('LL') }}</time>
+            <x-timestamp :at="$payment->billed_at" class="text-sm text-muted">{{ $payment->billed_at->isoFormat('LL') }}</x-timestamp>
 
             <span class="text-base text-ink">{{ $viewModel->paymentLabel($payment) }}</span>
 
@@ -51,4 +40,4 @@
       </ul>
     @endif
   </x-panel>
-</x-shell>
+</x-settings.page>

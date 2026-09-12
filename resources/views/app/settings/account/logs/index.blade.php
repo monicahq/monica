@@ -1,62 +1,38 @@
 {{-- Everything written down about an account: what its owner did, and what we sent them. --}}
 {{-- @var \App\ViewModels\Settings\Account\Logs\LogsViewModel $viewModel --}}
-<x-shell :title="__('Logs')">
-  <x-slot:breadcrumb>
-    <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ __('Back to settings') }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
+<x-settings.page
+  :title="__('Logs')"
+  :user="$viewModel->user()"
+  current="logs"
+>
+  <x-page-header :title="__('Logs')" :description="__('What has been done in this account, and every email it has sent.')" />
 
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="logs" />
-  </x-slot:sidebar>
+  <x-page-section :title="__('Activity')" :description="__('Every action that touched this account, newest first, with where it came from.')">
+    <x-list-panel
+      :items="$viewModel->logs()"
+      id="logs-container"
+      merge="append"
+      target="logs-container pagination"
+      footer-id="pagination"
+      :next-page-url="$viewModel->logs()->hasMorePages() ? $viewModel->logs()->nextPageUrl() : null"
+    >
+      <x-slot:empty>
+        <x-empty-state :title="__('Nothing has happened yet')">
+          <x-slot:icon>
+            <x-icon name="timeline" :size="30" :stroke-width="1.4" />
+          </x-slot:icon>
 
-  <header class="flex flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ __('Logs') }}</h1>
+          {{ __('Every change to your account is written down here, with the time it happened and the address it came from.') }}
+        </x-empty-state>
+      </x-slot:empty>
 
-    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('What has been done in this account, and every email it has sent.') }}</p>
-  </header>
+      @foreach ($viewModel->logs() as $log)
+        @include('app.settings.account.logs._log-row', ['log' => $log])
+      @endforeach
+    </x-list-panel>
+  </x-page-section>
 
-  <section class="flex flex-col gap-3">
-    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 text-section-title text-ink">{{ __('Activity') }}</h2>
-
-      <p class="text-sm text-pretty text-muted">{{ __('Every action that touched this account, newest first, with where it came from.') }}</p>
-    </div>
-
-    <x-panel :flush="true">
-      <div id="logs-container" x-merge="append">
-        @forelse ($viewModel->logs() as $log)
-          @include('app.settings.account.logs._log-row', ['log' => $log])
-        @empty
-          <x-empty-state :title="__('Nothing has happened yet')">
-            <x-slot:icon>
-              <x-icon name="timeline" :size="30" :stroke-width="1.4" />
-            </x-slot:icon>
-
-            {{ __('Every change to your account is written down here, with the time it happened and the address it came from.') }}
-          </x-empty-state>
-        @endforelse
-      </div>
-
-      @if ($viewModel->logs()->hasMorePages())
-        <x-slot:footer id="pagination">
-          <div class="text-center">
-            <x-link x-target="logs-container pagination" :href="$viewModel->logs()->nextPageUrl()">{{ __('Load more') }}</x-link>
-          </div>
-        </x-slot:footer>
-      @endif
-    </x-panel>
-  </section>
-
-  <section class="flex flex-col gap-3">
-    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 text-section-title text-ink">{{ __('Emails sent') }}</h2>
-
-      <p class="text-sm text-pretty text-muted">{{ __('If one you expected never arrived, look here first. An entry still on its way means the mail service has not confirmed it yet. No entry at all means it was never sent.') }}</p>
-    </div>
-
+  <x-page-section :title="__('Emails sent')" :description="__('If one you expected never arrived, look here first. An entry still on its way means the mail service has not confirmed it yet. No entry at all means it was never sent.')">
     <x-panel :flush="true">
       @forelse ($viewModel->emailsSent() as $emailSent)
         @include('app.settings.account.logs._email-sent-row', ['emailSent' => $emailSent])
@@ -78,5 +54,5 @@
         </x-slot:footer>
       @endif
     </x-panel>
-  </section>
-</x-shell>
+  </x-page-section>
+</x-settings.page>

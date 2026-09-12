@@ -6,7 +6,7 @@
 @endphp
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:breadcrumb>
-    <x-breadcrumb :items="[['label' => $vault->name]]" />
+    <x-breadcrumb.vault :vault="$vault" />
   </x-slot:breadcrumb>
 
   <x-slot:sidebar>

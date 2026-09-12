@@ -78,7 +78,7 @@ class OfferListTest extends TestCase
         $rendered = $this->blade('<x-offer-list :offers="$offers" />', ['offers' => $this->offers()]);
 
         $rendered->assertSee('<button', escape: false);
-        $rendered->assertSee('focus-visible:ring', escape: false);
+        $rendered->assertSee('focus-ring', escape: false);
     }
 
     #[Test]

@@ -1,14 +1,8 @@
 {{-- Where somebody lands after signing in: the compartments their account is divided into. --}}
 {{-- @var \App\ViewModels\Vaults\VaultsViewModel $viewModel --}}
 <x-account-layout :title="$viewModel->title()">
-  <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
-    <div class="flex min-w-0 flex-col gap-2">
-      <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
-
-      <p class="max-w-[64ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
-    </div>
-
-    <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full">
+  <x-page-header :title="$viewModel->title()" :description="$viewModel->description()">
+    <x-slot:actions>
       <x-button :href="$viewModel->createUrl()" data-turbo="true" size="small">
         <x-slot:icon>
           <x-icon name="plus" :size="16" :stroke-width="1.6" />
@@ -16,8 +10,8 @@
 
         {{ __('New vault') }}
       </x-button>
-    </div>
-  </header>
+    </x-slot:actions>
+  </x-page-header>
 
   @if ($viewModel->vaults() === [])
     <x-panel>

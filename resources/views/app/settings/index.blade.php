@@ -1,17 +1,12 @@
 {{-- The home of the settings: what belongs to you, what belongs to the account, and the way out. --}}
 {{-- @var \App\ViewModels\Settings\SettingsViewModel $viewModel --}}
-<x-shell :title="__('Settings')">
-  <x-slot:breadcrumb>
-    <x-button.bar :href="route('vaults.index')" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ __('Back to your vaults') }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="home" />
-  </x-slot:sidebar>
-
+<x-settings.page
+  :title="__('Settings')"
+  :user="$viewModel->user()"
+  current="home"
+  :back-href="route('vaults.index')"
+  :back-label="__('Back to your vaults')"
+>
   <header class="flex flex-col items-center gap-2.5 text-center">
     <x-avatar :user="$viewModel->user()" :size="56" />
 
@@ -23,14 +18,7 @@
   </header>
 
   @foreach ($viewModel->sections() as $section)
-    <section class="flex flex-col gap-3">
-      @if ($section['title'])
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ $section['title'] }}</h2>
-
-          <p class="text-sm text-pretty text-muted">{{ $section['description'] }}</p>
-        </div>
-      @endif
+    <x-page-section :title="$section['title']" :description="$section['description']">
 
       <x-panel :flush="true">
         @foreach ($section['rows'] as $row)
@@ -65,6 +53,6 @@
           </a>
         </p>
       @endif
-    </section>
+    </x-page-section>
   @endforeach
-</x-shell>
+</x-settings.page>

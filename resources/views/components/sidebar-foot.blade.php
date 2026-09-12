@@ -20,7 +20,7 @@
       href="{{ route('settings.index') }}"
       role="menuitem"
       data-turbo="true"
-      class="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none"
+      class="flex items-center gap-2.5 px-2.5 py-2 text-[13px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring-inset"
     >
       <x-icon name="settings" :size="16" :stroke-width="1.5" />
       {{ __('Account settings') }}
@@ -32,7 +32,7 @@
       <button
         type="submit"
         role="menuitem"
-        class="flex w-full cursor-pointer items-center gap-2.5 px-2.5 py-2 text-left text-[13px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none"
+        class="flex w-full cursor-pointer items-center gap-2.5 px-2.5 py-2 text-left text-[13px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring-inset"
       >
         <x-icon name="key" :size="16" :stroke-width="1.5" />
         {{ __('Sign out') }}
@@ -46,7 +46,7 @@
     @click.outside="open = false"
     ::aria-expanded="open ? 'true' : 'false'"
     aria-haspopup="menu"
-    class="{{ $item }} w-full cursor-pointer text-body hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+    class="{{ $item }} w-full cursor-pointer text-body hover:bg-hover hover:text-ink focus-ring"
   >
     <x-avatar id="shell-avatar" :user="$user" :size="26" />
 

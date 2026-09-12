@@ -64,7 +64,8 @@ class ApiKeyControllerTest extends TestCase
             ->withSession(['apiKey' => 'dunder-mifflin-infinity'])
             ->get(route('settings.security.index'))
             ->assertStatus(200)
-            ->assertSee('select-all">dunder-mifflin-infinity</p>', escape: false);
+            ->assertSee('select-all', escape: false)
+            ->assertSee('>dunder-mifflin-infinity</p>', escape: false);
     }
 
     #[Test]
@@ -88,9 +89,9 @@ class ApiKeyControllerTest extends TestCase
             ->withSession(['apiKey' => 'dunder-mifflin-infinity'])
             ->get(route('settings.security.index'))
             ->assertSee('Copy to the clipboard', escape: false)
-            ->assertSee('window.copyText($refs.key.textContent)', escape: false)
-            ->assertSee("copied: 'Copied'", escape: false)
-            ->assertSee('select-all">dunder-mifflin-infinity</p>', escape: false);
+            ->assertSee('window.copyText(this.text)', escape: false)
+            ->assertSee("text: 'dunder-mifflin-infinity'", escape: false)
+            ->assertSee("copied: 'Copied'", escape: false);
     }
 
     #[Test]

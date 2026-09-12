@@ -68,15 +68,11 @@
   </a>
 
   @if ($mayReorder)
-    <x-form
-      method="put"
+    <x-position-form
       :action="route('settings.fieldPosition.update', [$template, $sectionId, $field['id']])"
-      x-target="builder"
-      :data-position-form="$field['id']"
-      class="hidden"
-    >
-      <input type="hidden" name="position" value="" />
-    </x-form>
+      target="builder"
+      :row-id="$field['id']"
+    />
   @endif
 
   @if ($field['children'] !== [])

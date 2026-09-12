@@ -6,7 +6,7 @@
 @endphp
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:breadcrumb>
-    <x-breadcrumb :items="[['label' => $viewModel->vault()->name, 'url' => route('vaults.show', $viewModel->vault())], ['label' => __('People'), 'url' => $viewModel->peopleUrl()],
+    <x-breadcrumb.vault :vault="$viewModel->vault()" :items="[['label' => __('People'), 'url' => $viewModel->peopleUrl()],
         ['label' => $viewModel->contact()->name, 'url' => $viewModel->contactUrl()],
         ['label' => __('Links'), 'url' => $viewModel->linksUrl()],
         ['label' => $viewModel->title()],]" />
@@ -18,29 +18,18 @@
 
   <div class="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
     <div class="flex min-w-0 flex-col gap-6">
-      <header class="flex max-w-[66ch] flex-col gap-2">
-        <h1 class="text-page-title text-balance text-ink">{{ $viewModel->heading() }}</h1>
-
-        <p class="text-base text-pretty text-muted">{{ $viewModel->intro() }}</p>
-      </header>
+      <x-page-header :title="$viewModel->heading()" :description="$viewModel->intro()" class="max-w-[66ch]" />
 
       @if ($url)
-        <div class="flex flex-col gap-3.5 rounded-lg border border-hairline bg-canvas p-5 " x-data="{ copied: false }">
-          <p
-            x-ref="url"
-            class="rounded-md border border-hairline bg-sunken px-3.5 py-3 font-mono text-[12.5px] break-all text-ink select-all"
-          >{{ $url }}</p>
+        <div class="flex flex-col gap-3.5 rounded-lg border border-hairline bg-canvas p-5">
+          <x-code-value>{{ $url }}</x-code-value>
 
           <div class="flex flex-wrap items-center gap-2.5">
-            <x-button
-              type="button"
-              size="small"
-              @click="navigator.clipboard.writeText($refs.url.textContent).then(() => { copied = true; setTimeout(() => copied = false, 2500) })"
-            >
-              <span x-show="! copied">{{ __('Copy the link') }}</span>
-
-              <span x-cloak x-show="copied">{{ __('Copied') }}</span>
-            </x-button>
+            <x-copy-button
+              :text="$url"
+              :label="__('Copy the link')"
+              :failure="__('We could not copy it. Select the text and copy it by hand.')"
+            />
 
             <x-button.secondary :href="$url" target="_blank" rel="noopener" size="small">{{ __('Open it as a visitor') }}</x-button.secondary>
           </div>
@@ -58,15 +47,11 @@
           @endif
         </x-slot:action>
 
-        <dl class="grid gap-0">
+        <x-detail-list label-width="minmax(0,140px)" label-style="caption">
           @foreach ($viewModel->recap() as $row)
-            <div class="grid grid-cols-[minmax(0,140px)_minmax(0,1fr)] items-baseline gap-4 border-b border-hairline px-4.5 py-3 last:border-b-0 max-[560px]:grid-cols-1 max-[560px]:gap-0.5">
-              <dt class="text-xs tracking-(--tracking-caption) text-muted uppercase">{{ $row['label'] }}</dt>
-
-              <dd class="text-sm text-pretty text-ink">{{ $row['value'] }}</dd>
-            </div>
+            <x-detail-list.row :label="$row['label']" value-class="text-sm text-pretty text-ink">{{ $row['value'] }}</x-detail-list.row>
           @endforeach
-        </dl>
+        </x-detail-list>
       </x-panel>
 
       <x-panel :title="$viewModel->visitsHeader()" icon="timeline" :flush="true">

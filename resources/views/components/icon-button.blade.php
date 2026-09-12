@@ -18,7 +18,7 @@
   $classes = [
     'relative flex size-7.5 flex-none cursor-pointer items-center justify-center rounded-md border border-hairline bg-canvas text-muted no-underline',
     'transition-colors duration-(--duration-fast) ease-out hover:border-hairline-strong hover:text-ink',
-    'focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none',
+    'focus-ring',
   ];
 
   $hover = [

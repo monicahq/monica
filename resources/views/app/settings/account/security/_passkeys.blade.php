@@ -2,7 +2,7 @@
 {{-- @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel --}}
 @php($passkeys = $viewModel->passkeys())
 
-<div id="passkeys" x-merge="replace" class="transition-opacity [&[aria-busy]]:opacity-60">
+<div id="passkeys" x-merge="replace" class="dim-when-busy">
   @if (! $viewModel->passkeysAreAvailable())
     @include('app.settings.account.security._passkeys-unavailable', [
       'reason' => $viewModel->passkeysUnavailableReason(),

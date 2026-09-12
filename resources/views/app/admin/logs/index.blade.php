@@ -1,11 +1,7 @@
 {{-- Everything anybody with the administrator capacity has done to this instance, newest first. --}}
 {{-- @var \App\ViewModels\Admin\AdministratorLogsViewModel $viewModel --}}
 <x-admin-layout :title="__('Record of administrator actions')">
-  <header class="flex flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ __('Record of administrator actions') }}</h1>
-
-    <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('Everything done in the admin space, newest first, with who did it. Nothing here can be changed or removed.') }}</p>
-  </header>
+  <x-page-header :title="__('Record of administrator actions')" :description="__('Everything done in the admin space, newest first, with who did it. Nothing here can be changed or removed.')" />
 
   @if ($viewModel->administrators()->isNotEmpty() || $viewModel->isFiltered())
     <form method="get" action="{{ route('admin.logs.index') }}" class="flex flex-wrap items-end gap-3">
@@ -31,39 +27,35 @@
     </form>
   @endif
 
-  <x-panel :flush="true">
-    <div id="entries">
-      @forelse ($viewModel->entries() as $entry)
-        <div class="flex flex-col gap-1 border-b border-hairline px-4 py-3 last:border-b-0 sm:flex-row sm:items-baseline sm:gap-4">
-          <p class="grow text-sm text-ink">{{ $entry->description }}</p>
+  <x-list-panel
+    :items="$viewModel->entries()"
+    id="entries"
+    :next-page-url="$viewModel->entries()->hasMorePages() ? $viewModel->entries()->nextPageUrl() : null"
+  >
+    <x-slot:empty>
+      <x-empty-state :title="__('Nothing has been done yet')">
+        <x-slot:icon>
+          <x-icon name="timeline" :size="30" :stroke-width="1.4" />
+        </x-slot:icon>
 
-          <p class="shrink-0 text-xs text-muted">
-            {{ $entry->author }}
+        {{ __('Every decision an administrator makes is written down here, with their name and the time it happened.') }}
+      </x-empty-state>
+    </x-slot:empty>
 
-            @if ($entry->account !== null)
-              ⋅ {{ __('account :id', ['id' => $entry->account_id]) }}
-            @endif
+    @foreach ($viewModel->entries() as $entry)
+      <div class="flex flex-col gap-1 border-b border-hairline px-4 py-3 last:border-b-0 sm:flex-row sm:items-baseline sm:gap-4">
+        <p class="grow text-sm text-ink">{{ $entry->description }}</p>
 
-            ⋅ {{ $entry->created_at->diffForHumans() }}
-          </p>
-        </div>
-      @empty
-        <x-empty-state :title="__('Nothing has been done yet')">
-          <x-slot:icon>
-            <x-icon name="timeline" :size="30" :stroke-width="1.4" />
-          </x-slot:icon>
+        <p class="shrink-0 text-xs text-muted">
+          {{ $entry->author }}
 
-          {{ __('Every decision an administrator makes is written down here, with their name and the time it happened.') }}
-        </x-empty-state>
-      @endforelse
-    </div>
+          @if ($entry->account !== null)
+            ⋅ {{ __('account :id', ['id' => $entry->account_id]) }}
+          @endif
 
-    @if ($viewModel->entries()->hasMorePages())
-      <x-slot:footer>
-        <div class="text-center">
-          <x-link :href="$viewModel->entries()->nextPageUrl()">{{ __('Load more') }}</x-link>
-        </div>
-      </x-slot:footer>
-    @endif
-  </x-panel>
+          ⋅ {{ $entry->created_at->diffForHumans() }}
+        </p>
+      </div>
+    @endforeach
+  </x-list-panel>
 </x-admin-layout>

@@ -189,7 +189,7 @@
                   x-cloak
                   x-show="active > 1"
                   x-on:click="rows[{{ $index }}].removed = true"
-                  class="cursor-pointer rounded-sm p-1 text-muted-soft hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+                  class="cursor-pointer rounded-sm p-1 text-muted-soft hover:text-ink focus-ring"
                 >
                   <span class="sr-only">{{ __('Remove this moment') }}</span>
 
@@ -205,7 +205,7 @@
           x-cloak
           x-show="shown < {{ $reminder->blanks() }}"
           x-on:click="shown++"
-          class="flex cursor-pointer items-center gap-2 self-start rounded-md border border-dashed border-hairline-strong bg-transparent px-3 py-2 font-sans text-sm text-body hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+          class="flex cursor-pointer items-center gap-2 self-start rounded-md border border-dashed border-hairline-strong bg-transparent px-3 py-2 font-sans text-sm text-body hover:bg-hover hover:text-ink focus-ring"
         >
           <x-icon name="plus" :size="14" :stroke-width="1.5" />
 

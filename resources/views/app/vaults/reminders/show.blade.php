@@ -12,13 +12,8 @@
 @endphp
 <x-shell :title="$viewModel->title()">
   <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => $viewModel->vault()->name, 'url' => route('vaults.show', $viewModel->vault())],
-        ['label' => __('Reminders'), 'url' => $viewModel->remindersUrl()],
-        ['label' => $viewModel->title()],
-      ]"
-    />
+    <x-breadcrumb.vault :vault="$viewModel->vault()" :items="[['label' => __('Reminders'), 'url' => $viewModel->remindersUrl()],
+        ['label' => $viewModel->title()],]" />
   </x-slot:breadcrumb>
 
   <x-slot:sidebar>

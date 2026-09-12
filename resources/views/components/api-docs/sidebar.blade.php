@@ -6,7 +6,7 @@
 @props(['navigation', 'current'])
 
 @php
-  $entry = 'rounded-md px-2.5 py-1.75 text-[14px] transition-colors duration-(--duration-fast) ease-out focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none';
+  $entry = 'rounded-md px-2.5 py-1.75 text-[14px] transition-colors duration-(--duration-fast) ease-out focus-ring';
 @endphp
 
 <aside class="hidden w-68 shrink-0 self-start border-r border-hairline px-4 py-6 lg:sticky lg:top-28 lg:block lg:h-[calc(100vh-7rem)] lg:overflow-y-auto">

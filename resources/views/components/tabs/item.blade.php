@@ -22,7 +22,7 @@
   $base = '-mb-px flex h-9 flex-none cursor-pointer items-center gap-1.75 border-b-2 border-transparent px-2.5 '
     .'font-sans text-nav whitespace-nowrap text-muted no-underline '
     .'transition-[color,border-color] duration-(--duration-fast) ease-out hover:text-ink '
-    .'focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none '
+    .'focus-ring '
     .'aria-[selected=true]:border-b-primary aria-[selected=true]:font-semibold aria-[selected=true]:text-ink';
 
   $mark = $selected ? 'bg-hover text-body' : 'bg-transparent text-muted-soft';

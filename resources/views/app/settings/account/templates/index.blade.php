@@ -1,25 +1,12 @@
 {{-- Everything the account describes a record with, split into what it built and what we supplied. --}}
 {{-- @var \App\ViewModels\Settings\Account\Templates\TemplatesViewModel $viewModel --}}
-<x-shell :title="__('Templates')">
-  <x-slot:breadcrumb>
-    <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ __('Back to settings') }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
-  </x-slot:sidebar>
-
-  <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
-    <div class="flex min-w-0 flex-col gap-2">
-      <h1 class="text-page-title text-ink">{{ __('Templates') }}</h1>
-
-      <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('A template decides what a record shows: which sections it carries, and which fields are in them. Records keep the version they were made with until you move them.') }}</p>
-    </div>
-
-    <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full">
+<x-settings.page
+  :title="__('Templates')"
+  :user="$viewModel->user()"
+  current="templates"
+>
+  <x-page-header :title="__('Templates')" :description="__('A template decides what a record shows: which sections it carries, and which fields are in them. Records keep the version they were made with until you move them.')">
+    <x-slot:actions>
       <x-button.secondary :href="route('settings.templateImport.new')" data-turbo="true" class="max-sm:w-full">
         {{ __('Import a file') }}
       </x-button.secondary>
@@ -27,8 +14,8 @@
       <x-button :href="route('settings.templates.new')" data-turbo="true" class="max-sm:w-full">
         {{ __('Create a template') }}
       </x-button>
-    </div>
-  </header>
+    </x-slot:actions>
+  </x-page-header>
 
   <div id="templates" x-merge="replace" class="flex flex-col gap-8">
     <div class="flex flex-wrap items-center gap-2.5">
@@ -59,13 +46,7 @@
       <span class="ml-auto text-xs text-pretty text-muted">{{ $viewModel->summary() }}</span>
     </div>
 
-    <section class="flex flex-col gap-3">
-      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-        <h2 class="shrink-0 text-section-title text-ink">{{ __('Your templates') }}</h2>
-
-        <p class="text-sm text-pretty text-muted">{{ __('Yours to change, version and publish.') }}</p>
-      </div>
-
+    <x-page-section :title="__('Your templates')" :description="__('Yours to change, version and publish.')">
       <x-panel :flush="true">
         @forelse ($viewModel->ownTemplates() as $template)
           @include('app.settings.account.templates._row', ['template' => $template])
@@ -79,24 +60,18 @@
           </x-empty-state>
         @endforelse
       </x-panel>
-    </section>
+    </x-page-section>
 
     @if ($viewModel->suppliedTemplates() !== [])
-      <section class="flex flex-col gap-3">
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ __('Supplied with Monica') }}</h2>
-
-          <p class="text-sm text-pretty text-muted">{{ __('They work as they are. Copy one to change it.') }}</p>
-        </div>
-
+      <x-page-section :title="__('Supplied with Monica')" :description="__('They work as they are. Copy one to change it.')">
         <x-panel :flush="true">
           @foreach ($viewModel->suppliedTemplates() as $template)
             @include('app.settings.account.templates._row', ['template' => $template])
           @endforeach
         </x-panel>
-      </section>
+      </x-page-section>
     @endif
   </div>
 
   <p class="px-0.5 text-xs text-pretty text-muted">{{ __('Deleting a template is refused while a record still points at one of its versions. Turn it off instead and it stops being offered to anything new.') }}</p>
-</x-shell>
+</x-settings.page>

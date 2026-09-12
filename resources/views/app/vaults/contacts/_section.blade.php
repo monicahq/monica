@@ -10,11 +10,11 @@
   :icon="$section['icon']"
   :tint="$section['tint']"
   flush
-  class="[&[aria-busy]]:opacity-60"
+  class="dim-when-busy"
 >
   <x-slot:action>
     @if ($section['isEditing'])
-      <span class="text-xs tracking-caption text-muted uppercase">{{ __('Editing') }}</span>
+      <x-caption tone="muted">{{ __('Editing') }}</x-caption>
     @elseif ($section['isEditable'])
       <x-button.secondary
         size="small"
@@ -65,24 +65,20 @@
       </div>
     </x-form>
   @else
-    <dl class="grid gap-0">
+    <x-detail-list label-width="140px">
       @forelse ($section['fields'] as $field)
-        <div class="grid grid-cols-[140px_minmax(0,1fr)] items-baseline gap-4 border-b border-hairline px-4.5 py-3 last:border-b-0 max-[560px]:grid-cols-1 max-[560px]:gap-0.5">
-          <dt class="text-sm text-muted">{{ $field['label'] }}</dt>
-
-          <dd class="m-0 min-w-0">
-            <x-field-value
-              :field="$field['field']"
-              :value="$field['rawValue']"
-              :formatted="$field['value']"
-              :rows="$field['rows']"
-              :reminder="$field['reminderMark']"
-            />
-          </dd>
-        </div>
+        <x-detail-list.row :label="$field['label']" value-class="">
+          <x-field-value
+            :field="$field['field']"
+            :value="$field['rawValue']"
+            :formatted="$field['value']"
+            :rows="$field['rows']"
+            :reminder="$field['reminderMark']"
+          />
+        </x-detail-list.row>
       @empty
         <p class="px-4.5 py-3 text-sm text-pretty text-muted">{{ __('This section asks nothing yet.') }}</p>
       @endforelse
-    </dl>
+    </x-detail-list>
   @endif
 </x-panel>

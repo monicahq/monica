@@ -14,7 +14,7 @@
     aria-haspopup="dialog"
     aria-controls="notification-bar-panel"
     aria-label="{{ trans_choice('Notifications, :count unread|Notifications, :count unread', $unread) }}"
-    class="relative flex h-9 cursor-pointer items-center gap-1.75 rounded-md px-2.75 text-sm text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+    class="relative flex h-9 cursor-pointer items-center gap-1.75 rounded-md px-2.75 text-sm text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
   >
     <x-icon name="bell" :size="18" :stroke-width="1.5" />
 
@@ -47,7 +47,7 @@
 
           <button
             type="submit"
-            class="cursor-pointer rounded-md px-1.5 py-1 text-[12px] font-medium text-danger transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+            class="cursor-pointer rounded-md px-1.5 py-1 text-[12px] font-medium text-danger transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
           >
             {{ __('Yes, mark every one as read') }}
           </button>
@@ -57,7 +57,7 @@
           type="button"
           @click="confirming = true"
           x-show="! confirming"
-          class="ml-auto cursor-pointer rounded-md px-1.5 py-1 text-[12px] text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+          class="ml-auto cursor-pointer rounded-md px-1.5 py-1 text-[12px] text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
         >
           {{ __('Mark every one as read') }}
         </button>
@@ -77,7 +77,7 @@
               <button
                 type="submit"
                 @class([
-                  'flex w-full cursor-pointer flex-col items-start gap-0.5 px-3 py-2.5 text-left transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none',
+                  'flex w-full cursor-pointer flex-col items-start gap-0.5 px-3 py-2.5 text-left transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset',
                   'bg-card' => ! $notification['is_read'],
                 ])
               >

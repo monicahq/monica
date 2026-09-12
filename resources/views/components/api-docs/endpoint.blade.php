@@ -16,14 +16,14 @@
           type="button"
           x-data="{ copied: false, markdown: {{ Js::from($markdown) }} }"
           @click="window.copyText(markdown).then((ok) => { copied = ok; setTimeout(() => (copied = false), 1600) })"
-          class="cursor-pointer rounded-md border border-hairline bg-card px-3 py-1.75 font-sans text-[13px] font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+          class="cursor-pointer rounded-md border border-hairline bg-card px-3 py-1.75 font-sans text-[13px] font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
           aria-live="polite"
           x-text="copied ? 'Copied' : 'Copy for LLM'"
         >Copy for LLM</button>
 
         <a
           href="{{ route('docs.api.markdown.show', ['section' => $section->id]) }}"
-          class="rounded-md border border-hairline bg-card px-3 py-1.75 text-[13px] font-medium whitespace-nowrap text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+          class="rounded-md border border-hairline bg-card px-3 py-1.75 text-[13px] font-medium whitespace-nowrap text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
         >View as Markdown</a>
       </div>
     </div>

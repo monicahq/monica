@@ -6,7 +6,7 @@
 @endphp
 <x-shell :title="$viewModel->title()">
   <x-slot:breadcrumb>
-    <x-breadcrumb :items="[['label' => $vault->name, 'url' => route('vaults.show', $vault)], ['label' => __('People'), 'url' => route('contacts.index', $vault)],
+    <x-breadcrumb.vault :vault="$vault" :items="[['label' => __('People'), 'url' => route('contacts.index', $vault)],
         ['label' => $contact->name, 'url' => $viewModel->contactUrl()],
         ['label' => $viewModel->title()],]" />
   </x-slot:breadcrumb>

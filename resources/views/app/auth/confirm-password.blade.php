@@ -82,9 +82,7 @@
         </x-box>
       @endif
 
-      <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">
-        <x-link :href="route('settings.security.index')" class="font-semibold text-ink">{{ __('Back to your security settings') }}</x-link>
-      </x-box>
+      <x-auth-footnote :href="route('settings.security.index')" :label="__('Back to your security settings')"></x-auth-footnote>
     </div>
   </div>
 </x-guest-layout>

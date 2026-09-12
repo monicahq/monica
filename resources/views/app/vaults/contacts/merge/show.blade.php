@@ -5,13 +5,10 @@
 @endphp
 <x-shell :title="$viewModel->title()">
   <x-slot:breadcrumb>
-    <x-breadcrumb :items="[
-        ['label' => $viewModel->vault()->name, 'url' => route('vaults.show', $viewModel->vault())],
-        ['label' => __('People'), 'url' => route('contacts.index', $viewModel->vault())],
+    <x-breadcrumb.vault :vault="$viewModel->vault()" :items="[['label' => __('People'), 'url' => route('contacts.index', $viewModel->vault())],
         ['label' => $viewModel->contact()->name, 'url' => $viewModel->backUrl()],
         ['label' => __('Merge'), 'url' => $viewModel->pickerUrl()],
-        ['label' => $preview['other']['name']],
-    ]" />
+        ['label' => $preview['other']['name']],]" />
   </x-slot:breadcrumb>
 
   <x-slot:sidebar>

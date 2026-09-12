@@ -23,7 +23,7 @@
       "after:absolute after:-inset-1.5 after:content-['']",
       'transition-[background-color,color,transform] duration-(--duration-fast) ease-out',
       '',
-      'focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none',
+      'focus-ring',
     ])
   }}
 >

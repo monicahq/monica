@@ -152,15 +152,11 @@
 
     @if ($isEditable)
       @foreach ($pages as $page)
-        <x-form
-          method="put"
+        <x-position-form
           :action="route('settings.templatePagePosition.update', [$template, $page['uuid']])"
-          x-target="builder"
-          :data-position-form="$page['id']"
-          class="hidden"
-        >
-          <input type="hidden" name="position" value="" />
-        </x-form>
+          target="builder"
+          :row-id="$page['id']"
+        />
       @endforeach
     @endif
   </div>

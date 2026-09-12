@@ -1,12 +1,6 @@
 {{-- Where somebody is, which decides how every time on the screen reads. --}}
 {{-- @var \App\ViewModels\Settings\Account\Preferences\TimezonePanel $timezone --}}
-<section class="flex flex-col gap-3">
-  <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-    <h2 class="shrink-0 text-section-title text-ink">{{ __('Time zone') }}</h2>
-
-    <p class="text-sm text-pretty text-muted">{{ __('Search for the city you are in, or the country, and pick it from the list.') }}</p>
-  </div>
-
+<x-page-section :title="__('Time zone')" :description="__('Search for the city you are in, or the country, and pick it from the list.')">
   <x-panel id="timezone-panel" :flush="true">
     <x-form
       method="put"
@@ -66,7 +60,7 @@
                   @keydown.arrow-down.prevent="step($event.target, 1)"
                   @keydown.arrow-up.prevent="step($event.target, -1)"
                   @keydown.escape.prevent="clear()"
-                  class="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-hover focus-visible:bg-hover focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+                  class="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-hover focus-visible:bg-hover focus-ring"
                 >
                   <span class="min-w-0 flex-1">
                     <span class="block truncate text-sm {{ $zone['selected'] ? 'font-semibold' : '' }} text-ink">{{ $zone['name'] }}</span>
@@ -92,7 +86,7 @@
         </div>
 
         <div class="ml-auto flex flex-col items-end gap-0.5 text-right">
-          <span class="text-label tracking-caption text-muted-soft uppercase">{{ __('Your time zone') }}</span>
+          <x-caption>{{ __('Your time zone') }}</x-caption>
 
           <span class="font-mono text-sm text-ink">{{ $timezone->timezone() }}</span>
 
@@ -153,4 +147,4 @@
       </div>
     </x-form>
   </x-panel>
-</section>
+</x-page-section>

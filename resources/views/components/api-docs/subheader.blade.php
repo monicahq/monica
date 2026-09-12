@@ -1,7 +1,7 @@
 {{-- The bar that says which reference this is, and lets somebody search it. --}}
 <div class="sticky top-14 z-4 border-b border-hairline bg-canvas">
   <div class="mx-auto flex h-14 max-w-[97.5rem] items-center gap-5 px-4 sm:px-7">
-    <a href="{{ route('docs.api.index') }}" class="flex shrink-0 items-center gap-2.25 text-ink rounded-md focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none">
+    <a href="{{ route('docs.api.index') }}" class="flex shrink-0 items-center gap-2.25 text-ink rounded-md focus-ring">
       <x-icon name="key" :size="16" class="text-muted" />
       <span class="text-[15px] font-semibold tracking-[-0.015em]">API</span>
       <span class="rounded-xs border border-hairline-soft bg-sunken px-1.5 py-0.5 font-mono text-[11px] text-body">v1</span>
@@ -24,7 +24,7 @@
 
     <a
       href="{{ route('settings.security.index') }}"
-      class="ml-auto shrink-0 rounded-md border border-hairline px-3.5 py-2 text-sm font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+      class="ml-auto shrink-0 rounded-md border border-hairline px-3.5 py-2 text-sm font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
     >Get an API key</a>
   </div>
 </div>

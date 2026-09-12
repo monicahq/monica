@@ -3,23 +3,14 @@
 @php
   $values = $viewModel->values();
 @endphp
-<x-shell :title="$viewModel->title()">
-  <x-slot:breadcrumb>
-    <x-button.bar :href="route('settings.templates.index')" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ __('Back to the templates') }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
-  </x-slot:sidebar>
-
-  <header class="flex flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
-
-    <p class="max-w-[56ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
-  </header>
+<x-settings.page
+  :title="$viewModel->title()"
+  :user="$viewModel->user()"
+  current="templates"
+  :back-href="route('settings.templates.index')"
+  :back-label="__('Back to the templates')"
+>
+  <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
   <div
     x-data="{
@@ -35,13 +26,7 @@
     class="flex flex-col gap-8"
   >
     <x-form id="template-form" :method="$viewModel->method()" :action="$viewModel->action()" class="flex flex-col gap-8">
-      <section class="flex flex-col gap-3">
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ __('Name') }}</h2>
-
-          <p class="text-sm text-pretty text-muted">{{ __('The name is what the picker shows when somebody makes a record. The slug is what the URL and the API use.') }}</p>
-        </div>
-
+      <x-page-section :title="__('Name')" :description="__('The name is what the picker shows when somebody makes a record. The slug is what the URL and the API use.')">
         <x-panel>
           <div class="flex flex-col gap-4.5">
             <x-input
@@ -73,7 +58,7 @@
               <div class="flex flex-col gap-1.5">
                 <p class="flex items-baseline gap-1.5 text-label text-ink">{{ __('Slug') }}</p>
 
-                <p class="rounded-md border border-hairline bg-sunken px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ $values['slug'] }}</p>
+                <x-code-value>{{ $values['slug'] }}</x-code-value>
 
                 <p class="text-xs text-muted">{{ $viewModel->slugHelp() }}</p>
               </div>
@@ -90,21 +75,15 @@
             />
           </div>
         </x-panel>
-      </section>
+      </x-page-section>
 
       @unless ($viewModel->isEdit())
-        <section class="flex flex-col gap-3">
-          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-            <h2 class="shrink-0 text-section-title text-ink">{{ __('What it describes') }}</h2>
-
-            <p class="text-sm text-pretty text-muted">{{ __('Fixed now and not changeable later. Every record made with it would otherwise show something else.') }}</p>
-          </div>
-
+        <x-page-section :title="__('What it describes')" :description="__('Fixed now and not changeable later. Every record made with it would otherwise show something else.')">
           <x-panel :flush="true">
             <fieldset>
               <legend class="sr-only">{{ __('What it describes') }}</legend>
 
-              <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-hover focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none">
+              <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-hover focus-ring-inset">
                 <input type="radio" name="applies_to" value="contact" x-model="appliesTo" class="mt-1" />
 
                 <span class="min-w-0 flex-1">
@@ -114,7 +93,7 @@
               </label>
 
               @if ($viewModel->hasEntityTypes())
-                <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-hover focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none">
+                <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-hover focus-ring-inset">
                   <input type="radio" name="applies_to" value="entity" x-model="appliesTo" class="mt-1" />
 
                   <span class="min-w-0 flex-1">
@@ -149,7 +128,7 @@
               <x-error :messages="$errors->get('applies_to')" />
             </x-slot:footer>
           </x-panel>
-        </section>
+        </x-page-section>
       @endunless
     </x-form>
 
@@ -179,4 +158,4 @@
       </div>
     </div>
   </div>
-</x-shell>
+</x-settings.page>

@@ -7,23 +7,14 @@
   $swatchOn = "'border-ink bg-ink text-canvas'";
   $swatchOff = "'border-hairline-strong bg-canvas text-muted hover:bg-hover'";
 @endphp
-<x-shell :title="$viewModel->title()">
-  <x-slot:breadcrumb>
-    <x-button.bar :href="route('settings.entityTypes.index')" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ __('Back to the types') }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="entity-types" />
-  </x-slot:sidebar>
-
-  <header class="flex flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
-
-    <p class="max-w-[56ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
-  </header>
+<x-settings.page
+  :title="$viewModel->title()"
+  :user="$viewModel->user()"
+  current="entity-types"
+  :back-href="route('settings.entityTypes.index')"
+  :back-label="__('Back to the types')"
+>
+  <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
   <div
     x-data="{
@@ -44,13 +35,7 @@
     class="flex flex-col gap-8"
   >
     <x-form id="entity-type-form" :method="$viewModel->method()" :action="$viewModel->action()" class="flex flex-col gap-8">
-      <section class="flex flex-col gap-3">
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ __('Names') }}</h2>
-
-          <p class="text-sm text-pretty text-muted">{{ __('One name for a single record, one for the list. The singular goes in buttons and headers, the plural in list titles.') }}</p>
-        </div>
-
+      <x-page-section :title="__('Names')" :description="__('One name for a single record, one for the list. The singular goes in buttons and headers, the plural in list titles.')">
         <x-panel>
           <div class="flex flex-col gap-4.5">
             <div class="grid gap-4 sm:grid-cols-2">
@@ -95,7 +80,7 @@
               <div class="flex flex-col gap-1.5">
                 <p class="flex items-baseline gap-1.5 text-label text-ink">{{ __('Slug') }}</p>
 
-                <p class="rounded-md border border-hairline bg-sunken px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ $values['slug'] }}</p>
+                <x-code-value>{{ $values['slug'] }}</x-code-value>
 
                 <p class="text-xs text-muted">{{ $viewModel->slugHelp() }}</p>
               </div>
@@ -112,15 +97,9 @@
             />
           </div>
         </x-panel>
-      </section>
+      </x-page-section>
 
-      <section class="flex flex-col gap-3">
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ __('Appearance') }}</h2>
-
-          <p class="text-sm text-pretty text-muted">{{ __('The icon and colour mark this type in the vault navigation and beside every record of it.') }}</p>
-        </div>
-
+      <x-page-section :title="__('Appearance')" :description="__('The icon and colour mark this type in the vault navigation and beside every record of it.')">
         <x-panel>
           <div class="flex flex-col gap-5">
             <div class="flex w-full items-center gap-3 rounded-md border border-hairline bg-sunken px-3 py-2.5 text-left">
@@ -192,15 +171,9 @@
             </fieldset>
           </div>
         </x-panel>
-      </section>
+      </x-page-section>
 
-      <section class="flex flex-col gap-3">
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ __('Availability') }}</h2>
-
-          <p class="text-sm text-pretty text-muted">{{ __('An active type appears in every vault in this account. Turn it off and existing records stay as they are, but no new ones can be made.') }}</p>
-        </div>
-
+      <x-page-section :title="__('Availability')" :description="__('An active type appears in every vault in this account. Turn it off and existing records stay as they are, but no new ones can be made.')">
         <x-panel>
           <x-checkbox id="is_active" :checked="$values['isActive']">
             {{ __('New records of this type can be created') }}
@@ -216,7 +189,7 @@
             </x-slot:footer>
           @endif
         </x-panel>
-      </section>
+      </x-page-section>
     </x-form>
 
     <div class="flex flex-wrap items-center gap-3.5">
@@ -233,4 +206,4 @@
       </div>
     </div>
   </div>
-</x-shell>
+</x-settings.page>

@@ -1,17 +1,10 @@
 {{-- Where somebody edits their own profile: their name, their address and their photo. --}}
 {{-- @var \App\ViewModels\Settings\Account\Profile\ProfileViewModel $viewModel --}}
-<x-shell :title="__('Profile')">
-  <x-slot:breadcrumb>
-    <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ __('Back to settings') }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="profile" />
-  </x-slot:sidebar>
-
+<x-settings.page
+  :title="__('Profile')"
+  :user="$viewModel->user()"
+  current="profile"
+>
   <x-modal.confirm-password
     :confirmed="$viewModel->passwordIsConfirmed()"
     :seconds-left="$viewModel->secondsBeforeTheConfirmationExpires()"
@@ -19,19 +12,9 @@
     :offers-passkey="$viewModel->credentials()->offersPasskey()"
   />
 
-  <header class="flex flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ __('Profile') }}</h1>
+  <x-page-header :title="__('Profile')" :description="__('Your name, the address you sign in with, and your photo.')" />
 
-    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Your name, the address you sign in with, and your photo.') }}</p>
-  </header>
-
-  <section class="flex flex-col gap-3">
-    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 text-section-title text-ink">{{ __('Profile photo') }}</h2>
-
-      <p class="text-sm text-pretty text-muted">{{ __('Shown next to your name everywhere in the application.') }}</p>
-    </div>
-
+  <x-page-section :title="__('Profile photo')" :description="__('Shown next to your name everywhere in the application.')">
     <x-panel>
       <div
         class="flex flex-wrap items-center gap-5"
@@ -85,21 +68,15 @@
         </div>
       </div>
     </x-panel>
-  </section>
+  </x-page-section>
 
-  <section class="flex flex-col gap-3">
-    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 text-section-title text-ink">{{ __('Details') }}</h2>
-
-      <p class="text-sm text-pretty text-muted">{{ __('Your name appears everywhere the application refers to you.') }}</p>
-    </div>
-
+  <x-page-section :title="__('Details')" :description="__('Your name appears everywhere the application refers to you.')">
     <x-form
       method="put"
       :action="route('settings.profile.update')"
       id="details-form"
       x-target="details-form profile-avatar shell-avatar"
-      class="transition-opacity [&[aria-busy]]:opacity-60"
+      class="dim-when-busy"
     >
       <x-panel>
         <div class="flex flex-col gap-4.5">
@@ -136,15 +113,9 @@
         </x-slot:footer>
       </x-panel>
     </x-form>
-  </section>
+  </x-page-section>
 
-  <section class="flex flex-col gap-3">
-    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 text-section-title text-ink">{{ __('Email address') }}</h2>
-
-      <p class="text-sm text-pretty text-muted">{{ __('What you sign in with, and where every way back into the account is sent.') }}</p>
-    </div>
-
+  <x-page-section :title="__('Email address')" :description="__('What you sign in with, and where every way back into the account is sent.')">
     <x-form method="put" :action="route('settings.email.update')">
       <x-panel>
         <x-input
@@ -165,7 +136,7 @@
         </x-slot:footer>
       </x-panel>
     </x-form>
-  </section>
+  </x-page-section>
 
   <section id="delete-your-account" class="flex scroll-mt-20 flex-col gap-3">
     <div class="px-0.5">
@@ -221,4 +192,4 @@
       </div>
     </x-panel>
   </section>
-</x-shell>
+</x-settings.page>

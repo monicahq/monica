@@ -2,11 +2,7 @@
 {{-- @var \App\ViewModels\Admin\OverviewViewModel $viewModel --}}
 @use('App\Enums\EmailDeliveryStatusEnum')
 <x-admin-layout :title="__('Overview')">
-  <header class="flex flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ __('Overview') }}</h1>
-
-    <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('Where this instance stands, counted when you opened this screen.') }}</p>
-  </header>
+  <x-page-header :title="__('Overview')" :description="__('Where this instance stands, counted when you opened this screen.')" />
 
   @if ($viewModel->isEmpty())
     <x-notice>
@@ -37,7 +33,7 @@
       ['label' => __('New accounts'), 'value' => $viewModel->accountsCreatedRecently(), 'period' => trans_choice('last :count day|last :count days', \App\ViewModels\Admin\OverviewViewModel::NEW_ACCOUNT_DAYS)],
     ] as $figure)
       <div class="rounded-lg border border-hairline bg-card px-4 py-3.5 ">
-        <p class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ $figure['label'] }}</p>
+        <x-caption class="block">{{ $figure['label'] }}</x-caption>
 
         <p class="text-section-title text-ink">{{ $figure['value'] }}</p>
 
@@ -57,7 +53,7 @@
         [EmailDeliveryStatusEnum::Sent, __('On its way')],
       ] as [$status, $label])
         <div class="rounded-lg border border-hairline bg-card px-4 py-3.5">
-          <p class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ $label }}</p>
+          <x-caption class="block">{{ $label }}</x-caption>
 
           <p class="text-section-title text-ink">{{ $viewModel->emailsSentByStatus()[$status->value] }}</p>
 

@@ -14,7 +14,7 @@
         <button
           type="button"
           @click="renaming = true; $nextTick(() => $refs.name.focus())"
-          class="cursor-pointer text-xs text-muted underline underline-offset-2 transition-colors hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+          class="cursor-pointer text-xs text-muted underline underline-offset-2 transition-colors hover:text-ink focus-ring"
         >{{ __('Rename') }}</button>
 
         <x-modal.warning
@@ -27,7 +27,7 @@
             <button
               type="button"
               @click="open = true"
-              class="cursor-pointer text-xs text-muted underline underline-offset-2 transition-colors hover:text-error focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+              class="cursor-pointer text-xs text-muted underline underline-offset-2 transition-colors hover:text-error focus-ring"
             >{{ __('Delete') }}</button>
           </x-slot:trigger>
 
@@ -67,7 +67,7 @@
       <button
         type="button"
         @click="renaming = false"
-        class="cursor-pointer text-xs text-muted underline underline-offset-2 transition-colors hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+        class="cursor-pointer text-xs text-muted underline underline-offset-2 transition-colors hover:text-ink focus-ring"
       >{{ __('Cancel') }}</button>
 
       <x-error :id="'category-name-'.$category['id'].'-error'" :messages="$renameErrors->get('name')" />

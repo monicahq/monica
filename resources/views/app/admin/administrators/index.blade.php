@@ -1,11 +1,7 @@
 {{-- Who runs this instance. --}}
 {{-- @var \App\ViewModels\Admin\AdministratorsViewModel $viewModel --}}
 <x-admin-layout :title="__('Administrators')">
-  <header class="flex flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ __('Administrators') }}</h1>
-
-    <p class="max-w-[64ch] text-base text-pretty text-body">{{ __('Everybody who can reach this area. Nobody can give themselves this access, and nobody can take it away from themselves.') }}</p>
-  </header>
+  <x-page-header :title="__('Administrators')" :description="__('Everybody who can reach this area. Nobody can give themselves this access, and nobody can take it away from themselves.')" />
 
   @error('administrator')
     <x-notice tone="danger">{{ $message }}</x-notice>

@@ -1,22 +1,11 @@
 {{-- What this account holds, what it could hold, and how to pay for it. --}}
 {{-- @var \App\ViewModels\Settings\Account\Billing\BillingViewModel $viewModel --}}
-<x-shell :title="__('Billing')">
-  <x-slot:breadcrumb>
-    <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ __('Back to settings') }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="billing" />
-  </x-slot:sidebar>
-
-  <header class="flex flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ __('Billing') }}</h1>
-
-    <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('The offer this account is on, what it unlocks, and what is on record.') }}</p>
-  </header>
+<x-settings.page
+  :title="__('Billing')"
+  :user="$viewModel->user()"
+  current="billing"
+>
+  <x-page-header :title="__('Billing')" :description="__('The offer this account is on, what it unlocks, and what is on record.')" />
 
   @if ($viewModel->isSelfHosted())
     <x-notice tone="info" :title="__('Nothing to pay for here')">
@@ -45,11 +34,7 @@
       <x-notice tone="danger">{{ $errors->first('subscription') }}</x-notice>
     @endif
 
-    <section class="flex flex-col gap-3">
-      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-        <h2 class="shrink-0 text-section-title text-ink">{{ __('Your access') }}</h2>
-      </div>
-
+    <x-page-section :title="__('Your access')">
       <x-panel>
         <div class="flex flex-col gap-2">
           @if ($viewModel->holdsLifetimeAccess())
@@ -111,15 +96,9 @@
           @endif
         </div>
       </x-panel>
-    </section>
+    </x-page-section>
 
-    <section class="flex flex-col gap-3">
-      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-        <h2 class="shrink-0 text-section-title text-ink">{{ __('On record') }}</h2>
-
-        <p class="text-sm text-pretty text-muted">{{ __('What this account holds, and what was paid for it.') }}</p>
-      </div>
-
+    <x-page-section :title="__('On record')" :description="__('What this account holds, and what was paid for it.')">
       <x-panel>
         <dl class="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
           <div>
@@ -177,16 +156,10 @@
           </div>
         </dl>
       </x-panel>
-    </section>
+    </x-page-section>
 
     @if ($viewModel->offers() !== [])
-      <section class="flex flex-col gap-3">
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ __('Offers') }}</h2>
-
-          <p class="text-sm text-pretty text-muted">{{ __('All of them unlock exactly the same product, and every price includes tax. You pay at Stripe, never here.') }}</p>
-        </div>
-
+      <x-page-section :title="__('Offers')" :description="__('All of them unlock exactly the same product, and every price includes tax. You pay at Stripe, never here.')">
         @if (count($viewModel->currencies()) > 1)
           <x-form method="put" :action="route('settings.billingCurrency.update')" class="flex flex-wrap items-end gap-2">
             <x-select id="currency" name="currency" :label="__('Currency')" size="small" class="w-40">
@@ -200,7 +173,7 @@
         @endif
 
         <x-offer-list :offers="$viewModel->offers()" />
-      </section>
+      </x-page-section>
     @endif
   @endif
-</x-shell>
+</x-settings.page>

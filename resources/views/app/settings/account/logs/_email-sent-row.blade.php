@@ -17,7 +17,7 @@
     type="button"
     @click="open = ! open"
     :aria-expanded="open ? 'true' : 'false'"
-    class="flex w-full items-start gap-3 px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out cursor-pointer hover:bg-hover focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none"
+    class="flex w-full items-start gap-3 px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out cursor-pointer hover:bg-hover focus-ring-inset"
   >
     <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-plum-tint text-plum">
       <x-icon name="mail" :size="18" :stroke-width="1.5" />
@@ -32,11 +32,7 @@
         <x-badge :tone="$tone">{{ $deliveryLabel }}</x-badge>
 
         @if ($sentAt)
-          <time
-            datetime="{{ $sentAt->toIso8601String() }}"
-            title="{{ $sentAt->toDayDateTimeString() }}"
-            class="text-xs text-pretty text-muted"
-          >{{ __('Sent :time', ['time' => $sentAt->diffForHumans()]) }}</time>
+          <x-timestamp :at="$sentAt" class="text-xs text-pretty text-muted">{{ __('Sent :time', ['time' => $sentAt->diffForHumans()]) }}</x-timestamp>
         @endif
       </span>
     </span>

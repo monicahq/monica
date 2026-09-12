@@ -51,7 +51,7 @@
       type="button"
       @click="navOpen = false"
       aria-label="{{ __('Close the menu') }}"
-      class="-mr-1 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none lg:hidden"
+      class="-mr-1 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring lg:hidden"
     >
       <x-icon name="close" :size="15" :stroke-width="1.5" />
     </button>
@@ -61,7 +61,7 @@
     <a
       href="{{ route('vaults.index') }}"
       data-turbo="true"
-      class="flex items-center gap-2.5 rounded-md border border-hairline bg-canvas px-2.5 py-2 text-[13px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+      class="flex items-center gap-2.5 rounded-md border border-hairline bg-canvas px-2.5 py-2 text-[13px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
     >
       <x-icon name="arrow-right" :size="14" :stroke-width="1.5" class="shrink-0 rotate-180 text-muted" />
       {{ __('Leave the settings') }}
@@ -77,7 +77,7 @@
           href="{{ $entry['url'] }}"
           data-turbo="true"
           @if ($current === $entry['key']) aria-current="page" @endif
-          class="{{ $item }} {{ $current === $entry['key'] ? 'bg-canvas font-medium text-ink shadow-nav-active' : 'text-body hover:bg-hover hover:text-ink' }} focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+          class="{{ $item }} {{ $current === $entry['key'] ? 'bg-canvas font-medium text-ink shadow-nav-active' : 'text-body hover:bg-hover hover:text-ink' }} focus-ring"
         >
           <x-icon :name="$entry['icon']" :size="16" :stroke-width="1.5" />
           {{ $entry['label'] }}

@@ -115,7 +115,7 @@
 
         @if ($viewModel->isEditable())
           <div class="flex flex-col items-start gap-2.5 border-t border-hairline pt-4">
-            <p class="uppercase text-xs text-pretty tracking-caption text-muted">{{ __('In use') }}</p>
+            <x-caption tone="muted" class="block text-pretty">{{ __('In use') }}</x-caption>
 
             <p class="text-sm text-pretty text-muted">{{ $viewModel->usageNote() }}</p>
 

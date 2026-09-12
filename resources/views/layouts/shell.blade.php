@@ -45,7 +45,7 @@
             :aria-expanded="navOpen ? 'true' : 'false'"
             aria-controls="main-nav"
             aria-label="{{ __('Open the menu') }}"
-            class="-ml-1.5 flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none lg:hidden"
+            class="-ml-1.5 flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring lg:hidden"
           >
             <x-icon name="menu" :size="17" :stroke-width="1.4" />
           </button>

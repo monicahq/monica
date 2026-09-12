@@ -6,7 +6,7 @@
 @endphp
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:breadcrumb>
-    <x-breadcrumb :items="[['label' => $viewModel->vault()->name, 'url' => route('vaults.show', $viewModel->vault())], ['label' => __('People'), 'url' => $viewModel->peopleUrl()],
+    <x-breadcrumb.vault :vault="$viewModel->vault()" :items="[['label' => __('People'), 'url' => $viewModel->peopleUrl()],
         ['label' => $viewModel->contact()->name, 'url' => $viewModel->contactUrl()],
         ['label' => __('Links'), 'url' => $viewModel->linksUrl()],
         ['label' => $viewModel->breadcrumbLabel()],]" />
@@ -18,10 +18,10 @@
 
   <div class="flex flex-wrap items-start gap-6">
     <div class="min-w-60 flex-1">
-      <span class="flex items-center gap-2 text-xs tracking-(--tracking-caption) text-muted uppercase">
+      <x-caption tone="muted" class="flex items-center gap-2">
         <x-icon name="lock" :size="15" :stroke-width="1.6" />
         {{ __('Read only, always') }}
-      </span>
+      </x-caption>
 
       <h1 class="mt-2 text-page-title text-balance text-ink">{{ $viewModel->title() }}</h1>
 
@@ -121,7 +121,7 @@
           </span>
         </x-option-row>
 
-        <p class="mt-4 text-xs tracking-(--tracking-caption) text-muted uppercase">{{ __('Hides whatever you tick') }}</p>
+        <x-caption tone="muted" class="block mt-4">{{ __('Hides whatever you tick') }}</x-caption>
 
         <ul class="mt-2 flex list-none flex-col gap-1.5">
           @foreach ([

@@ -6,7 +6,7 @@
       <x-icon :name="$listing['typeIcon']" :size="16" :stroke-width="1.5" />
     </span>
 
-    <span class="text-xs tracking-caption uppercase text-muted">{{ $listing['typeLabel'] }}</span>
+    <x-caption tone="muted">{{ $listing['typeLabel'] }}</x-caption>
 
     <span class="truncate text-xs text-muted">· {{ $listing['categoryName'] }}</span>
 

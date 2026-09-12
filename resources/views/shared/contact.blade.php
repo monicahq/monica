@@ -57,15 +57,11 @@
 
       @forelse ($sections as $section)
         <x-panel :title="$section['name']" :icon="$section['icon']" :tint="$section['tint']" :flush="true">
-          <dl class="grid gap-0">
+          <x-detail-list label-width="minmax(0,170px)" label-style="caption">
             @foreach ($section['fields'] as $field)
-              <div class="grid grid-cols-[minmax(0,170px)_minmax(0,1fr)] items-baseline gap-4 border-b border-hairline px-4.5 py-3 last:border-b-0 max-[560px]:grid-cols-1 max-[560px]:gap-0.5">
-                <dt class="text-xs tracking-(--tracking-caption) text-muted uppercase">{{ $field['label'] }}</dt>
-
-                <dd class="text-base text-pretty text-ink">{{ $field['value'] }}</dd>
-              </div>
+              <x-detail-list.row :label="$field['label']">{{ $field['value'] }}</x-detail-list.row>
             @endforeach
-          </dl>
+          </x-detail-list>
         </x-panel>
       @empty
         <x-panel>

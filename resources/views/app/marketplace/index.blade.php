@@ -71,7 +71,7 @@
               'flex items-start gap-3 rounded-lg border p-3.5 no-underline ',
               'transition-[background-color,border-color,transform] duration-(--duration-fast) ease-out',
               'hover:bg-hover ',
-              'focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none',
+              'focus-ring',
               'border-ink bg-card' => $category['isCurrent'],
               'border-hairline bg-canvas' => ! $category['isCurrent'],
             ])

@@ -178,14 +178,10 @@
   </div>
 
   @if ($isEditable)
-    <x-form
-      method="put"
+    <x-position-form
       :action="route('settings.templateSectionPosition.update', [$template, $section['id']])"
-      x-target="builder"
-      :data-position-form="$section['id']"
-      class="hidden"
-    >
-      <input type="hidden" name="position" value="" />
-    </x-form>
+      target="builder"
+      :row-id="$section['id']"
+    />
   @endif
 </div>

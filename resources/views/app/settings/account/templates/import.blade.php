@@ -1,23 +1,17 @@
 {{-- A file on its way in, read before it becomes anything. --}}
 {{-- @var \App\ViewModels\Settings\Account\Templates\ImportFileViewModel $viewModel --}}
-<x-shell :title="$viewModel->title()" wide>
-  <x-slot:breadcrumb>
-    <x-breadcrumb :items="$viewModel->breadcrumb()" />
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
-  </x-slot:sidebar>
-
+<x-settings.page
+  :title="$viewModel->title()"
+  :user="$viewModel->user()"
+  current="templates"
+  :crumbs="$viewModel->breadcrumb()"
+  wide
+>
   <div class="grid items-start gap-7 lg:grid-cols-[minmax(0,1fr)_20rem]">
     <div class="flex min-w-0 flex-col gap-5" x-data="{ file: @js(old('file', $viewModel->raw())) }">
-      <header class="flex max-w-[66ch] flex-col gap-2">
-        <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
+      <x-page-header :title="$viewModel->title()" :description="$viewModel->intro()" class="max-w-[66ch]" />
 
-        <p class="text-base text-pretty text-body">{{ $viewModel->intro() }}</p>
-      </header>
-
-      <div id="import" x-merge="replace" class="flex flex-col gap-5 transition-opacity [&[aria-busy]]:opacity-60">
+      <div id="import" x-merge="replace" class="flex flex-col gap-5 dim-when-busy">
         <x-panel>
           <x-form method="post" :action="$viewModel->checkUrl()" x-target="import" class="flex flex-col gap-4">
             <x-textarea
@@ -137,4 +131,4 @@
       @endforeach
     </x-panel>
   </div>
-</x-shell>
+</x-settings.page>

@@ -28,7 +28,7 @@
       type="button"
       @click="open = ! open"
       :aria-expanded="open ? 'true' : 'false'"
-      class="block w-full cursor-pointer rounded-md text-left focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+      class="block w-full cursor-pointer rounded-md text-left focus-ring"
     >
       <span class="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
         <code class="font-mono text-base font-semibold text-ink">{{ $entry->label() }}</code>
@@ -94,7 +94,7 @@
                   type="button"
                   @click="shown = ! shown"
                   :aria-expanded="shown ? 'true' : 'false'"
-                  class="shrink-0 cursor-pointer rounded-md px-2 py-1 text-sm font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+                  class="shrink-0 cursor-pointer rounded-md px-2 py-1 text-sm font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
                   x-text="shown ? lessLabel : moreLabel"
                 >{{ __('View more') }}</button>
               </div>

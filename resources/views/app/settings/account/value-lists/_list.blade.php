@@ -10,7 +10,7 @@
   id="{{ $target }}"
   x-merge="replace"
   x-data="{ renaming: {{ $listErrors->has('name') ? 'true' : 'false' }}, adding: {{ $newValueErrors->has('label') ? 'true' : 'false' }} }"
-  class="transition-opacity [&[aria-busy]]:opacity-60"
+  class="dim-when-busy"
 >
   <x-panel :title="$list['name']" :subtitle="$list['countLabel']" :flush="true">
     <x-slot:action>
@@ -22,20 +22,17 @@
         >{{ __('Rename') }}</x-button.ghost>
 
         @if ($list['canBeDeleted'])
-          <x-modal.warning
+          <x-delete-action
             :title="__('Delete “:name”?', ['name' => $list['name']])"
             :confirm="__('Delete the list')"
             :action="route('settings.valueLists.destroy', $list['id'])"
+            :label="__('Delete')"
+            variant="ghost"
+            size="small"
             x-target="value-lists"
           >
-            <x-slot:trigger>
-              <x-button.ghost size="small" type="button" @click="open = true" class="hover:text-error">{{ __('Delete') }}</x-button.ghost>
-            </x-slot:trigger>
-
             <p>{{ __('The list is deleted, and every value in it with it.') }}</p>
-
-            <p>{{ __('This cannot be undone.') }}</p>
-          </x-modal.warning>
+          </x-delete-action>
         @endif
       </div>
     </x-slot:action>

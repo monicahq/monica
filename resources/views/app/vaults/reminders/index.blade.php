@@ -6,12 +6,7 @@
 @endphp
 <x-shell :title="$viewModel->title()">
   <x-slot:breadcrumb>
-    <x-breadcrumb
-      :items="[
-        ['label' => $viewModel->vault()->name, 'url' => route('vaults.show', $viewModel->vault())],
-        ['label' => __('Reminders')],
-      ]"
-    />
+    <x-breadcrumb.vault :vault="$viewModel->vault()" :items="[['label' => __('Reminders')],]" />
   </x-slot:breadcrumb>
 
   <x-slot:sidebar>
@@ -59,7 +54,7 @@
       </div>
     </div>
 
-    <div id="reminders-list" x-merge="replace" class="flex flex-col gap-9 transition-opacity [&[aria-busy]]:opacity-60">
+    <div id="reminders-list" x-merge="replace" class="flex flex-col gap-9 dim-when-busy">
       @foreach ($groups as $group)
         <section
           @class([

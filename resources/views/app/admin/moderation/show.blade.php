@@ -16,18 +16,18 @@
   <x-panel :title="__('What the author says')">
     <div class="flex flex-col gap-4">
       <div>
-        <p class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Summary') }}</p>
+        <x-caption class="block">{{ __('Summary') }}</x-caption>
         <p class="text-base text-pretty text-body">{{ $viewModel->summary() }}</p>
       </div>
 
       <div>
-        <p class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Description') }}</p>
+        <x-caption class="block">{{ __('Description') }}</x-caption>
         <p class="text-base text-pretty whitespace-pre-line text-body">{{ $viewModel->description() }}</p>
       </div>
 
       @if ($viewModel->changeNote() !== null)
         <div>
-          <p class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('What changed in this version') }}</p>
+          <x-caption class="block">{{ __('What changed in this version') }}</x-caption>
           <p class="text-base text-pretty whitespace-pre-line text-body">{{ $viewModel->changeNote() }}</p>
         </div>
       @endif

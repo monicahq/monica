@@ -4,18 +4,14 @@
   $template = $viewModel->template();
   $version = $viewModel->version();
 @endphp
-<x-shell :title="$template->name" wide>
-  <x-slot:breadcrumb>
-    <x-button.bar :href="route('settings.templates.index')" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ __('Back to the templates') }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
-  </x-slot:sidebar>
-
+<x-settings.page
+  :title="$template->name"
+  :user="$viewModel->user()"
+  current="templates"
+  :back-href="route('settings.templates.index')"
+  :back-label="__('Back to the templates')"
+  wide
+>
   <div id="builder" x-merge="replace" class="flex flex-col gap-6">
     <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
       <div class="flex min-w-0 flex-col gap-2">
@@ -199,4 +195,4 @@
       @endif
     </div>
   </div>
-</x-shell>
+</x-settings.page>

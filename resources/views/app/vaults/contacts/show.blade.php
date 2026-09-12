@@ -10,7 +10,7 @@
 @endphp
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:breadcrumb>
-    <x-breadcrumb :items="[['label' => $vault->name, 'url' => route('vaults.show', $vault)], ['label' => __('People'), 'url' => $viewModel->peopleUrl()],
+    <x-breadcrumb.vault :vault="$vault" :items="[['label' => __('People'), 'url' => $viewModel->peopleUrl()],
         ['label' => $viewModel->title()],]" />
   </x-slot:breadcrumb>
 
@@ -48,7 +48,7 @@
           aria-pressed="{{ $viewModel->isFavourite() ? 'true' : 'false' }}"
           aria-label="{{ $viewModel->favouriteLabel() }}"
           title="{{ $viewModel->favouriteLabel() }}"
-          class="flex size-6.5 cursor-pointer items-center justify-center rounded-full shadow-panel transition-colors duration-(--duration-fast) ease-out focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none {{ $viewModel->isFavourite() ? 'border-2 border-canvas bg-warning text-canvas hover:bg-warning/90' : 'border border-hairline-strong bg-canvas text-muted-soft hover:bg-warning-tint hover:text-warning' }}"
+          class="flex size-6.5 cursor-pointer items-center justify-center rounded-full shadow-panel transition-colors duration-(--duration-fast) ease-out focus-ring {{ $viewModel->isFavourite() ? 'border-2 border-canvas bg-warning text-canvas hover:bg-warning/90' : 'border border-hairline-strong bg-canvas text-muted-soft hover:bg-warning-tint hover:text-warning' }}"
         >
           <x-icon :name="$viewModel->isFavourite() ? 'star-filled' : 'star'" :size="14" :stroke-width="1.6" />
         </button>

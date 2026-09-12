@@ -34,7 +34,7 @@
         @else
           <a
             href="{{ route('auth.login.new') }}"
-            class="flex h-8.5 items-center rounded-md px-2.75 text-sm text-body no-underline transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+            class="flex h-8.5 items-center rounded-md px-2.75 text-sm text-body no-underline transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
           >
             {{ __('Sign in') }}
           </a>

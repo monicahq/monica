@@ -1,22 +1,13 @@
 {{-- Every version this template has had, and exactly what each one holds. --}}
 {{-- @var \App\ViewModels\Settings\Account\Templates\TemplateVersionHistoryViewModel $viewModel --}}
-<x-shell :title="$viewModel->title()">
-  <x-slot:breadcrumb>
-    <x-button.bar :href="$viewModel->backUrl()" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ $viewModel->backLabel() }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
-  </x-slot:sidebar>
-
-  <header class="flex min-w-0 flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
-
-    <p class="max-w-[62ch] text-base text-pretty text-body">{{ __('Publishing fixes a template exactly as it is: its pages in their order, the version of each section, and every field. Records made with an older version keep it until you move them.') }}</p>
-  </header>
+<x-settings.page
+  :title="$viewModel->title()"
+  :user="$viewModel->user()"
+  current="templates"
+  :back-href="$viewModel->backUrl()"
+  :back-label="$viewModel->backLabel()"
+>
+  <x-page-header :title="$viewModel->title()" :description="__('Publishing fixes a template exactly as it is: its pages in their order, the version of each section, and every field. Records made with an older version keep it until you move them.')" class="min-w-0" />
 
   @if ($viewModel->hasVersions())
     @php
@@ -39,4 +30,4 @@
       </x-empty-state>
     </x-panel>
   @endif
-</x-shell>
+</x-settings.page>

@@ -3,19 +3,17 @@
 @php
   $template = $viewModel->template();
 @endphp
-<x-shell :title="__('Share :name', ['name' => $template->name])" wide>
-  <x-slot:breadcrumb>
-    <x-breadcrumb :items="[
+<x-settings.page
+  :title="__('Share :name', ['name' => $template->name])"
+  :user="$viewModel->user()"
+  current="templates"
+  :crumbs="[
       ['label' => __('Templates'), 'url' => route('settings.templates.index')],
       ['label' => $template->name, 'url' => $viewModel->builderUrl()],
       ['label' => __('Share')],
-    ]" />
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="templates" />
-  </x-slot:sidebar>
-
+    ]"
+  wide
+>
   <header class="flex max-w-[66ch] flex-col gap-2">
     <h1 class="text-page-title text-ink">{{ __('Share :name', ['name' => $template->name]) }}</h1>
 
@@ -99,4 +97,4 @@
   <x-notice tone="quiet" icon="lock" :title="__('What never leaves, either way')">
     {{ __('No contacts, no notes, no reminders, no files, no photos. A field called Nickname is exported; the nicknames you wrote in it are not. You can read the whole file before it goes anywhere.') }}
   </x-notice>
-</x-shell>
+</x-settings.page>

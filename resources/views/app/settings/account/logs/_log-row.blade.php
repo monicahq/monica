@@ -15,11 +15,7 @@
     <p class="mt-px text-sm text-pretty text-muted">{{ $log->description }}</p>
 
     <p class="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-      <time
-        datetime="{{ $log->created_at->toIso8601String() }}"
-        title="{{ $log->created_at->toDayDateTimeString() }}"
-        class="text-xs text-pretty text-muted"
-      >{{ $log->created_at->diffForHumans() }}</time>
+      <x-timestamp :at="$log->created_at" class="text-xs text-pretty text-muted">{{ $log->created_at->diffForHumans() }}</x-timestamp>
 
       <span class="text-xs text-pretty text-muted" aria-hidden="true">·</span>
 

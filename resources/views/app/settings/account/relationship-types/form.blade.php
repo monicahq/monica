@@ -3,18 +3,13 @@
 @php
   $values = $viewModel->values();
 @endphp
-<x-shell :title="$viewModel->title()">
-  <x-slot:breadcrumb>
-    <x-button.bar :href="route('settings.relationshipTypes.index')" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ __('Back to relationship types') }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="relationship-types" />
-  </x-slot:sidebar>
-
+<x-settings.page
+  :title="$viewModel->title()"
+  :user="$viewModel->user()"
+  current="relationship-types"
+  :back-href="route('settings.relationshipTypes.index')"
+  :back-label="__('Back to relationship types')"
+>
   <header class="flex flex-col gap-2">
     <div class="flex flex-wrap items-center gap-3">
       <h1 class="text-page-title text-ink">{{ $viewModel->title() }}</h1>
@@ -46,11 +41,7 @@
     class="flex flex-col gap-8"
   >
     <x-form id="relationship-type-form" :method="$viewModel->method()" :action="$viewModel->action()" class="flex flex-col gap-8">
-      <section class="flex flex-col gap-3">
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ __('Name and category') }}</h2>
-        </div>
-
+      <x-page-section :title="__('Name and category')">
         <x-panel>
           <div class="flex flex-col gap-4.5">
             <x-input
@@ -77,13 +68,9 @@
             </x-select>
           </div>
         </x-panel>
-      </section>
+      </x-page-section>
 
-      <section class="flex flex-col gap-3">
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ __('How it reads') }}</h2>
-        </div>
-
+      <x-page-section :title="__('How it reads')">
         <x-panel>
           <div class="flex flex-col gap-4.5">
             @if ($viewModel->directionIsEditable())
@@ -179,13 +166,9 @@
             </div>
           </div>
         </x-panel>
-      </section>
+      </x-page-section>
 
-      <section class="flex flex-col gap-3">
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ __('Availability') }}</h2>
-        </div>
-
+      <x-page-section :title="__('Availability')">
         <x-panel>
           <div class="flex flex-col gap-2">
             <x-checkbox id="is_active" :checked="$values['isActive']">
@@ -195,19 +178,15 @@
             <p class="text-xs text-pretty text-muted">{{ $viewModel->availabilityHelp() }}</p>
           </div>
         </x-panel>
-      </section>
+      </x-page-section>
     </x-form>
 
     @if ($viewModel->behaviourTitle())
-      <section class="flex flex-col gap-3">
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-          <h2 class="shrink-0 text-section-title text-ink">{{ __('What the application does with it') }}</h2>
-        </div>
-
+      <x-page-section :title="__('What the application does with it')">
         <x-panel :title="$viewModel->behaviourTitle()" icon="family">
           <p class="text-sm text-pretty text-body">{{ $viewModel->behaviourBody() }}</p>
         </x-panel>
-      </section>
+      </x-page-section>
     @endif
 
     <div class="flex flex-wrap items-center gap-3.5">
@@ -222,4 +201,4 @@
       </div>
     </div>
   </div>
-</x-shell>
+</x-settings.page>

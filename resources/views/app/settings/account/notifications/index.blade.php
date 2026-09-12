@@ -4,24 +4,13 @@
   $channels = $viewModel->channels();
   $working = $viewModel->workingCount();
 @endphp
-<x-shell :title="__('Notifications')">
-  <x-slot:breadcrumb>
-    <x-button.bar :href="route('settings.index')" data-turbo="true" size="small">
-      <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-      {{ __('Back to settings') }}
-    </x-button.bar>
-  </x-slot:breadcrumb>
-
-  <x-slot:sidebar>
-    <x-settings.sidebar :user="$viewModel->user()" current="notifications" />
-  </x-slot:sidebar>
-
+<x-settings.page
+  :title="__('Notifications')"
+  :user="$viewModel->user()"
+  current="notifications"
+>
   <div class="flex flex-col gap-8">
-    <header class="flex flex-col gap-2">
-      <h1 class="text-page-title text-ink">{{ __('Notifications') }}</h1>
-
-      <p class="max-w-[56ch] text-base text-pretty text-body">{{ __('Where the application may reach you.') }}</p>
-    </header>
+    <x-page-header :title="__('Notifications')" :description="__('Where the application may reach you.')" />
 
     @if ($errors->any())
       <x-notice tone="danger">
@@ -144,4 +133,4 @@
       @endif
     @endforeach
   </div>
-</x-shell>
+</x-settings.page>

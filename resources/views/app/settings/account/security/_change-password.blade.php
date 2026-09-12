@@ -7,7 +7,7 @@
     :action="route('settings.password.update')"
     id="password-form"
     x-target="password-form"
-    class="transition-opacity [&[aria-busy]]:opacity-60"
+    class="dim-when-busy"
   >
     <x-panel>
       <div class="flex flex-col gap-4.5">

@@ -21,7 +21,7 @@
         type="button"
         x-data="{ copied: false, body: {{ Js::from($body) }} }"
         @click="window.copyText(body).then((ok) => { copied = ok; setTimeout(() => (copied = false), 1600) })"
-        class="ml-auto cursor-pointer rounded-xs px-2 py-1 text-[12px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none"
+        class="ml-auto cursor-pointer rounded-xs px-2 py-1 text-[12px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
         aria-live="polite"
         x-text="copied ? 'Copied' : 'Copy'"
       >Copy</button>

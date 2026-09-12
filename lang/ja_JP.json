@@ -2177,6 +2177,7 @@
     "Ways to connect": "連絡方法",
     "We could not copy it. Select the address and copy it by hand.": "コピーできませんでした。アドレスを選択して手動でコピーしてください。",
     "We could not copy it. Select the key and copy it by hand.": "コピーできませんでした。キーを選択して手動でコピーしてください。",
+    "We could not copy it. Select the text and copy it by hand.": "コピーできませんでした。テキストを選択して手動でコピーしてください。",
     "We could not copy them. Select the codes and copy them by hand.": "コピーできませんでした。コードを選択して手動でコピーしてください。",
     "We could not reach Stripe just now. Nothing was charged. Please try again in a moment.": "ただいま Stripe に接続できませんでした。請求はされていません。少ししてからもう一度お試しください。",
     "We could not reach Stripe to stop your subscription, so nothing was deleted. Please try again in a moment.": "サブスクリプションを止めるために Stripe に接続できませんでした。何も削除されていません。少ししてからもう一度お試しください。",
