@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Settings\Account\Security;
 
+use App\Enums\SsoProviderEnum;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Security\SecurityViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -128,6 +129,80 @@ class SecurityViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_names_the_provider_that_signs_the_user_in(): void
+    {
+        $this->offer('github');
+
+        $user = User::factory()->create(['sso_provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']);
+
+        $connected = new SecurityViewModel(user: $user)->connectedProvider();
+
+        $this->assertEquals('GitHub', $connected['name']);
+        $this->assertTrue($connected['available']);
+    }
+
+    #[Test]
+    public function it_keeps_naming_a_provider_the_instance_has_stopped_offering(): void
+    {
+        config(['monica.sso_installed' => []]);
+
+        $user = User::factory()->create(['sso_provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']);
+
+        $connected = new SecurityViewModel(user: $user)->connectedProvider();
+
+        $this->assertEquals('GitHub', $connected['name']);
+        $this->assertFalse($connected['available']);
+    }
+
+    #[Test]
+    public function it_names_no_provider_when_none_is_connected(): void
+    {
+        $this->assertNull(new SecurityViewModel(user: User::factory()->create())->connectedProvider());
+    }
+
+    #[Test]
+    public function it_offers_what_the_user_could_connect(): void
+    {
+        $this->offer('github');
+
+        $offered = new SecurityViewModel(user: User::factory()->create())->providersToConnect();
+
+        $this->assertCount(1, $offered);
+        $this->assertEquals('GitHub', $offered[0]['name']);
+        $this->assertEquals(route('settings.sso.redirect', ['provider' => 'github']), $offered[0]['url']);
+    }
+
+    #[Test]
+    public function it_offers_nothing_more_once_one_is_connected(): void
+    {
+        $this->offer('github');
+
+        $user = User::factory()->create(['sso_provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']);
+
+        $this->assertEquals([], new SecurityViewModel(user: $user)->providersToConnect());
+    }
+
+    #[Test]
+    public function it_allows_disconnecting_only_while_something_else_signs_the_user_in(): void
+    {
+        $withPassword = User::factory()->create(['sso_provider' => SsoProviderEnum::GitHub, 'sso_id' => '1']);
+        $withNothingElse = User::factory()->singleSignOn()->create();
+        $withNoProvider = User::factory()->create();
+
+        $this->assertTrue(new SecurityViewModel(user: $withPassword)->canDisconnectTheProvider());
+        $this->assertFalse(new SecurityViewModel(user: $withNothingElse)->canDisconnectTheProvider());
+        $this->assertFalse(new SecurityViewModel(user: $withNoProvider)->canDisconnectTheProvider());
+    }
+
+    #[Test]
+    public function it_lets_a_connected_user_remove_their_password(): void
+    {
+        $user = User::factory()->create(['sso_provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']);
+
+        $this->assertTrue(new SecurityViewModel(user: $user)->canRemoveThePassword());
+    }
+
+    #[Test]
     public function it_gives_the_address_a_device_is_given(): void
     {
         $user = User::factory()->create();
@@ -148,5 +223,15 @@ class SecurityViewModelTest extends TestCase
 
         $this->assertTrue($keys['Dwight’s phone']['reachesSensitiveFields']);
         $this->assertFalse($keys['Deployment script']['reachesSensitiveFields']);
+    }
+
+    private function offer(string $provider): void
+    {
+        config([
+            'monica.sso_installed' => SsoProviderEnum::values(),
+            "services.{$provider}.client_id" => 'dunder-mifflin-scranton',
+            "services.{$provider}.client_secret" => 'that-is-what-she-said',
+            "services.{$provider}.redirect" => "https://monica.test/sso/{$provider}/callback",
+        ]);
     }
 }

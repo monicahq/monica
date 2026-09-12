@@ -68,8 +68,8 @@ the rule.
 - `app/Actions`: one class per user action, holding the business logic. Controllers stay thin and delegate here. Most of the app lives in this folder.
 - `app/Models`: Eloquent models.
 - `app/Http/Controllers`: everything under `App` (the logged in app), grouped by domain (`Vaults`, `Settings`, `Marketplace`, `Admin`, `Auth`), plus the base `Controller.php`.
-- `app/Http/Middleware`: route middleware. Five classes, three of them aliased in
-  `bootstrap/app.php`: `active`, `administrator` and `magic.link`. `SetLocale` is appended to the web
+- `app/Http/Middleware`: route middleware. Six classes, four of them aliased in
+  `bootstrap/app.php`: `active`, `administrator`, `magic.link` and `sso`. `SetLocale` is appended to the web
   group and `SetApiLocale` prepended to the api group instead. An account carries no role: a record
   is reached when its account matches, which `resolveRouteBinding()` enforces, and when the vault in
   the URL matches, which the controller enforces with `abort_unless(..., 404)`. The one capacity is

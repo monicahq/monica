@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\AttemptLogin;
+use App\Enums\SsoProviderEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
@@ -454,5 +455,40 @@ class AttemptLoginTest extends TestCase
         } finally {
             $this->assertGuest();
         }
+    }
+
+    #[Test]
+    public function it_signs_in_a_password_holder_who_has_since_connected_a_provider(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create([
+            'email' => 'michael.scott@dundermifflin.com',
+            'sso_provider' => SsoProviderEnum::GitHub,
+            'sso_id' => '108120124',
+        ]);
+
+        $signedIn = new AttemptLogin(
+            email: 'michael.scott@dundermifflin.com',
+            password: 'password',
+        )->execute();
+
+        $this->assertTrue($signedIn->is($user));
+        $this->assertTrue($signedIn->usesSingleSignOn());
+    }
+
+    #[Test]
+    public function it_refuses_somebody_who_signed_up_through_a_provider_and_never_had_a_password(): void
+    {
+        Queue::fake();
+
+        User::factory()->singleSignOn()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $this->expectException(ValidationException::class);
+
+        new AttemptLogin(
+            email: 'michael.scott@dundermifflin.com',
+            password: 'password',
+        )->execute();
     }
 }

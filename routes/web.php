@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\ContactGroupingEnum;
+use App\Enums\SsoProviderEnum;
 use App\Http\Controllers\App\Admin\AccountController as AdminAccountController;
 use App\Http\Controllers\App\Admin\AccountLifetimeAccessController;
 use App\Http\Controllers\App\Admin\AccountStorageLimitController;
@@ -52,6 +53,7 @@ use App\Http\Controllers\App\Settings\Account\Security\PasskeyController;
 use App\Http\Controllers\App\Settings\Account\Security\PasswordController;
 use App\Http\Controllers\App\Settings\Account\Security\RecoveryCodeController;
 use App\Http\Controllers\App\Settings\Account\Security\SecurityController;
+use App\Http\Controllers\App\Settings\Account\Security\SsoController;
 use App\Http\Controllers\App\Settings\Account\Security\TwoFactorController;
 use App\Http\Controllers\App\Settings\Account\Templates\FieldController;
 use App\Http\Controllers\App\Settings\Account\Templates\FieldPositionController;
@@ -435,6 +437,14 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         Route::delete('settings/account/security/two-factor', [TwoFactorController::class, 'destroy'])->name('settings.twoFactor.destroy');
 
         Route::post('settings/account/security/recovery-codes', [RecoveryCodeController::class, 'create'])->name('settings.recoveryCodes.create');
+
+        Route::get('settings/account/security/sso/{provider}/redirect', [SsoController::class, 'redirect'])
+            ->middleware(['sso', 'throttle:6,1'])
+            ->whereIn('provider', SsoProviderEnum::values())
+            ->name('settings.sso.redirect');
+        Route::delete('settings/account/security/sso', [SsoController::class, 'destroy'])
+            ->middleware('throttle:6,1')
+            ->name('settings.sso.destroy');
     });
 
     /*

@@ -7,6 +7,7 @@ namespace Tests\Unit\Models;
 use App\Enums\DateFormatEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\NumberFormatEnum;
+use App\Enums\SsoProviderEnum;
 use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\Passkey;
@@ -113,6 +114,17 @@ class UserTest extends TestCase
 
         $this->assertTrue($withSso->usesSingleSignOn());
         $this->assertFalse($withPassword->usesSingleSignOn());
+    }
+
+    #[Test]
+    public function it_knows_which_provider_it_signs_in_with(): void
+    {
+        $withSso = User::factory()->singleSignOn()->create();
+        $withPassword = User::factory()->create();
+
+        $this->assertTrue($withSso->signsInWith(SsoProviderEnum::Google));
+        $this->assertFalse($withSso->signsInWith(SsoProviderEnum::GitHub));
+        $this->assertFalse($withPassword->signsInWith(SsoProviderEnum::Google));
     }
 
     #[Test]
@@ -228,11 +240,24 @@ class UserTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_call_a_single_sign_on_account_passwordless(): void
+    public function it_calls_an_account_created_through_a_provider_passwordless(): void
     {
         $user = User::factory()->singleSignOn()->create();
 
         $this->assertNull($user->password);
+        $this->assertTrue($user->usesSingleSignOn());
+        $this->assertTrue($user->usesPasswordlessSignIn());
+    }
+
+    #[Test]
+    public function it_does_not_call_a_password_holder_passwordless_once_they_connect_a_provider(): void
+    {
+        $user = User::factory()->create([
+            'sso_provider' => SsoProviderEnum::GitHub,
+            'sso_id' => '108120124',
+        ]);
+
+        $this->assertNotNull($user->password);
         $this->assertTrue($user->usesSingleSignOn());
         $this->assertFalse($user->usesPasswordlessSignIn());
     }

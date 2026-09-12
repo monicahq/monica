@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\ViewModels\Settings\Account\Security;
 
 use App\Enums\ApiKeyScopeEnum;
+use App\Enums\SsoProviderEnum;
 use App\Helpers\PasskeyAvailability;
+use App\Helpers\SsoProviderAvailability;
 use App\Models\User;
 use App\ViewModels\Auth\ConfirmPasswordViewModel;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -95,10 +97,58 @@ class SecurityViewModel
 
     public function canRemoveThePassword(): bool
     {
-        return ! $this->user->usesSingleSignOn()
-            && $this->user->password !== null
-            && $this->user->hasPasskeys()
-            && $this->passkeysAreAvailable();
+        if ($this->user->password === null) {
+            return false;
+        }
+
+        if ($this->user->usesSingleSignOn()) {
+            return true;
+        }
+
+        return $this->user->hasPasskeys() && $this->passkeysAreAvailable();
+    }
+
+    /**
+     * Get the provider signing this user in, or null when none does.
+     *
+     * @return array{name: string, available: bool}|null
+     */
+    public function connectedProvider(): ?array
+    {
+        $provider = $this->user->sso_provider;
+
+        if ($provider === null) {
+            return null;
+        }
+
+        return [
+            'name' => $provider->brandName(),
+            'available' => SsoProviderAvailability::isAvailable($provider),
+        ];
+    }
+
+    /**
+     * Get the providers this user could connect, which is none once one is
+     * connected, since a user signs in through at most one.
+     *
+     * @return list<array{name: string, url: string}>
+     */
+    public function providersToConnect(): array
+    {
+        if ($this->user->sso_provider !== null) {
+            return [];
+        }
+
+        return array_map(fn (SsoProviderEnum $provider): array => [
+            'name' => $provider->brandName(),
+            'url' => route('settings.sso.redirect', ['provider' => $provider->value]),
+        ], SsoProviderAvailability::onThisInstance());
+    }
+
+    public function canDisconnectTheProvider(): bool
+    {
+        return $this->user->sso_provider !== null
+            && ($this->user->password !== null || $this->user->hasPasskeys());
     }
 
     public function credentials(): ConfirmPasswordViewModel

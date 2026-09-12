@@ -55,6 +55,12 @@
           </x-form>
         </x-box>
 
+        @foreach ($viewModel->providersToOffer() as $provider)
+          <x-button.secondary :href="$provider['url']" class="w-full">
+            {{ __('Continue with :provider', ['provider' => $provider['name']]) }}
+          </x-button.secondary>
+        @endforeach
+
         @if (! $viewModel->passkeysAreAvailable())
           <x-box padding="p-4" class="rounded-lg text-center text-sm text-body">
             {{ __('Passkeys need a secure connection. Reach this instance over https and you can sign in with one.') }}

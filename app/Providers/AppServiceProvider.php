@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Actions\VerifyPasskey;
+use App\Enums\SsoProviderEnum;
 use App\Helpers\LocaleCollation;
 use App\Http\Responses\PasskeyConfirmationResponse;
 use App\Http\Responses\PasskeyDeletedResponse;
@@ -18,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -29,6 +31,7 @@ use Laravel\Passkeys\Contracts\PasskeyDeletedResponse as PasskeyDeletedResponseC
 use Laravel\Passkeys\Contracts\PasskeyLoginResponse as PasskeyLoginResponseContract;
 use Laravel\Passkeys\Passkeys;
 use Override;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +41,27 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->configurePasskeys();
+    }
+
+    /**
+     * Register the driver of every provider that needs a package of its own.
+     * Which packages are there is read from configuration rather than tested
+     * here, so a test reaches either state, and a package that is absent is
+     * never named.
+     */
+    private function configureSingleSignOn(): void
+    {
+        foreach (SsoProviderEnum::cases() as $provider) {
+            $driver = $provider->driverClass();
+
+            if ($driver === null || ! in_array($provider->value, config('monica.sso_installed', []), true)) {
+                continue;
+            }
+
+            Event::listen(function (SocialiteWasCalled $event) use ($provider, $driver): void {
+                $event->extendSocialite($provider->value, $driver);
+            });
+        }
     }
 
     private function configurePasskeys(): void
@@ -60,6 +84,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureCollation();
         $this->configureDefaultsProduction();
         $this->configureBilling();
+        $this->configureSingleSignOn();
     }
 
     private function configureBilling(): void

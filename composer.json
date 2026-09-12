@@ -30,6 +30,7 @@
         "laravel/framework": "^13.8",
         "laravel/passkeys": "^0",
         "laravel/sanctum": "^4.3",
+        "laravel/socialite": "^5.31",
         "laravel/tinker": "^3.0",
         "monicahq/laravel-sabre": "^2.0",
         "php-http/discovery": "^1.20",
@@ -52,11 +53,13 @@
         "mockery/mockery": "^1.6",
         "monicahq/laradb": "^1.1",
         "nunomaduro/collision": "^8.6",
-        "phpunit/phpunit": "^12.5.12"
+        "phpunit/phpunit": "^12.5.12",
+        "socialiteproviders/microsoft": "^4.10"
     },
     "suggest": {
         "laravel-notification-channels/telegram": "Required to send notifications over Telegram. Without it the channel is listed and reports itself unavailable.",
-        "laravel/vonage-notification-channel": "Required to send notifications by text message. Without it the channel is listed and reports itself unavailable."
+        "laravel/vonage-notification-channel": "Required to send notifications by text message. Without it the channel is listed and reports itself unavailable.",
+        "socialiteproviders/microsoft": "Required to offer Microsoft as a way to sign in. GitHub, Google and Facebook need nothing beyond laravel/socialite."
     },
     "autoload": {
         "psr-4": {

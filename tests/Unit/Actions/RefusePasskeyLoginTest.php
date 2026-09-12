@@ -47,13 +47,11 @@ class RefusePasskeyLoginTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_user_who_signs_in_through_an_identity_provider(): void
+    public function it_allows_a_user_who_also_signs_in_through_a_provider(): void
     {
         $user = User::factory()->singleSignOn()->create();
 
-        $this->expectException(ValidationException::class);
-
-        new RefusePasskeyLogin(candidate: $user)->execute();
+        $this->assertTrue(new RefusePasskeyLogin(candidate: $user)->execute()->is($user));
     }
 
     #[Test]
@@ -61,7 +59,7 @@ class RefusePasskeyLoginTest extends TestCase
     {
         $messages = [];
 
-        foreach ([null, User::factory()->create(['is_active' => false]), User::factory()->singleSignOn()->create()] as $candidate) {
+        foreach ([null, User::factory()->create(['is_active' => false])] as $candidate) {
             try {
                 new RefusePasskeyLogin(candidate: $candidate)->execute();
             } catch (ValidationException $exception) {
@@ -69,7 +67,7 @@ class RefusePasskeyLoginTest extends TestCase
             }
         }
 
-        $this->assertCount(3, $messages);
+        $this->assertCount(2, $messages);
         $this->assertEquals([['passkey' => [self::MESSAGE]]], array_unique($messages, SORT_REGULAR));
     }
 }

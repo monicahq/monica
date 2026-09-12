@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateUser;
+use App\Enums\SsoProviderEnum;
 use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -57,13 +58,16 @@ class CreateUserTest extends TestCase
             firstName: 'Pam',
             lastName: 'Beesly',
             email: 'pam.beesly@dundermifflin.com',
-            ssoProvider: 'google',
+            ssoProvider: SsoProviderEnum::Google,
+            ssoId: '108120124',
         )->execute();
 
         $this->assertNull($user->password);
         $this->assertNull($user->password_changed_at);
-        $this->assertEquals('google', $user->sso_provider);
+        $this->assertEquals(SsoProviderEnum::Google, $user->sso_provider);
+        $this->assertEquals('108120124', $user->sso_id);
         $this->assertTrue($user->usesSingleSignOn());
+        $this->assertNull($user->email_verified_at);
     }
 
     #[Test]

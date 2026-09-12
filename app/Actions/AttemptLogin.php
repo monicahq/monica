@@ -72,7 +72,6 @@ class AttemptLogin
 
         if ($candidate === null
             || ! $candidate->is_active
-            || $candidate->usesSingleSignOn()
             || $candidate->password === null) {
             $this->fail($candidate);
         }

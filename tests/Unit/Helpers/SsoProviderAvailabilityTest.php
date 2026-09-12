@@ -1,0 +1,97 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\Helpers;
+
+use App\Enums\SsoProviderEnum;
+use App\Helpers\SsoProviderAvailability;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class SsoProviderAvailabilityTest extends TestCase
+{
+    #[Test]
+    public function it_offers_a_provider_that_is_installed_and_configured(): void
+    {
+        $this->install(['github']);
+        $this->configure('github');
+
+        $this->assertTrue(SsoProviderAvailability::isAvailable(SsoProviderEnum::GitHub));
+        $this->assertEquals([SsoProviderEnum::GitHub], SsoProviderAvailability::onThisInstance());
+        $this->assertTrue(SsoProviderAvailability::anyOnThisInstance());
+    }
+
+    #[Test]
+    public function it_refuses_a_provider_whose_package_is_absent(): void
+    {
+        $this->install(['github', 'google', 'facebook']);
+        $this->configure('microsoft');
+
+        $this->assertFalse(SsoProviderAvailability::isAvailable(SsoProviderEnum::Microsoft));
+        $this->assertEquals([], SsoProviderAvailability::onThisInstance());
+        $this->assertFalse(SsoProviderAvailability::anyOnThisInstance());
+    }
+
+    #[Test]
+    public function it_refuses_a_provider_nobody_gave_credentials_for(): void
+    {
+        $this->install(['github']);
+
+        $this->assertFalse(SsoProviderAvailability::isAvailable(SsoProviderEnum::GitHub));
+        $this->assertEquals([], SsoProviderAvailability::onThisInstance());
+    }
+
+    #[Test]
+    public function it_refuses_a_provider_missing_any_one_of_its_three_credentials(): void
+    {
+        $this->install(['github']);
+
+        foreach (['client_id', 'client_secret', 'redirect'] as $missing) {
+            $this->configure('github');
+            config(["services.github.{$missing}" => null]);
+
+            $this->assertFalse(SsoProviderAvailability::isAvailable(SsoProviderEnum::GitHub));
+        }
+    }
+
+    #[Test]
+    public function it_offers_nothing_when_no_driver_is_installed_at_all(): void
+    {
+        $this->install([]);
+        $this->configure('github');
+        $this->configure('google');
+
+        $this->assertEquals([], SsoProviderAvailability::onThisInstance());
+        $this->assertFalse(SsoProviderAvailability::anyOnThisInstance());
+    }
+
+    #[Test]
+    public function it_keeps_the_order_the_enum_declares(): void
+    {
+        $this->install(['github', 'google', 'facebook']);
+        $this->configure('facebook');
+        $this->configure('github');
+        $this->configure('google');
+
+        $this->assertEquals(
+            [SsoProviderEnum::GitHub, SsoProviderEnum::Google, SsoProviderEnum::Facebook],
+            SsoProviderAvailability::onThisInstance(),
+        );
+    }
+
+    /** @param  list<string>  $providers */
+    private function install(array $providers): void
+    {
+        config(['monica.sso_installed' => $providers]);
+    }
+
+    private function configure(string $provider): void
+    {
+        config([
+            "services.{$provider}.client_id" => 'dunder-mifflin-scranton',
+            "services.{$provider}.client_secret" => 'that-is-what-she-said',
+            "services.{$provider}.redirect" => "https://monica.test/sso/{$provider}/callback",
+        ]);
+    }
+}

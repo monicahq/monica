@@ -4,7 +4,7 @@
   <x-form method="post" :action="route('settings.password.create')">
     <x-panel>
       <div class="flex flex-col gap-4.5">
-        <x-notice icon="lock" tone="info">{{ __('This account has no password. Your passkeys, and a link sent to your email address, are what sign you in.') }}</x-notice>
+        <x-notice icon="lock" tone="info">{{ __('This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.') }}</x-notice>
 
         <p class="text-sm text-pretty text-muted">{{ __('You can set one again at any time.') }}</p>
 

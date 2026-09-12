@@ -12,7 +12,8 @@ use App\Notifications\PasswordRemoved;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Give up a password in favour of passkeys.
+ * Give up a password, which is only allowed while something else still signs
+ * the user in: a passkey, or a provider they have connected.
  */
 class DestroyUserPassword
 {
@@ -32,16 +33,14 @@ class DestroyUserPassword
 
     private function validate(): void
     {
-        if ($this->user->usesSingleSignOn()) {
-            throw ValidationException::withMessages([
-                'password' => __('This account signs in through an identity provider and has no password.'),
-            ]);
-        }
-
         if ($this->user->password === null) {
             throw ValidationException::withMessages([
                 'password' => __('This account has no password to remove.'),
             ]);
+        }
+
+        if ($this->user->usesSingleSignOn()) {
+            return;
         }
 
         if (! $this->user->hasPasskeys()) {

@@ -129,7 +129,7 @@ class AccountViewModel
             return __('With a password');
         }
 
-        return __('Single sign-on through :provider', ['provider' => $this->user()->sso_provider]);
+        return __('Single sign-on through :provider', ['provider' => $this->user()->sso_provider?->brandName()]);
     }
 
     public function twoFactorLine(): string

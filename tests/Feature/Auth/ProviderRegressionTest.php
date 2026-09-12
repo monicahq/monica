@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
+use App\Enums\SsoProviderEnum;
 use App\Models\MagicLink;
 use App\Models\User;
 use Illuminate\Auth\EloquentUserProvider;
@@ -72,14 +73,31 @@ class ProviderRegressionTest extends TestCase
     }
 
     #[Test]
-    public function it_still_refuses_a_user_who_signs_in_through_an_identity_provider(): void
+    public function it_still_signs_in_a_user_who_has_also_connected_a_provider(): void
     {
         Queue::fake();
 
         User::factory()->create([
             'email' => 'michael.scott@dundermifflin.com',
-            'sso_provider' => 'google',
+            'sso_provider' => SsoProviderEnum::Google,
+            'sso_id' => '108120124',
         ]);
+
+        $response = $this->post(route('auth.login.create'), [
+            'email' => 'michael.scott@dundermifflin.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertRedirect(route('home.index'));
+        $this->assertAuthenticated();
+    }
+
+    #[Test]
+    public function it_still_refuses_a_user_who_signed_up_through_a_provider_and_has_no_password(): void
+    {
+        Queue::fake();
+
+        User::factory()->singleSignOn()->create(['email' => 'michael.scott@dundermifflin.com']);
 
         $response = $this->post(route('auth.login.create'), [
             'email' => 'michael.scott@dundermifflin.com',

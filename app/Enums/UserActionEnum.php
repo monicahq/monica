@@ -40,6 +40,8 @@ enum UserActionEnum: string implements Translatable
     case PasswordConfirmationRefused = 'password_confirmation_refused';
     case UserPasswordRemoved = 'user_password_removed';
     case UserPasswordSet = 'user_password_set';
+    case UserSsoConnected = 'user_sso_connected';
+    case UserSsoDisconnected = 'user_sso_disconnected';
     case VaultCreation = 'vault_created';
     case VaultUpdate = 'vault_updated';
     case VaultPositionUpdate = 'vault_position_updated';
@@ -203,6 +205,8 @@ enum UserActionEnum: string implements Translatable
             self::PasswordConfirmationRefused => 'Gave the wrong password before a sensitive action',
             self::UserPasswordRemoved => 'Removed their password',
             self::UserPasswordSet => 'Set a password',
+            self::UserSsoConnected => 'Connected :name as a way to sign in',
+            self::UserSsoDisconnected => 'Disconnected :name as a way to sign in',
             self::VaultCreation => 'Created the vault :name',
             self::VaultUpdate => 'Updated the vault :name',
             self::VaultPositionUpdate => 'Moved the vault :name in the list',

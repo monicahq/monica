@@ -84,15 +84,34 @@ class SecurityControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_there_is_nothing_to_change_when_the_account_signs_in_elsewhere(): void
+    public function it_offers_a_password_to_an_account_created_through_a_provider(): void
     {
         $user = User::factory()->singleSignOn()->create();
 
         $response = $this->actingAs($user)->get(route('settings.security.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('You sign in through your identity provider, so there is no password to change here.', escape: false);
+        $response->assertSee('This account has no password.', escape: false);
+        $response->assertSee('Set a password', escape: false);
         $response->assertDontSee('Current password', escape: false);
+    }
+
+    #[Test]
+    public function it_names_the_provider_that_signs_the_account_in(): void
+    {
+        config([
+            'monica.sso_installed' => ['github', 'google', 'facebook'],
+            'services.google.client_id' => 'dunder-mifflin-scranton',
+            'services.google.client_secret' => 'that-is-what-she-said',
+            'services.google.redirect' => 'https://monica.test/sso/google/callback',
+        ]);
+        $user = User::factory()->singleSignOn()->create();
+
+        $response = $this->actingAs($user)->get(route('settings.security.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Google', escape: false);
+        $response->assertSee('Signs you in.', escape: false);
     }
 
     #[Test]

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\SsoProviderEnum;
 use App\Http\Controllers\App\Auth\ConfirmPasswordController;
 use App\Http\Controllers\App\Auth\EmailVerificationController;
 use App\Http\Controllers\App\Auth\LocaleController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\App\Auth\PasswordResetLinkController;
 use App\Http\Controllers\App\Auth\RegistrationController;
 use App\Http\Controllers\App\Auth\RegistrationPasskeyController;
 use App\Http\Controllers\App\Auth\ScreenshotLinkController;
+use App\Http\Controllers\App\Auth\SsoController;
 use App\Http\Controllers\App\Auth\TwoFactorChallengeController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +45,16 @@ Route::middleware(['guest'])->group(function (): void {
             ->name('auth.magicLink.show');
     });
 
+    /*
+     * Signing in through an outside provider. A provider the instance has not both
+     * installed and given credentials for does not exist here: the middleware
+     * answers 404 and the sign in screen offers nothing.
+     */
+    Route::get('sso/{provider}/redirect', [SsoController::class, 'redirect'])
+        ->middleware(['sso', 'throttle:6,1'])
+        ->whereIn('provider', SsoProviderEnum::values())
+        ->name('auth.sso.redirect');
+
     Route::get('forgot-password', [PasswordResetLinkController::class, 'new'])->name('auth.password.new');
     Route::post('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->middleware('throttle:6,1')
@@ -57,6 +69,16 @@ Route::middleware(['guest'])->group(function (): void {
         ->middleware('throttle:6,1')
         ->name('auth.twoFactor.create');
 });
+
+/*
+ * Where a provider sends everybody back. It is registered once with the provider
+ * and serves both flows, so it sits outside the guest group: signing in arrives
+ * here, and so does a signed in person who has just connected one.
+ */
+Route::get('sso/{provider}/callback', [SsoController::class, 'callback'])
+    ->middleware(['sso', 'throttle:6,1'])
+    ->whereIn('provider', SsoProviderEnum::values())
+    ->name('auth.sso.callback');
 
 Route::middleware(['auth'])->group(function (): void {
     Route::get('register/passkey', [RegistrationPasskeyController::class, 'new'])->name('auth.registerPasskey.new');

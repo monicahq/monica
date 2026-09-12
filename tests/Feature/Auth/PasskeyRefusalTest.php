@@ -115,19 +115,6 @@ class PasskeyRefusalTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_passkey_belonging_to_a_single_sign_on_user(): void
-    {
-        $user = User::factory()->singleSignOn()->create();
-        $this->registerPasskeyFor($user, 'an-sso-user-credential');
-
-        $response = $this->attempt($this->assertion('an-sso-user-credential'));
-
-        $response->assertStatus(422);
-        $response->assertJsonPath('errors.passkey.0', self::MESSAGE);
-        $this->assertGuest();
-    }
-
-    #[Test]
     public function a_refused_sign_in_leaves_nothing_behind(): void
     {
         Queue::fake();
@@ -189,10 +176,7 @@ class PasskeyRefusalTest extends TestCase
         $deactivated = User::factory()->create(['is_active' => false]);
         $this->registerPasskeyFor($deactivated, 'deactivated');
 
-        $sso = User::factory()->singleSignOn()->create();
-        $this->registerPasskeyFor($sso, 'sso');
-
-        $bodies = collect(['unregistered', 'deactivated', 'sso'])
+        $bodies = collect(['unregistered', 'deactivated'])
             ->map(fn (string $id): array => $this->attempt($this->assertion($id))->json())
             ->unique()
             ->all();

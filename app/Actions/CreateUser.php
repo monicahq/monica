@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\SsoProviderEnum;
 use App\Helpers\TextSanitizer;
 use App\Models\Account;
 use App\Models\User;
@@ -22,7 +23,8 @@ class CreateUser
         private string $lastName,
         private string $email,
         private readonly ?string $password = null,
-        private ?string $ssoProvider = null,
+        private readonly ?SsoProviderEnum $ssoProvider = null,
+        private ?string $ssoId = null,
         private readonly ?string $locale = null,
         private readonly ?string $timezone = null,
     ) {}
@@ -40,7 +42,7 @@ class CreateUser
         $this->firstName = TextSanitizer::plainText($this->firstName);
         $this->lastName = TextSanitizer::plainText($this->lastName);
         $this->email = mb_strtolower(TextSanitizer::plainText($this->email));
-        $this->ssoProvider = TextSanitizer::nullablePlainText($this->ssoProvider);
+        $this->ssoId = TextSanitizer::nullablePlainText($this->ssoId);
     }
 
     private function create(): void
@@ -53,6 +55,7 @@ class CreateUser
             'password' => $this->password === null ? null : Hash::make($this->password),
             'password_changed_at' => $this->password === null ? null : now(),
             'sso_provider' => $this->ssoProvider,
+            'sso_id' => $this->ssoId,
             'is_active' => true,
             'locale' => $this->locale,
             'timezone' => $this->timezone ?? config('app.timezone'),

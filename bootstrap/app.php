@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\EnsureMagicLinkIsEnabled;
+use App\Http\Middleware\EnsureSsoProviderIsAvailable;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\EnsureUserIsAdministrator;
 use App\Http\Middleware\SetApiLocale;
@@ -37,6 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'active' => EnsureUserIsActive::class,
             'administrator' => EnsureUserIsAdministrator::class,
             'magic.link' => EnsureMagicLinkIsEnabled::class,
+            'sso' => EnsureSsoProviderIsAvailable::class,
         ]);
         $middleware->api(prepend: [
             EnsureFrontendRequestsAreStateful::class,

@@ -1,8 +1,6 @@
 {{-- The password half of the security screen. --}}
 {{-- @var \App\ViewModels\Settings\Account\Security\SecurityViewModel $viewModel --}}
 @if ($viewModel->usesPasswordlessSignIn())
-@elseif ($viewModel->usesSingleSignOn())
-  <x-notice icon="lock">{{ __('You sign in through your identity provider, so there is no password to change here.') }}</x-notice>
 @else
   <x-form
     method="put"

@@ -39,6 +39,18 @@
 
   <section class="flex flex-col gap-3">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('Outside providers') }}</h2>
+
+      <p class="text-sm text-pretty text-muted">{{ __('Sign in with an account you already have elsewhere. Connecting one adds a way in and takes none away.') }}</p>
+    </div>
+
+    <x-panel :flush="true">
+      @include('app.settings.account.security._sso', ['viewModel' => $viewModel])
+    </x-panel>
+  </section>
+
+  <section class="flex flex-col gap-3">
+    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
       <h2 class="shrink-0 text-section-title text-ink">{{ __('Passkeys') }}</h2>
 
       <p class="text-sm text-pretty text-muted">{{ __('A passkey is kept on your device and is unlocked by your fingerprint, your face or your device PIN. Nothing is typed, so nothing can be phished.') }}</p>

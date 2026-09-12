@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Auth;
 
+use App\Enums\SsoProviderEnum;
 use App\Helpers\PasskeyAvailability;
 use App\ViewModels\Auth\LoginViewModel;
 use PHPUnit\Framework\Attributes\Test;
@@ -48,6 +49,48 @@ class LoginViewModelTest extends TestCase
 
             $this->assertFalse(new LoginViewModel()->passkeysAreAvailable(), $host);
         }
+    }
+
+    #[Test]
+    public function it_offers_every_provider_that_is_installed_and_configured(): void
+    {
+        config()->set('monica.sso_installed', SsoProviderEnum::values());
+        $this->credentials('github');
+        $this->credentials('google');
+
+        $offered = new LoginViewModel()->providersToOffer();
+
+        $this->assertCount(2, $offered);
+        $this->assertEquals('github', $offered[0]['value']);
+        $this->assertEquals('GitHub', $offered[0]['name']);
+        $this->assertEquals(route('auth.sso.redirect', ['provider' => 'github']), $offered[0]['url']);
+        $this->assertEquals('Google', $offered[1]['name']);
+    }
+
+    #[Test]
+    public function it_offers_nothing_when_no_provider_is_configured(): void
+    {
+        config()->set('monica.sso_installed', SsoProviderEnum::values());
+
+        $this->assertEquals([], new LoginViewModel()->providersToOffer());
+    }
+
+    #[Test]
+    public function it_offers_nothing_when_the_package_is_absent(): void
+    {
+        config()->set('monica.sso_installed', []);
+        $this->credentials('github');
+
+        $this->assertEquals([], new LoginViewModel()->providersToOffer());
+    }
+
+    private function credentials(string $provider): void
+    {
+        config([
+            "services.{$provider}.client_id" => 'dunder-mifflin-scranton',
+            "services.{$provider}.client_secret" => 'that-is-what-she-said',
+            "services.{$provider}.redirect" => "https://monica.test/sso/{$provider}/callback",
+        ]);
     }
 
     #[Test]

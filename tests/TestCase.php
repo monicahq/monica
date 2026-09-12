@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use App\Enums\SsoProviderEnum;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Field;
@@ -21,11 +22,33 @@ use Tests\Fixtures\Stripe\FakeStripeClient;
 abstract class TestCase extends BaseTestCase
 {
     #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->clearConfig();
+    }
+
+    #[Override]
     protected function tearDown(): void
     {
         ApiRequestor::setHttpClient(null);
 
         parent::tearDown();
+    }
+
+    /**
+     * Put the instance in a known state: no provider signs anybody in, whatever the environment the
+     * suite runs in supplies. A test that needs one gives it credentials of its own with `config()`.
+     */
+    private function clearConfig(): void
+    {
+        foreach (SsoProviderEnum::values() as $provider) {
+            config([
+                "services.{$provider}.client_id" => null,
+                "services.{$provider}.client_secret" => null,
+            ]);
+        }
     }
 
     /**

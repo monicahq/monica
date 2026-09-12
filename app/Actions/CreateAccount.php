@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\SsoProviderEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
@@ -29,6 +30,8 @@ class CreateAccount
         private readonly ?string $password = null,
         private readonly ?string $timezone = null,
         private readonly ?string $locale = null,
+        private readonly ?SsoProviderEnum $ssoProvider = null,
+        private readonly ?string $ssoId = null,
     ) {}
 
     public function execute(): User
@@ -68,6 +71,8 @@ class CreateAccount
             password: $this->password,
             timezone: $this->timezone,
             locale: $this->locale,
+            ssoProvider: $this->ssoProvider,
+            ssoId: $this->ssoId,
         )->execute();
     }
 

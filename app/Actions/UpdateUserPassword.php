@@ -9,7 +9,6 @@ use App\Jobs\LogUserAction;
 use App\Models\User;
 use App\Notifications\PasswordSet;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 /**
  * Set or change the password of a user.
@@ -25,7 +24,6 @@ class UpdateUserPassword
 
     public function execute(): User
     {
-        $this->validate();
         $this->remember();
         $this->update();
         $this->log();
@@ -57,15 +55,6 @@ class UpdateUserPassword
         }
 
         $this->user->notify(new PasswordSet);
-    }
-
-    private function validate(): void
-    {
-        if ($this->user->usesSingleSignOn()) {
-            throw ValidationException::withMessages([
-                'password' => 'This user signs in through SSO and has no password.',
-            ]);
-        }
     }
 
     private function update(): void

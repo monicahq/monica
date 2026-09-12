@@ -19,8 +19,8 @@ last_name                   string (255)                    last name of the use
 photo_path                  string (255)                    base path of the photo file, without extension or size suffix
 email                       string (255)                    address the user signs in with, unique across the instance
 email_verified_at           datetime                        when the address was verified
-password                    string (255)                    hashed password, null when the user signs in through SSO
-password_changed_at         datetime                        when the password was last set, null when the user signs in through SSO
+password                    string (255)                    hashed password, null when the user signs up through SSO
+password_changed_at         datetime                        when the password was last set, null when the user signs up through SSO
 sso_provider                string (255)                    SSO provider the user signs in with
 is_active                   boolean                         whether the user can sign in, so an account can be suspended without being deleted
 locale                      string (5)                      language of the interface, falls back to the language of the instance

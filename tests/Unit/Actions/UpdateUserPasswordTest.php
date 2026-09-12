@@ -13,7 +13,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Validation\ValidationException;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -55,9 +54,9 @@ class UpdateUserPasswordTest extends TestCase
     }
 
     #[Test]
-    public function it_throws_when_the_user_signs_in_through_sso(): void
+    public function it_lets_a_user_who_signs_in_through_a_provider_set_a_password(): void
     {
-        $this->expectException(ValidationException::class);
+        Queue::fake();
 
         $user = User::factory()->singleSignOn()->create();
 
@@ -65,6 +64,10 @@ class UpdateUserPasswordTest extends TestCase
             user: $user,
             password: 'bearsbeatsbattlestar',
         )->execute();
+
+        $this->assertNotNull($user->refresh()->password);
+        $this->assertNotNull($user->password_changed_at);
+        $this->assertTrue($user->usesSingleSignOn());
     }
 
     #[Test]

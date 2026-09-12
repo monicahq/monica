@@ -23,7 +23,7 @@ class RefusePasskeyLogin
             $this->fail();
         }
 
-        if (! $this->candidate->is_active || $this->candidate->usesSingleSignOn()) {
+        if (! $this->candidate->is_active) {
             $this->fail();
         }
 

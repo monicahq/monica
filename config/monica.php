@@ -1,6 +1,8 @@
 <?php
 
 declare(strict_types=1);
+use Laravel\Socialite\SocialiteServiceProvider;
+use SocialiteProviders\Microsoft\Provider;
 
 return [
 
@@ -351,6 +353,28 @@ return [
     'magic_link_enabled' => (bool) env('MONICA_MAGIC_LINK_ENABLED', true),
 
     'magic_link_duration_minutes' => env('MONICA_MAGIC_LINK_DURATION_MINUTES', 5),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Signing in through an outside provider
+    |--------------------------------------------------------------------------
+    |
+    | Which providers this instance could offer, meaning the ones whose driver is
+    | actually installed. Socialite ships GitHub, Google and Facebook; Microsoft
+    | needs a package of its own. A provider is only offered once its credentials
+    | are in config/services.php as well, which SsoProviderAvailability decides.
+    | The presence of a package is read here rather than where it is used, so a
+    | test can reach either state by overriding this key.
+    |
+    */
+    'sso_installed' => class_exists(SocialiteServiceProvider::class)
+        ? array_values(array_filter([
+            'github',
+            'google',
+            'facebook',
+            class_exists(Provider::class) ? 'microsoft' : null,
+        ]))
+        : [],
 
     /*
     |--------------------------------------------------------------------------

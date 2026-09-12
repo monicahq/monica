@@ -9,6 +9,7 @@ use App\Contracts\CarriesOnAccountChannel;
 use App\Enums\DateFormatEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\NumberFormatEnum;
+use App\Enums\SsoProviderEnum;
 use App\Enums\TimeFormatEnum;
 use Carbon\CarbonImmutable;
 use Database\Factories\UserFactory;
@@ -46,7 +47,8 @@ use Override;
  * @property CarbonImmutable|null $email_verified_at
  * @property string|null $password
  * @property CarbonImmutable|null $password_changed_at
- * @property string|null $sso_provider
+ * @property SsoProviderEnum|null $sso_provider
+ * @property string|null $sso_id
  * @property bool $is_active
  * @property string|null $locale
  * @property string $timezone
@@ -76,6 +78,7 @@ use Override;
     'password',
     'password_changed_at',
     'sso_provider',
+    'sso_id',
     'is_active',
     'locale',
     'timezone',
@@ -129,6 +132,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             'date_format' => DateFormatEnum::class,
             'name_order' => NameOrderEnum::class,
             'number_format' => NumberFormatEnum::class,
+            'sso_provider' => SsoProviderEnum::class,
             'last_login_at' => 'datetime',
             'is_active' => 'boolean',
             'password' => 'hashed',
@@ -215,16 +219,22 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get whether the user has given up their password and signs in with a
-     * passkey instead.
-     *
-     * A null password used to mean one thing, that the user signs in through an
-     * identity provider. It now means either that or this, so the two are asked
-     * for by name rather than by testing the column at each call site.
+     * Get whether the user signs in through the given provider.
+     */
+    public function signsInWith(SsoProviderEnum $provider): bool
+    {
+        return $this->sso_provider === $provider;
+    }
+
+    /**
+     * Get whether the user has no password, which is the case for an account
+     * created through a provider or a passkey, and for one whose owner has since
+     * given their password up. What signs them in instead is asked for by name:
+     * `usesSingleSignOn()` and `hasPasskeys()`.
      */
     public function usesPasswordlessSignIn(): bool
     {
-        return $this->password === null && $this->sso_provider === null;
+        return $this->password === null;
     }
 
     /**

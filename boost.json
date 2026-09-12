@@ -9,8 +9,10 @@
     "sail": false,
     "skills": [
         "infer-conventions",
+        "cashier-stripe-development",
         "laravel-best-practices",
         "testing-best-practices",
+        "socialite-development",
         "tailwindcss-development"
     ]
 }
