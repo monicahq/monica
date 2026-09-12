@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Settings\Account\Security;
 
+use App\Enums\ApiKeyScopeEnum;
 use App\Helpers\PasskeyAvailability;
 use App\Models\User;
 use App\ViewModels\Auth\ConfirmPasswordViewModel;
@@ -40,7 +41,7 @@ class SecurityViewModel
         return count($this->user->two_factor_recovery_codes ?? []);
     }
 
-    /** @return array<int, array{id: int, name: string, createdAt: string, lastUsedAt: ?string}> */
+    /** @return array<int, array{id: int, name: string, createdAt: string, lastUsedAt: ?string, reachesSensitiveFields: bool}> */
     public function apiKeys(): array
     {
         return $this->user->tokens()
@@ -51,8 +52,14 @@ class SecurityViewModel
                 'name' => $apiKey->name,
                 'createdAt' => $apiKey->created_at->diffForHumans(),
                 'lastUsedAt' => $apiKey->last_used_at?->diffForHumans(),
+                'reachesSensitiveFields' => in_array(ApiKeyScopeEnum::SensitiveFields->value, $apiKey->abilities ?? [], true),
             ])
             ->all();
+    }
+
+    public function davAddress(): string
+    {
+        return route('sabre.dav', ['path' => ''], absolute: true);
     }
 
     public function apiKeysHeader(): string

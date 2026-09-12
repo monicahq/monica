@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Enums\ApiKeyScopeEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -21,6 +22,7 @@ class ApiKeyResource extends JsonResource
             'id' => (string) $this->id,
             'attributes' => [
                 'name' => $this->name,
+                'sensitive_fields' => in_array(ApiKeyScopeEnum::SensitiveFields->value, $this->abilities ?? [], true),
                 'last_used_at' => $this->last_used_at?->timestamp,
                 'expires_at' => $this->expires_at?->timestamp,
                 'created_at' => $this->created_at->timestamp,

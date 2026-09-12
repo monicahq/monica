@@ -1,0 +1,14 @@
+BEGIN:VCARD
+VERSION:4.0
+PRODID:-//Mozilla.org//Thunderbird 140.0//EN
+N:Beesly;Pam;;;
+FN:Pam Beesly
+EMAIL;PREF=1:pam@dundermifflin.test
+TEL;TYPE=cell:+15705550188
+NOTE:Receptionist, then sales.
+ORG:Dunder Mifflin
+X-MOZILLA-HTML:FALSE
+X-THUNDERBIRD-ETAG:"a1b2c3"
+UID:e4b1c9f2-77aa-4b3c-9d1e-5f6a7b8c9d01
+REV:20260901T091422Z
+END:VCARD

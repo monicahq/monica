@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+PRODID:-//KDE//Kontact 6.2//EN
+N:Malone;Kevin;;;
+FN:Kevin Malone
+EMAIL;TYPE=PREF:kevin@dundermifflin.test
+TEL;TYPE=CELL:+15705550166
+ORG:Dunder Mifflin;Accounting;
+X-KADDRESSBOOK-OPENING-HOURS:9-17
+X-KADDRESSBOOK-X-Profession:Accountant
+UID:ba8f9d1e-2c3b-4a5d-8e7f-1a2b3c4d5e6f
+REV:2026-09-01T09:14:22Z
+END:VCARD

@@ -276,4 +276,39 @@ class ApiKeyControllerTest extends TestCase
             'destroy' => ['DELETE', '/api/v1/api-keys/1'],
         ];
     }
+
+    #[Test]
+    public function it_creates_a_key_that_reaches_sensitive_fields_when_that_was_asked_for(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', '/api/v1/api-keys', [
+            'name' => 'Dwight’s phone',
+            'sensitive_fields' => true,
+        ]);
+
+        $response->assertCreated();
+        $response->assertJsonPath('data.attributes.sensitive_fields', true);
+        $this->assertContains('sensitive-fields', $user->tokens()->first()->abilities);
+    }
+
+    #[Test]
+    public function it_creates_a_key_that_reaches_no_sensitive_field_by_default(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', '/api/v1/api-keys', ['name' => 'Deployment script']);
+
+        $response->assertCreated();
+        $response->assertJsonPath('data.attributes.sensitive_fields', false);
+        $this->assertNotContains('sensitive-fields', $user->tokens()->first()->abilities);
+    }
 }

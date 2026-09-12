@@ -10,18 +10,21 @@ use App\Models\User;
 use Laravel\Sanctum\NewAccessToken;
 
 /**
- * Mint an API key for somebody, which acts as them and nobody else.
+ * Mint an API key for somebody, which acts as them and nobody else. The scopes it is handed become
+ * the key's abilities exactly, so a key reaches what it was minted to reach and nothing more.
  */
 class CreateApiKey
 {
+    /** @param  array<int, string>  $scopes */
     public function __construct(
         private readonly User $user,
         private readonly string $name,
+        private readonly array $scopes = [],
     ) {}
 
     public function execute(): NewAccessToken
     {
-        $key = $this->user->createToken($this->name);
+        $key = $this->user->createToken($this->name, $this->scopes);
 
         $this->log();
 
@@ -39,7 +42,7 @@ class CreateApiKey
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::ApiKeyCreation,
-            parameters: ['name' => $this->name],
+            parameters: ['name' => $this->name, 'scopes' => $this->scopes],
         )->onQueue('low');
     }
 }

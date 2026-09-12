@@ -6,6 +6,7 @@ namespace App\Http\Controllers\App\Settings\Account\Security;
 
 use App\Actions\CreateApiKey;
 use App\Actions\DestroyApiKey;
+use App\Enums\ApiKeyScopeEnum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,11 +17,19 @@ class ApiKeyController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:255'],
+            'sensitive_fields' => ['sometimes', 'boolean'],
         ]);
+
+        $scopes = ['*'];
+
+        if ((bool) ($validated['sensitive_fields'] ?? false)) {
+            $scopes[] = ApiKeyScopeEnum::SensitiveFields->value;
+        }
 
         $apiKey = new CreateApiKey(
             user: $request->user(),
             name: $validated['name'],
+            scopes: $scopes,
         )->execute()->plainTextToken;
 
         return redirect()->route('settings.security.index')

@@ -36,12 +36,15 @@ return new class extends Migration
             $table->timestamp('last_activity_at')->nullable()->comment('when the last activity counting as a real interaction happened, null when none has');
             $table->unsignedInteger('activity_count')->default(0)->comment('running count of activities the contact took part in');
             $table->timestamp('last_consulted_at')->nullable()->comment('when the user last opened the page, used to order recently viewed');
+            $table->string('dav_uri')->nullable()->comment('the .vcf name a device chose when it created the card, null for a contact made here, whose card is its uuid');
+            $table->longText('vcard')->nullable()->comment('the card as a device last sent it, kept whole so nothing it wrote is lost, read by nothing but the merge');
             $table->timestamps();
             $table->softDeletes();
 
             $table->index(['vault_id', 'sort_name']);
             $table->index(['vault_id', 'sort_key']);
             $table->index(['vault_id', 'created_at']);
+            $table->unique(['vault_id', 'dav_uri']);
 
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();

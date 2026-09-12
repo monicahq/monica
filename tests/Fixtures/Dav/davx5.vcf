@@ -1,0 +1,15 @@
+BEGIN:VCARD
+VERSION:4.0
+PRODID:-//dmfs.org//mimedir.vcard//EN
+N:Halpert;Jim;;;
+FN:Jim Halpert
+EMAIL;TYPE=work:jim@dundermifflin.test
+TEL;TYPE="cell,voice";VALUE=uri:tel:+15705550199
+TEL;TYPE="work,voice";VALUE=uri:tel:+15705550101
+ADR;TYPE=home:;;1725 Slough Avenue;Scranton;PA;18505;USA
+BDAY:19791001
+URL:https://jimhalpert.test
+X-DAVX5-DIRTY:0
+UID:0f9d5c4a-3f2e-4f1a-8c7b-2d9a4e8b1c55
+REV:20260901T091422Z
+END:VCARD

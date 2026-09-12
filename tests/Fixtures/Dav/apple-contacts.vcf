@@ -1,0 +1,23 @@
+BEGIN:VCARD
+VERSION:3.0
+PRODID:-//Apple Inc.//macOS 15.3//EN
+N:Schrute;Dwight;Kurt;;
+FN:Dwight Schrute
+NICKNAME:Beet farmer
+ORG:Dunder Mifflin;Sales;
+TITLE:Assistant Regional Manager
+item1.EMAIL;type=INTERNET;type=pref:dwight@dundermifflin.test
+item1.X-ABLabel:Work
+item2.TEL;type=pref:+15705551212
+item2.X-ABLabel:Mobile
+TEL;type=WORK:+15705550100
+item3.ADR;type=HOME:;;1725 Slough Avenue;Scranton;PA;18505;USA
+item3.X-ABADR:us
+item3.X-ABLabel:Farm
+BDAY;X-APPLE-OMIT-YEAR=1604:1604-01-20
+item4.X-ABDATE:2005-03-24
+item4.X-ABLabel:_$!<Anniversary>!$_
+X-ABShowAs:COMPANY
+UID:1F3D9A7C-4C2E-4C1B-9F7B-6D9A2E8B1C44
+REV:2026-09-01T09:14:22Z
+END:VCARD

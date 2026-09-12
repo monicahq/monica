@@ -12,6 +12,7 @@ $apiKey = [
     'id' => '3',
     'attributes' => [
         'name' => 'Dundie awards bot',
+        'sensitive_fields' => false,
         'last_used_at' => 1756339200,
         'expires_at' => null,
         'created_at' => 1756252800,
@@ -27,6 +28,7 @@ $olderApiKey = [
     'id' => '1',
     'attributes' => [
         'name' => 'Deployment script',
+        'sensitive_fields' => false,
         'last_used_at' => null,
         'expires_at' => null,
         'created_at' => 1756166400,
@@ -65,6 +67,7 @@ $identifier = [
 
 $keyAttributes = [
     ['name' => 'name', 'type' => 'string', 'description' => 'What the key is for, between 3 and 255 characters, as the person who minted it wrote it. Two keys may share a name; the identifier is what tells them apart.'],
+    ['name' => 'sensitive_fields', 'type' => 'boolean', 'description' => 'Whether the key reaches the values of fields marked sensitive. False unless that was chosen when the key was minted, because a key is handed to a device and an address book on a phone can be read by the other applications on it.'],
     ['name' => 'last_used_at', 'type' => 'timestamp', 'description' => 'When the key last let something in, as a count of seconds, or null if it never has. A key with null here has been minted and never used.'],
     ['name' => 'expires_at', 'type' => 'timestamp', 'description' => 'When the key stops working, as a count of seconds, or null when it never does. Every key issued today is null: expiry is not something this API sets yet.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the key was minted, as a count of seconds since 1970.'],
@@ -135,6 +138,13 @@ return [
                     'description' => 'What the key is for, in a few words. Between 3 and 255 characters. Two keys may share a name; the identifier is what tells them apart.',
                     'example' => 'Dundie awards bot',
                 ],
+                [
+                    'name' => 'sensitive_fields',
+                    'type' => 'boolean',
+                    'required' => false,
+                    'description' => 'Whether this key may read the values of fields marked sensitive. False when it is left out. Turn it on only for a device that needs them.',
+                    'example' => false,
+                ],
             ],
             'returns' => 'The new key object, and the readable key beside it.',
             'responseStatus' => 201,
@@ -144,6 +154,7 @@ return [
                     'id' => '4',
                     'attributes' => [
                         'name' => 'Dundie awards bot',
+                        'sensitive_fields' => false,
                         'last_used_at' => null,
                         'expires_at' => null,
                         'created_at' => 1756425600,

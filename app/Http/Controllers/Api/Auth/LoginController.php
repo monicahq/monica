@@ -49,6 +49,7 @@ class LoginController extends Controller
         $token = new CreateApiKey(
             user: $user,
             name: $this->keyName($validated['device_name'] ?? null),
+            scopes: ['*'],
         )->execute()->plainTextToken;
 
         return response()->json([

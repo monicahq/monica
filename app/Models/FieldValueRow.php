@@ -49,6 +49,16 @@ class FieldValueRow extends Model
     use HasFactory;
 
     /**
+     * The record a value belongs to, touched whenever the value is saved or
+     * removed. A card's version is read from the record's `updated_at`, so a
+     * value that moved without moving its record would hand a device a card
+     * it already believes it has.
+     *
+     * @var array<int, string>
+     */
+    protected $touches = ['valuable'];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

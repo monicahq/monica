@@ -126,4 +126,27 @@ class SecurityViewModelTest extends TestCase
 
         $this->assertEquals('Active · 2 API keys', new SecurityViewModel(user: $user)->apiKeysHeader());
     }
+
+    #[Test]
+    public function it_gives_the_address_a_device_is_given(): void
+    {
+        $user = User::factory()->create();
+
+        $viewModel = new SecurityViewModel(user: $user);
+
+        $this->assertEquals(route('sabre.dav', ['path' => ''], absolute: true), $viewModel->davAddress());
+    }
+
+    #[Test]
+    public function it_says_which_keys_reach_sensitive_fields(): void
+    {
+        $user = User::factory()->create();
+        $user->createToken('Deployment script', ['*']);
+        $user->createToken('Dwight’s phone', ['*', 'sensitive-fields']);
+
+        $keys = collect(new SecurityViewModel(user: $user)->apiKeys())->keyBy('name');
+
+        $this->assertTrue($keys['Dwight’s phone']['reachesSensitiveFields']);
+        $this->assertFalse($keys['Deployment script']['reachesSensitiveFields']);
+    }
 }

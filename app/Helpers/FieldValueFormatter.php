@@ -30,8 +30,23 @@ class FieldValueFormatter
             FieldTypeEnum::Multiselect => $this->choices($value),
             FieldTypeEnum::File, FieldTypeEnum::Image,
             FieldTypeEnum::Avatar => $this->blankToNull($value->file?->original_name),
+            FieldTypeEnum::Address => $this->address($value),
             default => null,
         };
+    }
+
+    private function address(FieldValue $value): ?string
+    {
+        if (! is_array($value->value_json)) {
+            return null;
+        }
+
+        $parts = array_filter(array_map(
+            fn (string $part): string => mb_trim((string) ($value->value_json[$part] ?? '')),
+            ['po_box', 'extended', 'street', 'city', 'region', 'postal_code', 'country'],
+        ));
+
+        return $parts === [] ? null : implode(', ', $parts);
     }
 
     private function blankToNull(?string $value): ?string

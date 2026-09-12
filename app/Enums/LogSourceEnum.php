@@ -8,6 +8,7 @@ enum LogSourceEnum: string
 {
     case Web = 'web';
     case Api = 'api';
+    case Dav = 'dav';
     case Mcp = 'mcp';
     case Import = 'import';
     case Automation = 'automation';

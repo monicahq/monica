@@ -30,7 +30,7 @@ value_number                decimal (20,6)                  value for the number
 value_boolean               boolean                         value for the yes or no type
 value_date                  date                            value for the date and recurring date types
 value_datetime              datetime                        value for a type that carries a time as well
-value_json                  json                            value for the composite types, such as an address or a location
+value_json                  json                            value for the composite types, such as an address or a location. An address holds po_box, extended, street, city, region, postal_code and country, all optional strings, in the order a card writes them
 value_list_item_id          int                             chosen item for the single choice types
 value_list_item_ids         json                            chosen items for the multiple choice types
 value_file_id               int                             attached file for the file, image and avatar types
@@ -73,6 +73,9 @@ updated_at                  datetime
 - **No API.** The screens exist: a block of the record opens as a form, and what a field holds is read back through `FieldValueFormatter`.
 
 ## Decisions taken while building it
+
+- **A value moves the record it belongs to.** `$touches = ['valuable']` on this model and on the repetition, honoured on save and on delete, because a card's version is read from the record's `updated_at` and a value that moved without moving its record would hand a device a card it already believes it has.
+- **The stored shape of an address was settled by its first writer.** A device sending a card was the first thing able to write one, so the seven parts a card carries are the seven keys `value_json` holds. `FieldValueFormatter` joins the non empty ones with a comma; the input control the page still lacks reads the same shape when it arrives.
 
 - **The column is asked of the type, once.** `FieldTypeEnum::valueColumn()` answers it, the way the enum already answers whether a type stores anything or reads from a list. It reads null for three different reasons, each written on the method: layout types store nothing, a repeater holds repetitions rather than a value, and a relation is decided by what the field points at rather than by its type.
 - **`SetFieldValue` is the only place a value is written,** and it takes typed parameters rather than one `mixed`: a chosen item, several chosen items, a file, a contact, an entity. A single loose value would mean every caller deciding what shape to hand over, and the action guessing.

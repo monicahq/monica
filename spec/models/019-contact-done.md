@@ -45,6 +45,8 @@ created_at                  datetime
 updated_at                  datetime
 deleted_at                  datetime
 deleted_with_vault          bool                            whether the contact was taken out by the deletion of its vault, so restoring the vault knows who to bring back
+dav_uri                     string (255)                    the .vcf name a device chose when it created the card, unique within the vault, null for a contact made here, whose card is its uuid
+vcard                       longtext                        the card as a device last sent it, kept whole so nothing a device wrote is lost, read by nothing but the merge that hands a card back
 ```
 
 ## Relationships
@@ -84,6 +86,8 @@ deleted_with_vault          bool                            whether the contact 
 - **The API reads and writes a contact, and not what is written on one.** `api/v1/vaults/{vault}/contacts` lists, searches, sorts, groups and creates, and one contact is read, deleted, renamed, favourited, given or stripped of a picture, and moved to another published template version, each at its own address. What no endpoint touches is the record itself: no field value is read or written over the API, so everything a template asks about somebody is reachable in the interface and nowhere else. Archiving and restoring have no endpoint either.
 
 ## Decisions taken while building it
+
+- **A device reads and writes a contact over CardDAV, and the card it sends is kept whole.** `dav_uri` and `vcard` are what that costs the model: the name a client chose for the card, so it keeps resolving, and the card itself, so a property the structure has no field for survives the next refresh instead of being stripped. The product never reads, searches or shows the kept card; the only reader is the merge that writes the record's values over it. One card is kept per contact, the one the last device sent, so removing a property on a device removes it everywhere.
 
 - **`sort_name` is written by the model, not by the actions.** One `saving` hook builds it, so no path that writes a name can forget to keep it in step. It reads family name first whatever order the contact itself reads in, since a list sorted one way for some rows and another way for others is sorted no way at all, and it is lowercased so the order does not depend on the collation of the database underneath.
 - **The rule that a contact needs a name is enforced in the same place.** Building the sort name is exactly the moment the question "is there a name at all" gets asked, and a contact left with none of the parts is refused there rather than in each action.

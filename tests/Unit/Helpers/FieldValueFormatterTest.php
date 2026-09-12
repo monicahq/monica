@@ -222,4 +222,32 @@ class FieldValueFormatterTest extends TestCase
             'value_string' => null,
         ], $attributes));
     }
+
+    #[Test]
+    public function it_reads_a_postal_address_back_as_one_line(): void
+    {
+        $user = User::factory()->create();
+
+        $this->assertEquals('1725 Slough Avenue, Scranton, PA, 18505, USA', new FieldValueFormatter($user)->format(
+            $this->value($user, FieldTypeEnum::Address, ['value_string' => null, 'value_json' => [
+                'po_box' => '',
+                'extended' => '',
+                'street' => '1725 Slough Avenue',
+                'city' => 'Scranton',
+                'region' => 'PA',
+                'postal_code' => '18505',
+                'country' => 'USA',
+            ]]),
+        ));
+    }
+
+    #[Test]
+    public function it_reads_an_empty_postal_address_back_as_nothing(): void
+    {
+        $user = User::factory()->create();
+
+        $this->assertNull(new FieldValueFormatter($user)->format(
+            $this->value($user, FieldTypeEnum::Address, ['value_string' => null, 'value_json' => null]),
+        ));
+    }
 }

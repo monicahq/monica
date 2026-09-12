@@ -236,4 +236,54 @@ class FieldValueTest extends TestCase
         $this->assertTrue($reminder->fieldValue->reminder()->exists());
         $this->assertEquals($reminder->id, $reminder->fieldValue->reminder->id);
     }
+
+    #[Test]
+    public function it_moves_the_record_it_belongs_to_when_it_is_written(): void
+    {
+        $contact = Contact::factory()->create();
+        $contact->forceFill(['updated_at' => CarbonImmutable::now()->subYear()])->saveQuietly();
+
+        FieldValue::factory()->create([
+            'valuable_type' => $contact->getMorphClass(),
+            'valuable_id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+        ]);
+
+        $this->assertTrue($contact->refresh()->updated_at->isToday());
+    }
+
+    #[Test]
+    public function it_moves_the_record_it_belongs_to_when_it_changes(): void
+    {
+        $contact = Contact::factory()->create();
+        $value = FieldValue::factory()->create([
+            'valuable_type' => $contact->getMorphClass(),
+            'valuable_id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+        ]);
+        $contact->forceFill(['updated_at' => CarbonImmutable::now()->subYear()])->saveQuietly();
+
+        $value->update(['value_string' => 'Utica']);
+
+        $this->assertTrue($contact->refresh()->updated_at->isToday());
+    }
+
+    #[Test]
+    public function it_moves_the_record_it_belongs_to_when_it_is_removed(): void
+    {
+        $contact = Contact::factory()->create();
+        $value = FieldValue::factory()->create([
+            'valuable_type' => $contact->getMorphClass(),
+            'valuable_id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+        ]);
+        $contact->forceFill(['updated_at' => CarbonImmutable::now()->subYear()])->saveQuietly();
+
+        $value->delete();
+
+        $this->assertTrue($contact->refresh()->updated_at->isToday());
+    }
 }

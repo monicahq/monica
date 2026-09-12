@@ -468,4 +468,30 @@ class ContactTest extends TestCase
             $reminder->remindable->reminders()->pluck('id')->all(),
         );
     }
+
+    #[Test]
+    public function it_carries_no_card_until_a_device_writes_one(): void
+    {
+        $contact = Contact::factory()->create();
+
+        $this->assertNull($contact->dav_uri);
+        $this->assertNull($contact->vcard);
+    }
+
+    #[Test]
+    public function it_keeps_the_card_a_device_sent_and_the_name_that_device_chose(): void
+    {
+        $card = "BEGIN:VCARD\r\nVERSION:4.0\r\nFN:Dwight Schrute\r\nEND:VCARD\r\n";
+
+        $contact = Contact::factory()->create([
+            'dav_uri' => 'dwight.vcf',
+            'vcard' => $card,
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'dav_uri' => 'dwight.vcf',
+        ]);
+        $this->assertEquals($card, $contact->refresh()->vcard);
+    }
 }

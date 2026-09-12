@@ -31,6 +31,7 @@
         "laravel/passkeys": "^0",
         "laravel/sanctum": "^4.3",
         "laravel/tinker": "^3.0",
+        "monicahq/laravel-sabre": "^2.0",
         "php-http/discovery": "^1.20",
         "pragmarx/google2fa-laravel": "^3.0",
         "resend/resend-laravel": "^1.4",

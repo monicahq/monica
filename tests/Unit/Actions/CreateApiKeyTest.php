@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateApiKey;
+use App\Enums\ApiKeyScopeEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
@@ -101,7 +102,41 @@ class CreateApiKeyTest extends TestCase
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ApiKeyCreation
                 && $job->account->id === $account->id
                 && $job->user->id === $user->id
-                && $job->parameters === ['name' => 'Dundie awards bot'],
+                && $job->parameters === ['name' => 'Dundie awards bot', 'scopes' => []],
         );
+    }
+
+    #[Test]
+    public function it_mints_a_key_reaching_exactly_the_scopes_it_was_handed(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new CreateApiKey(
+            user: $user,
+            name: 'Dwight’s phone',
+            scopes: ['*', ApiKeyScopeEnum::SensitiveFields->value],
+        )->execute();
+
+        $this->assertEquals(
+            ['*', 'sensitive-fields'],
+            $user->tokens()->first()->abilities,
+        );
+    }
+
+    #[Test]
+    public function it_mints_a_key_reaching_nothing_it_was_not_handed(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new CreateApiKey(user: $user, name: 'Deployment script', scopes: ['*'])->execute();
+
+        $token = $user->tokens()->first();
+
+        $this->assertEquals(['*'], $token->abilities);
+        $this->assertFalse(in_array(ApiKeyScopeEnum::SensitiveFields->value, $token->abilities, true));
     }
 }

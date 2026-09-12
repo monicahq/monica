@@ -230,4 +230,66 @@ class LogUserActionTest extends TestCase
         $this->assertEquals(Log::SYSTEM, $log->user_email);
         $this->assertTrue($log->wasPerformedBySystem());
     }
+
+    #[Test]
+    public function it_reads_the_interface_it_came_through_from_the_request(): void
+    {
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+
+        request()->attributes->set('log_source', LogSourceEnum::Dav);
+        request()->attributes->set('log_source_detail', 'Dwight’s phone');
+
+        new LogUserAction(
+            account: $account,
+            user: $user,
+            action: UserActionEnum::UserProfileUpdate,
+        )->handle();
+
+        $this->assertDatabaseHas('logs', [
+            'account_id' => $account->id,
+            'source' => LogSourceEnum::Dav->value,
+            'source_detail' => 'Dwight’s phone',
+        ]);
+    }
+
+    #[Test]
+    public function it_lets_the_caller_name_the_interface_instead(): void
+    {
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+
+        request()->attributes->set('log_source', LogSourceEnum::Dav);
+
+        new LogUserAction(
+            account: $account,
+            user: $user,
+            action: UserActionEnum::UserProfileUpdate,
+            source: LogSourceEnum::Api,
+        )->handle();
+
+        $this->assertDatabaseHas('logs', [
+            'account_id' => $account->id,
+            'source' => LogSourceEnum::Api->value,
+        ]);
+    }
+
+    #[Test]
+    public function it_reads_as_the_browser_when_nothing_says_otherwise(): void
+    {
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+
+        new LogUserAction(
+            account: $account,
+            user: $user,
+            action: UserActionEnum::UserProfileUpdate,
+        )->handle();
+
+        $this->assertDatabaseHas('logs', [
+            'account_id' => $account->id,
+            'source' => LogSourceEnum::Web->value,
+            'source_detail' => null,
+        ]);
+    }
 }

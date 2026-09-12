@@ -186,4 +186,48 @@ class ApiKeyControllerTest extends TestCase
 
         $this->assertSame(0, $user->tokens()->count());
     }
+
+    #[Test]
+    public function it_creates_a_key_that_reaches_sensitive_fields_when_the_box_is_ticked(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        $this->withConfirmedPassword()->actingAs($user)->post(route('settings.apiKeys.create'), [
+            'name' => 'Dwight’s phone',
+            'sensitive_fields' => '1',
+        ]);
+
+        $this->assertContains('sensitive-fields', $user->tokens()->first()->abilities);
+    }
+
+    #[Test]
+    public function it_leaves_sensitive_fields_out_of_a_key_when_the_box_is_left_alone(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        $this->withConfirmedPassword()->actingAs($user)->post(route('settings.apiKeys.create'), [
+            'name' => 'Deployment script',
+        ]);
+
+        $this->assertNotContains('sensitive-fields', $user->tokens()->first()->abilities);
+    }
+
+    #[Test]
+    public function it_shows_the_address_a_device_is_given_and_which_keys_reach_sensitive_fields(): void
+    {
+        $user = User::factory()->create();
+        $user->createToken('Dwight’s phone', ['*', 'sensitive-fields']);
+        $user->createToken('Deployment script', ['*']);
+
+        $response = $this->actingAs($user)->get(route('settings.security.index'));
+
+        $response->assertOk();
+        $response->assertSee(route('sabre.dav', ['path' => '']), escape: false);
+        $response->assertSee('Reads sensitive fields', escape: false);
+        $response->assertSee('Let this key read the values of fields marked sensitive', escape: false);
+    }
 }

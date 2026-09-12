@@ -67,6 +67,8 @@ use Override;
  * @property CarbonImmutable|null $last_activity_at
  * @property int $activity_count
  * @property CarbonImmutable|null $last_consulted_at
+ * @property string|null $dav_uri
+ * @property string|null $vcard
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
@@ -100,6 +102,8 @@ use Override;
     'last_activity_at',
     'activity_count',
     'last_consulted_at',
+    'dav_uri',
+    'vcard',
 ])]
 class Contact extends Model
 {

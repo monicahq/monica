@@ -58,7 +58,11 @@ class ApiDocsViewModelTest extends TestCase
         $navigation = new ApiDocsViewModel()->navigation();
 
         $this->assertEquals(
-            ['Introduction', 'Authentication', 'Rate limits', 'Pagination', 'Errors'],
+            [
+                'Introduction', 'Authentication', 'Rate limits', 'Pagination', 'Errors',
+                'What a device needs', 'Connecting each application', 'What a card carries',
+                'What happens when a device writes', 'The calendar and the task list',
+            ],
             array_column($navigation['guides'], 'label'),
         );
 

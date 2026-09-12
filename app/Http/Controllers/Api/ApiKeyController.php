@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Actions\CreateApiKey;
 use App\Actions\DestroyApiKey;
+use App\Enums\ApiKeyScopeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApiKeyResource;
 use Illuminate\Http\JsonResponse;
@@ -46,17 +47,27 @@ class ApiKeyController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:255'],
+            'sensitive_fields' => ['sometimes', 'boolean'],
         ]);
 
         $key = new CreateApiKey(
             user: $request->user(),
             name: $validated['name'],
+            scopes: $this->scopes((bool) ($validated['sensitive_fields'] ?? false)),
         )->execute();
 
         return new ApiKeyResource($key->accessToken)
             ->additional(['token' => $key->plainTextToken])
             ->response()
             ->setStatusCode(201);
+    }
+
+    /** @return array<int, string> */
+    private function scopes(bool $reachesSensitiveFields): array
+    {
+        return $reachesSensitiveFields
+            ? ['*', ApiKeyScopeEnum::SensitiveFields->value]
+            : ['*'];
     }
 
     public function destroy(Request $request, int $apiKey): Response

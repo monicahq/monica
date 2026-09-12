@@ -98,6 +98,16 @@ class FieldValue extends Model
     use HasFactory;
 
     /**
+     * The record a value belongs to, touched whenever the value is saved or
+     * removed. A card's version is read from the record's `updated_at`, so a
+     * value that moved without moving its record would hand a device a card
+     * it already believes it has.
+     *
+     * @var array<int, string>
+     */
+    protected $touches = ['valuable'];
+
+    /**
      * The year a date that comes round again is stored under when nobody knows
      * the real one. A birthday whose year is unknown is a normal case rather
      * than an error, and the column still has to hold a date, so it holds this

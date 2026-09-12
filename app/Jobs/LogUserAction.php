@@ -16,14 +16,18 @@ use Illuminate\Foundation\Queue\Queueable;
 
 /**
  * Write down that something happened. Every action that changes state dispatches this, and the
- * address and the subject are read in the constructor, since the queue has no request behind it and
- * half of what is worth recording is a deletion.
+ * address, the subject and the interface it came through are read in the constructor, since the
+ * queue has no request behind it and half of what is worth recording is a deletion.
  */
 class LogUserAction implements ShouldQueue
 {
     use Queueable;
 
     private ?string $ipAddress;
+
+    public LogSourceEnum $source;
+
+    public ?string $sourceDetail;
 
     public ?string $loggableType = null;
 
@@ -41,11 +45,13 @@ class LogUserAction implements ShouldQueue
         public ?array $parameters = null,
         ?Model $loggable = null,
         public ?array $changes = null,
-        public LogSourceEnum $source = LogSourceEnum::Web,
-        public ?string $sourceDetail = null,
+        ?LogSourceEnum $source = null,
+        ?string $sourceDetail = null,
         ?string $ipAddress = null,
     ) {
         $this->ipAddress = $ipAddress ?? request()->ip();
+        $this->source = $source ?? request()->attributes->get('log_source', LogSourceEnum::Web);
+        $this->sourceDetail = $sourceDetail ?? request()->attributes->get('log_source_detail');
 
         if ($loggable instanceof Model) {
             $this->loggableType = $loggable->getMorphClass();

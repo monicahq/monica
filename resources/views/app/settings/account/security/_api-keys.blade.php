@@ -42,6 +42,40 @@
     </div>
   @endif
 
+  <div
+    class="flex flex-col gap-2 border-b border-hairline px-4 py-3.5"
+    x-data="{
+      state: 'idle',
+      messages: {
+        idle: '',
+        copied: @js(__('Copied')),
+        failed: @js(__('We could not copy it. Select the address and copy it by hand.')),
+      },
+    }"
+  >
+    <p class="text-base font-semibold text-ink">{{ __('Address for a contacts or calendar application') }}</p>
+
+    <p class="text-sm text-pretty text-muted">{{ __('Add this address to the contacts or calendar application of a phone or a computer, with your email address and one of the keys below as the password. Your account password will not work.') }}</p>
+
+    <p x-ref="davAddress" class="rounded-md border border-hairline bg-canvas px-3 py-2 font-mono text-sm break-all text-ink select-all">{{ $viewModel->davAddress() }}</p>
+
+    <div class="flex flex-wrap items-center gap-2.5">
+      <x-button.secondary
+        type="button"
+        size="small"
+        @click="window.copyText($refs.davAddress.textContent).then((ok) => { state = ok ? 'copied' : 'failed'; if (ok) setTimeout(() => { if (state === 'copied') state = 'idle' }, 2500) })"
+      >{{ __('Copy the address') }}</x-button.secondary>
+
+      <p
+        role="status"
+        aria-live="polite"
+        class="text-sm"
+        :class="{ 'text-success': state === 'copied', 'text-error': state === 'failed' }"
+        x-text="messages[state] ?? ''"
+      ></p>
+    </div>
+  </div>
+
   <div class="flex w-full items-center gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0">
     <div class="min-w-0 flex-1">
       <p class="text-base font-semibold text-ink">{{ $viewModel->apiKeysHeader() }}</p>
@@ -70,6 +104,14 @@
         required
       />
 
+      <div class="flex flex-col gap-1">
+        <x-checkbox id="sensitive_fields" :checked="false">
+          {{ __('Let this key read the values of fields marked sensitive') }}
+        </x-checkbox>
+
+        <x-help>{{ __('Leave this off unless a device needs them. An address book on a phone can be read by the other applications on it.') }}</x-help>
+      </div>
+
       <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
         <x-button.secondary size="small" type="button" @click="creating = false">{{ __('Cancel') }}</x-button.secondary>
 
@@ -87,7 +129,11 @@
       icon="key"
     >
       <x-slot:end>
-        <div x-data="{ confirming: false }">
+        <div class="flex flex-wrap items-center justify-end gap-2.5" x-data="{ confirming: false }">
+          @if ($apiKey['reachesSensitiveFields'])
+            <x-badge tone="warning">{{ __('Reads sensitive fields') }}</x-badge>
+          @endif
+
           <x-button.secondary size="small" type="button" x-show="! confirming" @click="confirming = true">{{ __('Revoke') }}</x-button.secondary>
 
           <div x-cloak x-show="confirming" class="flex flex-wrap items-center justify-end gap-2.5">
