@@ -83,3 +83,13 @@
   the shell under `tests/Feature/Views/Layouts`.
 - Render with `$this->blade('<x-badge tone="danger">Bounced</x-badge>')` and assert the classes that
   carry the meaning and the copy, with `assertSee(..., escape: false)`.
+- Put a named slot **after** the default content in the string you pass to `$this->blade()`, the way
+  `EmptyStateTest` and `ButtonSplitTest` do. A slot written first compiles wrongly there and leaks
+  `@endslot` into the output, which a `.blade.php` file does not do, so the test fails on a component
+  that works.
+- Assert what a component does, not the markup it happens to emit today. A test naming a literal class
+  string or a literal piece of Alpine breaks on the next refactoring while the screen is still right,
+  and rewriting it then is the only way out.
+- Guard the rule that a variant never names a property its base already names with a count rather than
+  an `assertSee`, since the failure is two classes being present rather than one being absent. See
+  `CaptionTest::no_tone_carries_two_text_colours`.

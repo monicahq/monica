@@ -89,7 +89,7 @@ the rule.
   grouped like the controllers (`Vaults`, `Settings`, `Marketplace`, `Admin`, `Auth`). A rich page
   keeps one main view model and delegates its blocks to small objects next to it
   (`MarketplaceStatistics`).
-- `app/View/Components`: the five layout classes (`Shell`, `AccountLayout`, `AdminLayout`, `GuestLayout`, `MarketplaceLayout`). The 51 components under `resources/views/components` are anonymous, with `@props`.
+- `app/View/Components`: the five layout classes (`Shell`, `AccountLayout`, `AdminLayout`, `GuestLayout`, `MarketplaceLayout`). The 86 components under `resources/views/components` are anonymous, with `@props`.
 - `resources/views`: `app` for the logged in screens, `components` for shared UI, `layouts` and `partials` for the shell, `shared` for what a private link opens, `vendor` for the views a package publishes, which is where the email templates live.
 - `resources/css` and `resources/js`: the Tailwind theme and the Alpine setup.
 - `routes`: `web.php` (logged in), `api.php` (the JSON API), `auth.php`, `console.php`.
