@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Http\Middleware\EnsurePasswordIsConfirmedWhenThereIsOne;
+
 return [
 
     /*
@@ -90,14 +92,14 @@ return [
     | that create or delete passkeys. By default, Laravel's password
     | confirmation middleware is used.
     |
-    | It is deliberately empty here. An account may hold a passkey and no
-    | password at all, and asking such a person to confirm one leaves them
-    | unable to add a second passkey, which is the only way back from a lost
-    | device. The routes stay behind `auth`.
+    | This middleware asks for the password only when there is one to give, so
+    | an account with a password pays for a passkey like it pays for every
+    | other change to the way it signs in, and an account without one is never
+    | shut out.
     |
     */
 
-    'management_middleware' => [],
+    'management_middleware' => [EnsurePasswordIsConfirmedWhenThereIsOne::class],
 
     /*
     |--------------------------------------------------------------------------

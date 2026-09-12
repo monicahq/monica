@@ -45,7 +45,8 @@ class TwoFactorController extends Controller
             return back()->withErrors(['code' => __('That code is not right. Check your authenticator app is showing the current one.')]);
         }
 
-        return redirect()->route('settings.security.index')
+        return redirect()->route('settings.recoveryCodes.show')
+            ->with('recoveryCodes', $request->user()->refresh()->two_factor_recovery_codes)
             ->with('status', __('Two-factor authentication is on.'))
             ->with('status_description', __('We will ask for a code the next time you sign in.'));
     }

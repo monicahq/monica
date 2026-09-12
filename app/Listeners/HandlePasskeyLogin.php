@@ -9,8 +9,14 @@ use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
 use App\Models\User;
 use App\Notifications\NewLoginDetected;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Passkeys\Events\PasskeyVerified;
 
+/**
+ * One event serves two ceremonies. Signing in and confirming who you are both run VerifyPasskey, so
+ * this tells them apart by whether the guard already holds somebody: the login route is behind
+ * `guest` and verifies before it logs anybody in, the confirmation route is behind `auth`.
+ */
 class HandlePasskeyLogin
 {
     public function handle(PasskeyVerified $event): void
@@ -18,6 +24,12 @@ class HandlePasskeyLogin
         $user = $event->user;
 
         if (! $user instanceof User) {
+            return;
+        }
+
+        if (Auth::guard('web')->check()) {
+            $this->recordConfirmation($user, $event);
+
             return;
         }
 
@@ -38,5 +50,16 @@ class HandlePasskeyLogin
         )->onQueue('low');
 
         $user->notify(new NewLoginDetected(ip: request()->ip() ?? ''));
+    }
+
+    private function recordConfirmation(User $user, PasskeyVerified $event): void
+    {
+        LogUserAction::dispatch(
+            account: $user->account,
+            user: $user,
+            action: UserActionEnum::PasskeyConfirmed,
+            parameters: ['name' => $event->passkey->name],
+            loggable: $event->passkey,
+        )->onQueue('low');
     }
 }

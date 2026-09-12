@@ -73,7 +73,7 @@
       <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
         <x-button.secondary size="small" type="button" @click="creating = false">{{ __('Cancel') }}</x-button.secondary>
 
-        <x-button size="small">{{ __('Create key') }}</x-button>
+        <x-button size="small" type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Create key') }}</x-button>
       </div>
     </x-form>
   </div>
@@ -96,7 +96,7 @@
             <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep it') }}</x-button.secondary>
 
             <x-form method="delete" :action="route('settings.apiKeys.destroy', $apiKey['id'])" x-target="api-keys">
-              <x-button.danger size="small">{{ __('Revoke') }}</x-button.danger>
+              <x-button.danger size="small" type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Revoke') }}</x-button.danger>
             </x-form>
           </div>
         </div>

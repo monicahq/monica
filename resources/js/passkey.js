@@ -50,6 +50,21 @@ export default (config) => ({
         }
     },
 
+    async confirm() {
+        this.busy = true;
+        this.announce('');
+
+        try {
+            const { redirect } = await Passkeys.verify({ routes: config.routes });
+
+            this.$dispatch('passkey-confirmed', { redirect });
+        } catch (error) {
+            this.announce(this.explain(error), true);
+        } finally {
+            this.busy = false;
+        }
+    },
+
     explain(error) {
         if (error instanceof UserCancelledError) {
             return config.text.cancelled;

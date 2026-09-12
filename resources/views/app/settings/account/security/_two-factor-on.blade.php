@@ -17,7 +17,7 @@
         <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep it on') }}</x-button.secondary>
 
         <x-form method="delete" :action="route('settings.twoFactor.destroy')">
-          <x-button.danger size="small">{{ __('Turn it off') }}</x-button.danger>
+          <x-button.danger size="small" type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Turn it off') }}</x-button.danger>
         </x-form>
       </div>
     </div>
@@ -39,7 +39,7 @@
         <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep them') }}</x-button.secondary>
 
         <x-form method="post" :action="route('settings.recoveryCodes.create')">
-          <x-button.danger size="small">{{ __('Get new codes') }}</x-button.danger>
+          <x-button.danger size="small" type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Get new codes') }}</x-button.danger>
         </x-form>
       </div>
     </div>
@@ -47,43 +47,10 @@
 </x-row>
 
 <div class="px-4 py-3.5">
-  @if ($viewModel->recoveryCodes() === [])
+  @if ($viewModel->recoveryCodesRemaining() === 0)
     <x-notice tone="warning">{{ __('You have used every code. Ask for new ones before you need them.') }}</x-notice>
   @else
-    <ul class="grid gap-1.5 rounded-md border border-hairline bg-sunken px-4 py-3.5 font-mono sm:grid-cols-2 text-sm text-ink select-all">
-      @foreach ($viewModel->recoveryCodes() as $code)
-        <li>{{ $code }}</li>
-      @endforeach
-    </ul>
+    <p class="text-sm text-body">{{ trans_choice(':count recovery code left. They were shown once, when they were made.|:count recovery codes left. They were shown once, when they were made.', $viewModel->recoveryCodesRemaining()) }}</p>
   @endif
 </div>
-
-@if ($viewModel->recoveryCodes() !== [])
-  <div
-    class="flex flex-wrap items-center gap-2.5 px-4 pbe-3.5"
-    x-data="{
-      state: 'idle',
-      messages: {
-        idle: '',
-        copied: @js(__('Copied')),
-        failed: @js(__('We could not copy it. Select the key and copy it by hand.')),
-      },
-      codes: @js($viewModel->recoveryCodes()),
-    }"
-  >
-    <x-button
-      type="button"
-      size="small"
-      @click="window.copyText(codes.join('\n')).then((ok) => { state = ok ? 'copied' : 'failed'; if (ok) setTimeout(() => { if (state === 'copied') state = 'idle' }, 2500) })"
-    >{{ __('Copy to the clipboard') }}</x-button>
-
-    <p
-      role="status"
-      aria-live="polite"
-      class="text-sm"
-      :class="{ 'text-success': state === 'copied', 'text-error': state === 'failed' }"
-      x-text="messages[state] ?? ''"
-    ></p>
-  </div>
-@endif
 

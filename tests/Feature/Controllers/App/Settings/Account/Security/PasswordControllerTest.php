@@ -29,7 +29,7 @@ class PasswordControllerTest extends TestCase
             'password_changed_at' => null,
         ]);
 
-        $response = $this->actingAs($user)->put(route('settings.password.update'), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->put(route('settings.password.update'), [
             'current_password' => 'beets-bears-battlestar',
             'new_password' => 'schrute-farms-2005',
             'new_password_confirmation' => 'schrute-farms-2005',
@@ -62,7 +62,7 @@ class PasswordControllerTest extends TestCase
             'password' => Hash::make('beets-bears-battlestar'),
         ]);
 
-        $response = $this->actingAs($user)->put(route('settings.password.update'), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->put(route('settings.password.update'), [
             'current_password' => 'that-is-what-she-said',
             'new_password' => 'schrute-farms-2005',
             'new_password_confirmation' => 'schrute-farms-2005',
@@ -80,7 +80,7 @@ class PasswordControllerTest extends TestCase
             'password' => Hash::make('beets-bears-battlestar'),
         ]);
 
-        $response = $this->actingAs($user)->put(route('settings.password.update'), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->put(route('settings.password.update'), [
             'current_password' => 'beets-bears-battlestar',
             'new_password' => 'schrute-farms-2005',
             'new_password_confirmation' => 'dunder-mifflin-2005',
@@ -98,7 +98,7 @@ class PasswordControllerTest extends TestCase
             'password' => Hash::make('beets-bears-battlestar'),
         ]);
 
-        $response = $this->actingAs($user)->put(route('settings.password.update'), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->put(route('settings.password.update'), [
             'current_password' => 'beets-bears-battlestar',
             'new_password' => 'beets',
             'new_password_confirmation' => 'beets',
@@ -124,7 +124,7 @@ class PasswordControllerTest extends TestCase
         $user = User::factory()->create();
         Passkey::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->delete(route('settings.password.destroy'));
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.password.destroy'));
 
         $response->assertRedirect(route('settings.security.index'));
         $response->assertSessionHas('status');
@@ -139,7 +139,7 @@ class PasswordControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->delete(route('settings.password.destroy'));
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.password.destroy'));
 
         $response->assertSessionHasErrors('password');
         $this->assertNotNull($user->refresh()->password);
@@ -155,7 +155,7 @@ class PasswordControllerTest extends TestCase
         $user = User::factory()->create();
         Passkey::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->delete(route('settings.password.destroy'));
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.password.destroy'));
 
         $response->assertSessionHasErrors('password');
         $this->assertNotNull($user->refresh()->password);
@@ -169,7 +169,7 @@ class PasswordControllerTest extends TestCase
 
         $user = User::factory()->singleSignOn()->create();
 
-        $this->actingAs($user)->delete(route('settings.password.destroy'))
+        $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.password.destroy'))
             ->assertSessionHasErrors('password');
     }
 
@@ -180,7 +180,7 @@ class PasswordControllerTest extends TestCase
 
         $user = User::factory()->create(['password' => null]);
 
-        $response = $this->actingAs($user)->post(route('settings.password.create'), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.password.create'), [
             'new_password' => 'thatswhatshesaid',
             'new_password_confirmation' => 'thatswhatshesaid',
         ]);
@@ -197,7 +197,7 @@ class PasswordControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->actingAs($user)->post(route('settings.password.create'), [
+        $this->withConfirmedPassword()->actingAs($user)->post(route('settings.password.create'), [
             'new_password' => 'thatswhatshesaid',
             'new_password_confirmation' => 'thatswhatshesaid',
         ])->assertSessionHasErrors('new_password');
@@ -210,12 +210,12 @@ class PasswordControllerTest extends TestCase
 
         $user = User::factory()->create(['password' => null]);
 
-        $this->actingAs($user)->post(route('settings.password.create'), [
+        $this->withConfirmedPassword()->actingAs($user)->post(route('settings.password.create'), [
             'new_password' => 'thatswhatshesaid',
             'new_password_confirmation' => 'somethingelse',
         ])->assertSessionHasErrors('new_password');
 
-        $this->actingAs($user)->post(route('settings.password.create'), [
+        $this->withConfirmedPassword()->actingAs($user)->post(route('settings.password.create'), [
             'new_password' => 'short',
             'new_password_confirmation' => 'short',
         ])->assertSessionHasErrors('new_password');
@@ -228,5 +228,47 @@ class PasswordControllerTest extends TestCase
     {
         $this->post(route('settings.password.create'), [])->assertRedirect(route('auth.login.new'));
         $this->delete(route('settings.password.destroy'))->assertRedirect(route('auth.login.new'));
+    }
+
+    #[Test]
+    public function it_refuses_to_remove_the_password_without_a_confirmed_one(): void
+    {
+        $user = User::factory()->create(['password' => Hash::make('beets-bears-battlestar')]);
+
+        $response = $this->actingAs($user)->delete(route('settings.password.destroy'));
+
+        $response->assertRedirect(route('auth.confirmPassword.new'));
+
+        $this->assertNotNull($user->refresh()->password);
+    }
+
+    #[Test]
+    public function it_refuses_to_change_the_password_without_a_confirmed_one(): void
+    {
+        $user = User::factory()->create(['password' => Hash::make('beets-bears-battlestar')]);
+
+        $response = $this->actingAs($user)->put(route('settings.password.update'), [
+            'current_password' => 'beets-bears-battlestar',
+            'new_password' => 'schrute-farms-2005',
+            'new_password_confirmation' => 'schrute-farms-2005',
+        ]);
+
+        $response->assertRedirect(route('auth.confirmPassword.new'));
+
+        $this->assertTrue(Hash::check('beets-bears-battlestar', $user->refresh()->password));
+    }
+
+    #[Test]
+    public function it_forgets_the_confirmation_when_the_password_goes(): void
+    {
+        Queue::fake();
+        URL::forceScheme('https');
+
+        $user = User::factory()->create(['password' => Hash::make('beets-bears-battlestar')]);
+        Passkey::factory()->create(['user_id' => $user->id]);
+
+        $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.password.destroy'));
+
+        $this->assertNull(session('auth.password_confirmed_at'));
     }
 }

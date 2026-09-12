@@ -21,7 +21,7 @@ class ApiKeyControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post(route('settings.apiKeys.create'), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.apiKeys.create'), [
             'name' => 'Dundie awards bot',
         ]);
 
@@ -41,7 +41,7 @@ class ApiKeyControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post(route('settings.apiKeys.create'), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.apiKeys.create'), [
             'name' => 'Dundie awards bot',
         ]);
 
@@ -112,7 +112,7 @@ class ApiKeyControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post(route('settings.apiKeys.create'), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.apiKeys.create'), [
             'name' => 'ab',
         ]);
 
@@ -128,7 +128,7 @@ class ApiKeyControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post(route('settings.apiKeys.create'), []);
+        $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.apiKeys.create'), []);
 
         $response->assertSessionHasErrors('name');
     }
@@ -141,7 +141,7 @@ class ApiKeyControllerTest extends TestCase
         $user = User::factory()->create();
         $apiKey = $user->createToken('Dundie awards bot')->accessToken;
 
-        $response = $this->actingAs($user)->delete(route('settings.apiKeys.destroy', $apiKey->id));
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.apiKeys.destroy', $apiKey->id));
 
         $response->assertRedirect(route('settings.security.index'));
         $response->assertSessionHas('status', 'The API key is revoked.');
@@ -158,7 +158,7 @@ class ApiKeyControllerTest extends TestCase
         $dwight = User::factory()->create();
         $apiKey = $dwight->createToken('Beet farm sync')->accessToken;
 
-        $response = $this->actingAs($michael)->delete(route('settings.apiKeys.destroy', $apiKey->id));
+        $response = $this->withConfirmedPassword()->actingAs($michael)->delete(route('settings.apiKeys.destroy', $apiKey->id));
 
         $response->assertNotFound();
 
@@ -173,5 +173,17 @@ class ApiKeyControllerTest extends TestCase
 
         $this->delete(route('settings.apiKeys.destroy', 1))
             ->assertRedirect(route('auth.login.new'));
+    }
+
+    #[Test]
+    public function it_refuses_to_create_a_key_without_a_confirmed_password(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post(route('settings.apiKeys.create'), ['name' => 'Sabre']);
+
+        $response->assertRedirect(route('auth.confirmPassword.new'));
+
+        $this->assertSame(0, $user->tokens()->count());
     }
 }

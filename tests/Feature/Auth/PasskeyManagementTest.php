@@ -26,7 +26,7 @@ class PasskeyManagementTest extends TestCase
         $user = User::factory()->create();
         $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Untitled']);
 
-        $response = $this->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), [
             'name' => 'Michael MacBook',
         ]);
 
@@ -44,7 +44,7 @@ class PasskeyManagementTest extends TestCase
         $user = User::factory()->create();
         $passkey = Passkey::factory()->create(['user_id' => $user->id]);
 
-        $this->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), ['name' => 'Renamed']);
+        $this->withConfirmedPassword()->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), ['name' => 'Renamed']);
 
         Queue::assertPushedOn(
             queue: 'low',
@@ -62,7 +62,7 @@ class PasskeyManagementTest extends TestCase
         $user = User::factory()->create();
         $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Michael MacBook']);
 
-        $response = $this->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), ['name' => '  ']);
+        $response = $this->withConfirmedPassword()->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), ['name' => '  ']);
 
         $response->assertSessionHasErrors('name');
         $this->assertEquals('Michael MacBook', $passkey->refresh()->name);
@@ -76,7 +76,7 @@ class PasskeyManagementTest extends TestCase
         $user = User::factory()->create();
         $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Michael MacBook']);
 
-        $response = $this->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), [
             'name' => str_repeat('a', 256),
         ]);
 
@@ -92,7 +92,7 @@ class PasskeyManagementTest extends TestCase
         $user = User::factory()->create();
         $passkey = Passkey::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->delete(route('passkey.destroy', $passkey->id));
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('passkey.destroy', $passkey->id));
 
         $response->assertRedirect(route('settings.security.index'));
         $this->assertModelMissing($passkey);
@@ -107,7 +107,7 @@ class PasskeyManagementTest extends TestCase
         $going = Passkey::factory()->create(['user_id' => $user->id]);
         Passkey::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->delete(route('passkey.destroy', $going->id));
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('passkey.destroy', $going->id));
 
         $response->assertSessionHas('status_description', 'You still have 1 passkey, your password, and a link sent by email.');
     }
@@ -120,7 +120,7 @@ class PasskeyManagementTest extends TestCase
         $user = User::factory()->create();
         $passkey = Passkey::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->delete(route('passkey.destroy', $passkey->id));
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('passkey.destroy', $passkey->id));
 
         $response->assertSessionHas('status_description', 'Your password and a link sent by email still work.');
     }
@@ -133,7 +133,7 @@ class PasskeyManagementTest extends TestCase
         $user = User::factory()->create(['password' => null]);
         $passkey = Passkey::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->delete(route('passkey.destroy', $passkey->id));
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('passkey.destroy', $passkey->id));
 
         $response->assertSessionHas(
             'status_description',
@@ -149,7 +149,7 @@ class PasskeyManagementTest extends TestCase
         $user = User::factory()->create();
         $somebodyElse = Passkey::factory()->create(['name' => 'Not yours']);
 
-        $response = $this->actingAs($user)->put(route('settings.passkeys.update', $somebodyElse->id), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->put(route('settings.passkeys.update', $somebodyElse->id), [
             'name' => 'Mine now',
         ]);
 
@@ -165,7 +165,7 @@ class PasskeyManagementTest extends TestCase
         $user = User::factory()->create();
         $somebodyElse = Passkey::factory()->create();
 
-        $response = $this->actingAs($user)->delete(route('passkey.destroy', $somebodyElse->id));
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('passkey.destroy', $somebodyElse->id));
 
         $response->assertStatus(404);
         $this->assertModelExists($somebodyElse);

@@ -139,7 +139,6 @@ class ProfileControllerTest extends TestCase
         $response = $this->actingAs($user)->put(route('settings.profile.update'), [
             'first_name' => 'Michael',
             'last_name' => 'Scott',
-            'email' => 'michael.scott@dundermifflin.com',
         ]);
 
         $response->assertRedirect(route('settings.profile.index'));
@@ -150,7 +149,6 @@ class ProfileControllerTest extends TestCase
 
         $this->assertEquals('Michael', $user->first_name);
         $this->assertEquals('Scott', $user->last_name);
-        $this->assertEquals('michael.scott@dundermifflin.com', $user->email);
     }
 
     #[Test]
@@ -161,55 +159,25 @@ class ProfileControllerTest extends TestCase
         $response = $this->actingAs($user)->put(route('settings.profile.update'), [
             'first_name' => '',
             'last_name' => '',
-            'email' => $user->email,
         ]);
 
         $response->assertSessionHasErrors(['first_name', 'last_name']);
     }
 
     #[Test]
-    public function it_refuses_an_email_that_is_not_an_email(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->put(route('settings.profile.update'), [
-            'first_name' => 'Angela',
-            'last_name' => 'Martin',
-            'email' => 'not-an-email',
-        ]);
-
-        $response->assertSessionHasErrors('email');
-    }
-
-    #[Test]
-    public function it_refuses_an_email_another_user_already_signs_in_with(): void
-    {
-        $user = User::factory()->create();
-        $colleague = User::factory()->create(['email' => 'oscar.martinez@dundermifflin.com']);
-
-        $response = $this->actingAs($user)->put(route('settings.profile.update'), [
-            'first_name' => 'Oscar',
-            'last_name' => 'Martinez',
-            'email' => $colleague->email,
-        ]);
-
-        $response->assertSessionHasErrors('email');
-    }
-
-    #[Test]
-    public function it_accepts_the_email_the_user_already_signs_in_with(): void
+    public function it_saves_the_names_without_a_confirmed_password(): void
     {
         Queue::fake();
 
-        $user = User::factory()->create(['email' => 'kelly.kapoor@dundermifflin.com']);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->put(route('settings.profile.update'), [
-            'first_name' => 'Kelly',
-            'last_name' => 'Kapoor',
-            'email' => 'kelly.kapoor@dundermifflin.com',
+            'first_name' => 'Pam',
+            'last_name' => 'Beesly',
         ]);
 
-        $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('settings.profile.index'));
+
+        $this->assertEquals('Pam', $user->refresh()->first_name);
     }
 }

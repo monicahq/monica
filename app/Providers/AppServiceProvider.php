@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Actions\VerifyPasskey;
 use App\Helpers\LocaleCollation;
+use App\Http\Responses\PasskeyConfirmationResponse;
 use App\Http\Responses\PasskeyDeletedResponse;
 use App\Http\Responses\PasskeyLoginResponse;
 use App\Models\Account;
@@ -23,6 +24,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Cashier\Cashier;
 use Laravel\Passkeys\Actions\VerifyPasskey as BaseVerifyPasskey;
+use Laravel\Passkeys\Contracts\PasskeyConfirmationResponse as PasskeyConfirmationResponseContract;
 use Laravel\Passkeys\Contracts\PasskeyDeletedResponse as PasskeyDeletedResponseContract;
 use Laravel\Passkeys\Contracts\PasskeyLoginResponse as PasskeyLoginResponseContract;
 use Laravel\Passkeys\Passkeys;
@@ -46,6 +48,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BaseVerifyPasskey::class, VerifyPasskey::class);
         $this->app->singleton(PasskeyLoginResponseContract::class, PasskeyLoginResponse::class);
         $this->app->singleton(PasskeyDeletedResponseContract::class, PasskeyDeletedResponse::class);
+        $this->app->singleton(PasskeyConfirmationResponseContract::class, PasskeyConfirmationResponse::class);
     }
 
     public function boot(): void
@@ -81,6 +84,8 @@ class AppServiceProvider extends ServiceProvider
             ->by($request->user()?->id ?: $request->ip()));
         RateLimiter::for('passkey', fn (Request $request): Limit => Limit::perMinute(self::MAX_LOGIN_ATTEMPTS)
             ->by($request->string('credential.id')->lower()->toString().'|'.$request->ip()));
+        RateLimiter::for('confirm-password', fn (Request $request): Limit => Limit::perMinute(self::MAX_LOGIN_ATTEMPTS)
+            ->by($request->user()?->id ?: $request->ip()));
     }
 
     private function configureCollation(): void

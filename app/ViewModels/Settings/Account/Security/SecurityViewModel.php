@@ -6,6 +6,7 @@ namespace App\ViewModels\Settings\Account\Security;
 
 use App\Helpers\PasskeyAvailability;
 use App\Models\User;
+use App\ViewModels\Auth\ConfirmPasswordViewModel;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class SecurityViewModel
@@ -34,10 +35,9 @@ class SecurityViewModel
         return $this->user->two_factor_confirmed_at?->diffForHumans();
     }
 
-    /** @return array<int, string> */
-    public function recoveryCodes(): array
+    public function recoveryCodesRemaining(): int
     {
-        return $this->user->two_factor_recovery_codes ?? [];
+        return count($this->user->two_factor_recovery_codes ?? []);
     }
 
     /** @return array<int, array{id: int, name: string, createdAt: string, lastUsedAt: ?string}> */
@@ -92,6 +92,31 @@ class SecurityViewModel
             && $this->user->password !== null
             && $this->user->hasPasskeys()
             && $this->passkeysAreAvailable();
+    }
+
+    public function credentials(): ConfirmPasswordViewModel
+    {
+        return new ConfirmPasswordViewModel(user: $this->user);
+    }
+
+    public function passwordIsConfirmed(): bool
+    {
+        return $this->secondsBeforeTheConfirmationExpires() > 0;
+    }
+
+    /**
+     * What is left of the window when the screen is drawn. A page left open outlives its own
+     * confirmation, so the screen has to hand the browser a deadline rather than a yes or no.
+     */
+    public function secondsBeforeTheConfirmationExpires(): int
+    {
+        $confirmedAt = session('auth.password_confirmed_at');
+
+        if ($confirmedAt === null) {
+            return 0;
+        }
+
+        return max(0, (int) config('auth.password_timeout') - (time() - (int) $confirmedAt));
     }
 
     public function user(): User

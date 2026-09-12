@@ -35,6 +35,9 @@ enum UserActionEnum: string implements Translatable
     case PasskeyRenamed = 'passkey_renamed';
     case PasskeyRemoved = 'passkey_removed';
     case PasskeyLogin = 'passkey_logged_in';
+    case PasswordConfirmed = 'password_confirmed';
+    case PasskeyConfirmed = 'passkey_confirmed';
+    case PasswordConfirmationRefused = 'password_confirmation_refused';
     case UserPasswordRemoved = 'user_password_removed';
     case UserPasswordSet = 'user_password_set';
     case VaultCreation = 'vault_created';
@@ -195,6 +198,9 @@ enum UserActionEnum: string implements Translatable
             self::PasskeyRenamed => 'Renamed a passkey to :name',
             self::PasskeyRemoved => 'Removed the passkey called :name',
             self::PasskeyLogin => 'Signed in with the passkey called :name',
+            self::PasswordConfirmed => 'Confirmed their password before a sensitive action',
+            self::PasskeyConfirmed => 'Confirmed who they are with the passkey called :name',
+            self::PasswordConfirmationRefused => 'Gave the wrong password before a sensitive action',
             self::UserPasswordRemoved => 'Removed their password',
             self::UserPasswordSet => 'Set a password',
             self::VaultCreation => 'Created the vault :name',

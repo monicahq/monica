@@ -79,4 +79,24 @@ class HandlePasskeyLoginTest extends TestCase
             fn (NewLoginDetected $notification): bool => $notification->queue === 'high',
         );
     }
+
+    #[Test]
+    public function it_records_a_confirmation_rather_than_a_sign_in(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        $user = User::factory()->create(['last_login_at' => null]);
+        $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Scranton laptop']);
+
+        $this->actingAs($user);
+
+        new HandlePasskeyLogin()->handle(new PasskeyVerified($user, $passkey));
+
+        $this->assertNull($user->refresh()->last_login_at);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::PasskeyConfirmed);
+        Queue::assertNotPushed(CheckLastLogin::class);
+        Notification::assertNothingSent();
+    }
 }

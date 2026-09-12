@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\App\Auth\ConfirmPasswordController;
 use App\Http\Controllers\App\Auth\EmailVerificationController;
 use App\Http\Controllers\App\Auth\LocaleController;
 use App\Http\Controllers\App\Auth\LoginController;
@@ -59,6 +60,16 @@ Route::middleware(['guest'])->group(function (): void {
 
 Route::middleware(['auth'])->group(function (): void {
     Route::get('register/passkey', [RegistrationPasskeyController::class, 'new'])->name('auth.registerPasskey.new');
+
+    /*
+     * The screen a sensitive action is sent to when the session holds no recent confirmation. It
+     * takes the password, and the passkey package's own endpoints take a passkey, both of them
+     * writing the one session fact `password.confirm` reads.
+     */
+    Route::get('confirm-password', [ConfirmPasswordController::class, 'new'])->name('auth.confirmPassword.new');
+    Route::post('confirm-password', [ConfirmPasswordController::class, 'create'])
+        ->middleware('throttle:confirm-password')
+        ->name('auth.confirmPassword.create');
 
     Route::get('verify-email', [EmailVerificationController::class, 'show'])->name('auth.verification.notice');
     Route::get('verify-email/{id}/{hash}', [EmailVerificationController::class, 'update'])

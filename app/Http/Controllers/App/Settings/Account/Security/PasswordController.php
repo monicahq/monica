@@ -26,6 +26,8 @@ class PasswordController extends Controller
             password: $validated['new_password'],
         )->execute();
 
+        $request->session()->forget('auth.password_confirmed_at');
+
         return redirect()->route('settings.security.index')
             ->with('status', __('Your password is changed.'))
             ->with('status_description', __('Use it the next time you sign in.'));
@@ -58,6 +60,8 @@ class PasswordController extends Controller
         new DestroyUserPassword(
             user: $request->user(),
         )->execute();
+
+        $request->session()->forget('auth.password_confirmed_at');
 
         return redirect()->route('settings.security.index')
             ->with('status', __('Your password is removed.'))

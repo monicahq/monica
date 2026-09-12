@@ -59,7 +59,7 @@
             @endif
           </span>
 
-          <x-button size="small" class="ml-auto">{{ __('Save') }}</x-button>
+          <x-button size="small" class="ml-auto" type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Save') }}</x-button>
         </div>
       </x-slot:footer>
     </x-panel>

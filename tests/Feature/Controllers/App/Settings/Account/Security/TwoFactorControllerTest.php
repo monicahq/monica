@@ -20,7 +20,7 @@ class TwoFactorControllerTest extends TestCase
     {
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
-        $response = $this->actingAs($user)->get(route('settings.twoFactor.new'));
+        $response = $this->withConfirmedPassword()->actingAs($user)->get(route('settings.twoFactor.new'));
 
         $response->assertStatus(200);
         $response->assertSee('Pair your authenticator app', escape: false);
@@ -51,11 +51,11 @@ class TwoFactorControllerTest extends TestCase
             'two_factor_confirmed_at' => null,
         ]);
 
-        $response = $this->actingAs($user)->post(route('settings.twoFactor.create'), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.twoFactor.create'), [
             'code' => $google2fa->getCurrentOtp($secret),
         ]);
 
-        $response->assertRedirect(route('settings.security.index'));
+        $response->assertRedirect(route('settings.recoveryCodes.show'));
         $response->assertSessionHas('status', 'Two-factor authentication is on.');
 
         $this->assertTrue($user->refresh()->usesTwoFactorAuthentication());
@@ -71,7 +71,7 @@ class TwoFactorControllerTest extends TestCase
             'two_factor_confirmed_at' => null,
         ]);
 
-        $response = $this->actingAs($user)->post(route('settings.twoFactor.create'), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.twoFactor.create'), [
             'code' => '000000',
         ]);
 
@@ -85,7 +85,7 @@ class TwoFactorControllerTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post(route('settings.twoFactor.create'), []);
+        $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.twoFactor.create'), []);
 
         $response->assertSessionHasErrors('code');
     }
@@ -97,7 +97,7 @@ class TwoFactorControllerTest extends TestCase
 
         $user = User::factory()->twoFactor()->create();
 
-        $response = $this->actingAs($user)->delete(route('settings.twoFactor.destroy'));
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.twoFactor.destroy'));
 
         $response->assertRedirect(route('settings.security.index'));
         $response->assertSessionHas('status', 'Two-factor authentication is off.');
@@ -106,5 +106,52 @@ class TwoFactorControllerTest extends TestCase
 
         $this->assertFalse($user->usesTwoFactorAuthentication());
         $this->assertNull($user->two_factor_secret);
+    }
+
+    #[Test]
+    public function it_refuses_to_turn_two_factor_off_without_a_confirmed_password(): void
+    {
+        $user = User::factory()->twoFactor()->create();
+
+        $response = $this->actingAs($user)->delete(route('settings.twoFactor.destroy'));
+
+        $response->assertRedirect(route('auth.confirmPassword.new'));
+
+        $this->assertNotNull($user->refresh()->two_factor_confirmed_at);
+    }
+
+    #[Test]
+    public function it_refuses_to_start_enrolling_without_a_confirmed_password(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('settings.twoFactor.new'));
+
+        $response->assertRedirect(route('auth.confirmPassword.new'));
+
+        $this->assertNull($user->refresh()->two_factor_secret);
+    }
+
+    #[Test]
+    public function it_shows_the_codes_once_after_enrolment(): void
+    {
+        Queue::fake();
+
+        $google2fa = new Google2FA;
+        $secret = $google2fa->generateSecretKey();
+
+        $user = User::factory()->create([
+            'two_factor_secret' => $secret,
+            'two_factor_confirmed_at' => null,
+        ]);
+
+        $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.twoFactor.create'), [
+            'code' => $google2fa->getCurrentOtp($secret),
+        ]);
+
+        $this->followRedirects($response)
+            ->assertStatus(200)
+            ->assertSee($user->refresh()->two_factor_recovery_codes[0], escape: false)
+            ->assertSee('This is the only time they are shown', escape: false);
     }
 }

@@ -36,7 +36,7 @@
 
         <x-button.secondary size="small" type="button" @click="renaming = false">{{ __('Cancel') }}</x-button.secondary>
 
-        <x-button size="small">{{ __('Save') }}</x-button>
+        <x-button size="small" type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Save') }}</x-button>
       </x-form>
 
       <x-button.secondary
@@ -56,7 +56,7 @@
         <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep it') }}</x-button.secondary>
 
         <x-form method="delete" :action="route('passkey.destroy', $passkey['id'])">
-          <x-button.danger size="small">{{ __('Remove') }}</x-button.danger>
+          <x-button.danger size="small" type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Remove') }}</x-button.danger>
         </x-form>
       </div>
     </div>

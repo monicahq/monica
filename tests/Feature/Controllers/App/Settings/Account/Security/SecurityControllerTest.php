@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Security;
 
+use App\Models\Passkey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -109,7 +110,7 @@ class SecurityControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_the_recovery_codes_when_two_factor_authentication_is_on(): void
+    public function it_shows_no_recovery_code(): void
     {
         $user = User::factory()->twoFactor()->create(['two_factor_confirmed_at' => now()->subDays(3)]);
 
@@ -118,8 +119,19 @@ class SecurityControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Turned on 3 days ago', escape: false);
         $response->assertSee('Recovery codes', escape: false);
-        $response->assertSee('scranton-1', escape: false);
-        $response->assertSee('scranton-2', escape: false);
+        $response->assertDontSee('scranton-1', escape: false);
+        $response->assertDontSee('scranton-2', escape: false);
+    }
+
+    #[Test]
+    public function it_says_how_many_recovery_codes_are_left(): void
+    {
+        $user = User::factory()->twoFactor()->create(['two_factor_recovery_codes' => ['scranton-1', 'scranton-2']]);
+
+        $response = $this->actingAs($user)->get(route('settings.security.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('2 recovery codes left. They were shown once, when they were made.', escape: false);
     }
 
     #[Test]
@@ -134,29 +146,60 @@ class SecurityControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_to_copy_the_recovery_codes(): void
-    {
-        $user = User::factory()->twoFactor()->create(['two_factor_confirmed_at' => now()->subDays(3)]);
-
-        $this->actingAs($user)->get(route('settings.security.index'))
-            ->assertSee('Copy to the clipboard', escape: false)
-            ->assertSee('window.copyText(codes.join(', escape: false);
-    }
-
-    #[Test]
-    public function it_does_not_offer_to_copy_recovery_codes_that_are_all_spent(): void
-    {
-        $user = User::factory()->twoFactor()->create(['two_factor_recovery_codes' => []]);
-
-        $this->actingAs($user)->get(route('settings.security.index'))
-            ->assertDontSee('window.copyText(codes.join(', escape: false);
-    }
-
-    #[Test]
     public function it_redirects_a_visitor_who_is_not_signed_in(): void
     {
         $response = $this->get(route('settings.security.index'));
 
         $response->assertRedirect(route('auth.login.new'));
+    }
+
+    #[Test]
+    public function it_refuses_to_remove_a_passkey_without_a_confirmed_password(): void
+    {
+        $user = User::factory()->create();
+        $passkey = Passkey::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->delete(route('passkey.destroy', $passkey));
+
+        $response->assertRedirect(route('auth.confirmPassword.new'));
+
+        $this->assertModelExists($passkey);
+    }
+
+    #[Test]
+    public function it_removes_a_passkey_with_a_confirmed_password(): void
+    {
+        $user = User::factory()->create();
+        $passkey = Passkey::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('passkey.destroy', $passkey));
+
+        $response->assertRedirect(route('settings.security.index'));
+
+        $this->assertModelMissing($passkey);
+    }
+
+    #[Test]
+    public function it_forgets_the_confirmation_when_a_passkey_goes(): void
+    {
+        $user = User::factory()->create();
+        $passkey = Passkey::factory()->create(['user_id' => $user->id]);
+
+        $this->withConfirmedPassword()->actingAs($user)->delete(route('passkey.destroy', $passkey));
+
+        $this->assertNull(session('auth.password_confirmed_at'));
+    }
+
+    #[Test]
+    public function it_removes_a_passkey_of_an_account_with_no_password_without_asking(): void
+    {
+        $user = User::factory()->create(['password' => null]);
+        $passkey = Passkey::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->delete(route('passkey.destroy', $passkey));
+
+        $response->assertRedirect(route('settings.security.index'));
+
+        $this->assertModelMissing($passkey);
     }
 }

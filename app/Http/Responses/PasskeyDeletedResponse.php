@@ -13,6 +13,8 @@ class PasskeyDeletedResponse implements PasskeyDeletedResponseContract
     /** @param  Request  $request */
     public function toResponse($request): RedirectResponse
     {
+        $request->session()->forget('auth.password_confirmed_at');
+
         return redirect()->route('settings.security.index')
             ->with('status', __('That passkey is removed.'))
             ->with('status_description', $this->whatIsLeft($request));

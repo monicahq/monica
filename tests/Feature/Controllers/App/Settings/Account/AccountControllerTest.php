@@ -20,7 +20,7 @@ class AccountControllerTest extends TestCase
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
         $account = $user->account;
 
-        $response = $this->actingAs($user)->delete(route('settings.account.destroy'), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.account.destroy'), [
             'confirm_email' => 'michael.scott@dundermifflin.com',
         ]);
 
@@ -37,7 +37,7 @@ class AccountControllerTest extends TestCase
     {
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
-        $this->actingAs($user)->delete(route('settings.account.destroy'), [
+        $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.account.destroy'), [
             'confirm_email' => '  Michael.Scott@DunderMifflin.com  ',
         ]);
 
@@ -49,7 +49,7 @@ class AccountControllerTest extends TestCase
     {
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
-        $response = $this->actingAs($user)->delete(route('settings.account.destroy'), [
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.account.destroy'), [
             'confirm_email' => 'dwight.schrute@dundermifflin.com',
         ]);
 
@@ -64,7 +64,7 @@ class AccountControllerTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->delete(route('settings.account.destroy'));
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.account.destroy'));
 
         $response->assertSessionHasErrors('confirm_email');
 
@@ -78,7 +78,7 @@ class AccountControllerTest extends TestCase
         $stranger = User::factory()->create();
         $strangerAccount = $stranger->account;
 
-        $this->actingAs($user)->delete(route('settings.account.destroy'), [
+        $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.account.destroy'), [
             'confirm_email' => 'michael.scott@dundermifflin.com',
         ]);
 
@@ -91,7 +91,7 @@ class AccountControllerTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get(route('settings.profile.index'));
+        $response = $this->withConfirmedPassword()->actingAs($user)->get(route('settings.profile.index'));
 
         $response->assertStatus(200);
         $response->assertSee('Delete your account', escape: false);
@@ -141,7 +141,7 @@ class AccountControllerTest extends TestCase
         $michael = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
         $this->subscribeAccount($michael->account);
 
-        $response = $this->actingAs($michael)
+        $response = $this->withConfirmedPassword()->actingAs($michael)
             ->from(route('settings.profile.index'))
             ->delete(route('settings.account.destroy'), ['confirm_email' => 'michael.scott@dundermifflin.com']);
 
@@ -149,5 +149,19 @@ class AccountControllerTest extends TestCase
         $response->assertSessionHasErrors('confirm_email');
         $this->assertModelExists($michael);
         $this->assertModelExists($michael->account);
+    }
+
+    #[Test]
+    public function it_refuses_to_delete_the_account_without_a_confirmed_password(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->delete(route('settings.account.destroy'), [
+            'confirm_email' => $user->email,
+        ]);
+
+        $response->assertRedirect(route('auth.confirmPassword.new'));
+
+        $this->assertModelExists($user);
     }
 }

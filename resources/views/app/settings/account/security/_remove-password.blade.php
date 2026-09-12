@@ -28,7 +28,7 @@
         />
 
         <div class="flex justify-end">
-          <x-button>{{ __('Set a password') }}</x-button>
+          <x-button type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Set a password') }}</x-button>
         </div>
       </div>
     </x-panel>
@@ -39,7 +39,7 @@
       <p class="text-sm text-pretty text-muted">{{ __('A password is the one credential somebody can phish from you. With a passkey on a device you hold, you do not need it.') }}</p>
 
       <div x-show="! confirming" class="flex justify-end">
-        <x-button.secondary size="small" type="button" @click="confirming = true">{{ __('Remove my password') }}</x-button.secondary>
+        <x-button.secondary size="small" type="button" @click="confirming = true">{{ __('Remove the password') }}</x-button.secondary>
       </div>
 
       <div x-cloak x-show="confirming" class="flex flex-col gap-3">
@@ -49,7 +49,7 @@
           <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep my password') }}</x-button.secondary>
 
           <x-form method="delete" :action="route('settings.password.destroy')">
-            <x-button.danger size="small">{{ __('Remove my password') }}</x-button.danger>
+            <x-button.danger size="small" type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Remove the password') }}</x-button.danger>
           </x-form>
         </div>
       </div>

@@ -40,6 +40,7 @@ use App\Http\Controllers\App\Settings\Account\Notifications\NotificationChannelC
 use App\Http\Controllers\App\Settings\Account\Notifications\TelegramWebhookController;
 use App\Http\Controllers\App\Settings\Account\Preferences\PreferenceController;
 use App\Http\Controllers\App\Settings\Account\Preferences\TimezoneController;
+use App\Http\Controllers\App\Settings\Account\Profile\EmailController;
 use App\Http\Controllers\App\Settings\Account\Profile\PhotoController;
 use App\Http\Controllers\App\Settings\Account\Profile\ProfileController;
 use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipCategoryController;
@@ -300,7 +301,16 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::get('settings/account/profile', [ProfileController::class, 'index'])->name('settings.profile.index');
     Route::put('settings/account/profile', [ProfileController::class, 'update'])->name('settings.profile.update');
-    Route::delete('settings/account', [AccountController::class, 'destroy'])->name('settings.account.destroy');
+
+    /*
+     * Changing the address every way back into the account points at, and destroying the account,
+     * both cost a credential. The names beside them do not, which is why the address has a route of
+     * its own rather than riding along with the profile.
+     */
+    Route::middleware(['password.confirm:auth.confirmPassword.new'])->group(function (): void {
+        Route::put('settings/account/profile/email', [EmailController::class, 'update'])->name('settings.email.update');
+        Route::delete('settings/account', [AccountController::class, 'destroy'])->name('settings.account.destroy');
+    });
 
     Route::get('settings/account/billing', [BillingController::class, 'index'])->name('settings.billing.index');
     Route::put('settings/account/billing/currency', [BillingCurrencyController::class, 'update'])->name('settings.billingCurrency.update');
@@ -409,20 +419,37 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('settings/account/templates/{template}/sections/{templateVersionSection}/fields/{field}/position', [FieldPositionController::class, 'update'])->whereNumber(['templateVersionSection', 'field'])->name('settings.fieldPosition.update');
 
     Route::get('settings/account/security', [SecurityController::class, 'index'])->name('settings.security.index');
-    Route::post('settings/account/security/password', [PasswordController::class, 'create'])->name('settings.password.create');
-    Route::put('settings/account/security/password', [PasswordController::class, 'update'])->name('settings.password.update');
-    Route::delete('settings/account/security/password', [PasswordController::class, 'destroy'])->name('settings.password.destroy');
 
-    Route::get('settings/account/security/two-factor', [TwoFactorController::class, 'new'])->name('settings.twoFactor.new');
-    Route::post('settings/account/security/two-factor', [TwoFactorController::class, 'create'])->name('settings.twoFactor.create');
-    Route::delete('settings/account/security/two-factor', [TwoFactorController::class, 'destroy'])->name('settings.twoFactor.destroy');
+    /*
+     * Everything that decides how somebody signs in, or hands out access outliving the session.
+     * Reading the screen above costs nothing; changing any of it costs a password or a passkey,
+     * which `password.confirm` reads from the session and the screen it names writes there.
+     */
+    Route::middleware(['password.confirm:auth.confirmPassword.new'])->group(function (): void {
+        Route::post('settings/account/security/password', [PasswordController::class, 'create'])->name('settings.password.create');
+        Route::put('settings/account/security/password', [PasswordController::class, 'update'])->name('settings.password.update');
+        Route::delete('settings/account/security/password', [PasswordController::class, 'destroy'])->name('settings.password.destroy');
 
-    Route::post('settings/account/security/recovery-codes', [RecoveryCodeController::class, 'create'])->name('settings.recoveryCodes.create');
+        Route::get('settings/account/security/two-factor', [TwoFactorController::class, 'new'])->name('settings.twoFactor.new');
+        Route::post('settings/account/security/two-factor', [TwoFactorController::class, 'create'])->name('settings.twoFactor.create');
+        Route::delete('settings/account/security/two-factor', [TwoFactorController::class, 'destroy'])->name('settings.twoFactor.destroy');
 
-    Route::put('settings/account/security/passkeys/{passkey}', [PasskeyController::class, 'update'])->whereNumber('passkey')->name('settings.passkeys.update');
+        Route::post('settings/account/security/recovery-codes', [RecoveryCodeController::class, 'create'])->name('settings.recoveryCodes.create');
+    });
 
-    Route::post('settings/account/security/api-keys', [ApiKeyController::class, 'create'])->name('settings.apiKeys.create');
-    Route::delete('settings/account/security/api-keys/{apiKey}', [ApiKeyController::class, 'destroy'])->whereNumber('apiKey')->name('settings.apiKeys.destroy');
+    /*
+     * The one screen the recovery codes are ever printed on. It renders what the request that made
+     * them flashed and nothing else, so it is empty on its own and needs no gate of its own.
+     */
+    Route::get('settings/account/security/recovery-codes', [RecoveryCodeController::class, 'show'])->name('settings.recoveryCodes.show');
+
+    Route::middleware(['password.confirm:auth.confirmPassword.new'])->group(function (): void {
+
+        Route::put('settings/account/security/passkeys/{passkey}', [PasskeyController::class, 'update'])->whereNumber('passkey')->name('settings.passkeys.update');
+
+        Route::post('settings/account/security/api-keys', [ApiKeyController::class, 'create'])->name('settings.apiKeys.create');
+        Route::delete('settings/account/security/api-keys/{apiKey}', [ApiKeyController::class, 'destroy'])->whereNumber('apiKey')->name('settings.apiKeys.destroy');
+    });
 
     Route::post('settings/account/profile/photo', [PhotoController::class, 'update'])->name('settings.photo.update');
     Route::delete('settings/account/profile/photo', [PhotoController::class, 'destroy'])->name('settings.photo.destroy');

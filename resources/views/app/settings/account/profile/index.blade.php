@@ -12,6 +12,13 @@
     <x-settings.sidebar :user="$viewModel->user()" current="profile" />
   </x-slot:sidebar>
 
+  <x-modal.confirm-password
+    :confirmed="$viewModel->passwordIsConfirmed()"
+    :seconds-left="$viewModel->secondsBeforeTheConfirmationExpires()"
+    :offers-password="$viewModel->credentials()->offersPassword()"
+    :offers-passkey="$viewModel->credentials()->offersPasskey()"
+  />
+
   <header class="flex flex-col gap-2">
     <h1 class="text-page-title text-ink">{{ __('Profile') }}</h1>
 
@@ -84,7 +91,7 @@
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
       <h2 class="shrink-0 text-section-title text-ink">{{ __('Details') }}</h2>
 
-      <p class="text-sm text-pretty text-muted">{{ __('Your name appears everywhere the application refers to you; your address is what you sign in with.') }}</p>
+      <p class="text-sm text-pretty text-muted">{{ __('Your name appears everywhere the application refers to you.') }}</p>
     </div>
 
     <x-form
@@ -114,16 +121,6 @@
             />
           </div>
 
-          <x-input
-            type="email"
-            id="email"
-            :label="__('Email address')"
-            :value="$viewModel->details()['email']"
-            autocomplete="username"
-            :help="__('This is what you sign in with. Change it and we will ask you to confirm the new one.')"
-            :error="$errors->get('email')"
-            required
-          />
         </div>
 
         <x-slot:footer>
@@ -135,6 +132,35 @@
             </span>
 
             <x-button size="small" class="ml-auto">{{ __('Save changes') }}</x-button>
+          </div>
+        </x-slot:footer>
+      </x-panel>
+    </x-form>
+  </section>
+
+  <section class="flex flex-col gap-3">
+    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
+      <h2 class="shrink-0 text-section-title text-ink">{{ __('Email address') }}</h2>
+
+      <p class="text-sm text-pretty text-muted">{{ __('What you sign in with, and where every way back into the account is sent.') }}</p>
+    </div>
+
+    <x-form method="put" :action="route('settings.email.update')">
+      <x-panel>
+        <x-input
+          type="email"
+          id="email"
+          :label="__('Email address')"
+          :value="$viewModel->details()['email']"
+          autocomplete="username"
+          :help="__('Change it and we will ask you to confirm the new one. We ask for a credential first.')"
+          :error="$errors->get('email')"
+          required
+        />
+
+        <x-slot:footer>
+          <div class="flex justify-end">
+            <x-button size="small" type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Save this address') }}</x-button>
           </div>
         </x-slot:footer>
       </x-panel>
@@ -189,7 +215,7 @@
           <div class="flex flex-wrap items-center gap-3 max-sm:flex-col max-sm:items-stretch">
             <x-button.secondary type="button" size="small" @click="confirming = false">{{ __('Keep my account') }}</x-button.secondary>
 
-            <x-button.danger size="small" class="max-sm:w-full">{{ __('Delete it for good') }}</x-button.danger>
+            <x-button.danger size="small" class="max-sm:w-full" type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Delete it for good') }}</x-button.danger>
           </div>
         </x-form>
       </div>

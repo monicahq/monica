@@ -7,6 +7,7 @@ namespace Tests\Feature\Auth;
 use App\Models\Passkey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -61,7 +62,7 @@ class PasskeyChallengeTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->getJson(route('passkey.registration-options'));
+        $response = $this->withConfirmedPassword()->actingAs($user)->getJson(route('passkey.registration-options'));
 
         $response->assertOk();
         $response->assertJsonStructure([
@@ -77,7 +78,7 @@ class PasskeyChallengeTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $selection = $this->actingAs($user)
+        $selection = $this->withConfirmedPassword()->actingAs($user)
             ->getJson(route('passkey.registration-options'))
             ->json('options.authenticatorSelection');
 
@@ -91,7 +92,7 @@ class PasskeyChallengeTest extends TestCase
         $user = User::factory()->create();
         Passkey::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->getJson(route('passkey.registration-options'));
+        $response = $this->withConfirmedPassword()->actingAs($user)->getJson(route('passkey.registration-options'));
 
         $this->assertCount(1, $response->json('options.excludeCredentials'));
     }
@@ -105,10 +106,27 @@ class PasskeyChallengeTest extends TestCase
     }
 
     #[Test]
-    public function adding_a_passkey_needs_no_password_to_be_confirmed_first(): void
+    public function adding_a_passkey_needs_the_password_confirmed_when_there_is_one(): void
+    {
+        $user = User::factory()->create(['password' => Hash::make('dundermifflin')]);
+
+        $this->actingAs($user)->getJson(route('passkey.registration-options'))->assertStatus(423);
+    }
+
+    #[Test]
+    public function adding_a_passkey_asks_nothing_of_an_account_with_no_password(): void
     {
         $user = User::factory()->create(['password' => null]);
 
+        $this->actingAs($user)->getJson(route('passkey.registration-options'))->assertOk();
+    }
+
+    #[Test]
+    public function a_fresh_account_makes_its_first_passkey_without_being_asked(): void
+    {
+        $user = User::factory()->create(['password' => null]);
+
+        $this->actingAs($user)->get(route('auth.registerPasskey.new'))->assertStatus(200);
         $this->actingAs($user)->getJson(route('passkey.registration-options'))->assertOk();
     }
 }

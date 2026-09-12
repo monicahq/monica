@@ -249,6 +249,15 @@ abstract class TestCase extends BaseTestCase
         return $subscription;
     }
 
+    /**
+     * Put a credential confirmation in the session, given a moment ago, which is what the sensitive
+     * routes ask for. Travelling past `auth.password_timeout` in a test expires it.
+     */
+    protected function withConfirmedPassword(): static
+    {
+        return $this->withSession(['auth.password_confirmed_at' => time()]);
+    }
+
     protected function assignUserToAccount(User $user, Account $account): User
     {
         $user->account_id = $account->id;

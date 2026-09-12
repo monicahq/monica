@@ -8,6 +8,13 @@
     </x-button.bar>
   </x-slot:breadcrumb>
 
+  <x-modal.confirm-password
+    :confirmed="$viewModel->passwordIsConfirmed()"
+    :seconds-left="$viewModel->secondsBeforeTheConfirmationExpires()"
+    :offers-password="$viewModel->credentials()->offersPassword()"
+    :offers-passkey="$viewModel->credentials()->offersPasskey()"
+  />
+
   <x-slot:sidebar>
     <x-settings.sidebar :user="$viewModel->user()" current="security" />
   </x-slot:sidebar>
