@@ -1,29 +1,29 @@
 <!--
 Sync Impact Report
-Version change: 2.1.0 -> 2.2.0
-Rationale: an outbound channel that needs a third-party package was a required dependency, which
-made every installation carry the weight of every integration whether or not the operator wanted
-it, and left no answer for what the product should do when one is absent. Two new obligations, so
-MINOR. No principle is removed, redefined or renumbered.
+Version change: 2.2.0 -> 2.3.0
+Rationale: one authorisation rule was being written twice, once where a screen decides whether to
+offer a control and once where the action refuses it, with nothing keeping the two in step. Giving a
+rule one home needs somewhere for the classes that hold it to live, and the layout of the repository
+is fixed here, so admitting a folder is an amendment. Guidance expands and no principle is removed or
+redefined, so MINOR.
 
-Added: Technology and Architecture Constraints, two bullets.
-- An integration package ships as a suggested dependency and stays in the development dependencies,
-so the working path is still covered by the suite. The application boots, renders and passes its
-tests without it, and a channel whose package is missing never names an unregistered delivery
-driver. Presence is read through configuration so that both states are testable.
-- The account with the outside service belongs to the instance rather than the account holder. The
-product does not ask an account holder for a credential of their own and does not store one.
+Added: Technology and Architecture Constraints, one entry in the `app/` list.
+- `Policies`, one class per model whose abilities are asked by name. The folder is named rather than
+the classes being folded into an existing one because Laravel discovers a policy at that path and
+nowhere else.
 Modified: none.
 Removed: none.
 
-Considered and left standing: the first release bullet still requires push notifications on the
-server side for the mobile applications. The push channel was removed from the code because it
-could never be switched on, which discharges nothing: `spec/spec.md` 10.4 now says the channel
-returns once something delivers it.
+Considered and left standing: nothing is said here about which status a refused policy returns. The
+constraint that a record out of reach must fail as if it did not exist is already written once, under
+data access, and a policy is bound by it like anything else. Restating it beside the folder would be
+the same fact in two places.
 
-Follow-up owed by the pull request that adopts this: move
-`laravel-notification-channels/telegram` and `laravel/vonage-notification-channel` from `require`
-to `require-dev` plus `suggest`, and gate both channels on the package being present.
+Discharged since 2.2.0: the follow-up that amendment owed is done. Both
+`laravel-notification-channels/telegram` and `laravel/vonage-notification-channel` sit in the
+development dependencies and in `suggest`, and neither is required.
+
+Follow-up owed by the pull request that adopts this: none.
 -->
 
 # Monica Constitution
@@ -261,7 +261,8 @@ an amendment.
     `Console/Commands`, `Contracts`, `Enums`, `Exceptions`, `Helpers`, `Http` (holding
     `Controllers`, `Middleware`, `Requests`, `Resources` and `Responses`), `Jobs`, `Listeners`,
     `Models`, `Notifications` (one class per email the product sends, since there is no mailable),
-    `Providers`, `Rules`, `View/Components` (the layout components) and `ViewModels`.
+    `Policies` (one class per model whose abilities are asked by name), `Providers`, `Rules`,
+    `View/Components` (the layout components) and `ViewModels`.
   - `resources/`: `views` (`app` for the signed in screens, `components` for shared UI, `layouts`
     and `partials` for the shell, `shared` for the screens a private link opens, `vendor` for the
     views a package publishes, which is where the email templates live), `docs` for the API
@@ -391,4 +392,4 @@ test and the translations for the change under review, and to say which of the t
 change had to satisfy. Complexity that steps outside these principles MUST be justified in the pull
 request or removed.
 
-**Version**: 2.2.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-10
+**Version**: 2.3.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-12
