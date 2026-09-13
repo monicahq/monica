@@ -25,6 +25,7 @@ use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactViewModel;
+use App\ViewModels\Vaults\FamilyTreeBlock;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
@@ -999,6 +1000,27 @@ class ContactViewModelTest extends TestCase
         $this->assertTrue($viewModel->onRelationships());
         $this->assertFalse($viewModel->onOverview());
         $this->assertNull($viewModel->selectedPage());
+    }
+
+    #[Test]
+    public function it_hands_the_family_tree_block_the_contact_of_the_page(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, []);
+        $contact = $this->contact($user, $version);
+
+        $viewModel = new ContactViewModel(
+            user: $user,
+            vault: $contact->vault,
+            contact: $contact,
+            selectedPageKey: ContactViewModel::PAGE_RELATIONSHIPS,
+        );
+
+        $tree = $viewModel->familyTree();
+
+        $this->assertInstanceOf(FamilyTreeBlock::class, $tree);
+        $this->assertSame('Michael Scott', $tree->subject()['name']);
+        $this->assertSame($tree, $viewModel->familyTree());
     }
 
     private function contact(User $user, TemplateVersion $version, array $attributes = []): Contact

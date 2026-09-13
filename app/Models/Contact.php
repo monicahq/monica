@@ -560,6 +560,34 @@ class Contact extends Model
     }
 
     /**
+     * Scope the query to the contact's parents: the people a parentage
+     * relationship reaches with the given contact on the child side.
+     *
+     * The inverse of `childrenOf()`, and it reads by the same rules. Status is
+     * not consulted, because ending contact with a parent does not undo the
+     * parentage, and membership is read off the behaviour so that renaming the
+     * type, moving it or withdrawing it changes nobody.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeParentsOf(Builder $query, self $contact): void
+    {
+        $query->where('account_id', $contact->account_id)
+            ->where('vault_id', $contact->vault_id)
+            ->whereIn('id', function (QueryBuilder $rows) use ($contact): void {
+                $rows->select('contact_a_id')
+                    ->from('relationships')
+                    ->whereNull('deleted_at')
+                    ->where('vault_id', $contact->vault_id)
+                    ->where('contact_b_id', $contact->id)
+                    ->whereIn('relationship_type_id', self::typesBehavingAs(
+                        RelationshipBehaviorEnum::GenealogyParentage,
+                        $contact->account_id,
+                    ));
+            });
+    }
+
+    /**
      * Scope the query to whoever the contact is with now: the people a romantic
      * relationship recorded as current reaches, from either side.
      *

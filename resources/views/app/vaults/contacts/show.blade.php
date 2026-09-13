@@ -136,7 +136,10 @@
   @if ($viewModel->onVersionHistory())
     @include('app.vaults.contacts._version-history')
   @elseif ($viewModel->onRelationships())
-    @include('app.vaults.contacts._relationships', ['relationships' => $viewModel->relationships()])
+    @include('app.vaults.contacts._relationships', [
+      'relationships' => $viewModel->relationships(),
+      'tree' => $viewModel->familyTree(),
+    ])
   @elseif ($viewModel->onOverview())
     <div class="grid items-start gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
       <div class="flex flex-col gap-5">

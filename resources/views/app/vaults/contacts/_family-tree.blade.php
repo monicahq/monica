@@ -1,0 +1,92 @@
+{{-- One person's line: who is recorded as their parent, who they are with, and who their children are. --}}
+{{-- @var \App\ViewModels\Vaults\FamilyTreeBlock $tree --}}
+@php
+  $node = fn (array $person, int $size = 36, bool $isSubject = false): array => [
+    'node' => $person,
+    'size' => $size,
+    'isSubject' => $isSubject,
+    'nameOnlyLine' => $tree->nameOnlyLine(),
+  ];
+@endphp
+{{-- The heading row is as tall as a group's, whose Manage chip sets the height, so the first group
+  and the tree start on the same line. --}}
+<div class="mb-3 flex h-8 items-center">
+  <h2 id="family-tree" class="text-section-title text-ink">{{ __('Family tree') }}</h2>
+</div>
+
+<x-panel :flush="true">
+  @if ($tree->holdsNothing())
+    <div class="p-4">
+      <p class="text-sm text-pretty text-muted">{{ $tree->emptyLine() }}</p>
+
+      <div class="mt-3.5">
+        <x-button.secondary :href="$tree->addRelationshipUrl()" data-turbo="true" size="small">
+          {{ __('Add a relationship') }}
+        </x-button.secondary>
+      </div>
+    </div>
+  @else
+    {{-- A tier gathers onto one line: a stub under each node and a bar that stops halfway under the
+      outermost two, so any number of people needs no arithmetic. A tier of one drops the bar. --}}
+    <div
+      tabindex="0"
+      role="group"
+      aria-labelledby="family-tree"
+      class="h-72 overflow-auto bg-card px-4 py-5 focus-ring-inset"
+    >
+      <div class="mx-auto flex w-max min-w-full flex-col items-center">
+        @if ($tree->parents() !== [])
+          <h4 class="sr-only">{{ __('Parents') }}</h4>
+
+          <ul class="flex list-none justify-center gap-2">
+            @foreach ($tree->parents() as $parent)
+              <li class="relative flex flex-col items-center pb-5 before:absolute before:bottom-0 before:left-1/2 before:h-5 before:w-px before:-translate-x-1/2 before:bg-hairline-strong before:content-[''] after:absolute after:inset-x-0 after:bottom-5 after:h-px after:bg-hairline-strong after:content-[''] first:after:left-1/2 last:after:right-1/2 only:after:hidden">
+                @include('app.vaults.contacts._family-tree-node', $node($parent))
+              </li>
+            @endforeach
+          </ul>
+
+          <span class="h-5 w-px bg-hairline-strong" aria-hidden="true"></span>
+        @endif
+
+        <div class="grid w-full grid-cols-[1fr_auto_1fr] items-start">
+          <span></span>
+
+          @include('app.vaults.contacts._family-tree-node', $node($tree->subject(), 36, true))
+
+          @if ($tree->currentPartners() === [])
+            <span></span>
+          @else
+            <div>
+              <h4 class="sr-only">{{ __('Current partners') }}</h4>
+
+              <ul class="flex list-none justify-start gap-6">
+                @foreach ($tree->currentPartners() as $partner)
+                  <li class="relative before:absolute before:top-4.5 before:-left-6 before:h-px before:w-6 before:bg-hairline-strong before:content-['']">
+                    @include('app.vaults.contacts._family-tree-node', $node($partner))
+                  </li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
+        </div>
+
+        @if ($tree->children() !== [])
+          <span class="h-5 w-px bg-hairline-strong" aria-hidden="true"></span>
+
+          <h4 class="sr-only">{{ __('Children') }}</h4>
+
+          <ul class="flex list-none justify-center gap-2">
+            @foreach ($tree->children() as $child)
+              <li class="relative flex flex-col items-center pt-5 before:absolute before:top-0 before:left-1/2 before:h-5 before:w-px before:-translate-x-1/2 before:bg-hairline-strong before:content-[''] after:absolute after:inset-x-0 after:top-0 after:h-px after:bg-hairline-strong after:content-[''] first:after:left-1/2 last:after:right-1/2 only:after:hidden">
+                @include('app.vaults.contacts._family-tree-node', $node($child, 32))
+              </li>
+            @endforeach
+          </ul>
+        @endif
+      </div>
+    </div>
+  @endif
+</x-panel>
+
+<p class="mt-2.5 px-0.5 text-xs text-pretty text-muted">{{ $tree->scopeLine() }}</p>

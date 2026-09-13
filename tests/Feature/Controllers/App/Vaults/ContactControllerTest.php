@@ -948,6 +948,27 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_does_not_find_the_relationships_page_of_another_account_or_another_vault(): void
+    {
+        $user = User::factory()->create();
+        $stranger = User::factory()->create();
+        $theirs = $this->vaultReadyForContacts($stranger);
+        $michael = $this->contact($theirs, 'Michael', 'Scott');
+
+        $mine = $this->vaultReadyForContacts($user);
+        $jim = $this->contact($mine, 'Jim', 'Halpert');
+        $elsewhere = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $theirs, 'contact' => $michael, 'page' => 'relationships']))
+            ->assertNotFound();
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $elsewhere, 'contact' => $jim, 'page' => 'relationships']))
+            ->assertNotFound();
+    }
+
+    #[Test]
     public function the_record_offers_its_version_history_as_a_tab(): void
     {
         $user = User::factory()->create();

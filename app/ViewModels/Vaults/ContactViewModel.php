@@ -799,6 +799,14 @@ class ContactViewModel
         ));
     }
 
+    public function familyTree(): FamilyTreeBlock
+    {
+        return once(fn (): FamilyTreeBlock => new FamilyTreeBlock(
+            vault: $this->vault,
+            contact: $this->contact,
+        ));
+    }
+
     private function urlTo(?string $pageKey): string
     {
         return route('contacts.show', array_filter([
