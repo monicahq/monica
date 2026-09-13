@@ -18,15 +18,6 @@
     <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="contacts" />
   </x-slot:sidebar>
 
-  <a
-    href="{{ $viewModel->peopleUrl() }}"
-    data-turbo="true"
-    class="flex w-fit items-center gap-1.75 text-sm text-muted transition-colors duration-(--duration-fast) ease-out hover:text-ink"
-  >
-    <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-    {{ __('All people') }}
-  </a>
-
   <header class="flex flex-wrap items-start gap-5.5">
     <div
       id="contact-favourite"

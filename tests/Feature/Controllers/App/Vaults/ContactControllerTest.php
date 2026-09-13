@@ -668,6 +668,21 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function the_record_offers_the_way_back_to_the_list_in_the_breadcrumb_and_the_sidebar_only(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $page = $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->getContent();
+
+        $this->assertSame(2, substr_count($page, 'href="'.route('contacts.index', $vault).'"'));
+    }
+
+    #[Test]
     public function the_edit_screen_carries_the_name_and_the_way_out(): void
     {
         $user = User::factory()->create();
