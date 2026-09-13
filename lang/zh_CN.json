@@ -682,7 +682,6 @@
     "Euro (EUR)": "欧元（EUR）",
     "Every action an administrator has taken on this account is in the record.": "管理员对此账户执行的所有操作都有记录。",
     "Every action that touched this account, newest first, with where it came from.": "与此账户相关的所有操作，按时间倒序排列，并附上来源。",
-    "Every block is read only until you edit it. Editing one leaves the rest of the page alone, and saving writes only that block.": "在你编辑之前，每个区块都是只读的。编辑其中一个不会影响页面其余部分，保存时也只写入该区块。",
     "Every change to your account is written down here, with the time it happened and the address it came from.": "对账户的每一次更改都会记录在这里，包括发生时间和来源地址。",
     "Every channel is switched off, so this reminder will reach nobody. Change that in your notification settings.": "所有渠道均已关闭，因此此提醒不会送达任何人。请在通知设置中更改。",
     "Every contact added to this vault begins with this template. The ones already here keep the version they were written on.": "添加到此保险库的所有联系人都从此模板开始。已有的联系人保持创建时的版本。",

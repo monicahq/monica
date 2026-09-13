@@ -682,7 +682,6 @@
     "Euro (EUR)": "유로(EUR)",
     "Every action an administrator has taken on this account is in the record.": "관리자가 이 계정에 대해 한 모든 일이 기록에 남아 있습니다.",
     "Every action that touched this account, newest first, with where it came from.": "이 계정에 영향을 준 모든 동작을 최신순으로, 어디에서 왔는지와 함께 보여 줍니다.",
-    "Every block is read only until you edit it. Editing one leaves the rest of the page alone, and saving writes only that block.": "각 블록은 편집하기 전까지 읽기 전용입니다. 하나를 편집해도 페이지의 나머지는 그대로이며, 저장하면 그 블록만 기록됩니다.",
     "Every change to your account is written down here, with the time it happened and the address it came from.": "계정에 일어난 모든 변경이 일어난 시각과 접속한 주소와 함께 여기에 기록됩니다.",
     "Every channel is switched off, so this reminder will reach nobody. Change that in your notification settings.": "전달 방법이 모두 꺼져 있어 이 리마인더는 아무에게도 전달되지 않습니다. 알림 설정에서 바꾸세요.",
     "Every contact added to this vault begins with this template. The ones already here keep the version they were written on.": "이 보관함에 추가되는 모든 연락처는 이 템플릿으로 시작합니다. 이미 있는 연락처는 작성될 때의 버전을 그대로 유지합니다.",

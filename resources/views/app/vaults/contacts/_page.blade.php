@@ -20,10 +20,6 @@
     </x-empty-state>
   </x-panel>
 @else
-  <p class="max-w-[66ch] px-0.5 text-sm text-pretty text-muted">
-    {{ __('Every block is read only until you edit it. Editing one leaves the rest of the page alone, and saving writes only that block.') }}
-  </p>
-
   <div class="grid items-start gap-5 lg:grid-cols-2">
     @foreach ($sections as $section)
       @include('app.vaults.contacts._section', ['section' => $section])

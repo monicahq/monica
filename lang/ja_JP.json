@@ -682,7 +682,6 @@
     "Euro (EUR)": "ユーロ（EUR）",
     "Every action an administrator has taken on this account is in the record.": "このアカウントに対して管理者が行った操作はすべて記録されています。",
     "Every action that touched this account, newest first, with where it came from.": "このアカウントに関わったすべての操作を、新しい順に、送信元とともに表示します。",
-    "Every block is read only until you edit it. Editing one leaves the rest of the page alone, and saving writes only that block.": "編集するまで、各ブロックは読み取り専用です。1つを編集してもページの他の部分は影響を受けず、保存されるのはそのブロックだけです。",
     "Every change to your account is written down here, with the time it happened and the address it came from.": "アカウントへの変更はすべて、発生時刻と送信元アドレスとともにここに記録されます。",
     "Every channel is switched off, so this reminder will reach nobody. Change that in your notification settings.": "すべてのチャネルが無効なため、このリマインダーは誰にも届きません。通知設定で変更してください。",
     "Every contact added to this vault begins with this template. The ones already here keep the version they were written on.": "この保管庫に追加される連絡先はすべてこのテンプレートで始まります。すでにある連絡先は作成時のバージョンのままです。",
