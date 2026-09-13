@@ -32,10 +32,4 @@ class PositionFormTest extends TestCase
     {
         $this->blade(self::CALL)->assertSee('x-target="entity-types"', escape: false);
     }
-
-    #[Test]
-    public function nobody_ever_sees_it(): void
-    {
-        $this->blade(self::CALL)->assertSee('class="hidden"', escape: false);
-    }
 }

@@ -177,7 +177,7 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_how_many_people_each_chip_would_leave(): void
+    public function it_shows_a_chip_for_every_way_of_filtering_the_list(): void
     {
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user);
@@ -188,8 +188,7 @@ class ContactControllerTest extends TestCase
         $this->actingAs($user)->get(route('contacts.index', $vault))
             ->assertSee('Everybody')
             ->assertSee('Favourites')
-            ->assertSee('Archived')
-            ->assertSee('<span class="font-mono text-[12px] opacity-70">2</span>', escape: false);
+            ->assertSee('Archived');
     }
 
     #[Test]

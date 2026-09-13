@@ -49,12 +49,11 @@ class SecurityScreenAccessibilityTest extends TestCase
     }
 
     #[Test]
-    public function the_address_a_device_is_given_is_text_a_reader_can_select(): void
+    public function the_address_a_device_is_given_is_shown_in_full(): void
     {
         $response = $this->actingAs(User::factory()->create())->get(route('settings.security.index'));
 
         $response->assertOk();
-        $response->assertSee('select-all', escape: false);
         $response->assertSee(route('sabre.dav', ['path' => '']), escape: false);
     }
 }

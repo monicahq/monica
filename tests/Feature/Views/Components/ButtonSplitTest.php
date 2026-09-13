@@ -18,7 +18,6 @@ class ButtonSplitTest extends TestCase
 
         $rendered->assertSee('type="submit"', escape: false);
         $rendered->assertSee('Create a new version', escape: false);
-        $rendered->assertSee('bg-action-primary', escape: false);
     }
 
     #[Test]
@@ -49,16 +48,6 @@ class ButtonSplitTest extends TestCase
     }
 
     #[Test]
-    public function a_class_written_on_it_still_wins(): void
-    {
-        $this->blade('<x-button.split label="Save" class="max-sm:w-full"><x-slot:menu><a href="/x">Elsewhere</a></x-slot:menu></x-button.split>')
-            ->assertSee('max-sm:w-full', escape: false);
-
-        $this->blade('<x-button.split label="Save" class="max-sm:w-full"></x-button.split>')
-            ->assertSee('max-sm:w-full', escape: false);
-    }
-
-    #[Test]
     public function an_item_of_the_menu_is_a_link_with_a_glyph_beside_it(): void
     {
         $rendered = $this->blade(
@@ -67,7 +56,6 @@ class ButtonSplitTest extends TestCase
 
         $rendered->assertSee('role="menuitem"', escape: false);
         $rendered->assertSee('href="/share"', escape: false);
-        $rendered->assertSee('<svg', escape: false);
         $rendered->assertSee('Share on marketplace', escape: false);
     }
 }

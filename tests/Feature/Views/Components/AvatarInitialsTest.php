@@ -33,20 +33,6 @@ class AvatarInitialsTest extends TestCase
     }
 
     #[Test]
-    public function it_picks_its_tint_from_the_name(): void
-    {
-        $tints = collect(['Pam Beesly', 'Jim Halpert', 'Dwight Schrute', 'Michael Scott', 'Angela Martin', 'Kevin Malone', 'Oscar Martinez'])
-            ->map(fn (string $name): string => preg_match(
-                '/(bg-\[#[0-9a-f]{6}\]\/12)/',
-                $this->blade('<x-avatar-initials :name="$name" />', ['name' => $name])->__toString(),
-                $matches,
-            ) === 1 ? $matches[1] : '');
-
-        $this->assertCount(7, $tints->filter());
-        $this->assertGreaterThan(1, $tints->unique()->count());
-    }
-
-    #[Test]
     public function it_is_hidden_from_screen_readers(): void
     {
         $this->blade('<x-avatar-initials name="Pam Beesly" />')->assertSee('aria-hidden="true"', escape: false);

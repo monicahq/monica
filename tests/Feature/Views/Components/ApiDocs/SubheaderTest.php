@@ -18,7 +18,7 @@ class SubheaderTest extends TestCase
     #[Test]
     public function the_search_box_carries_a_real_label(): void
     {
-        $this->blade('<x-api-docs.subheader />')->assertSee('sr-only', escape: false);
+        $this->blade('<x-api-docs.subheader />')->assertSee('Search endpoints');
     }
 
     #[Test]

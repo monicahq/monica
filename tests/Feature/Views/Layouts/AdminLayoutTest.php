@@ -24,15 +24,6 @@ class AdminLayoutTest extends TestCase
     }
 
     #[Test]
-    public function it_inverts_its_bar_rather_than_drawing_it_the_colour_the_ordinary_bars_are(): void
-    {
-        $this->actingAs($this->administrator())
-            ->blade('<x-admin-layout>Anything</x-admin-layout>')
-            ->assertSee('bg-primary text-on-primary', escape: false)
-            ->assertDontSee('bg-topbar', escape: false);
-    }
-
-    #[Test]
     public function it_offers_no_way_into_a_vault(): void
     {
         $this->actingAs($this->administrator())

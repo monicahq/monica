@@ -101,13 +101,4 @@ class EndpointTest extends TestCase
             ->assertSee('No content.')
             ->assertSee('204');
     }
-
-    #[Test]
-    public function it_colours_a_failing_status_as_an_error(): void
-    {
-        $section = $this->section(['responseStatus' => 422, 'response' => ['message' => 'Nope.']]);
-
-        $this->blade('<x-api-docs.endpoint :section="$section" />', ['section' => $section])
-            ->assertSee('text-error', escape: false);
-    }
 }

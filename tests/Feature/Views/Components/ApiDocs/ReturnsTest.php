@@ -61,17 +61,6 @@ class ReturnsTest extends TestCase
     }
 
     #[Test]
-    public function it_indents_a_field_by_how_deep_its_path_goes(): void
-    {
-        $response = $this->blade('<x-api-docs.returns :section="$section" />', ['section' => $this->section()]);
-
-        $response->assertSee('ml-0', escape: false);
-        $response->assertSee('ml-4', escape: false);
-        $response->assertSee('ml-8', escape: false);
-        $response->assertSee('ml-12', escape: false);
-    }
-
-    #[Test]
     public function it_shows_the_summary_and_no_rows_for_an_endpoint_that_answers_with_nothing(): void
     {
         $response = $this->blade('<x-api-docs.returns :section="$section" />', [
@@ -83,7 +72,6 @@ class ReturnsTest extends TestCase
 
         $response->assertSee('Returns');
         $response->assertSee('Nothing at all.');
-        $response->assertDontSee('ml-0', escape: false);
     }
 
     #[Test]
@@ -97,14 +85,12 @@ class ReturnsTest extends TestCase
     }
 
     #[Test]
-    public function it_tells_a_type_apart_by_a_word_rather_than_by_a_colour(): void
+    public function it_names_every_type_in_words(): void
     {
         $response = $this->blade('<x-api-docs.returns :section="$section" />', ['section' => $this->section()]);
 
         $response->assertSee('array');
         $response->assertSee('object');
         $response->assertSee('integer');
-        $response->assertDontSee('text-error', escape: false);
-        $response->assertDontSee('text-success', escape: false);
     }
 }

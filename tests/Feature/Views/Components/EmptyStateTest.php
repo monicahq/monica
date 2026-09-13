@@ -16,7 +16,6 @@ class EmptyStateTest extends TestCase
             '<x-empty-state :title="__(\'Nothing has happened yet\')">It is written down here as soon as it does.</x-empty-state>',
         );
 
-        $rendered->assertSee('min-h-60', escape: false);
         $rendered->assertSee('Nothing has happened yet', escape: false);
         $rendered->assertSee('It is written down here as soon as it does.', escape: false);
     }
@@ -26,12 +25,5 @@ class EmptyStateTest extends TestCase
     {
         $this->blade('<x-empty-state>Nothing yet.<x-slot:action><button type="button">Make one</button></x-slot:action></x-empty-state>')
             ->assertSee('Make one', escape: false);
-    }
-
-    #[Test]
-    public function it_draws_no_plate_when_it_is_given_no_glyph(): void
-    {
-        $this->blade('<x-empty-state>Nothing yet.</x-empty-state>')
-            ->assertDontSee('-rotate-4', escape: false);
     }
 }

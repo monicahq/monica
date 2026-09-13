@@ -17,8 +17,7 @@ class InputTest extends TestCase
             ['error' => ['That address is already taken.']],
         );
 
-        $rendered->assertSee('<div class="flex flex-col gap-1.5">', escape: false);
-        $rendered->assertSee('<label class="flex items-baseline gap-1.5 text-label text-ink" for="email">', escape: false);
+        $rendered->assertSee('for="email"', escape: false);
         $rendered->assertSee('aria-describedby="email-help email-error"', escape: false);
         $rendered->assertSee('aria-invalid="true"', escape: false);
         $rendered->assertSee('id="email-help"', escape: false);
@@ -34,21 +33,10 @@ class InputTest extends TestCase
     }
 
     #[Test]
-    public function it_is_drawn_small_only_when_it_is_asked_to_be(): void
-    {
-        $this->blade('<x-input id="q" />')
-            ->assertSee('h-9 text-[16px] sm:text-base', escape: false);
-
-        $this->blade('<x-input id="q" size="small" />')
-            ->assertSee('h-8 text-[16px] sm:text-sm', escape: false);
-    }
-
-    #[Test]
     public function it_says_which_fields_are_optional(): void
     {
         $this->blade('<x-input id="nickname" label="Nickname" :optional="true" />')
-            ->assertSee('<span class="text-xs text-muted">optional</span>', escape: false)
-            ->assertSee('optional', escape: false);
+            ->assertSee('optional');
     }
 
     #[Test]
@@ -56,29 +44,24 @@ class InputTest extends TestCase
     {
         $rendered = $this->blade('<x-textarea id="notes" label="Notes" value="Sold paper." />');
 
-        $rendered->assertSee('min-h-24 resize-y', escape: false);
-        $rendered->assertSee('<label class="flex items-baseline gap-1.5 text-label text-ink" for="notes">', escape: false);
+        $rendered->assertSee('for="notes"', escape: false);
         $rendered->assertSee('Sold paper.', escape: false);
     }
 
     #[Test]
-    public function a_file_field_drops_the_well_it_has_no_text_in(): void
+    public function a_file_field_takes_the_kinds_of_file_it_is_given(): void
     {
         $this->blade('<x-file-input id="photo" accept="image/png" />')
-            ->assertSee('file:border-hairline file:bg-canvas', escape: false)
             ->assertSee('type="file"', escape: false)
             ->assertSee('accept="image/png"', escape: false);
     }
 
     #[Test]
-    public function an_error_carries_a_glyph_as_well_as_the_colour(): void
+    public function an_error_says_every_message_it_is_given(): void
     {
-        $rendered = $this->blade('<x-error :messages="$messages" />', ['messages' => ['First things first.', 'Then this.']]);
-
-        $rendered->assertSee('<li class="flex items-start gap-1.5 text-xs text-error">', escape: false);
-        $rendered->assertSee('First things first.', escape: false);
-        $rendered->assertSee('Then this.', escape: false);
-        $this->assertSame(2, substr_count($rendered->__toString(), '<svg'));
+        $this->blade('<x-error :messages="$messages" />', ['messages' => ['First things first.', 'Then this.']])
+            ->assertSee('First things first.')
+            ->assertSee('Then this.');
     }
 
     #[Test]

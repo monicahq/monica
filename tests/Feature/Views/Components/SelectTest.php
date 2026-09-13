@@ -18,7 +18,7 @@ class SelectTest extends TestCase
             .'</x-select>',
         );
 
-        $rendered->assertSee('<label class="flex items-baseline gap-1.5 text-label text-ink" for="branch">', escape: false);
+        $rendered->assertSee('for="branch"', escape: false);
         $rendered->assertSee('aria-describedby="branch-help branch-error"', escape: false);
         $rendered->assertSee('aria-invalid="true"', escape: false);
         $rendered->assertSee('id="branch-help"', escape: false);
@@ -35,34 +35,6 @@ class SelectTest extends TestCase
 
         $this->blade('<x-select id="branch-2" name="branch"><option value="x">X</option></x-select>')
             ->assertSee('name="branch"', escape: false);
-    }
-
-    #[Test]
-    public function it_draws_its_own_arrow_rather_than_the_browsers(): void
-    {
-        $rendered = $this->blade('<x-select id="branch"><option value="x">X</option></x-select>');
-
-        $rendered->assertSee('appearance-none', escape: false);
-        $rendered->assertSee('pointer-events-none absolute top-1/2 right-3', escape: false);
-    }
-
-    #[Test]
-    public function it_is_drawn_small_only_when_it_is_asked_to_be(): void
-    {
-        $this->blade('<x-select id="branch"><option value="x">X</option></x-select>')
-            ->assertSee('h-9 text-[16px] sm:text-base', escape: false);
-
-        $this->blade('<x-select id="branch" size="small"><option value="x">X</option></x-select>')
-            ->assertSee('h-8 text-[16px] sm:text-sm', escape: false);
-    }
-
-    #[Test]
-    public function a_class_written_on_it_narrows_the_field_rather_than_the_control(): void
-    {
-        $rendered = $this->blade('<x-select id="branch" class="w-38"><option value="x">X</option></x-select>');
-
-        $rendered->assertSee('<div class="flex flex-col gap-1.5 w-38">', escape: false);
-        $rendered->assertSee('w-full appearance-none', escape: false);
     }
 
     #[Test]

@@ -55,20 +55,6 @@ class IconButtonTest extends TestCase
     }
 
     #[Test]
-    public function it_pins_its_bubble_to_the_right_edge_when_it_sits_at_one(): void
-    {
-        $this->blade('<x-icon-button icon="clock" label="Remind me later" align="right" />')
-            ->assertSee('right-0', escape: false);
-    }
-
-    #[Test]
-    public function it_centres_its_bubble_by_default(): void
-    {
-        $this->blade('<x-icon-button icon="clock" label="Remind me later" />')
-            ->assertSee('-translate-x-1/2', escape: false);
-    }
-
-    #[Test]
     public function it_passes_the_attributes_it_is_given_through(): void
     {
         $this->blade('<x-icon-button href="/somewhere" icon="reminder" label="Open this reminder" data-turbo="true" />')

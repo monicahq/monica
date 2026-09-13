@@ -24,29 +24,6 @@ class LanguagePickerTest extends TestCase
     }
 
     #[Test]
-    public function it_draws_each_flag_as_a_background_rather_than_an_image(): void
-    {
-        $rendered = $this->blade(
-            '<x-language-picker :locales="$locales" :current="$current" />',
-            ['locales' => $this->locales(), 'current' => 'en'],
-        );
-
-        $rendered->assertSee('style="background: linear-gradient(to right, #002395 0 33%, #fff 33% 66%, #ed2939 66%);"', escape: false);
-        $rendered->assertDontSee('<img', escape: false);
-    }
-
-    #[Test]
-    public function it_scrolls_the_list_rather_than_running_off_the_screen(): void
-    {
-        $rendered = $this->blade(
-            '<x-language-picker :locales="$locales" :current="$current" />',
-            ['locales' => $this->manyLocales(), 'current' => 'en'],
-        );
-
-        $rendered->assertSee('max-h-72 overflow-y-auto overscroll-contain', escape: false);
-    }
-
-    #[Test]
     public function it_falls_back_to_the_first_language_when_the_one_in_use_is_not_offered(): void
     {
         $rendered = $this->blade(

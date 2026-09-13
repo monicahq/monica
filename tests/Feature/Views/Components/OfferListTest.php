@@ -14,11 +14,10 @@ class OfferListTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_draws_one_column_per_offer(): void
+    public function it_names_every_offer(): void
     {
         $rendered = $this->blade('<x-offer-list :offers="$offers" />', ['offers' => $this->offers()]);
 
-        $rendered->assertSee('md:grid-cols-3', escape: false);
         $rendered->assertSee('Monthly subscription', escape: false);
         $rendered->assertSee('Yearly subscription', escape: false);
         $rendered->assertSee('Lifetime access', escape: false);
@@ -63,22 +62,11 @@ class OfferListTest extends TestCase
     }
 
     #[Test]
-    public function it_is_a_list_of_headings_that_a_reader_can_walk(): void
-    {
-        $rendered = $this->blade('<x-offer-list :offers="$offers" />', ['offers' => $this->offers()]);
-
-        $rendered->assertSee('<ul', escape: false);
-        $rendered->assertSee('<li', escape: false);
-        $rendered->assertSee('<h3', escape: false);
-    }
-
-    #[Test]
-    public function every_offer_is_taken_up_with_a_real_button_that_shows_its_focus(): void
+    public function every_offer_is_taken_up_with_a_real_button(): void
     {
         $rendered = $this->blade('<x-offer-list :offers="$offers" />', ['offers' => $this->offers()]);
 
         $rendered->assertSee('<button', escape: false);
-        $rendered->assertSee('focus-ring', escape: false);
     }
 
     #[Test]

@@ -62,7 +62,6 @@ class TemplateBuilderControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
 
         $response->assertStatus(200);
-        $response->assertSee('cursor-grab', escape: false);
         $response->assertSee('data-row-id="'.$field->id.'"', escape: false);
         $response->assertSee('data-position-form="'.$field->id.'"', escape: false);
         $response->assertSee(route('settings.fieldPosition.update', [$template, $row->id, $field->id]), escape: false);

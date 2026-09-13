@@ -79,17 +79,26 @@
 
 ## View tests (Feature)
 
-- Blade components are tested, one file per component, under `tests/Feature/Views/Components`, and
-  the shell under `tests/Feature/Views/Layouts`.
-- Render with `$this->blade('<x-badge tone="danger">Bounced</x-badge>')` and assert the classes that
-  carry the meaning and the copy, with `assertSee(..., escape: false)`.
+A view test asserts what a screen does, never how it looks. How it looks is reviewed by looking at
+it, and a test that describes the look fails on the next visual change while the screen is still
+right.
+
+- You MUST NOT assert a class string, a bare tag, SVG path data, a CSS variable, a breakpoint or any
+  other property of the drawing. There is no exception for a class that "carries the meaning": a
+  tint, a size, a shadow, a gutter and a stacking rule are all the look.
+- A component with nothing to assert but its look gets no test file. Not every component has one.
+- What a view test MAY assert: the copy the reader sees, a route or a form `action`, a field `name`
+  or `value`, the accessibility contract (`aria-*`, `role`, `for`/`id`), the Alpine hooks that bind
+  the markup to a JavaScript component (`x-data="someComponent("`, `x-target`, `x-merge`), whether a
+  whole block is present at all, and which element a component resolves to when that changes what it
+  does (`<a>` against `<button>`, `<img>` against a link).
+- Blade components that have such a contract are tested one file per component, under
+  `tests/Feature/Views/Components`, and the shell under `tests/Feature/Views/Layouts`. Render with
+  `$this->blade('<x-badge tone="danger">Bounced</x-badge>')`.
 - Put a named slot **after** the default content in the string you pass to `$this->blade()`, the way
   `EmptyStateTest` and `ButtonSplitTest` do. A slot written first compiles wrongly there and leaks
   `@endslot` into the output, which a `.blade.php` file does not do, so the test fails on a component
   that works.
-- Assert what a component does, not the markup it happens to emit today. A test naming a literal class
-  string or a literal piece of Alpine breaks on the next refactoring while the screen is still right,
-  and rewriting it then is the only way out.
-- Guard the rule that a variant never names a property its base already names with a count rather than
-  an `assertSee`, since the failure is two classes being present rather than one being absent. See
-  `CaptionTest::no_tone_carries_two_text_colours`.
+- Prefer comparing two renderings to naming what is inside one. `IconTest` asserts that an unknown
+  glyph name renders the same as the default one and that every name in the catalogue renders
+  something else, and so says what the component does without naming a single path.

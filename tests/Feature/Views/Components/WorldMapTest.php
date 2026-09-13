@@ -28,26 +28,6 @@ class WorldMapTest extends TestCase
     }
 
     #[Test]
-    public function it_paints_from_the_palette_rather_than_from_literal_colours(): void
-    {
-        $view = $this->blade('<x-world-map />');
-
-        $view->assertSee('fill="var(--map-water)"', escape: false);
-        $view->assertSee('fill="var(--map-land)"', escape: false);
-        $view->assertSee('stroke="var(--map-graticule)"', escape: false);
-        $view->assertSee('stroke="var(--map-coast)"', escape: false);
-    }
-
-    #[Test]
-    public function it_names_no_colour_of_its_own(): void
-    {
-        $render = $this->blade('<x-world-map />')->__toString();
-
-        $this->assertDoesNotMatchRegularExpression('/(fill|stroke)="#/', $render);
-        $this->assertDoesNotMatchRegularExpression('/(fill|stroke)="rgb/', $render);
-    }
-
-    #[Test]
     public function it_rules_an_hour_of_the_world_every_fifteen_degrees(): void
     {
         $render = $this->blade('<x-world-map />')->__toString();

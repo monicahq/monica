@@ -36,19 +36,6 @@ class VaultSettingsControllerTest extends TestCase
     }
 
     #[Test]
-    public function the_half_of_the_screen_that_ends_the_vault_is_drawn_as_such(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
-
-        $response = $this->actingAs($user)->get(route('vaults.settings.index', $vault))->assertStatus(200);
-
-        $response->assertSee('border-error-edge bg-error-tint', escape: false);
-        $response->assertSee('<h2 class="text-card-title text-error">Delete this vault</h2>', escape: false);
-        $response->assertSee('bg-error text-white', escape: false);
-    }
-
-    #[Test]
     public function it_counts_the_contacts_a_deletion_would_take(): void
     {
         $user = User::factory()->create();

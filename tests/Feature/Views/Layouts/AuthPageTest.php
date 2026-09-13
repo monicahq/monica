@@ -20,7 +20,6 @@ class AuthPageTest extends TestCase
     {
         $this->blade('<x-auth-page title="Welcome back">The card</x-auth-page>')
             ->assertSee('<title>Welcome back</title>', escape: false)
-            ->assertSee('text-2xl font-semibold tracking-tight text-ink', escape: false)
             ->assertSee('Welcome back')
             ->assertSee('The card');
     }
@@ -29,7 +28,7 @@ class AuthPageTest extends TestCase
     public function the_line_under_the_title_is_left_out_when_there_is_none(): void
     {
         $this->blade('<x-auth-page title="Welcome back">The card</x-auth-page>')
-            ->assertDontSee('text-sm text-body', escape: false);
+            ->assertDontSee('Sign in to carry on.');
 
         $this->blade('<x-auth-page title="Welcome back" description="Sign in to carry on.">The card</x-auth-page>')
             ->assertSee('Sign in to carry on.');

@@ -14,9 +14,7 @@ class TooltipTest extends TestCase
     public function it_says_the_sentence_the_mark_stands_for(): void
     {
         $this->render()
-            ->assertSee('Every year on 3 February', escape: false)
-            ->assertSee('bg-primary', escape: false)
-            ->assertSee('text-on-primary', escape: false);
+            ->assertSee('Every year on 3 February', escape: false);
     }
 
     #[Test]
@@ -36,12 +34,6 @@ class TooltipTest extends TestCase
             ->assertSee('role="img"', escape: false)
             ->assertSee('aria-label="Every year on 3 February"', escape: false)
             ->assertSee('aria-hidden="true"', escape: false);
-    }
-
-    #[Test]
-    public function it_draws_what_it_was_given_to_explain(): void
-    {
-        $this->render()->assertSee('<svg', escape: false);
     }
 
     private function render(): TestView

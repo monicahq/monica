@@ -172,54 +172,6 @@ class SidebarTest extends TestCase
     }
 
     #[Test]
-    public function both_columns_are_a_tinted_panel_beside_the_page_rather_than_dark_chrome(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        foreach ([
-            ['<x-vault.sidebar :user="$user" :vault="$vault" />', ['user' => $user, 'vault' => $vault]],
-            ['<x-settings.sidebar :user="$user" />', ['user' => $user]],
-        ] as [$template, $data]) {
-            $rendered = $this->actingAs($user)->blade($template, $data);
-
-            $rendered->assertSee('border-r border-hairline bg-card', escape: false);
-            $rendered->assertSee('text-body hover:bg-hover hover:text-ink', escape: false);
-            $rendered->assertDontSee('bg-shell', escape: false);
-        }
-    }
-
-    #[Test]
-    public function both_columns_sit_in_the_flow_and_fill_their_cell_on_a_wide_screen(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        foreach ([
-            ['<x-vault.sidebar :user="$user" :vault="$vault" />', ['user' => $user, 'vault' => $vault]],
-            ['<x-settings.sidebar :user="$user" />', ['user' => $user]],
-        ] as [$template, $data]) {
-            $rendered = $this->actingAs($user)->blade($template, $data);
-
-            $rendered->assertSee('lg:static lg:h-full', escape: false);
-            $rendered->assertSee('fixed inset-y-0 left-0', escape: false);
-            $rendered->assertDontSee('lg:h-screen', escape: false);
-        }
-    }
-
-    #[Test]
-    public function the_destination_you_are_on_is_a_raised_card_rather_than_a_filled_pill(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->blade(
-            '<x-vault.sidebar :user="$user" :vault="$vault" current="contacts" />',
-            ['user' => $user, 'vault' => $vault],
-        )->assertSee('bg-canvas font-medium text-ink shadow-nav-active', escape: false);
-    }
-
-    #[Test]
     public function both_columns_are_the_drawer_the_bar_opens(): void
     {
         $user = User::factory()->create();
@@ -232,7 +184,6 @@ class SidebarTest extends TestCase
             $rendered = $this->actingAs($user)->blade($template, $data);
 
             $rendered->assertSee('id="main-nav"', escape: false);
-            $rendered->assertSee('max-lg:-translate-x-full', escape: false);
             $rendered->assertSee('Close the menu');
         }
     }
@@ -255,21 +206,6 @@ class SidebarTest extends TestCase
         $rendered->assertSee(route('reminders.index', $vault), escape: false);
         $rendered->assertSee('Reminders');
         $rendered->assertSee('2');
-    }
-
-    #[Test]
-    public function the_vault_column_counts_nothing_when_no_reminder_is_coming(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
-
-        $rendered = $this->actingAs($user)->blade(
-            '<x-vault.sidebar :user="$user" :vault="$vault" current="reminders" />',
-            ['user' => $user, 'vault' => $vault],
-        );
-
-        $rendered->assertSee(route('reminders.index', $vault), escape: false);
-        $rendered->assertDontSee('ml-auto text-xs text-muted', escape: false);
     }
 
     private function deadline(Reminder $rule, string $when): ReminderOccurrence

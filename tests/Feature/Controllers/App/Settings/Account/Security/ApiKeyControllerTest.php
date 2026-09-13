@@ -56,7 +56,7 @@ class ApiKeyControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_prints_the_new_key_in_a_box_a_click_selects_whole(): void
+    public function it_prints_the_new_key_once_it_is_made(): void
     {
         $user = User::factory()->create();
 
@@ -64,8 +64,7 @@ class ApiKeyControllerTest extends TestCase
             ->withSession(['apiKey' => 'dunder-mifflin-infinity'])
             ->get(route('settings.security.index'))
             ->assertStatus(200)
-            ->assertSee('select-all', escape: false)
-            ->assertSee('>dunder-mifflin-infinity</p>', escape: false);
+            ->assertSee('dunder-mifflin-infinity');
     }
 
     #[Test]

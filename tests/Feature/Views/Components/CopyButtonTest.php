@@ -40,16 +40,6 @@ class CopyButtonTest extends TestCase
     }
 
     #[Test]
-    public function it_is_the_primary_button_unless_it_is_told_otherwise(): void
-    {
-        $this->blade(self::CALL)
-            ->assertSee('bg-action-primary', escape: false);
-
-        $this->blade('<x-copy-button text="x" label="Copy" failure="No." variant="secondary" />')
-            ->assertSee('border-hairline-strong bg-canvas text-ink', escape: false);
-    }
-
-    #[Test]
     public function it_does_not_submit_the_form_it_may_be_standing_in(): void
     {
         $this->blade(self::CALL)->assertSee('type="button"', escape: false);

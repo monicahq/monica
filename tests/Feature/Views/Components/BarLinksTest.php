@@ -44,29 +44,12 @@ class BarLinksTest extends TestCase
     }
 
     #[Test]
-    public function it_is_navigation_rather_than_an_action(): void
+    public function every_link_says_its_name_to_a_screen_reader(): void
     {
         $this->blade('<x-bar-links />')
-            ->assertSee('text-sm text-body', escape: false)
-            ->assertSee('hover:bg-hover hover:text-ink', escape: false)
-            ->assertSee('focus-ring', escape: false);
-    }
-
-    #[Test]
-    public function it_keeps_the_glyphs_and_drops_the_labels_on_a_narrow_window(): void
-    {
-        $this->blade('<x-bar-links />')
-            ->assertSee('hidden min-[900px]:inline', escape: false)
             ->assertSee('aria-label="Docs"', escape: false)
             ->assertSee('aria-label="Marketplace"', escape: false)
             ->assertSee('aria-label="Account settings"', escape: false);
-    }
-
-    #[Test]
-    public function it_is_parted_from_the_theme_switch_and_the_avatar_by_a_hairline(): void
-    {
-        $this->blade('<x-bar-links />')
-            ->assertSee('h-5.5 w-px bg-hairline-strong', escape: false);
     }
 
     #[Test]

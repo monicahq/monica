@@ -69,18 +69,6 @@ class FieldReminderTest extends TestCase
     }
 
     #[Test]
-    public function it_draws_the_cadence_inert_for_a_rule_that_fires_once(): void
-    {
-        $dimmed = 'duration-(--duration-fast) opacity-55';
-
-        $this->render($this->rule(['cadence' => ReminderCadenceEnum::Once]))
-            ->assertSee($dimmed, escape: false);
-
-        $this->render($this->rule(['cadence' => ReminderCadenceEnum::Yearly]))
-            ->assertDontSee($dimmed, escape: false);
-    }
-
-    #[Test]
     public function every_moment_carries_a_direction_an_amount_and_a_unit(): void
     {
         $rendered = $this->render();

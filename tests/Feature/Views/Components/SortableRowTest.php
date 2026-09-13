@@ -27,17 +27,14 @@ class SortableRowTest extends TestCase
     public function it_shows_where_the_row_would_land(): void
     {
         $this->blade(self::CALL)
-            ->assertSee('hoveringId === 7 && draggingId !== 7', escape: false)
-            ->assertSee('absolute inset-x-0 top-0 z-10 h-0.5 bg-primary', escape: false);
+            ->assertSee('hoveringId === 7 && draggingId !== 7', escape: false);
     }
 
     #[Test]
     public function every_row_offers_the_same_handle(): void
     {
         $this->blade(self::CALL)
-            ->assertSee(__('Drag to reorder'), escape: false)
-            ->assertSee('cursor-grab', escape: false)
-            ->assertSee('active:cursor-grabbing', escape: false);
+            ->assertSee(__('Drag to reorder'), escape: false);
     }
 
     #[Test]
@@ -46,8 +43,7 @@ class SortableRowTest extends TestCase
         $this->blade(self::CALL)
             ->assertSee('data-position-form="7"', escape: false)
             ->assertSee('action="/types/7/position"', escape: false)
-            ->assertSee('name="position"', escape: false)
-            ->assertSee('class="hidden"', escape: false);
+            ->assertSee('name="position"', escape: false);
     }
 
     #[Test]

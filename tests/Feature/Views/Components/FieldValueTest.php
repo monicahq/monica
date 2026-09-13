@@ -24,16 +24,14 @@ class FieldValueTest extends TestCase
     public function it_reads_a_line_of_text_as_the_line_of_text(): void
     {
         $this->render(new Field(['type' => FieldTypeEnum::Text, 'label' => 'Known as']), null, 'Prison Mike')
-            ->assertSee('Prison Mike', escape: false)
-            ->assertSee('text-ink', escape: false);
+            ->assertSee('Prison Mike', escape: false);
     }
 
     #[Test]
     public function a_field_nobody_has_written_in_says_so_rather_than_disappearing(): void
     {
         $this->render(new Field(['type' => FieldTypeEnum::Text, 'label' => 'Known as']), null, null)
-            ->assertSee('Not recorded')
-            ->assertSee('text-placeholder', escape: false);
+            ->assertSee('Not recorded');
     }
 
     #[Test]
@@ -48,19 +46,16 @@ class FieldValueTest extends TestCase
         $no->value_boolean = false;
 
         $this->render($field, $yes, 'Yes')
-            ->assertSee('Yes')
-            ->assertSee('text-success', escape: false);
+            ->assertSee('Yes');
 
         $this->render($field, $no, 'No')
-            ->assertSee('No')
-            ->assertSee('text-muted', escape: false);
+            ->assertSee('No');
     }
 
     #[Test]
     public function a_paragraph_keeps_the_line_breaks_it_was_written_with(): void
     {
         $this->render(new Field(['type' => FieldTypeEnum::Textarea, 'label' => 'How we met']), null, "At the gym.\nTwice.")
-            ->assertSee('whitespace-pre-line', escape: false)
             ->assertSee("At the gym.\nTwice.", escape: false);
     }
 
@@ -80,8 +75,7 @@ class FieldValueTest extends TestCase
         $this->render($field, $value, 'Climbing, Cooking')
             ->assertSee('Climbing')
             ->assertSee('Cooking')
-            ->assertDontSee('Cycling')
-            ->assertSee('bg-card', escape: false);
+            ->assertDontSee('Cycling');
     }
 
     #[Test]
@@ -145,8 +139,7 @@ class FieldValueTest extends TestCase
         $this->markedDate('You will be reminded 7 days before, every year, at 09:00 Europe/Paris.')
             ->assertSee('3 February 1984')
             ->assertSee('You will be reminded 7 days before, every year, at 09:00 Europe/Paris.')
-            ->assertSee('role="img"', escape: false)
-            ->assertSee('M8 6.6V9.2l1.9 1.3', escape: false);
+            ->assertSee('role="img"', escape: false);
     }
 
     #[Test]
@@ -154,7 +147,7 @@ class FieldValueTest extends TestCase
     {
         $this->markedDate(null)
             ->assertSee('3 February 1984')
-            ->assertDontSee('M8 6.6V9.2l1.9 1.3', escape: false);
+            ->assertDontSee('You will be reminded');
     }
 
     private function markedDate(?string $reminder): TestView

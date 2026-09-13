@@ -95,15 +95,14 @@ class FieldControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_puts_the_bar_outside_the_form_and_the_cards_on_a_layer_of_their_own(): void
+    public function it_puts_the_bar_outside_the_form(): void
     {
         $user = User::factory()->create();
         [$template, $row] = $this->templateCarryingASection($user);
 
         $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
             ->assertSeeInOrder(['</form>', __('Pick a type to carry on.')], escape: false)
-            ->assertSee('form="add-field"', escape: false)
-            ->assertSee('relative flex cursor-pointer', escape: false);
+            ->assertSee('form="add-field"', escape: false);
     }
 
     #[Test]

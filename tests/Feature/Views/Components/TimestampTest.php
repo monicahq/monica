@@ -20,11 +20,4 @@ class TimestampTest extends TestCase
             ->assertSee('title="'.$at->toDayDateTimeString().'"', escape: false)
             ->assertSee('two days ago', escape: false);
     }
-
-    #[Test]
-    public function it_carries_the_classes_it_is_given(): void
-    {
-        $this->blade('<x-timestamp :at="$at" class="text-xs text-muted">then</x-timestamp>', ['at' => Carbon::now()])
-            ->assertSee('class="text-xs text-muted"', escape: false);
-    }
 }

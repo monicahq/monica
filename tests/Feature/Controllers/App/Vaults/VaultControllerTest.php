@@ -222,17 +222,6 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_the_name_of_the_vault_at_display_size(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
-
-        $this->actingAs($user)->get(route('vaults.show', $vault))
-            ->assertStatus(200)
-            ->assertSee('text-page-title text-balance text-ink', escape: false);
-    }
-
-    #[Test]
     public function it_signs_the_screen_with_the_mark_of_the_application(): void
     {
         $user = User::factory()->create();

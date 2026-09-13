@@ -36,13 +36,4 @@ class DeleteActionTest extends TestCase
             ->assertSee('type="button"', escape: false)
             ->assertSee('open = true', escape: false);
     }
-
-    #[Test]
-    public function the_quiet_trigger_only_turns_red_under_the_pointer(): void
-    {
-        $this->blade(self::CALL)->assertSee('text-error', escape: false);
-
-        $this->blade('<x-delete-action title="T" confirm="C" action="/x" label="Delete" variant="ghost"><p>Why</p></x-delete-action>')
-            ->assertSee('hover:text-error', escape: false);
-    }
 }

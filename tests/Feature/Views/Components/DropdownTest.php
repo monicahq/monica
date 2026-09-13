@@ -26,10 +26,9 @@ class DropdownTest extends TestCase
             ['options' => $this->formats()],
         );
 
-        $rendered->assertSee('border-hairline-strong bg-canvas text-ink shadow-control', escape: false);
         $rendered->assertSee('aria-haspopup="menu"', escape: false);
         $rendered->assertSee('24-hour', escape: false);
-        $rendered->assertSee('tracking-caption uppercase text-muted block px-2.5 pt-2 pb-1.5">Time format</span>', escape: false);
+        $rendered->assertSee('Time format');
     }
 
     #[Test]
@@ -68,15 +67,5 @@ class DropdownTest extends TestCase
 
         $rendered->assertSee('x-ref="trigger"', escape: false);
         $rendered->assertSee('x-anchor.bottom-end.offset.6="$refs.trigger"', escape: false);
-    }
-
-    #[Test]
-    public function it_writes_machine_values_in_mono_when_it_is_asked_to(): void
-    {
-        $this->blade('<x-dropdown name="t" label="24-hour" :options="$options" monospaced-hints />', ['options' => $this->formats()])
-            ->assertSee('ml-auto text-xs text-muted font-mono', escape: false);
-
-        $this->blade('<x-dropdown name="t" label="English" :options="$options" />', ['options' => $this->formats()])
-            ->assertDontSee('font-mono', escape: false);
     }
 }

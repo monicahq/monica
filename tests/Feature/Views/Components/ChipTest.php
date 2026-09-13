@@ -15,7 +15,6 @@ class ChipTest extends TestCase
         $rendered = $this->blade('<x-chip href="/settings/account/templates?filter=all">All</x-chip>');
 
         $rendered->assertSee('<a', escape: false);
-        $rendered->assertSee('border-hairline bg-canvas', escape: false);
         $rendered->assertSee('All', escape: false);
         $rendered->assertDontSee('aria-pressed', escape: false);
     }
@@ -41,12 +40,12 @@ class ChipTest extends TestCase
     }
 
     #[Test]
-    public function it_may_carry_a_count_in_mono(): void
+    public function it_may_carry_a_count(): void
     {
         $this->blade('<x-chip href="/x" :count="24">People</x-chip>')
-            ->assertSee('<span class="font-mono text-[12px] opacity-70">24</span>', escape: false);
+            ->assertSee('24');
 
         $this->blade('<x-chip href="/x">People</x-chip>')
-            ->assertDontSee('font-mono', escape: false);
+            ->assertDontSee('24');
     }
 }

@@ -18,13 +18,6 @@ class BackLinkTest extends TestCase
     }
 
     #[Test]
-    public function the_arrow_is_turned_round_so_it_points_the_way_out(): void
-    {
-        $this->blade('<x-back-link href="/settings">Back</x-back-link>')
-            ->assertSee('rotate-180', escape: false);
-    }
-
-    #[Test]
     public function it_is_followed_without_a_full_page_load(): void
     {
         $this->blade('<x-back-link href="/settings">Back</x-back-link>')

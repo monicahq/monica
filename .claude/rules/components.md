@@ -71,16 +71,16 @@ last, which Tailwind decides on its own and the string order does not affect.
 variant, so a button whose class list said it had an edge rendered without one, unnoticed. Fixed by
 moving `border-transparent` into the variants that want no edge.
 
-A property a variant chooses belongs to the variant, in every branch of the `match`.
-`ButtonTest::no_variant_carries_two_border_colours` guards the button.
-
-To check a suspected clash, search the built CSS for the two selectors: the later byte offset wins.
+A property a variant chooses belongs to the variant, in every branch of the `match`. Nothing guards
+this: a test that counts how many times a component names `border-transparent` is a test of how the
+component looks, and `.claude/rules/testing.md` forbids those. Read the `$base` and every branch of
+the `match` side by side instead, and check a suspected clash in the built CSS by searching for the
+two selectors: the later byte offset wins.
 
 The same clash arrives from outside, through `$attributes`. One call site passed `px-3.5 py-3` to a
 component whose base already said `px-3 py-2`, which is the same coin toss. A property the base names
 is not the caller's to set: either the component grows a prop for it, or the call site accepts the
-base. `CaptionTest::no_tone_carries_two_text_colours` and `CodeValueTest::no_surface_carries_two_backgrounds`
-are written as counts rather than as `assertSee`, which is what catches this.
+base.
 
 ## A component cannot hand a slot to its parent
 `<x-slot:footer>` binds to whichever component tag lexically encloses it. A component that renders
