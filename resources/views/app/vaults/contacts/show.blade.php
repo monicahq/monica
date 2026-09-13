@@ -182,40 +182,7 @@
       </div>
 
       <div class="flex flex-col gap-5">
-        <x-panel :title="__('Facts')" icon="info">
-          <dl class="grid gap-0">
-            @foreach ($viewModel->facts() as $fact)
-              <div class="grid grid-cols-[150px_minmax(0,1fr)] items-baseline gap-4 border-b border-hairline py-2.75 last:border-b-0 max-[560px]:grid-cols-1 max-[560px]:gap-0.5">
-                <dt class="flex items-center gap-2 text-sm text-muted">
-                  <x-icon :name="$fact['icon']" :size="15" :stroke-width="1.5" />
-                  {{ $fact['label'] }}
-                </dt>
-
-                <dd @class([
-                  'text-base text-pretty',
-                  $fact['value'] ? 'text-ink' : 'text-placeholder',
-                  'inline-flex items-center gap-2' => $fact['reminder'] !== null,
-                ])>
-                  {{ $fact['value'] ?? __('Not recorded') }}
-
-                  @if ($fact['reminder'])
-                    <x-tooltip :text="$fact['reminder']">
-                      <x-icon name="alarm" :size="15" class="text-muted" />
-                    </x-tooltip>
-                  @endif
-                </dd>
-              </div>
-            @endforeach
-          </dl>
-        </x-panel>
-
-        <x-panel :title="__('Relationships')" icon="relationship">
-          <x-slot:action>
-            <x-button.secondary size="small" :href="$viewModel->addRelationshipUrl()">{{ __('Add a relationship') }}</x-button.secondary>
-          </x-slot:action>
-
-          <p class="text-sm text-pretty text-muted">{{ $unbuilt['relationships'] }}</p>
-        </x-panel>
+        @include('app.vaults.contacts._immediate-family', ['family' => $viewModel->immediateFamily()])
 
         <x-panel :title="__('Reminders')" icon="reminder">
           <p class="text-sm text-pretty text-muted">{{ $unbuilt['reminders'] }}</p>

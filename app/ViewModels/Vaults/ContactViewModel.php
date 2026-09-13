@@ -766,6 +766,14 @@ class ContactViewModel
         ]);
     }
 
+    public function immediateFamily(): ImmediateFamilyBlock
+    {
+        return once(fn (): ImmediateFamilyBlock => new ImmediateFamilyBlock(
+            vault: $this->vault,
+            contact: $this->contact,
+        ));
+    }
+
     private function urlTo(?string $pageKey): string
     {
         return route('contacts.show', array_filter([

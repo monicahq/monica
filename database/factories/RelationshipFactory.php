@@ -52,21 +52,42 @@ class RelationshipFactory extends Factory
 
     public function parentage(): static
     {
-        return $this->state(fn (array $attributes): array => [
-            'relationship_type_id' => RelationshipType::factory()
-                ->system(RelationshipTypeEnum::ParentChild)
-                ->create(['account_id' => $attributes['account_id']])
-                ->id,
+        return $this->state([
+            'relationship_type_id' => fn (array $attributes): int => self::suppliedType(
+                RelationshipTypeEnum::ParentChild,
+                $attributes['account_id'],
+            ),
         ]);
     }
 
     public function romantic(): static
     {
-        return $this->state(fn (array $attributes): array => [
-            'relationship_type_id' => RelationshipType::factory()
-                ->system(RelationshipTypeEnum::Partner)
-                ->create(['account_id' => $attributes['account_id']])
-                ->id,
+        return $this->state([
+            'relationship_type_id' => fn (array $attributes): int => self::suppliedType(
+                RelationshipTypeEnum::Partner,
+                $attributes['account_id'],
+            ),
         ]);
+    }
+
+    /**
+     * The account's own copy of a supplied type, written once.
+     *
+     * An account holds one type per key, so a test recording several
+     * relationships of the same kind wants the same row rather than a second
+     * one the unique index would refuse.
+     */
+    private static function suppliedType(RelationshipTypeEnum $case, int $accountId): int
+    {
+        $existing = RelationshipType::query()
+            ->where('account_id', $accountId)
+            ->where('key', $case->value)
+            ->first();
+
+        if ($existing instanceof RelationshipType) {
+            return $existing->id;
+        }
+
+        return RelationshipType::factory()->system($case)->create(['account_id' => $accountId])->id;
     }
 }

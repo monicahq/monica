@@ -7,10 +7,13 @@ namespace Tests\Unit\Models;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
+use App\Enums\RelationshipTypeEnum;
 use App\Helpers\LocaleCollation;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\File;
+use App\Models\Relationship;
+use App\Models\RelationshipType;
 use App\Models\Reminder;
 use App\Models\ShareLink;
 use App\Models\TemplateVersion;
@@ -715,5 +718,279 @@ class ContactTest extends TestCase
         $contact->save();
 
         $this->assertSame('pam-beesly', $contact->fresh()->slug);
+    }
+
+    #[Test]
+    public function it_reads_the_children_of_a_contact(): void
+    {
+        $vault = Vault::factory()->create();
+        $michael = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $child = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id, 'last_name' => 'Scott']);
+
+        Relationship::factory()->parentage()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'contact_a_id' => $michael->id,
+            'contact_b_id' => $child->id,
+        ]);
+
+        $this->assertSame([$child->id], Contact::query()->childrenOf($michael)->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_does_not_read_a_parent_as_a_child(): void
+    {
+        $vault = Vault::factory()->create();
+        $parent = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $child = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        Relationship::factory()->parentage()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'contact_a_id' => $parent->id,
+            'contact_b_id' => $child->id,
+        ]);
+
+        $this->assertSame([], Contact::query()->childrenOf($child)->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_keeps_a_child_whose_relationship_ended(): void
+    {
+        $vault = Vault::factory()->create();
+        $parent = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $child = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        Relationship::factory()->parentage()->ended()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'contact_a_id' => $parent->id,
+            'contact_b_id' => $child->id,
+        ]);
+
+        $this->assertSame([$child->id], Contact::query()->childrenOf($parent)->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_keeps_a_child_who_is_partial_or_archived_and_drops_a_deleted_one(): void
+    {
+        $vault = Vault::factory()->create();
+        $parent = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $partial = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id, 'is_partial' => true]);
+        $archived = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id, 'is_archived' => true]);
+        $gone = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        foreach ([$partial, $archived, $gone] as $child) {
+            Relationship::factory()->parentage()->create([
+                'vault_id' => $vault->id,
+                'account_id' => $vault->account_id,
+                'contact_a_id' => $parent->id,
+                'contact_b_id' => $child->id,
+            ]);
+        }
+
+        $gone->delete();
+
+        $found = Contact::query()->childrenOf($parent)->pluck('id')->all();
+
+        $this->assertContains($partial->id, $found);
+        $this->assertContains($archived->id, $found);
+        $this->assertNotContains($gone->id, $found);
+    }
+
+    #[Test]
+    public function it_drops_a_child_whose_relationship_was_deleted(): void
+    {
+        $vault = Vault::factory()->create();
+        $parent = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $child = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        $relationship = Relationship::factory()->parentage()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'contact_a_id' => $parent->id,
+            'contact_b_id' => $child->id,
+        ]);
+
+        $relationship->delete();
+
+        $this->assertSame([], Contact::query()->childrenOf($parent)->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_names_a_child_once_however_many_rows_link_them(): void
+    {
+        $vault = Vault::factory()->create();
+        $parent = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $child = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        Relationship::factory()->parentage()->count(3)->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'contact_a_id' => $parent->id,
+            'contact_b_id' => $child->id,
+        ]);
+
+        $this->assertSame([$child->id], Contact::query()->childrenOf($parent)->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_reads_a_current_partner_from_either_side(): void
+    {
+        $vault = Vault::factory()->create();
+        $monica = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $chandler = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $phoebe = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        Relationship::factory()->romantic()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'contact_a_id' => $monica->id,
+            'contact_b_id' => $chandler->id,
+        ]);
+
+        Relationship::factory()->romantic()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'contact_a_id' => $phoebe->id,
+            'contact_b_id' => $monica->id,
+        ]);
+
+        $found = Contact::query()->currentPartnersOf($monica)->pluck('id')->all();
+
+        $this->assertContains($chandler->id, $found);
+        $this->assertContains($phoebe->id, $found);
+        $this->assertCount(2, $found);
+    }
+
+    #[Test]
+    public function it_drops_a_partner_whose_relationship_ended(): void
+    {
+        $vault = Vault::factory()->create();
+        $monica = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $richard = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        Relationship::factory()->romantic()->ended()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'contact_a_id' => $monica->id,
+            'contact_b_id' => $richard->id,
+            'ended_on' => null,
+        ]);
+
+        $this->assertSame([], Contact::query()->currentPartnersOf($monica)->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_counts_one_partner_when_an_ended_row_and_a_current_row_name_the_same_person(): void
+    {
+        $vault = Vault::factory()->create();
+        $monica = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $chandler = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        Relationship::factory()->romantic()->ended()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'contact_a_id' => $monica->id,
+            'contact_b_id' => $chandler->id,
+        ]);
+
+        Relationship::factory()->romantic()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'contact_a_id' => $monica->id,
+            'contact_b_id' => $chandler->id,
+        ]);
+
+        $this->assertSame([$chandler->id], Contact::query()->currentPartnersOf($monica)->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_reads_no_family_from_a_type_the_user_invented(): void
+    {
+        $vault = Vault::factory()->create();
+        $monica = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $other = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        $invented = RelationshipType::factory()->create([
+            'account_id' => $vault->account_id,
+            'name' => 'Spouse',
+            'role_a' => 'Spouse',
+            'role_b' => 'Spouse',
+        ]);
+
+        Relationship::factory()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'relationship_type_id' => $invented->id,
+            'contact_a_id' => $monica->id,
+            'contact_b_id' => $other->id,
+        ]);
+
+        $this->assertSame([], Contact::query()->currentPartnersOf($monica)->pluck('id')->all());
+        $this->assertSame([], Contact::query()->childrenOf($monica)->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_reads_no_family_from_a_sibling_or_a_colleague(): void
+    {
+        $vault = Vault::factory()->create();
+        $monica = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        foreach ([RelationshipTypeEnum::Sibling, RelationshipTypeEnum::Colleague, RelationshipTypeEnum::Cousin] as $case) {
+            $type = RelationshipType::factory()->system($case)->create(['account_id' => $vault->account_id]);
+            $other = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+            Relationship::factory()->create([
+                'vault_id' => $vault->id,
+                'account_id' => $vault->account_id,
+                'relationship_type_id' => $type->id,
+                'contact_a_id' => $monica->id,
+                'contact_b_id' => $other->id,
+            ]);
+        }
+
+        $this->assertSame([], Contact::query()->childrenOf($monica)->pluck('id')->all());
+        $this->assertSame([], Contact::query()->currentPartnersOf($monica)->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_keeps_family_written_with_a_type_since_renamed_or_withdrawn(): void
+    {
+        $vault = Vault::factory()->create();
+        $parent = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $child = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+
+        $type = RelationshipType::factory()->system(RelationshipTypeEnum::ParentChild)->create(['account_id' => $vault->account_id]);
+
+        Relationship::factory()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'relationship_type_id' => $type->id,
+            'contact_a_id' => $parent->id,
+            'contact_b_id' => $child->id,
+        ]);
+
+        $type->update(['name' => 'Progenitor', 'name_translation_key' => null, 'is_active' => false]);
+
+        $this->assertSame([$child->id], Contact::query()->childrenOf($parent)->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_reads_no_family_from_another_vault_or_another_account(): void
+    {
+        $vault = Vault::factory()->create();
+        $parent = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $elsewhere = Vault::factory()->create(['account_id' => $vault->account_id]);
+        $child = Contact::factory()->create(['vault_id' => $elsewhere->id, 'account_id' => $elsewhere->account_id]);
+
+        Relationship::factory()->parentage()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $vault->account_id,
+            'contact_a_id' => $parent->id,
+            'contact_b_id' => $child->id,
+        ]);
+
+        $this->assertSame([], Contact::query()->childrenOf($parent)->pluck('id')->all());
     }
 }

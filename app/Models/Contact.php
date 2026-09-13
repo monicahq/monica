@@ -7,6 +7,8 @@ namespace App\Models;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
+use App\Enums\RelationshipBehaviorEnum;
+use App\Enums\RelationshipStatusEnum;
 use App\Helpers\LocaleCollation;
 use App\Helpers\ReservedAddressWords;
 use App\Helpers\SlugBuilder;
@@ -24,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Override;
 
 /**
@@ -524,6 +527,95 @@ class Contact extends Model
             $query->whereLike('search_key', "%{$folded}%", caseSensitive: true)
                 ->orWhereLike('nickname', "%{$lowered}%", caseSensitive: false);
         });
+    }
+
+    /**
+     * Scope the query to the contact's children: the people a parentage
+     * relationship reaches with the given contact on the parent side.
+     *
+     * Status is not consulted. Ending contact with a child does not undo the
+     * parentage, which is the same rule the family tree reads by.
+     *
+     * This lives here rather than on the screen that first needed it because
+     * the API answers the same question, and a selection kept in a view model
+     * is one the two surfaces would sooner or later disagree about.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeChildrenOf(Builder $query, self $contact): void
+    {
+        $query->where('account_id', $contact->account_id)
+            ->where('vault_id', $contact->vault_id)
+            ->whereIn('id', function (QueryBuilder $rows) use ($contact): void {
+                $rows->select('contact_b_id')
+                    ->from('relationships')
+                    ->whereNull('deleted_at')
+                    ->where('vault_id', $contact->vault_id)
+                    ->where('contact_a_id', $contact->id)
+                    ->whereIn('relationship_type_id', self::typesBehavingAs(
+                        RelationshipBehaviorEnum::GenealogyParentage,
+                        $contact->account_id,
+                    ));
+            });
+    }
+
+    /**
+     * Scope the query to whoever the contact is with now: the people a romantic
+     * relationship recorded as current reaches, from either side.
+     *
+     * Both sides are asked separately so each meets an index of its own. A pair
+     * linked several times over the years answers once, because the people are
+     * selected by id rather than the rows counted.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeCurrentPartnersOf(Builder $query, self $contact): void
+    {
+        $query->where('account_id', $contact->account_id)
+            ->where('vault_id', $contact->vault_id)
+            ->where(function (Builder $query) use ($contact): void {
+                $query->whereIn('id', function (QueryBuilder $rows) use ($contact): void {
+                    $rows->select('contact_b_id')
+                        ->from('relationships')
+                        ->whereNull('deleted_at')
+                        ->where('vault_id', $contact->vault_id)
+                        ->where('status', RelationshipStatusEnum::Current->value)
+                        ->where('contact_a_id', $contact->id)
+                        ->whereIn('relationship_type_id', self::typesBehavingAs(
+                            RelationshipBehaviorEnum::Romantic,
+                            $contact->account_id,
+                        ));
+                })->orWhereIn('id', function (QueryBuilder $rows) use ($contact): void {
+                    $rows->select('contact_a_id')
+                        ->from('relationships')
+                        ->whereNull('deleted_at')
+                        ->where('vault_id', $contact->vault_id)
+                        ->where('status', RelationshipStatusEnum::Current->value)
+                        ->where('contact_b_id', $contact->id)
+                        ->whereIn('relationship_type_id', self::typesBehavingAs(
+                            RelationshipBehaviorEnum::Romantic,
+                            $contact->account_id,
+                        ));
+                });
+            });
+    }
+
+    /**
+     * The types carrying one of the protected behaviours, as a subquery.
+     *
+     * Membership is read off the behaviour and never off a name, a key or a
+     * category, so renaming Spouse, moving it or withdrawing it leaves the
+     * people it linked exactly where they are, and a type somebody invents and
+     * also calls Spouse reaches nobody.
+     *
+     * @return Builder<RelationshipType>
+     */
+    private static function typesBehavingAs(RelationshipBehaviorEnum $behavior, int $accountId): Builder
+    {
+        return RelationshipType::query()
+            ->select('id')
+            ->where('account_id', $accountId)
+            ->where('system_behavior', $behavior);
     }
 
     /**
