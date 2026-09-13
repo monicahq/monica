@@ -32,6 +32,13 @@ use App\Http\Controllers\Api\NotificationPreferenceController as ApiNotification
 use App\Http\Controllers\Api\NotificationReadController as ApiNotificationReadController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PortalSessionController;
+use App\Http\Controllers\Api\RelationshipCategoryActivationController;
+use App\Http\Controllers\Api\RelationshipCategoryController;
+use App\Http\Controllers\Api\RelationshipCategoryPositionController;
+use App\Http\Controllers\Api\RelationshipCategoryTypeController;
+use App\Http\Controllers\Api\RelationshipTypeActivationController;
+use App\Http\Controllers\Api\RelationshipTypeController;
+use App\Http\Controllers\Api\RelationshipTypePositionController;
 use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\SubscriptionCancellationController;
 use App\Http\Controllers\Api\SubscriptionController;
@@ -111,6 +118,25 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
         Route::put('entity-types/{entityType}/activation', [EntityTypeActivationController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.activation.update');
         Route::put('entity-types/{entityType}/position', [EntityTypePositionController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.position.update');
+
+        Route::get('relationship-categories', [RelationshipCategoryController::class, 'index'])->name('relationshipCategories');
+        Route::get('relationship-categories/{relationshipCategory}', [RelationshipCategoryController::class, 'show'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.show');
+        Route::get('relationship-categories/{relationshipCategory}/types', [RelationshipCategoryTypeController::class, 'index'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.types');
+        Route::post('relationship-categories', [RelationshipCategoryController::class, 'create'])->name('relationshipCategories.create');
+        Route::put('relationship-categories/{relationshipCategory}', [RelationshipCategoryController::class, 'update'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.update');
+        Route::delete('relationship-categories/{relationshipCategory}', [RelationshipCategoryController::class, 'destroy'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.destroy');
+
+        Route::put('relationship-categories/{relationshipCategory}/activation', [RelationshipCategoryActivationController::class, 'update'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.activation.update');
+        Route::put('relationship-categories/{relationshipCategory}/position', [RelationshipCategoryPositionController::class, 'update'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.position.update');
+
+        Route::get('relationship-types', [RelationshipTypeController::class, 'index'])->name('relationshipTypes');
+        Route::get('relationship-types/{relationshipType}', [RelationshipTypeController::class, 'show'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.show');
+        Route::post('relationship-types', [RelationshipTypeController::class, 'create'])->name('relationshipTypes.create');
+        Route::put('relationship-types/{relationshipType}', [RelationshipTypeController::class, 'update'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.update');
+        Route::delete('relationship-types/{relationshipType}', [RelationshipTypeController::class, 'destroy'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.destroy');
+
+        Route::put('relationship-types/{relationshipType}/activation', [RelationshipTypeActivationController::class, 'update'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.activation.update');
+        Route::put('relationship-types/{relationshipType}/position', [RelationshipTypePositionController::class, 'update'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.position.update');
 
         Route::get('templates', [TemplateController::class, 'index'])->name('templates');
         Route::get('templates/{template}', [TemplateController::class, 'show'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.show');

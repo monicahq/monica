@@ -22,6 +22,8 @@ use App\Models\Notification;
 use App\Models\NotificationChannel;
 use App\Models\NotificationPreference;
 use App\Models\Payment;
+use App\Models\RelationshipCategory;
+use App\Models\RelationshipType;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\StripeOrder;
@@ -916,6 +918,112 @@ class ApiDocsReturnFieldsTest extends TestCase
                 $entityType = EntityType::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
 
                 return $this->json('PUT', "/api/v1/entity-types/{$entityType->uuid}/position", ['position' => 1]);
+            }),
+
+            'relationship-categories-index' => $this->asSomebody(function (User $user): TestResponse {
+                RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('GET', '/api/v1/relationship-categories');
+            }),
+
+            'relationship-categories-show' => $this->asSomebody(function (User $user): TestResponse {
+                $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('GET', "/api/v1/relationship-categories/{$category->uuid}");
+            }),
+
+            'relationship-categories-create' => $this->asSomebody(fn (): TestResponse => $this->json('POST', '/api/v1/relationship-categories', [
+                'name' => 'Neighbourhood',
+            ])),
+
+            'relationship-categories-update' => $this->asSomebody(function (User $user): TestResponse {
+                $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/relationship-categories/{$category->uuid}", ['name' => 'Voisinage']);
+            }),
+
+            'relationship-categories-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/relationship-categories/{$category->uuid}");
+            }),
+
+            'relationship-categories-activation' => $this->asSomebody(function (User $user): TestResponse {
+                $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/relationship-categories/{$category->uuid}/activation", ['is_active' => false]);
+            }),
+
+            'relationship-categories-position' => $this->asSomebody(function (User $user): TestResponse {
+                $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
+
+                return $this->json('PUT', "/api/v1/relationship-categories/{$category->uuid}/position", ['position' => 1]);
+            }),
+
+            'relationship-types-by-category' => $this->asSomebody(function (User $user): TestResponse {
+                $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+                RelationshipType::factory()->create([
+                    'account_id' => $user->account_id,
+                    'relationship_category_id' => $category->id,
+                ]);
+
+                return $this->json('GET', "/api/v1/relationship-categories/{$category->uuid}/types");
+            }),
+
+            'relationship-types-index' => $this->asSomebody(function (User $user): TestResponse {
+                RelationshipType::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('GET', '/api/v1/relationship-types');
+            }),
+
+            'relationship-types-show' => $this->asSomebody(function (User $user): TestResponse {
+                $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('GET', "/api/v1/relationship-types/{$type->uuid}");
+            }),
+
+            'relationship-types-create' => $this->asSomebody(function (User $user): TestResponse {
+                $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('POST', '/api/v1/relationship-types', [
+                    'relationship_category_id' => $category->uuid,
+                    'name' => 'Godparent / Godchild',
+                    'role_a' => 'Godparent',
+                    'role_b' => 'Godchild',
+                    'is_symmetric' => false,
+                ]);
+            }),
+
+            'relationship-types-update' => $this->asSomebody(function (User $user): TestResponse {
+                $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+                $type = RelationshipType::factory()->create([
+                    'account_id' => $user->account_id,
+                    'relationship_category_id' => $category->id,
+                ]);
+
+                return $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}", [
+                    'relationship_category_id' => $category->uuid,
+                    'name' => 'Voisin',
+                    'role_a' => 'Voisin',
+                ]);
+            }),
+
+            'relationship-types-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/relationship-types/{$type->uuid}");
+            }),
+
+            'relationship-types-activation' => $this->asSomebody(function (User $user): TestResponse {
+                $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}/activation", ['is_active' => false]);
+            }),
+
+            'relationship-types-position' => $this->asSomebody(function (User $user): TestResponse {
+                $type = RelationshipType::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
+
+                return $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}/position", ['position' => 1]);
             }),
 
             'contacts-index' => $this->asSomebody(function (User $user): TestResponse {

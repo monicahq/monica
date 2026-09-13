@@ -1,0 +1,622 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Controllers\Api;
+
+use App\Enums\RelationshipTypeEnum;
+use App\Models\Contact;
+use App\Models\Relationship;
+use App\Models\RelationshipCategory;
+use App\Models\RelationshipType;
+use App\Models\User;
+use App\Models\Vault;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
+use Laravel\Sanctum\Sanctum;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class RelationshipTypeControllerTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /** @var array<string, mixed> */
+    private array $jsonStructure = [
+        'data' => [
+            'type',
+            'id',
+            'attributes' => [
+                'relationship_category_id',
+                'name',
+                'role_a',
+                'role_b',
+                'is_symmetric',
+                'system_behavior',
+                'position',
+                'is_system',
+                'is_active',
+                'relationship_count',
+                'created_at',
+                'updated_at',
+            ],
+            'links' => ['self'],
+        ],
+    ];
+
+    #[Test]
+    public function it_lists_the_types_of_the_account_by_category_then_by_position(): void
+    {
+        $user = User::factory()->create();
+        $second = RelationshipCategory::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
+        $first = RelationshipCategory::factory()->create(['account_id' => $user->account_id, 'position' => 1]);
+
+        RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $second->id, 'name' => 'Third', 'position' => 1]);
+        RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $first->id, 'name' => 'Second', 'position' => 2]);
+        RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $first->id, 'name' => 'First', 'position' => 1]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', '/api/v1/relationship-types');
+
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'data' => [$this->jsonStructure['data']],
+            'meta' => ['page', 'per_page', 'total'],
+        ]);
+        $response->assertJsonPath('data.0.attributes.name', 'First');
+        $response->assertJsonPath('data.1.attributes.name', 'Second');
+        $response->assertJsonPath('data.2.attributes.name', 'Third');
+        $response->assertJsonPath('data.0.type', 'relationship_type');
+        $response->assertJsonPath('data.0.attributes.relationship_category_id', $first->uuid);
+    }
+
+    #[Test]
+    public function it_lists_the_types_that_are_no_longer_offered_among_the_rest(): void
+    {
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        RelationshipType::factory()->inactive()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', '/api/v1/relationship-types');
+
+        $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonPath('data.0.attributes.is_active', false);
+    }
+
+    #[Test]
+    public function it_counts_the_relationships_written_with_a_type(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id]);
+
+        Relationship::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'relationship_type_id' => $type->id,
+            'contact_a_id' => Contact::factory()->create(['vault_id' => $vault->id])->id,
+            'contact_b_id' => Contact::factory()->create(['vault_id' => $vault->id])->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/relationship-types/{$type->uuid}")->assertJsonPath('data.attributes.relationship_count', 1);
+    }
+
+    #[Test]
+    public function it_does_not_list_the_types_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $stranger = User::factory()->create();
+        RelationshipType::factory()->create(['account_id' => $stranger->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', '/api/v1/relationship-types');
+
+        $response->assertOk();
+        $response->assertJsonCount(0, 'data');
+    }
+
+    #[Test]
+    public function it_shows_a_type(): void
+    {
+        $user = User::factory()->create();
+        $type = RelationshipType::factory()->directed()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/relationship-types/{$type->uuid}");
+
+        $response->assertOk();
+        $response->assertJsonStructure($this->jsonStructure);
+        $response->assertJsonPath('data.id', $type->uuid);
+        $response->assertJsonPath('data.attributes.role_a', 'Godparent');
+        $response->assertJsonPath('data.attributes.role_b', 'Godchild');
+        $response->assertJsonPath('data.attributes.is_symmetric', false);
+        $response->assertJsonPath('data.attributes.system_behavior', null);
+    }
+
+    #[Test]
+    public function it_reads_the_supplied_wording_of_a_type_through_the_translator(): void
+    {
+        $user = User::factory()->create();
+        $type = RelationshipType::factory()->system(RelationshipTypeEnum::ParentChild)->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/relationship-types/{$type->uuid}");
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.is_system', true);
+        $response->assertJsonPath('data.attributes.system_behavior', 'genealogy_parentage');
+        $response->assertJsonPath('data.attributes.name', __($type->name_translation_key));
+        $response->assertJsonPath('data.attributes.role_a', __($type->role_a_translation_key));
+    }
+
+    #[Test]
+    public function it_reads_the_words_the_user_wrote_whatever_language_is_asked_for(): void
+    {
+        $user = User::factory()->create();
+        $type = RelationshipType::factory()->create(['account_id' => $user->account_id, 'name' => 'Voisin']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/relationship-types/{$type->uuid}")->assertJsonPath('data.attributes.name', 'Voisin');
+    }
+
+    #[Test]
+    public function it_returns_not_found_for_a_type_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $stranger = User::factory()->create();
+        $type = RelationshipType::factory()->create(['account_id' => $stranger->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/relationship-types/{$type->uuid}")->assertNotFound();
+    }
+
+    #[Test]
+    public function it_returns_not_found_for_a_deleted_type(): void
+    {
+        $user = User::factory()->create();
+        $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
+        $type->delete();
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/relationship-types/{$type->uuid}")->assertNotFound();
+    }
+
+    #[Test]
+    public function it_adds_a_type(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', '/api/v1/relationship-types', [
+            'relationship_category_id' => $category->uuid,
+            'name' => 'Godparent / Godchild',
+            'role_a' => 'Godparent',
+            'role_b' => 'Godchild',
+            'is_symmetric' => false,
+        ]);
+
+        $response->assertCreated();
+        $response->assertJsonStructure($this->jsonStructure);
+        $response->assertJsonPath('data.attributes.name', 'Godparent / Godchild');
+        $response->assertJsonPath('data.attributes.is_symmetric', false);
+        $response->assertJsonPath('data.attributes.is_system', false);
+        $response->assertJsonPath('data.attributes.system_behavior', null);
+        $response->assertJsonPath('data.attributes.is_active', true);
+        $response->assertJsonPath('data.attributes.relationship_count', 0);
+        $this->assertDatabaseHas('relationship_types', [
+            'account_id' => $user->account_id,
+            'relationship_category_id' => $category->id,
+            'name' => 'Godparent / Godchild',
+            'role_b' => 'Godchild',
+            'is_system' => false,
+        ]);
+    }
+
+    #[Test]
+    public function it_places_a_new_type_last_in_its_category(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id, 'position' => 1]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', '/api/v1/relationship-types', [
+            'relationship_category_id' => $category->uuid,
+            'name' => 'Godparent',
+            'role_a' => 'Godparent',
+        ]);
+
+        $response->assertCreated();
+        $response->assertJsonPath('data.attributes.position', 2);
+    }
+
+    #[Test]
+    public function it_writes_the_single_role_of_a_symmetric_type_on_both_sides(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', '/api/v1/relationship-types', [
+            'relationship_category_id' => $category->uuid,
+            'name' => 'Neighbour',
+            'role_a' => 'Neighbour',
+        ]);
+
+        $response->assertCreated();
+        $response->assertJsonPath('data.attributes.is_symmetric', true);
+        $response->assertJsonPath('data.attributes.role_a', 'Neighbour');
+        $response->assertJsonPath('data.attributes.role_b', 'Neighbour');
+    }
+
+    #[Test]
+    public function it_refuses_a_directed_type_without_a_role_on_each_side(): void
+    {
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', '/api/v1/relationship-types', [
+            'relationship_category_id' => $category->uuid,
+            'name' => 'Godparent / Godchild',
+            'role_a' => 'Godparent',
+            'is_symmetric' => false,
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['role_b']);
+    }
+
+    #[Test]
+    public function it_refuses_a_name_another_type_of_the_account_carries(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id, 'name' => 'Neighbour']);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', '/api/v1/relationship-types', [
+            'relationship_category_id' => $category->uuid,
+            'name' => 'Neighbour',
+            'role_a' => 'Neighbour',
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['name']);
+    }
+
+    #[Test]
+    public function it_refuses_a_name_or_a_role_made_only_of_spaces(): void
+    {
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', '/api/v1/relationship-types', [
+            'relationship_category_id' => $category->uuid,
+            'name' => '   ',
+            'role_a' => '   ',
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['name', 'role_a']);
+    }
+
+    #[Test]
+    public function it_refuses_a_category_of_another_account_when_adding_a_type(): void
+    {
+        $user = User::factory()->create();
+        $stranger = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $stranger->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', '/api/v1/relationship-types', [
+            'relationship_category_id' => $category->uuid,
+            'name' => 'Neighbour',
+            'role_a' => 'Neighbour',
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['relationship_category_id']);
+    }
+
+    #[Test]
+    public function it_rewords_a_type(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        $other = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = RelationshipType::factory()->directed()->create([
+            'account_id' => $user->account_id,
+            'relationship_category_id' => $category->id,
+            'position' => 3,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}", [
+            'relationship_category_id' => $other->uuid,
+            'name' => 'Marraine / Filleul',
+            'role_a' => 'Marraine',
+            'role_b' => 'Filleul',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.name', 'Marraine / Filleul');
+        $response->assertJsonPath('data.attributes.role_a', 'Marraine');
+        $response->assertJsonPath('data.attributes.relationship_category_id', $other->uuid);
+        $response->assertJsonPath('data.attributes.is_symmetric', false);
+        $response->assertJsonPath('data.attributes.position', 3);
+        $response->assertJsonPath('data.id', $type->uuid);
+    }
+
+    #[Test]
+    public function it_rewords_a_supplied_type_without_touching_what_the_product_does_with_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = RelationshipType::factory()->system(RelationshipTypeEnum::ParentChild)->create([
+            'account_id' => $user->account_id,
+            'relationship_category_id' => $category->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}", [
+            'relationship_category_id' => $category->uuid,
+            'name' => 'Parent / Enfant',
+            'role_a' => 'Parent',
+            'role_b' => 'Enfant',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.name', 'Parent / Enfant');
+        $response->assertJsonPath('data.attributes.is_system', true);
+        $response->assertJsonPath('data.attributes.system_behavior', 'genealogy_parentage');
+    }
+
+    #[Test]
+    public function it_does_not_retire_a_type_when_it_is_reworded(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = RelationshipType::factory()->inactive()->create([
+            'account_id' => $user->account_id,
+            'relationship_category_id' => $category->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}", [
+            'relationship_category_id' => $category->uuid,
+            'name' => 'Voisin',
+            'role_a' => 'Voisin',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.is_active', false);
+    }
+
+    #[Test]
+    public function it_keeps_the_direction_when_none_is_sent(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = RelationshipType::factory()->directed()->create([
+            'account_id' => $user->account_id,
+            'relationship_category_id' => $category->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}", [
+            'relationship_category_id' => $category->uuid,
+            'name' => 'Godparent / Godchild',
+            'role_a' => 'Godparent',
+            'role_b' => 'Godchild',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.is_symmetric', false);
+    }
+
+    #[Test]
+    public function it_changes_the_direction_of_a_type_nobody_uses(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = RelationshipType::factory()->directed()->create([
+            'account_id' => $user->account_id,
+            'relationship_category_id' => $category->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}", [
+            'relationship_category_id' => $category->uuid,
+            'name' => 'Godparent / Godchild',
+            'role_a' => 'Godparent',
+            'is_symmetric' => true,
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.is_symmetric', true);
+        $response->assertJsonPath('data.attributes.role_b', 'Godparent');
+    }
+
+    #[Test]
+    public function it_refuses_to_change_the_direction_of_a_supplied_type(): void
+    {
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = RelationshipType::factory()->system(RelationshipTypeEnum::ParentChild)->create([
+            'account_id' => $user->account_id,
+            'relationship_category_id' => $category->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}", [
+            'relationship_category_id' => $category->uuid,
+            'name' => 'Parent / Child',
+            'role_a' => 'Parent',
+            'is_symmetric' => true,
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['is_symmetric']);
+        $this->assertFalse($type->refresh()->is_symmetric);
+    }
+
+    #[Test]
+    public function it_refuses_to_change_the_direction_of_a_type_relationships_use(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = RelationshipType::factory()->directed()->create([
+            'account_id' => $user->account_id,
+            'relationship_category_id' => $category->id,
+        ]);
+        Relationship::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'relationship_type_id' => $type->id,
+            'contact_a_id' => Contact::factory()->create(['vault_id' => $vault->id])->id,
+            'contact_b_id' => Contact::factory()->create(['vault_id' => $vault->id])->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}", [
+            'relationship_category_id' => $category->uuid,
+            'name' => 'Godparent / Godchild',
+            'role_a' => 'Godparent',
+            'is_symmetric' => true,
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['is_symmetric']);
+    }
+
+    #[Test]
+    public function it_deletes_a_type_no_relationship_uses(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('DELETE', "/api/v1/relationship-types/{$type->uuid}")->assertNoContent();
+        $this->assertSoftDeleted($type);
+    }
+
+    #[Test]
+    public function it_refuses_to_delete_a_supplied_type(): void
+    {
+        $user = User::factory()->create();
+        $type = RelationshipType::factory()->system()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('DELETE', "/api/v1/relationship-types/{$type->uuid}");
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['relationshipType']);
+        $this->assertNotSoftDeleted($type);
+    }
+
+    #[Test]
+    public function it_refuses_to_delete_a_type_relationships_use(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
+        Relationship::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'relationship_type_id' => $type->id,
+            'contact_a_id' => Contact::factory()->create(['vault_id' => $vault->id])->id,
+            'contact_b_id' => Contact::factory()->create(['vault_id' => $vault->id])->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('DELETE', "/api/v1/relationship-types/{$type->uuid}")->assertUnprocessable();
+
+        $response->assertJsonValidationErrors(['relationshipType']);
+        $this->assertNotSoftDeleted($type);
+    }
+
+    #[Test]
+    public function it_returns_not_found_when_writing_to_a_type_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $stranger = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = RelationshipType::factory()->create(['account_id' => $stranger->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}", [
+            'relationship_category_id' => $category->uuid,
+            'name' => 'Voisin',
+            'role_a' => 'Voisin',
+        ])->assertNotFound();
+
+        $this->json('DELETE', "/api/v1/relationship-types/{$type->uuid}")->assertNotFound();
+        $this->assertNotSoftDeleted($type);
+    }
+
+    #[Test]
+    public function it_returns_not_found_when_the_identifier_is_not_a_uuid(): void
+    {
+        $user = User::factory()->create();
+        $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/relationship-types/{$type->id}")->assertNotFound();
+    }
+}
