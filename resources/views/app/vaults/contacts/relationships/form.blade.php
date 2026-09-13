@@ -15,31 +15,16 @@
     <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" current="contacts" />
   </x-slot:sidebar>
 
-  <div class="flex justify-center">
-    <div
-      x-data="relationshipForm(@js($viewModel->projection()))"
-      class="w-full max-w-140 overflow-hidden rounded-lg border border-hairline bg-canvas shadow-pop"
-    >
-      <div class="flex items-start gap-3 border-b border-hairline p-4">
-        <span class="flex size-7 flex-none items-center justify-center rounded-md border border-hairline bg-card text-body">
-          <x-icon name="relationship" :size="16" />
-        </span>
+  <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
-        <div class="min-w-0 flex-1">
-          <h1 class="text-card-title text-ink">{{ $viewModel->title() }}</h1>
+  @if (! $viewModel->hasTypes())
+    <x-notice tone="warning">{{ $viewModel->noTypesLine() }}</x-notice>
+  @else
+    <div x-data="relationshipForm(@js($viewModel->projection()))" class="flex flex-col gap-8">
+      <x-form id="relationship-form" :method="$viewModel->method()" :action="$viewModel->action()">
+        <input type="hidden" name="swapped" ::value="swapped ? 1 : 0" />
 
-          <p class="mt-0.5 text-xs text-pretty text-muted">{{ $viewModel->description() }}</p>
-        </div>
-      </div>
-
-      @if (! $viewModel->hasTypes())
-        <div class="p-4">
-          <x-notice tone="warning">{{ $viewModel->noTypesLine() }}</x-notice>
-        </div>
-      @else
-        <x-form id="relationship-form" :method="$viewModel->method()" :action="$viewModel->action()">
-          <input type="hidden" name="swapped" ::value="swapped ? 1 : 0" />
-
+        <x-panel flush>
           <div class="p-4">
             <x-select
               id="relationship_type_id"
@@ -168,16 +153,18 @@
               <span class="mt-0.5 block text-xs text-pretty text-muted">{{ __('Leave it off and they stay out of your list of people, with a page of their own all the same.') }}</span>
             </x-checkbox>
           </div>
-        </x-form>
+        </x-panel>
+      </x-form>
 
-        <div class="flex items-center gap-3 border-t border-hairline bg-card px-4 py-3">
-          <x-button.ghost size="small" :href="$viewModel->contactUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.ghost>
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-3.5">
+        <p class="max-w-105 text-xs leading-relaxed text-muted-soft" x-text="hint"></p>
 
-          <span class="flex-1 text-right text-xs text-pretty text-muted" x-text="hint"></span>
+        <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
+          <x-button.secondary :href="$viewModel->contactUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
-          <x-button form="relationship-form" size="small" ::disabled="! complete">{{ __('Add relationship') }}</x-button>
+          <x-button form="relationship-form" ::disabled="! complete">{{ __('Add relationship') }}</x-button>
         </div>
-      @endif
+      </div>
     </div>
-  </div>
+  @endif
 </x-shell>
