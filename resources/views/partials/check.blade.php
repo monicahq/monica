@@ -20,7 +20,7 @@
           </div>
           <div class="modal-body">
           <p>{{ trans_choice('app.footer_modal_version_release_away', $instance->number_of_versions_since_current_version, ['number' => $instance->number_of_versions_since_current_version]) }}</p>
-          {!! $instance->latest_release_notes !!}
+          {{ $instance->latest_release_notes }}
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.close') }}</button>
