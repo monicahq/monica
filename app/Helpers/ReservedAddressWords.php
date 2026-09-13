@@ -36,6 +36,7 @@ class ReservedAddressWords
             'new',
             ContactGroupingEnum::Favourites->value,
             ContactGroupingEnum::Archived->value,
+            ContactGroupingEnum::NamesOnly->value,
         ];
     }
 }

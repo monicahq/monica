@@ -319,6 +319,20 @@ class ContactTest extends TestCase
     }
 
     #[Test]
+    public function it_groups_only_the_people_who_are_a_name_and_nothing_else(): void
+    {
+        $vault = Vault::factory()->create();
+        $jack = Contact::factory()->partial()->create(['vault_id' => $vault->id, 'first_name' => 'Jack']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Beesly']);
+        Contact::factory()->archived()->create(['vault_id' => $vault->id, 'last_name' => 'Scott']);
+
+        $contacts = Contact::query()->inGrouping(ContactGroupingEnum::NamesOnly)->get();
+
+        $this->assertCount(1, $contacts);
+        $this->assertTrue($jack->is($contacts->first()));
+    }
+
+    #[Test]
     public function it_groups_the_archived_apart_from_everybody_else(): void
     {
         $vault = Vault::factory()->create();

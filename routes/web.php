@@ -234,6 +234,15 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::post('vaults/{vault}/contacts/{contact}/relationships', [ContactRelationshipController::class, 'create'])
         ->name('contacts.relationships.create');
 
+    Route::get('vaults/{vault}/contacts/{contact}/relationships/{relationship}/edit', [ContactRelationshipController::class, 'edit'])
+        ->name('contacts.relationships.edit');
+
+    Route::put('vaults/{vault}/contacts/{contact}/relationships/{relationship}', [ContactRelationshipController::class, 'update'])
+        ->name('contacts.relationships.update');
+
+    Route::delete('vaults/{vault}/contacts/{contact}/relationships/{relationship}', [ContactRelationshipController::class, 'destroy'])
+        ->name('contacts.relationships.destroy');
+
     Route::get('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'show'])
         ->missing(fn (Request $request): Response => new AbsorbedContactController()->show($request))
         ->name('contacts.show');

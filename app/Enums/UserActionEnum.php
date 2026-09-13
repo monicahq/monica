@@ -80,6 +80,8 @@ enum UserActionEnum: string implements Translatable
     case RelationshipTypePositionUpdate = 'relationship_type_position_updated';
     case RelationshipTypeDeletion = 'relationship_type_deleted';
     case RelationshipCreation = 'relationship_created';
+    case RelationshipUpdate = 'relationship_updated';
+    case RelationshipDeletion = 'relationship_deleted';
     case DefaultTemplateSeeded = 'default_template_seeded';
     case TemplateCreation = 'template_created';
     case TemplateUpdate = 'template_updated';
@@ -246,6 +248,8 @@ enum UserActionEnum: string implements Translatable
             self::RelationshipTypePositionUpdate => 'Moved the relationship type :name',
             self::RelationshipTypeDeletion => 'Deleted the relationship type :name',
             self::RelationshipCreation => 'Recorded that :name is the :role of :other',
+            self::RelationshipUpdate => 'Changed the relationship between :name and :other',
+            self::RelationshipDeletion => 'Removed the relationship between :name and :other',
             self::DefaultTemplateSeeded => 'Set up the template :name the account starts with',
             self::TemplateCreation => 'Created the template :name',
             self::TemplateUpdate => 'Updated the template :name',

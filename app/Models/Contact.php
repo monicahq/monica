@@ -485,7 +485,7 @@ class Contact extends Model
      */
     public function scopeInGrouping(Builder $query, ContactGroupingEnum $grouping): void
     {
-        $query->where('is_partial', false)
+        $query->where('is_partial', $grouping === ContactGroupingEnum::NamesOnly)
             ->where('is_archived', $grouping === ContactGroupingEnum::Archived)
             ->when(
                 $grouping === ContactGroupingEnum::Favourites,

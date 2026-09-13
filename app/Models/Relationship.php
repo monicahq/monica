@@ -11,6 +11,7 @@ use Carbon\CarbonImmutable;
 use Database\Factories\RelationshipFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\RouteKey;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -84,6 +85,25 @@ class Relationship extends Model
             'started_on' => 'date',
             'ended_on' => 'date',
         ];
+    }
+
+    /**
+     * Scope the query to every relationship one contact is part of, from either side.
+     *
+     * One row holds both sides, so a contact is reached through `contact_a_id` or
+     * `contact_b_id` and never through both at once. The two are asked as one `where`
+     * group so each meets the index that leads with its own column.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeForContact(Builder $query, Contact $contact): void
+    {
+        $query->where('account_id', $contact->account_id)
+            ->where('vault_id', $contact->vault_id)
+            ->where(function (Builder $query) use ($contact): void {
+                $query->where('contact_a_id', $contact->id)
+                    ->orWhere('contact_b_id', $contact->id);
+            });
     }
 
     /**

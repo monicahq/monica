@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\RelationshipBehaviorEnum;
 use App\Enums\RelationshipStatusEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\CannotLinkSomebodyToThemselves;
 use App\Exceptions\RelationshipTypeIsNotAvailable;
 use App\Exceptions\RelationshipWouldCrossVaults;
-use App\Exceptions\RelationshipWouldLoopParentage;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Relationship;
@@ -28,6 +26,8 @@ use Illuminate\Support\Facades\DB;
  */
 class CreateRelationship
 {
+    use RefusesALoopInParentage;
+
     private Relationship $relationship;
 
     private Contact $other;
@@ -55,7 +55,13 @@ class CreateRelationship
         DB::transaction(function (): void {
             $this->settleTheOtherSide();
             $this->orderTheSides();
-            $this->refuseALoopInParentage();
+            $this->refuseALoopInParentage(
+                relationshipType: $this->relationshipType,
+                sideA: $this->sideA,
+                sideB: $this->sideB,
+                accountId: $this->user->account_id,
+                vaultId: $this->vault->id,
+            );
             $this->create();
         });
 
@@ -133,45 +139,6 @@ class CreateRelationship
 
         $this->sideA = $this->swapped ? $this->other : $this->contact;
         $this->sideB = $this->swapped ? $this->contact : $this->other;
-    }
-
-    private function refuseALoopInParentage(): void
-    {
-        if ($this->relationshipType->system_behavior !== RelationshipBehaviorEnum::GenealogyParentage) {
-            return;
-        }
-
-        $parentageTypes = $this->parentageTypeIds();
-        $seen = [$this->sideA->id];
-        $generation = [$this->sideA->id];
-
-        while ($generation !== []) {
-            $parents = Relationship::query()
-                ->where('vault_id', $this->vault->id)
-                ->whereIn('contact_b_id', $generation)
-                ->whereIn('relationship_type_id', $parentageTypes)
-                ->pluck('contact_a_id')
-                ->all();
-
-            if (in_array($this->sideB->id, $parents, true)) {
-                throw new RelationshipWouldLoopParentage(
-                    __('That would make somebody their own ancestor.')
-                );
-            }
-
-            $generation = array_values(array_diff(array_unique($parents), $seen));
-            $seen = array_merge($seen, $generation);
-        }
-    }
-
-    /** @return array<int, int> */
-    private function parentageTypeIds(): array
-    {
-        return RelationshipType::query()
-            ->where('account_id', $this->user->account_id)
-            ->where('system_behavior', RelationshipBehaviorEnum::GenealogyParentage)
-            ->pluck('id')
-            ->all();
     }
 
     private function create(): void

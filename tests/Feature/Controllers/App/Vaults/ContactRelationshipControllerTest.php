@@ -329,6 +329,252 @@ class ContactRelationshipControllerTest extends TestCase
             ->assertRedirect(route('auth.login.new'));
     }
 
+    #[Test]
+    public function it_shows_the_relationships_tab_grouped_and_counted(): void
+    {
+        $user = User::factory()->create();
+        $judy = $this->contactOf($user, 'Judy', 'Geller');
+        $ross = $this->contactOn($judy->vault, 'Ross', 'Geller');
+        $types = $this->typesOf($user);
+
+        Relationship::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $judy->vault_id,
+            'relationship_type_id' => $types['parent']->id,
+            'contact_a_id' => $judy->id,
+            'contact_b_id' => $ross->id,
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $judy->vault, 'contact' => $judy, 'page' => 'relationships']))
+            ->assertStatus(200)
+            ->assertSee('Family')
+            ->assertSee('Ross Geller')
+            ->assertSee('Manage');
+    }
+
+    #[Test]
+    public function it_refuses_the_relationships_tab_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $stranger = User::factory()->create();
+        $contact = $this->contactOf($stranger, 'Judy', 'Geller');
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $contact->vault, 'contact' => $contact, 'page' => 'relationships']))
+            ->assertStatus(404);
+    }
+
+    #[Test]
+    public function it_opens_the_form_that_corrects_a_relationship(): void
+    {
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+        $contact = Contact::query()->findOrFail($relationship->contact_a_id);
+
+        $this->actingAs($user)
+            ->get(route('contacts.relationships.edit', [
+                'vault' => $relationship->vault,
+                'contact' => $contact,
+                'relationship' => $relationship,
+            ]))
+            ->assertStatus(200)
+            ->assertSee('Edit this relationship')
+            ->assertSee('Still going');
+    }
+
+    #[Test]
+    public function it_changes_a_relationship(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+        $contact = Contact::query()->findOrFail($relationship->contact_a_id);
+        $sibling = RelationshipType::query()
+            ->where('account_id', $user->account_id)
+            ->where('key', RelationshipTypeEnum::Sibling->value)
+            ->firstOrFail();
+
+        $this->actingAs($user)
+            ->put(route('contacts.relationships.update', [
+                'vault' => $relationship->vault,
+                'contact' => $contact,
+                'relationship' => $relationship,
+            ]), [
+                'relationship_type_id' => $sibling->id,
+                'status' => RelationshipStatusEnum::Ended->value,
+                'started_on' => '1990-04-01',
+                'ended_on' => '2001-06-30',
+            ])
+            ->assertRedirect(route('contacts.show', [
+                'vault' => $relationship->vault,
+                'contact' => $contact,
+                'page' => 'relationships',
+            ]));
+
+        $this->assertDatabaseHas('relationships', [
+            'id' => $relationship->id,
+            'relationship_type_id' => $sibling->id,
+            'status' => RelationshipStatusEnum::Ended->value,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_change_whose_end_falls_before_its_start(): void
+    {
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+        $contact = Contact::query()->findOrFail($relationship->contact_a_id);
+
+        $this->actingAs($user)
+            ->put(route('contacts.relationships.update', [
+                'vault' => $relationship->vault,
+                'contact' => $contact,
+                'relationship' => $relationship,
+            ]), [
+                'relationship_type_id' => $relationship->relationship_type_id,
+                'status' => RelationshipStatusEnum::Ended->value,
+                'started_on' => '2001-06-30',
+                'ended_on' => '1990-04-01',
+            ])
+            ->assertSessionHasErrors('ended_on');
+
+        $this->assertDatabaseHas('relationships', [
+            'id' => $relationship->id,
+            'status' => RelationshipStatusEnum::Current->value,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_change_without_a_status(): void
+    {
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+        $contact = Contact::query()->findOrFail($relationship->contact_a_id);
+
+        $this->actingAs($user)
+            ->put(route('contacts.relationships.update', [
+                'vault' => $relationship->vault,
+                'contact' => $contact,
+                'relationship' => $relationship,
+            ]), ['relationship_type_id' => $relationship->relationship_type_id])
+            ->assertSessionHasErrors('status');
+    }
+
+    #[Test]
+    public function it_refuses_to_change_a_relationship_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $stranger = User::factory()->create();
+        $relationship = $this->relationshipOf($stranger);
+        $contact = Contact::query()->findOrFail($relationship->contact_a_id);
+
+        $this->actingAs($user)
+            ->get(route('contacts.relationships.edit', [
+                'vault' => $relationship->vault,
+                'contact' => $contact,
+                'relationship' => $relationship,
+            ]))
+            ->assertStatus(404);
+    }
+
+    #[Test]
+    public function it_removes_a_relationship(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+        $contact = Contact::query()->findOrFail($relationship->contact_a_id);
+
+        $this->actingAs($user)
+            ->delete(route('contacts.relationships.destroy', [
+                'vault' => $relationship->vault,
+                'contact' => $contact,
+                'relationship' => $relationship,
+            ]))
+            ->assertRedirect(route('contacts.show', [
+                'vault' => $relationship->vault,
+                'contact' => $contact,
+                'page' => 'relationships',
+            ]));
+
+        $this->assertSoftDeleted($relationship);
+        $this->assertModelExists($contact);
+    }
+
+    #[Test]
+    public function it_refuses_a_second_confirmation_of_the_same_removal(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+        $contact = Contact::query()->findOrFail($relationship->contact_a_id);
+        $url = route('contacts.relationships.destroy', [
+            'vault' => $relationship->vault,
+            'contact' => $contact,
+            'relationship' => $relationship,
+        ]);
+
+        $this->actingAs($user)->delete($url);
+        $this->actingAs($user)->delete($url)->assertStatus(404);
+    }
+
+    #[Test]
+    public function it_refuses_to_remove_a_relationship_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $stranger = User::factory()->create();
+        $relationship = $this->relationshipOf($stranger);
+        $contact = Contact::query()->findOrFail($relationship->contact_a_id);
+
+        $this->actingAs($user)
+            ->delete(route('contacts.relationships.destroy', [
+                'vault' => $relationship->vault,
+                'contact' => $contact,
+                'relationship' => $relationship,
+            ]))
+            ->assertStatus(404);
+
+        $this->assertModelExists($relationship);
+    }
+
+    #[Test]
+    public function it_refuses_a_relationship_reached_through_the_wrong_vault(): void
+    {
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+        $contact = Contact::query()->findOrFail($relationship->contact_a_id);
+        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
+        $stray = $this->contactOn($elsewhere, 'Ruth', 'Geller');
+
+        $this->actingAs($user)
+            ->delete(route('contacts.relationships.destroy', [
+                'vault' => $elsewhere,
+                'contact' => $stray,
+                'relationship' => $relationship,
+            ]))
+            ->assertStatus(404);
+
+        $this->assertModelExists($relationship);
+    }
+
+    private function relationshipOf(User $user): Relationship
+    {
+        $judy = $this->contactOf($user, 'Judy', 'Geller');
+        $ross = $this->contactOn($judy->vault, 'Ross', 'Geller');
+
+        return Relationship::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $judy->vault_id,
+            'relationship_type_id' => $this->typesOf($user)['parent']->id,
+            'contact_a_id' => $judy->id,
+            'contact_b_id' => $ross->id,
+        ]);
+    }
+
     private function contactOf(User $user, string $firstName, string $lastName): Contact
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);

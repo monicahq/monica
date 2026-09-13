@@ -15,12 +15,15 @@ enum ContactGroupingEnum: string implements Translatable
 
     case Archived = 'archived';
 
+    case NamesOnly = 'names-only';
+
     public function label(): string
     {
         return match ($this) {
             self::Everyone => 'Everybody',
             self::Favourites => 'Favourites',
             self::Archived => 'Archived',
+            self::NamesOnly => 'Names only',
         };
     }
 
@@ -30,6 +33,7 @@ enum ContactGroupingEnum: string implements Translatable
             self::Everyone => 'people',
             self::Favourites => 'star',
             self::Archived => 'file',
+            self::NamesOnly => 'profile',
         };
     }
 

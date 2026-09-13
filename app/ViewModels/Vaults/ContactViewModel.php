@@ -30,6 +30,8 @@ class ContactViewModel
 {
     public const string PAGE_OVERVIEW = 'overview';
 
+    public const string PAGE_RELATIONSHIPS = 'relationships';
+
     public const string PAGE_VERSION_HISTORY = 'version-history';
 
     private const int HEADER_FACTS = 3;
@@ -259,6 +261,16 @@ class ContactViewModel
         }
 
         $tabs[] = [
+            'key' => self::PAGE_RELATIONSHIPS,
+            'label' => __('Relationships'),
+            'icon' => 'relationship',
+            'count' => $this->relationships()->total() === 0 ? null : $this->relationships()->total(),
+            'url' => $this->urlTo(self::PAGE_RELATIONSHIPS),
+            'isSelected' => $this->onRelationships(),
+            'isPinned' => false,
+        ];
+
+        $tabs[] = [
             'key' => self::PAGE_VERSION_HISTORY,
             'label' => __('Version history'),
             'icon' => 'timeline',
@@ -274,7 +286,7 @@ class ContactViewModel
     public function selectedPage(): ?TemplateVersionPage
     {
         return once(function (): ?TemplateVersionPage {
-            if (in_array($this->selectedPageKey, [null, self::PAGE_OVERVIEW, self::PAGE_VERSION_HISTORY], true)) {
+            if (in_array($this->selectedPageKey, [null, self::PAGE_OVERVIEW, self::PAGE_RELATIONSHIPS, self::PAGE_VERSION_HISTORY], true)) {
                 return null;
             }
 
@@ -284,7 +296,12 @@ class ContactViewModel
 
     public function onOverview(): bool
     {
-        return $this->selectedPage() === null && ! $this->onVersionHistory();
+        return $this->selectedPage() === null && ! $this->onVersionHistory() && ! $this->onRelationships();
+    }
+
+    public function onRelationships(): bool
+    {
+        return $this->selectedPageKey === self::PAGE_RELATIONSHIPS;
     }
 
     public function onVersionHistory(): bool
@@ -769,6 +786,14 @@ class ContactViewModel
     public function immediateFamily(): ImmediateFamilyBlock
     {
         return once(fn (): ImmediateFamilyBlock => new ImmediateFamilyBlock(
+            vault: $this->vault,
+            contact: $this->contact,
+        ));
+    }
+
+    public function relationships(): RelationshipsBlock
+    {
+        return once(fn (): RelationshipsBlock => new RelationshipsBlock(
             vault: $this->vault,
             contact: $this->contact,
         ));

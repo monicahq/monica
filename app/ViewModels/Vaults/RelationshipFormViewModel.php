@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Models\Contact;
-use App\Models\RelationshipCategory;
-use App\Models\RelationshipType;
 use App\Models\User;
 use App\Models\Vault;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
 class RelationshipFormViewModel
 {
@@ -85,55 +82,23 @@ class RelationshipFormViewModel
     /** @return array<int, array{label: string, types: array<int, array{value: int, label: string, roleA: string, roleB: string, isSymmetric: bool}>}> */
     public function typeGroups(): array
     {
-        $categories = RelationshipCategory::query()
-            ->where('account_id', $this->user->account_id)
-            ->where('is_active', true)
-            ->with(['types' => function (Relation $query): void {
-                $query->where('is_active', true);
-            }])
-            ->orderBy('position')
-            ->get();
-
-        return $categories
-            ->map(fn (RelationshipCategory $category): array => [
-                'label' => $category->name,
-                'types' => $category->types
-                    ->map(fn (RelationshipType $type): array => [
-                        'value' => $type->id,
-                        'label' => $this->typeLabel($type),
-                        'roleA' => $type->role_a,
-                        'roleB' => $type->role_b,
-                        'isSymmetric' => $type->is_symmetric,
-                    ])
-                    ->values()
-                    ->all(),
-            ])
-            ->filter(fn (array $group): bool => $group['types'] !== [])
-            ->values()
-            ->all();
+        return $this->choices()->groups();
     }
 
     public function hasTypes(): bool
     {
-        return $this->typeGroups() !== [];
+        return $this->choices()->any();
     }
 
     /** @return array<int, array{roleA: string, roleB: string, isSymmetric: bool}> */
     public function typeMap(): array
     {
-        $map = [];
+        return $this->choices()->map();
+    }
 
-        foreach ($this->typeGroups() as $group) {
-            foreach ($group['types'] as $type) {
-                $map[$type['value']] = [
-                    'roleA' => $type['roleA'],
-                    'roleB' => $type['roleB'],
-                    'isSymmetric' => $type['isSymmetric'],
-                ];
-            }
-        }
-
-        return $map;
+    private function choices(): RelationshipTypeChoices
+    {
+        return once(fn (): RelationshipTypeChoices => new RelationshipTypeChoices(accountId: $this->user->account_id));
     }
 
     public function noTypesLine(): string
@@ -225,15 +190,6 @@ class RelationshipFormViewModel
             ->find($id);
 
         return $contact instanceof Contact ? $contact->name : '';
-    }
-
-    private function typeLabel(RelationshipType $type): string
-    {
-        if ($type->is_symmetric) {
-            return $type->role_a;
-        }
-
-        return __(':roleA ↔ :roleB', ['roleA' => $type->role_a, 'roleB' => $type->role_b]);
     }
 
     private function candidateNote(Contact $contact): string

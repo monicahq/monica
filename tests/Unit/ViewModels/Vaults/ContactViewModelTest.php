@@ -14,6 +14,7 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\RecordSnapshot;
+use App\Models\Relationship;
 use App\Models\Reminder;
 use App\Models\Section;
 use App\Models\SectionVersion;
@@ -248,9 +249,10 @@ class ContactViewModelTest extends TestCase
 
         $tabs = $viewModel->pages();
 
-        $this->assertCount(2, $tabs);
+        $this->assertCount(3, $tabs);
         $this->assertSame(ContactViewModel::PAGE_OVERVIEW, $tabs[0]['key']);
-        $this->assertSame(ContactViewModel::PAGE_VERSION_HISTORY, $tabs[1]['key']);
+        $this->assertSame(ContactViewModel::PAGE_RELATIONSHIPS, $tabs[1]['key']);
+        $this->assertSame(ContactViewModel::PAGE_VERSION_HISTORY, $tabs[2]['key']);
         $this->assertTrue($viewModel->onOverview());
     }
 
@@ -939,6 +941,64 @@ class ContactViewModelTest extends TestCase
             'Remove Michael Scott from favourites',
             new ContactViewModel(user: $user, vault: $favourite->vault, contact: $favourite)->favouriteLabel(),
         );
+    }
+
+    #[Test]
+    public function the_relationships_tab_stands_among_the_others_and_carries_its_count(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, []);
+        $contact = $this->contact($user, $version);
+        $other = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $contact->vault_id,
+        ]);
+
+        Relationship::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $contact->vault_id,
+            'contact_a_id' => $contact->id,
+            'contact_b_id' => $other->id,
+        ]);
+
+        $tabs = collect((new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact))->pages())
+            ->keyBy('key');
+
+        $this->assertArrayHasKey(ContactViewModel::PAGE_RELATIONSHIPS, $tabs);
+        $this->assertSame(1, $tabs[ContactViewModel::PAGE_RELATIONSHIPS]['count']);
+        $this->assertFalse($tabs[ContactViewModel::PAGE_RELATIONSHIPS]['isSelected']);
+    }
+
+    #[Test]
+    public function the_relationships_tab_counts_nothing_when_nobody_is_connected(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, []);
+        $contact = $this->contact($user, $version);
+
+        $tabs = collect((new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact))->pages())
+            ->keyBy('key');
+
+        $this->assertNull($tabs[ContactViewModel::PAGE_RELATIONSHIPS]['count']);
+    }
+
+    #[Test]
+    public function the_relationships_key_selects_its_own_page_and_not_the_overview(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, []);
+        $contact = $this->contact($user, $version);
+
+        $viewModel = new ContactViewModel(
+            user: $user,
+            vault: $contact->vault,
+            contact: $contact,
+            selectedPageKey: ContactViewModel::PAGE_RELATIONSHIPS,
+        );
+
+        $this->assertTrue($viewModel->onRelationships());
+        $this->assertFalse($viewModel->onOverview());
+        $this->assertNull($viewModel->selectedPage());
     }
 
     private function contact(User $user, TemplateVersion $version, array $attributes = []): Contact
