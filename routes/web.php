@@ -93,6 +93,7 @@ use App\Http\Controllers\App\Vaults\ContactDuplicateSearchController;
 use App\Http\Controllers\App\Vaults\ContactFavouriteController;
 use App\Http\Controllers\App\Vaults\ContactMergeController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
+use App\Http\Controllers\App\Vaults\ContactRelationshipController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\ContactShareLinkController;
 use App\Http\Controllers\App\Vaults\ContactTemplateVersionController;
@@ -226,6 +227,12 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::post('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'create'])
         ->name('contacts.merge.create');
+
+    Route::get('vaults/{vault}/contacts/{contact}/relationships/new', [ContactRelationshipController::class, 'new'])
+        ->name('contacts.relationships.new');
+
+    Route::post('vaults/{vault}/contacts/{contact}/relationships', [ContactRelationshipController::class, 'create'])
+        ->name('contacts.relationships.create');
 
     Route::get('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'show'])
         ->missing(fn (Request $request): Response => new AbsorbedContactController()->show($request))

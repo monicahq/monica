@@ -210,6 +210,10 @@
         </x-panel>
 
         <x-panel :title="__('Relationships')" icon="relationship">
+          <x-slot:action>
+            <x-button.secondary size="small" :href="$viewModel->addRelationshipUrl()">{{ __('Add a relationship') }}</x-button.secondary>
+          </x-slot:action>
+
           <p class="text-sm text-pretty text-muted">{{ $unbuilt['relationships'] }}</p>
         </x-panel>
 

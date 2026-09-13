@@ -9,7 +9,7 @@ The user-selectable nature of a link between two people: Parent / Child, Sibling
 
 A type belongs to a display category and defines how the relationship reads from each side. It may be symmetric, as Friend, or directed, as Parent / Child.
 
-Some supplied types carry a small protected behaviour used by product features. Parent / Child feeds the family tree. Partner, Fiancé and Spouse feed romantic history. This behaviour is attached to the stable type, not to its name or category.
+Some supplied types carry a small protected behaviour used by product features. Parent / Child feeds the family tree and the Children list. Partner, Fiancé and Spouse feed romantic history and, for current relationships, the Current partner list. Together these lists form the contact's Immediate family block. This behaviour is attached to the stable type, not to its name or category.
 
 ## Fields
 
@@ -67,5 +67,4 @@ deleted_at                  datetime
 - A supplied name or role is stored as a translation key rather than a word, so it reads in the
   language of whoever is looking. The moment the user rewrites it, their words are stored and the
   key is ignored. This is the same arrangement [ValueList](009-value-list-in-progress.md) uses.
-- The initial system has no deduction rules. `system_behavior` is only a stable hook for the family-tree and romantic-history projections and for optional future inference features.
-
+- The initial system has no deduction rules. `system_behavior` is only a stable hook for the Immediate family, family-tree and romantic-history projections and for optional future inference features.

@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
-use App\Exceptions\ContactNeedsAName;
 use App\Helpers\LocaleCollation;
 use App\Helpers\ReservedAddressWords;
 use App\Helpers\SlugBuilder;
@@ -32,11 +31,14 @@ use Override;
  *
  * A person being documented, and the object the whole product orbits.
  *
- * The concept is frozen and its content is not. A contact will always be a
- * person with a name; everything else on the page comes from the template
- * version it points at. Only the name is imposed, because the product uses it
- * constantly to sort, to search, to render headers and to build initials, and
- * none of that can depend on a field the user might have deleted.
+ * The concept is frozen and its content is not. The structured name is the one
+ * thing the product imposes, because it uses it constantly to sort, to search,
+ * to render headers and to build initials, and none of that can depend on a
+ * field the user might have deleted. Every part of it is optional, including
+ * all of them at once: somebody whose existence is known before their name is
+ * displays through the translated fallback, which is never stored in a name
+ * field. Everything else on the page comes from the template version it points
+ * at.
  *
  * A contact is addressed two ways, and answers to both. The slug is built from
  * the whole name the page shows, in the order that name reads in, keeping the
@@ -48,8 +50,9 @@ use Override;
  * Two special states live here. One contact per vault is flagged `is_me` and
  * represents the user, so that "Alice is my sister" is a relationship between
  * two rows rather than an invisible parallel logic. A partial contact is
- * somebody mentioned in a relationship and reduced to a first name, kept out of
- * the main lists until they are filled in.
+ * somebody written down while a relationship was being entered, kept out of the
+ * main lists until they are filled in. Partial and nameless are independent:
+ * either a partial or a regular contact may have no name.
  *
  * @property int $id
  * @property string $uuid
@@ -560,8 +563,21 @@ class Contact extends Model
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => $this->nameInOrder($this->name_order ?? NameOrderEnum::GivenFirst),
+            get: function (): string {
+                $name = $this->nameInOrder($this->name_order ?? NameOrderEnum::GivenFirst);
+
+                if ($name !== '') {
+                    return $name;
+                }
+
+                return __('Unnamed contact');
+            },
         );
+    }
+
+    public function isNameless(): bool
+    {
+        return $this->nameInOrder($this->name_order ?? NameOrderEnum::GivenFirst) === '';
     }
 
     /**
@@ -576,6 +592,10 @@ class Contact extends Model
     {
         return Attribute::make(
             get: function (): string {
+                if ($this->isNameless()) {
+                    return '?';
+                }
+
                 $words = collect([$this->first_name, $this->last_name])->filter();
 
                 if ($words->isEmpty()) {
@@ -620,6 +640,10 @@ class Contact extends Model
             ?? $this->maiden_name));
     }
 
+    /**
+     * A contact with no name part at all sorts and searches on an empty string,
+     * which is what lets somebody be written down before their name is known.
+     */
     private function buildSortName(): string
     {
         $parts = collect([$this->last_name, $this->first_name, $this->middle_name])
@@ -627,10 +651,6 @@ class Contact extends Model
             ->implode(' ');
 
         $sortName = mb_trim($parts !== '' ? $parts : (string) ($this->nickname ?? $this->maiden_name));
-
-        if ($sortName === '') {
-            throw new ContactNeedsAName('A contact needs at least one part of a name.');
-        }
 
         return mb_substr(mb_strtolower($sortName), 0, 511);
     }

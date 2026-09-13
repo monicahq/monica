@@ -12,9 +12,11 @@ use Database\Factories\RelationshipTypeFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Override;
 
@@ -63,6 +65,7 @@ use Override;
  * @property CarbonImmutable|null $deleted_at
  * @property-read Account $account
  * @property-read RelationshipCategory $relationshipCategory
+ * @property-read Collection<int, Relationship> $relationships
  */
 #[Fillable([
     'account_id',
@@ -109,13 +112,23 @@ class RelationshipType extends Model
     /**
      * How many relationships are written with this type.
      *
-     * The relationship record does not exist yet, so the answer is none. It is
-     * asked for here rather than at each call site because two rules turn on it:
-     * a type in use keeps its direction, and a type in use cannot be deleted.
+     * It is asked for here rather than at each call site because two rules turn
+     * on it: a type in use keeps its direction, and a type in use cannot be
+     * deleted. A soft deleted relationship is not in use.
      */
     public function relationshipCount(): int
     {
-        return 0;
+        return $this->relationships()->count();
+    }
+
+    /**
+     * Get the relationships written with this type.
+     *
+     * @return HasMany<Relationship, $this>
+     */
+    public function relationships(): HasMany
+    {
+        return $this->hasMany(Relationship::class);
     }
 
     /**

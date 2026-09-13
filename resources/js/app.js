@@ -10,6 +10,7 @@ import ajax from '@imacrayon/alpine-ajax';
 import confirmPassword from './confirm-password';
 import fieldReminder from './field-reminder';
 import passkey from './passkey';
+import relationshipForm from './relationship-form';
 import timezonePicker from './timezone-picker';
 
 window.Turbo = Turbo;
@@ -19,6 +20,7 @@ Turbo.session.drive = false;
 Alpine.data('confirmPassword', confirmPassword);
 Alpine.data('fieldReminder', fieldReminder);
 Alpine.data('passkey', passkey);
+Alpine.data('relationshipForm', relationshipForm);
 Alpine.data('timezonePicker', timezonePicker);
 
 window.Alpine = Alpine;

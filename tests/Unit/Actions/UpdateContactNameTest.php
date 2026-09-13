@@ -7,7 +7,6 @@ namespace Tests\Unit\Actions;
 use App\Actions\UpdateContactName;
 use App\Enums\NameOrderEnum;
 use App\Enums\UserActionEnum;
-use App\Exceptions\ContactNeedsAName;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\User;
@@ -102,16 +101,18 @@ class UpdateContactNameTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_leave_a_contact_with_no_name_at_all(): void
+    public function it_lets_a_contact_be_left_with_no_name_at_all(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
         $contact = Contact::factory()->create(['account_id' => $user->account_id]);
 
-        $this->expectException(ContactNeedsAName::class);
-
         new UpdateContactName(user: $user, contact: $contact, prefix: 'Dr')->execute();
+
+        $this->assertTrue($contact->refresh()->isNameless());
+        $this->assertEquals(__('Unnamed contact'), $contact->name);
+        $this->assertDatabaseHas('contacts', ['id' => $contact->id, 'first_name' => null, 'last_name' => null]);
     }
 
     #[Test]

@@ -7,8 +7,10 @@ namespace Tests\Unit\Models;
 use App\Enums\RelationshipBehaviorEnum;
 use App\Enums\RelationshipTypeEnum;
 use App\Models\Account;
+use App\Models\Relationship;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -102,9 +104,40 @@ class RelationshipTypeTest extends TestCase
     }
 
     #[Test]
-    public function nothing_is_written_with_it_while_relationships_do_not_exist(): void
+    public function nothing_is_written_with_a_type_nobody_has_used(): void
     {
         $type = RelationshipType::factory()->create();
+
+        $this->assertEquals(0, $type->relationshipCount());
+    }
+
+    #[Test]
+    public function it_counts_the_relationships_written_with_it(): void
+    {
+        $type = RelationshipType::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $type->account_id]);
+
+        Relationship::factory()->count(2)->create([
+            'account_id' => $type->account_id,
+            'vault_id' => $vault->id,
+            'relationship_type_id' => $type->id,
+        ]);
+
+        $this->assertEquals(2, $type->relationshipCount());
+    }
+
+    #[Test]
+    public function a_relationship_that_was_deleted_no_longer_uses_the_type(): void
+    {
+        $type = RelationshipType::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $type->account_id]);
+        $relationship = Relationship::factory()->create([
+            'account_id' => $type->account_id,
+            'vault_id' => $vault->id,
+            'relationship_type_id' => $type->id,
+        ]);
+
+        $relationship->delete();
 
         $this->assertEquals(0, $type->relationshipCount());
     }

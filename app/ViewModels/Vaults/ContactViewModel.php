@@ -758,6 +758,14 @@ class ContactViewModel
             ->filter(fn (Field $field): bool => $field->type->storesValue());
     }
 
+    public function addRelationshipUrl(): string
+    {
+        return route('contacts.relationships.new', [
+            'vault' => $this->vault,
+            'contact' => $this->contact,
+        ]);
+    }
+
     private function urlTo(?string $pageKey): string
     {
         return route('contacts.show', array_filter([

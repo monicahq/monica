@@ -41,7 +41,7 @@ updated_at                  datetime
 - `position` is unique within a template version. Reordering pages normalises the positions into one contiguous sequence.
 - A published template version freezes its pages. A page can be added, renamed, reordered or removed only while its template version is a draft.
 - The last page cannot be removed. A page containing section placements cannot be removed until those sections have been moved or removed explicitly.
-- A draft page may be empty while the template is being assembled. A version with several pages cannot be published while any of them is empty. A one page template may be published without a section because a record whose only custom content is its imposed name remains valid.
+- A draft page may be empty while the template is being assembled. A version with several pages cannot be published while any of them is empty. A one page template may be published without a section because a contact remains valid with only its product-owned identity header, even when every name component is empty.
 - There is no product limit above one page. The builder and record navigation must continue to work when the tab list is wider than the viewport.
 - A page stores presentation and navigation only. Fields and their values continue to belong to section versions. Search, filtering, reminders, exports and highlighted fields work across all pages.
 - A page is not a marketplace item. When a template is published or installed, its page structure travels inside the template payload. Publishing a section alone carries no page with it.

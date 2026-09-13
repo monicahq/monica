@@ -7,7 +7,6 @@ namespace Tests\Unit\Actions;
 use App\Actions\CreateContact;
 use App\Enums\NameOrderEnum;
 use App\Enums\UserActionEnum;
-use App\Exceptions\ContactNeedsAName;
 use App\Exceptions\TooManyContacts;
 use App\Exceptions\VaultAlreadyHasAMeContact;
 use App\Exceptions\VaultHasNoContactDefault;
@@ -283,21 +282,25 @@ class CreateContactTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_contact_with_no_part_of_a_name(): void
+    public function it_writes_down_somebody_whose_name_is_not_known(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->expectException(ContactNeedsAName::class);
-
-        new CreateContact(
+        $contact = new CreateContact(
             user: $user,
             vault: $vault,
             templateVersion: $this->publishedContactVersion($user->account),
             prefix: 'Dr',
+            isPartial: true,
         )->execute();
+
+        $this->assertTrue($contact->isNameless());
+        $this->assertTrue($contact->is_partial);
+        $this->assertEquals(__('Unnamed contact'), $contact->name);
+        $this->assertDatabaseHas('contacts', ['id' => $contact->id, 'first_name' => null, 'last_name' => null]);
     }
 
     #[Test]

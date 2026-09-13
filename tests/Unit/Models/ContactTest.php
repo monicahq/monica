@@ -7,7 +7,6 @@ namespace Tests\Unit\Models;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
-use App\Exceptions\ContactNeedsAName;
 use App\Helpers\LocaleCollation;
 use App\Models\Account;
 use App\Models\Contact;
@@ -165,11 +164,9 @@ class ContactTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_contact_with_no_part_of_a_name_at_all(): void
+    public function it_accepts_a_contact_with_no_part_of_a_name_at_all(): void
     {
-        $this->expectException(ContactNeedsAName::class);
-
-        Contact::factory()->create([
+        $contact = Contact::factory()->create([
             'prefix' => 'Dr',
             'first_name' => null,
             'middle_name' => null,
@@ -177,6 +174,37 @@ class ContactTest extends TestCase
             'nickname' => null,
             'maiden_name' => null,
         ]);
+
+        $this->assertTrue($contact->isNameless());
+        $this->assertEquals('', $contact->sort_name);
+        $this->assertEquals('', $contact->search_key);
+    }
+
+    #[Test]
+    public function it_shows_a_nameless_contact_through_the_fallback_without_storing_it(): void
+    {
+        $contact = Contact::factory()->create([
+            'first_name' => null,
+            'middle_name' => null,
+            'last_name' => null,
+            'nickname' => null,
+            'maiden_name' => null,
+        ]);
+
+        $this->assertEquals(__('Unnamed contact'), $contact->name);
+        $this->assertEquals('?', $contact->initials);
+        $this->assertDatabaseHas('contacts', ['id' => $contact->id, 'first_name' => null, 'last_name' => null]);
+    }
+
+    #[Test]
+    public function two_nameless_contacts_stay_separate_people(): void
+    {
+        $vault = Vault::factory()->create();
+        $first = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'first_name' => null, 'last_name' => null, 'nickname' => null, 'maiden_name' => null]);
+        $second = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'first_name' => null, 'last_name' => null, 'nickname' => null, 'maiden_name' => null]);
+
+        $this->assertNotEquals($first->id, $second->id);
+        $this->assertNotEquals($first->slug, $second->slug);
     }
 
     #[Test]

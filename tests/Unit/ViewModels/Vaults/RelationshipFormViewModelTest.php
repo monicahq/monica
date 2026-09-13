@@ -1,0 +1,229 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\ViewModels\Vaults;
+
+use App\Enums\RelationshipTypeEnum;
+use App\Models\Contact;
+use App\Models\RelationshipCategory;
+use App\Models\RelationshipType;
+use App\Models\User;
+use App\Models\Vault;
+use App\ViewModels\Vaults\RelationshipFormViewModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class RelationshipFormViewModelTest extends TestCase
+{
+    use RefreshDatabase;
+
+    #[Test]
+    public function it_groups_the_types_under_their_category(): void
+    {
+        $user = User::factory()->create();
+        $family = $this->categoryOf($user, 'Family', 1);
+        $work = $this->categoryOf($user, 'Professional', 2);
+        $this->typeOn($family, RelationshipTypeEnum::ParentChild);
+        $this->typeOn($work, RelationshipTypeEnum::Colleague);
+
+        $groups = $this->viewModelFor($user)->typeGroups();
+
+        $this->assertCount(2, $groups);
+        $this->assertEquals('Family', $groups[0]['label']);
+        $this->assertEquals('Professional', $groups[1]['label']);
+    }
+
+    #[Test]
+    public function it_names_a_directed_type_by_both_of_its_roles(): void
+    {
+        $user = User::factory()->create();
+        $this->typeOn($this->categoryOf($user, 'Family', 1), RelationshipTypeEnum::ParentChild);
+
+        $groups = $this->viewModelFor($user)->typeGroups();
+
+        $this->assertEquals('Parent ↔ Child', $groups[0]['types'][0]['label']);
+        $this->assertFalse($groups[0]['types'][0]['isSymmetric']);
+    }
+
+    #[Test]
+    public function it_names_a_symmetric_type_by_its_one_role(): void
+    {
+        $user = User::factory()->create();
+        $this->typeOn($this->categoryOf($user, 'Family', 1), RelationshipTypeEnum::Sibling);
+
+        $groups = $this->viewModelFor($user)->typeGroups();
+
+        $this->assertEquals('Sibling', $groups[0]['types'][0]['label']);
+        $this->assertTrue($groups[0]['types'][0]['isSymmetric']);
+    }
+
+    #[Test]
+    public function it_leaves_out_a_deactivated_type(): void
+    {
+        $user = User::factory()->create();
+        $category = $this->categoryOf($user, 'Family', 1);
+        $this->typeOn($category, RelationshipTypeEnum::Sibling);
+        RelationshipType::factory()->inactive()->create([
+            'account_id' => $user->account_id,
+            'relationship_category_id' => $category->id,
+            'name' => 'Beet farmer',
+        ]);
+
+        $labels = collect($this->viewModelFor($user)->typeGroups()[0]['types'])->pluck('label');
+
+        $this->assertCount(1, $labels);
+        $this->assertFalse($labels->contains('Beet farmer'));
+    }
+
+    #[Test]
+    public function it_leaves_out_a_deactivated_category_and_one_holding_nothing(): void
+    {
+        $user = User::factory()->create();
+        $this->typeOn($this->categoryOf($user, 'Family', 1), RelationshipTypeEnum::Sibling);
+        $this->typeOn($this->categoryOf($user, 'Hidden', 2, false), RelationshipTypeEnum::Colleague);
+        $this->categoryOf($user, 'Empty', 3);
+
+        $groups = $this->viewModelFor($user)->typeGroups();
+
+        $this->assertCount(1, $groups);
+        $this->assertEquals('Family', $groups[0]['label']);
+    }
+
+    #[Test]
+    public function it_offers_no_type_belonging_to_another_account(): void
+    {
+        $user = User::factory()->create();
+        $this->typeOn($this->categoryOf(User::factory()->create(), 'Family', 1), RelationshipTypeEnum::Sibling);
+
+        $this->assertEquals([], $this->viewModelFor($user)->typeGroups());
+        $this->assertFalse($this->viewModelFor($user)->hasTypes());
+    }
+
+    #[Test]
+    public function it_keys_the_types_by_id_so_the_form_can_read_their_roles(): void
+    {
+        $user = User::factory()->create();
+        $type = $this->typeOn($this->categoryOf($user, 'Family', 1), RelationshipTypeEnum::ParentChild);
+
+        $map = $this->viewModelFor($user)->typeMap();
+
+        $this->assertEquals(['roleA' => 'Parent', 'roleB' => 'Child', 'isSymmetric' => false], $map[$type->id]);
+    }
+
+    #[Test]
+    public function it_offers_the_other_people_of_the_vault_and_never_the_one_on_screen(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactOn($vault, 'Michael', 'Scott');
+        $this->contactOn($vault, 'Dwight', 'Schrute');
+
+        $names = collect(new RelationshipFormViewModel(user: $user, vault: $vault, contact: $michael)->candidates())
+            ->pluck('name');
+
+        $this->assertEquals(['Dwight Schrute'], $names->all());
+    }
+
+    #[Test]
+    public function it_never_reaches_a_contact_of_another_vault(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactOn($vault, 'Michael', 'Scott');
+        $this->contactOn($elsewhere, 'Dwight', 'Schrute');
+
+        $candidates = new RelationshipFormViewModel(user: $user, vault: $vault, contact: $michael)->candidates();
+
+        $this->assertEquals([], $candidates);
+    }
+
+    #[Test]
+    public function it_narrows_the_people_to_what_was_searched_for(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactOn($vault, 'Michael', 'Scott');
+        $this->contactOn($vault, 'Dwight', 'Schrute');
+        $this->contactOn($vault, 'Angela', 'Martin');
+
+        $names = collect(new RelationshipFormViewModel(user: $user, vault: $vault, contact: $michael, query: 'schrute')->candidates())
+            ->pluck('name');
+
+        $this->assertEquals(['Dwight Schrute'], $names->all());
+    }
+
+    #[Test]
+    public function it_offers_more_people_than_the_list_shows_at_once(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactOn($vault, 'Michael', 'Scott');
+
+        foreach (range(1, 8) as $number) {
+            $this->contactOn($vault, 'Dwight', "Schrute {$number}");
+        }
+
+        $candidates = new RelationshipFormViewModel(user: $user, vault: $vault, contact: $michael)->candidates();
+
+        $this->assertCount(8, $candidates);
+    }
+
+    #[Test]
+    public function it_stops_short_of_loading_the_whole_vault(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactOn($vault, 'Michael', 'Scott');
+
+        foreach (range(1, RelationshipFormViewModel::CANDIDATE_LIMIT + 5) as $number) {
+            $this->contactOn($vault, 'Dwight', "Schrute {$number}");
+        }
+
+        $candidates = new RelationshipFormViewModel(user: $user, vault: $vault, contact: $michael)->candidates();
+
+        $this->assertCount(RelationshipFormViewModel::CANDIDATE_LIMIT, $candidates);
+    }
+
+    private function viewModelFor(User $user): RelationshipFormViewModel
+    {
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        return new RelationshipFormViewModel(
+            user: $user,
+            vault: $vault,
+            contact: $this->contactOn($vault, 'Michael', 'Scott'),
+        );
+    }
+
+    private function contactOn(Vault $vault, string $firstName, string $lastName): Contact
+    {
+        return Contact::factory()->create([
+            'account_id' => $vault->account_id,
+            'vault_id' => $vault->id,
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+        ]);
+    }
+
+    private function categoryOf(User $user, string $name, int $position, bool $isActive = true): RelationshipCategory
+    {
+        return RelationshipCategory::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => $name,
+            'position' => $position,
+            'is_active' => $isActive,
+        ]);
+    }
+
+    private function typeOn(RelationshipCategory $category, RelationshipTypeEnum $case): RelationshipType
+    {
+        return RelationshipType::factory()->system($case)->create([
+            'account_id' => $category->account_id,
+            'relationship_category_id' => $category->id,
+            'position' => 1,
+        ]);
+    }
+}

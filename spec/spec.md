@@ -52,7 +52,7 @@ Concretely:
 
 Seven objects are never personalisable in their nature: the **Account**, the **Vault**, the **Contact**, the **Activity**, the **Relationship**, the **Group** and the special identity **Me**. Two others complete them (**Reminders** and **Changelog**), not because they are indispensable to every use, but because the product has to be able to handle them transversally, whatever structure was chosen.
 
-Note the nuance: **it is the concept that is fixed, not its content.** An activity will always be something that happened on a date with people, but the list of activity natures and the fields they carry are entirely configurable (see 9.3). The same logic applies to the contact, where only the name is imposed.
+Note the nuance: **it is the concept that is fixed, not its content.** An activity will always be something that happened on a date with people, but the list of activity natures and the fields they carry are entirely configurable (see 9.3). The same logic applies to the contact: its name has a stable product-owned structure, but every part of it may be unknown.
 
 Erica is a **mono-user** product. An account corresponds to a single person who signs in. There are therefore no invitations, no roles, no permissions between users, and no shared vault. This simplicity is deliberate: multi-user was little used and added disproportionate complexity to access, reminders, the journal and files.
 
@@ -259,7 +259,7 @@ Without going into detail, here are the families offered.
 
 ### 5.7. What stays imposed on a contact
 
-The **name** stays structured by the product, in all its components: title, given name, middle name, family name, suffix, maiden name, nickname. The reason is simple: the product itself uses it constantly to sort, to search, to display headers and to generate initials. It cannot depend on a field the user might not have created.
+The **name** stays structured by the product, in all its components: title, given name, middle name, family name, suffix, maiden name, nickname. It cannot depend on a field the user might not have created. Every component is optional, including all of them at once: a contact may exist before any part of their name is known. Erica displays a translated **Unnamed contact** fallback without storing it as a name, draws `?` instead of initials, and sorts unnamed contacts after named contacts.
 
 Conversely, information you would think fundamental is in fact made of customisable fields supplied by default: gender, date of birth, description. They are there from the start, but they can be removed, renamed or replaced.
 
@@ -325,12 +325,15 @@ The supplied types are Parent / Child, Sibling, Grandparent / Grandchild, Aunt o
 
 **The household is not the couple.** Two partners can live apart, have several households, remain co-parents after a breakup. The product therefore models **groups** (household, family unit, couple, social circle, team) separately from relationships, with their own dates of entry and exit. A household is never automatically deduced from a couple.
 
-**Mentioned people become real contacts.** When you enter "Monica's son, Jack", Jack becomes a contact in his own right, but a **partial** one: reduced to a first name and a relationship, hidden from the main lists while he stays that way. You enrich him later, or merge him with an existing contact. There is never a parallel free text describing a human without them existing in the graph.
+**Every relationship always links two real contacts.** The relationship editor never stores a person as free text and never creates a relationship with a missing endpoint. When the user selects an existing person, Erica uses that contact. When the user enters a new person, Erica always creates a Contact and then links it, even when **Create a contact record for this person** is unchecked. The checkbox only chooses the contact's initial state: checked creates a regular contact visible in the contact lists; unchecked creates a partial contact hidden from those lists. Both have an id, a page and ordinary relationships.
+
+**Partial and nameless are separate ideas.** A partial contact is still a Contact; `is_partial` changes its visibility, not its identity or capabilities. A partial contact may have a name, and a regular contact may have none. When you enter "Monica's son, Jack", Jack may be created as a named partial contact. When you only know that Monica has two children, Erica creates two distinct nameless partial contacts and two explicit Parent / Child relationships. No placeholder name is stored, and adding a name later updates the same contact and relationship.
 
 **Groups are distinct objects.** A household, family, team or social circle has its own name and members. It is never created or suggested from a relationship in the first version.
 
 ### 8.3. Explicit projections and safeguards
 
+- **Immediate family is visible directly on a contact record from day one.** The block contains Children and Current partner. Children are distinct contacts reached by outgoing Parent / Child links, regardless of relationship status; this includes unnamed partial contacts created when only their existence is known. Current partners are distinct contacts reached from either side of explicit Partner, Fiancé or Spouse rows with current status. Dates are optional; an ended row with no end date is not current. If several partners are recorded as current, show all of them. Both lists exclude deleted contacts and relationships, retain partial and archived contacts, and count and paginate in the database. A short preview links to the full matching list. The [exact selection and acceptance scenarios](models/026-relationship-not-yet.md#immediate-family-on-a-contact-record) use protected behaviours and roles, never names, categories or deductions. Ending a partnership does not remove children.
 - **The family tree is a day-one feature containing only recorded facts.** Starting from any contact, it follows non-deleted Parent / Child rows recursively to show recorded ancestors and descendants, and may show recorded romantic links beside them. Its branches are loaded as needed rather than by loading every relationship in the vault. Parentage remains in the tree regardless of temporal status: death or estrangement does not erase it. Following a chain may place a grandparent, grandchild or sibling in the tree; it does not create or assert a Grandparent, Sibling, Aunt, Uncle or Cousin relationship.
 - **Romantic history contains only recorded facts.** It orders explicit Partner, Fiancé and Spouse rows using their status and known dates. An ended row is the history of an ex relationship; Ex-partner is not a supplied type.
 - **No deduction or suggestion runs in the first version.** The product never guesses a link from names, shared parents, dates, households or other relationships.
@@ -603,7 +606,7 @@ This is the part that decides whether the feature is usable or not.
 - Custom entities.
 - **The journal and activities** (see 9), with configurable natures, their own fields, the day view, the timeline on a contact's record and quick capture. This is half the product, not a side feature: without it, inactivity reminders and statistics have nothing to measure.
 - The essential field types: text, long text, number, yes or no, web address, email, phone, dropdown, multiple choice, date, recurring date, relation, file, image, repeater, address, layout elements, as well as marking fields as sensitive.
-- The simple system of relationship categories, relationship types and explicit dated relationships, including the family-tree and romantic-history projections described in section 8.
+- The simple system of relationship categories, relationship types and explicit dated relationships, including unnamed partial contacts, the Immediate family block, and the family-tree and romantic-history projections described in section 8.
 - Duplicate detection and merging, with preview, conflict resolution, relationship transfer and history preservation.
 - Reminders and notifications.
 - Search.
