@@ -43,15 +43,35 @@ trait ResolvesModelInVault
     #[Override]
     public function resolveRouteBinding($value, $field = null): ?self
     {
-        $field ??= $this->getRouteKeyName();
+        $columns = $field !== null ? [$field] : $this->routeKeyColumns();
 
-        $record = $this->findInVault($field, $value);
+        foreach ($columns as $column) {
+            $record = $this->findInVault($column, $value);
 
-        if ($record !== null || $field === 'id' || ! ctype_digit((string) $value)) {
-            return $record;
+            if ($record !== null) {
+                return $record;
+            }
+        }
+
+        if (in_array('id', $columns, true) || ! ctype_digit((string) $value)) {
+            return null;
         }
 
         return $this->findInVault('id', $value);
+    }
+
+    /**
+     * The columns an address may name this record by, tried in order.
+     *
+     * One column is the ordinary case and is exactly what the router asked for before this existed.
+     * A model reached by more than one spelling of its address overrides this, and every attempt is
+     * scoped the same way, so widening what is accepted never widens what is reachable.
+     *
+     * @return list<string>
+     */
+    protected function routeKeyColumns(): array
+    {
+        return [$this->getRouteKeyName()];
     }
 
     /**

@@ -20,6 +20,7 @@ class VaultResource extends JsonResource
             'type' => 'vault',
             'id' => $this->uuid,
             'attributes' => [
+                'slug' => $this->slug,
                 'name' => $this->name,
                 'description' => $this->description,
                 'colour' => $this->colour,
@@ -30,7 +31,7 @@ class VaultResource extends JsonResource
                 'updated_at' => $this->updated_at?->timestamp,
             ],
             'links' => [
-                'self' => route('api.v1.vaults.show', $this->uuid),
+                'self' => route('api.v1.vaults.show', $this->resource),
             ],
         ];
     }

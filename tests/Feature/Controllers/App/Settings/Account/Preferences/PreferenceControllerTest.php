@@ -147,6 +147,7 @@ class PreferenceControllerTest extends TestCase
         $response = $this->actingAs($user)->put(route('settings.preferences.update'), [
             'locale' => 'fr_FR',
             'time_format' => '12',
+            'uses_readable_addresses' => '1',
         ]);
 
         $response->assertRedirect(route('settings.preferences.index'));
@@ -169,6 +170,7 @@ class PreferenceControllerTest extends TestCase
         $response = $this->actingAs($user)->put(route('settings.preferences.update'), [
             'locale' => 'de_DE',
             'time_format' => '24',
+            'uses_readable_addresses' => '1',
         ]);
 
         $response->assertSessionHas('locale', 'de_DE');
@@ -183,6 +185,7 @@ class PreferenceControllerTest extends TestCase
         $response = $this->actingAs($user)->put(route('settings.preferences.update'), [
             'locale' => 'kl_GL',
             'time_format' => '24',
+            'uses_readable_addresses' => '1',
         ]);
 
         $response->assertSessionHasErrors('locale');
@@ -198,6 +201,7 @@ class PreferenceControllerTest extends TestCase
         $response = $this->actingAs($user)->put(route('settings.preferences.update'), [
             'locale' => 'en',
             'time_format' => '36',
+            'uses_readable_addresses' => '1',
         ]);
 
         $response->assertSessionHasErrors('time_format');
@@ -215,6 +219,7 @@ class PreferenceControllerTest extends TestCase
             'locale' => 'en',
             'time_format' => '24',
             'date_format' => 'm/d/Y',
+            'uses_readable_addresses' => '1',
         ]);
 
         $response->assertRedirect(route('settings.preferences.index'));
@@ -233,6 +238,7 @@ class PreferenceControllerTest extends TestCase
             'locale' => 'en',
             'time_format' => '24',
             'date_format' => '',
+            'uses_readable_addresses' => '1',
         ]);
 
         $this->assertNull($user->refresh()->date_format);
@@ -247,6 +253,7 @@ class PreferenceControllerTest extends TestCase
             'locale' => 'en',
             'time_format' => '24',
             'date_format' => 'the-day-of-the-beet-harvest',
+            'uses_readable_addresses' => '1',
         ]);
 
         $response->assertSessionHasErrors('date_format');
@@ -268,6 +275,7 @@ class PreferenceControllerTest extends TestCase
             'time_format' => '12',
             'date_format' => 'Y-m-d',
             'number_format' => 'no_separator',
+            'uses_readable_addresses' => '1',
         ]);
 
         $user->refresh();
@@ -288,6 +296,7 @@ class PreferenceControllerTest extends TestCase
             'locale' => 'en',
             'time_format' => '24',
             'number_format' => 'dot_comma',
+            'uses_readable_addresses' => '1',
         ]);
 
         $response->assertRedirect(route('settings.preferences.index'));
@@ -306,6 +315,7 @@ class PreferenceControllerTest extends TestCase
             'locale' => 'en',
             'time_format' => '24',
             'number_format' => '',
+            'uses_readable_addresses' => '1',
         ]);
 
         $this->assertNull($user->refresh()->number_format);
@@ -320,9 +330,65 @@ class PreferenceControllerTest extends TestCase
             'locale' => 'en',
             'time_format' => '24',
             'number_format' => 'beets_per_acre',
+            'uses_readable_addresses' => '1',
         ]);
 
         $response->assertSessionHasErrors('number_format');
         $this->assertEquals(NumberFormatEnum::CommaAndDot, $user->refresh()->number_format);
+    }
+
+    #[Test]
+    public function it_offers_the_choice_of_what_an_address_is_written_with(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->get(route('settings.preferences.index'))
+            ->assertStatus(200)
+            ->assertSee('Links')
+            ->assertSee('Readable names')
+            ->assertSee('Identifiers');
+    }
+
+    #[Test]
+    public function the_choice_is_operable_with_the_keyboard_alone_and_announced(): void
+    {
+        $user = User::factory()->create();
+
+        $html = (string) $this->actingAs($user)->get(route('settings.preferences.index'))
+            ->assertStatus(200)
+            ->getContent();
+
+        $this->assertMatchesRegularExpression(
+            '/<button[^>]*name="uses_readable_addresses"[^>]*value="0"/',
+            $html,
+            'Each choice has to be a real control, so the keyboard reaches it and a screen reader announces it.'
+        );
+        $this->assertStringNotContainsString('onclick=', $html);
+    }
+
+    #[Test]
+    public function it_saves_the_choice_of_what_an_address_is_written_with(): void
+    {
+        $user = User::factory()->create(['uses_readable_addresses' => true]);
+
+        $this->actingAs($user)->put(route('settings.preferences.update'), [
+            'locale' => 'en',
+            'time_format' => '24',
+            'uses_readable_addresses' => '0',
+        ])->assertRedirect(route('settings.preferences.index'));
+
+        $this->assertDatabaseHas('users', ['id' => $user->id, 'uses_readable_addresses' => false]);
+    }
+
+    #[Test]
+    public function it_refuses_a_choice_that_is_neither(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->put(route('settings.preferences.update'), [
+            'locale' => 'en',
+            'time_format' => '24',
+            'uses_readable_addresses' => 'beets',
+        ])->assertSessionHasErrors('uses_readable_addresses');
     }
 }

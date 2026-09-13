@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Change what somebody chose about the way the application reads to them: the language of the
- * interface, the clock times are written on, the order dates read in, and the separators numbers
- * are written with.
+ * interface, the clock times are written on, the order dates read in, the separators numbers are
+ * written with, and whether addresses name the vault and the contact they open.
  */
 class UpdatePreferences
 {
@@ -25,6 +25,7 @@ class UpdatePreferences
         private readonly TimeFormatEnum $timeFormat,
         private readonly ?DateFormatEnum $dateFormat = null,
         private readonly ?NumberFormatEnum $numberFormat = null,
+        private readonly bool $usesReadableAddresses = true,
     ) {}
 
     public function execute(): User
@@ -53,6 +54,7 @@ class UpdatePreferences
         $this->user->time_format = $this->timeFormat;
         $this->user->date_format = $this->dateFormat;
         $this->user->number_format = $this->numberFormat;
+        $this->user->uses_readable_addresses = $this->usesReadableAddresses;
         $this->user->save();
     }
 

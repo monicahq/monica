@@ -18,3 +18,7 @@
 @unless($owns === 'number_format')
   <input type="hidden" name="number_format" value="{{ $viewModel->numberFormat()?->value }}" />
 @endunless
+
+@unless($owns === 'uses_readable_addresses')
+  <input type="hidden" name="uses_readable_addresses" value="{{ $viewModel->usesReadableAddresses() ? '1' : '0' }}" />
+@endunless

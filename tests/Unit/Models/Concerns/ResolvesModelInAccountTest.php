@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Concerns;
 
+use App\Models\Template;
 use App\Models\User;
-use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -15,62 +15,59 @@ class ResolvesModelInAccountTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_finds_a_record_of_the_account_by_its_route_key(): void
+    public function a_model_naming_one_column_resolves_by_it(): void
     {
         $user = User::factory()->create();
-        $vault = Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Dunder Mifflin Scranton',
-        ]);
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user);
 
-        $this->assertTrue($vault->is(new Vault()->resolveRouteBinding($vault->uuid)));
+        $this->assertTrue($template->is(new Template()->resolveRouteBinding($template->slug)));
     }
 
     #[Test]
-    public function it_does_not_find_a_record_of_another_account(): void
+    public function a_model_naming_one_column_still_refuses_every_other_spelling(): void
     {
         $user = User::factory()->create();
-        $somebodyElse = User::factory()->create();
-        $vault = Vault::factory()->create([
-            'account_id' => $somebodyElse->account_id,
-            'name' => 'Dunder Mifflin Utica',
-        ]);
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user);
 
-        $this->assertNull(new Vault()->resolveRouteBinding($vault->uuid));
+        $this->assertNull(new Template()->resolveRouteBinding($template->uuid));
     }
 
     #[Test]
-    public function it_accepts_the_primary_key_as_a_second_spelling_of_the_address(): void
+    public function it_still_accepts_the_primary_key_as_a_second_spelling(): void
     {
         $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user);
 
-        $this->assertTrue($vault->is(new Vault()->resolveRouteBinding((string) $vault->id)));
+        $this->assertTrue($template->is(new Template()->resolveRouteBinding((string) $template->id)));
     }
 
     #[Test]
-    public function it_does_not_find_a_record_of_another_account_by_its_primary_key(): void
+    public function it_still_honours_a_column_the_route_names_outright(): void
     {
         $user = User::factory()->create();
-        $somebodyElse = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $somebodyElse->account_id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user);
 
-        $this->assertNull(new Vault()->resolveRouteBinding((string) $vault->id));
+        $this->assertTrue($template->is(new Template()->resolveRouteBinding($template->uuid, 'uuid')));
+        $this->assertNull(new Template()->resolveRouteBinding($template->slug, 'uuid'));
     }
 
     #[Test]
-    public function it_finds_nothing_when_nobody_is_signed_in(): void
+    public function it_still_refuses_a_record_of_another_account(): void
     {
-        $vault = Vault::factory()->create();
+        $user = User::factory()->create();
+        $template = Template::factory()->create();
 
-        $this->assertNull(new Vault()->resolveRouteBinding($vault->uuid));
+        $this->actingAs($user);
+
+        $this->assertNotSame($user->account_id, $template->account_id);
+        $this->assertNull(new Template()->resolveRouteBinding($template->slug));
     }
 }

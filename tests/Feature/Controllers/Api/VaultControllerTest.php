@@ -170,7 +170,7 @@ class VaultControllerTest extends TestCase
         $response->assertJsonPath('data.attributes.is_default', false);
         $response->assertJsonPath('data.attributes.contact_count', 12);
         $response->assertJsonPath('data.attributes.created_at', $vault->created_at->timestamp);
-        $response->assertJsonPath('data.links.self', route('api.v1.vaults.show', $vault->uuid));
+        $response->assertJsonPath('data.links.self', route('api.v1.vaults.show', $vault));
     }
 
     #[Test]
@@ -258,7 +258,7 @@ class VaultControllerTest extends TestCase
             'colour' => '#4f8a49',
         ]);
         $response->assertJsonPath('data.id', $vault->uuid);
-        $response->assertJsonPath('data.links.self', route('api.v1.vaults.show', $vault->uuid));
+        $response->assertJsonPath('data.links.self', route('api.v1.vaults.show', $vault));
     }
 
     #[Test]
@@ -1062,5 +1062,44 @@ class VaultControllerTest extends TestCase
         ])->assertOk();
 
         $this->assertSame('Utica', $vault->refresh()->name);
+    }
+
+    #[Test]
+    public function it_reaches_a_vault_by_either_spelling_of_its_address(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->slug}")->assertOk()->assertJsonPath('data.id', $vault->uuid);
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}")->assertOk()->assertJsonPath('data.id', $vault->uuid);
+    }
+
+    #[Test]
+    public function it_reports_the_readable_address_beside_the_identifier(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}")
+            ->assertOk()
+            ->assertJsonPath('data.id', $vault->uuid)
+            ->assertJsonPath('data.attributes.slug', 'dunder-mifflin')
+            ->assertJsonPath('data.links.self', route('api.v1.vaults.show', $vault));
+    }
+
+    #[Test]
+    public function it_does_not_reach_the_readable_address_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $theirs = Vault::factory()->create(['name' => 'Schrute Farms']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$theirs->slug}")->assertNotFound();
+        $this->json('GET', "/api/v1/vaults/{$theirs->uuid}")->assertNotFound();
     }
 }

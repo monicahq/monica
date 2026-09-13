@@ -17,8 +17,8 @@ class ContactTemplateVersionController extends Controller
 {
     public function update(Request $request, string $vault, string $contact): JsonResponse
     {
-        $vault = $request->user()->account->vaults()->where('uuid', $vault)->firstOrFail();
-        $contact = Contact::query()->where('vault_id', $vault->id)->where('uuid', $contact)->firstOrFail();
+        $vault = $request->user()->account->vaults()->addressedBy($vault)->firstOrFail();
+        $contact = Contact::query()->where('vault_id', $vault->id)->addressedBy($contact)->firstOrFail();
 
         $request->validate(['template_version_id' => ['nullable', 'integer']]);
 

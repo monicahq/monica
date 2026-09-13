@@ -9,6 +9,8 @@ use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Exceptions\ContactNeedsAName;
 use App\Helpers\LocaleCollation;
+use App\Helpers\ReservedAddressWords;
+use App\Helpers\SlugBuilder;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInVault;
 use Carbon\CarbonImmutable;
@@ -20,6 +22,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Override;
@@ -35,6 +38,13 @@ use Override;
  * constantly to sort, to search, to render headers and to build initials, and
  * none of that can depend on a field the user might have deleted.
  *
+ * A contact is addressed two ways, and answers to both. The slug is built from
+ * the whole name the page shows, in the order that name reads in, keeping the
+ * alphabet it is written in so a name in Japanese is addressed in Japanese. It
+ * is not permanent: correcting a name rebuilds it, the one it had stops
+ * answering, and the one it had is reserved for good so nobody else in the
+ * vault is ever given it. The uuid never changes and never stops answering.
+ *
  * Two special states live here. One contact per vault is flagged `is_me` and
  * represents the user, so that "Alice is my sister" is a relationship between
  * two rows rather than an invisible parallel logic. A partial contact is
@@ -43,6 +53,7 @@ use Override;
  *
  * @property int $id
  * @property string $uuid
+ * @property string $slug
  * @property int $account_id
  * @property int $vault_id
  * @property int $template_version_id
@@ -80,10 +91,11 @@ use Override;
  * @property-read string $name
  * @property-read string $initials
  */
-#[RouteKey('uuid')]
+#[RouteKey('slug')]
 #[Fillable([
     'account_id',
     'vault_id',
+    'slug',
     'template_version_id',
     'prefix',
     'first_name',
@@ -123,6 +135,28 @@ class Contact extends Model
     public const int AVATAR_PIXELS = 512;
 
     /**
+     * How much room the readable address has, and what it falls back on when a name leaves
+     * nothing an address can carry.
+     */
+    public const int SLUG_LENGTH = 128;
+
+    public const string SLUG_WHEN_EMPTY = 'contact';
+
+    /**
+     * The columns the readable address is built from, and so the ones whose change rebuilds it.
+     */
+    public const array NAME_PARTS = [
+        'prefix',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'suffix',
+        'maiden_name',
+        'nickname',
+        'name_order',
+    ];
+
+    /**
      * The backgrounds a generated initials avatar is drawn on. They are picked
      * from when a contact is created and kept afterwards, so somebody who has
      * learnt to spot a face in a list does not have it change colour.
@@ -158,6 +192,112 @@ class Contact extends Model
             $contact->sort_key = LocaleCollation::sortKey($contact->sort_name, $locale);
             $contact->search_key = LocaleCollation::foldForSearch($contact->sort_name, $locale);
             $contact->match_key = LocaleCollation::matchKey($contact->buildMatchToken(), $locale);
+
+            if (($contact->slug ?? '') === '' || $contact->isDirty(self::NAME_PARTS)) {
+                $contact->slug = SlugBuilder::readable(
+                    derivedFrom: $contact->nameForAddress(),
+                    maxLength: self::SLUG_LENGTH,
+                    whenEmpty: self::SLUG_WHEN_EMPTY,
+                    isTaken: fn (string $slug): bool => $contact->slugIsSpent($slug),
+                );
+            }
+        });
+
+        static::saved(function (Contact $contact): void {
+            ContactSlugReservation::query()->firstOrCreate([
+                'vault_id' => $contact->vault_id,
+                'slug' => $contact->slug,
+            ], [
+                'contact_id' => $contact->id,
+            ]);
+        });
+    }
+
+    /**
+     * The name the readable address is built from: everything the page puts on the line, in the
+     * order this particular name reads in.
+     *
+     * The maiden name is added only when {@see nameInOrder()} has not already fallen back to it,
+     * which it does for a contact who has nothing else.
+     */
+    private function nameForAddress(): string
+    {
+        $name = $this->nameInOrder($this->name_order ?? NameOrderEnum::GivenFirst);
+
+        $parts = [$this->prefix, $name];
+
+        if ($this->maiden_name !== null && $this->maiden_name !== $name) {
+            $parts[] = $this->maiden_name;
+        }
+
+        $parts[] = $this->suffix;
+
+        return mb_trim(implode(' ', array_filter($parts)));
+    }
+
+    /**
+     * Whether another contact of this vault has ever answered to the slug, or a route already fixes
+     * it.
+     *
+     * Only the reservations are read. Every slug a contact is given is reserved in the same save,
+     * so the reservations are a superset of what the contacts themselves carry, and a name released
+     * by a correction stays spent. A contact does not collide with their own past: correcting a
+     * name back to what it was gives them the same address again, which points at the person it
+     * always pointed at.
+     */
+    private function slugIsSpent(string $slug): bool
+    {
+        if (in_array($slug, ReservedAddressWords::forContact(), true)) {
+            return true;
+        }
+
+        return ContactSlugReservation::query()
+            ->where('vault_id', $this->vault_id)
+            ->where('slug', $slug)
+            ->when($this->id !== null, fn (Builder $query) => $query->where('contact_id', '!=', $this->id))
+            ->exists();
+    }
+
+    /**
+     * The two spellings of this record's address.
+     *
+     * The readable one is tried first, being the one the product builds. The uuid is tried after it
+     * and never stops working: it is what every link saved before the readable address existed is
+     * written with, and what an address still names once a rename has released the readable one.
+     *
+     * @return list<string>
+     */
+    protected function routeKeyColumns(): array
+    {
+        return ['slug', 'uuid'];
+    }
+
+    /**
+     * The address the product builds for this record.
+     *
+     * The readable name unless the account asked for the identifier instead. It governs only what
+     * is built: both spellings keep answering either way, which is what stops the preference
+     * breaking a link somebody saved.
+     */
+    #[Override]
+    public function getRouteKey(): mixed
+    {
+        return Account::buildsReadableAddressesFor($this->account_id) ? $this->slug : $this->uuid;
+    }
+
+    /**
+     * Scope the query to the record an address names, in either spelling of it.
+     *
+     * The API resolves its own records rather than leaning on route model binding, so the rule that
+     * both spellings answer has to hold here too. Everything else about the query is left alone:
+     * this widens which column is read and never which records are in reach.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeAddressedBy(Builder $query, string $address): void
+    {
+        $query->where(function (Builder $query) use ($address): void {
+            $query->where('slug', $address)->orWhere('uuid', $address);
         });
     }
 
@@ -298,6 +438,19 @@ class Contact extends Model
     public function reminders(): MorphMany
     {
         return $this->morphMany(Reminder::class, 'remindable');
+    }
+
+    /**
+     * Get the slugs the contact has carried. Correcting a name releases the
+     * slug it built, and this is what stops it being given to somebody else in
+     * the vault, so an address saved before the correction fails rather than
+     * opening the wrong person.
+     *
+     * @return HasMany<ContactSlugReservation, $this>
+     */
+    public function slugReservations(): HasMany
+    {
+        return $this->hasMany(ContactSlugReservation::class);
     }
 
     /**

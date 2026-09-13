@@ -110,7 +110,7 @@ class ContactMergeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_sends_the_address_of_an_absorbed_contact_to_the_survivor(): void
+    public function it_tells_the_reader_of_an_absorbed_address_who_absorbed_them(): void
     {
         Queue::fake();
 
@@ -126,7 +126,9 @@ class ContactMergeControllerTest extends TestCase
             route('contacts.show', ['vault' => $jim->vault, 'contact' => $james->uuid])
         );
 
-        $response->assertRedirect(route('contacts.show', ['vault' => $jim->vault, 'contact' => $jim]));
+        $response->assertStatus(200)
+            ->assertSee('This record was merged')
+            ->assertSee(route('contacts.show', ['vault' => $jim->vault, 'contact' => $jim]), escape: false);
     }
 
     #[Test]

@@ -41,10 +41,10 @@ class ContactDuplicateController extends Controller
         ]);
     }
 
-    private function vault(Request $request, string $uuid): Vault
+    private function vault(Request $request, string $address): Vault
     {
         return $request->user()->account->vaults()
-            ->where('uuid', $uuid)
+            ->addressedBy($address)
             ->firstOrFail();
     }
 }

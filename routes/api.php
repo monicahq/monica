@@ -98,10 +98,10 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::get('emails-sent/{emailSent}', [EmailSentController::class, 'show'])->where('emailSent', '[1-9][0-9]*')->name('emailsSent.show');
 
         Route::get('vaults', [VaultController::class, 'index'])->name('vaults');
-        Route::get('vaults/{vault}', [VaultController::class, 'show'])->where('vault', '[0-9a-fA-F-]{36}')->name('vaults.show');
+        Route::get('vaults/{vault}', [VaultController::class, 'show'])->name('vaults.show');
         Route::post('vaults', [VaultController::class, 'create'])->name('vaults.create');
-        Route::put('vaults/{vault}', [VaultController::class, 'update'])->where('vault', '[0-9a-fA-F-]{36}')->name('vaults.update');
-        Route::delete('vaults/{vault}', [VaultController::class, 'destroy'])->where('vault', '[0-9a-fA-F-]{36}')->name('vaults.destroy');
+        Route::put('vaults/{vault}', [VaultController::class, 'update'])->name('vaults.update');
+        Route::delete('vaults/{vault}', [VaultController::class, 'destroy'])->name('vaults.destroy');
 
         Route::get('entity-types', [EntityTypeController::class, 'index'])->name('entityTypes');
         Route::get('entity-types/{entityType}', [EntityTypeController::class, 'show'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.show');
@@ -144,23 +144,23 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::delete('templates/{template}/versions/{version}/sections/{section}/fields/{field}', [FieldController::class, 'destroy'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'section' => '[1-9][0-9]*', 'field' => '[1-9][0-9]*'])->name('templates.versions.sections.fields.destroy');
         Route::put('templates/{template}/versions/{version}/sections/{section}/fields/{field}/position', [FieldPositionController::class, 'update'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'section' => '[1-9][0-9]*', 'field' => '[1-9][0-9]*'])->name('templates.versions.sections.fields.position.update');
 
-        Route::delete('vaults/{vault}/merges/{merge}', [ContactMergeController::class, 'destroy'])->where(['vault' => '[0-9a-fA-F-]{36}', 'merge' => '[0-9a-fA-F-]{36}'])->name('merges.destroy');
-        Route::get('vaults/{vault}/duplicates', [ContactDuplicateController::class, 'index'])->where('vault', '[0-9a-fA-F-]{36}')->name('duplicates');
-        Route::put('vaults/{vault}/duplicates/{candidate}/dismissal', [ContactDuplicateDismissalController::class, 'update'])->where(['vault' => '[0-9a-fA-F-]{36}', 'candidate' => '[1-9][0-9]*'])->name('duplicates.dismissal.update');
+        Route::delete('vaults/{vault}/merges/{merge}', [ContactMergeController::class, 'destroy'])->where(['merge' => '[0-9a-fA-F-]{36}'])->name('merges.destroy');
+        Route::get('vaults/{vault}/duplicates', [ContactDuplicateController::class, 'index'])->name('duplicates');
+        Route::put('vaults/{vault}/duplicates/{candidate}/dismissal', [ContactDuplicateDismissalController::class, 'update'])->where(['candidate' => '[1-9][0-9]*'])->name('duplicates.dismissal.update');
 
-        Route::get('vaults/{vault}/contacts', [ContactController::class, 'index'])->where('vault', '[0-9a-fA-F-]{36}')->name('contacts');
-        Route::get('vaults/{vault}/contacts/{contact}', [ContactController::class, 'show'])->where(['vault' => '[0-9a-fA-F-]{36}', 'contact' => '[0-9a-fA-F-]{36}'])->name('contacts.show');
-        Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->where('vault', '[0-9a-fA-F-]{36}')->name('contacts.create');
-        Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])->where(['vault' => '[0-9a-fA-F-]{36}', 'contact' => '[0-9a-fA-F-]{36}'])->name('contacts.destroy');
+        Route::get('vaults/{vault}/contacts', [ContactController::class, 'index'])->name('contacts');
+        Route::get('vaults/{vault}/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
+        Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
+        Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
-        Route::get('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'show'])->where(['vault' => '[0-9a-fA-F-]{36}', 'contact' => '[0-9a-fA-F-]{36}', 'other' => '[0-9a-fA-F-]{36}'])->name('contacts.merge.show');
-        Route::post('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'create'])->where(['vault' => '[0-9a-fA-F-]{36}', 'contact' => '[0-9a-fA-F-]{36}', 'other' => '[0-9a-fA-F-]{36}'])->name('contacts.merge.create');
+        Route::get('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'show'])->name('contacts.merge.show');
+        Route::post('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'create'])->name('contacts.merge.create');
 
-        Route::put('vaults/{vault}/contacts/{contact}/name', [ContactNameController::class, 'update'])->where(['vault' => '[0-9a-fA-F-]{36}', 'contact' => '[0-9a-fA-F-]{36}'])->name('contacts.name.update');
+        Route::put('vaults/{vault}/contacts/{contact}/name', [ContactNameController::class, 'update'])->name('contacts.name.update');
 
-        Route::put('vaults/{vault}/contacts/{contact}/favourite', [ContactFavouriteController::class, 'update'])->where(['vault' => '[0-9a-fA-F-]{36}', 'contact' => '[0-9a-fA-F-]{36}'])->name('contacts.favourite.update');
-        Route::post('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'update'])->where(['vault' => '[0-9a-fA-F-]{36}', 'contact' => '[0-9a-fA-F-]{36}'])->name('contacts.avatar.update');
-        Route::delete('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'destroy'])->where(['vault' => '[0-9a-fA-F-]{36}', 'contact' => '[0-9a-fA-F-]{36}'])->name('contacts.avatar.destroy');
-        Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactTemplateVersionController::class, 'update'])->where(['vault' => '[0-9a-fA-F-]{36}', 'contact' => '[0-9a-fA-F-]{36}'])->name('contacts.templateVersion.update');
+        Route::put('vaults/{vault}/contacts/{contact}/favourite', [ContactFavouriteController::class, 'update'])->name('contacts.favourite.update');
+        Route::post('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'update'])->name('contacts.avatar.update');
+        Route::delete('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'destroy'])->name('contacts.avatar.destroy');
+        Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactTemplateVersionController::class, 'update'])->name('contacts.templateVersion.update');
     });
 });

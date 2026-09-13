@@ -89,18 +89,18 @@ class ContactMergeController extends Controller
         return response()->noContent(204);
     }
 
-    private function vault(Request $request, string $uuid): Vault
+    private function vault(Request $request, string $address): Vault
     {
         return $request->user()->account->vaults()
-            ->where('uuid', $uuid)
+            ->addressedBy($address)
             ->firstOrFail();
     }
 
-    private function contact(Vault $vault, string $uuid): Contact
+    private function contact(Vault $vault, string $address): Contact
     {
         return Contact::query()
             ->where('vault_id', $vault->id)
-            ->where('uuid', $uuid)
+            ->addressedBy($address)
             ->firstOrFail();
     }
 }

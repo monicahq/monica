@@ -224,9 +224,9 @@ class ContactsViewModelTest extends TestCase
         $chips = collect(new ContactsViewModel(user: $user, vault: $vault)->filters())
             ->mapWithKeys(fn (array $chip): array => [$chip['key'] => parse_url($chip['url'], PHP_URL_PATH)]);
 
-        $this->assertEquals("/vaults/{$vault->uuid}/contacts", $chips['all']);
-        $this->assertEquals("/vaults/{$vault->uuid}/contacts/favourites", $chips['favourites']);
-        $this->assertEquals("/vaults/{$vault->uuid}/contacts/archived", $chips['archived']);
+        $this->assertEquals("/vaults/{$vault->slug}/contacts", $chips['all']);
+        $this->assertEquals("/vaults/{$vault->slug}/contacts/favourites", $chips['favourites']);
+        $this->assertEquals("/vaults/{$vault->slug}/contacts/archived", $chips['archived']);
 
         $this->assertStringNotContainsString(
             'filter=',

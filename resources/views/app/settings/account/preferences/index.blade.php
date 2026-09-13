@@ -1,7 +1,7 @@
 {{-- What somebody chose about how the application reads to them: language, clock, dates, numbers. --}}
 {{-- @var \App\ViewModels\Settings\Account\Preferences\PreferencesViewModel $viewModel --}}
 @php
-  $rows = 'language-form time-format-form date-format-form number-format-form preview timezone-panel';
+  $rows = 'language-form time-format-form date-format-form number-format-form readable-addresses-form preview timezone-panel';
 @endphp
 <x-settings.page
   :title="__('Preferences')"
@@ -92,6 +92,8 @@
           </x-form>
         </x-slot:end>
       </x-row>
+
+      @include('app.settings.account.preferences._readable-addresses', ['rows' => $rows])
 
       <x-slot:footer id="preview">
         {{ __('It is :time on :date where you are, in :language.', ['time' => $viewModel->timePreview(), 'date' => $viewModel->datePreview(), 'language' => $viewModel->localeLabel()]) }}

@@ -108,8 +108,8 @@ class ContactTest extends TestCase
             $contact->uuid,
         );
         $this->assertIsInt($contact->id);
-        $this->assertEquals('uuid', $contact->getRouteKeyName());
-        $this->assertEquals($contact->uuid, $contact->getRouteKey());
+        $this->assertEquals('slug', $contact->getRouteKeyName());
+        $this->assertEquals($contact->slug, $contact->getRouteKey());
     }
 
     #[Test]
@@ -493,5 +493,199 @@ class ContactTest extends TestCase
             'dav_uri' => 'dwight.vcf',
         ]);
         $this->assertEquals($card, $contact->refresh()->vcard);
+    }
+
+    #[Test]
+    public function it_gets_a_readable_address_built_from_the_whole_displayed_name(): void
+    {
+        $contact = Contact::factory()->create([
+            'prefix' => 'Dr',
+            'first_name' => 'Jim',
+            'middle_name' => 'Michael',
+            'last_name' => 'Halpert',
+            'suffix' => 'Jr',
+        ]);
+
+        $this->assertSame('dr-jim-michael-halpert-jr', $contact->slug);
+        $this->assertDatabaseHas('contact_slug_reservations', [
+            'vault_id' => $contact->vault_id,
+            'contact_id' => $contact->id,
+            'slug' => 'dr-jim-michael-halpert-jr',
+        ]);
+    }
+
+    #[Test]
+    public function it_puts_the_maiden_name_in_the_address_too(): void
+    {
+        $contact = Contact::factory()->create([
+            'first_name' => 'Pam',
+            'last_name' => 'Halpert',
+            'maiden_name' => 'Beesly',
+        ]);
+
+        $this->assertSame('pam-halpert-beesly', $contact->slug);
+    }
+
+    #[Test]
+    public function it_builds_the_address_in_the_order_the_name_reads_in(): void
+    {
+        $contact = Contact::factory()->create([
+            'first_name' => '太郎',
+            'last_name' => '田中',
+            'name_order' => NameOrderEnum::FamilyFirst,
+        ]);
+
+        $this->assertSame('田中-太郎', $contact->slug);
+    }
+
+    #[Test]
+    public function it_numbers_a_second_contact_of_the_same_name_in_one_vault(): void
+    {
+        $vault = Vault::factory()->create();
+
+        $first = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
+        $second = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
+
+        $this->assertSame('jim-halpert', $first->slug);
+        $this->assertSame('jim-halpert-2', $second->slug);
+    }
+
+    #[Test]
+    public function it_lets_another_vault_hold_the_same_readable_address(): void
+    {
+        $account = Account::factory()->create();
+        $here = Vault::factory()->create(['account_id' => $account->id]);
+        $there = Vault::factory()->create(['account_id' => $account->id]);
+
+        $mine = Contact::factory()->create(['vault_id' => $here->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
+        $theirs = Contact::factory()->create(['vault_id' => $there->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
+
+        $this->assertSame('jim-halpert', $mine->slug);
+        $this->assertSame('jim-halpert', $theirs->slug);
+    }
+
+    #[Test]
+    public function it_refuses_a_name_a_route_already_fixes(): void
+    {
+        $vault = Vault::factory()->create();
+
+        $new = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'New', 'last_name' => null]);
+        $archived = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Archived', 'last_name' => null]);
+
+        $this->assertSame('new-2', $new->slug);
+        $this->assertSame('archived-2', $archived->slug);
+    }
+
+    #[Test]
+    public function a_partial_contact_known_by_one_name_still_gets_an_address(): void
+    {
+        $contact = Contact::factory()->create([
+            'first_name' => 'Dwight',
+            'last_name' => null,
+            'is_partial' => true,
+        ]);
+
+        $this->assertSame('dwight', $contact->slug);
+    }
+
+    #[Test]
+    public function the_me_contact_gets_an_address_like_anybody_else(): void
+    {
+        $contact = Contact::factory()->create([
+            'first_name' => 'Michael',
+            'last_name' => 'Scott',
+            'is_me' => true,
+        ]);
+
+        $this->assertSame('michael-scott', $contact->slug);
+    }
+
+    #[Test]
+    public function a_contact_named_with_digits_resolves_to_itself_rather_than_to_the_row_of_that_number(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $decoy = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Decoy', 'last_name' => null]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => (string) $decoy->id, 'last_name' => null]);
+
+        $this->actingAs($user);
+
+        $this->assertTrue($contact->is(new Contact()->resolveRouteBinding((string) $decoy->id)));
+    }
+
+    #[Test]
+    public function it_is_reached_by_its_readable_address_and_by_its_identifier(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
+
+        $this->actingAs($user);
+
+        $this->assertTrue($contact->is(new Contact()->resolveRouteBinding('jim-halpert')));
+        $this->assertTrue($contact->is(new Contact()->resolveRouteBinding($contact->uuid)));
+    }
+
+    #[Test]
+    public function correcting_a_name_rebuilds_the_readable_address(): void
+    {
+        $contact = Contact::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);
+
+        $contact->last_name = 'Halpert';
+        $contact->save();
+
+        $this->assertSame('pam-halpert', $contact->fresh()->slug);
+    }
+
+    #[Test]
+    public function a_change_to_any_part_of_the_name_rebuilds_it(): void
+    {
+        $contact = Contact::factory()->create(['first_name' => 'Dwight', 'last_name' => 'Schrute']);
+
+        $contact->middle_name = 'Kurt';
+        $contact->save();
+
+        $this->assertSame('dwight-kurt-schrute', $contact->fresh()->slug);
+    }
+
+    #[Test]
+    public function a_readable_address_a_contact_has_released_is_refused_to_everybody_later(): void
+    {
+        $vault = Vault::factory()->create();
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
+
+        $contact->last_name = 'Halpert';
+        $contact->save();
+
+        $namesake = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
+
+        $this->assertSame('pam-halpert', $contact->fresh()->slug);
+        $this->assertSame('pam-beesly-2', $namesake->slug);
+    }
+
+    #[Test]
+    public function a_save_that_touches_no_name_leaves_the_readable_address_alone(): void
+    {
+        $contact = Contact::factory()->create(['first_name' => 'Jim', 'last_name' => 'Halpert']);
+
+        $contact->is_favourite = true;
+        $contact->save();
+
+        $this->assertSame('jim-halpert', $contact->fresh()->slug);
+    }
+
+    #[Test]
+    public function a_contact_renamed_back_takes_the_readable_address_they_held_before(): void
+    {
+        $contact = Contact::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);
+
+        $contact->last_name = 'Halpert';
+        $contact->save();
+
+        $contact->last_name = 'Beesly';
+        $contact->save();
+
+        $this->assertSame('pam-beesly', $contact->fresh()->slug);
     }
 }

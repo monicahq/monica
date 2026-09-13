@@ -27,6 +27,7 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         $this->clearConfig();
+        Account::forgetAddressPreferences();
     }
 
     #[Override]

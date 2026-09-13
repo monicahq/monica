@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Cashier\Billable;
 use Override;
 
@@ -47,6 +48,13 @@ use Override;
 ])]
 class Account extends Model
 {
+    /**
+     * What each account answered for {@see usesReadableAddresses()}, for the length of one request.
+     *
+     * @var array<int, bool>
+     */
+    private static array $readableAddresses = [];
+
     use Billable;
 
     /** @use HasFactory<AccountFactory> */
@@ -108,6 +116,53 @@ class Account extends Model
     {
         return $this->userIncludingDeleted()->value('locale')
             ?? config('app.locale');
+    }
+
+    /**
+     * Whether the product builds addresses that name this account's vaults and contacts.
+     *
+     * Read from the account rather than from whoever is signed in, for the same reason the language
+     * is: a queued notification has to build the address a request would.
+     *
+     * Answered once per request per account, because {@see Vault::getRouteKey()} asks
+     * for every link on a page and a list of fifty contacts would otherwise ask fifty times. The
+     * memo lives for one request, so a preference saved in one is read afresh in the next.
+     */
+    public function usesReadableAddresses(): bool
+    {
+        return self::buildsReadableAddressesFor($this->id);
+    }
+
+    /**
+     * The same answer for an account nobody has loaded.
+     *
+     * A vault and a contact both carry `account_id` and neither needs the row behind it to decide
+     * which address to build, so this is asked by id. Loading the relation instead would put one
+     * query behind every link on a page listing fifty contacts.
+     *
+     * On a request the answer is already in memory, on the user the request signed in: reading it
+     * there keeps a page costing exactly the queries it cost before. A queued job has nobody signed
+     * in and asks the database, once per account for as long as the process lives.
+     */
+    public static function buildsReadableAddressesFor(int $accountId): bool
+    {
+        $signedIn = Auth::user();
+
+        if ($signedIn instanceof User && $signedIn->account_id === $accountId) {
+            return $signedIn->uses_readable_addresses;
+        }
+
+        return self::$readableAddresses[$accountId] ??= (bool) (
+            User::withTrashed()->where('account_id', $accountId)->value('uses_readable_addresses') ?? true
+        );
+    }
+
+    /**
+     * Forget what was read, which a test changing the preference mid request needs.
+     */
+    public static function forgetAddressPreferences(): void
+    {
+        self::$readableAddresses = [];
     }
 
     /**

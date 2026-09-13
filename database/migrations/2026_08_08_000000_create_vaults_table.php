@@ -12,7 +12,8 @@ return new class extends Migration
     {
         Schema::create('vaults', function (Blueprint $table): void {
             $table->id()->comment('primary key');
-            $table->uuid()->unique()->comment('unguessable identifier used in URLs and by the API');
+            $table->uuid()->unique()->comment('unguessable identifier used in URLs and by the API, and the one that never changes');
+            $table->string('slug', 128)->comment('readable identifier used in URLs and by the API, built from the name, unique within the account');
             $table->unsignedBigInteger('account_id')->comment('account the vault belongs to');
             $table->string('name')->comment('name the user gave the vault');
             $table->text('description')->nullable()->comment('what the vault is for, shown on the vault list');
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->index(['account_id', 'position']);
+            $table->unique(['account_id', 'slug']);
 
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
         });

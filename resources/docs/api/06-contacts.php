@@ -10,11 +10,13 @@ $base = ApiDocsViewModel::baseUrl();
 $vaultId = '9d4f1c2e-7b3a-4f88-9a2d-6c1e5b0f7a31';
 $contactId = 'c4a1f7b2-8e36-4d59-b0a7-2f5c9d81e364';
 $otherContactId = '7b2e9034-5c18-4af6-9d21-0e83b6c47a5f';
+$vaultSlug = 'dunder-mifflin';
 
 $contact = [
     'type' => 'contact',
     'id' => $contactId,
     'attributes' => [
+        'slug' => 'pam-beesly',
         'name' => 'Pam Beesly',
         'prefix' => null,
         'first_name' => 'Pam',
@@ -41,7 +43,7 @@ $contact = [
         'updated_at' => 1756339200,
     ],
     'links' => [
-        'self' => $base.'/vaults/'.$vaultId.'/contacts/'.$contactId,
+        'self' => $base.'/vaults/'.$vaultSlug.'/contacts/pam-beesly',
     ],
 ];
 
@@ -49,6 +51,7 @@ $otherContact = [
     'type' => 'contact',
     'id' => $otherContactId,
     'attributes' => [
+        'slug' => 'dwight-kurt-schrute',
         'name' => 'Dwight Kurt Schrute',
         'prefix' => null,
         'first_name' => 'Dwight',
@@ -72,22 +75,22 @@ $otherContact = [
         'updated_at' => null,
     ],
     'links' => [
-        'self' => $base.'/vaults/'.$vaultId.'/contacts/'.$otherContactId,
+        'self' => $base.'/vaults/'.$vaultSlug.'/contacts/dwight-kurt-schrute',
     ],
 ];
 
 $vaultParam = [
     'name' => 'vault',
-    'type' => 'uuid',
+    'type' => 'string',
     'required' => true,
-    'description' => 'The identifier of the vault the contact lives in. A path that is not a uuid answers 404 without a query being run, so a sequential number reaches nothing.',
+    'description' => 'The vault the contact lives in, named either by the readable name it reports as slug or by the identifier it reports as id. Both answer.',
 ];
 
 $contactParam = [
     'name' => 'contact',
-    'type' => 'uuid',
+    'type' => 'string',
     'required' => true,
-    'description' => 'The identifier of the contact, which is the id it comes back with. The contact has to be in the vault the path names: a contact of yours addressed through the wrong vault answers 404, the same as one that never existed.',
+    'description' => 'The contact, named either by the readable name it reports as slug or by the identifier it reports as id. Both answer. A readable name is rebuilt whenever the record is renamed, and the previous one stops answering, so a client that stores a reference stores the id. A name a record has released is never given to another. The contact has to be in the vault the path names: a contact of yours addressed through the wrong vault answers 404, the same as one that never existed. A contact absorbed by a merge answers 404 here, and the merge endpoints say what became of them.',
 ];
 
 $identifier = [$vaultParam, $contactParam];
@@ -137,6 +140,7 @@ $listParams = [
 ];
 
 $contactAttributes = [
+    ['name' => 'slug', 'type' => 'string', 'description' => 'The readable name the contact is addressed by, built from the whole name above and unique within the vault. It keeps the alphabet the name is written in, so a name in Japanese is addressed in Japanese, sent as its own characters or percent encoded. It is not stable: correcting the name rebuilds it and the previous one stops answering, which is why a stored reference should be the id. Nothing lets you choose or edit it.'],
     ['name' => 'name', 'type' => 'string', 'description' => 'The whole name, assembled from the parts below in the order this contact reads in. It is what the lists sort and search on, and it is built rather than stored, so it cannot be written directly.'],
     ['name' => 'prefix', 'type' => 'string', 'description' => 'What comes before the name, up to 50 characters, or null. Dr and Sir are prefixes.'],
     ['name' => 'first_name', 'type' => 'string', 'description' => 'The given name, up to 255 characters, or null. It is the only part required to write a contact down, and even it may be cleared afterwards.'],

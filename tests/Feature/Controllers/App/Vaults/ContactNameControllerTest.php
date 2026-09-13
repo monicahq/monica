@@ -32,7 +32,7 @@ class ContactNameControllerTest extends TestCase
                 'last_name' => 'Scarn',
                 'nickname' => 'Prison Mike',
             ])
-            ->assertRedirect(route('contacts.show', ['vault' => $contact->vault, 'contact' => $contact]))
+            ->assertRedirect(route('contacts.show', ['vault' => $contact->vault, 'contact' => $contact->fresh()]))
             ->assertSessionHas('status');
 
         $this->assertDatabaseHas('contacts', [
@@ -116,5 +116,48 @@ class ContactNameControllerTest extends TestCase
             'first_name' => 'Michael',
             'last_name' => 'Scott',
         ]);
+    }
+
+    #[Test]
+    public function a_rename_takes_the_reader_to_the_rebuilt_address(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $before = $contact->slug;
+
+        $this->actingAs($user)
+            ->put(route('contacts.name.update', ['vault' => $contact->vault, 'contact' => $contact]), [
+                'first_name' => 'Michael',
+                'last_name' => 'Scarn',
+            ])
+            ->assertRedirect(route('contacts.show', ['vault' => $contact->vault, 'contact' => $contact->fresh()]));
+
+        $this->assertSame('michael-scarn', $contact->fresh()->slug);
+        $this->assertNotSame($before, $contact->fresh()->slug);
+    }
+
+    #[Test]
+    public function the_address_somebody_was_read_at_before_a_rename_stops_answering(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $before = $contact->slug;
+
+        $this->actingAs($user)->put(route('contacts.name.update', ['vault' => $contact->vault, 'contact' => $contact]), [
+            'first_name' => 'Michael',
+            'last_name' => 'Scarn',
+        ]);
+
+        $this->actingAs($user)
+            ->get(url("/vaults/{$contact->vault->slug}/contacts/{$before}"))
+            ->assertNotFound();
+
+        $this->actingAs($user)
+            ->get(url("/vaults/{$contact->vault->slug}/contacts/{$contact->uuid}"))
+            ->assertStatus(200);
     }
 }

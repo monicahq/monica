@@ -20,6 +20,7 @@ use App\Models\ValueList;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -476,5 +477,68 @@ class AccountTest extends TestCase
 
         $this->assertNull($account->stripeName());
         $this->assertNull($account->stripeEmail());
+    }
+
+    #[Test]
+    public function a_new_account_builds_readable_addresses(): void
+    {
+        $account = Account::factory()->create();
+        User::factory()->create(['account_id' => $account->id]);
+
+        $this->assertTrue($account->usesReadableAddresses());
+    }
+
+    #[Test]
+    public function it_reports_the_preference_the_person_on_it_chose(): void
+    {
+        $account = Account::factory()->create();
+        User::factory()->create(['account_id' => $account->id, 'uses_readable_addresses' => false]);
+
+        $this->assertFalse($account->usesReadableAddresses());
+
+        Account::forgetAddressPreferences();
+        $account->user->update(['uses_readable_addresses' => true]);
+
+        $this->assertTrue($account->usesReadableAddresses());
+    }
+
+    #[Test]
+    public function it_still_answers_for_an_account_whose_person_was_deleted(): void
+    {
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id, 'uses_readable_addresses' => false]);
+        $user->delete();
+
+        Account::forgetAddressPreferences();
+
+        $this->assertFalse($account->usesReadableAddresses());
+    }
+
+    #[Test]
+    public function an_account_with_nobody_on_it_builds_readable_addresses(): void
+    {
+        $account = Account::factory()->create();
+
+        $this->assertTrue($account->usesReadableAddresses());
+    }
+
+    #[Test]
+    public function it_asks_the_database_once_per_account_in_a_request(): void
+    {
+        $account = Account::factory()->create();
+        User::factory()->create(['account_id' => $account->id]);
+
+        Account::forgetAddressPreferences();
+
+        $queries = 0;
+        DB::listen(function () use (&$queries): void {
+            $queries++;
+        });
+
+        $account->usesReadableAddresses();
+        $account->usesReadableAddresses();
+        $account->usesReadableAddresses();
+
+        $this->assertSame(1, $queries);
     }
 }

@@ -20,6 +20,7 @@ class ContactResource extends JsonResource
             'type' => 'contact',
             'id' => $this->uuid,
             'attributes' => [
+                'slug' => $this->slug,
                 'name' => $this->name,
                 'prefix' => $this->prefix,
                 'first_name' => $this->first_name,
@@ -43,7 +44,7 @@ class ContactResource extends JsonResource
                 'updated_at' => $this->updated_at?->timestamp,
             ],
             'links' => [
-                'self' => route('api.v1.contacts.show', [$this->vault->uuid, $this->uuid]),
+                'self' => route('api.v1.contacts.show', [$this->vault, $this->resource]),
             ],
         ];
     }

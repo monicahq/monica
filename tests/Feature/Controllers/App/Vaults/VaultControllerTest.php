@@ -487,7 +487,7 @@ class VaultControllerTest extends TestCase
             'colour' => '#9a3f2b',
         ]);
 
-        $response->assertRedirect(route('vaults.settings.index', $vault));
+        $response->assertRedirect(route('vaults.settings.index', $vault->fresh()));
         $response->assertSessionHas('status');
 
         $vault->refresh();
@@ -659,5 +659,60 @@ class VaultControllerTest extends TestCase
             ->assertRedirect();
 
         $this->assertSame('Utica', $vault->refresh()->name);
+    }
+
+    #[Test]
+    public function it_opens_a_vault_at_its_readable_address(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+
+        $this->actingAs($user)->get(url("/vaults/{$vault->slug}"))->assertStatus(200);
+
+        $this->assertSame('dunder-mifflin', $vault->slug);
+    }
+
+    #[Test]
+    public function it_builds_the_address_of_a_vault_from_its_name(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+
+        $this->assertStringContainsString('/vaults/dunder-mifflin', route('vaults.show', ['vault' => $vault]));
+
+        $this->actingAs($user)->get(route('vaults.index'))
+            ->assertStatus(200)
+            ->assertSee('/vaults/dunder-mifflin', escape: false);
+    }
+
+    #[Test]
+    public function a_vault_still_opens_at_its_identifier(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+
+        $this->actingAs($user)->get(url("/vaults/{$vault->uuid}"))->assertStatus(200);
+    }
+
+    #[Test]
+    public function it_does_not_find_the_readable_address_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $theirs = Vault::factory()->create(['name' => 'Schrute Farms']);
+
+        $this->actingAs($user)->get(url("/vaults/{$theirs->slug}"))->assertNotFound();
+        $this->actingAs($user)->get(url("/vaults/{$theirs->uuid}"))->assertNotFound();
+    }
+
+    #[Test]
+    public function it_opens_a_vault_whose_name_is_written_in_another_alphabet(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => '家族']);
+
+        $this->assertSame('家族', $vault->slug);
+
+        $this->actingAs($user)->get(url('/vaults/家族'))->assertStatus(200);
+        $this->actingAs($user)->get(url('/vaults/'.rawurlencode('家族')))->assertStatus(200);
     }
 }

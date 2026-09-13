@@ -163,4 +163,30 @@ class UpdatePreferencesTest extends TestCase
         $this->assertSame('fr_FR', $user->fresh()->locale);
         $this->assertSame('nunez', $contact->fresh()->search_key);
     }
+
+    #[Test]
+    public function it_turns_readable_addresses_off_and_on(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['uses_readable_addresses' => true]);
+
+        new UpdatePreferences(
+            user: $user,
+            locale: 'en',
+            timeFormat: TimeFormatEnum::TwentyFourHour,
+            usesReadableAddresses: false,
+        )->execute();
+
+        $this->assertDatabaseHas('users', ['id' => $user->id, 'uses_readable_addresses' => false]);
+
+        new UpdatePreferences(
+            user: $user,
+            locale: 'en',
+            timeFormat: TimeFormatEnum::TwentyFourHour,
+            usesReadableAddresses: true,
+        )->execute();
+
+        $this->assertDatabaseHas('users', ['id' => $user->id, 'uses_readable_addresses' => true]);
+    }
 }

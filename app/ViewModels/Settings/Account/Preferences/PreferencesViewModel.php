@@ -37,6 +37,35 @@ class PreferencesViewModel
         return config('monica.locales')[$this->locale()]['label'];
     }
 
+    public function usesReadableAddresses(): bool
+    {
+        return $this->user->uses_readable_addresses;
+    }
+
+    /** @return array<int, array{value: string, label: string, hint: string, selected: bool}> */
+    public function addressStyles(): array
+    {
+        return [
+            [
+                'value' => '1',
+                'label' => __('Readable names'),
+                'hint' => '/vaults/famille/contacts/jim-halpert',
+                'selected' => $this->usesReadableAddresses(),
+            ],
+            [
+                'value' => '0',
+                'label' => __('Identifiers'),
+                'hint' => '/vaults/9f3c8b1e/contacts/1a7e5c90',
+                'selected' => ! $this->usesReadableAddresses(),
+            ],
+        ];
+    }
+
+    public function addressStyleLabel(): string
+    {
+        return $this->usesReadableAddresses() ? __('Readable names') : __('Identifiers');
+    }
+
     /** @return array<int, array{value: string, label: string, hint: string, selected: bool}> */
     public function timeFormats(): array
     {

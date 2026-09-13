@@ -3,7 +3,7 @@
   "specName": "Sign in with an outside provider",
   "branch": "worktree-bridge-cse_01LbXDMqg6oDbNsRaYjtnYzK",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -537,6 +537,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-11T18:41:26.021Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-13T09:51:29.884Z"
     }
   ],
   "telemetryInstanceId": "65c294ed-5ec5-4c91-93a8-2e9cbcc550e7",

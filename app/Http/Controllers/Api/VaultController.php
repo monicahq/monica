@@ -139,10 +139,10 @@ class VaultController extends Controller
         }
     }
 
-    private function find(Request $request, string $uuid): Vault
+    private function find(Request $request, string $address): Vault
     {
         return $request->user()->account->vaults()
-            ->where('uuid', $uuid)
+            ->addressedBy($address)
             ->firstOrFail();
     }
 }

@@ -587,4 +587,79 @@ class ContactControllerTest extends TestCase
         $response->assertJsonValidationErrors('first_name');
         $this->assertSame(1, $user->account->contactCount());
     }
+
+    #[Test]
+    public function it_reaches_a_contact_by_either_spelling_of_its_address(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id, 'account_id' => $user->account_id,
+            'first_name' => 'Jim', 'last_name' => 'Halpert',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->slug}/contacts/{$contact->slug}")
+            ->assertOk()->assertJsonPath('data.id', $contact->uuid);
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")
+            ->assertOk()->assertJsonPath('data.id', $contact->uuid);
+        $this->json('GET', "/api/v1/vaults/{$vault->slug}/contacts/{$contact->uuid}")
+            ->assertOk()->assertJsonPath('data.id', $contact->uuid);
+    }
+
+    #[Test]
+    public function it_reports_the_readable_address_beside_the_identifier(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id, 'account_id' => $user->account_id,
+            'first_name' => 'Jim', 'last_name' => 'Halpert',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")
+            ->assertOk()
+            ->assertJsonPath('data.id', $contact->uuid)
+            ->assertJsonPath('data.attributes.slug', 'jim-halpert')
+            ->assertJsonPath('data.links.self', route('api.v1.contacts.show', [$vault, $contact]));
+    }
+
+    #[Test]
+    public function it_reaches_a_contact_named_in_another_alphabet_written_either_way(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id, 'account_id' => $user->account_id,
+            'first_name' => '太郎', 'last_name' => '田中',
+            'name_order' => NameOrderEnum::FamilyFirst,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->slug}/contacts/田中-太郎")
+            ->assertOk()->assertJsonPath('data.id', $contact->uuid);
+        $this->json('GET', "/api/v1/vaults/{$vault->slug}/contacts/".rawurlencode('田中-太郎'))
+            ->assertOk()->assertJsonPath('data.id', $contact->uuid);
+    }
+
+    #[Test]
+    public function it_does_not_reach_a_contact_through_the_wrong_vault(): void
+    {
+        $user = User::factory()->create();
+        $here = Vault::factory()->create(['account_id' => $user->account_id]);
+        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create([
+            'vault_id' => $here->id, 'account_id' => $user->account_id,
+            'first_name' => 'Jim', 'last_name' => 'Halpert',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$elsewhere->slug}/contacts/{$contact->slug}")->assertNotFound();
+        $this->json('GET', "/api/v1/vaults/{$elsewhere->slug}/contacts/{$contact->uuid}")->assertNotFound();
+    }
 }

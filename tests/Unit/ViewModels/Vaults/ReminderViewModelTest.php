@@ -148,7 +148,7 @@ class ReminderViewModelTest extends TestCase
 
         $this->assertNotNull($card);
         $this->assertSame($contact->name, $card['name']);
-        $this->assertStringContainsString((string) $contact->uuid, $card['url']);
+        $this->assertStringContainsString((string) $contact->slug, $card['url']);
         $this->assertSame(1, $card['reminderCount']);
     }
 
@@ -171,7 +171,7 @@ class ReminderViewModelTest extends TestCase
         $reminder = $this->reminderAbout($user, $contact);
 
         $this->assertStringContainsString(
-            (string) $contact->uuid,
+            (string) $contact->slug,
             $this->viewModel($user, $reminder)->editUrl(),
         );
     }

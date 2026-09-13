@@ -56,6 +56,7 @@ use Override;
  * @property DateFormatEnum|null $date_format
  * @property NameOrderEnum $name_order
  * @property NumberFormatEnum|null $number_format
+ * @property bool $uses_readable_addresses
  * @property CarbonImmutable|null $last_login_at
  * @property string|null $last_login_ip
  * @property string|null $two_factor_secret
@@ -86,6 +87,7 @@ use Override;
     'date_format',
     'name_order',
     'number_format',
+    'uses_readable_addresses',
     'last_login_at',
     'last_login_ip',
     'two_factor_secret',
@@ -101,6 +103,16 @@ use Override;
 ])]
 class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail, PasskeyUser
 {
+    /**
+     * What a user has before anybody chooses, matching the defaults the columns carry, so a model
+     * that has not been read back from the database answers what the database would.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'uses_readable_addresses' => true,
+    ];
+
     use HasApiTokens;
 
     /** @use HasFactory<UserFactory> */
@@ -132,6 +144,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             'date_format' => DateFormatEnum::class,
             'name_order' => NameOrderEnum::class,
             'number_format' => NumberFormatEnum::class,
+            'uses_readable_addresses' => 'boolean',
             'sso_provider' => SsoProviderEnum::class,
             'last_login_at' => 'datetime',
             'is_active' => 'boolean',

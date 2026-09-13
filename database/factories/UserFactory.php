@@ -36,6 +36,7 @@ class UserFactory extends Factory
             'password_changed_at' => now(),
             'is_active' => true,
             'locale' => 'en',
+            'uses_readable_addresses' => true,
             'timezone' => 'UTC',
             'time_format' => TimeFormatEnum::TwentyFourHour,
             'name_order' => NameOrderEnum::GivenFirst,

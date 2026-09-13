@@ -34,6 +34,7 @@ class PreferenceController extends Controller
             'time_format' => ['required', 'string', Rule::enum(TimeFormatEnum::class)],
             'date_format' => ['nullable', 'string', Rule::enum(DateFormatEnum::class)],
             'number_format' => ['nullable', 'string', Rule::enum(NumberFormatEnum::class)],
+            'uses_readable_addresses' => ['required', 'boolean'],
         ]);
 
         new UpdatePreferences(
@@ -42,6 +43,7 @@ class PreferenceController extends Controller
             timeFormat: TimeFormatEnum::from($validated['time_format']),
             dateFormat: DateFormatEnum::tryFrom($validated['date_format'] ?? ''),
             numberFormat: NumberFormatEnum::tryFrom($validated['number_format'] ?? ''),
+            usesReadableAddresses: $request->boolean('uses_readable_addresses'),
         )->execute();
 
         LocaleResolution::remember($validated['locale']);

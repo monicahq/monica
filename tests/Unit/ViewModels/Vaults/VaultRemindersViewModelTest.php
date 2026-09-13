@@ -170,8 +170,8 @@ class VaultRemindersViewModelTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $viewModel = $this->viewModelFor($user, $vault);
 
-        $this->assertStringEndsWith("/vaults/{$vault->uuid}/reminders", $viewModel->groupedByWhenUrl());
-        $this->assertStringEndsWith("/vaults/{$vault->uuid}/reminders/by-contact", $viewModel->groupedByContactUrl());
+        $this->assertStringEndsWith("/vaults/{$vault->slug}/reminders", $viewModel->groupedByWhenUrl());
+        $this->assertStringEndsWith("/vaults/{$vault->slug}/reminders/by-contact", $viewModel->groupedByContactUrl());
     }
 
     #[Test]

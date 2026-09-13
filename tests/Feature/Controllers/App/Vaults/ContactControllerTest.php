@@ -241,12 +241,12 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function only_a_uuid_reaches_the_page_of_one_person(): void
+    public function either_spelling_of_an_address_reaches_the_page_of_one_person(): void
     {
         $vault = Vault::factory()->create();
 
-        $this->assertNull($this->routeNameFor("/vaults/{$vault->uuid}/contacts/beets"));
         $this->assertSame('contacts.show', $this->routeNameFor("/vaults/{$vault->uuid}/contacts/".Str::uuid7()));
+        $this->assertSame('contacts.show', $this->routeNameFor("/vaults/{$vault->slug}/contacts/jim-halpert"));
     }
 
     #[Test]
@@ -1330,5 +1330,109 @@ class ContactControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('You are at the ceiling of the free offer', escape: false);
         $response->assertSee(route('settings.billing.index'), escape: false);
+    }
+
+    #[Test]
+    public function it_opens_a_contact_at_its_readable_address(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $user->account_id,
+            'first_name' => 'Jim',
+            'last_name' => 'Halpert',
+        ]);
+
+        $this->assertSame('jim-halpert', $contact->slug);
+
+        $this->actingAs($user)->get(url("/vaults/{$vault->slug}/contacts/jim-halpert"))->assertStatus(200);
+        $this->actingAs($user)->get(url("/vaults/{$vault->uuid}/contacts/{$contact->uuid}"))->assertStatus(200);
+    }
+
+    #[Test]
+    public function it_builds_the_address_of_a_contact_from_their_name(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $user->account_id,
+            'first_name' => 'Jim',
+            'last_name' => 'Halpert',
+        ]);
+
+        $address = route('contacts.show', ['vault' => $vault, 'contact' => $contact]);
+
+        $this->assertStringContainsString("/vaults/{$vault->slug}/contacts/jim-halpert", $address);
+    }
+
+    #[Test]
+    public function it_does_not_find_a_contact_through_the_wrong_vault_of_the_same_account(): void
+    {
+        $user = User::factory()->create();
+        $here = $this->vaultReadyForContacts($user);
+        $elsewhere = $this->vaultReadyForContacts($user);
+        $contact = Contact::factory()->create([
+            'vault_id' => $here->id,
+            'account_id' => $user->account_id,
+            'first_name' => 'Jim',
+            'last_name' => 'Halpert',
+        ]);
+
+        $this->actingAs($user)->get(url("/vaults/{$elsewhere->slug}/contacts/{$contact->slug}"))->assertNotFound();
+        $this->actingAs($user)->get(url("/vaults/{$elsewhere->slug}/contacts/{$contact->uuid}"))->assertNotFound();
+    }
+
+    #[Test]
+    public function it_does_not_find_the_readable_address_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $theirs = Contact::factory()->create(['first_name' => 'Dwight', 'last_name' => 'Schrute']);
+
+        $this->actingAs($user)
+            ->get(url("/vaults/{$theirs->vault->slug}/contacts/{$theirs->slug}"))
+            ->assertNotFound();
+    }
+
+    #[Test]
+    public function two_people_of_one_name_each_get_an_address_of_their_own(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $first = Contact::factory()->create([
+            'vault_id' => $vault->id, 'account_id' => $user->account_id,
+            'first_name' => 'Jim', 'last_name' => 'Halpert',
+        ]);
+        $second = Contact::factory()->create([
+            'vault_id' => $vault->id, 'account_id' => $user->account_id,
+            'first_name' => 'Jim', 'last_name' => 'Halpert',
+        ]);
+
+        $this->assertSame('jim-halpert', $first->slug);
+        $this->assertSame('jim-halpert-2', $second->slug);
+
+        $this->actingAs($user)->get(url("/vaults/{$vault->slug}/contacts/jim-halpert"))->assertStatus(200);
+        $this->actingAs($user)->get(url("/vaults/{$vault->slug}/contacts/jim-halpert-2"))->assertStatus(200);
+    }
+
+    #[Test]
+    public function it_opens_a_contact_named_in_another_alphabet_written_either_way(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $user->account_id,
+            'first_name' => '太郎',
+            'last_name' => '田中',
+            'name_order' => NameOrderEnum::FamilyFirst,
+        ]);
+
+        $this->assertSame('田中-太郎', $contact->slug);
+
+        $this->actingAs($user)->get(url("/vaults/{$vault->slug}/contacts/田中-太郎"))->assertStatus(200);
+        $this->actingAs($user)->get(url("/vaults/{$vault->slug}/contacts/".rawurlencode('田中-太郎')))->assertStatus(200);
     }
 }

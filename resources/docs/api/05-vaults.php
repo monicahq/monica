@@ -11,6 +11,7 @@ $vault = [
     'type' => 'vault',
     'id' => '9d4f1c2e-7b3a-4f88-9a2d-6c1e5b0f7a31',
     'attributes' => [
+        'slug' => 'dunder-mifflin',
         'name' => 'Dunder Mifflin',
         'description' => 'Everybody at the Scranton branch.',
         'colour' => '#4f8a49',
@@ -21,7 +22,7 @@ $vault = [
         'updated_at' => 1756339200,
     ],
     'links' => [
-        'self' => $base.'/vaults/9d4f1c2e-7b3a-4f88-9a2d-6c1e5b0f7a31',
+        'self' => $base.'/vaults/dunder-mifflin',
     ],
 ];
 
@@ -29,6 +30,7 @@ $otherVault = [
     'type' => 'vault',
     'id' => 'b17c6d40-2e59-4a1b-8f03-5d84e2a9c6f7',
     'attributes' => [
+        'slug' => 'schrute-farms',
         'name' => 'Schrute Farms',
         'description' => null,
         'colour' => '#9a6a24',
@@ -39,7 +41,7 @@ $otherVault = [
         'updated_at' => null,
     ],
     'links' => [
-        'self' => $base.'/vaults/b17c6d40-2e59-4a1b-8f03-5d84e2a9c6f7',
+        'self' => $base.'/vaults/schrute-farms',
     ],
 ];
 
@@ -63,15 +65,16 @@ $pageParams = [
 $identifier = [
     [
         'name' => 'vault',
-        'type' => 'uuid',
+        'type' => 'string',
         'required' => true,
-        'description' => 'The identifier of the vault, which is the id it comes back with. A path that is not a uuid answers 404 without a query being run, so a sequential number reaches nothing.',
+        'description' => 'The vault, named either by the readable name it reports as slug or by the identifier it reports as id. Both answer, whichever the account builds its own addresses from. A readable name is rebuilt whenever the record is renamed, and the previous one stops answering, so a client that stores a reference stores the id. A name a record has released is never given to another.',
     ],
 ];
 
 $colours = 'Exactly one of #3f5fd0, #4f8a49, #9a6a24, #9a3f2b, #6b4fa8, #2f7f86, #a8447a or #4a4a52, written in lower case.';
 
 $vaultAttributes = [
+    ['name' => 'slug', 'type' => 'string', 'description' => 'The readable name the vault is addressed by, built from its name and unique within your account. It is not stable: renaming the vault rebuilds it and the previous one stops answering, which is why a stored reference should be the id. Nothing lets you choose or edit it.'],
     ['name' => 'name', 'type' => 'string', 'description' => 'What the vault is called. Up to 255 characters. Reduced to plain text when it was written down, so no markup survives here.'],
     ['name' => 'description', 'type' => 'string', 'description' => 'What the vault is for, up to 65535 characters, or null when nobody said. Null is the ordinary state of a vault nobody described, not a sign of anything missing.'],
     ['name' => 'colour', 'type' => 'string', 'description' => $colours.' It is how vaults are told apart at a glance, and it is decoration: nothing depends on it.'],

@@ -107,8 +107,8 @@ use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
 use App\Http\Controllers\App\Vaults\VaultReminderController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
@@ -162,96 +162,73 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->name('contacts.index');
 
     Route::get('vaults/{vault}/contacts/{contact}/set-aside', [SetAsideValueController::class, 'index'])
-        ->whereUuid('contact')
         ->name('contacts.setAside.index');
 
     Route::get('vaults/{vault}/contacts/{contact}/edit', [ContactController::class, 'edit'])
-        ->whereUuid('contact')
         ->name('contacts.edit');
 
     Route::put('vaults/{vault}/contacts/{contact}/name', [ContactNameController::class, 'update'])
-        ->whereUuid('contact')
         ->name('contacts.name.update');
 
     Route::post('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'update'])
-        ->whereUuid('contact')
         ->name('contacts.avatar.update');
 
     Route::delete('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'destroy'])
-        ->whereUuid('contact')
         ->name('contacts.avatar.destroy');
 
     Route::put('vaults/{vault}/contacts/{contact}/favourite', [ContactFavouriteController::class, 'update'])
-        ->whereUuid('contact')
         ->name('contacts.favourite.update');
 
     Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])
-        ->whereUuid('contact')
         ->name('contacts.destroy');
 
     Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactTemplateVersionController::class, 'update'])
-        ->whereUuid('contact')
         ->name('contacts.templateVersion.update');
 
     Route::get('vaults/{vault}/contacts/{contact}/sections/{templateVersionSection}/edit', [ContactSectionController::class, 'edit'])
-        ->whereUuid('contact')
         ->whereNumber('templateVersionSection')
         ->name('contacts.sections.edit');
 
     Route::put('vaults/{vault}/contacts/{contact}/sections/{templateVersionSection}', [ContactSectionController::class, 'update'])
-        ->whereUuid('contact')
         ->whereNumber('templateVersionSection')
         ->name('contacts.sections.update');
 
     Route::get('vaults/{vault}/contacts/{contact}/share-links', [ContactShareLinkController::class, 'index'])
-        ->whereUuid('contact')
         ->name('contacts.shareLinks.index');
 
     Route::get('vaults/{vault}/contacts/{contact}/share-links/new', [ContactShareLinkController::class, 'new'])
-        ->whereUuid('contact')
         ->name('contacts.shareLinks.new');
 
     Route::post('vaults/{vault}/contacts/{contact}/share-links', [ContactShareLinkController::class, 'create'])
-        ->whereUuid('contact')
         ->name('contacts.shareLinks.create');
 
     Route::get('vaults/{vault}/contacts/{contact}/share-links/{shareLink}', [ContactShareLinkController::class, 'show'])
-        ->whereUuid('contact')
         ->whereUuid('shareLink')
         ->name('contacts.shareLinks.show');
 
     Route::get('vaults/{vault}/contacts/{contact}/share-links/{shareLink}/edit', [ContactShareLinkController::class, 'edit'])
-        ->whereUuid('contact')
         ->whereUuid('shareLink')
         ->name('contacts.shareLinks.edit');
 
     Route::put('vaults/{vault}/contacts/{contact}/share-links/{shareLink}', [ContactShareLinkController::class, 'update'])
-        ->whereUuid('contact')
         ->whereUuid('shareLink')
         ->name('contacts.shareLinks.update');
 
     Route::delete('vaults/{vault}/contacts/{contact}/share-links/{shareLink}', [ContactShareLinkController::class, 'destroy'])
-        ->whereUuid('contact')
         ->whereUuid('shareLink')
         ->name('contacts.shareLinks.destroy');
 
     Route::get('vaults/{vault}/contacts/{contact}/merge', [ContactMergeController::class, 'new'])
-        ->whereUuid('contact')
         ->name('contacts.merge.new');
 
     Route::get('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'show'])
-        ->whereUuid('contact')
-        ->whereUuid('other')
         ->name('contacts.merge.show');
 
     Route::post('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'create'])
-        ->whereUuid('contact')
-        ->whereUuid('other')
         ->name('contacts.merge.create');
 
     Route::get('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'show'])
-        ->whereUuid('contact')
-        ->missing(fn (Request $request): RedirectResponse => new AbsorbedContactController()->show($request))
+        ->missing(fn (Request $request): Response => new AbsorbedContactController()->show($request))
         ->name('contacts.show');
 
     Route::delete('vaults/{vault}/merges/{contactMerge}', [ContactMergeController::class, 'destroy'])

@@ -12,7 +12,8 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table): void {
             $table->id()->comment('primary key');
-            $table->uuid()->unique()->comment('unguessable identifier used in URLs, share links and by the API');
+            $table->uuid()->unique()->comment('unguessable identifier used in URLs, share links and by the API, and the one that never changes');
+            $table->string('slug', 128)->comment('readable identifier used in URLs and by the API, built from the displayed name, unique within the vault');
             $table->unsignedBigInteger('account_id')->comment('account the contact belongs to');
             $table->unsignedBigInteger('vault_id')->comment('vault the contact lives in');
             $table->unsignedBigInteger('template_version_id')->comment('exact structure version the page renders from');
@@ -45,6 +46,7 @@ return new class extends Migration
             $table->index(['vault_id', 'sort_key']);
             $table->index(['vault_id', 'created_at']);
             $table->unique(['vault_id', 'dav_uri']);
+            $table->unique(['vault_id', 'slug']);
 
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();

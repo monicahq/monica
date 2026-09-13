@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('date_format', 20)->nullable()->comment('order the parts of a date read in, null to follow the locale');
             $table->string('name_order', 20)->default('given_first')->comment('order the name reads in, which the locale cannot always decide');
             $table->string('number_format', 20)->nullable()->comment('separators used for numbers, null to follow the locale');
+            $table->boolean('uses_readable_addresses')->default(true)->comment('whether the product builds addresses naming a vault and a contact, rather than addresses carrying their unguessable identifiers');
             $table->datetime('last_login_at')->nullable()->comment('when the user last signed in');
             $table->string('last_login_ip', 45)->nullable()->comment('ip address the user last signed in from, so a sign-in from somewhere new can be flagged');
             $table->text('two_factor_secret')->nullable()->comment('encrypted TOTP secret, null until the user enrols in two factor authentication');
