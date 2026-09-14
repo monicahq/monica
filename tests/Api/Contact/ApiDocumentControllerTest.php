@@ -212,7 +212,7 @@ class ApiDocumentControllerTest extends ApiTestCase
         ]);
 
         $this->expectDataError($response, [
-            'The document must be a file of type: pdf, doc, docx, odt, xls, xlsx, ods, ppt, pptx, odp, txt, csv, rtf, jpg, jpeg, png, gif, heic.',
+            'The document must be a file of type: pdf, doc, docx, odt, xls, xlsx, ods, ppt, pptx, odp, txt, csv, rtf, jpg, jpeg, png, gif, heic, zip.',
         ]);
     }
 
