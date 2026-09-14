@@ -194,6 +194,29 @@ class ApiDocumentControllerTest extends ApiTestCase
     }
 
     /** @test */
+    public function document_store_gets_an_error_if_the_file_type_is_not_allowed()
+    {
+        Storage::fake();
+
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('POST', '/api/documents', [
+            'contact_id' => $contact->id,
+            'document' => UploadedFile::fake()->createWithContent(
+                'malicious.html',
+                '<script>fetch("/api/contacts",{credentials:"include"});</script>'
+            ),
+        ]);
+
+        $this->expectDataError($response, [
+            'The document must be a file of type: pdf, doc, docx, odt, xls, xlsx, ods, ppt, pptx, odp, txt, csv, rtf, jpg, jpeg, png, gif, heic, zip.',
+        ]);
+    }
+
+    /** @test */
     public function document_store_gets_an_error_if_fields_are_missing()
     {
         $user = $this->signin();

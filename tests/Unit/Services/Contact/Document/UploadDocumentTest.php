@@ -63,6 +63,29 @@ class UploadDocumentTest extends TestCase
     }
 
     /** @test */
+    public function it_fails_if_the_file_type_is_not_allowed()
+    {
+        Storage::fake();
+
+        $contact = factory(Contact::class)->create([]);
+
+        $file = UploadedFile::fake()->createWithContent(
+            'malicious.html',
+            '<script>fetch("/api/contacts",{credentials:"include"});</script>'
+        );
+
+        $request = [
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+            'document' => $file,
+        ];
+
+        $this->expectException(ValidationException::class);
+
+        app(UploadDocument::class)->execute($request);
+    }
+
+    /** @test */
     public function it_throws_an_exception_if_contact_does_not_exist()
     {
         Storage::fake();

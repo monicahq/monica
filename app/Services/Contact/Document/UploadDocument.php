@@ -20,7 +20,11 @@ class UploadDocument extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer',
-            'document' => 'required|file',
+            // docx/xlsx/pptx/odt/ods/odp are ZIP containers; on libmagic
+            // versions without full OOXML/ODF signature support they sniff
+            // as a generic zip rather than their specific format, so `zip`
+            // has to stay allowed here too or those uploads get rejected.
+            'document' => 'required|file|mimes:pdf,doc,docx,odt,xls,xlsx,ods,ppt,pptx,odp,txt,csv,rtf,jpg,jpeg,png,gif,heic,zip',
         ];
     }
 
