@@ -6,11 +6,11 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\DestroyValueListItem;
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteAValueInUse;
 use App\Jobs\LogUserAction;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -42,7 +42,7 @@ class DestroyValueListItemTest extends TestCase
         $user = User::factory()->create();
         $item = ValueListItem::factory()->used(3)->create(['account_id' => $user->account_id]);
 
-        $this->expectException(CannotDeleteAValueInUse::class);
+        $this->expectException(AuthorizationException::class);
 
         new DestroyValueListItem(user: $user, item: $item)->execute();
     }

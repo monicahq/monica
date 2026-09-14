@@ -13,6 +13,9 @@ use App\Enums\SsoProviderEnum;
 use App\Enums\TimeFormatEnum;
 use Carbon\CarbonImmutable;
 use Database\Factories\UserFactory;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -267,6 +270,43 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     public function isAdministrator(): bool
     {
         return $this->is_active && $this->administrator()->exists();
+    }
+
+    /**
+     * Ask an ability about this user and get the answer with its reason.
+     *
+     * {@see can()} answers the same question with a bare boolean, which is
+     * enough to decide whether a control is active. This keeps the response, so
+     * the caller can also say why it was refused, in the wording the policy
+     * holds and every surface shares. A screen asks this way: it has a reason to
+     * show and nothing to interrupt.
+     *
+     * @param  \UnitEnum|string  $ability
+     * @param  mixed  $arguments
+     */
+    public function inspect($ability, $arguments = []): Response
+    {
+        return app(Gate::class)->forUser($this)->inspect($ability, $arguments);
+    }
+
+    /**
+     * Refuse the ability unless this user holds it.
+     *
+     * {@see inspect()} hands the same answer back to be read. This one refuses
+     * instead, and the refusal carries the wording the policy holds, so an
+     * action states neither the rule nor the reason a second time.
+     *
+     * Both ask about this user rather than the signed in session, so a job, a
+     * command and a device synchronising over CardDAV all get the same answer.
+     *
+     * @param  \UnitEnum|string  $ability
+     * @param  mixed  $arguments
+     *
+     * @throws AuthorizationException
+     */
+    public function authorize($ability, $arguments = []): Response
+    {
+        return app(Gate::class)->forUser($this)->authorize($ability, $arguments);
     }
 
     /**

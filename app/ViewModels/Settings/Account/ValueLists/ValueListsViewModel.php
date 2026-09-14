@@ -15,7 +15,7 @@ class ValueListsViewModel
     ) {}
 
     /**
-     * @return array<int, array{id: int, name: string, description: ?string, allowsUserValues: bool, canBeDeleted: bool, countLabel: string, values: array<int, array{id: int, label: string, isActive: bool, canBeDeleted: bool, usageLabel: string}>}>
+     * @return array<int, array{id: int, name: string, description: ?string, allowsUserValues: bool, addValueReason: ?string, canBeDeleted: bool, deleteReason: ?string, countLabel: string, values: array<int, array{id: int, label: string, isActive: bool, canBeDeleted: bool, usageLabel: string}>}>
      */
     public function lists(): array
     {
@@ -28,15 +28,17 @@ class ValueListsViewModel
                 'id' => $list->id,
                 'name' => $list->name,
                 'description' => $list->description,
-                'allowsUserValues' => $list->allows_user_values,
-                'canBeDeleted' => ! $list->is_system,
+                'allowsUserValues' => $this->user->can('addItem', $list),
+                'addValueReason' => $this->reason('addItem', $list),
+                'canBeDeleted' => $this->user->can('delete', $list),
+                'deleteReason' => $this->reason('delete', $list),
                 'countLabel' => $this->countLabel($list->items->count()),
                 'values' => $list->items
                     ->map(fn (ValueListItem $item): array => [
                         'id' => $item->id,
                         'label' => $item->label,
                         'isActive' => $item->is_active,
-                        'canBeDeleted' => $item->usage_count === 0,
+                        'canBeDeleted' => $this->user->can('delete', $item),
                         'usageLabel' => $this->usageLabel($item),
                     ])
                     ->all(),
@@ -47,6 +49,13 @@ class ValueListsViewModel
     public function user(): User
     {
         return $this->user;
+    }
+
+    private function reason(string $ability, ValueList $list): ?string
+    {
+        $response = $this->user->inspect($ability, $list);
+
+        return $response->denied() ? (string) $response->message() : null;
     }
 
     private function countLabel(int $count): string

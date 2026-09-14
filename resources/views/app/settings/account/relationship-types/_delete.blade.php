@@ -10,5 +10,15 @@
     <p>{{ __('No relationship is written with this type, so nothing you have written will change.') }}</p>
   </x-delete-action>
 @else
-  <p class="max-w-[48ch] text-xs text-pretty text-muted">{{ $viewModel->deleteBlockedReason() }}</p>
+  <div class="flex flex-wrap items-center gap-3.5">
+    <x-button.secondary
+      type="button"
+      aria-disabled="true"
+      aria-describedby="relationship-type-delete-reason"
+    >
+      {{ __('Delete this type') }}
+    </x-button.secondary>
+
+    <p id="relationship-type-delete-reason" class="max-w-[48ch] text-xs text-pretty text-muted">{{ $viewModel->deleteBlockedReason() }}</p>
+  </div>
 @endif

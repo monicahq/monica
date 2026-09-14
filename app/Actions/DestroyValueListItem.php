@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteAValueInUse;
 use App\Jobs\LogUserAction;
 use App\Models\User;
 use App\Models\ValueListItem;
@@ -38,9 +37,7 @@ class DestroyValueListItem
             throw new ModelNotFoundException('This value is in another account.');
         }
 
-        if ($this->item->usage_count > 0) {
-            throw new CannotDeleteAValueInUse("This value is used by {$this->item->usage_count} records.");
-        }
+        $this->user->authorize('delete', $this->item);
     }
 
     private function destroy(): void

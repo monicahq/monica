@@ -34,6 +34,17 @@ class VaultsViewModel
     }
 
     /**
+     * What the free offer allows, said only when the account is at it. The control stays on the
+     * screen and says why, rather than disappearing and leaving nothing to understand.
+     */
+    public function ceilingMessage(): ?string
+    {
+        $response = $this->user->inspect('create', Vault::class);
+
+        return $response->denied() ? (string) $response->message() : null;
+    }
+
+    /**
      * @return array<int, array{name: string, initial: string, description: string|null, colour: string, tint: string, contactCount: string, isDefault: bool, isLastOpened: bool, url: string}>
      */
     public function vaults(): array

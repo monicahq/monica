@@ -12,7 +12,9 @@ use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\Passkey;
 use App\Models\User;
+use App\Models\Vault;
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -260,5 +262,73 @@ class UserTest extends TestCase
         $this->assertNotNull($user->password);
         $this->assertTrue($user->usesSingleSignOn());
         $this->assertFalse($user->usesPasswordlessSignIn());
+    }
+
+    #[Test]
+    public function it_inspects_an_ability_and_keeps_the_reason_a_boolean_would_lose(): void
+    {
+        config(['monica.free_vault_limit' => 1]);
+
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $response = $user->inspect('create', Vault::class);
+
+        $this->assertTrue($response->denied());
+        $this->assertStringContainsString('Full access lifts the ceiling.', (string) $response->message());
+        $this->assertFalse($user->can('create', Vault::class));
+    }
+
+    #[Test]
+    public function it_inspects_an_ability_that_allows(): void
+    {
+        config(['monica.free_vault_limit' => 5]);
+
+        $user = User::factory()->create();
+
+        $response = $user->inspect('create', Vault::class);
+
+        $this->assertTrue($response->allowed());
+        $this->assertTrue($user->can('create', Vault::class));
+    }
+
+    #[Test]
+    public function it_refuses_an_ability_the_user_does_not_hold(): void
+    {
+        config(['monica.free_vault_limit' => 1]);
+
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->expectException(AuthorizationException::class);
+        $this->expectExceptionMessage('Full access lifts the ceiling.');
+
+        $user->authorize('create', Vault::class);
+    }
+
+    #[Test]
+    public function it_lets_an_ability_the_user_holds_through(): void
+    {
+        config(['monica.free_vault_limit' => 5]);
+
+        $user = User::factory()->create();
+
+        $this->assertTrue($user->authorize('create', Vault::class)->allowed());
+        $this->assertTrue($user->can('create', Vault::class));
+    }
+
+    #[Test]
+    public function it_asks_the_ability_about_this_user_rather_than_the_signed_in_one(): void
+    {
+        config(['monica.free_vault_limit' => 1]);
+
+        $atTheCeiling = User::factory()->create();
+        Vault::factory()->create(['account_id' => $atTheCeiling->account_id]);
+
+        $this->actingAs(User::factory()->create());
+
+        $this->expectException(AuthorizationException::class);
+
+        $atTheCeiling->authorize('create', Vault::class);
     }
 }

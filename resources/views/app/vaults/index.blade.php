@@ -1,9 +1,19 @@
 {{-- Where somebody lands after signing in: the compartments their account is divided into. --}}
 {{-- @var \App\ViewModels\Vaults\VaultsViewModel $viewModel --}}
+@php
+  $ceiling = $viewModel->ceilingMessage();
+@endphp
 <x-account-layout :title="$viewModel->title()">
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()">
     <x-slot:actions>
-      <x-button :href="$viewModel->createUrl()" data-turbo="true" size="small">
+      <x-button
+        :href="$ceiling === null ? $viewModel->createUrl() : null"
+        type="button"
+        :aria-disabled="$ceiling !== null ? 'true' : null"
+        :aria-describedby="$ceiling !== null ? 'vault-ceiling' : null"
+        data-turbo="true"
+        size="small"
+      >
         <x-slot:icon>
           <x-icon name="plus" :size="16" :stroke-width="1.6" />
         </x-slot:icon>
@@ -12,6 +22,10 @@
       </x-button>
     </x-slot:actions>
   </x-page-header>
+
+  @if ($ceiling !== null)
+    <x-paywall-prompt :message="$ceiling" id="vault-ceiling" />
+  @endif
 
   @if ($viewModel->vaults() === [])
     <x-panel>
@@ -23,7 +37,13 @@
         {{ __('A vault holds one part of your life. Everything you keep here is in a vault, and new records go to the first one you make.') }}
 
         <x-slot:action>
-          <x-button :href="$viewModel->createUrl()" data-turbo="true">
+          <x-button
+            :href="$ceiling === null ? $viewModel->createUrl() : null"
+            type="button"
+            :aria-disabled="$ceiling !== null ? 'true' : null"
+            :aria-describedby="$ceiling !== null ? 'vault-ceiling' : null"
+            data-turbo="true"
+          >
             <x-slot:icon>
               <x-icon name="plus" :size="18" :stroke-width="1.6" />
             </x-slot:icon>

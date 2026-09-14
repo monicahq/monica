@@ -7,7 +7,6 @@ namespace Tests\Unit\Actions;
 use App\Actions\CreateContact;
 use App\Enums\NameOrderEnum;
 use App\Enums\UserActionEnum;
-use App\Exceptions\TooManyContacts;
 use App\Exceptions\VaultAlreadyHasAMeContact;
 use App\Exceptions\VaultHasNoContactDefault;
 use App\Jobs\LogUserAction;
@@ -18,6 +17,7 @@ use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -438,7 +438,7 @@ class CreateContactTest extends TestCase
         $version = $this->publishedContactVersion($user->account);
         Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
 
-        $this->expectException(TooManyContacts::class);
+        $this->expectException(AuthorizationException::class);
         $this->expectExceptionMessage('Full access lifts the ceiling.');
 
         new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Pam')->execute();
@@ -456,7 +456,7 @@ class CreateContactTest extends TestCase
         $version = $this->publishedContactVersion($user->account);
         Contact::factory()->archived()->create(['account_id' => $user->account_id, 'vault_id' => $elsewhere->id]);
 
-        $this->expectException(TooManyContacts::class);
+        $this->expectException(AuthorizationException::class);
 
         new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Pam')->execute();
     }

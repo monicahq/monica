@@ -704,4 +704,32 @@ class VaultControllerTest extends TestCase
         $this->actingAs($user)->get(url('/vaults/家族'))->assertStatus(200);
         $this->actingAs($user)->get(url('/vaults/'.rawurlencode('家族')))->assertStatus(200);
     }
+
+    #[Test]
+    public function the_vaults_screen_marks_the_creation_unavailable_at_the_ceiling(): void
+    {
+        config(['monica.free_vault_limit' => 1]);
+
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+
+        $this->actingAs($user)->get(route('vaults.index'))
+            ->assertStatus(200)
+            ->assertSee('aria-disabled="true" aria-describedby="vault-ceiling"', false)
+            ->assertSee('Full access lifts the ceiling.', false);
+    }
+
+    #[Test]
+    public function the_vaults_screen_offers_the_creation_below_the_ceiling(): void
+    {
+        config(['monica.free_vault_limit' => 5]);
+
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+
+        $this->actingAs($user)->get(route('vaults.index'))
+            ->assertStatus(200)
+            ->assertSee(route('vaults.new'), false)
+            ->assertDontSee('aria-describedby="vault-ceiling"', false);
+    }
 }

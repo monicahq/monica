@@ -168,7 +168,7 @@ class EntityTypeFormViewModel
 
     public function canBeDeleted(): bool
     {
-        return $this->entityType !== null && $this->entityType->entity_count === 0;
+        return $this->entityType !== null && $this->user->can('delete', $this->entityType);
     }
 
     public function entityType(): ?EntityType

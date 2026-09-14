@@ -7,10 +7,10 @@ namespace App\Http\Controllers\App\Settings\Account\ValueLists;
 use App\Actions\CreateValueListItem;
 use App\Actions\DestroyValueListItem;
 use App\Actions\UpdateValueListItem;
-use App\Exceptions\CannotDeleteAValueInUse;
 use App\Http\Controllers\Controller;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -60,9 +60,9 @@ class ValueListItemController extends Controller
                 user: $request->user(),
                 item: $valueListItem,
             )->execute();
-        } catch (CannotDeleteAValueInUse) {
+        } catch (AuthorizationException $e) {
             return redirect()->route('settings.valueLists.index')
-                ->with('error', __('The value is in use and stays.'))
+                ->with('error', $e->getMessage())
                 ->with('error_description', __('Stop offering it instead, and everything that already has it keeps it.'));
         }
 

@@ -6,11 +6,11 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\CreateValueListItem;
 use App\Enums\UserActionEnum;
-use App\Exceptions\ValueListIsClosed;
 use App\Jobs\LogUserAction;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -86,7 +86,7 @@ class CreateValueListItemTest extends TestCase
             'allows_user_values' => false,
         ]);
 
-        $this->expectException(ValueListIsClosed::class);
+        $this->expectException(AuthorizationException::class);
 
         new CreateValueListItem(user: $user, valueList: $list, label: 'Beet farmer')->execute();
     }

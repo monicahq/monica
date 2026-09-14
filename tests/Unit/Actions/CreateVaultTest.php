@@ -8,13 +8,13 @@ use App\Actions\CreateVault;
 use App\Actions\UpdateVault;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\UserActionEnum;
-use App\Exceptions\TooManyVaults;
 use App\Jobs\LogUserAction;
 use App\Models\Template;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
@@ -198,7 +198,7 @@ class CreateVaultTest extends TestCase
         $user = User::factory()->create();
         Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->expectException(TooManyVaults::class);
+        $this->expectException(AuthorizationException::class);
         $this->expectExceptionMessage('Full access lifts the ceiling.');
 
         new CreateVault(user: $user, name: 'Sabre')->execute();
@@ -215,7 +215,7 @@ class CreateVaultTest extends TestCase
 
         try {
             new CreateVault(user: $user, name: 'Sabre')->execute();
-        } catch (TooManyVaults) {
+        } catch (AuthorizationException) {
         }
 
         $renamed = new UpdateVault(user: $user, vault: $vaults->first(), name: 'Scranton')->execute();

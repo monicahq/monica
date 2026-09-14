@@ -167,7 +167,7 @@ class RelationshipTypeFormViewModel
             return false;
         }
 
-        return ! $this->relationshipType->is_system && $this->relationshipType->relationshipCount() === 0;
+        return $this->user->can('delete', $this->relationshipType);
     }
 
     public function deleteBlockedReason(): string

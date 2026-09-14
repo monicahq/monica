@@ -2,12 +2,13 @@
 {{-- @var \App\ViewModels\Vaults\VaultFormViewModel $viewModel --}}
 @php
   $values = $viewModel->values();
+  $ceiling = $viewModel->ceilingMessage();
 @endphp
 <x-account-layout :title="$viewModel->title()">
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" class="max-w-140" />
 
-  @if ($viewModel->ceilingMessage() !== null)
-    <x-paywall-prompt :message="$viewModel->ceilingMessage()" class="max-w-140" />
+  @if ($ceiling !== null)
+    <x-paywall-prompt :message="$ceiling" id="vault-form-ceiling" class="max-w-140" />
   @endif
 
   <div
@@ -130,7 +131,11 @@
       <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full sm:ml-auto">
         <x-button.secondary :href="$viewModel->backUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
-        <x-button form="vault-form" ::disabled="! named">{{ __('Create vault') }}</x-button>
+        @if ($ceiling !== null)
+          <x-button form="vault-form" disabled aria-describedby="vault-form-ceiling">{{ __('Create vault') }}</x-button>
+        @else
+          <x-button form="vault-form" ::disabled="! named">{{ __('Create vault') }}</x-button>
+        @endif
       </div>
     </div>
   </div>

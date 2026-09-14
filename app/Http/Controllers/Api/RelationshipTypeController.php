@@ -8,13 +8,12 @@ use App\Actions\CreateRelationshipType;
 use App\Actions\DestroyRelationshipType;
 use App\Actions\UpdateRelationshipType;
 use App\Exceptions\CannotChangeARelationshipTypeDirection;
-use App\Exceptions\CannotDeleteARelationshipTypeInUse;
-use App\Exceptions\CannotDeleteASuppliedRelationshipType;
 use App\Exceptions\RelationshipTypeNameIsAlreadyUsed;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RelationshipTypeResource;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -145,7 +144,7 @@ class RelationshipTypeController extends Controller
                 user: $request->user(),
                 relationshipType: $this->find($request, $relationshipType),
             )->execute();
-        } catch (CannotDeleteASuppliedRelationshipType|CannotDeleteARelationshipTypeInUse $e) {
+        } catch (AuthorizationException $e) {
             throw ValidationException::withMessages(['relationshipType' => $e->getMessage()]);
         }
 

@@ -6,7 +6,6 @@ namespace App\Actions;
 
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteTheMeContact;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\ShareLink;
@@ -41,9 +40,7 @@ class DestroyContact
             throw new ModelNotFoundException('This contact is in another account.');
         }
 
-        if ($this->contact->is_me) {
-            throw new CannotDeleteTheMeContact('The contact representing you cannot be deleted.');
-        }
+        $this->user->authorize('delete', $this->contact);
     }
 
     private function destroy(): void

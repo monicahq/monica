@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\UserActionEnum;
-use App\Exceptions\ValueListIsClosed;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\User;
@@ -53,9 +52,7 @@ class CreateValueListItem
             throw new ModelNotFoundException('This value list is in another account.');
         }
 
-        if (! $this->valueList->allows_user_values) {
-            throw new ValueListIsClosed('This value list does not take choices of its own.');
-        }
+        $this->user->authorize('addItem', $this->valueList);
     }
 
     private function create(): void

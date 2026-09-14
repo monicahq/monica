@@ -6,6 +6,7 @@ namespace App\ViewModels\Vaults;
 
 use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
+use App\Models\Contact;
 use App\Models\Template;
 use App\Models\TemplateVersion;
 use App\Models\User;
@@ -54,17 +55,9 @@ class ContactFormViewModel
      */
     public function ceilingMessage(): ?string
     {
-        $limit = $this->user->account->contactLimit();
+        $response = $this->user->inspect('create', Contact::class);
 
-        if ($limit === null) {
-            return null;
-        }
-
-        if ($this->user->account->contactCount() < $limit) {
-            return null;
-        }
-
-        return trans_choice('The free offer holds :count contact across every vault, and this account already has it.|The free offer holds :count contacts across every vault, and this account already has them.', $limit);
+        return $response->denied() ? (string) $response->message() : null;
     }
 
     public function contactsUrl(): string

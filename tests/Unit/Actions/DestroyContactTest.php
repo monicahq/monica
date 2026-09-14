@@ -7,13 +7,13 @@ namespace Tests\Unit\Actions;
 use App\Actions\DestroyContact;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteTheMeContact;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\ShareLink;
 use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -85,7 +85,8 @@ class DestroyContactTest extends TestCase
         $user = User::factory()->create();
         $contact = Contact::factory()->me()->create(['account_id' => $user->account_id]);
 
-        $this->expectException(CannotDeleteTheMeContact::class);
+        $this->expectException(AuthorizationException::class);
+        $this->expectExceptionMessage('This is the contact that represents you, and it stays.');
 
         new DestroyContact(user: $user, contact: $contact)->execute();
     }

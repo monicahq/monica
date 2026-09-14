@@ -7,10 +7,10 @@ namespace App\Http\Dav;
 use App\Actions\DestroyContact;
 use App\Actions\ImportVCard;
 use App\Enums\ContactGroupingEnum;
-use App\Exceptions\CannotDeleteTheMeContact;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Collection;
 use Override;
 use Sabre\CardDAV\Backend\BackendInterface;
@@ -142,7 +142,7 @@ class AddressBookBackend implements BackendInterface, SyncSupport
 
         try {
             new DestroyContact(user: $this->user, contact: $contact)->execute();
-        } catch (CannotDeleteTheMeContact $exception) {
+        } catch (AuthorizationException $exception) {
             throw new Forbidden('The contact representing you cannot be removed from a device.', 0, $exception);
         }
 

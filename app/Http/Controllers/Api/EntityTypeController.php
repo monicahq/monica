@@ -7,10 +7,10 @@ namespace App\Http\Controllers\Api;
 use App\Actions\CreateEntityType;
 use App\Actions\DestroyEntityType;
 use App\Actions\UpdateEntityType;
-use App\Exceptions\CannotDeleteAnEntityTypeInUse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EntityTypeResource;
 use App\Models\EntityType;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -110,7 +110,7 @@ class EntityTypeController extends Controller
                 user: $request->user(),
                 entityType: $this->find($request, $entityType),
             )->execute();
-        } catch (CannotDeleteAnEntityTypeInUse $e) {
+        } catch (AuthorizationException $e) {
             throw ValidationException::withMessages(['entityType' => $e->getMessage()]);
         }
 

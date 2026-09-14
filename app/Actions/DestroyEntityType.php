@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteAnEntityTypeInUse;
 use App\Jobs\LogUserAction;
 use App\Models\EntityType;
 use App\Models\User;
@@ -36,9 +35,7 @@ class DestroyEntityType
             throw new ModelNotFoundException('This entity type is in another account.');
         }
 
-        if ($this->entityType->entity_count > 0) {
-            throw new CannotDeleteAnEntityTypeInUse("This type still holds {$this->entityType->entity_count} records.");
-        }
+        $this->user->authorize('delete', $this->entityType);
     }
 
     private function destroy(): void

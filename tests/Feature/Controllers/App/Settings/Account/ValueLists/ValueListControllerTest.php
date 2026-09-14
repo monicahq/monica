@@ -187,7 +187,7 @@ class ValueListControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_offer_to_delete_a_list_the_product_supplied(): void
+    public function it_marks_deletion_unavailable_for_a_list_the_product_supplied(): void
     {
         $user = User::factory()->create();
         ValueList::factory()->supplied(ValueListEnum::Genders)->create(['account_id' => $user->account_id]);
@@ -195,6 +195,8 @@ class ValueListControllerTest extends TestCase
         $this->actingAs($user)->get(route('settings.valueLists.index'))
             ->assertStatus(200)
             ->assertSee('Genders')
+            ->assertSee('aria-disabled="true"', false)
+            ->assertSee('This list stays.')
             ->assertDontSee('Delete “Genders”?', escape: false);
     }
 

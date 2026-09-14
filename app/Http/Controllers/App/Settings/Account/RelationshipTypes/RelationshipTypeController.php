@@ -8,14 +8,13 @@ use App\Actions\CreateRelationshipType;
 use App\Actions\DestroyRelationshipType;
 use App\Actions\UpdateRelationshipType;
 use App\Exceptions\CannotChangeARelationshipTypeDirection;
-use App\Exceptions\CannotDeleteARelationshipTypeInUse;
-use App\Exceptions\CannotDeleteASuppliedRelationshipType;
 use App\Exceptions\RelationshipTypeNameIsAlreadyUsed;
 use App\Http\Controllers\Controller;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
 use App\ViewModels\Settings\Account\RelationshipTypes\RelationshipTypeFormViewModel;
 use App\ViewModels\Settings\Account\RelationshipTypes\RelationshipTypesViewModel;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -108,13 +107,9 @@ class RelationshipTypeController extends Controller
                 user: $request->user(),
                 relationshipType: $relationshipType,
             )->execute();
-        } catch (CannotDeleteASuppliedRelationshipType) {
+        } catch (AuthorizationException $e) {
             return redirect()->route('settings.relationshipTypes.index')
-                ->with('error', __('The type came with your account and stays.'))
-                ->with('error_description', __('Stop offering it instead, and everything written with it keeps reading as it does.'));
-        } catch (CannotDeleteARelationshipTypeInUse) {
-            return redirect()->route('settings.relationshipTypes.index')
-                ->with('error', __('Relationships are written with this type, so it stays.'))
+                ->with('error', $e->getMessage())
                 ->with('error_description', __('Stop offering it instead, and everything written with it keeps reading as it does.'));
         }
 

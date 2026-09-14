@@ -415,14 +415,16 @@ class EntityTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_no_deletion_for_a_type_that_holds_records(): void
+    public function it_marks_deletion_unavailable_for_a_type_that_holds_records(): void
     {
         $user = User::factory()->create();
         $entityType = EntityType::factory()->used()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user)->get(route('settings.entityTypes.edit', $entityType))
             ->assertStatus(200)
-            ->assertDontSee('Delete this type')
+            ->assertSee('Delete this type')
+            ->assertSee('aria-disabled="true"', false)
+            ->assertSee('aria-describedby="entity-type-delete-reason"', false)
             ->assertSee('This type cannot be deleted while records are filed under it.');
     }
 

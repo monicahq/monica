@@ -4,6 +4,7 @@
 @php
   $vault = $viewModel->vault();
   $values = $viewModel->values();
+  $ceiling = $viewModel->ceilingMessage();
 @endphp
 <x-shell :title="$viewModel->title()">
   <x-slot:breadcrumb>
@@ -17,8 +18,8 @@
 
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
-  @if ($viewModel->ceilingMessage() !== null)
-    <x-paywall-prompt :message="$viewModel->ceilingMessage()" />
+  @if ($ceiling !== null)
+    <x-paywall-prompt :message="$ceiling" id="contact-form-ceiling" />
   @endif
 
   <div
@@ -185,7 +186,11 @@
       <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
         <x-button.secondary :href="$viewModel->contactsUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
-        <x-button form="contact-form" :disabled="! $viewModel->canCreate()">{{ __('Create the contact') }}</x-button>
+        <x-button
+          form="contact-form"
+          :disabled="! $viewModel->canCreate() || $ceiling !== null"
+          :aria-describedby="$ceiling !== null ? 'contact-form-ceiling' : null"
+        >{{ __('Create the contact') }}</x-button>
       </div>
     </div>
   </div>

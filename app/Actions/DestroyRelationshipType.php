@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteARelationshipTypeInUse;
-use App\Exceptions\CannotDeleteASuppliedRelationshipType;
 use App\Jobs\LogUserAction;
 use App\Models\RelationshipType;
 use App\Models\User;
@@ -41,13 +39,7 @@ class DestroyRelationshipType
             throw new ModelNotFoundException('This relationship type is in another account.');
         }
 
-        if ($this->relationshipType->is_system) {
-            throw new CannotDeleteASuppliedRelationshipType('This type came with the account and stays.');
-        }
-
-        if ($this->relationshipType->relationshipCount() > 0) {
-            throw new CannotDeleteARelationshipTypeInUse('Relationships are written with this type.');
-        }
+        $this->user->authorize('delete', $this->relationshipType);
     }
 
     private function destroy(): void

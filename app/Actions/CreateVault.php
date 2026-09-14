@@ -6,7 +6,6 @@ namespace App\Actions;
 
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\UserActionEnum;
-use App\Exceptions\TooManyVaults;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\Template;
@@ -41,17 +40,7 @@ class CreateVault
 
     private function refuseAboveTheCeiling(): void
     {
-        $limit = $this->user->account->vaultLimit();
-
-        if ($limit === null) {
-            return;
-        }
-
-        if ($this->user->account->vaults()->count() < $limit) {
-            return;
-        }
-
-        throw new TooManyVaults(trans_choice('The free offer holds :count vault, and this account already has it. Full access lifts the ceiling.|The free offer holds :count vaults, and this account already has them. Full access lifts the ceiling.', $limit));
+        $this->user->authorize('create', Vault::class);
     }
 
     private function sanitize(): void

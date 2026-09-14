@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteASuppliedList;
 use App\Jobs\LogUserAction;
 use App\Models\User;
 use App\Models\ValueList;
@@ -37,9 +36,7 @@ class DestroyValueList
             throw new ModelNotFoundException('This value list is in another account.');
         }
 
-        if ($this->valueList->is_system) {
-            throw new CannotDeleteASuppliedList('This value list was supplied by the product.');
-        }
+        $this->user->authorize('delete', $this->valueList);
     }
 
     private function destroy(): void

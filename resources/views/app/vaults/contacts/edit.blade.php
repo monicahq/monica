@@ -167,7 +167,7 @@
 
   <x-panel :title="__('Delete contact')" icon="people">
     <div class="flex flex-wrap items-center gap-3.5">
-      <p class="max-w-[60ch] text-sm text-pretty text-muted">{{ $viewModel->deleteDescription() }}</p>
+      <p id="delete-contact-reason" class="max-w-[60ch] text-sm text-pretty text-muted">{{ $viewModel->deleteDescription() }}</p>
 
       @if ($viewModel->mayBeDeleted())
         <x-modal.warning
@@ -185,6 +185,15 @@
 
           <p>{{ __('Nothing they took part in is deleted, and they can be restored.') }}</p>
         </x-modal.warning>
+      @else
+        <x-button.secondary
+          type="button"
+          aria-disabled="true"
+          aria-describedby="delete-contact-reason"
+          class="sm:ml-auto"
+        >
+          {{ __('Delete the contact') }}
+        </x-button.secondary>
       @endif
     </div>
   </x-panel>

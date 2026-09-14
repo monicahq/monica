@@ -11,11 +11,11 @@ use App\Actions\SetVaultDefaultTemplate;
 use App\Actions\UpdateVault;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VaultColourEnum;
-use App\Exceptions\TooManyVaults;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\VaultResource;
 use App\Models\TemplateVersion;
 use App\Models\Vault;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -66,7 +66,7 @@ class VaultController extends Controller
                 description: $validated['description'] ?? null,
                 colour: $validated['colour'] ?? null,
             )->execute();
-        } catch (TooManyVaults $e) {
+        } catch (AuthorizationException $e) {
             throw ValidationException::withMessages(['name' => $e->getMessage()]);
         }
 

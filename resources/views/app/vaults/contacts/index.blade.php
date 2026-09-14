@@ -2,6 +2,7 @@
 {{-- @var \App\ViewModels\Vaults\ContactsViewModel $viewModel --}}
 @php
   $vault = $viewModel->vault();
+  $ceiling = $viewModel->ceilingMessage();
 @endphp
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:breadcrumb>
@@ -15,7 +16,14 @@
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
     <h1 class="min-w-0 text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
-    <x-button :href="$viewModel->newContactUrl()" data-turbo="true" size="small">
+    <x-button
+      :href="$ceiling === null ? $viewModel->newContactUrl() : null"
+      type="button"
+      :aria-disabled="$ceiling !== null ? 'true' : null"
+      :aria-describedby="$ceiling !== null ? 'contact-ceiling' : null"
+      data-turbo="true"
+      size="small"
+    >
       <x-slot:icon>
         <x-icon name="plus" :size="16" :stroke-width="1.6" />
       </x-slot:icon>
@@ -23,6 +31,10 @@
       {{ __('Add somebody') }}
     </x-button>
   </header>
+
+  @if ($ceiling !== null)
+    <x-paywall-prompt :message="$ceiling" id="contact-ceiling" />
+  @endif
 
   <div id="contacts" x-merge="replace" class="flex flex-col gap-3.5">
     <div class="flex flex-wrap items-center gap-x-4 gap-y-2.5">
@@ -90,7 +102,13 @@
           {{ $viewModel->emptyLine() }}
 
           <x-slot:action>
-            <x-button :href="$viewModel->newContactUrl()" data-turbo="true">
+            <x-button
+              :href="$ceiling === null ? $viewModel->newContactUrl() : null"
+              type="button"
+              :aria-disabled="$ceiling !== null ? 'true' : null"
+              :aria-describedby="$ceiling !== null ? 'contact-ceiling' : null"
+              data-turbo="true"
+            >
               <x-slot:icon>
                 <x-icon name="plus" :size="18" :stroke-width="1.6" />
               </x-slot:icon>
@@ -117,7 +135,15 @@
             <span class="text-xs text-pretty text-muted">{{ $viewModel->endLine() }}</span>
           @endif
 
-          <x-button.secondary :href="$viewModel->newContactUrl()" data-turbo="true" size="small" class="ml-auto">
+          <x-button.secondary
+            :href="$ceiling === null ? $viewModel->newContactUrl() : null"
+            type="button"
+            :aria-disabled="$ceiling !== null ? 'true' : null"
+            :aria-describedby="$ceiling !== null ? 'contact-ceiling' : null"
+            data-turbo="true"
+            size="small"
+            class="ml-auto"
+          >
             <x-slot:icon>
               <x-icon name="plus" :size="16" :stroke-width="1.6" />
             </x-slot:icon>

@@ -758,8 +758,22 @@ class ContactControllerTest extends TestCase
         $this->actingAs($user)->get(route('contacts.edit', ['vault' => $vault, 'contact' => $me]))
             ->assertStatus(200)
             ->assertSee('Change the name')
-            ->assertDontSee('Delete the contact')
+            ->assertSee('aria-disabled="true"', false)
             ->assertSee('This is the contact that represents you, and it stays.', false);
+    }
+
+    #[Test]
+    public function the_edit_screen_of_any_other_contact_offers_the_way_out(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $dwight = $this->contact($vault, 'Dwight', 'Schrute');
+
+        $this->actingAs($user)->get(route('contacts.edit', ['vault' => $vault, 'contact' => $dwight]))
+            ->assertStatus(200)
+            ->assertSee('Delete the contact')
+            ->assertSee(route('contacts.destroy', ['vault' => $vault, 'contact' => $dwight]), false)
+            ->assertSee('Taking them off the list can be undone.', false);
     }
 
     #[Test]
@@ -1454,5 +1468,35 @@ class ContactControllerTest extends TestCase
 
         $this->actingAs($user)->get(url("/vaults/{$vault->slug}/contacts/田中-太郎"))->assertStatus(200);
         $this->actingAs($user)->get(url("/vaults/{$vault->slug}/contacts/".rawurlencode('田中-太郎')))->assertStatus(200);
+    }
+
+    #[Test]
+    public function the_contacts_screen_marks_the_creation_unavailable_at_the_ceiling(): void
+    {
+        config(['monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $this->contact($vault, 'Pam', 'Beesly');
+
+        $this->actingAs($user)->get(route('contacts.index', $vault))
+            ->assertStatus(200)
+            ->assertSee('aria-disabled="true"', false)
+            ->assertSee('aria-describedby="contact-ceiling"', false)
+            ->assertSee('Full access lifts the ceiling.', false);
+    }
+
+    #[Test]
+    public function the_contacts_screen_offers_the_creation_below_the_ceiling(): void
+    {
+        config(['monica.free_contact_limit' => 30]);
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $this->contact($vault, 'Pam', 'Beesly');
+
+        $this->actingAs($user)->get(route('contacts.index', $vault))
+            ->assertStatus(200)
+            ->assertDontSee('aria-describedby="contact-ceiling"', false);
     }
 }

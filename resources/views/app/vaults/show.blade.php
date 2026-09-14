@@ -3,6 +3,7 @@
 @php
   $vault = $viewModel->vault();
   $people = $viewModel->people();
+  $ceiling = $viewModel->ceilingMessage();
 @endphp
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:breadcrumb>
@@ -24,7 +25,15 @@
       @endif
     </div>
 
-    <x-button :href="$viewModel->newContactUrl()" data-turbo="true" size="small" class="max-sm:w-full">
+    <x-button
+      :href="$ceiling === null ? $viewModel->newContactUrl() : null"
+      type="button"
+      :aria-disabled="$ceiling !== null ? 'true' : null"
+      :aria-describedby="$ceiling !== null ? 'contact-ceiling' : null"
+      data-turbo="true"
+      size="small"
+      class="max-sm:w-full"
+    >
       <x-slot:icon>
         <x-icon name="plus" :size="16" :stroke-width="1.6" />
       </x-slot:icon>
@@ -32,6 +41,10 @@
       {{ __('Add somebody') }}
     </x-button>
   </header>
+
+  @if ($ceiling !== null)
+    <x-paywall-prompt :message="$ceiling" id="contact-ceiling" />
+  @endif
 
   <div class="grid auto-rows-fr gap-x-5.5 gap-y-7 md:grid-cols-2 lg:grid-cols-3">
     <section class="flex min-w-0 flex-col gap-2.5">
@@ -51,7 +64,14 @@
             {{ __('The people this part of your life is made of. Everything else on this screen is attached to them.') }}
 
             <x-slot:action>
-              <x-button :href="$viewModel->newContactUrl()" data-turbo="true" size="small">
+              <x-button
+                :href="$ceiling === null ? $viewModel->newContactUrl() : null"
+                type="button"
+                :aria-disabled="$ceiling !== null ? 'true' : null"
+                :aria-describedby="$ceiling !== null ? 'contact-ceiling' : null"
+                data-turbo="true"
+                size="small"
+              >
                 {{ __('Add the first person') }}
               </x-button>
             </x-slot:action>

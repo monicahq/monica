@@ -21,7 +21,16 @@
           @click="renaming = true; $nextTick(() => $refs.name.focus())"
         >{{ __('Rename') }}</x-button.ghost>
 
-        @if ($list['canBeDeleted'])
+        @if (! $list['canBeDeleted'])
+          <x-button.ghost
+            size="small"
+            type="button"
+            aria-disabled="true"
+            :aria-describedby="'value-list-'.$list['id'].'-delete-reason'"
+          >{{ __('Delete') }}</x-button.ghost>
+
+          <span id="value-list-{{ $list['id'] }}-delete-reason" class="sr-only">{{ $list['deleteReason'] }}</span>
+        @else
           <x-delete-action
             :title="__('Delete “:name”?', ['name' => $list['name']])"
             :confirm="__('Delete the list')"
@@ -83,7 +92,19 @@
       @endforelse
     </div>
 
-    @if ($list['allowsUserValues'])
+    @if (! $list['allowsUserValues'])
+      <div class="border-t border-hairline px-3 py-2.5">
+        <x-button.ghost size="small" type="button" aria-disabled="true" :aria-describedby="'value-list-'.$list['id'].'-add-reason'">
+          <x-slot:icon>
+            <x-icon name="plus" :size="15" :stroke-width="1.6" />
+          </x-slot:icon>
+
+          {{ __('Add a value') }}
+        </x-button.ghost>
+
+        <p id="value-list-{{ $list['id'] }}-add-reason" class="px-1 pt-1.5 text-xs text-pretty text-muted">{{ $list['addValueReason'] }}</p>
+      </div>
+    @else
       <div class="border-t border-hairline px-3 py-2.5">
         <x-button.ghost
           size="small"

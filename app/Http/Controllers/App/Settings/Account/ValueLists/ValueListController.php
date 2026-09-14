@@ -7,10 +7,10 @@ namespace App\Http\Controllers\App\Settings\Account\ValueLists;
 use App\Actions\CreateValueList;
 use App\Actions\DestroyValueList;
 use App\Actions\UpdateValueList;
-use App\Exceptions\CannotDeleteASuppliedList;
 use App\Http\Controllers\Controller;
 use App\Models\ValueList;
 use App\ViewModels\Settings\Account\ValueLists\ValueListsViewModel;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -68,9 +68,9 @@ class ValueListController extends Controller
                 user: $request->user(),
                 valueList: $valueList,
             )->execute();
-        } catch (CannotDeleteASuppliedList) {
+        } catch (AuthorizationException $e) {
             return redirect()->route('settings.valueLists.index')
-                ->with('error', __('This list stays.'))
+                ->with('error', $e->getMessage())
                 ->with('error_description', __('The application itself reads from this list. Empty it instead, and it offers nothing.'));
         }
 

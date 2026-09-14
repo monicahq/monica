@@ -516,6 +516,7 @@ class ContactControllerTest extends TestCase
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors(['contact']);
+        $response->assertJsonPath('errors.contact.0', 'This is the contact that represents you, and it stays. Everything on the record is written from its point of view.');
         $this->assertNotSoftDeleted($me);
     }
 
@@ -585,6 +586,7 @@ class ContactControllerTest extends TestCase
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors('first_name');
+        $response->assertJsonPath('errors.first_name.0', 'The free offer holds 1 contact across every vault, and this account already has it. Full access lifts the ceiling.');
         $this->assertSame(1, $user->account->contactCount());
     }
 

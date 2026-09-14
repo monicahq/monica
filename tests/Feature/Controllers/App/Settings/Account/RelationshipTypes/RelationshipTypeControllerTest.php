@@ -204,6 +204,32 @@ class RelationshipTypeControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_marks_deletion_unavailable_for_a_supplied_type(): void
+    {
+        $user = User::factory()->create();
+        $type = RelationshipType::factory()->system(RelationshipTypeEnum::ParentChild)->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('settings.relationshipTypes.edit', $type))
+            ->assertStatus(200)
+            ->assertSee('Delete this type')
+            ->assertSee('aria-disabled="true"', false)
+            ->assertSee('aria-describedby="relationship-type-delete-reason"', false)
+            ->assertSee('Supplied types cannot be deleted', escape: false);
+    }
+
+    #[Test]
+    public function it_offers_deletion_for_a_type_nobody_uses(): void
+    {
+        $user = User::factory()->create();
+        $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('settings.relationshipTypes.edit', $type))
+            ->assertStatus(200)
+            ->assertSee('Delete this type')
+            ->assertDontSee('aria-describedby="relationship-type-delete-reason"', false);
+    }
+
+    #[Test]
     public function it_says_what_a_supplied_type_feeds(): void
     {
         $user = User::factory()->create();

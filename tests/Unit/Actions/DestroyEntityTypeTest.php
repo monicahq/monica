@@ -6,10 +6,10 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\DestroyEntityType;
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteAnEntityTypeInUse;
 use App\Jobs\LogUserAction;
 use App\Models\EntityType;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -41,7 +41,7 @@ class DestroyEntityTypeTest extends TestCase
         $user = User::factory()->create();
         $entityType = EntityType::factory()->used(12)->create(['account_id' => $user->account_id]);
 
-        $this->expectException(CannotDeleteAnEntityTypeInUse::class);
+        $this->expectException(AuthorizationException::class);
 
         try {
             new DestroyEntityType(user: $user, entityType: $entityType)->execute();

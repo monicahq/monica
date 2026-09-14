@@ -54,6 +54,17 @@ class VaultDashboardViewModel
         return route('contacts.new', $this->vault);
     }
 
+    /**
+     * What the free offer allows, said only when the account is at it. The control stays on the
+     * screen and says why, rather than disappearing and leaving nothing to understand.
+     */
+    public function ceilingMessage(): ?string
+    {
+        $response = $this->user->inspect('create', Contact::class);
+
+        return $response->denied() ? (string) $response->message() : null;
+    }
+
     public function allContactsUrl(): string
     {
         return route('contacts.index', $this->vault);

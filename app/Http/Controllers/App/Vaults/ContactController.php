@@ -10,8 +10,6 @@ use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
-use App\Exceptions\CannotDeleteTheMeContact;
-use App\Exceptions\TooManyContacts;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\TemplateVersion;
@@ -20,6 +18,7 @@ use App\ViewModels\Vaults\ContactEditViewModel;
 use App\ViewModels\Vaults\ContactFormViewModel;
 use App\ViewModels\Vaults\ContactsViewModel;
 use App\ViewModels\Vaults\ContactViewModel;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -76,7 +75,7 @@ class ContactController extends Controller
 
         try {
             new DestroyContact(user: $request->user(), contact: $contact)->execute();
-        } catch (CannotDeleteTheMeContact $e) {
+        } catch (AuthorizationException $e) {
             return redirect()
                 ->route('contacts.edit', ['vault' => $vault, 'contact' => $contact])
                 ->withErrors(['contact' => $e->getMessage()]);
@@ -119,7 +118,7 @@ class ContactController extends Controller
                 isPartial: $request->boolean('is_partial'),
                 isFavourite: $request->boolean('is_favourite'),
             )->execute();
-        } catch (TooManyContacts $e) {
+        } catch (AuthorizationException $e) {
             return back()->withErrors(['first_name' => $e->getMessage()])->withInput();
         }
 

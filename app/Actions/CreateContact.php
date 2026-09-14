@@ -8,7 +8,6 @@ use App\Enums\NameOrderEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
-use App\Exceptions\TooManyContacts;
 use App\Exceptions\VaultAlreadyHasAMeContact;
 use App\Exceptions\VaultHasNoContactDefault;
 use App\Helpers\TextSanitizer;
@@ -136,17 +135,7 @@ class CreateContact
             return;
         }
 
-        $limit = $this->user->account->contactLimit();
-
-        if ($limit === null) {
-            return;
-        }
-
-        if ($this->user->account->contactCount() < $limit) {
-            return;
-        }
-
-        throw new TooManyContacts(trans_choice('The free offer holds :count contact across every vault, and this account already has it. Full access lifts the ceiling.|The free offer holds :count contacts across every vault, and this account already has them. Full access lifts the ceiling.', $limit));
+        $this->user->authorize('create', Contact::class);
     }
 
     private function create(): void

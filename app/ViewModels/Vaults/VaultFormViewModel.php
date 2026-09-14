@@ -46,17 +46,9 @@ class VaultFormViewModel
      */
     public function ceilingMessage(): ?string
     {
-        $limit = $this->user->account->vaultLimit();
+        $response = $this->user->inspect('create', Vault::class);
 
-        if ($limit === null) {
-            return null;
-        }
-
-        if ($this->user->account->vaults()->count() < $limit) {
-            return null;
-        }
-
-        return trans_choice('The free offer holds :count vault, and this account already has it.|The free offer holds :count vaults, and this account already has them.', $limit);
+        return $response->denied() ? (string) $response->message() : null;
     }
 
     /** @return array{name: string, description: string, colour: string, templateVersionId: string, isDefault: bool} */

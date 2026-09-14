@@ -9,11 +9,11 @@ use App\Actions\CreateEntityType;
 use App\Actions\DeactivateEntityType;
 use App\Actions\DestroyEntityType;
 use App\Actions\UpdateEntityType;
-use App\Exceptions\CannotDeleteAnEntityTypeInUse;
 use App\Http\Controllers\Controller;
 use App\Models\EntityType;
 use App\ViewModels\Settings\Account\EntityTypes\EntityTypeFormViewModel;
 use App\ViewModels\Settings\Account\EntityTypes\EntityTypesViewModel;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -103,9 +103,9 @@ class EntityTypeController extends Controller
                 user: $request->user(),
                 entityType: $entityType,
             )->execute();
-        } catch (CannotDeleteAnEntityTypeInUse) {
+        } catch (AuthorizationException $e) {
             return redirect()->route('settings.entityTypes.index')
-                ->with('error', __('The type still holds records and stays.'))
+                ->with('error', $e->getMessage())
                 ->with('error_description', __('Turn it off instead, and everything filed under it keeps its place.'));
         }
 

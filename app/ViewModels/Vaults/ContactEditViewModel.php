@@ -94,14 +94,16 @@ class ContactEditViewModel
 
     public function mayBeDeleted(): bool
     {
-        return ! $this->contact->is_me;
+        return $this->user->can('delete', $this->contact);
     }
 
     public function deleteDescription(): string
     {
-        return $this->mayBeDeleted()
-            ? __('Taking them off the list can be undone.')
-            : __('This is the contact that represents you, and it stays. Everything on the record is written from its point of view.');
+        $response = $this->user->inspect('delete', $this->contact);
+
+        return $response->denied()
+            ? (string) $response->message()
+            : __('Taking them off the list can be undone.');
     }
 
     public function contactUrl(): string

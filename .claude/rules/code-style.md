@@ -12,6 +12,7 @@ This file is the PHP and framework style. The structure of the application is in
 [models](../skills/models/SKILL.md), [view models](../skills/view-models/SKILL.md),
 [views](../skills/views/SKILL.md), [routes](../skills/routes/SKILL.md),
 [migrations](../skills/migrations/SKILL.md), [middlewares](../skills/middlewares/SKILL.md).
+Policies have no skill; their rules are in [policies.md](policies.md).
 Tests have their own rules in [testing.md](testing.md).
 
 When a rule here disagrees with the `laravel-best-practices` skill or with the Laravel Boost
@@ -191,8 +192,8 @@ nothing to say about itself is still missing its first line.
 
 ## Authorization
 
-- Policies use camelCase.
-- Use default CRUD words; replace `show` with `view`.
+Policies have their own rules in [policies.md](policies.md): when an ability earns one, how to ask it,
+what the refusal carries, and what stays out of it. Naming lives there too.
 
 ## Translations
 

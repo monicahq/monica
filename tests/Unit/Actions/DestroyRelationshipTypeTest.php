@@ -7,10 +7,10 @@ namespace Tests\Unit\Actions;
 use App\Actions\DestroyRelationshipType;
 use App\Enums\RelationshipTypeEnum;
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteASuppliedRelationshipType;
 use App\Jobs\LogUserAction;
 use App\Models\RelationshipType;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -40,7 +40,7 @@ class DestroyRelationshipTypeTest extends TestCase
         $user = User::factory()->create();
         $type = RelationshipType::factory()->system(RelationshipTypeEnum::Friend)->create(['account_id' => $user->account_id]);
 
-        $this->expectException(CannotDeleteASuppliedRelationshipType::class);
+        $this->expectException(AuthorizationException::class);
 
         new DestroyRelationshipType(user: $user, relationshipType: $type)->execute();
     }
