@@ -1,6 +1,7 @@
 {{-- A bounded unit of content, with a header that names it and an optional mark beside the name. --}}
 {{--
   @var string|null $title
+  @var string|null $titleId
   @var string|null $subtitle
   @var string|null $icon
   @var string|null $tint
@@ -12,6 +13,7 @@
 --}}
 @props([
   'title' => null,
+  'titleId' => null,
   'subtitle' => null,
   'icon' => null,
   'tint' => null,
@@ -41,7 +43,7 @@
       @endif
 
       <div class="min-w-0">
-        <h2 class="text-card-title {{ $danger ? 'text-error' : 'text-ink' }}">{{ $title }}</h2>
+        <h2 @isset($titleId) id="{{ $titleId }}" @endisset class="text-card-title {{ $danger ? 'text-error' : 'text-ink' }}">{{ $title }}</h2>
 
         @if ($subtitle)
           <p class="mt-0.5 text-xs text-muted">{{ $subtitle }}</p>

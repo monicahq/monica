@@ -60,6 +60,11 @@ class NotificationChannelsViewModel
             'awaits_proof' => $row->channel->provesSilently() && $row->isSetUp() && ! $row->isProven(),
             'disabled_reason' => $row->disabled_reason,
             'state' => $this->state($row),
+            'icon' => $this->icon($row->channel),
+            'tagline' => $this->tagline($row->channel),
+            'summary' => $this->summary($row->channel),
+            'carries' => $this->carries(),
+            'preview' => $this->preview($row->channel),
             'steps' => $this->steps($row),
             'destination_label' => $this->destinationLabel($row->channel),
             'update_url' => route('settings.notifications.update', $row->channel->value),
@@ -119,6 +124,62 @@ class NotificationChannelsViewModel
         return __('Off');
     }
 
+    private function icon(NotificationChannelEnum $channel): string
+    {
+        return match ($channel) {
+            NotificationChannelEnum::InApp => 'device',
+            NotificationChannelEnum::Email => 'mail',
+            NotificationChannelEnum::Telegram => 'text',
+            NotificationChannelEnum::Sms => 'phone',
+        };
+    }
+
+    private function tagline(NotificationChannelEnum $channel): string
+    {
+        return match ($channel) {
+            NotificationChannelEnum::InApp => __('A card in the corner of the screen while you are using the application.'),
+            NotificationChannelEnum::Email => __('Sent to :destination, one email per notification.', ['destination' => $this->user->email]),
+            NotificationChannelEnum::Telegram => __('A message in the conversation you opened with our bot.'),
+            NotificationChannelEnum::Sms => __('A text message to the number you gave us.'),
+        };
+    }
+
+    private function summary(NotificationChannelEnum $channel): string
+    {
+        return match ($channel) {
+            NotificationChannelEnum::InApp => __('A card slides in at the bottom right of whatever page you are on, and stays until you dismiss it.'),
+            NotificationChannelEnum::Email => __('Every notification is sent as its own email, however many there are on a given day. Nothing is grouped or held back.'),
+            NotificationChannelEnum::Telegram => __('Every notification arrives as its own message, in the conversation and nowhere else.'),
+            NotificationChannelEnum::Sms => __('Every notification is sent as one text message, short enough to arrive in one piece.'),
+        };
+    }
+
+    /**
+     * What the application has to say, whichever channel carries it.
+     *
+     * @return list<array{icon: string, label: string}>
+     */
+    private function carries(): array
+    {
+        return [
+            ['icon' => 'reminder', 'label' => __('Reminders falling due')],
+            ['icon' => 'calendar', 'label' => __('The daily summary, when you ask for one')],
+        ];
+    }
+
+    /**
+     * The shape the preview is drawn in. Telegram and the text message are both
+     * a conversation somebody reads on a telephone, so they share one.
+     */
+    private function preview(NotificationChannelEnum $channel): string
+    {
+        return match ($channel) {
+            NotificationChannelEnum::InApp => 'window',
+            NotificationChannelEnum::Email => 'inbox',
+            NotificationChannelEnum::Telegram, NotificationChannelEnum::Sms => 'conversation',
+        };
+    }
+
     /** @return list<string> */
     private function steps(NotificationChannel $row): array
     {
@@ -128,12 +189,12 @@ class NotificationChannelsViewModel
 
         $steps = [];
 
-        if ($row->channel->needsDestination()) {
-            $steps[] = $this->destinationStep($row->channel);
-        }
-
         if ($row->channel->discoversDestination()) {
             $steps[] = __('Nothing to type. Following the link opens a conversation with our bot, and the bot tells us where to send.');
+        }
+
+        if ($row->channel->needsDestination() && ! $row->channel->discoversDestination()) {
+            $steps[] = $this->destinationStep($row->channel);
         }
 
         if ($row->channel->provesSilently()) {
