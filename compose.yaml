@@ -1,0 +1,94 @@
+# The development environment: Apache, a queue worker and a database. It serves the checkout it
+# mounts, which has to carry its own .env, vendor and node_modules. The application answers on
+# http://localhost:8000.
+name: monica
+
+services:
+  # Apache, and nothing else. It has to be what the container runs rather than a process under
+  # something else: its log files are symbolic links to /dev/stderr, and a process whose standard
+  # error is a pipe cannot open that. Running it under a supervisor fails with AH00015 at startup.
+  app: &app
+    image: erica:latest
+    build:
+      context: .
+      args:
+        # Set these where the user outside the container is not 1000:1000, so the files
+        # the container writes into the checkout stay theirs. They are not named UID and
+        # GID because both bash and zsh hold those read only.
+        UID: ${USER_ID:-1000}
+        GID: ${GROUP_ID:-1000}
+    init: true
+    volumes:
+      - erica_storage:/var/www/html/storage
+    ports:
+      - 8000:80
+    environment:
+      # Application key for Laravel, generated outside the container with `echo -n "base64:"; openssl rand -base64 32`
+      APP_KEY: ${APP_KEY}
+      DB_CONNECTION: mariadb
+      DB_HOST: database
+      DB_DATABASE: monica
+      DB_USERNAME: monica
+      DB_PASSWORD: secret
+      QUEUE_CONNECTION: database
+    healthcheck:
+      # The health route answers only once the database answers, which is what the listener on
+      # DiagnosingHealth checks. The first start installs the dependencies, hence the long grace.
+      test: ['CMD', 'php', '-r', "exit((int) ! @file_get_contents('http://127.0.0.1:8000/up'));"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 300s
+    depends_on:
+      database:
+        condition: service_healthy
+
+  # The one process development adds. It waits for the application to report itself healthy, so
+  # that it starts against a database the migrations have reached, and it steps over the entrypoint
+  # so that only one container prepares anything.
+  queue:
+    <<: *app
+    command: ['php', 'artisan', 'queue:work', '--sleep=10', '--timeout=0', '--tries=3', '--queue=high,default,low', '>/proc/1/fd/1', '2>/proc/1/fd/2']
+    ports: []
+    depends_on:
+      app:
+        condition: service_healthy
+      database:
+        condition: service_healthy
+
+  # The cron process runs the scheduled tasks defined in the application. It also waits for the
+  # application to be healthy before starting, ensuring that the database and other dependencies
+  # are ready.
+  cron:
+    <<: *app
+    command: ['busybox', 'crond', '-f', '-l', '0', '-L', '/proc/1/fd/1']
+    ports: []
+    depends_on:
+      app:
+        condition: service_healthy
+      database:
+        condition: service_healthy
+
+  database:
+    image: mariadb:12
+    environment:
+      MARIADB_DATABASE: monica
+      MARIADB_USER: monica
+      MARIADB_PASSWORD: secret
+      MARIADB_ROOT_PASSWORD: secret
+    volumes:
+      - erica_database:/var/lib/mysql
+    restart: always
+    healthcheck:
+      # The application waits for this, so it starts against a database that answers rather than
+      # against one that has only been created. healthcheck.sh is what the image ships for it.
+      test: ['CMD', 'healthcheck.sh', '--connect', '--innodb_initialized']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  erica_database:
+    name: erica_database
+  erica_storage:
+    name: erica_storage

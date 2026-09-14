@@ -11,7 +11,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        $filterableString = Schema::getConnection()->getDriverName() === 'mysql'
+        $filterableString = in_array(Schema::getConnection()->getDriverName(), ['mysql', 'mariadb'], true)
             ? new Expression('value_string(255)')
             : 'value_string';
 

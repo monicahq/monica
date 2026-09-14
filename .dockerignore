@@ -1,0 +1,20 @@
+# What the image builds for itself. Leaving the copies from the machine outside in the context
+# would both slow the build and put another machine's state into the image.
+/node_modules
+/public/build
+/public/hot
+/vendor
+
+# What belongs to the machine outside the image. .env.docker is the environment the image ships
+# with, and is deliberately not listed here.
+.env
+.env.backup
+/database/*.sqlite*
+/public/storage
+/storage/debugbar/*.json
+/storage/framework/views/*.php
+/storage/logs/*.log
+/storage/pail/*.pail
+
+# Large, and nothing in the build reads it.
+/.git
