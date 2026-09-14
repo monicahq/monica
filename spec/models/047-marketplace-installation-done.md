@@ -40,6 +40,7 @@ deleted_at                  datetime
 ## Rules
 
 - Installing copies. The local copy is fully editable and has no runtime dependency on the listing (7).
+- Installing an activity type asks for one active local [ActivityCategory](028-activity-category-not-yet.md) and proposes Other. The marketplace category describes where the listing is published. It is never reused as the local activity category.
 - A new approved version raises `update_available_version_id` and produces a notification carrying the change note ([Notification](042-notification-done.md)). It changes nothing else.
 - The installer applies or declines. Declining is a real, remembered choice, not a postponement, and it does not stop them being told about the version after that.
 - Applying an update creates a **new version of the local copy** ([TemplateVersion](013-template-version-done.md) or [SectionVersion](015-section-version-in-progress.md)). A template update copies its pages and section placements into that new local version. It never edits a published local version, and records already on the old version stay there until moved deliberately (6).

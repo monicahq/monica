@@ -42,6 +42,7 @@ class CreateAccount
             $this->createFirstVault();
             $this->createDefaultValueLists();
             $this->createDefaultRelationshipTypes();
+            $this->createDefaultActivityCategories();
             $this->createNotificationPreference();
         });
 
@@ -87,6 +88,11 @@ class CreateAccount
     private function createDefaultValueLists(): void
     {
         new CreateDefaultValueLists(user: $this->user)->execute();
+    }
+
+    private function createDefaultActivityCategories(): void
+    {
+        new CreateDefaultActivityCategories(user: $this->user)->execute();
     }
 
     private function createDefaultRelationshipTypes(): void

@@ -375,9 +375,15 @@ An activity always carries:
 
 **The nature of activities, on the other hand, is entirely configurable.** That is where personalisation comes back.
 
-### 9.3. Activity natures
+### 9.3. Activity categories and natures
 
 The list of natures is configured at the account level, like the other shared value lists (see 5.4). Erica supplies a starting set that is immediately usable, and everybody adapts it: adding to it, renaming, deactivating without breaking the past activities that use it.
+
+**Categories organise the activity vocabulary.** Every account starts with Relationships and family, Work and education, Health and wellbeing, Home and daily life, Leisure and culture, Travel and experiences, Personal and Other. The user may create, rename, reorder and deactivate categories. Supplied categories cannot be deleted. A category groups activity natures in settings and pickers, filters the journal and provides a level for aggregate statistics. It never decides whether an activity counts as an interaction, which fields it carries or how it is shared.
+
+Every nature belongs to exactly one category. Moving a nature changes how every activity of that nature is grouped and aggregated, including past activities, because an activity does not keep a snapshot of the category. It changes no recorded fact. Other is the fallback category, so a nature is never left unclassified.
+
+Activity natures remain account owned even when they are created while recording an activity from a contact. The inline path asks only for the name, category and whether the nature counts as a real interaction. It saves the nature for the whole account and selects it in the activity being entered. The settings screen carries the complete editor. Installing a nature from the marketplace likewise asks which local category should receive it and proposes Other. The marketplace's editorial category is never copied into the account as an activity category.
 
 Each nature carries:
 

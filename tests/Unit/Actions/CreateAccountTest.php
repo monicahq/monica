@@ -269,4 +269,24 @@ class CreateAccountTest extends TestCase
             'is_system' => true,
         ]);
     }
+
+    #[Test]
+    public function it_gives_the_account_the_groups_its_activities_are_filed_under(): void
+    {
+        Queue::fake();
+
+        $user = new CreateAccount(
+            firstName: 'Michael',
+            lastName: 'Scott',
+            email: 'michael.scott@dundermifflin.com',
+        )->execute();
+
+        $this->assertCount(8, $user->account->activityCategories);
+        $this->assertDatabaseHas('activity_categories', [
+            'account_id' => $user->account_id,
+            'key' => 'other',
+            'is_system' => true,
+            'position' => 8,
+        ]);
+    }
 }

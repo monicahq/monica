@@ -70,6 +70,13 @@ enum UserActionEnum: string implements Translatable
     case EntityTypeActivated = 'entity_type_activated';
     case EntityTypeDeactivated = 'entity_type_deactivated';
     case EntityTypeDeletion = 'entity_type_deleted';
+    case ActivityCategoriesSeeded = 'activity_categories_seeded';
+    case ActivityCategoryCreation = 'activity_category_created';
+    case ActivityCategoryUpdate = 'activity_category_updated';
+    case ActivityCategoryPositionUpdate = 'activity_category_position_updated';
+    case ActivityCategoryActivated = 'activity_category_activated';
+    case ActivityCategoryDeactivated = 'activity_category_deactivated';
+    case ActivityCategoryDeletion = 'activity_category_deleted';
     case RelationshipTypesSeeded = 'relationship_types_seeded';
     case RelationshipCategoryCreation = 'relationship_category_created';
     case RelationshipCategoryUpdate = 'relationship_category_updated';
@@ -242,6 +249,13 @@ enum UserActionEnum: string implements Translatable
             self::EntityTypeActivated => 'Allowed new :name to be created again',
             self::EntityTypeDeactivated => 'Stopped new :name being created',
             self::EntityTypeDeletion => 'Deleted the kind of record :name',
+            self::ActivityCategoriesSeeded => 'Set up the activity categories the account starts with',
+            self::ActivityCategoryCreation => 'Created the activity category :name',
+            self::ActivityCategoryUpdate => 'Renamed the activity category :name',
+            self::ActivityCategoryPositionUpdate => 'Moved the activity category :name',
+            self::ActivityCategoryActivated => 'Offered the activity category :name again',
+            self::ActivityCategoryDeactivated => 'Stopped offering the activity category :name',
+            self::ActivityCategoryDeletion => 'Deleted the activity category :name',
             self::RelationshipTypesSeeded => 'Set up the relationship types the account starts with',
             self::RelationshipCategoryCreation => 'Created the relationship category :name',
             self::RelationshipCategoryUpdate => 'Renamed the relationship category :name',

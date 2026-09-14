@@ -19,6 +19,7 @@ uuid                        string (36)                     unguessable identifi
 account_id                  int                             account the activity belongs to
 vault_id                    int                             vault it lives in
 activity_type_id            int                             nature of the activity
+template_version_id         int, nullable                   exact field structure used when it was created, null when its type has none
 happened_on                 date                            the day it happened, or the first day when it spans several
 ended_on                    date                            the last day, null when it happened on a single day
 date_precision              enum (day, month, year, decade, unknown)  how precisely the date is known, so a rebuilt past is not forced to lie
@@ -42,7 +43,7 @@ deleted_at                  datetime
 
 ## Relationships
 
-- `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md), [ActivityType](035-activity-type-not-yet.md)
+- `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md), [ActivityType](035-activity-type-not-yet.md), [TemplateVersion](013-template-version-done.md)
 - `hasMany` [ActivityParticipant](037-activity-participant-not-yet.md)
 - `belongsToMany` [Contact](019-contact-done.md) and [Entity](020-entity-done.md) through it
 - `hasMany` [FieldValue](022-field-value-done.md), for the fields its type asks for
@@ -52,6 +53,7 @@ deleted_at                  datetime
 
 - An activity may have no participants at all (9.2). A day can be documented without anybody else being involved, and requiring a participant would make the journal half unusable.
 - Two entry paths, one result (9.4). Entering by the day, telling the evening and hooking people into the text, and entering by the person, adding it from their page right after seeing them, produce exactly the same row. `created_from` records which path was used and changes nothing else.
+- An activity copies its type's `template_version_id` when it is created and never follows a newer version automatically. Its existing custom fields therefore keep the structure they were entered against.
 - Dates may be imprecise (9.4). Rebuilding years of past is a supported use, and the product never forces a precision the user does not have. Group memberships use the same precision vocabulary. Relationship dates stay simpler in the first version and may adopt it later.
 - An activity whose type counts as an interaction updates `last_activity_at` on every participating contact (9.3, 10.2). Nothing else does.
 - Private by default (9.6). A share link includes an activity only when it is explicitly allowed, and the free narrative only when that is allowed separately. Both default to false, and a field marked sensitive stays excluded even when the activity is shared.

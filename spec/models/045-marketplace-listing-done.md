@@ -51,6 +51,7 @@ deleted_at                  datetime
 - **A section can be published on its own**, with no template or page around it (7). Section 7 names this as what lowers the barrier to contributing. Pages belong to a template version and are never marketplace items. Any design that requires wrapping a block in either one to share it has lost the point.
 - An activity type is publishable the same way (9.3), carrying its own field structure with it.
 - One category, chosen from ours. No free tags.
+- The marketplace category is editorial and global. It is not the installer's account owned [ActivityCategory](028-activity-category-not-yet.md), and publishing or installing an activity type never equates the two.
 - A refusal carries a reason and the reason is shown to the author (7).
 - `locale` is displayed in the catalogue and filterable (3.7). A listing is written in one language, and an installer in another gets the labels as written, which is fine because what they install is a copy they can rename freely.
 - `install_count` is public, as a quality signal (7).

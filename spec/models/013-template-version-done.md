@@ -35,7 +35,7 @@ updated_at                  datetime
 - `belongsTo` self as the previous version
 - `hasMany` [TemplateVersionPage](055-template-version-page-done.md)
 - `hasMany` [TemplateVersionSection](016-template-version-section-done.md)
-- referenced by [Contact](019-contact-done.md), [Entity](020-entity-done.md) and [ActivityType](035-activity-type-not-yet.md)
+- referenced by [Contact](019-contact-done.md), [Entity](020-entity-done.md), [ActivityType](035-activity-type-not-yet.md) and [Activity](036-activity-not-yet.md)
 
 ## Rules
 

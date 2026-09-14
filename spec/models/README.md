@@ -48,7 +48,7 @@ most of it: a vault lists what is coming and what has gone out, and a rule has a
 The preferences are the part still without one. Each file says how far it is built and what it is
 waiting on.
 
-Models 024 to 026 and 031 to 039 and 050 to 054 have no table and no model at all: relations between people,
+Models 024 to 026, 028, 031 to 039 and 050 to 054 have no table and no model at all: relations between people,
 groups, duplicates, the journal, webhooks, modules and search are the whole of what is still to be
 started.
 
@@ -107,6 +107,7 @@ Model 055, [TemplateVersionPage](055-template-version-page-done.md), is a later 
 
 | # | Model | Spec |
 |---|---|---|
+| 028 | [ActivityCategory](028-activity-category-not-yet.md) | 9.3 |
 | 035 | [ActivityType](035-activity-type-not-yet.md) | 9.3 |
 | 036 | [Activity](036-activity-not-yet.md) | 9.2 |
 | 037 | [ActivityParticipant](037-activity-participant-not-yet.md) | 9.2 |

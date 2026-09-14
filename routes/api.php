@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\ActivityCategoryActivationController;
+use App\Http\Controllers\Api\ActivityCategoryController;
+use App\Http\Controllers\Api\ActivityCategoryPositionController;
 use App\Http\Controllers\Api\ApiKeyController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegistrationController;
@@ -118,6 +121,15 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
         Route::put('entity-types/{entityType}/activation', [EntityTypeActivationController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.activation.update');
         Route::put('entity-types/{entityType}/position', [EntityTypePositionController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.position.update');
+
+        Route::get('activity-categories', [ActivityCategoryController::class, 'index'])->name('activityCategories');
+        Route::get('activity-categories/{activityCategory}', [ActivityCategoryController::class, 'show'])->where('activityCategory', '[0-9a-fA-F-]{36}')->name('activityCategories.show');
+        Route::post('activity-categories', [ActivityCategoryController::class, 'create'])->name('activityCategories.create');
+        Route::put('activity-categories/{activityCategory}', [ActivityCategoryController::class, 'update'])->where('activityCategory', '[0-9a-fA-F-]{36}')->name('activityCategories.update');
+        Route::delete('activity-categories/{activityCategory}', [ActivityCategoryController::class, 'destroy'])->where('activityCategory', '[0-9a-fA-F-]{36}')->name('activityCategories.destroy');
+
+        Route::put('activity-categories/{activityCategory}/activation', [ActivityCategoryActivationController::class, 'update'])->where('activityCategory', '[0-9a-fA-F-]{36}')->name('activityCategories.activation.update');
+        Route::put('activity-categories/{activityCategory}/position', [ActivityCategoryPositionController::class, 'update'])->where('activityCategory', '[0-9a-fA-F-]{36}')->name('activityCategories.position.update');
 
         Route::get('relationship-categories', [RelationshipCategoryController::class, 'index'])->name('relationshipCategories');
         Route::get('relationship-categories/{relationshipCategory}', [RelationshipCategoryController::class, 'show'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.show');

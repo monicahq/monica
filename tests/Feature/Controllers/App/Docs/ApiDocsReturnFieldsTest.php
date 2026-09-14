@@ -10,6 +10,7 @@ use App\Enums\NotificationChannelEnum;
 use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\StripeCatalogue;
+use App\Models\ActivityCategory;
 use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\EmailSent;
@@ -918,6 +919,46 @@ class ApiDocsReturnFieldsTest extends TestCase
                 $entityType = EntityType::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
 
                 return $this->json('PUT', "/api/v1/entity-types/{$entityType->uuid}/position", ['position' => 1]);
+            }),
+
+            'activity-categories-index' => $this->asSomebody(function (User $user): TestResponse {
+                ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('GET', '/api/v1/activity-categories');
+            }),
+
+            'activity-categories-show' => $this->asSomebody(function (User $user): TestResponse {
+                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('GET', "/api/v1/activity-categories/{$category->uuid}");
+            }),
+
+            'activity-categories-create' => $this->asSomebody(fn (): TestResponse => $this->json('POST', '/api/v1/activity-categories', [
+                'name' => 'Volunteering',
+            ])),
+
+            'activity-categories-update' => $this->asSomebody(function (User $user): TestResponse {
+                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/activity-categories/{$category->uuid}", ['name' => 'Bénévolat']);
+            }),
+
+            'activity-categories-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/activity-categories/{$category->uuid}");
+            }),
+
+            'activity-categories-activation' => $this->asSomebody(function (User $user): TestResponse {
+                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/activity-categories/{$category->uuid}/activation", ['is_active' => false]);
+            }),
+
+            'activity-categories-position' => $this->asSomebody(function (User $user): TestResponse {
+                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
+
+                return $this->json('PUT', "/api/v1/activity-categories/{$category->uuid}/position", ['position' => 1]);
             }),
 
             'relationship-categories-index' => $this->asSomebody(function (User $user): TestResponse {

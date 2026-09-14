@@ -234,6 +234,16 @@ class Account extends Model
     }
 
     /**
+     * Get the groups the activity vocabulary is filed under.
+     *
+     * @return HasMany<ActivityCategory, $this>
+     */
+    public function activityCategories(): HasMany
+    {
+        return $this->hasMany(ActivityCategory::class)->orderBy('position');
+    }
+
+    /**
      * Get the display groups the relationship vocabulary is filed under.
      *
      * @return HasMany<RelationshipCategory, $this>
