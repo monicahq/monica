@@ -27,7 +27,7 @@ class TemplatePositionController extends Controller
             position: (int) $validated['position'],
         )->execute();
 
-        return new TemplateResource($template->refresh()->load(['entityType', 'publishedVersion']))
+        return new TemplateResource($template->refresh()->load(['structure.entityType', 'publishedVersion']))
             ->response()
             ->setStatusCode(200);
     }

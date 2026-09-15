@@ -94,7 +94,7 @@ class ContactsViewModel
             'avatarUrl' => $contact->avatar === null
                 ? null
                 : route('files.show', ['vault' => $this->vault, 'file' => $contact->avatar]),
-            'template' => $contact->templateVersion->template->name,
+            'template' => $contact->structureVersion->structure->owner->name,
             'when' => ($contact->last_activity_at ?? $contact->created_at)->isoFormat('ll'),
             'whenLabel' => $contact->last_activity_at === null ? __('added') : __('last spoke'),
             'url' => route('contacts.show', ['vault' => $this->vault, 'contact' => $contact]),
@@ -260,7 +260,7 @@ class ContactsViewModel
     private function contacts(): Paginator
     {
         return $this->contacts ??= $this->ordered()
-            ->with(['templateVersion.template', 'avatar'])
+            ->with(['structureVersion.structure.owner', 'avatar'])
             ->simplePaginate(self::PER_PAGE)
             ->withQueryString();
     }

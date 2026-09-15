@@ -6,8 +6,8 @@ namespace App\ViewModels\Settings\Account\Templates;
 
 use App\Helpers\StructureFile;
 use App\Models\EntityType;
+use App\Models\StructureVersionPage;
 use App\Models\Template;
-use App\Models\TemplateVersionPage;
 use App\Models\User;
 use App\Models\ValueList;
 
@@ -17,7 +17,7 @@ class ImportFileViewModel
     public function __construct(
         private readonly User $user,
         private readonly ?Template $template = null,
-        private readonly ?TemplateVersionPage $page = null,
+        private readonly ?StructureVersionPage $page = null,
         private readonly string $raw = '',
         private readonly ?array $checked = null,
         private readonly ?string $refusal = null,

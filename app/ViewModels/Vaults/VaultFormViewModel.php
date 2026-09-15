@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\VaultColourEnum;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 class VaultFormViewModel
@@ -51,14 +52,14 @@ class VaultFormViewModel
         return $response->denied() ? (string) $response->message() : null;
     }
 
-    /** @return array{name: string, description: string, colour: string, templateVersionId: string, isDefault: bool} */
+    /** @return array{name: string, description: string, colour: string, structureVersionId: string, isDefault: bool} */
     public function values(): array
     {
         return [
             'name' => (string) old('name', ''),
             'description' => (string) old('description', ''),
             'colour' => (string) old('colour', Vault::DEFAULT_COLOUR),
-            'templateVersionId' => (string) old('template_version_id', $this->suppliedTemplateVersionId()),
+            'structureVersionId' => (string) old('structure_version_id', $this->suppliedStructureVersionId()),
             'isDefault' => $this->isDefault(),
         ];
     }
@@ -77,7 +78,7 @@ class VaultFormViewModel
     {
         return $this->contactTemplates()
             ->map(fn (Template $template): array => [
-                'id' => (int) $template->published_version_id,
+                'id' => (int) $template->structure->published_version_id,
                 'name' => $template->name,
             ])
             ->all();
@@ -119,11 +120,11 @@ class VaultFormViewModel
         ]);
     }
 
-    private function suppliedTemplateVersionId(): string
+    private function suppliedStructureVersionId(): string
     {
         $version = $this->contactTemplates()
             ->sortByDesc(fn (Template $template): bool => $template->is_system)
-            ->first()?->published_version_id;
+            ->first()?->structure->published_version_id;
 
         return $version === null ? '' : (string) $version;
     }
@@ -146,9 +147,12 @@ class VaultFormViewModel
     {
         return $this->contactTemplates ??= Template::query()
             ->where('account_id', $this->user->account_id)
-            ->where('applies_to', TemplateAppliesToEnum::Contact)
             ->where('is_active', true)
-            ->whereNotNull('published_version_id')
+            ->whereHas('structure', function (Builder $query): void {
+                $query->where('applies_to', StructureAppliesToEnum::Contact)
+                    ->whereNotNull('published_version_id');
+            })
+            ->with('structure')
             ->orderBy('position')
             ->get();
     }

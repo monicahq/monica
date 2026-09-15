@@ -1,14 +1,14 @@
 {{-- Picking what kind of field to add. --}}
 {{--
   @var \App\Models\Template $template
-  @var \App\Models\TemplateVersionSection $row
+  @var \App\Models\StructureVersionSection $row
   @var string $sectionName
   @var \App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel $catalogue
   @var \Illuminate\Support\Collection<int, \App\Models\ValueList> $valueLists
   @var \App\Models\User $user
 --}}
 @php
-  $backToBuilder = route('settings.templateBuilder.index', ['template' => $template, 'page' => $row->templateVersionPage->key]);
+  $backToBuilder = route('settings.templateBuilder.index', ['template' => $template, 'page' => $row->structureVersionPage->key]);
   $types = $catalogue->types();
   $pickable = array_values(array_map(fn (array $type): string => $type['key'], array_filter($types, fn (array $type): bool => $type['isAvailable'])));
   $footerLines = $catalogue->footerLines($sectionName);

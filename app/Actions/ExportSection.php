@@ -8,8 +8,8 @@ use App\Enums\UserActionEnum;
 use App\Exceptions\ListingHasNothingToPublish;
 use App\Helpers\StructureFile;
 use App\Jobs\LogUserAction;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -21,7 +21,7 @@ class ExportSection
     public function __construct(
         private readonly User $user,
         private readonly Template $template,
-        private readonly TemplateVersionSection $row,
+        private readonly StructureVersionSection $row,
     ) {}
 
     /** @return array<string, mixed> */

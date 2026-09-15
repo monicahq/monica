@@ -9,10 +9,10 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Templates\TemplateBuilderViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,9 +28,9 @@ class TemplateBuilderViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $published = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
-        $template->update(['published_version_id' => $published->id]);
-        $draft = TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 2]);
+        $published = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        $template->structure->update(['published_version_id' => $published->id]);
+        $draft = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 2]);
 
         $viewModel = new TemplateBuilderViewModel(user: $user, template: $template->fresh());
 
@@ -43,8 +43,8 @@ class TemplateBuilderViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $published = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
-        $template->update(['published_version_id' => $published->id]);
+        $published = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        $template->structure->update(['published_version_id' => $published->id]);
 
         $viewModel = new TemplateBuilderViewModel(user: $user, template: $template->fresh());
 
@@ -57,12 +57,12 @@ class TemplateBuilderViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $published = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
-        $template->update(['published_version_id' => $published->id]);
+        $published = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        $template->structure->update(['published_version_id' => $published->id]);
 
         $this->assertTrue(new TemplateBuilderViewModel(user: $user, template: $template->fresh())->isShareable());
 
-        TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 2]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 2]);
 
         $this->assertFalse(new TemplateBuilderViewModel(user: $user, template: $template->fresh())->isShareable());
     }
@@ -72,7 +72,7 @@ class TemplateBuilderViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $viewModel = new TemplateBuilderViewModel(user: $user, template: $template->fresh());
 
@@ -84,9 +84,9 @@ class TemplateBuilderViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $first = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
-        TemplateVersion::factory()->create([
-            'template_id' => $template->id,
+        $first = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        StructureVersion::factory()->create([
+            'structure_id' => $template->structure->id,
             'version_number' => 2,
             'previous_version_id' => $first->id,
         ]);
@@ -229,7 +229,7 @@ class TemplateBuilderViewModelTest extends TestCase
         $user = User::factory()->create();
         [$template, $row] = $this->templateCarryingASection($user);
         $version = $template->versions()->sole();
-        TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'label' => 'Life events']);
+        StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'label' => 'Life events']);
         Field::factory()->count(2)->create(['section_version_id' => $row->section_version_id]);
 
         $pages = new TemplateBuilderViewModel(user: $user, template: $template->fresh())->pages();
@@ -247,7 +247,7 @@ class TemplateBuilderViewModelTest extends TestCase
         $user = User::factory()->create();
         [$template] = $this->templateCarryingASection($user);
         $version = $template->versions()->sole();
-        $events = TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'label' => 'Life events']);
+        $events = StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'label' => 'Life events']);
 
         $viewModel = new TemplateBuilderViewModel(
             user: $user,
@@ -264,7 +264,7 @@ class TemplateBuilderViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         [$template] = $this->templateCarryingASection($user);
-        $elsewhere = TemplateVersionPage::factory()->create();
+        $elsewhere = StructureVersionPage::factory()->create();
 
         $viewModel = new TemplateBuilderViewModel(
             user: $user,
@@ -282,11 +282,11 @@ class TemplateBuilderViewModelTest extends TestCase
         $user = User::factory()->create();
         [$template] = $this->templateCarryingASection($user);
         $version = $template->versions()->sole();
-        $events = TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'label' => 'Life events']);
+        $events = StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'label' => 'Life events']);
         $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Jobs']);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $events->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $events->id,
             'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
         ]);
 
@@ -302,10 +302,10 @@ class TemplateBuilderViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id, 'status' => VersionStatusEnum::Draft]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'status' => VersionStatusEnum::Draft]);
         $section = Section::factory()->marked('health', '#4f8a49')->create(['account_id' => $user->account_id, 'name' => 'Health']);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
         ]);
 
@@ -376,9 +376,9 @@ class TemplateBuilderViewModelTest extends TestCase
 
         foreach (range(1, 2) as $ignored) {
             $other = Template::factory()->create(['account_id' => $user->account_id]);
-            $otherVersion = TemplateVersion::factory()->create(['template_id' => $other->id]);
-            TemplateVersionSection::factory()->create([
-                'template_version_id' => $otherVersion->id,
+            $otherVersion = StructureVersion::factory()->create(['structure_id' => $other->structure->id]);
+            StructureVersionSection::factory()->create([
+                'structure_version_id' => $otherVersion->id,
                 'section_version_id' => $row->section_version_id,
             ]);
         }
@@ -397,9 +397,9 @@ class TemplateBuilderViewModelTest extends TestCase
         $other = Template::factory()->create(['account_id' => $user->account_id]);
 
         foreach (range(1, 2) as $number) {
-            TemplateVersionSection::factory()->create([
-                'template_version_id' => TemplateVersion::factory()->create([
-                    'template_id' => $other->id,
+            StructureVersionSection::factory()->create([
+                'structure_version_id' => StructureVersion::factory()->create([
+                    'structure_id' => $other->structure->id,
                     'version_number' => $number,
                 ])->id,
                 'section_version_id' => $row->section_version_id,
@@ -417,7 +417,7 @@ class TemplateBuilderViewModelTest extends TestCase
         $user = User::factory()->create();
         [$template, $row] = $this->templateCarryingASection($user);
         $version = $template->versions()->sole();
-        $events = TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'label' => 'Life events']);
+        $events = StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'label' => 'Life events']);
         $field = Field::factory()->create([
             'section_version_id' => $row->section_version_id,
             'account_id' => $user->account_id,
@@ -442,7 +442,7 @@ class TemplateBuilderViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $viewModel = new TemplateBuilderViewModel(user: $user, template: $template->fresh());
 
@@ -455,7 +455,7 @@ class TemplateBuilderViewModelTest extends TestCase
         $user = User::factory()->create();
         [$template] = $this->templateCarryingASection($user);
         $version = $template->versions()->sole();
-        $events = TemplateVersionPage::factory()->create(['template_version_id' => $version->id]);
+        $events = StructureVersionPage::factory()->create(['structure_version_id' => $version->id]);
 
         $onGeneral = new TemplateBuilderViewModel(user: $user, template: $template->fresh());
         $onEvents = new TemplateBuilderViewModel(user: $user, template: $template->fresh(), selectedPageKey: $events->key);
@@ -470,7 +470,7 @@ class TemplateBuilderViewModelTest extends TestCase
         $user = User::factory()->create();
         [$template] = $this->templateCarryingASection($user);
         $version = $template->versions()->sole();
-        $events = TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'label' => 'Life events']);
+        $events = StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'label' => 'Life events']);
 
         $others = new TemplateBuilderViewModel(user: $user, template: $template->fresh())->otherPages();
 
@@ -482,24 +482,24 @@ class TemplateBuilderViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
 
         $this->assertFalse(new TemplateBuilderViewModel(user: $user, template: $template->fresh())->hasHistory());
 
-        TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 2]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 2]);
 
         $this->assertTrue(new TemplateBuilderViewModel(user: $user, template: $template->fresh())->hasHistory());
     }
 
-    /** @return array{0: Template, 1: TemplateVersionSection} */
+    /** @return array{0: Template, 1: StructureVersionSection} */
     private function templateCarryingASection(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id, 'status' => VersionStatusEnum::Draft]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'status' => VersionStatusEnum::Draft]);
         $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
         $sectionVersion = SectionVersion::factory()->used(1)->create(['section_id' => $section->id]);
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 

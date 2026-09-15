@@ -19,7 +19,7 @@ account_id                  int                             account the default 
 vault_id                    int                             vault the default applies in
 applies_to                  enum (contact, entity)          what kind of record the default is for
 entity_type_id              int                             type the default is for when applies_to is entity, null otherwise
-template_version_id         int                             exact version a new record starts on
+structure_version_id        int                             exact version a new record starts on
 created_at                  datetime
 updated_at                  datetime
 ```
@@ -29,13 +29,13 @@ updated_at                  datetime
 - `belongsTo` [Account](001-account-in-progress.md)
 - `belongsTo` [Vault](007-vault-in-progress.md)
 - `belongsTo` [EntityType](011-entity-type-done.md)
-- `belongsTo` [TemplateVersion](013-template-version-done.md)
+- `belongsTo` [StructureVersion](013-structure-version-done.md)
 
 ## Rules
 
 - One row per vault and per kind of record. For entities, one row per vault and per entity type.
 - The row points at a version, not at a template. Otherwise a new record would silently follow the latest structure, which section 3.1 forbids.
-- Changing the default affects records created afterwards and never touches records already created. Moving those is a separate, deliberate action ([TemplateVersion](013-template-version-done.md)).
+- Changing the default affects records created afterwards and never touches records already created. Moving those is a separate, deliberate action ([StructureVersion](013-structure-version-done.md)).
 - Every vault has a contact default, seeded at creation from the supplied contact template.
 - An entity type with no default in a vault simply offers no shortcut there. The user picks a template when creating the record.
 
@@ -43,7 +43,7 @@ updated_at                  datetime
 
 - **Only the contact default is written, and only it is read.** `CreateContact` starts a record on the default of its kind when the caller names no version. Nothing writes the entity default: the seeding of an account sets the contact one on every vault, and `SetVaultDefaultTemplate` is reached only from the vault screens, which offer contacts alone. Nothing reads it either, the action that wrote an entity down having been removed, so the row can exist and no code consults it.
 - **No API.** The choice is offered twice: on the form that opens a vault, and on the settings of one, where every published version of every contact template the account has is listed under the template it belongs to. It is a version rather than a template on both, since that is what the column holds. Nothing is exposed over the API yet.
-- **A vault whose default template version is retired keeps pointing at it.** Retiring a version stops it being offered for anything new, and nothing walks the defaults to find the ones that just went stale.
+- **A vault whose default structure version is retired keeps pointing at it.** Retiring a version stops it being offered for anything new, and nothing walks the defaults to find the ones that just went stale.
 
 ## Decisions taken while building it
 

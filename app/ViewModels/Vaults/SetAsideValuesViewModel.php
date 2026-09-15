@@ -45,7 +45,7 @@ class SetAsideValuesViewModel
 
     public function templateUrl(): string
     {
-        return route('settings.templateBuilder.index', $this->contact->templateVersion->template);
+        return route('settings.templateBuilder.index', $this->contact->structureVersion->structure->owner);
     }
 
     public function intro(): string

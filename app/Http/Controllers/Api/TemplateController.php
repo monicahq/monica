@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api;
 use App\Actions\CreateTemplate;
 use App\Actions\DestroyTemplate;
 use App\Actions\UpdateTemplate;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Exceptions\CannotDeleteATemplateInUse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TemplateResource;
@@ -29,7 +29,7 @@ class TemplateController extends Controller
         ));
 
         $templates = $request->user()->account->templates()
-            ->with(['entityType', 'publishedVersion'])
+            ->with(['structure.entityType', 'publishedVersion'])
             ->orderBy('position')
             ->orderBy('id')
             ->paginate($perPage);
@@ -53,10 +53,10 @@ class TemplateController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'applies_to' => ['required', Rule::enum(TemplateAppliesToEnum::class)],
+            'applies_to' => ['required', Rule::enum(StructureAppliesToEnum::class)],
             'description' => ['nullable', 'string', 'max:65535'],
             'entity_type_id' => [
-                Rule::requiredIf(fn (): bool => $request->string('applies_to')->value() === TemplateAppliesToEnum::Entity->value),
+                Rule::requiredIf(fn (): bool => $request->string('applies_to')->value() === StructureAppliesToEnum::Entity->value),
                 'nullable',
                 'string',
                 Rule::exists('entity_types', 'uuid')->where('account_id', $request->user()->account_id),
@@ -66,12 +66,12 @@ class TemplateController extends Controller
         $template = new CreateTemplate(
             user: $request->user(),
             name: $validated['name'],
-            appliesTo: TemplateAppliesToEnum::from($validated['applies_to']),
+            appliesTo: StructureAppliesToEnum::from($validated['applies_to']),
             entityType: $this->entityType($request, $validated['entity_type_id'] ?? null),
             description: $validated['description'] ?? null,
         )->execute();
 
-        return new TemplateResource($template->load(['entityType', 'publishedVersion']))
+        return new TemplateResource($template->load(['structure.entityType', 'publishedVersion']))
             ->response()
             ->setStatusCode(201);
     }
@@ -92,7 +92,7 @@ class TemplateController extends Controller
             description: $validated['description'],
         )->execute();
 
-        return new TemplateResource($template->refresh()->load(['entityType', 'publishedVersion']))
+        return new TemplateResource($template->refresh()->load(['structure.entityType', 'publishedVersion']))
             ->response()
             ->setStatusCode(200);
     }
@@ -123,7 +123,7 @@ class TemplateController extends Controller
     private function find(Request $request, string $uuid): Template
     {
         return $request->user()->account->templates()
-            ->with(['entityType', 'publishedVersion'])
+            ->with(['structure.entityType', 'publishedVersion'])
             ->where('uuid', $uuid)
             ->firstOrFail();
     }

@@ -9,9 +9,9 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -244,21 +244,21 @@ class FieldControllerTest extends TestCase
         $this->assertModelExists($field);
     }
 
-    private function url(Template $template, TemplateVersionSection $row): string
+    private function url(Template $template, StructureVersionSection $row): string
     {
         return "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}";
     }
 
-    /** @return array{User, Template, TemplateVersionSection} */
+    /** @return array{User, Template, StructureVersionSection} */
     private function placement(): array
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
         $section = Section::factory()->create(['account_id' => $user->account_id]);
         $sectionVersion = SectionVersion::factory()->create(['section_id' => $section->id]);
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 

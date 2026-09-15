@@ -13,7 +13,7 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\File;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
@@ -56,13 +56,13 @@ class EntityTest extends TestCase
     }
 
     #[Test]
-    public function it_belongs_to_the_template_version_its_page_renders_from(): void
+    public function it_belongs_to_the_structure_version_its_page_renders_from(): void
     {
-        $version = TemplateVersion::factory()->published()->create();
-        $entity = Entity::factory()->create(['template_version_id' => $version->id]);
+        $version = StructureVersion::factory()->published()->create();
+        $entity = Entity::factory()->create(['structure_version_id' => $version->id]);
 
-        $this->assertTrue($entity->templateVersion()->exists());
-        $this->assertTrue($version->is($entity->templateVersion));
+        $this->assertTrue($entity->structureVersion()->exists());
+        $this->assertTrue($version->is($entity->structureVersion));
     }
 
     #[Test]

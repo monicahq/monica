@@ -26,7 +26,7 @@ class TemplateActivationController extends Controller
             ? new ActivateTemplate(user: $request->user(), template: $template)->execute()
             : new DeactivateTemplate(user: $request->user(), template: $template)->execute();
 
-        return new TemplateResource($template->refresh()->load(['entityType', 'publishedVersion']))
+        return new TemplateResource($template->refresh()->load(['structure.entityType', 'publishedVersion']))
             ->response()
             ->setStatusCode(200);
     }

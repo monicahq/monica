@@ -6,8 +6,8 @@ namespace App\ViewModels\Settings\Account\Templates;
 
 use App\Enums\FieldTypeEnum;
 use App\Helpers\StructureFile;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Support\Number;
 
@@ -16,7 +16,7 @@ class ShareSectionViewModel
     public function __construct(
         private readonly User $user,
         private readonly Template $template,
-        private readonly TemplateVersionSection $row,
+        private readonly StructureVersionSection $row,
     ) {}
 
     public function user(): User
@@ -29,7 +29,7 @@ class ShareSectionViewModel
         return $this->template;
     }
 
-    public function row(): TemplateVersionSection
+    public function row(): StructureVersionSection
     {
         return $this->row;
     }
@@ -82,7 +82,7 @@ class ShareSectionViewModel
     {
         return __(':name, v:version', [
             'name' => $this->template->name,
-            'version' => $this->row->templateVersion->version_number,
+            'version' => $this->row->structureVersion->version_number,
         ]);
     }
 

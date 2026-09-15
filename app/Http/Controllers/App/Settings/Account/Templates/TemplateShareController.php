@@ -14,7 +14,7 @@ class TemplateShareController extends Controller
 {
     public function index(Request $request, Template $template): View
     {
-        abort_if($template->published_version_id === null, 404);
+        abort_if($template->structure->published_version_id === null, 404);
 
         return view('app.settings.account.templates.share', [
             'viewModel' => new ShareTemplateViewModel(

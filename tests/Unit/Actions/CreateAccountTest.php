@@ -174,7 +174,7 @@ class CreateAccountTest extends TestCase
 
         $this->assertEquals('Basic contact', $template->name);
         $this->assertTrue($template->is_system);
-        $this->assertNotNull($template->published_version_id);
+        $this->assertNotNull($template->structure->published_version_id);
         $this->assertCount(3, $template->publishedVersion->pages);
         $this->assertCount(6, $template->publishedVersion->assembly);
         $this->assertEquals(

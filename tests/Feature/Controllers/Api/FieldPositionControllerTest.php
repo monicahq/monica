@@ -8,9 +8,9 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -95,19 +95,19 @@ class FieldPositionControllerTest extends TestCase
             ->assertNotFound();
     }
 
-    private function url(Template $template, TemplateVersionSection $row): string
+    private function url(Template $template, StructureVersionSection $row): string
     {
         return "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}";
     }
 
-    /** @return array{User, Template, TemplateVersionSection} */
+    /** @return array{User, Template, StructureVersionSection} */
     private function placement(): array
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => SectionVersion::factory()->create([
                 'section_id' => Section::factory()->create(['account_id' => $user->account_id])->id,
             ])->id,

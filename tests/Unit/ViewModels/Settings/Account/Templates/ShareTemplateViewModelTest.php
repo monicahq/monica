@@ -8,9 +8,9 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Templates\ShareTemplateViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -87,7 +87,7 @@ class ShareTemplateViewModelTest extends TestCase
             'slug' => 'dunder-mifflin-contact',
         ]);
 
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $section = Section::factory()->create([
             'account_id' => $user->account_id,
@@ -99,8 +99,8 @@ class ShareTemplateViewModelTest extends TestCase
         Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => 'Nickname', 'position' => 1]);
         Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => 'Branch', 'position' => 2]);
 
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -115,8 +115,7 @@ class ShareTemplateViewModelTest extends TestCase
         $version->published_at = now();
         $version->save();
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template->fresh();
     }

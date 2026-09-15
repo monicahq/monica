@@ -6,8 +6,8 @@ namespace Tests\Feature\Controllers\Api;
 
 use App\Enums\VersionStatusEnum;
 use App\Models\Account;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -29,7 +29,7 @@ class TemplateDuplicateControllerTest extends TestCase
             'name' => 'Contact',
             'slug' => 'contact',
         ]);
-        TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         Sanctum::actingAs($user);
 
@@ -51,7 +51,7 @@ class TemplateDuplicateControllerTest extends TestCase
         Queue::fake();
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         Sanctum::actingAs($user);
 
@@ -59,8 +59,8 @@ class TemplateDuplicateControllerTest extends TestCase
 
         $copy = Template::query()->where('account_id', $user->account_id)->where('id', '!=', $template->id)->sole();
 
-        $this->assertDatabaseHas('template_versions', [
-            'template_id' => $copy->id,
+        $this->assertDatabaseHas('structure_versions', [
+            'structure_id' => $copy->structure->id,
             'status' => VersionStatusEnum::Draft->value,
         ]);
     }
@@ -71,7 +71,7 @@ class TemplateDuplicateControllerTest extends TestCase
         Queue::fake();
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         Sanctum::actingAs($user);
 
@@ -95,7 +95,7 @@ class TemplateDuplicateControllerTest extends TestCase
             'slug' => 'contact',
             'position' => 1,
         ]);
-        TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         Sanctum::actingAs($user);
 
@@ -126,7 +126,7 @@ class TemplateDuplicateControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => Account::factory()->create()->id]);
-        TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         Sanctum::actingAs($user);
 

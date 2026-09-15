@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
@@ -12,6 +12,7 @@ use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Open a new compartment in the account.
@@ -71,9 +72,11 @@ class CreateVault
     {
         $template = Template::query()
             ->where('account_id', $this->user->account_id)
-            ->where('applies_to', TemplateAppliesToEnum::Contact)
             ->where('is_system', true)
-            ->whereNotNull('published_version_id')
+            ->whereHas('structure', function (Builder $query): void {
+                $query->where('applies_to', StructureAppliesToEnum::Contact)
+                    ->whereNotNull('published_version_id');
+            })
             ->first();
 
         if ($template === null) {
@@ -83,9 +86,9 @@ class CreateVault
         VaultDefaultTemplate::query()->create([
             'account_id' => $this->user->account_id,
             'vault_id' => $this->vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
+            'applies_to' => StructureAppliesToEnum::Contact,
             'entity_type_id' => null,
-            'template_version_id' => $template->published_version_id,
+            'structure_version_id' => $template->structure->published_version_id,
         ]);
     }
 

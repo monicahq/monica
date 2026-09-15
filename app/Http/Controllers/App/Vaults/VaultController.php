@@ -9,12 +9,12 @@ use App\Actions\DestroyVault;
 use App\Actions\SetDefaultVault;
 use App\Actions\SetVaultDefaultTemplate;
 use App\Actions\UpdateVault;
-use App\Enums\TemplateAppliesToEnum;
 use App\Enums\VaultColourEnum;
 use App\Http\Controllers\Controller;
 use App\Jobs\RecordVaultVisit;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\Vault;
+use App\Rules\PublishedContactStructureVersion;
 use App\ViewModels\Vaults\VaultDashboardViewModel;
 use App\ViewModels\Vaults\VaultFormViewModel;
 use App\ViewModels\Vaults\VaultsViewModel;
@@ -132,27 +132,24 @@ class VaultController extends Controller
             'description' => ['nullable', 'string', 'max:65535'],
             'colour' => ['required', 'string', Rule::in(VaultColourEnum::values())],
             'is_default' => ['nullable', 'boolean'],
-            'template_version_id' => [
+            'structure_version_id' => [
                 'nullable',
                 'integer',
-                Rule::exists('templates', 'published_version_id')
-                    ->where('account_id', $request->user()->account_id)
-                    ->where('applies_to', TemplateAppliesToEnum::Contact->value)
-                    ->where('is_active', true),
+                new PublishedContactStructureVersion($request->user()->account_id),
             ],
         ];
     }
 
     private function settleWhatContactsStartFrom(Request $request, Vault $vault): void
     {
-        if (! $request->filled('template_version_id')) {
+        if (! $request->filled('structure_version_id')) {
             return;
         }
 
         new SetVaultDefaultTemplate(
             user: $request->user(),
             vault: $vault,
-            templateVersion: TemplateVersion::query()->findOrFail($request->integer('template_version_id')),
+            structureVersion: StructureVersion::query()->findOrFail($request->integer('structure_version_id')),
         )->execute();
     }
 }

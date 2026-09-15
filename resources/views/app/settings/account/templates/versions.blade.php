@@ -1,5 +1,5 @@
 {{-- Every version this template has had, and exactly what each one holds. --}}
-{{-- @var \App\ViewModels\Settings\Account\Templates\TemplateVersionHistoryViewModel $viewModel --}}
+{{-- @var \App\ViewModels\Settings\Account\Templates\StructureVersionHistoryViewModel $viewModel --}}
 <x-settings.page
   :title="$viewModel->title()"
   :user="$viewModel->user()"

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Settings\Account\Templates;
 
-use App\Actions\CreateTemplateVersionPage;
-use App\Actions\DestroyTemplateVersionPage;
-use App\Actions\UpdateTemplateVersionPage;
+use App\Actions\CreateStructureVersionPage;
+use App\Actions\DestroyStructureVersionPage;
+use App\Actions\UpdateStructureVersionPage;
 use App\Exceptions\CannotDeleteAPageInUse;
 use App\Exceptions\CannotDeleteTheLastPage;
 use App\Exceptions\PageLabelIsAlreadyUsed;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Controllers\Controller;
+use App\Models\StructureVersionPage;
 use App\Models\Template;
-use App\Models\TemplateVersionPage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -32,9 +32,9 @@ class TemplatePageController extends Controller
         }
 
         try {
-            $page = new CreateTemplateVersionPage(
+            $page = new CreateStructureVersionPage(
                 user: $request->user(),
-                templateVersion: $version,
+                structureVersion: $version,
                 label: $validated['label'],
             )->execute();
         } catch (PageLabelIsAlreadyUsed) {
@@ -49,47 +49,47 @@ class TemplatePageController extends Controller
             ->with('status', __('The page is added.'));
     }
 
-    public function update(Request $request, Template $template, TemplateVersionPage $templateVersionPage): RedirectResponse
+    public function update(Request $request, Template $template, StructureVersionPage $structureVersionPage): RedirectResponse
     {
-        abort_unless($templateVersionPage->isReachableThrough($request->user(), $template), 404);
+        abort_unless($structureVersionPage->isReachableThrough($request->user(), $template), 404);
 
         $validated = $request->validate([
             'label' => ['required', 'string', 'max:255'],
         ]);
 
         try {
-            new UpdateTemplateVersionPage(
+            new UpdateStructureVersionPage(
                 user: $request->user(),
-                page: $templateVersionPage,
+                page: $structureVersionPage,
                 label: $validated['label'],
             )->execute();
         } catch (PageLabelIsAlreadyUsed) {
-            return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $templateVersionPage->key])
+            return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $structureVersionPage->key])
                 ->with('error', __('This template already has a page reading exactly that.'))
                 ->with('error_description', __('Two tabs reading the same cannot be told apart.'));
         } catch (PublishedVersionIsFrozen) {
             return $this->refuse($template);
         }
 
-        return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $templateVersionPage->key])
+        return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $structureVersionPage->key])
             ->with('status', __('The page is renamed.'));
     }
 
-    public function destroy(Request $request, Template $template, TemplateVersionPage $templateVersionPage): RedirectResponse
+    public function destroy(Request $request, Template $template, StructureVersionPage $structureVersionPage): RedirectResponse
     {
-        abort_unless($templateVersionPage->isReachableThrough($request->user(), $template), 404);
+        abort_unless($structureVersionPage->isReachableThrough($request->user(), $template), 404);
 
         try {
-            new DestroyTemplateVersionPage(
+            new DestroyStructureVersionPage(
                 user: $request->user(),
-                page: $templateVersionPage,
+                page: $structureVersionPage,
             )->execute();
         } catch (CannotDeleteTheLastPage) {
-            return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $templateVersionPage->key])
+            return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $structureVersionPage->key])
                 ->with('error', __('This page stays.'))
                 ->with('error_description', __('It is the only one this template has, and a version with no page has nothing to render.'));
         } catch (CannotDeleteAPageInUse) {
-            return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $templateVersionPage->key])
+            return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $structureVersionPage->key])
                 ->with('error', __('This page stays.'))
                 ->with('error_description', __('It still holds sections. Move them to another page or take them off the template first.'));
         } catch (PublishedVersionIsFrozen) {

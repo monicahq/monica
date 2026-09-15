@@ -7,7 +7,7 @@
 
 The complete state of a contact or an entity at a moment, kept so it can be restored. Section 12 defines it against the log: a snapshot exists to go back, a log exists to explain who did what. They are complementary and neither replaces the other.
 
-The moment that matters most is a structure change. Section 6 requires that moving a record to another template version automatically saves the previous state, restorable. That guarantee is what makes changing structures safe enough to be offered casually, and it is the reason this model is not optional.
+The moment that matters most is a structure change. Section 6 requires that moving a record to another structure version automatically saves the previous state, restorable. That guarantee is what makes changing structures safe enough to be offered casually, and it is the reason this model is not optional.
 
 ## Fields
 
@@ -17,7 +17,7 @@ account_id                  int                             account the snapshot
 vault_id                    int                             vault the record lives in
 snapshotable_type           string (255)                    class of the record captured, a contact or an entity
 snapshotable_id             int                             id of that record
-template_version_id         int                             structure the record was on at the time
+structure_version_id        int                             structure the record was on at the time
 reason                      enum (template_change, merge, manual, import, restore, api)  why the snapshot was taken
 payload                     json                            full state of the record, its pages, section placements, fields, values and the files they pointed at
 file_ids                    json                            files the snapshot references, so the orphan sweep leaves them alone
@@ -32,7 +32,7 @@ updated_at                  datetime
 
 - `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md)
 - `morphTo` snapshotable
-- `belongsTo` [TemplateVersion](013-template-version-done.md), [User](002-user-done.md)
+- `belongsTo` [StructureVersion](013-structure-version-done.md), [User](002-user-done.md)
 
 ## Rules
 
@@ -57,7 +57,7 @@ updated_at                  datetime
 - **Restoring refuses rather than restores something partial**, checking that the version and every field the payload names are still there. Half a record put back is worse than a record left alone, because nobody can tell which half.
 - **Restoring writes a snapshot first**, which is the file's own rule, and it means the machinery that undoes a restore is the machinery that performs one.
 - **Immutable means the captured state, not the row.** `restored_at` moves, because it says something about the snapshot rather than about the state in it. Everything else is refused, and so is deletion, for the reason a log entry refuses both.
-- **Moving a record to another version is its own action,** `MoveRecordToTemplateVersion`, and it takes the snapshot unconditionally rather than working out whether the change looks harmless. The whole point of the guarantee is that nobody has to decide in advance whether they will regret it. This is the rule [Contact](019-contact-done.md) and [Entity](020-entity-done.md) both list and neither could keep until now.
+- **Moving a record to another version is its own action,** `MoveRecordToStructureVersion`, and it takes the snapshot unconditionally rather than working out whether the change looks harmless. The whole point of the guarantee is that nobody has to decide in advance whether they will regret it. This is the rule [Contact](019-contact-done.md) and [Entity](020-entity-done.md) both list and neither could keep until now.
 - **A value survives a move when the new structure still carries the field it points at.** Otherwise it is set aside, and a value set aside by an earlier move comes back when its field is carried again. Matching a value to a field of the same key on a differently versioned section is a separate question, and it belongs to the builder rather than here.
 
 ## Open questions

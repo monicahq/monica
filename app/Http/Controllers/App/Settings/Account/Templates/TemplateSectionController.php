@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Settings\Account\Templates;
 
-use App\Actions\AddSectionToTemplateVersion;
+use App\Actions\AddSectionToStructureVersion;
 use App\Actions\CreateSection;
-use App\Actions\RemoveSectionFromTemplateVersion;
+use App\Actions\RemoveSectionFromStructureVersion;
 use App\Actions\UpdateSection;
-use App\Actions\UpdateTemplateVersionSection;
+use App\Actions\UpdateStructureVersionSection;
 use App\Enums\VaultColourEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Controllers\Controller;
 use App\Models\Section;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersionSection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -36,7 +36,7 @@ class TemplateSectionController extends Controller
             'page' => [
                 'nullable',
                 'string',
-                Rule::exists('template_version_pages', 'uuid')->where('template_version_id', $version->id),
+                Rule::exists('structure_version_pages', 'uuid')->where('structure_version_id', $version->id),
             ],
         ]);
 
@@ -49,20 +49,20 @@ class TemplateSectionController extends Controller
             colour: $validated['colour'] ?? null,
         )->execute();
 
-        new AddSectionToTemplateVersion(
+        new AddSectionToStructureVersion(
             user: $request->user(),
-            templateVersion: $version,
+            structureVersion: $version,
             sectionVersion: $section->versions()->first(),
-            templateVersionPage: $page,
+            structureVersionPage: $page,
         )->execute();
 
         return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $page?->key])
             ->with('status', __('The section is added.'));
     }
 
-    public function update(Request $request, Template $template, TemplateVersionSection $templateVersionSection): RedirectResponse
+    public function update(Request $request, Template $template, StructureVersionSection $structureVersionSection): RedirectResponse
     {
-        abort_unless($templateVersionSection->isReachableThrough($request->user(), $template), 404);
+        abort_unless($structureVersionSection->isReachableThrough($request->user(), $template), 404);
 
         $validated = $request->validate([
             'title_override' => ['nullable', 'string', 'max:255'],
@@ -70,19 +70,19 @@ class TemplateSectionController extends Controller
             'colour' => ['nullable', 'string', Rule::in(VaultColourEnum::values())],
         ]);
 
-        if (! $templateVersionSection->templateVersion->status->isEditable()) {
+        if (! $structureVersionSection->structureVersion->status->isEditable()) {
             return $this->refuse($template);
         }
 
         try {
-            new UpdateTemplateVersionSection(
+            new UpdateStructureVersionSection(
                 user: $request->user(),
-                row: $templateVersionSection,
+                row: $structureVersionSection,
                 titleOverride: $validated['title_override'] ?? null,
-                isCollapsedByDefault: $templateVersionSection->is_collapsed_by_default,
+                isCollapsedByDefault: $structureVersionSection->is_collapsed_by_default,
             )->execute();
 
-            $section = $templateVersionSection->sectionVersion->section;
+            $section = $structureVersionSection->sectionVersion->section;
 
             new UpdateSection(
                 user: $request->user(),
@@ -98,20 +98,20 @@ class TemplateSectionController extends Controller
 
         return redirect()->route('settings.templateBuilder.index', [
             'template' => $template,
-            'page' => $templateVersionSection->templateVersionPage->key,
+            'page' => $structureVersionSection->structureVersionPage->key,
         ])->with('status', __('The section is saved.'));
     }
 
-    public function destroy(Request $request, Template $template, TemplateVersionSection $templateVersionSection): RedirectResponse
+    public function destroy(Request $request, Template $template, StructureVersionSection $structureVersionSection): RedirectResponse
     {
-        abort_unless($templateVersionSection->isReachableThrough($request->user(), $template), 404);
+        abort_unless($structureVersionSection->isReachableThrough($request->user(), $template), 404);
 
-        $page = $templateVersionSection->templateVersionPage->key;
+        $page = $structureVersionSection->structureVersionPage->key;
 
         try {
-            new RemoveSectionFromTemplateVersion(
+            new RemoveSectionFromStructureVersion(
                 user: $request->user(),
-                row: $templateVersionSection,
+                row: $structureVersionSection,
             )->execute();
         } catch (PublishedVersionIsFrozen) {
             return $this->refuse($template);

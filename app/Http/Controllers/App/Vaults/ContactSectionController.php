@@ -17,7 +17,7 @@ use App\Exceptions\ValueAlreadyHasAReminder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveFieldValuesRequest;
 use App\Models\Contact;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersionSection;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactViewModel;
 use Illuminate\Http\RedirectResponse;
@@ -26,30 +26,30 @@ use Illuminate\View\View;
 
 class ContactSectionController extends Controller
 {
-    public function edit(Request $request, Vault $vault, Contact $contact, TemplateVersionSection $templateVersionSection): View
+    public function edit(Request $request, Vault $vault, Contact $contact, StructureVersionSection $structureVersionSection): View
     {
-        $this->refuseWhatIsNotReachable($request, $vault, $contact, $templateVersionSection);
+        $this->refuseWhatIsNotReachable($request, $vault, $contact, $structureVersionSection);
 
         return view('app.vaults.contacts.show', [
             'viewModel' => new ContactViewModel(
                 user: $request->user(),
                 vault: $vault,
                 contact: $contact,
-                selectedPageKey: $templateVersionSection->templateVersionPage->key,
-                editingSection: $templateVersionSection,
+                selectedPageKey: $structureVersionSection->structureVersionPage->key,
+                editingSection: $structureVersionSection,
             ),
         ]);
     }
 
-    public function update(SaveFieldValuesRequest $request, Vault $vault, Contact $contact, TemplateVersionSection $templateVersionSection): RedirectResponse
+    public function update(SaveFieldValuesRequest $request, Vault $vault, Contact $contact, StructureVersionSection $structureVersionSection): RedirectResponse
     {
-        $this->refuseWhatIsNotReachable($request, $vault, $contact, $templateVersionSection);
+        $this->refuseWhatIsNotReachable($request, $vault, $contact, $structureVersionSection);
 
         try {
             new SetFieldValues(
                 user: $request->user(),
                 record: $contact,
-                section: $templateVersionSection,
+                section: $structureVersionSection,
                 values: $request->validated('fields', []),
                 yearIsUnknown: $request->validated('year_is_unknown', []),
                 monthIsUnknown: $request->validated('month_is_unknown', []),
@@ -57,7 +57,7 @@ class ContactSectionController extends Controller
             )->execute();
         } catch (FieldIsRequired|FieldValueIsNotUnique|NotEnoughRepetitions|NotEnoughStorageLeft|ReminderIsNotValid|ReminderMomentIsNotValid|ReminderNeedsADate|TooManyRepetitions|ValueAlreadyHasAReminder $e) {
             return redirect()
-                ->route('contacts.sections.edit', ['vault' => $vault, 'contact' => $contact, 'templateVersionSection' => $templateVersionSection])
+                ->route('contacts.sections.edit', ['vault' => $vault, 'contact' => $contact, 'structureVersionSection' => $structureVersionSection])
                 ->withInput()
                 ->withErrors(['fields' => $e->getMessage()]);
         }
@@ -66,20 +66,20 @@ class ContactSectionController extends Controller
             ->route('contacts.show', [
                 'vault' => $vault,
                 'contact' => $contact,
-                'page' => $templateVersionSection->templateVersionPage->key,
+                'page' => $structureVersionSection->structureVersionPage->key,
             ])
             ->with('status', __('Saved.'))
-            ->with('status_description', __(':section is up to date.', ['section' => $this->nameOf($templateVersionSection)]));
+            ->with('status_description', __(':section is up to date.', ['section' => $this->nameOf($structureVersionSection)]));
     }
 
-    private function refuseWhatIsNotReachable(Request $request, Vault $vault, Contact $contact, TemplateVersionSection $templateVersionSection): void
+    private function refuseWhatIsNotReachable(Request $request, Vault $vault, Contact $contact, StructureVersionSection $structureVersionSection): void
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
-        abort_unless($templateVersionSection->template_version_id === $contact->template_version_id, 404);
+        abort_unless($structureVersionSection->structure_version_id === $contact->structure_version_id, 404);
     }
 
-    private function nameOf(TemplateVersionSection $templateVersionSection): string
+    private function nameOf(StructureVersionSection $structureVersionSection): string
     {
-        return $templateVersionSection->title_override ?? $templateVersionSection->sectionVersion->section->name;
+        return $structureVersionSection->title_override ?? $structureVersionSection->sectionVersion->section->name;
     }
 }

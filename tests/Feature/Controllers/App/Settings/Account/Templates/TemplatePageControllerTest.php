@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -25,17 +25,17 @@ class TemplatePageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $response = $this->actingAs($user)->post(route('settings.templatePages.create', $template), [
             'label' => 'Life events',
         ]);
 
-        $page = TemplateVersionPage::query()->where('label', 'Life events')->sole();
+        $page = StructureVersionPage::query()->where('label', 'Life events')->sole();
 
         $response->assertRedirect(route('settings.templateBuilder.index', ['template' => $template, 'page' => $page->key]));
         $response->assertSessionHas('status');
-        $this->assertEquals($version->id, $page->template_version_id);
+        $this->assertEquals($version->id, $page->structure_version_id);
         $this->assertEquals('life-events', $page->key);
     }
 
@@ -46,14 +46,14 @@ class TemplatePageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $response = $this->actingAs($user)->post(route('settings.templatePages.create', $template), [
             'label' => 'General',
         ]);
 
         $response->assertSessionHas('error');
-        $this->assertEquals(1, TemplateVersionPage::query()->count());
+        $this->assertEquals(1, StructureVersionPage::query()->count());
     }
 
     #[Test]
@@ -63,12 +63,12 @@ class TemplatePageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->post(route('settings.templatePages.create', $template), ['label' => 'Life events'])
             ->assertSessionHas('error');
 
-        $this->assertEquals(1, TemplateVersionPage::query()->count());
+        $this->assertEquals(1, StructureVersionPage::query()->count());
     }
 
     #[Test]
@@ -78,7 +78,7 @@ class TemplatePageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->post(route('settings.templatePages.create', $template), ['label' => ''])
             ->assertSessionHasErrors('label', errorBag: 'newPage');
@@ -91,8 +91,8 @@ class TemplatePageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $page = TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'label' => 'Life events']);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $page = StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'label' => 'Life events']);
 
         $response = $this->actingAs($user)->put(route('settings.templatePages.update', [$template, $page]), [
             'label' => 'Milestones',
@@ -109,9 +109,9 @@ class TemplatePageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $page = TemplateVersionPage::factory()->create([
-            'template_version_id' => $version->id,
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $page = StructureVersionPage::factory()->create([
+            'structure_version_id' => $version->id,
             'key' => 'life-events',
             'label' => 'Life events',
         ]);
@@ -128,8 +128,8 @@ class TemplatePageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $page = TemplateVersionPage::factory()->create(['template_version_id' => $version->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $page = StructureVersionPage::factory()->create(['structure_version_id' => $version->id]);
 
         $response = $this->actingAs($user)->delete(route('settings.templatePages.destroy', [$template, $page]));
 
@@ -145,11 +145,11 @@ class TemplatePageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $page = TemplateVersionPage::factory()->create(['template_version_id' => $version->id]);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $page->id,
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $page = StructureVersionPage::factory()->create(['structure_version_id' => $version->id]);
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $page->id,
         ]);
 
         $this->actingAs($user)->delete(route('settings.templatePages.destroy', [$template, $page]))
@@ -165,7 +165,7 @@ class TemplatePageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $page = $version->pages()->sole();
 
         $this->actingAs($user)->delete(route('settings.templatePages.destroy', [$template, $page]))
@@ -181,8 +181,8 @@ class TemplatePageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $elsewhere = TemplateVersion::factory()->create(['account_id' => $user->account_id])->pages()->sole();
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $elsewhere = StructureVersion::factory()->create(['account_id' => $user->account_id])->pages()->sole();
 
         $this->actingAs($user)->put(route('settings.templatePages.update', [$template, $elsewhere]), ['label' => 'Milestones'])
             ->assertNotFound();
@@ -195,8 +195,8 @@ class TemplatePageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $theirs = TemplateVersion::factory()->create()->pages()->sole();
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $theirs = StructureVersion::factory()->create()->pages()->sole();
 
         $this->actingAs($user)->delete(route('settings.templatePages.destroy', [$template, $theirs]))
             ->assertNotFound();

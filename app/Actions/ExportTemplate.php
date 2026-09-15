@@ -38,7 +38,7 @@ class ExportTemplate
             throw new ModelNotFoundException('This template is in another account.');
         }
 
-        if ($this->template->published_version_id === null) {
+        if ($this->template->structure->published_version_id === null) {
             throw new ListingHasNothingToPublish("{$this->template->name} has never been published, so there is nothing frozen to write down.");
         }
     }

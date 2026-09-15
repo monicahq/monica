@@ -6,7 +6,7 @@ namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\NameOrderEnum;
 use App\Models\Contact;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -110,7 +110,7 @@ class ContactNameControllerTest extends TestCase
         return Contact::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => TemplateVersion::factory()->published()->create([
+            'structure_version_id' => StructureVersion::factory()->published()->create([
                 'account_id' => $user->account_id,
             ]),
             'first_name' => 'Michael',

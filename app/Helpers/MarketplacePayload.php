@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Helpers;
 
 use App\Exceptions\ListingHasNothingToPublish;
+use App\Models\ActivityType;
 use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use Illuminate\Support\Str;
 
 class MarketplacePayload
@@ -25,7 +27,7 @@ class MarketplacePayload
     private function __construct() {}
 
     /** @return array<string, mixed> */
-    public static function of(Template|Section $listable): array
+    public static function of(Template|ActivityType|Section $listable): array
     {
         return new self()->build($listable);
     }
@@ -46,16 +48,26 @@ class MarketplacePayload
     }
 
     /** @return array<string, mixed> */
-    private function build(Template|Section $listable): array
+    private function build(Template|ActivityType|Section $listable): array
     {
-        if ($listable->publishedVersion === null) {
+        $published = $listable instanceof Section
+            ? $listable->publishedVersion
+            : $listable->structure?->publishedVersion;
+
+        if ($published === null) {
             throw new ListingHasNothingToPublish("{$listable->name} has never been published, so there is nothing frozen to send.");
         }
 
         if ($listable instanceof Section) {
-            $section = $this->section($listable->publishedVersion);
+            $section = $this->section($published);
 
             return ['type' => 'section', 'section' => $section, 'value_lists' => $this->valueLists];
+        }
+
+        if ($listable instanceof ActivityType) {
+            $activityType = $this->activityType($listable);
+
+            return ['type' => 'activity_type', 'activity_type' => $activityType, 'value_lists' => $this->valueLists];
         }
 
         $template = $this->template($listable);
@@ -66,18 +78,59 @@ class MarketplacePayload
     /** @return array<string, mixed> */
     private function template(Template $template): array
     {
-        $version = $template->publishedVersion;
+        $version = $template->structure->publishedVersion;
+
+        return [
+            'slug' => $template->slug,
+            'name' => $template->getRawOriginal('name'),
+            'name_translation_key' => $template->name_translation_key,
+            'description' => $template->description,
+            'applies_to' => $template->structure->applies_to->value,
+            'locale' => $template->locale,
+            'version_number' => $version->version_number,
+            'entity_type' => $this->entityType($template->structure->entityType),
+            'pages' => $this->pages($version),
+        ];
+    }
+
+    /**
+     * An activity type travels as itself plus its structure. What somebody installs is a restaurant
+     * log, not a structure, so the label, the icon, the colour and the category it was filed under
+     * go with the fields.
+     *
+     * @return array<string, mixed>
+     */
+    private function activityType(ActivityType $activityType): array
+    {
+        $version = $activityType->structure->publishedVersion;
+
+        return [
+            'name' => $activityType->getRawOriginal('name'),
+            'name_translation_key' => $activityType->name_translation_key,
+            'description' => $activityType->description,
+            'icon' => $activityType->icon,
+            'colour' => $activityType->colour,
+            'category' => $activityType->activityCategory->name,
+            'category_key' => $activityType->activityCategory->key,
+            'version_number' => $version->version_number,
+            'pages' => $this->pages($version),
+        ];
+    }
+
+    /** @return array<int, array<string, mixed>> */
+    private function pages(StructureVersion $version): array
+    {
         $assembly = $version->assembly->load('sectionVersion.section', 'sectionVersion.fields.relationEntityType');
 
-        $pages = $version->pages
-            ->map(fn (TemplateVersionPage $page): array => [
+        return $version->pages
+            ->map(fn (StructureVersionPage $page): array => [
                 'key' => $page->key,
                 'label' => $page->getRawOriginal('label'),
                 'label_translation_key' => $page->label_translation_key,
                 'position' => $page->position,
                 'sections' => $assembly
-                    ->where('template_version_page_id', $page->id)
-                    ->map(fn (TemplateVersionSection $row): array => [
+                    ->where('structure_version_page_id', $page->id)
+                    ->map(fn (StructureVersionSection $row): array => [
                         'position' => $row->position,
                         'title_override' => $row->title_override,
                         'is_collapsed_by_default' => $row->is_collapsed_by_default,
@@ -88,18 +141,6 @@ class MarketplacePayload
             ])
             ->values()
             ->all();
-
-        return [
-            'slug' => $template->slug,
-            'name' => $template->getRawOriginal('name'),
-            'name_translation_key' => $template->name_translation_key,
-            'description' => $template->description,
-            'applies_to' => $template->applies_to->value,
-            'locale' => $template->locale,
-            'version_number' => $version->version_number,
-            'entity_type' => $this->entityType($template->entityType),
-            'pages' => $pages,
-        ];
     }
 
     /** @return array<string, mixed> */

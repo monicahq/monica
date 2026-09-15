@@ -9,8 +9,8 @@ use App\Enums\DefaultSectionEnum;
 use App\Jobs\CreateDefaultTemplate;
 use App\Models\Contact;
 use App\Models\Field;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -33,12 +33,12 @@ class NotesNewestFirstTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
-            'template_version_id' => Template::query()->where('account_id', $user->account_id)->sole()->published_version_id,
+            'structure_version_id' => Template::query()->where('account_id', $user->account_id)->sole()->structure->published_version_id,
         ]);
 
         $notes = Field::query()->where('account_id', $user->account_id)->where('key', DefaultFieldEnum::Notes->value)->sole();
         $note = $notes->children->sole();
-        $section = TemplateVersionSection::query()
+        $section = StructureVersionSection::query()
             ->where('account_id', $user->account_id)
             ->where('section_version_id', $notes->section_version_id)
             ->sole();
@@ -53,7 +53,7 @@ class NotesNewestFirstTest extends TestCase
             1 => ['id' => $held->id, 'values' => [$note->id => 'Where we met']],
         ]]])->assertRedirect();
 
-        $page = $section->templateVersionPage->key;
+        $page = $section->structureVersionPage->key;
         $html = $this->actingAs($user)->get(route('contacts.show', [$vault, $contact, 'page' => $page]))->getContent();
 
         $this->assertLessThan(
@@ -72,13 +72,13 @@ class NotesNewestFirstTest extends TestCase
         new CreateDefaultTemplate(user: $user)->handle();
 
         $notes = Field::query()->where('account_id', $user->account_id)->where('key', DefaultFieldEnum::Notes->value)->sole();
-        $section = TemplateVersionSection::query()
+        $section = StructureVersionSection::query()
             ->where('account_id', $user->account_id)
             ->where('section_version_id', $notes->section_version_id)
             ->sole();
 
         $this->assertSame(DefaultSectionEnum::Notes->value, $section->sectionVersion->section->slug);
-        $this->assertSame('general', $section->templateVersionPage->key);
+        $this->assertSame('general', $section->structureVersionPage->key);
     }
 
     #[Test]
@@ -92,12 +92,12 @@ class NotesNewestFirstTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
-            'template_version_id' => Template::query()->where('account_id', $user->account_id)->sole()->published_version_id,
+            'structure_version_id' => Template::query()->where('account_id', $user->account_id)->sole()->structure->published_version_id,
         ]);
 
         $notes = Field::query()->where('account_id', $user->account_id)->where('key', DefaultFieldEnum::Notes->value)->sole();
         $note = $notes->children->sole();
-        $section = TemplateVersionSection::query()
+        $section = StructureVersionSection::query()
             ->where('account_id', $user->account_id)
             ->where('section_version_id', $notes->section_version_id)
             ->sole();

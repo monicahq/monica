@@ -6,14 +6,14 @@ namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\RelationshipStatusEnum;
 use App\Enums\RelationshipTypeEnum;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Relationship;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -588,38 +588,37 @@ class ContactRelationshipControllerTest extends TestCase
 
         VaultDefaultTemplate::query()->firstOrCreate([
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
+            'applies_to' => StructureAppliesToEnum::Contact,
         ], [
             'account_id' => $vault->account_id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
 
         return Contact::factory()->create([
             'account_id' => $vault->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'first_name' => $firstName,
             'last_name' => $lastName,
         ]);
     }
 
-    private function publishedVersion(Vault $vault): TemplateVersion
+    private function publishedVersion(Vault $vault): StructureVersion
     {
         $default = VaultDefaultTemplate::query()
             ->where('vault_id', $vault->id)
-            ->where('applies_to', TemplateAppliesToEnum::Contact)
+            ->where('applies_to', StructureAppliesToEnum::Contact)
             ->first();
 
         if ($default !== null) {
-            return $default->templateVersion;
+            return $default->structureVersion;
         }
 
         $template = Template::factory()->create([
             'account_id' => $vault->account_id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
         ]);
 
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $version->update(['status' => VersionStatusEnum::Published]);
 
         return $version->refresh();

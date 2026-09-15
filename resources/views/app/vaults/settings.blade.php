@@ -109,16 +109,16 @@
     @if ($viewModel->templates() !== [])
       <x-form method="put" :action="$viewModel->defaultTemplateAction()" class="flex flex-col gap-4">
         <x-select
-          id="template_version_id"
+          id="structure_version_id"
           :label="__('Default template')"
           :help="__('An older version is offered too, so this vault can start its contacts on the version you want rather than the newest one.')"
-          :error="$errors->get('template_version_id')"
+          :error="$errors->get('structure_version_id')"
           class="max-w-105"
         >
           @foreach ($viewModel->templates() as $template)
             <optgroup label="{{ $template['name'] }}">
               @foreach ($template['versions'] as $version)
-                <option value="{{ $version['id'] }}" @selected($viewModel->currentTemplateVersionId() === (string) $version['id'])>{{ $version['label'] }}</option>
+                <option value="{{ $version['id'] }}" @selected($viewModel->currentStructureVersionId() === (string) $version['id'])>{{ $version['label'] }}</option>
               @endforeach
             </optgroup>
           @endforeach

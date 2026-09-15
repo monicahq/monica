@@ -36,7 +36,7 @@ $contact = [
         'is_archived' => false,
         'is_partial' => false,
         'is_me' => false,
-        'template_version_id' => 4,
+        'structure_version_id' => 4,
         'template_name' => 'Default contact',
         'last_activity_at' => null,
         'created_at' => 1756252800,
@@ -68,7 +68,7 @@ $otherContact = [
         'is_archived' => false,
         'is_partial' => false,
         'is_me' => false,
-        'template_version_id' => 4,
+        'structure_version_id' => 4,
         'template_name' => 'Default contact',
         'last_activity_at' => 1756166400,
         'created_at' => 1756080000,
@@ -159,7 +159,7 @@ $contactAttributes = [
     ['name' => 'is_archived', 'type' => 'boolean', 'description' => 'Whether the contact has been put away. An archived contact is out of every list but the archived one. Reading this is possible here; changing it is not, because no screen offers the gesture either.'],
     ['name' => 'is_partial', 'type' => 'boolean', 'description' => 'Whether the contact is somebody mentioned in a relationship and reduced to a first name. A partial contact is off every list until somebody fills them in, so it is listed by no filter at all.'],
     ['name' => 'is_me', 'type' => 'boolean', 'description' => 'Whether this contact represents you. Exactly one contact per vault is, it cannot be deleted, and nothing here hands the title to somebody else.'],
-    ['name' => 'template_version_id', 'type' => 'integer', 'description' => 'The published version of the template this contact renders from. It says what pages the contact has and what is written on them. Publishing a new version moves nobody: a contact stays on the version it points at until it is moved.'],
+    ['name' => 'structure_version_id', 'type' => 'integer', 'description' => 'The published version of the template this contact renders from. It says what pages the contact has and what is written on them. Publishing a new version moves nobody: a contact stays on the version it points at until it is moved.'],
     ['name' => 'template_name', 'type' => 'string', 'description' => 'What that template is called, which is what the lists show beside a contact.'],
     ['name' => 'last_activity_at', 'type' => 'timestamp', 'description' => 'When something was last written about this contact, as a count of seconds since 1970, or null when nothing ever has been.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the contact was written down, as a count of seconds since 1970 rather than a written date.'],
@@ -200,7 +200,7 @@ $writeParams = [
     ['name' => 'name_order', 'type' => 'string', 'required' => false, 'description' => 'Either given_first or family_first. Left out, the reader decides.'],
     ['name' => 'is_partial', 'type' => 'boolean', 'required' => false, 'description' => 'Whether this is somebody you know of rather than somebody you have written down. A partial contact is off every list until they are more than a first name. False when nothing says.'],
     ['name' => 'is_favourite', 'type' => 'boolean', 'required' => false, 'description' => 'Whether the contact sits at the top of the list. False when nothing says.'],
-    ['name' => 'template_version_id', 'type' => 'integer', 'required' => false, 'description' => 'The published version of one of your active contact templates, which says what the contact\'s page holds. Left out, the contact starts from whatever this vault publishes for contacts. A draft, a version belonging to somebody else, and a version describing something other than a contact are each refused.'],
+    ['name' => 'structure_version_id', 'type' => 'integer', 'required' => false, 'description' => 'The published version of one of your active contact templates, which says what the contact\'s page holds. Left out, the contact starts from whatever this vault publishes for contacts. A draft, a version belonging to somebody else, and a version describing something other than a contact are each refused.'],
 ];
 
 return [
@@ -389,7 +389,7 @@ return [
             'rateLimit' => 'Sixty requests per minute, per token.',
             'pathParams' => $identifier,
             'bodyParams' => [
-                ['name' => 'template_version_id', 'type' => 'integer', 'required' => false, 'description' => 'The published version to move onto. Leave it out to move onto whatever that template publishes now, which is how a contact catches up after a template is republished.', 'example' => 4],
+                ['name' => 'structure_version_id', 'type' => 'integer', 'required' => false, 'description' => 'The published version to move onto. Leave it out to move onto whatever that template publishes now, which is how a contact catches up after a template is republished.', 'example' => 4],
             ],
             'returns' => 'The contact object as it now reads, on its new version. A contact belonging to somebody else, a version not on offer, or the wrong vault each answer 404 and the contact is left where it was.',
             'response' => ['data' => $contact],

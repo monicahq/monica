@@ -7,7 +7,7 @@ namespace App\Jobs;
 use App\Enums\DefaultFieldEnum;
 use App\Enums\DefaultSectionEnum;
 use App\Enums\DefaultTemplateEnum;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
@@ -15,10 +15,11 @@ use App\Helpers\ValueListSnapshot;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\Structure;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\Vault;
@@ -38,7 +39,7 @@ class CreateDefaultTemplate implements ShouldQueue
 
     private Template $template;
 
-    private TemplateVersion $version;
+    private StructureVersion $version;
 
     /** @var array<string, int> */
     private array $valueLists;
@@ -75,22 +76,28 @@ class CreateDefaultTemplate implements ShouldQueue
 
         $this->template = Template::query()->create([
             'account_id' => $this->user->account_id,
-            'applies_to' => $supplied->appliesTo(),
-            'entity_type_id' => null,
             'name' => null,
             'name_translation_key' => $supplied->label(),
             'description' => null,
             'slug' => $supplied->value,
             'is_system' => true,
             'is_active' => true,
-            'published_version_id' => null,
             'locale' => config('app.locale'),
             'position' => 1,
         ]);
 
-        $this->version = TemplateVersion::query()->create([
+        $structure = Structure::query()->create([
             'account_id' => $this->user->account_id,
-            'template_id' => $this->template->id,
+            'owner_type' => Template::class,
+            'owner_id' => $this->template->id,
+            'applies_to' => $supplied->appliesTo(),
+            'entity_type_id' => null,
+            'published_version_id' => null,
+        ]);
+
+        $this->version = StructureVersion::query()->create([
+            'account_id' => $this->user->account_id,
+            'structure_id' => $structure->id,
             'version_number' => 1,
             'status' => VersionStatusEnum::Draft,
             'change_note' => null,
@@ -106,9 +113,9 @@ class CreateDefaultTemplate implements ShouldQueue
         $pagePosition = 1;
 
         foreach (DefaultTemplateEnum::BasicContact->pages() as $pageCase) {
-            $page = TemplateVersionPage::query()->create([
+            $page = StructureVersionPage::query()->create([
                 'account_id' => $this->user->account_id,
-                'template_version_id' => $this->version->id,
+                'structure_version_id' => $this->version->id,
                 'key' => $pageCase->value,
                 'label' => null,
                 'label_translation_key' => $pageCase->label(),
@@ -120,10 +127,10 @@ class CreateDefaultTemplate implements ShouldQueue
             foreach ($pageCase->sections() as $case) {
                 $sectionVersion = $this->createSection($case);
 
-                TemplateVersionSection::query()->create([
+                StructureVersionSection::query()->create([
                     'account_id' => $this->user->account_id,
-                    'template_version_id' => $this->version->id,
-                    'template_version_page_id' => $page->id,
+                    'structure_version_id' => $this->version->id,
+                    'structure_version_page_id' => $page->id,
                     'section_version_id' => $sectionVersion->id,
                     'position' => $sectionPosition,
                     'title_override' => null,
@@ -236,8 +243,9 @@ class CreateDefaultTemplate implements ShouldQueue
         $this->version->published_at = now();
         $this->version->save();
 
-        $this->template->published_version_id = $this->version->id;
-        $this->template->save();
+        $structure = $this->template->structure;
+        $structure->published_version_id = $this->version->id;
+        $structure->save();
     }
 
     private function seedTheVaultDefaults(): void
@@ -248,12 +256,12 @@ class CreateDefaultTemplate implements ShouldQueue
                 VaultDefaultTemplate::query()->updateOrCreate(
                     [
                         'vault_id' => $vault->id,
-                        'applies_to' => TemplateAppliesToEnum::Contact,
+                        'applies_to' => StructureAppliesToEnum::Contact,
                         'entity_type_id' => null,
                     ],
                     [
                         'account_id' => $this->user->account_id,
-                        'template_version_id' => $this->version->id,
+                        'structure_version_id' => $this->version->id,
                     ],
                 );
             });

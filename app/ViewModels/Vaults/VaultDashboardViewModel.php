@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
@@ -177,10 +177,11 @@ class VaultDashboardViewModel
     {
         return VaultDefaultTemplate::query()
             ->where('vault_id', $this->vault->id)
-            ->where('applies_to', TemplateAppliesToEnum::Contact)
+            ->where('applies_to', StructureAppliesToEnum::Contact)
             ->first()
-            ?->templateVersion
-            ->template
+            ?->structureVersion
+            ->structure
+            ->owner
             ->name;
     }
 }

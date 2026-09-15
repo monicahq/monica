@@ -6,14 +6,14 @@ namespace App\Helpers;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\VaultColourEnum;
 use App\Exceptions\StructureFileIsNotReadable;
 use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\Section;
+use App\Models\StructureVersionPage;
 use App\Models\Template;
-use App\Models\TemplateVersionPage;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use JsonException;
@@ -82,15 +82,23 @@ class StructureFileReader
     {
         $read = new self(self::decode($raw))->check();
 
-        if ($expecting === 'template' && $read['format'] !== 'template') {
+        if ($expecting === null || $expecting === $read['format']) {
+            return $read;
+        }
+
+        if ($read['format'] === 'activity_type') {
+            throw new StructureFileIsNotReadable(__('This file holds an activity type. Import it from the list of activity types and it arrives as a copy of its own.'));
+        }
+
+        if ($expecting === 'template') {
             throw new StructureFileIsNotReadable(__('This file holds one section rather than a whole template. Open the template you want it on, and import it from the page it belongs on.'));
         }
 
-        if ($expecting === 'section' && $read['format'] !== 'section') {
-            throw new StructureFileIsNotReadable(__('This file holds a whole template rather than one section. Import it from the list of templates and it arrives as a draft of its own.'));
+        if ($expecting === 'activity_type') {
+            throw new StructureFileIsNotReadable(__('This file does not hold an activity type. Import it where it belongs and it arrives as a copy of its own.'));
         }
 
-        return $read;
+        throw new StructureFileIsNotReadable(__('This file holds a whole template rather than one section. Import it from the list of templates and it arrives as a draft of its own.'));
     }
 
     /** @return array<string, mixed> */
@@ -128,9 +136,11 @@ class StructureFileReader
     {
         $format = $this->header();
 
-        $allowed = $format === 'template'
-            ? ['monica', 'exported_at', 'template', 'value_lists']
-            : ['monica', 'exported_at', 'from_template', 'section', 'value_lists'];
+        $allowed = match ($format) {
+            'template' => ['monica', 'exported_at', 'template', 'value_lists'],
+            'activity_type' => ['monica', 'exported_at', 'activity_type', 'value_lists'],
+            default => ['monica', 'exported_at', 'from_template', 'section', 'value_lists'],
+        };
 
         $file = StructureFileValues::object($this->file, 'the file', $allowed, ['monica', $format]);
 
@@ -143,6 +153,7 @@ class StructureFileReader
             'from_template' => $format === 'section' ? $this->fromTemplate($file) : null,
             'value_lists' => $this->valueLists,
             'template' => $format === 'template' ? $this->template($file['template']) : null,
+            'activity_type' => $format === 'activity_type' ? $this->activityType($file['activity_type']) : null,
             'section' => $format === 'section' ? $this->section($file['section'], 'section') : null,
         ];
     }
@@ -159,8 +170,8 @@ class StructureFileReader
 
         $format = StructureFileValues::string($header, 'format', 'monica', 32);
 
-        if ($format !== 'template' && $format !== 'section') {
-            $this->refuse(__('The header says :format. Monica reads two kinds of file: a template and a section.', [
+        if ($format !== 'template' && $format !== 'section' && $format !== 'activity_type') {
+            $this->refuse(__('The header says :format. Monica reads three kinds of file: a template, an activity type and a section.', [
                 'format' => $this->safe($format),
             ]));
         }
@@ -196,6 +207,51 @@ class StructureFileReader
     }
 
     /** @return array<string, mixed> */
+    /**
+     * An activity type carries what it looks like alongside its fields, so an installer gets a
+     * restaurant log rather than a bare structure. The category is read as a name and matched
+     * against the account's own when the copy is made.
+     *
+     * @return array<string, mixed>
+     */
+    private function activityType(mixed $node): array
+    {
+        $activityType = StructureFileValues::object($node, 'activity_type', [
+            'name', 'name_translation_key', 'description', 'icon', 'colour',
+            'category', 'category_key', 'version_number', 'pages',
+        ], ['pages']);
+
+        $pages = $this->pages($activityType['pages'], 'activity_type.pages');
+
+        if ($pages === []) {
+            $this->refuse(__('The header is right, but the activity type holds no page, so there is nothing in it to build.'));
+        }
+
+        $icon = StructureFileValues::identifier($activityType, 'icon', 'activity_type', 64);
+
+        if ($icon !== null && ! in_array($icon, Section::ICONS, true)) {
+            $this->refuse(__('The activity type in this file asks for an icon this version does not have.'));
+        }
+
+        $colour = StructureFileValues::nullableString($activityType, 'colour', 'activity_type', 7);
+
+        if ($colour !== null && ! in_array(mb_strtolower($colour), VaultColourEnum::values(), true)) {
+            $this->refuse(__('The activity type in this file asks for a colour this version does not offer.'));
+        }
+
+        return [
+            'name' => StructureFileValues::word($activityType, 'name', 'name_translation_key', 'activity_type', 255),
+            'description' => StructureFileValues::nullableString($activityType, 'description', 'activity_type', 255),
+            'icon' => $icon,
+            'colour' => $colour === null ? null : mb_strtolower($colour),
+            'category' => StructureFileValues::nullableString($activityType, 'category', 'activity_type', 255),
+            'category_key' => StructureFileValues::identifier($activityType, 'category_key', 'activity_type', 64),
+            'version_number' => StructureFileValues::integer($activityType, 'version_number', 'activity_type', 1, 9999, 1),
+            'pages' => $pages,
+        ];
+    }
+
+    /** @return array<string, mixed> */
     private function template(mixed $node): array
     {
         $template = StructureFileValues::object($node, 'template', [
@@ -203,9 +259,9 @@ class StructureFileReader
             'version_number', 'entity_type', 'pages',
         ], ['pages']);
 
-        $appliesTo = StructureFileValues::string($template, 'applies_to', 'template', 32, TemplateAppliesToEnum::Contact->value);
+        $appliesTo = StructureFileValues::string($template, 'applies_to', 'template', 32, StructureAppliesToEnum::Contact->value);
 
-        if (TemplateAppliesToEnum::tryFrom($appliesTo) === null) {
+        if (StructureAppliesToEnum::tryFrom($appliesTo) === null) {
             $this->refuse(__('The template says it applies to :word, which is not something this version knows about.', [
                 'word' => $this->safe($appliesTo),
             ]));
@@ -213,7 +269,7 @@ class StructureFileReader
 
         $entityType = $this->entityType($template['entity_type'] ?? null, 'template.entity_type');
 
-        if ($appliesTo === TemplateAppliesToEnum::Entity->value && $entityType === null) {
+        if ($appliesTo === StructureAppliesToEnum::Entity->value && $entityType === null) {
             $this->refuse(__('The template says it describes a kind of record, but it does not say which one.'));
         }
 
@@ -229,24 +285,24 @@ class StructureFileReader
             'description' => StructureFileValues::nullableString($template, 'description', 'template', 65535),
             'applies_to' => $appliesTo,
             'locale' => StructureFileValues::locale($template, 'template'),
-            'entity_type' => $appliesTo === TemplateAppliesToEnum::Entity->value ? $entityType : null,
+            'entity_type' => $appliesTo === StructureAppliesToEnum::Entity->value ? $entityType : null,
             'pages' => $pages,
         ];
     }
 
     /** @return list<array<string, mixed>> */
-    private function pages(mixed $node): array
+    private function pages(mixed $node, string $root = 'template.pages'): array
     {
-        $rows = StructureFileValues::collection($node, 'template.pages', self::MAX_PAGES);
+        $rows = StructureFileValues::collection($node, $root, self::MAX_PAGES);
         $keys = [];
         $pages = [];
 
         foreach ($rows as $index => $row) {
-            $path = "template.pages.{$index}";
+            $path = "{$root}.{$index}";
 
             $page = StructureFileValues::object($row, $path, ['key', 'label', 'label_translation_key', 'position', 'sections'], ['sections']);
             $label = StructureFileValues::word($page, 'label', 'label_translation_key', $path, 255);
-            $key = StructureFileValues::identifier($page, 'key', $path, TemplateVersionPage::KEY_LENGTH) ?? Str::slug($label);
+            $key = StructureFileValues::identifier($page, 'key', $path, StructureVersionPage::KEY_LENGTH) ?? Str::slug($label);
             $key = $key === '' ? 'page' : $key;
 
             if (in_array($key, $keys, true)) {

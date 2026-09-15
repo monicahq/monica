@@ -12,7 +12,7 @@ use App\Exceptions\ShareLinkIsRevoked;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\ShareLink;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersionSection;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactShareLinksViewModel;
 use App\ViewModels\Vaults\ShareLinkFormViewModel;
@@ -203,8 +203,8 @@ class ContactShareLinkController extends Controller
     {
         $included = array_map('intval', $request->input('sections', []));
 
-        return $contact->templateVersion->assembly
-            ->reject(fn (TemplateVersionSection $row): bool => in_array($row->id, $included, true))
+        return $contact->structureVersion->assembly
+            ->reject(fn (StructureVersionSection $row): bool => in_array($row->id, $included, true))
             ->pluck('id')
             ->values()
             ->all();

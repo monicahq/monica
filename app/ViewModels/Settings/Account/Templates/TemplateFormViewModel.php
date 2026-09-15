@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Settings\Account\Templates;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Models\EntityType;
 use App\Models\Template;
 use App\Models\User;
@@ -64,8 +64,8 @@ class TemplateFormViewModel
             'name' => (string) old('name', $this->template->name ?? ''),
             'description' => (string) old('description', $this->template->description ?? ''),
             'slug' => (string) old('slug', $this->template->slug ?? ''),
-            'appliesTo' => (string) old('applies_to', $this->template?->applies_to->value ?? TemplateAppliesToEnum::Contact->value),
-            'entityTypeId' => (string) old('entity_type_id', $this->template->entity_type_id ?? ''),
+            'appliesTo' => (string) old('applies_to', $this->template?->structure->applies_to->value ?? StructureAppliesToEnum::Contact->value),
+            'entityTypeId' => (string) old('entity_type_id', $this->template->structure->entity_type_id ?? ''),
         ];
     }
 
@@ -74,7 +74,7 @@ class TemplateFormViewModel
     {
         return EntityType::query()
             ->where('account_id', $this->user->account_id)
-            ->where(fn ($query) => $query->where('is_active', true)->orWhere('id', $this->template?->entity_type_id))
+            ->where(fn ($query) => $query->where('is_active', true)->orWhere('id', $this->template?->structure->entity_type_id))
             ->orderBy('position')
             ->get()
             ->map(fn (EntityType $type): array => ['id' => $type->id, 'name' => $type->name_plural])

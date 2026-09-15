@@ -10,9 +10,9 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
 use App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel;
@@ -390,7 +390,7 @@ class FieldControllerTest extends TestCase
 
         $michael = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $michael->account_id]);
-        $row = TemplateVersionSection::factory()->create();
+        $row = StructureVersionSection::factory()->create();
 
         $this->actingAs($michael)->get(route('settings.fields.new', [$template, $row]))->assertNotFound();
     }
@@ -414,15 +414,15 @@ class FieldControllerTest extends TestCase
         $this->assertDatabaseMissing('fields', ['label' => 'Sneaky']);
     }
 
-    /** @return array{0: Template, 1: TemplateVersionSection} */
+    /** @return array{0: Template, 1: StructureVersionSection} */
     private function templateCarryingASection(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Health']);
         $sectionVersion = SectionVersion::factory()->used(1)->create(['section_id' => $section->id]);
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 

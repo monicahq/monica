@@ -11,8 +11,8 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\Section;
 use App\Models\ShareLink;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\User;
 use Illuminate\Support\Collection;
 
@@ -98,7 +98,7 @@ class SharedContactViewModel
         }
 
         return $pages
-            ->map(fn (TemplateVersionPage $page): array => [
+            ->map(fn (StructureVersionPage $page): array => [
                 'key' => $page->key,
                 'label' => $page->label,
                 'url' => route('share.show', ['token' => $this->token, 'page' => $page->key]),
@@ -120,7 +120,7 @@ class SharedContactViewModel
         }
 
         return $this->includedSectionsOn($page)
-            ->map(fn (TemplateVersionSection $row): array => [
+            ->map(fn (StructureVersionSection $row): array => [
                 'name' => $row->title_override ?? $row->sectionVersion->section->name,
                 'icon' => in_array($row->sectionVersion->section->icon, Section::ICONS, true)
                     ? $row->sectionVersion->section->icon
@@ -138,36 +138,36 @@ class SharedContactViewModel
         return __('Nothing on this page has been filled in yet.');
     }
 
-    /** @return Collection<int, TemplateVersionPage> */
+    /** @return Collection<int, StructureVersionPage> */
     private function shownPages(): Collection
     {
-        return once(fn (): Collection => $this->contact->templateVersion->pages
-            ->filter(fn (TemplateVersionPage $page): bool => $this->includedSectionsOn($page)->isNotEmpty())
+        return once(fn (): Collection => $this->contact->structureVersion->pages
+            ->filter(fn (StructureVersionPage $page): bool => $this->includedSectionsOn($page)->isNotEmpty())
             ->values());
     }
 
-    private function selectedPage(): ?TemplateVersionPage
+    private function selectedPage(): ?StructureVersionPage
     {
-        return once(function (): ?TemplateVersionPage {
+        return once(function (): ?StructureVersionPage {
             $pages = $this->shownPages();
 
             return $pages->firstWhere('key', $this->selectedPageKey) ?? $pages->first();
         });
     }
 
-    /** @return Collection<int, TemplateVersionSection> */
-    private function includedSectionsOn(TemplateVersionPage $page): Collection
+    /** @return Collection<int, StructureVersionSection> */
+    private function includedSectionsOn(StructureVersionPage $page): Collection
     {
         $excluded = $this->shareLink->excluded_section_ids;
 
-        return $this->contact->templateVersion->assembly
-            ->where('template_version_page_id', $page->id)
-            ->reject(fn (TemplateVersionSection $row): bool => in_array($row->id, $excluded, true))
+        return $this->contact->structureVersion->assembly
+            ->where('structure_version_page_id', $page->id)
+            ->reject(fn (StructureVersionSection $row): bool => in_array($row->id, $excluded, true))
             ->values();
     }
 
     /** @return array<int, array{label: string, value: string}> */
-    private function fieldsIn(TemplateVersionSection $row): array
+    private function fieldsIn(StructureVersionSection $row): array
     {
         return $this->readableIn($row)
             ->map(fn (Field $field): array => [
@@ -183,13 +183,13 @@ class SharedContactViewModel
     private function readableFields(): Collection
     {
         return once(fn (): Collection => $this->shownPages()
-            ->flatMap(fn (TemplateVersionPage $page): Collection => $this->includedSectionsOn($page))
-            ->flatMap(fn (TemplateVersionSection $row): Collection => $this->readableIn($row))
+            ->flatMap(fn (StructureVersionPage $page): Collection => $this->includedSectionsOn($page))
+            ->flatMap(fn (StructureVersionSection $row): Collection => $this->readableIn($row))
             ->values());
     }
 
     /** @return Collection<int, Field> */
-    private function readableIn(TemplateVersionSection $row): Collection
+    private function readableIn(StructureVersionSection $row): Collection
     {
         return $row->sectionVersion->fields
             ->whereNull('parent_field_id')

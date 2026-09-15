@@ -11,9 +11,9 @@ use App\Helpers\StructureFileReader;
 use App\Helpers\StructureWriter;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\DB;
  */
 class ImportSection
 {
-    private TemplateVersionSection $row;
+    private StructureVersionSection $row;
 
     /** @var array<string, mixed> */
     private array $file;
@@ -31,12 +31,12 @@ class ImportSection
     public function __construct(
         private readonly User $user,
         private readonly Template $template,
-        private readonly TemplateVersionPage $page,
+        private readonly StructureVersionPage $page,
         private readonly string $raw,
     ) {}
 
     /** @throws StructureFileIsNotReadable */
-    public function execute(): TemplateVersionSection
+    public function execute(): StructureVersionSection
     {
         $this->validate();
         $this->import();
@@ -51,11 +51,11 @@ class ImportSection
             throw new ModelNotFoundException('This template is in another account.');
         }
 
-        if ($this->page->account_id !== $this->user->account_id || $this->page->templateVersion->template_id !== $this->template->id) {
+        if ($this->page->account_id !== $this->user->account_id || $this->page->structureVersion->structure_id !== $this->template->structure->id) {
             throw new ModelNotFoundException('This page is not on this template.');
         }
 
-        if (! $this->page->templateVersion->status->isEditable()) {
+        if (! $this->page->structureVersion->status->isEditable()) {
             throw new PublishedVersionIsFrozen('This version of the template is published, so nothing can be added to it.');
         }
 
@@ -70,14 +70,14 @@ class ImportSection
 
             $sectionVersion = $writer->section($this->file['section']);
 
-            $positions = TemplateVersionSection::query()
-                ->where('template_version_page_id', $this->page->id)
+            $positions = StructureVersionSection::query()
+                ->where('structure_version_page_id', $this->page->id)
                 ->pluck('position');
 
-            $this->row = TemplateVersionSection::query()->create([
+            $this->row = StructureVersionSection::query()->create([
                 'account_id' => $this->user->account_id,
-                'template_version_id' => $this->page->template_version_id,
-                'template_version_page_id' => $this->page->id,
+                'structure_version_id' => $this->page->structure_version_id,
+                'structure_version_page_id' => $this->page->id,
                 'section_version_id' => $sectionVersion->id,
                 'position' => ($positions->max() ?? 0) + 1,
                 'title_override' => null,

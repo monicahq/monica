@@ -7,8 +7,8 @@ namespace Tests\Feature\Controllers\Api;
 use App\Enums\VersionStatusEnum;
 use App\Models\Account;
 use App\Models\EntityType;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -116,11 +116,11 @@ class TemplateControllerTest extends TestCase
             'name' => 'Animal',
             'description' => 'Every creature the family keeps.',
         ]);
-        $published = TemplateVersion::factory()->published()->create([
-            'template_id' => $template->id,
+        $published = StructureVersion::factory()->published()->create([
+            'structure_id' => $template->structure->id,
             'version_number' => 3,
         ]);
-        $template->update(['published_version_id' => $published->id]);
+        $template->structure->update(['published_version_id' => $published->id]);
 
         Sanctum::actingAs($user);
 
@@ -212,8 +212,8 @@ class TemplateControllerTest extends TestCase
 
         $template = Template::query()->where('account_id', $user->account_id)->sole();
 
-        $this->assertDatabaseHas('template_versions', [
-            'template_id' => $template->id,
+        $this->assertDatabaseHas('structure_versions', [
+            'structure_id' => $template->structure->id,
             'version_number' => 1,
             'status' => VersionStatusEnum::Draft->value,
         ]);
@@ -347,7 +347,7 @@ class TemplateControllerTest extends TestCase
         Queue::fake();
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->published()->used(4)->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->used(4)->create(['structure_id' => $template->structure->id]);
 
         Sanctum::actingAs($user);
 

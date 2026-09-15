@@ -16,7 +16,7 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\Reminder;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersionSection;
 use App\Models\User;
 use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -44,7 +44,7 @@ class SetFieldValues
     public function __construct(
         private readonly User $user,
         private readonly Contact|Entity $record,
-        private readonly TemplateVersionSection $section,
+        private readonly StructureVersionSection $section,
         private readonly array $values,
         private readonly array $yearIsUnknown = [],
         private readonly array $monthIsUnknown = [],
@@ -81,7 +81,7 @@ class SetFieldValues
             throw new ModelNotFoundException('This record is in another account.');
         }
 
-        if ($this->section->template_version_id !== $this->record->template_version_id) {
+        if ($this->section->structure_version_id !== $this->record->structure_version_id) {
             throw new InvalidArgumentException('This section belongs to another structure than the one the record renders from.');
         }
     }

@@ -7,7 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\UpdateRelationship;
 use App\Enums\RelationshipStatusEnum;
 use App\Enums\RelationshipTypeEnum;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\RelationshipDatesAreOutOfOrder;
@@ -18,8 +18,8 @@ use App\Models\Contact;
 use App\Models\Relationship;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -373,17 +373,16 @@ class UpdateRelationshipTest extends TestCase
 
         $template = Template::factory()->create([
             'account_id' => $user->account_id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
         ]);
 
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $version->update(['status' => VersionStatusEnum::Published]);
 
         VaultDefaultTemplate::query()->create([
             'account_id' => $vault->account_id,
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
-            'template_version_id' => $version->id,
+            'applies_to' => StructureAppliesToEnum::Contact,
+            'structure_version_id' => $version->id,
         ]);
 
         return $vault->refresh();
@@ -393,13 +392,13 @@ class UpdateRelationshipTest extends TestCase
     {
         $default = VaultDefaultTemplate::query()
             ->where('vault_id', $vault->id)
-            ->where('applies_to', TemplateAppliesToEnum::Contact)
+            ->where('applies_to', StructureAppliesToEnum::Contact)
             ->firstOrFail();
 
         return Contact::factory()->create([
             'account_id' => $vault->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => $default->template_version_id,
+            'structure_version_id' => $default->structure_version_id,
             'first_name' => $firstName,
             'last_name' => $lastName,
         ]);

@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Settings\Account\Templates;
 
-use App\Actions\UpdateTemplateVersionSectionPosition;
+use App\Actions\UpdateStructureVersionSectionPosition;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Controllers\Controller;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersionSection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TemplateSectionPositionController extends Controller
 {
-    public function update(Request $request, Template $template, TemplateVersionSection $templateVersionSection): RedirectResponse
+    public function update(Request $request, Template $template, StructureVersionSection $structureVersionSection): RedirectResponse
     {
-        abort_unless($templateVersionSection->isReachableThrough($request->user(), $template), 404);
+        abort_unless($structureVersionSection->isReachableThrough($request->user(), $template), 404);
 
         $validated = $request->validate([
             'position' => ['required', 'integer', 'min:1'],
         ]);
 
         try {
-            new UpdateTemplateVersionSectionPosition(
+            new UpdateStructureVersionSectionPosition(
                 user: $request->user(),
-                row: $templateVersionSection,
+                row: $structureVersionSection,
                 position: (int) $validated['position'],
             )->execute();
         } catch (PublishedVersionIsFrozen) {
@@ -35,7 +35,7 @@ class TemplateSectionPositionController extends Controller
 
         return redirect()->route('settings.templateBuilder.index', [
             'template' => $template,
-            'page' => $templateVersionSection->templateVersionPage->key,
+            'page' => $structureVersionSection->structureVersionPage->key,
         ]);
     }
 }

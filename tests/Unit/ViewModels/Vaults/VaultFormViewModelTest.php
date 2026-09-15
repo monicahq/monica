@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\VaultFormViewModel;
@@ -85,8 +85,8 @@ class VaultFormViewModelTest extends TestCase
         $this->assertTrue($viewModel->showsTemplates());
         $this->assertEquals(
             [
-                ['id' => $standard->published_version_id, 'name' => 'Standard contact'],
-                ['id' => $work->published_version_id, 'name' => 'Work contact'],
+                ['id' => $standard->structure->published_version_id, 'name' => 'Standard contact'],
+                ['id' => $work->structure->published_version_id, 'name' => 'Work contact'],
             ],
             $viewModel->templates(),
         );
@@ -124,8 +124,8 @@ class VaultFormViewModelTest extends TestCase
         $supplied = $this->publishedContactTemplate($user, 'Basic contact', position: 2, system: true);
 
         $this->assertEquals(
-            (string) $supplied->published_version_id,
-            new VaultFormViewModel(user: $user)->values()['templateVersionId'],
+            (string) $supplied->structure->published_version_id,
+            new VaultFormViewModel(user: $user)->values()['structureVersionId'],
         );
     }
 
@@ -175,10 +175,9 @@ class VaultFormViewModelTest extends TestCase
             'is_system' => $system,
         ]);
 
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template;
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\StructureFileIsNotReadable;
@@ -13,10 +13,11 @@ use App\Helpers\StructureFileReader;
 use App\Helpers\StructureWriter;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
+use App\Models\Structure;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -69,22 +70,28 @@ class ImportTemplate
 
             $this->template = Template::query()->create([
                 'account_id' => $this->user->account_id,
-                'applies_to' => TemplateAppliesToEnum::from($payload['applies_to']),
-                'entity_type_id' => $entityType?->id,
                 'name' => $name,
                 'name_translation_key' => null,
                 'description' => TextSanitizer::nullablePlainText($payload['description']),
                 'slug' => $this->slug($name, $payload['slug']),
                 'is_system' => false,
                 'is_active' => true,
-                'published_version_id' => null,
                 'locale' => $payload['locale'] ?? $this->user->locale ?? config('app.locale'),
                 'position' => ($positions->max() ?? 0) + 1,
             ]);
 
-            $version = TemplateVersion::query()->create([
+            $structure = Structure::query()->create([
                 'account_id' => $this->user->account_id,
-                'template_id' => $this->template->id,
+                'owner_type' => Template::class,
+                'owner_id' => $this->template->id,
+                'applies_to' => StructureAppliesToEnum::from($payload['applies_to']),
+                'entity_type_id' => $entityType?->id,
+                'published_version_id' => null,
+            ]);
+
+            $version = StructureVersion::query()->create([
+                'account_id' => $this->user->account_id,
+                'structure_id' => $structure->id,
                 'version_number' => 1,
                 'status' => VersionStatusEnum::Draft,
                 'change_note' => null,
@@ -101,11 +108,11 @@ class ImportTemplate
     }
 
     /** @param  array<string, mixed>  $payload */
-    private function page(TemplateVersion $version, array $payload): void
+    private function page(StructureVersion $version, array $payload): void
     {
-        $page = TemplateVersionPage::query()->create([
+        $page = StructureVersionPage::query()->create([
             'account_id' => $this->user->account_id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'key' => $payload['key'],
             'label' => TextSanitizer::plainText($payload['label']),
             'label_translation_key' => null,
@@ -115,10 +122,10 @@ class ImportTemplate
         foreach ($payload['sections'] as $row) {
             $sectionVersion = $this->writer->section($row['section']);
 
-            TemplateVersionSection::query()->create([
+            StructureVersionSection::query()->create([
                 'account_id' => $this->user->account_id,
-                'template_version_id' => $version->id,
-                'template_version_page_id' => $page->id,
+                'structure_version_id' => $version->id,
+                'structure_version_page_id' => $page->id,
                 'section_version_id' => $sectionVersion->id,
                 'position' => $row['position'],
                 'title_override' => TextSanitizer::nullablePlainText($row['title_override']),

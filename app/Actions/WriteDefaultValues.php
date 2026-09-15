@@ -39,7 +39,7 @@ class WriteDefaultValues
     /** @return Collection<int, Field> */
     private function fields(): Collection
     {
-        return $this->record->templateVersion->assembly
+        return $this->record->structureVersion->assembly
             ->flatMap(fn ($row): Collection => $row->sectionVersion->fields)
             ->whereNull('parent_field_id')
             ->filter(fn (Field $field): bool => $field->type->hasAnInput())

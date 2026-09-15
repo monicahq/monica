@@ -6,12 +6,12 @@ namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Helpers\LocaleCollation;
 use App\Models\Contact;
 use App\Models\File;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -373,7 +373,7 @@ class ContactsViewModelTest extends TestCase
         return Contact::factory()->create([
             'vault_id' => $vault->id,
             'account_id' => $vault->account_id,
-            'template_version_id' => $vault->defaultTemplates()->sole()->template_version_id,
+            'structure_version_id' => $vault->defaultTemplates()->sole()->structure_version_id,
             'first_name' => $firstName,
             'last_name' => $lastName,
             ...$attributes,
@@ -389,16 +389,14 @@ class ContactsViewModelTest extends TestCase
             'name' => 'Basic contact',
         ]);
 
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         VaultDefaultTemplate::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
 
         return $vault;

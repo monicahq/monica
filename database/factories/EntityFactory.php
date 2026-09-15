@@ -6,7 +6,7 @@ namespace Database\Factories;
 
 use App\Models\Entity;
 use App\Models\EntityType;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
@@ -24,7 +24,7 @@ class EntityFactory extends Factory
             'vault_id' => Vault::factory(),
             'account_id' => fn (array $attributes): int => Vault::query()->findOrFail($attributes['vault_id'])->account_id,
             'entity_type_id' => EntityType::factory(),
-            'template_version_id' => TemplateVersion::factory()->published(),
+            'structure_version_id' => StructureVersion::factory()->published(),
             'name' => fake()->company(),
             'avatar_file_id' => null,
             'avatar_colour' => Entity::AVATAR_COLOURS[0],

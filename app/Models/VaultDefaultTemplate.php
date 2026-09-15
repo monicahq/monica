@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use Carbon\CarbonImmutable;
 use Database\Factories\VaultDefaultTemplateFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -34,22 +34,22 @@ use Override;
  * @property int $id
  * @property int $account_id
  * @property int $vault_id
- * @property TemplateAppliesToEnum $applies_to
+ * @property StructureAppliesToEnum $applies_to
  * @property int|null $entity_type_id
- * @property int $template_version_id
+ * @property int $structure_version_id
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read Vault $vault
  * @property-read EntityType|null $entityType
- * @property-read TemplateVersion $templateVersion
+ * @property-read StructureVersion $structureVersion
  */
 #[Fillable([
     'account_id',
     'vault_id',
     'applies_to',
     'entity_type_id',
-    'template_version_id',
+    'structure_version_id',
 ])]
 class VaultDefaultTemplate extends Model
 {
@@ -65,7 +65,7 @@ class VaultDefaultTemplate extends Model
     protected function casts(): array
     {
         return [
-            'applies_to' => TemplateAppliesToEnum::class,
+            'applies_to' => StructureAppliesToEnum::class,
         ];
     }
 
@@ -103,10 +103,10 @@ class VaultDefaultTemplate extends Model
     /**
      * Get the exact version a new record starts on.
      *
-     * @return BelongsTo<TemplateVersion, $this>
+     * @return BelongsTo<StructureVersion, $this>
      */
-    public function templateVersion(): BelongsTo
+    public function structureVersion(): BelongsTo
     {
-        return $this->belongsTo(TemplateVersion::class);
+        return $this->belongsTo(StructureVersion::class);
     }
 }

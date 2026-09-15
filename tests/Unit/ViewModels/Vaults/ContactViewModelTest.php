@@ -18,10 +18,10 @@ use App\Models\Relationship;
 use App\Models\Reminder;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactViewModel;
@@ -153,11 +153,11 @@ class ContactViewModelTest extends TestCase
         $this->assertFalse($sections[0]['isEditing']);
         $this->assertTrue($sections[0]['isEditable']);
         $this->assertSame(
-            route('contacts.sections.edit', ['vault' => $contact->vault, 'contact' => $contact, 'templateVersionSection' => $row]),
+            route('contacts.sections.edit', ['vault' => $contact->vault, 'contact' => $contact, 'structureVersionSection' => $row]),
             $sections[0]['editUrl'],
         );
         $this->assertSame(
-            route('contacts.sections.update', ['vault' => $contact->vault, 'contact' => $contact, 'templateVersionSection' => $row]),
+            route('contacts.sections.update', ['vault' => $contact->vault, 'contact' => $contact, 'structureVersionSection' => $row]),
             $sections[0]['saveUrl'],
         );
     }
@@ -232,7 +232,7 @@ class ContactViewModelTest extends TestCase
         $viewModel = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact);
 
         $this->assertSame(
-            route('settings.templateBuilder.index', $version->template),
+            route('settings.templateBuilder.index', $version->structure->owner),
             $viewModel->templateUrl(),
         );
     }
@@ -242,7 +242,7 @@ class ContactViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
         $version->pages()->delete();
         $contact = $this->contact($user, $version->refresh());
 
@@ -398,7 +398,7 @@ class ContactViewModelTest extends TestCase
         $user = User::factory()->create();
         $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
         $contact = $this->contact($user, $version);
-        $version->template->update(['published_version_id' => $version->id]);
+        $version->structure->update(['published_version_id' => $version->id]);
 
         $this->assertNull(new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->templateUpdate());
     }
@@ -408,19 +408,19 @@ class ContactViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $current = TemplateVersion::factory()->published()->create([
-            'template_id' => $template->id,
+        $current = StructureVersion::factory()->published()->create([
+            'structure_id' => $template->structure->id,
             'version_number' => 2,
         ]);
         $contact = $this->contact($user, $current);
 
         $this->assertNull(new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->templateUpdate());
 
-        $older = TemplateVersion::factory()->published()->create([
-            'template_id' => $template->id,
+        $older = StructureVersion::factory()->published()->create([
+            'structure_id' => $template->structure->id,
             'version_number' => 1,
         ]);
-        $template->update(['published_version_id' => $older->id]);
+        $template->structure->update(['published_version_id' => $older->id]);
 
         $this->assertNull(new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact->refresh())->templateUpdate());
     }
@@ -479,7 +479,7 @@ class ContactViewModelTest extends TestCase
         RecordSnapshot::factory()->create([
             'snapshotable_type' => Contact::class,
             'snapshotable_id' => $contact->id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'created_at' => now()->subDay(),
         ]);
 
@@ -605,7 +605,7 @@ class ContactViewModelTest extends TestCase
         $this->assertSame([], $viewModel->sections());
     }
 
-    private function moved(Contact $contact, TemplateVersion $from, TemplateVersion $to, User $by, CarbonImmutable $when): void
+    private function moved(Contact $contact, StructureVersion $from, StructureVersion $to, User $by, CarbonImmutable $when): void
     {
         RecordSnapshot::factory()->beforeAStructureChange($from)->create([
             'snapshotable_type' => Contact::class,
@@ -614,19 +614,19 @@ class ContactViewModelTest extends TestCase
             'created_at' => $when,
         ]);
 
-        $contact->update(['template_version_id' => $to->id]);
+        $contact->update(['structure_version_id' => $to->id]);
     }
 
-    private function publish(TemplateVersion $version, int $number, ?string $note = null): TemplateVersion
+    private function publish(StructureVersion $version, int $number, ?string $note = null): StructureVersion
     {
-        $published = TemplateVersion::factory()->published()->create([
-            'template_id' => $version->template_id,
+        $published = StructureVersion::factory()->published()->create([
+            'structure_id' => $version->structure_id,
             'version_number' => $number,
             'change_note' => $note,
             'previous_version_id' => $version->id,
         ]);
 
-        $version->template->update(['published_version_id' => $published->id]);
+        $version->structure->update(['published_version_id' => $published->id]);
 
         return $published;
     }
@@ -854,7 +854,7 @@ class ContactViewModelTest extends TestCase
         )->firstWhere('label', 'Birthday');
     }
 
-    private function fieldCalled(TemplateVersion $version, string $label): Field
+    private function fieldCalled(StructureVersion $version, string $label): Field
     {
         return Field::query()->where('label', $label)->firstOrFail();
     }
@@ -873,16 +873,16 @@ class ContactViewModelTest extends TestCase
     }
 
     /** @param  array<string, array<string, array<int, string>>>  $shape */
-    private function version(User $user, array $shape, string $templateName = 'Basic contact'): TemplateVersion
+    private function version(User $user, array $shape, string $templateName = 'Basic contact'): StructureVersion
     {
         $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => $templateName]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $version->pages()->delete();
 
         foreach ($shape as $pageLabel => $sections) {
-            $page = TemplateVersionPage::factory()->create([
-                'template_version_id' => $version->id,
+            $page = StructureVersionPage::factory()->create([
+                'structure_version_id' => $version->id,
                 'account_id' => $version->account_id,
                 'key' => Str::slug($pageLabel),
                 'label' => $pageLabel,
@@ -896,9 +896,9 @@ class ContactViewModelTest extends TestCase
                     Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => $label]);
                 }
 
-                TemplateVersionSection::factory()->create([
-                    'template_version_id' => $version->id,
-                    'template_version_page_id' => $page->id,
+                StructureVersionSection::factory()->create([
+                    'structure_version_id' => $version->id,
+                    'structure_version_page_id' => $page->id,
                     'section_version_id' => $sectionVersion->id,
                 ]);
             }
@@ -1023,14 +1023,14 @@ class ContactViewModelTest extends TestCase
         $this->assertSame($tree, $viewModel->familyTree());
     }
 
-    private function contact(User $user, TemplateVersion $version, array $attributes = []): Contact
+    private function contact(User $user, StructureVersion $version, array $attributes = []): Contact
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
         return Contact::factory()->create([
             'vault_id' => $vault->id,
             'account_id' => $user->account_id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'first_name' => 'Michael',
             'last_name' => 'Scott',
             ...$attributes,

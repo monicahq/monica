@@ -7,7 +7,7 @@ namespace Database\Factories;
 use App\Enums\SnapshotReasonEnum;
 use App\Models\Contact;
 use App\Models\RecordSnapshot;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
@@ -25,7 +25,7 @@ class RecordSnapshotFactory extends Factory
             'snapshotable_id' => Contact::factory(),
             'account_id' => fn (array $attributes): int => Contact::query()->findOrFail($attributes['snapshotable_id'])->account_id,
             'vault_id' => fn (array $attributes): int => Contact::query()->findOrFail($attributes['snapshotable_id'])->vault_id,
-            'template_version_id' => fn (array $attributes): int => Contact::query()->findOrFail($attributes['snapshotable_id'])->template_version_id,
+            'structure_version_id' => fn (array $attributes): int => Contact::query()->findOrFail($attributes['snapshotable_id'])->structure_version_id,
             'reason' => SnapshotReasonEnum::Manual,
             'payload' => ['record' => [], 'structure' => [], 'rows' => [], 'values' => []],
             'file_ids' => [],
@@ -35,11 +35,11 @@ class RecordSnapshotFactory extends Factory
         ];
     }
 
-    public function beforeAStructureChange(?TemplateVersion $templateVersion = null): static
+    public function beforeAStructureChange(?StructureVersion $structureVersion = null): static
     {
         return $this->state(fn (array $attributes): array => array_filter([
             'reason' => SnapshotReasonEnum::TemplateChange,
-            'template_version_id' => $templateVersion?->id,
+            'structure_version_id' => $structureVersion?->id,
         ], fn (mixed $value): bool => $value !== null));
     }
 

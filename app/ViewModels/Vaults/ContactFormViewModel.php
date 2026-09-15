@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Enums\NameOrderEnum;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Models\Contact;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 class ContactFormViewModel
@@ -66,7 +67,7 @@ class ContactFormViewModel
     }
 
     /**
-     * @return array{prefix: string, firstName: string, middleName: string, lastName: string, suffix: string, nickname: string, maidenName: string, nameOrder: string, templateVersionId: string, isFavourite: bool, isPartial: bool, keepGoing: bool}
+     * @return array{prefix: string, firstName: string, middleName: string, lastName: string, suffix: string, nickname: string, maidenName: string, nameOrder: string, structureVersionId: string, isFavourite: bool, isPartial: bool, keepGoing: bool}
      */
     public function values(): array
     {
@@ -79,7 +80,7 @@ class ContactFormViewModel
             'nickname' => (string) old('nickname', ''),
             'maidenName' => (string) old('maiden_name', ''),
             'nameOrder' => (string) old('name_order', ''),
-            'templateVersionId' => (string) old('template_version_id', $this->defaultTemplateVersionId()),
+            'structureVersionId' => (string) old('structure_version_id', $this->defaultStructureVersionId()),
             'isFavourite' => $this->ticked('is_favourite'),
             'isPartial' => $this->ticked('is_partial'),
             'keepGoing' => $this->ticked('keep_going'),
@@ -91,7 +92,7 @@ class ContactFormViewModel
     {
         return $this->contactTemplates()
             ->map(fn (Template $template): array => [
-                'id' => (int) $template->published_version_id,
+                'id' => (int) $template->structure->published_version_id,
                 'name' => $template->name,
             ])
             ->all();
@@ -149,25 +150,25 @@ class ContactFormViewModel
         return $this->startingVersion() !== null;
     }
 
-    private function startingVersion(): ?TemplateVersion
+    private function startingVersion(): ?StructureVersion
     {
-        $chosen = (int) $this->values()['templateVersionId'];
+        $chosen = (int) $this->values()['structureVersionId'];
 
         if ($chosen === 0) {
             return null;
         }
 
-        return TemplateVersion::query()
+        return StructureVersion::query()
             ->where('account_id', $this->user->account_id)
             ->find($chosen);
     }
 
-    private function defaultTemplateVersionId(): string
+    private function defaultStructureVersionId(): string
     {
         $version = VaultDefaultTemplate::query()
             ->where('vault_id', $this->vault->id)
-            ->where('applies_to', TemplateAppliesToEnum::Contact)
-            ->value('template_version_id');
+            ->where('applies_to', StructureAppliesToEnum::Contact)
+            ->value('structure_version_id');
 
         return $version === null ? '' : (string) $version;
     }
@@ -186,9 +187,12 @@ class ContactFormViewModel
     {
         return $this->contactTemplates ??= Template::query()
             ->where('account_id', $this->user->account_id)
-            ->where('applies_to', TemplateAppliesToEnum::Contact)
             ->where('is_active', true)
-            ->whereNotNull('published_version_id')
+            ->whereHas('structure', function (Builder $query): void {
+                $query->where('applies_to', StructureAppliesToEnum::Contact)
+                    ->whereNotNull('published_version_id');
+            })
+            ->with('structure')
             ->orderBy('position')
             ->get();
     }

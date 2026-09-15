@@ -10,10 +10,10 @@ use App\Helpers\StructureFile;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -72,7 +72,7 @@ class SectionImportControllerTest extends TestCase
         $response->assertRedirect(route('settings.templateBuilder.index', ['template' => $template, 'page' => $page->key]));
         $response->assertSessionHas('status');
 
-        $this->assertEquals(1, TemplateVersionSection::query()->where('template_version_page_id', $page->id)->count());
+        $this->assertEquals(1, StructureVersionSection::query()->where('structure_version_page_id', $page->id)->count());
     }
 
     #[Test]
@@ -87,8 +87,8 @@ class SectionImportControllerTest extends TestCase
         $this->actingAs($user)->post(route('settings.sectionImport.create', [$template, $page]), ['file' => $file])
             ->assertRedirect();
 
-        $copy = TemplateVersionSection::query()
-            ->where('template_version_page_id', $page->id)
+        $copy = StructureVersionSection::query()
+            ->where('structure_version_page_id', $page->id)
             ->sole()
             ->sectionVersion
             ->section;
@@ -109,8 +109,8 @@ class SectionImportControllerTest extends TestCase
         $this->actingAs($user)->post(route('settings.sectionImport.create', [$template, $page]), ['file' => $file])
             ->assertRedirect();
 
-        $copy = TemplateVersionSection::query()
-            ->where('template_version_page_id', $page->id)
+        $copy = StructureVersionSection::query()
+            ->where('structure_version_page_id', $page->id)
             ->sole()
             ->sectionVersion
             ->section;
@@ -133,7 +133,7 @@ class SectionImportControllerTest extends TestCase
             'file' => json_encode($file),
         ])->assertRedirect()->assertSessionHasErrors('file');
 
-        $this->assertEquals(0, TemplateVersionSection::query()->where('template_version_page_id', $page->id)->count());
+        $this->assertEquals(0, StructureVersionSection::query()->where('structure_version_page_id', $page->id)->count());
     }
 
     #[Test]
@@ -189,14 +189,14 @@ class SectionImportControllerTest extends TestCase
         return StructureFile::encode(StructureFile::ofSection($template->publishedVersion->assembly->first()));
     }
 
-    /** @return array{Template, TemplateVersionPage} */
+    /** @return array{Template, StructureVersionPage} */
     private function draft(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
 
-        $version = TemplateVersion::factory()->create([
+        $version = StructureVersion::factory()->create([
             'account_id' => $user->account_id,
-            'template_id' => $template->id,
+            'structure_id' => $template->structure->id,
         ]);
 
         return [$template, $version->pages()->firstOrFail()];
@@ -209,9 +209,9 @@ class SectionImportControllerTest extends TestCase
             'name' => 'Dunder Mifflin contact',
         ]);
 
-        $version = TemplateVersion::factory()->create([
+        $version = StructureVersion::factory()->create([
             'account_id' => $user->account_id,
-            'template_id' => $template->id,
+            'structure_id' => $template->structure->id,
         ]);
 
         $section = Section::factory()->create([
@@ -233,10 +233,10 @@ class SectionImportControllerTest extends TestCase
             'label' => 'Nickname',
         ]);
 
-        TemplateVersionSection::factory()->create([
+        StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $version->pages()->firstOrFail()->id,
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $version->pages()->firstOrFail()->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -251,8 +251,7 @@ class SectionImportControllerTest extends TestCase
         $version->published_at = now();
         $version->save();
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template->fresh();
     }

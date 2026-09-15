@@ -8,10 +8,10 @@ use App\Models\Contact;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\ShareLink;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ShareLinkFormViewModel;
@@ -153,7 +153,7 @@ class ShareLinkFormViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_names_the_template_version_the_page_is_laid_out_by(): void
+    public function it_names_the_structure_version_the_page_is_laid_out_by(): void
     {
         $user = User::factory()->create();
         $contact = $this->contactOf($user);
@@ -186,10 +186,10 @@ class ShareLinkFormViewModelTest extends TestCase
         $this->assertNull(new ShareLinkFormViewModel(user: $user, vault: $contact->vault, contact: $contact)->avatarUrl());
     }
 
-    private function sectionNamed(Contact $contact, string $name): TemplateVersionSection
+    private function sectionNamed(Contact $contact, string $name): StructureVersionSection
     {
-        return $contact->templateVersion->assembly
-            ->first(fn (TemplateVersionSection $row): bool => $row->sectionVersion->section->name === $name);
+        return $contact->structureVersion->assembly
+            ->first(fn (StructureVersionSection $row): bool => $row->sectionVersion->section->name === $name);
     }
 
     private function contactOf(User $user): Contact
@@ -199,7 +199,7 @@ class ShareLinkFormViewModelTest extends TestCase
             'account_id' => $user->account_id,
             'name' => 'Someone in the family',
         ]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->page($version, 'Overview', ['Facts', 'Doctors']);
         $this->page($version, 'Work', ['Where they worked']);
@@ -207,17 +207,17 @@ class ShareLinkFormViewModelTest extends TestCase
         return Contact::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => $version->refresh()->id,
+            'structure_version_id' => $version->refresh()->id,
             'first_name' => 'Michael',
             'last_name' => 'Scott',
         ]);
     }
 
     /** @param  list<string>  $sections */
-    private function page(TemplateVersion $version, string $label, array $sections): void
+    private function page(StructureVersion $version, string $label, array $sections): void
     {
-        $page = TemplateVersionPage::factory()->create([
-            'template_version_id' => $version->id,
+        $page = StructureVersionPage::factory()->create([
+            'structure_version_id' => $version->id,
             'account_id' => $version->account_id,
             'key' => mb_strtolower($label),
             'label' => $label,
@@ -227,9 +227,9 @@ class ShareLinkFormViewModelTest extends TestCase
             $section = Section::factory()->create(['account_id' => $version->account_id, 'name' => $name]);
             $sectionVersion = SectionVersion::factory()->create(['section_id' => $section->id]);
 
-            TemplateVersionSection::factory()->create([
-                'template_version_id' => $version->id,
-                'template_version_page_id' => $page->id,
+            StructureVersionSection::factory()->create([
+                'structure_version_id' => $version->id,
+                'structure_version_page_id' => $page->id,
                 'section_version_id' => $sectionVersion->id,
                 'position' => $position + 1,
             ]);

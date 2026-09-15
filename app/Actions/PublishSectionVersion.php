@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 /**
- * Freeze a draft of a section, so template versions can be built on something that will not move
+ * Freeze a draft of a section, so structure versions can be built on something that will not move
  * under them.
  */
 class PublishSectionVersion

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamp('published_at')->nullable()->comment('when it was frozen, null while it is a draft');
             $table->timestamp('retired_at')->nullable()->comment('when it stopped being offered');
             $table->unsignedBigInteger('previous_version_id')->nullable()->comment('version it was created from, null for the first one');
-            $table->unsignedInteger('usage_count')->default(0)->comment('how many template versions contain it');
+            $table->unsignedInteger('usage_count')->default(0)->comment('how many structure versions contain it');
             $table->timestamps();
 
             $table->unique(['section_id', 'version_number']);

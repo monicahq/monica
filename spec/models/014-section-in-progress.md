@@ -5,7 +5,7 @@
 
 ## What it is
 
-A reusable thematic block: "Address", "Social networks", "Medical follow up". A template version contains pages, and each page assembles sections in the order the user chose.
+A reusable thematic block: "Address", "Social networks", "Medical follow up". A structure version contains pages, and each page assembles sections in the order the user chose.
 
 Sections exist as their own object rather than as a grouping owned by a page for one specific reason given in section 5.2: so a single block can be shared without dragging the whole page around it. Somebody who built a good medical follow up block can publish that block alone. Section 7 calls this out as what lowers the barrier to contributing. Pages organise a template, but they do not change the independent identity or reuse of a section.
 
@@ -38,15 +38,15 @@ deleted_at                  datetime
 - `belongsTo` [Account](001-account-in-progress.md)
 - `hasMany` [SectionVersion](015-section-version-in-progress.md)
 - `belongsTo` [SectionVersion](015-section-version-in-progress.md) as the published one
-- `belongsToMany` [TemplateVersion](013-template-version-done.md) through [TemplateVersionSection](016-template-version-section-done.md)
+- `belongsToMany` [StructureVersion](013-structure-version-done.md) through [StructureVersionSection](016-structure-version-section-done.md)
 - `hasOne` [MarketplaceListing](045-marketplace-listing-done.md) when it is published
 
 ## Rules
 
 - A section is not owned by a template or a page. It can appear in several templates and in several versions of the same template, on different pages and at different positions.
-- A section carries no page or position of its own. Where it sits is a property of the assembly, and it lives on [TemplateVersionSection](016-template-version-section-done.md).
+- A section carries no page or position of its own. Where it sits is a property of the assembly, and it lives on [StructureVersionSection](016-structure-version-section-done.md).
 - A section can be published to the marketplace on its own, without a template around it (7).
-- Deleting a section is refused while any published template version contains one of its versions.
+- Deleting a section is refused while any published structure version contains one of its versions.
 - The account is seeded with the sections the default contact template needs, so the product works out of the box.
 
 ## Not done yet
@@ -59,9 +59,9 @@ deleted_at                  datetime
 ## Decisions taken while building it
 
 - **A section is created with its first draft version.** A section with no version is a name that asks for nothing, so `CreateSection` writes both in one transaction, exactly as a template does.
-- **A section carries no position, and the schema has no column for one.** Where a section sits is a property of the assembly and lives on [TemplateVersionSection](016-template-version-section-done.md). Giving the section one as well would let the two disagree.
-- **Deleting is refused only while a published template version carries one of its versions.** A section sitting in somebody's abandoned draft goes freely: nothing has been promised about a draft, and refusing there would leave sections nobody can get rid of. The check joins through the assembly to the status of the template version rather than reading `usage_count`, which counts drafts too.
-- **Deactivating is what a shared section gets instead of deletion.** It stops the section turning up when somebody assembles a template and leaves every template version already carrying it untouched.
+- **A section carries no position, and the schema has no column for one.** Where a section sits is a property of the assembly and lives on [StructureVersionSection](016-structure-version-section-done.md). Giving the section one as well would let the two disagree.
+- **Deleting is refused only while a published structure version carries one of its versions.** A section sitting in somebody's abandoned draft goes freely: nothing has been promised about a draft, and refusing there would leave sections nobody can get rid of. The check joins through the assembly to the status of the structure version rather than reading `usage_count`, which counts drafts too.
+- **Deactivating is what a shared section gets instead of deletion.** It stops the section turning up when somebody assembles a template and leaves every structure version already carrying it untouched.
 
 ## Open questions
 

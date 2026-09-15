@@ -9,8 +9,8 @@ use App\Enums\RepetitionOrderEnum;
 use App\Jobs\CreateDefaultTemplate;
 use App\Models\Contact;
 use App\Models\Field;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -134,7 +134,7 @@ class RepetitionOrderTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
-            'template_version_id' => Template::query()->where('account_id', $user->account_id)->sole()->published_version_id,
+            'structure_version_id' => Template::query()->where('account_id', $user->account_id)->sole()->structure->published_version_id,
         ]);
 
         $repeater = Field::query()
@@ -159,9 +159,9 @@ class RepetitionOrderTest extends TestCase
         $repeater->refresh();
     }
 
-    private function sectionOf(Field $field): TemplateVersionSection
+    private function sectionOf(Field $field): StructureVersionSection
     {
-        return TemplateVersionSection::query()
+        return StructureVersionSection::query()
             ->where('account_id', $field->account_id)
             ->where('section_version_id', $field->section_version_id)
             ->sole();
@@ -197,6 +197,6 @@ class RepetitionOrderTest extends TestCase
 
     private function pageOf(Field $field): string
     {
-        return $this->sectionOf($field)->templateVersionPage->key;
+        return $this->sectionOf($field)->structureVersionPage->key;
     }
 }

@@ -211,7 +211,7 @@ class AddressBookBackend implements BackendInterface, SyncSupport
         return Contact::query()
             ->where('vault_id', $vault->id)
             ->inGrouping(ContactGroupingEnum::Everyone)
-            ->with(['avatar', 'templateVersion'])
+            ->with(['avatar', 'structureVersion'])
             ->get();
     }
 

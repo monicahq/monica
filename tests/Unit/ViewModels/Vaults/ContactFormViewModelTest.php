@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\NameOrderEnum;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Models\Contact;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -33,7 +33,7 @@ class ContactFormViewModelTest extends TestCase
         $this->assertEquals('', $values['firstName']);
         $this->assertEquals('', $values['lastName']);
         $this->assertEquals('', $values['nameOrder']);
-        $this->assertEquals((string) $version, $values['templateVersionId']);
+        $this->assertEquals((string) $version, $values['structureVersionId']);
         $this->assertFalse($values['isFavourite']);
         $this->assertFalse($values['isPartial']);
         $this->assertFalse($values['keepGoing']);
@@ -137,8 +137,7 @@ class ContactFormViewModelTest extends TestCase
         VaultDefaultTemplate::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
-            'template_version_id' => $template->published_version_id,
+            'structure_version_id' => $template->structure->published_version_id,
         ]);
 
         return $vault;
@@ -148,8 +147,8 @@ class ContactFormViewModelTest extends TestCase
     {
         return (int) VaultDefaultTemplate::query()
             ->where('vault_id', $vault->id)
-            ->where('applies_to', TemplateAppliesToEnum::Contact)
-            ->value('template_version_id');
+            ->where('applies_to', StructureAppliesToEnum::Contact)
+            ->value('structure_version_id');
     }
 
     private function publishedContactTemplate(User $user, string $name): Template
@@ -159,10 +158,9 @@ class ContactFormViewModelTest extends TestCase
             'name' => $name,
         ]);
 
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template;
     }

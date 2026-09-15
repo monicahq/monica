@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Vaults;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -156,10 +156,9 @@ class VaultSettingsControllerTest extends TestCase
             'name' => $name,
         ]);
 
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template;
     }
@@ -169,9 +168,7 @@ class VaultSettingsControllerTest extends TestCase
         VaultDefaultTemplate::factory()->create([
             'account_id' => $vault->account_id,
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
-            'entity_type_id' => null,
-            'template_version_id' => $template->published_version_id,
+            'structure_version_id' => $template->structure->published_version_id,
         ]);
     }
 }

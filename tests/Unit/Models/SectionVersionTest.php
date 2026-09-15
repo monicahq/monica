@@ -8,7 +8,7 @@ use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Models\Field;
 use App\Models\SectionVersion;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersionSection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -60,9 +60,9 @@ class SectionVersionTest extends TestCase
     public function it_knows_the_pages_it_sits_on(): void
     {
         $version = SectionVersion::factory()->create();
-        TemplateVersionSection::factory()->create(['section_version_id' => $version->id]);
+        StructureVersionSection::factory()->create(['section_version_id' => $version->id]);
 
-        $this->assertTrue($version->templateVersions()->exists());
+        $this->assertTrue($version->structureVersions()->exists());
     }
 
     #[Test]
@@ -110,7 +110,7 @@ class SectionVersionTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_be_deleted_while_a_template_version_carries_it(): void
+    public function it_refuses_to_be_deleted_while_a_structure_version_carries_it(): void
     {
         $version = SectionVersion::factory()->used()->create();
 

@@ -7,8 +7,8 @@ namespace Tests\Unit\ViewModels\Settings\Account\Templates;
 use App\Helpers\StructureFile;
 use App\Helpers\StructureFileReader;
 use App\Models\EntityType;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\ValueList;
 use App\ViewModels\Settings\Account\Templates\ImportFileViewModel;
@@ -38,7 +38,7 @@ class ImportFileViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['account_id' => $user->account_id, 'template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['account_id' => $user->account_id, 'structure_id' => $template->structure->id]);
 
         $viewModel = new ImportFileViewModel(
             user: $user,

@@ -1,29 +1,28 @@
 <!--
 Sync Impact Report
-Version change: 2.2.0 -> 2.3.0
-Rationale: one authorisation rule was being written twice, once where a screen decides whether to
-offer a control and once where the action refuses it, with nothing keeping the two in step. Giving a
-rule one home needs somewhere for the classes that hold it to live, and the layout of the repository
-is fixed here, so admitting a folder is an amendment. Guidance expands and no principle is removed or
-redefined, so MINOR.
+Version change: 2.3.0 -> 2.3.1
+Rationale: principle VI named the frozen thing a template version. The versioned engine has been
+separated from the product concept it was named after, so the frozen thing is a structure version and
+a template is one of two things that own one. The obligation is identical, applied to an object that
+now has its own name, which the versioning rule below calls a clarification. PATCH.
 
-Added: Technology and Architecture Constraints, one entry in the `app/` list.
-- `Policies`, one class per model whose abilities are asked by name. The folder is named rather than
-the classes being folded into an existing one because Laravel discovers a policy at that path and
-nowhere else.
-Modified: none.
+Added: none.
+Modified: principle VI, first bullet. "A published version of a template or a section" becomes "a
+published structure version or section version", and the sentence naming what the freeze covers says
+structure version. Governance, one word: compliance is reviewed against eleven principles, not ten.
+The eleventh was added in 2.2.0 and the count was not moved with it.
 Removed: none.
 
-Considered and left standing: nothing is said here about which status a refused policy returns. The
-constraint that a record out of reach must fail as if it did not exist is already written once, under
-data access, and a policy is bound by it like anything else. Restating it beside the folder would be
-the same fact in two places.
+Considered and left standing: principle VII still names the mechanism "Template, Page, Section,
+Field". Those are the words the product shows a user and the words `spec/spec.md` section 5.2 uses,
+and the principle is about there being one mechanism rather than about what the engine under it is
+called. Renaming it here would put a technical word into the one place that describes the product to
+somebody who does not read the code.
 
-Discharged since 2.2.0: the follow-up that amendment owed is done. Both
-`laravel-notification-channels/telegram` and `laravel/vonage-notification-channel` sit in the
-development dependencies and in `suggest`, and neither is required.
+Discharged since 2.3.0: none owed.
 
-Follow-up owed by the pull request that adopts this: none.
+Follow-up owed by the pull request that adopts this: none. The rename it describes ships in the same
+pull request.
 -->
 
 # Monica Constitution
@@ -101,10 +100,11 @@ broken screen for part of the user base, and unconfirmed destruction is data los
 No change made by another person, or by the system, may alter what somebody already sees without
 them explicitly accepting it.
 
-- A published version of a template or a section is frozen. A modification creates a new version
-  beside it, with its own change note. Pages, page order and the placement of sections on pages are
-  part of the frozen version. The rule cascades: renaming a value list option elsewhere in the
-  product MUST NOT change the behavior of a version published yesterday. A draft, by contrast, stays
+- A published structure version or section version is frozen, whether a template owns it or an
+  activity type does. A modification creates a new version beside it, with its own change note.
+  Pages, page order and the placement of sections on pages are part of the frozen structure version.
+  The rule cascades: renaming a value list option elsewhere in the product MUST NOT change the
+  behavior of a version published yesterday. A draft, by contrast, stays
   freely editable, because freezing happens at publication and not at every micro-adjustment.
 - A record points at a precise version and stays on it until somebody moves it. Nothing follows
   "the latest version" implicitly. Moving a record MUST snapshot the previous state first, and that
@@ -388,8 +388,8 @@ invalidates existing practice, MINOR for a new principle or materially expanded 
 clarifications and wording that change no obligation.
 
 Compliance is reviewed at pull request time. A reviewer MUST be able to point at the action, the
-test and the translations for the change under review, and to say which of the ten principles the
+test and the translations for the change under review, and to say which of the eleven principles the
 change had to satisfy. Complexity that steps outside these principles MUST be justified in the pull
 request or removed.
 
-**Version**: 2.3.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-12
+**Version**: 2.3.1 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-13

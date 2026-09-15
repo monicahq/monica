@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\NameOrderEnum;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\VaultAlreadyHasAMeContact;
@@ -14,7 +14,7 @@ use App\Helpers\TextSanitizer;
 use App\Jobs\DetectDuplicateContacts;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -30,12 +30,12 @@ class CreateContact
 {
     private Contact $contact;
 
-    private TemplateVersion $version;
+    private StructureVersion $version;
 
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
-        private readonly ?TemplateVersion $templateVersion = null,
+        private readonly ?StructureVersion $structureVersion = null,
         private ?string $prefix = null,
         private ?string $firstName = null,
         private ?string $middleName = null,
@@ -79,31 +79,31 @@ class CreateContact
             throw new ModelNotFoundException('This vault is in another account.');
         }
 
-        if ($this->templateVersion instanceof TemplateVersion) {
-            $this->version = $this->templateVersion;
+        if ($this->structureVersion instanceof StructureVersion) {
+            $this->version = $this->structureVersion;
 
             return;
         }
 
         $default = VaultDefaultTemplate::query()
             ->where('vault_id', $this->vault->id)
-            ->where('applies_to', TemplateAppliesToEnum::Contact)
+            ->where('applies_to', StructureAppliesToEnum::Contact)
             ->first();
 
         if ($default === null) {
             throw new VaultHasNoContactDefault('This vault has no template for new contacts to start from.');
         }
 
-        $this->version = $default->templateVersion;
+        $this->version = $default->structureVersion;
     }
 
     private function validate(): void
     {
         if ($this->version->account_id !== $this->user->account_id) {
-            throw new ModelNotFoundException('This template version is in another account.');
+            throw new ModelNotFoundException('This structure version is in another account.');
         }
 
-        if ($this->version->template->applies_to !== TemplateAppliesToEnum::Contact) {
+        if ($this->version->structure->applies_to !== StructureAppliesToEnum::Contact) {
             throw new InvalidArgumentException('This template does not describe a contact.');
         }
 
@@ -144,7 +144,7 @@ class CreateContact
             $this->contact = Contact::query()->create([
                 'account_id' => $this->user->account_id,
                 'vault_id' => $this->vault->id,
-                'template_version_id' => $this->version->id,
+                'structure_version_id' => $this->version->id,
                 'prefix' => $this->prefix,
                 'first_name' => $this->firstName,
                 'middle_name' => $this->middleName,

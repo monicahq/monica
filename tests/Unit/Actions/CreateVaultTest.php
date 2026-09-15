@@ -6,11 +6,11 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\CreateVault;
 use App\Actions\UpdateVault;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -141,18 +141,17 @@ class CreateVaultTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id, 'is_system' => true]);
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
-        $template->published_version_id = $version->id;
-        $template->save();
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        $template->structure->update(['published_version_id' => $version->id]);
 
         $vault = new CreateVault(user: $user, name: 'Dunder Mifflin')->execute();
 
         $this->assertDatabaseHas('vault_default_templates', [
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact->value,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
             'entity_type_id' => null,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
     }
 

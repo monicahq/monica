@@ -7,10 +7,10 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 use App\Enums\VersionStatusEnum;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -28,14 +28,14 @@ class TemplateSectionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->post(route('settings.templateSections.create', $template), ['name' => 'Health'])
             ->assertRedirect()
             ->assertSessionHas('status');
 
         $this->assertDatabaseHas('sections', ['account_id' => $user->account_id, 'name' => 'Health']);
-        $this->assertDatabaseHas('template_version_sections', ['template_version_id' => $version->id]);
+        $this->assertDatabaseHas('structure_version_sections', ['structure_version_id' => $version->id]);
     }
 
     #[Test]
@@ -45,8 +45,8 @@ class TemplateSectionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $events = TemplateVersionPage::factory()->create(['template_version_id' => $version->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $events = StructureVersionPage::factory()->create(['structure_version_id' => $version->id]);
 
         $response = $this->actingAs($user)->post(route('settings.templateSections.create', $template), [
             'name' => 'Beet facts',
@@ -54,7 +54,7 @@ class TemplateSectionControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.templateBuilder.index', ['template' => $template, 'page' => $events->key]));
-        $this->assertDatabaseHas('template_version_sections', ['template_version_page_id' => $events->id]);
+        $this->assertDatabaseHas('structure_version_sections', ['structure_version_page_id' => $events->id]);
     }
 
     #[Test]
@@ -64,13 +64,13 @@ class TemplateSectionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        TemplateVersionPage::factory()->create(['template_version_id' => $version->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        StructureVersionPage::factory()->create(['structure_version_id' => $version->id]);
 
         $this->actingAs($user)->post(route('settings.templateSections.create', $template), ['name' => 'Beet facts']);
 
-        $this->assertDatabaseHas('template_version_sections', [
-            'template_version_page_id' => $version->pages()->firstOrFail()->id,
+        $this->assertDatabaseHas('structure_version_sections', [
+            'structure_version_page_id' => $version->pages()->firstOrFail()->id,
         ]);
     }
 
@@ -81,15 +81,15 @@ class TemplateSectionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $elsewhere = TemplateVersion::factory()->create(['account_id' => $user->account_id])->pages()->sole();
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $elsewhere = StructureVersion::factory()->create(['account_id' => $user->account_id])->pages()->sole();
 
         $this->actingAs($user)->post(route('settings.templateSections.create', $template), [
             'name' => 'Beet facts',
             'page' => $elsewhere->uuid,
         ])->assertSessionHasErrors('page');
 
-        $this->assertDatabaseCount('template_version_sections', 0);
+        $this->assertDatabaseCount('structure_version_sections', 0);
     }
 
     #[Test]
@@ -99,7 +99,7 @@ class TemplateSectionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->post(route('settings.templateSections.create', $template), ['name' => 'Health']);
 
@@ -116,7 +116,7 @@ class TemplateSectionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->post(route('settings.templateSections.create', $template), [])
             ->assertSessionHasErrors('name');
@@ -129,7 +129,7 @@ class TemplateSectionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->post(route('settings.templateSections.create', $template), ['name' => 'Health'])
             ->assertRedirect()
@@ -177,7 +177,7 @@ class TemplateSectionControllerTest extends TestCase
 
         $michael = User::factory()->create();
         $template = Template::factory()->create();
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($michael)->post(route('settings.templateSections.create', $template), ['name' => 'Health'])
             ->assertNotFound();
@@ -190,21 +190,21 @@ class TemplateSectionControllerTest extends TestCase
 
         $michael = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $michael->account_id]);
-        $row = TemplateVersionSection::factory()->create();
+        $row = StructureVersionSection::factory()->create();
 
         $this->actingAs($michael)->delete(route('settings.templateSections.destroy', [$template, $row]))
             ->assertNotFound();
     }
 
-    /** @return array{0: Template, 1: TemplateVersionSection, 2: Section} */
+    /** @return array{0: Template, 1: StructureVersionSection, 2: Section} */
     private function templateCarryingASection(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
         $sectionVersion = SectionVersion::factory()->used(1)->create(['section_id' => $section->id]);
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -218,7 +218,7 @@ class TemplateSectionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->post(route('settings.templateSections.create', $template), [
             'name' => 'Health',
@@ -241,7 +241,7 @@ class TemplateSectionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->post(route('settings.templateSections.create', $template), ['name' => 'Health'])
             ->assertRedirect();
@@ -256,7 +256,7 @@ class TemplateSectionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->post(route('settings.templateSections.create', $template), [
             'name' => 'Health',
@@ -273,7 +273,7 @@ class TemplateSectionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->post(route('settings.templateSections.create', $template), [
             'name' => 'Health',
@@ -313,9 +313,9 @@ class TemplateSectionControllerTest extends TestCase
         [$template, $row, $section] = $this->templateCarryingASection($user);
 
         $other = Template::factory()->create(['account_id' => $user->account_id]);
-        $otherVersion = TemplateVersion::factory()->create(['template_id' => $other->id]);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $otherVersion->id,
+        $otherVersion = StructureVersion::factory()->create(['structure_id' => $other->structure->id]);
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $otherVersion->id,
             'section_version_id' => $row->section_version_id,
         ]);
 
@@ -374,7 +374,7 @@ class TemplateSectionControllerTest extends TestCase
         $user = User::factory()->create();
         [$template, $row, $section] = $this->templateCarryingASection($user);
 
-        $row->templateVersion->update(['status' => VersionStatusEnum::Published]);
+        $row->structureVersion->update(['status' => VersionStatusEnum::Published]);
 
         $this->actingAs($user)->put(route('settings.templateSections.update', [$template, $row]), [
             'icon' => 'home',

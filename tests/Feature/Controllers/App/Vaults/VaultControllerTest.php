@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Vaults;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Jobs\RecordVaultVisit;
 use App\Models\Contact;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -364,14 +364,14 @@ class VaultControllerTest extends TestCase
         $this->actingAs($user)->post(route('vaults.create'), [
             'name' => 'Dunder Mifflin',
             'colour' => '#4f8a49',
-            'template_version_id' => (string) $chosen->published_version_id,
+            'structure_version_id' => (string) $chosen->structure->published_version_id,
         ])->assertRedirect(route('vaults.index'));
 
         $this->assertDatabaseHas('vault_default_templates', [
             'account_id' => $user->account_id,
             'vault_id' => Vault::query()->where('name', 'Dunder Mifflin')->sole()->id,
-            'applies_to' => TemplateAppliesToEnum::Contact->value,
-            'template_version_id' => $chosen->published_version_id,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
+            'structure_version_id' => $chosen->structure->published_version_id,
         ]);
     }
 
@@ -405,8 +405,8 @@ class VaultControllerTest extends TestCase
         $this->actingAs($michael)->post(route('vaults.create'), [
             'name' => 'Dunder Mifflin',
             'colour' => '#4f8a49',
-            'template_version_id' => $elsewhere->published_version_id,
-        ])->assertSessionHasErrors('template_version_id');
+            'structure_version_id' => $elsewhere->structure->published_version_id,
+        ])->assertSessionHasErrors('structure_version_id');
 
         $this->assertEquals(0, Vault::query()->where('account_id', $michael->account_id)->count());
     }
@@ -454,7 +454,7 @@ class VaultControllerTest extends TestCase
 
         $default = VaultDefaultTemplate::query()->sole();
 
-        $this->assertEquals($supplied->published_version_id, $default->template_version_id);
+        $this->assertEquals($supplied->structure->published_version_id, $default->structure_version_id);
     }
 
     #[Test]
@@ -586,10 +586,9 @@ class VaultControllerTest extends TestCase
             'is_system' => $system,
         ]);
 
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template;
     }

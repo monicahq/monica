@@ -74,7 +74,7 @@
 
             @if ($entry['goBack'])
               <x-form method="put" :action="$entry['goBack']['url']" class="ml-auto">
-                <input type="hidden" name="template_version_id" value="{{ $entry['goBack']['versionId'] }}" />
+                <input type="hidden" name="structure_version_id" value="{{ $entry['goBack']['versionId'] }}" />
 
                 <x-button.secondary size="small">{{ $entry['goBack']['label'] }}</x-button.secondary>
               </x-form>

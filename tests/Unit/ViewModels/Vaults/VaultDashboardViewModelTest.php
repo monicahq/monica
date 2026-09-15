@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Models\Contact;
 use App\Models\File;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -171,13 +171,12 @@ class VaultDashboardViewModelTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 148]);
 
         $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Colleague']);
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         VaultDefaultTemplate::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => $version->id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
+            'structure_version_id' => $version->id,
         ]);
 
         $rows = new VaultDashboardViewModel(user: $user, vault: $vault)->settingsRows();

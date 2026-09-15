@@ -16,9 +16,9 @@ use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -538,6 +538,96 @@ class StructureFileReaderTest extends TestCase
     }
 
     /** @return array<string, mixed> */
+    #[Test]
+    public function it_reads_an_activity_type_file(): void
+    {
+        $read = StructureFileReader::read(StructureFile::encode($this->activityTypeFile()), expecting: 'activity_type');
+
+        $this->assertEquals('activity_type', $read['format']);
+        $this->assertEquals('Restaurant', $read['activity_type']['name']);
+        $this->assertEquals('leisure', $read['activity_type']['category_key']);
+        $this->assertEquals('#4f8a49', $read['activity_type']['colour']);
+    }
+
+    #[Test]
+    public function it_says_a_file_holds_an_activity_type_when_a_template_was_wanted(): void
+    {
+        $this->expectExceptionMessage('This file holds an activity type.');
+
+        StructureFileReader::read(StructureFile::encode($this->activityTypeFile()), expecting: 'template');
+    }
+
+    #[Test]
+    public function it_says_a_file_holds_an_activity_type_when_a_section_was_wanted(): void
+    {
+        $this->expectExceptionMessage('This file holds an activity type.');
+
+        StructureFileReader::read(StructureFile::encode($this->activityTypeFile()), expecting: 'section');
+    }
+
+    #[Test]
+    public function it_names_a_supplied_activity_type_after_its_translation_key(): void
+    {
+        $file = $this->activityTypeFile();
+        $file['activity_type']['name'] = null;
+        $file['activity_type']['name_translation_key'] = 'Call';
+
+        $read = StructureFileReader::read(StructureFile::encode($file), expecting: 'activity_type');
+
+        $this->assertEquals('Call', $read['activity_type']['name']);
+    }
+
+    #[Test]
+    public function it_refuses_an_activity_type_asking_for_a_glyph_this_version_does_not_have(): void
+    {
+        $file = $this->activityTypeFile();
+        $file['activity_type']['icon'] = 'chevron-down';
+
+        $this->expectException(StructureFileIsNotReadable::class);
+
+        StructureFileReader::read(StructureFile::encode($file), expecting: 'activity_type');
+    }
+
+    #[Test]
+    public function it_refuses_an_activity_type_asking_for_a_colour_this_version_does_not_offer(): void
+    {
+        $file = $this->activityTypeFile();
+        $file['activity_type']['colour'] = '#ff0000';
+
+        $this->expectException(StructureFileIsNotReadable::class);
+
+        StructureFileReader::read(StructureFile::encode($file), expecting: 'activity_type');
+    }
+
+    #[Test]
+    public function it_names_the_page_of_an_activity_type_that_is_wrong(): void
+    {
+        $file = $this->activityTypeFile();
+        $file['activity_type']['pages'][0] = 'not a page';
+
+        $this->expectExceptionMessage('activity_type.pages.0');
+
+        StructureFileReader::read(StructureFile::encode($file), expecting: 'activity_type');
+    }
+
+    /** @return array<string, mixed> */
+    private function activityTypeFile(): array
+    {
+        return [
+            'monica' => ['format' => 'activity_type', 'format_version' => StructureFile::FORMAT_VERSION],
+            'exported_at' => '2026-09-13T09:12:04Z',
+            'activity_type' => [
+                'name' => 'Restaurant',
+                'icon' => 'heart',
+                'colour' => '#4f8a49',
+                'category' => 'Leisure and culture',
+                'category_key' => 'leisure',
+                'pages' => $this->file()['template']['pages'],
+            ],
+            'value_lists' => [],
+        ];
+    }
+
     private function file(): array
     {
         return [
@@ -578,9 +668,9 @@ class StructureFileReaderTest extends TestCase
             'name' => 'Dunder Mifflin contact',
         ]);
 
-        $version = TemplateVersion::factory()->create([
+        $version = StructureVersion::factory()->create([
             'account_id' => $user->account_id,
-            'template_id' => $template->id,
+            'structure_id' => $template->structure->id,
         ]);
 
         $page = $version->pages()->firstOrFail();
@@ -640,10 +730,10 @@ class StructureFileReaderTest extends TestCase
             'parent_field_id' => $repeater->id,
         ]);
 
-        TemplateVersionSection::factory()->create([
+        StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $page->id,
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $page->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -659,8 +749,7 @@ class StructureFileReaderTest extends TestCase
         $version->published_at = now();
         $version->save();
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template->fresh();
     }

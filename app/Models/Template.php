@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\TemplateAppliesToEnum;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInAccount;
 use Carbon\CarbonImmutable;
@@ -15,7 +14,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Override;
 
@@ -37,23 +38,20 @@ use Override;
  * @property int $id
  * @property string $uuid
  * @property int $account_id
- * @property TemplateAppliesToEnum $applies_to
- * @property int|null $entity_type_id
  * @property string $name
  * @property string|null $name_translation_key
  * @property string|null $description
  * @property string $slug
  * @property bool $is_system
  * @property bool $is_active
- * @property int|null $published_version_id
  * @property string $locale
  * @property int $position
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
  * @property-read Account $account
- * @property-read EntityType|null $entityType
- * @property-read TemplateVersion|null $publishedVersion
+ * @property-read Structure|null $structure
+ * @property-read StructureVersion|null $publishedVersion
  */
 /*
  * A template is looked up by its slug in a URL. The slug is readable and
@@ -62,15 +60,12 @@ use Override;
 #[RouteKey('slug')]
 #[Fillable([
     'account_id',
-    'applies_to',
-    'entity_type_id',
     'name',
     'name_translation_key',
     'description',
     'slug',
     'is_system',
     'is_active',
-    'published_version_id',
     'locale',
     'position',
 ])]
@@ -98,7 +93,6 @@ class Template extends Model
     protected function casts(): array
     {
         return [
-            'applies_to' => TemplateAppliesToEnum::class,
             'is_system' => 'boolean',
             'is_active' => 'boolean',
             'position' => 'integer',
@@ -116,24 +110,38 @@ class Template extends Model
     }
 
     /**
-     * Get the kind of record the template describes, which only a template
-     * applying to an entity has.
+     * Get the field structure the template owns. A template has exactly one and
+     * it is created with the template, so this is null only for a row somebody
+     * built by hand.
      *
-     * @return BelongsTo<EntityType, $this>
+     * @return MorphOne<Structure, $this>
      */
-    public function entityType(): BelongsTo
+    public function structure(): MorphOne
     {
-        return $this->belongsTo(EntityType::class);
+        return $this->morphOne(Structure::class, 'owner');
     }
 
     /**
      * Get every state the template has been in, newest first.
      *
-     * @return HasMany<TemplateVersion, $this>
+     * The versions belong to the structure rather than to the template, since
+     * an activity type has them too. This reaches them through it, so that a
+     * screen showing a template's history does not have to know the engine was
+     * ever separated from it.
+     *
+     * @return HasManyThrough<StructureVersion, Structure, $this>
      */
-    public function versions(): HasMany
+    public function versions(): HasManyThrough
     {
-        return $this->hasMany(TemplateVersion::class)->orderByDesc('version_number');
+        return $this->hasManyThrough(
+            StructureVersion::class,
+            Structure::class,
+            'owner_id',
+            'structure_id',
+            'id',
+            'id',
+        )->where('structures.owner_type', self::class)
+            ->orderByDesc('version_number');
     }
 
     /**
@@ -141,11 +149,18 @@ class Template extends Model
      * none while only drafts exist, which is a template somebody is still
      * designing.
      *
-     * @return BelongsTo<TemplateVersion, $this>
+     * @return HasOneThrough<StructureVersion, Structure, $this>
      */
-    public function publishedVersion(): BelongsTo
+    public function publishedVersion(): HasOneThrough
     {
-        return $this->belongsTo(TemplateVersion::class, 'published_version_id');
+        return $this->hasOneThrough(
+            StructureVersion::class,
+            Structure::class,
+            'owner_id',
+            'id',
+            'id',
+            'published_version_id',
+        )->where('structures.owner_type', self::class);
     }
 
     /**

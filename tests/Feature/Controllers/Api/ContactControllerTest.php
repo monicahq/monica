@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Enums\NameOrderEnum;
-use App\Enums\TemplateAppliesToEnum;
 use App\Models\Contact;
 use App\Models\File;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -46,7 +45,7 @@ class ContactControllerTest extends TestCase
                 'is_archived',
                 'is_partial',
                 'is_me',
-                'template_version_id',
+                'structure_version_id',
                 'template_name',
                 'last_activity_at',
                 'created_at',
@@ -373,7 +372,7 @@ class ContactControllerTest extends TestCase
             'vault_id' => $vault->id,
             'account_id' => $user->account_id,
             'first_name' => 'Pam',
-            'template_version_id' => $vault->defaultTemplates()->sole()->template_version_id,
+            'structure_version_id' => $vault->defaultTemplates()->sole()->structure_version_id,
         ]);
     }
 
@@ -417,11 +416,11 @@ class ContactControllerTest extends TestCase
 
         $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", [
             'first_name' => 'Pam',
-            'template_version_id' => $other->published_version_id,
+            'structure_version_id' => $other->structure->published_version_id,
         ]);
 
         $response->assertCreated();
-        $response->assertJsonPath('data.attributes.template_version_id', $other->published_version_id);
+        $response->assertJsonPath('data.attributes.structure_version_id', $other->structure->published_version_id);
         $response->assertJsonPath('data.attributes.template_name', 'Colleague');
     }
 
@@ -436,11 +435,11 @@ class ContactControllerTest extends TestCase
 
         $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", [
             'first_name' => 'Pam',
-            'template_version_id' => $stranger->published_version_id,
+            'structure_version_id' => $stranger->structure->published_version_id,
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['template_version_id']);
+        $response->assertJsonValidationErrors(['structure_version_id']);
         $this->assertDatabaseMissing('contacts', ['first_name' => 'Pam']);
     }
 
@@ -552,8 +551,7 @@ class ContactControllerTest extends TestCase
         VaultDefaultTemplate::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
-            'template_version_id' => $template->published_version_id,
+            'structure_version_id' => $template->structure->published_version_id,
         ]);
 
         return $vault;
@@ -562,10 +560,9 @@ class ContactControllerTest extends TestCase
     private function publishedContactTemplate(User $user, string $name): Template
     {
         $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => $name]);
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template;
     }

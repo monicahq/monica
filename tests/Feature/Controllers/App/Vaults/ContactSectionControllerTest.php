@@ -6,7 +6,7 @@ namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderInactiveReasonEnum;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
@@ -16,10 +16,10 @@ use App\Models\File;
 use App\Models\Reminder;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -45,14 +45,14 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         $version = $this->versionWithSections($user, 'Health', ['Ongoing' => 'Knee']);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $knee = Field::query()->where('label', 'Knee')->firstOrFail();
 
         $this->actingAs($user)
             ->get(route('contacts.sections.edit', [
                 'vault' => $vault,
                 'contact' => $michael,
-                'templateVersionSection' => $this->sectionNamed($version, 'Ongoing'),
+                'structureVersionSection' => $this->sectionNamed($version, 'Ongoing'),
             ]))
             ->assertStatus(200)
             ->assertSee('name="fields['.$knee->id.']"', false)
@@ -67,7 +67,7 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         $version = $this->versionWithSections($user, 'Health', ['Ongoing' => 'Knee', 'Diet' => 'Allergies']);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $knee = Field::query()->where('label', 'Knee')->firstOrFail();
         $allergies = Field::query()->where('label', 'Allergies')->firstOrFail();
 
@@ -75,7 +75,7 @@ class ContactSectionControllerTest extends TestCase
             ->get(route('contacts.sections.edit', [
                 'vault' => $vault,
                 'contact' => $michael,
-                'templateVersionSection' => $this->sectionNamed($version, 'Ongoing'),
+                'structureVersionSection' => $this->sectionNamed($version, 'Ongoing'),
             ]))
             ->assertStatus(200)
             ->assertSee('name="fields['.$knee->id.']"', false)
@@ -91,11 +91,11 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         $version = $this->versionWithSections($user, 'Health', ['Ongoing' => 'Knee']);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $row = $this->sectionNamed($version, 'Ongoing');
 
         $this->actingAs($user)
-            ->get(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $row]))
+            ->get(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $row]))
             ->assertStatus(200)
             ->assertSee('x-target="section-'.$row->id.' contact-facts"', false)
             ->assertSee('id="contact-facts"', false);
@@ -111,7 +111,7 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         $version = $this->versionWithSections($user, 'Health', ['Ongoing' => 'Knee']);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $knee = Field::query()->where('label', 'Knee')->firstOrFail();
 
         $this->actingAs($user)
@@ -119,7 +119,7 @@ class ContactSectionControllerTest extends TestCase
                 route('contacts.sections.update', [
                     'vault' => $vault,
                     'contact' => $michael,
-                    'templateVersionSection' => $this->sectionNamed($version, 'Ongoing'),
+                    'structureVersionSection' => $this->sectionNamed($version, 'Ongoing'),
                 ]),
                 ['fields' => [$knee->id => 'Twisted it skiing']],
             )
@@ -143,7 +143,7 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         $version = $this->versionWithSections($user, 'Health', ['Ongoing' => 'Knee', 'Diet' => 'Allergies']);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $knee = Field::query()->where('label', 'Knee')->firstOrFail();
         $allergies = Field::query()->where('label', 'Allergies')->firstOrFail();
 
@@ -151,7 +151,7 @@ class ContactSectionControllerTest extends TestCase
             route('contacts.sections.update', [
                 'vault' => $vault,
                 'contact' => $michael,
-                'templateVersionSection' => $this->sectionNamed($version, 'Ongoing'),
+                'structureVersionSection' => $this->sectionNamed($version, 'Ongoing'),
             ]),
             ['fields' => [$knee->id => 'Twisted it skiing', $allergies->id => 'Peanuts']],
         );
@@ -170,7 +170,7 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         $version = $this->versionWithSections($user, 'Health', ['Ongoing' => 'Knee']);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $knee = Field::query()->where('label', 'Knee')->firstOrFail();
         $knee->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
         $knee->update(['is_required' => true]);
@@ -179,10 +179,10 @@ class ContactSectionControllerTest extends TestCase
 
         $this->actingAs($user)
             ->put(
-                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]),
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
                 ['fields' => [$knee->id => '']],
             )
-            ->assertRedirect(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]))
+            ->assertRedirect(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]))
             ->assertSessionHasErrors('fields.'.$knee->id);
 
         $this->assertSame(0, FieldValue::query()->count());
@@ -198,7 +198,7 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         $version = $this->versionWithSections($user, 'Health', ['Dates' => 'Birthday']);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $birthday = Field::query()->where('label', 'Birthday')->firstOrFail();
         $birthday->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
         $birthday->update(['type' => FieldTypeEnum::RecurringDate]);
@@ -206,7 +206,7 @@ class ContactSectionControllerTest extends TestCase
         $section = $this->sectionNamed($version, 'Dates');
 
         $this->actingAs($user)->put(
-            route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]),
+            route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
             [
                 'fields' => [$birthday->id => '1964-03-15'],
                 'year_is_unknown' => [$birthday->id => '1'],
@@ -223,7 +223,7 @@ class ContactSectionControllerTest extends TestCase
             ->getContent();
 
         $editing = (string) $this->actingAs($user)
-            ->get(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]))
+            ->get(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]))
             ->getContent();
 
         $this->assertStringNotContainsString((string) FieldValue::PLACEHOLDER_YEAR, $reading);
@@ -240,18 +240,18 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         $version = $this->versionWithSections($user, 'Health', ['Ongoing' => 'Knee']);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
 
         $elsewhere = $this->versionWithSections($user, 'Work', ['Desk' => 'Floor']);
         $theirs = $this->sectionNamed($elsewhere, 'Desk');
 
         $this->actingAs($user)
-            ->get(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $theirs]))
+            ->get(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $theirs]))
             ->assertNotFound();
 
         $this->actingAs($user)
             ->put(
-                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $theirs]),
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $theirs]),
                 ['fields' => []],
             )
             ->assertNotFound();
@@ -268,16 +268,16 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         $version = $this->versionWithSections($user, 'Health', ['Ongoing' => 'Knee']);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $section = $this->sectionNamed($version, 'Ongoing');
 
         $this->actingAs($user)
-            ->get(route('contacts.sections.edit', ['vault' => $elsewhere, 'contact' => $michael, 'templateVersionSection' => $section]))
+            ->get(route('contacts.sections.edit', ['vault' => $elsewhere, 'contact' => $michael, 'structureVersionSection' => $section]))
             ->assertNotFound();
 
         $this->actingAs($user)
             ->put(
-                route('contacts.sections.update', ['vault' => $elsewhere, 'contact' => $michael, 'templateVersionSection' => $section]),
+                route('contacts.sections.update', ['vault' => $elsewhere, 'contact' => $michael, 'structureVersionSection' => $section]),
                 ['fields' => []],
             )
             ->assertNotFound();
@@ -294,16 +294,16 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($theirs, 'Michael', 'Scott');
 
         $version = $this->versionWithSections($stranger, 'Health', ['Ongoing' => 'Knee']);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $section = $this->sectionNamed($version, 'Ongoing');
 
         $this->actingAs($user)
-            ->get(route('contacts.sections.edit', ['vault' => $theirs, 'contact' => $michael, 'templateVersionSection' => $section]))
+            ->get(route('contacts.sections.edit', ['vault' => $theirs, 'contact' => $michael, 'structureVersionSection' => $section]))
             ->assertNotFound();
 
         $this->actingAs($user)
             ->put(
-                route('contacts.sections.update', ['vault' => $theirs, 'contact' => $michael, 'templateVersionSection' => $section]),
+                route('contacts.sections.update', ['vault' => $theirs, 'contact' => $michael, 'structureVersionSection' => $section]),
                 ['fields' => []],
             )
             ->assertNotFound();
@@ -317,7 +317,7 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         $version = $this->versionWithSections($user, 'Information', ['Documents' => 'Document']);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
 
         $documents = Field::query()->where('label', 'Document')->firstOrFail();
         $documents->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
@@ -328,7 +328,7 @@ class ContactSectionControllerTest extends TestCase
             ->get(route('contacts.sections.edit', [
                 'vault' => $vault,
                 'contact' => $michael,
-                'templateVersionSection' => $this->sectionNamed($version, 'Documents'),
+                'structureVersionSection' => $this->sectionNamed($version, 'Documents'),
             ]))
             ->assertStatus(200)
             ->assertSee('Add another')
@@ -346,11 +346,11 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$documents, $file, $description] = $this->documentsOn($user, $michael);
-        $section = TemplateVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
+        $section = StructureVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
 
         $this->actingAs($user)
             ->put(
-                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]),
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
                 ['fields' => [$documents->id => [
                     ['values' => [
                         $file->id => UploadedFile::fake()->create('lease.pdf', 8, 'application/pdf'),
@@ -379,8 +379,8 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$documents, $file, $description] = $this->documentsOn($user, $michael);
-        $section = TemplateVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
-        $url = route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]);
+        $section = StructureVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
+        $url = route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]);
 
         $this->actingAs($user)->put($url, ['fields' => [$documents->id => [
             ['values' => [
@@ -413,16 +413,16 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$documents, $file] = $this->documentsOn($user, $michael);
-        $section = TemplateVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
+        $section = StructureVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
 
         $this->actingAs($user)
             ->put(
-                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]),
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
                 ['fields' => [$documents->id => [
                     ['values' => [$file->id => UploadedFile::fake()->create('holiday.gif', 4, 'image/gif')]],
                 ]]],
             )
-            ->assertRedirect(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]))
+            ->assertRedirect(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]))
             ->assertSessionHasErrors('fields.'.$documents->id.'.0.values.'.$file->id);
 
         $this->assertSame(0, File::query()->count());
@@ -439,10 +439,10 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$documents, $file, $description] = $this->documentsOn($user, $michael);
-        $section = TemplateVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
+        $section = StructureVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
 
         $this->actingAs($user)->put(
-            route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]),
+            route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
             ['fields' => [$documents->id => [
                 ['values' => [
                     $file->id => UploadedFile::fake()->create('lease.pdf', 8, 'application/pdf'),
@@ -469,10 +469,10 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$documents] = $this->documentsOn($user, $michael);
-        $section = TemplateVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
+        $section = StructureVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
 
         $this->actingAs($user)
-            ->get(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section]))
+            ->get(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]))
             ->assertStatus(200)
             ->assertSee('enctype="multipart/form-data"', false);
     }
@@ -486,13 +486,13 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
 
         $this->actingAs($user)
             ->get(route('contacts.sections.edit', [
                 'vault' => $vault,
                 'contact' => $michael,
-                'templateVersionSection' => $this->sectionNamed($version, 'Dates'),
+                'structureVersionSection' => $this->sectionNamed($version, 'Dates'),
             ]))
             ->assertStatus(200)
             ->assertSee('Add a reminder')
@@ -508,13 +508,13 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$version, $metOn] = $this->versionWithADate($user, FieldTypeEnum::Date);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
 
         $this->actingAs($user)
             ->get(route('contacts.sections.edit', [
                 'vault' => $vault,
                 'contact' => $michael,
-                'templateVersionSection' => $this->sectionNamed($version, 'Dates'),
+                'structureVersionSection' => $this->sectionNamed($version, 'Dates'),
             ]))
             ->assertStatus(200)
             ->assertSee('name="reminders['.$metOn->id.'][on]"', false);
@@ -530,14 +530,14 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $section = $this->sectionNamed($version, 'Dates');
 
         $this->actingAs($user)
             ->put(route('contacts.sections.update', [
                 'vault' => $vault,
                 'contact' => $michael,
-                'templateVersionSection' => $section,
+                'structureVersionSection' => $section,
             ]), [
                 'fields' => [$birthday->id => '1984-02-03'],
                 'reminders' => [$birthday->id => $this->askedFor()],
@@ -564,14 +564,14 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $section = $this->sectionNamed($version, 'Dates');
 
         $this->actingAs($user)
             ->put(route('contacts.sections.update', [
                 'vault' => $vault,
                 'contact' => $michael,
-                'templateVersionSection' => $section,
+                'structureVersionSection' => $section,
             ]), [
                 'fields' => [$birthday->id => ''],
                 'reminders' => [$birthday->id => $this->askedFor()],
@@ -579,7 +579,7 @@ class ContactSectionControllerTest extends TestCase
             ->assertRedirect(route('contacts.sections.edit', [
                 'vault' => $vault,
                 'contact' => $michael,
-                'templateVersionSection' => $section,
+                'structureVersionSection' => $section,
             ]))
             ->assertSessionHasErrors('fields');
 
@@ -596,13 +596,13 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
 
         $this->actingAs($user)
             ->put(route('contacts.sections.update', [
                 'vault' => $vault,
                 'contact' => $michael,
-                'templateVersionSection' => $this->sectionNamed($version, 'Dates'),
+                'structureVersionSection' => $this->sectionNamed($version, 'Dates'),
             ]), [
                 'fields' => [$birthday->id => '1984-02-03'],
                 'reminders' => [$birthday->id => $this->askedFor(['cadence' => 'fortnightly'])],
@@ -622,11 +622,11 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $section = $this->sectionNamed($version, 'Dates');
 
         $this->actingAs($user)->put(route('contacts.sections.update', [
-            'vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section,
+            'vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section,
         ]), [
             'fields' => [$birthday->id => '1984-02-03'],
             'reminders' => [$birthday->id => $this->askedFor()],
@@ -634,7 +634,7 @@ class ContactSectionControllerTest extends TestCase
 
         $this->actingAs($user)
             ->get(route('contacts.sections.edit', [
-                'vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $section,
+                'vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section,
             ]))
             ->assertStatus(200)
             ->assertSee('value="Ring Michael"', false)
@@ -651,10 +651,10 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
 
         $this->actingAs($user)->put(route('contacts.sections.update', [
-            'vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $this->sectionNamed($version, 'Dates'),
+            'vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $this->sectionNamed($version, 'Dates'),
         ]), [
             'fields' => [$birthday->id => '1984-02-03'],
             'reminders' => [$birthday->id => $this->askedFor()],
@@ -675,10 +675,10 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
 
         $this->actingAs($user)->put(route('contacts.sections.update', [
-            'vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $this->sectionNamed($version, 'Dates'),
+            'vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $this->sectionNamed($version, 'Dates'),
         ]), ['fields' => [$birthday->id => '1984-02-03']]);
 
         $this->actingAs($user)
@@ -697,10 +697,10 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
 
         $this->actingAs($user)->put(route('contacts.sections.update', [
-            'vault' => $vault, 'contact' => $michael, 'templateVersionSection' => $this->sectionNamed($version, 'Dates'),
+            'vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $this->sectionNamed($version, 'Dates'),
         ]), [
             'fields' => [$birthday->id => '1984-02-03'],
             'reminders' => [$birthday->id => $this->askedFor()],
@@ -718,7 +718,7 @@ class ContactSectionControllerTest extends TestCase
             ->assertDontSee('M8 6.6V9.2l1.9 1.3', false);
     }
 
-    /** @return array{0: TemplateVersion, 1: Field} */
+    /** @return array{0: StructureVersion, 1: Field} */
     #[Test]
     #[DataProvider('badMoments')]
     public function it_sends_the_block_back_open_when_the_moments_say_nothing_usable(array $moments): void
@@ -730,14 +730,14 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $section = $this->sectionNamed($version, 'Dates');
 
         $response = $this->actingAs($user)
             ->put(route('contacts.sections.update', [
                 'vault' => $vault,
                 'contact' => $michael,
-                'templateVersionSection' => $section,
+                'structureVersionSection' => $section,
             ]), [
                 'fields' => [$birthday->id => '1984-02-03'],
                 'reminders' => [$birthday->id => $this->askedFor(['moments' => $moments])],
@@ -781,14 +781,14 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $section = $this->sectionNamed($version, 'Dates');
 
         $this->actingAs($user)
             ->put(route('contacts.sections.update', [
                 'vault' => $vault,
                 'contact' => $michael,
-                'templateVersionSection' => $section,
+                'structureVersionSection' => $section,
             ]), [
                 'fields' => [$birthday->id => '1984-02-03'],
                 'reminders' => [$birthday->id => $this->askedFor(['on' => null, 'moments' => []])],
@@ -808,14 +808,14 @@ class ContactSectionControllerTest extends TestCase
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['template_version_id' => $version->id]);
+        $michael->update(['structure_version_id' => $version->id]);
         $section = $this->sectionNamed($version, 'Dates');
 
         $this->actingAs($user)
             ->put(route('contacts.sections.update', [
                 'vault' => $vault,
                 'contact' => $michael,
-                'templateVersionSection' => $section,
+                'structureVersionSection' => $section,
             ]), [
                 'fields' => [$birthday->id => '1984-02-03'],
                 'reminders' => [$birthday->id => $this->askedFor()],
@@ -859,7 +859,7 @@ class ContactSectionControllerTest extends TestCase
     private function documentsOn(User $user, Contact $contact): array
     {
         $version = $this->versionWithSections($user, 'Information', ['Documents' => 'Document']);
-        $contact->update(['template_version_id' => $version->id]);
+        $contact->update(['structure_version_id' => $version->id]);
 
         $documents = Field::query()->where('label', 'Document')->firstOrFail();
         $documents->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
@@ -893,13 +893,13 @@ class ContactSectionControllerTest extends TestCase
     }
 
     /** @param  array<string, string>  $sections  the field label, keyed by the section name */
-    private function versionWithSections(User $user, string $pageLabel, array $sections): TemplateVersion
+    private function versionWithSections(User $user, string $pageLabel, array $sections): StructureVersion
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
-        $page = TemplateVersionPage::factory()->create([
-            'template_version_id' => $version->id,
+        $page = StructureVersionPage::factory()->create([
+            'structure_version_id' => $version->id,
             'account_id' => $version->account_id,
             'key' => Str::slug($pageLabel),
             'label' => $pageLabel,
@@ -913,9 +913,9 @@ class ContactSectionControllerTest extends TestCase
 
             Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => $fieldLabel]);
 
-            TemplateVersionSection::factory()->create([
-                'template_version_id' => $version->id,
-                'template_version_page_id' => $page->id,
+            StructureVersionSection::factory()->create([
+                'structure_version_id' => $version->id,
+                'structure_version_page_id' => $page->id,
                 'section_version_id' => $sectionVersion->id,
                 'position' => $position++,
             ]);
@@ -926,10 +926,10 @@ class ContactSectionControllerTest extends TestCase
         return $version->refresh();
     }
 
-    private function sectionNamed(TemplateVersion $version, string $name): TemplateVersionSection
+    private function sectionNamed(StructureVersion $version, string $name): StructureVersionSection
     {
         return $version->assembly
-            ->first(fn (TemplateVersionSection $row): bool => $row->sectionVersion->section->name === $name);
+            ->first(fn (StructureVersionSection $row): bool => $row->sectionVersion->section->name === $name);
     }
 
     /** @param  array<string, mixed>  $attributes */
@@ -938,7 +938,7 @@ class ContactSectionControllerTest extends TestCase
         return Contact::factory()->create([
             'vault_id' => $vault->id,
             'account_id' => $vault->account_id,
-            'template_version_id' => $vault->defaultTemplates()->sole()->template_version_id,
+            'structure_version_id' => $vault->defaultTemplates()->sole()->structure_version_id,
             'first_name' => $firstName,
             'last_name' => $lastName,
             ...$attributes,
@@ -953,8 +953,7 @@ class ContactSectionControllerTest extends TestCase
         VaultDefaultTemplate::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
-            'template_version_id' => $template->published_version_id,
+            'structure_version_id' => $template->structure->published_version_id,
         ]);
 
         return $vault;
@@ -967,10 +966,9 @@ class ContactSectionControllerTest extends TestCase
             'name' => $name,
         ]);
 
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template;
     }

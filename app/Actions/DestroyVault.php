@@ -10,7 +10,7 @@ use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\ShareLink;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\Model;
@@ -67,12 +67,12 @@ class DestroyVault
     {
         $counts = Contact::query()
             ->where('vault_id', $this->vault->id)
-            ->groupBy('template_version_id')
-            ->selectRaw('template_version_id, count(*) as total')
-            ->pluck('total', 'template_version_id');
+            ->groupBy('structure_version_id')
+            ->selectRaw('structure_version_id, count(*) as total')
+            ->pluck('total', 'structure_version_id');
 
         foreach ($counts as $versionId => $total) {
-            TemplateVersion::query()
+            StructureVersion::query()
                 ->whereKey($versionId)
                 ->where('record_count', '>=', $total)
                 ->decrement('record_count', $total);
@@ -88,7 +88,7 @@ class DestroyVault
 
     private function takeTheEntitiesWithIt(): void
     {
-        $this->giveTheCountsBack('template_version_id', TemplateVersion::class, 'record_count');
+        $this->giveTheCountsBack('structure_version_id', StructureVersion::class, 'record_count');
         $this->giveTheCountsBack('entity_type_id', EntityType::class, 'entity_count');
 
         Entity::query()

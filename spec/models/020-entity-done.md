@@ -17,7 +17,7 @@ uuid                        string (36)                     unguessable identifi
 account_id                  int                             account the entity belongs to
 vault_id                    int                             vault the entity lives in
 entity_type_id              int                             type of object it is, which never changes
-template_version_id         int                             exact structure version the page renders from
+structure_version_id        int                             exact structure version the page renders from
 name                        string (255)                    what the record is called, used in lists, headers and search
 sort_name                   string (255)                    precomputed string the list sorts on
 sort_key                    binary (2048)                   collation key the list orders and pages on, built for the language of the account and compared byte by byte, so the order reads the same on every database
@@ -34,7 +34,7 @@ deleted_with_vault          bool                            whether the record w
 
 ## Relationships
 
-- `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md), [EntityType](011-entity-type-done.md), [TemplateVersion](013-template-version-done.md)
+- `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md), [EntityType](011-entity-type-done.md), [StructureVersion](013-structure-version-done.md)
 - `belongsTo` [File](008-file-in-progress.md) as avatar
 - `hasMany` [FieldValue](022-field-value-done.md)
 - `belongsToMany` [Activity](036-activity-not-yet.md) through [ActivityParticipant](037-activity-participant-not-yet.md)
@@ -46,8 +46,8 @@ deleted_with_vault          bool                            whether the record w
 - An entity does not participate in the human relationship system (8.1). That system is deliberately restricted to contacts because it carries person-to-person roles, temporal state and the protected semantics used by genealogy and romantic history. The link between a contact and their dog is an ordinary relation field ([Field](017-field-done.md), type `relation`).
 - An entity can take part in an activity (9.2), can be the target of a relation field from a contact or from another entity, and can carry reminders driven by its own date fields (10.2). A contract renewal date on a Company entity is a first class reminder source.
 - An archived entity triggers no reminder, exactly as an archived [Contact](019-contact-done.md) does not. Its rules are deactivated with `record_archived` and come back when it is unarchived. A contract renewal on a company nobody deals with any more is the reason somebody archives it.
-- Changing the applied template version writes a snapshot first, exactly as for a contact.
-- The page hierarchy comes from the precise [TemplateVersion](013-template-version-done.md) assigned to the entity. One template page renders without tabs, while two or more use the same accessible tab navigation as a contact (5.2).
+- Changing the applied structure version writes a snapshot first, exactly as for a contact.
+- The page hierarchy comes from the precise [StructureVersion](013-structure-version-done.md) assigned to the entity. One page renders without tabs, while two or more use the same accessible tab navigation as a contact (5.2).
 - Soft deleted, for the same reasons.
 
 ## Not done yet

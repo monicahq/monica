@@ -40,7 +40,7 @@ use Override;
  * field the user might have deleted. Every part of it is optional, including
  * all of them at once: somebody whose existence is known before their name is
  * displays through the translated fallback, which is never stored in a name
- * field. Everything else on the page comes from the template version it points
+ * field. Everything else on the page comes from the structure version it points
  * at.
  *
  * A contact is addressed two ways, and answers to both. The slug is built from
@@ -62,7 +62,7 @@ use Override;
  * @property string $slug
  * @property int $account_id
  * @property int $vault_id
- * @property int $template_version_id
+ * @property int $structure_version_id
  * @property string|null $prefix
  * @property string|null $first_name
  * @property string|null $middle_name
@@ -92,7 +92,7 @@ use Override;
  * @property bool $deleted_with_vault
  * @property-read Account $account
  * @property-read Vault $vault
- * @property-read TemplateVersion $templateVersion
+ * @property-read StructureVersion $structureVersion
  * @property-read File|null $avatar
  * @property-read string $name
  * @property-read string $initials
@@ -102,7 +102,7 @@ use Override;
     'account_id',
     'vault_id',
     'slug',
-    'template_version_id',
+    'structure_version_id',
     'prefix',
     'first_name',
     'middle_name',
@@ -367,11 +367,11 @@ class Contact extends Model
      * and never a template, so the page keeps looking the way it did until
      * somebody deliberately moves the contact.
      *
-     * @return BelongsTo<TemplateVersion, $this>
+     * @return BelongsTo<StructureVersion, $this>
      */
-    public function templateVersion(): BelongsTo
+    public function structureVersion(): BelongsTo
     {
-        return $this->belongsTo(TemplateVersion::class);
+        return $this->belongsTo(StructureVersion::class);
     }
 
     /**

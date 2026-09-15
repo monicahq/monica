@@ -11,8 +11,8 @@ use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\SectionVersion;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -132,7 +132,7 @@ class WriteDefaultValuesTest extends TestCase
         return Contact::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => TemplateVersion::factory()->published()->create([
+            'structure_version_id' => StructureVersion::factory()->published()->create([
                 'account_id' => $user->account_id,
             ]),
             'first_name' => 'Pam',
@@ -143,7 +143,7 @@ class WriteDefaultValuesTest extends TestCase
     /** @param  array<string, mixed>  $attributes */
     private function fieldOn(Contact $contact, array $attributes = []): Field
     {
-        $version = $contact->templateVersion;
+        $version = $contact->structureVersion;
         $version->status = VersionStatusEnum::Draft;
         $version->save();
 
@@ -153,10 +153,10 @@ class WriteDefaultValuesTest extends TestCase
             'section_version_id' => $sectionVersion->id,
         ], $attributes));
 
-        TemplateVersionSection::factory()->create([
+        StructureVersionSection::factory()->create([
             'account_id' => $version->account_id,
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $version->pages->first()->id,
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $version->pages->first()->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -166,7 +166,7 @@ class WriteDefaultValuesTest extends TestCase
         $version->status = VersionStatusEnum::Published;
         $version->save();
 
-        $contact->unsetRelation('templateVersion');
+        $contact->unsetRelation('structureVersion');
 
         return $field;
     }

@@ -29,7 +29,7 @@ class TemplateDuplicateController extends Controller
             slug: $validated['slug'] ?? null,
         )->execute();
 
-        return new TemplateResource($copy->load(['entityType', 'publishedVersion']))
+        return new TemplateResource($copy->load(['structure.entityType', 'publishedVersion']))
             ->response()
             ->setStatusCode(201);
     }

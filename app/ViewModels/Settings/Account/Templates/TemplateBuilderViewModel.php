@@ -9,10 +9,10 @@ use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as Support;
@@ -37,10 +37,10 @@ class TemplateBuilderViewModel
         return $this->user;
     }
 
-    public function version(): ?TemplateVersion
+    public function version(): ?StructureVersion
     {
-        return once(fn (): ?TemplateVersion => $this->template->versions->firstWhere('status', VersionStatusEnum::Draft)
-            ?? $this->template->publishedVersion
+        return once(fn (): ?StructureVersion => $this->template->versions->firstWhere('status', VersionStatusEnum::Draft)
+            ?? $this->template->structure->publishedVersion
             ?? $this->template->versions->first());
     }
 
@@ -56,8 +56,8 @@ class TemplateBuilderViewModel
 
     public function isShareable(): bool
     {
-        return $this->template->published_version_id !== null
-            && $this->version()?->id === $this->template->published_version_id;
+        return $this->template->structure->published_version_id !== null
+            && $this->version()?->id === $this->template->structure->published_version_id;
     }
 
     public function versionLabel(): string
@@ -98,7 +98,7 @@ class TemplateBuilderViewModel
 
     public function publishingNote(): string
     {
-        $published = $this->template->publishedVersion;
+        $published = $this->template->structure->publishedVersion;
 
         if ($published === null) {
             return __('Nothing is using this template yet. Publishing makes this version the one new records are given.');
@@ -119,7 +119,7 @@ class TemplateBuilderViewModel
         $selected = $this->selectedPage();
 
         return $version->pages
-            ->map(fn (TemplateVersionPage $page): array => [
+            ->map(fn (StructureVersionPage $page): array => [
                 'id' => $page->id,
                 'uuid' => $page->uuid,
                 'label' => $page->label,
@@ -130,9 +130,9 @@ class TemplateBuilderViewModel
             ->all();
     }
 
-    public function selectedPage(): ?TemplateVersionPage
+    public function selectedPage(): ?StructureVersionPage
     {
-        return once(function (): ?TemplateVersionPage {
+        return once(function (): ?StructureVersionPage {
             $pages = $this->version()?->pages;
 
             if ($pages === null || $pages->isEmpty()) {
@@ -151,7 +151,7 @@ class TemplateBuilderViewModel
             return false;
         }
 
-        return $this->version()?->assembly->where('template_version_page_id', $page->id)->isEmpty() === true;
+        return $this->version()?->assembly->where('structure_version_page_id', $page->id)->isEmpty() === true;
     }
 
     /** @return array<int, array{id: int, uuid: string, label: string}> */
@@ -165,8 +165,8 @@ class TemplateBuilderViewModel
         }
 
         return $version->pages
-            ->reject(fn (TemplateVersionPage $other): bool => $other->is($page))
-            ->map(fn (TemplateVersionPage $other): array => [
+            ->reject(fn (StructureVersionPage $other): bool => $other->is($page))
+            ->map(fn (StructureVersionPage $other): array => [
                 'id' => $other->id,
                 'uuid' => $other->uuid,
                 'label' => $other->label,
@@ -187,8 +187,8 @@ class TemplateBuilderViewModel
             }
 
             $sectionIds = $version->assembly
-                ->where('template_version_page_id', $page->id)
-                ->map(fn (TemplateVersionSection $row): int => $row->sectionVersion->section_id)
+                ->where('structure_version_page_id', $page->id)
+                ->map(fn (StructureVersionSection $row): int => $row->sectionVersion->section_id)
                 ->unique()
                 ->all();
 
@@ -196,20 +196,20 @@ class TemplateBuilderViewModel
                 return [];
             }
 
-            return DB::table('template_version_sections')
-                ->join('section_versions', 'section_versions.id', '=', 'template_version_sections.section_version_id')
-                ->join('template_versions', 'template_versions.id', '=', 'template_version_sections.template_version_id')
+            return DB::table('structure_version_sections')
+                ->join('section_versions', 'section_versions.id', '=', 'structure_version_sections.section_version_id')
+                ->join('structure_versions', 'structure_versions.id', '=', 'structure_version_sections.structure_version_id')
                 ->whereIn('section_versions.section_id', $sectionIds)
-                ->where('template_versions.template_id', '!=', $this->template->id)
+                ->where('structure_versions.structure_id', '!=', $this->template->structure->id)
                 ->distinct()
-                ->get(['section_versions.section_id', 'template_versions.template_id'])
+                ->get(['section_versions.section_id', 'structure_versions.structure_id'])
                 ->groupBy('section_id')
-                ->map(fn (Support $rows): int => $rows->pluck('template_id')->unique()->count())
+                ->map(fn (Support $rows): int => $rows->pluck('structure_id')->unique()->count())
                 ->all();
         });
     }
 
-    private function markReach(TemplateVersionSection $row): string
+    private function markReach(StructureVersionSection $row): string
     {
         $others = $this->otherTemplateCounts()[$row->sectionVersion->section_id] ?? 0;
 
@@ -261,8 +261,8 @@ class TemplateBuilderViewModel
         }
 
         return $version->assembly
-            ->where('template_version_page_id', $page->id)
-            ->map(fn (TemplateVersionSection $row): array => [
+            ->where('structure_version_page_id', $page->id)
+            ->map(fn (StructureVersionSection $row): array => [
                 'id' => $row->id,
                 'name' => $row->title_override ?? $row->sectionVersion->section->name,
                 'icon' => $row->sectionVersion->section->icon,
@@ -285,7 +285,7 @@ class TemplateBuilderViewModel
      * @param  Collection<int, Field>  $siblings
      * @return array<string, mixed>
      */
-    private function field(Field $field, TemplateVersionPage $page, Collection $siblings): array
+    private function field(Field $field, StructureVersionPage $page, Collection $siblings): array
     {
         return [
             'id' => $field->id,
@@ -338,14 +338,14 @@ class TemplateBuilderViewModel
         ];
     }
 
-    private function pathTo(?TemplateVersionSection $row): string
+    private function pathTo(?StructureVersionSection $row): string
     {
         if ($row === null) {
             return '';
         }
 
         $name = $row->title_override ?? $row->sectionVersion->section->name;
-        $page = $this->version()?->pages->firstWhere('id', $row->template_version_page_id);
+        $page = $this->version()?->pages->firstWhere('id', $row->structure_version_page_id);
 
         if ($page === null || $page->is($this->selectedPage())) {
             return $name;
@@ -354,11 +354,11 @@ class TemplateBuilderViewModel
         return __(':page › :section', ['page' => $page->label, 'section' => $name]);
     }
 
-    private function fieldsOn(TemplateVersionPage $page): int
+    private function fieldsOn(StructureVersionPage $page): int
     {
         return (int) ($this->version()?->assembly
-            ->where('template_version_page_id', $page->id)
-            ->sum(fn (TemplateVersionSection $row): int => $row->sectionVersion->fields->count()) ?? 0);
+            ->where('structure_version_page_id', $page->id)
+            ->sum(fn (StructureVersionSection $row): int => $row->sectionVersion->fields->count()) ?? 0);
     }
 
     public function usageNote(): string
@@ -371,7 +371,7 @@ class TemplateBuilderViewModel
         return $this->findSelectedField()?->id;
     }
 
-    private function willBeCopied(TemplateVersionSection $row): bool
+    private function willBeCopied(StructureVersionSection $row): bool
     {
         $version = $row->sectionVersion;
 

@@ -67,7 +67,7 @@ class ShareTemplateViewModel
 
     public function versionLabel(): string
     {
-        $version = $this->template->publishedVersion;
+        $version = $this->template->structure->publishedVersion;
 
         return __('v:version, published :date', [
             'version' => $version?->version_number,
@@ -88,7 +88,7 @@ class ShareTemplateViewModel
 
     public function recordCountLabel(): string
     {
-        $count = $this->template->publishedVersion->record_count;
+        $count = $this->template->structure->publishedVersion->record_count;
 
         return trans_choice(':count record|:count records', $count);
     }

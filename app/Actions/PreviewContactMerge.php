@@ -181,7 +181,7 @@ class PreviewContactMerge
         $parts = [];
 
         foreach ([$this->kept, $this->absorbed] as $contact) {
-            $parts[] = "{$contact->id}:{$contact->sort_name}:{$contact->avatar_file_id}:{$contact->template_version_id}";
+            $parts[] = "{$contact->id}:{$contact->sort_name}:{$contact->avatar_file_id}:{$contact->structure_version_id}";
 
             foreach ($this->attachedValues($contact)->sortBy('id') as $value) {
                 $parts[] = "{$value->id}={$this->reads($value)}";
@@ -194,7 +194,7 @@ class PreviewContactMerge
     /** @return list<int> */
     private function fieldsTheSurvivorCarries(): array
     {
-        return once(fn (): array => $this->kept->templateVersion->assembly
+        return once(fn (): array => $this->kept->structureVersion->assembly
             ->flatMap(fn ($row): array => $row->sectionVersion->fields->pluck('id')->all())
             ->all());
     }

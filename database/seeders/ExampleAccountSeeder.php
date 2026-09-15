@@ -79,7 +79,7 @@ class ExampleAccountSeeder extends Seeder
 
     private function readTheFields(): void
     {
-        $version = $this->vault->defaultTemplates()->firstOrFail()->templateVersion;
+        $version = $this->vault->defaultTemplates()->firstOrFail()->structureVersion;
 
         /** @var Collection<int, Field> $fields */
         $fields = $version->assembly->flatMap(fn ($row): Collection => $row->sectionVersion->fields);

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers\App\Vaults;
 
 use App\Actions\SetVaultDefaultTemplate;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\VersionStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Structure;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\Vault;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -20,27 +21,28 @@ class VaultDefaultTemplateController extends Controller
 {
     public function update(Request $request, Vault $vault): RedirectResponse
     {
-        $contactTemplates = Template::query()
+        $contactStructures = Structure::query()
             ->select('id')
             ->where('account_id', $request->user()->account_id)
-            ->where('applies_to', TemplateAppliesToEnum::Contact->value)
-            ->where('is_active', true);
+            ->where('applies_to', StructureAppliesToEnum::Contact->value)
+            ->where('owner_type', Template::class)
+            ->whereIn('owner_id', Template::query()->select('id')->where('is_active', true));
 
         $validated = $request->validate([
-            'template_version_id' => [
+            'structure_version_id' => [
                 'required',
                 'integer',
-                Rule::exists('template_versions', 'id')
+                Rule::exists('structure_versions', 'id')
                     ->where('account_id', $request->user()->account_id)
                     ->where('status', VersionStatusEnum::Published->value)
-                    ->where(fn (Builder $query): Builder => $query->whereIn('template_id', $contactTemplates)),
+                    ->where(fn (Builder $query): Builder => $query->whereIn('structure_id', $contactStructures)),
             ],
         ]);
 
         new SetVaultDefaultTemplate(
             user: $request->user(),
             vault: $vault,
-            templateVersion: TemplateVersion::query()->findOrFail($validated['template_version_id']),
+            structureVersion: StructureVersion::query()->findOrFail($validated['structure_version_id']),
         )->execute();
 
         return redirect()->route('vaults.settings.index', $vault)

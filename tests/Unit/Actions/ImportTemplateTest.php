@@ -17,9 +17,9 @@ use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -48,7 +48,6 @@ class ImportTemplateTest extends TestCase
             'account_id' => $user->account_id,
             'name' => 'Dunder Mifflin contact',
             'is_system' => false,
-            'published_version_id' => null,
         ]);
     }
 
@@ -187,7 +186,7 @@ class ImportTemplateTest extends TestCase
             'slug' => 'branch',
             'name_plural' => 'Branches',
         ]);
-        $this->assertEquals('branch', $template->entityType->slug);
+        $this->assertEquals('branch', $template->structure->entityType->slug);
     }
 
     #[Test]
@@ -204,7 +203,7 @@ class ImportTemplateTest extends TestCase
 
         $template = new ImportTemplate(user: $user, raw: json_encode($file))->execute();
 
-        $this->assertEquals($entityType->id, $template->entity_type_id);
+        $this->assertEquals($entityType->id, $template->structure->entity_type_id);
         $this->assertEquals(1, EntityType::query()->where('account_id', $user->account_id)->where('slug', 'branch')->count());
     }
 
@@ -312,9 +311,9 @@ class ImportTemplateTest extends TestCase
             'name' => 'Dunder Mifflin contact',
         ]);
 
-        $version = TemplateVersion::factory()->create([
+        $version = StructureVersion::factory()->create([
             'account_id' => $user->account_id,
-            'template_id' => $template->id,
+            'structure_id' => $template->structure->id,
         ]);
 
         $section = Section::factory()->create([
@@ -367,10 +366,10 @@ class ImportTemplateTest extends TestCase
             'parent_field_id' => $repeater->id,
         ]);
 
-        TemplateVersionSection::factory()->create([
+        StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $version->pages()->firstOrFail()->id,
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $version->pages()->firstOrFail()->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -386,8 +385,7 @@ class ImportTemplateTest extends TestCase
         $version->published_at = now();
         $version->save();
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template->fresh();
     }

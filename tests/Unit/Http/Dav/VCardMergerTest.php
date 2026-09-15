@@ -10,7 +10,7 @@ use App\Http\Dav\VCardMerger;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -64,7 +64,7 @@ class VCardMergerTest extends TestCase
         $version = Structure::withFields($user, [
             ['type' => FieldTypeEnum::Phone, 'label' => 'Work'],
         ]);
-        $contact = $this->contact(['template_version_id' => $version->id]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
         $this->value($contact, $version, 0, ['value_string' => '+15705551212']);
 
         $card = new VCardMerger()->merge($contact);
@@ -81,7 +81,7 @@ class VCardMergerTest extends TestCase
             ['type' => FieldTypeEnum::Phone, 'label' => 'Work'],
         ]);
         $contact = $this->contact([
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'vcard' => "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:dwight\r\nFN:Dwight Schrute\r\nORG:Schrute Farms\r\nTEL:+15705550000\r\nTEL;TYPE=work:+15705550100\r\nEND:VCARD\r\n",
         ]);
         $this->value($contact, $version, 0, ['value_string' => '+15705551212']);
@@ -103,7 +103,7 @@ class VCardMergerTest extends TestCase
             ['type' => FieldTypeEnum::Phone, 'label' => 'Work'],
         ]);
         $contact = $this->contact([
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'vcard' => "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:dwight\r\nFN:Dwight Schrute\r\nTEL;TYPE=cell:+15705550000\r\nTEL;TYPE=home:+15705550200\r\nTEL;TYPE=work:+15705550300\r\nEND:VCARD\r\n",
         ]);
         $this->value($contact, $version, 0, ['value_string' => '+15705551212']);
@@ -124,7 +124,7 @@ class VCardMergerTest extends TestCase
             ['type' => FieldTypeEnum::Email, 'label' => 'Email'],
         ]);
         $contact = $this->contact([
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'vcard' => "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:dwight\r\nFN:Dwight Schrute\r\nEMAIL:dwight@dundermifflin.test\r\nEND:VCARD\r\n",
         ]);
 
@@ -140,7 +140,7 @@ class VCardMergerTest extends TestCase
         $version = Structure::withFields($user, [
             ['type' => FieldTypeEnum::RecurringDate, 'key' => 'birthday', 'label' => 'Birthday'],
         ]);
-        $contact = $this->contact(['template_version_id' => $version->id]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
         $this->value($contact, $version, 0, [
             'value_string' => null,
             'value_date' => '1900-02-03',
@@ -159,7 +159,7 @@ class VCardMergerTest extends TestCase
         $version = Structure::withFields($user, [
             ['type' => FieldTypeEnum::RecurringDate, 'key' => 'birthday', 'label' => 'Birthday'],
         ]);
-        $contact = $this->contact(['template_version_id' => $version->id]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
         $this->value($contact, $version, 0, [
             'value_string' => null,
             'value_date' => '1984-02-03',
@@ -177,7 +177,7 @@ class VCardMergerTest extends TestCase
         $version = Structure::withFields($user, [
             ['type' => FieldTypeEnum::RecurringDate, 'key' => 'met-on', 'label' => 'The day we met'],
         ]);
-        $contact = $this->contact(['template_version_id' => $version->id]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
         $this->value($contact, $version, 0, [
             'value_string' => null,
             'value_date' => '2005-03-24',
@@ -196,7 +196,7 @@ class VCardMergerTest extends TestCase
         $version = Structure::withFields($user, [
             ['type' => FieldTypeEnum::Address, 'label' => 'Home'],
         ]);
-        $contact = $this->contact(['template_version_id' => $version->id]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
         $this->value($contact, $version, 0, [
             'value_string' => null,
             'value_json' => [
@@ -220,7 +220,7 @@ class VCardMergerTest extends TestCase
         $version = Structure::withFields($user, [
             ['type' => FieldTypeEnum::Phone, 'label' => 'Private line', 'is_sensitive' => true],
         ]);
-        $contact = $this->contact(['template_version_id' => $version->id]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
         $this->value($contact, $version, 0, ['value_string' => '+15705559999']);
 
         $this->assertStringNotContainsString('+15705559999', new VCardMerger()->merge($contact));
@@ -235,7 +235,7 @@ class VCardMergerTest extends TestCase
             ['type' => FieldTypeEnum::Phone, 'label' => 'Private line', 'is_sensitive' => true],
         ]);
         $contact = $this->contact([
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'vcard' => "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:dwight\r\nFN:Dwight Schrute\r\nTEL:+15705550000\r\nEND:VCARD\r\n",
         ]);
         $this->value($contact, $version, 0, ['value_string' => '+15705559999']);
@@ -264,7 +264,7 @@ class VCardMergerTest extends TestCase
     }
 
     /** @param  array<string, mixed>  $attributes */
-    private function value(Contact $contact, TemplateVersion $version, int $index, array $attributes): FieldValue
+    private function value(Contact $contact, StructureVersion $version, int $index, array $attributes): FieldValue
     {
         $field = $this->fieldsOf($version)[$index];
 
@@ -280,7 +280,7 @@ class VCardMergerTest extends TestCase
     }
 
     /** @return array<int, Field> */
-    private function fieldsOf(TemplateVersion $version): array
+    private function fieldsOf(StructureVersion $version): array
     {
         return $version->sectionVersions()->with('fields')->get()
             ->flatMap(fn ($section) => $section->fields)

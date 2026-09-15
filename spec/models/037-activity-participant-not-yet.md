@@ -18,7 +18,6 @@ activity_id                 int                             activity taken part 
 participant_type            string (255)                    class of the participant, a contact or an entity
 participant_id              int                             id of that record
 role                        string (255)                    what they were there as, such as host, guest or practitioner
-counts_as_interaction       boolean                         copied from the type at write time, so recomputing inactivity never joins
 notes                       string (255)                    anything specific to this participant's presence
 position                    int                             order participants are listed in
 created_at                  datetime
@@ -35,8 +34,8 @@ updated_at                  datetime
 
 - A participant appears once per activity.
 - The participant lives in the same vault as the activity. This is the compartment boundary and it holds here too.
-- `counts_as_interaction` is copied from the activity type at write time. It is denormalised on purpose: recomputing a contact's `last_activity_at` is a hot path and it should read one indexed table, not join through the activity to its type.
-- Adding a participant to an activity that counts refreshes `last_activity_at` on that contact. Removing one recomputes it.
+- Adding a contact participant refreshes `activity_count` and `last_activity_at` for that contact. `last_activity_at` is the latest date among activities in which the contact participates, so adding an old activity never replaces a newer value.
+- Removing a contact participant, changing the activity date and deleting or restoring the activity recompute these derived contact values. Entity participants have no contact interaction value to update.
 - Deleting a participation never deletes the activity. An activity with nobody left is still a valid activity (9.2).
 - `Moi` may be a participant like anybody else (4.3). "We lived in Montreal" is exactly the sentence section 4.3 wants to be expressible.
 

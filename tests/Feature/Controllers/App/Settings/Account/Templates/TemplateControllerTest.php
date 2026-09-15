@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Models\EntityType;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -80,8 +80,12 @@ class TemplateControllerTest extends TestCase
             'account_id' => $user->account_id,
             'name' => 'Pet',
             'slug' => 'pet',
-            'applies_to' => TemplateAppliesToEnum::Contact->value,
             'is_system' => false,
+        ]);
+
+        $this->assertDatabaseHas('structures', [
+            'account_id' => $user->account_id,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
         ]);
     }
 
@@ -99,9 +103,9 @@ class TemplateControllerTest extends TestCase
             'entity_type_id' => $entityType->id,
         ])->assertRedirect();
 
-        $this->assertDatabaseHas('templates', [
+        $this->assertDatabaseHas('structures', [
             'account_id' => $user->account_id,
-            'applies_to' => TemplateAppliesToEnum::Entity->value,
+            'applies_to' => StructureAppliesToEnum::Entity->value,
             'entity_type_id' => $entityType->id,
         ]);
     }
@@ -220,7 +224,7 @@ class TemplateControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->published()->used(12)->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->used(12)->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->delete(route('settings.templates.destroy', $template))
             ->assertRedirect(route('settings.templates.index'))

@@ -5,7 +5,7 @@
 
 ## What it is
 
-One frozen state of a section, and the thing that actually owns fields. Everything said in [TemplateVersion](013-template-version-done.md) about freezing applies here identically, one level down.
+One frozen state of a section, and the thing that actually owns fields. Everything said in [StructureVersion](013-structure-version-done.md) about freezing applies here identically, one level down.
 
 This is also where the cascade in section 6 is enforced. A published section version pins its fields, and a field that reads from a value list pins the state of that list. Renaming an option elsewhere in the product cannot change what a section published yesterday does, and that is only true if the version keeps enough of the list to stand on its own.
 
@@ -22,7 +22,7 @@ resolved_value_lists        json                            snapshot of every va
 published_at                datetime                        when it was frozen, null while it is a draft
 retired_at                  datetime                        when it stopped being offered
 previous_version_id         int                             version it was created from, null for the first one
-usage_count                 int                             how many template versions contain it
+usage_count                 int                             how many structure versions contain it
 created_at                  datetime
 updated_at                  datetime
 ```
@@ -33,14 +33,14 @@ updated_at                  datetime
 - `belongsTo` [Section](014-section-in-progress.md)
 - `belongsTo` self as the previous version
 - `hasMany` [Field](017-field-done.md)
-- `belongsToMany` [TemplateVersion](013-template-version-done.md) through [TemplateVersionSection](016-template-version-section-done.md), with each placement assigned to one [TemplateVersionPage](055-template-version-page-done.md)
+- `belongsToMany` [StructureVersion](013-structure-version-done.md) through [StructureVersionSection](016-structure-version-section-done.md), with each placement assigned to one [StructureVersionPage](055-structure-version-page-done.md)
 
 ## Rules
 
-- A published version is immutable, enforced by the application, exactly as in [TemplateVersion](013-template-version-done.md).
+- A published version is immutable, enforced by the application, exactly as in [StructureVersion](013-structure-version-done.md).
 - Fields belong to the section version, never to the section. Adding a field to a published section means publishing a new version of it.
 - `resolved_value_lists` holds the items each list contained at publication, with their keys and labels. It is what makes the freeze real across the value list boundary (6). Reading a stored value still resolves through the live [ValueListItem](010-value-list-item-done.md) when it is still there, so a relabelled option reads with its new label. The snapshot is what answers when the item is gone, and it is what travels to another account on install.
-- Retiring a version leaves every template version already containing it untouched.
+- Retiring a version leaves every structure version already containing it untouched.
 - A published version is never deleted. A draft can be.
 
 ## Not done yet
@@ -54,9 +54,9 @@ updated_at                  datetime
 
 - **The snapshot holds only the lists the fields actually reference.** This is the open question below, answered the smaller way: a section has nothing to do with the lists it does not use, and copying the whole account into every published version would grow without bound. The tidiness argument for full copies belongs to installation, and it can be revisited in [MarketplaceInstallation](047-marketplace-installation-done.md) without changing what is written here.
 - **The snapshot stores labels as they sit in the database, translation key and all.** Resolving them through `__()` at publication would bake the interface language of whoever pressed the button into a structure meant to outlive them. Each item is stored with its raw `label`, its `label_translation_key`, its key, its position and whether it was active; each list with its raw `name`, its `name_translation_key` and its key.
-- **The freeze is enforced on the model, exactly as on [TemplateVersion](013-template-version-done.md),** and `resolved_value_lists` is one of the columns publication freezes. A snapshot that could be rewritten afterwards would be worth nothing.
+- **The freeze is enforced on the model, exactly as on [StructureVersion](013-structure-version-done.md),** and `resolved_value_lists` is one of the columns publication freezes. A snapshot that could be rewritten afterwards would be worth nothing.
 - **Drafting from a version copies every field, repeaters first.** Fields belong to the version and never to the section, so a new draft needs its own. Copying a child before its repeater would leave it pointing at the old parent and the two versions would silently share a field, so the copy walks the parents first and maps old identifiers to new ones.
-- **A draft is not deletable while any template version points at it.** `usage_count` counts drafts as well as published assemblies, which is right here: the foreign key cascades, so deleting would quietly take the section off somebody's template rather than refusing.
+- **A draft is not deletable while any structure version points at it.** `usage_count` counts drafts as well as published assemblies, which is right here: the foreign key cascades, so deleting would quietly take the section off somebody's template rather than refusing.
 
 ## Open questions
 

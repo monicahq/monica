@@ -17,7 +17,7 @@ class TemplateExportController extends Controller
 {
     public function index(Request $request, Template $template): View
     {
-        abort_if($template->published_version_id === null, 404);
+        abort_if($template->structure->published_version_id === null, 404);
 
         return view('app.settings.account.templates.export', [
             'viewModel' => new ShareTemplateViewModel(
@@ -29,7 +29,7 @@ class TemplateExportController extends Controller
 
     public function show(Request $request, Template $template): StreamedResponse
     {
-        abort_if($template->published_version_id === null, 404);
+        abort_if($template->structure->published_version_id === null, 404);
 
         $file = new ExportTemplate(
             user: $request->user(),

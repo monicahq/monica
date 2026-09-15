@@ -7,8 +7,8 @@ namespace Tests\Unit\Actions;
 use App\Actions\DeactivateTemplate;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -40,7 +40,7 @@ class DeactivateTemplateTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->published()->used(31)->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->used(31)->create(['structure_id' => $template->structure->id]);
 
         new DeactivateTemplate(user: $user, template: $template)->execute();
 

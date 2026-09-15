@@ -61,6 +61,9 @@ use App\Http\Controllers\App\Settings\Account\Templates\SectionExportController;
 use App\Http\Controllers\App\Settings\Account\Templates\SectionImportCheckController;
 use App\Http\Controllers\App\Settings\Account\Templates\SectionImportController;
 use App\Http\Controllers\App\Settings\Account\Templates\SectionShareController;
+use App\Http\Controllers\App\Settings\Account\Templates\StructureVersionController;
+use App\Http\Controllers\App\Settings\Account\Templates\StructureVersionHistoryController;
+use App\Http\Controllers\App\Settings\Account\Templates\StructureVersionPublicationController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateActivationController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateBuilderController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateController;
@@ -74,9 +77,6 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionControlle
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPageController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPositionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateShareController;
-use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionController;
-use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionHistoryController;
-use App\Http\Controllers\App\Settings\Account\Templates\TemplateVersionPublicationController;
 use App\Http\Controllers\App\Settings\Account\ValueLists\ValueListController;
 use App\Http\Controllers\App\Settings\Account\ValueLists\ValueListItemActivationController;
 use App\Http\Controllers\App\Settings\Account\ValueLists\ValueListItemController;
@@ -96,7 +96,7 @@ use App\Http\Controllers\App\Vaults\ContactNameController;
 use App\Http\Controllers\App\Vaults\ContactRelationshipController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\ContactShareLinkController;
-use App\Http\Controllers\App\Vaults\ContactTemplateVersionController;
+use App\Http\Controllers\App\Vaults\ContactStructureVersionController;
 use App\Http\Controllers\App\Vaults\FileController;
 use App\Http\Controllers\App\Vaults\ReminderController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceDismissalController;
@@ -183,15 +183,15 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])
         ->name('contacts.destroy');
 
-    Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactTemplateVersionController::class, 'update'])
+    Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])
         ->name('contacts.templateVersion.update');
 
-    Route::get('vaults/{vault}/contacts/{contact}/sections/{templateVersionSection}/edit', [ContactSectionController::class, 'edit'])
-        ->whereNumber('templateVersionSection')
+    Route::get('vaults/{vault}/contacts/{contact}/sections/{structureVersionSection}/edit', [ContactSectionController::class, 'edit'])
+        ->whereNumber('structureVersionSection')
         ->name('contacts.sections.edit');
 
-    Route::put('vaults/{vault}/contacts/{contact}/sections/{templateVersionSection}', [ContactSectionController::class, 'update'])
-        ->whereNumber('templateVersionSection')
+    Route::put('vaults/{vault}/contacts/{contact}/sections/{structureVersionSection}', [ContactSectionController::class, 'update'])
+        ->whereNumber('structureVersionSection')
         ->name('contacts.sections.update');
 
     Route::get('vaults/{vault}/contacts/{contact}/share-links', [ContactShareLinkController::class, 'index'])
@@ -377,41 +377,41 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::post('settings/account/templates/import/check', [TemplateImportCheckController::class, 'create'])->middleware('throttle:20,1')->name('settings.templateImportCheck.create');
     Route::post('settings/account/templates/import', [TemplateImportController::class, 'create'])->middleware('throttle:20,1')->name('settings.templateImport.create');
 
-    Route::get('settings/account/templates/{template}/pages/{templateVersionPage}/sections/import', [SectionImportController::class, 'new'])->name('settings.sectionImport.new');
-    Route::post('settings/account/templates/{template}/pages/{templateVersionPage}/sections/import/check', [SectionImportCheckController::class, 'create'])->middleware('throttle:20,1')->name('settings.sectionImportCheck.create');
-    Route::post('settings/account/templates/{template}/pages/{templateVersionPage}/sections/import', [SectionImportController::class, 'create'])->middleware('throttle:20,1')->name('settings.sectionImport.create');
+    Route::get('settings/account/templates/{template}/pages/{structureVersionPage}/sections/import', [SectionImportController::class, 'new'])->name('settings.sectionImport.new');
+    Route::post('settings/account/templates/{template}/pages/{structureVersionPage}/sections/import/check', [SectionImportCheckController::class, 'create'])->middleware('throttle:20,1')->name('settings.sectionImportCheck.create');
+    Route::post('settings/account/templates/{template}/pages/{structureVersionPage}/sections/import', [SectionImportController::class, 'create'])->middleware('throttle:20,1')->name('settings.sectionImport.create');
 
     Route::get('settings/account/templates/{template}/share', [TemplateShareController::class, 'index'])->name('settings.templateShare.index');
     Route::get('settings/account/templates/{template}/export', [TemplateExportController::class, 'index'])->name('settings.templateExport.index');
     Route::get('settings/account/templates/{template}/export/file', [TemplateExportController::class, 'show'])->name('settings.templateExport.show');
 
-    Route::get('settings/account/templates/{template}/sections/{templateVersionSection}/share', [SectionShareController::class, 'index'])->whereNumber('templateVersionSection')->name('settings.sectionShare.index');
-    Route::get('settings/account/templates/{template}/sections/{templateVersionSection}/export', [SectionExportController::class, 'index'])->whereNumber('templateVersionSection')->name('settings.sectionExport.index');
-    Route::get('settings/account/templates/{template}/sections/{templateVersionSection}/export/file', [SectionExportController::class, 'show'])->whereNumber('templateVersionSection')->name('settings.sectionExport.show');
+    Route::get('settings/account/templates/{template}/sections/{structureVersionSection}/share', [SectionShareController::class, 'index'])->whereNumber('structureVersionSection')->name('settings.sectionShare.index');
+    Route::get('settings/account/templates/{template}/sections/{structureVersionSection}/export', [SectionExportController::class, 'index'])->whereNumber('structureVersionSection')->name('settings.sectionExport.index');
+    Route::get('settings/account/templates/{template}/sections/{structureVersionSection}/export/file', [SectionExportController::class, 'show'])->whereNumber('structureVersionSection')->name('settings.sectionExport.show');
 
     Route::get('settings/account/templates/{template}/builder/{page?}', [TemplateBuilderController::class, 'index'])->name('settings.templateBuilder.index');
     Route::get('settings/account/templates/{template}/builder/{page}/fields/{field}', [TemplateBuilderController::class, 'index'])->whereNumber('field')->name('settings.templateBuilder.field');
-    Route::get('settings/account/templates/{template}/versions', [TemplateVersionHistoryController::class, 'index'])->name('settings.templateVersions.index');
-    Route::post('settings/account/templates/{template}/versions', [TemplateVersionController::class, 'create'])->name('settings.templateVersions.create');
-    Route::delete('settings/account/templates/{template}/versions/{templateVersion}', [TemplateVersionController::class, 'destroy'])->whereNumber('templateVersion')->name('settings.templateVersions.destroy');
-    Route::put('settings/account/templates/{template}/versions/{templateVersion}/published', [TemplateVersionPublicationController::class, 'update'])->whereNumber('templateVersion')->name('settings.templateVersionPublication.update');
+    Route::get('settings/account/templates/{template}/versions', [StructureVersionHistoryController::class, 'index'])->name('settings.templateVersions.index');
+    Route::post('settings/account/templates/{template}/versions', [StructureVersionController::class, 'create'])->name('settings.templateVersions.create');
+    Route::delete('settings/account/templates/{template}/versions/{structureVersion}', [StructureVersionController::class, 'destroy'])->whereNumber('structureVersion')->name('settings.templateVersions.destroy');
+    Route::put('settings/account/templates/{template}/versions/{structureVersion}/published', [StructureVersionPublicationController::class, 'update'])->whereNumber('structureVersion')->name('settings.templateVersionPublication.update');
 
     Route::post('settings/account/templates/{template}/pages', [TemplatePageController::class, 'create'])->name('settings.templatePages.create');
-    Route::put('settings/account/templates/{template}/pages/{templateVersionPage}', [TemplatePageController::class, 'update'])->name('settings.templatePages.update');
-    Route::delete('settings/account/templates/{template}/pages/{templateVersionPage}', [TemplatePageController::class, 'destroy'])->name('settings.templatePages.destroy');
-    Route::put('settings/account/templates/{template}/pages/{templateVersionPage}/position', [TemplatePagePositionController::class, 'update'])->name('settings.templatePagePosition.update');
+    Route::put('settings/account/templates/{template}/pages/{structureVersionPage}', [TemplatePageController::class, 'update'])->name('settings.templatePages.update');
+    Route::delete('settings/account/templates/{template}/pages/{structureVersionPage}', [TemplatePageController::class, 'destroy'])->name('settings.templatePages.destroy');
+    Route::put('settings/account/templates/{template}/pages/{structureVersionPage}/position', [TemplatePagePositionController::class, 'update'])->name('settings.templatePagePosition.update');
 
     Route::post('settings/account/templates/{template}/sections', [TemplateSectionController::class, 'create'])->name('settings.templateSections.create');
-    Route::put('settings/account/templates/{template}/sections/{templateVersionSection}', [TemplateSectionController::class, 'update'])->whereNumber('templateVersionSection')->name('settings.templateSections.update');
-    Route::delete('settings/account/templates/{template}/sections/{templateVersionSection}', [TemplateSectionController::class, 'destroy'])->whereNumber('templateVersionSection')->name('settings.templateSections.destroy');
-    Route::put('settings/account/templates/{template}/sections/{templateVersionSection}/position', [TemplateSectionPositionController::class, 'update'])->whereNumber('templateVersionSection')->name('settings.templateSectionPosition.update');
-    Route::put('settings/account/templates/{template}/sections/{templateVersionSection}/page', [TemplateSectionPageController::class, 'update'])->whereNumber('templateVersionSection')->name('settings.templateSectionPage.update');
+    Route::put('settings/account/templates/{template}/sections/{structureVersionSection}', [TemplateSectionController::class, 'update'])->whereNumber('structureVersionSection')->name('settings.templateSections.update');
+    Route::delete('settings/account/templates/{template}/sections/{structureVersionSection}', [TemplateSectionController::class, 'destroy'])->whereNumber('structureVersionSection')->name('settings.templateSections.destroy');
+    Route::put('settings/account/templates/{template}/sections/{structureVersionSection}/position', [TemplateSectionPositionController::class, 'update'])->whereNumber('structureVersionSection')->name('settings.templateSectionPosition.update');
+    Route::put('settings/account/templates/{template}/sections/{structureVersionSection}/page', [TemplateSectionPageController::class, 'update'])->whereNumber('structureVersionSection')->name('settings.templateSectionPage.update');
 
-    Route::get('settings/account/templates/{template}/sections/{templateVersionSection}/fields/new', [FieldController::class, 'new'])->whereNumber('templateVersionSection')->name('settings.fields.new');
-    Route::post('settings/account/templates/{template}/sections/{templateVersionSection}/fields', [FieldController::class, 'create'])->whereNumber('templateVersionSection')->name('settings.fields.create');
-    Route::put('settings/account/templates/{template}/sections/{templateVersionSection}/fields/{field}', [FieldController::class, 'update'])->whereNumber(['templateVersionSection', 'field'])->name('settings.fields.update');
-    Route::delete('settings/account/templates/{template}/sections/{templateVersionSection}/fields/{field}', [FieldController::class, 'destroy'])->whereNumber(['templateVersionSection', 'field'])->name('settings.fields.destroy');
-    Route::put('settings/account/templates/{template}/sections/{templateVersionSection}/fields/{field}/position', [FieldPositionController::class, 'update'])->whereNumber(['templateVersionSection', 'field'])->name('settings.fieldPosition.update');
+    Route::get('settings/account/templates/{template}/sections/{structureVersionSection}/fields/new', [FieldController::class, 'new'])->whereNumber('structureVersionSection')->name('settings.fields.new');
+    Route::post('settings/account/templates/{template}/sections/{structureVersionSection}/fields', [FieldController::class, 'create'])->whereNumber('structureVersionSection')->name('settings.fields.create');
+    Route::put('settings/account/templates/{template}/sections/{structureVersionSection}/fields/{field}', [FieldController::class, 'update'])->whereNumber(['structureVersionSection', 'field'])->name('settings.fields.update');
+    Route::delete('settings/account/templates/{template}/sections/{structureVersionSection}/fields/{field}', [FieldController::class, 'destroy'])->whereNumber(['structureVersionSection', 'field'])->name('settings.fields.destroy');
+    Route::put('settings/account/templates/{template}/sections/{structureVersionSection}/fields/{field}/position', [FieldPositionController::class, 'update'])->whereNumber(['structureVersionSection', 'field'])->name('settings.fieldPosition.update');
 
     Route::get('settings/account/security', [SecurityController::class, 'index'])->name('settings.security.index');
 

@@ -43,13 +43,13 @@
         <x-page-section :title="__('What this contact starts from')" :description="__('The template decides which fields the contact page holds. The vault’s own template is used unless you pick another here. It can be changed on the contact afterwards.')">
           <x-panel>
             <x-select
-              id="template_version_id"
+              id="structure_version_id"
               :label="__('Template')"
-              :error="$errors->get('template_version_id')"
+              :error="$errors->get('structure_version_id')"
               class="max-w-105"
             >
               @foreach ($viewModel->templates() as $template)
-                <option value="{{ $template['id'] }}" @selected($values['templateVersionId'] === (string) $template['id'])>{{ $template['name'] }}</option>
+                <option value="{{ $template['id'] }}" @selected($values['structureVersionId'] === (string) $template['id'])>{{ $template['name'] }}</option>
               @endforeach
             </x-select>
           </x-panel>

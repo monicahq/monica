@@ -9,7 +9,7 @@ use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\ShareLink;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -63,8 +63,8 @@ class DestroyContact
                 ->where('contact_count', '>', 0)
                 ->decrement('contact_count');
 
-            TemplateVersion::query()
-                ->whereKey($this->contact->template_version_id)
+            StructureVersion::query()
+                ->whereKey($this->contact->structure_version_id)
                 ->where('record_count', '>', 0)
                 ->decrement('record_count');
         });

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Vaults;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -29,7 +29,7 @@ class VaultDefaultTemplateControllerTest extends TestCase
         $chosen = $this->publishedContactTemplate($user, 'Work contact');
 
         $response = $this->actingAs($user)->put(route('vaults.defaultTemplate.update', $vault), [
-            'template_version_id' => $chosen->published_version_id,
+            'structure_version_id' => $chosen->structure->published_version_id,
         ]);
 
         $response->assertRedirect(route('vaults.settings.index', $vault));
@@ -37,8 +37,8 @@ class VaultDefaultTemplateControllerTest extends TestCase
         $this->assertDatabaseHas('vault_default_templates', [
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact->value,
-            'template_version_id' => $chosen->published_version_id,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
+            'structure_version_id' => $chosen->structure->published_version_id,
         ]);
     }
 
@@ -55,17 +55,16 @@ class VaultDefaultTemplateControllerTest extends TestCase
         VaultDefaultTemplate::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
-            'template_version_id' => $standard->published_version_id,
+            'structure_version_id' => $standard->structure->published_version_id,
         ]);
 
         $this->actingAs($user)->put(route('vaults.defaultTemplate.update', $vault), [
-            'template_version_id' => $work->published_version_id,
+            'structure_version_id' => $work->structure->published_version_id,
         ]);
 
         $default = VaultDefaultTemplate::query()->where('vault_id', $vault->id)->sole();
 
-        $this->assertEquals($work->published_version_id, $default->template_version_id);
+        $this->assertEquals($work->structure->published_version_id, $default->structure_version_id);
     }
 
     #[Test]
@@ -76,19 +75,19 @@ class VaultDefaultTemplateControllerTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $template = $this->publishedContactTemplate($user, 'Standard contact');
-        $older = $template->published_version_id;
+        $older = $template->structure->published_version_id;
 
-        $newest = TemplateVersion::factory()->published()->create([
-            'template_id' => $template->id,
+        $newest = StructureVersion::factory()->published()->create([
+            'structure_id' => $template->structure->id,
             'version_number' => 2,
         ]);
-        $template->update(['published_version_id' => $newest->id]);
+        $template->structure->update(['published_version_id' => $newest->id]);
 
         $this->actingAs($user)->put(route('vaults.defaultTemplate.update', $vault), [
-            'template_version_id' => $older,
+            'structure_version_id' => $older,
         ])->assertRedirect(route('vaults.settings.index', $vault));
 
-        $this->assertEquals($older, VaultDefaultTemplate::query()->where('vault_id', $vault->id)->sole()->template_version_id);
+        $this->assertEquals($older, VaultDefaultTemplate::query()->where('vault_id', $vault->id)->sole()->structure_version_id);
     }
 
     #[Test]
@@ -100,14 +99,14 @@ class VaultDefaultTemplateControllerTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $template = $this->publishedContactTemplate($user, 'Standard contact');
 
-        $draft = TemplateVersion::factory()->create([
-            'template_id' => $template->id,
+        $draft = StructureVersion::factory()->create([
+            'structure_id' => $template->structure->id,
             'version_number' => 2,
         ]);
 
         $this->actingAs($user)->put(route('vaults.defaultTemplate.update', $vault), [
-            'template_version_id' => $draft->id,
-        ])->assertSessionHasErrors('template_version_id');
+            'structure_version_id' => $draft->id,
+        ])->assertSessionHasErrors('structure_version_id');
 
         $this->assertEquals(0, VaultDefaultTemplate::query()->where('vault_id', $vault->id)->count());
     }
@@ -120,16 +119,15 @@ class VaultDefaultTemplateControllerTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $template = Template::factory()->create([
+        $template = Template::factory()->forEntity()->create([
             'account_id' => $user->account_id,
-            'applies_to' => TemplateAppliesToEnum::Entity,
             'name' => 'Beet varieties',
         ]);
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->put(route('vaults.defaultTemplate.update', $vault), [
-            'template_version_id' => $version->id,
-        ])->assertSessionHasErrors('template_version_id');
+            'structure_version_id' => $version->id,
+        ])->assertSessionHasErrors('structure_version_id');
 
         $this->assertEquals(0, VaultDefaultTemplate::query()->where('vault_id', $vault->id)->count());
     }
@@ -145,8 +143,8 @@ class VaultDefaultTemplateControllerTest extends TestCase
         $elsewhere = $this->publishedContactTemplate($dwight, 'Beet varieties');
 
         $this->actingAs($michael)->put(route('vaults.defaultTemplate.update', $vault), [
-            'template_version_id' => $elsewhere->published_version_id,
-        ])->assertSessionHasErrors('template_version_id');
+            'structure_version_id' => $elsewhere->structure->published_version_id,
+        ])->assertSessionHasErrors('structure_version_id');
 
         $this->assertEquals(0, VaultDefaultTemplate::query()->where('vault_id', $vault->id)->count());
     }
@@ -160,7 +158,7 @@ class VaultDefaultTemplateControllerTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user)->put(route('vaults.defaultTemplate.update', $vault), [])
-            ->assertSessionHasErrors('template_version_id');
+            ->assertSessionHasErrors('structure_version_id');
     }
 
     #[Test]
@@ -173,7 +171,7 @@ class VaultDefaultTemplateControllerTest extends TestCase
         $chosen = $this->publishedContactTemplate($michael, 'Work contact');
 
         $this->actingAs($michael)->put(route('vaults.defaultTemplate.update', $elsewhere), [
-            'template_version_id' => $chosen->published_version_id,
+            'structure_version_id' => $chosen->structure->published_version_id,
         ])->assertNotFound();
     }
 
@@ -184,10 +182,9 @@ class VaultDefaultTemplateControllerTest extends TestCase
             'name' => $name,
         ]);
 
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template;
     }

@@ -51,7 +51,7 @@ $otherTemplate = [
 $versionLink = $base.'/templates/'.$templateId.'/versions/';
 
 $publishedVersion = [
-    'type' => 'template_version',
+    'type' => 'structure_version',
     'id' => '312',
     'attributes' => [
         'version_number' => 3,
@@ -68,7 +68,7 @@ $publishedVersion = [
 ];
 
 $draftVersion = [
-    'type' => 'template_version',
+    'type' => 'structure_version',
     'id' => '318',
     'attributes' => [
         'version_number' => 4,
@@ -87,7 +87,7 @@ $draftVersion = [
 $nestedVersion = $publishedVersion;
 $nestedVersion['attributes']['pages'] = [
     [
-        'type' => 'template_version_page',
+        'type' => 'structure_version_page',
         'id' => 'a1f7b3c8-6e42-4d09-8b57-1c9e0f2a4d36',
         'attributes' => [
             'key' => 'general',
@@ -95,7 +95,7 @@ $nestedVersion['attributes']['pages'] = [
             'position' => 1,
             'sections' => [
                 [
-                    'type' => 'template_version_section',
+                    'type' => 'structure_version_section',
                     'id' => '904',
                     'attributes' => [
                         'position' => 1,
@@ -262,7 +262,7 @@ $fieldRows = $nested(
 $sectionRows = [
     ...$nested(
         'pages[].attributes.sections',
-        'template_version_section',
+        'structure_version_section',
         'placement',
         'placements',
         $sectionAttributes,
@@ -275,7 +275,7 @@ $structureAttributes = [
     ...$versionAttributes,
     ...$nested(
         'pages',
-        'template_version_page',
+        'structure_version_page',
         'page',
         'pages',
         $pageAttributes,
@@ -308,7 +308,7 @@ $fieldParam = [
 ];
 
 $pageExample = [
-    'type' => 'template_version_page',
+    'type' => 'structure_version_page',
     'id' => $pageId,
     'attributes' => [
         'key' => 'medical',
@@ -319,7 +319,7 @@ $pageExample = [
 ];
 
 $placementExample = [
-    'type' => 'template_version_section',
+    'type' => 'structure_version_section',
     'id' => '904',
     'attributes' => [
         'position' => 1,
@@ -548,7 +548,7 @@ return [
         ],
         [
             'id' => 'template-versions-index',
-            'returnFields' => ApiDocsFields::page('template_version', 'version', 'versions', $versionAttributes),
+            'returnFields' => ApiDocsFields::page('structure_version', 'version', 'versions', $versionAttributes),
             'title' => 'List template versions',
             'label' => 'List template versions',
             'method' => 'GET',
@@ -571,7 +571,7 @@ return [
         ],
         [
             'id' => 'template-versions-create',
-            'returnFields' => ApiDocsFields::one('template_version', 'version', $versionAttributes),
+            'returnFields' => ApiDocsFields::one('structure_version', 'version', $versionAttributes),
             'title' => 'Open a draft',
             'label' => 'Open a draft',
             'method' => 'POST',
@@ -591,7 +591,7 @@ return [
         ],
         [
             'id' => 'template-versions-publication-update',
-            'returnFields' => ApiDocsFields::one('template_version', 'version', $versionAttributes),
+            'returnFields' => ApiDocsFields::one('structure_version', 'version', $versionAttributes),
             'title' => 'Publish a version',
             'label' => 'Publish a version',
             'method' => 'PUT',
@@ -631,7 +631,7 @@ return [
         ],
         [
             'id' => 'template-versions-show',
-            'returnFields' => ApiDocsFields::one('template_version', 'version', $structureAttributes),
+            'returnFields' => ApiDocsFields::one('structure_version', 'version', $structureAttributes),
             'title' => 'Get a template version',
             'label' => 'Get a template version',
             'method' => 'GET',
@@ -651,7 +651,7 @@ return [
         ],
         [
             'id' => 'template-version-pages-create',
-            'returnFields' => ApiDocsFields::nested('template_version_page', 'page', $pageOnly),
+            'returnFields' => ApiDocsFields::nested('structure_version_page', 'page', $pageOnly),
             'title' => 'Add a page',
             'label' => 'Add a page',
             'method' => 'POST',
@@ -675,7 +675,7 @@ return [
         ],
         [
             'id' => 'template-version-pages-update',
-            'returnFields' => ApiDocsFields::nested('template_version_page', 'page', $pageOnly),
+            'returnFields' => ApiDocsFields::nested('structure_version_page', 'page', $pageOnly),
             'title' => 'Rename a page',
             'label' => 'Rename a page',
             'method' => 'PUT',
@@ -712,7 +712,7 @@ return [
         ],
         [
             'id' => 'template-version-pages-position-update',
-            'returnFields' => ApiDocsFields::nested('template_version_page', 'page', $pageOnly),
+            'returnFields' => ApiDocsFields::nested('structure_version_page', 'page', $pageOnly),
             'title' => 'Move a page',
             'label' => 'Move a page',
             'method' => 'PUT',
@@ -732,7 +732,7 @@ return [
         ],
         [
             'id' => 'template-version-sections-create',
-            'returnFields' => ApiDocsFields::nested('template_version_section', 'placement', $placementOnly),
+            'returnFields' => ApiDocsFields::nested('structure_version_section', 'placement', $placementOnly),
             'title' => 'Place a section',
             'label' => 'Place a section',
             'method' => 'POST',
@@ -759,7 +759,7 @@ return [
         ],
         [
             'id' => 'template-version-sections-update',
-            'returnFields' => ApiDocsFields::nested('template_version_section', 'placement', $placementOnly),
+            'returnFields' => ApiDocsFields::nested('structure_version_section', 'placement', $placementOnly),
             'title' => 'Change a placement',
             'label' => 'Change a placement',
             'method' => 'PUT',
@@ -797,7 +797,7 @@ return [
         ],
         [
             'id' => 'template-version-sections-position-update',
-            'returnFields' => ApiDocsFields::nested('template_version_section', 'placement', $placementOnly),
+            'returnFields' => ApiDocsFields::nested('structure_version_section', 'placement', $placementOnly),
             'title' => 'Move a section on its page',
             'label' => 'Move a section',
             'method' => 'PUT',
@@ -817,7 +817,7 @@ return [
         ],
         [
             'id' => 'template-version-sections-page-update',
-            'returnFields' => ApiDocsFields::nested('template_version_section', 'placement', $placementOnly),
+            'returnFields' => ApiDocsFields::nested('structure_version_section', 'placement', $placementOnly),
             'title' => 'Move a section to another page',
             'label' => 'Move to another page',
             'method' => 'PUT',

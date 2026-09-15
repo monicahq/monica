@@ -7,7 +7,7 @@ namespace App\Http\Controllers\App\Settings\Account\Templates;
 use App\Actions\CreateTemplate;
 use App\Actions\DestroyTemplate;
 use App\Actions\UpdateTemplate;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Exceptions\CannotDeleteATemplateInUse;
 use App\Http\Controllers\Controller;
 use App\Models\EntityType;
@@ -52,7 +52,7 @@ class TemplateController extends Controller
             ],
         );
 
-        $appliesTo = TemplateAppliesToEnum::from($validated['applies_to']);
+        $appliesTo = StructureAppliesToEnum::from($validated['applies_to']);
 
         $template = new CreateTemplate(
             user: $request->user(),
@@ -115,7 +115,7 @@ class TemplateController extends Controller
             ->with('status_description', __('Nothing was rendering with it.'));
     }
 
-    private function entityType(Request $request, TemplateAppliesToEnum $appliesTo): ?EntityType
+    private function entityType(Request $request, StructureAppliesToEnum $appliesTo): ?EntityType
     {
         if (! $appliesTo->needsEntityType()) {
             return null;
@@ -144,9 +144,9 @@ class TemplateController extends Controller
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:65535'],
-            'applies_to' => ['required', Rule::enum(TemplateAppliesToEnum::class)],
+            'applies_to' => ['required', Rule::enum(StructureAppliesToEnum::class)],
             'entity_type_id' => [
-                'required_if:applies_to,'.TemplateAppliesToEnum::Entity->value,
+                'required_if:applies_to,'.StructureAppliesToEnum::Entity->value,
                 'nullable',
                 Rule::exists('entity_types', 'id')->where('account_id', $request->user()->account_id),
             ],

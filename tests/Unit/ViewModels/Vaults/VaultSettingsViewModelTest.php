@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\VaultColourEnum;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -97,14 +97,13 @@ class VaultSettingsViewModelTest extends TestCase
         VaultDefaultTemplate::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
-            'template_version_id' => $template->published_version_id,
+            'structure_version_id' => $template->structure->published_version_id,
         ]);
 
         $viewModel = new VaultSettingsViewModel(user: $user, vault: $vault);
 
         $this->assertEquals('Work contact', $viewModel->currentTemplateName());
-        $this->assertEquals((string) $template->published_version_id, $viewModel->currentTemplateVersionId());
+        $this->assertEquals((string) $template->structure->published_version_id, $viewModel->currentStructureVersionId());
     }
 
     #[Test]
@@ -116,7 +115,7 @@ class VaultSettingsViewModelTest extends TestCase
         $viewModel = new VaultSettingsViewModel(user: $user, vault: $vault);
 
         $this->assertNull($viewModel->currentTemplateName());
-        $this->assertEquals('', $viewModel->currentTemplateVersionId());
+        $this->assertEquals('', $viewModel->currentStructureVersionId());
     }
 
     #[Test]
@@ -134,7 +133,7 @@ class VaultSettingsViewModelTest extends TestCase
         $this->assertCount(2, $templates);
         $this->assertEquals('Standard contact', $templates[0]['name']);
         $this->assertEquals(
-            [['id' => (int) $standard->published_version_id, 'label' => 'Version 1 (latest)']],
+            [['id' => (int) $standard->structure->published_version_id, 'label' => 'Version 1 (latest)']],
             $templates[0]['versions'],
         );
         $this->assertEquals('Work contact', $templates[1]['name']);
@@ -146,15 +145,15 @@ class VaultSettingsViewModelTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $template = $this->publishedContactTemplate($user, 'Standard contact');
-        $first = $template->published_version_id;
+        $first = $template->structure->published_version_id;
 
-        $newest = TemplateVersion::factory()->published()->create([
-            'template_id' => $template->id,
+        $newest = StructureVersion::factory()->published()->create([
+            'structure_id' => $template->structure->id,
             'version_number' => 2,
         ]);
-        $template->update(['published_version_id' => $newest->id]);
+        $template->structure->update(['published_version_id' => $newest->id]);
 
-        TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 3]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 3]);
 
         $versions = new VaultSettingsViewModel(user: $user, vault: $vault)->templates()[0]['versions'];
 
@@ -174,7 +173,7 @@ class VaultSettingsViewModelTest extends TestCase
         $templates = new VaultSettingsViewModel(user: $user, vault: $vault)->templates();
 
         $this->assertCount(1, $templates);
-        $this->assertEquals((int) $template->published_version_id, $templates[0]['versions'][0]['id']);
+        $this->assertEquals((int) $template->structure->published_version_id, $templates[0]['versions'][0]['id']);
     }
 
     #[Test]
@@ -198,10 +197,9 @@ class VaultSettingsViewModelTest extends TestCase
             'position' => $position,
         ]);
 
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template;
     }

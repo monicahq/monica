@@ -11,7 +11,7 @@ use App\Helpers\ReminderSchedule;
 use App\Models\Contact;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 
@@ -287,13 +287,13 @@ class ReminderViewModel
 
     private function pageCarryingTheField(Contact $contact): ?string
     {
-        $placement = TemplateVersionSection::query()
+        $placement = StructureVersionSection::query()
             ->where('account_id', $this->reminder->account_id)
-            ->where('template_version_id', $contact->template_version_id)
+            ->where('structure_version_id', $contact->structure_version_id)
             ->where('section_version_id', $this->reminder->field->section_version_id)
             ->first();
 
-        return $placement?->templateVersionPage->key;
+        return $placement?->structureVersionPage->key;
     }
 
     public function pauseUrl(): string

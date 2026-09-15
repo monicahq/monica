@@ -107,7 +107,7 @@ Section 5.5 lists the families. The ones in the first version (15) are marked.
 - **The key is settled once, in underscores, and never rebuilt.** It is unique within the whole section version rather than among a field's siblings, so a field moving in or out of a repeater does not have to change identity. Underscores rather than the dashes used for a slug, because what reads a key is code and not a person.
 - **The type cannot be changed after the field is added.** Changing it under values already written would quietly turn them into something else, and every type-dependent setting on the row would have to be re-derived. Removing the field and adding the one that was wanted is the honest path, and it is the one the builder should offer. The value list a choice field reads from can be swapped, since the values keep meaning what they said.
 - **A choice field must name the list it offers.** A field of that type with nothing to offer is not a field somebody is part way through configuring; it is a field that cannot render.
-- **Both the freeze and the repeater rule are enforced on the model,** for the reason given in [TemplateVersion](013-template-version-done.md): the specification says the application refuses the write on every path, and one guard below the actions is the only way to mean it.
+- **Both the freeze and the repeater rule are enforced on the model,** for the reason given in [StructureVersion](013-structure-version-done.md): the specification says the application refuses the write on every path, and one guard below the actions is the only way to mean it.
 
 ## Open questions
 

@@ -10,7 +10,7 @@ use App\Models\Contact;
 use App\Models\FieldValue;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
@@ -60,7 +60,7 @@ class CalendarTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
             'account_id' => $vault->account_id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'first_name' => 'Dwight',
             'last_name' => 'Schrute',
         ]);
@@ -98,7 +98,7 @@ class CalendarTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
             'account_id' => $vault->account_id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
         $value = $this->value($contact, $version, 0, [
             'value_string' => null,
@@ -171,7 +171,7 @@ class CalendarTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
             'account_id' => $vault->account_id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
         $value = $this->value($contact, $version, 0, ['value_string' => null, 'value_date' => '1984-01-20']);
         $entry = $this->dates($vault).$contact->uuid.'-'.$value->id.'.ics';
@@ -232,7 +232,7 @@ class CalendarTest extends TestCase
     }
 
     /** @param  array<string, mixed>  $attributes */
-    private function value(Contact $contact, TemplateVersion $version, int $index, array $attributes): FieldValue
+    private function value(Contact $contact, StructureVersion $version, int $index, array $attributes): FieldValue
     {
         $field = $version->sectionVersions()->with('fields')->get()
             ->flatMap(fn ($section) => $section->fields)

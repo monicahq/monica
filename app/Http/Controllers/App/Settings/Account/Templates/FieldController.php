@@ -13,8 +13,8 @@ use App\Enums\RepetitionOrderEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Controllers\Controller;
 use App\Models\Field;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersionSection;
 use App\Models\ValueList;
 use App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -26,14 +26,14 @@ use InvalidArgumentException;
 
 class FieldController extends Controller
 {
-    public function new(Request $request, Template $template, TemplateVersionSection $templateVersionSection): View
+    public function new(Request $request, Template $template, StructureVersionSection $structureVersionSection): View
     {
-        abort_unless($templateVersionSection->isReachableThrough($request->user(), $template), 404);
+        abort_unless($structureVersionSection->isReachableThrough($request->user(), $template), 404);
 
         return view('app.settings.account.templates.field-type', [
             'template' => $template,
-            'row' => $templateVersionSection,
-            'sectionName' => $templateVersionSection->title_override ?? $templateVersionSection->sectionVersion->section->name,
+            'row' => $structureVersionSection,
+            'sectionName' => $structureVersionSection->title_override ?? $structureVersionSection->sectionVersion->section->name,
             'catalogue' => new FieldCatalogueViewModel,
             'valueLists' => ValueList::query()
                 ->where('account_id', $request->user()->account_id)
@@ -43,9 +43,9 @@ class FieldController extends Controller
         ]);
     }
 
-    public function create(Request $request, Template $template, TemplateVersionSection $templateVersionSection): RedirectResponse
+    public function create(Request $request, Template $template, StructureVersionSection $structureVersionSection): RedirectResponse
     {
-        abort_unless($templateVersionSection->isReachableThrough($request->user(), $template), 404);
+        abort_unless($structureVersionSection->isReachableThrough($request->user(), $template), 404);
 
         $validated = $request->validate([
             'type' => ['required', Rule::enum(FieldTypeEnum::class)],
@@ -61,7 +61,7 @@ class FieldController extends Controller
         try {
             $sectionVersion = new MakeSectionVersionEditable(
                 user: $request->user(),
-                row: $templateVersionSection,
+                row: $structureVersionSection,
             )->execute();
 
             $field = new CreateField(
@@ -74,21 +74,21 @@ class FieldController extends Controller
         } catch (PublishedVersionIsFrozen) {
             return $this->refuse($template);
         } catch (InvalidArgumentException) {
-            return redirect()->route('settings.fields.new', [$template, $templateVersionSection])
+            return redirect()->route('settings.fields.new', [$template, $structureVersionSection])
                 ->with('error', __('A field that offers choices has to say which list they come from.'))
                 ->with('error_description', __('Make the list on the value lists screen first, then come back.'));
         }
 
         return redirect()->route('settings.templateBuilder.field', [
             'template' => $template,
-            'page' => $templateVersionSection->templateVersionPage->key,
+            'page' => $structureVersionSection->structureVersionPage->key,
             'field' => $field->id,
         ])->with('status', __('The field is added.'));
     }
 
-    public function update(Request $request, Template $template, TemplateVersionSection $templateVersionSection, Field $field): RedirectResponse
+    public function update(Request $request, Template $template, StructureVersionSection $structureVersionSection, Field $field): RedirectResponse
     {
-        abort_unless($templateVersionSection->isReachableThrough($request->user(), $template), 404);
+        abort_unless($structureVersionSection->isReachableThrough($request->user(), $template), 404);
 
         $validated = $request->validate([
             'label' => ['required', 'string', 'max:255'],
@@ -101,7 +101,7 @@ class FieldController extends Controller
         ]);
 
         try {
-            $target = $this->editable($request, $templateVersionSection, $field);
+            $target = $this->editable($request, $structureVersionSection, $field);
 
             new UpdateField(
                 user: $request->user(),
@@ -121,17 +121,17 @@ class FieldController extends Controller
 
         return redirect()->route('settings.templateBuilder.field', [
             'template' => $template,
-            'page' => $templateVersionSection->templateVersionPage->key,
+            'page' => $structureVersionSection->structureVersionPage->key,
             'field' => $target->getKey(),
         ])->with('status', __('The field is saved.'));
     }
 
-    public function destroy(Request $request, Template $template, TemplateVersionSection $templateVersionSection, Field $field): RedirectResponse
+    public function destroy(Request $request, Template $template, StructureVersionSection $structureVersionSection, Field $field): RedirectResponse
     {
-        abort_unless($templateVersionSection->isReachableThrough($request->user(), $template), 404);
+        abort_unless($structureVersionSection->isReachableThrough($request->user(), $template), 404);
 
         try {
-            $target = $this->editable($request, $templateVersionSection, $field);
+            $target = $this->editable($request, $structureVersionSection, $field);
 
             new DestroyField(user: $request->user(), field: $target)->execute();
         } catch (PublishedVersionIsFrozen) {
@@ -140,13 +140,13 @@ class FieldController extends Controller
 
         return redirect()->route('settings.templateBuilder.index', [
             'template' => $template,
-            'page' => $templateVersionSection->templateVersionPage->key,
+            'page' => $structureVersionSection->structureVersionPage->key,
         ])
             ->with('status', __('The field is removed.'))
             ->with('status_description', __('Nothing had been written in it.'));
     }
 
-    private function editable(Request $request, TemplateVersionSection $row, Field $field): Field
+    private function editable(Request $request, StructureVersionSection $row, Field $field): Field
     {
         if ($field->section_version_id !== $row->section_version_id) {
             throw new ModelNotFoundException('This field is not in this section.');

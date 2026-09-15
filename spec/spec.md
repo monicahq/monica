@@ -205,15 +205,17 @@ Both needs go through the same mechanism, which means there is only one thing to
 Four levels, from the broadest to the finest:
 
 - **The Template** is the complete definition of a record. It is what you apply to a contact, an entity or an activity, and it decides what appears on the record.
-- **The Page** is a named and ordered part of a template. Every template version contains at least one page. A page belongs to that template version and is not reusable or publishable on its own.
-- **The Section** is a reusable thematic block, for example "Address", "Social networks", "Medical follow up". Each section in a template version is placed on exactly one page, in whatever order the user wants.
+- **The Page** is a named and ordered part of a template. Every version contains at least one page. A page belongs to that version and is not reusable or publishable on its own.
+- **The Section** is a reusable thematic block, for example "Address", "Social networks", "Medical follow up". Each section in a version is placed on exactly one page, in whatever order the user wants.
 - **The Field** is the elementary piece of information inside a section: "Street", "City", "Postcode". Each field has a type (text, date, list of choices, file, and so on) and its own constraints.
 
 In this section, **page** means a page inside a template. **Record view** means the complete contact, entity or activity screen that contains the header and every template page.
 
+Under the surface these four levels are one engine, and the engine is not called a template. A template owns a **structure**, and so does an activity nature (9.3); the structure is what holds the versions, the pages and the section placements. The distinction matters in exactly one place, which is that an activity nature carries its own fields without being a template and without a second engine growing beside the first. Everywhere a user can see, the word stays template.
+
 The page exists to make a long record understandable. The section stays separate because sharing an isolated block ("here is my Medical follow up section") must remain possible without imposing the template or page around it.
 
-Pages are part of the frozen template version. Renaming, reordering, adding or removing a page is a structure change and therefore happens only in a draft. Moving a section to another page is also a structure change. Pages carry presentation and navigation only. Values still belong to fields, and search, filtering, reminders and exports work across every page without requiring the user to select one.
+Pages are part of the frozen version. Renaming, reordering, adding or removing a page is a structure change and therefore happens only in a draft. Moving a section to another page is also a structure change. Pages carry presentation and navigation only. Values still belong to fields, and search, filtering, reminders and exports work across every page without requiring the user to select one.
 
 The record interface follows these rules:
 
@@ -231,6 +233,8 @@ The template builder always shows the page structure, including when there is on
 Inventing a type of object happens in two steps: you declare the type ("Animal"), then you associate one or more possible structures with it. The same type can have several templates, and the template applied by default can vary from one vault to another. The "Family" vault and the "Professional breeding" vault can both handle "Animals" at a completely different level of detail.
 
 Once created, an entity never changes type. Its display structure, on the other hand, can be changed at any time.
+
+This flexibility is deliberate and it is not shared with activity natures. An entity type may have several templates because two vaults may want to record an animal at a completely different level of detail. An activity nature has exactly one set of fields, for the whole account, because a restaurant visit recorded in two vaults is still a restaurant visit, and because the journal aggregates across vaults without having to ask which structure a figure came from.
 
 ### 5.4. Shared value lists
 
@@ -269,7 +273,7 @@ Conversely, information you would think fundamental is in fact made of customisa
 
 Personalising to this extent creates an obvious risk: if everybody can modify structures, records become unstable. The product's answer comes down to two rules.
 
-**First rule: a published structure is frozen.** Once a version of a template or a section is published, it never moves again. Any modification creates a new version alongside it, with its own change note. Pages, page order and the placement of sections on pages are part of that frozen template version. The rule applies in cascade, including to value lists: renaming an option elsewhere in the product cannot change the behaviour of a section published yesterday.
+**First rule: a published structure is frozen.** Once a version of a structure or a section is published, it never moves again. Any modification creates a new version alongside it, with its own change note. Pages, page order and the placement of sections on pages are part of that frozen version. The rule applies in cascade, including to value lists: renaming an option elsewhere in the product cannot change the behaviour of a section published yesterday.
 
 As long as a structure is a draft, it stays freely editable. Freezing happens at publication, so as not to create a version at every micro-adjustment during design.
 
@@ -379,17 +383,20 @@ An activity always carries:
 
 The list of natures is configured at the account level, like the other shared value lists (see 5.4). Erica supplies a starting set that is immediately usable, and everybody adapts it: adding to it, renaming, deactivating without breaking the past activities that use it.
 
-**Categories organise the activity vocabulary.** Every account starts with Relationships and family, Work and education, Health and wellbeing, Home and daily life, Leisure and culture, Travel and experiences, Personal and Other. The user may create, rename, reorder and deactivate categories. Supplied categories cannot be deleted. A category groups activity natures in settings and pickers, filters the journal and provides a level for aggregate statistics. It never decides whether an activity counts as an interaction, which fields it carries or how it is shared.
+The [supplied catalogue](models/035-activity-type-in-progress.md#supplied-types) covers ordinary interactions, work and education, health, home, leisure, travel, personal events and one fallback, Other activity.
+
+**Categories organise the activity vocabulary.** Every account starts with Relationships and family, Work and education, Health and wellbeing, Home and daily life, Leisure and culture, Travel and experiences, Personal and Other. The user may create, rename, reorder and deactivate categories. Supplied categories cannot be deleted. A category groups activity natures in settings and pickers, filters the journal and provides a level for aggregate statistics. It never decides which fields an activity carries, who participated or how it is shared.
 
 Every nature belongs to exactly one category. Moving a nature changes how every activity of that nature is grouped and aggregated, including past activities, because an activity does not keep a snapshot of the category. It changes no recorded fact. Other is the fallback category, so a nature is never left unclassified.
 
-Activity natures remain account owned even when they are created while recording an activity from a contact. The inline path asks only for the name, category and whether the nature counts as a real interaction. It saves the nature for the whole account and selects it in the activity being entered. The settings screen carries the complete editor. Installing a nature from the marketplace likewise asks which local category should receive it and proposes Other. The marketplace's editorial category is never copied into the account as an activity category.
+Activity natures remain account owned even when they are created while recording an activity from a contact. The inline path asks only for the name and category. It saves the nature for the whole account and selects it in the activity being entered. The settings screen carries the complete editor. Installing a nature from the marketplace likewise asks which local category should receive it and proposes Other. The marketplace's editorial category is never copied into the account as an activity category.
 
 Each nature carries:
 
 - **a label, an icon and a colour**, so the journal reads at a glance;
-- **whether or not it counts as a real interaction** with the participants. A lunch counts, a call counts, "I thought about him" or "I saw a photo of her" do not. That setting, and it alone, feeds inactivity reminders (see 10.2);
-- **its own field structure**, defined with the same engine as contact records: sections and fields (see 5.2). A "Restaurant" nature can carry the venue, the dish and a rating out of 5. A "Medical appointment" nature can carry the practitioner, the reason and a scanned prescription. A "Call" nature may carry nothing but a duration.
+- **its own field structure**, defined with the same engine as contact records, and not merely one that resembles it: the nature owns a structure exactly as a template does, with the same pages, sections, fields, versions and freezing rules (see 5.2 and 6). What the settings screen calls it is custom fields; the words template and version never appear there, because neither is what somebody came to that screen to manage. A "Restaurant" nature can carry the venue, the dish and a rating out of 5. A "Medical appointment" nature can carry the practitioner, the reason and a scanned prescription. A "Call" nature may carry nothing but a duration.
+
+**Participation is the only rule for contact history.** Adding a contact as a participant means that the contact took part in the activity. The activity appears in their history and may become their latest interaction, regardless of its nature. Mentioning somebody only in the narrative does not make them a participant. An activity without a contact participant changes no contact. When an older activity is recorded later, it stays in the history but never replaces a more recent `last_activity_at` value.
 
 Direct consequence: **an activity nature can be shared on the marketplace** like any other structure, with the same versioning and installation rules (sections 6 and 7). Somebody who has designed a good log for mountain outings, or a good log for medical appointments, can publish it as is.
 
@@ -457,7 +464,7 @@ Without that distinction, you can neither postpone a reminder cleanly, nor keep 
 - **Recurring**: every year on 12 May, every Monday and Friday, and so on.
 - **Field based**: the product reads any `date` or `recurring_date` entered on a record and derives deadlines from it, with one or more offsets ("7 days before" and "on the day"). The source provides the record, field and value; the reminder separately defines whether it fires once or recurs, and at which frequency. A complete `date` can therefore drive a recurring reminder. A `recurring_date` is useful when the calendar date itself repeats or its year is unknown, and may suggest a yearly cadence without imposing it. Saving a date never creates a rule silently: the interface offers to add one, prefilled from that context, and the user chooses its wording, cadence, offsets and local time.
 - **Relative to an activity**: "14 days after the last lunch". It relies directly on the journal (see 9).
-- **By inactivity**: "tell me if I have had no contact with this person for 90 days". This is probably the most important reminder in a personal CRM, and the most absent from existing tools. It is computed from activities marked as counting as a real interaction (see 9.3), which means its quality depends entirely on the journal being kept.
+- **By inactivity**: "tell me if I have had no contact with this person for 90 days". This is probably the most important reminder in a personal CRM, and the most absent from existing tools. It is computed from the latest dated activity in which the contact participates (see 9.3), so its quality depends on participants and dates being recorded accurately.
 
 ### 10.3. Expected behaviours
 

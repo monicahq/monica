@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
 use App\Enums\VersionStatusEnum;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -26,12 +26,12 @@ class TemplateSectionPageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $general = $version->pages()->firstOrFail();
-        $events = TemplateVersionPage::factory()->create(['template_version_id' => $version->id]);
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $general->id,
+        $events = StructureVersionPage::factory()->create(['structure_version_id' => $version->id]);
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $general->id,
         ]);
 
         $response = $this->actingAs($user)->put(route('settings.templateSectionPage.update', [$template, $row]), [
@@ -40,25 +40,25 @@ class TemplateSectionPageControllerTest extends TestCase
 
         $response->assertRedirect(route('settings.templateBuilder.index', ['template' => $template, 'page' => $events->key]));
         $response->assertSessionHas('status');
-        $this->assertEquals($events->id, $row->fresh()->template_version_page_id);
+        $this->assertEquals($events->id, $row->fresh()->structure_version_page_id);
     }
 
     #[Test]
-    public function it_refuses_a_page_on_another_template_version(): void
+    public function it_refuses_a_page_on_another_structure_version(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $row = TemplateVersionSection::factory()->create(['template_version_id' => $version->id]);
-        $elsewhere = TemplateVersion::factory()->create(['account_id' => $user->account_id])->pages()->sole();
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $row = StructureVersionSection::factory()->create(['structure_version_id' => $version->id]);
+        $elsewhere = StructureVersion::factory()->create(['account_id' => $user->account_id])->pages()->sole();
 
         $this->actingAs($user)->put(route('settings.templateSectionPage.update', [$template, $row]), [
             'page' => $elsewhere->uuid,
         ])->assertSessionHasErrors('page');
 
-        $this->assertNotEquals($elsewhere->id, $row->fresh()->template_version_page_id);
+        $this->assertNotEquals($elsewhere->id, $row->fresh()->structure_version_page_id);
     }
 
     #[Test]
@@ -68,16 +68,16 @@ class TemplateSectionPageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $events = TemplateVersionPage::factory()->create(['template_version_id' => $version->id]);
-        $row = TemplateVersionSection::factory()->create(['template_version_id' => $version->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $events = StructureVersionPage::factory()->create(['structure_version_id' => $version->id]);
+        $row = StructureVersionSection::factory()->create(['structure_version_id' => $version->id]);
         $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
 
         $this->actingAs($user)->put(route('settings.templateSectionPage.update', [$template, $row]), [
             'page' => $events->uuid,
         ])->assertSessionHas('error');
 
-        $this->assertNotEquals($events->id, $row->fresh()->template_version_page_id);
+        $this->assertNotEquals($events->id, $row->fresh()->structure_version_page_id);
     }
 
     #[Test]
@@ -87,11 +87,11 @@ class TemplateSectionPageControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $theirs = TemplateVersionSection::factory()->create();
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $theirs = StructureVersionSection::factory()->create();
 
         $this->actingAs($user)->put(route('settings.templateSectionPage.update', [$template, $theirs]), [
-            'page' => $theirs->templateVersion->pages()->sole()->uuid,
+            'page' => $theirs->structureVersion->pages()->sole()->uuid,
         ])->assertNotFound();
     }
 }

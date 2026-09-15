@@ -18,8 +18,8 @@ use App\Models\FieldValueRow;
 use App\Models\File;
 use App\Models\RecordSnapshot;
 use App\Models\SectionVersion;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -49,7 +49,7 @@ class CreateRecordSnapshotTest extends TestCase
             'vault_id' => $contact->vault_id,
             'snapshotable_type' => Contact::class,
             'snapshotable_id' => $contact->id,
-            'template_version_id' => $contact->template_version_id,
+            'structure_version_id' => $contact->structure_version_id,
             'reason' => SnapshotReasonEnum::Manual->value,
             'created_by_user_id' => $user->id,
             'restored_at' => null,
@@ -104,7 +104,7 @@ class CreateRecordSnapshotTest extends TestCase
         $page = $snapshot->payload['structure'][0];
         $section = $page['sections'][0];
 
-        $this->assertEquals($contact->templateVersion->pages->first()->key, $page['key']);
+        $this->assertEquals($contact->structureVersion->pages->first()->key, $page['key']);
         $this->assertEquals('city', $section['fields'][0]['key']);
         $this->assertEquals('City', $section['fields'][0]['label']);
         $this->assertEquals($field->id, $section['fields'][0]['id']);
@@ -260,7 +260,7 @@ class CreateRecordSnapshotTest extends TestCase
         return Contact::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => TemplateVersion::factory()->published()->create(['account_id' => $user->account_id]),
+            'structure_version_id' => StructureVersion::factory()->published()->create(['account_id' => $user->account_id]),
             'first_name' => 'Pam',
             'last_name' => 'Beesly',
         ]);
@@ -269,7 +269,7 @@ class CreateRecordSnapshotTest extends TestCase
     /** @param  array<string, mixed>  $attributes */
     private function fieldOnThePageOf(Contact $contact, array $attributes = []): Field
     {
-        $version = $contact->templateVersion;
+        $version = $contact->structureVersion;
         $version->status = VersionStatusEnum::Draft;
         $version->save();
 
@@ -279,10 +279,10 @@ class CreateRecordSnapshotTest extends TestCase
             'section_version_id' => $sectionVersion->id,
         ], $attributes));
 
-        TemplateVersionSection::factory()->create([
+        StructureVersionSection::factory()->create([
             'account_id' => $version->account_id,
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $version->pages->first()->id,
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $version->pages->first()->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -292,7 +292,7 @@ class CreateRecordSnapshotTest extends TestCase
         $version->status = VersionStatusEnum::Published;
         $version->save();
 
-        $contact->unsetRelation('templateVersion');
+        $contact->unsetRelation('structureVersion');
 
         return $field;
     }

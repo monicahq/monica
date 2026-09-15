@@ -24,7 +24,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
 
-class FieldController extends TemplateStructureController
+class FieldController extends TemplateScopedController
 {
     public function create(Request $request, string $template, string $version, string $section): JsonResponse
     {

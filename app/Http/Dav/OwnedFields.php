@@ -70,7 +70,7 @@ class OwnedFields
     /** @return Collection<int, Field> */
     private function fields(): Collection
     {
-        return $this->contact->templateVersion
+        return $this->contact->structureVersion
             ->sectionVersions()
             ->with('fields')
             ->get()

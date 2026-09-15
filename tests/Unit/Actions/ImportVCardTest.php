@@ -9,7 +9,7 @@ use App\Enums\FieldTypeEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -51,7 +51,7 @@ class ImportVCardTest extends TestCase
         $this->assertEquals('Dwight', $contact->first_name);
         $this->assertEquals('Schrute', $contact->last_name);
         $this->assertEquals('Beet farmer', $contact->nickname);
-        $this->assertEquals($version->id, $contact->template_version_id);
+        $this->assertEquals($version->id, $contact->structure_version_id);
         $this->assertEquals('dwight.vcf', $contact->dav_uri);
     }
 
@@ -130,7 +130,7 @@ class ImportVCardTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $this->vault->id,
             'account_id' => $this->vault->account_id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
         $this->write($contact, $version, 0, ['value_string' => 'dwight@dundermifflin.test']);
 
@@ -156,7 +156,7 @@ class ImportVCardTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $this->vault->id,
             'account_id' => $this->vault->account_id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
         $this->write($contact, $version, 0, ['value_string' => '+15705559999']);
 
@@ -180,7 +180,7 @@ class ImportVCardTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $this->vault->id,
             'account_id' => $this->vault->account_id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
         $this->write($contact, $version, 0, ['value_string' => '+15705559999']);
 
@@ -272,7 +272,7 @@ class ImportVCardTest extends TestCase
     }
 
     /** @param  array<string, mixed>  $attributes */
-    private function write(Contact $contact, TemplateVersion $version, int $index, array $attributes): FieldValue
+    private function write(Contact $contact, StructureVersion $version, int $index, array $attributes): FieldValue
     {
         $field = $this->fieldsOf($version)[$index];
 
@@ -287,7 +287,7 @@ class ImportVCardTest extends TestCase
         ]);
     }
 
-    private function valueOf(Contact $contact, TemplateVersion $version, int $index): FieldValue
+    private function valueOf(Contact $contact, StructureVersion $version, int $index): FieldValue
     {
         return FieldValue::query()
             ->where('valuable_id', $contact->id)
@@ -296,7 +296,7 @@ class ImportVCardTest extends TestCase
     }
 
     /** @return array<int, Field> */
-    private function fieldsOf(TemplateVersion $version): array
+    private function fieldsOf(StructureVersion $version): array
     {
         return $version->sectionVersions()->with('fields')->get()
             ->flatMap(fn ($section) => $section->fields)

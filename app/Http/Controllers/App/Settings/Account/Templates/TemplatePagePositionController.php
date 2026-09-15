@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Settings\Account\Templates;
 
-use App\Actions\UpdateTemplateVersionPagePosition;
+use App\Actions\UpdateStructureVersionPagePosition;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Controllers\Controller;
+use App\Models\StructureVersionPage;
 use App\Models\Template;
-use App\Models\TemplateVersionPage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TemplatePagePositionController extends Controller
 {
-    public function update(Request $request, Template $template, TemplateVersionPage $templateVersionPage): RedirectResponse
+    public function update(Request $request, Template $template, StructureVersionPage $structureVersionPage): RedirectResponse
     {
-        abort_unless($templateVersionPage->isReachableThrough($request->user(), $template), 404);
+        abort_unless($structureVersionPage->isReachableThrough($request->user(), $template), 404);
 
         $validated = $request->validate([
             'position' => ['required', 'integer', 'min:1'],
         ]);
 
         try {
-            new UpdateTemplateVersionPagePosition(
+            new UpdateStructureVersionPagePosition(
                 user: $request->user(),
-                page: $templateVersionPage,
+                page: $structureVersionPage,
                 position: $validated['position'],
             )->execute();
         } catch (PublishedVersionIsFrozen) {
@@ -34,7 +34,7 @@ class TemplatePagePositionController extends Controller
                 ->with('error_description', __('Start a draft from it, and the pages of the draft are yours to arrange.'));
         }
 
-        return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $templateVersionPage->key])
+        return redirect()->route('settings.templateBuilder.index', ['template' => $template, 'page' => $structureVersionPage->key])
             ->with('status', __('The pages are reordered.'));
     }
 }

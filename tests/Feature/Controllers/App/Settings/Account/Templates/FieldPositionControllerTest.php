@@ -6,9 +6,9 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
 use App\Models\Field;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -62,14 +62,14 @@ class FieldPositionControllerTest extends TestCase
             ->assertNotFound();
     }
 
-    /** @return array{0: Template, 1: TemplateVersionSection} */
+    /** @return array{0: Template, 1: StructureVersionSection} */
     private function templateCarryingASection(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $sectionVersion = SectionVersion::factory()->used(1)->create(['account_id' => $user->account_id]);
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 

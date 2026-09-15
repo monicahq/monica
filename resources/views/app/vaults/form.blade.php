@@ -90,13 +90,13 @@
       @if ($viewModel->showsTemplates())
         <x-box :title="__('What a new contact starts from')" :description="__('Every contact you add here begins with this template. You can change it afterwards, for the vault or for one contact.')">
           <x-select
-            id="template_version_id"
+            id="structure_version_id"
             :label="__('Default template')"
-            :error="$errors->get('template_version_id')"
+            :error="$errors->get('structure_version_id')"
             class="max-w-105"
           >
             @foreach ($viewModel->templates() as $template)
-              <option value="{{ $template['id'] }}" @selected($values['templateVersionId'] === (string) $template['id'])>{{ $template['name'] }}</option>
+              <option value="{{ $template['id'] }}" @selected($values['structureVersionId'] === (string) $template['id'])>{{ $template['name'] }}</option>
             @endforeach
           </x-select>
         </x-box>

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -24,9 +24,9 @@ class TemplatePagePositionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $general = $version->pages()->firstOrFail();
-        $events = TemplateVersionPage::factory()->create(['template_version_id' => $version->id]);
+        $events = StructureVersionPage::factory()->create(['structure_version_id' => $version->id]);
 
         $response = $this->actingAs($user)->put(route('settings.templatePagePosition.update', [$template, $events]), [
             'position' => 1,
@@ -44,7 +44,7 @@ class TemplatePagePositionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $page = $version->pages()->sole();
 
         $this->actingAs($user)->put(route('settings.templatePagePosition.update', [$template, $page]), ['position' => 0])
@@ -58,7 +58,7 @@ class TemplatePagePositionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
         $page = $version->pages()->sole();
 
         $this->actingAs($user)->put(route('settings.templatePagePosition.update', [$template, $page]), ['position' => 1])
@@ -72,8 +72,8 @@ class TemplatePagePositionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $theirs = TemplateVersion::factory()->create()->pages()->sole();
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $theirs = StructureVersion::factory()->create()->pages()->sole();
 
         $this->actingAs($user)->put(route('settings.templatePagePosition.update', [$template, $theirs]), ['position' => 1])
             ->assertNotFound();

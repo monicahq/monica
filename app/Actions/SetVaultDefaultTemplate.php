@@ -7,7 +7,7 @@ namespace App\Actions;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Jobs\LogUserAction;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -24,7 +24,7 @@ class SetVaultDefaultTemplate
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
-        private readonly TemplateVersion $templateVersion,
+        private readonly StructureVersion $structureVersion,
     ) {}
 
     public function execute(): VaultDefaultTemplate
@@ -42,28 +42,28 @@ class SetVaultDefaultTemplate
             throw new ModelNotFoundException('This vault is in another account.');
         }
 
-        if ($this->templateVersion->account_id !== $this->user->account_id) {
-            throw new ModelNotFoundException('This template version is in another account.');
+        if ($this->structureVersion->account_id !== $this->user->account_id) {
+            throw new ModelNotFoundException('This structure version is in another account.');
         }
 
-        if ($this->templateVersion->status !== VersionStatusEnum::Published) {
+        if ($this->structureVersion->status !== VersionStatusEnum::Published) {
             throw new InvalidArgumentException('A record can only start on a published version.');
         }
     }
 
     private function set(): void
     {
-        $template = $this->templateVersion->template;
+        $template = $this->structureVersion->structure->owner;
 
         $this->default = VaultDefaultTemplate::query()->updateOrCreate(
             [
                 'vault_id' => $this->vault->id,
-                'applies_to' => $template->applies_to,
-                'entity_type_id' => $template->entity_type_id,
+                'applies_to' => $template->structure->applies_to,
+                'entity_type_id' => $template->structure->entity_type_id,
             ],
             [
                 'account_id' => $this->user->account_id,
-                'template_version_id' => $this->templateVersion->id,
+                'structure_version_id' => $this->structureVersion->id,
             ],
         );
     }
@@ -75,7 +75,7 @@ class SetVaultDefaultTemplate
             user: $this->user,
             action: UserActionEnum::VaultDefaultTemplateSet,
             vault: $this->vault,
-            parameters: ['name' => $this->templateVersion->template->name],
+            parameters: ['name' => $this->structureVersion->structure->owner->name],
             loggable: $this->default,
         )->onQueue('low');
     }

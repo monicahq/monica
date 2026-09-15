@@ -7,18 +7,18 @@ namespace App\Http\Controllers\App\Settings\Account\Templates;
 use App\Exceptions\StructureFileIsNotReadable;
 use App\Helpers\StructureFileReader;
 use App\Http\Controllers\Controller;
+use App\Models\StructureVersionPage;
 use App\Models\Template;
-use App\Models\TemplateVersionPage;
 use App\ViewModels\Settings\Account\Templates\ImportFileViewModel;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class SectionImportCheckController extends Controller
 {
-    public function create(Request $request, Template $template, TemplateVersionPage $templateVersionPage): View
+    public function create(Request $request, Template $template, StructureVersionPage $structureVersionPage): View
     {
-        abort_unless($templateVersionPage->isReachableThrough($request->user(), $template), 404);
-        abort_unless($templateVersionPage->templateVersion->status->isEditable(), 404);
+        abort_unless($structureVersionPage->isReachableThrough($request->user(), $template), 404);
+        abort_unless($structureVersionPage->structureVersion->status->isEditable(), 404);
 
         $validated = $request->validate([
             'file' => ['required', 'string', 'max:'.StructureFileReader::MAX_BYTES],
@@ -36,7 +36,7 @@ class SectionImportCheckController extends Controller
             'viewModel' => new ImportFileViewModel(
                 user: $request->user(),
                 template: $template,
-                page: $templateVersionPage,
+                page: $structureVersionPage,
                 raw: $validated['file'],
                 checked: $checked,
                 refusal: $refusal,

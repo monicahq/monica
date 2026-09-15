@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('account_id')->comment('account the entity belongs to');
             $table->unsignedBigInteger('vault_id')->comment('vault the entity lives in');
             $table->unsignedBigInteger('entity_type_id')->comment('type of object it is, which never changes');
-            $table->unsignedBigInteger('template_version_id')->comment('exact structure version the page renders from');
+            $table->unsignedBigInteger('structure_version_id')->comment('exact structure version the page renders from');
             $table->string('name')->comment('what the record is called, used in lists, headers and search');
             $table->string('sort_name', 511)->comment('precomputed string the list sorts on, so sorting never depends on rendering');
             $table->binary('sort_key', 2048)->comment('collation key the list orders and pages on, built for the language of the account, compared byte by byte so the order reads the same on every database');
@@ -36,7 +36,7 @@ return new class extends Migration
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();
             $table->foreign('entity_type_id')->references('id')->on('entity_types');
-            $table->foreign('template_version_id')->references('id')->on('template_versions');
+            $table->foreign('structure_version_id')->references('id')->on('structure_versions');
             $table->foreign('avatar_file_id')->references('id')->on('files')->nullOnDelete();
         });
     }

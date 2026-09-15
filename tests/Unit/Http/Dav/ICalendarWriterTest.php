@@ -126,7 +126,7 @@ class ICalendarWriterTest extends TestCase
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
             'account_id' => $vault->account_id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
         $field = $version->sectionVersions()->with('fields')->get()->flatMap(fn ($section) => $section->fields)->first();
 

@@ -8,9 +8,9 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -26,7 +26,7 @@ class SectionShareControllerTest extends TestCase
         $user = User::factory()->create();
         $row = $this->publishedRow($user);
 
-        $this->actingAs($user)->get(route('settings.sectionShare.index', [$row->templateVersion->template, $row->id]))
+        $this->actingAs($user)->get(route('settings.sectionShare.index', [$row->structureVersion->structure->owner, $row->id]))
             ->assertStatus(200)
             ->assertSee(__('Export the section as a file'))
             ->assertSee(__('Publish the section'))
@@ -39,7 +39,7 @@ class SectionShareControllerTest extends TestCase
         $user = User::factory()->create();
         $row = $this->publishedRow($user);
 
-        $this->actingAs($user)->get(route('settings.sectionShare.index', [$row->templateVersion->template, $row->id]))
+        $this->actingAs($user)->get(route('settings.sectionShare.index', [$row->structureVersion->structure->owner, $row->id]))
             ->assertSee(__('What is going out'))
             ->assertSee('Nickname');
     }
@@ -61,7 +61,7 @@ class SectionShareControllerTest extends TestCase
         $row = $this->publishedRow(User::factory()->create());
 
         $this->actingAs(User::factory()->create())
-            ->get(route('settings.sectionShare.index', [$row->templateVersion->template, $row->id]))
+            ->get(route('settings.sectionShare.index', [$row->structureVersion->structure->owner, $row->id]))
             ->assertNotFound();
     }
 
@@ -74,11 +74,11 @@ class SectionShareControllerTest extends TestCase
         $row->sectionVersion->status = VersionStatusEnum::Draft;
         $row->sectionVersion->save();
 
-        $this->actingAs($user)->get(route('settings.sectionShare.index', [$row->templateVersion->template, $row->id]))
+        $this->actingAs($user)->get(route('settings.sectionShare.index', [$row->structureVersion->structure->owner, $row->id]))
             ->assertNotFound();
     }
 
-    private function publishedRow(User $user): TemplateVersionSection
+    private function publishedRow(User $user): StructureVersionSection
     {
         $template = Template::factory()->create([
             'account_id' => $user->account_id,
@@ -86,7 +86,7 @@ class SectionShareControllerTest extends TestCase
             'slug' => 'dunder-mifflin-contact',
         ]);
 
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $section = Section::factory()->create([
             'account_id' => $user->account_id,
@@ -98,8 +98,8 @@ class SectionShareControllerTest extends TestCase
 
         Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => 'Nickname']);
 
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -114,8 +114,7 @@ class SectionShareControllerTest extends TestCase
         $version->published_at = now();
         $version->save();
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $row->fresh();
     }

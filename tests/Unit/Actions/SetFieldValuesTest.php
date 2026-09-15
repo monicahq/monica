@@ -22,8 +22,8 @@ use App\Models\File;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\SectionVersion;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -283,16 +283,16 @@ class SetFieldValuesTest extends TestCase
 
         $user = User::factory()->create();
         $contact = $this->contactOf($user);
-        $elsewhere = TemplateVersion::factory()->create(['account_id' => $user->account_id]);
+        $elsewhere = StructureVersion::factory()->create(['account_id' => $user->account_id]);
 
         $this->expectException(InvalidArgumentException::class);
 
         new SetFieldValues(
             user: $user,
             record: $contact,
-            section: TemplateVersionSection::factory()->create([
+            section: StructureVersionSection::factory()->create([
                 'account_id' => $user->account_id,
-                'template_version_id' => $elsewhere->id,
+                'structure_version_id' => $elsewhere->id,
             ]),
             values: [],
         )->execute();
@@ -1041,7 +1041,7 @@ class SetFieldValuesTest extends TestCase
         return Contact::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => TemplateVersion::factory()->published()->create([
+            'structure_version_id' => StructureVersion::factory()->published()->create([
                 'account_id' => $user->account_id,
             ]),
             'first_name' => 'Pam',
@@ -1070,9 +1070,9 @@ class SetFieldValuesTest extends TestCase
         return $child;
     }
 
-    private function sectionOf(Field $field): TemplateVersionSection
+    private function sectionOf(Field $field): StructureVersionSection
     {
-        return TemplateVersionSection::query()
+        return StructureVersionSection::query()
             ->where('section_version_id', $field->section_version_id)
             ->firstOrFail();
     }
@@ -1080,7 +1080,7 @@ class SetFieldValuesTest extends TestCase
     /** @param  array<string, mixed>  $attributes */
     private function fieldOn(Contact $contact, array $attributes = [], ?SectionVersion $beside = null): Field
     {
-        $version = $contact->templateVersion;
+        $version = $contact->structureVersion;
         $version->status = VersionStatusEnum::Draft;
         $version->save();
 
@@ -1097,10 +1097,10 @@ class SetFieldValuesTest extends TestCase
         ], $attributes));
 
         if ($beside === null) {
-            TemplateVersionSection::factory()->create([
+            StructureVersionSection::factory()->create([
                 'account_id' => $version->account_id,
-                'template_version_id' => $version->id,
-                'template_version_page_id' => $version->pages->first()->id,
+                'structure_version_id' => $version->id,
+                'structure_version_page_id' => $version->pages->first()->id,
                 'section_version_id' => $sectionVersion->id,
             ]);
         }
@@ -1111,7 +1111,7 @@ class SetFieldValuesTest extends TestCase
         $version->status = VersionStatusEnum::Published;
         $version->save();
 
-        $contact->unsetRelation('templateVersion');
+        $contact->unsetRelation('structureVersion');
 
         return $field;
     }

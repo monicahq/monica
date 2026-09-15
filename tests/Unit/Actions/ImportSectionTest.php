@@ -17,10 +17,10 @@ use App\Jobs\LogUserAction;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -45,8 +45,8 @@ class ImportSectionTest extends TestCase
 
         $row = new ImportSection(user: $user, template: $template, page: $page, raw: $file)->execute();
 
-        $this->assertInstanceOf(TemplateVersionSection::class, $row);
-        $this->assertEquals($page->id, $row->template_version_page_id);
+        $this->assertInstanceOf(StructureVersionSection::class, $row);
+        $this->assertEquals($page->id, $row->structure_version_page_id);
         $this->assertEquals('Personal details', $row->sectionVersion->section->name);
         $this->assertCount(3, $row->sectionVersion->fields);
     }
@@ -77,10 +77,10 @@ class ImportSectionTest extends TestCase
         $file = $this->exportedSection($user);
         [$template, $page] = $this->draft($user);
 
-        TemplateVersionSection::factory()->create([
+        StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
-            'template_version_id' => $page->template_version_id,
-            'template_version_page_id' => $page->id,
+            'structure_version_id' => $page->structure_version_id,
+            'structure_version_page_id' => $page->id,
             'position' => 4,
         ]);
 
@@ -208,14 +208,14 @@ class ImportSectionTest extends TestCase
         return StructureFile::encode(StructureFile::ofSection($template->publishedVersion->assembly->first()));
     }
 
-    /** @return array{Template, TemplateVersionPage} */
+    /** @return array{Template, StructureVersionPage} */
     private function draft(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
 
-        $version = TemplateVersion::factory()->create([
+        $version = StructureVersion::factory()->create([
             'account_id' => $user->account_id,
-            'template_id' => $template->id,
+            'structure_id' => $template->structure->id,
         ]);
 
         return [$template, $version->pages()->firstOrFail()];
@@ -228,9 +228,9 @@ class ImportSectionTest extends TestCase
             'name' => 'Dunder Mifflin contact',
         ]);
 
-        $version = TemplateVersion::factory()->create([
+        $version = StructureVersion::factory()->create([
             'account_id' => $user->account_id,
-            'template_id' => $template->id,
+            'structure_id' => $template->structure->id,
         ]);
 
         $section = Section::factory()->create([
@@ -276,10 +276,10 @@ class ImportSectionTest extends TestCase
             'position' => 3,
         ]);
 
-        TemplateVersionSection::factory()->create([
+        StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $version->pages()->firstOrFail()->id,
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $version->pages()->firstOrFail()->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -295,8 +295,7 @@ class ImportSectionTest extends TestCase
         $version->published_at = now();
         $version->save();
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template->fresh();
     }

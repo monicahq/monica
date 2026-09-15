@@ -12,7 +12,7 @@ use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\ShareLink;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -77,9 +77,9 @@ class DestroyVaultTest extends TestCase
 
         $user = User::factory()->create();
         $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->published()->used(2)->create();
-        $dwight = Contact::factory()->create(['vault_id' => $vault->id, 'template_version_id' => $version->id]);
-        $angela = Contact::factory()->create(['vault_id' => $vault->id, 'template_version_id' => $version->id]);
+        $version = StructureVersion::factory()->published()->used(2)->create();
+        $dwight = Contact::factory()->create(['vault_id' => $vault->id, 'structure_version_id' => $version->id]);
+        $angela = Contact::factory()->create(['vault_id' => $vault->id, 'structure_version_id' => $version->id]);
 
         new DestroyVault(user: $user, vault: $vault)->execute();
 
@@ -112,16 +112,16 @@ class DestroyVaultTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
         $type = EntityType::factory()->create(['account_id' => $user->account_id, 'entity_count' => 2]);
-        $version = TemplateVersion::factory()->published()->used(2)->create();
+        $version = StructureVersion::factory()->published()->used(2)->create();
         $dunder = Entity::factory()->create([
             'vault_id' => $vault->id,
             'entity_type_id' => $type->id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
         $sabre = Entity::factory()->create([
             'vault_id' => $vault->id,
             'entity_type_id' => $type->id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
 
         new DestroyVault(user: $user, vault: $vault)->execute();

@@ -7,8 +7,8 @@ namespace App\ViewModels\Vaults;
 use App\Enums\ShareLinkExpiryEnum;
 use App\Models\Contact;
 use App\Models\ShareLink;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 
@@ -74,10 +74,10 @@ class ShareLinkFormViewModel
 
     public function templateLine(): string
     {
-        $version = $this->contact->templateVersion;
+        $version = $this->contact->structureVersion;
 
         return __(':template, version :number', [
-            'template' => $version->template->name,
+            'template' => $version->structure->owner->name,
             'number' => $version->version_number,
         ]);
     }
@@ -192,13 +192,13 @@ class ShareLinkFormViewModel
     {
         $excluded = $this->shareLink === null ? [] : $this->shareLink->excluded_section_ids;
 
-        return $this->contact->templateVersion->pages
-            ->map(fn (TemplateVersionPage $page): array => [
+        return $this->contact->structureVersion->pages
+            ->map(fn (StructureVersionPage $page): array => [
                 'key' => $page->key,
                 'label' => $page->label,
-                'sections' => $this->contact->templateVersion->assembly
-                    ->where('template_version_page_id', $page->id)
-                    ->map(fn (TemplateVersionSection $row): array => [
+                'sections' => $this->contact->structureVersion->assembly
+                    ->where('structure_version_page_id', $page->id)
+                    ->map(fn (StructureVersionSection $row): array => [
                         'id' => $row->id,
                         'name' => $row->title_override ?? $row->sectionVersion->section->name,
                         'isIncluded' => ! in_array($row->id, $excluded, true),
@@ -213,7 +213,7 @@ class ShareLinkFormViewModel
 
     public function sectionCount(): int
     {
-        return $this->contact->templateVersion->assembly->count();
+        return $this->contact->structureVersion->assembly->count();
     }
 
     public function sectionsLine(): string

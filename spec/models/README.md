@@ -41,15 +41,15 @@ Every file follows the same shape.
 | 005 | [EmailSent](005-email-sent-in-progress.md) | exists, minor changes |
 | 006 | [PersonalAccessToken](006-personal-access-token-in-progress.md) | exists, changes needed |
 
-Models 007 to 023 exist as well, and so do 040 to 043, the reminder chain: the rule, the concrete
+Models 007 to 025, 027 to 028, 034, 040 to 049 and 055 exist as well. Models 040 to 043 are the reminder chain: the rule, the concrete
 deadlines it produces, the notifications that carry them and the preferences that say how. It was
 built ahead of the journal it will one day also read from. The screens have since caught up with
 most of it: a vault lists what is coming and what has gone out, and a rule has a page of its own.
 The preferences are the part still without one. Each file says how far it is built and what it is
 waiting on.
 
-Models 024 to 026, 028, 031 to 039 and 050 to 054 have no table and no model at all: relations between people,
-groups, duplicates, the journal, webhooks, modules and search are the whole of what is still to be
+Models 026, 031 to 033, 035 to 039 and 050 to 054 have no table and no model at all: relationships,
+groups, the journal, webhooks, modules and search are the whole of what is still to be
 started.
 
 ### The compartments and the files
@@ -67,14 +67,18 @@ started.
 | 010 | [ValueListItem](010-value-list-item-done.md) | 5.4 |
 | 011 | [EntityType](011-entity-type-done.md) | 5.3 |
 | 012 | [Template](012-template-in-progress.md) | 5.2, 6 |
-| 013 | [TemplateVersion](013-template-version-done.md) | 6 |
+| 013 | [StructureVersion](013-structure-version-done.md) | 6 |
 | 014 | [Section](014-section-in-progress.md) | 5.2 |
 | 015 | [SectionVersion](015-section-version-in-progress.md) | 6 |
-| 016 | [TemplateVersionSection](016-template-version-section-done.md) | 5.2 |
+| 016 | [StructureVersionSection](016-structure-version-section-done.md) | 5.2 |
 | 017 | [Field](017-field-done.md) | 5.5, 5.6 |
 | 018 | [VaultDefaultTemplate](018-vault-default-template-done.md) | 5.3 |
 
-Model 055, [TemplateVersionPage](055-template-version-page-done.md), is a later addition to this established engine, and its table is created before the one of model 016 so that every section placement names its page from the first migration. It keeps the next unused number rather than renumbering models that already exist and are referenced throughout the repository.
+Two models sit out of order here, and both for the same reason: they were added to an engine that was already built and already referenced throughout the repository, and renumbering it would make existing documentation, code reviews and implementation history misleading.
+
+Model 055, [StructureVersionPage](055-structure-version-page-done.md), is a later addition to this engine, and its table is created before the one of model 016 so that every section placement names its page from the first migration.
+
+Model 056, [Structure](056-structure-done.md), is the container models 012 to 018 now hang off, so by dependency it belongs before all of them and its table is created first. Read it before 012. It exists because the engine had been named after one of its callers: a version belonged to a template, which made it impossible for an [ActivityType](035-activity-type-in-progress.md) to have fields without either borrowing a template it is not or growing a second engine beside the first.
 
 ### The records
 
@@ -107,8 +111,8 @@ Model 055, [TemplateVersionPage](055-template-version-page-done.md), is a later 
 
 | # | Model | Spec |
 |---|---|---|
-| 028 | [ActivityCategory](028-activity-category-not-yet.md) | 9.3 |
-| 035 | [ActivityType](035-activity-type-not-yet.md) | 9.3 |
+| 028 | [ActivityCategory](028-activity-category-done.md) | 9.3 |
+| 035 | [ActivityType](035-activity-type-in-progress.md) | 9.3 |
 | 036 | [Activity](036-activity-not-yet.md) | 9.2 |
 | 037 | [ActivityParticipant](037-activity-participant-not-yet.md) | 9.2 |
 | 038 | [Mood](038-mood-not-yet.md) | 9.4 |
@@ -148,7 +152,8 @@ Model 055, [TemplateVersionPage](055-template-version-page-done.md), is a later 
 
 | # | Model | Spec |
 |---|---|---|
-| 055 | [TemplateVersionPage](055-template-version-page-done.md) | 5.2, 6 |
+| 055 | [StructureVersionPage](055-structure-version-page-done.md) | 5.2, 6 |
+| 056 | [Structure](056-structure-done.md) | 5.2, 6, 7, 9.3 |
 
 ## Not modelled here
 

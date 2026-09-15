@@ -9,9 +9,9 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Templates\ShareSectionViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -40,7 +40,7 @@ class ShareSectionViewModelTest extends TestCase
         $row->title_override = 'About Dwight';
         $row->saveQuietly();
 
-        $viewModel = new ShareSectionViewModel(user: $user, template: $row->templateVersion->template, row: $row->fresh());
+        $viewModel = new ShareSectionViewModel(user: $user, template: $row->structureVersion->structure->owner, row: $row->fresh());
 
         $this->assertEquals('About Dwight', $viewModel->name());
     }
@@ -94,12 +94,12 @@ class ShareSectionViewModelTest extends TestCase
 
         return new ShareSectionViewModel(
             user: $user,
-            template: $row->templateVersion->template,
+            template: $row->structureVersion->structure->owner,
             row: $row,
         );
     }
 
-    private function publishedRow(User $user): TemplateVersionSection
+    private function publishedRow(User $user): StructureVersionSection
     {
         $template = Template::factory()->create([
             'account_id' => $user->account_id,
@@ -107,7 +107,7 @@ class ShareSectionViewModelTest extends TestCase
             'slug' => 'dunder-mifflin-contact',
         ]);
 
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $section = Section::factory()->create([
             'account_id' => $user->account_id,
@@ -131,8 +131,8 @@ class ShareSectionViewModelTest extends TestCase
             'position' => 2,
         ]);
 
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -147,8 +147,7 @@ class ShareSectionViewModelTest extends TestCase
         $version->published_at = now();
         $version->save();
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $row->fresh();
     }

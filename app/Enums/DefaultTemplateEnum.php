@@ -18,10 +18,10 @@ enum DefaultTemplateEnum: string implements Translatable
         };
     }
 
-    public function appliesTo(): TemplateAppliesToEnum
+    public function appliesTo(): StructureAppliesToEnum
     {
         return match ($this) {
-            self::BasicContact => TemplateAppliesToEnum::Contact,
+            self::BasicContact => StructureAppliesToEnum::Contact,
         };
     }
 

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Settings\Account\Templates;
 
+use App\Enums\VersionStatusEnum;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Templates\TemplatesViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
+use App\Models\StructureVersionSection;
 use Tests\TestCase;
 
 class TemplatesViewModelTest extends TestCase
@@ -59,9 +61,9 @@ class TemplatesViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $withDraft = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $withDraft->id]);
+        StructureVersion::factory()->create(['structure_id' => $withDraft->structure->id]);
         $published = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->published()->create(['template_id' => $published->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $published->structure->id]);
 
         $viewModel = new TemplatesViewModel(user: $user, filter: TemplatesViewModel::FILTER_DRAFTS);
 
@@ -73,8 +75,8 @@ class TemplatesViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $published = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $published->id]);
-        $published->update(['published_version_id' => $version->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $published->structure->id]);
+        $published->structure->update(['published_version_id' => $version->id]);
         Template::factory()->create(['account_id' => $user->account_id]);
 
         $viewModel = new TemplatesViewModel(user: $user, filter: TemplatesViewModel::FILTER_PUBLISHED);
@@ -98,8 +100,8 @@ class TemplatesViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $first = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
-        $template->update(['published_version_id' => $first->id]);
+        $first = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        $template->structure->update(['published_version_id' => $first->id]);
 
         $row = (new TemplatesViewModel(user: $user))->ownTemplates()[0];
 
@@ -112,9 +114,9 @@ class TemplatesViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $first = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
-        TemplateVersion::factory()->create([
-            'template_id' => $template->id,
+        $first = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        StructureVersion::factory()->create([
+            'structure_id' => $template->structure->id,
             'version_number' => 2,
             'previous_version_id' => $first->id,
         ]);
@@ -176,5 +178,20 @@ class TemplatesViewModelTest extends TestCase
         $names = array_column(new TemplatesViewModel(user: $user)->ownTemplates(), 'name');
 
         $this->assertSame(['Zoe', 'Élodie', 'Erin'], $names);
+    }
+
+    #[Test]
+    public function it_counts_the_sections_of_the_version_it_shows(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        StructureVersionSection::factory()->create(['structure_version_id' => $version->id]);
+        $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+        $template->structure->update(['published_version_id' => $version->id]);
+
+        $row = (new TemplatesViewModel(user: $user))->ownTemplates()[0];
+
+        $this->assertEquals('1 section', $row['sectionLabel']);
     }
 }

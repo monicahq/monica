@@ -8,10 +8,10 @@ use App\Models\Contact;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\ShareLink;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactShareLinksViewModel;
@@ -137,7 +137,7 @@ class ContactShareLinksViewModelTest extends TestCase
         $dwight = Contact::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $michael->vault_id,
-            'template_version_id' => $michael->template_version_id,
+            'structure_version_id' => $michael->structure_version_id,
             'first_name' => 'Dwight',
         ]);
         ShareLink::factory()->for($dwight, 'shareable')->create();
@@ -161,10 +161,10 @@ class ContactShareLinksViewModelTest extends TestCase
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
-        $page = TemplateVersionPage::factory()->create([
-            'template_version_id' => $version->id,
+        $page = StructureVersionPage::factory()->create([
+            'structure_version_id' => $version->id,
             'account_id' => $version->account_id,
             'key' => 'overview',
             'label' => 'Overview',
@@ -173,9 +173,9 @@ class ContactShareLinksViewModelTest extends TestCase
         $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Facts']);
         $sectionVersion = SectionVersion::factory()->create(['section_id' => $section->id]);
 
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $page->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $page->id,
             'section_version_id' => $sectionVersion->id,
             'position' => 1,
         ]);
@@ -183,7 +183,7 @@ class ContactShareLinksViewModelTest extends TestCase
         return Contact::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => $version->refresh()->id,
+            'structure_version_id' => $version->refresh()->id,
             'first_name' => 'Michael',
             'last_name' => 'Scott',
         ]);

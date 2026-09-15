@@ -10,9 +10,9 @@ use App\Helpers\StructureFile;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -61,7 +61,7 @@ class TemplateImportControllerTest extends TestCase
         $response->assertSessionHas('status');
 
         $this->assertEquals('Dunder Mifflin contact', $template->name);
-        $this->assertNull($template->published_version_id);
+        $this->assertNull($template->structure->published_version_id);
     }
 
     #[Test]
@@ -121,9 +121,9 @@ class TemplateImportControllerTest extends TestCase
             'slug' => 'dunder-mifflin-contact',
         ]);
 
-        $version = TemplateVersion::factory()->create([
+        $version = StructureVersion::factory()->create([
             'account_id' => $user->account_id,
-            'template_id' => $template->id,
+            'structure_id' => $template->structure->id,
         ]);
 
         $section = Section::factory()->create([
@@ -143,10 +143,10 @@ class TemplateImportControllerTest extends TestCase
             'label' => 'Nickname',
         ]);
 
-        TemplateVersionSection::factory()->create([
+        StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $version->pages()->firstOrFail()->id,
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $version->pages()->firstOrFail()->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -161,8 +161,7 @@ class TemplateImportControllerTest extends TestCase
         $version->published_at = now();
         $version->save();
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template->fresh();
     }

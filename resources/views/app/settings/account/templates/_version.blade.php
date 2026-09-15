@@ -1,6 +1,6 @@
 {{-- One version on the timeline, and everything it holds once it is opened. --}}
 {{--
-  @var \App\ViewModels\Settings\Account\Templates\TemplateVersionEntry $entry
+  @var \App\ViewModels\Settings\Account\Templates\StructureVersionEntry $entry
   @var bool $hasConnector
 --}}
 <li

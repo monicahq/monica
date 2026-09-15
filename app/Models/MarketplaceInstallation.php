@@ -132,7 +132,7 @@ class MarketplaceInstallation extends Model
     }
 
     /**
-     * Get the local copy, which is a template or a section in the account of
+     * Get the local copy, which is a template, a section or an activity type in the account of
      * the installer, fully theirs to change.
      *
      * @return MorphTo<Model, $this>

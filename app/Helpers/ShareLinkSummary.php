@@ -6,7 +6,7 @@ namespace App\Helpers;
 
 use App\Models\Contact;
 use App\Models\ShareLink;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersionSection;
 
 class ShareLinkSummary
 {
@@ -70,13 +70,13 @@ class ShareLinkSummary
     {
         $excluded = $link->excluded_section_ids;
 
-        return $contact->templateVersion->assembly
-            ->reject(fn (TemplateVersionSection $row): bool => in_array($row->id, $excluded, true))
+        return $contact->structureVersion->assembly
+            ->reject(fn (StructureVersionSection $row): bool => in_array($row->id, $excluded, true))
             ->count();
     }
 
     public static function sectionsTotal(Contact $contact): int
     {
-        return $contact->templateVersion->assembly->count();
+        return $contact->structureVersion->assembly->count();
     }
 }

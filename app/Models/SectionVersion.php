@@ -20,7 +20,7 @@ use Override;
  * Class SectionVersion
  *
  * One frozen state of a section, and the thing that actually owns fields.
- * Everything a template version promises about freezing applies here
+ * Everything a structure version promises about freezing applies here
  * identically, one level down: fields belong to the version, never to the
  * section, so adding a field to a published section means publishing a new
  * version of it.
@@ -68,7 +68,7 @@ class SectionVersion extends Model
     use HasFactory;
 
     /**
-     * What publication freezes. The count of template versions containing it
+     * What publication freezes. The count of structure versions containing it
      * still moves, and it may still be retired, but nothing that decides what
      * the section renders may change again.
      *
@@ -86,7 +86,7 @@ class SectionVersion extends Model
 
     /**
      * Guard the freeze here rather than in each action that could reach it, for
-     * the same reason a template version does.
+     * the same reason a structure version does.
      */
     #[Override]
     protected static function booted(): void
@@ -107,7 +107,7 @@ class SectionVersion extends Model
             }
 
             if ($version->usage_count > 0) {
-                throw new PublishedVersionIsFrozen("Version {$version->version_number} sits in {$version->usage_count} templates.");
+                throw new PublishedVersionIsFrozen("Version {$version->version_number} sits in {$version->usage_count} structures.");
             }
         });
     }
@@ -171,13 +171,13 @@ class SectionVersion extends Model
     }
 
     /**
-     * Get the template versions this section sits in.
+     * Get the structure versions this section sits in.
      *
-     * @return BelongsToMany<TemplateVersion, $this>
+     * @return BelongsToMany<StructureVersion, $this>
      */
-    public function templateVersions(): BelongsToMany
+    public function structureVersions(): BelongsToMany
     {
-        return $this->belongsToMany(TemplateVersion::class, 'template_version_sections')
+        return $this->belongsToMany(StructureVersion::class, 'structure_version_sections')
             ->withPivot(['position', 'title_override', 'is_collapsed_by_default']);
     }
 }

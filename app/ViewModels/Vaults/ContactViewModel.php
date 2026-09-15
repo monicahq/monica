@@ -15,9 +15,9 @@ use App\Models\FieldValueRow;
 use App\Models\RecordSnapshot;
 use App\Models\Reminder;
 use App\Models\Section;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel;
@@ -41,7 +41,7 @@ class ContactViewModel
         private readonly Vault $vault,
         private readonly Contact $contact,
         private readonly ?string $selectedPageKey = null,
-        private readonly ?TemplateVersionSection $editingSection = null,
+        private readonly ?StructureVersionSection $editingSection = null,
     ) {}
 
     /** @return Collection<int, FieldValue> */
@@ -195,15 +195,15 @@ class ContactViewModel
 
     public function templateUrl(): string
     {
-        return route('settings.templateBuilder.index', $this->contact->templateVersion->template);
+        return route('settings.templateBuilder.index', $this->contact->structureVersion->structure->owner);
     }
 
     /** @return array{number: int, title: string, body: string, label: string, applyUrl: string}|null */
     public function templateUpdate(): ?array
     {
         return once(function (): ?array {
-            $current = $this->contact->templateVersion;
-            $published = $current->template->publishedVersion;
+            $current = $this->contact->structureVersion;
+            $published = $current->structure->publishedVersion;
 
             if ($published === null || $published->version_number <= $current->version_number) {
                 return null;
@@ -215,7 +215,7 @@ class ContactViewModel
                 'number' => $published->version_number,
                 'title' => __('Version :number of the :template template is ready', [
                     'number' => $published->version_number,
-                    'template' => $current->template->name,
+                    'template' => $current->structure->owner->name,
                 ]),
                 'body' => trim(($note === null ? '' : "{$note} ").__('Nothing changes here until you apply it. Applying it changes which sections and fields :name shows. Everything already written down stays.', [
                     'name' => $this->contact->first_name ?? $this->contact->name,
@@ -246,7 +246,7 @@ class ContactViewModel
             'isPinned' => false,
         ]];
 
-        foreach ($this->contact->templateVersion->pages as $page) {
+        foreach ($this->contact->structureVersion->pages as $page) {
             $fields = $this->fieldsOn($page);
 
             $tabs[] = [
@@ -283,14 +283,14 @@ class ContactViewModel
         return $tabs;
     }
 
-    public function selectedPage(): ?TemplateVersionPage
+    public function selectedPage(): ?StructureVersionPage
     {
-        return once(function (): ?TemplateVersionPage {
+        return once(function (): ?StructureVersionPage {
             if (in_array($this->selectedPageKey, [null, self::PAGE_OVERVIEW, self::PAGE_RELATIONSHIPS, self::PAGE_VERSION_HISTORY], true)) {
                 return null;
             }
 
-            return $this->contact->templateVersion->pages->firstWhere('key', $this->selectedPageKey);
+            return $this->contact->structureVersion->pages->firstWhere('key', $this->selectedPageKey);
         });
     }
 
@@ -326,7 +326,7 @@ class ContactViewModel
                 'date' => $leg['from']->isoFormat('LL'),
                 'ago' => $leg['from']->diffForHumans(),
                 'title' => __(':template, version :number', [
-                    'template' => $version->template->name,
+                    'template' => $version->structure->owner->name,
                     'number' => $version->version_number,
                 ]),
                 'badge' => match (true) {
@@ -348,22 +348,22 @@ class ContactViewModel
         return array_reverse($entries);
     }
 
-    /** @return array<int, array{version: TemplateVersion, from: CarbonImmutable, by: User|null}> */
+    /** @return array<int, array{version: StructureVersion, from: CarbonImmutable, by: User|null}> */
     private function versionChain(): array
     {
         return once(function (): array {
             $stamps = RecordSnapshot::query()
                 ->where('snapshotable_type', $this->contact->getMorphClass())
                 ->where('snapshotable_id', $this->contact->id)
-                ->with(['templateVersion.template', 'createdBy'])
+                ->with(['structureVersion.structure.owner', 'createdBy'])
                 ->orderBy('created_at')
                 ->orderBy('id')
                 ->get()
                 ->values()
                 ->all();
 
-            $versions = array_map(fn (RecordSnapshot $stamp): TemplateVersion => $stamp->templateVersion, $stamps);
-            $versions[] = $this->contact->templateVersion;
+            $versions = array_map(fn (RecordSnapshot $stamp): StructureVersion => $stamp->structureVersion, $stamps);
+            $versions[] = $this->contact->structureVersion;
 
             $chain = [['version' => $versions[0], 'from' => $this->contact->created_at, 'by' => null]];
 
@@ -383,7 +383,7 @@ class ContactViewModel
         });
     }
 
-    /** @param  array{version: TemplateVersion, from: CarbonImmutable, by: User|null}  $leg */
+    /** @param  array{version: StructureVersion, from: CarbonImmutable, by: User|null}  $leg */
     private function whoApplied(array $leg, bool $isFirst): string
     {
         if ($isFirst) {
@@ -409,7 +409,7 @@ class ContactViewModel
     }
 
     /** @return array{url: string, versionId: int, label: string}|null */
-    private function wayBackTo(TemplateVersion $version, bool $isCurrent): ?array
+    private function wayBackTo(StructureVersion $version, bool $isCurrent): ?array
     {
         if ($isCurrent || $version->status !== VersionStatusEnum::Published) {
             return null;
@@ -431,7 +431,7 @@ class ContactViewModel
         $chain = $this->versionChain();
 
         $templates = collect($chain)
-            ->map(fn (array $leg): int => $leg['version']->template_id)
+            ->map(fn (array $leg): int => $leg['version']->structure_id)
             ->unique()
             ->count();
 
@@ -445,15 +445,15 @@ class ContactViewModel
     /** @return array{template: string, number: int, since: string, shows: string} */
     public function currentVersion(): array
     {
-        $version = $this->contact->templateVersion;
+        $version = $this->contact->structureVersion;
         $chain = $this->versionChain();
 
         $sections = $version->assembly->count();
         $fields = $version->assembly
-            ->sum(fn (TemplateVersionSection $row): int => $this->storedFields($row->sectionVersion->fields)->count());
+            ->sum(fn (StructureVersionSection $row): int => $this->storedFields($row->sectionVersion->fields)->count());
 
         return [
-            'template' => $version->template->name,
+            'template' => $version->structure->owner->name,
             'number' => $version->version_number,
             'since' => end($chain)['from']->isoFormat('LL'),
             'shows' => implode(', ', [
@@ -490,15 +490,15 @@ class ContactViewModel
             return [];
         }
 
-        return $this->contact->templateVersion->assembly
-            ->where('template_version_page_id', $page->id)
+        return $this->contact->structureVersion->assembly
+            ->where('structure_version_page_id', $page->id)
             ->values()
-            ->map(fn (TemplateVersionSection $row): array => $this->blockFor($row))
+            ->map(fn (StructureVersionSection $row): array => $this->blockFor($row))
             ->all();
     }
 
     /** @return array<string, mixed> */
-    private function blockFor(TemplateVersionSection $row): array
+    private function blockFor(StructureVersionSection $row): array
     {
         $fields = $this->fieldsIn($row);
 
@@ -515,12 +515,12 @@ class ContactViewModel
             'editUrl' => route('contacts.sections.edit', [
                 'vault' => $this->vault,
                 'contact' => $this->contact,
-                'templateVersionSection' => $row,
+                'structureVersionSection' => $row,
             ]),
             'saveUrl' => route('contacts.sections.update', [
                 'vault' => $this->vault,
                 'contact' => $this->contact,
-                'templateVersionSection' => $row,
+                'structureVersionSection' => $row,
             ]),
             'saveLine' => __('Saving writes :section only.', ['section' => mb_strtolower($this->nameOf($row))]),
         ];
@@ -536,14 +536,14 @@ class ContactViewModel
             && $field->children->contains(fn (Field $child): bool => $child->type->holdsAFile());
     }
 
-    private function glyphOf(TemplateVersionSection $row): string
+    private function glyphOf(StructureVersionSection $row): string
     {
         $icon = $row->sectionVersion->section->icon;
 
         return in_array($icon, Section::ICONS, true) ? $icon : Section::DEFAULT_ICON;
     }
 
-    private function nameOf(TemplateVersionSection $row): string
+    private function nameOf(StructureVersionSection $row): string
     {
         return $row->title_override ?? $row->sectionVersion->section->name;
     }
@@ -592,8 +592,8 @@ class ContactViewModel
     /** @return Collection<int, Field> */
     private function highlightedFields(): Collection
     {
-        return once(fn (): Collection => $this->contact->templateVersion->assembly
-            ->flatMap(fn (TemplateVersionSection $row): Collection => $this->storedFields($row->sectionVersion->fields))
+        return once(fn (): Collection => $this->contact->structureVersion->assembly
+            ->flatMap(fn (StructureVersionSection $row): Collection => $this->storedFields($row->sectionVersion->fields))
             ->filter(fn (Field $field): bool => $field->is_highlighted)
             ->values());
     }
@@ -647,7 +647,7 @@ class ContactViewModel
     }
 
     /** @return array<int, array<string, mixed>> */
-    private function fieldsIn(TemplateVersionSection $row): array
+    private function fieldsIn(StructureVersionSection $row): array
     {
         return $this->storedFields($row->sectionVersion->fields)
             ->map(fn (Field $field): array => [
@@ -757,11 +757,11 @@ class ContactViewModel
         ];
     }
 
-    private function fieldsOn(TemplateVersionPage $page): int
+    private function fieldsOn(StructureVersionPage $page): int
     {
-        return $this->contact->templateVersion->assembly
-            ->where('template_version_page_id', $page->id)
-            ->sum(fn (TemplateVersionSection $row): int => $this->storedFields($row->sectionVersion->fields)->count());
+        return $this->contact->structureVersion->assembly
+            ->where('structure_version_page_id', $page->id)
+            ->sum(fn (StructureVersionSection $row): int => $this->storedFields($row->sectionVersion->fields)->count());
     }
 
     /**

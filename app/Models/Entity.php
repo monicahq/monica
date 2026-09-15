@@ -42,7 +42,7 @@ use Override;
  * @property int $account_id
  * @property int $vault_id
  * @property int $entity_type_id
- * @property int $template_version_id
+ * @property int $structure_version_id
  * @property string $name
  * @property string $sort_name
  * @property string $sort_key
@@ -58,7 +58,7 @@ use Override;
  * @property-read Account $account
  * @property-read Vault $vault
  * @property-read EntityType $entityType
- * @property-read TemplateVersion $templateVersion
+ * @property-read StructureVersion $structureVersion
  * @property-read File|null $avatar
  * @property-read string $initials
  */
@@ -67,7 +67,7 @@ use Override;
     'account_id',
     'vault_id',
     'entity_type_id',
-    'template_version_id',
+    'structure_version_id',
     'name',
     'avatar_file_id',
     'avatar_colour',
@@ -182,11 +182,11 @@ class Entity extends Model
      * and never a template, so the page keeps looking the way it did until
      * somebody deliberately moves the record.
      *
-     * @return BelongsTo<TemplateVersion, $this>
+     * @return BelongsTo<StructureVersion, $this>
      */
-    public function templateVersion(): BelongsTo
+    public function structureVersion(): BelongsTo
     {
-        return $this->belongsTo(TemplateVersion::class);
+        return $this->belongsTo(StructureVersion::class);
     }
 
     /**

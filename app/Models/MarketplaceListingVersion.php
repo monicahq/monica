@@ -21,7 +21,7 @@ use Override;
  * One published state of a listing, with the payload somebody installs and the
  * change note they read before deciding whether to update.
  *
- * It is separate from the listing for the same reason a template version is
+ * It is separate from the listing for the same reason a structure version is
  * separate from a template: what is published is frozen, and what people rely
  * on has to keep working. It is also what makes the update path possible. When
  * an author publishes a new version, everybody who installed the previous one

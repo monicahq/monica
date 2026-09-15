@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Models\SectionVersion;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +18,7 @@ class MakeSectionVersionEditable
 {
     public function __construct(
         private readonly User $user,
-        private readonly TemplateVersionSection $row,
+        private readonly StructureVersionSection $row,
     ) {}
 
     public function execute(): SectionVersion

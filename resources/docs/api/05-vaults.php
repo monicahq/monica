@@ -172,7 +172,7 @@ return [
                     'description' => 'True makes this the vault records land in when nothing says which, and takes that over from whichever vault held it. False, or saying nothing, changes nothing: exactly one of your vaults is it while you have a vault at all, so there would be nothing to hand it to.',
                 ],
                 [
-                    'name' => 'template_version_id',
+                    'name' => 'structure_version_id',
                     'type' => 'integer',
                     'required' => false,
                     'description' => 'The published version of one of your active contact templates. A new contact in this vault starts from it. Contacts already created keep the version they were created on. A draft, a version belonging to somebody else, and a version describing something other than a contact are each refused.',
@@ -226,7 +226,7 @@ return [
                     'description' => 'True makes this the vault records land in when nothing says which, and takes that over from whichever vault held it. False, or saying nothing, changes nothing: exactly one of your vaults is it while you have a vault at all, so there would be nothing to hand it to.',
                 ],
                 [
-                    'name' => 'template_version_id',
+                    'name' => 'structure_version_id',
                     'type' => 'integer',
                     'required' => false,
                     'description' => 'The published version of one of your active contact templates. A new contact in this vault starts from it. Contacts already created keep the version they were created on. A draft, a version belonging to somebody else, and a version describing something other than a contact are each refused.',

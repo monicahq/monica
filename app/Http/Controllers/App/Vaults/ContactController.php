@@ -9,11 +9,11 @@ use App\Actions\DestroyContact;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
-use App\Enums\TemplateAppliesToEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\Vault;
+use App\Rules\PublishedContactStructureVersion;
 use App\ViewModels\Vaults\ContactEditViewModel;
 use App\ViewModels\Vaults\ContactFormViewModel;
 use App\ViewModels\Vaults\ContactsViewModel;
@@ -106,7 +106,7 @@ class ContactController extends Controller
             $contact = new CreateContact(
                 user: $request->user(),
                 vault: $vault,
-                templateVersion: $this->versionAskedFor($request),
+                structureVersion: $this->versionAskedFor($request),
                 prefix: $validated['prefix'] ?? null,
                 firstName: $validated['first_name'],
                 middleName: $validated['middle_name'] ?? null,
@@ -148,23 +148,20 @@ class ContactController extends Controller
             'is_partial' => ['nullable', 'boolean'],
             'is_favourite' => ['nullable', 'boolean'],
             'keep_going' => ['nullable', 'boolean'],
-            'template_version_id' => [
+            'structure_version_id' => [
                 'nullable',
                 'integer',
-                Rule::exists('templates', 'published_version_id')
-                    ->where('account_id', $request->user()->account_id)
-                    ->where('applies_to', TemplateAppliesToEnum::Contact->value)
-                    ->where('is_active', true),
+                new PublishedContactStructureVersion($request->user()->account_id),
             ],
         ];
     }
 
-    private function versionAskedFor(Request $request): ?TemplateVersion
+    private function versionAskedFor(Request $request): ?StructureVersion
     {
-        if (! $request->filled('template_version_id')) {
+        if (! $request->filled('structure_version_id')) {
             return null;
         }
 
-        return TemplateVersion::query()->find($request->integer('template_version_id'));
+        return StructureVersion::query()->find($request->integer('structure_version_id'));
     }
 }

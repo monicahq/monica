@@ -9,8 +9,8 @@ use App\Models\Account;
 use App\Models\Contact;
 use App\Models\EmailSent;
 use App\Models\MarketplaceListingVersion;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Admin\OverviewViewModel;
@@ -28,11 +28,11 @@ class OverviewViewModelTest extends TestCase
         $michael = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $michael->account_id]);
         $template = Template::factory()->create(['account_id' => $michael->account_id]);
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
         Contact::factory()->count(3)->create([
             'account_id' => $michael->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
         Account::factory()->create();
 

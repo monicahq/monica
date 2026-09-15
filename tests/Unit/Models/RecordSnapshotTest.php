@@ -10,7 +10,7 @@ use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\RecordSnapshot;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
@@ -55,7 +55,7 @@ class RecordSnapshotTest extends TestCase
             'snapshotable_id' => $entity->id,
             'account_id' => $entity->account_id,
             'vault_id' => $entity->vault_id,
-            'template_version_id' => $entity->template_version_id,
+            'structure_version_id' => $entity->structure_version_id,
         ]);
 
         $this->assertTrue($entity->is($snapshot->snapshotable));
@@ -64,12 +64,12 @@ class RecordSnapshotTest extends TestCase
     #[Test]
     public function it_belongs_to_the_structure_the_record_was_on(): void
     {
-        $version = TemplateVersion::factory()->published()->create();
-        $contact = Contact::factory()->create(['template_version_id' => $version->id]);
+        $version = StructureVersion::factory()->published()->create();
+        $contact = Contact::factory()->create(['structure_version_id' => $version->id]);
         $snapshot = RecordSnapshot::factory()->create(['snapshotable_id' => $contact->id]);
 
-        $this->assertTrue($snapshot->templateVersion()->exists());
-        $this->assertTrue($version->is($snapshot->templateVersion));
+        $this->assertTrue($snapshot->structureVersion()->exists());
+        $this->assertTrue($version->is($snapshot->structureVersion));
     }
 
     #[Test]

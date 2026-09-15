@@ -7,9 +7,9 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 use App\Enums\FieldTypeEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Field;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -43,7 +43,7 @@ class BuilderFlowTest extends TestCase
             ->post(route('settings.templateSections.create', $template), ['name' => 'Health'])
             ->assertRedirect();
 
-        $row = TemplateVersionSection::query()->where('account_id', $user->account_id)->firstOrFail();
+        $row = StructureVersionSection::query()->where('account_id', $user->account_id)->firstOrFail();
 
         $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))->assertOk();
 
@@ -83,7 +83,7 @@ class BuilderFlowTest extends TestCase
         $template->refresh();
 
         $this->assertEquals(VersionStatusEnum::Published, $version->fresh()->status);
-        $this->assertEquals($version->id, $template->published_version_id);
+        $this->assertEquals($version->id, $template->structure->published_version_id);
         $this->assertEquals(VersionStatusEnum::Published, $row->fresh()->sectionVersion->status);
     }
 
@@ -94,8 +94,8 @@ class BuilderFlowTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
-        $template->update(['published_version_id' => $version->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        $template->structure->update(['published_version_id' => $version->id]);
 
         $this->actingAs($user)
             ->get(route('settings.templateBuilder.index', $template))
@@ -115,7 +115,7 @@ class BuilderFlowTest extends TestCase
         $template = Template::query()->where('account_id', $user->account_id)->firstOrFail();
 
         $this->actingAs($user)->post(route('settings.templateSections.create', $template), ['name' => 'Health']);
-        $row = TemplateVersionSection::query()->where('account_id', $user->account_id)->firstOrFail();
+        $row = StructureVersionSection::query()->where('account_id', $user->account_id)->firstOrFail();
 
         $this->actingAs($user)->post(route('settings.fields.create', [$template, $row]), [
             'type' => FieldTypeEnum::Text->value,
@@ -126,9 +126,9 @@ class BuilderFlowTest extends TestCase
         $sectionVersion = $row->fresh()->sectionVersion;
 
         $other = Template::factory()->create(['account_id' => $user->account_id]);
-        $otherVersion = TemplateVersion::factory()->create(['template_id' => $other->id]);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $otherVersion->id,
+        $otherVersion = StructureVersion::factory()->create(['structure_id' => $other->structure->id]);
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $otherVersion->id,
             'section_version_id' => $sectionVersion->id,
         ]);
         $sectionVersion->increment('usage_count');

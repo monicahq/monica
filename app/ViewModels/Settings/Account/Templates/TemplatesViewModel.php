@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\ViewModels\Settings\Account\Templates;
 
 use App\Enums\VersionStatusEnum;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -104,8 +104,8 @@ class TemplatesViewModel
             'isSystem' => $template->is_system,
             'isActive' => $template->is_active,
             'hasDraft' => $draft !== null,
-            'appliesTo' => $template->applies_to,
-            'entityTypeName' => $template->entityType?->name_plural,
+            'appliesTo' => $template->structure->applies_to,
+            'entityTypeName' => $template->structure->entityType?->name_plural,
             'sectionLabel' => self::sectionLabel((int) ($shown->assembly_count ?? 0)),
             'updatedLabel' => __('Updated :date', ['date' => $template->updated_at?->isoFormat('LL') ?? '']),
             'versionLabel' => $shown === null ? '—' : 'v'.$shown->version_number,
@@ -123,7 +123,7 @@ class TemplatesViewModel
         return trans_choice(':count section|:count sections', $count);
     }
 
-    private static function versionSubLabel(Template $template, ?TemplateVersion $shown): string
+    private static function versionSubLabel(Template $template, ?StructureVersion $shown): string
     {
         if ($shown === null) {
             return __('never published');
@@ -160,7 +160,7 @@ class TemplatesViewModel
             })
             ->filter(fn (Template $template): bool => match ($this->filter()) {
                 self::FILTER_DRAFTS => $template->versions->contains('status', VersionStatusEnum::Draft),
-                self::FILTER_PUBLISHED => $template->published_version_id !== null,
+                self::FILTER_PUBLISHED => $template->structure->published_version_id !== null,
                 self::FILTER_SUPPLIED => $template->is_system,
                 default => true,
             });
@@ -178,7 +178,7 @@ class TemplatesViewModel
         return Template::query()
             ->where('account_id', $this->user->account_id)
             ->with([
-                'entityType',
+                'structure.entityType',
                 'versions' => fn ($query) => $query->withCount('assembly'),
                 'publishedVersion' => fn ($query) => $query->withCount('assembly'),
             ])

@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\DefaultPageEnum;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\SlugBuilder;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\EntityType;
+use App\Models\Structure;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +32,7 @@ class CreateTemplate
     public function __construct(
         private readonly User $user,
         private string $name,
-        private readonly TemplateAppliesToEnum $appliesTo = TemplateAppliesToEnum::Contact,
+        private readonly StructureAppliesToEnum $appliesTo = StructureAppliesToEnum::Contact,
         private readonly ?EntityType $entityType = null,
         private ?string $description = null,
         private ?string $slug = null,
@@ -76,22 +77,28 @@ class CreateTemplate
         DB::transaction(function () use ($positions): void {
             $this->template = Template::query()->create([
                 'account_id' => $this->user->account_id,
-                'applies_to' => $this->appliesTo,
-                'entity_type_id' => $this->appliesTo->needsEntityType() ? $this->entityType?->id : null,
                 'name' => $this->name,
                 'name_translation_key' => null,
                 'description' => $this->description,
                 'slug' => $this->slug(),
                 'is_system' => false,
                 'is_active' => $this->isActive,
-                'published_version_id' => null,
                 'locale' => $this->locale ?? $this->user->locale ?? config('app.locale'),
                 'position' => ($positions->max() ?? 0) + 1,
             ]);
 
-            $version = TemplateVersion::query()->create([
+            $structure = Structure::query()->create([
                 'account_id' => $this->user->account_id,
-                'template_id' => $this->template->id,
+                'owner_type' => Template::class,
+                'owner_id' => $this->template->id,
+                'applies_to' => $this->appliesTo,
+                'entity_type_id' => $this->appliesTo->needsEntityType() ? $this->entityType?->id : null,
+                'published_version_id' => null,
+            ]);
+
+            $version = StructureVersion::query()->create([
+                'account_id' => $this->user->account_id,
+                'structure_id' => $structure->id,
                 'version_number' => 1,
                 'status' => VersionStatusEnum::Draft,
                 'change_note' => null,
@@ -101,10 +108,10 @@ class CreateTemplate
                 'record_count' => 0,
             ]);
 
-            TemplateVersionPage::query()->create([
+            StructureVersionPage::query()->create([
                 'account_id' => $this->user->account_id,
-                'template_version_id' => $version->id,
-                'key' => TemplateVersionPage::SUPPLIED_KEY,
+                'structure_version_id' => $version->id,
+                'key' => StructureVersionPage::SUPPLIED_KEY,
                 'label' => null,
                 'label_translation_key' => DefaultPageEnum::General->label(),
                 'position' => 1,

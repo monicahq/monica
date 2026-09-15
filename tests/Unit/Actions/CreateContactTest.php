@@ -12,8 +12,8 @@ use App\Exceptions\VaultHasNoContactDefault;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -41,7 +41,7 @@ class CreateContactTest extends TestCase
         $contact = new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $version,
+            structureVersion: $version,
             prefix: 'Mr',
             firstName: 'Michael',
             middleName: 'Gary',
@@ -56,7 +56,7 @@ class CreateContactTest extends TestCase
             'id' => $contact->id,
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'prefix' => 'Mr',
             'first_name' => 'Michael',
             'middle_name' => 'Gary',
@@ -84,7 +84,7 @@ class CreateContactTest extends TestCase
         VaultDefaultTemplate::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
 
         $contact = new CreateContact(
@@ -94,7 +94,7 @@ class CreateContactTest extends TestCase
             lastName: 'Scott',
         )->execute();
 
-        $this->assertEquals($version->id, $contact->template_version_id);
+        $this->assertEquals($version->id, $contact->structure_version_id);
         $this->assertSame(1, $version->fresh()->record_count);
     }
 
@@ -108,19 +108,19 @@ class CreateContactTest extends TestCase
         VaultDefaultTemplate::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => $this->publishedContactVersion($user->account)->id,
+            'structure_version_id' => $this->publishedContactVersion($user->account)->id,
         ]);
         $chosen = $this->publishedContactVersion($user->account);
 
         $contact = new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $chosen,
+            structureVersion: $chosen,
             firstName: 'Michael',
             lastName: 'Scott',
         )->execute();
 
-        $this->assertEquals($chosen->id, $contact->template_version_id);
+        $this->assertEquals($chosen->id, $contact->structure_version_id);
     }
 
     #[Test]
@@ -147,7 +147,7 @@ class CreateContactTest extends TestCase
         $contact = new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $this->publishedContactVersion($user->account),
+            structureVersion: $this->publishedContactVersion($user->account),
             firstName: 'Pam',
             lastName: 'Beesly',
         )->execute();
@@ -167,7 +167,7 @@ class CreateContactTest extends TestCase
         new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $version,
+            structureVersion: $version,
             firstName: 'Jim',
             lastName: 'Halpert',
         )->execute();
@@ -187,7 +187,7 @@ class CreateContactTest extends TestCase
         $contact = new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $this->publishedContactVersion($user->account),
+            structureVersion: $this->publishedContactVersion($user->account),
             firstName: 'Jack',
             isPartial: true,
         )->execute();
@@ -207,7 +207,7 @@ class CreateContactTest extends TestCase
         $contact = new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $this->publishedContactVersion($user->account),
+            structureVersion: $this->publishedContactVersion($user->account),
             firstName: 'Pam',
             isFavourite: true,
         )->execute();
@@ -226,7 +226,7 @@ class CreateContactTest extends TestCase
         $contact = new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $this->publishedContactVersion($user->account),
+            structureVersion: $this->publishedContactVersion($user->account),
             firstName: 'Michael',
             lastName: 'Scott',
             isMe: true,
@@ -249,7 +249,7 @@ class CreateContactTest extends TestCase
         new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $this->publishedContactVersion($user->account),
+            structureVersion: $this->publishedContactVersion($user->account),
             firstName: 'Michael',
             lastName: 'Scott',
             isMe: true,
@@ -271,7 +271,7 @@ class CreateContactTest extends TestCase
         $contact = new CreateContact(
             user: $user,
             vault: $work,
-            templateVersion: $version,
+            structureVersion: $version,
             firstName: 'Michael',
             lastName: 'Scott',
             isMe: true,
@@ -292,7 +292,7 @@ class CreateContactTest extends TestCase
         $contact = new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $this->publishedContactVersion($user->account),
+            structureVersion: $this->publishedContactVersion($user->account),
             prefix: 'Dr',
             isPartial: true,
         )->execute();
@@ -314,7 +314,7 @@ class CreateContactTest extends TestCase
         $contact = new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $this->publishedContactVersion($user->account),
+            structureVersion: $this->publishedContactVersion($user->account),
             firstName: '<script>alert("Dwight")</script>Dwight',
             lastName: '<b>Schrute</b>',
         )->execute();
@@ -336,13 +336,13 @@ class CreateContactTest extends TestCase
         new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $this->publishedContactVersion($user->account),
+            structureVersion: $this->publishedContactVersion($user->account),
             firstName: 'Dwight',
         )->execute();
     }
 
     #[Test]
-    public function it_refuses_a_template_version_in_another_account(): void
+    public function it_refuses_a_structure_version_in_another_account(): void
     {
         Queue::fake();
 
@@ -354,7 +354,7 @@ class CreateContactTest extends TestCase
         new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $this->publishedContactVersion(Account::factory()->create()),
+            structureVersion: $this->publishedContactVersion(Account::factory()->create()),
             firstName: 'Dwight',
         )->execute();
     }
@@ -367,14 +367,14 @@ class CreateContactTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $template = Template::factory()->forEntity()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         $this->expectException(InvalidArgumentException::class);
 
         new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $version,
+            structureVersion: $version,
             firstName: 'Dwight',
         )->execute();
     }
@@ -387,14 +387,14 @@ class CreateContactTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->expectException(InvalidArgumentException::class);
 
         new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $version,
+            structureVersion: $version,
             firstName: 'Dwight',
         )->execute();
     }
@@ -410,7 +410,7 @@ class CreateContactTest extends TestCase
         $contact = new CreateContact(
             user: $user,
             vault: $vault,
-            templateVersion: $this->publishedContactVersion($user->account),
+            structureVersion: $this->publishedContactVersion($user->account),
             firstName: 'Michael',
             lastName: 'Scott',
         )->execute();
@@ -441,7 +441,7 @@ class CreateContactTest extends TestCase
         $this->expectException(AuthorizationException::class);
         $this->expectExceptionMessage('Full access lifts the ceiling.');
 
-        new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Pam')->execute();
+        new CreateContact(user: $user, vault: $vault, structureVersion: $version, firstName: 'Pam')->execute();
     }
 
     #[Test]
@@ -458,7 +458,7 @@ class CreateContactTest extends TestCase
 
         $this->expectException(AuthorizationException::class);
 
-        new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Pam')->execute();
+        new CreateContact(user: $user, vault: $vault, structureVersion: $version, firstName: 'Pam')->execute();
     }
 
     #[Test]
@@ -473,8 +473,8 @@ class CreateContactTest extends TestCase
         Contact::factory()->me()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
         Contact::factory()->partial()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
 
-        $pam = new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Pam')->execute();
-        $partial = new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Bob', isPartial: true)->execute();
+        $pam = new CreateContact(user: $user, vault: $vault, structureVersion: $version, firstName: 'Pam')->execute();
+        $partial = new CreateContact(user: $user, vault: $vault, structureVersion: $version, firstName: 'Bob', isPartial: true)->execute();
 
         $this->assertInstanceOf(Contact::class, $pam);
         $this->assertInstanceOf(Contact::class, $partial);
@@ -492,7 +492,7 @@ class CreateContactTest extends TestCase
         $version = $this->publishedContactVersion($user->account);
         Contact::factory()->count(2)->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
 
-        $contact = new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Pam')->execute();
+        $contact = new CreateContact(user: $user, vault: $vault, structureVersion: $version, firstName: 'Pam')->execute();
 
         $this->assertInstanceOf(Contact::class, $contact);
     }
@@ -508,15 +508,15 @@ class CreateContactTest extends TestCase
         $version = $this->publishedContactVersion($user->account);
         Contact::factory()->count(2)->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
 
-        $contact = new CreateContact(user: $user, vault: $vault, templateVersion: $version, firstName: 'Pam')->execute();
+        $contact = new CreateContact(user: $user, vault: $vault, structureVersion: $version, firstName: 'Pam')->execute();
 
         $this->assertInstanceOf(Contact::class, $contact);
     }
 
-    private function publishedContactVersion(Account $account): TemplateVersion
+    private function publishedContactVersion(Account $account): StructureVersion
     {
         $template = Template::factory()->create(['account_id' => $account->id]);
 
-        return TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        return StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
     }
 }

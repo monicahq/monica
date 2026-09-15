@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\SetVaultDefaultTemplate;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\EntityType;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -37,7 +37,7 @@ class SetVaultDefaultTemplateTest extends TestCase
         $default = new SetVaultDefaultTemplate(
             user: $user,
             vault: $vault,
-            templateVersion: $version,
+            structureVersion: $version,
         )->execute();
 
         $this->assertInstanceOf(VaultDefaultTemplate::class, $default);
@@ -45,9 +45,9 @@ class SetVaultDefaultTemplateTest extends TestCase
             'id' => $default->id,
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact->value,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
             'entity_type_id' => null,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
     }
 
@@ -64,10 +64,10 @@ class SetVaultDefaultTemplateTest extends TestCase
         $default = new SetVaultDefaultTemplate(
             user: $user,
             vault: $vault,
-            templateVersion: $version,
+            structureVersion: $version,
         )->execute();
 
-        $this->assertEquals(TemplateAppliesToEnum::Entity, $default->applies_to);
+        $this->assertEquals(StructureAppliesToEnum::Entity, $default->applies_to);
         $this->assertEquals($entityType->id, $default->entity_type_id);
     }
 
@@ -79,13 +79,13 @@ class SetVaultDefaultTemplateTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $first = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
-        $second = TemplateVersion::factory()->published()->create(['template_id' => $template->id, 'version_number' => 2]);
+        $first = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        $second = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id, 'version_number' => 2]);
 
-        new SetVaultDefaultTemplate(user: $user, vault: $vault, templateVersion: $first)->execute();
-        $default = new SetVaultDefaultTemplate(user: $user, vault: $vault, templateVersion: $second)->execute();
+        new SetVaultDefaultTemplate(user: $user, vault: $vault, structureVersion: $first)->execute();
+        $default = new SetVaultDefaultTemplate(user: $user, vault: $vault, structureVersion: $second)->execute();
 
-        $this->assertEquals($second->id, $default->template_version_id);
+        $this->assertEquals($second->id, $default->structure_version_id);
         $this->assertEquals(1, VaultDefaultTemplate::query()->count());
     }
 
@@ -101,13 +101,13 @@ class SetVaultDefaultTemplateTest extends TestCase
         new SetVaultDefaultTemplate(
             user: $user,
             vault: $vault,
-            templateVersion: $this->publishedVersion(Template::factory()->create(['account_id' => $user->account_id])),
+            structureVersion: $this->publishedVersion(Template::factory()->create(['account_id' => $user->account_id])),
         )->execute();
 
         new SetVaultDefaultTemplate(
             user: $user,
             vault: $vault,
-            templateVersion: $this->publishedVersion(Template::factory()->forEntity($entityType)->create(['account_id' => $user->account_id])),
+            structureVersion: $this->publishedVersion(Template::factory()->forEntity($entityType)->create(['account_id' => $user->account_id])),
         )->execute();
 
         $this->assertEquals(2, VaultDefaultTemplate::query()->where('vault_id', $vault->id)->count());
@@ -125,16 +125,16 @@ class SetVaultDefaultTemplateTest extends TestCase
         $detailed = new SetVaultDefaultTemplate(
             user: $user,
             vault: $family,
-            templateVersion: $this->publishedVersion(Template::factory()->create(['account_id' => $user->account_id])),
+            structureVersion: $this->publishedVersion(Template::factory()->create(['account_id' => $user->account_id])),
         )->execute();
 
         $plain = new SetVaultDefaultTemplate(
             user: $user,
             vault: $work,
-            templateVersion: $this->publishedVersion(Template::factory()->create(['account_id' => $user->account_id])),
+            structureVersion: $this->publishedVersion(Template::factory()->create(['account_id' => $user->account_id])),
         )->execute();
 
-        $this->assertNotEquals($detailed->template_version_id, $plain->template_version_id);
+        $this->assertNotEquals($detailed->structure_version_id, $plain->structure_version_id);
     }
 
     #[Test]
@@ -150,22 +150,22 @@ class SetVaultDefaultTemplateTest extends TestCase
         new SetVaultDefaultTemplate(
             user: $user,
             vault: $vault,
-            templateVersion: $this->publishedVersion(Template::factory()->create(['account_id' => $user->account_id])),
+            structureVersion: $this->publishedVersion(Template::factory()->create(['account_id' => $user->account_id])),
         )->execute();
     }
 
     #[Test]
-    public function it_refuses_a_template_version_in_another_account(): void
+    public function it_refuses_a_structure_version_in_another_account(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->published()->create();
+        $version = StructureVersion::factory()->published()->create();
 
         $this->expectException(ModelNotFoundException::class);
 
-        new SetVaultDefaultTemplate(user: $user, vault: $vault, templateVersion: $version)->execute();
+        new SetVaultDefaultTemplate(user: $user, vault: $vault, structureVersion: $version)->execute();
     }
 
     #[Test]
@@ -176,11 +176,11 @@ class SetVaultDefaultTemplateTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->expectException(InvalidArgumentException::class);
 
-        new SetVaultDefaultTemplate(user: $user, vault: $vault, templateVersion: $version)->execute();
+        new SetVaultDefaultTemplate(user: $user, vault: $vault, structureVersion: $version)->execute();
     }
 
     #[Test]
@@ -192,7 +192,7 @@ class SetVaultDefaultTemplateTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $version = $this->publishedVersion(Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Basic contact']));
 
-        $default = new SetVaultDefaultTemplate(user: $user, vault: $vault, templateVersion: $version)->execute();
+        $default = new SetVaultDefaultTemplate(user: $user, vault: $vault, structureVersion: $version)->execute();
 
         Queue::assertPushedOn(
             queue: 'low',
@@ -206,8 +206,8 @@ class SetVaultDefaultTemplateTest extends TestCase
         );
     }
 
-    private function publishedVersion(Template $template): TemplateVersion
+    private function publishedVersion(Template $template): StructureVersion
     {
-        return TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        return StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
     }
 }

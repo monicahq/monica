@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('slug', 128)->comment('readable identifier used in URLs and by the API, built from the displayed name, unique within the vault');
             $table->unsignedBigInteger('account_id')->comment('account the contact belongs to');
             $table->unsignedBigInteger('vault_id')->comment('vault the contact lives in');
-            $table->unsignedBigInteger('template_version_id')->comment('exact structure version the page renders from');
+            $table->unsignedBigInteger('structure_version_id')->comment('exact structure version the page renders from');
             $table->string('prefix', 50)->nullable()->comment('civility, such as Dr or Mrs');
             $table->string('first_name')->nullable()->comment('first name');
             $table->string('middle_name')->nullable()->comment('middle name');
@@ -34,7 +34,7 @@ return new class extends Migration
             $table->boolean('is_favourite')->default(false)->comment('whether the contact is pinned to the top of the list');
             $table->unsignedBigInteger('avatar_file_id')->nullable()->comment('uploaded avatar, null when initials are used instead');
             $table->string('avatar_colour', 7)->comment('background colour of the generated initials avatar');
-            $table->timestamp('last_activity_at')->nullable()->comment('when the last activity counting as a real interaction happened, null when none has');
+            $table->timestamp('last_activity_at')->nullable()->comment('date of the latest activity the contact participated in, null when none exists');
             $table->unsignedInteger('activity_count')->default(0)->comment('running count of activities the contact took part in');
             $table->timestamp('last_consulted_at')->nullable()->comment('when the user last opened the page, used to order recently viewed');
             $table->string('dav_uri')->nullable()->comment('the .vcf name a device chose when it created the card, null for a contact made here, whose card is its uuid');
@@ -50,7 +50,7 @@ return new class extends Migration
 
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();
-            $table->foreign('template_version_id')->references('id')->on('template_versions');
+            $table->foreign('structure_version_id')->references('id')->on('structure_versions');
             $table->foreign('avatar_file_id')->references('id')->on('files')->nullOnDelete();
         });
     }

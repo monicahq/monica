@@ -72,7 +72,7 @@ return [
             'path' => '/activity-categories',
             'description' => 'List the groups your account files its activity natures under, in the order you arranged them.',
             'body' => [
-                'A category groups the vocabulary in settings and pickers, filters the journal and gives aggregate statistics a level to count at. It never decides whether an activity counts as a real interaction, which fields it carries, or how it is shared. Moving a nature between groups changes how its activities are grouped, including past ones, and changes no recorded fact.',
+                'A category groups the vocabulary in settings and pickers, filters the journal and gives aggregate statistics a level to count at. It never decides which fields an activity carries, who participated, or how it is shared. Moving a nature between groups changes how its activities are grouped, including past ones, and changes no recorded fact.',
                 'Every account starts with eight: Relationships and family, Work and education, Health and wellbeing, Home and daily life, Leisure and culture, Travel and experiences, Personal and Other. Other is the fallback, so a nature is never left unclassified. All eight are marked with is_system, which stops them being deleted and nothing else.',
                 'Retired categories are listed with the rest, because one that is off is meant to be found again and switched back on.',
             ],
@@ -111,7 +111,7 @@ return [
             'description' => 'Add a group of your own, when the eight the product supplies do not sort your vocabulary the way you think of it.',
             'body' => [
                 'The category goes at the end of the list and is offered straight away. It holds nothing until natures are filed under it, and a group holding nothing is a perfectly ordinary state: Other is supplied that way.',
-                'A category does no work beyond grouping, filtering and counting. Adding one called Health does not make anything filed under it count as a real interaction: only the nature decides that.',
+                'A category does no work beyond grouping, filtering and counting. Adding one called Health changes no activity behaviour. Contact history is determined by participants, not by categories or natures.',
             ],
             'rateLimit' => 'Sixty requests per minute, per token.',
             'bodyParams' => [

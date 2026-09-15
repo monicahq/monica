@@ -9,10 +9,17 @@ use App\Exceptions\CannotDeleteATemplateInUse;
 use App\Jobs\LogUserAction;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\VaultDefaultTemplate;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Delete a template, which is only allowed while no record points at any of its versions.
+ *
+ * The delete is soft and the structure stays with it. A vault default naming one of its versions
+ * is removed in the same transaction, since a new record would otherwise be given a version whose
+ * template is gone, and the vault falls back to the account's default the way a vault with no
+ * default of its own already does.
  */
 class DestroyTemplate
 {
@@ -47,7 +54,13 @@ class DestroyTemplate
     {
         $this->name = $this->template->name;
 
-        $this->template->delete();
+        DB::transaction(function (): void {
+            VaultDefaultTemplate::query()
+                ->whereIn('structure_version_id', $this->template->versions()->select('structure_versions.id'))
+                ->delete();
+
+            $this->template->delete();
+        });
     }
 
     private function log(): void

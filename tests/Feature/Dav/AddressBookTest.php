@@ -8,7 +8,7 @@ use App\Enums\FieldTypeEnum;
 use App\Models\Contact;
 use App\Models\FieldValue;
 use App\Models\Log;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -77,7 +77,7 @@ class AddressBookTest extends TestCase
             'first_name' => 'Dwight',
             'last_name' => 'Schrute',
             'nickname' => 'Beet farmer',
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]));
         $this->value($contact, $version, 0, ['value_string' => 'dwight@dundermifflin.test']);
         $this->value($contact, $version, 1, ['value_string' => '+15705551212']);
@@ -102,7 +102,7 @@ class AddressBookTest extends TestCase
         $version = Structure::withFields($this->user, [
             ['type' => FieldTypeEnum::RecurringDate, 'key' => 'birthday', 'label' => 'Birthday'],
         ]);
-        $contact = Contact::factory()->create($this->inVault($vault, ['template_version_id' => $version->id]));
+        $contact = Contact::factory()->create($this->inVault($vault, ['structure_version_id' => $version->id]));
         $this->value($contact, $version, 0, [
             'value_string' => null,
             'value_date' => '1900-02-03',
@@ -128,7 +128,7 @@ class AddressBookTest extends TestCase
         $version = Structure::withFields($this->user, [
             ['type' => FieldTypeEnum::Phone, 'label' => 'Private line', 'is_sensitive' => true],
         ]);
-        $contact = Contact::factory()->create($this->inVault($vault, ['template_version_id' => $version->id]));
+        $contact = Contact::factory()->create($this->inVault($vault, ['structure_version_id' => $version->id]));
         $this->value($contact, $version, 0, ['value_string' => '+15705559999']);
 
         $response = $this->dav('GET', $this->book($vault).$contact->uuid.'.vcf');
@@ -144,7 +144,7 @@ class AddressBookTest extends TestCase
         $version = Structure::withFields($this->user, [
             ['type' => FieldTypeEnum::Phone, 'label' => 'Private line', 'is_sensitive' => true],
         ]);
-        $contact = Contact::factory()->create($this->inVault($vault, ['template_version_id' => $version->id]));
+        $contact = Contact::factory()->create($this->inVault($vault, ['structure_version_id' => $version->id]));
         $this->value($contact, $version, 0, ['value_string' => '+15705559999']);
 
         $this->key = $this->user->createToken('Dwight’s phone', ['sensitive-fields'])->plainTextToken;
@@ -258,7 +258,7 @@ class AddressBookTest extends TestCase
     }
 
     /** @param  array<string, mixed>  $attributes */
-    private function value(Contact $contact, TemplateVersion $version, int $index, array $attributes): FieldValue
+    private function value(Contact $contact, StructureVersion $version, int $index, array $attributes): FieldValue
     {
         $field = $version->sectionVersions()->with('fields')->get()
             ->flatMap(fn ($section) => $section->fields)
@@ -424,7 +424,7 @@ class AddressBookTest extends TestCase
         $version = Structure::withFields($this->user, [
             ['type' => FieldTypeEnum::Phone, 'label' => 'Private line', 'is_sensitive' => true],
         ]);
-        $contact = Contact::factory()->create($this->inVault($vault, ['template_version_id' => $version->id]));
+        $contact = Contact::factory()->create($this->inVault($vault, ['structure_version_id' => $version->id]));
         $this->value($contact, $version, 0, ['value_string' => '+15705559999']);
 
         $this->dav('PUT', $this->book($vault).$contact->uuid.'.vcf', body: $this->card(), contentType: 'text/vcard')

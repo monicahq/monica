@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
 use App\Enums\VersionStatusEnum;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -25,9 +25,9 @@ class TemplateSectionPositionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $first = TemplateVersionSection::factory()->create(['template_version_id' => $version->id, 'position' => 1]);
-        $second = TemplateVersionSection::factory()->create(['template_version_id' => $version->id, 'position' => 2]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $first = StructureVersionSection::factory()->create(['structure_version_id' => $version->id, 'position' => 1]);
+        $second = StructureVersionSection::factory()->create(['structure_version_id' => $version->id, 'position' => 2]);
 
         $this->actingAs($user)->put(route('settings.templateSectionPosition.update', [$template, $second]), ['position' => 1])
             ->assertRedirect();
@@ -43,8 +43,8 @@ class TemplateSectionPositionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $row = TemplateVersionSection::factory()->create(['template_version_id' => $version->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $row = StructureVersionSection::factory()->create(['structure_version_id' => $version->id]);
 
         $this->actingAs($user)->put(route('settings.templateSectionPosition.update', [$template, $row]), ['position' => 'first'])
             ->assertSessionHasErrors('position');
@@ -57,9 +57,9 @@ class TemplateSectionPositionControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $row = TemplateVersionSection::factory()->create(['template_version_id' => $version->id, 'position' => 1]);
-        TemplateVersionSection::factory()->create(['template_version_id' => $version->id, 'position' => 2]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $row = StructureVersionSection::factory()->create(['structure_version_id' => $version->id, 'position' => 1]);
+        StructureVersionSection::factory()->create(['structure_version_id' => $version->id, 'position' => 2]);
         $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
 
         $this->actingAs($user)->put(route('settings.templateSectionPosition.update', [$template, $row->fresh()]), ['position' => 2])
@@ -76,7 +76,7 @@ class TemplateSectionPositionControllerTest extends TestCase
 
         $michael = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $michael->account_id]);
-        $row = TemplateVersionSection::factory()->create();
+        $row = StructureVersionSection::factory()->create();
 
         $this->actingAs($michael)->put(route('settings.templateSectionPosition.update', [$template, $row]), ['position' => 1])
             ->assertNotFound();

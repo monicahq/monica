@@ -10,7 +10,7 @@ use App\Enums\ReminderMomentUnitEnum;
 use App\Helpers\FieldValueRules;
 use App\Models\Field;
 use App\Models\Reminder;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersionSection;
 use App\Rules\ReminderMoments;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
@@ -91,7 +91,7 @@ class SaveFieldValuesRequest extends FormRequest
         return route('contacts.sections.edit', [
             'vault' => $this->route('vault'),
             'contact' => $this->route('contact'),
-            'templateVersionSection' => $this->section(),
+            'structureVersionSection' => $this->section(),
         ]);
     }
 
@@ -105,11 +105,11 @@ class SaveFieldValuesRequest extends FormRequest
             ->values();
     }
 
-    public function section(): TemplateVersionSection
+    public function section(): StructureVersionSection
     {
-        $section = $this->route('templateVersionSection');
+        $section = $this->route('structureVersionSection');
 
-        return $section instanceof TemplateVersionSection
+        return $section instanceof StructureVersionSection
             ? $section
             : throw new RuntimeException('This request has no section.');
     }

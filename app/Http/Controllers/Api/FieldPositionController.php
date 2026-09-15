@@ -10,7 +10,7 @@ use App\Http\Resources\FieldResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class FieldPositionController extends TemplateStructureController
+class FieldPositionController extends TemplateScopedController
 {
     public function update(Request $request, string $template, string $version, string $section, string $field): JsonResponse
     {

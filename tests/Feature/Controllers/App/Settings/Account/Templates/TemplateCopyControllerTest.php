@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -23,7 +23,7 @@ class TemplateCopyControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
-        TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->post(route('settings.templateCopy.create', $template))
             ->assertRedirect()
@@ -43,14 +43,14 @@ class TemplateCopyControllerTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->supplied()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->post(route('settings.templateCopy.create', $template))->assertRedirect();
 
         $copy = Template::query()->where('account_id', $user->account_id)->where('is_system', false)->firstOrFail();
 
         $this->assertFalse($copy->is_system);
-        $this->assertNull($copy->published_version_id);
+        $this->assertNull($copy->structure->published_version_id);
     }
 
     #[Test]
@@ -60,7 +60,7 @@ class TemplateCopyControllerTest extends TestCase
 
         $michael = User::factory()->create();
         $template = Template::factory()->create();
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($michael)->post(route('settings.templateCopy.create', $template))->assertNotFound();
     }

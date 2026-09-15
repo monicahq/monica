@@ -22,7 +22,7 @@ use Illuminate\Validation\ValidationException;
 /**
  * Make two contacts one, keeping everything either of them held.
  *
- * It follows the shape of {@see MoveRecordToTemplateVersion}, and destroys nothing: the absorbed
+ * It follows the shape of {@see MoveRecordToStructureVersion}, and destroys nothing: the absorbed
  * contact is soft deleted and keeps its rows. Every decision arrives in `$resolutions` and must
  * match what {@see PreviewContactMerge} reported. Snapshots are left where they are.
  */
@@ -343,7 +343,7 @@ class MergeContacts
     /** @return list<int> */
     private function fieldsTheSurvivorCarries(): array
     {
-        return once(fn (): array => $this->kept->templateVersion->assembly
+        return once(fn (): array => $this->kept->structureVersion->assembly
             ->flatMap(fn ($row): array => $row->sectionVersion->fields->pluck('id')->all())
             ->all());
     }

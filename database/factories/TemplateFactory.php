@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Models\Account;
 use App\Models\EntityType;
+use App\Models\Structure;
 use App\Models\Template;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -23,15 +24,12 @@ class TemplateFactory extends Factory
     {
         return [
             'account_id' => Account::factory(),
-            'applies_to' => TemplateAppliesToEnum::Contact,
-            'entity_type_id' => null,
             'name' => 'Contact',
             'name_translation_key' => null,
             'description' => fake()->sentence(),
             'slug' => Str::slug(fake()->unique()->words(3, true)),
             'is_system' => false,
             'is_active' => true,
-            'published_version_id' => null,
             'locale' => 'en',
             'position' => 1,
         ];
@@ -40,10 +38,35 @@ class TemplateFactory extends Factory
     public function forEntity(?EntityType $entityType = null): static
     {
         return $this->state(fn (array $attributes): array => [
-            'applies_to' => TemplateAppliesToEnum::Entity,
-            'entity_type_id' => $entityType->id ?? EntityType::factory(),
             'name' => 'Animal',
-        ]);
+        ])->afterCreating(function (Template $template) use ($entityType): void {
+            $template->structure->update([
+                'applies_to' => StructureAppliesToEnum::Entity,
+                'entity_type_id' => $entityType->id
+                    ?? EntityType::factory()->create(['account_id' => $template->account_id])->id,
+            ]);
+        });
+    }
+
+    /**
+     * Create the structure the template owns.
+     *
+     * A template without one cannot be given a version, so every template gets
+     * one here rather than leaving each test to remember. It describes a contact
+     * unless a state says otherwise, which forEntity does by amending it.
+     */
+    #[Override]
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Template $template): void {
+            Structure::factory()->create([
+                'account_id' => $template->account_id,
+                'owner_type' => Template::class,
+                'owner_id' => $template->id,
+                'applies_to' => StructureAppliesToEnum::Contact,
+                'entity_type_id' => null,
+            ]);
+        });
     }
 
     public function supplied(): static

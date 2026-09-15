@@ -20,9 +20,9 @@ use App\Models\File;
 use App\Models\RecordSnapshot;
 use App\Models\SectionVersion;
 use App\Models\ShareLink;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -416,7 +416,7 @@ class MergeContactsTest extends TestCase
     }
 
     /** @return array{0: Contact, 1: Contact} */
-    private function twoContactsOf(User $user, ?TemplateVersion $version = null): array
+    private function twoContactsOf(User $user, ?StructureVersion $version = null): array
     {
         $version ??= $this->publishedContactVersion($user);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -427,25 +427,25 @@ class MergeContactsTest extends TestCase
         ];
     }
 
-    private function contactIn(Vault $vault, TemplateVersion $version, string $first, string $last): Contact
+    private function contactIn(Vault $vault, StructureVersion $version, string $first, string $last): Contact
     {
         return Contact::factory()->create([
             'account_id' => $vault->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'first_name' => $first,
             'last_name' => $last,
         ]);
     }
 
-    private function publishedContactVersion(User $user): TemplateVersion
+    private function publishedContactVersion(User $user): StructureVersion
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
 
-        return TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        return StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
     }
 
-    private function fieldCarriedBy(TemplateVersion $version): Field
+    private function fieldCarriedBy(StructureVersion $version): Field
     {
         $sectionVersion = SectionVersion::factory()->create(['account_id' => $version->account_id]);
         $field = Field::factory()->create([
@@ -456,9 +456,9 @@ class MergeContactsTest extends TestCase
         $version->status = VersionStatusEnum::Draft;
         $version->save();
 
-        TemplateVersionSection::factory()->create([
+        StructureVersionSection::factory()->create([
             'account_id' => $version->account_id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 

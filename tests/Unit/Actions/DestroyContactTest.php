@@ -10,7 +10,7 @@ use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\ShareLink;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -44,11 +44,11 @@ class DestroyContactTest extends TestCase
 
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 4]);
-        $version = TemplateVersion::factory()->published()->used(3)->create();
+        $version = StructureVersion::factory()->published()->used(3)->create();
         $contact = Contact::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
 
         new DestroyContact(user: $user, contact: $contact)->execute();
@@ -64,11 +64,11 @@ class DestroyContactTest extends TestCase
 
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 0]);
-        $version = TemplateVersion::factory()->published()->create();
+        $version = StructureVersion::factory()->published()->create();
         $contact = Contact::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
 
         new DestroyContact(user: $user, contact: $contact)->execute();

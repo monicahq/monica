@@ -10,10 +10,10 @@ use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\ShareLink;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -468,16 +468,16 @@ class ContactShareLinkControllerTest extends TestCase
         return Contact::factory()->create([
             'account_id' => $vault->account_id,
             'vault_id' => $vault->id,
-            'template_version_id' => $this->versionWithTwoPages($vault)->id,
+            'structure_version_id' => $this->versionWithTwoPages($vault)->id,
             'first_name' => $firstName,
             'last_name' => $lastName,
         ]);
     }
 
-    private function versionWithTwoPages(Vault $vault): TemplateVersion
+    private function versionWithTwoPages(Vault $vault): StructureVersion
     {
         $template = Template::factory()->create(['account_id' => $vault->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->page($version, 'Overview', ['Facts' => 'Born', 'Doctors' => 'Doctor']);
         $this->page($version, 'Work', ['Where they worked' => 'Employer']);
@@ -488,10 +488,10 @@ class ContactShareLinkControllerTest extends TestCase
     }
 
     /** @param  array<string, string>  $sections */
-    private function page(TemplateVersion $version, string $label, array $sections): TemplateVersionPage
+    private function page(StructureVersion $version, string $label, array $sections): StructureVersionPage
     {
-        $page = TemplateVersionPage::factory()->create([
-            'template_version_id' => $version->id,
+        $page = StructureVersionPage::factory()->create([
+            'structure_version_id' => $version->id,
             'account_id' => $version->account_id,
             'key' => Str::slug($label),
             'label' => $label,
@@ -505,9 +505,9 @@ class ContactShareLinkControllerTest extends TestCase
 
             Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => $fieldLabel]);
 
-            TemplateVersionSection::factory()->create([
-                'template_version_id' => $version->id,
-                'template_version_page_id' => $page->id,
+            StructureVersionSection::factory()->create([
+                'structure_version_id' => $version->id,
+                'structure_version_page_id' => $page->id,
                 'section_version_id' => $sectionVersion->id,
                 'position' => $position++,
             ]);
@@ -516,9 +516,9 @@ class ContactShareLinkControllerTest extends TestCase
         return $page;
     }
 
-    private function sectionNamed(Contact $contact, string $name): TemplateVersionSection
+    private function sectionNamed(Contact $contact, string $name): StructureVersionSection
     {
-        return $contact->templateVersion->assembly
-            ->first(fn (TemplateVersionSection $row): bool => $row->sectionVersion->section->name === $name);
+        return $contact->structureVersion->assembly
+            ->first(fn (StructureVersionSection $row): bool => $row->sectionVersion->section->name === $name);
     }
 }

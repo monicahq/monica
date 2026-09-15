@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
+use App\Models\ActivityType;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersionSection;
+use Illuminate\Support\Str;
 
 class StructureFile
 {
@@ -25,7 +27,7 @@ class StructureFile
     }
 
     /** @return array<string, mixed> */
-    public static function ofSection(TemplateVersionSection $row): array
+    public static function ofSection(StructureVersionSection $row): array
     {
         $payload = MarketplacePayload::ofSectionVersion($row->sectionVersion);
 
@@ -33,20 +35,40 @@ class StructureFile
             'monica' => ['format' => 'section', 'format_version' => self::FORMAT_VERSION],
             'exported_at' => now()->toIso8601ZuluString(),
             'from_template' => [
-                'name' => $row->templateVersion->template->name,
-                'version' => $row->templateVersion->version_number,
+                'name' => $row->structureVersion->structure->owner->name,
+                'version' => $row->structureVersion->version_number,
             ],
             'section' => $payload['section'],
             'value_lists' => $payload['value_lists'],
         ];
     }
 
-    public static function nameOfTemplate(Template $template): string
+    /** @return array<string, mixed> */
+    public static function ofActivityType(ActivityType $activityType): array
     {
-        return "{$template->slug}-v{$template->publishedVersion?->version_number}.json";
+        $payload = MarketplacePayload::of($activityType);
+
+        return [
+            'monica' => ['format' => 'activity_type', 'format_version' => self::FORMAT_VERSION],
+            'exported_at' => now()->toIso8601ZuluString(),
+            'activity_type' => $payload['activity_type'],
+            'value_lists' => $payload['value_lists'],
+        ];
     }
 
-    public static function nameOfSection(TemplateVersionSection $row): string
+    public static function nameOfActivityType(ActivityType $activityType): string
+    {
+        $version = $activityType->structure->publishedVersion?->version_number;
+
+        return Str::slug($activityType->name)."-v{$version}.json";
+    }
+
+    public static function nameOfTemplate(Template $template): string
+    {
+        return "{$template->slug}-v{$template->structure->publishedVersion?->version_number}.json";
+    }
+
+    public static function nameOfSection(StructureVersionSection $row): string
     {
         return "{$row->sectionVersion->section->slug}.json";
     }

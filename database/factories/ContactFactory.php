@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Contact;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
@@ -22,7 +22,7 @@ class ContactFactory extends Factory
         return [
             'vault_id' => Vault::factory(),
             'account_id' => fn (array $attributes): int => Vault::query()->findOrFail($attributes['vault_id'])->account_id,
-            'template_version_id' => TemplateVersion::factory()->published(),
+            'structure_version_id' => StructureVersion::factory()->published(),
             'prefix' => null,
             'first_name' => fake()->firstName(),
             'middle_name' => null,

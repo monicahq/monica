@@ -9,13 +9,15 @@ use App\Actions\DestroyTemplate;
 use App\Enums\UserActionEnum;
 use App\Exceptions\CannotDeleteATemplateInUse;
 use App\Jobs\LogUserAction;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
+use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
 use Tests\TestCase;
 
 class DestroyTemplateTest extends TestCase
@@ -42,7 +44,7 @@ class DestroyTemplateTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->published()->used(214)->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->used(214)->create(['structure_id' => $template->structure->id]);
 
         $this->expectException(CannotDeleteATemplateInUse::class);
 
@@ -91,5 +93,23 @@ class DestroyTemplateTest extends TestCase
             return $job->action === UserActionEnum::TemplateDeletion
                 && $job->parameters === ['name' => 'Contact'];
         });
+    }
+
+    #[Test]
+    public function it_takes_the_vault_defaults_naming_one_of_its_versions_with_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $default = VaultDefaultTemplate::factory()->create(['vault_id' => $vault->id, 'structure_version_id' => $version->id]);
+        $another = VaultDefaultTemplate::factory()->create(['vault_id' => $vault->id]);
+
+        new DestroyTemplate(user: $user, template: $template)->execute();
+
+        $this->assertModelMissing($default);
+        $this->assertModelExists($another);
     }
 }

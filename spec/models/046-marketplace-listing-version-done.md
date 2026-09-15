@@ -38,7 +38,7 @@ updated_at                  datetime
 
 - An approved version is immutable, like every other published version in the product (6).
 - The payload is self contained. For a template it carries the pages, their stable keys and order, the placement of sections on those pages, the fields, the value list items they reference and, when it applies to an entity type, the entity type itself. A section published alone carries no page. Installing must never need anything from the author's account at install time, because installing is copying and the copy has to stand alone.
-- An activity type payload carries the type and its field structure, but not the author's account owned activity category. The installer chooses one of their own categories when making the local copy ([ActivityCategory](028-activity-category-not-yet.md)).
+- An activity type payload carries the type and its field structure, but not the author's account owned activity category. The installer chooses one of their own categories when making the local copy ([ActivityCategory](028-activity-category-done.md)).
 - **There is never a forced synchronisation** (7, 3.1). A new version notifies. It never updates anything by itself. This is the single most important rule of the marketplace and it is a direct application of the principle that nothing changes under somebody's feet.
 - Withdrawing a version stops new installs and changes nothing for existing ones.
 - `checksum` lets an install verify the payload it received matches what was approved.

@@ -77,6 +77,9 @@ enum UserActionEnum: string implements Translatable
     case ActivityCategoryActivated = 'activity_category_activated';
     case ActivityCategoryDeactivated = 'activity_category_deactivated';
     case ActivityCategoryDeletion = 'activity_category_deleted';
+    case ActivityTypeCreation = 'activity_type_created';
+    case ActivityTypeDeletion = 'activity_type_deleted';
+    case ActivityTypeFieldsPublished = 'activity_type_fields_published';
     case RelationshipTypesSeeded = 'relationship_types_seeded';
     case RelationshipCategoryCreation = 'relationship_category_created';
     case RelationshipCategoryUpdate = 'relationship_category_updated';
@@ -256,6 +259,9 @@ enum UserActionEnum: string implements Translatable
             self::ActivityCategoryActivated => 'Offered the activity category :name again',
             self::ActivityCategoryDeactivated => 'Stopped offering the activity category :name',
             self::ActivityCategoryDeletion => 'Deleted the activity category :name',
+            self::ActivityTypeCreation => 'Created the activity type :name',
+            self::ActivityTypeDeletion => 'Deleted the activity type :name',
+            self::ActivityTypeFieldsPublished => 'Published version :version of the custom fields of the activity type :name',
             self::RelationshipTypesSeeded => 'Set up the relationship types the account starts with',
             self::RelationshipCategoryCreation => 'Created the relationship category :name',
             self::RelationshipCategoryUpdate => 'Renamed the relationship category :name',

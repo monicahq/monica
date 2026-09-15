@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateTemplate;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Jobs\LogUserAction;
@@ -41,15 +41,21 @@ class CreateTemplateTest extends TestCase
         $this->assertDatabaseHas('templates', [
             'id' => $template->id,
             'account_id' => $user->account_id,
-            'applies_to' => TemplateAppliesToEnum::Contact->value,
-            'entity_type_id' => null,
             'name' => 'Contact',
             'description' => 'The one every vault starts with',
             'slug' => 'contact',
             'is_system' => false,
             'is_active' => true,
-            'published_version_id' => null,
             'position' => 1,
+        ]);
+
+        $this->assertDatabaseHas('structures', [
+            'account_id' => $user->account_id,
+            'owner_type' => Template::class,
+            'owner_id' => $template->id,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
+            'entity_type_id' => null,
+            'published_version_id' => null,
         ]);
     }
 
@@ -62,8 +68,8 @@ class CreateTemplateTest extends TestCase
 
         $template = new CreateTemplate(user: $user, name: 'Contact')->execute();
 
-        $this->assertDatabaseHas('template_versions', [
-            'template_id' => $template->id,
+        $this->assertDatabaseHas('structure_versions', [
+            'structure_id' => $template->structure->id,
             'account_id' => $user->account_id,
             'version_number' => 1,
             'status' => VersionStatusEnum::Draft->value,
@@ -82,9 +88,9 @@ class CreateTemplateTest extends TestCase
         $template = new CreateTemplate(user: $user, name: 'Contact')->execute();
         $version = $template->versions()->sole();
 
-        $this->assertDatabaseHas('template_version_pages', [
+        $this->assertDatabaseHas('structure_version_pages', [
             'account_id' => $user->account_id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'key' => 'general',
             'label' => null,
             'label_translation_key' => 'General',
@@ -105,11 +111,12 @@ class CreateTemplateTest extends TestCase
         $template = new CreateTemplate(
             user: $user,
             name: 'Animal',
-            appliesTo: TemplateAppliesToEnum::Entity,
+            appliesTo: StructureAppliesToEnum::Entity,
             entityType: $entityType,
         )->execute();
 
-        $this->assertEquals($entityType->id, $template->entity_type_id);
+        $this->assertEquals($entityType->id, $template->structure->entity_type_id);
+        $this->assertEquals(StructureAppliesToEnum::Entity, $template->structure->applies_to);
     }
 
     #[Test]
@@ -124,7 +131,7 @@ class CreateTemplateTest extends TestCase
         new CreateTemplate(
             user: $user,
             name: 'Animal',
-            appliesTo: TemplateAppliesToEnum::Entity,
+            appliesTo: StructureAppliesToEnum::Entity,
         )->execute();
     }
 
@@ -141,7 +148,7 @@ class CreateTemplateTest extends TestCase
         new CreateTemplate(
             user: $michael,
             name: 'Animal',
-            appliesTo: TemplateAppliesToEnum::Entity,
+            appliesTo: StructureAppliesToEnum::Entity,
             entityType: $entityType,
         )->execute();
     }

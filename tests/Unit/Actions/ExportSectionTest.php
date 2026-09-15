@@ -15,9 +15,9 @@ use App\Jobs\LogUserAction;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -39,7 +39,7 @@ class ExportSectionTest extends TestCase
         $user = User::factory()->create();
         $row = $this->publishedRow($user);
 
-        $file = new ExportSection(user: $user, template: $row->templateVersion->template, row: $row)->execute();
+        $file = new ExportSection(user: $user, template: $row->structureVersion->structure->owner, row: $row)->execute();
 
         $this->assertEquals('section', $file['monica']['format']);
         $this->assertEquals(StructureFile::FORMAT_VERSION, $file['monica']['format_version']);
@@ -55,7 +55,7 @@ class ExportSectionTest extends TestCase
         $user = User::factory()->create();
         $row = $this->publishedRow($user);
 
-        $file = new ExportSection(user: $user, template: $row->templateVersion->template, row: $row)->execute();
+        $file = new ExportSection(user: $user, template: $row->structureVersion->structure->owner, row: $row)->execute();
 
         $this->assertEquals(
             ['name' => 'Dunder Mifflin contact', 'version' => 1],
@@ -71,7 +71,7 @@ class ExportSectionTest extends TestCase
         $user = User::factory()->create();
         $row = $this->publishedRow($user, withAValueList: true);
 
-        $file = new ExportSection(user: $user, template: $row->templateVersion->template, row: $row)->execute();
+        $file = new ExportSection(user: $user, template: $row->structureVersion->structure->owner, row: $row)->execute();
 
         $this->assertArrayHasKey('branches', $file['value_lists']);
         $this->assertEquals('Scranton', $file['value_lists']['branches']['items'][0]['label']);
@@ -105,7 +105,7 @@ class ExportSectionTest extends TestCase
 
         $this->expectException(ListingHasNothingToPublish::class);
 
-        new ExportSection(user: $user, template: $row->templateVersion->template, row: $row->fresh())->execute();
+        new ExportSection(user: $user, template: $row->structureVersion->structure->owner, row: $row->fresh())->execute();
     }
 
     #[Test]
@@ -116,7 +116,7 @@ class ExportSectionTest extends TestCase
         $user = User::factory()->create();
         $row = $this->publishedRow($user);
 
-        new ExportSection(user: $user, template: $row->templateVersion->template, row: $row)->execute();
+        new ExportSection(user: $user, template: $row->structureVersion->structure->owner, row: $row)->execute();
 
         Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
             return $job->action === UserActionEnum::SectionExported
@@ -124,14 +124,14 @@ class ExportSectionTest extends TestCase
         });
     }
 
-    private function publishedRow(User $user, bool $withAValueList = false): TemplateVersionSection
+    private function publishedRow(User $user, bool $withAValueList = false): StructureVersionSection
     {
         $template = Template::factory()->create([
             'account_id' => $user->account_id,
             'name' => 'Dunder Mifflin contact',
         ]);
 
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $section = Section::factory()->create([
             'account_id' => $user->account_id,
@@ -147,8 +147,8 @@ class ExportSectionTest extends TestCase
             'value_list_id' => $withAValueList ? $this->valueList($user)->id : null,
         ]);
 
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -167,8 +167,7 @@ class ExportSectionTest extends TestCase
         $version->published_at = now();
         $version->save();
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $row->fresh();
     }

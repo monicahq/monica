@@ -41,7 +41,7 @@ deleted_at                  datetime
 ## Relationships
 
 - `belongsTo` [Account](001-account-in-progress.md), [MarketplaceCategory](044-marketplace-category-done.md)
-- `morphTo` listable, a [Template](012-template-in-progress.md), a [Section](014-section-in-progress.md) or an [ActivityType](035-activity-type-not-yet.md)
+- `morphTo` listable, a [Template](012-template-in-progress.md), a [Section](014-section-in-progress.md) or an [ActivityType](035-activity-type-in-progress.md)
 - `hasMany` [MarketplaceListingVersion](046-marketplace-listing-version-done.md)
 - `hasMany` [MarketplaceInstallation](047-marketplace-installation-done.md)
 
@@ -51,7 +51,7 @@ deleted_at                  datetime
 - **A section can be published on its own**, with no template or page around it (7). Section 7 names this as what lowers the barrier to contributing. Pages belong to a template version and are never marketplace items. Any design that requires wrapping a block in either one to share it has lost the point.
 - An activity type is publishable the same way (9.3), carrying its own field structure with it.
 - One category, chosen from ours. No free tags.
-- The marketplace category is editorial and global. It is not the installer's account owned [ActivityCategory](028-activity-category-not-yet.md), and publishing or installing an activity type never equates the two.
+- The marketplace category is editorial and global. It is not the installer's account owned [ActivityCategory](028-activity-category-done.md), and publishing or installing an activity type never equates the two.
 - A refusal carries a reason and the reason is shown to the author (7).
 - `locale` is displayed in the catalogue and filterable (3.7). A listing is written in one language, and an installer in another gets the labels as written, which is fine because what they install is a copy they can rename freely.
 - `install_count` is public, as a quality signal (7).
@@ -63,7 +63,7 @@ The moderation path: `ApproveMarketplaceListingVersion` and `RejectMarketplaceLi
 
 The author path is not built. The four actions that created a listing, changed one, submitted one for moderation and withdrew one were written, had no caller and have been removed, so nothing puts a listing in front of the two moderation actions in the first place.
 
-Two things the specification asks for are not built yet and are named here so nobody assumes otherwise. `listable` accepts a template or a section and not an activity type, since [ActivityType](035-activity-type-not-yet.md) does not exist. And moderation has no user behind it: `moderated_by` is written as a name, because there is no instance administrator anywhere in the product yet, so the two moderation actions take one rather than a `User` and check no account.
+Two things the specification asks for are not built yet and are named here so nobody assumes otherwise. `listable` accepts a template or a section and not an activity type, since [ActivityType](035-activity-type-in-progress.md) does not exist. And moderation has no user behind it: `moderated_by` is written as a name, because there is no instance administrator anywhere in the product yet, so the two moderation actions take one rather than a `User` and check no account.
 
 ## Open questions
 

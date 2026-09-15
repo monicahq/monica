@@ -8,7 +8,7 @@ use App\Actions\MakeSectionVersionEditable;
 use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\SectionVersion;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -27,7 +27,7 @@ class MakeSectionVersionEditableTest extends TestCase
 
         $user = User::factory()->create();
         $sectionVersion = SectionVersion::factory()->used(1)->create(['account_id' => $user->account_id]);
-        $row = TemplateVersionSection::factory()->create([
+        $row = StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
             'section_version_id' => $sectionVersion->id,
         ]);
@@ -45,7 +45,7 @@ class MakeSectionVersionEditableTest extends TestCase
 
         $user = User::factory()->create();
         $sectionVersion = SectionVersion::factory()->published()->used(1)->create(['account_id' => $user->account_id]);
-        $row = TemplateVersionSection::factory()->create([
+        $row = StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
             'section_version_id' => $sectionVersion->id,
         ]);
@@ -65,7 +65,7 @@ class MakeSectionVersionEditableTest extends TestCase
 
         $user = User::factory()->create();
         $sectionVersion = SectionVersion::factory()->used(2)->create(['account_id' => $user->account_id]);
-        $row = TemplateVersionSection::factory()->create([
+        $row = StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
             'section_version_id' => $sectionVersion->id,
         ]);
@@ -82,7 +82,7 @@ class MakeSectionVersionEditableTest extends TestCase
 
         $user = User::factory()->create();
         $sectionVersion = SectionVersion::factory()->published()->used(1)->create(['account_id' => $user->account_id]);
-        $row = TemplateVersionSection::factory()->create([
+        $row = StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
             'section_version_id' => $sectionVersion->id,
         ]);
@@ -104,7 +104,7 @@ class MakeSectionVersionEditableTest extends TestCase
         Field::factory()->create(['section_version_id' => $sectionVersion->id, 'key' => 'street', 'label' => 'Street']);
         $sectionVersion->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
 
-        $row = TemplateVersionSection::factory()->create([
+        $row = StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
             'section_version_id' => $sectionVersion->id,
         ]);
@@ -125,7 +125,7 @@ class MakeSectionVersionEditableTest extends TestCase
         $field = Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => 'Street']);
         $sectionVersion->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
 
-        $row = TemplateVersionSection::factory()->create([
+        $row = StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
             'section_version_id' => $sectionVersion->id,
         ]);
@@ -142,7 +142,7 @@ class MakeSectionVersionEditableTest extends TestCase
         Queue::fake();
 
         $michael = User::factory()->create();
-        $row = TemplateVersionSection::factory()->create();
+        $row = StructureVersionSection::factory()->create();
 
         $this->expectException(ModelNotFoundException::class);
 

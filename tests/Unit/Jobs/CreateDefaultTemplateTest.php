@@ -11,7 +11,7 @@ use App\Enums\DefaultSectionEnum;
 use App\Enums\DefaultTemplateEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\RepetitionOrderEnum;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
@@ -42,10 +42,14 @@ class CreateDefaultTemplateTest extends TestCase
 
         new CreateDefaultTemplate(user: $user)->handle();
 
+        $this->assertDatabaseHas('structures', [
+            'account_id' => $user->account_id,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
+            'entity_type_id' => null,
+        ]);
+
         $this->assertDatabaseHas('templates', [
             'account_id' => $user->account_id,
-            'applies_to' => TemplateAppliesToEnum::Contact->value,
-            'entity_type_id' => null,
             'name' => null,
             'name_translation_key' => 'Basic contact',
             'slug' => DefaultTemplateEnum::BasicContact->value,
@@ -507,15 +511,15 @@ class CreateDefaultTemplateTest extends TestCase
 
         new CreateDefaultTemplate(user: $user)->handle();
 
-        $version = Template::query()->sole()->published_version_id;
+        $version = Template::query()->sole()->structure->published_version_id;
 
         foreach ([$family, $work] as $vault) {
             $this->assertDatabaseHas('vault_default_templates', [
                 'account_id' => $user->account_id,
                 'vault_id' => $vault->id,
-                'applies_to' => TemplateAppliesToEnum::Contact->value,
+                'applies_to' => StructureAppliesToEnum::Contact->value,
                 'entity_type_id' => null,
-                'template_version_id' => $version,
+                'structure_version_id' => $version,
             ]);
         }
     }

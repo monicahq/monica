@@ -20,7 +20,7 @@ id                          int                             primary key
 uuid                        string (36)                     unguessable identifier used in URLs, share links and by the API
 account_id                  int                             account the contact belongs to
 vault_id                    int                             vault the contact lives in
-template_version_id         int                             exact structure version the page renders from
+structure_version_id        int                             exact structure version the page renders from
 prefix                      string (50)                     civility, such as Dr or Mrs
 first_name                  string (255)                    first name
 middle_name                 string (255)                    middle name
@@ -38,7 +38,7 @@ is_archived                 boolean                         whether the contact 
 is_favourite                boolean                         whether the contact is pinned to the top of the list
 avatar_file_id              int                             uploaded avatar, null when initials are used instead
 avatar_colour               string (7)                      background colour of the generated initials avatar
-last_activity_at            datetime                        when the last activity counting as a real interaction happened, null when none has
+last_activity_at            datetime                        date of the latest activity the contact participated in, null when none exists
 activity_count              int                             running count of activities the contact took part in
 last_consulted_at           datetime                        when the user last opened the page, used to order recently viewed
 created_at                  datetime
@@ -51,7 +51,7 @@ vcard                       longtext                        the card as a device
 
 ## Relationships
 
-- `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md), [TemplateVersion](013-template-version-done.md)
+- `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md), [StructureVersion](013-structure-version-done.md)
 - `belongsTo` [File](008-file-in-progress.md) as avatar
 - `hasMany` [FieldValue](022-field-value-done.md)
 - `hasMany` [Relationship](026-relationship-not-yet.md), from both sides
@@ -64,17 +64,17 @@ vcard                       longtext                        the card as a device
 - The name is structured by the product and never by a template (5.7). Every part is optional, including all of them at once. A nameless contact is displayed using the translated fallback **Unnamed contact**, which is never stored in a name field or returned as recorded data.
 - `sort_name` is written on save. Sorting a list of thousands of contacts cannot depend on concatenating at read time, and the order has to be stable regardless of who is looking. Nameless contacts sort after named contacts and use their stable id as the final tie-breaker; their empty name contributes no searchable text.
 - `is_me` marks the contact representing the user (4.3). It cannot be deleted, cannot be merged into another contact, and is identifiable stably by the API, MCP, imports and modules. Its name and its page are editable like any other contact's. Relations read from it in the first person.
-- A partial contact is a complete Contact row, not free text or a lesser model (8.2). It has an id, template version, page, custom fields and relationships like any other contact; `is_partial` only keeps it out of the main contact lists. Its partial state does not say whether it has a name. Changing its name or fields never changes that state implicitly; it becomes regular only through an explicit promotion or by being merged into a regular contact.
+- A partial contact is a complete Contact row, not free text or a lesser model (8.2). It has an id, structure version, page, custom fields and relationships like any other contact; `is_partial` only keeps it out of the main contact lists. Its partial state does not say whether it has a name. Changing its name or fields never changes that state implicitly; it becomes regular only through an explicit promotion or by being merged into a regular contact.
 - Creating a relationship to a new person always creates this Contact first, in the same transaction. In the relationship editor, **Create a contact record for this person** checked means `is_partial = false`; unchecked means `is_partial = true`. Unchecking it never stores only text and never produces a relationship without a second contact.
 - The owner's contact page displays [Immediate family](026-relationship-not-yet.md#immediate-family-on-a-contact-record): the contact's explicitly recorded children and current partners. This includes nameless partial and archived relatives, excludes deleted ones and counts each person once per list. The block is computed entirely from relationships.
-- `last_activity_at` counts only activities whose nature is marked as a real interaction (9.3). It is what the inactivity reminder reads (10.2), and it is maintained on write because computing it on read would scan the activity table for every row in a list.
+- `last_activity_at` is the latest date among activities in which the contact participates, regardless of activity type (9.3). It is what the inactivity reminder reads (10.2), and it is maintained on write because computing it on read would scan the activity table for every row in a list. Recording an older activity never replaces a newer value.
 - A contact is soft deleted. Deleting it cancels future reminder occurrences and restores them if the contact comes back (10.3). Its relationships, activities and files are not destroyed.
 - Deleting a [Vault](007-vault-in-progress.md) takes its contacts with it, marked as having gone with it. Restoring the vault brings back exactly those, and leaves somebody deleted on their own beforehand deleted.
 - **An archived contact triggers no reminder.** Archiving deactivates the rules about them and cancels their future occurrences, the way deleting does, and unarchiving reactivates the rules and puts what is ahead back (10.3). Past occurrences are kept, because they are history, and the rules say why they are quiet instead of vanishing (3.3). This covers the inactivity rule too: a contact nobody is meant to hear about cannot fire for silence.
-- Changing the applied template version writes a [RecordSnapshot](023-record-snapshot-done.md) first, always (6).
+- Changing the applied structure version writes a [RecordSnapshot](023-record-snapshot-done.md) first, always (6).
 - Every field on the page, including ones invented yesterday, is searchable and filterable with no configuration (13).
 - The avatar is a [File](008-file-in-progress.md) like any other upload, and choosing one moves `reference_count` through `AttachFile` and `DetachFile` (11). A contact carrying none is drawn as its initials, or as `?` when no name is known, and taking one off never deletes: the file goes orphan and the sweep comes for it once the grace period has run out.
-- The page hierarchy comes from the precise [TemplateVersion](013-template-version-done.md) assigned to the contact. The identity header and highlighted fields remain above it. One template page renders without tabs, while two or more use the accessible tab navigation defined in section 5.2.
+- The page hierarchy comes from the precise [StructureVersion](013-structure-version-done.md) assigned to the contact. The identity header and highlighted fields remain above it. One page renders without tabs, while two or more use the accessible tab navigation defined in section 5.2.
 
 ## Not done yet
 
@@ -87,7 +87,7 @@ vcard                       longtext                        the card as a device
 - **Merging is not here.** [ContactMerge](034-contact-merge-done.md) is its own model, and with it the rule that a partial contact stops being partial when it is merged.
 - **`name_order` does not fall back to the user preference.** The column says null means "follow the user", and a contact carrying none reads given name first whatever that user chose. The preference is stored on [User](002-user-done.md) and asked for on no screen, so nothing here has anything to follow yet.
 - **Archiving has an action nobody can reach, and unarchiving and restoring have none at all.** `ArchiveContact` is written and no screen and no endpoint calls it; `UnarchiveContact` and `RestoreContact` had no caller either and have been removed. The list already offers the archived as one of its three places. It is therefore a list nobody can put anybody on, and the soft deletion is a deletion as far as anybody using the product can tell. Favouriting is the one of the five that has come out: `api/v1/vaults/{vault}/contacts/{contact}/favourite` sets it, and no screen does.
-- **The API reads and writes a contact, and not what is written on one.** `api/v1/vaults/{vault}/contacts` lists, searches, sorts, groups and creates, and one contact is read, deleted, renamed, favourited, given or stripped of a picture, and moved to another published template version, each at its own address. What no endpoint touches is the record itself: no field value is read or written over the API, so everything a template asks about somebody is reachable in the interface and nowhere else. Archiving and restoring have no endpoint either.
+- **The API reads and writes a contact, and not what is written on one.** `api/v1/vaults/{vault}/contacts` lists, searches, sorts, groups and creates, and one contact is read, deleted, renamed, favourited, given or stripped of a picture, and moved to another published structure version, each at its own address. What no endpoint touches is the record itself: no field value is read or written over the API, so everything a template asks about somebody is reachable in the interface and nowhere else. Archiving and restoring have no endpoint either.
 
 ## Decisions taken while building it
 

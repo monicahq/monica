@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\ShareLink;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -863,7 +863,7 @@ class VaultControllerTest extends TestCase
 
         $response = $this->json('POST', '/api/v1/vaults', [
             'name' => 'Dunder Mifflin',
-            'template_version_id' => $chosen->published_version_id,
+            'structure_version_id' => $chosen->structure->published_version_id,
         ]);
 
         $response->assertCreated();
@@ -871,8 +871,8 @@ class VaultControllerTest extends TestCase
         $this->assertDatabaseHas('vault_default_templates', [
             'account_id' => $user->account_id,
             'vault_id' => Vault::query()->where('name', 'Dunder Mifflin')->sole()->id,
-            'applies_to' => TemplateAppliesToEnum::Contact->value,
-            'template_version_id' => $chosen->published_version_id,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
+            'structure_version_id' => $chosen->structure->published_version_id,
         ]);
     }
 
@@ -891,39 +891,39 @@ class VaultControllerTest extends TestCase
             'name' => 'Scranton',
             'description' => null,
             'colour' => '#9a3f2b',
-            'template_version_id' => $chosen->published_version_id,
+            'structure_version_id' => $chosen->structure->published_version_id,
         ])->assertOk();
 
         $this->assertDatabaseHas('vault_default_templates', [
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact->value,
-            'template_version_id' => $chosen->published_version_id,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
+            'structure_version_id' => $chosen->structure->published_version_id,
         ]);
     }
 
     #[Test]
-    public function it_refuses_a_template_version_that_is_still_a_draft(): void
+    public function it_refuses_a_structure_version_that_is_still_a_draft(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $draft = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $draft = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         Sanctum::actingAs($user);
 
         $response = $this->json('POST', '/api/v1/vaults', [
             'name' => 'Dunder Mifflin',
-            'template_version_id' => $draft->id,
+            'structure_version_id' => $draft->id,
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('template_version_id');
+        $response->assertJsonValidationErrors('structure_version_id');
         $this->assertDatabaseCount('vaults', 0);
     }
 
     #[Test]
-    public function it_refuses_a_template_version_from_another_account(): void
+    public function it_refuses_a_structure_version_from_another_account(): void
     {
         Queue::fake();
 
@@ -935,33 +935,32 @@ class VaultControllerTest extends TestCase
 
         $response = $this->json('POST', '/api/v1/vaults', [
             'name' => 'Dunder Mifflin',
-            'template_version_id' => $elsewhere->published_version_id,
+            'structure_version_id' => $elsewhere->structure->published_version_id,
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('template_version_id');
+        $response->assertJsonValidationErrors('structure_version_id');
     }
 
     #[Test]
-    public function it_refuses_a_template_version_that_describes_something_other_than_a_contact(): void
+    public function it_refuses_a_structure_version_that_describes_something_other_than_a_contact(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
         $template = Template::factory()->forEntity()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
-        $template->published_version_id = $version->id;
-        $template->save();
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        $template->structure->update(['published_version_id' => $version->id]);
 
         Sanctum::actingAs($user);
 
         $response = $this->json('POST', '/api/v1/vaults', [
             'name' => 'Dunder Mifflin',
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('template_version_id');
+        $response->assertJsonValidationErrors('structure_version_id');
     }
 
     #[Test]
@@ -979,7 +978,7 @@ class VaultControllerTest extends TestCase
         $this->json('POST', '/api/v1/vaults', [
             'name' => 'Dunder Mifflin',
             'is_default' => true,
-            'template_version_id' => $chosen->published_version_id,
+            'structure_version_id' => $chosen->structure->published_version_id,
         ])->assertCreated();
 
         Queue::assertPushedOn(
@@ -1008,10 +1007,9 @@ class VaultControllerTest extends TestCase
             'name' => $name,
         ]);
 
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $template;
     }

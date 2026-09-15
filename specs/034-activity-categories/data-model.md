@@ -1,7 +1,7 @@
 # Data model: activity categories
 
 One new table. Nothing existing changes shape; `accounts` gains a relation and no column.
-The record's rules are [spec/models/028](../../spec/models/028-activity-category-not-yet.md).
+The record's rules are [spec/models/028](../../spec/models/028-activity-category-done.md).
 
 ## `activity_categories`
 

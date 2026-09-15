@@ -10,10 +10,11 @@ use App\Helpers\SlugBuilder;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\SectionVersion;
+use App\Models\Structure;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +26,7 @@ class DuplicateTemplate
 {
     private Template $copy;
 
-    private TemplateVersion $source;
+    private StructureVersion $source;
 
     public function __construct(
         private readonly User $user,
@@ -56,7 +57,7 @@ class DuplicateTemplate
             throw new ModelNotFoundException('This template is in another account.');
         }
 
-        $source = $this->template->publishedVersion ?? $this->template->versions()->first();
+        $source = $this->template->structure->publishedVersion ?? $this->template->versions()->first();
 
         if ($source === null) {
             throw new ModelNotFoundException('This template has no version to copy.');
@@ -76,22 +77,28 @@ class DuplicateTemplate
         DB::transaction(function () use ($name, $positions): void {
             $this->copy = Template::query()->create([
                 'account_id' => $this->template->account_id,
-                'applies_to' => $this->template->applies_to,
-                'entity_type_id' => $this->template->entity_type_id,
                 'name' => $name,
                 'name_translation_key' => null,
                 'description' => $this->template->description,
                 'slug' => $this->slug($name),
                 'is_system' => false,
                 'is_active' => true,
-                'published_version_id' => null,
                 'locale' => $this->template->locale,
                 'position' => ($positions->max() ?? 0) + 1,
             ]);
 
-            $version = TemplateVersion::query()->create([
+            $structure = Structure::query()->create([
                 'account_id' => $this->copy->account_id,
-                'template_id' => $this->copy->id,
+                'owner_type' => Template::class,
+                'owner_id' => $this->copy->id,
+                'applies_to' => $this->template->structure->applies_to,
+                'entity_type_id' => $this->template->structure->entity_type_id,
+                'published_version_id' => null,
+            ]);
+
+            $version = StructureVersion::query()->create([
+                'account_id' => $this->copy->account_id,
+                'structure_id' => $structure->id,
                 'version_number' => 1,
                 'status' => VersionStatusEnum::Draft,
                 'change_note' => null,
@@ -103,11 +110,11 @@ class DuplicateTemplate
 
             $pages = $this->copyThePages($version);
 
-            $this->source->assembly->each(function (TemplateVersionSection $row) use ($version, $pages): void {
-                TemplateVersionSection::query()->create([
+            $this->source->assembly->each(function (StructureVersionSection $row) use ($version, $pages): void {
+                StructureVersionSection::query()->create([
                     'account_id' => $version->account_id,
-                    'template_version_id' => $version->id,
-                    'template_version_page_id' => $pages[$row->template_version_page_id],
+                    'structure_version_id' => $version->id,
+                    'structure_version_page_id' => $pages[$row->structure_version_page_id],
                     'section_version_id' => $row->section_version_id,
                     'position' => $row->position,
                     'title_override' => $row->title_override,
@@ -120,14 +127,14 @@ class DuplicateTemplate
     }
 
     /** @return array<int, int> */
-    private function copyThePages(TemplateVersion $version): array
+    private function copyThePages(StructureVersion $version): array
     {
         $pages = [];
 
-        $this->source->pages->each(function (TemplateVersionPage $page) use ($version, &$pages): void {
-            $copy = TemplateVersionPage::query()->create([
+        $this->source->pages->each(function (StructureVersionPage $page) use ($version, &$pages): void {
+            $copy = StructureVersionPage::query()->create([
                 'account_id' => $version->account_id,
-                'template_version_id' => $version->id,
+                'structure_version_id' => $version->id,
                 'key' => $page->key,
                 'label' => $page->getRawOriginal('label'),
                 'label_translation_key' => $page->label_translation_key,

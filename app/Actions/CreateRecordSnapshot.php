@@ -13,8 +13,8 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\RecordSnapshot;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -58,7 +58,7 @@ class CreateRecordSnapshot
             'vault_id' => $this->record->vault_id,
             'snapshotable_type' => $this->record->getMorphClass(),
             'snapshotable_id' => $this->record->id,
-            'template_version_id' => $this->record->template_version_id,
+            'structure_version_id' => $this->record->structure_version_id,
             'reason' => $this->reason,
             'payload' => [
                 'record' => $this->record(),
@@ -108,18 +108,18 @@ class CreateRecordSnapshot
     /** @return array<int, array<string, mixed>> */
     private function structure(): array
     {
-        $version = $this->record->templateVersion;
+        $version = $this->record->structureVersion;
         $assembly = $version->assembly->load('sectionVersion.section', 'sectionVersion.fields');
 
         return $version->pages
-            ->map(fn (TemplateVersionPage $page): array => [
+            ->map(fn (StructureVersionPage $page): array => [
                 'id' => $page->id,
                 'key' => $page->key,
                 'label' => $page->label,
                 'position' => $page->position,
                 'sections' => $assembly
-                    ->where('template_version_page_id', $page->id)
-                    ->map(fn (TemplateVersionSection $row): array => [
+                    ->where('structure_version_page_id', $page->id)
+                    ->map(fn (StructureVersionSection $row): array => [
                         'id' => $row->id,
                         'name' => $row->title_override ?? $row->sectionVersion->section->name,
                         'position' => $row->position,

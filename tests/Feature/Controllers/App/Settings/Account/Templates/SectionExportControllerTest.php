@@ -10,9 +10,9 @@ use App\Jobs\LogUserAction;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -29,7 +29,7 @@ class SectionExportControllerTest extends TestCase
         $user = User::factory()->create();
         $row = $this->publishedRow($user);
 
-        $this->actingAs($user)->get(route('settings.sectionExport.index', [$row->templateVersion->template, $row->id]))
+        $this->actingAs($user)->get(route('settings.sectionExport.index', [$row->structureVersion->structure->owner, $row->id]))
             ->assertStatus(200)
             ->assertSee('personal-details.json')
             ->assertSee('&quot;format&quot;: &quot;section&quot;', false);
@@ -44,7 +44,7 @@ class SectionExportControllerTest extends TestCase
         $row = $this->publishedRow($user);
 
         $response = $this->actingAs($user)
-            ->get(route('settings.sectionExport.show', [$row->templateVersion->template, $row->id]));
+            ->get(route('settings.sectionExport.show', [$row->structureVersion->structure->owner, $row->id]));
 
         $response->assertOk();
         $response->assertDownload('personal-details.json');
@@ -65,7 +65,7 @@ class SectionExportControllerTest extends TestCase
         $row = $this->publishedRow($user);
 
         $this->actingAs($user)
-            ->get(route('settings.sectionExport.show', [$row->templateVersion->template, $row->id]))
+            ->get(route('settings.sectionExport.show', [$row->structureVersion->structure->owner, $row->id]))
             ->streamedContent();
 
         Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
@@ -90,11 +90,11 @@ class SectionExportControllerTest extends TestCase
         $row = $this->publishedRow(User::factory()->create());
 
         $this->actingAs(User::factory()->create())
-            ->get(route('settings.sectionExport.show', [$row->templateVersion->template, $row->id]))
+            ->get(route('settings.sectionExport.show', [$row->structureVersion->structure->owner, $row->id]))
             ->assertNotFound();
     }
 
-    private function publishedRow(User $user): TemplateVersionSection
+    private function publishedRow(User $user): StructureVersionSection
     {
         $template = Template::factory()->create([
             'account_id' => $user->account_id,
@@ -102,7 +102,7 @@ class SectionExportControllerTest extends TestCase
             'slug' => 'dunder-mifflin-contact',
         ]);
 
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $section = Section::factory()->create([
             'account_id' => $user->account_id,
@@ -114,8 +114,8 @@ class SectionExportControllerTest extends TestCase
 
         Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => 'Nickname']);
 
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -130,8 +130,7 @@ class SectionExportControllerTest extends TestCase
         $version->published_at = now();
         $version->save();
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         return $row->fresh();
     }

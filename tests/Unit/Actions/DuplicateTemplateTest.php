@@ -9,10 +9,10 @@ use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Jobs\LogUserAction;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,7 +31,7 @@ class DuplicateTemplateTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
-        TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         $copy = new DuplicateTemplate(user: $user, template: $template)->execute();
 
@@ -48,7 +48,7 @@ class DuplicateTemplateTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         $copy = new DuplicateTemplate(
             user: $user,
@@ -68,7 +68,7 @@ class DuplicateTemplateTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->supplied()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         $copy = new DuplicateTemplate(user: $user, template: $template)->execute();
 
@@ -83,12 +83,12 @@ class DuplicateTemplateTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         $copy = new DuplicateTemplate(user: $user, template: $template)->execute();
         $version = $copy->versions()->first();
 
-        $this->assertNull($copy->published_version_id);
+        $this->assertNull($copy->structure->published_version_id);
         $this->assertEquals(1, $version->version_number);
         $this->assertEquals(VersionStatusEnum::Draft, $version->status);
         $this->assertNull($version->previous_version_id);
@@ -101,10 +101,10 @@ class DuplicateTemplateTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $sectionVersion = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
             'title_override' => 'Where they live',
         ]);
@@ -126,16 +126,16 @@ class DuplicateTemplateTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $health = TemplateVersionPage::factory()->create([
-            'template_version_id' => $version->id,
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $health = StructureVersionPage::factory()->create([
+            'structure_version_id' => $version->id,
             'key' => 'health',
             'label' => 'Health',
             'position' => 2,
         ]);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $health->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $health->id,
         ]);
 
         $copy = new DuplicateTemplate(user: $user, template: $template)->execute();
@@ -145,7 +145,7 @@ class DuplicateTemplateTest extends TestCase
         $this->assertCount(2, $pages);
         $this->assertEquals(['general', 'health'], $pages->pluck('key')->all());
         $this->assertNotEquals($health->id, $pages->last()->id);
-        $this->assertEquals($pages->last()->id, $copied->assembly()->sole()->template_version_page_id);
+        $this->assertEquals($pages->last()->id, $copied->assembly()->sole()->structure_version_page_id);
     }
 
     #[Test]
@@ -156,16 +156,16 @@ class DuplicateTemplateTest extends TestCase
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
 
-        $published = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $published = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $sectionVersion = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $published->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $published->id,
             'section_version_id' => $sectionVersion->id,
         ]);
         $published->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
-        $template->update(['published_version_id' => $published->id]);
+        $template->structure->update(['published_version_id' => $published->id]);
 
-        TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 2]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 2]);
 
         $copy = new DuplicateTemplate(user: $user, template: $template->fresh())->execute();
 
@@ -192,7 +192,7 @@ class DuplicateTemplateTest extends TestCase
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         new DuplicateTemplate(user: $user, template: $template)->execute();
 

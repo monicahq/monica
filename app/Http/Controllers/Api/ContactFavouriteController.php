@@ -30,7 +30,7 @@ class ContactFavouriteController extends Controller
         }
 
         return new ContactResource(
-            $contact->refresh()->load(['vault', 'templateVersion.template', 'avatar']),
+            $contact->refresh()->load(['vault', 'structureVersion.structure.owner', 'avatar']),
         )->response()->setStatusCode(200);
     }
 }

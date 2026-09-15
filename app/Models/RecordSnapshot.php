@@ -24,7 +24,7 @@ use Override;
  * replaces the other.
  *
  * The moment that matters most is a structure change. Moving a record to
- * another template version saves the previous state first, always, and that
+ * another structure version saves the previous state first, always, and that
  * guarantee is what makes changing structures safe enough to offer casually.
  *
  * The payload is self contained. Restoring has to work even if the structure it
@@ -36,7 +36,7 @@ use Override;
  * @property int $vault_id
  * @property string $snapshotable_type
  * @property int $snapshotable_id
- * @property int $template_version_id
+ * @property int $structure_version_id
  * @property SnapshotReasonEnum $reason
  * @property array<array-key, mixed> $payload
  * @property array<array-key, mixed> $file_ids
@@ -48,7 +48,7 @@ use Override;
  * @property-read Account $account
  * @property-read Vault $vault
  * @property-read Contact|Entity $snapshotable
- * @property-read TemplateVersion $templateVersion
+ * @property-read StructureVersion $structureVersion
  * @property-read User|null $createdBy
  */
 #[Fillable([
@@ -56,7 +56,7 @@ use Override;
     'vault_id',
     'snapshotable_type',
     'snapshotable_id',
-    'template_version_id',
+    'structure_version_id',
     'reason',
     'payload',
     'file_ids',
@@ -143,11 +143,11 @@ class RecordSnapshot extends Model
     /**
      * Get the structure the record was on at the time.
      *
-     * @return BelongsTo<TemplateVersion, $this>
+     * @return BelongsTo<StructureVersion, $this>
      */
-    public function templateVersion(): BelongsTo
+    public function structureVersion(): BelongsTo
     {
-        return $this->belongsTo(TemplateVersion::class);
+        return $this->belongsTo(StructureVersion::class);
     }
 
     /**

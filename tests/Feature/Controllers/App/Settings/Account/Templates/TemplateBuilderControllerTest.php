@@ -11,10 +11,10 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use DOMDocument;
 use DOMXPath;
@@ -31,12 +31,12 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Paper stock']);
         $sectionVersion = SectionVersion::factory()->create(['section_id' => $section->id]);
         Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => 'Weight']);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -51,11 +51,11 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $sectionVersion = SectionVersion::factory()->create(['account_id' => $user->account_id]);
         $field = Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => 'Weight']);
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -72,11 +72,11 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $sectionVersion = SectionVersion::factory()->create(['account_id' => $user->account_id]);
         Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => 'Weight']);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -96,7 +96,7 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $sectionVersion = SectionVersion::factory()->create(['account_id' => $user->account_id]);
         $repeater = Field::factory()->create([
             'section_version_id' => $sectionVersion->id,
@@ -109,8 +109,8 @@ class TemplateBuilderControllerTest extends TestCase
             'label' => 'Weight',
             'type' => FieldTypeEnum::Number,
         ]);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -136,7 +136,7 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $sectionVersion = SectionVersion::factory()->create(['account_id' => $user->account_id]);
         $repeater = Field::factory()->create([
             'section_version_id' => $sectionVersion->id,
@@ -144,8 +144,8 @@ class TemplateBuilderControllerTest extends TestCase
             'type' => FieldTypeEnum::Repeater,
             'is_repeatable' => true,
         ]);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -163,11 +163,11 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $sectionVersion = SectionVersion::factory()->create(['account_id' => $user->account_id]);
         $field = Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => 'Weight']);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -185,8 +185,8 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $events = TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'label' => 'Life events']);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $events = StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'label' => 'Life events']);
         $this->sectionOn($user, $version, $version->pages()->firstOrFail(), 'Paper stock');
         $row = $this->sectionOn($user, $version, $events, 'Jobs');
         $field = Field::factory()->create([
@@ -211,10 +211,10 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $sectionVersion = SectionVersion::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
 
@@ -225,7 +225,7 @@ class TemplateBuilderControllerTest extends TestCase
 
         $sectionVersion->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
         $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
-        $template->update(['published_version_id' => $version->id]);
+        $template->structure->update(['published_version_id' => $version->id]);
 
         $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
             ->assertSee(__('Share on marketplace'))
@@ -238,7 +238,7 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
             ->assertStatus(200)
@@ -250,8 +250,8 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'label' => 'Life events']);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'label' => 'Life events']);
 
         $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
             ->assertStatus(200)
@@ -266,7 +266,7 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $this->actingAs($user)
             ->from(route('settings.templateBuilder.index', $template))
@@ -282,8 +282,8 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        $events = TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'label' => 'Life events']);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $events = StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'label' => 'Life events']);
         $this->sectionOn($user, $version, $version->pages()->firstOrFail(), 'Paper stock');
         $this->sectionOn($user, $version, $events, 'Jobs');
 
@@ -303,7 +303,7 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $this->sectionOn($user, $version, $version->pages()->firstOrFail(), 'Paper stock');
 
         $this->actingAs($user)->get(route('settings.templateBuilder.index', ['template' => $template, 'page' => 'nothing-answers-to-this']))
@@ -316,14 +316,14 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $this->sectionOn($user, $version, $version->pages()->firstOrFail(), 'Paper stock');
 
         $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
             ->assertStatus(200)
             ->assertDontSee('Move to');
 
-        TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'label' => 'Life events']);
+        StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'label' => 'Life events']);
 
         $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
             ->assertStatus(200)
@@ -363,9 +363,9 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $first = TemplateVersion::factory()->published()->create(['template_id' => $template->id, 'version_number' => 1]);
-        TemplateVersion::factory()->create([
-            'template_id' => $template->id,
+        $first = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
+        StructureVersion::factory()->create([
+            'structure_id' => $template->structure->id,
             'version_number' => 2,
             'previous_version_id' => $first->id,
         ]);
@@ -382,7 +382,7 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
 
         $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
 
@@ -391,13 +391,13 @@ class TemplateBuilderControllerTest extends TestCase
         $response->assertDontSee('href="'.route('settings.templateVersions.index', $template).'"', escape: false);
     }
 
-    private function sectionOn(User $user, TemplateVersion $version, TemplateVersionPage $page, string $name): TemplateVersionSection
+    private function sectionOn(User $user, StructureVersion $version, StructureVersionPage $page, string $name): StructureVersionSection
     {
         $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => $name]);
 
-        return TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
-            'template_version_page_id' => $page->id,
+        return StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $page->id,
             'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
         ]);
     }
@@ -407,7 +407,7 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
 
@@ -422,7 +422,7 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
 
@@ -442,8 +442,8 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $published = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
-        $template->update(['published_version_id' => $published->id]);
+        $published = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        $template->structure->update(['published_version_id' => $published->id]);
 
         $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template->fresh()));
 
@@ -456,10 +456,10 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Health']);
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
         ]);
 
@@ -475,15 +475,15 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         foreach ([['Health', 'health', '#4f8a49'], ['Work', 'briefcase', '#2f7f86']] as [$name, $icon, $colour]) {
             $section = Section::factory()->marked($icon, $colour)->create([
                 'account_id' => $user->account_id,
                 'name' => $name,
             ]);
-            TemplateVersionSection::factory()->create([
-                'template_version_id' => $version->id,
+            StructureVersionSection::factory()->create([
+                'structure_version_id' => $version->id,
                 'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
             ]);
         }
@@ -500,7 +500,7 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
 
@@ -513,7 +513,7 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
 
@@ -525,10 +525,10 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $section = Section::factory()->marked('profile', '#3f5fd0')->create(['account_id' => $user->account_id]);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
         ]);
 
@@ -549,7 +549,7 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersion::factory()->create(['template_id' => $template->id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
 
@@ -589,10 +589,10 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $section = Section::factory()->create(['account_id' => $user->account_id]);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
         ]);
 
@@ -615,10 +615,10 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $section = Section::factory()->marked('profile', '#3f5fd0')->create(['account_id' => $user->account_id]);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
         ]);
 
@@ -661,10 +661,10 @@ class TemplateBuilderControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
         $section = Section::factory()->marked('profile', '#3f5fd0')->create(['account_id' => $user->account_id]);
-        TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
         ]);
 

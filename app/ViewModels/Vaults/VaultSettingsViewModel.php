@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
+use App\Models\StructureVersion;
 use App\Models\Template;
-use App\Models\TemplateVersion;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 class VaultSettingsViewModel
@@ -92,9 +93,9 @@ class VaultSettingsViewModel
             ->map(fn (Template $template): array => [
                 'name' => $template->name,
                 'versions' => $template->versions
-                    ->map(fn (TemplateVersion $version): array => [
+                    ->map(fn (StructureVersion $version): array => [
                         'id' => $version->id,
-                        'label' => $version->is($template->publishedVersion)
+                        'label' => $version->is($template->structure->publishedVersion)
                             ? __('Version :number (latest)', ['number' => $version->version_number])
                             : __('Version :number', ['number' => $version->version_number]),
                     ])
@@ -104,16 +105,16 @@ class VaultSettingsViewModel
             ->all();
     }
 
-    public function currentTemplateVersionId(): string
+    public function currentStructureVersionId(): string
     {
-        $current = $this->contactDefault()?->template_version_id;
+        $current = $this->contactDefault()?->structure_version_id;
 
-        return (string) old('template_version_id', $current === null ? '' : (string) $current);
+        return (string) old('structure_version_id', $current === null ? '' : (string) $current);
     }
 
     public function currentTemplateName(): ?string
     {
-        return $this->contactDefault()?->templateVersion->template->name;
+        return $this->contactDefault()?->structureVersion->structure->owner->name;
     }
 
     public function isTheLastVault(): bool
@@ -144,7 +145,7 @@ class VaultSettingsViewModel
     {
         return VaultDefaultTemplate::query()
             ->where('vault_id', $this->vault->id)
-            ->where('applies_to', TemplateAppliesToEnum::Contact)
+            ->where('applies_to', StructureAppliesToEnum::Contact)
             ->first();
     }
 
@@ -153,8 +154,8 @@ class VaultSettingsViewModel
     {
         return $this->contactTemplates ??= Template::query()
             ->where('account_id', $this->user->account_id)
-            ->where('applies_to', TemplateAppliesToEnum::Contact)
             ->where('is_active', true)
+            ->whereHas('structure', fn (Builder $query) => $query->where('applies_to', StructureAppliesToEnum::Contact))
             ->with([
                 'publishedVersion',
                 'versions' => fn ($query) => $query

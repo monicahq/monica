@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Models\Account;
 use App\Models\EntityType;
-use App\Models\TemplateVersion;
+use App\Models\StructureVersion;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -41,11 +41,11 @@ class VaultDefaultTemplateTest extends TestCase
     #[Test]
     public function it_belongs_to_the_version_a_new_record_starts_on(): void
     {
-        $version = TemplateVersion::factory()->published()->create();
-        $default = VaultDefaultTemplate::factory()->create(['template_version_id' => $version->id]);
+        $version = StructureVersion::factory()->published()->create();
+        $default = VaultDefaultTemplate::factory()->create(['structure_version_id' => $version->id]);
 
-        $this->assertTrue($default->templateVersion()->exists());
-        $this->assertTrue($version->is($default->templateVersion));
+        $this->assertTrue($default->structureVersion()->exists());
+        $this->assertTrue($version->is($default->structureVersion));
     }
 
     #[Test]
@@ -56,7 +56,7 @@ class VaultDefaultTemplateTest extends TestCase
 
         $this->assertTrue($default->entityType()->exists());
         $this->assertTrue($entityType->is($default->entityType));
-        $this->assertEquals(TemplateAppliesToEnum::Entity, $default->applies_to);
+        $this->assertEquals(StructureAppliesToEnum::Entity, $default->applies_to);
     }
 
     #[Test]
@@ -64,7 +64,7 @@ class VaultDefaultTemplateTest extends TestCase
     {
         $default = VaultDefaultTemplate::factory()->create();
 
-        $this->assertEquals(TemplateAppliesToEnum::Contact, $default->applies_to);
+        $this->assertEquals(StructureAppliesToEnum::Contact, $default->applies_to);
         $this->assertNull($default->entity_type_id);
         $this->assertNull($default->entityType);
     }

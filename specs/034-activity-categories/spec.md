@@ -2,11 +2,11 @@
 
 **Feature Branch**: `2026-09-13-activities` | **Created**: 2026-09-13 | **Status**: Draft
 
-**Input**: "implement activity type categories models + actions to manage them + api methods + docs, based on spec/models/028-activity-category-not-yet.md, no UI, only the backend needed for the future."
+**Input**: "implement activity type categories models + actions to manage them + api methods + docs, based on spec/models/028-activity-category-done.md, no UI, only the backend needed for the future."
 
 ## Overview
 
-An activity category is the group an account files its activity natures under: Relationships and family, Work and education, Health and wellbeing, Travel and experiences. It organises the vocabulary in settings and pickers, filters the journal and gives aggregate statistics a level to count at. It never decides whether an activity counts as an interaction, which fields it carries, or how it is shared. The rules are [spec/models/028](../../spec/models/028-activity-category-not-yet.md) and [spec.md §9.3](../../spec/spec.md).
+An activity category is the group an account files its activity natures under: Relationships and family, Work and education, Health and wellbeing, Travel and experiences. It organises the vocabulary in settings and pickers, filters the journal and gives aggregate statistics a level to count at. It never decides which fields an activity carries, who participated, or how it is shared. The rules are [spec/models/028](../../spec/models/028-activity-category-done.md) and [spec.md §9.3](../../spec/spec.md).
 
 This is the record, the operations on it and its API, and nothing a person can click. Activity natures do not exist yet, so the groups start empty and everything that counts what a group holds reads zero until they do.
 

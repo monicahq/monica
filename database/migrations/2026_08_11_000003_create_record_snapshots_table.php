@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('vault_id')->comment('vault the record lives in');
             $table->string('snapshotable_type')->comment('class of the record captured, a contact or an entity');
             $table->unsignedBigInteger('snapshotable_id')->comment('id of that record');
-            $table->unsignedBigInteger('template_version_id')->comment('structure the record was on at the time');
+            $table->unsignedBigInteger('structure_version_id')->comment('structure the record was on at the time');
             $table->string('reason', 32)->comment('why the snapshot was taken');
             $table->json('payload')->comment('full state of the record, its pages, section placements, fields, values and the files they pointed at');
             $table->json('file_ids')->comment('files the snapshot references, so the orphan sweep leaves them alone');
@@ -29,7 +29,7 @@ return new class extends Migration
 
             $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
             $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();
-            $table->foreign('template_version_id')->references('id')->on('template_versions');
+            $table->foreign('structure_version_id')->references('id')->on('structure_versions');
             $table->foreign('created_by_user_id')->references('id')->on('users')->nullOnDelete();
         });
     }

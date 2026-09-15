@@ -4,37 +4,37 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Settings\Account\Templates;
 
-use App\Actions\MoveSectionToTemplateVersionPage;
+use App\Actions\MoveSectionToStructureVersionPage;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Controllers\Controller;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class TemplateSectionPageController extends Controller
 {
-    public function update(Request $request, Template $template, TemplateVersionSection $templateVersionSection): RedirectResponse
+    public function update(Request $request, Template $template, StructureVersionSection $structureVersionSection): RedirectResponse
     {
-        abort_unless($templateVersionSection->isReachableThrough($request->user(), $template), 404);
+        abort_unless($structureVersionSection->isReachableThrough($request->user(), $template), 404);
 
         $validated = $request->validate([
             'page' => [
                 'required',
                 'string',
-                Rule::exists('template_version_pages', 'uuid')
-                    ->where('template_version_id', $templateVersionSection->template_version_id),
+                Rule::exists('structure_version_pages', 'uuid')
+                    ->where('structure_version_id', $structureVersionSection->structure_version_id),
             ],
         ]);
 
-        $page = TemplateVersionPage::query()->where('uuid', $validated['page'])->firstOrFail();
+        $page = StructureVersionPage::query()->where('uuid', $validated['page'])->firstOrFail();
 
         try {
-            new MoveSectionToTemplateVersionPage(
+            new MoveSectionToStructureVersionPage(
                 user: $request->user(),
-                row: $templateVersionSection,
+                row: $structureVersionSection,
                 page: $page,
             )->execute();
         } catch (PublishedVersionIsFrozen) {

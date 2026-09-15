@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\App\Docs;
 use App\Actions\MergeContacts;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NotificationChannelEnum;
-use App\Enums\TemplateAppliesToEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\StripeCatalogue;
 use App\Models\ActivityCategory;
@@ -28,10 +28,10 @@ use App\Models\RelationshipType;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\StripeOrder;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersion;
-use App\Models\TemplateVersionPage;
-use App\Models\TemplateVersionSection;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -382,10 +382,10 @@ class ApiDocsReturnFieldsTest extends TestCase
         ]);
 
         $template = Template::factory()->create(['account_id' => $vault->account_id, 'name' => 'Basic contact']);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id]);
-        TemplateVersionSection::factory()->create([
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        StructureVersionSection::factory()->create([
             'account_id' => $vault->account_id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
         $version->status = VersionStatusEnum::Published;
@@ -393,13 +393,13 @@ class ApiDocsReturnFieldsTest extends TestCase
 
         $kept = Contact::factory()->create([
             'vault_id' => $vault->id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'first_name' => 'Jim',
             'last_name' => 'Halpert',
         ]);
         $absorbed = Contact::factory()->create([
             'vault_id' => $vault->id,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
             'first_name' => 'Jimmy',
             'last_name' => 'Halpert',
         ]);
@@ -719,30 +719,30 @@ class ApiDocsReturnFieldsTest extends TestCase
 
             'templates-duplicate-create' => $this->asSomebody(function (User $user): TestResponse {
                 $template = Template::factory()->create(['account_id' => $user->account_id]);
-                TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+                StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
 
                 return $this->json('POST', "/api/v1/templates/{$template->uuid}/duplicate");
             }),
 
             'template-versions-index' => $this->asSomebody(function (User $user): TestResponse {
                 $template = Template::factory()->create(['account_id' => $user->account_id]);
-                TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+                StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
 
                 return $this->json('GET', "/api/v1/templates/{$template->uuid}/versions");
             }),
 
             'template-versions-create' => $this->asSomebody(function (User $user): TestResponse {
                 $template = Template::factory()->create(['account_id' => $user->account_id]);
-                $version = TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+                $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
                 $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
-                $template->update(['published_version_id' => $version->id]);
+                $template->structure->update(['published_version_id' => $version->id]);
 
                 return $this->json('POST', "/api/v1/templates/{$template->uuid}/versions");
             }),
 
             'template-versions-publication-update' => $this->asSomebody(function (User $user): TestResponse {
                 $template = Template::factory()->create(['account_id' => $user->account_id]);
-                TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+                StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
 
                 return $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/publication", [
                     'change_note' => 'The first one.',
@@ -751,20 +751,20 @@ class ApiDocsReturnFieldsTest extends TestCase
 
             'template-versions-destroy' => $this->asSomebody(function (User $user): TestResponse {
                 $template = Template::factory()->create(['account_id' => $user->account_id]);
-                TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+                StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
 
                 return $this->json('DELETE', "/api/v1/templates/{$template->uuid}/versions/1");
             }),
 
             'template-versions-show' => $this->asSomebody(function (User $user): TestResponse {
                 $template = Template::factory()->create(['account_id' => $user->account_id]);
-                $version = TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+                $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
                 $sectionVersion = SectionVersion::factory()->create([
                     'section_id' => Section::factory()->create(['account_id' => $user->account_id])->id,
                 ]);
-                TemplateVersionSection::factory()->create([
-                    'template_version_id' => $version->id,
-                    'template_version_page_id' => $version->pages()->firstOrFail()->id,
+                StructureVersionSection::factory()->create([
+                    'structure_version_id' => $version->id,
+                    'structure_version_page_id' => $version->pages()->firstOrFail()->id,
                     'section_version_id' => $sectionVersion->id,
                 ]);
                 Field::factory()->create(['section_version_id' => $sectionVersion->id]);
@@ -787,7 +787,7 @@ class ApiDocsReturnFieldsTest extends TestCase
 
             'template-version-pages-destroy' => $this->asSomebody(function (User $user): TestResponse {
                 [$template, $version] = $this->aDraft($user);
-                $page = TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'position' => 2]);
+                $page = StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'position' => 2]);
 
                 return $this->json('DELETE', "/api/v1/templates/{$template->uuid}/versions/1/pages/{$page->uuid}");
             }),
@@ -833,7 +833,7 @@ class ApiDocsReturnFieldsTest extends TestCase
 
             'template-version-sections-page-update' => $this->asSomebody(function (User $user): TestResponse {
                 [$template, $version, $row] = $this->aPlacement($user);
-                $page = TemplateVersionPage::factory()->create(['template_version_id' => $version->id, 'position' => 2]);
+                $page = StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'position' => 2]);
 
                 return $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}/page", [
                     'page_id' => $page->uuid,
@@ -1180,14 +1180,13 @@ class ApiDocsReturnFieldsTest extends TestCase
             'contacts-template-version-update' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
                 $template = Template::factory()->create(['account_id' => $user->account_id]);
-                $version = TemplateVersion::factory()->published()->create([
-                    'template_id' => $template->id,
+                $version = StructureVersion::factory()->published()->create([
+                    'structure_id' => $template->structure->id,
                     'account_id' => $user->account_id,
                     'version_number' => 1,
                 ]);
 
-                $template->published_version_id = $version->id;
-                $template->save();
+                $template->structure->update(['published_version_id' => $version->id]);
 
                 $file = File::factory()->create([
                     'account_id' => $vault->account_id,
@@ -1197,7 +1196,7 @@ class ApiDocsReturnFieldsTest extends TestCase
                 $contact = Contact::factory()->create([
                     'vault_id' => $vault->id,
                     'account_id' => $user->account_id,
-                    'template_version_id' => $version->id,
+                    'structure_version_id' => $version->id,
                     'avatar_file_id' => $file->id,
                 ]);
 
@@ -1219,16 +1218,14 @@ class ApiDocsReturnFieldsTest extends TestCase
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Basic contact']);
-        $version = TemplateVersion::factory()->published()->create(['template_id' => $template->id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        $template->published_version_id = $version->id;
-        $template->save();
+        $template->structure->update(['published_version_id' => $version->id]);
 
         VaultDefaultTemplate::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
-            'applies_to' => TemplateAppliesToEnum::Contact,
-            'template_version_id' => $version->id,
+            'structure_version_id' => $version->id,
         ]);
 
         return $vault;
@@ -1249,21 +1246,21 @@ class ApiDocsReturnFieldsTest extends TestCase
         ]);
     }
 
-    /** @return array{Template, TemplateVersion} */
+    /** @return array{Template, StructureVersion} */
     private function aDraft(User $user): array
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = TemplateVersion::factory()->create(['template_id' => $template->id, 'version_number' => 1]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
 
         return [$template, $version];
     }
 
-    /** @return array{Template, TemplateVersion, TemplateVersionSection} */
+    /** @return array{Template, StructureVersion, StructureVersionSection} */
     private function aPlacement(User $user): array
     {
         [$template, $version] = $this->aDraft($user);
-        $row = TemplateVersionSection::factory()->create([
-            'template_version_id' => $version->id,
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
             'section_version_id' => SectionVersion::factory()->create([
                 'section_id' => Section::factory()->create(['account_id' => $user->account_id])->id,
             ])->id,

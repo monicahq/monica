@@ -9,30 +9,30 @@ use App\Actions\UpdateFieldPosition;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Controllers\Controller;
 use App\Models\Field;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
-use App\Models\TemplateVersionSection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class FieldPositionController extends Controller
 {
-    public function update(Request $request, Template $template, TemplateVersionSection $templateVersionSection, Field $field): RedirectResponse
+    public function update(Request $request, Template $template, StructureVersionSection $structureVersionSection, Field $field): RedirectResponse
     {
-        abort_unless($templateVersionSection->isReachableThrough($request->user(), $template), 404);
+        abort_unless($structureVersionSection->isReachableThrough($request->user(), $template), 404);
 
         $validated = $request->validate([
             'position' => ['required', 'integer', 'min:1'],
         ]);
 
-        if ($field->section_version_id !== $templateVersionSection->section_version_id) {
+        if ($field->section_version_id !== $structureVersionSection->section_version_id) {
             throw new ModelNotFoundException('This field is not in this section.');
         }
 
         try {
             $sectionVersion = new MakeSectionVersionEditable(
                 user: $request->user(),
-                row: $templateVersionSection,
+                row: $structureVersionSection,
             )->execute();
 
             $target = $sectionVersion->id === $field->section_version_id
@@ -51,7 +51,7 @@ class FieldPositionController extends Controller
 
         return redirect()->route('settings.templateBuilder.index', [
             'template' => $template,
-            'page' => $templateVersionSection->templateVersionPage->key,
+            'page' => $structureVersionSection->structureVersionPage->key,
         ]);
     }
 }

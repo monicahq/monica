@@ -45,7 +45,7 @@ class ContactNameController extends Controller
         )->execute();
 
         return new ContactResource(
-            $contact->refresh()->load(['vault', 'templateVersion.template', 'avatar']),
+            $contact->refresh()->load(['vault', 'structureVersion.structure.owner', 'avatar']),
         )->response()->setStatusCode(200);
     }
 }
