@@ -26,7 +26,7 @@ class MakeAdministratorCommandTest extends TestCase
 
         $this->assertDatabaseCount('administrators', 0);
 
-        $this->artisan('monica:make-administrator', ['email' => 'michael.scott@dundermifflin.com'])
+        $this->artisan('monica:make-administrator', ['--email' => 'michael.scott@dundermifflin.com'])
             ->expectsOutputToContain('Michael Scott now administers this instance.')
             ->assertExitCode(0);
 
@@ -38,7 +38,7 @@ class MakeAdministratorCommandTest extends TestCase
     {
         User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
-        $this->artisan('monica:make-administrator', ['email' => 'michael.scott@dundermifflin.com']);
+        $this->artisan('monica:make-administrator', ['--email' => 'michael.scott@dundermifflin.com']);
 
         $this->assertDatabaseHas('administrator_logs', [
             'user_id' => null,
@@ -52,7 +52,7 @@ class MakeAdministratorCommandTest extends TestCase
     {
         $michael = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
-        $this->artisan('monica:make-administrator', ['email' => 'Michael.Scott@DunderMifflin.com'])
+        $this->artisan('monica:make-administrator', ['--email' => 'Michael.Scott@DunderMifflin.com'])
             ->assertExitCode(0);
 
         $this->assertDatabaseHas('administrators', ['user_id' => $michael->id]);
@@ -61,7 +61,7 @@ class MakeAdministratorCommandTest extends TestCase
     #[Test]
     public function it_refuses_an_address_belonging_to_nobody(): void
     {
-        $this->artisan('monica:make-administrator', ['email' => 'nobody@dundermifflin.com'])
+        $this->artisan('monica:make-administrator', ['--email' => 'nobody@dundermifflin.com'])
             ->expectsOutputToContain('Nobody on this instance uses the address nobody@dundermifflin.com.')
             ->assertExitCode(1);
 
@@ -78,7 +78,7 @@ class MakeAdministratorCommandTest extends TestCase
         ]);
         Administrator::factory()->create(['user_id' => $michael->id]);
 
-        $this->artisan('monica:make-administrator', ['email' => 'michael.scott@dundermifflin.com'])
+        $this->artisan('monica:make-administrator', ['--email' => 'michael.scott@dundermifflin.com'])
             ->expectsOutputToContain('Michael Scott already administers this instance.')
             ->assertExitCode(1);
 

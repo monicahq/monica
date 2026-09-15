@@ -44,6 +44,7 @@
         "brianium/paratest": "^7.20",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^3.9.2",
+        "laravel-lang/common": "^6.8",
         "laravel-notification-channels/telegram": "^8.0",
         "laravel/boost": "^2.5",
         "laravel/pail": "^1.2.5",

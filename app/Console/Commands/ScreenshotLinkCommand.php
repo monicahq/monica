@@ -6,17 +6,15 @@ namespace App\Console\Commands;
 
 use App\Http\Controllers\App\Auth\ScreenshotLinkController;
 use App\Models\User;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\URL;
 
+#[Signature('monica:screenshot-link {email : The address of the user to sign in as} {--to=/ : The path the link lands on}')]
+#[Description('Mint a short lived signed link that signs somebody in, for taking a screenshot of a screen behind the sign in')]
 class ScreenshotLinkCommand extends Command
 {
-    /** @var string */
-    protected $signature = 'monica:screenshot-link {email : The address of the user to sign in as} {--to=/ : The path the link lands on}';
-
-    /** @var string */
-    protected $description = 'Mint a short lived signed link that signs somebody in, for taking a screenshot of a screen behind the sign in';
-
     public function handle(): int
     {
         if (! ScreenshotLinkController::isAvailable()) {

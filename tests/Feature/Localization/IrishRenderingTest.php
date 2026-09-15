@@ -33,7 +33,7 @@ class IrishRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('riachtanach', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('ag teastáil', (string) session('errors')->first('email'));
     }
 
     #[Test]

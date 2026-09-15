@@ -21,8 +21,10 @@ The strings themselves are the keys, in one JSON file per locale under `lang/`. 
 
 1. Write the string in the code as usual. A string in an enum belongs in `translationKeys()`, and the enum MUST implement `Translatable`.
 2. Run `php artisan monica:localize`. Read what it says it added and removed.
-3. Translate every string it reports as missing, in every locale of `config('monica.locales')`.
-4. Run `php artisan monica:localize --check` and confirm it passes.
+3. Translate every string it reports as missing, in every locale of `App\Helpers\AvailableLocales`,
+   which is every `lang/*.json` file.
+4. Run `php artisan lang:update` to apply the translations to the language files.
+5. Run `php artisan monica:localize --check` and confirm it passes.
 
 ## Writing a translation
 

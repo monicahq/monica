@@ -33,7 +33,7 @@ class TamilRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('கட்டாயம் தேவை', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('புலம் அவசியம்', (string) session('errors')->first('email'));
     }
 
     #[Test]

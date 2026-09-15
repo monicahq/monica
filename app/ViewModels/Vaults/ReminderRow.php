@@ -10,6 +10,7 @@ use App\Enums\NotificationChannelEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Enums\ReminderPostponePresetEnum;
+use App\Helpers\AvailableLocales;
 use App\Models\Contact;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -304,6 +305,6 @@ class ReminderRow
     private function dateFormat(): string
     {
         return $this->user->date_format->value
-            ?? (string) config('monica.locales.'.app()->getLocale().'.date_format', DateFormatEnum::MonthSpelled->value);
+            ?? (string) AvailableLocales::details(app()->getLocale())['date_format'];
     }
 }

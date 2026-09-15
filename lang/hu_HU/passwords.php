@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 return [
-    'reset' => 'A jelszavadat visszaállítottuk.',
-    'sent' => 'Elküldtük a jelszó visszaállítására szolgáló hivatkozást az e-mail-címedre.',
-    'throttled' => 'Várj egy kicsit, mielőtt újra próbálkozol.',
-    'token' => 'Ez a jelszó-visszaállítási kód érvénytelen.',
-    'user' => 'Nem találunk felhasználót ezzel az e-mail-címmel.',
+    'reset' => 'Az új jelszó beállítva!',
+    'sent' => 'Jelszó-emlékeztető elküldve!',
+    'throttled' => 'Kérjük várjon, mielőtt újra megpróbálná.',
+    'token' => 'Ez az új jelszó generálásához tartozó token érvénytelen.',
+    'user' => 'Nem található felhasználó a megadott email címmel.',
 ];

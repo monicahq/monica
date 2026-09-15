@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'failed' => 'Bu maʻlumotlar bizning yozuvlarimizga toʻgʻri kelmaydi.',
-    'password' => 'Kiritilgan parol notoʻgʻri.',
-    'throttle' => 'Kirish urinishlari juda koʻp. :seconds soniyadan keyin yana urinib koʻring.',
+    'failed' => 'Bunday maʼlumotlarga ega foydalanuvchi mavjud emas.',
+    'password' => 'Noto‘g‘ri parol.',
+    'throttle' => 'Kirish uchun juda ko‘p urinishlar aniqlandi. Iltimos :seconds soniyadan so‘ng yana urinib ko‘ring.',
 ];

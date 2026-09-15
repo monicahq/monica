@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Auth;
 
+use App\Helpers\AvailableLocales;
 use App\Helpers\LocaleCollation;
 use App\ViewModels\Auth\RegisterViewModel;
 use PHPUnit\Framework\Attributes\Test;
@@ -26,12 +27,12 @@ class RegisterViewModelTest extends TestCase
     {
         $locales = new RegisterViewModel()->locales();
 
-        $this->assertCount(count(config('monica.locales')), $locales);
+        $this->assertCount(count(AvailableLocales::codes()), $locales);
         $this->assertEquals([
             'code' => 'en',
             'label' => 'English',
             'region' => 'United Kingdom',
-            'flag' => config('monica.locales.en.flag'),
+            'flag' => config('localization.locales.en.flag'),
         ], collect($locales)->firstWhere('code', 'en'));
     }
 

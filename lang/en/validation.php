@@ -3,18 +3,6 @@
 declare(strict_types=1);
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Validation Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines contain the default error messages used by
-    | the validator class. Some of these rules have multiple versions such
-    | as the size rules. Feel free to tweak each of these messages here.
-    |
-    */
-
     'accepted' => 'The :attribute field must be accepted.',
     'accepted_if' => 'The :attribute field must be accepted when :other is :value.',
     'active_url' => 'The :attribute field must be a valid URL.',
@@ -164,41 +152,139 @@ return [
     'starts_with' => 'The :attribute field must start with one of the following: :values.',
     'string' => 'The :attribute field must be a string.',
     'timezone' => 'The :attribute field must be a valid timezone.',
+    'ulid' => 'The :attribute field must be a valid ULID.',
     'unique' => 'The :attribute has already been taken.',
     'uploaded' => 'The :attribute failed to upload.',
     'uppercase' => 'The :attribute field must be uppercase.',
     'url' => 'The :attribute field must be a valid URL.',
-    'ulid' => 'The :attribute field must be a valid ULID.',
     'uuid' => 'The :attribute field must be a valid UUID.',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Custom Validation Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify custom validation messages for attributes using the
-    | convention "attribute.rule" to name the lines. This makes it quick to
-    | specify a specific custom language line for a given attribute rule.
-    |
-    */
-
-    'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
-        ],
+    'attributes' => [
+        'address' => 'address',
+        'affiliate_url' => 'affiliate URL',
+        'age' => 'age',
+        'amount' => 'amount',
+        'announcement' => 'announcement',
+        'area' => 'area',
+        'audience_prize' => 'audience prize',
+        'audience_winner' => 'audience winner',
+        'available' => 'available',
+        'birthday' => 'birthday',
+        'body' => 'body',
+        'city' => 'city',
+        'color' => 'color',
+        'company' => 'company',
+        'compilation' => 'compilation',
+        'concept' => 'concept',
+        'conditions' => 'conditions',
+        'content' => 'content',
+        'contest' => 'contest',
+        'country' => 'country',
+        'cover' => 'cover',
+        'created_at' => 'created at',
+        'creator' => 'creator',
+        'currency' => 'currency',
+        'current_password' => 'current password',
+        'customer' => 'customer',
+        'date' => 'date',
+        'date_of_birth' => 'date of birth',
+        'dates' => 'dates',
+        'day' => 'day',
+        'deleted_at' => 'deleted at',
+        'description' => 'description',
+        'display_type' => 'display type',
+        'district' => 'district',
+        'duration' => 'duration',
+        'email' => 'email',
+        'excerpt' => 'excerpt',
+        'filter' => 'filter',
+        'finished_at' => 'finished at',
+        'first_name' => 'first name',
+        'gender' => 'gender',
+        'grand_prize' => 'grand prize',
+        'group' => 'group',
+        'hour' => 'hour',
+        'image' => 'image',
+        'image_desktop' => 'desktop image',
+        'image_main' => 'main image',
+        'image_mobile' => 'mobile image',
+        'images' => 'images',
+        'is_audience_winner' => 'is audience winner',
+        'is_hidden' => 'is hidden',
+        'is_subscribed' => 'is subscribed',
+        'is_visible' => 'is visible',
+        'is_winner' => 'is winner',
+        'items' => 'items',
+        'key' => 'key',
+        'last_name' => 'last name',
+        'lesson' => 'lesson',
+        'line_address_1' => 'line address 1',
+        'line_address_2' => 'line address 2',
+        'login' => 'login',
+        'message' => 'message',
+        'middle_name' => 'middle name',
+        'minute' => 'minute',
+        'mobile' => 'mobile',
+        'month' => 'month',
+        'name' => 'name',
+        'national_code' => 'national code',
+        'number' => 'number',
+        'password' => 'password',
+        'password_confirmation' => 'password confirmation',
+        'phone' => 'phone',
+        'photo' => 'photo',
+        'portfolio' => 'portfolio',
+        'postal_code' => 'postal code',
+        'preview' => 'preview',
+        'price' => 'price',
+        'product_id' => 'product ID',
+        'product_uid' => 'product UID',
+        'product_uuid' => 'product UUID',
+        'promo_code' => 'promo code',
+        'province' => 'province',
+        'quantity' => 'quantity',
+        'reason' => 'reason',
+        'recaptcha_response_field' => 'recaptcha response field',
+        'referee' => 'referee',
+        'referees' => 'referees',
+        'region' => 'region',
+        'reject_reason' => 'reject reason',
+        'remember' => 'remember',
+        'restored_at' => 'restored at',
+        'result_text_under_image' => 'result text under image',
+        'role' => 'role',
+        'rule' => 'rule',
+        'rules' => 'rules',
+        'second' => 'second',
+        'sex' => 'sex',
+        'shipment' => 'shipment',
+        'short_text' => 'short text',
+        'size' => 'size',
+        'skills' => 'skills',
+        'slug' => 'slug',
+        'specialization' => 'specialization',
+        'started_at' => 'started at',
+        'state' => 'state',
+        'status' => 'status',
+        'street' => 'street',
+        'student' => 'student',
+        'subject' => 'subject',
+        'tag' => 'tag',
+        'tags' => 'tags',
+        'teacher' => 'teacher',
+        'terms' => 'terms',
+        'test_description' => 'test description',
+        'test_locale' => 'test locale',
+        'test_name' => 'test name',
+        'text' => 'text',
+        'time' => 'time',
+        'title' => 'title',
+        'type' => 'type',
+        'updated_at' => 'updated at',
+        'user' => 'user',
+        'username' => 'username',
+        'value' => 'value',
+        'winner' => 'winner',
+        'work' => 'work',
+        'year' => 'year',
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Custom Validation Attributes
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used to swap our attribute placeholder
-    | with something more reader friendly such as "E-Mail Address" instead
-    | of "email". This simply helps us make our message more expressive.
-    |
-    */
-
-    'attributes' => [],
-
 ];

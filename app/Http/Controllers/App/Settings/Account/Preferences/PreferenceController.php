@@ -8,6 +8,7 @@ use App\Actions\UpdatePreferences;
 use App\Enums\DateFormatEnum;
 use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
+use App\Helpers\AvailableLocales;
 use App\Helpers\LocaleResolution;
 use App\Http\Controllers\Controller;
 use App\ViewModels\Settings\Account\Preferences\PreferencesViewModel;
@@ -30,7 +31,7 @@ class PreferenceController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'locale' => ['required', 'string', Rule::in(array_keys(config('monica.locales')))],
+            'locale' => ['required', 'string', Rule::in(AvailableLocales::codes())],
             'time_format' => ['required', 'string', Rule::enum(TimeFormatEnum::class)],
             'date_format' => ['nullable', 'string', Rule::enum(DateFormatEnum::class)],
             'number_format' => ['nullable', 'string', Rule::enum(NumberFormatEnum::class)],

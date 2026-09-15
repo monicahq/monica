@@ -5,22 +5,24 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Contracts\Translatable;
+use App\Helpers\AvailableLocales;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Illuminate\Translation\MessageSelector;
+use LaravelLang\Locales\Facades\Locales;
+use LaravelLang\Publisher\Resources\Translation;
+use LaravelLang\Publisher\Services\Converters\Text\SmartPunctuationDecorator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RegexIterator;
 use SplFileInfo;
 
+#[Signature('monica:localize {--check : Report what is out of date, and write nothing}')]
+#[Description('Collect the strings to translate and write them to the locale files')]
 class LocalizeCommand extends Command
 {
-    /** @var string */
-    protected $signature = 'monica:localize {--check : Report what is out of date, and write nothing}';
-
-    /** @var string */
-    protected $description = 'Collect the strings to translate and write them to the locale files';
-
     /** @var list<string> */
     private const array FUNCTIONS = ['__', 'trans', 'trans_choice', '@lang'];
 
@@ -224,7 +226,7 @@ class LocalizeCommand extends Command
     /** @return list<string> */
     private function typographyRulesBrokenBy(string $translation, string $locale): array
     {
-        $rules = config("monica.locales.{$locale}.typography", []);
+        $rules = config("localization.locales.{$locale}.typography", []);
 
         if ($rules === []) {
             return [];
@@ -449,6 +451,17 @@ class LocalizeCommand extends Command
             }
         }
 
+        $update = new \LaravelLang\Publisher\Processors\Update(
+            output: $this->output,
+            locales: Locales::raw()->installed(),
+            decorator: new SmartPunctuationDecorator(app(\LaravelLang\Publisher\Helpers\Config::class)),
+            config: app(\LaravelLang\Publisher\Helpers\Config::class),
+            translation: ($translation = new Translation()),
+        );
+        $update->prepare()->collect();
+
+        $keys = array_merge($keys, $translation->toArray()['en']['en.json']);
+
         $keys = array_map(strval(...), array_keys($keys));
 
         sort($keys, SORT_STRING);
@@ -568,7 +581,7 @@ class LocalizeCommand extends Command
         preg_match_all('/(?<![!<>=])(?:===|==)(?!=)\s*1\b/', $code, $matches, PREG_OFFSET_CAPTURE);
 
         foreach ($matches[0] as [$match, $offset]) {
-            $window = mb_strcut($code, $offset, 240);
+            $window = mb_strcut($code, intval($offset), 240);
 
             if (! str_contains($window, ':count')) {
                 continue;
@@ -611,7 +624,7 @@ class LocalizeCommand extends Command
                     continue;
                 }
 
-                if ($this->guardsZeroBefore($code, $offset)) {
+                if ($this->guardsZeroBefore($code, intval($offset))) {
                     continue;
                 }
 
@@ -766,7 +779,7 @@ class LocalizeCommand extends Command
     /** @return list<string> */
     private function locales(): array
     {
-        $locales = array_keys(config('monica.locales'));
+        $locales = AvailableLocales::codes();
         $source = $this->sourceLocale();
 
         usort($locales, fn (string $a, string $b): int => [$a !== $source, $a] <=> [$b !== $source, $b]);

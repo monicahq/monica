@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
+#[Signature('monica:setup-telegram')]
+#[Description('Tell Telegram where to send what people say to the bot, so a conversation can be connected to an account')]
 class SetupTelegramCommand extends Command
 {
-    /** @var string */
-    protected $signature = 'monica:setup-telegram';
-
-    /** @var string */
-    protected $description = 'Tell Telegram where to send what people say to the bot, so a conversation can be connected to an account';
-
     public function handle(): int
     {
         if (! config('services.telegram.installed')) {

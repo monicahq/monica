@@ -6,6 +6,7 @@ namespace App\ViewModels\Settings\Account\Billing;
 
 use App\Enums\AccessKindEnum;
 use App\Enums\OfferKindEnum;
+use App\Helpers\AvailableLocales;
 use App\Helpers\StorageSize;
 use App\Helpers\StripeCatalogue;
 use App\Models\Account;
@@ -260,7 +261,7 @@ class BillingViewModel
             return $this->currency;
         }
 
-        $suggested = config('monica.locales.'.app()->getLocale().'.currency');
+        $suggested = AvailableLocales::details(app()->getLocale())['currency'] ?? null;
 
         if (is_string($suggested) && in_array($suggested, $currencies, true)) {
             return $suggested;

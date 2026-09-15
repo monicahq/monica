@@ -71,7 +71,7 @@ class BillingViewModelTest extends TestCase
     #[Test]
     public function it_suggests_the_currency_of_the_language_when_nothing_was_picked(): void
     {
-        config(['monica.locales.en.currency' => 'usd']);
+        config(['localization.locales.en.currency' => 'usd']);
 
         $michael = User::factory()->create();
         $this->app->setLocale('en');
@@ -82,7 +82,7 @@ class BillingViewModelTest extends TestCase
     #[Test]
     public function it_never_shows_a_currency_the_catalogue_does_not_quote(): void
     {
-        config(['monica.locales.en.currency' => 'gbp']);
+        config(['localization.locales.en.currency' => 'gbp']);
 
         $michael = User::factory()->create();
         $this->app->setLocale('en');

@@ -6,7 +6,7 @@ The strings themselves and the `monica:localize` workflow are in the
 [translations skill](../skills/translations/SKILL.md). This file is only about how a translated value
 is written once you are writing it.
 
-A rule here is enforced. Every locale declares its rules in its own entry of `config/monica.php`,
+A rule here is enforced. Every locale declares its rules in its own entry of `config/localization.php`,
 under `typography`, and `php artisan monica:localize --check` refuses a value that breaks one. A
 locale with nothing declared is not checked, and adding rules for one is a matter of writing this
 section and that array, and nothing else.
@@ -50,7 +50,7 @@ Which space depends on the mark, following the Imprimerie nationale:
 | `?` | U+202F |
 
 Both are invisible in an editor and neither can be told from an ordinary space by looking, which is
-why they are named here by code point and written in `config/monica.php` as `"\u{00A0}"` and
+why they are named here by code point and written in `config/localization.php` as `"\u{00A0}"` and
 `"\u{202F}"` rather than pasted. In `lang/fr_FR.json` they are stored as the characters themselves,
 because the file is written with unescaped Unicode so that accented letters stay readable.
 
@@ -222,7 +222,7 @@ has read the file, and say in the notes what they covered.
 ## Writing rules for a language that has none
 
 1. Write its section above, saying what the rule is and why, in the shape the French section uses.
-2. Declare it in that locale's entry of `config/monica.php`, under `typography`. The keys are
+2. Declare it in that locale's entry of `config/localization.php`, under `typography`. The keys are
    `apostrophe`, `quotes`, `space_before` and `forbidden_words`, all optional, and a rule you do not
    declare is not checked. Name what the language uses; what it refuses follows from that.
 3. Correct whatever the check then reports, because a rule the shipped file breaks is a rule nobody

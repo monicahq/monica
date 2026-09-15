@@ -33,7 +33,7 @@ class IcelandicRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('er nauðsynlegt', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('er nauðsynlegur', (string) session('errors')->first('email'));
     }
 
     #[Test]

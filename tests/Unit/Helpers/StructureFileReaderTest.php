@@ -183,8 +183,6 @@ class StructureFileReaderTest extends TestCase
     #[Test]
     public function it_reads_a_locale_whose_language_is_written_with_three_letters(): void
     {
-        config(['monica.locales.fil_PH' => ['label' => 'Filipino', 'region' => 'Pilipinas']]);
-
         $file = $this->file();
         $file['template']['locale'] = 'fil_PH';
 

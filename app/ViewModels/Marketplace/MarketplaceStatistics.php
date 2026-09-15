@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Marketplace;
 
 use App\Enums\MarketplaceListingStatusEnum;
+use App\Helpers\AvailableLocales;
 use App\Models\MarketplaceInstallation;
 use App\Models\MarketplaceListing;
 use App\Models\Section;
@@ -79,7 +80,7 @@ class MarketplaceStatistics
             ->sortDesc()
             ->take(2)
             ->keys()
-            ->map(fn (string $locale): string => config("monica.locales.{$locale}.label") ?? $locale);
+            ->map(fn (string $locale): string => (string) AvailableLocales::details($locale)['label']);
 
         if ($top->isEmpty()) {
             return __('Nothing has been published yet');

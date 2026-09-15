@@ -6,6 +6,7 @@ namespace App\ViewModels\Marketplace;
 
 use App\Enums\MarketplaceCategoryEnum;
 use App\Enums\MarketplaceListingStatusEnum;
+use App\Helpers\AvailableLocales;
 use App\Models\MarketplaceCategory;
 use App\Models\MarketplaceInstallation;
 use App\Models\MarketplaceListing;
@@ -112,7 +113,7 @@ class MarketplaceViewModel
             ->values()
             ->map(fn (string $locale): array => [
                 'value' => $locale,
-                'label' => config("monica.locales.{$locale}.label") ?? $locale,
+                'label' => (string) AvailableLocales::details($locale)['label'],
             ])
             ->all();
     }
@@ -220,7 +221,7 @@ class MarketplaceViewModel
             'categoryName' => $listing->category->name,
             'facts' => self::facts($listing),
             'authorLabel' => __('By :author', ['author' => $listing->author_name]),
-            'language' => config("monica.locales.{$listing->locale}.label") ?? $listing->locale,
+            'language' => (string) AvailableLocales::details($listing->locale)['label'],
             'installLabel' => trans_choice(':count installation|:count installations', $listing->install_count),
             'isInstalled' => $installation !== null,
             'hasUpdate' => $installation?->update_available_version_id !== null,

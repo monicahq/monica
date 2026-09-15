@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'failed' => 'Disse oplysninger passer ikke med vores registreringer.',
-    'password' => 'Den angivne adgangskode er forkert.',
+    'failed' => 'De angivne oplysninger er ugyldige.',
+    'password' => 'Adgangskoden er forkert.',
     'throttle' => 'For mange loginforsøg. Prøv igen om :seconds sekunder.',
 ];

@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 return [
-    'reset' => 'Ihr Passwort wurde zurückgesetzt.',
-    'sent' => 'Wir haben Ihnen den Link zum Zurücksetzen des Passworts per E-Mail geschickt.',
-    'throttled' => 'Warten Sie einen Moment, bevor Sie es erneut versuchen.',
-    'token' => 'Dieser Token zum Zurücksetzen des Passworts ist ungültig.',
-    'user' => 'Wir finden keinen Benutzer mit dieser E-Mail-Adresse.',
+    'reset' => 'Das Passwort wurde zurückgesetzt!',
+    'sent' => 'E-Mail zum Zurücksetzen des Passworts wurde gesendet!',
+    'throttled' => 'Bitte warten Sie, bevor Sie es erneut versuchen.',
+    'token' => 'Der Passwort-Wiederherstellungsschlüssel ist ungültig oder abgelaufen.',
+    'user' => 'Es konnte leider kein Nutzer mit dieser E-Mail-Adresse gefunden werden.',
 ];

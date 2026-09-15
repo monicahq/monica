@@ -3,6 +3,6 @@
 declare(strict_types=1);
 
 return [
-    'previous' => '&laquo; Trước',
-    'next' => 'Sau &raquo;',
+    'next' => 'Trang sau &raquo;',
+    'previous' => '&laquo; Trang trước',
 ];

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'failed' => 'Aquestes credencials no coincideixen amb els nostres registres.',
-    'password' => 'La contrasenya que has donat és incorrecta.',
-    'throttle' => 'Massa intents d’inici de sessió. Torna-ho a provar en :seconds segons.',
+    'failed' => 'Aquestes credencials no concorden amb els nostres registres.',
+    'password' => 'La contrasenya és incorrecta.',
+    'throttle' => 'Ha superat el nombre màxim d’intents d’accés. Si us plau, torni a intentar-ho en :seconds segons.',
 ];

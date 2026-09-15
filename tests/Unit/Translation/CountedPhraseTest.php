@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Translation;
 
+use App\Helpers\AvailableLocales;
 use Illuminate\Translation\MessageSelector;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -147,7 +148,7 @@ class CountedPhraseTest extends TestCase
     #[Test]
     public function every_shipped_language_says_how_many_wordings_it_needs(): void
     {
-        foreach (array_keys(config('monica.locales')) as $locale) {
+        foreach (AvailableLocales::codes() as $locale) {
             $this->assertArrayHasKey($locale, self::WORDINGS_PER_LOCALE, $locale);
         }
     }
@@ -160,7 +161,7 @@ class CountedPhraseTest extends TestCase
 
         $this->assertGreaterThan(40, count($counted));
 
-        foreach (array_keys(config('monica.locales')) as $locale) {
+        foreach (AvailableLocales::codes() as $locale) {
             $this->app->setLocale($locale);
 
             foreach ($counted as $key) {
@@ -180,7 +181,7 @@ class CountedPhraseTest extends TestCase
     #[Test]
     public function every_segment_of_every_counted_phrase_in_the_catalogue_interpolates_the_count(): void
     {
-        foreach (array_keys(config('monica.locales')) as $locale) {
+        foreach (AvailableLocales::codes() as $locale) {
             $path = lang_path($locale.'.json');
 
             $this->assertFileExists($path, "{$locale} is registered without a translation file");

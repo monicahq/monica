@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'failed' => 'Þessar upplýsingar passa ekki við það sem við höfum skráð.',
-    'password' => 'Lykilorðið sem þú slóst inn er rangt.',
-    'throttle' => 'Of margar innskráningartilraunir. Reyndu aftur eftir :seconds sekúndur.',
+    'failed' => 'Þessi skilríki passa ekki við skrár okkar.',
+    'password' => 'Lykilorð er rangt.',
+    'throttle' => 'Of margar innskráningartilraunir. Vinsamlegast reyndu aftur eftir :seconds sekúndur.',
 ];

@@ -6,19 +6,17 @@ namespace App\Console\Commands;
 
 use App\Actions\GrantAdministratorAccess;
 use App\Models\User;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
+#[Signature('monica:make-administrator {--email= : Address of an existing user of this instance}')]
+#[Description('Let an existing user run this instance')]
 class MakeAdministratorCommand extends Command
 {
-    /** @var string */
-    protected $signature = 'monica:make-administrator {email : Address of an existing user of this instance}';
-
-    /** @var string */
-    protected $description = 'Let an existing user run this instance';
-
     public function handle(): int
     {
-        $email = mb_strtolower((string) $this->argument('email'));
+        $email = mb_strtolower((string) $this->option('email'));
 
         $user = User::query()->whereRaw('lower(email) = ?', [$email])->first();
 

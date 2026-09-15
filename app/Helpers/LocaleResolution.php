@@ -116,6 +116,6 @@ class LocaleResolution
     /** @return array<string, array<string, mixed>> */
     private static function locales(): array
     {
-        return config('monica.locales');
+        return AvailableLocales::all();
     }
 }

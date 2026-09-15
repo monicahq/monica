@@ -33,7 +33,7 @@ class GreekRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('είναι υποχρεωτικό', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('είναι απαραίτητο', (string) session('errors')->first('email'));
     }
 
     #[Test]

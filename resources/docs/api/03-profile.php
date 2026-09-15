@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Helpers\AvailableLocales;
 use App\ViewModels\Docs\ApiDocsFields;
 use App\ViewModels\Docs\ApiDocsViewModel;
 
 $base = ApiDocsViewModel::baseUrl();
 
-$locales = array_keys((array) config('monica.locales'));
+$locales = AvailableLocales::codes();
 $languages = count($locales) === 1
     ? $locales[0]
     : implode(', ', array_slice($locales, 0, -1)).' or '.$locales[count($locales) - 1];

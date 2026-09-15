@@ -7,6 +7,7 @@ namespace Tests\Unit\ViewModels\Settings\Account\Preferences;
 use App\Enums\DateFormatEnum;
 use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
+use App\Helpers\AvailableLocales;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Preferences\PreferencesViewModel;
 use Carbon\Carbon;
@@ -43,7 +44,7 @@ class PreferencesViewModelTest extends TestCase
 
         $locales = $viewModel->locales();
 
-        $this->assertCount(count(config('monica.locales')), $locales);
+        $this->assertCount(count(AvailableLocales::codes()), $locales);
         $this->assertEquals('fr_FR', $viewModel->locale());
         $this->assertEquals('Français', $viewModel->localeLabel());
         $this->assertTrue(collect($locales)->firstWhere('value', 'fr_FR')['selected']);

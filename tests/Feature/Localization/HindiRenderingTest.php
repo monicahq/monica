@@ -33,7 +33,7 @@ class HindiRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('ज़रूरी है', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('फील्ड आवश्यक होता है', (string) session('errors')->first('email'));
     }
 
     #[Test]

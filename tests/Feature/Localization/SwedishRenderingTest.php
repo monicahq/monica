@@ -33,7 +33,7 @@ class SwedishRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('måste fyllas i', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('är obligatoriskt', (string) session('errors')->first('email'));
     }
 
     #[Test]

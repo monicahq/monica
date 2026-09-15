@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 return [
-    'reset' => 'Salasanasi on palautettu.',
-    'sent' => 'Lähetimme salasanan palautuslinkin sähköpostiisi.',
-    'throttled' => 'Odota hetki ennen kuin yrität uudelleen.',
-    'token' => 'Tämä salasanan palautuskoodi ei kelpaa.',
-    'user' => 'Emme löydä käyttäjää tuolla sähköpostiosoitteella.',
+    'reset' => 'Salasana on resetoitu!',
+    'sent' => 'Resetointilinkki lähetetty sähköpostitse!',
+    'throttled' => 'Odota, ennen kuin yrität uudelleen',
+    'token' => 'Resetointitunniste on viallinen.',
+    'user' => 'Sähköpostiosoitteella ei löydy käyttäjää.',
 ];

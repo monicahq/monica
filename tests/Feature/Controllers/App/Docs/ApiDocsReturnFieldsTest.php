@@ -9,6 +9,7 @@ use App\Enums\FieldTypeEnum;
 use App\Enums\NotificationChannelEnum;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\VersionStatusEnum;
+use App\Helpers\AvailableLocales;
 use App\Helpers\StripeCatalogue;
 use App\Models\ActivityCategory;
 use App\Models\Contact;
@@ -55,12 +56,24 @@ class ApiDocsReturnFieldsTest extends TestCase
     #[Test]
     public function it_names_every_language_the_instance_ships_where_it_documents_the_locale(): void
     {
-        config(['monica.locales.kl_GL' => ['label' => 'Kalaallisut', 'region' => 'Kalaallit Nunaat']]);
+        $langPath = storage_path('framework/testing/docs-lang');
+
+        if (! is_dir($langPath)) {
+            mkdir($langPath, 0755, true);
+        }
+
+        file_put_contents($langPath.'/kl_GL.json', '{}');
+        $this->app->useLangPath($langPath);
 
         $profile = include base_path('resources/docs/api/03-profile.php');
         $description = json_encode($profile);
+        $locales = AvailableLocales::codes();
 
-        foreach (array_keys((array) config('monica.locales')) as $locale) {
+        unlink($langPath.'/kl_GL.json');
+
+        $this->assertContains('kl_GL', $locales);
+
+        foreach ($locales as $locale) {
             $this->assertStringContainsString($locale, (string) $description, $locale);
         }
     }

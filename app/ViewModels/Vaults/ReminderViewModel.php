@@ -7,6 +7,7 @@ namespace App\ViewModels\Vaults;
 use App\Enums\DateFormatEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceStatusEnum;
+use App\Helpers\AvailableLocales;
 use App\Helpers\ReminderSchedule;
 use App\Models\Contact;
 use App\Models\Reminder;
@@ -322,6 +323,6 @@ class ReminderViewModel
     private function dateFormat(): string
     {
         return $this->user->date_format->value
-            ?? (string) config('monica.locales.'.app()->getLocale().'.date_format', DateFormatEnum::MonthSpelled->value);
+            ?? (string) AvailableLocales::details(app()->getLocale())['date_format'];
     }
 }

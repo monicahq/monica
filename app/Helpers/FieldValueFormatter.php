@@ -130,13 +130,13 @@ class FieldValueFormatter
     private function dateFormat(): string
     {
         return $this->user->date_format->value
-            ?? (string) config('monica.locales.'.app()->getLocale().'.date_format', DateFormatEnum::DayFirst->value);
+            ?? (string) AvailableLocales::details(app()->getLocale())['date_format'];
     }
 
     private function numberFormat(): NumberFormatEnum
     {
         return $this->user->number_format
-            ?? NumberFormatEnum::tryFrom((string) config('monica.locales.'.app()->getLocale().'.number_format'))
+            ?? NumberFormatEnum::tryFrom((string) AvailableLocales::details(app()->getLocale())['number_format'])
             ?? NumberFormatEnum::CommaAndDot;
     }
 }

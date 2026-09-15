@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 return [
     'reset' => 'Athshocraíodh do phasfhocal.',
-    'sent' => 'Sheolamar nasc athshocraithe pasfhocail chuig do ríomhphost.',
-    'throttled' => 'Fan tamall sula mbaineann tú triail eile as.',
-    'token' => 'Níl an cód athshocraithe pasfhocail seo bailí.',
-    'user' => 'Ní fhaighimid aon úsáideoir leis an seoladh ríomhphoist sin.',
+    'sent' => 'Tá nasc athshocraithe do phasfhocal seolta againn le ríomhphost.',
+    'throttled' => 'Fan go fóill sula ndéanfaidh tú iarracht eile.',
+    'token' => 'Tá an comhartha athshocraithe pasfhocail seo neamhbhailí.',
+    'user' => 'Ní féidir linn úsáideoir a aimsiú leis an seoladh ríomhphoist sin.',
 ];

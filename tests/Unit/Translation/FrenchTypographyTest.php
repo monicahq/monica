@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Translation;
 
+use App\Helpers\AvailableLocales;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -12,13 +13,13 @@ class FrenchTypographyTest extends TestCase
     #[Test]
     public function it_writes_french_with_the_typographic_apostrophe(): void
     {
-        $this->assertSame("\u{2019}", config('monica.locales.fr_FR.typography.apostrophe'));
+        $this->assertSame("\u{2019}", config('localization.locales.fr_FR.typography.apostrophe'));
     }
 
     #[Test]
     public function it_writes_a_full_non_breaking_space_before_a_colon_and_a_narrow_one_before_the_rest(): void
     {
-        $spaces = config('monica.locales.fr_FR.typography.space_before');
+        $spaces = config('localization.locales.fr_FR.typography.space_before');
 
         $this->assertSame("\u{00A0}", $spaces[':']);
         $this->assertSame("\u{202F}", $spaces[';']);
@@ -29,7 +30,7 @@ class FrenchTypographyTest extends TestCase
     #[Test]
     public function it_quotes_french_with_guillemets_holding_a_narrow_non_breaking_space(): void
     {
-        $typography = config('monica.locales.fr_FR.typography');
+        $typography = config('localization.locales.fr_FR.typography');
 
         $this->assertSame('«', $typography['quotes']['open']);
         $this->assertSame('»', $typography['quotes']['close']);
@@ -39,7 +40,7 @@ class FrenchTypographyTest extends TestCase
     #[Test]
     public function it_refuses_the_pronouns_that_can_mean_nothing_but_tutoiement(): void
     {
-        $words = config('monica.locales.fr_FR.typography.forbidden_words');
+        $words = config('localization.locales.fr_FR.typography.forbidden_words');
 
         $this->assertSame(['tu', 'toi', 'tes'], $words);
     }
@@ -47,7 +48,7 @@ class FrenchTypographyTest extends TestCase
     #[Test]
     public function it_leaves_ton_and_ta_out_because_they_are_also_ordinary_french_words(): void
     {
-        $words = config('monica.locales.fr_FR.typography.forbidden_words');
+        $words = config('localization.locales.fr_FR.typography.forbidden_words');
 
         $this->assertNotContains('ton', $words);
         $this->assertNotContains('ta', $words);
@@ -69,7 +70,7 @@ class FrenchTypographyTest extends TestCase
         ];
 
         foreach ($expected as $locale => [$open, $close]) {
-            $quotes = config("monica.locales.{$locale}.typography.quotes");
+            $quotes = config("localization.locales.{$locale}.typography.quotes");
 
             $this->assertSame($open, $quotes['open'], $locale);
             $this->assertSame($close, $quotes['close'], $locale);
@@ -79,8 +80,8 @@ class FrenchTypographyTest extends TestCase
     #[Test]
     public function it_writes_a_narrow_non_breaking_space_inside_guillemets_in_french_and_nowhere_else(): void
     {
-        foreach (array_keys(config('monica.locales')) as $locale) {
-            $inner = config("monica.locales.{$locale}.typography.quotes.inner_space");
+        foreach (AvailableLocales::codes() as $locale) {
+            $inner = config("localization.locales.{$locale}.typography.quotes.inner_space");
 
             $locale === 'fr_FR'
                 ? $this->assertSame("\u{202F}", $inner)

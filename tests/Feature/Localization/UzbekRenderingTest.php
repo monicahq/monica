@@ -32,7 +32,7 @@ class UzbekRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('majburiy', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('maydoni to‘ldirilishi shart', (string) session('errors')->first('email'));
     }
 
     #[Test]

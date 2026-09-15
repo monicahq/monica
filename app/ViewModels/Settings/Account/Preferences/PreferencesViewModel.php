@@ -7,6 +7,7 @@ namespace App\ViewModels\Settings\Account\Preferences;
 use App\Enums\DateFormatEnum;
 use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
+use App\Helpers\AvailableLocales;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 
@@ -21,7 +22,7 @@ class PreferencesViewModel
     {
         $current = $this->locale();
 
-        return collect(config('monica.locales'))
+        return collect(AvailableLocales::all())
             ->map(fn (array $locale, string $code): array => [
                 'value' => $code,
                 'label' => $locale['label'],
@@ -34,7 +35,7 @@ class PreferencesViewModel
 
     public function localeLabel(): string
     {
-        return config('monica.locales')[$this->locale()]['label'];
+        return (string) AvailableLocales::details($this->locale())['label'];
     }
 
     public function usesReadableAddresses(): bool
@@ -175,9 +176,9 @@ class PreferencesViewModel
     {
         $locale = app()->getLocale();
 
-        return array_key_exists($locale, config('monica.locales'))
+        return AvailableLocales::has($locale)
             ? $locale
-            : config('app.locale');
+            : (string) config('app.locale');
     }
 
     public function timeFormat(): TimeFormatEnum
@@ -192,7 +193,7 @@ class PreferencesViewModel
 
     private function languageDateFormat(): string
     {
-        return config('monica.locales')[$this->locale()]['date_format'];
+        return (string) AvailableLocales::details($this->locale())['date_format'];
     }
 
     private function languageDateExample(): string
@@ -207,6 +208,6 @@ class PreferencesViewModel
 
     private function languageNumberFormat(): NumberFormatEnum
     {
-        return NumberFormatEnum::from(config('monica.locales')[$this->locale()]['number_format']);
+        return NumberFormatEnum::from((string) AvailableLocales::details($this->locale())['number_format']);
     }
 }

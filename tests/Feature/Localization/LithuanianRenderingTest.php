@@ -33,7 +33,7 @@ class LithuanianRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('yra būtinas', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('Privaloma užpildyti lauką', (string) session('errors')->first('email'));
     }
 
     #[Test]

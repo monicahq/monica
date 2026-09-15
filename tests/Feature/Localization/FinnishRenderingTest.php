@@ -33,7 +33,7 @@ class FinnishRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('on pakollinen', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('vaaditaan', (string) session('errors')->first('email'));
     }
 
     #[Test]

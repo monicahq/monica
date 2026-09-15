@@ -32,6 +32,6 @@ class SimplifiedChineseRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('必填', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('不能为空', (string) session('errors')->first('email'));
     }
 }

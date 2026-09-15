@@ -33,7 +33,7 @@ class HungarianRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('kitöltése kötelező', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('megadása kötelező', (string) session('errors')->first('email'));
     }
 
     #[Test]

@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 return [
-    'reset' => 'Mật khẩu của bạn đã được đặt lại.',
-    'sent' => 'Chúng tôi đã gửi liên kết đặt lại mật khẩu vào thư của bạn.',
-    'throttled' => 'Hãy chờ một chút trước khi thử lại.',
-    'token' => 'Mã đặt lại mật khẩu này không hợp lệ.',
-    'user' => 'Chúng tôi không tìm thấy người dùng nào với địa chỉ thư đó.',
+    'reset' => 'Mật khẩu mới đã được cập nhật!',
+    'sent' => 'Hướng dẫn cấp lại mật khẩu đã được gửi!',
+    'throttled' => 'Vui lòng đợi trước khi thử lại.',
+    'token' => 'Mã khôi phục mật khẩu không hợp lệ.',
+    'user' => 'Không tìm thấy người dùng với địa chỉ email này.',
 ];

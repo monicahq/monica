@@ -33,7 +33,7 @@ class BengaliRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('আবশ্যক', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('পূরণ করা বাধ্যতামূলক', (string) session('errors')->first('email'));
     }
 
     #[Test]

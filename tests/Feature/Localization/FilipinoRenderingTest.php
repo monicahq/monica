@@ -33,7 +33,7 @@ class FilipinoRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('Kailangan ang', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('Kinakailangan ang field na', (string) session('errors')->first('email'));
     }
 
     #[Test]

@@ -55,12 +55,9 @@ class LocalizeCommandTest extends TestCase
     {
         $this->app->useLangPath($this->langPath);
 
-        config(['monica.locales' => [
-            'tr_TR' => ['label' => 'Türkçe'],
-            'en' => ['label' => 'English'],
-            'de_DE' => ['label' => 'Deutsch'],
-            'fr_FR' => ['label' => 'Français'],
-        ]]);
+        foreach (['tr_TR', 'de_DE', 'fr_FR'] as $locale) {
+            $this->writeTranslations($locale, []);
+        }
 
         $output = $this->outputOfLocalize();
 
@@ -481,7 +478,7 @@ class LocalizeCommandTest extends TestCase
     public function it_leaves_a_locale_that_declares_no_typography_alone(): void
     {
         $this->app->useLangPath($this->langPath);
-        config(['monica.locales.de_DE.typography' => []]);
+        config(['localization.locales.de_DE.typography' => []]);
         $this->writeTranslations('de_DE', [self::PREFERENCES => "Alles loschen ? L'image"]);
 
         $this->assertDoesNotMatchRegularExpression('/^de_DE has \d+ value/m', $this->outputOfLocalize());
@@ -490,6 +487,8 @@ class LocalizeCommandTest extends TestCase
     #[Test]
     public function it_leaves_the_english_source_alone_because_english_declares_no_typography(): void
     {
+        $this->app->useLangPath($this->langPath);
+
         $this->assertDoesNotMatchRegularExpression('/^en has \d+ value/m', $this->outputOfLocalize());
     }
 

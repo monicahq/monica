@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Schema;
 use Laravel\Mcp\Server\Attributes\Description;
 
 #[Signature('monica:setup
-                       {--force : Run without asking, which is what a container has to do}
-                       {--build : Run only the steps that prepare the checkout}
-                       {--deploy : Run only the steps that touch the database}')]
+             {--force : Run without asking, which is what a container has to do}
+             {--build : Run only the steps that prepare the checkout}
+             {--deploy : Run only the steps that touch the database}')]
 #[Description('Prepare the application to run, and bring the database up to date')]
 class SetupApplicationCommand extends Command
 {

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'failed' => 'Diese Zugangsdaten passen zu keinem Konto.',
-    'password' => 'Das angegebene Passwort ist falsch.',
-    'throttle' => 'Zu viele Anmeldeversuche. Versuchen Sie es in :seconds Sekunden erneut.',
+    'failed' => 'Diese Kombination aus Zugangsdaten wurde nicht in unserer Datenbank gefunden.',
+    'password' => 'Das Passwort ist falsch.',
+    'throttle' => 'Zu viele Loginversuche. Versuchen Sie es bitte in :seconds Sekunden nochmal.',
 ];

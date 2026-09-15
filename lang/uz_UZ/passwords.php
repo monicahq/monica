@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 return [
-    'reset' => 'Parolingiz qaytadan oʻrnatildi.',
-    'sent' => 'Parolingizni qaytadan oʻrnatish havolasini elektron pochtaga yubordik.',
-    'throttled' => 'Yana urinishdan oldin kutib turing.',
-    'token' => 'Parolni qaytadan oʻrnatish uchun bu token yaroqsiz.',
-    'user' => 'Oʻsha elektron pochta manziliga ega foydalanuvchini topa olmadik.',
+    'reset' => 'Sizning parolingiz tiklandi!',
+    'sent' => 'Parolni tiklash havolasini elektron pochta orqali yubordik!',
+    'throttled' => 'Iltimos birozdan so‘ng qayta urinib ko‘ring.',
+    'token' => 'Ushbu parolni qayta tiklash kodi noto‘g‘ri.',
+    'user' => 'Ushbu elektron pochta manziliga ega foydalanuvchi topilmadi.',
 ];

@@ -200,7 +200,7 @@ class StructureFileValues
             return null;
         }
 
-        return array_key_exists($locale, (array) config('monica.locales')) ? $locale : null;
+        return AvailableLocales::has($locale) ? $locale : null;
     }
 
     /** @param  array<string, mixed>  $node */

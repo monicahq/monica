@@ -33,7 +33,7 @@ class VietnameseRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('là bắt buộc', (string) session('errors')->first('email'));
+        $this->assertStringContainsString('không được bỏ trống', (string) session('errors')->first('email'));
     }
 
     #[Test]

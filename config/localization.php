@@ -1,0 +1,589 @@
+<?php
+
+declare(strict_types=1);
+
+use LaravelLang\LocaleList\Locale;
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Supported locales
+    |--------------------------------------------------------------------------
+    |
+    | What the interface knows about each language it is translated into. The
+    | lang folder is what decides which languages those are: a locale exists
+    | because lang/{locale}.json exists, which php artisan lang:add writes, and
+    | this array only describes it. A locale nobody has described here is still
+    | offered, under its own code.
+    |
+    | The label is the language in its own words, and the region the country in
+    | its own words. The flag is a css value for the background property, drawn
+    | rather than shipped as an image. The date format is the order that language
+    | reads dates in, and the number format the separators it writes numbers
+    | with, both used for whoever has not picked one of their own.
+    |
+    | The typography is how that language punctuates, read by monica:localize to
+    | refuse a translation written any other way. It is optional: a locale that
+    | declares none is not checked, which is where most of them stand. The rules
+    | themselves are written down in .claude/rules/translations.md. The
+    | characters are escaped rather than pasted, because a non-breaking space is
+    | invisible and an apostrophe has a twin that is wrong.
+    |
+    | It sits here rather than in config/monica.php because it answers the same
+    | question as the settings below, which laravel-lang reads.
+    |
+    */
+
+    'locales' => [
+        'en' => [
+            'label' => 'English',
+            'region' => 'United Kingdom',
+            'currency' => 'gbp',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'comma_dot',
+            'flag' => 'linear-gradient(to bottom, transparent 40%, #C8102E 40% 60%, transparent 60%), linear-gradient(to right, transparent 38%, #C8102E 38% 62%, transparent 62%), linear-gradient(to bottom, transparent 30%, #fff 30% 70%, transparent 70%), linear-gradient(to right, transparent 28%, #fff 28% 72%, transparent 72%), linear-gradient(to bottom right, transparent 44%, #fff 44% 56%, transparent 56%), linear-gradient(to bottom left, transparent 44%, #fff 44% 56%, transparent 56%), #012169',
+            'typography' => [
+                'apostrophe' => "\u{2019}",
+                'quotes' => [
+                    'open' => '“',
+                    'close' => '”',
+                ],
+            ],
+        ],
+        'bn_BD' => [
+            'label' => 'বাংলা',
+            'region' => 'বাংলাদেশ',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'comma_dot',
+            'flag' => 'radial-gradient(circle at 45% 50%, #f42a41 0 24%, transparent 24%), linear-gradient(to bottom, #006a4e 0 100%)',
+        ],
+        'ca_ES' => [
+            'label' => 'Català',
+            'region' => 'Catalunya',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'dot_comma',
+            'flag' => 'linear-gradient(to bottom, #fcdd09 0 11.11%, #da121a 11.11% 22.22%, #fcdd09 22.22% 33.33%, #da121a 33.33% 44.44%, #fcdd09 44.44% 55.55%, #da121a 55.55% 66.66%, #fcdd09 66.66% 77.77%, #da121a 77.77% 88.88%, #fcdd09 88.88%)',
+        ],
+        'da_DK' => [
+            'label' => 'Dansk',
+            'region' => 'Danmark',
+            'date_format' => 'd-m-Y',
+            'number_format' => 'dot_comma',
+            'flag' => 'linear-gradient(to bottom, transparent 40%, #fff 40% 60%, transparent 60%), linear-gradient(to right, transparent 31%, #fff 31% 44%, transparent 44%), #c8102e',
+        ],
+        'de_DE' => [
+            'label' => 'Deutsch',
+            'region' => 'Deutschland',
+            'currency' => 'eur',
+            'date_format' => 'd.m.Y',
+            'number_format' => 'dot_comma',
+            'flag' => 'linear-gradient(to bottom, #000 0 33%, #dd0000 33% 66%, #ffce00 66%)',
+            'typography' => [
+                'apostrophe' => "\u{2019}",
+                'quotes' => [
+                    'open' => '„',
+                    'close' => '“',
+                ],
+            ],
+        ],
+        'el_GR' => [
+            'label' => 'Ελληνικά',
+            'region' => 'Ελλάδα',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'dot_comma',
+            'flag' => 'linear-gradient(to bottom, #0d5eaf 0 11.11%, #fff 11.11% 22.22%, #0d5eaf 22.22% 33.33%, #fff 33.33% 44.44%, #0d5eaf 44.44% 55.55%, #fff 55.55% 66.66%, #0d5eaf 66.66% 77.77%, #fff 77.77% 88.88%, #0d5eaf 88.88%), linear-gradient(to right, #0d5eaf 0 40%, transparent 40%) 0 0 / 100% 55.55% no-repeat, linear-gradient(to bottom, transparent 11.11%, #fff 11.11% 22.22%, transparent 22.22% 33.33%, #fff 33.33% 44.44%, transparent 44.44%) 0 0 / 40% 55.55% no-repeat, linear-gradient(to right, transparent 16%, #fff 16% 24%, transparent 24%) 0 0 / 40% 55.55% no-repeat',
+        ],
+        'es_ES' => [
+            'label' => 'Español',
+            'region' => 'España',
+            'currency' => 'eur',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'dot_comma',
+            'flag' => 'linear-gradient(to bottom, #aa151b 0 25%, #f1bf00 25% 75%, #aa151b 75%)',
+            'typography' => [
+                'quotes' => [
+                    'open' => '«',
+                    'close' => '»',
+                ],
+            ],
+        ],
+        'fi_FI' => [
+            'label' => 'Suomi',
+            'region' => 'Suomi',
+            'date_format' => 'j.n.Y',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, transparent 40%, #002f6c 40% 60%, transparent 60%), linear-gradient(to right, transparent 31%, #002f6c 31% 44%, transparent 44%), #fff',
+        ],
+        'fil_PH' => [
+            'label' => 'Filipino',
+            'region' => 'Pilipinas',
+            'date_format' => 'm/d/Y',
+            'number_format' => 'comma_dot',
+            'flag' => 'radial-gradient(circle at 13% 50%, #fcd116 0 9%, transparent 9%), linear-gradient(to bottom right, #fff 0 40%, transparent 40%) 0 0 / 100% 50% no-repeat, linear-gradient(to top right, #fff 0 40%, transparent 40%) 0 100% / 100% 50% no-repeat, linear-gradient(to bottom, #0038a8 0 50%, #ce1126 50%)',
+        ],
+        'fr_FR' => [
+            'label' => 'Français',
+            'region' => 'France',
+            'currency' => 'eur',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to right, #002395 0 33%, #fff 33% 66%, #ed2939 66%)',
+            'typography' => [
+                'apostrophe' => "\u{2019}",
+                'space_before' => [
+                    ':' => "\u{00A0}",
+                    ';' => "\u{202F}",
+                    '!' => "\u{202F}",
+                    '?' => "\u{202F}",
+                ],
+                'quotes' => [
+                    'open' => '«',
+                    'close' => '»',
+                    'inner_space' => "\u{202F}",
+                ],
+                'forbidden_words' => ['tu', 'toi', 'tes'],
+            ],
+        ],
+        'ga_IE' => [
+            'label' => 'Gaeilge',
+            'region' => 'Éire',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'comma_dot',
+            'flag' => 'linear-gradient(to right, #169b62 0 33%, #fff 33% 66%, #ff883e 66%)',
+        ],
+        'hi_IN' => [
+            'label' => 'हिन्दी',
+            'region' => 'भारत',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'comma_dot',
+            'flag' => 'radial-gradient(circle at 50% 50%, transparent 0 5%, #000080 5% 7%, transparent 7%), linear-gradient(to bottom, #ff9933 0 33.33%, #fff 33.33% 66.66%, #138808 66.66%)',
+        ],
+        'hu_HU' => [
+            'label' => 'Magyar',
+            'region' => 'Magyarország',
+            'date_format' => 'Y. m. d.',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, #ce2939 0 33%, #fff 33% 66%, #477050 66%)',
+        ],
+        'is_IS' => [
+            'label' => 'Íslenska',
+            'region' => 'Ísland',
+            'date_format' => 'j.n.Y',
+            'number_format' => 'dot_comma',
+            'flag' => 'linear-gradient(to bottom, transparent 43%, #d72828 43% 57%, transparent 57%), linear-gradient(to right, transparent 33.5%, #d72828 33.5% 41.5%, transparent 41.5%), linear-gradient(to bottom, transparent 36%, #fff 36% 64%, transparent 64%), linear-gradient(to right, transparent 28%, #fff 28% 47%, transparent 47%), #02529c',
+        ],
+        'it_IT' => [
+            'label' => 'Italiano',
+            'region' => 'Italia',
+            'currency' => 'eur',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'dot_comma',
+            'flag' => 'linear-gradient(to right, #008c45 0 33%, #fff 33% 66%, #cd212a 66%)',
+            'typography' => [
+                'apostrophe' => "\u{2019}",
+                'quotes' => [
+                    'open' => '«',
+                    'close' => '»',
+                ],
+            ],
+        ],
+        'ja_JP' => [
+            'label' => '日本語',
+            'region' => '日本',
+            'date_format' => 'Y/m/d',
+            'number_format' => 'comma_dot',
+            'flag' => 'radial-gradient(circle at 50% 50%, #bc002d 0 35%, #fff 35%)',
+        ],
+        'ko_KR' => [
+            'label' => '한국어',
+            'region' => '대한민국',
+            'date_format' => 'Y. m. d.',
+            'number_format' => 'comma_dot',
+            'flag' => 'linear-gradient(to bottom right, transparent 7%, #000 7% 9.5%, transparent 9.5% 11.5%, #000 11.5% 14%, transparent 14% 16%, #000 16% 18.5%, transparent 18.5% 81.5%, #000 81.5% 84%, transparent 84% 86%, #000 86% 88.5%, transparent 88.5% 90.5%, #000 90.5% 93%, transparent 93%), linear-gradient(to bottom left, transparent 7%, #000 7% 9.5%, transparent 9.5% 11.5%, #000 11.5% 14%, transparent 14% 16%, #000 16% 18.5%, transparent 18.5% 81.5%, #000 81.5% 84%, transparent 84% 86%, #000 86% 88.5%, transparent 88.5% 90.5%, #000 90.5% 93%, transparent 93%), radial-gradient(circle at 50% 50%, transparent 0 27%, #fff 27%), linear-gradient(to bottom right, #cd2e3a 0 50%, #0047a0 50%)',
+        ],
+        'lt_LT' => [
+            'label' => 'Lietuvių',
+            'region' => 'Lietuva',
+            'date_format' => 'Y-m-d',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, #fdb913 0 33%, #006a44 33% 66%, #c1272d 66%)',
+        ],
+        'nb_NO' => [
+            'label' => 'Norsk bokmål',
+            'region' => 'Norge',
+            'date_format' => 'd.m.Y',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, transparent 43%, #00205b 43% 57%, transparent 57%), linear-gradient(to right, transparent 33.5%, #00205b 33.5% 41.5%, transparent 41.5%), linear-gradient(to bottom, transparent 36%, #fff 36% 64%, transparent 64%), linear-gradient(to right, transparent 28%, #fff 28% 47%, transparent 47%), #ba0c2f',
+        ],
+        'nl_NL' => [
+            'label' => 'Nederlands',
+            'region' => 'Nederland',
+            'currency' => 'eur',
+            'date_format' => 'd-m-Y',
+            'number_format' => 'dot_comma',
+            'typography' => [
+                'apostrophe' => "\u{2019}",
+                'quotes' => [
+                    'open' => '“',
+                    'close' => '”',
+                ],
+            ],
+            'flag' => 'linear-gradient(to bottom, #ae1c28 0 33%, #fff 33% 66%, #21468b 66%)',
+        ],
+        'pl_PL' => [
+            'label' => 'Polski',
+            'region' => 'Polska',
+            'date_format' => 'd.m.Y',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, #fff 0 50%, #dc143c 50%)',
+        ],
+        'pt_BR' => [
+            'label' => 'Português',
+            'region' => 'Brasil',
+            'currency' => 'brl',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'dot_comma',
+            'answers_bare_language' => true,
+            /* Four green corners over yellow leave the lozenge, and the disc sits on top of it. */
+            'flag' => 'radial-gradient(circle at 50% 50%, #002776 0 28%, transparent 28%), linear-gradient(to bottom right, #009c3b 0 25%, transparent 25%), linear-gradient(to bottom left, #009c3b 0 25%, transparent 25%), linear-gradient(to top right, #009c3b 0 25%, transparent 25%), linear-gradient(to top left, #009c3b 0 25%, transparent 25%), #fedf00',
+            'typography' => [
+                'quotes' => [
+                    'open' => '“',
+                    'close' => '”',
+                ],
+            ],
+        ],
+        'pt_PT' => [
+            'label' => 'Português',
+            'region' => 'Portugal',
+            'currency' => 'eur',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to right, #006600 0 40%, #ff0000 40%)',
+            'typography' => [
+                'quotes' => [
+                    'open' => '«',
+                    'close' => '»',
+                ],
+            ],
+        ],
+        'si_LK' => [
+            'label' => 'සිංහල',
+            'region' => 'ශ්‍රී ලංකාව',
+            'date_format' => 'Y-m-d',
+            'number_format' => 'comma_dot',
+            'flag' => 'linear-gradient(to right, #ffbe29 0 6%, #00534e 6% 20%, #eb7400 20% 34%, #ffbe29 34% 40%, #8d2029 40%)',
+        ],
+        'sv_SE' => [
+            'label' => 'Svenska',
+            'region' => 'Sverige',
+            'date_format' => 'Y-m-d',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, transparent 40%, #fecc00 40% 60%, transparent 60%), linear-gradient(to right, transparent 31%, #fecc00 31% 44%, transparent 44%), #006aa7',
+        ],
+        'ta_IN' => [
+            'label' => 'தமிழ்',
+            'region' => 'இந்தியா',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'comma_dot',
+            'flag' => 'radial-gradient(circle at 50% 50%, transparent 0 5%, #000080 5% 7%, transparent 7%), linear-gradient(to bottom, #ff9933 0 33.33%, #fff 33.33% 66.66%, #138808 66.66%)',
+        ],
+        'th_TH' => [
+            'label' => 'ไทย',
+            'region' => 'ประเทศไทย',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'comma_dot',
+            'flag' => 'linear-gradient(to bottom, #a51931 0 16.66%, #f4f5f8 16.66% 33.33%, #2d2a4a 33.33% 66.66%, #f4f5f8 66.66% 83.33%, #a51931 83.33%)',
+        ],
+        'tr_TR' => [
+            'label' => 'Türkçe',
+            'region' => 'Türkiye',
+            'currency' => 'try',
+            'date_format' => 'd.m.Y',
+            'number_format' => 'dot_comma',
+            /* The crescent is a red disc laid over a white one, and the star is a dot: at 20 by 14 pixels a five-pointed star drawn in gradients reads as a smudge. */
+            'flag' => 'radial-gradient(circle at 62% 50%, #fff 0 9%, transparent 9%), radial-gradient(circle at 46% 50%, #e30a17 0 31%, transparent 31%), radial-gradient(circle at 40% 50%, #fff 0 32%, transparent 32%), #e30a17',
+            'typography' => [
+                'apostrophe' => "\u{2019}",
+                'quotes' => [
+                    'open' => '“',
+                    'close' => '”',
+                ],
+            ],
+        ],
+        'uz_UZ' => [
+            'label' => 'Oʻzbekcha',
+            'region' => 'Oʻzbekiston',
+            'date_format' => 'd.m.Y',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, #0099b5 0 30%, #ce1126 30% 33%, #fff 33% 67%, #ce1126 67% 70%, #1eb53a 70%)',
+        ],
+        'vi_VN' => [
+            'label' => 'Tiếng Việt',
+            'region' => 'Việt Nam',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'dot_comma',
+            'flag' => 'conic-gradient(from 180deg, transparent 0 18deg, #ffff00 18deg 54deg, transparent 54deg 90deg, #ffff00 90deg 126deg, transparent 126deg 162deg, #ffff00 162deg 198deg, transparent 198deg 234deg, #ffff00 234deg 270deg, transparent 270deg 306deg, #ffff00 306deg 342deg, transparent 342deg) 50% 50% / 46% 62% no-repeat, #da251d',
+        ],
+        'zh_CN' => [
+            'label' => '简体中文',
+            'region' => '中国',
+            'date_format' => 'Y-m-d',
+            'number_format' => 'comma_dot',
+            'flag' => 'radial-gradient(circle at 20% 32%, #ffde00 0 22%, transparent 22%), radial-gradient(circle at 40% 15%, #ffde00 0 7%, transparent 7%), radial-gradient(circle at 49% 30%, #ffde00 0 7%, transparent 7%), radial-gradient(circle at 46% 49%, #ffde00 0 7%, transparent 7%), radial-gradient(circle at 35% 61%, #ffde00 0 7%, transparent 7%), #de2910',
+        ],
+    ],
+
+    /*
+     * Determines what type of files to use when updating language files.
+     *
+     * @see https://laravel-lang.com/configuration.html#inline
+     *
+     * By default, `false`.
+     */
+
+    'inline' => (bool) env('LOCALIZATION_INLINE', env('LANG_PUBLISHER_INLINE')),
+
+    /*
+     * Do arrays need to be aligned by keys before processing arrays?
+     *
+     * @see https://laravel-lang.com/configuration.html#alignment
+     *
+     * By default, true
+     */
+
+    'align' => (bool) env('LOCALIZATION_ALIGN', env('LANG_PUBLISHER_ALIGN', false)),
+
+    /*
+     * The language codes chosen for the files in this repository may not
+     * match the preferences for your project.
+     *
+     * Specify here mappings of localizations with your project.
+     *
+     * @see https://laravel-lang.com/configuration.html#aliases
+     */
+
+    'aliases' => [
+        Locale::Bengali->value => 'bn_BD',
+        Locale::French->value => 'fr_FR',
+        Locale::Catalan->value => 'ca_ES',
+        Locale::Danish->value => 'da_DK',
+        Locale::German->value => 'de_DE',
+        Locale::Greek->value => 'el_GR',
+        Locale::Spanish->value => 'es_ES',
+        Locale::Finnish->value => 'fi_FI',
+        Locale::Pilipino->value => 'fil_PH',
+        Locale::Irish->value => 'ga_IE',
+        Locale::Hindi->value => 'hi_IN',
+        Locale::Hungarian->value => 'hu_HU',
+        Locale::Icelandic->value => 'is_IS',
+        Locale::Italian->value => 'it_IT',
+        Locale::Japanese->value => 'ja_JP',
+        Locale::Korean->value => 'ko_KR',
+        Locale::Lithuanian->value => 'lt_LT',
+        Locale::NorwegianBokmal->value => 'nb_NO',
+        Locale::Dutch->value => 'nl_NL',
+        Locale::Polish->value => 'pl_PL',
+        Locale::PortugueseBrazil->value => 'pt_BR',
+        Locale::Portuguese->value => 'pt_PT',
+        Locale::Sinhala->value => 'si_LK',
+        Locale::Swedish->value => 'sv_SE',
+        Locale::Tamil->value => 'ta_IN',
+        Locale::Thai->value => 'th_TH',
+        Locale::Turkish->value => 'tr_TR',
+        Locale::UzbekLatin->value => 'uz_UZ',
+        Locale::Vietnamese->value => 'vi_VN',
+        Locale::Chinese->value => 'zh_CN',
+    ],
+
+    /*
+     * This option determines the mechanism for converting translation
+     * keys into a typographic version.
+     *
+     * @see https://laravel-lang.com/configuration.html#smart_punctuation
+     *
+     * By default, false
+     */
+
+    'smart_punctuation' => [
+        'enable' => true,
+
+        'common' => [
+            'double_quote_opener' => '“',
+            'double_quote_closer' => '”',
+            'single_quote_opener' => '‘',
+            'single_quote_closer' => '’',
+        ],
+
+        'locales' => [
+            'en' => [
+                'double_quote_opener' => '“',
+                'double_quote_closer' => '”',
+                'single_quote_opener' => '‘',
+                'single_quote_closer' => '’',
+            ],
+
+            'fr_FR' => [
+                'double_quote_opener' => '« ',
+                'double_quote_closer' => ' »',
+                'single_quote_opener' => '‘',
+                'single_quote_closer' => '’',
+            ],
+
+            'de_DE' => [
+                'double_quote_opener' => '„',
+                'double_quote_closer' => '“',
+                'single_quote_opener' => '‚',
+                'single_quote_closer' => '‘',
+            ],
+
+            'es_ES' => [
+                'double_quote_opener' => '«',
+                'double_quote_closer' => '»',
+                'single_quote_opener' => '‘',
+                'single_quote_closer' => '’',
+            ],
+            'pt_PT' => [
+                'double_quote_opener' => '«',
+                'double_quote_closer' => '»',
+                'single_quote_opener' => '‘',
+                'single_quote_closer' => '’',
+            ],
+            'nl_NL' => [
+                'double_quote_opener' => '“',
+                'double_quote_closer' => '“',
+                'single_quote_opener' => '‚',
+                'single_quote_closer' => '‘',
+            ],
+            'pt_BR' => [
+                'double_quote_opener' => '“',
+                'double_quote_closer' => '“',
+                'single_quote_opener' => '‚',
+                'single_quote_closer' => '‘',
+            ],
+            'it_IT' => [
+                'double_quote_opener' => '«',
+                'double_quote_closer' => '»',
+                'single_quote_opener' => '‘',
+                'single_quote_closer' => '’',
+            ],
+            'tr_TR' => [
+                'double_quote_opener' => '“',
+                'double_quote_closer' => '“',
+                'single_quote_opener' => '‚',
+                'single_quote_closer' => '‘',
+            ],
+        ],
+    ],
+
+    /*
+     * This option defines settings for working with model translations.
+     *
+     * @see https://laravel-lang.com/configuration.html#models
+     */
+
+    'models' => [
+        /*
+         * This option specifies a suffix for models containing translations.
+         *
+         * For example,
+         *   main model is `App\Models\Page`
+         *   translation model is `App\Models\PageTranslation`
+         *
+         * By default, `Translation`
+         */
+
+        'suffix' => 'Translation',
+
+        /*
+         * This option determines the need to filter localizations loaded
+         * in the relay when using eager loading.
+         *
+         * By default, true.
+         */
+
+        'filter' => [
+            'enabled' => (bool) env('LOCALIZATION_FILTER_ENABLED', true),
+        ],
+
+        /*
+         * This option specifies a folder to store helper files for the IDE.
+         *
+         * By default, `vendor/_laravel_lang`
+         */
+
+        'helpers' => env('VENDOR_PATH', base_path('vendor/_laravel_lang')),
+    ],
+
+    /*
+     * This option contains a list of translators that the Laravel Lang Translator project works with.
+     *
+     * Google Translate is enabled by default.
+     *
+     * @see https://laravel-lang.com/configuration.html#translators
+     */
+
+    'translators' => [
+        /*
+         * List of channels used for translations.
+         *
+         * By default,
+         *
+         *     Google is enabled
+         *     Deepl  is disabled
+         *     Yandex is disabled
+         */
+
+        'channels' => [
+            'google' => [
+                'translator' => '\LaravelLang\Translator\Integrations\Google',
+
+                'enabled' => (bool) env('TRANSLATION_GOOGLE_ENABLED', true),
+                'priority' => (int) env('TRANSLATION_GOOGLE_PRIORITY', 1),
+            ],
+
+            'deepl' => [
+                'translator' => '\LaravelLang\Translator\Integrations\Deepl',
+
+                'enabled' => (bool) env('TRANSLATION_DEEPL_ENABLED', false),
+                'priority' => (int) env('TRANSLATION_DEEPL_PRIORITY', 2),
+
+                'credentials' => [
+                    'key' => (string) env('TRANSLATION_DEEPL_KEY'),
+                ],
+            ],
+
+            'yandex' => [
+                'translator' => '\LaravelLang\Translator\Integrations\Yandex',
+
+                'enabled' => (bool) env('TRANSLATION_YANDEX_ENABLED', false),
+                'priority' => (int) env('TRANSLATION_YANDEX_PRIORITY', 3),
+
+                'credentials' => [
+                    'key' => (string) env('TRANSLATION_YANDEX_KEY'),
+                    'folder' => (string) env('TRANSLATION_YANDEX_FOLDER_ID'),
+                ],
+            ],
+        ],
+
+        'options' => [
+            /*
+             * Set a custom pattern for extracting replaceable keywords from the string,
+             * default to extracting words prefixed with a colon.
+             *
+             *  Available options:
+             *
+             *     `true` is a `/:(\w+)/`
+             *     `false` will disable regular expression processing
+             *      `/any regex/` - any regular expression you specify
+             *
+             *   By default, `true`
+             *
+             * @example (e.g. "Hello :name" will extract "name")
+             */
+
+            'preserve_parameters' => true,
+        ],
+    ],
+];

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Settings;
 
 use App\Enums\TimeFormatEnum;
+use App\Helpers\AvailableLocales;
 use App\Models\EntityType;
 use App\Models\RelationshipType;
 use App\Models\Template;
@@ -191,13 +192,13 @@ class SettingsViewModel
     {
         $locale = app()->getLocale();
 
-        if (! array_key_exists($locale, config('monica.locales'))) {
-            $locale = config('app.locale');
+        if (! AvailableLocales::has($locale)) {
+            $locale = (string) config('app.locale');
         }
 
         $format = $this->user->time_format ?? TimeFormatEnum::TwentyFourHour;
 
-        return config('monica.locales')[$locale]['label'].' · '.__($format->label());
+        return (string) AvailableLocales::details($locale)['label'].' · '.__($format->label());
     }
 
     private function templateCount(): string
