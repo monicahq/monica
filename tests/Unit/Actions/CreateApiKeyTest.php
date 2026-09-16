@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateApiKey;
+use App\Enums\ApiKeyClientEnum;
 use App\Enums\ApiKeyScopeEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
@@ -102,7 +103,7 @@ class CreateApiKeyTest extends TestCase
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ApiKeyCreation
                 && $job->account->id === $account->id
                 && $job->user->id === $user->id
-                && $job->parameters === ['name' => 'Dundie awards bot', 'scopes' => []],
+                && $job->parameters === ['name' => 'Dundie awards bot', 'scopes' => [], 'client' => 'script'],
         );
     }
 
@@ -138,5 +139,35 @@ class CreateApiKeyTest extends TestCase
 
         $this->assertEquals(['*'], $token->abilities);
         $this->assertFalse(in_array(ApiKeyScopeEnum::SensitiveFields->value, $token->abilities, true));
+    }
+
+    #[Test]
+    public function it_records_the_kind_of_caller_the_key_was_minted_for(): void
+    {
+        $user = User::factory()->create();
+
+        $key = new CreateApiKey(
+            user: $user,
+            name: 'Dundie awards bot',
+            client: ApiKeyClientEnum::Assistant,
+        )->execute();
+
+        $this->assertDatabaseHas('personal_access_tokens', [
+            'id' => $key->accessToken->id,
+            'client' => ApiKeyClientEnum::Assistant->value,
+        ]);
+    }
+
+    #[Test]
+    public function it_treats_a_key_minted_without_a_kind_as_a_personal_script(): void
+    {
+        $user = User::factory()->create();
+
+        $key = new CreateApiKey(user: $user, name: 'Deployment script')->execute();
+
+        $this->assertDatabaseHas('personal_access_tokens', [
+            'id' => $key->accessToken->id,
+            'client' => ApiKeyClientEnum::Script->value,
+        ]);
     }
 }

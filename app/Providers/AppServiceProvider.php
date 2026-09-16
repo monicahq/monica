@@ -107,6 +107,14 @@ class AppServiceProvider extends ServiceProvider
     {
         RateLimiter::for('api', fn (Request $request) => Limit::perMinute(60)
             ->by($request->user()?->id ?: $request->ip()));
+        RateLimiter::for('mcp', function (Request $request): Limit {
+            if (config('monica.self_hosted')) {
+                return Limit::none();
+            }
+
+            return Limit::perMinute(60)
+                ->by((string) ($request->user()?->currentAccessToken()?->getKey() ?: $request->ip()));
+        });
         RateLimiter::for('passkey', fn (Request $request): Limit => Limit::perMinute(self::MAX_LOGIN_ATTEMPTS)
             ->by($request->string('credential.id')->lower()->toString().'|'.$request->ip()));
         RateLimiter::for('confirm-password', fn (Request $request): Limit => Limit::perMinute(self::MAX_LOGIN_ATTEMPTS)

@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContactDuplicateController;
 use App\Http\Controllers\Api\ContactDuplicateDismissalController;
 use App\Http\Controllers\Api\ContactFavouriteController;
+use App\Http\Controllers\Api\ContactMeController;
 use App\Http\Controllers\Api\ContactMergeController;
 use App\Http\Controllers\Api\ContactNameController;
 use App\Http\Controllers\Api\ContactStructureVersionController;
@@ -57,7 +58,10 @@ use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\TemplateDuplicateController;
 use App\Http\Controllers\Api\TemplatePositionController;
 use App\Http\Controllers\Api\VaultController;
+use App\Http\Middleware\SetMcpLogSource;
+use App\Mcp\Servers\EricaServer;
 use Illuminate\Support\Facades\Route;
+use Laravel\Mcp\Facades\Mcp;
 
 Route::prefix('v1')->name('api.v1.')->group(function (): void {
     Route::get('status', [StatusController::class, 'show'])->middleware('throttle:60,1')->name('status');
@@ -187,6 +191,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/duplicates/{candidate}/dismissal', [ContactDuplicateDismissalController::class, 'update'])->where(['candidate' => '[1-9][0-9]*'])->name('duplicates.dismissal.update');
 
         Route::get('vaults/{vault}/contacts', [ContactController::class, 'index'])->name('contacts');
+        Route::get('vaults/{vault}/contacts/me', [ContactMeController::class, 'show'])->name('contacts.me');
         Route::get('vaults/{vault}/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
         Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
         Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
@@ -202,3 +207,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])->name('contacts.templateVersion.update');
     });
 });
+
+Mcp::web('mcp', EricaServer::class)
+    ->middleware(['auth:sanctum', 'throttle:mcp', SetMcpLogSource::class])
+    ->withoutMiddleware('throttle:api');

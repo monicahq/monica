@@ -23,6 +23,7 @@ class ApiKeyControllerTest extends TestCase
             'id',
             'attributes' => [
                 'name',
+                'client',
                 'last_used_at',
                 'expires_at',
                 'created_at',
@@ -310,5 +311,41 @@ class ApiKeyControllerTest extends TestCase
         $response->assertCreated();
         $response->assertJsonPath('data.attributes.sensitive_fields', false);
         $this->assertNotContains('sensitive-fields', $user->tokens()->first()->abilities);
+    }
+
+    #[Test]
+    public function it_mints_a_key_for_an_assistant(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', '/api/v1/api-keys', [
+            'name' => 'Dundie awards bot',
+            'client' => 'assistant',
+        ]);
+
+        $response->assertCreated()->assertJsonPath('data.attributes.client', 'assistant');
+    }
+
+    #[Test]
+    public function it_treats_a_key_minted_without_a_kind_as_a_personal_script(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $this->json('POST', '/api/v1/api-keys', ['name' => 'Deployment script'])
+            ->assertCreated()
+            ->assertJsonPath('data.attributes.client', 'script');
+    }
+
+    #[Test]
+    public function it_refuses_a_kind_it_does_not_know(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $this->json('POST', '/api/v1/api-keys', ['name' => 'Dundie awards bot', 'client' => 'toaster'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['client']);
     }
 }

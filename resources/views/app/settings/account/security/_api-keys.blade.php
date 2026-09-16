@@ -69,6 +69,17 @@
         required
       />
 
+      <x-select
+        id="client"
+        :label="__('What will use this key')"
+        :help="__('It tells the two apart on this list and in your journal. It does not change what the key reaches.')"
+        :error="$errors->get('client')"
+      >
+        @foreach (\App\Enums\ApiKeyClientEnum::cases() as $case)
+          <option value="{{ $case->value }}" @selected(old('client', 'script') === $case->value)>{{ __($case->label()) }}</option>
+        @endforeach
+      </x-select>
+
       <div class="flex flex-col gap-1">
         <x-checkbox id="sensitive_fields" :checked="false">
           {{ __('Let this key read the values of fields marked sensitive') }}
@@ -95,6 +106,8 @@
     >
       <x-slot:end>
         <div class="flex flex-wrap items-center justify-end gap-2.5" x-data="{ confirming: false }">
+          <x-badge tone="neutral">{{ $apiKey['client'] }}</x-badge>
+
           @if ($apiKey['reachesSensitiveFields'])
             <x-badge tone="warning">{{ __('Reads sensitive fields') }}</x-badge>
           @endif

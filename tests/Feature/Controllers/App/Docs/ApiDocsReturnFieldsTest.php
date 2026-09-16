@@ -7,7 +7,6 @@ namespace Tests\Feature\Controllers\App\Docs;
 use App\Actions\MergeContacts;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NotificationChannelEnum;
-use App\Enums\StructureAppliesToEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\StripeCatalogue;
@@ -1092,6 +1091,14 @@ class ApiDocsReturnFieldsTest extends TestCase
                 $contact = $this->contactWithAPicture($vault);
 
                 return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}");
+            }),
+
+            'contacts-me' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $contact = $this->contactWithAPicture($vault);
+                $contact->update(['is_me' => true]);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/me");
             }),
 
             'contacts-create' => $this->asSomebody(function (User $user): TestResponse {

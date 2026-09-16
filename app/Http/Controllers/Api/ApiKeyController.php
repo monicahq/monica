@@ -6,12 +6,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Actions\CreateApiKey;
 use App\Actions\DestroyApiKey;
+use App\Enums\ApiKeyClientEnum;
 use App\Enums\ApiKeyScopeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApiKeyResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class ApiKeyController extends Controller
 {
@@ -48,12 +50,14 @@ class ApiKeyController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'sensitive_fields' => ['sometimes', 'boolean'],
+            'client' => ['sometimes', Rule::enum(ApiKeyClientEnum::class)],
         ]);
 
         $key = new CreateApiKey(
             user: $request->user(),
             name: $validated['name'],
             scopes: $this->scopes((bool) ($validated['sensitive_fields'] ?? false)),
+            client: ApiKeyClientEnum::tryFrom((string) ($validated['client'] ?? '')) ?? ApiKeyClientEnum::Script,
         )->execute();
 
         return new ApiKeyResource($key->accessToken)

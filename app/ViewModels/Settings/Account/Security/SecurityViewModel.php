@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Settings\Account\Security;
 
+use App\Enums\ApiKeyClientEnum;
 use App\Enums\ApiKeyScopeEnum;
 use App\Enums\SsoProviderEnum;
 use App\Helpers\PasskeyAvailability;
@@ -52,6 +53,7 @@ class SecurityViewModel
             ->map(fn (PersonalAccessToken $apiKey): array => [
                 'id' => $apiKey->id,
                 'name' => $apiKey->name,
+                'client' => __((ApiKeyClientEnum::tryFrom((string) $apiKey->client) ?? ApiKeyClientEnum::Script)->label()),
                 'createdAt' => $apiKey->created_at->diffForHumans(),
                 'lastUsedAt' => $apiKey->last_used_at?->diffForHumans(),
                 'reachesSensitiveFields' => in_array(ApiKeyScopeEnum::SensitiveFields->value, $apiKey->abilities ?? [], true),

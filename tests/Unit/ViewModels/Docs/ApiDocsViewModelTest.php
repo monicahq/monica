@@ -62,6 +62,7 @@ class ApiDocsViewModelTest extends TestCase
                 'Introduction', 'Authentication', 'Rate limits', 'Pagination', 'Errors',
                 'What a device needs', 'Connecting each application', 'What a card carries',
                 'What happens when a device writes', 'The calendar and the task list',
+                'Connect an assistant', 'What an assistant can read', 'What an assistant can change',
             ],
             array_column($navigation['guides'], 'label'),
         );

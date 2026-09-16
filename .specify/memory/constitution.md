@@ -1,30 +1,39 @@
 <!--
 Sync Impact Report
-Version change: 2.3.0 -> 2.3.1
-Rationale: principle VI named the frozen thing a template version. The versioned engine has been
-separated from the product concept it was named after, so the frozen thing is a structure version and
-a template is one of two things that own one. The obligation is identical, applied to an object that
-now has its own name, which the versioning rule below calls a clarification. PATCH.
+<!--
+Sync Impact Report
+Version change: 2.3.1 -> 2.4.0
+Rationale: the official MCP server is a capability principle X already requires, and the package that
+serves it generates its server and tool classes into a namespace no listed folder holds. A tool is not
+a controller, a model or an action: it is a transport the product exposes, and the layout of the
+repository is fixed here, so admitting the folder is an amendment. Guidance expands and no principle
+is removed or redefined, so MINOR.
 
-Added: none.
-Modified: principle VI, first bullet. "A published version of a template or a section" becomes "a
-published structure version or section version", and the sentence naming what the freeze covers says
-structure version. Governance, one word: compliance is reviewed against eleven principles, not ten.
-The eleventh was added in 2.2.0 and the count was not moved with it.
+Added: Technology and Architecture Constraints, one entry in the `app/` list.
+- `Mcp`, holding `Servers` and `Tools`, the MCP surface principle X calls for. The folder is named
+rather than the classes being folded into an existing one because `laravel/mcp` generates into it, and
+because a tool is a transport rather than a controller, a model or an action.
+Modified: none.
 Removed: none.
 
-Considered and left standing: principle VII still names the mechanism "Template, Page, Section,
-Field". Those are the words the product shows a user and the words `spec/spec.md` section 5.2 uses,
-and the principle is about there being one mechanism rather than about what the engine under it is
-called. Renaming it here would put a technical word into the one place that describes the product to
-somebody who does not read the code.
+Considered and left standing: nothing is said here about where the MCP route is declared. `routes/` is
+already enumerated, the package loads its own `routes/ai.php` only when that file exists, and the
+endpoint is declared in `routes/api.php` like any other. Naming the exception would describe a file
+this project does not create.
 
-Discharged since 2.3.0: none owed.
+Also left standing: nothing is said about a tool holding no authorisation rule of its own. Principle X
+already says the MCP server exposes the API and must not bypass it or hold rules of its own, and
+restating it beside the folder would be the same fact in two places.
+
+Discharged since 2.3.1: none owed. 2.3.1 renamed the frozen thing in principle VI to a structure
+version, which this amendment leaves exactly as it found it.
+
+Follow-up owed by the pull request that adopts this: none.
+-->
 
 Follow-up owed by the pull request that adopts this: none. The rename it describes ships in the same
 pull request.
 -->
-
 # Monica Constitution
 
 ## Core Principles
@@ -260,6 +269,7 @@ an amendment.
   - `app/`: `Actions` (one class per user operation, and where most of the application lives),
     `Console/Commands`, `Contracts`, `Enums`, `Exceptions`, `Helpers`, `Http` (holding
     `Controllers`, `Middleware`, `Requests`, `Resources` and `Responses`), `Jobs`, `Listeners`,
+    `Mcp` (holding `Servers` and `Tools`, the MCP surface principle X calls for),
     `Models`, `Notifications` (one class per email the product sends, since there is no mailable),
     `Policies` (one class per model whose abilities are asked by name), `Providers`, `Rules`,
     `View/Components` (the layout components) and `ViewModels`.
@@ -392,4 +402,4 @@ test and the translations for the change under review, and to say which of the e
 change had to satisfy. Complexity that steps outside these principles MUST be justified in the pull
 request or removed.
 
-**Version**: 2.3.1 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-13
+**Version**: 2.4.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-15

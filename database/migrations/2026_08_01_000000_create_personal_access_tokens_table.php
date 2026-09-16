@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name')->comment('name the person gave the key, so they can tell one from another');
             $table->string('token', 64)->unique()->comment('hash of the key, since the key itself is shown once and never stored');
             $table->text('abilities')->nullable()->comment('what the key is allowed to do, unused until there is an API to scope');
+            $table->string('client', 20)->default('script')->comment('kind of caller the key was issued for, so an assistant is told from a personal script');
             $table->timestamp('last_used_at')->nullable()->comment('when the key last authenticated a request, null while it never has');
             $table->timestamp('expires_at')->nullable()->index()->comment('when the key stops working, null when it never does');
             $table->timestamps();

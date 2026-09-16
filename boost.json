@@ -12,6 +12,7 @@
         "cashier-stripe-development",
         "laravel-best-practices",
         "testing-best-practices",
+        "mcp-development",
         "socialite-development",
         "tailwindcss-development"
     ]

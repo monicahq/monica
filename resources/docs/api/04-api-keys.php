@@ -12,6 +12,7 @@ $apiKey = [
     'id' => '3',
     'attributes' => [
         'name' => 'Dundie awards bot',
+        'client' => 'assistant',
         'sensitive_fields' => false,
         'last_used_at' => 1756339200,
         'expires_at' => null,
@@ -28,6 +29,7 @@ $olderApiKey = [
     'id' => '1',
     'attributes' => [
         'name' => 'Deployment script',
+        'client' => 'script',
         'sensitive_fields' => false,
         'last_used_at' => null,
         'expires_at' => null,
@@ -67,6 +69,7 @@ $identifier = [
 
 $keyAttributes = [
     ['name' => 'name', 'type' => 'string', 'description' => 'What the key is for, between 3 and 255 characters, as the person who minted it wrote it. Two keys may share a name; the identifier is what tells them apart.'],
+    ['name' => 'client', 'type' => 'string', 'description' => 'What the key was minted for: script for something you wrote yourself, assistant for an assistant connecting over MCP. It tells the two apart on the security screen and in your journal, and it restricts nothing: a key of either kind reaches exactly what you reach.'],
     ['name' => 'sensitive_fields', 'type' => 'boolean', 'description' => 'Whether the key reaches the values of fields marked sensitive. False unless that was chosen when the key was minted, because a key is handed to a device and an address book on a phone can be read by the other applications on it.'],
     ['name' => 'last_used_at', 'type' => 'timestamp', 'description' => 'When the key last let something in, as a count of seconds, or null if it never has. A key with null here has been minted and never used.'],
     ['name' => 'expires_at', 'type' => 'timestamp', 'description' => 'When the key stops working, as a count of seconds, or null when it never does. Every key issued today is null: expiry is not something this API sets yet.'],
@@ -140,6 +143,13 @@ return [
                     'example' => 'Dundie awards bot',
                 ],
                 [
+                    'name' => 'client',
+                    'type' => 'string',
+                    'required' => false,
+                    'description' => 'What will use the key: script, which is what it is when left out, or assistant for an assistant connecting over MCP. It describes the key and restricts nothing.',
+                    'example' => 'assistant',
+                ],
+                [
                     'name' => 'sensitive_fields',
                     'type' => 'boolean',
                     'required' => false,
@@ -155,6 +165,7 @@ return [
                     'id' => '4',
                     'attributes' => [
                         'name' => 'Dundie awards bot',
+                        'client' => 'assistant',
                         'sensitive_fields' => false,
                         'last_used_at' => null,
                         'expires_at' => null,

@@ -6,10 +6,12 @@ namespace App\Http\Controllers\App\Settings\Account\Security;
 
 use App\Actions\CreateApiKey;
 use App\Actions\DestroyApiKey;
+use App\Enums\ApiKeyClientEnum;
 use App\Enums\ApiKeyScopeEnum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ApiKeyController extends Controller
 {
@@ -18,6 +20,7 @@ class ApiKeyController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'sensitive_fields' => ['sometimes', 'boolean'],
+            'client' => ['sometimes', Rule::enum(ApiKeyClientEnum::class)],
         ]);
 
         $scopes = ['*'];
@@ -30,6 +33,7 @@ class ApiKeyController extends Controller
             user: $request->user(),
             name: $validated['name'],
             scopes: $scopes,
+            client: ApiKeyClientEnum::tryFrom((string) ($validated['client'] ?? '')) ?? ApiKeyClientEnum::Script,
         )->execute()->plainTextToken;
 
         return redirect()->route('settings.security.index')
