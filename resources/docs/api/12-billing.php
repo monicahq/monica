@@ -161,6 +161,7 @@ $portalSessionFields = [
 
 return [
     'name' => 'Billing',
+    'description' => 'What the account pays, what it has paid, and the way to change or stop paying.',
     'sections' => [
         [
             'id' => 'billing-show',

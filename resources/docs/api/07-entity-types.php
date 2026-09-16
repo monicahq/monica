@@ -95,6 +95,7 @@ $entityTypeAttributes = [
 
 return [
     'name' => 'Kinds of record',
+    'description' => 'The sorts of thing a vault keeps besides people, each with its own template and its own place in the order.',
     'sections' => [
         [
             'id' => 'entity-types-index',

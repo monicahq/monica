@@ -76,6 +76,7 @@ $keyAttributes = [
 
 return [
     'name' => 'API keys',
+    'description' => 'The tokens that reach this API. Create one, look at what you hold, and revoke what you no longer use.',
     'sections' => [
         [
             'id' => 'api-keys-index',

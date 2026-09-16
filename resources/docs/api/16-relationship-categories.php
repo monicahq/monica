@@ -62,6 +62,7 @@ $categoryAttributes = [
 
 return [
     'name' => 'Relationship categories',
+    'description' => 'The groups relationship types are filed under, which order the vocabulary rather than deciding anything.',
     'sections' => [
         [
             'id' => 'relationship-categories-index',

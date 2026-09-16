@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 return [
     'name' => 'Authentication',
+    'description' => 'Open a session, close one, and register an account. These are the only endpoints that need no token.',
     'sections' => [
         [
             'id' => 'register-store',

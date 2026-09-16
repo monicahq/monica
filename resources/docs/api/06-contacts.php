@@ -205,6 +205,7 @@ $writeParams = [
 
 return [
     'name' => 'Contacts',
+    'description' => 'The people a vault holds, their names, their pictures and the template version each one is read through.',
     'sections' => [
         [
             'id' => 'contacts-index',

@@ -48,6 +48,7 @@ $notificationAttributes = [
 
 return [
     'name' => 'Notifications',
+    'description' => 'What the product has told the account holder, and whether they have read it.',
     'sections' => [
         [
             'id' => 'notifications-index',

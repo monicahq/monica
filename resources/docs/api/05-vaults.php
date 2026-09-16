@@ -87,6 +87,7 @@ $vaultAttributes = [
 
 return [
     'name' => 'Vaults',
+    'description' => 'The compartments an account is divided into. A record belongs to exactly one, and moving it between them is deliberate.',
     'sections' => [
         [
             'id' => 'vaults-index',

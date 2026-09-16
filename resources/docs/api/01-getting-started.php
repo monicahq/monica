@@ -21,6 +21,8 @@ return [
             'body' => [
                 'There is no test mode. Every request is processed against your real account, so be careful with anything that deletes.',
                 'The version is part of the URL rather than a header. A caller who writes /api/v1 today keeps working the day a second version arrives beside it.',
+                'Everything on these pages is also published as an OpenAPI 3.2 document. Import it into Postman, Bruno, Swagger UI or anything else that reads OpenAPI and every endpoint arrives with its parameters, its answers and its refusals already described. Note that openapi-generator cannot read version 3.2 yet.',
+                'That document is built from these pages when you ask for it, so it describes this instance and names it as its server, and it can neither describe an endpoint this instance does not answer nor miss one that it does. A returned value is described as admitting null, because these pages record what a field holds when it holds something and not whether it may hold nothing.',
             ],
             'rateLimit' => 'Sixty requests per minute, per address.',
             'response' => [

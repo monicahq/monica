@@ -53,6 +53,7 @@ $logAttributes = [
 
 return [
     'name' => 'Logs',
+    'description' => 'What happened on the account, who did it and from which interface, appended and never rewritten.',
     'sections' => [
         [
             'id' => 'logs-index',

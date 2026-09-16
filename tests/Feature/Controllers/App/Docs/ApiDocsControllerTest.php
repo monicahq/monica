@@ -130,6 +130,33 @@ class ApiDocsControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_where_the_reader_had_scrolled_the_menu_to(): void
+    {
+        $response = $this->get(route('docs.api.show', ['section' => 'vaults-index']));
+
+        $response->assertSee('x-data="apiDocsSidebarScroll"', escape: false);
+        $response->assertSee('@click="remember()"', escape: false);
+    }
+
+    #[Test]
+    public function it_offers_the_openapi_document_from_every_page_of_the_reference(): void
+    {
+        $response = $this->get(route('docs.api.show', ['section' => 'vaults-index']));
+
+        $response->assertSee(route('docs.api.openapi'), escape: false);
+        $response->assertSee('OpenAPI Spec');
+    }
+
+    #[Test]
+    public function it_tells_a_newcomer_the_document_exists(): void
+    {
+        $response = $this->get(route('docs.api.show', ['section' => 'introduction']));
+
+        $response->assertSee('OpenAPI 3.2 document');
+        $response->assertSee('admitting null');
+    }
+
+    #[Test]
     public function every_section_of_the_reference_is_reachable(): void
     {
         $ids = array_map(

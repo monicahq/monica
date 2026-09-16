@@ -74,6 +74,7 @@ $emailAttributesWithBody = [
 
 return [
     'name' => 'Emails sent',
+    'description' => 'Every message the product sent on the account behalf, with what became of it.',
     'sections' => [
         [
             'id' => 'emails-sent-index',

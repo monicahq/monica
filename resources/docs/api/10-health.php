@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 return [
     'name' => 'Health',
+    'description' => 'Whether the instance is answering, and whether what it depends on is answering it.',
     'sections' => [
         [
             'id' => 'status-show',

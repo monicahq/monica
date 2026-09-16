@@ -155,6 +155,7 @@ $merge = [
 
 return [
     'name' => 'Duplicates and merges',
+    'description' => 'Contacts that look like the same person, and the act of folding one into another without losing what either held.',
     'sections' => [
         [
             'id' => 'duplicates-index',

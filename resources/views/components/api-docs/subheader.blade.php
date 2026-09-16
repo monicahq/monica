@@ -22,9 +22,17 @@
       <kbd class="rounded-xs border border-hairline px-1.25 py-px font-mono text-[11px] text-muted-soft">⌘K</kbd>
     </label>
 
-    <a
-      href="{{ route('settings.security.index') }}"
-      class="ml-auto shrink-0 rounded-md border border-hairline px-3.5 py-2 text-sm font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
-    >Get an API key</a>
+    <div class="ml-auto flex shrink-0 items-center gap-2.5">
+      <a
+        href="{{ route('docs.api.openapi') }}"
+        class="rounded-md border border-hairline px-3.5 py-2 text-sm font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
+        target="_blank"
+      >OpenAPI Spec</a>
+
+      <a
+        href="{{ route('settings.security.index') }}"
+        class="rounded-md border border-hairline px-3.5 py-2 text-sm font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
+      >Get an API key</a>
+    </div>
   </div>
 </div>

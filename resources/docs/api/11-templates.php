@@ -376,6 +376,7 @@ $placementOnly = [
 
 return [
     'name' => 'Templates',
+    'description' => 'How a record is laid out: its versions, its pages, the sections on them and the fields in those. A published version is frozen.',
     'sections' => [
         [
             'id' => 'templates-index',

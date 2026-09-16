@@ -81,6 +81,7 @@ $typeAttributes = [
 
 return [
     'name' => 'Relationship types',
+    'description' => 'The kinds of tie one contact can have to another, each with the wording read from either side.',
     'sections' => [
         [
             'id' => 'relationship-types-index',

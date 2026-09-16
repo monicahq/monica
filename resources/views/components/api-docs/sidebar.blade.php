@@ -9,7 +9,11 @@
   $entry = 'rounded-md px-2.5 py-1.75 text-[14px] transition-colors duration-(--duration-fast) ease-out focus-ring';
 @endphp
 
-<aside class="hidden w-68 shrink-0 self-start border-r border-hairline px-4 py-6 lg:sticky lg:top-28 lg:block lg:h-[calc(100vh-7rem)] lg:overflow-y-auto">
+<aside
+  x-data="apiDocsSidebarScroll"
+  @click="remember()"
+  class="hidden w-68 shrink-0 self-start border-r border-hairline px-4 py-6 lg:sticky lg:top-28 lg:block lg:h-[calc(100vh-7rem)] lg:overflow-y-auto"
+>
   <h2 class="mb-2 ml-2.5 text-[11px] font-medium tracking-caption text-muted-soft uppercase">Getting started</h2>
 
   <nav class="mb-6.5 flex flex-col gap-px" aria-label="Getting started">

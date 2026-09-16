@@ -7,6 +7,7 @@ import focus from '@alpinejs/focus';
 import anchor from '@alpinejs/anchor';
 import ajax from '@imacrayon/alpine-ajax';
 
+import apiDocsSidebarScroll from './api-docs-sidebar-scroll';
 import confirmPassword from './confirm-password';
 import fieldReminder from './field-reminder';
 import passkey from './passkey';
@@ -17,6 +18,7 @@ window.Turbo = Turbo;
 
 Turbo.session.drive = false;
 
+Alpine.data('apiDocsSidebarScroll', apiDocsSidebarScroll);
 Alpine.data('confirmPassword', confirmPassword);
 Alpine.data('fieldReminder', fieldReminder);
 Alpine.data('passkey', passkey);

@@ -16,6 +16,7 @@ use App\Http\Controllers\App\Admin\OverviewController;
 use App\Http\Controllers\App\Admin\UserActivationController;
 use App\Http\Controllers\App\Docs\ApiDocsController;
 use App\Http\Controllers\App\Docs\ApiDocsMarkdownController;
+use App\Http\Controllers\App\Docs\OpenApiDocumentController;
 use App\Http\Controllers\App\GettingStartedController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\Marketplace\MarketplaceController;
@@ -119,6 +120,9 @@ Route::get('docs/api', [ApiDocsController::class, 'index'])
 
 Route::get('docs/api.md', [ApiDocsMarkdownController::class, 'index'])
     ->name('docs.api.markdown.index');
+
+Route::get('docs/api/v1/openapi', [OpenApiDocumentController::class, 'index'])
+    ->name('docs.api.openapi');
 
 Route::get('docs/api/{section}.md', [ApiDocsMarkdownController::class, 'show'])
     ->where('section', '[a-z0-9\-]+')

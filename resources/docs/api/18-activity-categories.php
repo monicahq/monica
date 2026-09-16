@@ -62,6 +62,7 @@ $categoryAttributes = [
 
 return [
     'name' => 'Activity categories',
+    'description' => 'The groups activity natures are filed under, which order the vocabulary and give statistics a level to count at.',
     'sections' => [
         [
             'id' => 'activity-categories-index',

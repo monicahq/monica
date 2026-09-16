@@ -121,6 +121,7 @@ $channelPathParam = [
 
 return [
     'name' => 'Notification channels',
+    'description' => 'Where a notification is delivered, proving a destination belongs to whoever named it.',
     'sections' => [
         [
             'id' => 'notification-channels-index',

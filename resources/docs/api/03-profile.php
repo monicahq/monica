@@ -52,6 +52,7 @@ $userAttributes = [
 
 return [
     'name' => 'Your profile',
+    'description' => 'The person behind the account: their name, the language they read in and the zone their days are counted in.',
     'sections' => [
         [
             'id' => 'me-show',
