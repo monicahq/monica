@@ -2,7 +2,7 @@
 
 These settings apply to the project and CI, not to individual tests. Read `rules/isolation.md` for choices within a test.
 
-Fetch `https://docs.phpunit.de/en/13.3/` for PHPUnit options that make test runs faster.
+Fetch the PHPUnit 12.5.34 documentation at `https://phpunit.de/documentation.html` for PHPUnit options that make test runs faster.
 Verify each flag in the documentation before adding it to CI.
 
 Measure before changing a setting. Find the slow test first, and apply a project-wide setting only after identifying the costly work.

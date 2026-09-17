@@ -14,12 +14,12 @@ Schedule::command('model:prune')->dailyAt('01:05');
 Schedule::command('queue:prune-batches')->dailyAt('01:10');
 Schedule::command('queue:prune-failed')->dailyAt('01:15');
 
-Schedule::job(new PurgeOrphanedFiles, 'low')->dailyAt('03:20');
+Schedule::job(new PurgeOrphanedFiles, 'low')->dailyAt('03:20')->sentryMonitor();
 
-Schedule::job(new DetectDuplicateContacts, 'low')->dailyAt('03:40');
+Schedule::job(new DetectDuplicateContacts, 'low')->dailyAt('03:40')->sentryMonitor();
 
-Schedule::job(new GenerateDueReminderOccurrences, 'low')->dailyAt('02:30');
+Schedule::job(new GenerateDueReminderOccurrences, 'low')->dailyAt('02:30')->sentryMonitor();
 
-Schedule::job(new DeliverDueNotifications, 'high')->everyFiveMinutes();
+Schedule::job(new DeliverDueNotifications, 'high')->everyFiveMinutes()->sentryMonitor();
 
-Schedule::job(new SendNotificationDigests, 'low')->hourly();
+Schedule::job(new SendNotificationDigests, 'low')->hourly()->sentryMonitor();

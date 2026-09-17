@@ -14,6 +14,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use Sentry\Laravel\Integration as SentryIntegration;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -68,4 +69,5 @@ return Application::configure(basePath: dirname(__DIR__))
                 || $request->is('user/passkeys')
                 || $request->is('user/passkeys/options'),
         );
+        SentryIntegration::handles($exceptions);
     })->create();

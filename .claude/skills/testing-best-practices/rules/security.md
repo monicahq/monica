@@ -19,7 +19,7 @@ public function test_escapes_dangerous_content_in_the_notification(): void
 
     $content = (new QuotaApproaching($organization, 80))->toMail()->render();
 
-    $this->assertStringContainsString('<script>', $content);
+    $this->assertStringContainsString('&lt;script&gt;', $content);
     $this->assertStringNotContainsString("<script>alert('xss')</script>", $content);
 }
 ```

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 use Laravel\Socialite\SocialiteServiceProvider;
-use SocialiteProviders\Microsoft\Provider;
+use SocialiteProviders\Microsoft\Provider as MicrosoftProvider;
 
 return [
 
@@ -51,7 +51,7 @@ return [
             'github',
             'google',
             'facebook',
-            class_exists(Provider::class) ? 'microsoft' : null,
+            class_exists(MicrosoftProvider::class) ? 'microsoft' : null,
         ]))
         : [],
 

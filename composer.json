@@ -37,6 +37,7 @@
         "php-http/discovery": "^1.20",
         "pragmarx/google2fa-laravel": "^3.0",
         "resend/resend-laravel": "^1.4",
+        "sentry/sentry-laravel": "^4.27",
         "spatie/laravel-login-link": "^1.6",
         "stevebauman/purify": "^6.3"
     },
