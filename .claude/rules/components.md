@@ -108,6 +108,33 @@ returns a 500.
 Reach for the real tag instead. `x-button` already takes `variant`, so
 `<x-button :variant="$variant" @click="...">` covers what a dynamic component was wanted for.
 
+## In an Alpine handler, `$el` is what was clicked and `$root` is the nearest component
+
+Neither reaches the element a component is mounted on. `$el` is whatever the handler sits on, and
+`$root` is the closest `x-data` above it, which is often a shared component rather than the screen's:
+`x-icon-button` declares `x-data="{ shown: false }"`, so every Move and Remove button is its own
+component. Both point at the mounted element only during `init()`.
+
+A component that has to find its own markup takes the element that was acted on and walks up to a
+marker of its own. `resources/js/activity-type-fields.js` does this, and the editor's controls pass it
+in: `@click="addField($el)"`, then `el.closest('[data-field-editor]')`.
+
+This fails silently. `querySelector` returns null, the handler throws inside Alpine, and the button
+simply does nothing.
+
+## `@js()` is not compiled inside a component tag
+
+`<x-select ::disabled="type !== @js($kind)">` passes the raw string `type !== @js($kind)` through as a
+data key, and the surrounding `@if`/`@else` can be swallowed with it, which returns a 500 from a
+template that looks right. The same line on a plain `<span>` or `<fieldset>` compiles.
+
+So put the Alpine expression on real markup. A run of controls that all switch together belongs in a
+`<fieldset>` carrying the `x-show` and the `:disabled`, which also stops the hidden ones being
+submitted.
+
+A Blade comment inside `@php` breaks the block just as quietly: the whole block is printed to the
+page as text. Use `//` there.
+
 ## Take a collection or an array, not one of them
 View models return both. `x-list-panel` called `isEmpty()` and fell over on the admin account list,
 which returns a plain array. A component receiving a list checks for emptiness in a way that holds for

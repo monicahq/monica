@@ -33,6 +33,7 @@ class AddSectionToStructureVersion
         private readonly SectionVersion $sectionVersion,
         private ?string $titleOverride = null,
         private readonly bool $isCollapsedByDefault = false,
+        private readonly bool $showsTitle = true,
         private readonly ?StructureVersionPage $structureVersionPage = null,
     ) {}
 
@@ -104,6 +105,7 @@ class AddSectionToStructureVersion
                 'section_version_id' => $this->sectionVersion->id,
                 'position' => ($positions->max() ?? 0) + 1,
                 'title_override' => $this->titleOverride,
+                'shows_title' => $this->showsTitle,
                 'is_collapsed_by_default' => $this->isCollapsedByDefault,
             ]);
 

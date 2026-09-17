@@ -27,6 +27,7 @@ class StructureVersionSectionFactory extends Factory
             'structure_version_page_id' => fn (array $attributes): int => $this->firstPageOf((int) $attributes['structure_version_id']),
             'position' => 1,
             'title_override' => null,
+            'shows_title' => true,
             'is_collapsed_by_default' => false,
         ];
     }
@@ -47,6 +48,13 @@ class StructureVersionSectionFactory extends Factory
     {
         return $this->state(fn (array $attributes): array => [
             'is_collapsed_by_default' => true,
+        ]);
+    }
+
+    public function withoutTitle(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'shows_title' => false,
         ]);
     }
 }

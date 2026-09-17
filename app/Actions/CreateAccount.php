@@ -6,6 +6,7 @@ namespace App\Actions;
 
 use App\Enums\SsoProviderEnum;
 use App\Enums\UserActionEnum;
+use App\Jobs\CreateDefaultActivityTypes;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
@@ -15,7 +16,8 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Create an account, the one user in it, the vault their contacts go in, the value lists the
- * fields of that vault pick from, and the vocabulary its relationships are described with.
+ * fields of that vault pick from, and the vocabulary its relationships and its activities are
+ * described with.
  */
 class CreateAccount
 {
@@ -49,6 +51,7 @@ class CreateAccount
         event(new Registered($this->user));
 
         $this->createDefaultTemplate();
+        $this->createDefaultActivityTypes();
         $this->log();
 
         return $this->user;
@@ -108,6 +111,11 @@ class CreateAccount
     private function createDefaultTemplate(): void
     {
         CreateDefaultTemplate::dispatch(user: $this->user)->onQueue('high');
+    }
+
+    private function createDefaultActivityTypes(): void
+    {
+        CreateDefaultActivityTypes::dispatch(user: $this->user)->onQueue('high');
     }
 
     private function log(): void

@@ -6,9 +6,12 @@ namespace Tests\Unit\Models;
 
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
+use App\Models\ActivityType;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
+use App\Models\Template;
+use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -111,5 +114,36 @@ class StructureVersionSectionTest extends TestCase
             'section_version_id' => $sectionVersion->id,
             'position' => 2,
         ]);
+    }
+
+    #[Test]
+    public function it_is_reachable_through_the_template_or_the_activity_type_that_owns_its_structure(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $activityType = ActivityType::factory()->create(['account_id' => $user->account_id]);
+        $structure = $activityType->structure;
+
+        $onTheTemplate = StructureVersionSection::factory()->create([
+            'account_id' => $user->account_id,
+            'structure_version_id' => StructureVersion::factory()->create([
+                'account_id' => $user->account_id,
+                'structure_id' => $template->structure->id,
+            ])->id,
+        ]);
+
+        $onTheType = StructureVersionSection::factory()->create([
+            'account_id' => $user->account_id,
+            'structure_version_id' => StructureVersion::factory()->create([
+                'account_id' => $user->account_id,
+                'structure_id' => $structure->id,
+                'version_number' => 2,
+            ])->id,
+        ]);
+
+        $this->assertTrue($onTheTemplate->isReachableThrough($user, $template));
+        $this->assertTrue($onTheType->isReachableThrough($user, $activityType));
+        $this->assertFalse($onTheType->isReachableThrough($user, $template));
+        $this->assertFalse($onTheTemplate->isReachableThrough($user, $activityType));
     }
 }

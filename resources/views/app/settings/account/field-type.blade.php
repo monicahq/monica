@@ -1,14 +1,16 @@
 {{-- Picking what kind of field to add. --}}
 {{--
-  @var \App\Models\Template $template
   @var \App\Models\StructureVersionSection $row
   @var string $sectionName
+  @var string $backHref
+  @var string $backLabel
+  @var string $current
+  @var string $action
   @var \App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel $catalogue
   @var \Illuminate\Support\Collection<int, \App\Models\ValueList> $valueLists
   @var \App\Models\User $user
 --}}
 @php
-  $backToBuilder = route('settings.templateBuilder.index', ['template' => $template, 'page' => $row->structureVersionPage->key]);
   $types = $catalogue->types();
   $pickable = array_values(array_map(fn (array $type): string => $type['key'], array_filter($types, fn (array $type): bool => $type['isAvailable'])));
   $footerLines = $catalogue->footerLines($sectionName);
@@ -17,9 +19,9 @@
 <x-settings.page
   :title="__('Add a field')"
   :user="$user"
-  current="templates"
-  :back-href="$backToBuilder"
-  :back-label="__('Back to the template')"
+  :current="$current"
+  :back-href="$backHref"
+  :back-label="$backLabel"
   wide
 >
   <x-slot:footer>
@@ -41,7 +43,7 @@
       </div>
 
       <div class="ml-auto flex items-center gap-3">
-        <x-button.secondary :href="$backToBuilder" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
+        <x-button.secondary :href="$backHref" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
         <x-button form="add-field" ::disabled="!canAdd">{{ __('Add the field') }}</x-button>
       </div>
@@ -51,7 +53,7 @@
   <x-form
     id="add-field"
     method="post"
-    :action="route('settings.fields.create', [$template, $row])"
+    :action="$action"
     x-effect="$dispatch('field-type-picked', type)"
     x-data="{
       type: {{ Js::from(old('type', '')) }},

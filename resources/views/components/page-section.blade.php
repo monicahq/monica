@@ -3,6 +3,7 @@
   @var string|null $title
   @var string|null $description
   @var \Illuminate\View\ComponentSlot|null $aside
+  @var \Illuminate\View\ComponentSlot|null $actions
 --}}
 @props([
   'title' => null,
@@ -20,6 +21,10 @@
 
       @isset($aside)
         <span class="ml-auto text-xs text-pretty text-muted">{{ $aside }}</span>
+      @endisset
+
+      @isset($actions)
+        <span class="ml-auto flex shrink-0 items-center gap-2 self-center">{{ $actions }}</span>
       @endisset
     </div>
   @endif

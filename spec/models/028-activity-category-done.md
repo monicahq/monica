@@ -75,4 +75,4 @@ deleted_at                  datetime
 
 The table, model, factory, supplied catalogue, actions, API endpoints and API reference exist. Listing, reading, creating, renaming, deleting, activating, deactivating and reordering are covered by tests.
 
-The settings screen is not built. Listing the types of one category and reporting a nonzero `activity_type_count` wait for the [ActivityType](035-activity-type-in-progress.md) screens. The type's table, model and creation action exist since the structure engine became generic.
+The settings screen is built: Activity types in account settings lists the categories in a rail, adds one in a modal, renames one in place, moves it, switches it off and on, and deletes one that may be deleted. `activity_type_count` counts the types filed under the category, so the number the rail shows and the number refusing a deletion are one number.

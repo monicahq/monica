@@ -55,7 +55,7 @@
   @endif
 
   <input
-    id="{{ $id }}"
+    @if ($id) id="{{ $id }}" @endif
     name="{{ $name ?? $id }}"
     type="{{ $type }}"
     value="{{ $value }}"

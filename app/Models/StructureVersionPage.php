@@ -108,18 +108,18 @@ class StructureVersionPage extends Model
     }
 
     /**
-     * Whether this page is one the given user may reach through the given
-     * template.
+     * Whether this page is one the given user may reach through the given owner,
+     * which is a template or an activity type.
      *
-     * A page is addressed under the template it sits on, and neither half can
-     * be trusted on its own: the account has to match, and the page has to be
-     * on a version of the template the URL actually names.
+     * A page is addressed under the thing it sits on, and neither half can be
+     * trusted on its own: the account has to match, and the page has to be on a
+     * version of the structure the URL actually names.
      */
-    public function isReachableThrough(User $user, Template $template): bool
+    public function isReachableThrough(User $user, ActivityType|Template $owner): bool
     {
         return $this->account_id === $user->account_id
-            && $this->structureVersion->structure->owner_type === Template::class
-            && $this->structureVersion->structure->owner_id === $template->id;
+            && $this->structureVersion->structure->owner_type === $owner::class
+            && $this->structureVersion->structure->owner_id === $owner->id;
     }
 
     /**

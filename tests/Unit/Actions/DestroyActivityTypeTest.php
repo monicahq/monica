@@ -11,11 +11,11 @@ use App\Jobs\LogUserAction;
 use App\Models\ActivityCategory;
 use App\Models\ActivityType;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
-use App\Exceptions\CannotDeleteASuppliedActivityType;
 use Tests\TestCase;
 
 class DestroyActivityTypeTest extends TestCase
@@ -87,7 +87,7 @@ class DestroyActivityTypeTest extends TestCase
         $user = User::factory()->create();
         $supplied = ActivityType::factory()->supplied()->create(['account_id' => $user->account_id]);
 
-        $this->expectException(CannotDeleteASuppliedActivityType::class);
+        $this->expectException(AuthorizationException::class);
 
         new DestroyActivityType(user: $user, activityType: $supplied)->execute();
     }

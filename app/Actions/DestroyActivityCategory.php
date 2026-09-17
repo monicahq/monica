@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteAnActivityCategoryInUse;
-use App\Exceptions\CannotDeleteASuppliedActivityCategory;
 use App\Jobs\LogUserAction;
 use App\Models\ActivityCategory;
 use App\Models\User;
@@ -39,15 +37,7 @@ class DestroyActivityCategory
             throw new ModelNotFoundException('This activity category is in another account.');
         }
 
-        if ($this->activityCategory->is_system) {
-            throw new CannotDeleteASuppliedActivityCategory('This category came with the account and stays.');
-        }
-
-        $held = $this->activityCategory->activityTypeCount();
-
-        if ($held > 0) {
-            throw new CannotDeleteAnActivityCategoryInUse("This category still holds {$held} activity types.");
-        }
+        $this->user->authorize('delete', $this->activityCategory);
     }
 
     private function destroy(): void

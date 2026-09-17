@@ -41,14 +41,14 @@ Every file follows the same shape.
 | 005 | [EmailSent](005-email-sent-in-progress.md) | exists, minor changes |
 | 006 | [PersonalAccessToken](006-personal-access-token-in-progress.md) | exists, changes needed |
 
-Models 007 to 025, 027 to 028, 034, 040 to 049 and 055 exist as well. Models 040 to 043 are the reminder chain: the rule, the concrete
+Models 007 to 025, 027 to 028, 034, 035, 040 to 049 and 055 exist as well. Models 040 to 043 are the reminder chain: the rule, the concrete
 deadlines it produces, the notifications that carry them and the preferences that say how. It was
 built ahead of the journal it will one day also read from. The screens have since caught up with
 most of it: a vault lists what is coming and what has gone out, and a rule has a page of its own.
 The preferences are the part still without one. Each file says how far it is built and what it is
 waiting on.
 
-Models 026, 031 to 033, 035 to 039 and 050 to 054 have no table and no model at all: relationships,
+Models 026, 031 to 033, 036 to 039 and 050 to 054 have no table and no model at all: relationships,
 groups, the journal, webhooks, modules and search are the whole of what is still to be
 started.
 

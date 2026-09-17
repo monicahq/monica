@@ -6,10 +6,11 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\DestroyActivityCategory;
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteASuppliedActivityCategory;
 use App\Jobs\LogUserAction;
 use App\Models\ActivityCategory;
+use App\Models\ActivityType;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -41,7 +42,25 @@ class DestroyActivityCategoryTest extends TestCase
         $user = User::factory()->create();
         $category = ActivityCategory::factory()->system()->create(['account_id' => $user->account_id]);
 
-        $this->expectException(CannotDeleteASuppliedActivityCategory::class);
+        $this->expectException(AuthorizationException::class);
+
+        try {
+            new DestroyActivityCategory(user: $user, activityCategory: $category)->execute();
+        } finally {
+            $this->assertNotSoftDeleted($category);
+        }
+    }
+
+    #[Test]
+    public function it_refuses_to_delete_a_category_still_holding_a_type(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+        ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+
+        $this->expectException(AuthorizationException::class);
 
         try {
             new DestroyActivityCategory(user: $user, activityCategory: $category)->execute();

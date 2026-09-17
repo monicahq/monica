@@ -7,6 +7,7 @@ namespace Tests\Unit\Models;
 use App\Enums\ActivityCategoryEnum;
 use App\Models\Account;
 use App\Models\ActivityCategory;
+use App\Models\ActivityType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -69,9 +70,34 @@ class ActivityCategoryTest extends TestCase
     }
 
     #[Test]
-    public function it_holds_no_activity_nature_until_that_record_exists(): void
+    public function it_has_many_activity_natures(): void
     {
         $category = ActivityCategory::factory()->create();
+        ActivityType::factory()->create(['activity_category_id' => $category->id]);
+
+        $this->assertTrue($category->activityTypes()->exists());
+    }
+
+    #[Test]
+    public function it_counts_the_activity_natures_filed_under_it(): void
+    {
+        $category = ActivityCategory::factory()->create();
+        $elsewhere = ActivityCategory::factory()->create();
+
+        ActivityType::factory()->count(3)->create(['activity_category_id' => $category->id]);
+        ActivityType::factory()->create(['activity_category_id' => $elsewhere->id]);
+
+        $this->assertSame(3, $category->activityTypeCount());
+        $this->assertSame(1, $elsewhere->activityTypeCount());
+    }
+
+    #[Test]
+    public function it_does_not_count_a_deleted_activity_nature(): void
+    {
+        $category = ActivityCategory::factory()->create();
+        $type = ActivityType::factory()->create(['activity_category_id' => $category->id]);
+
+        $type->delete();
 
         $this->assertSame(0, $category->activityTypeCount());
     }

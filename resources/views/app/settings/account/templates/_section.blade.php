@@ -116,14 +116,14 @@
             x-target="builder"
             class="flex flex-wrap items-end gap-3"
           >
-            @include('app.settings.account.templates._section-mark-picker', [
-              'id' => 'section-'.$section['id'],
-              'glyphs' => $glyphs,
-              'colours' => $colours,
-              'icon' => $section['icon'],
-              'colour' => $section['colour'],
-              'reach' => $section['markReach'],
-            ])
+            <x-mark-picker
+              :id="'section-'.$section['id']"
+              :glyphs="$glyphs"
+              :colours="$colours"
+              :icon="$section['icon']"
+              :colour="$section['colour']"
+              :reach="$section['markReach']"
+            />
 
             <x-input
               :id="'section-'.$section['id'].'-title'"

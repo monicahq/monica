@@ -118,6 +118,7 @@ class DuplicateTemplate
                     'section_version_id' => $row->section_version_id,
                     'position' => $row->position,
                     'title_override' => $row->title_override,
+                    'shows_title' => $row->shows_title,
                     'is_collapsed_by_default' => $row->is_collapsed_by_default,
                 ]);
 

@@ -23,6 +23,11 @@ use App\Http\Controllers\App\Marketplace\MarketplaceController;
 use App\Http\Controllers\App\NotificationController;
 use App\Http\Controllers\App\NotificationReadController;
 use App\Http\Controllers\App\Settings\Account\AccountController;
+use App\Http\Controllers\App\Settings\Account\ActivityTypes\ActivityCategoryActivationController;
+use App\Http\Controllers\App\Settings\Account\ActivityTypes\ActivityCategoryController;
+use App\Http\Controllers\App\Settings\Account\ActivityTypes\ActivityCategoryPositionController;
+use App\Http\Controllers\App\Settings\Account\ActivityTypes\ActivityTypeController;
+use App\Http\Controllers\App\Settings\Account\ActivityTypes\ActivityTypePositionController;
 use App\Http\Controllers\App\Settings\Account\Billing\BillingController;
 use App\Http\Controllers\App\Settings\Account\Billing\BillingCurrencyController;
 use App\Http\Controllers\App\Settings\Account\Billing\CheckoutController;
@@ -367,6 +372,21 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('settings/account/relationship-types/categories/{relationshipCategory}', [RelationshipCategoryController::class, 'update'])->whereNumber('relationshipCategory')->name('settings.relationshipCategories.update');
     Route::delete('settings/account/relationship-types/categories/{relationshipCategory}', [RelationshipCategoryController::class, 'destroy'])->whereNumber('relationshipCategory')->name('settings.relationshipCategories.destroy');
     Route::put('settings/account/relationship-types/categories/{relationshipCategory}/position', [RelationshipCategoryPositionController::class, 'update'])->whereNumber('relationshipCategory')->name('settings.relationshipCategoryPosition.update');
+
+    Route::get('settings/account/activity-types', [ActivityTypeController::class, 'index'])->name('settings.activityTypes.index');
+    Route::get('settings/account/activity-types/categories/{activityCategory}', [ActivityTypeController::class, 'index'])->whereNumber('activityCategory')->name('settings.activityTypes.category');
+    Route::get('settings/account/activity-types/new', [ActivityTypeController::class, 'new'])->name('settings.activityTypes.new');
+    Route::post('settings/account/activity-types', [ActivityTypeController::class, 'create'])->name('settings.activityTypes.create');
+    Route::get('settings/account/activity-types/{activityType}/edit', [ActivityTypeController::class, 'edit'])->whereNumber('activityType')->name('settings.activityTypes.edit');
+    Route::put('settings/account/activity-types/{activityType}', [ActivityTypeController::class, 'update'])->whereNumber('activityType')->name('settings.activityTypes.update');
+    Route::delete('settings/account/activity-types/{activityType}', [ActivityTypeController::class, 'destroy'])->whereNumber('activityType')->name('settings.activityTypes.destroy');
+    Route::put('settings/account/activity-types/{activityType}/position', [ActivityTypePositionController::class, 'update'])->whereNumber('activityType')->name('settings.activityTypePosition.update');
+
+    Route::post('settings/account/activity-types/categories', [ActivityCategoryController::class, 'create'])->name('settings.activityCategories.create');
+    Route::put('settings/account/activity-types/categories/{activityCategory}', [ActivityCategoryController::class, 'update'])->whereNumber('activityCategory')->name('settings.activityCategories.update');
+    Route::delete('settings/account/activity-types/categories/{activityCategory}', [ActivityCategoryController::class, 'destroy'])->whereNumber('activityCategory')->name('settings.activityCategories.destroy');
+    Route::put('settings/account/activity-types/categories/{activityCategory}/position', [ActivityCategoryPositionController::class, 'update'])->whereNumber('activityCategory')->name('settings.activityCategoryPosition.update');
+    Route::put('settings/account/activity-types/categories/{activityCategory}/activation', [ActivityCategoryActivationController::class, 'update'])->whereNumber('activityCategory')->name('settings.activityCategoryActivation.update');
 
     Route::get('settings/account/templates', [TemplateController::class, 'index'])->name('settings.templates.index');
     Route::get('settings/account/templates/new', [TemplateController::class, 'new'])->name('settings.templates.new');

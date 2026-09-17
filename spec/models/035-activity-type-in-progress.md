@@ -1,6 +1,6 @@
 # 035. ActivityType
 
-**Status:** the table, the model and its creation action exist. Its screens and its API follow separately
+**Status:** the table, the model, its actions and its settings screens exist. Its API follows separately
 **Spec:** 9.3, 9.5, 10.2, 7
 
 ## What it is
@@ -89,16 +89,18 @@ deleted_at                  datetime
 
 ## Management screens
 
-- **Settings, Activity types** lists categories in their account order and types in their category order. It includes inactive rows, identifies supplied rows and searches names across every category.
+- **Settings, Activity types** pairs a rail of categories in their account order with the types of the selected one in their category order. An entry above the rail lists every type of the account, grouped by category. Inactive rows are listed and marked, and supplied rows are identified.
 - Type rows have no interaction setting or badge. Whether a contact history changes is determined only by the activity's participants.
-- The settings screen creates, renames, reorders, moves, activates and deactivates a type. It links to category management and warns before deletion.
-- The type form requires a name and an active category. Description, icon and colour are optional.
-- A new type starts with no custom fields, which is a published structure version holding one empty page rather than the absence of one. Saving the type offers the field builder, which is the same engine the template builder uses.
-- Editing a published field structure creates a draft. Publishing the draft changes the version offered to new activities and never moves an existing activity to it.
-- The screens say "custom fields" throughout. The words template, structure and version never reach the user here: neither is what they came to manage.
-- The activity form groups active types under active categories. It offers search and recent types before the complete grouped list.
-- The activity form may create a type inline. This short form asks only for name and category. The saved type belongs to the account and is immediately selected.
+- The settings screen creates, renames, reorders, moves, activates and deactivates a type, carries category management in place, and warns before deletion.
+- The type form is a screen of its own, and it is the only screen: name, category, description, mark, the fields the type asks for, whether it is offered, and whether it may be deleted, all saved together. Its icons come from the catalogue sections use and its colours from the vault colours.
+- A new type starts with no custom fields, which is a published structure version holding one empty page rather than the absence of one. Fields are asked for on the same screen that names the type, so a type and the first thing it asks for are added in one go.
+- A field may sit in a group or in none. A group is a section whose name is drawn above its fields; the fields nobody grouped are a section too, placed first with its name hidden, and they are read before any group.
+- A field's kind is picked from a list in its own row, not from a screen of its own. The full catalogue screen remains how the template builder picks one.
+- A field that offers choices keeps them in a value list of its own. The list is not shared: it is listed on no screen and offered in no picker, because nobody named it and it belongs to that one field.
+- Saving opens a draft of what the type publishes, writes the whole layout into it and publishes it. The version offered to new activities changes; an existing activity never moves to it.
+- The screens say "custom fields" throughout. The words template, structure and version never reach the user here, in a screen or in a URL: none of them is what they came to manage.
 - Supplied and used types offer deactivation instead of deletion. A user created type that no activity uses may be deleted after confirmation.
+- Not built yet: search across categories, and the activity form and the type it creates inline.
 
 ## API contract
 
@@ -132,6 +134,6 @@ The API exposes the same account level operations as the settings screen:
 - The type uses the same page, section and field hierarchy as a contact or an entity, through the same engine and the same actions. Every activity keeps the exact version used when it was created, so changing the type's fields never changes an old activity.
 - An activity type never decides whether contact occurred. Participation does. Every contact added as a participant contributes the activity to that contact's history and latest interaction.
 - Disabling a type never breaks the activities already using it (9.3). They keep their type, their icon and their fields.
-- The account is seeded with a usable set at creation. The supplied catalogue ships with the settings screens rather than with the engine, so no account holds a supplied type yet. Supplied types may be renamed, reordered or disabled, but not deleted, which the delete action already refuses.
+- The account is seeded with a usable set at creation. `CreateDefaultActivityTypes` writes the forty types below, each with the custom fields it asks for, and it is a queued job because it writes several hundred rows nobody is looking at yet. Supplied types may be renamed, reordered or disabled, but not deleted, which the delete action already refuses.
 - A user created type may be deleted only when no activity uses it. Otherwise it must be disabled.
 - One activity has one type. Overlap belongs in custom fields or later tags, not in several type links.

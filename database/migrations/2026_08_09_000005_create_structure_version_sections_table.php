@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('section_version_id')->comment('exact section version placed, never the section itself');
             $table->unsignedInteger('position')->comment('order the section appears inside its page');
             $table->string('title_override')->nullable()->comment('title to show instead of the section own name, null to use its own');
+            $table->boolean('shows_title')->default(true)->comment('whether the section name is drawn above its fields, false for the block holding the fields that are in no group');
             $table->boolean('is_collapsed_by_default')->default(false)->comment('whether the section starts folded, so a long page stays readable');
             $table->timestamps();
 

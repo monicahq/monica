@@ -21,6 +21,7 @@ class ValueListsViewModel
     {
         return ValueList::query()
             ->where('account_id', $this->user->account_id)
+            ->where('is_shared', true)
             ->with(['items' => fn ($query) => $query->orderBy('position')])
             ->orderBy('position')
             ->get()

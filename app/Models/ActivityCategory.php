@@ -10,9 +10,11 @@ use Carbon\CarbonImmutable;
 use Database\Factories\ActivityCategoryFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Override;
 
@@ -49,6 +51,7 @@ use Override;
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
  * @property-read Account $account
+ * @property-read Collection<int, ActivityType> $activityTypes
  */
 #[Fillable([
     'account_id',
@@ -107,16 +110,24 @@ class ActivityCategory extends Model
     }
 
     /**
+     * Get the activity natures filed under this category.
+     *
+     * @return HasMany<ActivityType, $this>
+     */
+    public function activityTypes(): HasMany
+    {
+        return $this->hasMany(ActivityType::class);
+    }
+
+    /**
      * How many activity natures are filed under this category.
      *
-     * Two things read it: the answer every endpoint gives, and the rule that a
-     * category still holding natures cannot be deleted. The ActivityType record
-     * does not exist yet, so it is zero for every category. This method is the
-     * one place that changes when it does, and the guard, the actions, the
-     * controllers, the routes and the reference all stay as they are.
+     * Two things read it and they have to agree: the number the settings rail
+     * shows beside a category, and the rule that a category still holding
+     * natures cannot be deleted. A soft deleted nature is not one of them.
      */
     public function activityTypeCount(): int
     {
-        return 0;
+        return $this->activityTypes()->count();
     }
 }

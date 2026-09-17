@@ -133,14 +133,12 @@
             >
               <input type="hidden" name="page" value="{{ $viewModel->selectedPage()?->uuid }}" />
 
-              @include('app.settings.account.templates._section-mark-picker', [
-                'id' => 'section-new',
-                'glyphs' => $viewModel->glyphs(),
-                'colours' => $viewModel->colours(),
-                'icon' => null,
-                'colour' => null,
-                'reach' => __('It marks this section on every template carrying it.'),
-              ])
+              <x-mark-picker
+                id="section-new"
+                :glyphs="$viewModel->glyphs()"
+                :colours="$viewModel->colours()"
+                :reach="__('It marks this section on every template carrying it.')"
+              />
 
               <x-input
                 id="section-name"

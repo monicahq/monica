@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable()->comment('what the list is for, shown in the field builder');
             $table->boolean('is_system')->default(false)->comment('whether the product supplied it, which only affects whether the key can be relied on');
             $table->boolean('allows_user_values')->default(true)->comment('whether a user may add their own item to it');
+            $table->boolean('is_shared')->default(true)->comment('whether the list is part of the account vocabulary, false when it holds the choices of one field and is listed nowhere else');
             $table->unsignedInteger('position')->comment('order the lists appear in on the settings screen');
             $table->timestamps();
             $table->softDeletes();

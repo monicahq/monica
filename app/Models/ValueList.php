@@ -27,6 +27,12 @@ use Override;
  * `key` of a supplied list is stable, and it is stable so that the product can
  * find the list again, not so that the list stays as it was.
  *
+ * A list is shared unless it says otherwise. One that is not holds the choices
+ * somebody typed into a single field and belongs to that field: it is stored
+ * here so there is one way to hold a set of choices rather than two, and it is
+ * kept off the value lists screen and out of every picker, because it is not
+ * part of the account's vocabulary and nobody named it.
+ *
  * @property int $id
  * @property int $account_id
  * @property string|null $key
@@ -35,6 +41,7 @@ use Override;
  * @property string|null $description
  * @property bool $is_system
  * @property bool $allows_user_values
+ * @property bool $is_shared
  * @property int $position
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
@@ -49,6 +56,7 @@ use Override;
     'description',
     'is_system',
     'allows_user_values',
+    'is_shared',
     'position',
 ])]
 class ValueList extends Model
@@ -69,6 +77,7 @@ class ValueList extends Model
         return [
             'is_system' => 'boolean',
             'allows_user_values' => 'boolean',
+            'is_shared' => 'boolean',
             'position' => 'integer',
         ];
     }

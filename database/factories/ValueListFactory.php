@@ -27,8 +27,16 @@ class ValueListFactory extends Factory
             'description' => fake()->sentence(),
             'is_system' => false,
             'allows_user_values' => true,
+            'is_shared' => true,
             'position' => 1,
         ];
+    }
+
+    public function ownedByAField(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_shared' => false,
+        ]);
     }
 
     public function supplied(ValueListEnum $list = ValueListEnum::PhoneLabels): static

@@ -29,6 +29,12 @@ use Override;
  * whole mechanism by which freezing a structure version freezes the fields the
  * record ends up showing.
  *
+ * A placement may also hide the section's name. That is what carries a block of
+ * fields nobody grouped: they are still a section, because a field belongs to a
+ * section version and nothing else, but the reader is shown the fields alone
+ * with no heading over them. It is display only, like the title override, and
+ * the same section placed elsewhere keeps its name.
+ *
  * @property int $id
  * @property int $account_id
  * @property int $structure_version_id
@@ -36,6 +42,7 @@ use Override;
  * @property int $section_version_id
  * @property int $position
  * @property string|null $title_override
+ * @property bool $shows_title
  * @property bool $is_collapsed_by_default
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
@@ -51,6 +58,7 @@ use Override;
     'section_version_id',
     'position',
     'title_override',
+    'shows_title',
     'is_collapsed_by_default',
 ])]
 class StructureVersionSection extends Model
@@ -86,25 +94,26 @@ class StructureVersionSection extends Model
     {
         return [
             'position' => 'integer',
+            'shows_title' => 'boolean',
             'is_collapsed_by_default' => 'boolean',
         ];
     }
 
     /**
-     * Whether this row is one the given user may reach through the given
-     * template.
+     * Whether this row is one the given user may reach through the given owner,
+     * which is a template or an activity type.
      *
-     * The rows are addressed by their own number in a URL, under the template
-     * they sit on, and neither half can be trusted on its own: the account has
-     * to match, and the row has to be on a version of the template the URL
+     * The rows are addressed by their own number in a URL, under the thing they
+     * sit on, and neither half can be trusted on its own: the account has to
+     * match, and the row has to be on a version of the structure the URL
      * actually names. Without the second half, somebody could put a field on
      * one of their templates while the URL said another.
      */
-    public function isReachableThrough(User $user, Template $template): bool
+    public function isReachableThrough(User $user, ActivityType|Template $owner): bool
     {
         return $this->account_id === $user->account_id
-            && $this->structureVersion->structure->owner_type === Template::class
-            && $this->structureVersion->structure->owner_id === $template->id;
+            && $this->structureVersion->structure->owner_type === $owner::class
+            && $this->structureVersion->structure->owner_id === $owner->id;
     }
 
     /**

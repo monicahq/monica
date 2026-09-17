@@ -7,11 +7,10 @@ namespace App\Http\Controllers\Api;
 use App\Actions\CreateActivityCategory;
 use App\Actions\DestroyActivityCategory;
 use App\Actions\UpdateActivityCategory;
-use App\Exceptions\CannotDeleteAnActivityCategoryInUse;
-use App\Exceptions\CannotDeleteASuppliedActivityCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ActivityCategoryResource;
 use App\Models\ActivityCategory;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -84,7 +83,7 @@ class ActivityCategoryController extends Controller
                 user: $request->user(),
                 activityCategory: $this->find($request, $activityCategory),
             )->execute();
-        } catch (CannotDeleteASuppliedActivityCategory|CannotDeleteAnActivityCategoryInUse $e) {
+        } catch (AuthorizationException $e) {
             throw ValidationException::withMessages(['activityCategory' => $e->getMessage()]);
         }
 

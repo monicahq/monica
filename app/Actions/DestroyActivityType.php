@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteASuppliedActivityType;
 use App\Jobs\LogUserAction;
 use App\Models\ActivityType;
 use App\Models\User;
@@ -40,9 +39,7 @@ class DestroyActivityType
             throw new ModelNotFoundException('This activity type is in another account.');
         }
 
-        if ($this->activityType->is_system) {
-            throw new CannotDeleteASuppliedActivityType('This activity type came with the account and stays.');
-        }
+        $this->user->authorize('delete', $this->activityType);
     }
 
     private function destroy(): void

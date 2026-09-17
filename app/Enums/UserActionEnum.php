@@ -77,7 +77,12 @@ enum UserActionEnum: string implements Translatable
     case ActivityCategoryActivated = 'activity_category_activated';
     case ActivityCategoryDeactivated = 'activity_category_deactivated';
     case ActivityCategoryDeletion = 'activity_category_deleted';
+    case ActivityTypesSeeded = 'activity_types_seeded';
     case ActivityTypeCreation = 'activity_type_created';
+    case ActivityTypeUpdate = 'activity_type_updated';
+    case ActivityTypePositionUpdate = 'activity_type_position_updated';
+    case ActivityTypeActivated = 'activity_type_activated';
+    case ActivityTypeDeactivated = 'activity_type_deactivated';
     case ActivityTypeDeletion = 'activity_type_deleted';
     case ActivityTypeFieldsPublished = 'activity_type_fields_published';
     case RelationshipTypesSeeded = 'relationship_types_seeded';
@@ -259,7 +264,12 @@ enum UserActionEnum: string implements Translatable
             self::ActivityCategoryActivated => 'Offered the activity category :name again',
             self::ActivityCategoryDeactivated => 'Stopped offering the activity category :name',
             self::ActivityCategoryDeletion => 'Deleted the activity category :name',
+            self::ActivityTypesSeeded => 'Set up the activity types the account starts with',
             self::ActivityTypeCreation => 'Created the activity type :name',
+            self::ActivityTypeUpdate => 'Changed the activity type :name',
+            self::ActivityTypePositionUpdate => 'Moved the activity type :name',
+            self::ActivityTypeActivated => 'Offered the activity type :name again',
+            self::ActivityTypeDeactivated => 'Stopped offering the activity type :name',
             self::ActivityTypeDeletion => 'Deleted the activity type :name',
             self::ActivityTypeFieldsPublished => 'Published version :version of the custom fields of the activity type :name',
             self::RelationshipTypesSeeded => 'Set up the relationship types the account starts with',

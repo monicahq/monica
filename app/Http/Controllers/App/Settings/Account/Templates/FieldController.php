@@ -30,13 +30,17 @@ class FieldController extends Controller
     {
         abort_unless($structureVersionSection->isReachableThrough($request->user(), $template), 404);
 
-        return view('app.settings.account.templates.field-type', [
-            'template' => $template,
+        return view('app.settings.account.field-type', [
             'row' => $structureVersionSection,
             'sectionName' => $structureVersionSection->title_override ?? $structureVersionSection->sectionVersion->section->name,
+            'backHref' => route('settings.templateBuilder.index', ['template' => $template, 'page' => $structureVersionSection->structureVersionPage->key]),
+            'backLabel' => __('Back to the template'),
+            'current' => 'templates',
+            'action' => route('settings.fields.create', [$template, $structureVersionSection]),
             'catalogue' => new FieldCatalogueViewModel,
             'valueLists' => ValueList::query()
                 ->where('account_id', $request->user()->account_id)
+                ->where('is_shared', true)
                 ->orderBy('position')
                 ->get(),
             'user' => $request->user(),
@@ -172,6 +176,7 @@ class FieldController extends Controller
 
         return ValueList::query()
             ->where('account_id', $request->user()->account_id)
+            ->where('is_shared', true)
             ->find($request->integer('value_list_id'));
     }
 

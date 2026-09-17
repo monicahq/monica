@@ -6,8 +6,10 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\CreateAccount;
 use App\Enums\UserActionEnum;
+use App\Jobs\CreateDefaultActivityTypes;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
+use App\Models\ActivityType;
 use App\Models\Field;
 use App\Models\Template;
 use App\Models\User;
@@ -158,6 +160,42 @@ class CreateAccountTest extends TestCase
             job: CreateDefaultTemplate::class,
             callback: fn (CreateDefaultTemplate $job): bool => $job->user->id === $user->id,
         );
+    }
+
+    #[Test]
+    public function it_asks_for_the_natures_an_activity_can_be_recorded_as(): void
+    {
+        Queue::fake();
+
+        $user = new CreateAccount(
+            firstName: 'Michael',
+            lastName: 'Scott',
+            email: 'michael.scott@dundermifflin.com',
+            password: 'thatswhatshesaid',
+        )->execute();
+
+        Queue::assertPushedOn(
+            queue: 'high',
+            job: CreateDefaultActivityTypes::class,
+            callback: fn (CreateDefaultActivityTypes $job): bool => $job->user->id === $user->id,
+        );
+    }
+
+    #[Test]
+    public function it_asks_for_the_activity_types_only_once_the_categories_they_are_filed_under_exist(): void
+    {
+        $user = new CreateAccount(
+            firstName: 'Michael',
+            lastName: 'Scott',
+            email: 'michael.scott@dundermifflin.com',
+            password: 'thatswhatshesaid',
+        )->execute();
+
+        $types = ActivityType::query()->where('account_id', $user->account_id)->get();
+
+        $this->assertCount(40, $types);
+        $this->assertTrue($types->every(fn (ActivityType $type): bool => $type->activity_category_id !== null));
+        $this->assertSame('Call', $types->firstWhere('key', 'call')->name);
     }
 
     #[Test]

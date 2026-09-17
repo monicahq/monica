@@ -128,17 +128,17 @@ class StructureVersion extends Model
 
     /**
      * Whether this version is one the given user may reach through the given
-     * template.
+     * owner, which is a template or an activity type.
      *
-     * A version is addressed under the template it belongs to, and neither half
-     * can be trusted on its own: the account has to match, and the version has
-     * to be one of the structure the template in the URL actually owns.
+     * A version is addressed under the thing it belongs to, and neither half can
+     * be trusted on its own: the account has to match, and the version has to be
+     * one of the structure the owner in the URL actually owns.
      */
-    public function isReachableThrough(User $user, Template $template): bool
+    public function isReachableThrough(User $user, ActivityType|Template $owner): bool
     {
         return $this->account_id === $user->account_id
-            && $this->structure->owner_type === Template::class
-            && $this->structure->owner_id === $template->id;
+            && $this->structure->owner_type === $owner::class
+            && $this->structure->owner_id === $owner->id;
     }
 
     /**
