@@ -11,6 +11,7 @@ use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\StripeCatalogue;
 use App\Models\ActivityCategory;
+use App\Models\ActivityType;
 use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\EmailSent;
@@ -973,6 +974,83 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('PUT', "/api/v1/activity-categories/{$category->uuid}/position", ['position' => 1]);
             }),
 
+            'activity-categories-types' => $this->asSomebody(function (User $user): TestResponse {
+                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+                ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+
+                return $this->json('GET', "/api/v1/activity-categories/{$category->uuid}/types");
+            }),
+
+            'activity-types-index' => $this->asSomebody(function (User $user): TestResponse {
+                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+                ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+
+                return $this->json('GET', '/api/v1/activity-types');
+            }),
+
+            'activity-types-show' => $this->asSomebody(function (User $user): TestResponse {
+                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+                $type = ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+
+                return $this->json('GET', "/api/v1/activity-types/{$type->uuid}");
+            }),
+
+            'activity-types-create' => $this->asSomebody(function (User $user): TestResponse {
+                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('POST', '/api/v1/activity-types', [
+                    'activity_category_id' => $category->uuid,
+                    'name' => 'Board game night',
+                ]);
+            }),
+
+            'activity-types-update' => $this->asSomebody(function (User $user): TestResponse {
+                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+                $type = ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+
+                return $this->json('PUT', "/api/v1/activity-types/{$type->uuid}", [
+                    'activity_category_id' => $category->uuid,
+                    'name' => 'Games evening',
+                ]);
+            }),
+
+            'activity-types-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+                $type = ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+
+                return $this->json('DELETE', "/api/v1/activity-types/{$type->uuid}");
+            }),
+
+            'activity-types-activation' => $this->asSomebody(function (User $user): TestResponse {
+                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+                $type = ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+
+                return $this->json('PUT', "/api/v1/activity-types/{$type->uuid}/activation", ['is_active' => false]);
+            }),
+
+            'activity-types-position' => $this->asSomebody(function (User $user): TestResponse {
+                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+                $type = ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id, 'position' => 2]);
+
+                return $this->json('PUT', "/api/v1/activity-types/{$type->uuid}/position", ['position' => 1]);
+            }),
+
+            'activity-types-fields' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->activityTypeWithAField($user);
+
+                return $this->json('GET', "/api/v1/activity-types/{$type->uuid}/fields");
+            }),
+
+            'activity-types-fields-update' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->activityTypeWithAField($user);
+
+                return $this->json('PUT', "/api/v1/activity-types/{$type->uuid}/fields", [
+                    'groups' => [
+                        ['name' => 'Where', 'fields' => [['label' => 'Venue', 'type' => 'text', 'is_required' => true]]],
+                    ],
+                ]);
+            }),
+
             'relationship-categories-index' => $this->asSomebody(function (User $user): TestResponse {
                 RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
 
@@ -1329,6 +1407,20 @@ class ApiDocsReturnFieldsTest extends TestCase
             ->where('account_id', $user->account_id)
             ->where('channel', $channel->value)
             ->firstOrFail();
+    }
+
+    private function activityTypeWithAField(User $user): ActivityType
+    {
+        $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+
+        $this->json('PUT', "/api/v1/activity-types/{$type->uuid}/fields", [
+            'groups' => [
+                ['name' => 'Where', 'fields' => [['label' => 'Venue', 'type' => 'text', 'is_required' => true]]],
+            ],
+        ]);
+
+        return $type;
     }
 
     private function asSomebody(callable $call): TestResponse

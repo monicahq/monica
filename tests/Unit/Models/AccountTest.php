@@ -7,6 +7,8 @@ namespace Tests\Unit\Models;
 use App\Enums\AccessKindEnum;
 use App\Enums\OfferKindEnum;
 use App\Models\Account;
+use App\Models\ActivityCategory;
+use App\Models\ActivityType;
 use App\Models\Contact;
 use App\Models\EmailSent;
 use App\Models\Log;
@@ -54,6 +56,21 @@ class AccountTest extends TestCase
 
         $this->assertTrue($account->vaults()->exists());
         $this->assertEquals('Schrute Farms', $account->vaults->first()->name);
+    }
+
+    #[Test]
+    public function it_has_many_activity_types(): void
+    {
+        $account = Account::factory()->create();
+        $category = ActivityCategory::factory()->create(['account_id' => $account->id]);
+        ActivityType::factory()->create([
+            'account_id' => $account->id,
+            'activity_category_id' => $category->id,
+            'name' => 'Dundies',
+        ]);
+
+        $this->assertTrue($account->activityTypes()->exists());
+        $this->assertEquals('Dundies', $account->activityTypes->first()->name);
     }
 
     #[Test]

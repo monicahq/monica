@@ -7,6 +7,7 @@ namespace Tests\Feature\Controllers\Api;
 use App\Actions\CreateAccount;
 use App\Enums\ActivityCategoryEnum;
 use App\Models\ActivityCategory;
+use App\Models\ActivityType;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -64,6 +65,22 @@ class ActivityCategoryControllerTest extends TestCase
         $response->assertJsonPath('data.0.attributes.is_system', true);
         $response->assertJsonPath('data.0.attributes.activity_type_count', 0);
         $response->assertJsonPath('data.7.attributes.name', __('Other'));
+    }
+
+    #[Test]
+    public function it_counts_the_types_filed_under_a_group(): void
+    {
+        $user = User::factory()->create();
+        $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+        ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+        ActivityType::factory()->inactive()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/activity-categories/{$category->uuid}");
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.activity_type_count', 2);
     }
 
     #[Test]

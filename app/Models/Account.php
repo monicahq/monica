@@ -244,6 +244,16 @@ class Account extends Model
     }
 
     /**
+     * Get every nature an activity may be recorded as, across the groups they are filed under.
+     *
+     * @return HasMany<ActivityType, $this>
+     */
+    public function activityTypes(): HasMany
+    {
+        return $this->hasMany(ActivityType::class);
+    }
+
+    /**
      * Get the display groups the relationship vocabulary is filed under.
      *
      * @return HasMany<RelationshipCategory, $this>

@@ -41,6 +41,26 @@ $otherCategory = [
     ],
 ];
 
+$typeOfCategory = [
+    'type' => 'activity_type',
+    'id' => 'c3f9a8d1-4e62-4b07-9a35-6d180b2fc74e',
+    'attributes' => [
+        'activity_category_id' => '5f8b3c21-9d07-4a64-8e12-7b0a4d6c3e95',
+        'name' => 'Call',
+        'description' => null,
+        'icon' => 'activity',
+        'colour' => null,
+        'position' => 1,
+        'is_system' => true,
+        'is_active' => true,
+        'created_at' => 1756252800,
+        'updated_at' => null,
+    ],
+    'links' => [
+        'self' => $base.'/activity-types/c3f9a8d1-4e62-4b07-9a35-6d180b2fc74e',
+    ],
+];
+
 $pageParams = [
     ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1'],
     ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many categories one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25'],
@@ -55,7 +75,7 @@ $categoryAttributes = [
     ['name' => 'position', 'type' => 'integer', 'description' => 'Where the category sits in the settings, the pickers and the journal filters, counting from 1. Retired categories are numbered along with the rest, so one switched back on finds the place it had.'],
     ['name' => 'is_system', 'type' => 'boolean', 'description' => 'Whether the product supplied the category with the account. It governs one thing and one thing only: a supplied category cannot be deleted. It may be renamed, moved and retired like any other.'],
     ['name' => 'is_active', 'type' => 'boolean', 'description' => 'Whether the category and the natures under it are offered when an activity is recorded. False removes the whole group from that choice and touches nothing already written.'],
-    ['name' => 'activity_type_count', 'type' => 'integer', 'description' => 'How many activity natures are filed under the category, retired ones counted. It is what decides whether the category may be deleted. Activity natures are not built yet, so it answers 0 on every category until they are.'],
+    ['name' => 'activity_type_count', 'type' => 'integer', 'description' => 'How many activity natures are filed under the category, retired ones counted. It is what decides whether the category may be deleted.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the category was added, as a count of seconds since 1970 rather than a written date.'],
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null if it has not changed since it was added.'],
 ];
@@ -95,12 +115,45 @@ return [
             'examplePath' => '/activity-categories/5f8b3c21-9d07-4a64-8e12-7b0a4d6c3e95',
             'description' => 'Retrieve one group: what it is called, where it sits, and how many natures it holds.',
             'body' => [
-                'The natures themselves are not in here, and cannot be yet: activity natures are still to be built. Until they are, every category answers a count of zero and nothing can be filed under one.',
+                'The natures themselves are not in here, only how many there are. Ask for the types of the category to read them.',
             ],
             'rateLimit' => 'Sixty requests per minute, per token.',
             'pathParams' => $identifier,
             'returns' => 'An activity category object. A category belonging to somebody else answers 404, which is also what a category that never existed answers, and what a deleted one answers.',
             'response' => ['data' => $category],
+        ],
+        [
+            'id' => 'activity-categories-types',
+            'returnFields' => ApiDocsFields::page('activity_type', 'nature', 'natures', [
+                ['name' => 'activity_category_id', 'type' => 'uuid', 'description' => 'The group the nature is filed under, which is the category you asked about.'],
+                ['name' => 'name', 'type' => 'string', 'description' => 'What the nature is called, in the language you ask for while the product still supplies the wording.'],
+                ['name' => 'description', 'type' => 'string', 'description' => 'A sentence saying what the nature covers, or null when nobody wrote one.'],
+                ['name' => 'icon', 'type' => 'string', 'description' => 'The glyph drawn beside the nature, or null.'],
+                ['name' => 'colour', 'type' => 'string', 'description' => 'The tint the nature is drawn in, or null.'],
+                ['name' => 'position', 'type' => 'integer', 'description' => 'Where the nature sits inside this group, counting from 1.'],
+                ['name' => 'is_system', 'type' => 'boolean', 'description' => 'Whether the product supplied the nature, which governs deletion and nothing else.'],
+                ['name' => 'is_active', 'type' => 'boolean', 'description' => 'Whether the nature is offered when an activity is recorded.'],
+                ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the nature was added, as a count of seconds since 1970.'],
+                ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null.'],
+            ]),
+            'title' => 'List the activity types of a category',
+            'label' => 'List the activity types of a category',
+            'method' => 'GET',
+            'path' => '/activity-categories/{activityCategory}/types',
+            'examplePath' => '/activity-categories/5f8b3c21-9d07-4a64-8e12-7b0a4d6c3e95/types',
+            'description' => 'List the natures filed under one group, in the order you arranged them.',
+            'body' => [
+                'This is the grouped reading the settings screen shows, one group at a time. Retired natures are listed with the rest, and so are the natures of a retired category, because the list says what is filed where rather than what is currently offered.',
+                'The natures are described exactly as the activity types endpoints describe them, so anything you read here can be changed there without asking for it again.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => $identifier,
+            'queryParams' => $pageParams,
+            'returns' => 'A page of activity type objects, and how many there are in all. A category belonging to somebody else answers 404 rather than an empty list.',
+            'response' => [
+                'data' => [$typeOfCategory],
+                'meta' => ['page' => 1, 'per_page' => 25, 'total' => 1],
+            ],
         ],
         [
             'id' => 'activity-categories-create',
@@ -154,7 +207,7 @@ return [
             'description' => 'Remove a group you added that holds nothing.',
             'body' => [
                 'Two categories cannot go. One the product supplied stays, because the wording it falls back to belongs to the product. One that still holds natures stays, and the answer says how many, because removing it would take them with it. Move them elsewhere first, or retire the category instead.',
-                'Activity natures are still to be built, so no category holds one yet and only the first refusal can happen today. The second is written and starts refusing the day that record lands.',
+                'Both refusals bite today, since natures are filed under categories from the moment an account is created.',
                 'A deletion is recoverable, so an accident is not the end of anything.',
             ],
             'rateLimit' => 'Sixty requests per minute, per token.',
@@ -175,7 +228,7 @@ return [
             'body' => [
                 'Retiring a category takes the whole group out of the choice offered when somebody records an activity. It is the answer wherever deletion is refused, and it works on a category the product supplied as readily as on your own.',
                 'Nothing already written is touched. Every activity keeps its nature and reads as it did, and the category keeps the place it had, so offering it again puts it back where it was rather than at the end.',
-                'Activity natures are still to be built, so nothing offers them yet and this setting has no visible effect today. It is recorded now so that the picker honours it the day it exists. Expect no observable change until then.',
+                'Retiring a group retires the choice of every nature under it, and offering it again brings them all back, each still holding whether it is offered in its own right.',
                 'Send the state you want rather than asking for a toggle, so sending the same value twice confirms it instead of inverting it.',
             ],
             'rateLimit' => 'Sixty requests per minute, per token.',
