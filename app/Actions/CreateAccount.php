@@ -9,15 +9,19 @@ use App\Enums\UserActionEnum;
 use App\Jobs\CreateDefaultActivityTypes;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
+use App\Jobs\SeedActivityCategories;
+use App\Jobs\SeedNotificationPreference;
+use App\Jobs\SeedRelationshipTypes;
+use App\Jobs\SeedValueLists;
 use App\Models\Account;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Create an account, the one user in it, the vault their contacts go in, the value lists the
- * fields of that vault pick from, and the vocabulary its relationships and its activities are
- * described with.
+ * Create an account, the one user in it and the vault their contacts go in, then ask an ordered
+ * chain of jobs for the rest of what the account starts with.
  */
 class CreateAccount
 {
@@ -42,16 +46,11 @@ class CreateAccount
             $this->createAccount();
             $this->createUser();
             $this->createFirstVault();
-            $this->createDefaultValueLists();
-            $this->createDefaultRelationshipTypes();
-            $this->createDefaultActivityCategories();
-            $this->createNotificationPreference();
         });
 
         event(new Registered($this->user));
 
-        $this->createDefaultTemplate();
-        $this->createDefaultActivityTypes();
+        $this->seedTheAccount();
         $this->log();
 
         return $this->user;
@@ -88,34 +87,16 @@ class CreateAccount
         )->execute();
     }
 
-    private function createDefaultValueLists(): void
+    private function seedTheAccount(): void
     {
-        new CreateDefaultValueLists(user: $this->user)->execute();
-    }
-
-    private function createDefaultActivityCategories(): void
-    {
-        new CreateDefaultActivityCategories(user: $this->user)->execute();
-    }
-
-    private function createDefaultRelationshipTypes(): void
-    {
-        new CreateDefaultRelationshipTypes(user: $this->user)->execute();
-    }
-
-    private function createNotificationPreference(): void
-    {
-        new CreateNotificationPreference(account: $this->account)->execute();
-    }
-
-    private function createDefaultTemplate(): void
-    {
-        CreateDefaultTemplate::dispatch(user: $this->user)->onQueue('high');
-    }
-
-    private function createDefaultActivityTypes(): void
-    {
-        CreateDefaultActivityTypes::dispatch(user: $this->user)->onQueue('high');
+        Bus::chain([
+            new SeedNotificationPreference(user: $this->user),
+            new SeedValueLists(user: $this->user),
+            new SeedActivityCategories(user: $this->user),
+            new CreateDefaultTemplate(user: $this->user),
+            new CreateDefaultActivityTypes(user: $this->user),
+            new SeedRelationshipTypes(user: $this->user),
+        ])->onQueue('high')->dispatch();
     }
 
     private function log(): void

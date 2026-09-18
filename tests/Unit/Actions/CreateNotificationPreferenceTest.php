@@ -77,4 +77,15 @@ class CreateNotificationPreferenceTest extends TestCase
 
         $this->assertSame('UTC', $preference->timezone);
     }
+    #[Test]
+    public function it_writes_nothing_when_the_account_already_has_the_row(): void
+    {
+        $account = Account::factory()->create();
+
+        new CreateNotificationPreference(account: $account)->execute();
+        new CreateNotificationPreference(account: $account)->execute();
+
+        $this->assertSame(1, NotificationPreference::query()->where('account_id', $account->id)->count());
+        $this->assertSame(4, NotificationChannel::query()->where('account_id', $account->id)->count());
+    }
 }

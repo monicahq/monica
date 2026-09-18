@@ -24,6 +24,10 @@ class CreateDefaultValueLists
     /** @return list<ValueList> */
     public function execute(): array
     {
+        if ($this->user->account->valueLists()->exists()) {
+            return [];
+        }
+
         $lists = DB::transaction(fn (): array => $this->create());
 
         $this->log();

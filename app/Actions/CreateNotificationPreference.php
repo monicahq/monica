@@ -22,6 +22,12 @@ class CreateNotificationPreference
 
     public function execute(): NotificationPreference
     {
+        $existing = NotificationPreference::query()->where('account_id', $this->account->id)->first();
+
+        if ($existing instanceof NotificationPreference) {
+            return $existing;
+        }
+
         $preference = NotificationPreference::query()->create([
             'account_id' => $this->account->id,
             'quiet_hours_are_enabled' => false,

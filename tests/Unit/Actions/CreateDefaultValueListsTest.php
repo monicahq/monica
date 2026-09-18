@@ -160,4 +160,16 @@ class CreateDefaultValueListsTest extends TestCase
         );
         Queue::assertPushed(LogUserAction::class, 1);
     }
+    #[Test]
+    public function it_writes_nothing_when_the_account_already_has_them(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new CreateDefaultValueLists(user: $user)->execute();
+        new CreateDefaultValueLists(user: $user)->execute();
+
+        $this->assertSame(count(ValueListEnum::cases()), ValueList::query()->where('account_id', $user->account_id)->count());
+    }
 }

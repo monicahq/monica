@@ -6,6 +6,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\CreateAccountFromProvider;
 use App\Enums\SsoProviderEnum;
+use App\Jobs\LogUserAction;
 use App\Models\User;
 use App\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -41,7 +42,7 @@ class CreateAccountFromProviderTest extends TestCase
     #[Test]
     public function it_gives_the_account_everything_registering_gives(): void
     {
-        Queue::fake();
+        Queue::fake(LogUserAction::class);
         Notification::fake();
 
         $user = $this->create();

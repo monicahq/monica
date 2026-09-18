@@ -27,6 +27,10 @@ class CreateDefaultActivityCategories
     /** @return list<ActivityCategory> */
     public function execute(): array
     {
+        if ($this->user->account->activityCategories()->exists()) {
+            return [];
+        }
+
         $categories = DB::transaction(fn (): array => $this->create());
 
         $this->log();

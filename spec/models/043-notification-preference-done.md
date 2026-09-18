@@ -36,7 +36,7 @@ updated_at                  datetime
 
 ## Rules
 
-- One row per account, created with the account so delivery never has to handle a missing row. Every account that existed before the feature was given one by migration, for the same reason.
+- One row per account, written by the first job in the chain a new account dispatches, so it lands a moment after the account rather than with it. It goes first in that chain precisely because delivery does not handle a missing row: the preferences endpoint asks for it with `firstOrFail` and answers 404 without it. Every account that existed before the feature was given one by migration, for the same reason.
 - **The defaults are in-app and email on, push off, quiet hours off, delivery immediate**, in the zone of the account's user. Quiet hours are off because guessing at somebody's sleeping hours and then silently holding their reminders is worse than telling them at the wrong time once.
 - **Quiet hours reach every channel, in-app included.** Section 10.4 says nothing may disturb and carves nothing out.
 - **The digest hour is never held by quiet hours.** It is an hour the account chose deliberately, and an implicit setting overruling an explicit one would move a summary somebody scheduled.

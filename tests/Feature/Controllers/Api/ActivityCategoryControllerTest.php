@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\Api;
 
 use App\Actions\CreateAccount;
 use App\Enums\ActivityCategoryEnum;
+use App\Jobs\LogUserAction;
 use App\Models\ActivityCategory;
 use App\Models\ActivityType;
 use App\Models\User;
@@ -40,7 +41,7 @@ class ActivityCategoryControllerTest extends TestCase
     #[Test]
     public function it_lists_the_eight_groups_a_new_account_is_given(): void
     {
-        Queue::fake();
+        Queue::fake(LogUserAction::class);
 
         $user = new CreateAccount(
             firstName: 'Michael',
@@ -63,7 +64,7 @@ class ActivityCategoryControllerTest extends TestCase
         $response->assertJsonPath('data.0.attributes.name', __('Relationships and family'));
         $response->assertJsonPath('data.0.attributes.position', 1);
         $response->assertJsonPath('data.0.attributes.is_system', true);
-        $response->assertJsonPath('data.0.attributes.activity_type_count', 0);
+        $response->assertJsonPath('data.0.attributes.activity_type_count', 9);
         $response->assertJsonPath('data.7.attributes.name', __('Other'));
     }
 

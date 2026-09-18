@@ -133,4 +133,15 @@ class CreateDefaultRelationshipTypesTest extends TestCase
 
         return $this->assignUserToAccount(user: User::factory()->make(), account: $account);
     }
+    #[Test]
+    public function it_writes_nothing_when_the_account_already_has_them(): void
+    {
+        $user = $this->michael();
+
+        new CreateDefaultRelationshipTypes(user: $user)->execute();
+        new CreateDefaultRelationshipTypes(user: $user)->execute();
+
+        $this->assertEquals(10, RelationshipType::query()->where('account_id', $user->account_id)->count());
+        $this->assertEquals(5, RelationshipCategory::query()->where('account_id', $user->account_id)->count());
+    }
 }

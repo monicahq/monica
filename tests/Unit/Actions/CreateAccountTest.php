@@ -9,6 +9,10 @@ use App\Enums\UserActionEnum;
 use App\Jobs\CreateDefaultActivityTypes;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
+use App\Jobs\SeedActivityCategories;
+use App\Jobs\SeedNotificationPreference;
+use App\Jobs\SeedRelationshipTypes;
+use App\Jobs\SeedValueLists;
 use App\Models\ActivityType;
 use App\Models\Field;
 use App\Models\Template;
@@ -108,7 +112,7 @@ class CreateAccountTest extends TestCase
     #[Test]
     public function it_gives_the_account_the_value_lists_it_starts_with(): void
     {
-        Queue::fake();
+        Queue::fake(LogUserAction::class);
 
         $user = new CreateAccount(
             firstName: 'Michael',
@@ -117,7 +121,7 @@ class CreateAccountTest extends TestCase
             password: 'thatswhatshesaid',
         )->execute();
 
-        $lists = $user->account->valueLists()->orderBy('position')->get();
+        $lists = $user->account->valueLists()->whereNotNull('key')->orderBy('position')->get();
 
         $this->assertEquals(
             [
@@ -144,7 +148,7 @@ class CreateAccountTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_for_the_template_the_account_writes_a_contact_down_with(): void
+    public function it_asks_for_the_rest_of_the_seeding_in_the_order_it_has_to_happen_in(): void
     {
         Queue::fake();
 
@@ -155,29 +159,18 @@ class CreateAccountTest extends TestCase
             password: 'thatswhatshesaid',
         )->execute();
 
-        Queue::assertPushedOn(
-            queue: 'high',
-            job: CreateDefaultTemplate::class,
-            callback: fn (CreateDefaultTemplate $job): bool => $job->user->id === $user->id,
-        );
-    }
-
-    #[Test]
-    public function it_asks_for_the_natures_an_activity_can_be_recorded_as(): void
-    {
-        Queue::fake();
-
-        $user = new CreateAccount(
-            firstName: 'Michael',
-            lastName: 'Scott',
-            email: 'michael.scott@dundermifflin.com',
-            password: 'thatswhatshesaid',
-        )->execute();
+        Queue::assertPushedWithChain(SeedNotificationPreference::class, [
+            SeedValueLists::class,
+            SeedActivityCategories::class,
+            CreateDefaultTemplate::class,
+            CreateDefaultActivityTypes::class,
+            SeedRelationshipTypes::class,
+        ]);
 
         Queue::assertPushedOn(
             queue: 'high',
-            job: CreateDefaultActivityTypes::class,
-            callback: fn (CreateDefaultActivityTypes $job): bool => $job->user->id === $user->id,
+            job: SeedNotificationPreference::class,
+            callback: fn (SeedNotificationPreference $job): bool => $job->user->id === $user->id,
         );
     }
 
@@ -276,7 +269,7 @@ class CreateAccountTest extends TestCase
     #[Test]
     public function it_seeds_the_same_account_whichever_credential_it_was_created_with(): void
     {
-        Queue::fake();
+        Queue::fake(LogUserAction::class);
 
         $withPasskey = new CreateAccount(
             firstName: 'Michael',
@@ -291,7 +284,7 @@ class CreateAccountTest extends TestCase
     #[Test]
     public function it_gives_the_account_the_vocabulary_its_relationships_are_written_in(): void
     {
-        Queue::fake();
+        Queue::fake(LogUserAction::class);
 
         $user = new CreateAccount(
             firstName: 'Michael',
@@ -311,7 +304,7 @@ class CreateAccountTest extends TestCase
     #[Test]
     public function it_gives_the_account_the_groups_its_activities_are_filed_under(): void
     {
-        Queue::fake();
+        Queue::fake(LogUserAction::class);
 
         $user = new CreateAccount(
             firstName: 'Michael',

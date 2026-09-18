@@ -29,6 +29,10 @@ class CreateDefaultRelationshipTypes
     /** @return list<RelationshipType> */
     public function execute(): array
     {
+        if ($this->user->account->relationshipCategories()->exists()) {
+            return [];
+        }
+
         $types = DB::transaction(fn (): array => $this->create());
 
         $this->log();

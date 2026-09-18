@@ -103,4 +103,16 @@ class CreateDefaultActivityCategoriesTest extends TestCase
             return $job->action === UserActionEnum::ActivityCategoriesSeeded;
         });
     }
+    #[Test]
+    public function it_writes_nothing_when_the_account_already_has_them(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new CreateDefaultActivityCategories(user: $user)->execute();
+        new CreateDefaultActivityCategories(user: $user)->execute();
+
+        $this->assertEquals(8, ActivityCategory::query()->where('account_id', $user->account_id)->count());
+    }
 }
