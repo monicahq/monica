@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Dav;
 
+use App\Actions\ExportContactVCard;
 use App\Enums\FieldTypeEnum;
 use App\Models\Contact;
 use App\Models\FieldValue;
@@ -339,6 +340,85 @@ class AddressBookTest extends TestCase
             'source' => 'dav',
             'source_detail' => 'Dwight’s phone',
         ]);
+    }
+
+    #[Test]
+    public function a_card_coming_back_under_an_address_it_never_had_updates_the_contact_it_names(): void
+    {
+        $vault = $this->vault();
+        $version = Structure::asTheDefaultOf($this->user, $vault, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Mobile'],
+        ]);
+        $contact = Contact::factory()->create($this->inVault($vault, [
+            'first_name' => 'Dwight',
+            'last_name' => 'Schrute',
+            'structure_version_id' => $version->id,
+        ]));
+
+        $returning = "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:{$contact->uuid}\r\nN:Schrute;Dwight;Kurt;;\r\nFN:Dwight Kurt Schrute\r\nEND:VCARD\r\n";
+
+        $this->dav('PUT', $this->book($vault).'a-name-the-phone-chose.vcf', body: $returning, contentType: 'text/vcard')
+            ->assertStatus(201);
+
+        $this->assertSame(1, Contact::query()->where('vault_id', $vault->id)->count());
+        $this->assertSame('Kurt', $contact->refresh()->middle_name);
+    }
+
+    #[Test]
+    public function a_card_naming_a_contact_of_another_vault_makes_a_new_one_and_leaves_that_contact_alone(): void
+    {
+        $scranton = $this->vault();
+        $utica = $this->vault('Utica');
+        Structure::asTheDefaultOf($this->user, $scranton, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Mobile'],
+        ]);
+        $elsewhere = Contact::factory()->create($this->inVault($utica, ['first_name' => 'Dwight', 'last_name' => 'Schrute']));
+
+        $returning = "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:{$elsewhere->uuid}\r\nN:Schrute;Dwight;Kurt;;\r\nFN:Dwight Kurt Schrute\r\nEND:VCARD\r\n";
+
+        $this->dav('PUT', $this->book($scranton).'a-name-the-phone-chose.vcf', body: $returning, contentType: 'text/vcard')
+            ->assertStatus(201);
+
+        $this->assertSame(1, Contact::query()->where('vault_id', $scranton->id)->count());
+        $this->assertSame(1, Contact::query()->where('vault_id', $utica->id)->count());
+        $this->assertNull($elsewhere->refresh()->middle_name);
+    }
+
+    #[Test]
+    public function a_card_this_very_product_exported_comes_home_to_the_contact_it_came_from(): void
+    {
+        $vault = $this->vault();
+        $version = Structure::asTheDefaultOf($this->user, $vault, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Mobile'],
+        ]);
+        $contact = Contact::factory()->create($this->inVault($vault, [
+            'first_name' => 'Dwight',
+            'last_name' => 'Schrute',
+            'structure_version_id' => $version->id,
+        ]));
+
+        $exported = new ExportContactVCard(user: $this->user, contact: $contact, reachesSensitiveFields: true)->execute();
+
+        $this->dav('PUT', $this->book($vault).'whatever-the-phone-called-it.vcf', body: $exported, contentType: 'text/vcard')
+            ->assertStatus(201);
+
+        $this->assertSame(1, Contact::query()->where('vault_id', $vault->id)->count());
+        $this->assertSame('Dwight', $contact->refresh()->first_name);
+        $this->assertSame('Schrute', $contact->last_name);
+    }
+
+    #[Test]
+    public function a_card_naming_nobody_in_the_vault_still_makes_a_contact(): void
+    {
+        $vault = $this->vault();
+        Structure::asTheDefaultOf($this->user, $vault, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Mobile'],
+        ]);
+
+        $this->dav('PUT', $this->book($vault).'dwight.vcf', body: $this->card(), contentType: 'text/vcard')
+            ->assertStatus(201);
+
+        $this->assertSame(1, Contact::query()->where('vault_id', $vault->id)->count());
     }
 
     #[Test]

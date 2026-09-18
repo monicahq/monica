@@ -666,6 +666,26 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_the_card_and_the_merge_behind_one_menu(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee('x-data="{ menuOpen: false }"', escape: false)
+            ->assertSee('@click="menuOpen = ! menuOpen"', escape: false)
+            ->assertSee('aria-haspopup="menu"', escape: false)
+            ->assertSee('role="menu"', escape: false)
+            ->assertSee('role="menuitem"', escape: false)
+            ->assertSee('Export as vCard')
+            ->assertSee(route('contacts.vcard.show', ['vault' => $vault, 'contact' => $michael]), false)
+            ->assertSee('Merge')
+            ->assertSee(route('contacts.merge.new', ['vault' => $vault, 'contact' => $michael]), false);
+    }
+
+    #[Test]
     public function the_record_offers_the_way_back_to_the_list_in_the_breadcrumb_and_the_sidebar_only(): void
     {
         $user = User::factory()->create();

@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\ContactMeController;
 use App\Http\Controllers\Api\ContactMergeController;
 use App\Http\Controllers\Api\ContactNameController;
 use App\Http\Controllers\Api\ContactStructureVersionController;
+use App\Http\Controllers\Api\ContactVCardController;
 use App\Http\Controllers\Api\EmailSentController;
 use App\Http\Controllers\Api\EntityTypeActivationController;
 use App\Http\Controllers\Api\EntityTypeController;
@@ -211,6 +212,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::get('vaults/{vault}/contacts', [ContactController::class, 'index'])->name('contacts');
         Route::get('vaults/{vault}/contacts/me', [ContactMeController::class, 'show'])->name('contacts.me');
         Route::get('vaults/{vault}/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
+        Route::get('vaults/{vault}/contacts/{contact}/vcard', [ContactVCardController::class, 'show'])->name('contacts.vcard.show');
         Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
         Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 

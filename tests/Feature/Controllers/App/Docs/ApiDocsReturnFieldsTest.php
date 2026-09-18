@@ -84,6 +84,10 @@ class ApiDocsReturnFieldsTest extends TestCase
         $problems = [];
 
         foreach ($this->endpoints() as $section) {
+            if (! $section->answersInJson()) {
+                continue;
+            }
+
             $problems = [...$problems, ...$this->check($section)];
         }
 
@@ -98,6 +102,14 @@ class ApiDocsReturnFieldsTest extends TestCase
 
         foreach ($this->endpoints() as $section) {
             $answersWithNothing = $section->responseStatus === 204;
+
+            if (! $section->answersInJson()) {
+                if ($section->hasReturnFields()) {
+                    $unexpected[] = $section->id;
+                }
+
+                continue;
+            }
 
             if (! $answersWithNothing && ! $section->hasReturnFields()) {
                 $missing[] = $section->id;

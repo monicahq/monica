@@ -103,6 +103,7 @@ use App\Http\Controllers\App\Vaults\ContactRelationshipController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\ContactShareLinkController;
 use App\Http\Controllers\App\Vaults\ContactStructureVersionController;
+use App\Http\Controllers\App\Vaults\ContactVCardController;
 use App\Http\Controllers\App\Vaults\FileController;
 use App\Http\Controllers\App\Vaults\ReminderController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceDismissalController;
@@ -251,6 +252,9 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::delete('vaults/{vault}/contacts/{contact}/relationships/{relationship}', [ContactRelationshipController::class, 'destroy'])
         ->name('contacts.relationships.destroy');
+
+    Route::get('vaults/{vault}/contacts/{contact}/vcard', [ContactVCardController::class, 'show'])
+        ->name('contacts.vcard.show');
 
     Route::get('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'show'])
         ->missing(fn (Request $request): Response => new AbsorbedContactController()->show($request))

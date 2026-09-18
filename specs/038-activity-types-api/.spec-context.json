@@ -3,7 +3,7 @@
   "specName": "Activity type and category endpoints",
   "branch": "2026-api",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -288,7 +288,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-17T12:07:01.168Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T08:36:45.116Z"
     }
   ],
-  "currentTask": "T032"
+  "currentTask": "T032",
+  "telemetryInstanceId": "ee2bc355-7b31-4560-844c-bf883d42f6e8"
 }

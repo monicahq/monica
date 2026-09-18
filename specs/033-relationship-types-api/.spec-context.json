@@ -3,7 +3,7 @@
   "specName": "Relationship category and type endpoints",
   "branch": "2026-09-13-api",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -352,6 +352,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-13T21:14:28.531Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T08:36:45.116Z"
     }
   ],
   "currentTask": "T040",

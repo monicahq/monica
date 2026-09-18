@@ -336,13 +336,21 @@ class BuildOpenApiDocument
             return $answer;
         }
 
+        $mediaType = $section['responseMediaType'] ?? 'application/json';
+
+        if ($mediaType !== 'application/json') {
+            $answer['content'] = [$mediaType => ['schema' => ['type' => 'string']]];
+
+            return $answer;
+        }
+
         $content = ['schema' => $this->schemaFromFields($section['returnFields'] ?? [])];
 
         if (($section['response'] ?? null) !== null) {
             $content['example'] = $section['response'];
         }
 
-        $answer['content'] = ['application/json' => $content];
+        $answer['content'] = [$mediaType => $content];
 
         return $answer;
     }

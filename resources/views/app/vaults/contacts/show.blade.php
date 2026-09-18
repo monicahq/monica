@@ -7,6 +7,9 @@
 
   $inert = 'inline-flex h-8.5 cursor-default items-center gap-2 rounded-md border border-hairline px-3.25 '
     .'font-sans text-[13.5px] font-semibold text-placeholder';
+
+  $menuItem = 'flex w-full cursor-pointer items-center gap-2.5 rounded-xs px-2.5 py-2 text-left font-sans '
+    .'text-sm text-ink no-underline transition-colors hover:bg-hover focus-ring-inset';
 @endphp
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:breadcrumb>
@@ -88,10 +91,17 @@
         {{ __('Edit contact') }}
       </x-button.secondary>
 
-      <x-button.secondary :href="$viewModel->mergeUrl()" data-turbo="true" size="small">
-        <x-icon name="contact" :size="15" :stroke-width="1.6" />
-        {{ __('Merge') }}
-      </x-button.secondary>
+      <x-actions-menu :label="__('More actions for :name', ['name' => $contact->name])">
+        <a href="{{ $viewModel->mergeUrl() }}" role="menuitem" data-turbo="true" class="{{ $menuItem }}">
+          <x-icon name="contact" :size="15" :stroke-width="1.6" />
+          {{ __('Merge') }}
+        </a>
+
+        <a href="{{ $viewModel->vCardUrl() }}" role="menuitem" class="{{ $menuItem }}">
+          <x-icon name="file" :size="15" :stroke-width="1.6" />
+          {{ __('Export as vCard') }}
+        </a>
+      </x-actions-menu>
     </div>
   </header>
 

@@ -3,7 +3,7 @@
   "specName": "Manage relationships",
   "branch": "2026-09-13-manage-relationships",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -432,7 +432,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-13T18:50:19.365Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T08:36:45.116Z"
     }
   ],
-  "currentTask": "T050"
+  "currentTask": "T050",
+  "telemetryInstanceId": "4d409e93-c24d-4ed1-ba6c-b3d8b757ecbe"
 }

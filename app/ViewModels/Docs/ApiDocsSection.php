@@ -39,6 +39,8 @@ class ApiDocsSection
 
     public readonly int $responseStatus;
 
+    public readonly string $responseMediaType;
+
     /** @var array<string, mixed>|null */
     public readonly ?array $response;
 
@@ -60,6 +62,7 @@ class ApiDocsSection
         $this->rateLimit = $section['rateLimit'];
         $this->returns = $section['returns'] ?? null;
         $this->responseStatus = $section['responseStatus'] ?? 200;
+        $this->responseMediaType = $section['responseMediaType'] ?? 'application/json';
         $this->response = $section['response'] ?? null;
         $this->overriddenBody = $section['exampleBody'] ?? null;
         $this->returnFields = $section['returnFields'] ?? [];
@@ -76,6 +79,15 @@ class ApiDocsSection
     public function hasReturnFields(): bool
     {
         return $this->returnFields !== [];
+    }
+
+    /**
+     * Whether the endpoint answers in JSON. One does not, handing the caller a vCard, and the
+     * checks that read an answer field by field have nothing to read in that case.
+     */
+    public function answersInJson(): bool
+    {
+        return $this->responseMediaType === 'application/json';
     }
 
     /**

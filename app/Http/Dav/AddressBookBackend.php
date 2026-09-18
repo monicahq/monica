@@ -103,15 +103,38 @@ class AddressBookBackend implements BackendInterface, SyncSupport
     #[Override]
     public function createCard($addressBookId, $cardUri, $cardData): ?string
     {
+        $vault = $this->vault($addressBookId);
+
         new ImportVCard(
             user: $this->user,
-            vault: $this->vault($addressBookId),
+            vault: $vault,
             card: (string) $cardData,
             reachesSensitiveFields: $this->reachesSensitiveFields,
+            contact: $this->contactNamedBy($vault, (string) $cardData),
             davUri: (string) $cardUri,
         )->execute();
 
         return null;
+    }
+
+    /**
+     * A card exported from here and loaded onto a device comes back filed under a name the device
+     * chose, which no contact answers to, so it would otherwise arrive as a second person. The
+     * identifier it carries says who it is. The vault is part of the query rather than a check
+     * afterwards, so an identifier held in another vault is never read, let alone written.
+     */
+    private function contactNamedBy(Vault $vault, string $cardData): ?Contact
+    {
+        $uid = (string) (new VCardReader($cardData)->first('UID')?->getValue() ?? '');
+
+        if ($uid === '') {
+            return null;
+        }
+
+        return Contact::query()
+            ->where('vault_id', $vault->id)
+            ->where('uuid', $uid)
+            ->first();
     }
 
     #[Override]

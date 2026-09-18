@@ -3,7 +3,7 @@
   "specName": "Add a relationship",
   "branch": "2026-09-13-spec-relations",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -392,7 +392,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-13T14:10:14.480Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T08:36:45.116Z"
     }
   ],
-  "currentTask": "T045"
+  "currentTask": "T045",
+  "telemetryInstanceId": "12dac016-32fd-49cc-99f4-241ec9f51758"
 }

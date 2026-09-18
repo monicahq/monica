@@ -410,4 +410,27 @@ class BuildOpenApiDocumentTest extends TestCase
 
         $this->assertSame('vault', $example['data']['type']);
     }
+
+    #[Test]
+    public function it_says_when_an_endpoint_answers_with_something_other_than_json(): void
+    {
+        $document = new BuildOpenApiDocument()->execute();
+
+        $answer = $document['paths']['/vaults/{vault}/contacts/{contact}/vcard']['get']['responses'][200];
+
+        $this->assertArrayHasKey('text/vcard', $answer['content']);
+        $this->assertArrayNotHasKey('application/json', $answer['content']);
+        $this->assertSame('string', $answer['content']['text/vcard']['schema']['type']);
+    }
+
+    #[Test]
+    public function it_still_says_json_for_an_endpoint_that_declares_no_media_type(): void
+    {
+        $document = new BuildOpenApiDocument()->execute();
+
+        $answer = $document['paths']['/vaults/{vault}/contacts/{contact}']['get']['responses'][200];
+
+        $this->assertArrayHasKey('application/json', $answer['content']);
+        $this->assertArrayNotHasKey('text/vcard', $answer['content']);
+    }
 }

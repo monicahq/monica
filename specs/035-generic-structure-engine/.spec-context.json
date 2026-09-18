@@ -3,7 +3,7 @@
   "specName": "Generic structure engine",
   "branch": "2026-09-13-structure",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -504,7 +504,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-14T11:34:46.136Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T08:36:45.116Z"
     }
   ],
-  "currentTask": "T060"
+  "currentTask": "T060",
+  "telemetryInstanceId": "59a637d7-5e8d-490a-990a-52ecf71417ae"
 }

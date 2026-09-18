@@ -149,6 +149,11 @@ class ContactViewModel
         return route('contacts.merge.new', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
+    public function vCardUrl(): string
+    {
+        return route('contacts.vcard.show', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
     public function undoableMerge(): ?ContactMerge
     {
         return once(fn (): ?ContactMerge => ContactMerge::query()

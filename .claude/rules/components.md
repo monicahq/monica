@@ -22,6 +22,7 @@ than like a component:
 | `x-detail-list` + `x-detail-list.row` | A run of labelled values, one to a line |
 | `x-sortable-row` + `x-position-form` | A row somebody reorders by dragging, and the form recording where it landed |
 | `x-delete-action` | A quiet button that destroys something, the card that asks first, and the warning that it is final |
+| `x-actions-menu` | The button that unfolds the rest of what may be done here, and the menu it unfolds |
 | `x-copy-button` | The button that puts a value on the clipboard and says whether it got there |
 | `x-code-value` | A value meant to be copied exactly, in a fixed-width face |
 | `x-caption` | The small word in capitals that names what sits under it |
@@ -42,12 +43,28 @@ inset variant of it, nor `transition-opacity [&[aria-busy]]:opacity-60`.
 The long forms were spelled out 68 times across 46 files. At that length a missing piece is invisible
 in review, which is the whole argument for giving the recipe a name.
 
-## Three files is the bar for a new component
+## Three files is the bar, unless the markup carries a contract
 Extract when the same markup stands in **three or more files**. Below that, leave it where it is.
 Twice in one file is not a component, it is two lines, and `CLAUDE.md` already says not to hide those
 behind a name.
 
 Count files, not occurrences. Eight copies inside one screen are that screen's business.
+
+**One exception.** Markup carrying a behavioural or accessibility contract is extracted at the
+**second** file, not the third. A contract means the parts that must all be present and must agree:
+the ARIA naming a widget and reporting its state, the keyboard route out of it, the dismissal, and
+the Alpine state the three of them share. A tint or a gutter copied badly is visible in review.
+`aria-expanded` copied without its `@keydown.escape.window` is invisible in review and broken for
+somebody using a screen reader, and the constitution makes WCAG 2.2 AA a delivery condition rather
+than an audit at the end.
+
+The actions menu is the case that fixed this. Its trigger and its floating panel stood in two files,
+thirty lines of state and wiring between them. Counting files said to leave it, which meant waiting
+for a third screen before protecting the part most likely to rot. It is `x-actions-menu` now.
+
+The exception covers the contract and stops there. The items inside that menu are links on one screen
+and forms and modal triggers on the other, sharing a class string and nothing else, so they stayed
+where they were and the three file bar still governs them.
 
 ## Count the markup, not the idea
 Two blocks that do the same job are not the same markup, and the difference is what decides whether a
