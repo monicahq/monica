@@ -2,7 +2,7 @@
 """Detect code that drifted from its Companion living spec.
 
 For each configured capability, report the source files that changed SINCE the
-capability's living spec (`capabilities/<name>/spec.md`) was last committed, and
+capability's living spec (`capabilities/<name>/<name>.spec.md`) was last committed, and
 classify each:
 
   - `tracked`   — the file appears in a `specs/*/.spec-context.json` recorded
@@ -44,6 +44,7 @@ import argparse
 import importlib.util
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -199,6 +200,51 @@ def _tracked_files_since(root: str, commit: str, working: bool = False) -> set[s
     return out
 
 
+def _vouched_files_since(root: str, commit: str, cap_name: str, working: bool = False) -> set[str]:
+    """Files changed by a run that accounted for `cap_name` — folded into it, or
+    recorded an explicit skip for it — since the spec's last commit. Either is
+    the run saying the spec still describes the code, so those files are not
+    drift. A file changed by hand, with no run behind it, still is."""
+    out: set[str] = set()
+    rels = _changed_since(root, commit, "specs/", working=working)
+    if working:
+        rels += _untracked(root, "specs/")
+    for rel in rels:
+        rel = rsp._posix(rel)
+        if not rel.endswith("/.spec-context.json"):
+            continue
+        try:
+            with open(os.path.join(root, rel), encoding="utf-8") as fh:
+                data = json.load(fh)
+        except (OSError, ValueError):
+            continue
+        living = data.get("livingSpecs") if isinstance(data, dict) else None
+        if not isinstance(living, dict):
+            continue
+        names = {n for n in (living.get("synced") or []) if isinstance(n, str)}
+        for s_ in living.get("skipped") or []:
+            n = s_ if isinstance(s_, str) else (s_.get("name") if isinstance(s_, dict) else None)
+            if isinstance(n, str):
+                names.add(n)
+        if cap_name in names:
+            out |= _read_context_files(os.path.join(root, rel))
+    return out
+
+
+def _is_any_spec_doc(fp: str, spec_dirs: set) -> bool:
+    """True for any registered capability's living-spec documents, not only this one's.
+
+    Colocated capabilities sit beside the code they describe, so one capability's `match`
+    routinely claims the directory its *siblings* keep their specs in. Without this, editing
+    a neighbour's spec is reported as drifted code here — which is how a directory holding
+    six colocated capabilities flags all six every time any one of them is written.
+    """
+    if not any(fp.endswith(t) for t in rsp.RESERVED_TIERS) and not fp.endswith(".spec.md"):
+        return False
+    file_dir = fp.rsplit("/", 1)[0] if "/" in fp else ""
+    return file_dir in spec_dirs
+
+
 def _is_own_spec_doc(fp: str, spec_posix: str) -> bool:
     """True for the capability's own living-spec documents — the spec itself or a
     reserved-tier sibling (`.arch.md` / `.coverage.md`) in the spec's directory.
@@ -228,15 +274,128 @@ def _exempt(file: str, exempt_globs: list[str]) -> bool:
     )
 
 
-def compute_drift(root: str, living: dict, working: bool = False) -> dict:
+def compute_drift(root: str, living: dict, working: bool = False,
+                  since: str | None = None) -> dict:
     """The drift result object. Inert (empty) when living specs are disabled.
     `working` widens each changed set to the working tree (uncommitted +
-    untracked); the default path issues exactly the same git commands as before."""
+    untracked); the default path issues exactly the same git commands as before.
+
+    Every evaluation records its inputs and its verdict to the run self-trace, so
+    a "drift warning on every open" can be compared against what the computation
+    actually said last time instead of relying on memory."""
+    import time as _time
+
+    _started = _time.monotonic()
+    try:
+        result = _compute_drift(root, living, working, since)
+    except Exception as exc:  # noqa: BLE001
+        _trace_drift(root, living, working, None, exc,
+                     int((_time.monotonic() - _started) * 1000))
+        raise
+    _trace_drift(root, living, working, result, None,
+                 int((_time.monotonic() - _started) * 1000))
+    return result
+
+
+def _trace_drift(root: str, living: dict, working: bool, result, exc, ms: int) -> None:
+    """One trace line per drift evaluation. Never raises."""
+    try:
+        import sys as _sys
+        from pathlib import Path as _Path
+
+        _sys.path.insert(0, str(_Path(__file__).resolve().parent))
+        import run_trace
+
+        if result is None:
+            reason = f"{type(exc).__name__}: {exc}".strip()
+            run_trace.record("drift", "drift-compute", False, ms=ms,
+                             feature_dir=None, reason=reason,
+                             read=len(living.get("capabilities") or []))
+            return
+        drifted = [c["name"] for c in result.get("capabilities", []) if not c.get("inSync")]
+        run_trace.record(
+            "drift", "drift-compute", True, ms=ms, feature_dir=None,
+            spec=None,
+            files=sorted({d["file"] for c in result.get("capabilities", [])
+                          for d in (c.get("drifted") or [])}),
+            read=len(living.get("capabilities") or []),
+        )
+        _record_drift_verdict(root, {
+            "working": working,
+            "checked": result.get("checked", 0),
+            "drifted": drifted,
+            "skipped": [s.get("name") for s in result.get("skipped", [])],
+        })
+    except Exception:  # noqa: BLE001 — tracing never breaks the evaluation
+        pass
+
+
+def _record_drift_verdict(root: str, verdict: dict) -> None:
+    """Append the verdict itself, so two evaluations can be diffed later."""
+    try:
+        import sys as _sys
+        from pathlib import Path as _Path
+
+        _sys.path.insert(0, str(_Path(__file__).resolve().parent))
+        import run_trace
+        from spec_context import _now_iso
+
+        target = _Path(root) / run_trace.UNATTRIBUTED_DIR
+        if not target.is_dir():
+            return
+        run_trace._ensure_ignored(target)
+        line = json.dumps({"at": _now_iso(), "tool": "drift", "verdict": verdict},
+                          ensure_ascii=False, separators=(",", ":")) + "\n"
+        with (target / run_trace.TRACE_NAME).open("a", encoding="utf-8") as fh:
+            fh.write(line)
+    except Exception:  # noqa: BLE001
+        pass
+
+
+def _marker_globs(root: str, living: dict) -> dict[str, list[str]]:
+    """Every `touches` glob in each capability's spec, by capability name."""
+    out: dict[str, list[str]] = {}
+    for cap in living.get("capabilities") or []:
+        spec = cap.get("spec")
+        if not spec:
+            continue
+        try:
+            with open(os.path.join(root, spec), encoding="utf-8") as fh:
+                slices = rsp.requirement_slices(fh.read())
+        except (OSError, UnicodeDecodeError):
+            continue
+        out[cap["name"]] = [g for s in slices for g in (s.get("touches") or [])]
+    return out
+
+
+def _named_elsewhere(fp: str, cap_name: str, markers: dict[str, list[str]]) -> bool:
+    """A requirement in another capability names this file, and none here does.
+
+    Sibling capabilities routinely share one broad glob, so a change one of them
+    describes would flag every other. The requirement that names the file is the
+    claim; a glob with no requirement behind it yields to it.
+    """
+    if any(rsp._glob_matches(g, fp) for g in markers.get(cap_name, [])):
+        return False
+    return any(rsp._glob_matches(g, fp)
+               for name, globs in markers.items() if name != cap_name for g in globs)
+
+
+def _compute_drift(root: str, living: dict, working: bool = False,
+                   since: str | None = None) -> dict:
     if not living["enabled"]:
         return {"enabled": False, "working": working, "checked": 0,
                 "capabilities": [], "skipped": []}
 
     exempt_globs = living.get("exempt") or []
+    # Every directory a registered spec lives in. A colocated capability's globs claim the
+    # directory its siblings keep their specs in, and a spec is not code that drifts.
+    spec_dirs = set()
+    for _c in living.get("capabilities") or []:
+        _s = _c.get("spec")
+        if _s:
+            _sp = rsp._posix(_s)
+            spec_dirs.add(_sp.rsplit("/", 1)[0] if "/" in _sp else "")
     git_ok = _is_git_repo(root)
     boundaries = _shallow_boundaries(root) if git_ok else frozenset()
     graft_state_unknown = boundaries is None
@@ -244,6 +403,7 @@ def compute_drift(root: str, living: dict, working: bool = False) -> dict:
     untracked = _untracked(root) if (working and git_ok) else []
     caps_out: list[dict] = []
     skipped: list[dict] = []
+    markers = _marker_globs(root, living)
 
     for cap in living["capabilities"]:
         spec = cap.get("spec")
@@ -258,6 +418,14 @@ def compute_drift(root: str, living: dict, working: bool = False) -> dict:
             skipped.append({"name": cap["name"], "reason": SKIP_UNREADABLE})
             continue
         state, commit = _spec_commit(root, spec)
+        if since:
+            # Branch-scoped: measure from where this work started rather than from each
+            # spec's own last commit. Whole-repo drift only ever gets read once it is a
+            # backlog; this answers the question while the change is still in hand — which
+            # capabilities did I touch, and did I fold any of them.
+            merge_base = _git(root, ["merge-base", since, "HEAD"])[1].strip()
+            if merge_base:
+                state, commit = "ok", merge_base
         if state != "ok":
             unreadable = state == "unreadable" and has_commits
             reason = SKIP_UNREADABLE if unreadable else SKIP_UNCOMMITTED
@@ -269,25 +437,35 @@ def compute_drift(root: str, living: dict, working: bool = False) -> dict:
 
         spec_posix = rsp._posix(spec)
         tracked = _tracked_files_since(root, commit, working=working)
+        vouched = _vouched_files_since(root, commit, cap["name"], working=working)
         changed = _changed_since(root, commit, working=working)
         if working:
             changed += untracked
         drifted = []
+        folded_here = False
         seen: set[str] = set()
         for f in changed:
             fp = rsp._posix(f)
             if fp in seen:
                 continue
             seen.add(fp)
-            if _is_own_spec_doc(fp, spec_posix):
+            if _is_own_spec_doc(fp, spec_posix) or _is_any_spec_doc(fp, spec_dirs):
+                folded_here = folded_here or _is_own_spec_doc(fp, spec_posix)
                 continue
             if not rsp.matches(cap, fp):
                 continue
             if _exempt(fp, exempt_globs):
                 continue
+            if fp in vouched:
+                continue
+            if _named_elsewhere(fp, cap["name"], markers):
+                continue
             severity = "tracked" if fp in tracked else "unspeced"
             drifted.append({"file": fp, "severity": severity})
         drifted.sort(key=lambda d: (d["severity"], d["file"]))
+        if since and folded_here:
+            # The spec was written on this branch, so its code changing is the fold, not drift.
+            drifted = []
         caps_out.append({
             "name": cap["name"],
             "spec": spec_posix,
@@ -380,6 +558,52 @@ def render_human(result: dict) -> str:
     return "\n".join(lines)
 
 
+REVIEWED_RE = re.compile(r"^<!--\s*reviewed:\s*([0-9a-f]{7,40})\s*-->\s*$", re.M)
+
+
+def accept(root: str, living: dict, names: list) -> int:
+    """Record that a spec was read against the code and found still true.
+
+    The baseline is the spec's last commit, so a spec that is *correct* drifts further every
+    week and there is no way to say so. Left alone, every capability ends up flagged and the
+    flag stops meaning anything — which is the state that made this worth adding.
+
+    The record is a line in the spec rather than a field somewhere else, because committing
+    it is what moves the baseline: a note kept anywhere else would need its own bookkeeping
+    to stay true. Reviewing is a claim a person makes, so nothing here writes it on its own.
+    """
+    from pathlib import Path as _Path
+
+    caps = {c.get("name"): c for c in (living or {}).get("capabilities") or []}
+    head = _git(root, ["rev-parse", "--short", "HEAD"])[1].strip() or "unknown"
+    touched = 0
+    for name in names:
+        cap = caps.get(name)
+        if not cap or not cap.get("spec"):
+            print(f"[companion] No capability named {name!r} in the registry.", file=sys.stderr)
+            continue
+        path = _Path(root) / cap["spec"]
+        try:
+            text = path.read_text(encoding="utf-8")
+        except OSError as err:
+            print(f"[companion] Could not read {cap['spec']}: {err}", file=sys.stderr)
+            continue
+        line = f"<!-- reviewed: {head} -->"
+        if REVIEWED_RE.search(text):
+            text = REVIEWED_RE.sub(line, text, count=1)
+        else:
+            lines = text.splitlines()
+            at = 1 if lines and lines[0].startswith("# ") else 0
+            lines.insert(at, "" if at else line)
+            if at:
+                lines.insert(at + 1, line)
+            text = "\n".join(lines) + ("\n" if text.endswith("\n") else "")
+        path.write_text(text, encoding="utf-8")
+        print(f"[companion] {name}: reviewed at {head}. Commit the spec to move its baseline.")
+        touched += 1
+    return 0 if touched else 1
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Report Companion living-spec drift.")
     ap.add_argument("--root", default=".", help="repo root (default: cwd)")
@@ -388,10 +612,18 @@ def main(argv=None) -> int:
     ap.add_argument("--working", action="store_true",
                     help="also count working-tree changes (uncommitted edits, "
                          "deletions, and untracked files) as drift")
+    ap.add_argument("--since", metavar="REF",
+                    help="measure from the merge base with REF instead of each spec's own "
+                         "last commit, so the report is about this branch's work alone")
+    ap.add_argument("--accept", metavar="CAPABILITY", action="append", default=[],
+                    help="record that this capability's spec was read against the code and "
+                         "found still true; repeatable. Commit the spec to move its baseline")
     args = ap.parse_args(argv)
 
     living = rsp.load_living(args.root)
-    result = compute_drift(args.root, living, working=args.working)
+    if args.accept:
+        return accept(args.root, living, args.accept)
+    result = compute_drift(args.root, living, working=args.working, since=args.since)
     if args.json:
         print(json.dumps(result, indent=2))
     else:

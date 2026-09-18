@@ -6,6 +6,12 @@ description: "Report where the active spec stands — current step, status, reco
 
 Summarize the active feature's position in the spec-driven pipeline so you can see, at a glance, the current step, its status, the decisions recorded so far, and what to do next. **Read-only** — this command never writes `.spec-context.json`.
 
+<!-- speckit-companion:part command-spelling -->
+## Name every command the way this project registers it
+
+Commands are named in dot form throughout this body, `speckit.companion.plan`, because that is their canonical id, and without a leading slash, because the spelling a host actually registers is not always this one. Claude Code installs `/speckit-companion-plan`. Look at how the commands are installed in this project, under the agent's own commands or skills directory, and use that spelling every time you name one to the developer or dispatch one yourself. A dotted name typed into a host that registered dashes resolves to nothing at all.
+<!-- /speckit-companion:part command-spelling -->
+
 ## Prerequisites
 
 - Verify Python is available by running `python3 --version`.
@@ -50,11 +56,11 @@ Next: <action>  →  <command|—>
 
 - No decisions recorded → `Decisions: (none recorded)`.
 - Spec fully implemented / completed / archived → `Next: Pipeline complete  →  —`.
-- Inside the implement step → `Next: Continue implementation at <task>  →  dispatching /speckit.implement`.
+- Inside the implement step → `Next: Continue implementation at <task>  →  dispatching speckit.implement`.
 - No state and no spec files → `Nothing to summarize (no spec files or recorded state found).`
 
 The script also emits a final `RESOLUTION: { … }` JSON line. It is for
-`/speckit.companion.resume` and tests — you do not need to surface it to the user.
+`speckit.companion.resume` and tests — you do not need to surface it to the user.
 
 ## Graceful Degradation
 

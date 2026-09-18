@@ -3,7 +3,7 @@
   "specName": "Activity category endpoints",
   "branch": "2026-09-13-activities",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -399,6 +399,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-18T08:36:45.116Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "currentTask": "T045",

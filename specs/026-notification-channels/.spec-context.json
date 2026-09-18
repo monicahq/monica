@@ -3,7 +3,7 @@
   "specName": "More ways for a notification to reach somebody",
   "branch": "worktree-bridge-cse_017p5bGvqjfE7hzwJusiQp33",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -39,6 +39,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-11T14:39:47.767Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "telemetryInstanceId": "69b360a9-50db-459f-897b-f7473c6e698d"

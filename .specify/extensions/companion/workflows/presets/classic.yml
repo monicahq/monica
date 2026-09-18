@@ -1,0 +1,15 @@
+# A shipped starting point. Pick it from the pipeline panel — "New workflow…",
+# then "Start from". Nothing here is final: everything it sets can be changed
+# afterwards, one node or one section at a time.
+preset: Classic spec-kit
+summary: Stock spec-kit's document shapes — prioritized P1/P2/P3 user stories, and the full Technical Context block in the plan.
+
+commands:
+  specify:
+    template:
+      sections:
+        "User Scenarios & Testing": stories-classic
+  plan:
+    template:
+      sections:
+        "Technical Context": technical-context-classic

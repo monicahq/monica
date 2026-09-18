@@ -3,7 +3,7 @@
   "specName": "Reminder foundation on a date field",
   "branch": "2026-09-02-reminder-foundation",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -527,6 +527,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-04T16:05:56.846Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "currentTask": "T061",

@@ -3,7 +3,7 @@
   "specName": "Address book and calendar synchronisation",
   "branch": "2026-09-09-dav-synchronisation",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -544,6 +544,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-13T09:51:33.933Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "telemetryInstanceId": "d4ca5d73-5c26-4335-a379-aa12ce69511b",

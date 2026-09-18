@@ -1,0 +1,54 @@
+{
+  "commands": {
+    "auto": [],
+    "implement": [
+      {
+        "artifact": "tasks.md",
+        "node": "implement-exec",
+        "conditional": false
+      }
+    ],
+    "plan": [
+      {
+        "artifact": "plan.md",
+        "node": "plan-doc",
+        "conditional": false
+      },
+      {
+        "artifact": "research.md",
+        "node": "side-files",
+        "conditional": true
+      },
+      {
+        "artifact": "data-model.md",
+        "node": "side-files",
+        "conditional": true
+      },
+      {
+        "artifact": "contracts/",
+        "node": "side-files",
+        "conditional": true
+      }
+    ],
+    "specify": [
+      {
+        "artifact": "<short-name>.spec.md",
+        "node": "draft-spec",
+        "conditional": false
+      },
+      {
+        "artifact": "checklists/requirements.md",
+        "node": "quality-checklist",
+        "conditional": false
+      }
+    ],
+    "tasks": [
+      {
+        "artifact": "tasks.md",
+        "node": "tasks-doc",
+        "conditional": false
+      }
+    ]
+  },
+  "artifactCount": 8
+}

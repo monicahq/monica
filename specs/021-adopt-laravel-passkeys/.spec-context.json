@@ -3,7 +3,7 @@
   "specName": "Adopt laravel/passkeys",
   "branch": "main",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -479,6 +479,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-05T10:12:51.191Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "telemetryInstanceId": "4a85cca7-b3ba-4a32-908e-a9edc7a4037a",

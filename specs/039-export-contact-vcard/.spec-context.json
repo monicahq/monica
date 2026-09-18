@@ -3,7 +3,7 @@
   "specName": "Export a contact as a vCard",
   "branch": "claude/export-contact-vcard-7bc2b2",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -216,6 +216,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-18T08:36:23.649Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.891Z"
     }
   ],
   "telemetryInstanceId": "a4e97e47-b566-4dc3-b65c-4786ad28748b",

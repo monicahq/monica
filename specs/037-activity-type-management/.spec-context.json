@@ -3,7 +3,7 @@
   "specName": "Activity type management",
   "branch": "2026-09-16-activity-type-management",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -521,6 +521,20 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-16T20:31:59.577Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:44:02.626Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.891Z"
     }
   ],
   "currentTask": "T063",

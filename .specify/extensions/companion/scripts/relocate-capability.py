@@ -41,7 +41,7 @@ import companion_config as cc  # noqa: E402
 
 CONFIG_REL = cc.LIVING_SPECS_REL
 LEGACY_CONFIG_REL = cc.LEGACY_CONFIG_REL
-SPEC_SUFFIX = ".spec.md"
+SPEC_SUFFIX = cc.SPEC_SUFFIX
 
 
 def _load_sibling(module_name: str, filename: str):
@@ -103,7 +103,7 @@ def _display_name(spec: str) -> str:
     a capability can silently rename it in the UI."""
     base = os.path.basename(_posix(spec))
     stem = base
-    for suffix in (SPEC_SUFFIX, ".arch.md", ".coverage.md", ".md"):
+    for suffix in (SPEC_SUFFIX, ".rules.md", ".arch.md", ".coverage.md", ".md"):
         if stem.endswith(suffix):
             stem = stem[: -len(suffix)]
             break
@@ -167,8 +167,51 @@ def _target_spec(root: str, cap: dict, to: str, spec_override: str | None) -> st
     if spec_override:
         return _posix(spec_override)
     if to == "central":
-        return _default_spec(cap["name"])
-    return f"{_area_root(root, cap)}/{cap['name']}{SPEC_SUFFIX}"
+        # `capabilities/<capability>/<name>.spec.md`, the shape adoption writes
+        # and `living-move`'s own doc promises. `_default_spec` still answers the
+        # legacy `capabilities/<name>/<name>.spec.md` so a registry written before the
+        # rename keeps resolving; moving a capability is not the place to keep it.
+        return f"{cc.DEFAULT_CAPABILITY_ROOT}/{cap['name']}/{cap['name']}{SPEC_SUFFIX}"
+    area = _area_root(root, cap)
+    why = _needs_central(root, cap, area)
+    if why:
+        # Colocated would put this spec in a folder full of other capabilities'
+        # code. Adoption already sends such a capability central; moving it
+        # must not undo that.
+        print(f"[relocate] {cap['name']} stays central: {why}", file=sys.stderr)
+        return f"{cc.DEFAULT_CAPABILITY_ROOT}/{cap['name']}/{cap['name']}{SPEC_SUFFIX}"
+    return f"{area}/{cap['name']}{SPEC_SUFFIX}"
+
+
+def _needs_central(root: str, cap: dict, area: str) -> str | None:
+    """Why a colocated home would be wrong for this capability, or None.
+
+    Two shapes have no folder of their own: globs over several sibling
+    directories (the common parent belongs to all of them), and a glob over a
+    whole area that other capabilities live inside (the layer capability)."""
+    dirs = set()
+    for pat in cap.get("match") or []:
+        lit = _posix(rsp._literal_prefix(pat))
+        if lit and os.path.isfile(os.path.join(root, lit)):
+            lit = _posix(os.path.dirname(lit))
+        if lit:
+            dirs.add(lit)
+    if len(dirs) > 1:
+        return f"its globs cover {len(dirs)} sibling directories, so {area}/ is nobody's folder"
+    try:
+        others, _ = cc.resolve_living_specs(root)
+    except Exception:  # noqa: BLE001 — best-effort; a bad registry is reported elsewhere
+        return None
+    for other in others.get("capabilities") or []:
+        if other.get("name") == cap.get("name"):
+            continue
+        try:
+            inner = _area_root(root, other)
+        except RelocateError:
+            continue
+        if inner != area and inner.startswith(area + "/"):
+            return f"{other['name']} lives inside {area}/, which makes this the layer's capability"
+    return None
 
 
 # --------------------------------------------------------------------------- #
@@ -270,13 +313,19 @@ def _move(root: str, src: str, dst: str, use_git: bool) -> None:
     os.replace(os.path.join(root, src), dst_abs)
 
 
-def _apply_moves(root: str, plans: list[dict], use_git: bool) -> list[tuple[str, str]]:
-    done: list[tuple[str, str]] = []
+def _apply_moves(root: str, plans: list[dict], use_git: bool,
+                 done: list[tuple[str, str]]) -> None:
+    """Callers pass their own list so a move that raises part-way through still
+    leaves them the set to roll back — a return value would never arrive."""
     for plan in plans:
         for mv in plan["moves"]:
-            _move(root, mv["from"], mv["to"], use_git)
+            # Recorded before the attempt, not after: `_move` creates the
+            # destination directories before it renames, so a rename that then
+            # fails leaves those directories behind. Rollback is best-effort per
+            # entry, so an entry whose move never landed costs one failed rename
+            # and buys the directory pruning that restores the tree.
             done.append((mv["from"], mv["to"]))
-    return done
+            _move(root, mv["from"], mv["to"], use_git)
 
 
 def _rollback(root: str, done: list[tuple[str, str]], use_git: bool) -> None:
@@ -305,19 +354,13 @@ def _prune_empty_dirs(root: str, rel_dir: str) -> None:
 
 
 def _write_config(config_path: str, original: str | None, enabled: bool,
-                  capabilities: list[dict], exempt=None) -> None:
+                  capabilities: list[dict], exempt=None, rules=None) -> None:
     """Re-emit the registry through the shared renderer and splice it back, writing via
     a temp file + os.replace so a partial file never lands."""
-    rendered = cc.render_registry(enabled, capabilities, exempt)
+    rendered = cc.render_registry(enabled, capabilities, exempt, rules)
     if original is not None:
         rendered = cc.splice_registry(original, rendered)
-    parent = os.path.dirname(config_path)
-    if parent:
-        os.makedirs(parent, exist_ok=True)
-    tmp = config_path + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as fh:
-        fh.write(rendered)
-    os.replace(tmp, config_path)
+    cc.atomic_write_text(config_path, rendered)
 
 
 def relocate(root: str, to: str, name: str | None = None, spec: str | None = None,
@@ -380,8 +423,9 @@ def relocate(root: str, to: str, name: str | None = None, spec: str | None = Non
         with open(config_path, encoding="utf-8") as fh:
             original = fh.read()
 
-    done = _apply_moves(root, moving, use_git)
+    done: list[tuple[str, str]] = []
     try:
+        _apply_moves(root, moving, use_git, done)
         capabilities = regcap._normalize_existing(living)
         by_name = {p["name"]: p for p in moving}
         for entry in capabilities:
@@ -395,19 +439,40 @@ def relocate(root: str, to: str, name: str | None = None, spec: str | None = Non
             else:
                 entry["spec"] = plan["spec"]
         _write_config(config_path, original, living["enabled"], capabilities,
-                      living.get("exempt"))
+                      living.get("exempt"), living.get("rules"))
         if cc.should_drop_legacy(meta) and regcap._drop_legacy_block(legacy_path):
             result["migratedFrom"] = LEGACY_CONFIG_REL
-    except Exception:
+    except BaseException:
+        # BaseException, not Exception: Ctrl-C during a multi-file relocation is
+        # exactly when a user reaches for it, and unwinding past this handler
+        # would leave half the specs moved with the registry naming the old paths.
         _rollback(root, done, use_git)
         try:
             if original is None:
-                os.remove(config_path)
+                # Absent before the run. If the write never landed there is
+                # nothing to remove, and that is the ordinary case — not a
+                # failed restore worth warning about.
+                if os.path.exists(config_path):
+                    os.remove(config_path)
             else:
-                with open(config_path, "w", encoding="utf-8") as fh:
-                    fh.write(original)
-        except OSError:
-            pass
+                cc.atomic_write_text(config_path, original)
+        except BaseException as exc:
+            # Warn only when the registry on disk actually differs from what it
+            # was before the run. A restore that failed because the write never
+            # landed in the first place leaves everything consistent, and saying
+            # otherwise sends the user hunting a problem that is not there.
+            try:
+                if os.path.exists(config_path):
+                    with open(config_path, encoding="utf-8") as fh:
+                        current = fh.read()
+                else:
+                    current = None
+            except OSError:
+                current = None
+            if current != original:
+                print(f"[companion] Rollback could not restore {config_path}: {exc}. "
+                      f"The files were restored; the registry may still name the new paths.",
+                      file=sys.stderr)
         raise
     for plan in moving:
         _prune_empty_dirs(root, os.path.dirname(plan["specFrom"]))

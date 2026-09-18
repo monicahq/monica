@@ -1,4 +1,5 @@
 installed:
+- archive
 - companion
 settings:
   auto_execute_hooks: true

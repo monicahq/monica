@@ -3,7 +3,7 @@
   "specName": "Instance Configuration",
   "branch": "claude/speckit-app-configuration-7f9e08",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -425,6 +425,20 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-17T14:52:52.264Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:43:54.529Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.891Z"
     }
   ],
   "telemetryInstanceId": "ce46e7df-7f0d-483c-acc3-e681883b05b6",

@@ -55,8 +55,33 @@ def record(feature_dir: Path, changed: list[str], root: str) -> tuple[list[str],
     names = [m["name"] for m in rsp.match_changed(files, living, root)]
     if not names:
         return [], "no-match"
-    from capture import set_living_specs_loaded
+    from capture import (
+        set_living_specs_loaded,
+        set_living_specs_loaded_requirements,
+        set_living_specs_rules,
+    )
     set_living_specs_loaded(feature_dir, names)
+    # What the run was told, beside what it read.
+    try:
+        set_living_specs_rules(feature_dir, living.get("rules") or {})
+    except Exception:  # noqa: BLE001 — the record must never fail the command
+        pass
+    # Which requirements the run will read, for the capabilities that carry
+    # markers. A capability read whole gets no entry — listing all of its
+    # requirements would say nothing that `loaded` does not already say.
+    try:
+        # A capability read by requirement records what it read. One that was
+        # consulted and contributed nothing records the empty list, so "its
+        # markers all missed" stays distinguishable from "it was read whole",
+        # which records no entry at all.
+        per_cap = {
+            entry["name"]: [r["heading"] for r in entry.get("requirements") or []]
+            for entry in rsp.requirements_for_changed(files, living, root)
+            if not entry.get("whole")
+        }
+        set_living_specs_loaded_requirements(feature_dir, per_cap)
+    except Exception:  # noqa: BLE001 — the record must never fail the command
+        pass
     return names, "loaded"
 
 
@@ -80,6 +105,17 @@ def main(argv=None) -> int:
         args = ap.parse_args(argv)
     except SystemExit:
         return 0  # a malformed arg must not fail the host command (SystemExit escapes `except Exception`)
+
+    # This process mutates the record — three read-modify-write cycles on the
+    # shared file — so its reads and its publishes must queue behind any other
+    # writer's. Without this the editor's own write can land between one of
+    # those reads and its publish and be silently discarded.
+    try:
+        from spec_context import enable_write_lock
+
+        enable_write_lock()
+    except ImportError:
+        pass
 
     try:
         feature_dir = Path(args.feature_dir)

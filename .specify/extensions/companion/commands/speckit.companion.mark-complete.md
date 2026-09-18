@@ -63,13 +63,27 @@ python3 .specify/extensions/companion/scripts/write-context.py --fold-living-spe
 ```
 
 This parses the feature spec for `## ADDED / MODIFIED / REMOVED / RENAMED Requirements` blocks and
-applies each to the resolved `capabilities/<name>/spec.md` — the changed-files-matched capability for
+applies each to the resolved `capabilities/<name>/<name>.spec.md` — the changed-files-matched capability for
 unmarked blocks, and every `<!-- capability: <name> -->`-marked capability for the rest, so each
 capability spec receives only its own requirements. It is **opt-in** (only acts when
 `living-specs.yml` sets `enabled: true`), a **clean no-op** when the spec carries
 no delta block, **idempotent** on re-run, and records the synced
 capability names onto `livingSpecs.synced` in `.spec-context.json`. Best-effort — it never fails the
 host command.
+
+**Read what it printed.** A block marked for a capability the registry does not hold has nowhere to
+land, so the fold names it and folds nothing for it. That is the ordinary case for a feature that
+introduced behaviour no capability owned yet. Register it with the files this feature actually
+touched, then fold again — the fold is idempotent, so the capabilities that already landed are
+untouched:
+
+```bash
+python3 .specify/extensions/companion/scripts/register-capability.py --name <name> --match '<glob>'
+python3 .specify/extensions/companion/scripts/write-context.py --fold-living-spec --by ai
+```
+
+Name it for what a person can now do, not for the directory it lives in, and say in your summary
+that a new capability appeared and why.
 
 ## Graceful Degradation
 

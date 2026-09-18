@@ -3,7 +3,7 @@
   "specName": "Stripe Paywall",
   "branch": "main",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -624,6 +624,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-08T16:58:20.631Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "telemetryInstanceId": "1084832a-ad0d-4bf5-bef9-e7c0ff0d95b9",

@@ -7,7 +7,7 @@ description: "Capture the current spec-kit step into .spec-context.json for the 
 Record the active feature's current pipeline step into `.spec-context.json` so the
 SpecKit Companion GUI re-renders with the correct step and status. This command
 runs as the `after_specify` lifecycle hook — **state-writing only**; the spec
-directory and files are created by the core `/speckit.specify` workflow.
+directory and files are created by the core `speckit.specify` workflow.
 
 ## Prerequisites
 
@@ -28,7 +28,7 @@ The script resolves the active feature directory on its own, in this order:
 `--feature-dir` → `SPECIFY_FEATURE_DIRECTORY` env → `SPECIFY_FEATURE` env →
 `.specify/feature.json` → current git branch prefix.
 
-If you already know the feature directory (e.g. the one `/speckit.specify` just
+If you already know the feature directory (e.g. the one `speckit.specify` just
 created), pass it explicitly so resolution is unambiguous:
 
 ```bash

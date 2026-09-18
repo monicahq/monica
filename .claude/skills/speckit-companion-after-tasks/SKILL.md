@@ -1,18 +1,23 @@
 ---
 name: speckit-companion-after-tasks
-description: Capture tasks completion (currentStep=tasks, status=ready-to-implement) into .spec-context.json for the Companion GUI
+description: Capture tasks completion (currentStep=tasks, status=ready-to-implement)
+  into .spec-context.json for the Companion GUI
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
-  author: github-spec-kit
-  source: companion:commands/speckit.companion.after-tasks.md
+  author: alfredoperez
+  source: extension:companion
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion After Tasks Skill
 
 # Capture Tasks Context
 
 Record the active feature's tasks completion into `.spec-context.json` so the
 SpecKit Companion GUI re-renders with the correct step and status. This command
 runs as the `after_tasks` lifecycle hook — **state-writing only**; the tasks
-document is created by the core `/speckit.tasks` workflow.
+document is created by the core `speckit.tasks` workflow.
 
 ## Prerequisites
 
@@ -35,7 +40,7 @@ The script resolves the active feature directory on its own, in this order:
 `--feature-dir` → `SPECIFY_FEATURE_DIRECTORY` env → `SPECIFY_FEATURE` env →
 `.specify/feature.json` → current git branch prefix.
 
-If you already know the feature directory (e.g. the one `/speckit.tasks` just
+If you already know the feature directory (e.g. the one `speckit.tasks` just
 wrote into), pass it explicitly so resolution is unambiguous:
 
 ```bash

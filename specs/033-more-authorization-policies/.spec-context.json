@@ -3,7 +3,7 @@
   "specName": "More Authorization Policies",
   "branch": "worktree-bridge-cse_01TW8W8mep4et4wkVJqkzR8a",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -240,6 +240,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-14T14:15:07.667Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "telemetryInstanceId": "294ab8a3-011e-415c-a716-a95397a55e0d",

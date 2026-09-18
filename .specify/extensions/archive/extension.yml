@@ -1,0 +1,24 @@
+schema_version: "1.0"
+extension:
+  id: "archive"
+  name: "Archive Extension"
+  version: "1.3.0"
+  description: "Archive merged features into main project memory, resolving gaps and conflicts."
+  author: "Stanislav Deviatov"
+  repository: "https://github.com/stn1slv/spec-kit-archive"
+  license: "MIT"
+  homepage: "https://github.com/stn1slv/spec-kit-archive"
+  category: "docs"
+  effect: "read-write"
+requires:
+  speckit_version: ">=0.14.0"
+provides:
+  commands:
+    - name: "speckit.archive.run"
+      file: "commands/archive.md"
+      description: "Archive a feature specification into main project memory after merge"
+tags:
+  - "archive"
+  - "memory"
+  - "merge"
+  - "changelog"

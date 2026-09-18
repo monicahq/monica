@@ -3,7 +3,7 @@
   "specName": "Template version history",
   "branch": "2026-09-05-template-history",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -199,6 +199,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-09T20:01:43.551Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "currentTask": "T020",

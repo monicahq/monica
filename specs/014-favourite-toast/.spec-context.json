@@ -3,7 +3,7 @@
   "specName": "Confirmation when a contact is marked a favourite",
   "branch": "2026-09-02-reminder-delivery-engine",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -112,6 +112,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-04T16:06:01.503Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "currentTask": "T008",

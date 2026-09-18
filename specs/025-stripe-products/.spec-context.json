@@ -3,7 +3,7 @@
   "specName": "The order behind a purchase",
   "branch": "2026-09-07-stripe-paywall",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -46,6 +46,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-08T21:03:22.508Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "telemetryInstanceId": "67b137ba-204b-4f07-ba3b-699e62702822"

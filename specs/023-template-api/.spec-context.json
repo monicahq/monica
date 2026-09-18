@@ -3,7 +3,7 @@
   "specName": "Template endpoints",
   "branch": "2026-09-05-api-templates",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -448,6 +448,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-09T20:01:41.626Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "currentTask": "T053",

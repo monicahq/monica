@@ -25,7 +25,7 @@ python3 .specify/extensions/companion/scripts/drift.py
 
 The script reads the capability registry (`living-specs.yml`), reuses the
 resolver for capability membership, and uses git to find what changed since each
-capability's `capabilities/<name>/spec.md` was last committed. Each drifted file
+capability's `capabilities/<name>/<name>.spec.md` was last committed. Each drifted file
 is classified:
 
 - **`tracked`** — the file went through the Companion pipeline (it appears in a
@@ -50,4 +50,4 @@ python3 .specify/extensions/companion/scripts/drift.py --json
 
 ## What to do with the report
 
-Drift is a signal, not an error. To fold the reported changes back in one pass, run `/speckit.companion.living-sync` — the write-side twin of this report (it consumes the same `--working` computation). Otherwise, for each `unspeced` or `tracked` row, either fold the change into the living spec by hand (e.g. run `/speckit.companion.living-adopt` for the area, or write a delta spec) or add the path to the registry's `exempt` list if it shouldn't be tracked. The command never blocks the pipeline on its own.
+Drift is a signal, not an error. To fold the reported changes back in one pass, run `speckit.companion.living-sync` — the write-side twin of this report (it consumes the same `--working` computation). Otherwise, for each `unspeced` or `tracked` row, either fold the change into the living spec by hand (e.g. run `speckit.companion.living-adopt` for the area, or write a delta spec) or add the path to the registry's `exempt` list if it shouldn't be tracked. The command never blocks the pipeline on its own.

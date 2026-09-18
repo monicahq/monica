@@ -3,7 +3,7 @@
   "specName": "Readable vault and contact addresses",
   "branch": "worktree-bridge-cse_014evwqq1f5bNrx4VwJmo7xJ",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -472,6 +472,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-13T09:51:26.803Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "telemetryInstanceId": "e760b82c-d879-4962-8d53-836cb64e998d",

@@ -16,11 +16,59 @@ from __future__ import annotations
 import re
 import subprocess
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
-from capture import set_living_specs_synced
-from spec_context import _repo_root_for, read_ctx
+from capture import append_capture_entries, set_living_specs_synced
+from spec_context import _repo_root_for, feature_spec_path, read_ctx
+from living_validate import (ADOPTED_LINE, ERROR, _fence_flags,
+                             adopted_sources, check_feature_deltas,
+                             fences_are_balanced)
 from spec_deltas import _REQ_HEADING_RE, _has_deltas, parse_spec_deltas
+
+
+_TOUCHES_LINE = re.compile(r"^\s*<!--\s*touches:\s*(.+?)\s*-->\s*$")
+#: An edge to a rule under another capability. A delta never carries one, so it
+#: survives a fold only by being carried across deliberately.
+_ALIGNS_LINE = re.compile(r"^\s*<!--\s*aligns:\s*(.+?)\s*-->\s*$")
+
+
+def _touches_globs(lines: list[str]) -> list[str]:
+    """The globs on the marker directly under a `###` heading, or []."""
+    if len(lines) < 2:
+        return []
+    m = _TOUCHES_LINE.match(lines[1])
+    return [g.strip() for g in m.group(1).split(",") if g.strip()] if m else []
+
+
+def _keep_marker(old: list[str], new: list[str]) -> list[str]:
+    """Carry a requirement's file marker across a fold, widened, never narrowed.
+
+    The replacement span covers the marker line, so a plain slice assignment
+    deletes a marker `living-adopt` wrote the first time a feature folds into
+    that requirement. A fold only ever learns about more files, so the two sets
+    are unioned rather than replaced.
+    """
+    # An empty replacement section deletes the requirement block; there is no
+    # heading left to hang a marker under.
+    if not new:
+        return new
+    # A delta comes from a feature spec, which never adopts anything. Stripping
+    # here means the only adopted markers in a living spec are the ones adoption
+    # wrote, and a fold onto a requirement always clears them.
+    rest = [ln for ln in new[1:] if not ADOPTED_LINE.match(ln)]
+    # An `aligns` edge points at a rule under another capability, so no file match can
+    # reach it and nothing would ever notice it going missing. A delta never carries one,
+    # so dropping it here deletes it for good the first time a feature folds onto this
+    # requirement — silently retiring the one edge the file match cannot rediscover.
+    aligns = [ln for ln in old if _ALIGNS_LINE.match(ln)]
+    rest = [ln for ln in rest if not _ALIGNS_LINE.match(ln)]
+    globs = _touches_globs(old)
+    globs += [g for g in _touches_globs(new) if g not in globs]
+    if not globs:
+        return [new[0]] + aligns + rest
+    if rest and _TOUCHES_LINE.match(rest[0]):
+        rest = rest[1:]
+    return [new[0], f"<!-- touches: {', '.join(globs)} -->"] + aligns + rest
 
 
 def _loaded_capabilities(feature_dir: Path) -> list[str]:
@@ -76,12 +124,43 @@ def _accountability_gap(feature_dir: Path, synced) -> list[str]:
     return [c for c in loaded if c not in accounted]
 
 
+def _note_nothing_loaded(feature_dir: Path, root: Path) -> None:
+    """Record, where a human will see it, that a configured project resolved nothing.
+
+    stderr is where this used to end and end quietly. The doctor reads concerns and the
+    panel shows them, so the one run that produced no living-spec work at all stops looking
+    identical to one that had none to do. Silent on a project that does not use living
+    specs, and best-effort throughout: this must never fail the host command.
+    """
+    try:
+        if not (root / "living-specs.yml").exists():
+            return
+        append_capture_entries(feature_dir, "concerns", "note", [
+            "This change resolved no living-spec capability, so nothing was loaded before it "
+            "and nothing was folded after it. Either the areas it touched belong to no "
+            "capability yet, or a capability claims them and no requirement describes them "
+            "— `living-validate` names which."
+        ])
+    except Exception:  # noqa: BLE001
+        pass
+
+
 def _living_requirement_span(living_lines: list[str], heading: str) -> tuple[int, int] | None:
     """Find the [start, end) line span of a `### <heading>` requirement in a living
-    spec, end being the next `###`/`##` or EOF. Heading match is exact (stripped)."""
+    spec, end being the next `###`/`##` or EOF. Heading match is exact (stripped).
+
+    Fenced blocks are skipped, so a heading inside a code example is never
+    matched or used as a boundary — the same rule the slicer, the coverage
+    denominator and the shape check all count by. Counting differently here is
+    how the empty-spec guard came to refuse a fold that had written
+    requirements, and permit one that had removed them all.
+    """
     heading = heading.strip()
+    fenced = _fence_flags(living_lines)
     start = None
     for i, line in enumerate(living_lines):
+        if fenced[i]:
+            continue
         m = _REQ_HEADING_RE.match(line)
         if m and m.group(1).strip() == heading:
             start = i
@@ -90,6 +169,8 @@ def _living_requirement_span(living_lines: list[str], heading: str) -> tuple[int
         return None
     end = len(living_lines)
     for j in range(start + 1, len(living_lines)):
+        if fenced[j]:
+            continue
         s = living_lines[j]
         if s.startswith("### ") or s.startswith("## "):
             end = j
@@ -163,7 +244,8 @@ def apply_deltas(living_text: str, deltas: dict) -> tuple[str, dict]:
 
     Returns the updated text and the per-verb count of what was applied."""
     lines = living_text.splitlines()
-    applied = {"added": 0, "modified": 0, "removed": 0, "renamed": 0, "promoted": 0, "promoted_present": 0}
+    applied = {"added": 0, "modified": 0, "removed": 0, "renamed": 0, "promoted": 0, "promoted_present": 0,
+               "confirmed": 0}
     renames = _rename_map(deltas)
     modified_bodies = {head: section for head, section in deltas["modified"]}
 
@@ -193,7 +275,15 @@ def apply_deltas(living_text: str, deltas: dict) -> tuple[str, dict]:
     for head, section in deltas["modified"]:
         span = _living_requirement_span(lines, head)
         if span:
-            body = section.rstrip("\n").splitlines()
+            old_body = lines[span[0]:span[1]]
+            body = _keep_marker(old_body, section.rstrip("\n").splitlines())
+            # A requirement adoption transcribed is a claim about the code that
+            # nothing has checked. A run that folds a delta onto it has now built
+            # against it, so the claim is confirmed and the marker goes. `touches`
+            # is carried across deliberately; everything else comes from the delta,
+            # which is what promotes this one by dropping it.
+            if adopted_sources(old_body) and not adopted_sources(body):
+                applied["confirmed"] += 1
             if span[1] < len(lines):
                 body.append("")  # keep the blank line separating the next requirement
             lines[span[0]:span[1]] = body
@@ -243,7 +333,7 @@ def _deltas_for(deltas: dict, cap_name: str, is_default: bool) -> dict:
 
 
 def _initial_living_spec(capability_name: str) -> str:
-    """A minimal well-formed living-spec scaffold for a capability whose spec.md
+    """A minimal well-formed living-spec scaffold for a capability whose spec file
     doesn't exist yet, so the first ADDED fold creates a titled, sectioned spec
     (the accumulation story LS·4 relies on) rather than a headerless fragment.
     The slug is humanized into a title; ADDED requirements append under
@@ -257,7 +347,7 @@ def _initial_living_spec(capability_name: str) -> str:
 
 
 def _git_changed_files(root: Path) -> list[str]:
-    """Files this feature branch changed vs its merge-base with the default branch.
+    """Files this feature changed vs its merge-base with the default branch — committed, uncommitted and untracked.
 
     Best-effort: returns [] if git can't answer (detached/odd checkout, no
     merge-base). On the write-side fold, an empty result means the caller
@@ -275,9 +365,18 @@ def _git_changed_files(root: Path) -> list[str]:
         if not mb:
             continue
         try:
+            # Working tree against the merge-base, not HEAD against it: at the
+            # moment the fold runs the feature is usually uncommitted, and a new
+            # slice is untracked. Both are what this run changed.
             out = subprocess.run(
-                ["git", "diff", "--name-only", mb, "HEAD"], cwd=str(root),
+                ["git", "diff", "--name-only", mb], cwd=str(root),
                 capture_output=True, text=True, check=True,
+            ).stdout
+            tracked = [x for x in out.splitlines() if x.strip()]
+            dirs = sorted({str(PurePosixPath(f).parent) for f in tracked}) or ["."]
+            out += subprocess.run(
+                ["git", "ls-files", "--others", "--exclude-standard", "--", *dirs],
+                cwd=str(root), capture_output=True, text=True, check=True,
             ).stdout
         except (subprocess.CalledProcessError, FileNotFoundError):
             return []
@@ -352,13 +451,78 @@ def _resolve_fold_targets(rsp, living: dict, root: Path, deltas: dict) -> tuple[
     return targets, default_name
 
 
+def _would_empty(after: str) -> bool:
+    """True when the folded text carries no requirement at all.
+
+    Counted by the same slicer every other reader uses, so a heading in an
+    uncovered-files list is not mistaken for a requirement and a heading inside
+    a fence is not counted at all.
+    """
+    if not fences_are_balanced(after):
+        # Everything under an unclosed fence is invisible here, so the count is
+        # not the spec's — refusing on it means refusing a fold that wrote
+        # requirements, and advising a retirement that would then empty the file.
+        return False
+    rsp = _load_resolver()
+    if rsp is None:
+        return False  # unanswerable, and a guard that cannot count must not refuse
+    try:
+        return len(rsp.requirement_slices(after)) == 0
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def _shape_errors(spec_text: str, spec_rel: str, targets: list, root: Path,
+                  default_name=None) -> dict:
+    """Error-level shape findings in the feature spec's deltas, per capability.
+
+    Imported and called in-process rather than run as a command: a correctness
+    gate that a missing interpreter or a subprocess failing for its own reasons
+    can turn into "no findings" is not a gate.
+    """
+    known = [c.get("name") for c in targets if c.get("name")]
+    texts: dict = {}
+    try:
+        for cap in targets:
+            # Inside the guard, and reading `name` the same way the line above
+            # does. A target with no name raised straight out of here and took
+            # the whole fold with it.
+            rel, name = cap.get("spec"), cap.get("name")
+            if not rel or not name:
+                continue
+            path = root / rel
+            if path.exists():
+                try:
+                    texts[name] = path.read_text(encoding="utf-8")
+                except OSError:
+                    pass
+        findings = check_feature_deltas(spec_text, spec_rel, known, texts, default_name)
+    except Exception:  # noqa: BLE001
+        return {}  # the check breaking must never block a sound fold
+    out: dict = {}
+    for f in findings:
+        if f["severity"] != ERROR:
+            # Not a block, but not silence either: a warning here is the one
+            # chance to say "this ADDED heading restates one the spec already
+            # has" BEFORE it becomes a permanent second requirement. A run that
+            # folded two near-duplicates never saw this, because it was dropped.
+            print(
+                f"[companion] Living-spec fold: warning at {f['path']}:{f['line']} "
+                f"[{f['code']}] {f['message']} {f['fix']}",
+                file=sys.stderr,
+            )
+            continue
+        out.setdefault(f.get("capability"), []).append(f)
+    return out
+
+
 def fold_living_spec(feature_dir: Path, by: str) -> Path | None:
     """Fold the feature spec's requirement deltas into the resolved living spec(s).
 
     Opt-in (livingSpecs.enabled) and best-effort: any miss (feature off, no
     config, no resolver, no delta block, no spec file) is a clean no-op that
     returns None and writes nothing. On a real fold, applies the deltas to each
-    target's capabilities/<name>/spec.md, records the synced names onto
+    target's registered spec path, records the synced names onto
     livingSpecs.synced, logs a one-line per-capability summary, and returns the
     updated .spec-context.json path. Idempotent: re-running folds nothing new."""
     root = _repo_root_for(feature_dir)
@@ -385,7 +549,7 @@ def fold_living_spec(feature_dir: Path, by: str) -> Path | None:
         )
         return None
 
-    spec_md = feature_dir / "spec.md"
+    spec_md = feature_spec_path(feature_dir)
     try:
         spec_text = spec_md.read_text(encoding="utf-8")
     except OSError:
@@ -433,11 +597,16 @@ def fold_living_spec(feature_dir: Path, by: str) -> Path | None:
                     file=sys.stderr,
                 )
         else:
+            # Nothing loaded is not the same as nothing to do. On a configured project it
+            # means the run was briefed on nothing and wrote nothing back, which is exactly
+            # the state living specs exist to prevent — and the one state the accountability
+            # check above cannot see, because it has no loaded capability to hold to account.
             print(
                 "[companion] Living-spec fold: this feature's spec carries no delta "
                 "block and loaded no capabilities; nothing to fold.",
                 file=sys.stderr,
             )
+            _note_nothing_loaded(feature_dir, root)
         return None  # additive case — no delta block
 
     try:
@@ -452,6 +621,40 @@ def fold_living_spec(feature_dir: Path, by: str) -> Path | None:
         )
         return None
 
+    blocked = _shape_errors(
+        spec_text, str(spec_md.relative_to(root)) if spec_md.is_relative_to(root) else str(spec_md),
+        targets, root, default_name)
+
+    # A block marked for a capability nobody registered is never a target, so
+    # keying its refusal on that name made the refusal unreachable: the block
+    # was dropped and the author was told nothing at all. Reported here, before
+    # the loop, because there is no target to hang it on.
+    target_names = {c.get("name") for c in targets}
+    for name, findings in sorted(blocked.items(), key=lambda kv: str(kv[0])):
+        if name in target_names:
+            continue
+        for f in findings:
+            print(
+                f"[companion] Living-spec fold: refused {name or '(unmarked)'} — "
+                f"{f['message']} [{f['code']}] ({f['path']}:{f['line']})",
+                file=sys.stderr,
+            )
+
+    # A well-formed block naming a capability nobody registered is not a target
+    # either, and until now it was dropped without a word: the run wrote a
+    # requirement, the fold said it synced, and the requirement was nowhere. New
+    # behaviour with no home is exactly what a growing codebase produces, so say
+    # so and name the command that gives it one.
+    marked = {c for v in ("added", "modified", "removed", "renamed")
+              for c in (deltas.get("unit_caps", {}).get(v) or []) if c}
+    for name in sorted(marked - target_names):
+        print(
+            f"[companion] Living-spec fold: '{name}' is not a registered capability, "
+            f"so its requirements were not folded. Register it and fold again: "
+            f"register-capability.py --name {name} --match '<glob>'",
+            file=sys.stderr,
+        )
+
     synced: list[str] = []
     for cap in targets:
         spec_rel = cap.get("spec")
@@ -460,12 +663,34 @@ def fold_living_spec(feature_dir: Path, by: str) -> Path | None:
         cap_deltas = _deltas_for(deltas, cap["name"], cap["name"] == default_name)
         if not _has_deltas(cap_deltas):
             continue  # no requirement routed to this capability
+        refused = blocked.get(cap["name"]) or []
+        if refused:
+            # Per capability, never the whole fold: one broken block must not
+            # cost every sound one its write.
+            for f in refused:
+                print(
+                    f"[companion] Living-spec fold: refused {cap['name']} — "
+                    f"{f['message']} [{f['code']}] ({f['path']}:{f['line']})",
+                    file=sys.stderr,
+                )
+            continue
         living_path = root / spec_rel
         try:
             before = living_path.read_text(encoding="utf-8") if living_path.exists() else _initial_living_spec(cap.get("name") or living_path.parent.name)
         except OSError:
             continue
         after, applied = apply_deltas(before, cap_deltas)
+        if after != before and _would_empty(after) and not cap.get("retire"):
+            # An emptied spec has lost the thing that made it worth keeping, and
+            # a stale spec is recoverable where an empty one is not. Retiring a
+            # capability is deliberate, so it has to be declared as one.
+            print(
+                f"[companion] Living-spec fold: refused {cap['name']} — this would "
+                f"leave {spec_rel} with no requirements at all. Set `retire: true` on "
+                f"{cap['name']} in living-specs.yml if that is intended.",
+                file=sys.stderr,
+            )
+            continue
         unmatched = (
             (len(cap_deltas["modified"]) - applied["modified"] - applied["promoted"] - applied["promoted_present"])
             + (len(cap_deltas["removed"]) - applied["removed"])
@@ -501,6 +726,10 @@ def fold_living_spec(feature_dir: Path, by: str) -> Path | None:
         if applied["promoted"]:
             reasons.append(
                 f"{applied['promoted']} added (MODIFIED with no existing match)"
+            )
+        if applied["confirmed"]:
+            reasons.append(
+                f"{applied['confirmed']} confirmed (adopted, and this run built against it)"
             )
         if unmatched:
             reasons.append(f"{unmatched} change(s) skipped: no matching requirement heading")

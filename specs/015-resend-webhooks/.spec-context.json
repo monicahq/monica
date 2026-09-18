@@ -3,7 +3,7 @@
   "specName": "Resend delivery webhooks",
   "branch": "20260904-resend-webhook",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -325,6 +325,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-04T16:41:33.095Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "telemetryInstanceId": "a36adc4c-bb4e-4970-b61f-3e1d1875f12b",

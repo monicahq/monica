@@ -9,9 +9,10 @@ workflow:
 requires:
   # Floor is the engine surface this workflow rides: `specify workflow run`/`resume`
   # plus the `command`/`gate`/`switch` step registry, present from 0.9.5. Bare floor —
-  # spec-kit stable is past this (0.11.x), so git/`uv` dev builds (`0.11.x.devN`)
+  # spec-kit's stable line is long past this, so git/`uv` dev builds (`X.Y.Z.devN`)
   # already satisfy `>=0.9.5` under PEP 440; a `.dev0` suffix would only matter if
-  # this floor were the line HEAD currently builds.
+  # this floor equalled the exact line spec-kit HEAD currently builds. Keep it bare
+  # unless that becomes true again — do not "restore" a `.dev0` suffix here.
   speckit_version: ">=0.9.5"
   integrations:
     # Advisory, non-exhaustive compatibility hint (the documented `any: [...]` shape).
@@ -60,22 +61,25 @@ steps:
     type: switch
     expression: "{{ steps.classify.output.size }}"
     cases:
-      small:
+      # `simple` is the verdict the classifier emits (presets/_parts/routing.md:
+      # "`small` names the *bar*, never the verdict"). This key read `small`
+      # once, so no run ever matched it and every spec took the full default.
+      simple:
         # Folded path — less ceremony for a small change: plan and tasks still
         # run (implement reads tasks.md, so it can't be skipped), but WITHOUT the
         # review-gate pauses. That is the "fold toward implement" — fewer stops,
         # not fewer artifacts.
-        - id: small-plan
+        - id: simple-plan
           command: speckit.companion.plan
           integration: "{{ inputs.integration }}"
           input:
             args: "{{ inputs.spec }}"
-        - id: small-tasks
+        - id: simple-tasks
           command: speckit.companion.tasks
           integration: "{{ inputs.integration }}"
           input:
             args: "{{ inputs.spec }}"
-        - id: small-implement
+        - id: simple-implement
           command: speckit.companion.implement
           integration: "{{ inputs.integration }}"
           input:

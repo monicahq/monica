@@ -3,7 +3,7 @@
   "specName": "Prove a credential before a sensitive action",
   "branch": "worktree-bridge-cse_01QcMjb6dSEA14uA2CGUVRHx",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -431,6 +431,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-11T21:19:06.691Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "telemetryInstanceId": "6ffea37d-a038-446e-9322-16a534fc1f46",

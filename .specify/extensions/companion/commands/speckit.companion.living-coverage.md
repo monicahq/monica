@@ -4,7 +4,7 @@ description: "Report living-spec requirement→test coverage — per requirement
 
 # Spec Coverage
 
-Show, for each living-spec capability, which of its requirements have a test mapped in the capability's coverage-tier sibling (the `*.coverage.md` next to its spec — `spec.coverage.md` for a centralized `capabilities/<name>/spec.md`, or `<base>.coverage.md` for a colocated spec) and which are still uncovered. A living spec's requirements file says **what** the area must do; its coverage tier says **which test proves each one**. This command reads both and reports the gap. **Read-only** — it never edits anything — and it **never fails** (always exits success). It's the conformance on-ramp, a signal you act on, not a gate that blocks you (the same contract as `/speckit.companion.living-drift`).
+Show, for each living-spec capability, which of its requirements have a test mapped in the capability's coverage-tier sibling (the `*.coverage.md` next to its spec — `spec.coverage.md` for a centralized `capabilities/<name>/<name>.spec.md`, or `<base>.coverage.md` for a colocated spec) and which are still uncovered. A living spec's requirements file says **what** the area must do; its coverage tier says **which test proves each one**. This command reads both and reports the gap. **Read-only** — it never edits anything — and it **never fails** (always exits success). It's the conformance on-ramp, a signal you act on, not a gate that blocks you (the same contract as `speckit.companion.living-drift`).
 
 This is **opt-in**. With living specs disabled (or no config), it reports nothing and exits clean. A capability that ships only a `.spec.md` with no `.coverage.md` sibling reports every requirement uncovered — never an error.
 

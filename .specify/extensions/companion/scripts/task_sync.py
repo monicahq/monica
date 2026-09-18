@@ -35,26 +35,55 @@ from spec_context import (
 # `**` is optional: matches the turbo/companion bold form `- [x] **T001**` AND the
 # standard tasks-template plain form `- [x] T001 …`. A `T\d+` is still required right
 # after the checkbox, so non-task checkboxes never false-match.
-COMPLETED_TASK_RE = re.compile(r"^\s*[-*]\s*\[[xX]\]\s*(?:\*\*)?(T\d+)")
-PENDING_TASK_RE = re.compile(r"^\s*[-*]\s*\[\s\]\s*(?:\*\*)?(T\d+)")
+#
+# This grammar matches `taskCheckboxes.ts` on the VS Code side, because the two
+# decide the same question — whether every task is done — from opposite sides of
+# the product. `tests/fixtures/task-grammar/` holds the cases they must agree
+# on, and both test suites read it.
+COMPLETED_TASK_RE = re.compile(r"^\s*[-*+]\s*\[[xX]\]\s*(?:\*\*)?(T\d+)")
+PENDING_TASK_RE = re.compile(r"^\s*[-*+]\s*\[\s\]\s*(?:\*\*)?(T\d+)")
+_FENCE_RE = re.compile(r"^\s*(`{3,}|~{3,})")
+_INLINE_CODE_RE = re.compile(r"(`+)[^`]*?\1")
+
+
+def prose_lines(content: str):
+    """The document's lines with fenced blocks dropped and code spans blanked.
+
+    A checkbox inside a code fence is documentation showing the syntax, not
+    work — counting it once let this side report a task list complete while
+    the viewer, which has always skipped fences, still showed tasks left.
+    """
+    open_fence: str | None = None
+    for raw in content.splitlines():
+        fence = _FENCE_RE.match(raw)
+        marker = fence.group(1) if fence else None
+        if open_fence:
+            if marker and marker[0] == open_fence[0] and len(marker) >= len(open_fence):
+                open_fence = None
+            continue
+        if marker:
+            open_fence = marker
+            continue
+        yield _INLINE_CODE_RE.sub("", raw)
 
 
 def parse_task_markers(tasks_md: Path) -> tuple[list[str], list[str]]:
     """Return (all_task_ids, completed_task_ids) in document order from tasks.md."""
+    try:
+        content = tasks_md.read_text(encoding="utf-8")
+    except OSError:
+        return [], []
     all_ids: list[str] = []
     done_ids: list[str] = []
-    try:
-        for line in tasks_md.read_text(encoding="utf-8").splitlines():
-            m = COMPLETED_TASK_RE.match(line)
-            if m:
-                all_ids.append(m.group(1))
-                done_ids.append(m.group(1))
-                continue
-            m = PENDING_TASK_RE.match(line)
-            if m:
-                all_ids.append(m.group(1))
-    except OSError:
-        pass
+    for line in prose_lines(content):
+        m = COMPLETED_TASK_RE.match(line)
+        if m:
+            all_ids.append(m.group(1))
+            done_ids.append(m.group(1))
+            continue
+        m = PENDING_TASK_RE.match(line)
+        if m:
+            all_ids.append(m.group(1))
     return all_ids, done_ids
 
 
@@ -80,6 +109,15 @@ def _mark_tasks_done(tasks_md: Path, ids: set) -> None:
             lines[i] = line.replace("[ ]", "[x]", 1)
             changed = True
     if not changed:
+        return
+    try:
+        import companion_config as cc
+
+        cc.atomic_write_text(str(tasks_md), "".join(lines))
+        return
+    except ImportError:
+        pass
+    except OSError:
         return
     tmp = tasks_md.with_suffix(tasks_md.suffix + ".tmp")
     try:
@@ -326,6 +364,30 @@ def materialize_log(feature_dir: Path, by: str, quiet: bool = False) -> Path | N
     return target
 
 
+def _last_finished(log: list, done: list) -> str | None:
+    """The most recently journaled completion among `done`, by recorded time.
+
+    Not `done[-1]`: that is the last task in tasks.md order, so after a wave of
+    tasks completing together it names whichever happens to sit lowest in the
+    file rather than the one that actually finished last. Falls back to file
+    order only when the journal cannot answer — a task synced from tasks.md
+    without ever being journaled has no time of its own.
+    """
+    best, best_at = None, None
+    for entry in log:
+        if not isinstance(entry, dict):
+            continue
+        tid = entry.get("task")
+        if tid not in done or entry.get("kind") != "complete":
+            continue
+        at = entry.get("at")
+        if not isinstance(at, str):
+            continue
+        if best_at is None or at >= best_at:
+            best, best_at = tid, at
+    return best or done[-1]
+
+
 def sync_tasks(feature_dir: Path, tasks_md: Path, final_status: str, by: str) -> Path | None:
     """Per-task journaling for the implement step.
 
@@ -377,7 +439,13 @@ def sync_tasks(feature_dir: Path, tasks_md: Path, final_status: str, by: str) ->
     ctx["status"] = final_status if all_done else "implementing"
 
     pending = [tid for tid in distinct_all if tid not in distinct_done]
-    ctx["currentTask"] = (pending[0] if pending else (distinct_done[-1] if distinct_done else None))
+    # With work left, the current task is the next one to do. With none left, it is
+    # the one most recently FINISHED — which is not `distinct_done[-1]`: that is the
+    # last task in tasks.md order, so after a wave of tasks completing together it
+    # names whichever happens to sit lowest in the file. Read the journal instead,
+    # which knows when each one actually closed.
+    ctx["currentTask"] = (pending[0] if pending
+                          else (_last_finished(log, distinct_done) if distinct_done else None))
 
     # Finish-only backstop: append ONE finish per fresh task (no start/complete
     # pair → no 0s tick). The live path (`--task <id> --kind complete`) already
@@ -400,3 +468,26 @@ def sync_tasks(feature_dir: Path, tasks_md: Path, final_status: str, by: str) ->
         file=sys.stderr,
     )
     return target
+
+
+def close_task(
+    feature_dir: Path, task_id: str, by: str,
+    did: str | None = None, files: list[str] | None = None,
+) -> Path | None:
+    """Append a task finish and fold it, in one call — the MAIN agent's task close.
+
+    Half of every capture call during implement is the main agent's own second
+    call for its own task. This collapses those two into one without removing the
+    split: a fanned-out worker must still append alone, because folding is a write
+    to the shared record and two folders is exactly the contention the split
+    exists to prevent.
+
+    Byte-equivalent to `--task … --append` followed by `--materialize`, and
+    idempotent for the same reason the fold is.
+    """
+    appended = append_task_log(feature_dir, task_id, by, did, files)
+    folded = materialize_log(feature_dir, by, quiet=True)
+    # A fold that finds nothing to do returns None; returning that would discard
+    # the fact that the append itself landed, leaving the call reported as a
+    # silent failure. The append is the write that matters here.
+    return folded or appended

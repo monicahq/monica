@@ -6,8 +6,14 @@ description: "Continue the spec-driven pipeline from the last completed step, ca
 
 Pick the pipeline back up where it stopped. This command reads the active
 feature's recorded state, resolves the next step — carrying the recorded
-`decisions` into scope — and dispatches the next `/speckit.*` command. Inside the
+`decisions` into scope — and dispatches the next `speckit.*` command. Inside the
 implement step it continues at the next unchecked task.
+
+<!-- speckit-companion:part command-spelling -->
+## Name every command the way this project registers it
+
+Commands are named in dot form throughout this body, `speckit.companion.plan`, because that is their canonical id, and without a leading slash, because the spelling a host actually registers is not always this one. Claude Code installs `/speckit-companion-plan`. Look at how the commands are installed in this project, under the agent's own commands or skills directory, and use that spelling every time you name one to the developer or dispatch one yourself. A dotted name typed into a host that registered dashes resolves to nothing at all.
+<!-- /speckit-companion:part command-spelling -->
 
 ## Prerequisites
 
@@ -39,10 +45,10 @@ implement step it continues at the next unchecked task.
    - **`empty: true`** (no recorded state and no spec files) → print
      `Nothing to resume (no spec files or recorded state found).` and stop.
    - **`nextTask` is set** (inside the implement step) → continue implementation at
-     `nextTask`: invoke `/speckit.implement`, instructing it to resume at the next
+     `nextTask`: invoke `speckit.implement`, instructing it to resume at the next
      unchecked task.
-   - **otherwise** → invoke `nextCommand` (e.g. `/speckit.plan`, `/speckit.tasks`,
-     `/speckit.implement`).
+   - **otherwise** → invoke `nextCommand` (e.g. `speckit.plan`, `speckit.tasks`,
+     `speckit.implement`).
 
 4. When you dispatch, state the recorded `decisions[]` as in-scope context for the
    step you are running, so prior decisions carry forward and the user does not
@@ -50,7 +56,7 @@ implement step it continues at the next unchecked task.
 
 ## Dispatch note
 
-Resume dispatches the **already-installed** `/speckit.*` commands. It does not
+Resume dispatches the **already-installed** `speckit.*` commands. It does not
 require a `specify workflow resume` CLI subcommand, so it works on the stock
 installed spec-kit version. The dispatched command runs its own `after_*` capture
 hook, which writes the resulting `history[]` entry — resume itself writes no state.
@@ -64,7 +70,7 @@ Decisions in scope:
 Next: <action>  →  dispatching <command>
 ```
 
-- Tasks/implement step → `Next: Continue implementation at <task>  →  dispatching /speckit.implement`.
+- Tasks/implement step → `Next: Continue implementation at <task>  →  dispatching speckit.implement`.
 - No decisions recorded → omit the "Decisions in scope" block.
 
 ## Graceful Degradation

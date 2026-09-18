@@ -3,7 +3,7 @@
   "specName": "Authorization Policies and Gates",
   "branch": "worktree-bridge-cse_01TW8W8mep4et4wkVJqkzR8a",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -320,6 +320,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-14T14:15:11.068Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "telemetryInstanceId": "bc3b391c-5602-4069-b666-dd0db7e884ca",

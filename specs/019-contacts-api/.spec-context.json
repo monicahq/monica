@@ -3,7 +3,7 @@
   "specName": "Contact endpoints",
   "branch": "2026-09-04-api-contact",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -319,6 +319,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-09T20:01:50.200Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.892Z"
     }
   ],
   "currentTask": "T035",

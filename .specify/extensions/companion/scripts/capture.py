@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import sys
+import re
 from pathlib import Path
 
 from spec_context import (
@@ -33,7 +34,12 @@ def _coerce_value(raw: str):
     try:
         return int(raw)
     except ValueError:
-        return raw
+        pass
+    # A decimal point is required, so "1e5", "nan" and "inf" stay strings and
+    # json.dumps never has to emit a value JSON cannot express.
+    if re.fullmatch(r"-?\d+\.\d+", raw):
+        return float(raw)
+    return raw
 
 
 PROTECTED_SET_KEYS = frozenset({"history", "transitions", "status", "currentStep"})
@@ -89,6 +95,83 @@ def set_living_specs_loaded(feature_dir: Path, names: list[str]) -> Path | None:
         if n not in merged:
             merged.append(n)
     block["loaded"] = merged
+    ctx["livingSpecs"] = block
+    atomic_write(target, ctx)
+    return target
+
+
+def set_living_specs_loaded_requirements(feature_dir: Path, per_cap: dict) -> Path | None:
+    """Record which REQUIREMENTS a run read, per capability.
+
+    A sibling of `livingSpecs.loaded`, never a change to it: that list is a plain
+    list of names several readers already consume — including the completion
+    accounting that requires every loaded capability to end with a delta or a
+    recorded skip — so widening its element type would break each of them for a
+    feature none of them care about.
+
+    Written only for a capability read by requirement. A capability read whole
+    gets no entry, because naming all of its requirements would say nothing.
+    Merges per capability, de-duping while preserving order, so a re-run is a
+    no-op."""
+    # An empty list is meaningful: the capability was consulted and its markers
+    # all missed, which is a different fact from being read whole (no entry).
+    cleaned = {
+        str(cap).strip(): [str(h) for h in heads if str(h).strip()]
+        for cap, heads in (per_cap or {}).items()
+        if str(cap).strip() and heads is not None
+    }
+    if not cleaned:
+        return None
+    target = feature_dir / ".spec-context.json"
+    branch = _git_branch(_repo_root_for(feature_dir)) or "main"
+    ctx = read_ctx(target)
+    fill_required(ctx, feature_dir, branch)
+    block = ctx.get("livingSpecs")
+    if not isinstance(block, dict):
+        block = {}
+    prior = block.get("loadedRequirements")
+    merged = dict(prior) if isinstance(prior, dict) else {}
+    for cap, heads in cleaned.items():
+        seen: list = []
+        for h in list(merged.get(cap) or []) + heads:
+            if h not in seen:
+                seen.append(h)
+        merged[cap] = seen
+    block["loadedRequirements"] = merged
+    ctx["livingSpecs"] = block
+    atomic_write(target, ctx)
+    return target
+
+
+def set_living_specs_rules(feature_dir: Path, rules: dict) -> Path | None:
+    """Record the authored guidance a run was given, per step.
+
+    A sibling of `livingSpecs.loaded` for the same reason as
+    `loadedRequirements`: a reader asking "what was this run told?" should get
+    the guidance beside the capabilities, and neither list changes shape for the
+    other. A project with no rules writes nothing, so absence stays absence."""
+    cleaned = {
+        str(step).strip(): [str(line) for line in lines if str(line).strip()]
+        for step, lines in (rules or {}).items()
+        if str(step).strip() and lines
+    }
+    if not cleaned:
+        return None
+    target = feature_dir / ".spec-context.json"
+    branch = _git_branch(_repo_root_for(feature_dir)) or "main"
+    ctx = read_ctx(target)
+    fill_required(ctx, feature_dir, branch)
+    block = ctx.get("livingSpecs")
+    if not isinstance(block, dict):
+        block = {}
+    prior = block.get("rules")
+    merged = dict(prior) if isinstance(prior, dict) else {}
+    for step, lines in cleaned.items():
+        # The prior side was read off disk: coerce it, or a hand-corrupted
+        # non-string entry raises inside a writer that must never fail a run.
+        kept = [str(line) for line in (merged.get(step) or [])]
+        merged[step] = list(dict.fromkeys(kept + lines))
+    block["rules"] = merged
     ctx["livingSpecs"] = block
     atomic_write(target, ctx)
     return target
@@ -191,6 +274,59 @@ def _coerce_entry(raw: str, identity_key: str) -> dict | None:
             if isinstance(ident, str) and ident.strip():
                 return obj
     return {identity_key: text}
+
+
+def run_verification(what: str, command: str, timeout: int = 900) -> dict:
+    """Run a command and record what actually happened, rather than what anyone says did.
+
+    This is the whole difference between a receipt and a claim. Everything in `verified[]`
+    until now was a sentence an agent typed, including the command, which was a string it
+    wrote rather than evidence anything ran. The Overview then drew a checkmark beside it.
+
+    The outcome is the exit code, because that is the part nobody can talk their way past.
+    Output is kept only as a tail: enough to recognise what happened, never enough to make
+    the context file a log.
+    """
+    import subprocess
+    import time
+
+    started = time.monotonic()
+    try:
+        proc = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=timeout)
+        code, out = proc.returncode, (proc.stdout or "") + (proc.stderr or "")
+    except subprocess.TimeoutExpired:
+        code, out = 124, f"timed out after {timeout}s"
+    except Exception as err:  # noqa: BLE001
+        code, out = 127, f"could not run: {err}"
+    took = round(time.monotonic() - started, 1)
+
+    tail = [ln for ln in out.strip().splitlines() if ln.strip()][-3:]
+    entry = {
+        "what": what,
+        "command": command,
+        "source": "derived",
+        "exitCode": code,
+        "durationSeconds": took,
+        "result": " · ".join(tail) if tail else ("no output" if code == 0 else f"exit {code}"),
+    }
+    # A non-zero exit is the finding, not a failure to record. Recording it is the point:
+    # a run that could not prove its work should say so where the reader looks.
+    if code != 0:
+        entry["warnings"] = [f"exited {code}"]
+    return entry
+
+
+def append_verification_runs(feature_dir: Path, specs: list[str]) -> tuple[Path | None, list[str]]:
+    """Run each `WHAT::COMMAND` and append what actually happened. Returns the target and any skips."""
+    entries, skipped = [], []
+    for spec in specs:
+        what, sep, command = spec.partition("::")
+        if not sep or not command.strip():
+            skipped.append(spec)
+            continue
+        entries.append(json.dumps(run_verification(what.strip(), command.strip())))
+    target = append_capture_entries(feature_dir, "verified", "what", entries) if entries else None
+    return target, skipped
 
 
 def _entry_identity(item, identity_key: str) -> str | None:
@@ -342,3 +478,110 @@ def set_classification(feature_dir: Path, raw: str) -> Path:
     ctx["classification"] = obj
     atomic_write(target, ctx)
     return target
+
+
+# --------------------------------------------------------------------------- #
+# Batched end-of-step capture
+#
+# The capture flags are already additive and already compose in one call — the
+# end-of-step volley is several calls only because the command bodies emit them
+# separately. One document through the same writers changes the number of file
+# rewrites, not the record.
+# --------------------------------------------------------------------------- #
+
+BATCH_KEYS = ("verified", "decisions", "concerns", "expectations", "context",
+              "coverage", "step_summary", "last_action", "set")
+
+
+def _parsed_batch(raw: str) -> dict:
+    """Validate the batch document. A malformed payload is a caller error."""
+    try:
+        doc = json.loads(raw)
+    except ValueError as exc:
+        raise ValueError(f"--batch is not valid JSON: {exc}") from exc
+    if not isinstance(doc, dict):
+        raise ValueError("--batch must be a JSON object")
+    unknown = sorted(set(doc) - set(BATCH_KEYS))
+    if unknown:
+        raise ValueError(
+            f"--batch has unknown key(s): {', '.join(unknown)}. "
+            f"Known keys: {', '.join(BATCH_KEYS)}."
+        )
+    for key in ("verified", "decisions", "concerns", "expectations", "context", "coverage"):
+        if key in doc and not isinstance(doc[key], list):
+            raise ValueError(f"--batch '{key}' must be a list")
+    if "set" in doc and doc["set"] is not None:
+        if not isinstance(doc["set"], dict):
+            raise ValueError("--batch 'set' must be a map of field to value")
+        bad = sorted(set(doc["set"]) & PROTECTED_SET_KEYS)
+        if bad:
+            raise ValueError(
+                f"--batch 'set' cannot write lifecycle key(s): {', '.join(bad)} — "
+                f"they are managed by the capture/mark-complete writers.")
+        for key, val in doc["set"].items():
+            if isinstance(val, (dict, list)):
+                raise ValueError(
+                    f"--batch 'set.{key}' must be a string, number or boolean "
+                    f"(a nested value has nowhere to go in a flat field)")
+    for item in doc.get("coverage") or []:
+        if not isinstance(item, dict) or not item.get("req"):
+            raise ValueError("--batch 'coverage' entries need a 'req' key")
+    if "step_summary" in doc and not isinstance(doc["step_summary"], dict):
+        raise ValueError("--batch 'step_summary' must be an object")
+    return doc
+
+
+def _as_raw(items: list) -> list:
+    """Capture writers take JSON strings or bare text; pass objects through as JSON."""
+    return [x if isinstance(x, str) else json.dumps(x, ensure_ascii=False) for x in items]
+
+
+def apply_batch(feature_dir: Path, raw: str, step: str) -> tuple:
+    """Apply the whole end-of-step volley, returning (target, [what landed])."""
+    doc = _parsed_batch(raw)
+    target, landed = None, []
+
+    def note(result, label):
+        nonlocal target
+        if result is not None:
+            target = result
+            landed.append(label)
+
+    for field, key, identity in (
+        ("decisions", "decisions", "decision"),
+        ("verified", "verified", "what"),
+        ("concerns", "concerns", "note"),
+    ):
+        items = doc.get(key)
+        if items:
+            note(append_capture_entries(feature_dir, field, identity, _as_raw(items)),
+                 f"{len(items)} {key}")
+    for field in ("expectations", "context"):
+        items = doc.get(field)
+        if items:
+            note(append_string_list(feature_dir, field, [str(x) for x in items]),
+                 f"{len(items)} {field}")
+    for item in doc.get("coverage") or []:
+        note(upsert_coverage(feature_dir, item["req"], item.get("tasks"),
+                             item.get("tests"), item.get("title")),
+             f"coverage {item['req']}")
+    summary = doc.get("step_summary")
+    if summary:
+        # The step is which slot to write, not part of the record. Passing it
+        # through would store `{"step": …, "summary": …}` where the single-flag
+        # form stores `{"summary": …}` — the two would not be byte-equivalent.
+        body = {k: v for k, v in summary.items() if k != "step"}
+        note(upsert_step_summary(feature_dir, summary.get("step") or step,
+                                 json.dumps(body, ensure_ascii=False)),
+             "step summary")
+    if doc.get("last_action"):
+        note(set_fields(feature_dir, [f"last_action={doc['last_action']}"]), "last_action")
+    # `set` carries the plain fields a wrap-up would otherwise spend one call
+    # each on — intent, approach, workflow, size, unattended. They are ordinary
+    # `--set` pairs; batching them changes nothing about what lands, only how
+    # many times the file is opened to land it.
+    pairs = doc.get("set")
+    if isinstance(pairs, dict) and pairs:
+        note(set_fields(feature_dir, [f"{k}={v}" for k, v in pairs.items()]),
+             f"{len(pairs)} field(s)")
+    return target, landed

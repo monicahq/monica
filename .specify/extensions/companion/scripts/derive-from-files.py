@@ -24,13 +24,15 @@ from pathlib import Path
 # The sibling module's filename has a hyphen, so it can't be a normal import.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 wc = importlib.import_module("write-context")
+ts = importlib.import_module("task_sync")
+spec_context = importlib.import_module("spec_context")
 
 
 def _infer(feature_dir: Path) -> tuple[str, str] | None:
     """Map artifact presence to (step, status); None when nothing is present."""
     tasks_md = feature_dir / "tasks.md"
     plan_md = feature_dir / "plan.md"
-    spec_md = feature_dir / "spec.md"
+    spec_md = spec_context.feature_spec_path(feature_dir)
 
     if tasks_md.is_file():
         all_ids, done_ids = wc.parse_task_markers(tasks_md)
@@ -78,13 +80,16 @@ def derive(feature_dir: Path, by: str = "derive") -> Path | None:
     ctx["currentStep"] = step
     ctx["status"] = status
 
-    log.append({
-        "step": step,
-        "substep": None,
-        "kind": "start",
-        "by": by,
-        "at": now,
-    })
+    # A step is started once — same guard as write-context.update_context, so
+    # deriving twice at the same step cannot duplicate the history entry.
+    if not wc._has_step_start(log, step, None):
+        log.append({
+            "step": step,
+            "substep": None,
+            "kind": "start",
+            "by": by,
+            "at": now,
+        })
 
     if step == "implement":
         all_ids, done_ids = wc.parse_task_markers(feature_dir / "tasks.md")
@@ -106,7 +111,10 @@ def derive(feature_dir: Path, by: str = "derive") -> Path | None:
                 "at": wc._now_iso(),
             })
         pending = [tid for tid in distinct_all if tid not in distinct_done]
-        ctx["currentTask"] = (pending[0] if pending else (distinct_done[-1] if distinct_done else None))
+        # Same rule as the sync path: with none pending, the current task is the one
+        # most recently finished, not the last in tasks.md order.
+        ctx["currentTask"] = (pending[0] if pending
+                              else (ts._last_finished(log, distinct_done) if distinct_done else None))
         # Close the implement step itself once every marker is checked off.
         all_done = bool(distinct_all) and set(distinct_done) >= set(distinct_all)
         if all_done and not wc._has_complete(log, "implement", None):

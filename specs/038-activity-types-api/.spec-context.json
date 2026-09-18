@@ -3,7 +3,7 @@
   "specName": "Activity type and category endpoints",
   "branch": "2026-api",
   "currentStep": "implement",
-  "status": "completed",
+  "status": "archived",
   "history": [
     {
       "step": "specify",
@@ -295,6 +295,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-18T08:36:45.116Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-18T13:52:14.891Z"
     }
   ],
   "currentTask": "T032",
