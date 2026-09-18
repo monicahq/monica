@@ -9,6 +9,7 @@ use App\Http\Controllers\App\Admin\AccountLifetimeAccessController;
 use App\Http\Controllers\App\Admin\AccountStorageLimitController;
 use App\Http\Controllers\App\Admin\AdministratorController;
 use App\Http\Controllers\App\Admin\AdministratorLogController;
+use App\Http\Controllers\App\Admin\InstanceSettingController;
 use App\Http\Controllers\App\Admin\ModerationApprovalController;
 use App\Http\Controllers\App\Admin\ModerationController;
 use App\Http\Controllers\App\Admin\ModerationRejectionController;
@@ -505,6 +506,19 @@ Route::middleware(['administrator'])->group(function (): void {
     Route::delete('admin/accounts/{account}/lifetime-access', [AccountLifetimeAccessController::class, 'destroy'])->whereNumber('account')->name('admin.accounts.lifetimeAccess.destroy');
     Route::post('admin/accounts/{account}/activation', [UserActivationController::class, 'create'])->whereNumber('account')->name('admin.accounts.activation.create');
     Route::delete('admin/accounts/{account}/activation', [UserActivationController::class, 'destroy'])->whereNumber('account')->name('admin.accounts.activation.destroy');
+
+    Route::get('admin/configuration', [InstanceSettingController::class, 'index'])->name('admin.configuration.index');
+
+    /*
+     * Changing how the instance behaves costs a password or a passkey, the same gate the security
+     * screen puts in front of anything that decides how somebody signs in. The mail transport is
+     * reachable from here, and repointing it takes the password reset and sign in links with it.
+     */
+    Route::middleware(['password.confirm:auth.confirmPassword.new'])->group(function (): void {
+        Route::put('admin/configuration/{setting}', [InstanceSettingController::class, 'update'])->name('admin.configuration.update');
+        Route::delete('admin/configuration/{setting}', [InstanceSettingController::class, 'destroy'])->name('admin.configuration.destroy');
+        Route::delete('admin/configuration/orphans/{name}', [InstanceSettingController::class, 'destroyOrphan'])->name('admin.configuration.orphans.destroy');
+    });
 
     Route::get('admin/administrators', [AdministratorController::class, 'index'])->name('admin.administrators.index');
     Route::post('admin/administrators', [AdministratorController::class, 'create'])->name('admin.administrators.create');

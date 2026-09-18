@@ -18,6 +18,8 @@ enum AdministratorActionEnum: string implements Translatable
     case LifetimeAccessWithdrawn = 'lifetime_access_withdrawn';
     case AdministratorAccessGranted = 'administrator_access_granted';
     case AdministratorAccessWithdrawn = 'administrator_access_withdrawn';
+    case InstanceSettingUpdated = 'instance_setting_updated';
+    case InstanceSettingReverted = 'instance_setting_reverted';
 
     public function description(): string
     {
@@ -31,6 +33,8 @@ enum AdministratorActionEnum: string implements Translatable
             self::LifetimeAccessWithdrawn => 'Withdrew lifetime access from the account of :name',
             self::AdministratorAccessGranted => 'Made :name an administrator',
             self::AdministratorAccessWithdrawn => 'Withdrew administrator access from :name',
+            self::InstanceSettingUpdated => 'Changed the instance setting :name',
+            self::InstanceSettingReverted => 'Put the instance setting :name back to what the deployment supplies',
         };
     }
 

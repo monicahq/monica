@@ -24,6 +24,7 @@ class AdminAccessTest extends TestCase
             'the moderation queue' => ['admin/moderation'],
             'the account lookup' => ['admin/accounts'],
             'the administrators' => ['admin/administrators'],
+            'the configuration' => ['admin/configuration'],
         ];
     }
 

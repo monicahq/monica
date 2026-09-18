@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Actions\VerifyPasskey;
 use App\Enums\SsoProviderEnum;
+use App\Helpers\InstanceSettings;
 use App\Helpers\LocaleCollation;
 use App\Http\Responses\PasskeyConfirmationResponse;
 use App\Http\Responses\PasskeyDeletedResponse;
@@ -44,6 +45,16 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
+     * Put what an administrator chose in front of what the deployment supplied,
+     * before anything else boots and reads a value.
+     */
+    private function applyInstanceSettings(): void
+    {
+        InstanceSettings::stashDeploymentValues();
+        InstanceSettings::apply();
+    }
+
+    /**
      * Register the driver of every provider that needs a package of its own.
      * Which packages are there is read from configuration rather than tested
      * here, so a test reaches either state, and a package that is absent is
@@ -79,6 +90,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Date::use(CarbonImmutable::class);
 
+        $this->applyInstanceSettings();
         $this->forceSecureUrls();
         $this->configureRateLimiting();
         $this->configureCollation();
