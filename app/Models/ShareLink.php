@@ -31,7 +31,7 @@ use Override;
  *
  * Everything sensitive is out until the owner says otherwise. Every inclusion
  * here is false to begin with, and the two exclusion lists tighten the result
- * further, section by section and activity by activity.
+ * further, section by section and life event by life event.
  *
  * Only the hash of the token is kept, as for a magic link, so a database dump
  * yields no working link. The plain token exists for the length of the request
@@ -50,14 +50,14 @@ use Override;
  * @property CarbonImmutable|null $expires_at
  * @property CarbonImmutable|null $revoked_at
  * @property bool $includes_files
- * @property bool $includes_activities
- * @property bool $includes_activity_narrative
+ * @property bool $includes_life_events
+ * @property bool $includes_life_event_narrative
  * @property bool $includes_day_narrative
  * @property bool $includes_relationships
  * @property bool $includes_groups
  * @property bool $includes_sensitive_fields
  * @property array<array-key, mixed> $excluded_section_ids
- * @property array<array-key, mixed> $excluded_activity_ids
+ * @property array<array-key, mixed> $excluded_life_event_ids
  * @property int $view_count
  * @property CarbonImmutable|null $last_viewed_at
  * @property int|null $created_by_user_id
@@ -81,14 +81,14 @@ use Override;
     'expires_at',
     'revoked_at',
     'includes_files',
-    'includes_activities',
-    'includes_activity_narrative',
+    'includes_life_events',
+    'includes_life_event_narrative',
     'includes_day_narrative',
     'includes_relationships',
     'includes_groups',
     'includes_sensitive_fields',
     'excluded_section_ids',
-    'excluded_activity_ids',
+    'excluded_life_event_ids',
     'view_count',
     'last_viewed_at',
     'created_by_user_id',
@@ -127,14 +127,14 @@ class ShareLink extends Model
             'expires_at' => 'datetime',
             'revoked_at' => 'datetime',
             'includes_files' => 'boolean',
-            'includes_activities' => 'boolean',
-            'includes_activity_narrative' => 'boolean',
+            'includes_life_events' => 'boolean',
+            'includes_life_event_narrative' => 'boolean',
             'includes_day_narrative' => 'boolean',
             'includes_relationships' => 'boolean',
             'includes_groups' => 'boolean',
             'includes_sensitive_fields' => 'boolean',
             'excluded_section_ids' => 'array',
-            'excluded_activity_ids' => 'array',
+            'excluded_life_event_ids' => 'array',
             'view_count' => 'integer',
             'last_viewed_at' => 'datetime',
         ];

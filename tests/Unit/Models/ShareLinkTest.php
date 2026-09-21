@@ -71,8 +71,8 @@ class ShareLinkTest extends TestCase
         $shareLink = ShareLink::factory()->create();
 
         $this->assertFalse($shareLink->includes_files);
-        $this->assertFalse($shareLink->includes_activities);
-        $this->assertFalse($shareLink->includes_activity_narrative);
+        $this->assertFalse($shareLink->includes_life_events);
+        $this->assertFalse($shareLink->includes_life_event_narrative);
         $this->assertFalse($shareLink->includes_day_narrative);
         $this->assertFalse($shareLink->includes_relationships);
         $this->assertFalse($shareLink->includes_groups);
@@ -84,11 +84,11 @@ class ShareLinkTest extends TestCase
     {
         $shareLink = ShareLink::factory()->create([
             'excluded_section_ids' => [12, 34],
-            'excluded_activity_ids' => [56],
+            'excluded_life_event_ids' => [56],
         ]);
 
         $this->assertEquals([12, 34], $shareLink->fresh()->excluded_section_ids);
-        $this->assertEquals([56], $shareLink->fresh()->excluded_activity_ids);
+        $this->assertEquals([56], $shareLink->fresh()->excluded_life_event_ids);
     }
 
     #[Test]

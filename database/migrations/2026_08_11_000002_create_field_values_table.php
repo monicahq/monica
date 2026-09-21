@@ -19,7 +19,7 @@ return new class extends Migration
             $table->id()->comment('primary key');
             $table->unsignedBigInteger('account_id')->comment('account the value belongs to');
             $table->unsignedBigInteger('vault_id')->comment('vault the value belongs to, so filtering never needs a join');
-            $table->string('valuable_type')->comment('class of the record, a contact, an entity or an activity');
+            $table->string('valuable_type')->comment('class of the record, a contact, an entity or a life event');
             $table->unsignedBigInteger('valuable_id')->comment('id of that record');
             $table->unsignedBigInteger('field_id')->comment('field the value was entered for');
             $table->string('field_key', 64)->comment('key of that field copied at write time, so the value survives the field');

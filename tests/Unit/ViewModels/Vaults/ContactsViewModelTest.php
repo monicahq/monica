@@ -6,7 +6,6 @@ namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
-use App\Enums\StructureAppliesToEnum;
 use App\Helpers\LocaleCollation;
 use App\Models\Contact;
 use App\Models\File;
@@ -35,7 +34,7 @@ class ContactsViewModelTest extends TestCase
         $this->contact($vault, 'Michael', 'Scott', [
             'nickname' => 'Prison Mike',
             'is_favourite' => true,
-            'last_activity_at' => '2026-08-04 09:00:00',
+            'last_interaction_at' => '2026-08-04 09:00:00',
         ]);
 
         $person = new ContactsViewModel(user: $user, vault: $vault)->groups()[0]['people'][0];

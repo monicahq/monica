@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
-use App\Enums\StructureAppliesToEnum;
 use App\Models\Contact;
 use App\Models\File;
 use App\Models\StructureVersion;
@@ -39,14 +38,13 @@ class VaultDashboardViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_whose_vault_it_is_and_how_many_people_are_in_it(): void
+    public function it_says_how_many_people_are_in_it(): void
     {
         $user = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 148]);
 
         $viewModel = new VaultDashboardViewModel(user: $user, vault: $vault);
 
-        $this->assertEquals('Michael Scott · 148 people', $viewModel->overline());
         $this->assertEquals('148 people', $viewModel->peopleCaption());
     }
 

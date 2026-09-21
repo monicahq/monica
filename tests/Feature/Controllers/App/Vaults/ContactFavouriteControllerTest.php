@@ -75,7 +75,7 @@ class ContactFavouriteControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_records_the_marking_in_the_activity(): void
+    public function it_records_the_marking_in_the_life_event(): void
     {
         Queue::fake();
 
@@ -146,7 +146,7 @@ class ContactFavouriteControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_records_the_clearing_in_the_activity(): void
+    public function it_records_the_clearing_in_the_life_event(): void
     {
         Queue::fake();
 

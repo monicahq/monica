@@ -27,7 +27,7 @@ class CreateShareLink
 
     /**
      * @param  list<int>  $excludedSectionIds
-     * @param  list<int>  $excludedActivityIds
+     * @param  list<int>  $excludedLifeEventIds
      */
     public function __construct(
         private readonly User $user,
@@ -37,14 +37,14 @@ class CreateShareLink
         private readonly ?string $password = null,
         private readonly ?CarbonImmutable $expiresAt = null,
         private readonly bool $includesFiles = false,
-        private readonly bool $includesActivities = false,
-        private readonly bool $includesActivityNarrative = false,
+        private readonly bool $includesLifeEvents = false,
+        private readonly bool $includesLifeEventNarrative = false,
         private readonly bool $includesDayNarrative = false,
         private readonly bool $includesRelationships = false,
         private readonly bool $includesGroups = false,
         private readonly bool $includesSensitiveFields = false,
         private readonly array $excludedSectionIds = [],
-        private readonly array $excludedActivityIds = [],
+        private readonly array $excludedLifeEventIds = [],
     ) {}
 
     public function execute(): ShareLink
@@ -85,14 +85,14 @@ class CreateShareLink
             'password_hash' => $this->password === null ? null : Hash::make($this->password),
             'expires_at' => $this->expiresAt,
             'includes_files' => $this->includesFiles,
-            'includes_activities' => $this->includesActivities,
-            'includes_activity_narrative' => $this->includesActivityNarrative,
+            'includes_life_events' => $this->includesLifeEvents,
+            'includes_life_event_narrative' => $this->includesLifeEventNarrative,
             'includes_day_narrative' => $this->includesDayNarrative,
             'includes_relationships' => $this->includesRelationships,
             'includes_groups' => $this->includesGroups,
             'includes_sensitive_fields' => $this->includesSensitiveFields,
             'excluded_section_ids' => $this->excludedSectionIds,
-            'excluded_activity_ids' => $this->excludedActivityIds,
+            'excluded_life_event_ids' => $this->excludedLifeEventIds,
             'view_count' => 0,
             'created_by_user_id' => $this->user->id,
         ]);

@@ -6,15 +6,15 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\CreateAccount;
 use App\Enums\UserActionEnum;
-use App\Jobs\CreateDefaultActivityTypes;
+use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
-use App\Jobs\SeedActivityCategories;
+use App\Jobs\SeedLifeEventCategories;
 use App\Jobs\SeedNotificationPreference;
 use App\Jobs\SeedRelationshipTypes;
 use App\Jobs\SeedValueLists;
-use App\Models\ActivityType;
 use App\Models\Field;
+use App\Models\LifeEventType;
 use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -161,9 +161,9 @@ class CreateAccountTest extends TestCase
 
         Queue::assertPushedWithChain(SeedNotificationPreference::class, [
             SeedValueLists::class,
-            SeedActivityCategories::class,
+            SeedLifeEventCategories::class,
             CreateDefaultTemplate::class,
-            CreateDefaultActivityTypes::class,
+            CreateDefaultLifeEventTypes::class,
             SeedRelationshipTypes::class,
         ]);
 
@@ -175,7 +175,7 @@ class CreateAccountTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_for_the_activity_types_only_once_the_categories_they_are_filed_under_exist(): void
+    public function it_asks_for_the_life_event_types_only_once_the_categories_they_are_filed_under_exist(): void
     {
         $user = new CreateAccount(
             firstName: 'Michael',
@@ -184,10 +184,10 @@ class CreateAccountTest extends TestCase
             password: 'thatswhatshesaid',
         )->execute();
 
-        $types = ActivityType::query()->where('account_id', $user->account_id)->get();
+        $types = LifeEventType::query()->where('account_id', $user->account_id)->get();
 
         $this->assertCount(40, $types);
-        $this->assertTrue($types->every(fn (ActivityType $type): bool => $type->activity_category_id !== null));
+        $this->assertTrue($types->every(fn (LifeEventType $type): bool => $type->life_event_category_id !== null));
         $this->assertSame('Call', $types->firstWhere('key', 'call')->name);
     }
 
@@ -302,7 +302,7 @@ class CreateAccountTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_the_account_the_groups_its_activities_are_filed_under(): void
+    public function it_gives_the_account_the_groups_its_life_events_are_filed_under(): void
     {
         Queue::fake(LogUserAction::class);
 
@@ -312,8 +312,8 @@ class CreateAccountTest extends TestCase
             email: 'michael.scott@dundermifflin.com',
         )->execute();
 
-        $this->assertCount(8, $user->account->activityCategories);
-        $this->assertDatabaseHas('activity_categories', [
+        $this->assertCount(8, $user->account->lifeEventCategories);
+        $this->assertDatabaseHas('life_event_categories', [
             'account_id' => $user->account_id,
             'key' => 'other',
             'is_system' => true,

@@ -16,8 +16,6 @@
 
   <header class="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
     <div class="flex min-w-0 flex-col gap-1.5">
-      <p class="text-sm text-pretty text-muted">{{ $viewModel->overline() }}</p>
-
       <h1 class="text-page-title text-balance text-ink">{{ $vault->name }}</h1>
 
       @if ($viewModel->description())
@@ -122,7 +120,7 @@
               <x-icon :name="$section['icon']" :size="30" :stroke-width="1.4" />
             </x-slot:icon>
 
-            {{ $section['emptyText'] }}
+            {{ $section['emptyText'] ?? '' }}
           </x-empty-state>
         </div>
       </section>

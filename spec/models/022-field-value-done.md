@@ -19,7 +19,7 @@ The second is the detached state. Section 3.3 forbids silent deletion: when a fi
 id                          int                             primary key
 account_id                  int                             account the value belongs to
 vault_id                    int                             vault the value belongs to, so filtering never needs a join
-valuable_type               string (255)                    class of the record, a contact, an entity or an activity
+valuable_type               string (255)                    class of the record, a contact, an entity or a life event
 valuable_id                 int                             id of that record
 field_id                    int                             field the value was entered for
 field_key                   string (64)                     key of that field copied at write time, so the value survives the field

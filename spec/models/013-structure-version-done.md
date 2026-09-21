@@ -37,16 +37,16 @@ updated_at                  datetime
 - `belongsTo` self as the previous version
 - `hasMany` [StructureVersionPage](055-structure-version-page-done.md)
 - `hasMany` [StructureVersionSection](016-structure-version-section-done.md)
-- referenced by [Contact](019-contact-done.md), [Entity](020-entity-done.md) and [Activity](036-activity-not-yet.md)
+- referenced by [Contact](019-contact-done.md), [Entity](020-entity-done.md) and [LifeEvent](036-life-event-not-yet.md)
 
-An [ActivityType](035-activity-type-in-progress.md) does not reference a version. It owns a structure, and the structure says which version is published. That is the direction that lets a type change its fields without every activity following.
+An [LifeEventType](035-life-event-type-in-progress.md) does not reference a version. It owns a structure, and the structure says which version is published. That is the direction that lets a type change its fields without every life event following.
 
 ## Rules
 
 - A published version is immutable. Not "should not be edited": the application refuses the write, and every code path that could reach it goes through a check. This is the load bearing rule of section 6 and everything else in the personalisation engine leans on it.
 - Immutability cascades. A published version pins its pages, their order, the placement of sections on them and the exact section versions they contain. Those section versions pin their fields. Renaming a value list item elsewhere cannot change what a section published yesterday does. Where a resolved copy is needed to make that true, [SectionVersion](015-section-version-in-progress.md) says so.
 - Every version contains at least one [StructureVersionPage](055-structure-version-page-done.md). It may contain any number above one. A version with no page cannot be published.
-- A page may hold no sections, and a version of one empty page is publishable. That is what an activity type starts with before anybody opens its field builder, and it renders a record carrying no custom fields rather than failing to render.
+- A page may hold no sections, and a version of one empty page is publishable. That is what a life event type starts with before anybody opens its field builder, and it renders a record carrying no custom fields rather than failing to render.
 - Editing a published version creates a draft copied from it, with `previous_version_id` set. Publishing that draft is a separate act, and it requires a change note.
 - A record never follows "latest". Moving a record to another version is deliberate, per record or in bulk, and it always writes a [RecordSnapshot](023-record-snapshot-done.md) first so it can be undone (6).
 - A record only ever moves between versions of one structure. `applies_to` is a property of the structure, so a contact cannot land on a version describing an entity, and the check needs no knowledge of who owns what.
@@ -55,9 +55,9 @@ An [ActivityType](035-activity-type-in-progress.md) does not reference a version
 
 ## Not done yet
 
-- **Records move between versions one at a time, and only a contact does.** `MoveRecordToStructureVersion` writes the [RecordSnapshot](023-record-snapshot-done.md) first, moves the record and hands `record_count` from one version to the other. A contact reaches it two ways: the banner offering the version its template publishes now, and the line of the version history that goes back to an earlier published one. [Entity](020-entity-done.md) has no screen to reach it from, and [Activity](036-activity-not-yet.md) is still ahead.
+- **Records move between versions one at a time, and only a contact does.** `MoveRecordToStructureVersion` writes the [RecordSnapshot](023-record-snapshot-done.md) first, moves the record and hands `record_count` from one version to the other. A contact reaches it two ways: the banner offering the version its template publishes now, and the line of the version history that goes back to an earlier published one. [Entity](020-entity-done.md) has no screen to reach it from, and [LifeEvent](036-life-event-not-yet.md) is still ahead.
 - **Nothing moves a whole version's worth of records at once.** Publishing moves nobody, deliberately, and there is no way to say "and bring everybody with it" for an account that wants exactly that.
-- **The API reaches versions through their template only.** `/templates/{template}/versions/{version}` is the whole surface. A structure owned by an activity type has no path yet, and it gets one with the activity type screens rather than here.
+- **The API reaches versions through their template only.** `/templates/{template}/versions/{version}` is the whole surface. A structure owned by a life event type has no path yet, and it gets one with the life event type screens rather than here.
 - **Retiring a version has no screen.** The action exists and nothing calls it: a version is retired when a template stops being offered, and that decision is taken on the template rather than the version. The version history already says a retired version cannot be gone back to, so the sentence exists before the thing that would produce one.
 
 ## Decisions taken while building it

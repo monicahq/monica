@@ -7,10 +7,10 @@ namespace Tests\Unit\Models;
 use App\Enums\AccessKindEnum;
 use App\Enums\OfferKindEnum;
 use App\Models\Account;
-use App\Models\ActivityCategory;
-use App\Models\ActivityType;
 use App\Models\Contact;
 use App\Models\EmailSent;
+use App\Models\LifeEventCategory;
+use App\Models\LifeEventType;
 use App\Models\Log;
 use App\Models\NotificationPreference;
 use App\Models\Payment;
@@ -59,18 +59,18 @@ class AccountTest extends TestCase
     }
 
     #[Test]
-    public function it_has_many_activity_types(): void
+    public function it_has_many_life_event_types(): void
     {
         $account = Account::factory()->create();
-        $category = ActivityCategory::factory()->create(['account_id' => $account->id]);
-        ActivityType::factory()->create([
+        $category = LifeEventCategory::factory()->create(['account_id' => $account->id]);
+        LifeEventType::factory()->create([
             'account_id' => $account->id,
-            'activity_category_id' => $category->id,
+            'life_event_category_id' => $category->id,
             'name' => 'Dundies',
         ]);
 
-        $this->assertTrue($account->activityTypes()->exists());
-        $this->assertEquals('Dundies', $account->activityTypes->first()->name);
+        $this->assertTrue($account->lifeEventTypes()->exists());
+        $this->assertEquals('Dundies', $account->lifeEventTypes->first()->name);
     }
 
     #[Test]

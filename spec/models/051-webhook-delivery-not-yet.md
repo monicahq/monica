@@ -16,7 +16,7 @@ id                          int                             primary key
 account_id                  int                             account the delivery belongs to
 webhook_subscription_id     int                             subscription being delivered to
 event_id                    string (36)                     unique identifier of the event, the same across every retry of it
-event_type                  string (64)                     what happened, such as activity.created
+event_type                  string (64)                     what happened, such as life event.created
 event_occurred_at           datetime                        when the thing actually happened, which is not when it was sent
 vault_id                    int                             vault the event came from, null for an account level event
 subject_type                string (255)                    class of the object concerned

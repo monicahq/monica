@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Enums\ReminderOccurrenceStatusEnum;
+use App\Models\Contact;
+use App\Models\File;
+use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\VaultsViewModel;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -37,8 +43,6 @@ class VaultsViewModelTest extends TestCase
         $vaults = new VaultsViewModel(user: $user)->vaults();
 
         $this->assertSame(['Famille', 'Travail'], array_column($vaults, 'name'));
-        $this->assertTrue($vaults[0]['isLastOpened']);
-        $this->assertFalse($vaults[1]['isLastOpened']);
     }
 
     #[Test]
@@ -67,18 +71,31 @@ class VaultsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function nothing_is_marked_as_last_opened_when_none_of_them_ever_was(): void
+    public function a_vault_says_when_it_was_last_opened(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['timezone' => 'UTC']);
 
-        Vault::factory()->count(2)->create([
+        Vault::factory()->create([
             'account_id' => $user->account_id,
+            'name' => 'Le club',
+            'position' => 1,
             'last_visited_at' => null,
         ]);
 
-        $vaults = new VaultsViewModel(user: $user)->vaults();
+        Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Famille',
+            'position' => 2,
+            'last_visited_at' => now()->subHours(3),
+        ]);
 
-        $this->assertSame([false, false], array_column($vaults, 'isLastOpened'));
+        $lines = array_combine(
+            array_column($vaults = new VaultsViewModel(user: $user)->vaults(), 'name'),
+            array_column($vaults, 'visitLine'),
+        );
+
+        $this->assertSame('Not opened yet', $lines['Le club']);
+        $this->assertSame('Opened 3 hours ago', $lines['Famille']);
     }
 
     #[Test]
@@ -96,22 +113,94 @@ class VaultsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_counts_the_people_in_each_vault_in_words(): void
+    public function it_shows_four_faces_and_says_how_many_it_left_out(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 18]);
+
+        Contact::factory()->count(6)->create(['vault_id' => $vault->id]);
+
+        $card = new VaultsViewModel(user: $user)->vaults()[0];
+
+        $this->assertCount(4, $card['faces']);
+        $this->assertSame('and 14 more', $card['moreFaces']);
+    }
+
+    #[Test]
+    public function it_leaves_nobody_out_when_the_vault_holds_no_more_than_four(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 2]);
+
+        Contact::factory()->count(2)->create(['vault_id' => $vault->id]);
+
+        $card = new VaultsViewModel(user: $user)->vaults()[0];
+
+        $this->assertCount(2, $card['faces']);
+        $this->assertNull($card['moreFaces']);
+    }
+
+    #[Test]
+    public function a_face_carries_the_picture_of_whoever_has_one(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 1]);
+
+        $file = File::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'first_name' => 'Michael',
+            'last_name' => 'Scott',
+            'avatar_file_id' => $file->id,
+        ]);
+
+        $face = new VaultsViewModel(user: $user)->vaults()[0]['faces'][0];
+
+        $this->assertSame('Michael Scott', $face['name']);
+        $this->assertSame(route('files.show', ['vault' => $vault, 'file' => $file]), $face['avatarUrl']);
+    }
+
+    #[Test]
+    public function it_counts_the_dates_the_vault_owes_before_the_month_is_out(): void
+    {
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $reminder = Reminder::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'remindable_type' => $contact->getMorphClass(),
+            'remindable_id' => $contact->id,
+            'is_active' => true,
+        ]);
+
+        $thisMonth = CarbonImmutable::now()->startOfMonth()->addDay();
+
+        foreach ([$thisMonth, $thisMonth->addDay(), CarbonImmutable::now()->endOfMonth()->addMonth()] as $when) {
+            ReminderOccurrence::factory()->create([
+                'account_id' => $user->account_id,
+                'vault_id' => $vault->id,
+                'reminder_id' => $reminder->id,
+                'status' => ReminderOccurrenceStatusEnum::Pending,
+                'source_local_date' => $when->toDateString(),
+                'generation_key' => "1:{$when->toDateString()}:on::",
+                'scheduled_for' => $when,
+                'local_date' => $when->toDateString(),
+            ]);
+        }
+
+        $this->assertSame(2, new VaultsViewModel(user: $user)->vaults()[0]['dateCount']);
+    }
+
+    #[Test]
+    public function no_task_is_ever_open_while_the_application_writes_none_down(): void
     {
         $user = User::factory()->create();
 
-        Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Empty', 'position' => 1, 'contact_count' => 0]);
-        Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'One', 'position' => 2, 'contact_count' => 1]);
-        Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Many', 'position' => 3, 'contact_count' => 12]);
+        Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $counts = array_combine(
-            array_column($vaults = new VaultsViewModel(user: $user)->vaults(), 'name'),
-            array_column($vaults, 'contactCount'),
-        );
-
-        $this->assertSame('Nobody in it yet', $counts['Empty']);
-        $this->assertSame('1 person', $counts['One']);
-        $this->assertSame('12 people', $counts['Many']);
+        $this->assertSame(0, new VaultsViewModel(user: $user)->vaults()[0]['openTaskCount']);
     }
 
     #[Test]
@@ -128,7 +217,7 @@ class VaultsViewModelTest extends TestCase
         $vault = new VaultsViewModel(user: $user)->vaults()[0];
 
         $this->assertSame('#2f7350', $vault['colour']);
-        $this->assertSame('color-mix(in srgb, #2f7350 12%, transparent)', $vault['tint']);
+        $this->assertSame('color-mix(in srgb, #2f7350 12%, var(--canvas))', $vault['tint']);
         $this->assertSame('F', $vault['initial']);
     }
 

@@ -7,7 +7,7 @@ import focus from '@alpinejs/focus';
 import anchor from '@alpinejs/anchor';
 import ajax from '@imacrayon/alpine-ajax';
 
-import activityTypeFields from './activity-type-fields';
+import lifeEventTypeFields from './life-event-type-fields';
 import apiDocsSidebarScroll from './api-docs-sidebar-scroll';
 import confirmPassword from './confirm-password';
 import fieldReminder from './field-reminder';
@@ -19,7 +19,7 @@ window.Turbo = Turbo;
 
 Turbo.session.drive = false;
 
-Alpine.data('activityTypeFields', activityTypeFields);
+Alpine.data('lifeEventTypeFields', lifeEventTypeFields);
 Alpine.data('apiDocsSidebarScroll', apiDocsSidebarScroll);
 Alpine.data('confirmPassword', confirmPassword);
 Alpine.data('fieldReminder', fieldReminder);

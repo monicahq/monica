@@ -6,7 +6,7 @@ namespace Tests\Unit\Models;
 
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
-use App\Models\ActivityType;
+use App\Models\LifeEventType;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
@@ -117,12 +117,12 @@ class StructureVersionSectionTest extends TestCase
     }
 
     #[Test]
-    public function it_is_reachable_through_the_template_or_the_activity_type_that_owns_its_structure(): void
+    public function it_is_reachable_through_the_template_or_the_life_event_type_that_owns_its_structure(): void
     {
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $activityType = ActivityType::factory()->create(['account_id' => $user->account_id]);
-        $structure = $activityType->structure;
+        $lifeEventType = LifeEventType::factory()->create(['account_id' => $user->account_id]);
+        $structure = $lifeEventType->structure;
 
         $onTheTemplate = StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
@@ -142,8 +142,8 @@ class StructureVersionSectionTest extends TestCase
         ]);
 
         $this->assertTrue($onTheTemplate->isReachableThrough($user, $template));
-        $this->assertTrue($onTheType->isReachableThrough($user, $activityType));
+        $this->assertTrue($onTheType->isReachableThrough($user, $lifeEventType));
         $this->assertFalse($onTheType->isReachableThrough($user, $template));
-        $this->assertFalse($onTheTemplate->isReachableThrough($user, $activityType));
+        $this->assertFalse($onTheTemplate->isReachableThrough($user, $lifeEventType));
     }
 }

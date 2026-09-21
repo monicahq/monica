@@ -13,7 +13,7 @@ class WarningTest extends TestCase
     public function it_is_a_dialog_that_traps_the_focus(): void
     {
         $rendered = $this->blade(
-            '<x-modal.warning title="Delete “test”?" action="/settings/account/activity-categories/9"><p>Nothing you have written changes.</p><x-slot:trigger><button type="button" @click="open = true">Delete this category</button></x-slot:trigger></x-modal.warning>',
+            '<x-modal.warning title="Delete “test”?" action="/settings/account/life-event-categories/9"><p>Nothing you have written changes.</p><x-slot:trigger><button type="button" @click="open = true">Delete this category</button></x-slot:trigger></x-modal.warning>',
         );
 
         $rendered->assertSee('role="dialog"', escape: false);
@@ -26,7 +26,7 @@ class WarningTest extends TestCase
     public function it_draws_the_card_on_the_body_so_it_shows_from_inside_a_menu_that_closes(): void
     {
         $rendered = $this->blade(
-            '<x-modal.warning title="Delete “test”?" action="/settings/account/activity-categories/9"><p>Nothing you have written changes.</p><x-slot:trigger><button type="button" @click="open = true">Delete this category</button></x-slot:trigger></x-modal.warning>',
+            '<x-modal.warning title="Delete “test”?" action="/settings/account/life-event-categories/9"><p>Nothing you have written changes.</p><x-slot:trigger><button type="button" @click="open = true">Delete this category</button></x-slot:trigger></x-modal.warning>',
         );
 
         $rendered->assertSee('<template x-teleport="body">', escape: false);
@@ -36,7 +36,7 @@ class WarningTest extends TestCase
     public function it_shows_the_trigger_and_what_the_card_asks(): void
     {
         $rendered = $this->blade(
-            '<x-modal.warning title="Delete “test”?" confirm="Delete the category" action="/settings/account/activity-categories/9"><p>Nothing you have written changes.</p><x-slot:trigger><button type="button" @click="open = true">Delete this category</button></x-slot:trigger></x-modal.warning>',
+            '<x-modal.warning title="Delete “test”?" confirm="Delete the category" action="/settings/account/life-event-categories/9"><p>Nothing you have written changes.</p><x-slot:trigger><button type="button" @click="open = true">Delete this category</button></x-slot:trigger></x-modal.warning>',
         );
 
         $rendered->assertSee('Delete this category', escape: false);
@@ -49,10 +49,10 @@ class WarningTest extends TestCase
     public function it_destroys_what_the_trigger_pointed_at(): void
     {
         $rendered = $this->blade(
-            '<x-modal.warning action="/settings/account/activity-categories/9"><p>Nothing you have written changes.</p><x-slot:trigger><button type="button">Delete</button></x-slot:trigger></x-modal.warning>',
+            '<x-modal.warning action="/settings/account/life-event-categories/9"><p>Nothing you have written changes.</p><x-slot:trigger><button type="button">Delete</button></x-slot:trigger></x-modal.warning>',
         );
 
-        $rendered->assertSee('action="/settings/account/activity-categories/9"', escape: false);
+        $rendered->assertSee('action="/settings/account/life-event-categories/9"', escape: false);
         $rendered->assertSee('value="delete"', escape: false);
     }
 }

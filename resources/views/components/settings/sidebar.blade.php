@@ -23,16 +23,21 @@
       ],
     ],
     [
-      'title' => __('This account'),
+      'title' => __('Personalisation'),
       'entries' => [
         ['key' => 'entity-types', 'label' => __('Kinds of record'), 'icon' => 'organization', 'url' => route('settings.entityTypes.index')],
         ['key' => 'templates', 'label' => __('Templates'), 'icon' => 'file', 'url' => route('settings.templates.index')],
         ['key' => 'value-lists', 'label' => __('Value lists'), 'icon' => 'tasks', 'url' => route('settings.valueLists.index')],
         ['key' => 'relationship-types', 'label' => __('Relationship types'), 'icon' => 'relationship', 'url' => route('settings.relationshipTypes.index')],
-        ['key' => 'activity-types', 'label' => __('Activity types'), 'icon' => 'activity', 'url' => route('settings.activityTypes.index')],
-        ...(config('monica.self_hosted') ? [] : [['key' => 'billing', 'label' => __('Billing'), 'icon' => 'coin', 'url' => route('settings.billing.index')]]),
+        ['key' => 'life-event-types', 'label' => __('Life event types'), 'icon' => 'activity', 'url' => route('settings.lifeEventTypes.index')],
       ],
     ],
+    ...(config('monica.self_hosted') ? [] : [[
+      'title' => __('Account'),
+      'entries' => [
+        ['key' => 'billing', 'label' => __('Billing'), 'icon' => 'coin', 'url' => route('settings.billing.index')],
+      ],
+    ]]),
   ];
 @endphp
 
@@ -42,9 +47,15 @@
   class="fixed inset-y-0 left-0 z-40 flex w-62 flex-col border-r border-hairline bg-card transition-transform duration-(--duration-slow) ease-out max-lg:-translate-x-full lg:static lg:h-full lg:w-auto lg:translate-x-0"
 >
   <div class="flex items-center gap-2.5 px-4 pt-3.5 pb-2.5">
-    <x-logo :size="26" />
+    <a
+      href="{{ route('vaults.index') }}"
+      data-turbo="true"
+      class="flex min-w-0 items-center gap-2.5 rounded-md no-underline focus-ring"
+    >
+      <x-logo :size="26" />
 
-    <span class="truncate text-sm font-semibold tracking-tight text-ink">{{ config('app.name') }}</span>
+      <span class="truncate text-sm font-semibold tracking-tight text-ink">{{ config('app.name') }}</span>
+    </a>
 
     <x-theme-toggle class="ml-auto" />
 
@@ -71,7 +82,7 @@
 
   <nav aria-label="{{ __('Settings') }}" class="min-h-0 flex-1 space-y-px overflow-y-auto px-2 pt-1.5 pb-3">
     @foreach ($groups as $group)
-      <h2 class="px-2 pt-1 pb-1.5 text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ $group['title'] }}</h2>
+      <h2 class="px-2 pt-4 pb-2.5 text-[11px] font-medium tracking-caption text-muted-soft uppercase first:pt-1">{{ $group['title'] }}</h2>
 
       @foreach ($group['entries'] as $entry)
         <a

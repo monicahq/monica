@@ -20,8 +20,8 @@ which kind of record it describes, which of its versions is currently published,
 It exists because the engine had been named after one of its callers. A contact carried a
 `template_version_id`, a page belonged to a template version, a section placement was a template
 version section. That was accurate while a template was the only thing with fields. An
-[ActivityType](035-activity-type-in-progress.md) needs the same engine for its custom fields (9.3), and
-naming the engine after a template left two bad options: an activity type borrows a
+[LifeEventType](035-life-event-type-in-progress.md) needs the same engine for its custom fields (9.3), and
+naming the engine after a template left two bad options: a life event type borrows a
 [Template](012-template-in-progress.md) it is not, or a second field engine grows beside the first,
 which [the constitution](../../.specify/memory/constitution.md) principle VII forbids outright.
 
@@ -35,9 +35,9 @@ user sees it.
 id                          int                             primary key
 uuid                        string (36)                     unguessable identifier used by the API
 account_id                  int                             account the structure belongs to
-owner_type                  string (255)                    class of the thing that owns it, a template or an activity type
+owner_type                  string (255)                    class of the thing that owns it, a template or a life event type
 owner_id                    int                             id of that owner
-applies_to                  enum (contact, entity, activity)  kind of record it describes
+applies_to                  enum (contact, entity, life event)  kind of record it describes
 entity_type_id              int, nullable                   type it applies to when applies_to is entity, null otherwise
 published_version_id        int, nullable                   version offered to a new record, null while only drafts exist
 created_at                  datetime
@@ -50,7 +50,7 @@ updated_at                  datetime
 
 - `belongsTo` [Account](001-account-in-progress.md), [EntityType](011-entity-type-done.md)
 - `morphTo` its owner, a [Template](012-template-in-progress.md) or an
-  [ActivityType](035-activity-type-in-progress.md)
+  [LifeEventType](035-life-event-type-in-progress.md)
 - `belongsTo` [StructureVersion](013-structure-version-done.md) as the published one
 - `hasMany` [StructureVersion](013-structure-version-done.md)
 
@@ -60,7 +60,7 @@ updated_at                  datetime
   by the two columns being required, the second by the unique index on them.
 - The owner is a morph, and a morph takes no foreign key, so two rules the database would otherwise
   enforce live elsewhere.
-- The first is that a structure never outlives its owner for good. Deleting a template or an activity
+- The first is that a structure never outlives its owner for good. Deleting a template or a life event
   type is soft, and the structure deliberately stays, because a restored owner has to come back with
   its fields. The only deletion that is final is the account, and the database handles that through
   `account_id`. Anything that force deletes a single owner has to take the structure with it, and
@@ -71,7 +71,7 @@ updated_at                  datetime
   with it.
 - `applies_to` lives here rather than on the owner so that a version can say which kind of record it
   describes without anybody asking who owns it. Moving a record to another version and resolving a
-  vault default both need that answer, and neither should have to know that templates and activity
+  vault default both need that answer, and neither should have to know that templates and life event
   types exist.
 - `published_version_id` is the only place "which version is current" is written. Nothing else caches
   it and nothing derives it by taking the highest number.
@@ -86,4 +86,4 @@ updated_at                  datetime
 - Nothing here is settled against a marketplace listing that installs a structure without its owner.
   [MarketplaceListing](045-marketplace-listing-done.md) publishes the owner, so the question does not
   arise today, and it would arise the moment somebody wants to install a bare structure into an
-  activity type that already has one.
+  life event type that already has one.

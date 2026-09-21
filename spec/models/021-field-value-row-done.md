@@ -16,7 +16,7 @@ It comes before [FieldValue](022-field-value-done.md) in the order because a val
 ```
 id                          int                             primary key
 account_id                  int                             account the row belongs to
-valuable_type               string (255)                    class of the record the row belongs to, a contact, an entity or an activity
+valuable_type               string (255)                    class of the record the row belongs to, a contact, an entity or a life event
 valuable_id                 int                             id of that record
 field_id                    int                             repeater field this is a repetition of
 position                    int                             order the repetition appears in, which the user can reorder
@@ -27,7 +27,7 @@ updated_at                  datetime
 ## Relationships
 
 - `belongsTo` [Account](001-account-in-progress.md)
-- `morphTo` valuable, which is a [Contact](019-contact-done.md), an [Entity](020-entity-done.md) or an [Activity](036-activity-not-yet.md)
+- `morphTo` valuable, which is a [Contact](019-contact-done.md), an [Entity](020-entity-done.md) or an [LifeEvent](036-life-event-not-yet.md)
 - `belongsTo` [Field](017-field-done.md), which must be a repeater
 - `hasMany` [FieldValue](022-field-value-done.md)
 
@@ -41,7 +41,7 @@ updated_at                  datetime
 
 ## Not done yet
 
-- **An activity holds no repetitions,** because [Activity](036-activity-not-yet.md) does not exist. The morph is written to take one the day it does; what exists today is a repetition on a contact or an entity.
+- **A life event holds no repetitions,** because [LifeEvent](036-life-event-not-yet.md) does not exist. The morph is written to take one the day it does; what exists today is a repetition on a contact or an entity.
 - **A repetition is added and taken away, and never moved.** The block of the record that opens as a form draws the repetitions a repeater holds, a few blank ones after them, and writes the whole lot when it is saved: what arrives carrying a number is that repetition, what carries none is a new one, and a number that does not arrive at all is one somebody removed. `position` is written in the order they were added and nothing reorders them. The action a drag would have called was written, had no caller and has been removed, so reordering starts from nothing on the day a drag is built.
 - **No API.**
 

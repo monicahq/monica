@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
+use App\Actions\CreateLifeEventType;
+use App\Actions\CreateStructureVersionDraft;
 use App\Actions\PublishStructureVersion;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\CannotPublishAnEmptyPage;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Jobs\LogUserAction;
+use App\Models\LifeEventCategory;
 use App\Models\SectionVersion;
-use App\Models\Template;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
-use App\Actions\CreateActivityType;
-use App\Actions\CreateStructureVersionDraft;
-use App\Models\ActivityCategory;
 use Tests\TestCase;
 
 class PublishStructureVersionTest extends TestCase
@@ -286,12 +286,12 @@ class PublishStructureVersionTest extends TestCase
     }
 
     #[Test]
-    public function it_says_a_section_it_published_went_out_with_the_activity_type(): void
+    public function it_says_a_section_it_published_went_out_with_the_life_event_type(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
-        $draft = $this->activityTypeDraft($user);
+        $draft = $this->lifeEventTypeDraft($user);
         $first = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
         $second = SectionVersion::factory()->create([
             'account_id' => $user->account_id,
@@ -306,33 +306,33 @@ class PublishStructureVersionTest extends TestCase
 
         new PublishStructureVersion(user: $user, structureVersion: $draft, changeNote: 'Where we went.')->execute();
 
-        $this->assertEquals('Published with the activity type.', $second->fresh()->change_note);
+        $this->assertEquals('Published with the life event type.', $second->fresh()->change_note);
     }
 
     #[Test]
-    public function it_writes_the_publication_of_custom_fields_to_the_logs_as_the_activity_type_it_is(): void
+    public function it_writes_the_publication_of_custom_fields_to_the_logs_as_the_life_event_type_it_is(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
-        $draft = $this->activityTypeDraft($user);
+        $draft = $this->lifeEventTypeDraft($user);
 
         new PublishStructureVersion(user: $user, structureVersion: $draft, changeNote: 'Where we went.')->execute();
 
         Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::ActivityTypeFieldsPublished
+            return $job->action === UserActionEnum::LifeEventTypeFieldsPublished
                 && $job->parameters === ['name' => 'Restaurant', 'version' => 2];
         });
     }
 
-    private function activityTypeDraft(User $user): StructureVersion
+    private function lifeEventTypeDraft(User $user): StructureVersion
     {
-        $activityType = new CreateActivityType(
+        $lifeEventType = new CreateLifeEventType(
             user: $user,
-            activityCategory: ActivityCategory::factory()->create(['account_id' => $user->account_id]),
+            lifeEventCategory: LifeEventCategory::factory()->create(['account_id' => $user->account_id]),
             name: 'Restaurant',
         )->execute();
 
-        return new CreateStructureVersionDraft(user: $user, structureVersion: $activityType->structure->publishedVersion)->execute();
+        return new CreateStructureVersionDraft(user: $user, structureVersion: $lifeEventType->structure->publishedVersion)->execute();
     }
 }

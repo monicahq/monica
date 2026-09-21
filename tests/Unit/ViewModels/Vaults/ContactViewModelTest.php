@@ -262,7 +262,7 @@ class ContactViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
-        $contact = $this->contact($user, $version, ['last_activity_at' => now()->subDays(4)]);
+        $contact = $this->contact($user, $version, ['last_interaction_at' => now()->subDays(4)]);
 
         $facts = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact))->headerFacts();
 

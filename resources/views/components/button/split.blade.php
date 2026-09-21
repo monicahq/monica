@@ -1,7 +1,13 @@
 {{-- A primary button with the rest of what can be done hanging behind a chevron on its edge. --}}
-{{-- @var string $label --}}
+{{--
+  @var string $label
+  @var string|null $href
+  @var bool $turbo
+--}}
 @props([
   'label',
+  'href' => null,
+  'turbo' => false,
 ])
 
 @php
@@ -10,7 +16,7 @@
 
 @if ($hasMenu)
   <div x-data="{ open: false }" @keydown.escape.window="open = false" @ajax:before.window="open = false" {{ $attributes->class(['flex']) }}>
-    <x-button class="flex-1 rounded-r-none">{{ $label }}</x-button>
+    <x-button :href="$href" :data-turbo="$turbo ? 'true' : null" class="flex-1 rounded-r-none">{{ $label }}</x-button>
 
     <x-button
       type="button"
@@ -46,5 +52,5 @@
     </div>
   </div>
 @else
-  <x-button {{ $attributes }}>{{ $label }}</x-button>
+  <x-button :href="$href" :data-turbo="$turbo ? 'true' : null" {{ $attributes }}>{{ $label }}</x-button>
 @endif

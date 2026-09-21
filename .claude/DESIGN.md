@@ -244,9 +244,9 @@ The mark in `public/images/logo.svg` is never redrawn and never recoloured, exce
 
 **Relationships.** Direction is written as a sentence, never implied by an arrow: "Lucie is Théo's mother." Show type, qualifiers as badges, period, and certainty (certain, probable, uncertain) as a word. Deduced and suggested relationships are visually distinguishable from confirmed ones and say where they came from. Editing a relationship states the reciprocal that will be created.
 
-**Timeline.** A chronological list. Thin vertical line, date grouping, compact rows, small nature glyphs, expandable detail, an explicit distinction between event date and recorded date. Activities and relationship events share one stream. No decorative timeline graphics.
+**Timeline.** A chronological list. Thin vertical line, date grouping, compact rows, small nature glyphs, expandable detail, an explicit distinction between event date and recorded date. Life events and relationship events share one stream. No decorative timeline graphics.
 
-**Journal.** A day is a page: activities, the day's own narrative, a mood. An empty day stays empty. No nudging, no streaks, no gamification.
+**Journal.** A day is a page: life events, the day's own narrative, a mood. An empty day stays empty. No nudging, no streaks, no gamification.
 
 **Reminders.** Subject, related contact, due date, recurrence, delivery status, state. Overdue uses a word and a glyph, not red alone. Snooze, skip, complete and turn off the rule are four distinct labelled actions, and the interface says which occurrences each one affects.
 

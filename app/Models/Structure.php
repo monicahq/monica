@@ -27,7 +27,7 @@ use Override;
  *
  * It exists because the engine used to be named after one of its callers: a
  * version belonged to a template, so nothing but a template could carry fields.
- * An activity type needs the same engine, and the alternatives were to make it
+ * A life event type needs the same engine, and the alternatives were to make it
  * borrow a template it is not, or to grow a second field engine beside the
  * first, which the constitution forbids.
  *
@@ -50,7 +50,7 @@ use Override;
  * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read EntityType|null $entityType
- * @property-read Template|ActivityType|null $owner
+ * @property-read Template|LifeEventType|null $owner
  * @property-read StructureVersion|null $publishedVersion
  */
 #[Fillable([
@@ -92,7 +92,7 @@ class Structure extends Model
     }
 
     /**
-     * Get the thing the structure describes, a template or an activity type.
+     * Get the thing the structure describes, a template or a life event type.
      *
      * The column carries no foreign key, and the owner is soft deleted, so this
      * is null once the owner is gone. The deleting actions keep that state out

@@ -13,7 +13,7 @@ return new class extends Migration
         Schema::create('field_value_rows', function (Blueprint $table): void {
             $table->id()->comment('primary key');
             $table->unsignedBigInteger('account_id')->comment('account the row belongs to');
-            $table->string('valuable_type')->comment('class of the record the row belongs to, a contact, an entity or an activity');
+            $table->string('valuable_type')->comment('class of the record the row belongs to, a contact, an entity or a life event');
             $table->unsignedBigInteger('valuable_id')->comment('id of that record');
             $table->unsignedBigInteger('field_id')->comment('repeater field this is a repetition of');
             $table->unsignedInteger('position')->comment('order the repetition appears in, which the user can reorder');

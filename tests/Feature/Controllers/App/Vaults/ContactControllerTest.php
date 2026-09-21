@@ -666,7 +666,7 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_keeps_the_card_and_the_merge_behind_one_menu(): void
+    public function it_keeps_the_share_the_merge_and_the_card_behind_one_menu(): void
     {
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user);
@@ -674,11 +674,13 @@ class ContactControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
             ->assertStatus(200)
-            ->assertSee('x-data="{ menuOpen: false }"', escape: false)
-            ->assertSee('@click="menuOpen = ! menuOpen"', escape: false)
+            ->assertSee('x-data="{ open: false }"', escape: false)
+            ->assertSee('@click="open = ! open"', escape: false)
             ->assertSee('aria-haspopup="menu"', escape: false)
             ->assertSee('role="menu"', escape: false)
             ->assertSee('role="menuitem"', escape: false)
+            ->assertSee('Share')
+            ->assertSee(route('contacts.shareLinks.index', ['vault' => $vault, 'contact' => $michael]), false)
             ->assertSee('Export as vCard')
             ->assertSee(route('contacts.vcard.show', ['vault' => $vault, 'contact' => $michael]), false)
             ->assertSee('Merge')

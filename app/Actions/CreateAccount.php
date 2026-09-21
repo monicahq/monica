@@ -6,10 +6,10 @@ namespace App\Actions;
 
 use App\Enums\SsoProviderEnum;
 use App\Enums\UserActionEnum;
-use App\Jobs\CreateDefaultActivityTypes;
+use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
-use App\Jobs\SeedActivityCategories;
+use App\Jobs\SeedLifeEventCategories;
 use App\Jobs\SeedNotificationPreference;
 use App\Jobs\SeedRelationshipTypes;
 use App\Jobs\SeedValueLists;
@@ -92,9 +92,9 @@ class CreateAccount
         Bus::chain([
             new SeedNotificationPreference(user: $this->user),
             new SeedValueLists(user: $this->user),
-            new SeedActivityCategories(user: $this->user),
+            new SeedLifeEventCategories(user: $this->user),
             new CreateDefaultTemplate(user: $this->user),
-            new CreateDefaultActivityTypes(user: $this->user),
+            new CreateDefaultLifeEventTypes(user: $this->user),
             new SeedRelationshipTypes(user: $this->user),
         ])->onQueue('high')->dispatch();
     }

@@ -10,7 +10,7 @@ use App\Exceptions\CannotPublishAnEmptyPage;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
-use App\Models\ActivityType;
+use App\Models\LifeEventType;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
 use App\Models\User;
@@ -26,7 +26,7 @@ use InvalidArgumentException;
  * rather than in whatever asked for the publication: the rule is about freezing,
  * and every caller has to obey it identically or the freeze means nothing.
  *
- * The structure belongs to a template or to an activity type, and the journal
+ * The structure belongs to a template or to a life event type, and the journal
  * names whichever it is, since neither word means anything on the other's screen.
  */
 class PublishStructureVersion
@@ -70,8 +70,8 @@ class PublishStructureVersion
 
     private function sectionChangeNote(): string
     {
-        if ($this->structureVersion->structure->owner instanceof ActivityType) {
-            return __('Published with the activity type.');
+        if ($this->structureVersion->structure->owner instanceof LifeEventType) {
+            return __('Published with the life event type.');
         }
 
         return __('Published with the template.');
@@ -144,8 +144,8 @@ class PublishStructureVersion
         LogUserAction::dispatch(
             account: $this->user->account,
             user: $this->user,
-            action: $owner instanceof ActivityType
-                ? UserActionEnum::ActivityTypeFieldsPublished
+            action: $owner instanceof LifeEventType
+                ? UserActionEnum::LifeEventTypeFieldsPublished
                 : UserActionEnum::TemplateVersionPublished,
             parameters: [
                 'name' => $owner->name,

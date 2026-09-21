@@ -234,23 +234,23 @@ class Account extends Model
     }
 
     /**
-     * Get the groups the activity vocabulary is filed under.
+     * Get the groups the life event vocabulary is filed under.
      *
-     * @return HasMany<ActivityCategory, $this>
+     * @return HasMany<LifeEventCategory, $this>
      */
-    public function activityCategories(): HasMany
+    public function lifeEventCategories(): HasMany
     {
-        return $this->hasMany(ActivityCategory::class)->orderBy('position');
+        return $this->hasMany(LifeEventCategory::class)->orderBy('position');
     }
 
     /**
-     * Get every nature an activity may be recorded as, across the groups they are filed under.
+     * Get every nature a life event may be recorded as, across the groups they are filed under.
      *
-     * @return HasMany<ActivityType, $this>
+     * @return HasMany<LifeEventType, $this>
      */
-    public function activityTypes(): HasMany
+    public function lifeEventTypes(): HasMany
     {
-        return $this->hasMany(ActivityType::class);
+        return $this->hasMany(LifeEventType::class);
     }
 
     /**

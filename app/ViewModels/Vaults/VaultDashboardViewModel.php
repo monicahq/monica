@@ -39,11 +39,6 @@ class VaultDashboardViewModel
         return $this->vault->description;
     }
 
-    public function overline(): string
-    {
-        return "{$this->user->name} · {$this->contactCount()}";
-    }
-
     public function vaultsUrl(): string
     {
         return route('vaults.index');
@@ -126,7 +121,7 @@ class VaultDashboardViewModel
     }
 
     /**
-     * @return array<int, array{title: string, caption: string, icon: string, emptyTitle: string, emptyText: string}>
+     * @return array<int, array{title: string, caption: string, icon: string, emptyTitle: string, emptyText?: string}>
      */
     public function unbuiltSections(): array
     {
@@ -136,7 +131,6 @@ class VaultDashboardViewModel
                 'caption' => __('Nothing open'),
                 'icon' => 'tasks',
                 'emptyTitle' => __('Nothing you owe anyone'),
-                'emptyText' => __('Things you said you would do for somebody in this vault appear here until they are done.'),
             ],
             [
                 'title' => __('Reminders'),

@@ -6,10 +6,10 @@ namespace App\Actions;
 
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\LifeEventType;
 use App\Models\SectionVersion;
-use App\Models\ActivityType;
-use App\Models\Template;
 use App\Models\StructureVersionSection;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\DB;
  */
 class RemoveSectionFromStructureVersion
 {
-    private Template|ActivityType $owner;
+    private Template|LifeEventType $owner;
 
     private string $sectionName;
 

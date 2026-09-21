@@ -5,11 +5,11 @@
 
 ## What it is
 
-The definition of a record: what a contact page shows, what an Animal holds, what a Restaurant activity asks for. It is what gets applied to a record, and what decides what appears on it.
+The definition of a record: what a contact page shows, what an Animal holds, what a Restaurant life event asks for. It is what gets applied to a record, and what decides what appears on it.
 
 The template itself is a container with an identity. It holds no pages, sections or fields directly, and since the engine was made generic it holds no versions either. What it holds is a [Structure](056-structure-done.md), and the structure holds the versions ([StructureVersion](013-structure-version-done.md)). A version contains ordered pages ([StructureVersionPage](055-structure-version-page-done.md)), and those pages contain ordered section versions through [StructureVersionSection](016-structure-version-section-done.md). The split exists because of section 6: a published version is frozen forever, and a record points at a precise version rather than at "the latest". The stable product identity has to live somewhere, and that somewhere is this model; what the engine needs lives on the structure.
 
-Three things can be templated in the first version: a contact, an entity of a given type, and an activity of a given nature (9.3). The activity case is what lets somebody design a good mountain hike log or a good medical appointment log and publish it as is.
+Three things can be templated in the first version: a contact, an entity of a given type, and a life event of a given nature (9.3). The life event case is what lets somebody design a good mountain hike log or a good medical appointment log and publish it as is.
 
 ## Fields
 
@@ -40,7 +40,7 @@ deleted_at                  datetime
 
 ## Rules
 
-- A template does not point at an activity type and never did. The two are siblings now: each owns a [Structure](056-structure-done.md) and neither knows the other exists.
+- A template does not point at a life event type and never did. The two are siblings now: each owns a [Structure](056-structure-done.md) and neither knows the other exists.
 - A template owns exactly one structure. Deleting a template is soft, and the structure stays: a soft deleted template is restorable and has to come back with its fields. What must never be left behind is a structure whose owner is gone for good, and the only path to that today is the account being deleted, which the database handles through `structures.account_id`. A force delete of a single template would need to take the structure with it, and nothing does one.
 - `applies_to` and `entity_type_id` are read through the structure. They moved there so that a version can say which kind of record it describes without anybody asking who owns it, which is what moving a record to another version and resolving a vault default both need.
 - `locale` is recorded because a template written by one person is written in one language (3.7). The marketplace shows it and filters on it, and an installer may rename everything freely because what they installed is a copy.
@@ -50,7 +50,7 @@ deleted_at                  datetime
 
 ## Not done yet
 
-- **The activity case left this model.** `applies_to` now lives on the structure and offers `activity` as well, which is what an [ActivityType](035-activity-type-in-progress.md) structure carries. A template is never the thing that applies to an activity.
+- **The life event case left this model.** `applies_to` now lives on the structure and offers `life event` as well, which is what an [LifeEventType](035-life-event-type-in-progress.md) structure carries. A template is never the thing that applies to a life event.
 - **Everything the marketplace needs.** `installed_from_listing_version_id` and the `hasOne` [MarketplaceListing](045-marketplace-listing-done.md) are not in the schema. Both point at tables that do not exist, and adding a nullable column with no foreign key would only look like support for something absent.
 - **No API.** The screens exist: the list that groups templates into what somebody built and what the product supplied, the form that names one, and the builder. Nothing is exposed over the API yet.
 - **No record preview.** The builder shows the structure being edited, and not what a record made from it would look like. The record renderer exists and is not reachable from here, so somebody building a template still finds out what they built by opening somebody.

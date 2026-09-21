@@ -2,14 +2,10 @@
 {{-- @var \App\ViewModels\Vaults\ContactViewModel $viewModel --}}
 @php
   $vault = $viewModel->vault();
-  $contact = $viewModel->contact();
   $unbuilt = $viewModel->unbuilt();
 
   $inert = 'inline-flex h-8.5 cursor-default items-center gap-2 rounded-md border border-hairline px-3.25 '
     .'font-sans text-[13.5px] font-semibold text-placeholder';
-
-  $menuItem = 'flex w-full cursor-pointer items-center gap-2.5 rounded-xs px-2.5 py-2 text-left font-sans '
-    .'text-sm text-ink no-underline transition-colors hover:bg-hover focus-ring-inset';
 @endphp
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:breadcrumb>
@@ -80,28 +76,22 @@
       </ul>
     </div>
 
-    <div class="ml-auto flex flex-wrap items-center gap-2.5">
-      <x-button.secondary :href="$viewModel->shareLinksUrl()" data-turbo="true" size="small">
-        <x-icon name="link" :size="15" :stroke-width="1.6" />
-        {{ $viewModel->shareLine() }}
-      </x-button.secondary>
+    <div class="ml-auto">
+      <x-button.split :label="__('Edit contact')" :href="$viewModel->editUrl()" turbo>
+        <x-slot:menu>
+          <x-button.split-item :href="$viewModel->shareLinksUrl()" icon="link" data-turbo="true">
+            {{ $viewModel->shareLine() }}
+          </x-button.split-item>
 
-      <x-button.secondary :href="$viewModel->editUrl()" data-turbo="true" size="small">
-        <x-icon name="profile" :size="15" :stroke-width="1.6" />
-        {{ __('Edit contact') }}
-      </x-button.secondary>
+          <x-button.split-item :href="$viewModel->mergeUrl()" icon="contact" data-turbo="true">
+            {{ __('Merge') }}
+          </x-button.split-item>
 
-      <x-actions-menu :label="__('More actions for :name', ['name' => $contact->name])">
-        <a href="{{ $viewModel->mergeUrl() }}" role="menuitem" data-turbo="true" class="{{ $menuItem }}">
-          <x-icon name="contact" :size="15" :stroke-width="1.6" />
-          {{ __('Merge') }}
-        </a>
-
-        <a href="{{ $viewModel->vCardUrl() }}" role="menuitem" class="{{ $menuItem }}">
-          <x-icon name="file" :size="15" :stroke-width="1.6" />
-          {{ __('Export as vCard') }}
-        </a>
-      </x-actions-menu>
+          <x-button.split-item :href="$viewModel->vCardUrl()" icon="file">
+            {{ __('Export as vCard') }}
+          </x-button.split-item>
+        </x-slot:menu>
+      </x-button.split>
     </div>
   </header>
 
@@ -201,10 +191,6 @@
 
         <x-panel :title="__('Reminders')" icon="reminder">
           <p class="text-sm text-pretty text-muted">{{ $unbuilt['reminders'] }}</p>
-        </x-panel>
-
-        <x-panel :title="__('Things you said you would do')" icon="tasks">
-          <p class="text-sm text-pretty text-muted">{{ $unbuilt['tasks'] }}</p>
         </x-panel>
       </div>
     </div>

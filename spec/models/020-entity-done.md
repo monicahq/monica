@@ -37,14 +37,14 @@ deleted_with_vault          bool                            whether the record w
 - `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md), [EntityType](011-entity-type-done.md), [StructureVersion](013-structure-version-done.md)
 - `belongsTo` [File](008-file-in-progress.md) as avatar
 - `hasMany` [FieldValue](022-field-value-done.md)
-- `belongsToMany` [Activity](036-activity-not-yet.md) through [ActivityParticipant](037-activity-participant-not-yet.md)
+- `belongsToMany` [LifeEvent](036-life-event-not-yet.md) through [LifeEventParticipant](037-life-event-participant-not-yet.md)
 - `hasMany` [RecordSnapshot](023-record-snapshot-done.md), [Reminder](040-reminder-done.md)
 
 ## Rules
 
 - An entity never changes type (5.3). It changes its display structure freely, which is a different operation.
 - An entity does not participate in the human relationship system (8.1). That system is deliberately restricted to contacts because it carries person-to-person roles, temporal state and the protected semantics used by genealogy and romantic history. The link between a contact and their dog is an ordinary relation field ([Field](017-field-done.md), type `relation`).
-- An entity can take part in an activity (9.2), can be the target of a relation field from a contact or from another entity, and can carry reminders driven by its own date fields (10.2). A contract renewal date on a Company entity is a first class reminder source.
+- An entity can take part in a life event (9.2), can be the target of a relation field from a contact or from another entity, and can carry reminders driven by its own date fields (10.2). A contract renewal date on a Company entity is a first class reminder source.
 - An archived entity triggers no reminder, exactly as an archived [Contact](019-contact-done.md) does not. Its rules are deactivated with `record_archived` and come back when it is unarchived. A contract renewal on a company nobody deals with any more is the reason somebody archives it.
 - Changing the applied structure version writes a snapshot first, exactly as for a contact.
 - The page hierarchy comes from the precise [StructureVersion](013-structure-version-done.md) assigned to the entity. One page renders without tabs, while two or more use the same accessible tab navigation as a contact (5.2).
@@ -55,7 +55,7 @@ deleted_with_vault          bool                            whether the record w
 - **Nothing sets the avatar.** The column points at [File](008-file-in-progress.md) and the relationship reads it, but no action and no screen picks a file for a record, exactly as for a [Contact](019-contact-done.md). Every record is drawn as its initials until something offers that choice.
 - **`last_consulted_at` stays null.** It is written by the screen that consults a record, and there is none.
 - **Nothing archives a record, so nothing silences a reminder about one.** The actions that archived a record and put it back silenced and revived with `record_archived`, had no caller and have been removed, so a contract renewal on an archived company is a case no code now reaches. No screen creates a rule about an entity either, because entities have no screens at all.
-- **Nothing writes a record down from an activity or a relation field.** [Activity](036-activity-not-yet.md) is ahead, and the relation field points at an entity that already exists.
+- **Nothing writes a record down from a life event or a relation field.** [LifeEvent](036-life-event-not-yet.md) is ahead, and the relation field points at an entity that already exists.
 - **No screen, no API and no action.** The model, its factory and its relationships are all that exist. Every action that wrote a record down, renamed one, archived one, unarchived one, deleted one or brought one back had no caller and has been removed, so no code writes a record of an invented kind or takes one away. What reads them is the model, its relationships and the counts on [EntityType](011-entity-type-done.md).
 
 ## Decisions taken while building it

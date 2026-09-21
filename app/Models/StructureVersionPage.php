@@ -109,13 +109,13 @@ class StructureVersionPage extends Model
 
     /**
      * Whether this page is one the given user may reach through the given owner,
-     * which is a template or an activity type.
+     * which is a template or a life event type.
      *
      * A page is addressed under the thing it sits on, and neither half can be
      * trusted on its own: the account has to match, and the page has to be on a
      * version of the structure the URL actually names.
      */
-    public function isReachableThrough(User $user, ActivityType|Template $owner): bool
+    public function isReachableThrough(User $user, LifeEventType|Template $owner): bool
     {
         return $this->account_id === $user->account_id
             && $this->structureVersion->structure->owner_type === $owner::class

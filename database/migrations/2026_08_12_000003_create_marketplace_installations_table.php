@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('account_id')->comment('account that installed it');
             $table->unsignedBigInteger('marketplace_listing_id')->comment('listing it came from');
             $table->unsignedBigInteger('marketplace_listing_version_id')->comment('exact version that was copied');
-            $table->string('installable_type')->comment('class of the local copy, a template, a section or an activity type');
+            $table->string('installable_type')->comment('class of the local copy, a template, a section or a life event type');
             $table->unsignedBigInteger('installable_id')->comment('id of that local copy');
             $table->timestamp('installed_at')->comment('when the copy was made');
             $table->boolean('has_local_changes')->default(false)->comment('whether the installer edited their copy since, which makes an update riskier');

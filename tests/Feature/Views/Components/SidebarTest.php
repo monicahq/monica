@@ -98,6 +98,23 @@ class SidebarTest extends TestCase
     }
 
     #[Test]
+    public function the_name_of_the_application_at_the_top_of_either_column_leads_to_the_vaults(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->blade(
+            '<x-vault.sidebar :user="$user" :vault="$vault" current="dashboard" />',
+            ['user' => $user, 'vault' => $vault],
+        )->assertSee('href="'.route('vaults.index').'"', escape: false);
+
+        $this->actingAs($user)->blade(
+            '<x-settings.sidebar :user="$user" current="profile" />',
+            ['user' => $user],
+        )->assertSee('href="'.route('vaults.index').'"', escape: false);
+    }
+
+    #[Test]
     public function the_settings_column_offers_the_settings_and_the_way_out_of_them(): void
     {
         $user = User::factory()->create();
@@ -127,10 +144,12 @@ class SidebarTest extends TestCase
             'Security and access',
             'Preferences',
             'Logs',
-            'This account',
+            'Personalisation',
             'Kinds of record',
             'Templates',
             'Value lists',
+            'Account',
+            'Billing',
         ]);
     }
 

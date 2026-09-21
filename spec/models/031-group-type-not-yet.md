@@ -43,4 +43,4 @@ deleted_at                  datetime
 
 ## Open questions
 
-- Whether a group type should be able to carry its own custom fields through a template, the way an activity type does (9.3). It would be consistent, it is not asked for, and section 15 defers personalising anything beyond contacts and entities.
+- Whether a group type should be able to carry its own custom fields through a template, the way a life event type does (9.3). It would be consistent, it is not asked for, and section 15 defers personalising anything beyond contacts and entities.

@@ -86,16 +86,16 @@ class StructureFileReader
             return $read;
         }
 
-        if ($read['format'] === 'activity_type') {
-            throw new StructureFileIsNotReadable(__('This file holds an activity type. Import it from the list of activity types and it arrives as a copy of its own.'));
+        if ($read['format'] === 'life_event_type') {
+            throw new StructureFileIsNotReadable(__('This file holds a life event type. Import it from the list of life event types and it arrives as a copy of its own.'));
         }
 
         if ($expecting === 'template') {
             throw new StructureFileIsNotReadable(__('This file holds one section rather than a whole template. Open the template you want it on, and import it from the page it belongs on.'));
         }
 
-        if ($expecting === 'activity_type') {
-            throw new StructureFileIsNotReadable(__('This file does not hold an activity type. Import it where it belongs and it arrives as a copy of its own.'));
+        if ($expecting === 'life_event_type') {
+            throw new StructureFileIsNotReadable(__('This file does not hold a life event type. Import it where it belongs and it arrives as a copy of its own.'));
         }
 
         throw new StructureFileIsNotReadable(__('This file holds a whole template rather than one section. Import it from the list of templates and it arrives as a draft of its own.'));
@@ -138,7 +138,7 @@ class StructureFileReader
 
         $allowed = match ($format) {
             'template' => ['monica', 'exported_at', 'template', 'value_lists'],
-            'activity_type' => ['monica', 'exported_at', 'activity_type', 'value_lists'],
+            'life_event_type' => ['monica', 'exported_at', 'life_event_type', 'value_lists'],
             default => ['monica', 'exported_at', 'from_template', 'section', 'value_lists'],
         };
 
@@ -153,7 +153,7 @@ class StructureFileReader
             'from_template' => $format === 'section' ? $this->fromTemplate($file) : null,
             'value_lists' => $this->valueLists,
             'template' => $format === 'template' ? $this->template($file['template']) : null,
-            'activity_type' => $format === 'activity_type' ? $this->activityType($file['activity_type']) : null,
+            'life_event_type' => $format === 'life_event_type' ? $this->lifeEventType($file['life_event_type']) : null,
             'section' => $format === 'section' ? $this->section($file['section'], 'section') : null,
         ];
     }
@@ -170,8 +170,8 @@ class StructureFileReader
 
         $format = StructureFileValues::string($header, 'format', 'monica', 32);
 
-        if ($format !== 'template' && $format !== 'section' && $format !== 'activity_type') {
-            $this->refuse(__('The header says :format. Monica reads three kinds of file: a template, an activity type and a section.', [
+        if ($format !== 'template' && $format !== 'section' && $format !== 'life_event_type') {
+            $this->refuse(__('The header says :format. Monica reads three kinds of file: a template, a life event type and a section.', [
                 'format' => $this->safe($format),
             ]));
         }
@@ -208,45 +208,45 @@ class StructureFileReader
 
     /** @return array<string, mixed> */
     /**
-     * An activity type carries what it looks like alongside its fields, so an installer gets a
+     * A life event type carries what it looks like alongside its fields, so an installer gets a
      * restaurant log rather than a bare structure. The category is read as a name and matched
      * against the account's own when the copy is made.
      *
      * @return array<string, mixed>
      */
-    private function activityType(mixed $node): array
+    private function lifeEventType(mixed $node): array
     {
-        $activityType = StructureFileValues::object($node, 'activity_type', [
+        $lifeEventType = StructureFileValues::object($node, 'life_event_type', [
             'name', 'name_translation_key', 'description', 'icon', 'colour',
             'category', 'category_key', 'version_number', 'pages',
         ], ['pages']);
 
-        $pages = $this->pages($activityType['pages'], 'activity_type.pages');
+        $pages = $this->pages($lifeEventType['pages'], 'life_event_type.pages');
 
         if ($pages === []) {
-            $this->refuse(__('The header is right, but the activity type holds no page, so there is nothing in it to build.'));
+            $this->refuse(__('The header is right, but the life event type holds no page, so there is nothing in it to build.'));
         }
 
-        $icon = StructureFileValues::identifier($activityType, 'icon', 'activity_type', 64);
+        $icon = StructureFileValues::identifier($lifeEventType, 'icon', 'life_event_type', 64);
 
         if ($icon !== null && ! in_array($icon, Section::ICONS, true)) {
-            $this->refuse(__('The activity type in this file asks for an icon this version does not have.'));
+            $this->refuse(__('The life event type in this file asks for an icon this version does not have.'));
         }
 
-        $colour = StructureFileValues::nullableString($activityType, 'colour', 'activity_type', 7);
+        $colour = StructureFileValues::nullableString($lifeEventType, 'colour', 'life_event_type', 7);
 
         if ($colour !== null && ! in_array(mb_strtolower($colour), VaultColourEnum::values(), true)) {
-            $this->refuse(__('The activity type in this file asks for a colour this version does not offer.'));
+            $this->refuse(__('The life event type in this file asks for a colour this version does not offer.'));
         }
 
         return [
-            'name' => StructureFileValues::word($activityType, 'name', 'name_translation_key', 'activity_type', 255),
-            'description' => StructureFileValues::nullableString($activityType, 'description', 'activity_type', 255),
+            'name' => StructureFileValues::word($lifeEventType, 'name', 'name_translation_key', 'life_event_type', 255),
+            'description' => StructureFileValues::nullableString($lifeEventType, 'description', 'life_event_type', 255),
             'icon' => $icon,
             'colour' => $colour === null ? null : mb_strtolower($colour),
-            'category' => StructureFileValues::nullableString($activityType, 'category', 'activity_type', 255),
-            'category_key' => StructureFileValues::identifier($activityType, 'category_key', 'activity_type', 64),
-            'version_number' => StructureFileValues::integer($activityType, 'version_number', 'activity_type', 1, 9999, 1),
+            'category' => StructureFileValues::nullableString($lifeEventType, 'category', 'life_event_type', 255),
+            'category_key' => StructureFileValues::identifier($lifeEventType, 'category_key', 'life_event_type', 64),
+            'version_number' => StructureFileValues::integer($lifeEventType, 'version_number', 'life_event_type', 1, 9999, 1),
             'pages' => $pages,
         ];
     }

@@ -80,7 +80,7 @@ class MarketplaceViewModelTest extends TestCase
     #[Test]
     public function it_falls_back_to_the_default_filters_when_it_is_given_nonsense(): void
     {
-        $viewModel = new MarketplaceViewModel(type: 'activities', category: 'gardening', sort: 'randomly');
+        $viewModel = new MarketplaceViewModel(type: 'life events', category: 'gardening', sort: 'randomly');
 
         $this->assertSame('all', $viewModel->type());
         $this->assertSame('', $viewModel->category());

@@ -537,84 +537,84 @@ class StructureFileReaderTest extends TestCase
 
     /** @return array<string, mixed> */
     #[Test]
-    public function it_reads_an_activity_type_file(): void
+    public function it_reads_a_life_event_type_file(): void
     {
-        $read = StructureFileReader::read(StructureFile::encode($this->activityTypeFile()), expecting: 'activity_type');
+        $read = StructureFileReader::read(StructureFile::encode($this->lifeEventTypeFile()), expecting: 'life_event_type');
 
-        $this->assertEquals('activity_type', $read['format']);
-        $this->assertEquals('Restaurant', $read['activity_type']['name']);
-        $this->assertEquals('leisure', $read['activity_type']['category_key']);
-        $this->assertEquals('#4f8a49', $read['activity_type']['colour']);
+        $this->assertEquals('life_event_type', $read['format']);
+        $this->assertEquals('Restaurant', $read['life_event_type']['name']);
+        $this->assertEquals('leisure', $read['life_event_type']['category_key']);
+        $this->assertEquals('#4f8a49', $read['life_event_type']['colour']);
     }
 
     #[Test]
-    public function it_says_a_file_holds_an_activity_type_when_a_template_was_wanted(): void
+    public function it_says_a_file_holds_a_life_event_type_when_a_template_was_wanted(): void
     {
-        $this->expectExceptionMessage('This file holds an activity type.');
+        $this->expectExceptionMessage('This file holds a life event type.');
 
-        StructureFileReader::read(StructureFile::encode($this->activityTypeFile()), expecting: 'template');
+        StructureFileReader::read(StructureFile::encode($this->lifeEventTypeFile()), expecting: 'template');
     }
 
     #[Test]
-    public function it_says_a_file_holds_an_activity_type_when_a_section_was_wanted(): void
+    public function it_says_a_file_holds_a_life_event_type_when_a_section_was_wanted(): void
     {
-        $this->expectExceptionMessage('This file holds an activity type.');
+        $this->expectExceptionMessage('This file holds a life event type.');
 
-        StructureFileReader::read(StructureFile::encode($this->activityTypeFile()), expecting: 'section');
+        StructureFileReader::read(StructureFile::encode($this->lifeEventTypeFile()), expecting: 'section');
     }
 
     #[Test]
-    public function it_names_a_supplied_activity_type_after_its_translation_key(): void
+    public function it_names_a_supplied_life_event_type_after_its_translation_key(): void
     {
-        $file = $this->activityTypeFile();
-        $file['activity_type']['name'] = null;
-        $file['activity_type']['name_translation_key'] = 'Call';
+        $file = $this->lifeEventTypeFile();
+        $file['life_event_type']['name'] = null;
+        $file['life_event_type']['name_translation_key'] = 'Call';
 
-        $read = StructureFileReader::read(StructureFile::encode($file), expecting: 'activity_type');
+        $read = StructureFileReader::read(StructureFile::encode($file), expecting: 'life_event_type');
 
-        $this->assertEquals('Call', $read['activity_type']['name']);
+        $this->assertEquals('Call', $read['life_event_type']['name']);
     }
 
     #[Test]
-    public function it_refuses_an_activity_type_asking_for_a_glyph_this_version_does_not_have(): void
+    public function it_refuses_a_life_event_type_asking_for_a_glyph_this_version_does_not_have(): void
     {
-        $file = $this->activityTypeFile();
-        $file['activity_type']['icon'] = 'chevron-down';
+        $file = $this->lifeEventTypeFile();
+        $file['life_event_type']['icon'] = 'chevron-down';
 
         $this->expectException(StructureFileIsNotReadable::class);
 
-        StructureFileReader::read(StructureFile::encode($file), expecting: 'activity_type');
+        StructureFileReader::read(StructureFile::encode($file), expecting: 'life_event_type');
     }
 
     #[Test]
-    public function it_refuses_an_activity_type_asking_for_a_colour_this_version_does_not_offer(): void
+    public function it_refuses_a_life_event_type_asking_for_a_colour_this_version_does_not_offer(): void
     {
-        $file = $this->activityTypeFile();
-        $file['activity_type']['colour'] = '#ff0000';
+        $file = $this->lifeEventTypeFile();
+        $file['life_event_type']['colour'] = '#ff0000';
 
         $this->expectException(StructureFileIsNotReadable::class);
 
-        StructureFileReader::read(StructureFile::encode($file), expecting: 'activity_type');
+        StructureFileReader::read(StructureFile::encode($file), expecting: 'life_event_type');
     }
 
     #[Test]
-    public function it_names_the_page_of_an_activity_type_that_is_wrong(): void
+    public function it_names_the_page_of_a_life_event_type_that_is_wrong(): void
     {
-        $file = $this->activityTypeFile();
-        $file['activity_type']['pages'][0] = 'not a page';
+        $file = $this->lifeEventTypeFile();
+        $file['life_event_type']['pages'][0] = 'not a page';
 
-        $this->expectExceptionMessage('activity_type.pages.0');
+        $this->expectExceptionMessage('life_event_type.pages.0');
 
-        StructureFileReader::read(StructureFile::encode($file), expecting: 'activity_type');
+        StructureFileReader::read(StructureFile::encode($file), expecting: 'life_event_type');
     }
 
     /** @return array<string, mixed> */
-    private function activityTypeFile(): array
+    private function lifeEventTypeFile(): array
     {
         return [
-            'monica' => ['format' => 'activity_type', 'format_version' => StructureFile::FORMAT_VERSION],
+            'monica' => ['format' => 'life_event_type', 'format_version' => StructureFile::FORMAT_VERSION],
             'exported_at' => '2026-09-13T09:12:04Z',
-            'activity_type' => [
+            'life_event_type' => [
                 'name' => 'Restaurant',
                 'icon' => 'heart',
                 'colour' => '#4f8a49',

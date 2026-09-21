@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
-use App\Models\ActivityType;
+use App\Models\LifeEventType;
 use App\Models\StructureVersionSection;
 use App\Models\Template;
 use Illuminate\Support\Str;
@@ -44,23 +44,23 @@ class StructureFile
     }
 
     /** @return array<string, mixed> */
-    public static function ofActivityType(ActivityType $activityType): array
+    public static function ofLifeEventType(LifeEventType $lifeEventType): array
     {
-        $payload = MarketplacePayload::of($activityType);
+        $payload = MarketplacePayload::of($lifeEventType);
 
         return [
-            'monica' => ['format' => 'activity_type', 'format_version' => self::FORMAT_VERSION],
+            'monica' => ['format' => 'life_event_type', 'format_version' => self::FORMAT_VERSION],
             'exported_at' => now()->toIso8601ZuluString(),
-            'activity_type' => $payload['activity_type'],
+            'life_event_type' => $payload['life_event_type'],
             'value_lists' => $payload['value_lists'],
         ];
     }
 
-    public static function nameOfActivityType(ActivityType $activityType): string
+    public static function nameOfLifeEventType(LifeEventType $lifeEventType): string
     {
-        $version = $activityType->structure->publishedVersion?->version_number;
+        $version = $lifeEventType->structure->publishedVersion?->version_number;
 
-        return Str::slug($activityType->name)."-v{$version}.json";
+        return Str::slug($lifeEventType->name)."-v{$version}.json";
     }
 
     public static function nameOfTemplate(Template $template): string

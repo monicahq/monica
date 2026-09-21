@@ -28,9 +28,15 @@
   class="fixed inset-y-0 left-0 z-40 flex w-62 flex-col border-r border-hairline bg-card transition-transform duration-(--duration-slow) ease-out max-lg:-translate-x-full lg:static lg:h-full lg:w-auto lg:translate-x-0"
 >
   <div class="flex items-center gap-2.5 px-4 pt-3.5 pb-2.5">
-    <x-logo :size="26" />
+    <a
+      href="{{ route('vaults.index') }}"
+      data-turbo="true"
+      class="flex min-w-0 items-center gap-2.5 rounded-md no-underline focus-ring"
+    >
+      <x-logo :size="26" />
 
-    <span class="truncate text-sm font-semibold tracking-tight text-ink">{{ config('app.name') }}</span>
+      <span class="truncate text-sm font-semibold tracking-tight text-ink">{{ config('app.name') }}</span>
+    </a>
 
     <x-theme-toggle class="ml-auto" />
 
@@ -107,7 +113,7 @@
   </div>
 
   <nav aria-label="{{ __('This vault') }}" class="min-h-0 flex-1 space-y-px overflow-y-auto px-2 pt-1.5 pb-3">
-    <h2 class="px-2 pt-1 pb-1.5 text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('This vault') }}</h2>
+    <h2 class="px-2 pt-4 pb-2.5 text-[11px] font-medium tracking-caption text-muted-soft uppercase first:pt-1">{{ __('This vault') }}</h2>
 
     @foreach ($sections as $section)
       @if ($section['url'])

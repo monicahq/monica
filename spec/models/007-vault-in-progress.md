@@ -5,7 +5,7 @@
 
 ## What it is
 
-A watertight compartment of data. "Famille", "Pro", "Amis". Contacts, entities and activities live in one, and nothing reaches across.
+A watertight compartment of data. "Famille", "Pro", "Amis". Contacts, entities and life events live in one, and nothing reaches across.
 
 The word is inherited from Monica v2, where a vault was also a unit of collaboration: people were invited into one and given a role. That half is gone (4.1). What remains is the useful half: separating contexts, so a work search does not return a family contact, so a webhook feeding a work automation never sees anything personal, and so a private link can be scoped to one part of a life without exposing the rest.
 
@@ -32,7 +32,7 @@ deleted_at                  datetime
 ## Relationships
 
 - `belongsTo` [Account](001-account-in-progress.md)
-- `hasMany` [Contact](019-contact-done.md), [Entity](020-entity-done.md), [Activity](036-activity-not-yet.md), [Group](032-group-not-yet.md), [JournalDay](039-journal-day-not-yet.md), [File](008-file-in-progress.md)
+- `hasMany` [Contact](019-contact-done.md), [Entity](020-entity-done.md), [LifeEvent](036-life-event-not-yet.md), [Group](032-group-not-yet.md), [JournalDay](039-journal-day-not-yet.md), [File](008-file-in-progress.md)
 - `hasMany` [VaultDefaultTemplate](018-vault-default-template-done.md)
 - `hasMany` [ShareLink](048-share-link-done.md)
 
@@ -40,14 +40,14 @@ deleted_at                  datetime
 
 - An account may hold no vault at all. The last one goes like any other, and the account is taken back to the state it started in, which is the screen that explains what to do first.
 - Exactly one vault per account is the default, whenever the account holds a vault. The first vault created is the default, and so is the next one created by an account left with none.
-- Every query touching contacts, entities, activities, groups, files or journal days filters on `vault_id`. This is not a convenience, it is the compartment. It applies equally to search (13), exports, webhooks (14.3), modules and share links (4.4).
-- Moving a record from one vault to another is an explicit action, logged, and it must carry its dependants with it or refuse. Moving a contact that participates in an activity in the old vault is the interesting case, and the resolution belongs in the action, not here.
+- Every query touching contacts, entities, life events, groups, files or journal days filters on `vault_id`. This is not a convenience, it is the compartment. It applies equally to search (13), exports, webhooks (14.3), modules and share links (4.4).
+- Moving a record from one vault to another is an explicit action, logged, and it must carry its dependants with it or refuse. Moving a contact that participates in a life event in the old vault is the interesting case, and the resolution belongs in the action, not here.
 - Deleting a vault is soft, and it is the most destructive thing a user can do short of deleting the account. It must warn, state what it contains, and be reversible for a grace period.
 - Files are stored under a path derived from account then vault (11), and no predictable name may allow crossing that boundary.
 
 ## Not done yet
 
-- The vault holds contacts, entities and the templates its records start from. Files carry a `vault_id` and are served through it, and the `hasMany` side of that is read through the values that point at one rather than declared here. Activities, groups, journal days and share links are each their own model, and their `hasMany` sides arrive with them. So does the filter on `vault_id` for everything but records.
+- The vault holds contacts, entities and the templates its records start from. Files carry a `vault_id` and are served through it, and the `hasMany` side of that is read through the values that point at one rather than declared here. Life events, groups, journal days and share links are each their own model, and their `hasMany` sides arrive with them. So does the filter on `vault_id` for everything but records.
 - `contact_count` is kept in step by the actions that write a contact down and delete one. Nothing brings one back any more, the action that restored a deleted contact having had no caller and been removed. The count covers every contact the vault holds, archived and partial ones included.
 - The screen that opens a vault exists and stamps `last_visited_at` as it does (`RecordVaultVisit`), which is what puts the last one opened at the head of the list. The list of them is a placeholder waiting for its own design, and the screen of one vault shows its name, what it is for and how many contacts it holds. Everything else on that screen is invented, since reminders, tasks, the journal and the record of what was opened recently are all later models.
 - The settings screen renames the vault, changes what it is for and its colour, says what a new contact starts from, and deletes the vault; the deletion asks first and says how many contacts go with it. `DestroyVault` takes the contacts with it and hands the default over to the first vault left, or to nobody when there is none. Nothing brings a vault back: the action that restored one with the contacts that left with it, and took the title back when nobody held it, was reached from nowhere in the interface and has been removed. The grace period is not enforced either, so a deleted vault stays deleted and nothing purges it, which is the safe half of the rule to leave unfinished.
@@ -57,8 +57,8 @@ deleted_at                  datetime
 
 ## Decisions taken while building it
 
-- **`Moi` lives once per vault.** Section 4.3 says the contact is unique in the account and section 4.2 says a contact belongs to one vault, and those cannot both be literally true. Each vault holds its own contact flagged `is_me`, all representing the same person, because vault isolation is the stronger guarantee: breaking it for one row would leak across compartments in search, activities and share links.
+- **`Moi` lives once per vault.** Section 4.3 says the contact is unique in the account and section 4.2 says a contact belongs to one vault, and those cannot both be literally true. Each vault holds its own contact flagged `is_me`, all representing the same person, because vault isolation is the stronger guarantee: breaking it for one row would leak across compartments in search, life events and share links.
 
 ## Open questions
 
-- Moving an activity between vaults when its participants do not all move. Undecided.
+- Moving a life event between vaults when its participants do not all move. Undecided.

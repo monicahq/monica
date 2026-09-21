@@ -21,7 +21,7 @@ class UpdateShareLink
 {
     /**
      * @param  list<int>  $excludedSectionIds
-     * @param  list<int>  $excludedActivityIds
+     * @param  list<int>  $excludedLifeEventIds
      */
     public function __construct(
         private readonly User $user,
@@ -32,14 +32,14 @@ class UpdateShareLink
         private readonly ?string $password = null,
         private readonly bool $removesPassword = false,
         private readonly bool $includesFiles = false,
-        private readonly bool $includesActivities = false,
-        private readonly bool $includesActivityNarrative = false,
+        private readonly bool $includesLifeEvents = false,
+        private readonly bool $includesLifeEventNarrative = false,
         private readonly bool $includesDayNarrative = false,
         private readonly bool $includesRelationships = false,
         private readonly bool $includesGroups = false,
         private readonly bool $includesSensitiveFields = false,
         private readonly array $excludedSectionIds = [],
-        private readonly array $excludedActivityIds = [],
+        private readonly array $excludedLifeEventIds = [],
     ) {}
 
     public function execute(): ShareLink
@@ -75,14 +75,14 @@ class UpdateShareLink
         $this->shareLink->recipient_hint = $this->recipientHint;
         $this->shareLink->expires_at = $this->expiresAt;
         $this->shareLink->includes_files = $this->includesFiles;
-        $this->shareLink->includes_activities = $this->includesActivities;
-        $this->shareLink->includes_activity_narrative = $this->includesActivityNarrative;
+        $this->shareLink->includes_life_events = $this->includesLifeEvents;
+        $this->shareLink->includes_life_event_narrative = $this->includesLifeEventNarrative;
         $this->shareLink->includes_day_narrative = $this->includesDayNarrative;
         $this->shareLink->includes_relationships = $this->includesRelationships;
         $this->shareLink->includes_groups = $this->includesGroups;
         $this->shareLink->includes_sensitive_fields = $this->includesSensitiveFields;
         $this->shareLink->excluded_section_ids = $this->excludedSectionIds;
-        $this->shareLink->excluded_activity_ids = $this->excludedActivityIds;
+        $this->shareLink->excluded_life_event_ids = $this->excludedLifeEventIds;
         $this->shareLink->password_hash = $this->passwordHash();
         $this->shareLink->save();
     }

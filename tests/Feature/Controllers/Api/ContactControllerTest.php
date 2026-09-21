@@ -47,7 +47,7 @@ class ContactControllerTest extends TestCase
                 'is_me',
                 'structure_version_id',
                 'template_name',
-                'last_activity_at',
+                'last_life_event_at',
                 'created_at',
                 'updated_at',
             ],
@@ -245,8 +245,8 @@ class ContactControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Beesly', 'last_activity_at' => null]);
-        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Scott', 'last_activity_at' => CarbonImmutable::parse('2026-01-01')]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Beesly', 'last_interaction_at' => null]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Scott', 'last_interaction_at' => CarbonImmutable::parse('2026-01-01')]);
 
         Sanctum::actingAs($user);
 

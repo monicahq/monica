@@ -587,7 +587,7 @@ class ContactViewModel
         $facts[] = [
             'icon' => 'timeline',
             'label' => __('Last in touch'),
-            'value' => $this->contact->last_activity_at?->diffForHumans() ?? __('never'),
+            'value' => $this->contact->last_interaction_at?->diffForHumans() ?? __('never'),
             'reminder' => null,
         ];
 
@@ -647,7 +647,6 @@ class ContactViewModel
             'compose' => __('A call, a visit, something they said. Writing it down is the next thing this screen will do.'),
             'relationships' => __('Who :name is to the other people in this vault, once relationships exist.', ['name' => $name]),
             'reminders' => __('Birthdays and anything else you ask to be told about, in good time.'),
-            'tasks' => __('Things you said you would do for :name appear here until they are done.', ['name' => $name]),
         ];
     }
 

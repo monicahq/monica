@@ -69,7 +69,7 @@ class CreateContactTest extends TestCase
             'is_partial' => false,
             'is_archived' => false,
             'is_favourite' => false,
-            'activity_count' => 0,
+            'life_event_count' => 0,
         ]);
     }
 

@@ -5,9 +5,9 @@
 
 ## What it is
 
-One day, as a thing that can be written about. It holds what belongs to the day itself rather than to any activity in it: the general account of the day, and the mood.
+One day, as a thing that can be written about. It holds what belongs to the day itself rather than to any life event in it: the general account of the day, and the mood.
 
-Section 9.4 makes the case for it in one line: a day may hold nothing but a mood. If everything lived on activities, a day with a mood and no events would have nowhere to be stored, and the journal would only work for days that happened to contain something worth logging.
+Section 9.4 makes the case for it in one line: a day may hold nothing but a mood. If everything lived on life events, a day with a mood and no events would have nowhere to be stored, and the journal would only work for days that happened to contain something worth logging.
 
 It also states the tone the product takes, which is a design constraint and not a nicety. An empty day stays an empty day. The product does not make anybody feel guilty and does not ask for anything.
 
@@ -20,10 +20,10 @@ account_id                  int                             account the day belo
 vault_id                    int                             vault the day is written in
 date                        date                            the day itself
 mood_id                     int                             general mood, null when none was chosen
-narrative                   text                            the account of the day, belonging to no activity in particular
+narrative                   text                            the account of the day, belonging to no life event in particular
 narrative_is_shareable      boolean                         whether a share link may include that account, false by default
 rating                      int                             how the day went on a fixed scale, null when not rated
-activity_count              int                             running count of activities on that day, so the calendar renders without aggregating
+life_event_count              int                             running count of life events on that day, so the calendar renders without aggregating
 is_notable                  boolean                         whether the user marked the day as one to remember
 created_at                  datetime
 updated_at                  datetime
@@ -32,13 +32,13 @@ updated_at                  datetime
 ## Relationships
 
 - `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md), [Mood](038-mood-not-yet.md)
-- `hasMany` [Activity](036-activity-not-yet.md), matched on vault and date
+- `hasMany` [LifeEvent](036-life-event-not-yet.md), matched on vault and date
 
 ## Rules
 
 - One row per vault per date. The row is created lazily, on the first thing written about that day, and never in advance. Pre-creating days would fill the table with emptiness and turn "no entry" into "an empty entry", which are different things.
 - A day with only a mood is complete and valid.
-- Activities are not owned by the day. They belong to the vault and carry their own date, and the day gathers them by date. This matters because an activity can be entered from a contact page without the day existing yet (9.4), and it must land in the right day on its own.
+- Life events are not owned by the day. They belong to the vault and carry their own date, and the day gathers them by date. This matters because a life event can be entered from a contact page without the day existing yet (9.4), and it must land in the right day on its own.
 - Private by default (9.6). The account of the day is included in a share link only when explicitly allowed.
 - Past days can be filled in freely, and years can be rebuilt after the fact (9.4).
 - The calendar view of the journal must not rely on colour alone to show which days hold something (3.5).

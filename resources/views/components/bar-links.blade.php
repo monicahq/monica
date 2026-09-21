@@ -17,6 +17,7 @@
   ]) as $link)
     <a
       href="{{ $link['href'] }}"
+      data-turbo="true"
       aria-label="{{ $link['label'] }}"
       class="flex h-9 items-center gap-1.75 rounded-md px-2.75 text-sm text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
     >

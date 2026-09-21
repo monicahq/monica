@@ -1,6 +1,6 @@
 # 034. ContactMerge
 
-**Status:** exists (`app/Models/ContactMerge.php`), with relationships, groups and activities waiting on the models that carry them
+**Status:** exists (`app/Models/ContactMerge.php`), with relationships, groups and life events waiting on the models that carry them
 **Spec:** 8.3, 15, 3.3
 
 ## What it is
@@ -42,7 +42,7 @@ updated_at                  datetime
 
 - The absorbed contact is soft deleted, never destroyed (3.3). Every identifier that pointed at it keeps resolving, and the page redirects to the survivor.
 - A snapshot of the survivor is taken before anything is written, so the whole operation can be undone as a unit.
-- Everything moves: field values, repeater rows, files, the avatar, reminders, share links, and the relation fields other records pointed at the absorbed contact through. Relationships, group memberships and activity participations join that list when those models exist.
+- Everything moves: field values, repeater rows, files, the avatar, reminders, share links, and the relation fields other records pointed at the absorbed contact through. Relationships, group memberships and life event participations join that list when those models exist.
 - Collisions are shown in the preview. The user chooses whether to keep both rows or remove an exact duplicate, and that choice is recorded in `resolutions`. Different types or dates are never combined automatically.
 - `Moi` is never absorbed (4.3). It can absorb another contact, never the reverse.
 - A merge is previewed before it runs. Conflicting values are shown side by side and the user chooses. Nothing is resolved silently.

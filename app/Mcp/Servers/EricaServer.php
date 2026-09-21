@@ -7,9 +7,9 @@ namespace App\Mcp\Servers;
 use App\Mcp\Tools\CreateContact;
 use App\Mcp\Tools\GetContact;
 use App\Mcp\Tools\GetMeContact;
-use App\Mcp\Tools\ListActivityCategories;
 use App\Mcp\Tools\ListContacts;
 use App\Mcp\Tools\ListEntityTypes;
+use App\Mcp\Tools\ListLifeEventCategories;
 use App\Mcp\Tools\ListRelationshipCategories;
 use App\Mcp\Tools\ListRelationshipTypes;
 use App\Mcp\Tools\ListTemplates;
@@ -43,7 +43,7 @@ class EricaServer extends Server
     protected array $tools = [
         GetContact::class,
         GetMeContact::class,
-        ListActivityCategories::class,
+        ListLifeEventCategories::class,
         ListContacts::class,
         ListEntityTypes::class,
         ListRelationshipCategories::class,

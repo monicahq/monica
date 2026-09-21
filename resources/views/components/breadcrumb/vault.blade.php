@@ -9,6 +9,6 @@
 ])
 
 <x-breadcrumb
-  :items="array_merge([['label' => $vault->name, 'url' => route('vaults.show', $vault)]], $items)"
+  :items="array_merge([['label' => $vault->name, 'url' => route('vaults.show', $vault), 'icon' => 'home']], $items)"
   {{ $attributes }}
 />

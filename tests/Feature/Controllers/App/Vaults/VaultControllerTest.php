@@ -28,14 +28,13 @@ class VaultControllerTest extends TestCase
         Vault::factory()->default()->create([
             'account_id' => $user->account_id,
             'name' => 'Dunder Mifflin',
-            'description' => 'Everybody at the Scranton branch',
         ]);
         Vault::factory()->create(['name' => 'Schrute Farms']);
 
         $this->actingAs($user)->get(route('vaults.index'))
             ->assertStatus(200)
             ->assertSee('Dunder Mifflin')
-            ->assertSee('Everybody at the Scranton branch')
+            ->assertSee('Default')
             ->assertDontSee('Schrute Farms');
     }
 
@@ -50,7 +49,7 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_marks_the_vault_you_were_last_in_and_puts_it_first(): void
+    public function it_says_when_each_vault_was_opened_and_puts_the_latest_first(): void
     {
         $user = User::factory()->create();
 
@@ -72,7 +71,22 @@ class VaultControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSeeInOrder(['Famille', 'Travail']);
-        $response->assertSee('Last opened', escape: false);
+        $response->assertSee('Opened 1 hour ago');
+    }
+
+    #[Test]
+    public function a_card_shows_the_faces_in_the_vault_and_what_it_owes_this_month(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 18]);
+
+        Contact::factory()->count(5)->create(['vault_id' => $vault->id]);
+
+        $this->actingAs($user)->get(route('vaults.index'))
+            ->assertStatus(200)
+            ->assertSee('and 14 more')
+            ->assertSee('Open tasks')
+            ->assertSee('Dates this month');
     }
 
     #[Test]
@@ -715,7 +729,10 @@ class VaultControllerTest extends TestCase
         $this->actingAs($user)->get(route('vaults.index'))
             ->assertStatus(200)
             ->assertSee('aria-disabled="true" aria-describedby="vault-ceiling"', false)
-            ->assertSee('Full access lifts the ceiling.', false);
+            ->assertSee('Full access lifts the ceiling.', false)
+            ->assertSee('Upgrade')
+            ->assertSee(route('settings.billing.index'), false)
+            ->assertDontSee('You are at the ceiling of the free offer');
     }
 
     #[Test]
@@ -729,6 +746,7 @@ class VaultControllerTest extends TestCase
         $this->actingAs($user)->get(route('vaults.index'))
             ->assertStatus(200)
             ->assertSee(route('vaults.new'), false)
-            ->assertDontSee('aria-describedby="vault-ceiling"', false);
+            ->assertDontSee('aria-describedby="vault-ceiling"', false)
+            ->assertDontSee('Upgrade');
     }
 }

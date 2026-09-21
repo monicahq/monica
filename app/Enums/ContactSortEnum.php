@@ -32,7 +32,7 @@ enum ContactSortEnum: string implements Translatable
         return match ($this) {
             self::Name => 'sort_key',
             self::Nickname => 'nickname',
-            self::LastSpoke => 'last_activity_at',
+            self::LastSpoke => 'last_interaction_at',
             self::Added => 'created_at',
         };
     }

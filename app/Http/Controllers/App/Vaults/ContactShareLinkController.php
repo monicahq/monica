@@ -125,14 +125,14 @@ class ContactShareLinkController extends Controller
                 password: $validated['password'] ?? null,
                 removesPassword: $request->boolean('removes_password'),
                 includesFiles: $shareLink->includes_files,
-                includesActivities: $shareLink->includes_activities,
-                includesActivityNarrative: $shareLink->includes_activity_narrative,
+                includesLifeEvents: $shareLink->includes_life_events,
+                includesLifeEventNarrative: $shareLink->includes_life_event_narrative,
                 includesDayNarrative: $shareLink->includes_day_narrative,
                 includesRelationships: $shareLink->includes_relationships,
                 includesGroups: $shareLink->includes_groups,
                 includesSensitiveFields: $request->boolean('includes_sensitive_fields'),
                 excludedSectionIds: $this->excludedSectionIds($request, $contact),
-                excludedActivityIds: $shareLink->excluded_activity_ids,
+                excludedLifeEventIds: $shareLink->excluded_life_event_ids,
             )->execute();
         } catch (ShareLinkIsRevoked) {
             return $this->refuseTheRevoked($vault, $contact);

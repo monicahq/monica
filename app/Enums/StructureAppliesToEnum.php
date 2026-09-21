@@ -8,7 +8,7 @@ enum StructureAppliesToEnum: string
 {
     case Contact = 'contact';
     case Entity = 'entity';
-    case Activity = 'activity';
+    case LifeEvent = 'life_event';
 
     public function needsEntityType(): bool
     {

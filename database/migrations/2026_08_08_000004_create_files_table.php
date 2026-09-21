@@ -24,7 +24,7 @@ return new class extends Migration
             $table->unsignedInteger('width')->nullable()->comment('width in pixels for an image, null otherwise');
             $table->unsignedInteger('height')->nullable()->comment('height in pixels for an image, null otherwise');
             $table->json('variants')->nullable()->comment('the derived sizes written beside it, each with its suffix and pixel size');
-            $table->unsignedInteger('reference_count')->default(0)->comment('how many values or activities currently point at it, zero meaning orphan');
+            $table->unsignedInteger('reference_count')->default(0)->comment('how many values or life events currently point at it, zero meaning orphan');
             $table->timestamp('orphaned_at')->nullable()->comment('when the count last reached zero, which starts the grace period');
             $table->unsignedBigInteger('uploaded_by_user_id')->nullable()->comment('user who uploaded it, null when an import or a module did');
             $table->timestamps();

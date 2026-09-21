@@ -30,7 +30,7 @@ return [
             'description' => 'Ten reading capabilities, each answering what the matching endpoint in this reference answers.',
             'body' => [
                 'list-vaults gives the compartments your contacts are filed in, and every other capability takes one of their addresses. list-contacts lists the people in one, narrowed by a search, a grouping or an order. get-contact looks one up, and get-me-contact resolves the contact standing for you without your having to know its address first.',
-                'list-templates and list-template-versions describe the structures your records are drawn from. list-entity-types, list-relationship-types, list-relationship-categories and list-activity-categories give the vocabulary your account has shaped for itself.',
+                'list-templates and list-template-versions describe the structures your records are drawn from. list-entity-types, list-relationship-types, list-relationship-categories and list-life-event-categories give the vocabulary your account has shaped for itself.',
                 'Reading changes nothing and is not written to your account journal.',
             ],
             'rateLimit' => 'Sixty requests per minute, per key.',
@@ -46,7 +46,7 @@ return [
             'body' => [
                 'create-contact, update-contact-name and set-contact-favourite each run exactly what the matching endpoint runs, so what is refused there is refused here.',
                 'Every change an assistant makes is written to your account journal, recorded as having arrived over MCP and naming the key that made it. That is how you tell a change an assistant made from one you typed yourself. The contact it creates is an ordinary contact, with no marker on it.',
-                'Notes, activities and the values written in a contact fields are not offered yet. They arrive here once the API carries them.',
+                'Notes, life events and the values written in a contact fields are not offered yet. They arrive here once the API carries them.',
             ],
             'rateLimit' => 'Sixty requests per minute, per key.',
             'returns' => 'The record as it stands after the change, the same object the matching endpoint answers with.',

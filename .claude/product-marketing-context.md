@@ -10,7 +10,7 @@
 
 **One-liner:** Monica is an open-source place to document your life and the people in it, structured your way.
 
-**What it does:** Monica combines a private people directory with a day-by-day journal. People can record the details, relationships, dates, activities, notes, and reminders they do not want to forget, while defining their own templates, sections, fields, lists, and custom types of things to track. An activity entered once belongs both to the journal for that day and to the histories of the people involved.
+**What it does:** Monica combines a private people directory with a day-by-day journal. People can record the details, relationships, dates, life events, notes, and reminders they do not want to forget, while defining their own templates, sections, fields, lists, and custom types of things to track. A life event entered once belongs both to the journal for that day and to the histories of the people involved.
 
 **Product category:** Personal relationship manager / personal CRM, with personal knowledge management and journaling capabilities. “Personal relationship manager” is clearer and warmer than “CRM” for primary messaging; “personal CRM” remains useful for search and comparison.
 
@@ -98,8 +98,8 @@ This landscape is category-level and repository-derived. Named competitors and w
 
 **Key differentiators:**
 
-- A people directory and personal journal are two views of the same underlying activities, eliminating duplicate entry.
-- Users define their own templates, pages, sections, fields, value lists, activity types, and custom entities.
+- A people directory and personal journal are two views of the same underlying life events, eliminating duplicate entry.
+- Users define their own templates, pages, sections, fields, value lists, life event types, and custom entities.
 - Human relationships are modeled as a first-class system with two-way reading, multiple concurrent relationships, uncertain or imprecise facts, qualifiers, and time periods.
 - Published structures are versioned and frozen; installed structures never update without explicit acceptance.
 - Templates and individual sections can be shared through a moderated marketplace and are copied on installation, remaining under the installer’s control.
@@ -110,7 +110,7 @@ This landscape is category-level and repository-derived. Named competitors and w
 - The open-source core is designed for community modules with explicit safeguards and extension points.
 - Deletion, updates, and structural changes are explicit, traceable, and recoverable wherever the product can preserve data.
 
-**How Monica does it differently:** Monica supplies a small usable skeleton, then lets each person redefine everything around stable concepts such as contacts, activities, relationships, groups, and vaults. Flexibility is contained through immutable published versions, explicit migrations, preserved history, and user-controlled updates.
+**How Monica does it differently:** Monica supplies a small usable skeleton, then lets each person redefine everything around stable concepts such as contacts, life events, relationships, groups, and vaults. Flexibility is contained through immutable published versions, explicit migrations, preserved history, and user-controlled updates.
 
 **Why that is better:** Users get the fit of a system they designed without losing predictability, history, portability, or a quick starting point. The product adapts to the user’s life instead of asking the user to adapt their life to the product.
 
@@ -122,9 +122,9 @@ These are anticipated objections, not objections proven through sales or intervi
 
 | Objection | Response |
 |---|---|
-| “This sounds like too much work to maintain.” | Start with a minimal supplied structure. Capture only what matters, and enter shared activities once so they appear in both the journal and people’s histories. Nothing in onboarding is required. |
+| “This sounds like too much work to maintain.” | Start with a minimal supplied structure. Capture only what matters, and enter shared life events once so they appear in both the journal and people’s histories. Nothing in onboarding is required. |
 | “Recording information about people feels invasive.” | Monica is a private personal record, not a social network or surveillance product. The product should encourage relevance and respect, lets users compartmentalize data, protects sensitive fields from casual exposure, and makes export and deletion explicit. Ethical-use guidance still needs to be developed. |
-| “I can already do this in Notes, Notion, or a spreadsheet.” | Those tools can store the information, but Monica supplies the people, relationship, activity, reminder, history, search, privacy, and timeline semantics so the user does not have to build and maintain them. |
+| “I can already do this in Notes, Notion, or a spreadsheet.” | Those tools can store the information, but Monica supplies the people, relationship, life event, reminder, history, search, privacy, and timeline semantics so the user does not have to build and maintain them. |
 | “A customizable system will become chaotic.” | Published structures are frozen, records stay on exact versions, and changes happen through drafts and explicit upgrades. Another user or the system never silently changes an installed structure. |
 | “Self-hosting is too technical.” | Self-hosting is an option for people who want it, not a requirement. The hosted version offers the same product without server maintenance. |
 | “Can I trust a young product with important data?” | Be candid about development status. Lead with open source, exportability, traceability, conservative deletion, and the option to self-host; never claim maturity, uptime, or capabilities that are not yet evidenced. |
@@ -171,7 +171,7 @@ The following language comes from product copy and founder narrative in the repo
 - Your own record
 - Private by default
 - People, not contacts, in broad marketing copy
-- Journal, history, relationships, activities
+- Journal, history, relationships, life events
 - Vault / one part of your life
 - Open source
 - Self-hosted
@@ -202,11 +202,11 @@ The following language comes from product copy and founder narrative in the repo
 | Contact | A person being documented; use “person” in most broad marketing copy |
 | Me | The unique contact representing the user |
 | Entity | A user-defined type of non-person object, such as an animal, company, recipe, or instrument |
-| Activity | Something that happened on a date, optionally involving people or entities; the building block of the journal |
-| Journal | The day-by-day view of activities; the counterpart to a person’s record and timeline |
+| LifeEvent | Something that happened on a date, optionally involving people or entities; the building block of the journal |
+| Journal | The day-by-day view of life events; the counterpart to a person’s record and timeline |
 | Relationship | A structured, bidirectional human link between two contacts |
 | Group | A dated set of people, such as a household, couple, social circle, family, or team; separate from relationships |
-| Template | The complete versioned definition of a contact, entity, or activity record |
+| Template | The complete versioned definition of a contact, entity, or life event record |
 | Page | An ordered navigation and presentation unit within a template version |
 | Section | A reusable thematic block of fields that can also be shared independently |
 | Field | One typed piece of information inside a section |
@@ -236,9 +236,9 @@ The following language comes from product copy and founder narrative in the repo
 
 | Theme | Core message | Supporting product evidence |
 |---|---|---|
-| Remember what matters | Keep the human context that contact cards and memory lose | People records, activities, journal, reminders, relationships, timelines |
+| Remember what matters | Keep the human context that contact cards and memory lose | People records, life events, journal, reminders, relationships, timelines |
 | Structured your way | Monica presumes as little as possible about what you want to record | Templates, pages, reusable sections, typed fields, value lists, custom entities |
-| One life, connected | Documenting a day also documents the people in it | The shared activity model behind the journal and person histories |
+| One life, connected | Documenting a day also documents the people in it | The shared life event model behind the journal and person histories |
 | Change without chaos | Personalization never means silent breakage | Frozen published versions, explicit upgrades, snapshots, history, no silent deletion |
 | Your record, under your control | Keep intimate information private, portable, and independent | Open source, free unlimited self-hosting, vaults, export, deletion, private shares |
 | Open to your tools | Automate or connect without accepting an imposed assistant | Product-wide API intent, official MCP, webhooks, scoped tokens, module system |
@@ -270,9 +270,9 @@ The following language comes from product copy and founder narrative in the repo
 
 **Primary conversion action:** Create an account on the hosted service. For technically inclined visitors, the parallel conversion is to self-host Monica.
 
-**Activation action:** Create the first vault, add the first person, and record the first meaningful piece of context. Once the journal ships, recording a first activity that appears in both the journal and a person’s history should become a key “aha” moment.
+**Activation action:** Create the first vault, add the first person, and record the first meaningful piece of context. Once the journal ships, recording a first life event that appears in both the journal and a person’s history should become a key “aha” moment.
 
-**Current metrics:** Unknown. At minimum, consider measuring landing-page-to-registration conversion, registration-to-first-vault activation, time to first person, time to first meaningful field value, first-week return rate, journal/activity adoption once available, export usage, self-host installs, and hosted one-time-purchase conversion.
+**Current metrics:** Unknown. At minimum, consider measuring landing-page-to-registration conversion, registration-to-first-vault activation, time to first person, time to first meaningful field value, first-week return rate, journal/life event adoption once available, export usage, self-host installs, and hosted one-time-purchase conversion.
 
 ## Open Questions for Validation
 

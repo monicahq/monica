@@ -50,9 +50,9 @@ Concretely:
 
 ### 3.2. The core stays stable
 
-Seven objects are never personalisable in their nature: the **Account**, the **Vault**, the **Contact**, the **Activity**, the **Relationship**, the **Group** and the special identity **Me**. Two others complete them (**Reminders** and **Changelog**), not because they are indispensable to every use, but because the product has to be able to handle them transversally, whatever structure was chosen.
+Seven objects are never personalisable in their nature: the **Account**, the **Vault**, the **Contact**, the **LifeEvent**, the **Relationship**, the **Group** and the special identity **Me**. Two others complete them (**Reminders** and **Changelog**), not because they are indispensable to every use, but because the product has to be able to handle them transversally, whatever structure was chosen.
 
-Note the nuance: **it is the concept that is fixed, not its content.** An activity will always be something that happened on a date with people, but the list of activity natures and the fields they carry are entirely configurable (see 9.3). The same logic applies to the contact: its name has a stable product-owned structure, but every part of it may be unknown.
+Note the nuance: **it is the concept that is fixed, not its content.** A life event will always be something that happened on a date with people, but the list of life event natures and the fields they carry are entirely configurable (see 9.3). The same logic applies to the contact: its name has a stable product-owned structure, but every part of it may be unknown.
 
 Erica is a **mono-user** product. An account corresponds to a single person who signs in. There are therefore no invitations, no roles, no permissions between users, and no shared vault. This simplicity is deliberate: multi-user was little used and added disproportionate complexity to access, reminders, the journal and files.
 
@@ -131,13 +131,13 @@ Ten words to know before reading on.
 | Term | What it is |
 |---|---|
 | **Account** | The personal space for configuration and, on the hosted version, billing. An account corresponds to a single user. |
-| **Vault** | A watertight compartment of data, for example "Family", "Work" or "Friends". Contacts, entities and activities live in a vault. |
+| **Vault** | A watertight compartment of data, for example "Family", "Work" or "Friends". Contacts, entities and life events live in a vault. |
 | **Contact** | A person being documented. |
 | **Me** | The special contact representing the user themselves. |
 | **Relationship** | A structured human link between two contacts, read in both directions. |
 | **Group** | A set of contacts that exists independently of their relationships: household, couple, social circle, team, family. |
 | **Entity** | A type of object invented by the user (Animal, Company, Recipe, Musical instrument, and so on) that lives alongside contacts. |
-| **Activity** | Something that happened, on a date, possibly with contacts or entities. It is the building block of the journal. |
+| **LifeEvent** | Something that happened, on a date, possibly with contacts or entities. It is the building block of the journal. |
 | **Journal** | The day by day reading of everything you lived through. The counterpart of the record, which is the reading by person. |
 | **Private share** | A revocable link giving limited access to a contact record or a vault, without creating an account or collaboration inside Erica. |
 
@@ -151,13 +151,13 @@ There are no account roles, invitations, members, permissions between users or r
 
 A vault remains a watertight compartment allowing contexts such as "Family", "Work" and "Friends" to be kept apart. It serves to organise and compartmentalise data, not to manage permissions between several users.
 
-A contact or an activity belongs to a specific vault. Searches, exports, webhooks, modules and private shares can be limited to a vault. Moving data from one vault to another is an explicit and recorded action.
+A contact or a life event belongs to a specific vault. Searches, exports, webhooks, modules and private shares can be limited to a vault. Moving data from one vault to another is an explicit and recorded action.
 
 ### 4.3. The notion of Me
 
 Every account has a special contact called **Me**, representing the person using Erica.
 
-Me is a real contact: it can carry a template, custom fields, activities and relationships, and it can belong to groups. This identity makes it possible to model sentences like "Alice is my sister", "I had lunch with Marc" or "we lived in Montreal" correctly, without creating an invisible parallel logic.
+Me is a real contact: it can carry a template, custom fields, life events and relationships, and it can belong to groups. This identity makes it possible to model sentences like "Alice is my sister", "I had lunch with Marc" or "we lived in Montreal" correctly, without creating an invisible parallel logic.
 
 Me does, however, have invariants:
 
@@ -181,7 +181,7 @@ Every share link is:
 - limited to a specific record or vault;
 - protected by an unguessable token;
 - optionally given an expiry date and a password;
-- configurable to include or exclude files, activities, relationships, sensitive fields and other sections;
+- configurable to include or exclude files, life events, relationships, sensitive fields and other sections;
 - journalled, with the date of creation, the last consultation and the revocation.
 
 By default, sensitive fields, the personal narrative of the journal, the modification history and technical data are never exposed.
@@ -204,14 +204,14 @@ Both needs go through the same mechanism, which means there is only one thing to
 
 Four levels, from the broadest to the finest:
 
-- **The Template** is the complete definition of a record. It is what you apply to a contact, an entity or an activity, and it decides what appears on the record.
+- **The Template** is the complete definition of a record. It is what you apply to a contact, an entity or a life event, and it decides what appears on the record.
 - **The Page** is a named and ordered part of a template. Every version contains at least one page. A page belongs to that version and is not reusable or publishable on its own.
 - **The Section** is a reusable thematic block, for example "Address", "Social networks", "Medical follow up". Each section in a version is placed on exactly one page, in whatever order the user wants.
 - **The Field** is the elementary piece of information inside a section: "Street", "City", "Postcode". Each field has a type (text, date, list of choices, file, and so on) and its own constraints.
 
-In this section, **page** means a page inside a template. **Record view** means the complete contact, entity or activity screen that contains the header and every template page.
+In this section, **page** means a page inside a template. **Record view** means the complete contact, entity or life event screen that contains the header and every template page.
 
-Under the surface these four levels are one engine, and the engine is not called a template. A template owns a **structure**, and so does an activity nature (9.3); the structure is what holds the versions, the pages and the section placements. The distinction matters in exactly one place, which is that an activity nature carries its own fields without being a template and without a second engine growing beside the first. Everywhere a user can see, the word stays template.
+Under the surface these four levels are one engine, and the engine is not called a template. A template owns a **structure**, and so does a life event nature (9.3); the structure is what holds the versions, the pages and the section placements. The distinction matters in exactly one place, which is that a life event nature carries its own fields without being a template and without a second engine growing beside the first. Everywhere a user can see, the word stays template.
 
 The page exists to make a long record understandable. The section stays separate because sharing an isolated block ("here is my Medical follow up section") must remain possible without imposing the template or page around it.
 
@@ -234,7 +234,7 @@ Inventing a type of object happens in two steps: you declare the type ("Animal")
 
 Once created, an entity never changes type. Its display structure, on the other hand, can be changed at any time.
 
-This flexibility is deliberate and it is not shared with activity natures. An entity type may have several templates because two vaults may want to record an animal at a completely different level of detail. An activity nature has exactly one set of fields, for the whole account, because a restaurant visit recorded in two vaults is still a restaurant visit, and because the journal aggregates across vaults without having to ask which structure a figure came from.
+This flexibility is deliberate and it is not shared with life event natures. An entity type may have several templates because two vaults may want to record an animal at a completely different level of detail. A life event nature has exactly one set of fields, for the whole account, because a restaurant visit recorded in two vaults is still a restaurant visit, and because the journal aggregates across vaults without having to ask which structure a figure came from.
 
 ### 5.4. Shared value lists
 
@@ -353,7 +353,7 @@ A later version may also calculate or suggest relationships from the explicit gr
 
 ---
 
-## 9. The journal and activities
+## 9. The journal and life events
 
 ### 9.1. The second facet of the product
 
@@ -363,11 +363,11 @@ These two halves are not two products placed side by side. It is the same gestur
 
 That is what makes the journal sustainable over time. A classic diary demands a daily effort that returns nothing in the short term, so it gets abandoned after three weeks. Here, every line written immediately enriches something else: the record of the people involved, inactivity reminders, search, statistics. You are no longer writing for a hypothetical future self, you are writing for a tool that uses it straight away.
 
-### 9.2. The activity
+### 9.2. The life event
 
-The activity is the basic unit of both facets. It is a fact: something happened, on a date, possibly with people.
+The life event is the basic unit of both facets. It is a fact: something happened, on a date, possibly with people.
 
-An activity always carries:
+A life event always carries:
 
 - **a date**, or a period when it lasts several days (a trip, a hospital stay);
 - **a nature**: lunch, call, concert, medical appointment, argument, walk, and so on;
@@ -375,37 +375,37 @@ An activity always carries:
 - **a free narrative**, plus the fields specific to its nature;
 - **files**: photos, tickets, scans.
 
-**The concept of an activity is part of the core and is never personalisable in its nature.** The reason is the same as for the contact: the product uses it transversally, to build a timeline, compute inactivity, feed search and statistics. If the activity were merely one user invented object among others, none of those features could work reliably.
+**The concept of a life event is part of the core and is never personalisable in its nature.** The reason is the same as for the contact: the product uses it transversally, to build a timeline, compute inactivity, feed search and statistics. If the life event were merely one user invented object among others, none of those features could work reliably.
 
-**The nature of activities, on the other hand, is entirely configurable.** That is where personalisation comes back.
+**The nature of life events, on the other hand, is entirely configurable.** That is where personalisation comes back.
 
-### 9.3. Activity categories and natures
+### 9.3. Life event categories and natures
 
-The list of natures is configured at the account level, like the other shared value lists (see 5.4). Erica supplies a starting set that is immediately usable, and everybody adapts it: adding to it, renaming, deactivating without breaking the past activities that use it.
+The list of natures is configured at the account level, like the other shared value lists (see 5.4). Erica supplies a starting set that is immediately usable, and everybody adapts it: adding to it, renaming, deactivating without breaking the past life events that use it.
 
-The [supplied catalogue](models/035-activity-type-in-progress.md#supplied-types) covers ordinary interactions, work and education, health, home, leisure, travel, personal events and one fallback, Other activity.
+The [supplied catalogue](models/035-life-event-type-in-progress.md#supplied-types) covers ordinary interactions, work and education, health, home, leisure, travel, personal events and one fallback, Other life event.
 
-**Categories organise the activity vocabulary.** Every account starts with Relationships and family, Work and education, Health and wellbeing, Home and daily life, Leisure and culture, Travel and experiences, Personal and Other. The user may create, rename, reorder and deactivate categories. Supplied categories cannot be deleted. A category groups activity natures in settings and pickers, filters the journal and provides a level for aggregate statistics. It never decides which fields an activity carries, who participated or how it is shared.
+**Categories organise the life event vocabulary.** Every account starts with Relationships and family, Work and education, Health and wellbeing, Home and daily life, Leisure and culture, Travel and experiences, Personal and Other. The user may create, rename, reorder and deactivate categories. Supplied categories cannot be deleted. A category groups life event natures in settings and pickers, filters the journal and provides a level for aggregate statistics. It never decides which fields a life event carries, who participated or how it is shared.
 
-Every nature belongs to exactly one category. Moving a nature changes how every activity of that nature is grouped and aggregated, including past activities, because an activity does not keep a snapshot of the category. It changes no recorded fact. Other is the fallback category, so a nature is never left unclassified.
+Every nature belongs to exactly one category. Moving a nature changes how every life event of that nature is grouped and aggregated, including past life events, because a life event does not keep a snapshot of the category. It changes no recorded fact. Other is the fallback category, so a nature is never left unclassified.
 
-Activity natures remain account owned even when they are created while recording an activity from a contact. The inline path asks only for the name and category. It saves the nature for the whole account and selects it in the activity being entered. The settings screen carries the complete editor. Installing a nature from the marketplace likewise asks which local category should receive it and proposes Other. The marketplace's editorial category is never copied into the account as an activity category.
+Life event natures remain account owned even when they are created while recording a life event from a contact. The inline path asks only for the name and category. It saves the nature for the whole account and selects it in the life event being entered. The settings screen carries the complete editor. Installing a nature from the marketplace likewise asks which local category should receive it and proposes Other. The marketplace's editorial category is never copied into the account as a life event category.
 
 Each nature carries:
 
 - **a label, an icon and a colour**, so the journal reads at a glance;
 - **its own field structure**, defined with the same engine as contact records, and not merely one that resembles it: the nature owns a structure exactly as a template does, with the same pages, sections, fields, versions and freezing rules (see 5.2 and 6). What the settings screen calls it is custom fields; the words template and version never appear there, because neither is what somebody came to that screen to manage. A "Restaurant" nature can carry the venue, the dish and a rating out of 5. A "Medical appointment" nature can carry the practitioner, the reason and a scanned prescription. A "Call" nature may carry nothing but a duration.
 
-**Participation is the only rule for contact history.** Adding a contact as a participant means that the contact took part in the activity. The activity appears in their history and may become their latest interaction, regardless of its nature. Mentioning somebody only in the narrative does not make them a participant. An activity without a contact participant changes no contact. When an older activity is recorded later, it stays in the history but never replaces a more recent `last_activity_at` value.
+**Participation is the only rule for contact history.** Adding a contact as a participant means that the contact took part in the life event. The life event appears in their history and may become their latest interaction, regardless of its nature. Mentioning somebody only in the narrative does not make them a participant. A life event without a contact participant changes no contact. When an older life event is recorded later, it stays in the history but never replaces a more recent `last_life_event_at` value.
 
-Direct consequence: **an activity nature can be shared on the marketplace** like any other structure, with the same versioning and installation rules (sections 6 and 7). Somebody who has designed a good log for mountain outings, or a good log for medical appointments, can publish it as is.
+Direct consequence: **a life event nature can be shared on the marketplace** like any other structure, with the same versioning and installation rules (sections 6 and 7). Somebody who has designed a good log for mountain outings, or a good log for medical appointments, can publish it as is.
 
 ### 9.4. The journal, the reading by day
 
 The journal is the chronological view of all of this. A day can contain:
 
-- the **activities** of the day;
-- a **narrative of the day itself**, which belongs to no particular activity;
+- the **life events** of the day;
+- a **narrative of the day itself**, which belongs to no particular life event;
 - a **general mood**, chosen from a list that is itself configurable.
 
 A day can have nothing but a mood. An empty day stays an empty day, the product makes nobody feel guilty and asks for nothing.
@@ -413,35 +413,35 @@ A day can have nothing but a mood. An empty day stays an empty day, the product 
 **Two ways to enter the same information**, because both correspond to real moments:
 
 - **by the day**: in the evening, I tell the story of my day and hook the people concerned into the text;
-- **by the person**: I have just seen somebody, I add the activity from their record, and it files itself into the journal for the right day.
+- **by the person**: I have just seen somebody, I add the life event from their record, and it files itself into the journal for the right day.
 
 Both produce exactly the same thing. This is the main scenario for quick capture on mobile (see 3.8): recording a meeting in ten seconds, in the street, straight afterwards.
 
 You can of course fill in a past day, or reconstruct entire years after the fact. As with relationships (see 8.2), a date can stay imprecise, and the product never forces a precision you do not have.
 
-### 9.5. What activities feed elsewhere
+### 9.5. What life events feed elsewhere
 
-This is the whole reason the mechanism exists. Activities are not an isolated module.
+This is the whole reason the mechanism exists. Life events are not an isolated module.
 
-- **A contact's timeline.** On somebody's record, activities mix with relationship events (see 8.3) to form a single readable story.
-- **Inactivity reminders** (see 10.2). "Tell me if I have had no contact with this person for 90 days" only makes sense if there is a trace of that contact. Without activities, it is a reminder that can measure nothing.
+- **A contact's timeline.** On somebody's record, life events mix with relationship events (see 8.3) to form a single readable story.
+- **Inactivity reminders** (see 10.2). "Tell me if I have had no contact with this person for 90 days" only makes sense if there is a trace of that contact. Without life events, it is a reminder that can measure nothing.
 - **Event relative reminders** (see 10.2), of the kind "14 days after the last lunch".
-- **Statistics**: who I see the most, who I neglect, how it changes over time, the breakdown by activity nature.
-- **Search** (see 13), which has to find an activity by its content the way it finds a contact.
+- **Statistics**: who I see the most, who I neglect, how it changes over time, the breakdown by life event nature.
+- **Search** (see 13), which has to find a life event by its content the way it finds a contact.
 - **Photos**, which finally get a natural place to be filed: the day they were taken, with the people who were there.
 
 ### 9.6. The privacy of the journal
 
-The journal is personal. In Erica, an activity, its narrative and the day it belongs to are private by default because the account has only one user.
+The journal is personal. In Erica, a life event, its narrative and the day it belongs to are private by default because the account has only one user.
 
-When a contact record or a vault is exposed by a private link, activities and narratives are never included implicitly. The owner explicitly chooses what may be visible:
+When a contact record or a vault is exposed by a private link, life events and narratives are never included implicitly. The owner explicitly chooses what may be visible:
 
-- the structured facts of an activity;
+- the structured facts of a life event;
 - its free narrative;
 - the associated files;
 - the overall narrative of a day.
 
-The setting can be defined at the link level and then tightened activity by activity. A field marked as sensitive stays excluded by default, even if the activity is shared.
+The setting can be defined at the link level and then tightened life event by life event. A field marked as sensitive stays excluded by default, even if the life event is shared.
 
 ## 10. Reminders
 
@@ -463,8 +463,8 @@ Without that distinction, you can neither postpone a reminder cleanly, nor keep 
 - **One off**: a date, once.
 - **Recurring**: every year on 12 May, every Monday and Friday, and so on.
 - **Field based**: the product reads any `date` or `recurring_date` entered on a record and derives deadlines from it, with one or more offsets ("7 days before" and "on the day"). The source provides the record, field and value; the reminder separately defines whether it fires once or recurs, and at which frequency. A complete `date` can therefore drive a recurring reminder. A `recurring_date` is useful when the calendar date itself repeats or its year is unknown, and may suggest a yearly cadence without imposing it. Saving a date never creates a rule silently: the interface offers to add one, prefilled from that context, and the user chooses its wording, cadence, offsets and local time.
-- **Relative to an activity**: "14 days after the last lunch". It relies directly on the journal (see 9).
-- **By inactivity**: "tell me if I have had no contact with this person for 90 days". This is probably the most important reminder in a personal CRM, and the most absent from existing tools. It is computed from the latest dated activity in which the contact participates (see 9.3), so its quality depends on participants and dates being recorded accurately.
+- **Relative to a life event**: "14 days after the last lunch". It relies directly on the journal (see 9).
+- **By inactivity**: "tell me if I have had no contact with this person for 90 days". This is probably the most important reminder in a personal CRM, and the most absent from existing tools. It is computed from the latest dated life event in which the contact participates (see 9.3), so its quality depends on participants and dates being recorded accurately.
 
 ### 10.3. Expected behaviours
 
@@ -569,7 +569,7 @@ The intended uses:
 The list of events follows the product, not a sub-part of the product. At minimum you can listen to:
 
 - **Contacts and entities**: creation, modification, deletion, restoration, merge, change of applied structure.
-- **Activities and journal**: an activity is created, modified or deleted, a day is filled in. This is probably the most useful event to listen to, since it allows rebroadcasting your life to any other tool.
+- **Life events and journal**: a life event is created, modified or deleted, a day is filled in. This is probably the most useful event to listen to, since it allows rebroadcasting your life to any other tool.
 - **Relationships**: creation, modification, status change, deletion and restoration.
 - **Reminders**: a deadline arrives, it is postponed or dismissed, a rule is deactivated.
 - **Structures**: a template or a section is created or published, a new version is published.
@@ -617,7 +617,7 @@ This is the part that decides whether the feature is usable or not.
 - The complete core: mono-user account, personal vaults, the Me contact, contacts, groups and read only private share links.
 - The complete personalisation engine: templates, pages, sections, fields, versions, shared value lists.
 - Custom entities.
-- **The journal and activities** (see 9), with configurable natures, their own fields, the day view, the timeline on a contact's record and quick capture. This is half the product, not a side feature: without it, inactivity reminders and statistics have nothing to measure.
+- **The journal and life events** (see 9), with configurable natures, their own fields, the day view, the timeline on a contact's record and quick capture. This is half the product, not a side feature: without it, inactivity reminders and statistics have nothing to measure.
 - The essential field types: text, long text, number, yes or no, web address, email, phone, dropdown, multiple choice, date, recurring date, relation, file, image, repeater, address, layout elements, as well as marking fields as sensitive.
 - The simple system of relationship categories, relationship types and explicit dated relationships, including unnamed partial contacts, the Immediate family block, and the family-tree and romantic-history projections described in section 8.
 - Duplicate detection and merging, with preview, conflict resolution, relationship transfer and history preservation.
@@ -638,7 +638,7 @@ This is the part that decides whether the feature is usable or not.
 - Calculated fields and aggregations.
 - Tasks as an object in their own right.
 - Automatic feeding of the journal: recognising people mentioned in free text, importing from a calendar, matching against the photos on the phone. These are capture accelerators, not prerequisites, and each raises its own privacy questions.
-- Advanced statistics on activities. V1 limits itself to what is directly readable on a record and in the journal.
+- Advanced statistics on life events. V1 limits itself to what is directly readable on a record and in the journal.
 - Personalising objects other than the contact and entities (account, vault). The mechanism is designed for it, but it will not be exposed straight away.
 - A complete ecosystem for distributing, rating and automatically updating modules.
 - Relationship labels, qualifiers, imprecise or repeated periods, recorded certainty, and every automatic relationship deduction or suggestion described as a possible extension in section 8.4.

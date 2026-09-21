@@ -17,7 +17,7 @@ Structured filtering ("every contact whose city is Paris and whose diet is veget
 id                          int                             primary key
 account_id                  int                             account the record belongs to
 vault_id                    int                             vault it lives in, so a search never crosses the compartment
-searchable_type             string (255)                    class of the record indexed, a contact, an entity, an activity or a group
+searchable_type             string (255)                    class of the record indexed, a contact, an entity, a life event or a group
 searchable_id               int                             id of that record
 title                       string (511)                    the name or heading, weighted highest when ranking results
 body                        longtext                        every searchable value flattened into text
@@ -42,7 +42,7 @@ updated_at                  datetime
 - A field marked sensitive is indexed, because the owner is the only person searching (5.6, 4.1). It is never surfaced through a share link, which reads its own restricted path and not this table.
 - Every result is scoped by vault. Search respects the compartment like everything else (4.2).
 - Stemming and tokenisation depend on the language (3.7), which is why `locale` is stored per entry rather than assumed from the account.
-- Activities are indexed alongside records. Section 9.5 requires an activity to be findable by its content the way a contact is.
+- Life events are indexed alongside records. Section 9.5 requires a life event to be findable by its content the way a contact is.
 - Deleting a record deletes its entry. A soft deleted record is removed from the index and reindexed if it comes back.
 
 ## Open questions

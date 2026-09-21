@@ -125,7 +125,7 @@ class Template extends Model
      * Get every state the template has been in, newest first.
      *
      * The versions belong to the structure rather than to the template, since
-     * an activity type has them too. This reaches them through it, so that a
+     * a life event type has them too. This reaches them through it, so that a
      * screen showing a template's history does not have to know the engine was
      * ever separated from it.
      *

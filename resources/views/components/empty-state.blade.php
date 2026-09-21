@@ -22,7 +22,9 @@
     <p class="text-section-title text-ink">{{ $title }}</p>
   @endisset
 
-  <p class="max-w-[44ch] text-base text-pretty text-muted">{{ $slot }}</p>
+  @if (trim($slot->toHtml()) !== '')
+    <p class="max-w-[44ch] text-base text-pretty text-muted">{{ $slot }}</p>
+  @endif
 
   @isset($action)
     <div class="mt-1">{{ $action }}</div>

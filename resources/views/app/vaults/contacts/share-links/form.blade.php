@@ -126,7 +126,7 @@
         <ul class="mt-2 flex list-none flex-col gap-1.5">
           @foreach ([
             __('Anything attached as a file, and anything a repeated block holds'),
-            __('Activities, and everything you wrote about them'),
+            __('Life events, and everything you wrote about them'),
             __('Your account of any day this person appears in'),
             __('Relationships and group memberships'),
             __('Who changed what and when, and everything technical'),

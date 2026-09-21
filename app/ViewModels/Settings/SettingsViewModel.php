@@ -130,7 +130,7 @@ class SettingsViewModel
             ],
             [
                 'title' => __('Value lists'),
-                'description' => __('The lists the application offers you: relationship kinds, genders, call reasons, activity types.'),
+                'description' => __('The lists the application offers you: relationship kinds, genders, call reasons, life event types.'),
                 'icon' => 'tasks',
                 'meta' => null,
                 'url' => route('settings.valueLists.index'),

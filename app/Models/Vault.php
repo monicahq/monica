@@ -26,7 +26,7 @@ use Override;
  * Class Vault
  *
  * A watertight compartment of data: "Famille", "Pro", "Amis". Contacts,
- * entities and activities live in one, and nothing reaches across. Separating
+ * entities and life events live in one, and nothing reaches across. Separating
  * contexts is the whole point, so that a work search never returns a family
  * contact and a private link scoped to one part of a life exposes no other.
  *

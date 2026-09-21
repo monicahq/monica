@@ -34,14 +34,14 @@ updated_at                  datetime
 
 ## Rules
 
-- Every structure version has at least one page. Creating a template creates its structure, its first draft and a page labelled "General" in the same transaction, and creating an [ActivityType](035-activity-type-in-progress.md) does the same. The supplied label uses a translation key and can be renamed like any other page.
+- Every structure version has at least one page. Creating a template creates its structure, its first draft and a page labelled "General" in the same transaction, and creating an [LifeEventType](035-life-event-type-in-progress.md) does the same. The supplied label uses a translation key and can be renamed like any other page.
 - A page belongs to exactly one structure version and is never reused across versions. Drafting from a version copies each page and preserves its key, label and position while assigning a new UUID.
 - `key` is unique within a structure version and stays stable across drafts copied from it. Renaming the label never changes the key. This is what makes a page URL readable and durable while a record remains on its precise structure version.
 - Every page has a visible label through either `label` or `label_translation_key`. Display labels are unique within a structure version so two tabs never have the same accessible name.
 - `position` is unique within a structure version. Reordering pages normalises the positions into one contiguous sequence.
 - A published structure version freezes its pages. A page can be added, renamed, reordered or removed only while its structure version is a draft.
 - The last page cannot be removed. A page containing section placements cannot be removed until those sections have been moved or removed explicitly.
-- A draft page may be empty while the structure is being assembled. A version with several pages cannot be published while any of them is empty. A version of one empty page may be published: a contact remains valid with only its product-owned identity header, even when every name component is empty, and an activity type that nobody has given fields to renders an activity carrying none.
+- A draft page may be empty while the structure is being assembled. A version with several pages cannot be published while any of them is empty. A version of one empty page may be published: a contact remains valid with only its product-owned identity header, even when every name component is empty, and a life event type that nobody has given fields to renders a life event carrying none.
 - There is no product limit above one page. The builder and record navigation must continue to work when the tab list is wider than the viewport.
 - A page stores presentation and navigation only. Fields and their values continue to belong to section versions. Search, filtering, reminders, exports and highlighted fields work across all pages.
 - A page is not a marketplace item. When a template is published or installed, its page structure travels inside the template payload. Publishing a section alone carries no page with it.

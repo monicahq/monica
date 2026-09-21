@@ -95,8 +95,8 @@ class ContactsViewModel
                 ? null
                 : route('files.show', ['vault' => $this->vault, 'file' => $contact->avatar]),
             'template' => $contact->structureVersion->structure->owner->name,
-            'when' => ($contact->last_activity_at ?? $contact->created_at)->isoFormat('ll'),
-            'whenLabel' => $contact->last_activity_at === null ? __('added') : __('last spoke'),
+            'when' => ($contact->last_interaction_at ?? $contact->created_at)->isoFormat('ll'),
+            'whenLabel' => $contact->last_interaction_at === null ? __('added') : __('last spoke'),
             'url' => route('contacts.show', ['vault' => $this->vault, 'contact' => $contact]),
         ];
     }

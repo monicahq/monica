@@ -313,7 +313,7 @@ class ContactShareLinkControllerTest extends TestCase
         $link = ShareLink::factory()->for($contact, 'shareable')->create([
             'includes_files' => true,
             'includes_relationships' => true,
-            'excluded_activity_ids' => [42],
+            'excluded_life_event_ids' => [42],
         ]);
 
         $this->actingAs($user)
@@ -326,7 +326,7 @@ class ContactShareLinkControllerTest extends TestCase
 
         $this->assertTrue($link->includes_files);
         $this->assertTrue($link->includes_relationships);
-        $this->assertSame([42], $link->excluded_activity_ids);
+        $this->assertSame([42], $link->excluded_life_event_ids);
     }
 
     #[Test]

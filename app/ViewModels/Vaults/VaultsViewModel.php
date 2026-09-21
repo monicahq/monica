@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Models\Contact;
+use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault;
+use Carbon\CarbonImmutable;
 
 class VaultsViewModel
 {
+    private const int FACES_SHOWN = 4;
+
     public function __construct(
         private readonly User $user,
     ) {}
@@ -16,16 +21,6 @@ class VaultsViewModel
     public function title(): string
     {
         return __('Your vaults');
-    }
-
-    public function description(): string
-    {
-        return __('A vault keeps one part of your life separate from the others. People, notes and reminders never move between them.');
-    }
-
-    public function orderNote(): string
-    {
-        return __('The one you were last in is first.');
     }
 
     public function createUrl(): string
@@ -45,7 +40,7 @@ class VaultsViewModel
     }
 
     /**
-     * @return array<int, array{name: string, initial: string, description: string|null, colour: string, tint: string, contactCount: string, isDefault: bool, isLastOpened: bool, url: string}>
+     * @return array<int, array{name: string, initial: string, colour: string, tint: string, visitLine: string, faces: array<int, array{name: string, avatarUrl: string|null}>, moreFaces: string|null, openTaskCount: int, dateCount: int, isDefault: bool, url: string}>
      */
     public function vaults(): array
     {
@@ -57,27 +52,84 @@ class VaultsViewModel
             ->get();
 
         return $vaults
-            ->map(fn (Vault $vault, int $index): array => [
+            ->map(fn (Vault $vault): array => [
                 'name' => $vault->name,
                 'initial' => mb_strtoupper(mb_substr($vault->name, 0, 1)),
-                'description' => $vault->description,
                 'colour' => $vault->colour,
-                'tint' => "color-mix(in srgb, {$vault->colour} 12%, transparent)",
-                'contactCount' => $this->contactCount($vault),
+                'tint' => "color-mix(in srgb, {$vault->colour} 12%, var(--canvas))",
+                'visitLine' => $this->visitLine($vault),
+                'faces' => $this->faces($vault),
+                'moreFaces' => $this->moreFaces($vault),
+                'openTaskCount' => $this->openTaskCount(),
+                'dateCount' => $this->dateCount($vault),
                 'isDefault' => $vault->is_default,
-                'isLastOpened' => $index === 0 && $vault->last_visited_at !== null,
                 'url' => route('vaults.show', $vault),
             ])
             ->all();
     }
 
-    private function contactCount(Vault $vault): string
+    private function visitLine(Vault $vault): string
     {
-        if ($vault->contact_count === 0) {
-            return __('Nobody in it yet');
+        if ($vault->last_visited_at === null) {
+            return __('Not opened yet');
         }
 
-        return trans_choice(':count person|:count people', $vault->contact_count);
+        return __('Opened :when', [
+            'when' => $vault->last_visited_at->setTimezone($this->user->timezone)->diffForHumans(),
+        ]);
+    }
+
+    /** @return array<int, array{name: string, avatarUrl: string|null}> */
+    private function faces(Vault $vault): array
+    {
+        return $vault
+            ->contacts()
+            ->listed()
+            ->with('avatar')
+            ->orderByDesc('created_at')
+            ->limit(self::FACES_SHOWN)
+            ->get()
+            ->map(fn (Contact $contact): array => [
+                'name' => $contact->name,
+                'avatarUrl' => $contact->avatar === null
+                    ? null
+                    : route('files.show', ['vault' => $vault, 'file' => $contact->avatar]),
+            ])
+            ->all();
+    }
+
+    private function moreFaces(Vault $vault): ?string
+    {
+        $remaining = $vault->contact_count - self::FACES_SHOWN;
+
+        if ($remaining <= 0) {
+            return null;
+        }
+
+        return trans_choice('[0,*]and :count more', $remaining);
+    }
+
+    /**
+     * Always none, because nothing in the application writes a task down yet. The cell stays on the
+     * card so the two counts read as a pair, and it tells the truth the day tasks arrive.
+     */
+    private function openTaskCount(): int
+    {
+        return 0;
+    }
+
+    /**
+     * What the vault has to be told about before the month is out. Anything actionable and still
+     * undealt with counts, overdue included, which is the set the reminders screen calls upcoming.
+     */
+    private function dateCount(Vault $vault): int
+    {
+        return ReminderOccurrence::query()
+            ->upcomingInVault(
+                vault: $vault,
+                until: CarbonImmutable::now($this->user->timezone)->endOfMonth(),
+            )
+            ->count();
     }
 
     public function user(): User

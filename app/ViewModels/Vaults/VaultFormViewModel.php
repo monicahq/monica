@@ -28,7 +28,7 @@ class VaultFormViewModel
 
     public function description(): string
     {
-        return __('A vault holds one part of your life. The contacts, records and activities you put in one stay in it, and a search in another vault never reaches them.');
+        return __('A vault holds one part of your life. The contacts, records and life events you put in one stay in it, and a search in another vault never reaches them.');
     }
 
     public function action(): string

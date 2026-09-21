@@ -78,7 +78,7 @@ Two models sit out of order here, and both for the same reason: they were added 
 
 Model 055, [StructureVersionPage](055-structure-version-page-done.md), is a later addition to this engine, and its table is created before the one of model 016 so that every section placement names its page from the first migration.
 
-Model 056, [Structure](056-structure-done.md), is the container models 012 to 018 now hang off, so by dependency it belongs before all of them and its table is created first. Read it before 012. It exists because the engine had been named after one of its callers: a version belonged to a template, which made it impossible for an [ActivityType](035-activity-type-in-progress.md) to have fields without either borrowing a template it is not or growing a second engine beside the first.
+Model 056, [Structure](056-structure-done.md), is the container models 012 to 018 now hang off, so by dependency it belongs before all of them and its table is created first. Read it before 012. It exists because the engine had been named after one of its callers: a version belonged to a template, which made it impossible for an [LifeEventType](035-life-event-type-in-progress.md) to have fields without either borrowing a template it is not or growing a second engine beside the first.
 
 ### The records
 
@@ -111,10 +111,10 @@ Model 056, [Structure](056-structure-done.md), is the container models 012 to 01
 
 | # | Model | Spec |
 |---|---|---|
-| 028 | [ActivityCategory](028-activity-category-done.md) | 9.3 |
-| 035 | [ActivityType](035-activity-type-in-progress.md) | 9.3 |
-| 036 | [Activity](036-activity-not-yet.md) | 9.2 |
-| 037 | [ActivityParticipant](037-activity-participant-not-yet.md) | 9.2 |
+| 028 | [LifeEventCategory](028-life-event-category-done.md) | 9.3 |
+| 035 | [LifeEventType](035-life-event-type-in-progress.md) | 9.3 |
+| 036 | [LifeEvent](036-life-event-not-yet.md) | 9.2 |
+| 037 | [LifeEventParticipant](037-life-event-participant-not-yet.md) | 9.2 |
 | 038 | [Mood](038-mood-not-yet.md) | 9.4 |
 | 039 | [JournalDay](039-journal-day-not-yet.md) | 9.4 |
 
@@ -161,7 +161,7 @@ These appear in the specification but are explicitly out of the first version (s
 
 - **Task.** Deferred. It will reuse the reminder and notification machinery rather than grow its own, so nothing here should make that harder.
 - **Calculated fields and aggregations.** Deferred. They are a field type, not a model.
-- **Statistics.** Read from activities, so no storage of their own until the shape of the questions is known.
+- **Statistics.** Read from life events, so no storage of their own until the shape of the questions is known.
 - **Mobile applications.** They consume the API, and add no model beyond the push token, which lives on the notification preference.
 - **Advanced relationships.** Labels, qualifiers, repeated periods, recorded certainty, deductions and suggestions are possible later extensions of the explicit relationship graph. They have no model in the first version.
 

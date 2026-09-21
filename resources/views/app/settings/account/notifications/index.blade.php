@@ -10,10 +10,7 @@
   current="notifications"
 >
   <div class="flex flex-col gap-8">
-    <x-page-header
-      :title="__('Notifications')"
-      :description="__('Choose how the application reaches you. A channel changes the moment you flip it, and the panel beside it shows what lands there.')"
-    />
+    <x-page-header :title="__('Notifications')" />
 
     <div id="notification-channels" class="flex flex-col gap-6">
       @if ($errors->any())

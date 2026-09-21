@@ -2,14 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Api\ActivityCategoryActivationController;
-use App\Http\Controllers\Api\ActivityCategoryController;
-use App\Http\Controllers\Api\ActivityCategoryPositionController;
-use App\Http\Controllers\Api\ActivityCategoryTypeController;
-use App\Http\Controllers\Api\ActivityTypeActivationController;
-use App\Http\Controllers\Api\ActivityTypeController;
-use App\Http\Controllers\Api\ActivityTypeFieldController;
-use App\Http\Controllers\Api\ActivityTypePositionController;
 use App\Http\Controllers\Api\ApiKeyController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegistrationController;
@@ -33,6 +25,14 @@ use App\Http\Controllers\Api\EntityTypeController;
 use App\Http\Controllers\Api\EntityTypePositionController;
 use App\Http\Controllers\Api\FieldController;
 use App\Http\Controllers\Api\FieldPositionController;
+use App\Http\Controllers\Api\LifeEventCategoryActivationController;
+use App\Http\Controllers\Api\LifeEventCategoryController;
+use App\Http\Controllers\Api\LifeEventCategoryPositionController;
+use App\Http\Controllers\Api\LifeEventCategoryTypeController;
+use App\Http\Controllers\Api\LifeEventTypeActivationController;
+use App\Http\Controllers\Api\LifeEventTypeController;
+use App\Http\Controllers\Api\LifeEventTypeFieldController;
+use App\Http\Controllers\Api\LifeEventTypePositionController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\MeTimezoneController;
@@ -132,27 +132,27 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('entity-types/{entityType}/activation', [EntityTypeActivationController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.activation.update');
         Route::put('entity-types/{entityType}/position', [EntityTypePositionController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.position.update');
 
-        Route::get('activity-categories', [ActivityCategoryController::class, 'index'])->name('activityCategories');
-        Route::get('activity-categories/{activityCategory}', [ActivityCategoryController::class, 'show'])->where('activityCategory', '[0-9a-fA-F-]{36}')->name('activityCategories.show');
-        Route::post('activity-categories', [ActivityCategoryController::class, 'create'])->name('activityCategories.create');
-        Route::put('activity-categories/{activityCategory}', [ActivityCategoryController::class, 'update'])->where('activityCategory', '[0-9a-fA-F-]{36}')->name('activityCategories.update');
-        Route::delete('activity-categories/{activityCategory}', [ActivityCategoryController::class, 'destroy'])->where('activityCategory', '[0-9a-fA-F-]{36}')->name('activityCategories.destroy');
+        Route::get('life-event-categories', [LifeEventCategoryController::class, 'index'])->name('lifeEventCategories');
+        Route::get('life-event-categories/{lifeEventCategory}', [LifeEventCategoryController::class, 'show'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.show');
+        Route::post('life-event-categories', [LifeEventCategoryController::class, 'create'])->name('lifeEventCategories.create');
+        Route::put('life-event-categories/{lifeEventCategory}', [LifeEventCategoryController::class, 'update'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.update');
+        Route::delete('life-event-categories/{lifeEventCategory}', [LifeEventCategoryController::class, 'destroy'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.destroy');
 
-        Route::put('activity-categories/{activityCategory}/activation', [ActivityCategoryActivationController::class, 'update'])->where('activityCategory', '[0-9a-fA-F-]{36}')->name('activityCategories.activation.update');
-        Route::put('activity-categories/{activityCategory}/position', [ActivityCategoryPositionController::class, 'update'])->where('activityCategory', '[0-9a-fA-F-]{36}')->name('activityCategories.position.update');
-        Route::get('activity-categories/{activityCategory}/types', [ActivityCategoryTypeController::class, 'index'])->where('activityCategory', '[0-9a-fA-F-]{36}')->name('activityCategories.types');
+        Route::put('life-event-categories/{lifeEventCategory}/activation', [LifeEventCategoryActivationController::class, 'update'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.activation.update');
+        Route::put('life-event-categories/{lifeEventCategory}/position', [LifeEventCategoryPositionController::class, 'update'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.position.update');
+        Route::get('life-event-categories/{lifeEventCategory}/types', [LifeEventCategoryTypeController::class, 'index'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.types');
 
-        Route::get('activity-types', [ActivityTypeController::class, 'index'])->name('activityTypes');
-        Route::get('activity-types/{activityType}', [ActivityTypeController::class, 'show'])->where('activityType', '[0-9a-fA-F-]{36}')->name('activityTypes.show');
-        Route::post('activity-types', [ActivityTypeController::class, 'create'])->name('activityTypes.create');
-        Route::put('activity-types/{activityType}', [ActivityTypeController::class, 'update'])->where('activityType', '[0-9a-fA-F-]{36}')->name('activityTypes.update');
-        Route::delete('activity-types/{activityType}', [ActivityTypeController::class, 'destroy'])->where('activityType', '[0-9a-fA-F-]{36}')->name('activityTypes.destroy');
+        Route::get('life-event-types', [LifeEventTypeController::class, 'index'])->name('lifeEventTypes');
+        Route::get('life-event-types/{lifeEventType}', [LifeEventTypeController::class, 'show'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.show');
+        Route::post('life-event-types', [LifeEventTypeController::class, 'create'])->name('lifeEventTypes.create');
+        Route::put('life-event-types/{lifeEventType}', [LifeEventTypeController::class, 'update'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.update');
+        Route::delete('life-event-types/{lifeEventType}', [LifeEventTypeController::class, 'destroy'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.destroy');
 
-        Route::put('activity-types/{activityType}/activation', [ActivityTypeActivationController::class, 'update'])->where('activityType', '[0-9a-fA-F-]{36}')->name('activityTypes.activation.update');
-        Route::put('activity-types/{activityType}/position', [ActivityTypePositionController::class, 'update'])->where('activityType', '[0-9a-fA-F-]{36}')->name('activityTypes.position.update');
+        Route::put('life-event-types/{lifeEventType}/activation', [LifeEventTypeActivationController::class, 'update'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.activation.update');
+        Route::put('life-event-types/{lifeEventType}/position', [LifeEventTypePositionController::class, 'update'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.position.update');
 
-        Route::get('activity-types/{activityType}/fields', [ActivityTypeFieldController::class, 'index'])->where('activityType', '[0-9a-fA-F-]{36}')->name('activityTypes.fields');
-        Route::put('activity-types/{activityType}/fields', [ActivityTypeFieldController::class, 'update'])->where('activityType', '[0-9a-fA-F-]{36}')->name('activityTypes.fields.update');
+        Route::get('life-event-types/{lifeEventType}/fields', [LifeEventTypeFieldController::class, 'index'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.fields');
+        Route::put('life-event-types/{lifeEventType}/fields', [LifeEventTypeFieldController::class, 'update'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.fields.update');
 
         Route::get('relationship-categories', [RelationshipCategoryController::class, 'index'])->name('relationshipCategories');
         Route::get('relationship-categories/{relationshipCategory}', [RelationshipCategoryController::class, 'show'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.show');

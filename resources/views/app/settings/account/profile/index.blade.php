@@ -14,7 +14,7 @@
 
   <x-page-header :title="__('Profile')" :description="__('Your name, the address you sign in with, and your photo.')" />
 
-  <x-page-section :title="__('Profile photo')" :description="__('Shown next to your name everywhere in the application.')">
+  <x-page-section :title="__('Profile photo')">
     <x-panel>
       <div
         class="flex flex-wrap items-center gap-5"
@@ -70,7 +70,7 @@
     </x-panel>
   </x-page-section>
 
-  <x-page-section :title="__('Details')" :description="__('Your name appears everywhere the application refers to you.')">
+  <x-page-section :title="__('Details')">
     <x-form
       method="put"
       :action="route('settings.profile.update')"

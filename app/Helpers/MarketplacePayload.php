@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Helpers;
 
 use App\Exceptions\ListingHasNothingToPublish;
-use App\Models\ActivityType;
 use App\Models\EntityType;
 use App\Models\Field;
+use App\Models\LifeEventType;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
@@ -27,7 +27,7 @@ class MarketplacePayload
     private function __construct() {}
 
     /** @return array<string, mixed> */
-    public static function of(Template|ActivityType|Section $listable): array
+    public static function of(Template|LifeEventType|Section $listable): array
     {
         return new self()->build($listable);
     }
@@ -48,7 +48,7 @@ class MarketplacePayload
     }
 
     /** @return array<string, mixed> */
-    private function build(Template|ActivityType|Section $listable): array
+    private function build(Template|LifeEventType|Section $listable): array
     {
         $published = $listable instanceof Section
             ? $listable->publishedVersion
@@ -64,10 +64,10 @@ class MarketplacePayload
             return ['type' => 'section', 'section' => $section, 'value_lists' => $this->valueLists];
         }
 
-        if ($listable instanceof ActivityType) {
-            $activityType = $this->activityType($listable);
+        if ($listable instanceof LifeEventType) {
+            $lifeEventType = $this->lifeEventType($listable);
 
-            return ['type' => 'activity_type', 'activity_type' => $activityType, 'value_lists' => $this->valueLists];
+            return ['type' => 'life_event_type', 'life_event_type' => $lifeEventType, 'value_lists' => $this->valueLists];
         }
 
         $template = $this->template($listable);
@@ -94,24 +94,24 @@ class MarketplacePayload
     }
 
     /**
-     * An activity type travels as itself plus its structure. What somebody installs is a restaurant
+     * A life event type travels as itself plus its structure. What somebody installs is a restaurant
      * log, not a structure, so the label, the icon, the colour and the category it was filed under
      * go with the fields.
      *
      * @return array<string, mixed>
      */
-    private function activityType(ActivityType $activityType): array
+    private function lifeEventType(LifeEventType $lifeEventType): array
     {
-        $version = $activityType->structure->publishedVersion;
+        $version = $lifeEventType->structure->publishedVersion;
 
         return [
-            'name' => $activityType->getRawOriginal('name'),
-            'name_translation_key' => $activityType->name_translation_key,
-            'description' => $activityType->description,
-            'icon' => $activityType->icon,
-            'colour' => $activityType->colour,
-            'category' => $activityType->activityCategory->name,
-            'category_key' => $activityType->activityCategory->key,
+            'name' => $lifeEventType->getRawOriginal('name'),
+            'name_translation_key' => $lifeEventType->name_translation_key,
+            'description' => $lifeEventType->description,
+            'icon' => $lifeEventType->icon,
+            'colour' => $lifeEventType->colour,
+            'category' => $lifeEventType->lifeEventCategory->name,
+            'category_key' => $lifeEventType->lifeEventCategory->key,
             'version_number' => $version->version_number,
             'pages' => $this->pages($version),
         ];

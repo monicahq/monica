@@ -56,7 +56,7 @@ No role, no permission, no invitation, no membership. Section 4.1 removes them, 
 - A user is soft deleted. A hard delete would orphan logs, which must survive the user they describe (see [Log](004-log-in-progress.md)).
 - `timezone` must be a valid IANA identifier. It defaults from the browser at sign up and is editable afterwards.
 - Changing `timezone`, `locale` or any format never rewrites stored data. It changes rendering only, and it never shifts an already computed reminder occurrence (3.1, 10.3).
-- The user is not the `Moi` contact. `Moi` is a contact in a vault ([Contact](019-contact-done.md)) and carries the fields, activities and relations. The user carries the credentials. Renaming one does not rename the other, and the specification does not ask it to.
+- The user is not the `Moi` contact. `Moi` is a contact in a vault ([Contact](019-contact-done.md)) and carries the fields, life events and relations. The user carries the credentials. Renaming one does not rename the other, and the specification does not ask it to.
 
 ## Not done yet
 

@@ -75,7 +75,7 @@ $identifier = [
     ],
 ];
 
-$icons = 'One of profile, logs, security, preferences, key, device, info, activity, mail, sun, moon or check.';
+$icons = 'One of profile, logs, security, preferences, key, device, info, life event, mail, sun, moon or check.';
 
 $colours = 'Exactly one of #3f5fd0, #4f8a49, #9a6a24, #9a3f2b, #5d5f96 or #1d1d20, written in lower case.';
 

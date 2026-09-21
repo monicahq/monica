@@ -133,7 +133,7 @@ Neither reaches the element a component is mounted on. `$el` is whatever the han
 component. Both point at the mounted element only during `init()`.
 
 A component that has to find its own markup takes the element that was acted on and walks up to a
-marker of its own. `resources/js/activity-type-fields.js` does this, and the editor's controls pass it
+marker of its own. `resources/js/life-event-type-fields.js` does this, and the editor's controls pass it
 in: `@click="addField($el)"`, then `el.closest('[data-field-editor]')`.
 
 This fails silently. `querySelector` returns null, the handler throws inside Alpine, and the button

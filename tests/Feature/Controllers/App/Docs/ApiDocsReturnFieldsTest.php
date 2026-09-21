@@ -10,8 +10,6 @@ use App\Enums\NotificationChannelEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\StripeCatalogue;
-use App\Models\ActivityCategory;
-use App\Models\ActivityType;
 use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\EmailSent;
@@ -19,6 +17,8 @@ use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
+use App\Models\LifeEventCategory;
+use App\Models\LifeEventType;
 use App\Models\Log;
 use App\Models\Notification;
 use App\Models\NotificationChannel;
@@ -946,117 +946,117 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('PUT', "/api/v1/entity-types/{$entityType->uuid}/position", ['position' => 1]);
             }),
 
-            'activity-categories-index' => $this->asSomebody(function (User $user): TestResponse {
-                ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+            'life-event-categories-index' => $this->asSomebody(function (User $user): TestResponse {
+                LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
 
-                return $this->json('GET', '/api/v1/activity-categories');
+                return $this->json('GET', '/api/v1/life-event-categories');
             }),
 
-            'activity-categories-show' => $this->asSomebody(function (User $user): TestResponse {
-                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+            'life-event-categories-show' => $this->asSomebody(function (User $user): TestResponse {
+                $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
 
-                return $this->json('GET', "/api/v1/activity-categories/{$category->uuid}");
+                return $this->json('GET', "/api/v1/life-event-categories/{$category->uuid}");
             }),
 
-            'activity-categories-create' => $this->asSomebody(fn (): TestResponse => $this->json('POST', '/api/v1/activity-categories', [
+            'life-event-categories-create' => $this->asSomebody(fn (): TestResponse => $this->json('POST', '/api/v1/life-event-categories', [
                 'name' => 'Volunteering',
             ])),
 
-            'activity-categories-update' => $this->asSomebody(function (User $user): TestResponse {
-                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+            'life-event-categories-update' => $this->asSomebody(function (User $user): TestResponse {
+                $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
 
-                return $this->json('PUT', "/api/v1/activity-categories/{$category->uuid}", ['name' => 'Bénévolat']);
+                return $this->json('PUT', "/api/v1/life-event-categories/{$category->uuid}", ['name' => 'Bénévolat']);
             }),
 
-            'activity-categories-destroy' => $this->asSomebody(function (User $user): TestResponse {
-                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+            'life-event-categories-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
 
-                return $this->json('DELETE', "/api/v1/activity-categories/{$category->uuid}");
+                return $this->json('DELETE', "/api/v1/life-event-categories/{$category->uuid}");
             }),
 
-            'activity-categories-activation' => $this->asSomebody(function (User $user): TestResponse {
-                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+            'life-event-categories-activation' => $this->asSomebody(function (User $user): TestResponse {
+                $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
 
-                return $this->json('PUT', "/api/v1/activity-categories/{$category->uuid}/activation", ['is_active' => false]);
+                return $this->json('PUT', "/api/v1/life-event-categories/{$category->uuid}/activation", ['is_active' => false]);
             }),
 
-            'activity-categories-position' => $this->asSomebody(function (User $user): TestResponse {
-                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
+            'life-event-categories-position' => $this->asSomebody(function (User $user): TestResponse {
+                $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
 
-                return $this->json('PUT', "/api/v1/activity-categories/{$category->uuid}/position", ['position' => 1]);
+                return $this->json('PUT', "/api/v1/life-event-categories/{$category->uuid}/position", ['position' => 1]);
             }),
 
-            'activity-categories-types' => $this->asSomebody(function (User $user): TestResponse {
-                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
-                ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+            'life-event-categories-types' => $this->asSomebody(function (User $user): TestResponse {
+                $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+                LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id]);
 
-                return $this->json('GET', "/api/v1/activity-categories/{$category->uuid}/types");
+                return $this->json('GET', "/api/v1/life-event-categories/{$category->uuid}/types");
             }),
 
-            'activity-types-index' => $this->asSomebody(function (User $user): TestResponse {
-                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
-                ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+            'life-event-types-index' => $this->asSomebody(function (User $user): TestResponse {
+                $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+                LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id]);
 
-                return $this->json('GET', '/api/v1/activity-types');
+                return $this->json('GET', '/api/v1/life-event-types');
             }),
 
-            'activity-types-show' => $this->asSomebody(function (User $user): TestResponse {
-                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
-                $type = ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+            'life-event-types-show' => $this->asSomebody(function (User $user): TestResponse {
+                $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+                $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id]);
 
-                return $this->json('GET', "/api/v1/activity-types/{$type->uuid}");
+                return $this->json('GET', "/api/v1/life-event-types/{$type->uuid}");
             }),
 
-            'activity-types-create' => $this->asSomebody(function (User $user): TestResponse {
-                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
+            'life-event-types-create' => $this->asSomebody(function (User $user): TestResponse {
+                $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
 
-                return $this->json('POST', '/api/v1/activity-types', [
-                    'activity_category_id' => $category->uuid,
+                return $this->json('POST', '/api/v1/life-event-types', [
+                    'life_event_category_id' => $category->uuid,
                     'name' => 'Board game night',
                 ]);
             }),
 
-            'activity-types-update' => $this->asSomebody(function (User $user): TestResponse {
-                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
-                $type = ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+            'life-event-types-update' => $this->asSomebody(function (User $user): TestResponse {
+                $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+                $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id]);
 
-                return $this->json('PUT', "/api/v1/activity-types/{$type->uuid}", [
-                    'activity_category_id' => $category->uuid,
+                return $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}", [
+                    'life_event_category_id' => $category->uuid,
                     'name' => 'Games evening',
                 ]);
             }),
 
-            'activity-types-destroy' => $this->asSomebody(function (User $user): TestResponse {
-                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
-                $type = ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+            'life-event-types-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+                $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id]);
 
-                return $this->json('DELETE', "/api/v1/activity-types/{$type->uuid}");
+                return $this->json('DELETE', "/api/v1/life-event-types/{$type->uuid}");
             }),
 
-            'activity-types-activation' => $this->asSomebody(function (User $user): TestResponse {
-                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
-                $type = ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+            'life-event-types-activation' => $this->asSomebody(function (User $user): TestResponse {
+                $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+                $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id]);
 
-                return $this->json('PUT', "/api/v1/activity-types/{$type->uuid}/activation", ['is_active' => false]);
+                return $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}/activation", ['is_active' => false]);
             }),
 
-            'activity-types-position' => $this->asSomebody(function (User $user): TestResponse {
-                $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
-                $type = ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id, 'position' => 2]);
+            'life-event-types-position' => $this->asSomebody(function (User $user): TestResponse {
+                $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+                $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id, 'position' => 2]);
 
-                return $this->json('PUT', "/api/v1/activity-types/{$type->uuid}/position", ['position' => 1]);
+                return $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}/position", ['position' => 1]);
             }),
 
-            'activity-types-fields' => $this->asSomebody(function (User $user): TestResponse {
-                $type = $this->activityTypeWithAField($user);
+            'life-event-types-fields' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->lifeEventTypeWithAField($user);
 
-                return $this->json('GET', "/api/v1/activity-types/{$type->uuid}/fields");
+                return $this->json('GET', "/api/v1/life-event-types/{$type->uuid}/fields");
             }),
 
-            'activity-types-fields-update' => $this->asSomebody(function (User $user): TestResponse {
-                $type = $this->activityTypeWithAField($user);
+            'life-event-types-fields-update' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->lifeEventTypeWithAField($user);
 
-                return $this->json('PUT', "/api/v1/activity-types/{$type->uuid}/fields", [
+                return $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}/fields", [
                     'groups' => [
                         ['name' => 'Where', 'fields' => [['label' => 'Venue', 'type' => 'text', 'is_required' => true]]],
                     ],
@@ -1421,12 +1421,12 @@ class ApiDocsReturnFieldsTest extends TestCase
             ->firstOrFail();
     }
 
-    private function activityTypeWithAField(User $user): ActivityType
+    private function lifeEventTypeWithAField(User $user): LifeEventType
     {
-        $category = ActivityCategory::factory()->create(['account_id' => $user->account_id]);
-        $type = ActivityType::factory()->create(['account_id' => $user->account_id, 'activity_category_id' => $category->id]);
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id]);
 
-        $this->json('PUT', "/api/v1/activity-types/{$type->uuid}/fields", [
+        $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}/fields", [
             'groups' => [
                 ['name' => 'Where', 'fields' => [['label' => 'Venue', 'type' => 'text', 'is_required' => true]]],
             ],

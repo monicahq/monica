@@ -4,26 +4,25 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Helpers;
 
+use App\Actions\CreateLifeEventType;
 use App\Enums\FieldTypeEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\ListingHasNothingToPublish;
 use App\Helpers\MarketplacePayload;
 use App\Helpers\ValueListSnapshot;
 use App\Models\Field;
+use App\Models\LifeEventCategory;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
 use App\Models\Template;
+use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use App\Actions\CreateActivityType;
-use App\Models\ActivityCategory;
-use App\Models\User;
-use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class MarketplacePayloadTest extends TestCase
@@ -223,22 +222,22 @@ class MarketplacePayloadTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_down_an_activity_type_with_the_category_it_was_filed_under(): void
+    public function it_writes_down_a_life_event_type_with_the_category_it_was_filed_under(): void
     {
         $user = User::factory()->create();
-        $category = ActivityCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Leisure and culture', 'key' => 'leisure']);
-        $activityType = new CreateActivityType(user: $user, activityCategory: $category, name: 'Restaurant', icon: 'heart', colour: '#4f8a49')->execute();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Leisure and culture', 'key' => 'leisure']);
+        $lifeEventType = new CreateLifeEventType(user: $user, lifeEventCategory: $category, name: 'Restaurant', icon: 'heart', colour: '#4f8a49')->execute();
 
-        $payload = MarketplacePayload::of($activityType);
+        $payload = MarketplacePayload::of($lifeEventType);
 
-        $this->assertEquals('activity_type', $payload['type']);
-        $this->assertEquals('Restaurant', $payload['activity_type']['name']);
-        $this->assertEquals('heart', $payload['activity_type']['icon']);
-        $this->assertEquals('#4f8a49', $payload['activity_type']['colour']);
-        $this->assertEquals('Leisure and culture', $payload['activity_type']['category']);
-        $this->assertEquals('leisure', $payload['activity_type']['category_key']);
-        $this->assertEquals(1, $payload['activity_type']['version_number']);
-        $this->assertCount(1, $payload['activity_type']['pages']);
+        $this->assertEquals('life_event_type', $payload['type']);
+        $this->assertEquals('Restaurant', $payload['life_event_type']['name']);
+        $this->assertEquals('heart', $payload['life_event_type']['icon']);
+        $this->assertEquals('#4f8a49', $payload['life_event_type']['colour']);
+        $this->assertEquals('Leisure and culture', $payload['life_event_type']['category']);
+        $this->assertEquals('leisure', $payload['life_event_type']['category_key']);
+        $this->assertEquals(1, $payload['life_event_type']['version_number']);
+        $this->assertCount(1, $payload['life_event_type']['pages']);
     }
 
     private function publish(Template|Section $listable, StructureVersion|SectionVersion $version): void

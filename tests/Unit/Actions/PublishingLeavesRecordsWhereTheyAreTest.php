@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
-use App\Actions\CreateActivityType;
+use App\Actions\CreateLifeEventType;
 use App\Actions\CreateStructureVersionDraft;
 use App\Actions\PublishStructureVersion;
 use App\Enums\VersionStatusEnum;
-use App\Models\ActivityCategory;
-use App\Models\ActivityType;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\LifeEventCategory;
+use App\Models\LifeEventType;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
@@ -75,21 +75,21 @@ class PublishingLeavesRecordsWhereTheyAreTest extends TestCase
     }
 
     #[Test]
-    public function an_activity_type_keeps_offering_the_newest_version_without_touching_the_old_one(): void
+    public function a_life_event_type_keeps_offering_the_newest_version_without_touching_the_old_one(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
-        $activityType = new CreateActivityType(
+        $lifeEventType = new CreateLifeEventType(
             user: $user,
-            activityCategory: ActivityCategory::factory()->create(['account_id' => $user->account_id]),
+            lifeEventCategory: LifeEventCategory::factory()->create(['account_id' => $user->account_id]),
             name: 'Restaurant',
         )->execute();
 
-        $first = $activityType->structure->publishedVersion;
+        $first = $lifeEventType->structure->publishedVersion;
         $second = $this->publishAnotherVersion($user, $first);
 
-        $this->assertEquals($second->id, $activityType->structure->refresh()->published_version_id);
+        $this->assertEquals($second->id, $lifeEventType->structure->refresh()->published_version_id);
         $this->assertEquals($first->id, $second->previous_version_id);
         $this->assertEquals(VersionStatusEnum::Published, $first->refresh()->status);
     }
@@ -154,17 +154,17 @@ class PublishingLeavesRecordsWhereTheyAreTest extends TestCase
     }
 
     #[Test]
-    public function an_activity_type_in_another_account_is_not_found(): void
+    public function a_life_event_type_in_another_account_is_not_found(): void
     {
         Queue::fake();
 
-        $elsewhere = new CreateActivityType(
+        $elsewhere = new CreateLifeEventType(
             user: $stranger = User::factory()->create(),
-            activityCategory: ActivityCategory::factory()->create(['account_id' => $stranger->account_id]),
+            lifeEventCategory: LifeEventCategory::factory()->create(['account_id' => $stranger->account_id]),
             name: 'Restaurant',
         )->execute();
 
-        $this->assertInstanceOf(ActivityType::class, $elsewhere);
+        $this->assertInstanceOf(LifeEventType::class, $elsewhere);
 
         $mine = User::factory()->create();
 

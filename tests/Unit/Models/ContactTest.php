@@ -119,8 +119,8 @@ class ContactTest extends TestCase
     {
         $contact = Contact::factory()->me()->favourite()->archived()->create([
             'name_order' => NameOrderEnum::FamilyFirst,
-            'activity_count' => 12,
-            'last_activity_at' => now(),
+            'life_event_count' => 12,
+            'last_life_event_at' => now(),
             'last_consulted_at' => now(),
         ]);
 
@@ -130,9 +130,9 @@ class ContactTest extends TestCase
         $this->assertTrue($contact->is_favourite);
         $this->assertTrue($contact->is_archived);
         $this->assertFalse($contact->is_partial);
-        $this->assertSame(12, $contact->activity_count);
+        $this->assertSame(12, $contact->life_event_count);
         $this->assertEquals(NameOrderEnum::FamilyFirst, $contact->name_order);
-        $this->assertInstanceOf(CarbonImmutable::class, $contact->last_activity_at);
+        $this->assertInstanceOf(CarbonImmutable::class, $contact->last_life_event_at);
         $this->assertInstanceOf(CarbonImmutable::class, $contact->last_consulted_at);
     }
 
@@ -397,9 +397,9 @@ class ContactTest extends TestCase
     public function it_sorts_the_contacts_a_column_says_nothing_about_to_the_end_in_both_directions(): void
     {
         $vault = Vault::factory()->create();
-        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Beesly', 'last_activity_at' => null]);
-        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Schrute', 'last_activity_at' => CarbonImmutable::parse('2026-01-02')]);
-        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Scott', 'last_activity_at' => CarbonImmutable::parse('2026-01-01')]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Beesly', 'last_interaction_at' => null]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Schrute', 'last_interaction_at' => CarbonImmutable::parse('2026-01-02')]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Scott', 'last_interaction_at' => CarbonImmutable::parse('2026-01-01')]);
 
         $ascending = Contact::query()->sortedBy(ContactSortEnum::LastSpoke, 'asc')->pluck('last_name')->all();
         $descending = Contact::query()->sortedBy(ContactSortEnum::LastSpoke, 'desc')->pluck('last_name')->all();

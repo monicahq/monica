@@ -81,8 +81,9 @@ use Override;
  * @property bool $is_favourite
  * @property int|null $avatar_file_id
  * @property string $avatar_colour
- * @property CarbonImmutable|null $last_activity_at
- * @property int $activity_count
+ * @property CarbonImmutable|null $last_life_event_at
+ * @property CarbonImmutable|null $last_interaction_at
+ * @property int $life_event_count
  * @property CarbonImmutable|null $last_consulted_at
  * @property string|null $dav_uri
  * @property string|null $vcard
@@ -117,8 +118,9 @@ use Override;
     'is_favourite',
     'avatar_file_id',
     'avatar_colour',
-    'last_activity_at',
-    'activity_count',
+    'last_life_event_at',
+    'last_interaction_at',
+    'life_event_count',
     'last_consulted_at',
     'dav_uri',
     'vcard',
@@ -321,8 +323,9 @@ class Contact extends Model
             'is_partial' => 'boolean',
             'is_archived' => 'boolean',
             'is_favourite' => 'boolean',
-            'last_activity_at' => 'datetime',
-            'activity_count' => 'integer',
+            'last_life_event_at' => 'datetime',
+            'last_interaction_at' => 'datetime',
+            'life_event_count' => 'integer',
             'last_consulted_at' => 'datetime',
             'deleted_with_vault' => 'boolean',
         ];

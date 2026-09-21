@@ -5,7 +5,7 @@
 
 ## What it is
 
-An uploaded file: a photo, a document, a scan, an avatar. Files are attached to records through fields (5.5), to activities (9.2), and to nothing else.
+An uploaded file: a photo, a document, a scan, an avatar. Files are attached to records through fields (5.5), to life events (9.2), and to nothing else.
 
 The model exists separately from the value that points at it for three reasons stated in section 11. The product must know at any moment which files are actually in use, so the storage quota is reliable. It must be able to delete orphans automatically after a grace period. And that grace period has to be long enough for restoring an old version of a record to recover a file detached a moment ago, which is impossible if detaching deletes.
 
@@ -25,7 +25,7 @@ checksum                    string (64)                     hash of the contents
 width                       int                             width in pixels for an image, null otherwise
 height                      int                             height in pixels for an image, null otherwise
 variants                    json                            the derived sizes written beside it, each with its suffix and pixel size
-reference_count             int                             how many values or activities currently point at it, zero meaning orphan
+reference_count             int                             how many values or life events currently point at it, zero meaning orphan
 orphaned_at                 datetime                        when the count last reached zero, which starts the grace period
 uploaded_by_user_id         int                             user who uploaded it, null when an import or a module did
 created_at                  datetime
@@ -38,14 +38,14 @@ deleted_at                  datetime
 - `belongsTo` [Account](001-account-in-progress.md)
 - `belongsTo` [Vault](007-vault-in-progress.md)
 - `belongsTo` [User](002-user-done.md) as uploader
-- referenced by [FieldValue](022-field-value-done.md) and [Activity](036-activity-not-yet.md)
+- referenced by [FieldValue](022-field-value-done.md) and [LifeEvent](036-life-event-not-yet.md)
 
 ## Rules
 
 - Storage goes through the disk configured in Laravel (11). Nothing in the application may assume local disk or S3. Self hosted picks its own driver, hosted picks ours, and the behaviour is identical either way.
 - The path is always prefixed by account then vault. Download, preview, asynchronous processing, export, module and share link all apply the same prefix check. A file is never served by path from user input.
 - Public URLs use `uuid`, never `id`. Sequential identifiers in a URL let somebody walk the table.
-- `reference_count` is maintained when a value or an activity attaches or detaches. When it reaches zero, `orphaned_at` is stamped. When it rises again, `orphaned_at` is cleared.
+- `reference_count` is maintained when a value or a life event attaches or detaches. When it reaches zero, `orphaned_at` is stamped. When it rises again, `orphaned_at` is cleared.
 - A file whose `orphaned_at` is older than the grace period is deleted by a scheduled job, which also decrements the account total. The grace period is configuration, and it must be longer than the window in which a snapshot can be restored ([RecordSnapshot](023-record-snapshot-done.md)), otherwise a restore recovers a pointer to nothing.
 - An upload that would push `storage_used_in_bytes` past the account limit is refused before the bytes are written, not after.
 - Nothing is deleted silently (3.3). A file removed by the orphan sweep is logged.
@@ -53,7 +53,7 @@ deleted_at                  datetime
 
 ## Not done yet
 
-- **A value and a contact avatar point at a file, and nothing else does.** [FieldValue](022-field-value-done.md) and the avatar of a [Contact](019-contact-done.md) both move `reference_count` through `AttachFile` and `DetachFile`, and a file a live [RecordSnapshot](023-record-snapshot-done.md) names is left alone by the sweep whatever its count says. [Activity](036-activity-not-yet.md) is still ahead, and [Entity](020-entity-done.md) and [Group](032-group-not-yet.md) carry an `avatar_file_id` with its constraint that nothing writes to.
+- **A value and a contact avatar point at a file, and nothing else does.** [FieldValue](022-field-value-done.md) and the avatar of a [Contact](019-contact-done.md) both move `reference_count` through `AttachFile` and `DetachFile`, and a file a live [RecordSnapshot](023-record-snapshot-done.md) names is left alone by the sweep whatever its count says. [LifeEvent](036-life-event-not-yet.md) is still ahead, and [Entity](020-entity-done.md) and [Group](032-group-not-yet.md) carry an `avatar_file_id` with its constraint that nothing writes to.
 - **Files arrive and go out, and nothing else about them has a screen.** A file field on a record uploads through `SetFieldValues`, which hands the upload to `CreateFile`; `FileController` reads one back off the private disk under the name it came in with. What has no screen is the rest of the model: nothing lists what a vault holds and nothing says how much room is left. Nor is there a way to take a file off a record, since an empty upload box means unchanged: a file inside a repeater goes when the repetition does, and a file field sitting on its own cannot be emptied at all. There is no API.
 - **The user photo still writes its own two versions outside this model.** It predates the file table and has not moved onto it, so an account holds two ideas of what an uploaded image is.
 - **`variants` stays null.** Which sizes an image is derived into is a question for whatever renders one, and a record draws what it holds at the size the page asks for. The column and the asynchronous processing arrive together. The avatar of a [Contact](019-contact-done.md) does not wait for them: it is cropped square once, on upload, and the row holds that crop rather than an original with derivatives beside it.

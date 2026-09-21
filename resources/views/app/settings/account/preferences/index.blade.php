@@ -8,7 +8,7 @@
   :user="$viewModel->user()"
   current="preferences"
 >
-  <x-page-header :title="__('Preferences')" :description="__('These are yours alone, on every device you sign in from. Nothing here changes for anybody else in your account.')" />
+  <x-page-header :title="__('Preferences')" />
 
   <x-page-section :title="__('Language and formats')" :description="__('Each one saves as soon as you pick it. There is nothing to press.')">
     <x-panel :flush="true">

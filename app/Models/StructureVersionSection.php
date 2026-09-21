@@ -101,7 +101,7 @@ class StructureVersionSection extends Model
 
     /**
      * Whether this row is one the given user may reach through the given owner,
-     * which is a template or an activity type.
+     * which is a template or a life event type.
      *
      * The rows are addressed by their own number in a URL, under the thing they
      * sit on, and neither half can be trusted on its own: the account has to
@@ -109,7 +109,7 @@ class StructureVersionSection extends Model
      * actually names. Without the second half, somebody could put a field on
      * one of their templates while the URL said another.
      */
-    public function isReachableThrough(User $user, ActivityType|Template $owner): bool
+    public function isReachableThrough(User $user, LifeEventType|Template $owner): bool
     {
         return $this->account_id === $user->account_id
             && $this->structureVersion->structure->owner_type === $owner::class

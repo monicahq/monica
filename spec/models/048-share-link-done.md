@@ -27,14 +27,14 @@ password_hash               string (255)                    hash of the password
 expires_at                  datetime                        when it stops working, null when it never does
 revoked_at                  datetime                        when it was revoked, which is immediate and permanent
 includes_files              boolean                         whether attached files are reachable through it
-includes_activities         boolean                         whether activities appear, false by default
-includes_activity_narrative boolean                         whether the free account of an activity appears, false by default
+includes_life_events         boolean                         whether life events appear, false by default
+includes_life_event_narrative boolean                         whether the free account of a life event appears, false by default
 includes_day_narrative      boolean                         whether the account of a day appears, false by default
 includes_relationships      boolean                         whether relationships appear
 includes_groups             boolean                         whether group memberships appear
 includes_sensitive_fields   boolean                         whether fields marked sensitive appear, false by default
 excluded_section_ids        json                            sections held back from the shared page
-excluded_activity_ids       json                            activities held back individually, tightening the general setting
+excluded_life_event_ids       json                            life events held back individually, tightening the general setting
 view_count                  int                             how many times it was opened
 last_viewed_at              datetime                        when it was last opened
 created_by_user_id          int                             user who created it
@@ -53,8 +53,8 @@ updated_at                  datetime
 - **Read only. Always.** A shared vault is a read only view (4.4). There is no path from a share link to a write, and no feature may be added that creates one.
 - Only the hash of the token is stored, as for a magic link. A database dump must not yield working links.
 - **Everything sensitive is excluded by default** (4.4): fields marked sensitive, the personal narrative of the journal, the modification history and technical data. The owner opts in, never out.
-- Activities and their narratives are excluded by default and enabled explicitly (9.6). The setting can be made at the link level and then tightened activity by activity, which `excluded_activity_ids` carries.
-- A field marked sensitive stays excluded even when the activity or the section around it is shared (9.6, 5.6).
+- Life events and their narratives are excluded by default and enabled explicitly (9.6). The setting can be made at the link level and then tightened life event by life event, which `excluded_life_event_ids` carries.
+- A field marked sensitive stays excluded even when the life event or the section around it is shared (9.6, 5.6).
 - A shared record uses the page structure of its precise template version. A page with no included section is omitted from the shared tab list. If only one page remains after exclusions, the tab list is hidden as it is on the private record. Page labels must never reveal the existence of excluded content through an empty tab.
 - Revocation is immediate and permanent. A revoked link is never reactivated, a new one is made instead.
 - Every link is logged with its creation, its last view and its revocation (4.4), which is what [ShareLinkVisit](049-share-link-visit-done.md) and these columns hold between them.
@@ -64,7 +64,7 @@ updated_at                  datetime
 ## Not done yet
 
 - **A vault link renders nothing.** `s/{token}` opens a contact page and says plainly that a whole vault has no page yet. The columns and the actions treat both alike; only the screen is missing.
-- **Five inclusions store an intent nothing reads.** Files, activities, activity narratives, day narratives, relationships and group memberships have no models yet ([Activity](036-activity-not-yet.md), [JournalDay](039-journal-day-not-yet.md), [Relationship](026-relationship-not-yet.md), [Group](032-group-not-yet.md)), and neither does `excluded_activity_ids`. The columns are written and read back honestly, nothing acts on them, and the form does not offer a control for any of them.
+- **Five inclusions store an intent nothing reads.** Files, life events, life event narratives, day narratives, relationships and group memberships have no models yet ([LifeEvent](036-life-event-not-yet.md), [JournalDay](039-journal-day-not-yet.md), [Relationship](026-relationship-not-yet.md), [Group](032-group-not-yet.md)), and neither does `excluded_life_event_ids`. The columns are written and read back honestly, nothing acts on them, and the form does not offer a control for any of them.
 - **Nothing has to keep notifications away from a viewer** (10.4). [Notification](042-notification-done.md) is addressed to a `user_id`, and somebody holding a link is not a user of the account, so there is no path by which one could reach them.
 
 ## What renders it

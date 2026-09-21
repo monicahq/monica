@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
+use App\Actions\CreateLifeEventType;
+use App\Actions\CreateStructureVersionDraft;
 use App\Actions\RemoveSectionFromStructureVersion;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Jobs\LogUserAction;
+use App\Models\LifeEventCategory;
 use App\Models\Section;
 use App\Models\SectionVersion;
-use App\Models\Template;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
-use App\Actions\CreateActivityType;
-use App\Actions\CreateStructureVersionDraft;
-use App\Models\ActivityCategory;
 use Tests\TestCase;
 
 class RemoveSectionFromStructureVersionTest extends TestCase
@@ -154,12 +154,12 @@ class RemoveSectionFromStructureVersionTest extends TestCase
     }
 
     #[Test]
-    public function it_takes_a_section_off_an_activity_type_structure(): void
+    public function it_takes_a_section_off_a_life_event_type_structure(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
-        $draft = $this->activityTypeDraft($user);
+        $draft = $this->lifeEventTypeDraft($user);
         $row = StructureVersionSection::factory()->create([
             'account_id' => $user->account_id,
             'structure_version_id' => $draft->id,
@@ -170,14 +170,14 @@ class RemoveSectionFromStructureVersionTest extends TestCase
         $this->assertModelMissing($row);
     }
 
-    private function activityTypeDraft(User $user): StructureVersion
+    private function lifeEventTypeDraft(User $user): StructureVersion
     {
-        $activityType = new CreateActivityType(
+        $lifeEventType = new CreateLifeEventType(
             user: $user,
-            activityCategory: ActivityCategory::factory()->create(['account_id' => $user->account_id]),
+            lifeEventCategory: LifeEventCategory::factory()->create(['account_id' => $user->account_id]),
             name: 'Restaurant',
         )->execute();
 
-        return new CreateStructureVersionDraft(user: $user, structureVersion: $activityType->structure->publishedVersion)->execute();
+        return new CreateStructureVersionDraft(user: $user, structureVersion: $lifeEventType->structure->publishedVersion)->execute();
     }
 }

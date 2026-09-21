@@ -45,10 +45,10 @@ class StructureFactory extends Factory
         ]);
     }
 
-    public function forActivity(): static
+    public function forLifeEvent(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'applies_to' => StructureAppliesToEnum::Activity,
+            'applies_to' => StructureAppliesToEnum::LifeEvent,
             'entity_type_id' => null,
         ]);
     }

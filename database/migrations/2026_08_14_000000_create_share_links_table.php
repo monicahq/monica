@@ -24,14 +24,14 @@ return new class extends Migration
             $table->timestamp('expires_at')->nullable()->comment('when it stops working, null when it never does');
             $table->timestamp('revoked_at')->nullable()->comment('when it was revoked, which is immediate and permanent');
             $table->boolean('includes_files')->default(false)->comment('whether attached files are reachable through it');
-            $table->boolean('includes_activities')->default(false)->comment('whether activities appear, false by default');
-            $table->boolean('includes_activity_narrative')->default(false)->comment('whether the free account of an activity appears, false by default');
+            $table->boolean('includes_life_events')->default(false)->comment('whether life events appear, false by default');
+            $table->boolean('includes_life_event_narrative')->default(false)->comment('whether the free account of a life event appears, false by default');
             $table->boolean('includes_day_narrative')->default(false)->comment('whether the account of a day appears, false by default');
             $table->boolean('includes_relationships')->default(false)->comment('whether relationships appear');
             $table->boolean('includes_groups')->default(false)->comment('whether group memberships appear');
             $table->boolean('includes_sensitive_fields')->default(false)->comment('whether fields marked sensitive appear, false by default');
             $table->json('excluded_section_ids')->comment('sections held back from the shared page');
-            $table->json('excluded_activity_ids')->comment('activities held back individually, tightening the general setting');
+            $table->json('excluded_life_event_ids')->comment('life events held back individually, tightening the general setting');
             $table->unsignedInteger('view_count')->default(0)->comment('how many times it was opened');
             $table->timestamp('last_viewed_at')->nullable()->comment('when it was last opened');
             $table->unsignedBigInteger('created_by_user_id')->nullable()->comment('user who created it');

@@ -37,8 +37,8 @@ class ContactFactory extends Factory
             'is_favourite' => false,
             'avatar_file_id' => null,
             'avatar_colour' => Contact::AVATAR_COLOURS[0],
-            'last_activity_at' => null,
-            'activity_count' => 0,
+            'last_life_event_at' => null,
+            'life_event_count' => 0,
             'last_consulted_at' => null,
         ];
     }

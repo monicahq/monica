@@ -67,7 +67,7 @@ class ApiDocsControllerTest extends TestCase
         $response->assertSee('Kinds of record');
         $response->assertSee('Relationship categories');
         $response->assertSee('Relationship types');
-        $response->assertSee('Activity categories');
+        $response->assertSee('Life event categories');
         $response->assertSee('Introduction');
         $response->assertSee('Pagination');
     }
