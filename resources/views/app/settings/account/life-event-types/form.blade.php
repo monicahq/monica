@@ -40,24 +40,14 @@
         <input type="hidden" name="is_active" value="0" form="life-event-type-form" />
 
         <label for="is_active" class="flex cursor-pointer items-center">
-          <input
-            type="checkbox"
-            role="switch"
+          <x-switch
             id="is_active"
-            name="is_active"
-            value="1"
             form="life-event-type-form"
-            title="{{ $viewModel->availabilityHelp() }}"
+            :checked="$viewModel->isActive()"
+            :title="$viewModel->availabilityHelp()"
             aria-describedby="life-event-type-availability"
-            @checked($viewModel->isActive())
             x-model="active"
-            class="peer sr-only"
           />
-
-          <span
-            aria-hidden="true"
-            class="relative block h-6 w-10 shrink-0 rounded-full border border-hairline-strong bg-sunken transition-colors duration-(--duration-fast) after:absolute after:top-0.5 after:left-0.5 after:size-4.5 after:rounded-full after:bg-canvas after:shadow-control after:transition-transform after:duration-(--duration-fast) after:content-[''] peer-checked:border-transparent peer-checked:bg-action-primary peer-checked:after:translate-x-4 peer-focus-visible:ring-[3px] peer-focus-visible:ring-focus-ring/45"
-          ></span>
         </label>
 
         <span

@@ -16,7 +16,7 @@
     <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="contacts" />
   </x-slot:sidebar>
 
-  <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
+  <x-page-header :title="$viewModel->title()" />
 
   @if ($ceiling !== null)
     <x-paywall-prompt :message="$ceiling" id="contact-form-ceiling" />
@@ -56,7 +56,7 @@
         </x-page-section>
       @endif
 
-      <x-page-section :title="__('Name')" :description="__('Only the first name is needed. The rest is there for the people whose name does not fit in two boxes.')">
+      <x-page-section :title="__('Name')">
         <x-panel>
           <div class="flex flex-col gap-4.5">
             <div class="grid gap-4 sm:grid-cols-2">
@@ -121,7 +121,6 @@
                 id="nickname"
                 :value="$values['nickname']"
                 :label="__('Nickname')"
-                :help="__('What you actually call them.')"
                 :error="$errors->get('nickname')"
                 maxlength="255"
                 optional
@@ -130,8 +129,7 @@
               <x-input
                 id="maiden_name"
                 :value="$values['maidenName']"
-                :label="__('Maiden name')"
-                :help="__('Kept so searching either name finds them.')"
+                :label="__('Name before marriage')"
                 :error="$errors->get('maiden_name')"
                 maxlength="255"
                 optional
@@ -159,26 +157,30 @@
         </x-panel>
       </x-page-section>
 
-      <x-page-section :title="__('This contact')" :description="__('Two things you can say about them now. Both are yours to change from their page later.')">
-        <x-panel>
-          <div class="flex flex-col gap-4">
-            @foreach ($viewModel->flags() as $flag)
-              <div class="flex flex-col gap-1">
-                <x-checkbox :id="$flag['id']" :checked="$flag['checked']">{{ $flag['name'] }}</x-checkbox>
+      <div class="flex max-w-130 flex-col gap-4.5">
+        @foreach ($viewModel->flags() as $flag)
+          <div class="flex flex-col gap-0.5">
+            <label for="{{ $flag['id'] }}" class="flex cursor-pointer items-center gap-3.5">
+              <x-switch
+                :id="$flag['id']"
+                :checked="$flag['checked']"
+                :aria-describedby="$flag['id'].'-help'"
+              />
 
-                <p class="text-xs text-pretty text-muted pl-6.5">{{ $flag['help'] }}</p>
-              </div>
-            @endforeach
+              <span class="text-base font-semibold text-ink">{{ $flag['name'] }}</span>
+            </label>
+
+            <p id="{{ $flag['id'] }}-help" class="pl-13.5 text-sm text-pretty text-muted">{{ $flag['help'] }}</p>
           </div>
-        </x-panel>
-      </x-page-section>
+        @endforeach
+      </div>
 
       @if ($viewModel->blocker())
         <x-notice tone="warning">{{ $viewModel->blocker() }}</x-notice>
       @endif
     </x-form>
 
-    <div class="flex flex-wrap items-center gap-x-6 gap-y-3.5">
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-3.5 border-t border-hairline pt-4.5">
       <x-checkbox id="keep_going" form="contact-form" :checked="$values['keepGoing']">
         {{ __('Create another one after this') }}
       </x-checkbox>

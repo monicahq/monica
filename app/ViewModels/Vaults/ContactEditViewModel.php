@@ -44,13 +44,6 @@ class ContactEditViewModel
         ]);
     }
 
-    public function nameDescription(): string
-    {
-        return __('Every part is optional on its own, and at least one has to be filled in. This is asked for whatever template :name is on.', [
-            'name' => $this->contact->first_name ?? $this->contact->name,
-        ]);
-    }
-
     public function action(): string
     {
         return route('contacts.name.update', ['vault' => $this->vault, 'contact' => $this->contact]);

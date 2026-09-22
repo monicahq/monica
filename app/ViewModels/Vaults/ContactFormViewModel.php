@@ -40,11 +40,6 @@ class ContactFormViewModel
         return __('New contact');
     }
 
-    public function description(): string
-    {
-        return __('A name is enough to start. Everything else belongs to the template. You fill it in on the contact once it exists.');
-    }
-
     public function action(): string
     {
         return route('contacts.create', $this->vault);
@@ -130,7 +125,7 @@ class ContactFormViewModel
             [
                 'id' => 'is_partial',
                 'name' => __('Partial contact'),
-                'help' => __('Somebody you only know through another person. They stay off the lists until you fill them in, and become an ordinary contact as soon as you do.'),
+                'help' => __('This person won’t have a contact page or appear in search results or your contact list. You can turn them into a full contact later'),
                 'checked' => $values['isPartial'],
             ],
         ];

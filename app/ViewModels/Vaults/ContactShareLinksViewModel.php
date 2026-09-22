@@ -35,17 +35,17 @@ class ContactShareLinksViewModel
 
     public function title(): string
     {
-        return __('Links to :name’s page', ['name' => $this->contact->first_name ?? $this->contact->name]);
+        return __('Share :name’s contact details', ['name' => $this->contact->first_name ?? $this->contact->name]);
     }
 
     public function intro(): string
     {
-        return __('Every link ever made for them, including the ones you revoked. They are kept so you can always say who could see what, and when.');
+        return __('Choose which details to share, then send a link. Anyone with the link can view those details without a :app account.', ['app' => config('app.name')]);
     }
 
     public function emptyLine(): string
     {
-        return __('Nothing is shared. A link opens this one page for somebody who has no account. It shows only what you allow, and stops working when you say so.');
+        return __('You control what each link shows and can turn off access at any time.');
     }
 
     public function contactUrl(): string

@@ -126,7 +126,7 @@ class ShareLinkFormViewModel
 
     public function submitLabel(): string
     {
-        return $this->shareLink === null ? __('Create the link') : __('Save what it shows');
+        return $this->shareLink === null ? __('Create sharing link') : __('Save what it shows');
     }
 
     public function submitLine(): string

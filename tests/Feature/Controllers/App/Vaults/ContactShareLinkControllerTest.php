@@ -45,7 +45,7 @@ class ContactShareLinkControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_so_when_nothing_is_shared(): void
+    public function it_offers_a_first_link_when_nothing_is_shared(): void
     {
         $user = User::factory()->create();
         $contact = $this->contactOf($user);
@@ -53,7 +53,8 @@ class ContactShareLinkControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('contacts.shareLinks.index', ['vault' => $contact->vault, 'contact' => $contact]))
             ->assertStatus(200)
-            ->assertSee('Nothing is shared');
+            ->assertSee('Create your first sharing link')
+            ->assertSee('You control what each link shows and can turn off access at any time.');
     }
 
     #[Test]

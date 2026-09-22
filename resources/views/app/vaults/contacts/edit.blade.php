@@ -74,7 +74,6 @@
   <x-form id="name-form" method="put" :action="$viewModel->action()" class="flex flex-col gap-5">
     <x-panel
       :title="__('Change the name')"
-      :subtitle="$viewModel->nameDescription()"
       icon="people"
     >
       <div class="grid gap-4 sm:grid-cols-2">

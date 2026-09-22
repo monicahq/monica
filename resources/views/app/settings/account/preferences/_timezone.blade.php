@@ -6,7 +6,7 @@
       method="put"
       :action="route('settings.timezone.update')"
       x-target="timezone-panel preview"
-      x-data="timezonePicker(@js($timezone->projection()))"
+      x-data="timezonePicker({{ Js::from($timezone->projection()) }})"
       x-init="filter()"
       @ajax:before.window="reset()"
       class="contents"

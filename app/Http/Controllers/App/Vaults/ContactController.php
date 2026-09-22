@@ -149,7 +149,7 @@ class ContactController extends Controller
 
         $destination = $request->boolean('keep_going')
             ? redirect()->route('contacts.new', $vault)
-            : redirect()->route('contacts.index', $vault);
+            : redirect()->route('contacts.show', ['vault' => $vault, 'contact' => $contact]);
 
         return $destination
             ->with('status', __(':name is written down.', ['name' => $contact->name]))

@@ -80,7 +80,7 @@ export default (bounds) => ({
         }
 
         event.currentTarget.value = zone;
-        this.$el.requestSubmit(event.currentTarget);
+        event.currentTarget.form.requestSubmit(event.currentTarget);
     },
 
     /**
@@ -109,6 +109,6 @@ export default (bounds) => ({
         this.$refs.longitude.value = longitude.toFixed(4);
         this.$refs.latitude.value = latitude.toFixed(4);
 
-        this.$el.requestSubmit();
+        event.currentTarget.closest('form').requestSubmit();
     },
 });

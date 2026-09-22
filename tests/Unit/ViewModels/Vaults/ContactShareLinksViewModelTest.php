@@ -31,7 +31,7 @@ class ContactShareLinksViewModelTest extends TestCase
 
         $viewModel = new ContactShareLinksViewModel(user: $user, vault: $contact->vault, contact: $contact);
 
-        $this->assertSame('Links to Michael’s page', $viewModel->title());
+        $this->assertSame('Share Michael’s contact details', $viewModel->title());
     }
 
     #[Test]

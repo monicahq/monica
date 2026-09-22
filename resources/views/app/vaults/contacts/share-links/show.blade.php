@@ -8,7 +8,7 @@
   <x-slot:breadcrumb>
     <x-breadcrumb.vault :vault="$viewModel->vault()" :items="[['label' => __('People'), 'url' => $viewModel->peopleUrl()],
         ['label' => $viewModel->contact()->name, 'url' => $viewModel->contactUrl()],
-        ['label' => __('Links'), 'url' => $viewModel->linksUrl()],
+        ['label' => __('Sharing links'), 'url' => $viewModel->linksUrl()],
         ['label' => $viewModel->title()],]" />
   </x-slot:breadcrumb>
 

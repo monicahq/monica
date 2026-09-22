@@ -7,7 +7,7 @@
   <x-slot:breadcrumb>
     <x-breadcrumb.vault :vault="$viewModel->vault()" :items="[['label' => __('People'), 'url' => $viewModel->peopleUrl()],
         ['label' => $viewModel->contact()->name, 'url' => $viewModel->contactUrl()],
-        ['label' => __('Links')],]" />
+        ['label' => __('Sharing links')],]" />
   </x-slot:breadcrumb>
 
   <x-slot:sidebar>
@@ -21,7 +21,7 @@
 
     <x-button :href="$viewModel->newUrl()" data-turbo="true" size="small" class="shrink-0">
       <x-icon name="plus" :size="15" :stroke-width="1.8" />
-      {{ __('New link') }}
+      {{ __('Create sharing link') }}
     </x-button>
   </div>
 
@@ -70,7 +70,7 @@
           </x-slot:end>
         </x-row>
       @empty
-        <x-empty-state :title="__('Nothing is shared')">
+        <x-empty-state :title="__('Create your first sharing link')">
           <x-slot:icon>
             <x-icon name="link" :size="30" :stroke-width="1.4" />
           </x-slot:icon>
@@ -78,7 +78,7 @@
           {{ $viewModel->emptyLine() }}
 
           <x-slot:action>
-            <x-button :href="$viewModel->newUrl()" data-turbo="true" size="small">{{ __('Make a link') }}</x-button>
+            <x-button :href="$viewModel->newUrl()" data-turbo="true" size="small">{{ __('Create sharing link') }}</x-button>
           </x-slot:action>
         </x-empty-state>
       @endforelse

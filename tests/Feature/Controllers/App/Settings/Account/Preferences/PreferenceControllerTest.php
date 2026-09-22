@@ -70,7 +70,8 @@ class PreferenceControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('settings.preferences.index'));
 
-        $response->assertSee('x-data="timezonePicker(', escape: false);
+        $response->assertSee('x-data="timezonePicker(JSON.parse(', escape: false);
+        $response->assertDontSee('@js(', escape: false);
         $response->assertSee('north', escape: false);
         $response->assertDontSee('clientX', escape: false);
         $response->assertDontSee('toFixed', escape: false);
