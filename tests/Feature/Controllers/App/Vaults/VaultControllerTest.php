@@ -231,7 +231,6 @@ class VaultControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('vaults.show', $vault))
             ->assertStatus(200)
-            ->assertSee('All your vaults')
             ->assertSee(route('vaults.index'));
     }
 

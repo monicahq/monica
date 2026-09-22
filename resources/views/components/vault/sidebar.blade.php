@@ -1,11 +1,10 @@
-{{-- The column beside the screens of one vault: what it holds, and the way into another. --}}
+{{-- The column beside the screens of one vault: what it holds. --}}
 {{--
   @var \App\Models\User $user
   @var \App\Models\Vault $vault
   @var string $current
   @var int|null $taskCount
   @var int $reminderCount
-  @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Vault> $vaults
 --}}
 
 @php
@@ -48,68 +47,6 @@
     >
       <x-icon name="close" :size="15" :stroke-width="1.5" />
     </button>
-  </div>
-
-  <div x-data="{ open: false }" @keydown.escape.window="open = false" class="relative mx-2 mb-1.5">
-    <button
-      type="button"
-      @click="open = ! open"
-      @click.outside="open = false"
-      :aria-expanded="open ? 'true' : 'false'"
-      class="flex w-full cursor-pointer items-center gap-2.5 rounded-md border border-hairline bg-canvas px-2.5 py-2 text-left transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
-    >
-      <span
-        style="background: {{ $vault->colour }}"
-        class="flex size-6 shrink-0 items-center justify-center rounded-sm text-xs font-semibold text-white"
-        aria-hidden="true"
-      >{{ mb_strtoupper(mb_substr($vault->name, 0, 1)) }}</span>
-
-      <span class="min-w-0">
-        <span class="block truncate text-[13px] font-semibold text-ink">{{ $vault->name }}</span>
-
-        <span class="block text-[11px] text-muted">
-          {{ trans_choice(':count person|:count people', $vault->contact_count) }}
-        </span>
-      </span>
-
-      <x-icon name="chevron-down" :size="14" :stroke-width="1.5" class="ml-auto shrink-0 text-muted transition-transform duration-(--duration-standard)" ::class="open && 'rotate-180'" />
-    </button>
-
-    <div
-      x-cloak
-      x-show="open"
-      x-transition.opacity.duration.120ms
-      class="absolute inset-x-0 top-full z-10 mt-1 overflow-hidden rounded-lg border border-hairline bg-canvas shadow-pop"
-    >
-      @foreach ($vaults as $option)
-        @if ($option->is($vault))
-          <span
-            aria-current="true"
-            class="flex items-center gap-2.5 bg-hover px-2.5 py-2"
-          >
-            <span style="background: {{ $option->colour }}" class="size-2.5 shrink-0 rounded-sm" aria-hidden="true"></span>
-
-            <span class="truncate text-[13px] font-semibold text-ink">{{ $option->name }}</span>
-
-            <span class="ml-auto text-[11px] text-muted">{{ __('You are here') }}</span>
-          </span>
-        @else
-          <a
-            href="{{ route('vaults.show', $option) }}"
-            data-turbo="true"
-            class="flex items-center gap-2.5 px-2.5 py-2 transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset"
-          >
-            <span style="background: {{ $option->colour }}" class="size-2.5 shrink-0 rounded-sm" aria-hidden="true"></span>
-
-            <span class="truncate text-[13px] text-body">{{ $option->name }}</span>
-          </a>
-        @endif
-      @endforeach
-
-      <a href="{{ route('vaults.index') }}" data-turbo="true" class="block border-t border-hairline px-2.5 py-2 text-[13px] text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring-inset">
-        {{ __('All your vaults') }}
-      </a>
-    </div>
   </div>
 
   <nav aria-label="{{ __('This vault') }}" class="min-h-0 flex-1 space-y-px overflow-y-auto px-2 pt-1.5 pb-3">

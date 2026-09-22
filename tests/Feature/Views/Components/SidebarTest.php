@@ -67,37 +67,6 @@ class SidebarTest extends TestCase
     }
 
     #[Test]
-    public function the_switcher_lists_every_vault_and_does_not_link_to_the_one_you_are_in(): void
-    {
-        $user = User::factory()->create();
-        $here = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
-        $other = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Vance Refrigeration']);
-
-        $rendered = $this->actingAs($user)->blade(
-            '<x-vault.sidebar :user="$user" :vault="$vault" />',
-            ['user' => $user, 'vault' => $here],
-        );
-
-        $rendered->assertSee('Vance Refrigeration');
-        $rendered->assertSee(route('vaults.show', $other), escape: false);
-        $rendered->assertSee('You are here');
-        $rendered->assertSee('All your vaults');
-    }
-
-    #[Test]
-    public function the_switcher_leaves_out_the_vaults_of_another_account(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        Vault::factory()->create(['name' => 'Sabre']);
-
-        $this->actingAs($user)->blade(
-            '<x-vault.sidebar :user="$user" :vault="$vault" />',
-            ['user' => $user, 'vault' => $vault],
-        )->assertDontSee('Sabre');
-    }
-
-    #[Test]
     public function the_name_of_the_application_at_the_top_of_either_column_leads_to_the_vaults(): void
     {
         $user = User::factory()->create();
