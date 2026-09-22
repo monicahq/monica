@@ -5,6 +5,13 @@
 - Remove all mannered prose.
 - Add quiet flags to noisy commands
 
+## When to keep going and when to stop
+
+- When a step does not need my input, keep going. Put status notes in the same message as your next action.
+- Stop and ask only when you cannot continue without me, or before anything destructive: deleting data, force-pushing, or changing anything outside this repository. A choice the code, the rules and the skills do not settle, and that changes what you build, counts as not being able to continue.
+- When a subagent reports back, check its evidence before you accept it.
+- End every run with three headings: **Blocked on me**, **Changed**, **Found**. Mark anything you could not confirm, and say where you looked.
+
 ## Which rules win
 
 When two sources disagree, follow this order.
@@ -22,7 +29,6 @@ When two sources disagree, follow this order.
 - Write code as simply as possible - do not over-engineer so anyone can understand it.
 - Do not extract a private method just because a few lines are repeated twice. If the repeated code is short and not business critical, repeat it inline rather than naming and hiding it behind a helper. Extract only when the logic is non-trivial, reused in several places, or its own concept worth naming.
 - Always follow the Laravel best practices and how we structure our codebase.
-- If you are unsure about a specific implementation, ask for clarification before proceeding.
 - When you write tests, read the testing rules in `rules/testing.md` and follow them.
 - When writing code, follow the coding standards in `rules/code-style.md`.
 - ALWAYS warn users before making a destructive action in the UI.
@@ -134,10 +140,14 @@ feat: better header buttons
 
 Never use dashes (— or -) as punctuation in documentation or README files. Rephrase sentences using periods, commas, or parentheses instead.
 
-## Checklist for each feature or change
+## When a change is done
 
-- You MUST run `php artisan monica:localize` and translate what it reports as missing, in every configured locale. Never edit `lang/*.json` keys by hand.
-- You MUST make sure what you wrote is covered by a test
+A change is done when all of these hold. CI runs the tests and PHPStan, so passing the tests alone still lands a red pull request.
+
+- What you wrote is covered by a test, and the affected tests pass.
+- `php artisan monica:localize --check` passes: run `php artisan monica:localize` and translate what it reports as missing, in every configured locale. Never edit `lang/*.json` keys by hand.
+- `vendor/bin/phpstan analyse --no-progress` reports nothing.
+- `vendor/bin/pint --dirty --format agent` leaves nothing to fix.
 
 # Laravel Boost Guidelines
 
