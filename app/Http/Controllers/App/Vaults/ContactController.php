@@ -6,9 +6,11 @@ namespace App\Http\Controllers\App\Vaults;
 
 use App\Actions\CreateContact;
 use App\Actions\DestroyContact;
+use App\Actions\UpdateContactListView;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
+use App\Enums\SortDirectionEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\StructureVersion;
@@ -26,16 +28,39 @@ use Illuminate\View\View;
 
 class ContactController extends Controller
 {
-    public function index(Request $request, Vault $vault, ?string $filter = null): View
+    public function index(Request $request, Vault $vault, ?string $filter = null): View|RedirectResponse
     {
+        $user = $request->user();
+        $grouping = ContactGroupingEnum::fromValueOrEveryone($filter ?? $user->contact_list_grouping);
+        $sort = ContactSortEnum::fromValueOrName($request->string('sort')->toString() ?: $user->contact_list_sort);
+        $direction = SortDirectionEnum::fromValueOrAscending($request->string('direction')->toString() ?: $user->contact_list_direction);
+
+        if ($filter === null) {
+            return redirect()->route('contacts.index', [
+                'vault' => $vault,
+                'filter' => $grouping->value,
+                'sort' => $sort->value,
+                'direction' => $direction->value,
+            ]);
+        }
+
+        if (! $request->prefetch()) {
+            new UpdateContactListView(
+                user: $user,
+                grouping: $grouping,
+                sort: $sort,
+                direction: $direction,
+            )->execute();
+        }
+
         return view('app.vaults.contacts.index', [
             'viewModel' => new ContactsViewModel(
-                user: $request->user(),
+                user: $user,
                 vault: $vault,
                 query: (string) $request->string('query'),
-                filter: $filter ?? ContactGroupingEnum::Everyone->value,
-                sort: (string) $request->string('sort', ContactSortEnum::Name->value),
-                direction: (string) $request->string('direction', ContactsViewModel::DIRECTION_ASC),
+                grouping: $grouping,
+                sort: $sort,
+                direction: $direction,
             ),
         ]);
     }

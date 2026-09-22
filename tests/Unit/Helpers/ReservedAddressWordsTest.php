@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Helpers;
 
+use App\Enums\ContactGroupingEnum;
 use App\Helpers\ReservedAddressWords;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\Test;
@@ -40,14 +41,25 @@ class ReservedAddressWordsTest extends TestCase
     {
         $this->assertContains('new', $this->fixedSegmentsAfter('vaults'));
         $this->assertContains('favourites', $this->fixedSegmentsAfter('contacts'));
+        $this->assertContains('names-only', $this->fixedSegmentsAfter('contacts'));
+    }
+
+    #[Test]
+    public function it_reserves_every_grouping_the_contact_list_answers_to(): void
+    {
+        foreach (ContactGroupingEnum::values() as $grouping) {
+            $this->assertContains($grouping, ReservedAddressWords::forContact());
+        }
+
+        $this->assertContains('all', ReservedAddressWords::forContact());
     }
 
     /**
      * Every word a route nails down in the place a record's own address would sit.
      *
      * A literal segment counts, and so does a parameter the route constrains to a list of literals,
-     * which is how the contact list takes `favourites` and `archived` in the very place a contact's
-     * address goes.
+     * which is how the contact list takes its four groupings in the very place a contact's address
+     * goes. A literal may carry a hyphen, and `names-only` did until this read it.
      *
      * @return list<string>
      */
@@ -73,7 +85,7 @@ class ReservedAddressWordsTest extends TestCase
 
             $constraint = $route->wheres[trim($next, '{}?')] ?? null;
 
-            if (is_string($constraint) && preg_match('/^[a-z]+(\|[a-z]+)*$/', $constraint) === 1) {
+            if (is_string($constraint) && preg_match('/^[a-z][a-z-]*(\|[a-z][a-z-]*)*$/', $constraint) === 1) {
                 $segments = [...$segments, ...explode('|', $constraint)];
             }
         }

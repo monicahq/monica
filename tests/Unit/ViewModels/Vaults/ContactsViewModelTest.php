@@ -6,6 +6,7 @@ namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
+use App\Enums\SortDirectionEnum;
 use App\Helpers\LocaleCollation;
 use App\Models\Contact;
 use App\Models\File;
@@ -115,7 +116,7 @@ class ContactsViewModelTest extends TestCase
         $groups = new ContactsViewModel(
             user: $user,
             vault: $vault,
-            sort: ContactSortEnum::Added->value,
+            sort: ContactSortEnum::Added,
         )->groups();
 
         $this->assertCount(1, $groups);
@@ -202,8 +203,8 @@ class ContactsViewModelTest extends TestCase
             user: $user,
             vault: $vault,
             query: 'schrute',
-            sort: ContactSortEnum::Added->value,
-            direction: ContactsViewModel::DIRECTION_DESC,
+            sort: ContactSortEnum::Added,
+            direction: SortDirectionEnum::Descending,
         );
 
         $favourites = collect($viewModel->filters())->firstWhere('key', 'favourites');
@@ -223,9 +224,14 @@ class ContactsViewModelTest extends TestCase
         $chips = collect(new ContactsViewModel(user: $user, vault: $vault)->filters())
             ->mapWithKeys(fn (array $chip): array => [$chip['key'] => parse_url($chip['url'], PHP_URL_PATH)]);
 
-        $this->assertEquals("/vaults/{$vault->slug}/contacts", $chips['all']);
+        $this->assertEquals("/vaults/{$vault->slug}/contacts/all", $chips['all']);
         $this->assertEquals("/vaults/{$vault->slug}/contacts/favourites", $chips['favourites']);
         $this->assertEquals("/vaults/{$vault->slug}/contacts/archived", $chips['archived']);
+        $this->assertEquals("/vaults/{$vault->slug}/contacts/names-only", $chips['names-only']);
+
+        foreach (ContactGroupingEnum::cases() as $grouping) {
+            $this->assertStringEndsWith("/contacts/{$grouping->value}", $chips[$grouping->value]);
+        }
 
         $this->assertStringNotContainsString(
             'filter=',
@@ -240,33 +246,14 @@ class ContactsViewModelTest extends TestCase
         $vault = $this->vaultReadyForContacts($user);
 
         $this->assertStringEndsWith(
-            '/contacts',
+            '/contacts/all',
             new ContactsViewModel(user: $user, vault: $vault)->searchUrl(),
         );
 
         $this->assertStringEndsWith(
             '/contacts/archived',
-            new ContactsViewModel(user: $user, vault: $vault, filter: ContactGroupingEnum::Archived->value)->searchUrl(),
+            new ContactsViewModel(user: $user, vault: $vault, grouping: ContactGroupingEnum::Archived)->searchUrl(),
         );
-    }
-
-    #[Test]
-    public function it_falls_back_to_the_name_when_the_url_asks_for_nonsense(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $viewModel = new ContactsViewModel(
-            user: $user,
-            vault: $vault,
-            filter: 'beets',
-            sort: 'shoe-size',
-            direction: 'sideways',
-        );
-
-        $this->assertEquals(ContactGroupingEnum::Everyone->value, $viewModel->filter());
-        $this->assertEquals(ContactSortEnum::Name->value, $viewModel->sort());
-        $this->assertEquals(ContactsViewModel::DIRECTION_ASC, $viewModel->direction());
     }
 
     #[Test]
@@ -324,8 +311,8 @@ class ContactsViewModelTest extends TestCase
         $byDate = collect(new ContactsViewModel(
             user: $user,
             vault: $vault,
-            sort: ContactSortEnum::LastSpoke->value,
-            direction: ContactsViewModel::DIRECTION_DESC,
+            sort: ContactSortEnum::LastSpoke,
+            direction: SortDirectionEnum::Descending,
         )->directions());
 
         $this->assertEquals(['Newest first', 'Oldest first'], $byDate->pluck('label')->all());
@@ -341,7 +328,7 @@ class ContactsViewModelTest extends TestCase
         $sorts = collect(new ContactsViewModel(
             user: $user,
             vault: $vault,
-            sort: ContactSortEnum::Added->value,
+            sort: ContactSortEnum::Added,
         )->sorts());
 
         $this->assertEquals(['name', 'nickname', 'last-spoke', 'added'], $sorts->pluck('value')->all());
@@ -444,7 +431,7 @@ class ContactsViewModelTest extends TestCase
         $this->contact($vault, 'Erin', 'Erin');
 
         $ascending = $this->surnamesOrderedFor($user, $vault);
-        $descending = $this->surnamesOrderedFor($user, $vault, ContactsViewModel::DIRECTION_DESC);
+        $descending = $this->surnamesOrderedFor($user, $vault, SortDirectionEnum::Descending);
 
         $this->assertSame(array_reverse($ascending), $descending);
     }
@@ -488,7 +475,7 @@ class ContactsViewModelTest extends TestCase
     }
 
     /** @return array<int, string> */
-    private function surnamesOrderedFor(User $user, Vault $vault, string $direction = ContactsViewModel::DIRECTION_ASC): array
+    private function surnamesOrderedFor(User $user, Vault $vault, SortDirectionEnum $direction = SortDirectionEnum::Ascending): array
     {
         $viewModel = new ContactsViewModel(user: $user, vault: $vault, direction: $direction);
 

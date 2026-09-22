@@ -8,6 +8,7 @@ use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\RelationshipTypeEnum;
+use App\Enums\SortDirectionEnum;
 use App\Helpers\LocaleCollation;
 use App\Models\Account;
 use App\Models\Contact;
@@ -388,7 +389,7 @@ class ContactTest extends TestCase
         Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
         Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
 
-        $descending = Contact::query()->sortedBy(ContactSortEnum::Name, 'desc')->pluck('last_name')->all();
+        $descending = Contact::query()->sortedBy(ContactSortEnum::Name, SortDirectionEnum::Descending)->pluck('last_name')->all();
 
         $this->assertEquals(['Scott', 'Beesly'], $descending);
     }
@@ -401,8 +402,8 @@ class ContactTest extends TestCase
         Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Schrute', 'last_interaction_at' => CarbonImmutable::parse('2026-01-02')]);
         Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Scott', 'last_interaction_at' => CarbonImmutable::parse('2026-01-01')]);
 
-        $ascending = Contact::query()->sortedBy(ContactSortEnum::LastSpoke, 'asc')->pluck('last_name')->all();
-        $descending = Contact::query()->sortedBy(ContactSortEnum::LastSpoke, 'desc')->pluck('last_name')->all();
+        $ascending = Contact::query()->sortedBy(ContactSortEnum::LastSpoke, SortDirectionEnum::Ascending)->pluck('last_name')->all();
+        $descending = Contact::query()->sortedBy(ContactSortEnum::LastSpoke, SortDirectionEnum::Descending)->pluck('last_name')->all();
 
         $this->assertEquals(['Scott', 'Schrute', 'Beesly'], $ascending);
         $this->assertEquals(['Schrute', 'Scott', 'Beesly'], $descending);
@@ -416,7 +417,7 @@ class ContactTest extends TestCase
         $first = Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Scott', 'created_at' => $moment]);
         $second = Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Scott', 'created_at' => $moment]);
 
-        $order = Contact::query()->sortedBy(ContactSortEnum::Added, 'asc')->pluck('id')->all();
+        $order = Contact::query()->sortedBy(ContactSortEnum::Added, SortDirectionEnum::Ascending)->pluck('id')->all();
 
         $this->assertEquals([$first->id, $second->id], $order);
     }

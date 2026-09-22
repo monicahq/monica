@@ -6,6 +6,7 @@ namespace App\Mcp\Tools;
 
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
+use App\Enums\SortDirectionEnum;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
@@ -30,7 +31,7 @@ class ListContacts extends Tool
             'filter' => ['nullable', 'string', Rule::in(ContactGroupingEnum::values())],
             'query' => ['nullable', 'string', 'max:255'],
             'sort' => ['nullable', 'string', Rule::in(ContactSortEnum::values())],
-            'direction' => ['nullable', 'string', Rule::in(['asc', 'desc'])],
+            'direction' => ['nullable', 'string', Rule::enum(SortDirectionEnum::class)],
         ]);
 
         $vault = $this->vault($request, $validated['vault']);
@@ -41,7 +42,7 @@ class ListContacts extends Tool
             ->matchingSearch($validated['query'] ?? '')
             ->sortedBy(
                 ContactSortEnum::fromValueOrName($validated['sort'] ?? null),
-                $validated['direction'] ?? 'asc',
+                SortDirectionEnum::fromValueOrAscending($validated['direction'] ?? null),
             )
             ->with(['vault', 'structureVersion.structure.owner', 'avatar'])
             ->get();

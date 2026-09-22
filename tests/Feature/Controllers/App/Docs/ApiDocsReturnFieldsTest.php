@@ -552,6 +552,12 @@ class ApiDocsReturnFieldsTest extends TestCase
                 'timezone' => 'Europe/Lisbon',
             ])),
 
+            'me-contact-list-view-update' => $this->asSomebody(fn (User $user): TestResponse => $this->json('PUT', '/api/v1/me/contact-list-view', [
+                'grouping' => 'favourites',
+                'sort' => 'last-spoke',
+                'direction' => 'desc',
+            ])),
+
             'api-keys-index' => $this->asSomebody(function (User $user): TestResponse {
                 $user->createToken('Dundie awards bot');
 

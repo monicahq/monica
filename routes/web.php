@@ -170,7 +170,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
 
     Route::get('vaults/{vault}/contacts/{filter?}', [ContactController::class, 'index'])
-        ->whereIn('filter', [ContactGroupingEnum::Favourites->value, ContactGroupingEnum::Archived->value])
+        ->whereIn('filter', ContactGroupingEnum::values())
         ->name('contacts.index');
 
     Route::get('vaults/{vault}/contacts/{contact}/set-aside', [SetAsideValueController::class, 'index'])

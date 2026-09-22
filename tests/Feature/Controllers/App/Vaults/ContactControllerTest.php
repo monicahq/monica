@@ -44,7 +44,7 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Michael', 'Scott', ['nickname' => 'Prison Mike']);
         $this->contact($vault, 'Dwight', 'Schrute');
 
-        $this->actingAs($user)->get(route('contacts.index', $vault))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'all']))
             ->assertStatus(200)
             ->assertSee('Michael Scott')
             ->assertSee('Dwight Schrute')
@@ -63,7 +63,7 @@ class ContactControllerTest extends TestCase
         $this->contact($scranton, 'Michael', 'Scott');
         $this->contact($utica, 'Karen', 'Filippelli');
 
-        $this->actingAs($user)->get(route('contacts.index', $scranton))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $scranton, 'filter' => 'all', 'filter' => 'all']))
             ->assertSee('Michael Scott')
             ->assertDontSee('Karen Filippelli');
     }
@@ -78,7 +78,7 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Dwight', 'Schrute', ['is_archived' => true]);
         $this->contact($vault, 'Bob', 'Vance', ['is_partial' => true]);
 
-        $this->actingAs($user)->get(route('contacts.index', $vault))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'all']))
             ->assertSee('Michael Scott')
             ->assertDontSee('Dwight Schrute')
             ->assertDontSee('Bob Vance');
@@ -93,7 +93,7 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Michael', 'Scott');
         $this->contact($vault, 'Dwight', 'Schrute', ['is_archived' => true]);
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'archived']))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'archived']))
             ->assertSee('Dwight Schrute')
             ->assertDontSee('Michael Scott')
             ->assertSee('1 of 1 shown.');
@@ -108,9 +108,242 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Michael', 'Scott', ['is_favourite' => true]);
         $this->contact($vault, 'Dwight', 'Schrute');
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'favourites']))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'favourites']))
             ->assertSee('Michael Scott')
             ->assertDontSee('Dwight Schrute');
+    }
+
+    #[Test]
+    public function it_lists_everybody_at_its_own_address(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Michael', 'Scott');
+        $this->contact($vault, 'Dwight', 'Schrute', ['is_archived' => true]);
+
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'all']))
+            ->assertStatus(200)
+            ->assertSee('Michael Scott')
+            ->assertDontSee('Dwight Schrute');
+    }
+
+    #[Test]
+    public function it_shows_the_people_written_down_as_a_first_name_only(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Michael', 'Scott');
+        $this->contact($vault, 'Bob', 'Vance', ['is_partial' => true]);
+
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'names-only']))
+            ->assertStatus(200)
+            ->assertSee('Bob Vance')
+            ->assertDontSee('Michael Scott');
+    }
+
+    #[Test]
+    public function it_does_not_find_a_contact_list_at_a_word_that_is_not_a_grouping(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)->get("/vaults/{$vault->slug}/contacts/beets")
+            ->assertStatus(404);
+    }
+
+    #[Test]
+    public function it_moves_the_address_bar_with_the_view(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $page = $this->actingAs($user)
+            ->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all']))
+            ->assertStatus(200)
+            ->getContent();
+
+        preg_match_all('/x-target(\.push)?="contacts"/', $page, $targets);
+
+        $this->assertCount(6, $targets[0]);
+        $this->assertSame($targets[0], array_filter($targets[0], fn (string $target): bool => str_contains($target, '.push')));
+    }
+
+    #[Test]
+    public function it_shows_everybody_when_nothing_is_recorded(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)->get(route('contacts.index', $vault))
+            ->assertRedirect(route('contacts.index', [
+                'vault' => $vault,
+                'filter' => 'all',
+                'sort' => 'name',
+                'direction' => 'asc',
+            ]));
+    }
+
+    #[Test]
+    public function it_redirects_the_bare_address_to_the_recorded_view(): void
+    {
+        $user = User::factory()->create([
+            'contact_list_grouping' => 'favourites',
+            'contact_list_sort' => 'last-spoke',
+            'contact_list_direction' => 'desc',
+        ]);
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)->get(route('contacts.index', $vault))
+            ->assertRedirect(route('contacts.index', [
+                'vault' => $vault,
+                'filter' => 'favourites',
+                'sort' => 'last-spoke',
+                'direction' => 'desc',
+            ]));
+    }
+
+    #[Test]
+    public function it_records_the_view_the_address_states(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)->get(route('contacts.index', [
+            'vault' => $vault,
+            'filter' => 'archived',
+            'sort' => 'added',
+            'direction' => 'desc',
+        ]))->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'contact_list_grouping' => 'archived',
+            'contact_list_sort' => 'added',
+            'contact_list_direction' => 'desc',
+        ]);
+    }
+
+    #[Test]
+    public function it_applies_the_recorded_view_in_every_vault_of_the_account(): void
+    {
+        $user = User::factory()->create();
+        $scranton = $this->vaultReadyForContacts($user);
+        $stamford = $this->vaultReadyForContacts($user, 'Another contact');
+
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $scranton, 'filter' => 'archived']))
+            ->assertStatus(200);
+
+        $this->actingAs($user)->get(route('contacts.index', $stamford))
+            ->assertRedirect(route('contacts.index', [
+                'vault' => $stamford,
+                'filter' => 'archived',
+                'sort' => 'name',
+                'direction' => 'asc',
+            ]));
+    }
+
+    #[Test]
+    public function it_records_nothing_for_a_contact_list_in_another_account(): void
+    {
+        $user = User::factory()->create();
+        $somebodyElse = User::factory()->create();
+        $theirVault = $this->vaultReadyForContacts($somebodyElse);
+
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $theirVault, 'filter' => 'archived']))
+            ->assertStatus(404);
+
+        $this->assertNull($user->refresh()->contact_list_grouping);
+    }
+
+    #[Test]
+    public function it_shows_the_grouping_the_address_states_over_the_recorded_one(): void
+    {
+        $user = User::factory()->create(['contact_list_grouping' => 'favourites']);
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Michael', 'Scott', ['is_favourite' => true]);
+        $this->contact($vault, 'Dwight', 'Schrute', ['is_archived' => true]);
+
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'archived']))
+            ->assertStatus(200)
+            ->assertSee('Dwight Schrute')
+            ->assertDontSee('Michael Scott');
+
+        $this->assertEquals('archived', $user->refresh()->contact_list_grouping);
+    }
+
+    #[Test]
+    public function it_keeps_the_recorded_sort_when_the_address_states_only_a_grouping(): void
+    {
+        $user = User::factory()->create([
+            'contact_list_grouping' => 'all',
+            'contact_list_sort' => 'last-spoke',
+            'contact_list_direction' => 'desc',
+        ]);
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'names-only']))
+            ->assertStatus(200);
+
+        $user->refresh();
+
+        $this->assertEquals('names-only', $user->contact_list_grouping);
+        $this->assertEquals('last-spoke', $user->contact_list_sort);
+        $this->assertEquals('desc', $user->contact_list_direction);
+    }
+
+    #[Test]
+    public function it_falls_back_to_everybody_when_the_recorded_grouping_is_no_longer_a_grouping(): void
+    {
+        $user = User::factory()->create([
+            'contact_list_grouping' => 'beets',
+            'contact_list_sort' => 'added',
+            'contact_list_direction' => 'desc',
+        ]);
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)->get(route('contacts.index', $vault))
+            ->assertRedirect(route('contacts.index', [
+                'vault' => $vault,
+                'filter' => 'all',
+                'sort' => 'added',
+                'direction' => 'desc',
+            ]));
+    }
+
+    #[Test]
+    public function it_falls_back_to_the_name_when_the_address_asks_for_nonsense(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)->get(route('contacts.index', [
+            'vault' => $vault,
+            'filter' => 'all',
+            'sort' => 'shoe-size',
+            'direction' => 'sideways',
+        ]))->assertStatus(200);
+
+        $user->refresh();
+
+        $this->assertEquals('name', $user->contact_list_sort);
+        $this->assertEquals('asc', $user->contact_list_direction);
+    }
+
+    #[Test]
+    public function it_records_nothing_when_the_request_is_a_prefetch(): void
+    {
+        $user = User::factory()->create(['contact_list_grouping' => 'favourites']);
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)
+            ->withHeaders(['Sec-Purpose' => 'prefetch'])
+            ->get(route('contacts.index', ['vault' => $vault, 'filter' => 'names-only']))
+            ->assertStatus(200);
+
+        $this->assertEquals('favourites', $user->refresh()->contact_list_grouping);
     }
 
     #[Test]
@@ -122,11 +355,11 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Michael', 'Scott', ['nickname' => 'Prison Mike']);
         $this->contact($vault, 'Dwight', 'Schrute');
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'query' => 'schrute']))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'query' => 'schrute']))
             ->assertSee('Dwight Schrute')
             ->assertDontSee('Michael Scott');
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'query' => 'prison']))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'query' => 'prison']))
             ->assertSee('Michael Scott')
             ->assertDontSee('Dwight Schrute');
     }
@@ -140,9 +373,9 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Michael', 'Scott');
         $this->contact($vault, 'Dwight', 'Schrute');
 
-        $ascending = $this->actingAs($user)->get(route('contacts.index', $vault))->getContent();
+        $ascending = $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'all']))->getContent();
         $descending = $this->actingAs($user)
-            ->get(route('contacts.index', ['vault' => $vault, 'sort' => 'name', 'direction' => 'desc']))
+            ->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'sort' => 'name', 'direction' => 'desc']))
             ->getContent();
 
         $this->assertLessThan(
@@ -164,11 +397,11 @@ class ContactControllerTest extends TestCase
 
         $this->contact($vault, 'Michael', 'Scott');
 
-        $this->actingAs($user)->get(route('contacts.index', $vault))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'all']))
             ->assertSee('>S</h2>', escape: false);
 
         $content = str($this->actingAs($user)
-            ->get(route('contacts.index', ['vault' => $vault, 'sort' => 'added', 'direction' => 'desc']))
+            ->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'sort' => 'added', 'direction' => 'desc']))
             ->assertSee('Michael Scott')
             ->getContent())->after('</header>')->before('</main>')->toString();
 
@@ -184,7 +417,7 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Michael', 'Scott', ['is_favourite' => true]);
         $this->contact($vault, 'Dwight', 'Schrute');
 
-        $this->actingAs($user)->get(route('contacts.index', $vault))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'all']))
             ->assertSee('Everybody')
             ->assertSee('Favourites')
             ->assertSee('Archived');
@@ -201,7 +434,7 @@ class ContactControllerTest extends TestCase
 
         foreach (['asc', 'desc'] as $direction) {
             $html = (string) $this->actingAs($user)
-                ->get(route('contacts.index', ['vault' => $vault, 'sort' => 'nickname', 'direction' => $direction]))
+                ->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'sort' => 'nickname', 'direction' => $direction]))
                 ->getContent();
 
             $this->assertLessThan(
@@ -221,7 +454,7 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Michael', 'Scott');
 
         $this->actingAs($user)
-            ->get(route('contacts.index', ['vault' => $vault, 'sort' => 'shoe-size', 'direction' => 'sideways']))
+            ->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'sort' => 'shoe-size', 'direction' => 'sideways']))
             ->assertStatus(200)
             ->assertSee('Michael Scott')
             ->assertSee('<option value="name" selected>Name</option>', escape: false)
@@ -273,7 +506,7 @@ class ContactControllerTest extends TestCase
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user);
 
-        $this->actingAs($user)->get(route('contacts.index', $vault))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'all']))
             ->assertSee('Nobody here yet')
             ->assertSee('This vault holds nobody so far.');
     }
@@ -286,7 +519,7 @@ class ContactControllerTest extends TestCase
 
         $this->contact($vault, 'Bob', 'Vance', ['is_partial' => true]);
 
-        $this->actingAs($user)->get(route('contacts.index', $vault))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'all']))
             ->assertSee('Nobody here yet')
             ->assertSee('One person here was written down as a partial contact')
             ->assertDontSee('This vault holds nobody so far.');
@@ -319,7 +552,7 @@ class ContactControllerTest extends TestCase
 
         $this->contact($vault, 'Michael', 'Scott');
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'query' => 'Filippelli']))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'query' => 'Filippelli']))
             ->assertSee('Nothing matches')
             ->assertDontSee('Nobody here yet');
     }
@@ -336,11 +569,11 @@ class ContactControllerTest extends TestCase
             'structure_version_id' => $vault->defaultTemplates()->sole()->structure_version_id,
         ]);
 
-        $this->actingAs($user)->get(route('contacts.index', $vault))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'all']))
             ->assertSee('Load more')
             ->assertDontSee('End of the list.');
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'page' => 2]))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'page' => 2]))
             ->assertDontSee('Load more')
             ->assertSee('End of the list. 51 people, no pages.');
     }
@@ -380,7 +613,7 @@ class ContactControllerTest extends TestCase
 
         $this->contact($vault, 'Michael', 'Scott');
 
-        foreach ([route('contacts.index', $vault), route('contacts.new', $vault)] as $url) {
+        foreach ([route('contacts.index', ['vault' => $vault, 'filter' => 'all']), route('contacts.new', $vault)] as $url) {
             $this->actingAs($user)->get($url)
                 ->assertStatus(200)
                 ->assertSee($vault->name)
@@ -1317,7 +1550,7 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Dwight', 'Élodie');
         $this->contact($vault, 'Michael', 'Scott');
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'query' => 'elodie']))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'query' => 'elodie']))
             ->assertStatus(200)
             ->assertSee('Dwight Élodie')
             ->assertDontSee('Michael Scott');
@@ -1331,7 +1564,7 @@ class ContactControllerTest extends TestCase
 
         $this->contact($vault, 'Michael', 'Scott');
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'query' => 'Bob Vance of Vance Refrigeration']))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'query' => 'Bob Vance of Vance Refrigeration']))
             ->assertStatus(200)
             ->assertSee('Nothing matches')
             ->assertDontSee('Michael Scott');
@@ -1345,7 +1578,7 @@ class ContactControllerTest extends TestCase
 
         $this->contact($vault, 'Dwight', 'Élodie');
 
-        $this->actingAs($user)->get(route('contacts.index', $vault))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'all']))
             ->assertStatus(200)
             ->assertSee('Dwight Élodie');
     }
@@ -1498,7 +1731,7 @@ class ContactControllerTest extends TestCase
         $vault = $this->vaultReadyForContacts($user);
         $this->contact($vault, 'Pam', 'Beesly');
 
-        $this->actingAs($user)->get(route('contacts.index', $vault))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'all']))
             ->assertStatus(200)
             ->assertSee('aria-disabled="true"', false)
             ->assertSee('aria-describedby="contact-ceiling"', false)
@@ -1514,7 +1747,7 @@ class ContactControllerTest extends TestCase
         $vault = $this->vaultReadyForContacts($user);
         $this->contact($vault, 'Pam', 'Beesly');
 
-        $this->actingAs($user)->get(route('contacts.index', $vault))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'all']))
             ->assertStatus(200)
             ->assertDontSee('aria-describedby="contact-ceiling"', false);
     }

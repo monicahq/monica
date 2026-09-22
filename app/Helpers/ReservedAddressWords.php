@@ -25,10 +25,10 @@ class ReservedAddressWords
     /**
      * The words a contact may not be addressed by.
      *
-     * `contacts/new` is the same story. `favourites` and `archived` are the values the contact list
-     * accepts in the place a contact's own address would sit, and that route is declared first too.
-     * `me` is fixed by the API route resolving the contact that stands for the account holder, which
-     * is declared above `contacts/{contact}` so that the literal wins.
+     * `contacts/new` is the same story. Every grouping the contact list answers to sits in the place
+     * a contact's own address would sit, and that route is declared first too, so all of them are
+     * spent. `me` is fixed by the API route resolving the contact that stands for the account holder,
+     * which is declared above `contacts/{contact}` so that the literal wins.
      *
      * @return list<string>
      */
@@ -37,9 +37,7 @@ class ReservedAddressWords
         return [
             'new',
             'me',
-            ContactGroupingEnum::Favourites->value,
-            ContactGroupingEnum::Archived->value,
-            ContactGroupingEnum::NamesOnly->value,
+            ...ContactGroupingEnum::values(),
         ];
     }
 }

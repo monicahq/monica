@@ -9,6 +9,7 @@ use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\RelationshipBehaviorEnum;
 use App\Enums\RelationshipStatusEnum;
+use App\Enums\SortDirectionEnum;
 use App\Helpers\LocaleCollation;
 use App\Helpers\ReservedAddressWords;
 use App\Helpers\SlugBuilder;
@@ -663,7 +664,7 @@ class Contact extends Model
      *
      * @param  Builder<$this>  $query
      */
-    public function scopeSortedBy(Builder $query, ContactSortEnum $sort, string $direction): void
+    public function scopeSortedBy(Builder $query, ContactSortEnum $sort, SortDirectionEnum $direction): void
     {
         $column = $sort->column();
 
@@ -671,7 +672,7 @@ class Contact extends Model
             $sort->canBeUnknown(),
             fn (Builder $query): Builder => $query->orderByRaw("{$column} is null"),
         )
-            ->orderBy($column, $direction === 'desc' ? 'desc' : 'asc')
+            ->orderBy($column, $direction->value)
             ->orderBy('id');
     }
 

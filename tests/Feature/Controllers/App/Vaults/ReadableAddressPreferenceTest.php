@@ -26,7 +26,7 @@ class ReadableAddressPreferenceTest extends TestCase
             parse_url(route('contacts.show', ['vault' => $vault, 'contact' => $contact]), PHP_URL_PATH),
         );
 
-        $this->actingAs($user)->get(route('contacts.index', $vault))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all']))
             ->assertStatus(200)
             ->assertSee("/vaults/{$vault->slug}/contacts/{$contact->slug}", escape: false);
     }
@@ -41,7 +41,7 @@ class ReadableAddressPreferenceTest extends TestCase
             parse_url(route('contacts.show', ['vault' => $vault, 'contact' => $contact]), PHP_URL_PATH),
         );
 
-        $this->actingAs($user)->get(route('contacts.index', $vault))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all']))
             ->assertStatus(200)
             ->assertSee("/vaults/{$vault->uuid}/contacts/{$contact->uuid}", escape: false)
             ->assertDontSee("/vaults/{$vault->slug}/contacts/{$contact->slug}", escape: false);

@@ -34,6 +34,7 @@ use App\Http\Controllers\Api\LifeEventTypeController;
 use App\Http\Controllers\Api\LifeEventTypeFieldController;
 use App\Http\Controllers\Api\LifeEventTypePositionController;
 use App\Http\Controllers\Api\LogController;
+use App\Http\Controllers\Api\MeContactListViewController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\MeTimezoneController;
 use App\Http\Controllers\Api\NotificationChannelController as ApiNotificationChannelController;
@@ -81,6 +82,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::get('me', [MeController::class, 'show'])->name('me');
         Route::put('me', [MeController::class, 'update'])->name('me.update');
         Route::put('me/timezone', [MeTimezoneController::class, 'update'])->name('me.timezone.update');
+        Route::put('me/contact-list-view', [MeContactListViewController::class, 'update'])->name('me.contactListView.update');
 
         Route::get('billing', [BillingController::class, 'show'])->name('billing');
         Route::get('billing/payments', [PaymentController::class, 'index'])->name('billing.payments');

@@ -31,12 +31,45 @@ class MeControllerTest extends TestCase
                 'date_format',
                 'name_order',
                 'number_format',
+                'contact_list_grouping',
+                'contact_list_sort',
+                'contact_list_direction',
                 'created_at',
                 'updated_at',
             ],
             'links' => ['self'],
         ],
     ];
+
+    #[Test]
+    public function it_shows_the_view_the_contact_list_opens_on(): void
+    {
+        $user = User::factory()->create([
+            'contact_list_grouping' => 'favourites',
+            'contact_list_sort' => 'last-spoke',
+            'contact_list_direction' => 'desc',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', '/api/v1/me')
+            ->assertOk()
+            ->assertJsonPath('data.attributes.contact_list_grouping', 'favourites')
+            ->assertJsonPath('data.attributes.contact_list_sort', 'last-spoke')
+            ->assertJsonPath('data.attributes.contact_list_direction', 'desc');
+    }
+
+    #[Test]
+    public function it_shows_no_contact_list_view_until_somebody_has_opened_the_list(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $this->json('GET', '/api/v1/me')
+            ->assertOk()
+            ->assertJsonPath('data.attributes.contact_list_grouping', null)
+            ->assertJsonPath('data.attributes.contact_list_sort', null)
+            ->assertJsonPath('data.attributes.contact_list_direction', null);
+    }
 
     #[Test]
     public function it_shows_the_user_the_token_belongs_to(): void

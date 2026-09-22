@@ -59,6 +59,9 @@ use Override;
  * @property DateFormatEnum|null $date_format
  * @property NameOrderEnum $name_order
  * @property NumberFormatEnum|null $number_format
+ * @property string|null $contact_list_grouping
+ * @property string|null $contact_list_sort
+ * @property string|null $contact_list_direction
  * @property bool $uses_readable_addresses
  * @property CarbonImmutable|null $last_login_at
  * @property string|null $last_login_ip

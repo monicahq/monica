@@ -6,6 +6,7 @@ namespace App\ViewModels\Vaults;
 
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
+use App\Enums\SortDirectionEnum;
 use App\Helpers\LocaleCollation;
 use App\Models\Contact;
 use App\Models\User;
@@ -15,10 +16,6 @@ use Illuminate\Pagination\Paginator;
 
 class ContactsViewModel
 {
-    public const string DIRECTION_ASC = 'asc';
-
-    public const string DIRECTION_DESC = 'desc';
-
     private const int PER_PAGE = 50;
 
     /** @var Paginator<int, Contact>|null */
@@ -31,9 +28,9 @@ class ContactsViewModel
         private readonly User $user,
         private readonly Vault $vault,
         private readonly string $query = '',
-        private readonly string $filter = ContactGroupingEnum::Everyone->value,
-        private readonly string $sort = ContactSortEnum::Name->value,
-        private readonly string $direction = self::DIRECTION_ASC,
+        private readonly ContactGroupingEnum $grouping = ContactGroupingEnum::Everyone,
+        private readonly ContactSortEnum $sort = ContactSortEnum::Name,
+        private readonly SortDirectionEnum $direction = SortDirectionEnum::Ascending,
     ) {}
 
     public function vault(): Vault
@@ -111,8 +108,8 @@ class ContactsViewModel
             'label' => __($grouping->label()),
             'icon' => $grouping->icon(),
             'count' => $this->countOf($grouping) === 0 ? null : $this->countOf($grouping),
-            'url' => $this->url(filter: $grouping->value),
-            'isCurrent' => $grouping === $this->grouping(),
+            'url' => $this->url(grouping: $grouping),
+            'isCurrent' => $grouping === $this->grouping,
         ], ContactGroupingEnum::cases());
     }
 
@@ -122,21 +119,21 @@ class ContactsViewModel
         return array_map(fn (array $sort): array => [
             'value' => $sort['key'],
             'label' => $sort['label'],
-            'isCurrent' => $sort['key'] === $this->sort(),
+            'isCurrent' => $sort['key'] === $this->sort->value,
         ], self::definitions());
     }
 
     /** @return array<int, array{value: string, label: string, isCurrent: bool}> */
     public function directions(): array
     {
-        $labels = $this->sortOrder()->isChronological()
-            ? [self::DIRECTION_DESC => __('Newest first'), self::DIRECTION_ASC => __('Oldest first')]
-            : [self::DIRECTION_ASC => __('A to Z'), self::DIRECTION_DESC => __('Z to A')];
+        $labels = $this->sort->isChronological()
+            ? [SortDirectionEnum::Descending->value => __('Newest first'), SortDirectionEnum::Ascending->value => __('Oldest first')]
+            : [SortDirectionEnum::Ascending->value => __('A to Z'), SortDirectionEnum::Descending->value => __('Z to A')];
 
         return array_map(fn (string $key): array => [
             'value' => $key,
             'label' => $labels[$key],
-            'isCurrent' => $key === $this->direction(),
+            'isCurrent' => $key === $this->direction->value,
         ], array_keys($labels));
     }
 
@@ -210,29 +207,17 @@ class ContactsViewModel
 
     public function filter(): string
     {
-        return $this->grouping()->value;
+        return $this->grouping->value;
     }
 
     public function sort(): string
     {
-        return $this->sortOrder()->value;
-    }
-
-    private function grouping(): ContactGroupingEnum
-    {
-        return ContactGroupingEnum::fromValueOrEveryone($this->filter);
-    }
-
-    private function sortOrder(): ContactSortEnum
-    {
-        return ContactSortEnum::fromValueOrName($this->sort);
+        return $this->sort->value;
     }
 
     public function direction(): string
     {
-        return $this->direction === self::DIRECTION_DESC
-            ? self::DIRECTION_DESC
-            : self::DIRECTION_ASC;
+        return $this->direction->value;
     }
 
     public function newContactUrl(): string
@@ -268,7 +253,7 @@ class ContactsViewModel
     /** @return Builder<Contact> */
     private function ordered(): Builder
     {
-        return $this->matching()->sortedBy($this->sortOrder(), $this->direction());
+        return $this->matching()->sortedBy($this->sort, $this->direction);
     }
 
     /** @return Builder<Contact> */
@@ -276,7 +261,7 @@ class ContactsViewModel
     {
         return Contact::query()
             ->where('vault_id', $this->vault->id)
-            ->inGrouping($this->grouping())
+            ->inGrouping($this->grouping)
             ->matchingSearch($this->query);
     }
 
@@ -298,7 +283,7 @@ class ContactsViewModel
 
     private function isGrouped(): bool
     {
-        return $this->sortOrder() === ContactSortEnum::Name;
+        return $this->sort === ContactSortEnum::Name;
     }
 
     private function letterOf(Contact $contact): string
@@ -334,17 +319,17 @@ class ContactsViewModel
 
     private function isNarrowed(): bool
     {
-        return $this->searchTerm() !== '' || $this->grouping() !== ContactGroupingEnum::Everyone;
+        return $this->searchTerm() !== '' || $this->grouping !== ContactGroupingEnum::Everyone;
     }
 
-    private function url(?string $filter = null): string
+    private function url(?ContactGroupingEnum $grouping = null): string
     {
         return route('contacts.index', [
             'vault' => $this->vault,
-            'filter' => $this->segmentFor($filter ?? $this->filter()),
+            'filter' => ($grouping ?? $this->grouping)->value,
             'query' => $this->query === '' ? null : $this->query,
-            'sort' => $this->sort(),
-            'direction' => $this->direction(),
+            'sort' => $this->sort->value,
+            'direction' => $this->direction->value,
         ]);
     }
 
@@ -352,12 +337,7 @@ class ContactsViewModel
     {
         return route('contacts.index', [
             'vault' => $this->vault,
-            'filter' => $this->segmentFor($this->filter()),
+            'filter' => $this->grouping->value,
         ]);
-    }
-
-    private function segmentFor(string $filter): ?string
-    {
-        return $filter === ContactGroupingEnum::Everyone->value ? null : $filter;
     }
 }

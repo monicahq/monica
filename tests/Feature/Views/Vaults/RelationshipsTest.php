@@ -74,9 +74,15 @@ class RelationshipsTest extends TestCase
         $ruth->update(['is_partial' => true]);
         $this->parentage($this->judy, $ruth);
 
+        $link = route('contacts.index', ['vault' => $this->vault, 'filter' => 'names-only']);
+
         $this->tab()
             ->assertSee(__('Review names'))
-            ->assertSee(route('contacts.index', ['vault' => $this->vault, 'filter' => 'names-only']));
+            ->assertSee($link);
+
+        $this->actingAs($this->user)->get($link)
+            ->assertStatus(200)
+            ->assertSee('Ruth Geller');
     }
 
     #[Test]

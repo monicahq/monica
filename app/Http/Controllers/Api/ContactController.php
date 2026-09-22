@@ -9,6 +9,7 @@ use App\Actions\DestroyContact;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
+use App\Enums\SortDirectionEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
@@ -32,7 +33,7 @@ class ContactController extends Controller
             'filter' => ['nullable', 'string', Rule::in(ContactGroupingEnum::values())],
             'query' => ['nullable', 'string', 'max:255'],
             'sort' => ['nullable', 'string', Rule::in(ContactSortEnum::values())],
-            'direction' => ['nullable', 'string', Rule::in(['asc', 'desc'])],
+            'direction' => ['nullable', 'string', Rule::enum(SortDirectionEnum::class)],
         ]);
 
         $perPage = max(1, min(
@@ -46,7 +47,7 @@ class ContactController extends Controller
             ->matchingSearch($validated['query'] ?? '')
             ->sortedBy(
                 ContactSortEnum::fromValueOrName($validated['sort'] ?? null),
-                $validated['direction'] ?? 'asc',
+                SortDirectionEnum::fromValueOrAscending($validated['direction'] ?? null),
             )
             ->with(['vault', 'structureVersion.structure.owner', 'avatar'])
             ->paginate($perPage);

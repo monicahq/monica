@@ -45,12 +45,12 @@
             :selected="$filter['isCurrent']"
             :icon="$filter['icon']"
             :count="$filter['count']"
-            x-target="contacts"
+            x-target.push="contacts"
           >{{ $filter['label'] }}</x-chip>
         @endforeach
       </div>
 
-      <form method="get" action="{{ $viewModel->searchUrl() }}" x-target="contacts" class="flex flex-wrap items-center gap-2 sm:ml-auto">
+      <form method="get" action="{{ $viewModel->searchUrl() }}" x-target.push="contacts" class="flex flex-wrap items-center gap-2 sm:ml-auto">
         <input type="hidden" name="query" value="{{ $viewModel->query() }}" />
 
         <label for="sort" class="text-xs text-pretty text-muted">{{ __('Sorted by') }}</label>
@@ -72,7 +72,7 @@
     </div>
 
     <div class="flex flex-wrap items-center gap-x-4 gap-y-2.5">
-      <form method="get" action="{{ $viewModel->searchUrl() }}" x-target="contacts" class="flex items-center gap-2">
+      <form method="get" action="{{ $viewModel->searchUrl() }}" x-target.push="contacts" class="flex items-center gap-2">
         <input type="hidden" name="sort" value="{{ $viewModel->sort() }}" />
         <input type="hidden" name="direction" value="{{ $viewModel->direction() }}" />
 
