@@ -12,6 +12,8 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\StructureVersion;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -71,6 +73,131 @@ class VCardMergerTest extends TestCase
 
         $this->assertStringContainsString('TEL:+15705551212', $card);
         $this->assertStringContainsString('X-ABLabel:Work', $card);
+    }
+
+    #[Test]
+    public function it_writes_a_standard_label_as_the_type_every_address_book_reads(): void
+    {
+        $user = User::factory()->create();
+        $version = Structure::withFields($user, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Phone'],
+        ]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
+        $mobile = $this->labelOn($version, 0, 'mobile', 'Mobile');
+        $this->value($contact, $version, 0, ['value_string' => '+15705551212', 'value_list_item_id' => $mobile->id]);
+
+        $card = new VCardMerger()->merge($contact);
+
+        $this->assertStringContainsString('TYPE=cell', $card);
+        $this->assertStringContainsString('+15705551212', $card);
+        $this->assertStringNotContainsString('X-ABLabel:Phone', $card);
+    }
+
+    #[Test]
+    public function it_writes_a_label_nobody_standardised_as_the_wording_the_account_chose(): void
+    {
+        $user = User::factory()->create();
+        $version = Structure::withFields($user, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Phone'],
+        ]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
+        $boat = $this->labelOn($version, 0, null, 'Boat');
+        $this->value($contact, $version, 0, ['value_string' => '+15705551212', 'value_list_item_id' => $boat->id]);
+
+        $card = new VCardMerger()->merge($contact);
+
+        $this->assertStringContainsString('X-ABLabel:Boat', $card);
+        $this->assertStringNotContainsString('X-ABLabel:Phone', $card);
+    }
+
+    #[Test]
+    public function it_writes_the_wording_somebody_typed_rather_than_the_open_label(): void
+    {
+        $user = User::factory()->create();
+        $version = Structure::withFields($user, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Phone'],
+        ]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
+        $open = $this->labelOn($version, 0, ValueListItem::OPEN_KEY, 'Custom...');
+        $this->value($contact, $version, 0, [
+            'value_string' => '+15705551212',
+            'value_list_item_id' => $open->id,
+            'label_wording' => 'Boat',
+        ]);
+
+        $card = new VCardMerger()->merge($contact);
+
+        $this->assertStringContainsString('X-ABLabel:Boat', $card);
+        $this->assertStringNotContainsString('X-ABLabel:Other', $card);
+    }
+
+    #[Test]
+    public function it_falls_back_to_the_name_of_the_field_when_the_value_carries_no_label(): void
+    {
+        $user = User::factory()->create();
+        $version = Structure::withFields($user, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Work'],
+        ]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
+        $this->value($contact, $version, 0, ['value_string' => '+15705551212']);
+
+        $card = new VCardMerger()->merge($contact);
+
+        $this->assertStringContainsString('X-ABLabel:Work', $card);
+    }
+
+    #[Test]
+    public function it_writes_the_label_of_an_email_as_the_type_a_card_knows(): void
+    {
+        $user = User::factory()->create();
+        $version = Structure::withFields($user, [
+            ['type' => FieldTypeEnum::Email, 'label' => 'Email'],
+        ]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
+        $work = $this->labelOn($version, 0, 'work', 'Work');
+        $this->value($contact, $version, 0, ['value_string' => 'dwight@schrutefarms.example', 'value_list_item_id' => $work->id]);
+
+        $card = new VCardMerger()->merge($contact);
+
+        $this->assertStringContainsString('TYPE=work', $card);
+        $this->assertStringContainsString('dwight@schrutefarms.example', $card);
+    }
+
+    #[Test]
+    public function it_writes_no_label_for_a_sensitive_field_because_it_writes_no_property_at_all(): void
+    {
+        $user = User::factory()->create();
+        $version = Structure::withFields($user, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Phone', 'is_sensitive' => true],
+        ]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
+        $mobile = $this->labelOn($version, 0, 'mobile', 'Mobile');
+        $this->value($contact, $version, 0, ['value_string' => '+15705551212', 'value_list_item_id' => $mobile->id]);
+
+        $card = new VCardMerger()->merge($contact);
+
+        $this->assertStringNotContainsString('+15705551212', $card);
+        $this->assertStringNotContainsString('X-ABLabel:Mobile', $card);
+    }
+
+    #[Test]
+    public function it_labels_a_property_the_device_already_put_on_the_card(): void
+    {
+        $user = User::factory()->create();
+        $version = Structure::withFields($user, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Phone'],
+        ]);
+        $contact = $this->contact([
+            'structure_version_id' => $version->id,
+            'vcard' => "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:dwight\r\nFN:Dwight Schrute\r\nTEL:+15705550000\r\nEND:VCARD\r\n",
+        ]);
+        $mobile = $this->labelOn($version, 0, 'mobile', 'Mobile');
+        $this->value($contact, $version, 0, ['value_string' => '+15705551212', 'value_list_item_id' => $mobile->id]);
+
+        $card = new VCardMerger()->merge($contact);
+
+        $this->assertStringContainsString('TYPE=cell', $card);
+        $this->assertStringContainsString('+15705551212', $card);
     }
 
     #[Test]
@@ -258,6 +385,22 @@ class VCardMergerTest extends TestCase
     }
 
     /** @param  array<string, mixed>  $attributes */
+    private function labelOn(StructureVersion $version, int $index, ?string $key, string $label): ValueListItem
+    {
+        $field = $this->fieldsOf($version)[$index];
+        $list = ValueList::factory()->create(['account_id' => $field->account_id]);
+
+        $field->value_list_id = $list->id;
+        $field->save();
+
+        return ValueListItem::factory()->create([
+            'account_id' => $field->account_id,
+            'value_list_id' => $list->id,
+            'key' => $key,
+            'label' => $label,
+        ]);
+    }
+
     private function contact(array $attributes = []): Contact
     {
         return Contact::factory()->create($attributes);

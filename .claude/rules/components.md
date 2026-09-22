@@ -22,7 +22,7 @@ than like a component:
 | `x-detail-list` + `x-detail-list.row` | A run of labelled values, one to a line |
 | `x-sortable-row` + `x-position-form` | A row somebody reorders by dragging, and the form recording where it landed |
 | `x-delete-action` | A quiet button that destroys something, the card that asks first, and the warning that it is final |
-| `x-actions-menu` | The button that unfolds the rest of what may be done here, and the menu it unfolds |
+| `x-actions-menu` + `x-actions-menu.item` | The button that unfolds the rest of what may be done here, the menu it unfolds, and one line of it |
 | `x-copy-button` | The button that puts a value on the clipboard and says whether it got there |
 | `x-code-value` | A value meant to be copied exactly, in a fixed-width face |
 | `x-caption` | The small word in capitals that names what sits under it |
@@ -30,6 +30,7 @@ than like a component:
 | `x-back-link` | The way back out of a screen, in the top bar |
 | `x-auth-footnote` | The line under a sign-in card offering the other way in |
 | `x-breadcrumb.vault` | A trail inside a vault, which always starts at the vault |
+| `x-combo-box` | A list of labels that becomes a box for a wording of your own when the open one is picked |
 
 Read the component before you call it. Every one opens with a line saying what it is and a `@var`
 block naming its props, and that is the whole documentation.

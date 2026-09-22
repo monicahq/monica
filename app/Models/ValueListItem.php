@@ -60,6 +60,8 @@ use Override;
 ])]
 class ValueListItem extends Model
 {
+    public const string OPEN_KEY = 'custom...';
+
     /** @use HasFactory<ValueListItemFactory> */
     use HasFactory;
 
@@ -109,6 +111,16 @@ class ValueListItem extends Model
      *
      * @return Attribute<string, string>
      */
+    /**
+     * Whether picking this item asks for a wording of its own. The open item
+     * is the one somebody reaches for when none of the others fit, so it names
+     * no wording itself and takes whatever is typed beside it.
+     */
+    public function takesATypedWording(): bool
+    {
+        return $this->key === self::OPEN_KEY;
+    }
+
     protected function label(): Attribute
     {
         return Attribute::make(

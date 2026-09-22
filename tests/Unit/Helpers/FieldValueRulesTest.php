@@ -99,6 +99,69 @@ class FieldValueRulesTest extends TestCase
     }
 
     #[Test]
+    public function it_asks_for_the_label_of_an_email_or_a_phone_naming_a_list(): void
+    {
+        $list = ValueList::factory()->create();
+        $phone = Field::factory()->create(['type' => FieldTypeEnum::Phone, 'value_list_id' => $list->id]);
+        $item = ValueListItem::factory()->create(['value_list_id' => $list->id]);
+
+        $rules = FieldValueRules::for(collect([$phone]));
+
+        $this->assertArrayHasKey("labels.{$phone->id}", $rules);
+        $this->assertContains('nullable', $rules["labels.{$phone->id}"]);
+
+        $validator = Validator::make(
+            ['fields' => [$phone->id => '+44 7700 900461'], 'labels' => [$phone->id => $item->id]],
+            $rules,
+        );
+
+        $this->assertFalse($validator->fails());
+    }
+
+    #[Test]
+    public function it_refuses_a_label_that_is_not_on_the_list_the_field_names(): void
+    {
+        $list = ValueList::factory()->create();
+        $another = ValueList::factory()->create();
+        $phone = Field::factory()->create(['type' => FieldTypeEnum::Phone, 'value_list_id' => $list->id]);
+        $elsewhere = ValueListItem::factory()->create(['value_list_id' => $another->id]);
+
+        $validator = Validator::make(
+            ['fields' => [$phone->id => '+44 7700 900461'], 'labels' => [$phone->id => $elsewhere->id]],
+            FieldValueRules::for(collect([$phone])),
+        );
+
+        $this->assertTrue($validator->fails());
+    }
+
+    #[Test]
+    public function it_refuses_a_label_nobody_offers_any_more(): void
+    {
+        $list = ValueList::factory()->create();
+        $email = Field::factory()->create(['type' => FieldTypeEnum::Email, 'value_list_id' => $list->id]);
+        $retired = ValueListItem::factory()->disabled()->create(['value_list_id' => $list->id]);
+
+        $validator = Validator::make(
+            ['fields' => [$email->id => 'pam@dundermifflin.example'], 'labels' => [$email->id => $retired->id]],
+            FieldValueRules::for(collect([$email])),
+        );
+
+        $this->assertTrue($validator->fails());
+    }
+
+    #[Test]
+    public function it_asks_for_no_label_where_the_field_names_no_list(): void
+    {
+        $phone = Field::factory()->create(['type' => FieldTypeEnum::Phone, 'value_list_id' => null]);
+        $text = Field::factory()->create(['type' => FieldTypeEnum::Text]);
+
+        $rules = FieldValueRules::for(collect([$phone, $text]));
+
+        $this->assertArrayNotHasKey("labels.{$phone->id}", $rules);
+        $this->assertArrayNotHasKey("labels.{$text->id}", $rules);
+    }
+
+    #[Test]
     public function it_checks_every_item_of_a_multiple_choice(): void
     {
         $list = ValueList::factory()->create();

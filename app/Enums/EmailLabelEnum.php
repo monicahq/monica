@@ -9,10 +9,11 @@ use Override;
 
 enum EmailLabelEnum: string implements SuppliedValueListItem
 {
+    case Home = 'home';
     case Personal = 'personal';
     case Work = 'work';
-    case School = 'school';
     case Other = 'other';
+    case Custom = 'custom...';
 
     #[Override]
     public function label(): string
@@ -20,8 +21,9 @@ enum EmailLabelEnum: string implements SuppliedValueListItem
         return match ($this) {
             self::Personal => 'Personal',
             self::Work => 'Work',
-            self::School => 'School',
+            self::Home => 'Home',
             self::Other => 'Other',
+            self::Custom => 'Custom...',
         };
     }
 

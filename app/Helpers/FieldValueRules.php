@@ -35,6 +35,11 @@ class FieldValueRules
             if ($field->type === FieldTypeEnum::Multiselect) {
                 $rules["fields.{$field->id}.*"] = self::choiceRule($field);
             }
+
+            if (self::offersALabel($field)) {
+                $rules["labels.{$field->id}"] = ['nullable', self::choiceRule($field)];
+                $rules["label_wordings.{$field->id}"] = ['nullable', 'string', 'max:255'];
+            }
         }
 
         return $rules;
@@ -51,6 +56,8 @@ class FieldValueRules
             ]),
             "fields.{$field->id}.*.id" => ['nullable', 'integer'],
             "fields.{$field->id}.*.values" => ['nullable', 'array'],
+            "fields.{$field->id}.*.labels" => ['nullable', 'array'],
+            "fields.{$field->id}.*.label_wordings" => ['nullable', 'array'],
         ];
 
         foreach ($field->children as $child) {
@@ -62,6 +69,11 @@ class FieldValueRules
 
             if ($child->type === FieldTypeEnum::Multiselect) {
                 $rules["fields.{$field->id}.*.values.{$child->id}.*"] = self::choiceRule($child);
+            }
+
+            if (self::offersALabel($child)) {
+                $rules["fields.{$field->id}.*.labels.{$child->id}"] = ['nullable', self::choiceRule($child)];
+                $rules["fields.{$field->id}.*.label_wordings.{$child->id}"] = ['nullable', 'string', 'max:255'];
             }
         }
 
@@ -106,6 +118,11 @@ class FieldValueRules
         }
 
         return $rules;
+    }
+
+    private static function offersALabel(Field $field): bool
+    {
+        return $field->type->usesALabelList() && $field->value_list_id !== null;
     }
 
     private static function choiceRule(Field $field): mixed

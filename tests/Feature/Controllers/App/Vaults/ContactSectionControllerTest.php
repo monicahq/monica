@@ -6,7 +6,6 @@ namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderInactiveReasonEnum;
-use App\Enums\StructureAppliesToEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
@@ -21,6 +20,8 @@ use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Carbon\CarbonImmutable;
@@ -367,6 +368,72 @@ class ContactSectionControllerTest extends TestCase
         $this->assertSame($vault->id, $stored->vault_id);
         $this->assertDatabaseHas('field_values', ['field_id' => $file->id, 'value_file_id' => $stored->id]);
         $this->assertDatabaseHas('field_values', ['field_id' => $description->id, 'value_string' => 'The lease']);
+    }
+
+    #[Test]
+    public function it_writes_the_type_beside_the_email_of_a_repetition(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$documents] = $this->documentsOn($user, $michael);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $work = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'key' => 'work',
+            'label' => 'Work',
+        ]);
+        $email = $this->childOf($documents, 'Email', [
+            'type' => FieldTypeEnum::Email,
+            'value_list_id' => $list->id,
+        ]);
+        $section = StructureVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
+
+        $this->actingAs($user)->put(
+            route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
+            ['fields' => [$documents->id => [
+                [
+                    'values' => [$email->id => 'michael@dundermifflin.example'],
+                    'labels' => [$email->id => (string) $work->id],
+                ],
+            ]]],
+        )->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('field_values', [
+            'field_id' => $email->id,
+            'value_string' => 'michael@dundermifflin.example',
+            'value_list_item_id' => $work->id,
+        ]);
+    }
+
+    #[Test]
+    public function it_names_the_type_of_a_repeated_email_inside_its_own_repetition(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$documents] = $this->documentsOn($user, $michael);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Work']);
+        $email = $this->childOf($documents, 'Email', [
+            'type' => FieldTypeEnum::Email,
+            'value_list_id' => $list->id,
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('contacts.sections.edit', [
+                'vault' => $vault,
+                'contact' => $michael,
+                'structureVersionSection' => StructureVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole(),
+            ]))
+            ->assertStatus(200)
+            ->assertSee('fields['.$documents->id.'][0][labels]['.$email->id.']', false)
+            ->assertDontSee('labels['.$documents->id.'][0]', false);
     }
 
     #[Test]

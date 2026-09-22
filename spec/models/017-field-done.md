@@ -47,7 +47,7 @@ Section 5.5 lists the families. The ones in the first version (15) are marked.
 
 | Family | Types | In v1 |
 |---|---|---|
-| Simple | `text`, `textarea`, `number`, `boolean`, `url`, `email`, `phone` | yes |
+| Simple | `text`, `textarea`, `number`, `boolean`, `url` | yes |
 | Choice | `select`, `multiselect`, `radio` | yes |
 | Choice | `tags` | later |
 | Date | `date`, `recurring_date` | yes |
@@ -56,7 +56,7 @@ Section 5.5 lists the families. The ones in the first version (15) are marked.
 | Relation | `qualified_relation` | later |
 | File | `file`, `image` | yes |
 | File | `avatar` | yes |
-| Composite | `address`, `repeater` | yes |
+| Composite | `email`, `phone`, `address`, `repeater` | yes |
 | Composite | `money`, `full_name` | later |
 | Layout | `divider`, `heading`, `help` | yes |
 | Other | `rating`, `rich_text`, `colour`, `location` | later |
@@ -100,6 +100,8 @@ Section 5.5 lists the families. The ones in the first version (15) are marked.
 - **The inspector edits four things and clears the rest.** It offers the label, the help text, the placeholder and the three switches, and it sends nothing else; `UpdateField` writes every column it was given, so saving the inspector wipes `is_unique`, `default_value`, `options`, `validation` and the repetition limits on the field being edited. Renaming the supplied "File" field therefore forgets which kinds of file it takes. The value list is the one that survives, because the controller reads it off the field and hands it back. This is a fault rather than a decision, and it is what the screen for the rest of the row has to fix.
 
 ## Decisions taken while building it
+
+- **A composite type may write more than one column, and email and phone are the first to do it.** The address or the number stays in `value_string`, and the label saying what it is for goes in `value_list_item_id`, the column a choice field already writes. `FieldTypeEnum::valueColumn()` still names one column, the primary one, and a second question, `usesALabelList()`, says whether a label rides beside it. The two questions are deliberately separate from `usesValueList()`: a choice field cannot exist without a list, while an email field naming none is complete and simply offers no label. Because the value stays where it was, uniqueness, duplicate detection and the filter index all keep reading the address or the number and ignore the label, which is what the product wants: two contacts sharing a number are the same person whatever each of them called it.
 
 - **The type catalogue is an enum, and it carries the behaviour that follows from a type.** Whether a type stores a value, reads from a value list, points at another record, can drive a reminder or is a repeater is asked of the enum rather than repeated at every call site. Only the types the first version ships with are cases: an unimplemented type that can already be written to the column is a promise the product cannot keep.
 - **Settings a type cannot honour are dropped rather than stored.** A field that is not a choice keeps no value list, one that is not a relation points at nothing, and one that is not a repeater carries no repetition limits. Whether a field can drive a reminder is derived from `date` or `recurring_date`, not stored separately. Storing a setting the type will never read would be storing a lie, and the next person to read the row would believe it.

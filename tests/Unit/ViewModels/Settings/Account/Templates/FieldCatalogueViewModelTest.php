@@ -68,12 +68,44 @@ class FieldCatalogueViewModelTest extends TestCase
     #[Test]
     public function it_gives_every_type_a_mark_and_an_illustration(): void
     {
-        $kinds = ['input', 'textarea', 'toggle', 'dropdown', 'list', 'pills', 'upload', 'rows', 'layout'];
+        $kinds = ['input', 'textarea', 'toggle', 'dropdown', 'list', 'pills', 'upload', 'rows', 'labelled', 'layout'];
 
         foreach ($this->catalogue()->types() as $type) {
             $this->assertNotEmpty($type['mark'], "{$type['key']} has no mark");
             $this->assertContains($type['preview']['kind'], $kinds, "{$type['key']} draws nothing known");
         }
+    }
+
+    #[Test]
+    public function it_draws_an_email_and_a_phone_as_a_label_beside_a_value(): void
+    {
+        $types = [];
+
+        foreach ($this->catalogue()->types() as $type) {
+            $types[$type['key']] = $type['preview'];
+        }
+
+        $this->assertEquals('labelled', $types['email']['kind']);
+        $this->assertEquals('labelled', $types['phone']['kind']);
+        $this->assertNotEmpty($types['email']['label']);
+        $this->assertNotEmpty($types['phone']['label']);
+    }
+
+    #[Test]
+    public function it_shows_an_email_and_a_phone_among_the_composite_types(): void
+    {
+        $composite = [];
+
+        foreach ($this->catalogue()->families() as $family) {
+            if ($family['name'] !== __('Composite')) {
+                continue;
+            }
+
+            $composite = array_map(fn (array $type): string => $type['key'], $family['types']);
+        }
+
+        $this->assertContains('email', $composite);
+        $this->assertContains('phone', $composite);
     }
 
     #[Test]

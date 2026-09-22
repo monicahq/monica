@@ -316,6 +316,172 @@ class SetFieldValueTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_a_phone_number_and_the_label_saying_what_it_is_for(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $mobile = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'label' => 'Mobile',
+        ]);
+        $field = $this->labelledFieldOf($user, $list, FieldTypeEnum::Phone);
+
+        $value = new SetFieldValue(
+            user: $user,
+            valuable: $contact,
+            field: $field,
+            value: '+44 7700 900461',
+            valueListItem: $mobile,
+        )->execute();
+
+        $this->assertDatabaseHas('field_values', [
+            'id' => $value->id,
+            'value_string' => '+44 7700 900461',
+            'value_list_item_id' => $mobile->id,
+        ]);
+        $this->assertSame(1, $mobile->fresh()->usage_count);
+    }
+
+    #[Test]
+    public function it_takes_an_email_address_with_no_label_at_all(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $field = $this->labelledFieldOf($user, $list, FieldTypeEnum::Email);
+
+        $value = new SetFieldValue(
+            user: $user,
+            valuable: $contact,
+            field: $field,
+            value: 'pam@dundermifflin.example',
+        )->execute();
+
+        $this->assertDatabaseHas('field_values', [
+            'id' => $value->id,
+            'value_string' => 'pam@dundermifflin.example',
+            'value_list_item_id' => null,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_label_that_is_not_on_the_list_the_field_names(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $field = $this->labelledFieldOf($user, $list, FieldTypeEnum::Phone);
+        $elsewhere = ValueListItem::factory()->create(['account_id' => $user->account_id, 'label' => 'Fax']);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        new SetFieldValue(
+            user: $user,
+            valuable: $contact,
+            field: $field,
+            value: '+44 7700 900461',
+            valueListItem: $elsewhere,
+        )->execute();
+    }
+
+    #[Test]
+    public function it_keeps_the_wording_somebody_typed_beside_the_open_label(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $other = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'key' => ValueListItem::OPEN_KEY,
+            'label' => 'Custom...',
+        ]);
+        $field = $this->labelledFieldOf($user, $list, FieldTypeEnum::Phone);
+
+        $value = new SetFieldValue(
+            user: $user,
+            valuable: $contact,
+            field: $field,
+            value: '+44 7700 900461',
+            valueListItem: $other,
+            labelWording: 'Boat',
+        )->execute();
+
+        $this->assertDatabaseHas('field_values', [
+            'id' => $value->id,
+            'value_list_item_id' => $other->id,
+            'label_wording' => 'Boat',
+        ]);
+    }
+
+    #[Test]
+    public function it_drops_a_wording_typed_beside_a_label_that_names_itself(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $mobile = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'key' => 'mobile',
+            'label' => 'Mobile',
+        ]);
+        $field = $this->labelledFieldOf($user, $list, FieldTypeEnum::Phone);
+
+        $value = new SetFieldValue(
+            user: $user,
+            valuable: $contact,
+            field: $field,
+            value: '+44 7700 900461',
+            valueListItem: $mobile,
+            labelWording: 'Boat',
+        )->execute();
+
+        $this->assertDatabaseHas('field_values', [
+            'id' => $value->id,
+            'value_list_item_id' => $mobile->id,
+            'label_wording' => null,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_repeated_number_whatever_labels_the_two_carry(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $other = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $contact->vault_id,
+            'first_name' => 'Jim',
+            'last_name' => 'Halpert',
+        ]);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $mobile = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Mobile']);
+        $work = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Work']);
+        $field = $this->labelledFieldOf($user, $list, FieldTypeEnum::Phone, ['is_unique' => true]);
+
+        new SetFieldValue(user: $user, valuable: $contact, field: $field, value: '+44 7700 900461', valueListItem: $mobile)->execute();
+
+        $this->expectException(FieldValueIsNotUnique::class);
+
+        new SetFieldValue(user: $user, valuable: $other, field: $field, value: '+44 7700 900461', valueListItem: $work)->execute();
+    }
+
+    #[Test]
     public function it_writes_the_contact_a_relation_points_at(): void
     {
         Queue::fake();
@@ -752,6 +918,16 @@ class SetFieldValueTest extends TestCase
     }
 
     /** @param  array<string, mixed>  $attributes */
+    /** @param  array<string, mixed>  $attributes */
+    private function labelledFieldOf(User $user, ValueList $list, FieldTypeEnum $type, array $attributes = []): Field
+    {
+        return Field::factory()->create(array_merge([
+            'account_id' => $user->account_id,
+            'type' => $type,
+            'value_list_id' => $list->id,
+        ], $attributes));
+    }
+
     private function fieldOf(User $user, array $attributes = []): Field
     {
         return Field::factory()->create(array_merge(['account_id' => $user->account_id], $attributes));

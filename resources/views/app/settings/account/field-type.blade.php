@@ -66,6 +66,7 @@
       totalPhrase: {{ Js::from($catalogue->totalPhrase()) }},
       pickable: {{ Js::from($pickable) }},
       needsAList: {{ Js::from($catalogue->typesNeedingAValueList()) }},
+      offersALabelList: {{ Js::from($catalogue->typesOfferingALabelList()) }},
       get needle() { return this.query.trim().toLowerCase() },
       matches(key) { return this.needle === '' || this.index[key].includes(this.needle) },
       get shown() { return Object.keys(this.index).filter(key => this.matches(key)).length },
@@ -73,6 +74,8 @@
       get previewed() { return this.peek !== '' ? this.peek : this.type },
       get canAdd() { return this.pickable.includes(this.type) },
       get offersChoices() { return this.needsAList.includes(this.type) },
+      get offersALabel() { return this.offersALabelList.includes(this.type) },
+      get offersAList() { return this.offersChoices || this.offersALabel },
     }"
     class="flex flex-col gap-7"
   >
@@ -242,11 +245,13 @@
       </aside>
     </div>
 
-    <section x-cloak x-show="offersChoices" class="flex flex-col gap-3">
+    <section x-cloak x-show="offersAList" class="flex flex-col gap-3">
       <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h2 class="shrink-0 text-section-title text-ink">{{ __('Where do the choices come from?') }}</h2>
+        <h2 class="shrink-0 text-section-title text-ink" x-text="offersALabel ? @js(__('Where do the labels come from?')) : @js(__('Where do the choices come from?'))"></h2>
 
-        <p class="text-sm text-pretty text-muted">{{ __('A field that offers choices reads them from a value list. The same options can then be reused everywhere, instead of retyped into every field.') }}</p>
+        <p x-cloak x-show="! offersALabel" class="text-sm text-pretty text-muted">{{ __('A field that offers choices reads them from a value list. The same options can then be reused everywhere, instead of retyped into every field.') }}</p>
+
+        <p x-cloak x-show="offersALabel" class="text-sm text-pretty text-muted">{{ __('The label says what a value is for, such as mobile or work. Leave it empty and the field takes no label.') }}</p>
       </div>
 
       <x-panel>

@@ -14,6 +14,7 @@ enum PhoneLabelEnum: string implements SuppliedValueListItem
     case Work = 'work';
     case Fax = 'fax';
     case Other = 'other';
+    case Custom = 'custom...';
 
     #[Override]
     public function label(): string
@@ -24,6 +25,7 @@ enum PhoneLabelEnum: string implements SuppliedValueListItem
             self::Work => 'Work',
             self::Fax => 'Fax',
             self::Other => 'Other',
+            self::Custom => 'Custom...',
         };
     }
 

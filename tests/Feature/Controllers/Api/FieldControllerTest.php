@@ -117,6 +117,40 @@ class FieldControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_takes_the_list_a_phone_takes_its_labels_from(): void
+    {
+        Queue::fake();
+        [$user, $template, $row] = $this->placement();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', $this->url($template, $row).'/fields', [
+            'type' => 'phone',
+            'label' => 'Phone',
+            'value_list_id' => $list->id,
+        ])->assertCreated();
+
+        $this->assertDatabaseHas('fields', ['type' => 'phone', 'value_list_id' => $list->id]);
+    }
+
+    #[Test]
+    public function it_takes_an_email_that_names_no_list_at_all(): void
+    {
+        Queue::fake();
+        [$user, $template, $row] = $this->placement();
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', $this->url($template, $row).'/fields', [
+            'type' => 'email',
+            'label' => 'Email',
+        ])->assertCreated();
+
+        $this->assertDatabaseHas('fields', ['type' => 'email', 'value_list_id' => null]);
+    }
+
+    #[Test]
     public function it_refuses_a_relation_field_that_does_not_say_what_it_points_at(): void
     {
         Queue::fake();

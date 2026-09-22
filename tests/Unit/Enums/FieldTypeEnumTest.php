@@ -119,6 +119,31 @@ class FieldTypeEnumTest extends TestCase
     }
 
     #[Test]
+    public function it_says_which_types_read_a_label_from_a_value_list(): void
+    {
+        $this->assertTrue(FieldTypeEnum::Email->usesALabelList());
+        $this->assertTrue(FieldTypeEnum::Phone->usesALabelList());
+
+        foreach (FieldTypeEnum::cases() as $type) {
+            if ($type === FieldTypeEnum::Email || $type === FieldTypeEnum::Phone) {
+                continue;
+            }
+
+            $this->assertFalse($type->usesALabelList());
+        }
+    }
+
+    #[Test]
+    public function it_keeps_a_label_list_apart_from_a_list_that_is_the_value(): void
+    {
+        $this->assertFalse(FieldTypeEnum::Email->usesValueList());
+        $this->assertFalse(FieldTypeEnum::Phone->usesValueList());
+        $this->assertFalse(FieldTypeEnum::Select->usesALabelList());
+        $this->assertFalse(FieldTypeEnum::Radio->usesALabelList());
+        $this->assertFalse(FieldTypeEnum::Multiselect->usesALabelList());
+    }
+
+    #[Test]
     public function it_says_which_type_points_at_another_record(): void
     {
         $this->assertTrue(FieldTypeEnum::Relation->isRelation());

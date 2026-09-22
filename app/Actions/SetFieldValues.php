@@ -37,6 +37,8 @@ class SetFieldValues
 
     /**
      * @param  array<int, mixed>  $values  what was typed, keyed by field id
+     * @param  array<int, mixed>  $labels  the label picked beside a value, keyed by field id
+     * @param  array<int, mixed>  $labelWordings  the wording typed when that label is the open one
      * @param  array<int, bool>  $yearIsUnknown
      * @param  array<int, bool>  $monthIsUnknown
      * @param  array<int, array<string, mixed>>  $reminders  what was asked of each date, keyed by field id
@@ -46,6 +48,8 @@ class SetFieldValues
         private readonly Contact|Entity $record,
         private readonly StructureVersionSection $section,
         private readonly array $values,
+        private readonly array $labels = [],
+        private readonly array $labelWordings = [],
         private readonly array $yearIsUnknown = [],
         private readonly array $monthIsUnknown = [],
         private readonly array $reminders = [],
@@ -296,10 +300,16 @@ class SetFieldValues
             return;
         }
 
-        $this->saveOne($field, $this->given($field), null);
+        $this->saveOne(
+            $field,
+            $this->given($field),
+            null,
+            $this->labels[$field->id] ?? null,
+            $this->labelWordings[$field->id] ?? null,
+        );
     }
 
-    private function saveOne(Field $field, mixed $given, ?FieldValueRow $row): void
+    private function saveOne(Field $field, mixed $given, ?FieldValueRow $row, mixed $label = null, mixed $wording = null): void
     {
         if ($field->type->holdsAFile()) {
             $this->saveTheFile($field, $given, $row);
@@ -319,7 +329,8 @@ class SetFieldValues
             field: $field,
             row: $row,
             value: $this->scalarFor($field, $given),
-            valueListItem: $this->chosenItem($field, $given),
+            valueListItem: $this->chosenItem($field, $given) ?? $this->chosenLabel($field, $label),
+            labelWording: $wording === null ? null : (string) $wording,
             valueListItems: $this->chosenItems($field, $given),
             yearIsUnknown: (bool) ($this->yearIsUnknown[$field->id] ?? false),
             monthIsUnknown: (bool) ($this->monthIsUnknown[$field->id] ?? false),
@@ -355,7 +366,6 @@ class SetFieldValues
     {
         $given = $this->given($field);
         $submitted = is_array($given) ? $given : [];
-
         $existing = $this->repetitionsOf($field);
         $children = $this->childrenOf($field);
         $kept = [];
@@ -369,6 +379,8 @@ class SetFieldValues
             }
 
             $values = is_array($repetition['values'] ?? null) ? $repetition['values'] : [];
+            $labels = is_array($repetition['labels'] ?? null) ? $repetition['labels'] : [];
+            $wordings = is_array($repetition['label_wordings'] ?? null) ? $repetition['label_wordings'] : [];
             $row = $existing->get((int) ($repetition['id'] ?? 0));
 
             if ($row === null && $this->nothingWasFilledIn($children, $values)) {
@@ -385,7 +397,7 @@ class SetFieldValues
             $ordered[] = $row;
 
             foreach ($children as $child) {
-                $this->saveOne($child, $values[$child->id] ?? null, $row);
+                $this->saveOne($child, $values[$child->id] ?? null, $row, $labels[$child->id] ?? null, $wordings[$child->id] ?? null);
             }
         }
 
@@ -525,6 +537,15 @@ class SetFieldValues
         }
 
         return $field->type === FieldTypeEnum::Boolean ? filter_var($given, FILTER_VALIDATE_BOOLEAN) : $given;
+    }
+
+    private function chosenLabel(Field $field, mixed $label): ?ValueListItem
+    {
+        if (! $field->type->usesALabelList() || $label === null || $label === '') {
+            return null;
+        }
+
+        return ValueListItem::query()->find($label);
     }
 
     private function chosenItem(Field $field, mixed $given): ?ValueListItem

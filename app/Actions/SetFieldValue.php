@@ -44,6 +44,7 @@ class SetFieldValue
         private readonly ?FieldValueRow $row = null,
         private readonly mixed $value = null,
         private readonly ?ValueListItem $valueListItem = null,
+        private readonly ?string $labelWording = null,
         private readonly array $valueListItems = [],
         private readonly ?File $file = null,
         private readonly ?Contact $relatedContact = null,
@@ -119,6 +120,12 @@ class SetFieldValue
 
     private function validateTheChoices(): void
     {
+        if ($this->field->type->usesALabelList()) {
+            $this->validateTheLabel();
+
+            return;
+        }
+
         if (! $this->field->type->usesValueList()) {
             return;
         }
@@ -178,6 +185,34 @@ class SetFieldValue
         if ($this->file->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This file is in another account.');
         }
+    }
+
+    private function validateTheLabel(): void
+    {
+        if (! $this->valueListItem instanceof ValueListItem) {
+            return;
+        }
+
+        if ($this->valueListItem->value_list_id !== $this->field->value_list_id) {
+            throw new InvalidArgumentException("The item {$this->valueListItem->label} is not on the list this field offers.");
+        }
+    }
+
+    /** @return array<string, int|string|null> */
+    private function theLabel(): array
+    {
+        if (! $this->field->type->usesALabelList()) {
+            return [];
+        }
+
+        $wording = $this->valueListItem?->takesATypedWording() === true
+            ? TextSanitizer::nullablePlainText($this->labelWording)
+            : null;
+
+        return [
+            'value_list_item_id' => $this->valueListItem?->id,
+            'label_wording' => $wording === null || mb_trim($wording) === '' ? null : mb_trim($wording),
+        ];
     }
 
     private function readTheExistingValue(): void
@@ -266,7 +301,7 @@ class SetFieldValue
                     'field_id' => $this->field->id,
                     'field_value_row_id' => $this->row?->id,
                 ],
-                array_merge($this->emptyColumns(), [
+                array_merge($this->emptyColumns(), $this->theLabel(), [
                     'account_id' => $this->user->account_id,
                     'vault_id' => $this->valuable->vault_id,
                     'field_key' => $this->field->key,
@@ -286,10 +321,10 @@ class SetFieldValue
         $columns = [
             'value_string', 'value_text', 'value_number', 'value_boolean', 'value_date',
             'value_datetime', 'value_json', 'value_list_item_id', 'value_list_item_ids',
-            'value_file_id', 'related_contact_id', 'related_entity_id',
+            'value_file_id', 'related_contact_id', 'related_entity_id', 'label_wording',
         ];
 
-        return array_fill_keys(array_diff($columns, [$this->column]), null);
+        return array_fill_keys(array_diff($columns, [$this->column], array_keys($this->theLabel())), null);
     }
 
     private function moveTheFileCount(): void

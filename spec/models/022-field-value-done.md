@@ -31,7 +31,8 @@ value_boolean               boolean                         value for the yes or
 value_date                  date                            value for the date and recurring date types
 value_datetime              datetime                        value for a type that carries a time as well
 value_json                  json                            value for the composite types, such as an address or a location. An address holds po_box, extended, street, city, region, postal_code and country, all optional strings, in the order a card writes them
-value_list_item_id          int                             chosen item for the single choice types
+value_list_item_id          int                             chosen item for the single choice types, and the label of an email or a phone
+label_wording               string                          wording somebody typed for a label the list does not name, kept only when the chosen item is the open one
 value_list_item_ids         json                            chosen items for the multiple choice types
 value_file_id               int                             attached file for the file, image and avatar types
 related_contact_id          int                             target of a relation field pointing at a contact

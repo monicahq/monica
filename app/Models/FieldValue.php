@@ -45,6 +45,7 @@ use Override;
  * @property CarbonImmutable|null $value_date
  * @property CarbonImmutable|null $value_datetime
  * @property array<array-key, mixed>|null $value_json
+ * @property string|null $label_wording
  * @property int|null $value_list_item_id
  * @property array<array-key, mixed>|null $value_list_item_ids
  * @property int|null $value_file_id
@@ -84,6 +85,7 @@ use Override;
     'value_json',
     'value_list_item_id',
     'value_list_item_ids',
+    'label_wording',
     'value_file_id',
     'related_contact_id',
     'related_entity_id',

@@ -62,8 +62,8 @@ enum DefaultSectionEnum: string implements Translatable
                 DefaultFieldEnum::Birthday,
             ],
             self::ContactInformation => [
-                DefaultFieldEnum::Email,
-                DefaultFieldEnum::Phone,
+                DefaultFieldEnum::Emails,
+                DefaultFieldEnum::Phones,
                 DefaultFieldEnum::Website,
             ],
             self::Addresses => [

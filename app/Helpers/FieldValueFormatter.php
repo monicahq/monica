@@ -19,8 +19,8 @@ class FieldValueFormatter
     public function format(FieldValue $value): ?string
     {
         return match ($value->field->type) {
-            FieldTypeEnum::Text, FieldTypeEnum::Url, FieldTypeEnum::Email,
-            FieldTypeEnum::Phone => $this->blankToNull($value->value_string),
+            FieldTypeEnum::Text, FieldTypeEnum::Url => $this->blankToNull($value->value_string),
+            FieldTypeEnum::Email, FieldTypeEnum::Phone => $this->labelled($value),
             FieldTypeEnum::Textarea => $this->blankToNull($value->value_text),
             FieldTypeEnum::Number => $this->number($value),
             FieldTypeEnum::Boolean => $this->boolean($value),
@@ -33,6 +33,18 @@ class FieldValueFormatter
             FieldTypeEnum::Address => $this->address($value),
             default => null,
         };
+    }
+
+    private function labelled(FieldValue $value): ?string
+    {
+        $written = $this->blankToNull($value->value_string);
+        $label = $this->blankToNull($value->label_wording) ?? $value->valueListItem?->label;
+
+        if ($written === null || $label === null) {
+            return $written;
+        }
+
+        return __(':value (:label)', ['value' => $written, 'label' => $label]);
     }
 
     private function address(FieldValue $value): ?string

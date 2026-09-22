@@ -68,6 +68,16 @@ enum FieldTypeEnum: string
         return in_array($this, [self::Select, self::Multiselect, self::Radio], true);
     }
 
+    /**
+     * Whether a value of this type carries a label of its own, picked from the
+     * list the field names. The list is not the value, which is what keeps this
+     * apart from usesValueList().
+     */
+    public function usesALabelList(): bool
+    {
+        return in_array($this, [self::Email, self::Phone], true);
+    }
+
     public function isRelation(): bool
     {
         return $this === self::Relation;

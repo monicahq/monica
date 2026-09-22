@@ -3,7 +3,7 @@
   "specName": "Vault switcher in the breadcrumb",
   "branch": "2026-breadcrimb",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -265,7 +265,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-21T17:14:56.022Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-22T20:08:11.437Z"
     }
   ],
-  "currentTask": "T031"
+  "currentTask": "T031",
+  "telemetryInstanceId": "95a0efe9-97ea-4a97-836c-ed8c2b353763"
 }

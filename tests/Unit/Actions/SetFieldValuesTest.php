@@ -174,6 +174,113 @@ class SetFieldValuesTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_the_label_beside_the_number_it_belongs_to(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $mobile = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::Phone, 'value_list_id' => $list->id]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($field),
+            values: [$field->id => '+44 7700 900461'],
+            labels: [$field->id => (string) $mobile->id],
+        )->execute();
+
+        $this->assertDatabaseHas('field_values', [
+            'field_id' => $field->id,
+            'value_string' => '+44 7700 900461',
+            'value_list_item_id' => $mobile->id,
+        ]);
+    }
+
+    #[Test]
+    public function it_writes_the_wording_somebody_typed_for_the_open_label(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $other = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'key' => ValueListItem::OPEN_KEY,
+        ]);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::Phone, 'value_list_id' => $list->id]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($field),
+            values: [$field->id => '+44 7700 900461'],
+            labels: [$field->id => (string) $other->id],
+            labelWordings: [$field->id => 'Boat'],
+        )->execute();
+
+        $this->assertDatabaseHas('field_values', [
+            'field_id' => $field->id,
+            'value_list_item_id' => $other->id,
+            'label_wording' => 'Boat',
+        ]);
+    }
+
+    #[Test]
+    public function it_keeps_a_field_unfilled_when_a_label_arrives_with_no_value(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $mobile = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::Phone, 'value_list_id' => $list->id]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($field),
+            values: [$field->id => ''],
+            labels: [$field->id => (string) $mobile->id],
+        )->execute();
+
+        $this->assertDatabaseMissing('field_values', ['field_id' => $field->id]);
+    }
+
+    #[Test]
+    public function it_takes_a_required_email_with_no_label_at_all(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $field = $this->fieldOn($contact, [
+            'type' => FieldTypeEnum::Email,
+            'value_list_id' => $list->id,
+            'is_required' => true,
+        ]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($field),
+            values: [$field->id => 'pam@dundermifflin.example'],
+        )->execute();
+
+        $this->assertDatabaseHas('field_values', [
+            'field_id' => $field->id,
+            'value_string' => 'pam@dundermifflin.example',
+            'value_list_item_id' => null,
+        ]);
+    }
+
+    #[Test]
     public function it_carries_the_unknown_year_of_a_date_that_comes_round_again(): void
     {
         Queue::fake();
@@ -343,6 +450,45 @@ class SetFieldValuesTest extends TestCase
         $this->assertSame(2, FieldValueRow::query()->count());
         $this->assertDatabaseHas('field_values', ['field_id' => $description->id, 'value_string' => 'The lease']);
         $this->assertDatabaseHas('field_values', ['field_id' => $description->id, 'value_string' => 'The insurance']);
+    }
+
+    #[Test]
+    public function it_writes_each_repetition_the_label_that_belongs_to_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $work = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Work']);
+        $home = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Home']);
+        $addresses = $this->fieldOn($contact, ['key' => 'addresses', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $email = $this->childOf($addresses, [
+            'key' => 'email',
+            'type' => FieldTypeEnum::Email,
+            'value_list_id' => $list->id,
+        ]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($addresses),
+            values: [$addresses->id => [
+                ['values' => [$email->id => 'michael@work.example'], 'labels' => [$email->id => (string) $work->id]],
+                ['values' => [$email->id => 'michael@home.example'], 'labels' => [$email->id => (string) $home->id]],
+            ]],
+        )->execute();
+
+        $this->assertDatabaseHas('field_values', [
+            'field_id' => $email->id,
+            'value_string' => 'michael@work.example',
+            'value_list_item_id' => $work->id,
+        ]);
+        $this->assertDatabaseHas('field_values', [
+            'field_id' => $email->id,
+            'value_string' => 'michael@home.example',
+            'value_list_item_id' => $home->id,
+        ]);
     }
 
     #[Test]

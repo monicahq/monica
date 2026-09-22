@@ -76,23 +76,38 @@
       </ul>
     </div>
 
-    <div class="ml-auto">
-      <x-button.split :label="__('Edit contact')" :href="$viewModel->editUrl()" turbo>
-        <x-slot:menu>
-          <x-button.split-item :href="$viewModel->shareLinksUrl()" icon="link" data-turbo="true">
-            {{ $viewModel->shareLine() }}
-          </x-button.split-item>
+    <div class="ml-auto flex flex-wrap items-center gap-2.5">
+      <x-button :href="$viewModel->editUrl()" data-turbo="true" size="small">
+        <x-slot:icon>
+          <x-icon name="profile" :size="15" :stroke-width="1.6" />
+        </x-slot:icon>
+        {{ __('Edit contact') }}
+      </x-button>
 
-          <x-button.split-item :href="$viewModel->mergeUrl()" icon="contact" data-turbo="true">
-            {{ __('Merge') }}
-          </x-button.split-item>
+      <x-actions-menu :label="__('More actions for :name', ['name' => $viewModel->contact()->name])">
+        <x-actions-menu.item :href="$viewModel->shareLinksUrl()" data-turbo="true">
+          <x-slot:icon>
+            <x-icon name="link" :size="15" :stroke-width="1.6" />
+          </x-slot:icon>
+          {{ $viewModel->shareLine() }}
+        </x-actions-menu.item>
 
-          <x-button.split-item :href="$viewModel->vCardUrl()" icon="file">
-            {{ __('Export as vCard') }}
-          </x-button.split-item>
-        </x-slot:menu>
-      </x-button.split>
+        <x-actions-menu.item :href="$viewModel->mergeUrl()" data-turbo="true">
+          <x-slot:icon>
+            <x-icon name="contact" :size="15" :stroke-width="1.6" />
+          </x-slot:icon>
+          {{ __('Merge') }}
+        </x-actions-menu.item>
+
+        <x-actions-menu.item :href="$viewModel->vCardUrl()" data-turbo="true">
+          <x-slot:icon>
+            <x-icon name="file" :size="15" :stroke-width="1.6" />
+          </x-slot:icon>
+          {{ __('Export as vCard') }}
+        </x-actions-menu.item>
+      </x-actions-menu>
     </div>
+
   </header>
 
   @if ($viewModel->undoMergeUrl() !== null)

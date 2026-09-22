@@ -12,8 +12,10 @@ use App\Actions\CreateReminder;
 use App\Actions\SetFieldValue;
 use App\Enums\ContactCategoryEnum;
 use App\Enums\DefaultFieldEnum;
+use App\Enums\EmailLabelEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\GenderEnum;
+use App\Enums\PhoneLabelEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderMomentDirectionEnum;
 use App\Enums\ReminderMomentUnitEnum;
@@ -22,6 +24,7 @@ use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\User;
+use App\Models\ValueList;
 use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Database\Seeder;
@@ -118,11 +121,19 @@ class ExampleAccountSeeder extends Seeder
         $this->writeChoice($contact, DefaultFieldEnum::Category, ValueListEnum::ContactCategories, $person['category']->value);
         $this->writeChoice($contact, DefaultFieldEnum::Gender, ValueListEnum::Genders, $person['gender']->value);
 
-        foreach ([DefaultFieldEnum::Email, DefaultFieldEnum::Phone, DefaultFieldEnum::Address] as $field) {
+        foreach ([DefaultFieldEnum::Address] as $field) {
             $this->writeValue($contact, $field, $person[$field->value]);
         }
 
-        $this->writeNote($contact, $person['note']);
+        $repeated = [
+            (DefaultFieldEnum::Emails)->value => DefaultFieldEnum::Email,
+            (DefaultFieldEnum::Notes)->value => DefaultFieldEnum::Note,
+            (DefaultFieldEnum::Phones)->value => DefaultFieldEnum::Phone,
+        ];
+
+        foreach ($repeated as $repeater => $field) {
+            $this->writeRow($contact, $field, $repeater, $person[$field->value]);
+        }
 
         return $this->writeValue($contact, DefaultFieldEnum::Birthday, $person['birthday']);
     }
@@ -165,20 +176,35 @@ class ExampleAccountSeeder extends Seeder
         )->execute();
     }
 
-    private function writeNote(Contact $contact, string $note): void
+    private function writeRow(Contact $contact, DefaultFieldEnum $field, string $repeater, mixed $value): void
     {
+        if ($value === null) {
+            return;
+        }
+
+        $valueListItem = null;
+        if (is_array($value)) {
+            $valueList = ValueList::query()->where('key', $field->valueList()->value)->first();
+            if ($valueList === null) {
+                throw new \Exception("Value list not found for field: " . $field->value);
+            }
+            $valueListItem = $valueList->items()->where('key', $value[1])->first();
+            $value = $value[0];
+        }
+
         $row = new CreateFieldValueRow(
             user: $this->user,
             valuable: $contact,
-            field: $this->fields[DefaultFieldEnum::Notes->value],
+            field: $this->fields[$repeater],
         )->execute();
 
         new SetFieldValue(
             user: $this->user,
             valuable: $contact,
-            field: $this->fields[DefaultFieldEnum::Note->value],
+            field: $this->fields[$field->value],
             row: $row,
-            value: $note,
+            value: $value,
+            valueListItem: $valueListItem,
         )->execute();
     }
 
@@ -234,8 +260,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::Family,
                 'gender' => GenderEnum::Woman,
                 'birthday' => '1969-04-22',
-                'email' => self::EMAIL,
-                'phone' => '+1 212 555 0120',
+                'email' => [self::EMAIL, EmailLabelEnum::Personal],
+                'phone' => ['+1 212 555 0120', PhoneLabelEnum::Home],
                 'address' => $apartment20,
                 'note' => 'Head chef. Eleven categories of towel. The cleaning is not a problem, it is a system.',
                 'reminder' => null,
@@ -250,8 +276,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::CloseFriend,
                 'gender' => GenderEnum::Woman,
                 'birthday' => '1969-05-05',
-                'email' => 'rachel.green@fortunata.example',
-                'phone' => '+1 212 555 0105',
+                'email' => ['rachel.green@fortunata.example', EmailLabelEnum::Personal],
+                'phone' => ['+1 212 555 0105', PhoneLabelEnum::Home],
                 'address' => $apartment20,
                 'note' => 'Walked out on Barry and turned up at Central Perk in the wedding dress. Fashion, at last.',
                 'reminder' => [
@@ -270,8 +296,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::Family,
                 'gender' => GenderEnum::Man,
                 'birthday' => '1967-10-18',
-                'email' => 'ross.geller@prehistorymuseum.example',
-                'phone' => '+1 212 555 0118',
+                'email' => ['ross.geller@prehistorymuseum.example', EmailLabelEnum::Personal],
+                'phone' => ['+1 212 555 0118', PhoneLabelEnum::Home],
                 'address' => ['street' => '15 Grove Street', 'city' => 'New York', 'postcode' => 'NY 10014', 'country' => 'United States'],
                 'note' => 'My brother. Palaeontologist. Three divorces and counting. Insists they were on a break.',
                 'reminder' => [
@@ -290,8 +316,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::Family,
                 'gender' => GenderEnum::Man,
                 'birthday' => '1968-04-08',
-                'email' => 'chandler.bing@bingstatistical.example',
-                'phone' => '+1 212 555 0108',
+                'email' => ['chandler.bing@bingstatistical.example', EmailLabelEnum::Work],
+                'phone' => ['+1 212 555 0108', PhoneLabelEnum::Mobile],
                 'address' => $apartment20,
                 'note' => 'My husband. Statistical analysis and data reconfiguration, which nobody can repeat back. Hates Thanksgiving, and has since 1978.',
                 'reminder' => [
@@ -310,8 +336,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::CloseFriend,
                 'gender' => GenderEnum::Man,
                 'birthday' => '1968-01-09',
-                'email' => 'joey.tribbiani@daysofourlives.example',
-                'phone' => '+1 212 555 0109',
+                'email' => ['joey.tribbiani@daysofourlives.example', EmailLabelEnum::Work],
+                'phone' => ['+1 212 555 0109', PhoneLabelEnum::Mobile],
                 'address' => $apartment19,
                 'note' => 'Doctor Drake Ramoray on Days of Our Lives. Does not share food. Seven sisters.',
                 'reminder' => [
@@ -330,8 +356,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::CloseFriend,
                 'gender' => GenderEnum::Woman,
                 'birthday' => '1969-02-16',
-                'email' => 'phoebe.buffay@smellycat.example',
-                'phone' => '+1 212 555 0116',
+                'email' => ['phoebe.buffay@smellycat.example', EmailLabelEnum::Personal],
+                'phone' => ['+1 212 555 0116', PhoneLabelEnum::Home],
                 'address' => ['street' => '5 Morton Street, apartment 14', 'city' => 'New York', 'postcode' => 'NY 10014', 'country' => 'United States'],
                 'note' => 'Massage therapist, and the only person I know who wrote Smelly Cat. Twin sister Ursula, who is not to be trusted.',
                 'reminder' => [
@@ -350,8 +376,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::Friend,
                 'gender' => GenderEnum::Man,
                 'birthday' => null,
-                'email' => 'mike.hannigan@hannigan.example',
-                'phone' => '+1 212 555 0132',
+                'email' => ['mike.hannigan@hannigan.example', EmailLabelEnum::Personal],
+                'phone' => ['+1 212 555 0132', PhoneLabelEnum::Home],
                 'address' => null,
                 'note' => 'Married Phoebe in the snow, February 2004. Gave up the law for the piano.',
                 'reminder' => null,
@@ -366,8 +392,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::Acquaintance,
                 'gender' => GenderEnum::Man,
                 'birthday' => null,
-                'email' => 'gunther@centralperk.example',
-                'phone' => '+1 212 555 0100',
+                'email' => ['gunther@centralperk.example', EmailLabelEnum::Work],
+                'phone' => ['+1 212 555 0100', PhoneLabelEnum::Home],
                 'address' => ['street' => 'Central Perk, 199 Lafayette Street', 'city' => 'New York', 'postcode' => 'NY 10012', 'country' => 'United States'],
                 'note' => 'Runs Central Perk. Has been in love with Rachel for years and has told nobody but us.',
                 'reminder' => null,
@@ -382,8 +408,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::Acquaintance,
                 'gender' => GenderEnum::Woman,
                 'birthday' => null,
-                'email' => 'janice.litman@litman.example',
-                'phone' => '+1 212 555 0141',
+                'email' => ['janice.litman@litman.example', EmailLabelEnum::Personal],
+                'phone' => ['+1 212 555 0141', PhoneLabelEnum::Home],
                 'address' => null,
                 'note' => 'Oh. My. God. Chandler keeps ending it and it keeps not ending.',
                 'reminder' => null,
@@ -398,8 +424,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::Friend,
                 'gender' => GenderEnum::Man,
                 'birthday' => null,
-                'email' => 'richard.burke@burkeophthalmology.example',
-                'phone' => '+1 212 555 0121',
+                'email' => ['richard.burke@burkeophthalmology.example', EmailLabelEnum::Personal],
+                'phone' => ['+1 212 555 0121', PhoneLabelEnum::Home],
                 'address' => null,
                 'note' => 'Ophthalmologist, friend of my parents, twenty one years older than me. The moustache stays.',
                 'reminder' => null,
@@ -414,8 +440,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::Acquaintance,
                 'gender' => GenderEnum::Woman,
                 'birthday' => null,
-                'email' => 'emily.waltham@waltham.example',
-                'phone' => '+44 20 7946 0102',
+                'email' => ['emily.waltham@waltham.example', EmailLabelEnum::Personal],
+                'phone' => ['+44 20 7946 0102', PhoneLabelEnum::Work],
                 'address' => ['street' => 'Montague Street', 'city' => 'London', 'postcode' => 'WC1B 5BP', 'country' => 'United Kingdom'],
                 'note' => 'Ross married her in London in 1998 and said the wrong name at the altar. Mine, in a manner of speaking.',
                 'reminder' => null,
@@ -430,8 +456,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::Friend,
                 'gender' => GenderEnum::Woman,
                 'birthday' => null,
-                'email' => 'carol.willick@willick.example',
-                'phone' => '+1 212 555 0111',
+                'email' => ['carol.willick@willick.example', EmailLabelEnum::Personal],
+                'phone' => ['+1 212 555 0111', PhoneLabelEnum::Home],
                 'address' => null,
                 'note' => 'Ross’s first wife and Ben’s mother. Married Susan in January 1996, and I did the catering.',
                 'reminder' => null,
@@ -446,8 +472,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::Friend,
                 'gender' => GenderEnum::Woman,
                 'birthday' => null,
-                'email' => 'susan.bunch@bunch.example',
-                'phone' => '+1 212 555 0112',
+                'email' => ['susan.bunch@bunch.example', EmailLabelEnum::Personal],
+                'phone' => ['+1 212 555 0112', PhoneLabelEnum::Home],
                 'address' => null,
                 'note' => 'Carol’s wife, and Ben’s other mother. Ross has come round to it.',
                 'reminder' => null,
@@ -502,8 +528,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::Family,
                 'gender' => GenderEnum::Man,
                 'birthday' => null,
-                'email' => 'jack.geller@geller.example',
-                'phone' => '+1 516 555 0130',
+                'email' => ['jack.geller@geller.example', EmailLabelEnum::Personal],
+                'phone' => ['+1 516 555 0130', PhoneLabelEnum::Home],
                 'address' => ['street' => null, 'city' => 'Long Island', 'postcode' => 'NY 11501', 'country' => 'United States'],
                 'note' => 'Dad. Sold the Porsche story to anybody who would listen.',
                 'reminder' => null,
@@ -518,8 +544,8 @@ class ExampleAccountSeeder extends Seeder
                 'category' => ContactCategoryEnum::Family,
                 'gender' => GenderEnum::Woman,
                 'birthday' => null,
-                'email' => 'judy.geller@geller.example',
-                'phone' => '+1 516 555 0131',
+                'email' => ['judy.geller@geller.example', EmailLabelEnum::Personal],
+                'phone' => ['+1 516 555 0131', PhoneLabelEnum::Home],
                 'address' => ['street' => null, 'city' => 'Long Island', 'postcode' => 'NY 11501', 'country' => 'United States'],
                 'note' => 'Mum. Ross is the favourite and she has never once pretended otherwise.',
                 'reminder' => null,

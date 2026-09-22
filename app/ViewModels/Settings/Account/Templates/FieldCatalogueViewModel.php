@@ -104,6 +104,15 @@ class FieldCatalogueViewModel
         ));
     }
 
+    /** @return array<int, string> */
+    public function typesOfferingALabelList(): array
+    {
+        return array_values(array_map(
+            fn (FieldTypeEnum $type): string => $type->value,
+            array_filter(FieldTypeEnum::cases(), fn (FieldTypeEnum $type): bool => $type->usesALabelList()),
+        ));
+    }
+
     public static function labelFor(FieldTypeEnum $type): string
     {
         foreach (self::catalogue() as $family) {
@@ -149,8 +158,6 @@ class FieldCatalogueViewModel
                     ['key' => 'number', 'label' => __('Number'), 'description' => __('A number, with its own minimum, maximum and decimals.'), 'example' => __('Weight in kilograms, 0 to 400, one decimal'), 'mark' => 'hash', 'preview' => ['kind' => 'input', 'value' => __('18.4'), 'mono' => true]],
                     ['key' => 'boolean', 'label' => __('Yes or no'), 'description' => __('A single checkbox. Nothing in between.'), 'example' => __('Neutered'), 'mark' => 'check-circle', 'preview' => ['kind' => 'toggle', 'value' => __('Neutered')]],
                     ['key' => 'url', 'label' => __('URL'), 'description' => __('A web address, checked the same way by the application and the API.'), 'example' => __('The breeder’s website'), 'mark' => 'link', 'preview' => ['kind' => 'input', 'prefix' => 'https://', 'value' => 'breeder.example', 'mono' => true]],
-                    ['key' => 'email', 'label' => __('Email'), 'description' => __('An email address, checked before it is saved.'), 'example' => __('The kennel’s booking address'), 'mark' => 'mail', 'preview' => ['kind' => 'input', 'value' => 'bookings@kennel.example', 'mono' => true]],
-                    ['key' => 'phone', 'label' => __('Phone'), 'description' => __('A phone number, stored as written.'), 'example' => __('The out of hours clinic'), 'mark' => 'device', 'preview' => ['kind' => 'input', 'value' => __('+44 7700 900461'), 'mono' => true]],
                 ],
             ],
             [
@@ -193,6 +200,8 @@ class FieldCatalogueViewModel
                 'name' => __('Composite'),
                 'blurb' => __('Several values that belong together.'),
                 'types' => [
+                    ['key' => 'email', 'label' => __('Email'), 'description' => __('An email address, checked before it is saved, and what it is for.'), 'example' => __('The kennel’s booking address, marked as work'), 'mark' => 'mail', 'preview' => ['kind' => 'labelled', 'label' => __('Work'), 'value' => 'bookings@kennel.example', 'mono' => true]],
+                    ['key' => 'phone', 'label' => __('Phone'), 'description' => __('A phone number, stored as written, and what it is for.'), 'example' => __('The out of hours clinic, marked as mobile'), 'mark' => 'device', 'preview' => ['kind' => 'labelled', 'label' => __('Mobile'), 'value' => __('+44 7700 900461'), 'mono' => true]],
                     ['key' => 'address', 'label' => __('Address'), 'description' => __('Street, city, postcode and country in one block.'), 'example' => __('Where the kennel is'), 'mark' => 'place', 'preview' => ['kind' => 'rows', 'rows' => [[__('Street'), 'full'], [__('City'), 'medium'], [__('Postcode'), 'narrow']]]],
                     ['key' => 'repeater', 'label' => __('Repeater'), 'description' => __('A group of fields that can be filled again and again. A repeater inside a repeater is refused.'), 'example' => __('Vaccinations: vaccine, date, next due'), 'mark' => 'layers', 'preview' => ['kind' => 'rows', 'repeats' => true, 'rows' => [[__('Vaccine'), 'full'], [__('Date given'), 'wide'], [__('Next due'), 'narrow']]]],
                     ['key' => 'money', 'label' => __('Money'), 'description' => __('An amount with its currency.'), 'example' => __('What the insurance costs a year'), 'mark' => 'coin', 'preview' => ['kind' => 'input', 'prefix' => __('GBP'), 'value' => __('40.00'), 'mono' => true]],

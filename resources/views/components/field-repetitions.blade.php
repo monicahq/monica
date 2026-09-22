@@ -52,6 +52,8 @@
                 :formatted="$answer['value']"
                 :id="'field-'.$field->id.'-'.$index.'-'.$answer['id']"
                 :name="'fields['.$field->id.']['.($rowOffset + $index).'][values]['.$answer['id'].']'"
+                :label-name="'fields['.$field->id.']['.($rowOffset + $index).'][labels]['.$answer['id'].']'"
+                :wording-name="'fields['.$field->id.']['.($rowOffset + $index).'][label_wordings]['.$answer['id'].']'"
                 :year-name="'fields['.$field->id.']['.($rowOffset + $index).'][unknown_year]['.$answer['id'].']'"
               />
             @endforeach
@@ -86,6 +88,8 @@
                 :field="$child"
                 :id="'field-'.$field->id.'-new'.$blank.'-'.$child->id"
                 :name="'fields['.$field->id.']['.($blankOffset + $blank).'][values]['.$child->id.']'"
+                :label-name="'fields['.$field->id.']['.($blankOffset + $blank).'][labels]['.$child->id.']'"
+                :wording-name="'fields['.$field->id.']['.($blankOffset + $blank).'][label_wordings]['.$child->id.']'"
                 :year-name="'fields['.$field->id.']['.($blankOffset + $blank).'][unknown_year]['.$child->id.']'"
               />
             @endforeach

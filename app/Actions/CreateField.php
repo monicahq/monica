@@ -136,7 +136,7 @@ class CreateField
             'is_highlighted' => $this->isHighlighted,
             'is_unique' => $this->isUnique,
             'is_identifying' => $this->isIdentifying,
-            'value_list_id' => $this->type->usesValueList() ? $this->valueList?->id : null,
+            'value_list_id' => $this->type->usesValueList() || $this->type->usesALabelList() ? $this->valueList?->id : null,
             'default_value' => $this->defaultValue,
             'options' => $this->options,
             'validation' => $this->validation,

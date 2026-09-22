@@ -119,6 +119,34 @@ class FieldControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_asks_where_the_labels_come_from(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'name' => 'Phone labels']);
+
+        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
+            ->assertSee(__('Where do the labels come from?'))
+            ->assertSee($list->name)
+            ->assertSee('offersALabelList', escape: false);
+    }
+
+    #[Test]
+    public function it_offers_an_email_and_a_phone_without_demanding_a_list_of_them(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+
+        $response = $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]));
+
+        $response->assertSee("previewed === 'email'", escape: false)
+            ->assertSee("previewed === 'phone'", escape: false);
+
+        $this->assertStringNotContainsString('"email"', json_encode((new FieldCatalogueViewModel)->typesNeedingAValueList()));
+        $this->assertStringContainsString('"phone"', json_encode((new FieldCatalogueViewModel)->typesOfferingALabelList()));
+    }
+
+    #[Test]
     public function it_hands_the_label_and_the_type_back_after_a_refusal(): void
     {
         $user = User::factory()->create();

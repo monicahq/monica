@@ -81,7 +81,7 @@ class UpdateField
         $this->field->is_highlighted = $this->isHighlighted;
         $this->field->is_unique = $this->isUnique;
         $this->field->is_identifying = $this->isIdentifying;
-        $this->field->value_list_id = $this->field->type->usesValueList() ? $this->valueList?->id : null;
+        $this->field->value_list_id = $this->field->type->usesValueList() || $this->field->type->usesALabelList() ? $this->valueList?->id : null;
         $this->field->default_value = $this->defaultValue;
         $this->field->options = $this->options;
         $this->field->validation = $this->validation;

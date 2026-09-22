@@ -60,6 +60,18 @@
 
       <span class="min-w-0 truncate text-xs text-muted">{{ $value }}</span>
     </div>
+  @elseif ($kind === 'labelled')
+    <div class="flex items-stretch gap-1.5">
+      <div class="{{ $box }} flex w-5/12 shrink-0 items-center gap-1.5 px-2.5 py-1.5">
+        <span class="min-w-0 truncate text-sm text-ink">{{ $preview['label'] }}</span>
+
+        <x-icon name="chevron-down" :size="14" class="ml-auto shrink-0 text-muted" />
+      </div>
+
+      <div class="{{ $box }} flex min-w-0 grow items-center overflow-hidden">
+        <span class="min-w-0 truncate px-2.5 py-1.5 text-sm text-ink {{ ($preview['mono'] ?? false) ? 'font-mono' : '' }}">{{ $value }}</span>
+      </div>
+    </div>
   @elseif ($kind === 'rows')
     <div class="grid gap-2">
       @foreach ($preview['rows'] as [$rowLabel, $width])

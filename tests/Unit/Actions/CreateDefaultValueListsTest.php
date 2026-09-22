@@ -58,10 +58,10 @@ class CreateDefaultValueListsTest extends TestCase
         $list = ValueList::query()->firstWhere('key', ValueListEnum::PhoneLabels->value);
 
         $this->assertEquals(
-            ['Mobile', 'Home', 'Work', 'Fax', 'Other'],
+            ['Mobile', 'Home', 'Work', 'Fax', 'Other', 'Custom...'],
             $list->items()->orderBy('position')->pluck('label_translation_key')->all(),
         );
-        $this->assertEquals([1, 2, 3, 4, 5], $list->items()->orderBy('position')->pluck('position')->all());
+        $this->assertEquals([1, 2, 3, 4, 5, 6], $list->items()->orderBy('position')->pluck('position')->all());
     }
 
     #[Test]
@@ -160,6 +160,7 @@ class CreateDefaultValueListsTest extends TestCase
         );
         Queue::assertPushed(LogUserAction::class, 1);
     }
+
     #[Test]
     public function it_writes_nothing_when_the_account_already_has_them(): void
     {

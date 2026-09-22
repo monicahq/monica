@@ -27,6 +27,8 @@
   $chosen = $type === FieldTypeEnum::Multiselect && $field->valueList
       ? $field->valueList->items->whereIn('id', $value?->value_list_item_ids ?? [])->sortBy('position')->values()
       : collect();
+
+  $kind = $type->usesALabelList() ? ($value?->label_wording ?: $value?->valueListItem?->label) : null;
 @endphp
 
 @switch(true)
@@ -36,8 +38,6 @@
         <div class="flex flex-col gap-1.5 rounded-md border border-hairline bg-card px-3.5 py-2.5">
           @foreach ($row['fields'] as $answer)
             <div class="flex flex-col gap-0.5">
-              <span class="text-xs text-muted">{{ $answer['label'] }}</span>
-
               <x-field-value
                 :field="$answer['field']"
                 :value="$answer['rawValue']"
@@ -82,6 +82,16 @@
       @else
         <x-icon name="close" :size="16" :stroke-width="1.9" class="text-muted" />
         {{ __('No') }}
+      @endif
+    </span>
+    @break
+
+  @case($type->usesALabelList() && $value?->value_string !== null)
+    <span class="flex flex-wrap items-center gap-1.75">
+      <span class="text-base text-ink">{{ $value->value_string }}</span>
+
+      @if ($kind !== null)
+        <x-badge>{{ $kind }}</x-badge>
       @endif
     </span>
     @break

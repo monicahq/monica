@@ -31,7 +31,8 @@ return new class extends Migration
             $table->date('value_date')->nullable()->comment('value for the date and recurring date types');
             $table->timestamp('value_datetime')->nullable()->comment('value for a type that carries a time as well');
             $table->json('value_json')->nullable()->comment('value for the composite types, such as an address or a location');
-            $table->unsignedBigInteger('value_list_item_id')->nullable()->comment('chosen item for the single choice types');
+            $table->unsignedBigInteger('value_list_item_id')->nullable()->comment('chosen item for the single choice types, and the label of an email or a phone');
+            $table->string('label_wording')->nullable()->comment('wording somebody typed for a label the list does not name, kept only when the chosen item is the open one');
             $table->json('value_list_item_ids')->nullable()->comment('chosen items for the multiple choice types');
             $table->unsignedBigInteger('value_file_id')->nullable()->comment('attached file for the file, image and avatar types');
             $table->unsignedBigInteger('related_contact_id')->nullable()->comment('target of a relation field pointing at a contact');

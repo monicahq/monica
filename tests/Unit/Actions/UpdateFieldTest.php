@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\UpdateField;
+use App\Enums\FieldTypeEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
@@ -125,6 +126,43 @@ class UpdateFieldTest extends TestCase
         new UpdateField(user: $user, field: $field, label: 'Gender', valueList: $other)->execute();
 
         $this->assertEquals($other->id, $field->fresh()->value_list_id);
+    }
+
+    #[Test]
+    public function it_swaps_the_list_a_phone_takes_its_labels_from(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $other = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $field = Field::factory()->create([
+            'account_id' => $user->account_id,
+            'type' => FieldTypeEnum::Phone,
+            'value_list_id' => $list->id,
+        ]);
+
+        new UpdateField(user: $user, field: $field, label: 'Phone', valueList: $other)->execute();
+
+        $this->assertEquals($other->id, $field->fresh()->value_list_id);
+    }
+
+    #[Test]
+    public function it_lets_a_phone_be_left_with_no_labels_to_offer(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $field = Field::factory()->create([
+            'account_id' => $user->account_id,
+            'type' => FieldTypeEnum::Phone,
+            'value_list_id' => $list->id,
+        ]);
+
+        new UpdateField(user: $user, field: $field, label: 'Phone')->execute();
+
+        $this->assertNull($field->fresh()->value_list_id);
     }
 
     #[Test]

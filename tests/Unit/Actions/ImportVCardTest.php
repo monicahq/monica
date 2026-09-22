@@ -11,6 +11,8 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\StructureVersion;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -102,6 +104,104 @@ class ImportVCardTest extends TestCase
 
         $this->assertTrue($value->year_is_unknown);
         $this->assertEquals('01-20', $value->value_date->format('m-d'));
+    }
+
+    #[Test]
+    public function it_reads_the_type_a_card_carries_as_the_label_of_the_value(): void
+    {
+        $version = Structure::asTheDefaultOf($this->user, $this->vault, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Phone'],
+        ]);
+        $mobile = $this->labelOn($version, 0, 'mobile', 'Mobile');
+
+        $contact = new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: $this->cardCarrying("TEL;TYPE=cell:+15705551212\r\n"),
+            davUri: 'dwight.vcf',
+        )->execute();
+
+        $this->assertEquals($mobile->id, $this->valueOf($contact, $version, 0)->value_list_item_id);
+    }
+
+    #[Test]
+    public function it_prefers_the_wording_a_device_wrote_over_the_type_beside_it(): void
+    {
+        $version = Structure::asTheDefaultOf($this->user, $this->vault, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Phone'],
+        ]);
+        $this->labelOn($version, 0, 'mobile', 'Mobile');
+        $boat = $this->labelOn($version, 0, null, 'Boat');
+
+        $contact = new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: $this->cardCarrying("item1.TEL;TYPE=cell:+15705551212\r\nitem1.X-ABLabel:Boat\r\n"),
+            davUri: 'dwight.vcf',
+        )->execute();
+
+        $this->assertEquals($boat->id, $this->valueOf($contact, $version, 0)->value_list_item_id);
+    }
+
+    #[Test]
+    public function it_writes_no_label_for_a_wording_the_list_does_not_hold(): void
+    {
+        $version = Structure::asTheDefaultOf($this->user, $this->vault, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Phone'],
+        ]);
+        $this->labelOn($version, 0, 'mobile', 'Mobile');
+
+        $contact = new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: $this->cardCarrying("item1.TEL:+15705551212\r\nitem1.X-ABLabel:Submarine\r\n"),
+            davUri: 'dwight.vcf',
+        )->execute();
+
+        $value = $this->valueOf($contact, $version, 0);
+
+        $this->assertNull($value->value_list_item_id);
+        $this->assertEquals('+15705551212', $value->value_string);
+    }
+
+    #[Test]
+    public function it_keeps_an_unmatched_wording_against_the_open_label(): void
+    {
+        $version = Structure::asTheDefaultOf($this->user, $this->vault, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Phone'],
+        ]);
+        $this->labelOn($version, 0, 'mobile', 'Mobile');
+        $open = $this->labelOn($version, 0, ValueListItem::OPEN_KEY, 'Custom...');
+
+        $contact = new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: $this->cardCarrying("item1.TEL:+15705551212\r\nitem1.X-ABLabel:Submarine\r\n"),
+            davUri: 'dwight.vcf',
+        )->execute();
+
+        $value = $this->valueOf($contact, $version, 0);
+
+        $this->assertEquals($open->id, $value->value_list_item_id);
+        $this->assertEquals('Submarine', $value->label_wording);
+    }
+
+    #[Test]
+    public function it_adds_nothing_to_a_list_the_account_owns(): void
+    {
+        $version = Structure::asTheDefaultOf($this->user, $this->vault, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Phone'],
+        ]);
+        $mobile = $this->labelOn($version, 0, 'mobile', 'Mobile');
+
+        new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: $this->cardCarrying("item1.TEL:+15705551212\r\nitem1.X-ABLabel:Submarine\r\n"),
+            davUri: 'dwight.vcf',
+        )->execute();
+
+        $this->assertEquals(1, ValueListItem::query()->where('value_list_id', $mobile->value_list_id)->count());
     }
 
     #[Test]
@@ -252,6 +352,34 @@ class ImportVCardTest extends TestCase
             vault: $this->vault,
             card: 'beets',
         )->execute();
+    }
+
+    private function labelOn(StructureVersion $version, int $index, ?string $key, string $label): ValueListItem
+    {
+        $field = $this->fieldsOf($version)[$index];
+
+        if ($field->value_list_id === null) {
+            $field->value_list_id = ValueList::factory()->create(['account_id' => $field->account_id])->id;
+            $field->save();
+        }
+
+        return ValueListItem::factory()->create([
+            'account_id' => $field->account_id,
+            'value_list_id' => $field->value_list_id,
+            'key' => $key,
+            'label' => $label,
+        ]);
+    }
+
+    private function cardCarrying(string $property): string
+    {
+        return "BEGIN:VCARD\r\n".
+            "VERSION:4.0\r\n".
+            "UID:dwight\r\n".
+            "N:Schrute;Dwight;;;\r\n".
+            "FN:Dwight Schrute\r\n".
+            $property.
+            "END:VCARD\r\n";
     }
 
     private function card(): string

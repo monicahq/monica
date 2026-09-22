@@ -369,6 +369,44 @@ class CreateFieldTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_the_list_a_phone_takes_its_labels_from(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+
+        $field = new CreateField(
+            user: $user,
+            sectionVersion: $version,
+            type: FieldTypeEnum::Phone,
+            label: 'Phone',
+            valueList: $list,
+        )->execute();
+
+        $this->assertEquals($list->id, $field->value_list_id);
+    }
+
+    #[Test]
+    public function it_takes_an_email_that_names_no_list_at_all(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+
+        $field = new CreateField(
+            user: $user,
+            sectionVersion: $version,
+            type: FieldTypeEnum::Email,
+            label: 'Email',
+        )->execute();
+
+        $this->assertNull($field->value_list_id);
+    }
+
+    #[Test]
     public function it_points_a_relation_at_contacts_unless_told_otherwise(): void
     {
         Queue::fake();

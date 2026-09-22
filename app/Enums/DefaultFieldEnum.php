@@ -12,7 +12,9 @@ enum DefaultFieldEnum: string implements Translatable
     case Category = 'category';
     case Gender = 'gender';
     case Birthday = 'birthday';
+    case Emails = 'emails';
     case Email = 'email';
+    case Phones = 'phones';
     case Phone = 'phone';
     case Website = 'website';
     case Address = 'address';
@@ -31,7 +33,9 @@ enum DefaultFieldEnum: string implements Translatable
             self::Category => 'Category',
             self::Gender => 'Gender',
             self::Birthday => 'Birthday',
+            self::Emails => 'Emails',
             self::Email => 'Email',
+            self::Phones => 'Phones',
             self::Phone => 'Phone',
             self::Website => 'Website',
             self::Address => 'Address',
@@ -52,7 +56,9 @@ enum DefaultFieldEnum: string implements Translatable
             self::Category => FieldTypeEnum::Multiselect,
             self::Gender => FieldTypeEnum::Select,
             self::Birthday => FieldTypeEnum::RecurringDate,
+            self::Emails => FieldTypeEnum::Repeater,
             self::Email => FieldTypeEnum::Email,
+            self::Phones => FieldTypeEnum::Repeater,
             self::Phone => FieldTypeEnum::Phone,
             self::Website => FieldTypeEnum::Url,
             self::Address => FieldTypeEnum::Address,
@@ -80,6 +86,8 @@ enum DefaultFieldEnum: string implements Translatable
             self::Document => [self::File, self::Description],
             self::Photo => [self::Image, self::Caption],
             self::Notes => [self::Note],
+            self::Emails => [self::Email],
+            self::Phones => [self::Phone],
             default => [],
         };
     }
@@ -112,6 +120,8 @@ enum DefaultFieldEnum: string implements Translatable
         return match ($this) {
             self::Category => ValueListEnum::ContactCategories,
             self::Gender => ValueListEnum::Genders,
+            self::Email => ValueListEnum::EmailLabels,
+            self::Phone => ValueListEnum::PhoneLabels,
             default => null,
         };
     }
@@ -120,6 +130,8 @@ enum DefaultFieldEnum: string implements Translatable
     {
         return match ($this) {
             self::Notes => RepetitionOrderEnum::NewestFirst,
+            self::Emails => RepetitionOrderEnum::NewestLast,
+            self::Phones => RepetitionOrderEnum::NewestLast,
             default => null,
         };
     }

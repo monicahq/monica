@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Dav;
 
+use App\Enums\EmailLabelEnum;
+use App\Enums\PhoneLabelEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
@@ -160,28 +162,90 @@ class VCardMerger
 
         if ($onTheCard !== null) {
             $onTheCard->setValue($written);
+            $this->label($card, $onTheCard, $field, $value);
 
             return;
         }
 
-        $this->append($card, $property, $written, $field);
+        $this->append($card, $property, $written, $field, $value);
     }
 
     /** @param  string|array<int, string>  $written */
-    private function append(VCard $card, string $property, string|array $written, Field $field): void
+    private function append(VCard $card, string $property, string|array $written, Field $field, ?FieldValue $value): void
     {
-        $added = $this->put($card, $property, $written);
+        $this->label($card, $this->put($card, $property, $written), $field, $value);
+    }
 
-        if (! in_array($property, self::LABELLED, true)) {
+    /**
+     * Say what a property is for. The value's own label goes on as the type every address book
+     * reads, or as a wording of its own when nothing standard fits. A value carrying no label
+     * falls back to the name of the field it came from, which is all a card used to carry.
+     */
+    private function label(VCard $card, Property $property, Field $field, ?FieldValue $value): void
+    {
+        if (! in_array($property->name, self::LABELLED, true)) {
             return;
         }
 
-        $group = $this->nextGroup($card);
-        $added->group = $group;
+        $item = $value?->valueListItem;
+        $typed = $value?->label_wording;
+        $standard = $typed === null || $typed === ''
+            ? self::standardType($property->name, $item?->key)
+            : null;
 
-        $label = $this->put($card, 'X-ABLabel', $field->label);
+        if ($standard !== null) {
+            $property['TYPE'] = $standard;
+
+            return;
+        }
+
+        $wording = $typed === null || $typed === ''
+            ? ($item === null ? $field->label : $item->label)
+            : $typed;
+        $group = (string) $property->group;
+
+        if ($group === '') {
+            $group = $this->nextGroup($card);
+            $property->group = $group;
+        }
+
+        foreach ($card->children() as $child) {
+            if ($child instanceof Property && mb_strtolower($child->name) === 'x-ablabel' && mb_strtolower((string) $child->group) === mb_strtolower($group)) {
+                $child->setValue($wording);
+
+                return;
+            }
+        }
+
+        $label = $this->put($card, 'X-ABLabel', $wording);
         $label->group = $group;
         $label->name = 'X-ABLabel';
+    }
+
+    private static function standardType(string $property, ?string $key): ?string
+    {
+        if ($key === null) {
+            return null;
+        }
+
+        return match ($property) {
+            'TEL' => match ($key) {
+                (PhoneLabelEnum::Mobile)->value => 'cell',
+                (PhoneLabelEnum::Home)->value => 'home',
+                (PhoneLabelEnum::Work)->value => 'work',
+                (PhoneLabelEnum::Fax)->value => 'fax',
+                (PhoneLabelEnum::Other)->value => 'other',
+                default => null,
+            },
+            'EMAIL' => match ($key) {
+                (EmailLabelEnum::Home)->value => 'home',
+                (EmailLabelEnum::Personal)->value => 'personal',
+                (EmailLabelEnum::Work)->value => 'work',
+                (EmailLabelEnum::Other)->value => 'other',
+                default => null,
+            },
+            default => null,
+        };
     }
 
     private function nextGroup(VCard $card): string

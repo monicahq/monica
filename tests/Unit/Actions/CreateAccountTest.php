@@ -138,7 +138,7 @@ class CreateAccountTest extends TestCase
             $lists->pluck('key')->all(),
         );
         $this->assertEquals('Phone labels', $lists->firstWhere('key', 'phone_labels')->name);
-        $this->assertEquals(5, $lists->firstWhere('key', 'phone_labels')->items()->count());
+        $this->assertEquals(6, $lists->firstWhere('key', 'phone_labels')->items()->count());
 
         Queue::assertPushedOn(
             queue: 'low',

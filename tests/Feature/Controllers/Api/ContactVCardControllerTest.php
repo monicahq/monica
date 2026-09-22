@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api;
 
+use App\Actions\ImportVCard;
 use App\Enums\FieldTypeEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -108,6 +111,59 @@ class ContactVCardControllerTest extends TestCase
 
         $this->assertSame($throughTheScreen, $throughTheApi);
         $this->assertStringContainsString('+15705551212', $throughTheApi);
+    }
+
+    #[Test]
+    public function a_label_leaves_on_the_card_and_comes_back_as_the_label_it_left_with(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = Structure::asTheDefaultOf($user, $vault, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Phone'],
+        ]);
+        $field = $version->sectionVersions()->with('fields')->get()->flatMap(fn ($section) => $section->fields)->first();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $work = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'key' => 'work',
+            'label' => 'Work',
+        ]);
+        $field->value_list_id = $list->id;
+        $field->save();
+
+        $contact = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'structure_version_id' => $version->id,
+            'first_name' => 'Dwight',
+            'last_name' => 'Schrute',
+        ]);
+        FieldValue::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'valuable_type' => $contact->getMorphClass(),
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'field_key' => $field->key,
+            'value_string' => '+15705551212',
+            'value_list_item_id' => $work->id,
+        ]);
+
+        $exported = $this->withToken($user->createToken('Dwight’s script')->plainTextToken)
+            ->get("/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/vcard")
+            ->streamedContent();
+
+        $this->assertStringContainsString('TYPE=work', $exported);
+
+        $returned = new ImportVCard(user: $user, vault: $vault, card: $exported, davUri: 'dwight.vcf')->execute();
+
+        $this->assertEquals($work->id, FieldValue::query()
+            ->where('valuable_id', $returned->id)
+            ->where('field_id', $field->id)
+            ->value('value_list_item_id'));
     }
 
     #[Test]

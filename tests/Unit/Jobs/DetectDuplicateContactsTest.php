@@ -12,6 +12,8 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\SectionVersion;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -113,6 +115,31 @@ class DetectDuplicateContactsTest extends TestCase
         $candidate = ContactDuplicateCandidate::query()->firstOrFail();
 
         $this->assertEquals(95, $candidate->score);
+        $this->assertEquals('field', $candidate->reasons[0]['kind']);
+        $this->assertEquals('jim@dundermifflin.com', $candidate->reasons[0]['value']);
+    }
+
+    #[Test]
+    public function it_proposes_a_pair_sharing_an_address_under_two_different_labels(): void
+    {
+        $vault = Vault::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $vault->account_id]);
+        $personal = ValueListItem::factory()->create(['account_id' => $vault->account_id, 'value_list_id' => $list->id, 'label' => 'Personal']);
+        $work = ValueListItem::factory()->create(['account_id' => $vault->account_id, 'value_list_id' => $list->id, 'label' => 'Work']);
+        $field = $this->identifyingField($vault);
+        $field->value_list_id = $list->id;
+        $field->save();
+
+        $jim = $this->contactIn($vault, 'Jim', 'Halpert');
+        $jimmy = $this->contactIn($vault, 'Jimmy', 'H');
+
+        $this->valueFor($jim, $field, 'jim@dundermifflin.com')->forceFill(['value_list_item_id' => $personal->id])->save();
+        $this->valueFor($jimmy, $field, 'jim@dundermifflin.com')->forceFill(['value_list_item_id' => $work->id])->save();
+
+        new DetectDuplicateContacts(subject: $vault)->handle();
+
+        $candidate = ContactDuplicateCandidate::query()->firstOrFail();
+
         $this->assertEquals('field', $candidate->reasons[0]['kind']);
         $this->assertEquals('jim@dundermifflin.com', $candidate->reasons[0]['value']);
     }

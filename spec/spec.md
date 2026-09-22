@@ -246,12 +246,12 @@ Erica supplies a set of ready to use lists when the account is created. Each one
 
 Without going into detail, here are the families offered.
 
-- **Simple**: short text, long text, number, yes or no, web address, email, phone.
+- **Simple**: short text, long text, number, yes or no, web address.
 - **Choice**: dropdown, multiple choice, radio buttons, free tags.
 - **Dates**: precise date, recurring date (a birthday, whose year may be unknown), duration ("together since...").
 - **Relations**: link to another contact or another entity, optionally qualified ("owner of", "vet of").
 - **Files**: file, image, avatar.
-- **Composite**: full address, amount with currency, full name, and the **repeater**, which allows entering the same block several times (several phone numbers, several addresses).
+- **Composite**: email and phone, each an address or a number together with what it is for, full address, amount with currency, full name, and the **repeater**, which allows entering the same block several times (several phone numbers, several addresses).
 - **Miscellaneous**: rating out of 5 stars, rich text, colour, geographic position.
 - **Layout**: divider, sub-part heading, help text. These elements store no data, they exist purely to make a long record readable.
 - **Calculated** (planned for later): a value derived from other fields, such as age from a date of birth, or a count ("number of animals this contact has").

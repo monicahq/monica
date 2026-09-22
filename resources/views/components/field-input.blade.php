@@ -7,6 +7,8 @@
   @var array<int, array{id: int, fields: array<int, array<string, mixed>>}> $rows
   @var string|null $id
   @var string|null $name
+  @var string|null $labelName
+  @var string|null $wordingName
   @var string|null $yearName
   @var array<string, mixed>|null $reminder
   @var string|null $reminderName
@@ -20,6 +22,8 @@
   'rows' => [],
   'id' => null,
   'name' => null,
+  'labelName' => null,
+  'wordingName' => null,
   'yearName' => null,
   'reminder' => null,
   'reminderName' => null,
@@ -35,9 +39,13 @@
   $reminderName ??= "reminders[{$field->id}]";
   $type = $field->type;
 
-  $items = $type->usesValueList() && $field->valueList
+  $items = ($type->usesValueList() || $type->usesALabelList()) && $field->valueList
       ? $field->valueList->items->where('is_active', true)->sortBy('position')->values()
       : collect();
+
+  $labelName ??= "labels[{$field->id}]";
+  $wordingName ??= "label_wordings[{$field->id}]";
+  $chosenLabel = $type->usesALabelList() ? $value?->value_list_item_id : null;
 
   $chosen = $value?->value_list_item_id;
   $chosenMany = $value?->value_list_item_ids ?? [];
@@ -237,6 +245,52 @@
         <x-field-reminder :field="$field" :reminder="$reminder" :name="$reminderName" :id="$id.'-reminder'" :messages="$messages" />
       @endif
     </div>
+    @break
+
+  @case($type->usesALabelList())
+    <fieldset class="flex w-full flex-col gap-1.5">
+      <legend class="w-full text-label text-ink">
+        {{ $field->label }}
+
+        @if (! $field->is_required)
+          <span class="text-xs font-normal text-muted">{{ __('optional') }}</span>
+        @endif
+      </legend>
+
+      @if ($field->help_text)
+        <p class="text-xs text-muted">{{ $field->help_text }}</p>
+      @endif
+
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-start">
+        <x-combo-box
+          class="sm:w-40 sm:shrink-0"
+          :items="$items"
+          :id="$id.'-label'"
+          :name="$labelName"
+          :wording-name="$wordingName"
+          :chosen="$chosenLabel"
+          :wording="$value?->label_wording"
+        />
+
+        <div class="sm:grow">
+          <x-input
+            :type="match ($type) {
+                FieldTypeEnum::Email => 'email',
+                FieldTypeEnum::Phone => 'tel',
+                default => 'text',
+            }"
+            :id="$id"
+            :name="$name"
+            :aria-label="$field->label"
+            :value="$value?->value_string"
+            :placeholder="$field->placeholder"
+            :error="$error"
+            :required="$field->is_required"
+            :allow-password-manager="! $field->is_sensitive"
+          />
+        </div>
+      </div>
+    </fieldset>
     @break
 
   @case($type->hasAnInput())

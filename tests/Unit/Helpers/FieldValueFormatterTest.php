@@ -55,6 +55,75 @@ class FieldValueFormatterTest extends TestCase
     }
 
     #[Test]
+    public function it_reads_a_phone_number_with_what_it_is_for(): void
+    {
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $mobile = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'label' => 'Mobile',
+        ]);
+
+        $this->assertEquals('+44 7700 900461 (Mobile)', new FieldValueFormatter($user)->format(
+            $this->value($user, FieldTypeEnum::Phone, [
+                'value_string' => '+44 7700 900461',
+                'value_list_item_id' => $mobile->id,
+            ]),
+        ));
+    }
+
+    #[Test]
+    public function it_reads_an_email_address_alone_when_nobody_said_what_it_is_for(): void
+    {
+        $user = User::factory()->create();
+
+        $this->assertEquals('pam@dundermifflin.example', new FieldValueFormatter($user)->format(
+            $this->value($user, FieldTypeEnum::Email, ['value_string' => 'pam@dundermifflin.example']),
+        ));
+    }
+
+    #[Test]
+    public function it_reads_the_wording_somebody_typed_rather_than_the_open_label(): void
+    {
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $other = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'key' => 'other',
+            'label' => 'Other',
+        ]);
+
+        $this->assertEquals('+44 7700 900461 (Boat)', new FieldValueFormatter($user)->format(
+            $this->value($user, FieldTypeEnum::Phone, [
+                'value_string' => '+44 7700 900461',
+                'value_list_item_id' => $other->id,
+                'label_wording' => 'Boat',
+            ]),
+        ));
+    }
+
+    #[Test]
+    public function it_still_reads_a_label_nobody_offers_any_more(): void
+    {
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $retired = ValueListItem::factory()->disabled()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'label' => 'Fax',
+        ]);
+
+        $this->assertEquals('+44 7700 900461 (Fax)', new FieldValueFormatter($user)->format(
+            $this->value($user, FieldTypeEnum::Phone, [
+                'value_string' => '+44 7700 900461',
+                'value_list_item_id' => $retired->id,
+            ]),
+        ));
+    }
+
+    #[Test]
     public function it_reads_a_number_with_the_separators_the_person_uses(): void
     {
         $user = User::factory()->create(['number_format' => NumberFormatEnum::DotAndComma]);

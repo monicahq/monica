@@ -51,6 +51,8 @@ class ContactSectionController extends Controller
                 record: $contact,
                 section: $structureVersionSection,
                 values: $request->validated('fields', []),
+                labels: $request->validated('labels', []),
+                labelWordings: $request->validated('label_wordings', []),
                 yearIsUnknown: $request->validated('year_is_unknown', []),
                 monthIsUnknown: $request->validated('month_is_unknown', []),
                 reminders: $request->validated('reminders', []),

@@ -232,8 +232,10 @@ class CreateDefaultTemplateTest extends TestCase
         $document = Field::query()->firstWhere('key', DefaultFieldEnum::Document->value);
         $photo = Field::query()->firstWhere('key', DefaultFieldEnum::Photo->value);
         $notes = Field::query()->firstWhere('key', DefaultFieldEnum::Notes->value);
+        $emails = Field::query()->firstWhere('key', DefaultFieldEnum::Emails->value);
+        $phones = Field::query()->firstWhere('key', DefaultFieldEnum::Phones->value);
 
-        foreach ([$document, $photo, $notes] as $repeater) {
+        foreach ([$document, $photo, $notes, $emails, $phones] as $repeater) {
             $this->assertSame(FieldTypeEnum::Repeater, $repeater->type);
             $this->assertTrue($repeater->is_repeatable);
             $this->assertNull($repeater->repeat_min);
@@ -248,12 +250,18 @@ class CreateDefaultTemplateTest extends TestCase
         $this->assertEquals(['file', 'description'], $document->children->pluck('key')->all());
         $this->assertEquals(['image', 'caption'], $photo->children->pluck('key')->all());
         $this->assertEquals(['note'], $notes->children->pluck('key')->all());
+        $this->assertEquals(['email'], $emails->children->pluck('key')->all());
+        $this->assertEquals(['phone'], $phones->children->pluck('key')->all());
         $this->assertSame(FieldTypeEnum::File, $document->children[0]->type);
         $this->assertSame(FieldTypeEnum::Image, $photo->children[0]->type);
         $this->assertSame(FieldTypeEnum::Textarea, $notes->children[0]->type);
+        $this->assertSame(FieldTypeEnum::Email, $emails->children[0]->type);
+        $this->assertNotNull($emails->children[0]->value_list_id);
+        $this->assertSame(FieldTypeEnum::Phone, $phones->children[0]->type);
+        $this->assertNotNull($phones->children[0]->value_list_id);
 
         $this->assertEquals(
-            ['notes', 'document', 'photo'],
+            ['notes', 'emails', 'phones', 'document', 'photo'],
             Field::query()->where('is_repeatable', true)->orderBy('id')->pluck('key')->all(),
         );
     }
@@ -368,7 +376,7 @@ class CreateDefaultTemplateTest extends TestCase
 
         $fields = Field::query()->where('account_id', $user->account_id)->get();
 
-        $this->assertCount(15, $fields);
+        $this->assertCount(17, $fields);
         $this->assertEmpty($fields->filter(fn (Field $field): bool => $field->is_required));
         $this->assertEmpty($fields->filter(fn (Field $field): bool => $field->is_sensitive));
     }

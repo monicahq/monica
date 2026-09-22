@@ -3,7 +3,7 @@
   "specName": "Contact list view preference",
   "branch": "2026-09-22-contact-list-view-preference",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -328,7 +328,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-22T14:39:06.085Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-22T20:08:04.476Z"
     }
   ],
-  "currentTask": "T037"
+  "currentTask": "T037",
+  "telemetryInstanceId": "792572a0-1b7f-4a39-a61c-ffaa9258a146"
 }

@@ -12,12 +12,15 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\User;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Sabre\DAV\Exception\BadRequest;
+use Sabre\VObject\Component;
+use Sabre\VObject\Parameter;
 use Sabre\VObject\Property;
 
 /**
@@ -154,14 +157,99 @@ class ImportVCard
             $row = new CreateFieldValueRow(user: $this->user, valuable: $contact, field: $field)->execute();
         }
 
+        $label = $this->labelOf($field, $onTheCard);
+
         new SetFieldValue(
             user: $this->user,
             valuable: $contact,
             field: $field,
             row: $row,
             value: $written['value'],
+            valueListItem: $label['item'],
+            labelWording: $label['wording'],
             yearIsUnknown: $written['yearIsUnknown'],
         )->execute();
+    }
+
+    /**
+     * Which of the field's labels the card is naming. The wording a device wrote wins over the
+     * standard type, because an account that renamed a label meant that wording. Nothing is ever
+     * added to the list: the account owns it, and a synchronising device may not write to it.
+     */
+    /** @return array{item: ?ValueListItem, wording: ?string} */
+    private function labelOf(Field $field, Property $onTheCard): array
+    {
+        if (! $field->type->usesALabelList() || $field->value_list_id === null) {
+            return ['item' => null, 'wording' => null];
+        }
+
+        $offered = ValueListItem::query()
+            ->where('value_list_id', $field->value_list_id)
+            ->get();
+
+        $wording = $this->wordingBeside($onTheCard);
+
+        if ($wording !== null && $wording !== '') {
+            $found = $offered->first(fn (ValueListItem $item): bool => mb_strtolower($item->label) === mb_strtolower($wording));
+
+            if ($found instanceof ValueListItem) {
+                return ['item' => $found, 'wording' => null];
+            }
+        }
+
+        foreach ($this->typesOn($onTheCard) as $type) {
+            $key = $type === 'cell' ? 'mobile' : $type;
+            $found = $offered->first(fn (ValueListItem $item): bool => $item->key === $key);
+
+            if ($found instanceof ValueListItem && ! $found->takesATypedWording()) {
+                return ['item' => $found, 'wording' => null];
+            }
+        }
+
+        if ($wording === null || $wording === '') {
+            return ['item' => null, 'wording' => null];
+        }
+
+        $open = $offered->first(fn (ValueListItem $item): bool => $item->takesATypedWording());
+
+        return $open instanceof ValueListItem
+            ? ['item' => $open, 'wording' => $wording]
+            : ['item' => null, 'wording' => null];
+    }
+
+    private function wordingBeside(Property $onTheCard): ?string
+    {
+        $group = mb_strtolower((string) $onTheCard->group);
+
+        if ($group === '') {
+            return null;
+        }
+
+        $card = $onTheCard->parent;
+
+        if (! $card instanceof Component) {
+            return null;
+        }
+
+        foreach ($card->children() as $child) {
+            if ($child instanceof Property && mb_strtolower($child->name) === 'x-ablabel' && mb_strtolower((string) $child->group) === $group) {
+                return mb_trim((string) $child->getValue());
+            }
+        }
+
+        return null;
+    }
+
+    /** @return array<int, string> */
+    private function typesOn(Property $onTheCard): array
+    {
+        $types = $onTheCard['TYPE'];
+
+        if (! $types instanceof Parameter) {
+            return [];
+        }
+
+        return array_map(mb_strtolower(...), $types->getParts());
     }
 
     /** @return array{value: mixed, yearIsUnknown: bool} */
