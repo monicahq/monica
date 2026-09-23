@@ -16,11 +16,36 @@ class FieldValueFormatter
 {
     public function __construct(private readonly User $user) {}
 
+    /** @return array<string, string> */
+    public static function addressPartNames(): array
+    {
+        return [
+            'street' => __('Street'),
+            'extended' => __('Extended street line'),
+            'po_box' => __('Post office box'),
+            'city' => __('City'),
+            'region' => __('Region'),
+            'postal_code' => __('Postcode'),
+            'country' => __('Country'),
+        ];
+    }
+
+    /** @param  array<string, mixed>|null  $parts */
+    public static function addressLine(?array $parts): ?string
+    {
+        $filled = array_filter(array_map(
+            fn (string $part): string => mb_trim((string) ($parts[$part] ?? '')),
+            FieldValue::ADDRESS_PARTS,
+        ));
+
+        return $filled === [] ? null : implode(', ', $filled);
+    }
+
     public function format(FieldValue $value): ?string
     {
         return match ($value->field->type) {
             FieldTypeEnum::Text, FieldTypeEnum::Url => $this->blankToNull($value->value_string),
-            FieldTypeEnum::Email, FieldTypeEnum::Phone => $this->labelled($value),
+            FieldTypeEnum::Email, FieldTypeEnum::Phone, FieldTypeEnum::Address => $this->labelled($value),
             FieldTypeEnum::Textarea => $this->blankToNull($value->value_text),
             FieldTypeEnum::Number => $this->number($value),
             FieldTypeEnum::Boolean => $this->boolean($value),
@@ -30,14 +55,15 @@ class FieldValueFormatter
             FieldTypeEnum::Multiselect => $this->choices($value),
             FieldTypeEnum::File, FieldTypeEnum::Image,
             FieldTypeEnum::Avatar => $this->blankToNull($value->file?->original_name),
-            FieldTypeEnum::Address => $this->address($value),
             default => null,
         };
     }
 
     private function labelled(FieldValue $value): ?string
     {
-        $written = $this->blankToNull($value->value_string);
+        $written = $value->field->type === FieldTypeEnum::Address
+            ? self::addressLine(is_array($value->value_json) ? $value->value_json : null)
+            : $this->blankToNull($value->value_string);
         $label = $this->blankToNull($value->label_wording) ?? $value->valueListItem?->label;
 
         if ($written === null || $label === null) {
@@ -45,20 +71,6 @@ class FieldValueFormatter
         }
 
         return __(':value (:label)', ['value' => $written, 'label' => $label]);
-    }
-
-    private function address(FieldValue $value): ?string
-    {
-        if (! is_array($value->value_json)) {
-            return null;
-        }
-
-        $parts = array_filter(array_map(
-            fn (string $part): string => mb_trim((string) ($value->value_json[$part] ?? '')),
-            ['po_box', 'extended', 'street', 'city', 'region', 'postal_code', 'country'],
-        ));
-
-        return $parts === [] ? null : implode(', ', $parts);
     }
 
     private function blankToNull(?string $value): ?string

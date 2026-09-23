@@ -3,7 +3,7 @@
   "specName": "Reminder row actions",
   "branch": "2026-09-23-reminders",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -208,6 +208,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-23T13:37:11.212Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-23T19:34:18.156Z"
     }
   ],
   "currentTask": "T022",
@@ -278,5 +285,6 @@
     "T022": {
       "status": "DONE"
     }
-  }
+  },
+  "telemetryInstanceId": "5fff38c4-e96e-4dc6-8295-b989fac274c9"
 }

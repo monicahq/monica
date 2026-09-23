@@ -55,6 +55,7 @@
     method="post"
     :action="$action"
     x-effect="$dispatch('field-type-picked', type)"
+    x-init="$watch('type', (picked) => { if (! listPicked) listId = String(suppliedLists[picked] ?? '') })"
     x-data="{
       type: {{ Js::from(old('type', '')) }},
       peek: '',
@@ -67,6 +68,9 @@
       pickable: {{ Js::from($pickable) }},
       needsAList: {{ Js::from($catalogue->typesNeedingAValueList()) }},
       offersALabelList: {{ Js::from($catalogue->typesOfferingALabelList()) }},
+      suppliedLists: {{ Js::from($catalogue->suppliedLabelListIds($valueLists)) }},
+      listId: {{ Js::from(old('value_list_id', '')) }},
+      listPicked: {{ Js::from(old('value_list_id', '') !== '') }},
       get needle() { return this.query.trim().toLowerCase() },
       matches(key) { return this.needle === '' || this.index[key].includes(this.needle) },
       get shown() { return Object.keys(this.index).filter(key => this.matches(key)).length },
@@ -258,7 +262,7 @@
         @if ($valueLists->isEmpty())
           <x-notice tone="warning">{{ __('You have no value lists yet. Make one on the value lists screen, then come back.') }}</x-notice>
         @else
-          <x-select id="value_list_id" :label="__('Value list')" ::required="offersChoices" class="max-w-96">
+          <x-select id="value_list_id" :label="__('Value list')" ::required="offersChoices" x-model="listId" @change="listPicked = true" class="max-w-96">
             <option value="">{{ __('Pick a list') }}</option>
 
             @foreach ($valueLists as $list)

@@ -173,6 +173,25 @@ class UpdateFieldTest extends TestCase
     }
 
     #[Test]
+    public function it_swaps_the_list_an_address_takes_its_labels_from(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $other = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $field = Field::factory()->create([
+            'account_id' => $user->account_id,
+            'type' => FieldTypeEnum::Address,
+            'value_list_id' => $list->id,
+        ]);
+
+        new UpdateField(user: $user, field: $field, label: 'Address', valueList: $other)->execute();
+
+        $this->assertEquals($other->id, $field->fresh()->value_list_id);
+    }
+
+    #[Test]
     public function it_refuses_to_leave_a_choice_field_with_nothing_to_offer(): void
     {
         Queue::fake();

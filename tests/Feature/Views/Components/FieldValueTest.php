@@ -134,6 +134,45 @@ class FieldValueTest extends TestCase
     }
 
     #[Test]
+    public function an_address_reads_as_its_line_with_what_it_is_for_beside_it(): void
+    {
+        $list = ValueList::factory()->create();
+        $work = ValueListItem::factory()->create(['value_list_id' => $list->id, 'label' => 'Work']);
+        $field = new Field(['type' => FieldTypeEnum::Address, 'label' => 'Address', 'value_list_id' => $list->id]);
+
+        $value = new FieldValue;
+        $value->value_json = ['street' => '1725 Slough Avenue', 'city' => 'Scranton', 'country' => 'USA'];
+        $value->value_list_item_id = $work->id;
+
+        $this->render($field, $value, '1725 Slough Avenue, Scranton, USA (Work)')
+            ->assertSeeInOrder(['1725 Slough Avenue, Scranton, USA', 'Work'])
+            ->assertDontSee('(Work)');
+    }
+
+    #[Test]
+    public function an_address_nobody_said_the_use_of_reads_as_its_line_alone(): void
+    {
+        $field = new Field(['type' => FieldTypeEnum::Address, 'label' => 'Address']);
+
+        $value = new FieldValue;
+        $value->value_json = ['street' => '1725 Slough Avenue', 'city' => 'Scranton'];
+
+        $this->render($field, $value, '1725 Slough Avenue, Scranton')
+            ->assertSee('1725 Slough Avenue, Scranton')
+            ->assertDontSee('Not recorded');
+    }
+
+    #[Test]
+    public function an_address_nobody_filled_in_says_so(): void
+    {
+        $field = new Field(['type' => FieldTypeEnum::Address, 'label' => 'Address']);
+
+        $this->render($field, null, null)
+            ->assertSee('Not recorded')
+            ->assertDontSee('This kind of field cannot be filled in here yet.');
+    }
+
+    #[Test]
     public function a_date_somebody_asked_to_be_told_about_carries_a_mark_saying_what_it_does(): void
     {
         $this->markedDate('You will be reminded 7 days before, every year, at 09:00 Europe/Paris.')

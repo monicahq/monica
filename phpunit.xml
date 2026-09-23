@@ -22,11 +22,13 @@
         <env name="APP_KEY" value="base64:1zIqSKT/IRwsdzeakTeYfC/In+k0BxaCtfnzw9ApxnA="/>
         <env name="APP_URL" value="http://localhost"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
+        <env name="APP_DEBUG" value="false"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>
         <env name="DB_CONNECTION" value="testing"/>
         <env name="MAIL_MAILER" value="array"/>
+        <env name="MONICA_SELF_HOSTED" value="false"/>
         <env name="VONAGE_KEY" value="testing-key"/>
         <env name="VONAGE_SECRET" value="testing-secret"/>
         <env name="VONAGE_SMS_FROM" value="15550000000"/>

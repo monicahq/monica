@@ -9,8 +9,8 @@ on:
     types: [opened, synchronize, reopened]
   # Also on pushes to main, so anything that lands without going through a pull
   # request is still checked.
-  push:
-    branches: [main]
+  # push:
+  #   branches: [main]
   workflow_dispatch:
 
 concurrency:

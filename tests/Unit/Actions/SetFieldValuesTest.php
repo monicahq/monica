@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
+use App\Actions\SetFieldValue;
 use App\Actions\SetFieldValues;
+use App\Enums\CountryEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
 use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Enums\RepetitionOrderEnum;
+use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\FieldIsRequired;
 use App\Exceptions\ReminderNeedsADate;
@@ -281,6 +284,252 @@ class SetFieldValuesTest extends TestCase
     }
 
     #[Test]
+    public function it_clears_an_address_whose_seven_boxes_came_back_empty(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $address = $this->fieldOn($contact, ['key' => 'address', 'type' => FieldTypeEnum::Address]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => ['street' => '1725 Slough Avenue', 'city' => 'Scranton']],
+        )->execute();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => array_fill_keys(FieldValue::ADDRESS_PARTS, ' ')],
+        )->execute();
+
+        $this->assertSame(0, FieldValue::query()->count());
+    }
+
+    #[Test]
+    public function it_keeps_an_address_unfilled_when_a_label_arrives_with_seven_empty_boxes(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $home = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Home']);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address, 'value_list_id' => $list->id]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => array_fill_keys(FieldValue::ADDRESS_PARTS, '')],
+            labels: [$address->id => (string) $home->id],
+        )->execute();
+
+        $this->assertDatabaseMissing('field_values', ['field_id' => $address->id]);
+        $this->assertSame(0, $home->fresh()->usage_count);
+    }
+
+    #[Test]
+    public function it_refuses_a_required_address_whose_seven_boxes_are_empty(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address, 'is_required' => true, 'label' => 'Address']);
+
+        $this->expectException(FieldIsRequired::class);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => array_fill_keys(FieldValue::ADDRESS_PARTS, '')],
+        )->execute();
+    }
+
+    #[Test]
+    public function it_takes_a_required_address_with_one_box_filled_in_and_writes_the_rest_empty(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address, 'is_required' => true]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => array_merge(array_fill_keys(FieldValue::ADDRESS_PARTS, ''), ['city' => 'Scranton'])],
+        )->execute();
+
+        $this->assertEquals(
+            ['po_box' => '', 'extended' => '', 'street' => '', 'city' => 'Scranton', 'region' => '', 'postal_code' => '', 'country' => ''],
+            FieldValue::query()->where('field_id', $address->id)->sole()->value_json,
+        );
+    }
+
+    #[Test]
+    public function it_writes_the_country_picked_as_the_wording_of_its_item(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $canada = $this->countryOf($user, CountryEnum::Canada);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => ['city' => 'Toronto', 'country' => (string) $canada->id]],
+        )->execute();
+
+        $this->assertSame('Canada', FieldValue::query()->where('field_id', $address->id)->sole()->value_json['country']);
+    }
+
+    #[Test]
+    public function it_keeps_the_country_a_device_wrote_when_asked_to_keep_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+
+        new SetFieldValue(
+            user: $user,
+            valuable: $contact,
+            field: $address,
+            value: ['city' => 'Scranton', 'country' => 'USA'],
+        )->execute();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => ['city' => 'Stamford', 'country' => 'keep']],
+        )->execute();
+
+        $stored = FieldValue::query()->where('field_id', $address->id)->sole()->value_json;
+
+        $this->assertSame('Stamford', $stored['city']);
+        $this->assertSame('USA', $stored['country']);
+    }
+
+    #[Test]
+    public function it_writes_no_country_when_asked_to_keep_one_that_was_never_there(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => ['city' => 'Scranton', 'country' => 'keep']],
+        )->execute();
+
+        $this->assertSame('', FieldValue::query()->where('field_id', $address->id)->sole()->value_json['country']);
+    }
+
+    #[Test]
+    public function it_writes_no_country_when_none_was_picked(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+
+        new SetFieldValue(
+            user: $user,
+            valuable: $contact,
+            field: $address,
+            value: ['city' => 'Scranton', 'country' => 'USA'],
+        )->execute();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => ['city' => 'Scranton', 'country' => '']],
+        )->execute();
+
+        $this->assertSame('', FieldValue::query()->where('field_id', $address->id)->sole()->value_json['country']);
+    }
+
+    #[Test]
+    public function it_refuses_a_country_of_another_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $this->countryOf($user, CountryEnum::Canada);
+        $theirs = $this->countryOf(User::factory()->create(), CountryEnum::France);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => ['city' => 'Paris', 'country' => (string) $theirs->id]],
+        )->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_country_that_is_not_on_the_list_of_countries(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $this->countryOf($user, CountryEnum::Canada);
+        $phoneLabels = ValueList::factory()->supplied(ValueListEnum::PhoneLabels)->create(['account_id' => $user->account_id]);
+        $mobile = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $phoneLabels->id]);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => ['city' => 'Scranton', 'country' => (string) $mobile->id]],
+        )->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_country_typed_in_rather_than_picked(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => ['city' => 'Scranton', 'country' => 'Canada']],
+        )->execute();
+    }
+
+    #[Test]
     public function it_carries_the_unknown_year_of_a_date_that_comes_round_again(): void
     {
         Queue::fake();
@@ -489,6 +738,95 @@ class SetFieldValuesTest extends TestCase
             'value_string' => 'michael@home.example',
             'value_list_item_id' => $home->id,
         ]);
+    }
+
+    #[Test]
+    public function it_writes_each_repeated_address_with_the_label_that_belongs_to_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $home = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Home']);
+        $holidayHome = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Holiday home']);
+        $addresses = $this->fieldOn($contact, ['key' => 'addresses', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $address = $this->childOf($addresses, ['key' => 'address', 'type' => FieldTypeEnum::Address, 'value_list_id' => $list->id]);
+        $section = $this->sectionOf($addresses);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$addresses->id => [
+                ['values' => [$address->id => ['street' => '1725 Slough Avenue', 'city' => 'Scranton']], 'labels' => [$address->id => (string) $home->id]],
+                ['values' => [$address->id => ['street' => 'Schrute Farms', 'city' => 'Honesdale']], 'labels' => [$address->id => (string) $holidayHome->id]],
+                ['values' => [$address->id => array_fill_keys(FieldValue::ADDRESS_PARTS, '')], 'labels' => [$address->id => (string) $home->id]],
+            ]],
+        )->execute();
+
+        $rows = FieldValueRow::query()->orderBy('position')->get();
+
+        $this->assertCount(2, $rows);
+        $this->assertSame('1725 Slough Avenue', FieldValue::query()->where('field_value_row_id', $rows[0]->id)->sole()->value_json['street']);
+        $this->assertSame($home->id, FieldValue::query()->where('field_value_row_id', $rows[0]->id)->sole()->value_list_item_id);
+        $this->assertSame('Schrute Farms', FieldValue::query()->where('field_value_row_id', $rows[1]->id)->sole()->value_json['street']);
+        $this->assertSame($holidayHome->id, FieldValue::query()->where('field_value_row_id', $rows[1]->id)->sole()->value_list_item_id);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$addresses->id => [
+                ['id' => $rows[1]->id, 'values' => [$address->id => ['street' => 'Schrute Farms', 'city' => 'Honesdale']], 'labels' => [$address->id => (string) $holidayHome->id]],
+            ]],
+        )->execute();
+
+        $this->assertSame(1, FieldValueRow::query()->count());
+        $this->assertModelMissing($rows[0]);
+        $this->assertSame('Honesdale', FieldValue::query()->where('field_value_row_id', $rows[1]->id)->sole()->value_json['city']);
+    }
+
+    #[Test]
+    public function it_keeps_the_country_of_the_repetition_it_is_asked_to_keep_it_in(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $addresses = $this->fieldOn($contact, ['key' => 'addresses', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $address = $this->childOf($addresses, ['key' => 'address', 'type' => FieldTypeEnum::Address]);
+        $section = $this->sectionOf($addresses);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$addresses->id => [
+                ['values' => [$address->id => ['city' => 'Scranton']]],
+                ['values' => [$address->id => ['city' => 'Winnipeg']]],
+            ]],
+        )->execute();
+
+        $rows = FieldValueRow::query()->orderBy('position')->get();
+        $first = FieldValue::query()->where('field_value_row_id', $rows[0]->id)->sole();
+        $second = FieldValue::query()->where('field_value_row_id', $rows[1]->id)->sole();
+        $first->update(['value_json' => [...$first->value_json, 'country' => 'USA']]);
+        $second->update(['value_json' => [...$second->value_json, 'country' => 'Canada']]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$addresses->id => [
+                ['id' => $rows[0]->id, 'values' => [$address->id => ['city' => 'Stamford', 'country' => 'keep']]],
+                ['id' => $rows[1]->id, 'values' => [$address->id => ['city' => 'Winnipeg', 'country' => 'keep']]],
+            ]],
+        )->execute();
+
+        $this->assertSame('USA', $first->fresh()->value_json['country']);
+        $this->assertSame('Stamford', $first->fresh()->value_json['city']);
+        $this->assertSame('Canada', $second->fresh()->value_json['country']);
     }
 
     #[Test]
@@ -1214,6 +1552,20 @@ class SetFieldValuesTest extends TestCase
         $repeater->unsetRelation('children');
 
         return $child;
+    }
+
+    private function countryOf(User $user, CountryEnum $country): ValueListItem
+    {
+        $countries = ValueList::query()
+            ->where('account_id', $user->account_id)
+            ->where('key', ValueListEnum::Countries->value)
+            ->first()
+            ?? ValueList::factory()->supplied(ValueListEnum::Countries)->create(['account_id' => $user->account_id]);
+
+        return ValueListItem::factory()->supplied($country)->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $countries->id,
+        ]);
     }
 
     private function sectionOf(Field $field): StructureVersionSection

@@ -9,10 +9,10 @@ on:
     types: [opened, synchronize, reopened]
   # Also on pushes to main, so anything that lands without going through a pull
   # request is still tested.
-  push:
-    branches: [main]
-  release:
-    types: [created]
+  # push:
+  #   branches: [main]
+  # release:
+  #   types: [created]
   workflow_dispatch:
 
 concurrency:

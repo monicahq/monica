@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Dav;
 
+use App\Enums\AddressLabelEnum;
 use App\Enums\EmailLabelEnum;
 use App\Enums\PhoneLabelEnum;
 use App\Models\Contact;
@@ -244,6 +245,11 @@ class VCardMerger
                 (EmailLabelEnum::Other)->value => 'other',
                 default => null,
             },
+            'ADR' => match ($key) {
+                (AddressLabelEnum::Home)->value => 'home',
+                (AddressLabelEnum::Work)->value => 'work',
+                default => null,
+            },
             default => null,
         };
     }
@@ -286,7 +292,7 @@ class VCardMerger
 
         $address = array_map(
             fn (string $part): string => (string) ($parts[$part] ?? ''),
-            ['po_box', 'extended', 'street', 'city', 'region', 'postal_code', 'country'],
+            FieldValue::ADDRESS_PARTS,
         );
 
         return implode('', $address) === '' ? null : $address;

@@ -12,8 +12,8 @@ enum AddressLabelEnum: string implements SuppliedValueListItem
     case Home = 'home';
     case Work = 'work';
     case HolidayHome = 'holiday_home';
-    case Previous = 'previous';
     case Other = 'other';
+    case Custom = 'custom...';
 
     #[Override]
     public function label(): string
@@ -22,8 +22,8 @@ enum AddressLabelEnum: string implements SuppliedValueListItem
             self::Home => 'Home',
             self::Work => 'Work',
             self::HolidayHome => 'Holiday home',
-            self::Previous => 'Previous',
             self::Other => 'Other',
+            self::Custom => 'Custom...',
         };
     }
 

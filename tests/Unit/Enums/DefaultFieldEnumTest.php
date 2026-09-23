@@ -13,10 +13,11 @@ use Tests\TestCase;
 class DefaultFieldEnumTest extends TestCase
 {
     #[Test]
-    public function it_names_the_list_an_email_and_a_phone_take_their_label_from(): void
+    public function it_names_the_list_an_email_a_phone_and_an_address_take_their_label_from(): void
     {
         $this->assertEquals(ValueListEnum::EmailLabels, DefaultFieldEnum::Email->valueList());
         $this->assertEquals(ValueListEnum::PhoneLabels, DefaultFieldEnum::Phone->valueList());
+        $this->assertEquals(ValueListEnum::AddressLabels, DefaultFieldEnum::Address->valueList());
     }
 
     #[Test]

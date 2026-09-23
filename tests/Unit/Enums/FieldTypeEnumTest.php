@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Enums;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\ValueListEnum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -68,13 +69,13 @@ class FieldTypeEnumTest extends TestCase
         $this->assertTrue(FieldTypeEnum::Text->hasAnInput());
         $this->assertTrue(FieldTypeEnum::RecurringDate->hasAnInput());
         $this->assertTrue(FieldTypeEnum::Multiselect->hasAnInput());
+        $this->assertTrue(FieldTypeEnum::Address->hasAnInput());
     }
 
     #[Test]
     public function it_says_which_types_still_need_machinery_of_their_own(): void
     {
         $this->assertFalse(FieldTypeEnum::Relation->hasAnInput());
-        $this->assertFalse(FieldTypeEnum::Address->hasAnInput());
         $this->assertFalse(FieldTypeEnum::Avatar->hasAnInput());
     }
 
@@ -123,9 +124,10 @@ class FieldTypeEnumTest extends TestCase
     {
         $this->assertTrue(FieldTypeEnum::Email->usesALabelList());
         $this->assertTrue(FieldTypeEnum::Phone->usesALabelList());
+        $this->assertTrue(FieldTypeEnum::Address->usesALabelList());
 
         foreach (FieldTypeEnum::cases() as $type) {
-            if ($type === FieldTypeEnum::Email || $type === FieldTypeEnum::Phone) {
+            if (in_array($type, [FieldTypeEnum::Email, FieldTypeEnum::Phone, FieldTypeEnum::Address], true)) {
                 continue;
             }
 
@@ -138,9 +140,26 @@ class FieldTypeEnumTest extends TestCase
     {
         $this->assertFalse(FieldTypeEnum::Email->usesValueList());
         $this->assertFalse(FieldTypeEnum::Phone->usesValueList());
+        $this->assertFalse(FieldTypeEnum::Address->usesValueList());
         $this->assertFalse(FieldTypeEnum::Select->usesALabelList());
         $this->assertFalse(FieldTypeEnum::Radio->usesALabelList());
         $this->assertFalse(FieldTypeEnum::Multiselect->usesALabelList());
+    }
+
+    #[Test]
+    public function it_names_the_supplied_list_a_label_comes_from(): void
+    {
+        $this->assertEquals(ValueListEnum::EmailLabels, FieldTypeEnum::Email->suppliedLabelList());
+        $this->assertEquals(ValueListEnum::PhoneLabels, FieldTypeEnum::Phone->suppliedLabelList());
+        $this->assertEquals(ValueListEnum::AddressLabels, FieldTypeEnum::Address->suppliedLabelList());
+
+        foreach (FieldTypeEnum::cases() as $type) {
+            if ($type->usesALabelList()) {
+                continue;
+            }
+
+            $this->assertNull($type->suppliedLabelList());
+        }
     }
 
     #[Test]

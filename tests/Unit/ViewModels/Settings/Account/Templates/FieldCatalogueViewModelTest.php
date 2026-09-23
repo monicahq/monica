@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Settings\Account\Templates;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\ValueListEnum;
+use App\Models\ValueList;
 use App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -89,6 +91,46 @@ class FieldCatalogueViewModelTest extends TestCase
         $this->assertEquals('labelled', $types['phone']['kind']);
         $this->assertNotEmpty($types['email']['label']);
         $this->assertNotEmpty($types['phone']['label']);
+    }
+
+    #[Test]
+    public function it_draws_an_address_as_what_it_is_for_above_the_boxes_it_is_written_in(): void
+    {
+        $types = [];
+
+        foreach ($this->catalogue()->types() as $type) {
+            $types[$type['key']] = $type;
+        }
+
+        $this->assertStringContainsString('what the address is for', $types['address']['description']);
+        $this->assertEquals('rows', $types['address']['preview']['kind']);
+        $this->assertEquals(__('Home'), $types['address']['preview']['label']);
+        $this->assertEquals(
+            [__('Street'), __('City'), __('Postcode'), __('Country')],
+            array_map(fn (array $row): string => $row[0], $types['address']['preview']['rows']),
+        );
+    }
+
+    #[Test]
+    public function it_offers_a_label_list_for_an_email_a_phone_and_an_address(): void
+    {
+        $this->assertEquals(['email', 'phone', 'address'], $this->catalogue()->typesOfferingALabelList());
+    }
+
+    #[Test]
+    public function it_names_the_supplied_list_of_labels_each_labelled_type_starts_from(): void
+    {
+        $email = new ValueList(['key' => ValueListEnum::EmailLabels->value]);
+        $email->id = 4;
+        $address = new ValueList(['key' => ValueListEnum::AddressLabels->value]);
+        $address->id = 7;
+        $homemade = new ValueList(['key' => null]);
+        $homemade->id = 9;
+
+        $this->assertEquals(
+            ['email' => 4, 'address' => 7],
+            $this->catalogue()->suppliedLabelListIds(collect([$homemade, $email, $address])),
+        );
     }
 
     #[Test]

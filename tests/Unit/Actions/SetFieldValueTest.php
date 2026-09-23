@@ -109,7 +109,128 @@ class SetFieldValueTest extends TestCase
         $this->assertEquals('42.000000', $number->value_number);
         $this->assertTrue($yesNo->value_boolean);
         $this->assertEquals('2005-03-24', $date->value_date->format('Y-m-d'));
-        $this->assertEquals(['street' => '1725 Slough Avenue', 'city' => 'Scranton'], $address->value_json);
+        $this->assertEquals('1725 Slough Avenue', $address->value_json['street']);
+        $this->assertEquals('Scranton', $address->value_json['city']);
+    }
+
+    #[Test]
+    public function it_writes_an_address_as_the_seven_parts_a_card_carries_in_the_order_a_card_writes_them(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+
+        $value = new SetFieldValue(
+            user: $user,
+            valuable: $contact,
+            field: $this->fieldOf($user, ['type' => FieldTypeEnum::Address]),
+            value: ['city' => 'Scranton', 'street' => '1725 Slough Avenue', 'region' => null, 'postal_code' => '18505'],
+        )->execute();
+
+        $this->assertSame([
+            'po_box' => '',
+            'extended' => '',
+            'street' => '1725 Slough Avenue',
+            'city' => 'Scranton',
+            'region' => '',
+            'postal_code' => '18505',
+            'country' => '',
+        ], $value->value_json);
+    }
+
+    #[Test]
+    public function it_strips_the_markup_out_of_every_part_of_an_address(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+
+        $value = new SetFieldValue(
+            user: $user,
+            valuable: $contact,
+            field: $this->fieldOf($user, ['type' => FieldTypeEnum::Address]),
+            value: ['street' => '<b>1725 Slough Avenue</b>', 'city' => '  <script>alert("x")</script>Scranton  '],
+        )->execute();
+
+        $this->assertSame('1725 Slough Avenue', $value->value_json['street']);
+        $this->assertSame('Scranton', $value->value_json['city']);
+    }
+
+    #[Test]
+    public function it_writes_an_address_and_the_label_saying_what_it_is_for(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $work = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'key' => 'work',
+            'label' => 'Work',
+        ]);
+        $field = $this->labelledFieldOf($user, $list, FieldTypeEnum::Address);
+
+        $value = new SetFieldValue(
+            user: $user,
+            valuable: $contact,
+            field: $field,
+            value: ['street' => '1725 Slough Avenue', 'city' => 'Scranton'],
+            valueListItem: $work,
+        )->execute();
+
+        $this->assertDatabaseHas('field_values', [
+            'id' => $value->id,
+            'value_list_item_id' => $work->id,
+        ]);
+        $this->assertSame('1725 Slough Avenue', $value->fresh()->value_json['street']);
+        $this->assertSame(1, $work->fresh()->usage_count);
+    }
+
+    #[Test]
+    public function it_refuses_an_address_label_that_is_not_on_the_list_the_field_names(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $field = $this->labelledFieldOf($user, $list, FieldTypeEnum::Address);
+        $elsewhere = ValueListItem::factory()->create(['account_id' => $user->account_id, 'label' => 'Mobile']);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        new SetFieldValue(
+            user: $user,
+            valuable: $contact,
+            field: $field,
+            value: ['street' => '1725 Slough Avenue'],
+            valueListItem: $elsewhere,
+        )->execute();
+    }
+
+    #[Test]
+    public function it_lets_two_records_share_an_address_on_a_field_that_asks_for_unique_values(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $other = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $contact->vault_id,
+            'first_name' => 'Jim',
+            'last_name' => 'Halpert',
+        ]);
+        $field = $this->fieldOf($user, ['type' => FieldTypeEnum::Address, 'is_unique' => true]);
+
+        new SetFieldValue(user: $user, valuable: $contact, field: $field, value: ['street' => '1725 Slough Avenue'])->execute();
+        $second = new SetFieldValue(user: $user, valuable: $other, field: $field, value: ['street' => '1725 Slough Avenue'])->execute();
+
+        $this->assertSame('1725 Slough Avenue', $second->value_json['street']);
     }
 
     #[Test]

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Vaults;
 
+use App\Enums\CountryEnum;
 use App\Enums\FieldTypeEnum;
+use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
@@ -162,6 +164,253 @@ class ContactSectionControllerTest extends TestCase
             ->assertSessionHasErrors('fields.'.$knee->id);
 
         $this->assertSame(0, FieldValue::query()->count());
+    }
+
+    #[Test]
+    public function it_saves_an_address_and_what_it_is_for(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        $labels = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $work = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $labels->id, 'label' => 'Work']);
+        [$address, $section] = $this->addressOn($user, $michael, ['value_list_id' => $labels->id]);
+        $usa = $this->countryOf($user, CountryEnum::UnitedStates);
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
+                [
+                    'fields' => [$address->id => [
+                        'street' => '1725 Slough Avenue',
+                        'extended' => '',
+                        'po_box' => '',
+                        'city' => 'Scranton',
+                        'region' => 'PA',
+                        'postal_code' => '18505',
+                        'country' => (string) $usa->id,
+                    ]],
+                    'labels' => [$address->id => (string) $work->id],
+                ],
+            )
+            ->assertSessionHasNoErrors()
+            ->assertSessionHas('status');
+
+        $stored = FieldValue::query()->where('field_id', $address->id)->sole();
+
+        $this->assertSame($work->id, $stored->value_list_item_id);
+        $this->assertEquals([
+            'po_box' => '',
+            'extended' => '',
+            'street' => '1725 Slough Avenue',
+            'city' => 'Scranton',
+            'region' => 'PA',
+            'postal_code' => '18505',
+            'country' => 'United States',
+        ], $stored->value_json);
+    }
+
+    #[Test]
+    public function it_saves_the_wording_somebody_typed_for_the_label_of_an_address(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $dwight = $this->contact($vault, 'Dwight', 'Schrute');
+        $labels = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $custom = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $labels->id,
+            'key' => ValueListItem::OPEN_KEY,
+            'label' => 'Custom...',
+        ]);
+        [$address, $section] = $this->addressOn($user, $dwight, ['value_list_id' => $labels->id]);
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $dwight, 'structureVersionSection' => $section]),
+                [
+                    'fields' => [$address->id => ['street' => 'Schrute Farms', 'city' => 'Honesdale']],
+                    'labels' => [$address->id => (string) $custom->id],
+                    'label_wordings' => [$address->id => 'Beet farm'],
+                ],
+            )
+            ->assertSessionHasNoErrors();
+
+        $stored = FieldValue::query()->where('field_id', $address->id)->sole();
+
+        $this->assertSame($custom->id, $stored->value_list_item_id);
+        $this->assertSame('Beet farm', $stored->label_wording);
+        $this->assertSame('Schrute Farms', $stored->value_json['street']);
+    }
+
+    #[Test]
+    public function it_clears_an_address_whose_boxes_all_came_back_empty(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        [$address, $section] = $this->addressOn($user, $michael);
+        $route = route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]);
+
+        $this->actingAs($user)->put($route, ['fields' => [$address->id => ['city' => 'Scranton']]]);
+        $this->assertSame(1, FieldValue::query()->count());
+
+        $this->actingAs($user)
+            ->put($route, ['fields' => [$address->id => array_fill_keys(FieldValue::ADDRESS_PARTS, '')]])
+            ->assertSessionHasNoErrors();
+
+        $this->assertSame(0, FieldValue::query()->count());
+    }
+
+    #[Test]
+    public function it_sends_the_block_back_open_when_a_required_address_is_left_empty(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        [$address, $section] = $this->addressOn($user, $michael, ['is_required' => true]);
+
+        $response = $this->actingAs($user)->put(
+            route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
+            ['fields' => [$address->id => array_fill_keys(FieldValue::ADDRESS_PARTS, '')]],
+        );
+
+        $response->assertRedirect(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]));
+        $response->assertSessionHasErrors('fields');
+        $this->assertStringContainsString('Address', session('errors')->first('fields'));
+        $this->assertSame(0, FieldValue::query()->count());
+    }
+
+    #[Test]
+    public function it_refuses_a_street_longer_than_its_box_and_names_the_box(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        [$address, $section] = $this->addressOn($user, $michael);
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
+                ['fields' => [$address->id => ['street' => str_repeat('a', 256)]]],
+            )
+            ->assertSessionHasErrors("fields.{$address->id}.street");
+
+        $this->assertStringContainsString('street of address', session('errors')->first("fields.{$address->id}.street"));
+        $this->assertSame(0, FieldValue::query()->count());
+    }
+
+    #[Test]
+    public function it_refuses_a_country_the_account_does_not_offer(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        [$address, $section] = $this->addressOn($user, $michael);
+        $this->countryOf($user, CountryEnum::UnitedStates);
+        $theirs = $this->countryOf(User::factory()->create(), CountryEnum::Canada);
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
+                ['fields' => [$address->id => ['city' => 'Toronto', 'country' => (string) $theirs->id]]],
+            )
+            ->assertSessionHasErrors("fields.{$address->id}.country");
+
+        $this->assertSame(0, FieldValue::query()->count());
+    }
+
+    #[Test]
+    public function it_opens_an_address_as_seven_boxes_to_fill_in(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        [$address, $section] = $this->addressOn($user, $michael);
+
+        $response = $this->actingAs($user)->get(route('contacts.sections.edit', [
+            'vault' => $vault,
+            'contact' => $michael,
+            'structureVersionSection' => $section,
+        ]));
+
+        $response->assertStatus(200);
+
+        foreach (FieldValue::ADDRESS_PARTS as $part) {
+            $response->assertSee('name="fields['.$address->id.']['.$part.']"', false);
+        }
+
+        $response->assertDontSee('This kind of field cannot be filled in here yet.');
+    }
+
+    #[Test]
+    public function it_opens_an_address_a_device_wrote_with_every_part_it_wrote(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $dwight = $this->contact($vault, 'Dwight', 'Schrute');
+        [$address, $section] = $this->addressOn($user, $dwight);
+        $this->countryOf($user, CountryEnum::UnitedStates);
+        $this->deviceAddressOn($dwight, $address);
+
+        $this->actingAs($user)
+            ->get(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $dwight, 'structureVersionSection' => $section]))
+            ->assertStatus(200)
+            ->assertSee('value="PO Box 12"', false)
+            ->assertSee('value="Suite 3"', false)
+            ->assertSee('<option value="keep" selected>USA</option>', false);
+    }
+
+    #[Test]
+    public function it_keeps_every_part_a_device_wrote_when_only_the_city_changes(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $dwight = $this->contact($vault, 'Dwight', 'Schrute');
+        [$address, $section] = $this->addressOn($user, $dwight);
+        $this->countryOf($user, CountryEnum::UnitedStates);
+        $this->deviceAddressOn($dwight, $address);
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $dwight, 'structureVersionSection' => $section]),
+                ['fields' => [$address->id => [
+                    'street' => '1725 Slough Avenue',
+                    'extended' => 'Suite 3',
+                    'po_box' => 'PO Box 12',
+                    'city' => 'Stamford',
+                    'region' => 'PA',
+                    'postal_code' => '18505',
+                    'country' => 'keep',
+                ]]],
+            )
+            ->assertSessionHasNoErrors();
+
+        $this->assertEquals([
+            'po_box' => 'PO Box 12',
+            'extended' => 'Suite 3',
+            'street' => '1725 Slough Avenue',
+            'city' => 'Stamford',
+            'region' => 'PA',
+            'postal_code' => '18505',
+            'country' => 'USA',
+        ], FieldValue::query()->where('field_id', $address->id)->sole()->value_json);
     }
 
     #[Test]
@@ -383,6 +632,55 @@ class ContactSectionControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('fields['.$documents->id.'][0][labels]['.$email->id.']', false)
             ->assertDontSee('labels['.$documents->id.'][0]', false);
+    }
+
+    #[Test]
+    public function it_writes_two_repeated_addresses_each_with_what_it_is_for(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $dwight = $this->contact($vault, 'Dwight', 'Schrute');
+
+        $version = $this->versionWithSections($user, 'Information', ['Addresses' => 'Addresses']);
+        $dwight->update(['structure_version_id' => $version->id]);
+        $addresses = Field::query()->where('label', 'Addresses')->firstOrFail();
+        $addresses->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
+        $addresses->update(['type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $home = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Home']);
+        $holidayHome = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Holiday home']);
+        $address = $this->childOf($addresses, 'Address', ['type' => FieldTypeEnum::Address, 'value_list_id' => $list->id]);
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $dwight, 'structureVersionSection' => $this->sectionNamed($version, 'Addresses')]),
+                ['fields' => [$addresses->id => [
+                    [
+                        'values' => [$address->id => ['street' => '1725 Slough Avenue', 'city' => 'Scranton']],
+                        'labels' => [$address->id => (string) $home->id],
+                    ],
+                    [
+                        'values' => [$address->id => ['street' => 'Schrute Farms', 'city' => 'Honesdale']],
+                        'labels' => [$address->id => (string) $holidayHome->id],
+                    ],
+                ]]],
+            )
+            ->assertSessionHasNoErrors();
+
+        $rows = FieldValueRow::query()->where('field_id', $addresses->id)->orderBy('position')->get();
+
+        $this->assertCount(2, $rows);
+
+        $first = FieldValue::query()->where('field_value_row_id', $rows[0]->id)->sole();
+        $second = FieldValue::query()->where('field_value_row_id', $rows[1]->id)->sole();
+
+        $this->assertEqualsCanonicalizing(FieldValue::ADDRESS_PARTS, array_keys($first->value_json));
+        $this->assertSame('1725 Slough Avenue', $first->value_json['street']);
+        $this->assertSame($home->id, $first->value_list_item_id);
+        $this->assertSame('Schrute Farms', $second->value_json['street']);
+        $this->assertSame($holidayHome->id, $second->value_list_item_id);
     }
 
     #[Test]
@@ -829,6 +1127,59 @@ class ContactSectionControllerTest extends TestCase
         $sectionVersion->update(['status' => VersionStatusEnum::Published]);
 
         return $child;
+    }
+
+    /**
+     * @param  array<string, mixed>  $attributes
+     * @return array{0: Field, 1: StructureVersionSection}
+     */
+    private function addressOn(User $user, Contact $contact, array $attributes = []): array
+    {
+        $version = $this->versionWithSections($user, 'Information', ['Addresses' => 'Address']);
+        $contact->update(['structure_version_id' => $version->id]);
+
+        $address = Field::query()->where('label', 'Address')->firstOrFail();
+        $address->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
+        $address->update(['type' => FieldTypeEnum::Address, ...$attributes]);
+        $address->sectionVersion->update(['status' => VersionStatusEnum::Published]);
+
+        return [$address->refresh(), $this->sectionNamed($version, 'Addresses')];
+    }
+
+    private function deviceAddressOn(Contact $contact, Field $address): FieldValue
+    {
+        return FieldValue::factory()->create([
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+            'valuable_type' => $contact->getMorphClass(),
+            'valuable_id' => $contact->id,
+            'field_id' => $address->id,
+            'field_key' => $address->key,
+            'value_string' => null,
+            'value_json' => [
+                'po_box' => 'PO Box 12',
+                'extended' => 'Suite 3',
+                'street' => '1725 Slough Avenue',
+                'city' => 'Scranton',
+                'region' => 'PA',
+                'postal_code' => '18505',
+                'country' => 'USA',
+            ],
+        ]);
+    }
+
+    private function countryOf(User $user, CountryEnum $country): ValueListItem
+    {
+        $countries = ValueList::query()
+            ->where('account_id', $user->account_id)
+            ->where('key', ValueListEnum::Countries->value)
+            ->first()
+            ?? ValueList::factory()->supplied(ValueListEnum::Countries)->create(['account_id' => $user->account_id]);
+
+        return ValueListItem::factory()->supplied($country)->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $countries->id,
+        ]);
     }
 
     /** @param  array<string, string>  $sections  the field label, keyed by the section name */

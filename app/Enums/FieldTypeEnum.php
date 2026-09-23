@@ -54,7 +54,8 @@ enum FieldTypeEnum: string
         return in_array($this, [
             self::Text, self::Textarea, self::Number, self::Boolean, self::Url,
             self::Email, self::Phone, self::Select, self::Multiselect, self::Radio,
-            self::Date, self::RecurringDate, self::File, self::Image, self::Repeater,
+            self::Date, self::RecurringDate, self::File, self::Image, self::Address,
+            self::Repeater,
         ], true);
     }
 
@@ -75,7 +76,17 @@ enum FieldTypeEnum: string
      */
     public function usesALabelList(): bool
     {
-        return in_array($this, [self::Email, self::Phone], true);
+        return in_array($this, [self::Email, self::Phone, self::Address], true);
+    }
+
+    public function suppliedLabelList(): ?ValueListEnum
+    {
+        return match ($this) {
+            self::Email => ValueListEnum::EmailLabels,
+            self::Phone => ValueListEnum::PhoneLabels,
+            self::Address => ValueListEnum::AddressLabels,
+            default => null,
+        };
     }
 
     public function isRelation(): bool

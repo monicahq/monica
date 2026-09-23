@@ -319,4 +319,83 @@ class FieldValueFormatterTest extends TestCase
             $this->value($user, FieldTypeEnum::Address, ['value_string' => null, 'value_json' => null]),
         ));
     }
+
+    #[Test]
+    public function it_reads_an_address_with_what_it_is_for(): void
+    {
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $work = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'label' => 'Work',
+        ]);
+
+        $this->assertEquals('1725 Slough Avenue, Scranton (Work)', new FieldValueFormatter($user)->format(
+            $this->value($user, FieldTypeEnum::Address, [
+                'value_json' => ['street' => '1725 Slough Avenue', 'city' => 'Scranton'],
+                'value_list_item_id' => $work->id,
+            ]),
+        ));
+    }
+
+    #[Test]
+    public function it_reads_the_wording_typed_beside_the_open_label_of_an_address(): void
+    {
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $custom = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'key' => ValueListItem::OPEN_KEY,
+            'label' => 'Custom...',
+        ]);
+
+        $this->assertEquals('Schrute Farms, Honesdale (Beet farm)', new FieldValueFormatter($user)->format(
+            $this->value($user, FieldTypeEnum::Address, [
+                'value_json' => ['street' => 'Schrute Farms', 'city' => 'Honesdale'],
+                'value_list_item_id' => $custom->id,
+                'label_wording' => 'Beet farm',
+            ]),
+        ));
+    }
+
+    #[Test]
+    public function it_still_reads_an_address_label_nobody_offers_any_more(): void
+    {
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $previous = ValueListItem::factory()->disabled()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'label' => 'Previous',
+        ]);
+
+        $this->assertEquals('Stamford (Previous)', new FieldValueFormatter($user)->format(
+            $this->value($user, FieldTypeEnum::Address, [
+                'value_json' => ['city' => 'Stamford'],
+                'value_list_item_id' => $previous->id,
+            ]),
+        ));
+    }
+
+    #[Test]
+    public function it_joins_the_filled_parts_of_an_address_in_the_order_a_card_carries_them(): void
+    {
+        $this->assertEquals('PO Box 12, Suite 3, 1725 Slough Avenue, Scranton', FieldValueFormatter::addressLine([
+            'city' => 'Scranton',
+            'street' => '1725 Slough Avenue',
+            'extended' => 'Suite 3',
+            'po_box' => 'PO Box 12',
+            'region' => ' ',
+        ]));
+    }
+
+    #[Test]
+    public function it_joins_nothing_out_of_an_address_whose_parts_are_all_empty(): void
+    {
+        $this->assertNull(FieldValueFormatter::addressLine(['street' => '', 'city' => ' ']));
+        $this->assertNull(FieldValueFormatter::addressLine([]));
+        $this->assertNull(FieldValueFormatter::addressLine(null));
+    }
 }

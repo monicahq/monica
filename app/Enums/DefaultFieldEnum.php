@@ -122,6 +122,7 @@ enum DefaultFieldEnum: string implements Translatable
             self::Gender => ValueListEnum::Genders,
             self::Email => ValueListEnum::EmailLabels,
             self::Phone => ValueListEnum::PhoneLabels,
+            self::Address => ValueListEnum::AddressLabels,
             default => null,
         };
     }

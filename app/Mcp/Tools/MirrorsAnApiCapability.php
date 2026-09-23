@@ -9,8 +9,7 @@ use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Auth\AuthenticationException;
-use Laravel\Mcp\Enums\ErrorCode;
-use Laravel\Mcp\Exceptions\JsonRpcException;
+use Illuminate\Validation\ValidationException;
 use Laravel\Mcp\Request;
 
 /**
@@ -19,6 +18,9 @@ use Laravel\Mcp\Request;
  *
  * A record outside the key's account, or outside the vault the request named, is reported as not
  * existing rather than as forbidden, in a translated sentence the assistant can relay as it stands.
+ * The refusal is raised as a validation error because that is the one kind the MCP package relays
+ * word for word whatever the debug setting. Any other exception reaches the assistant as a generic
+ * server error once debug is off, and is reported as one.
  */
 trait MirrorsAnApiCapability
 {
@@ -81,8 +83,8 @@ trait MirrorsAnApiCapability
         return $template;
     }
 
-    protected function doesNotExist(string $message): JsonRpcException
+    protected function doesNotExist(string $message): ValidationException
     {
-        return new JsonRpcException($message, ErrorCode::INVALID_PARAMS->value);
+        return ValidationException::withMessages(['address' => $message]);
     }
 }

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderMomentDirectionEnum;
 use App\Enums\ReminderMomentUnitEnum;
+use App\Helpers\FieldValueFormatter;
 use App\Helpers\FieldValueRules;
 use App\Models\Field;
 use App\Models\Reminder;
@@ -79,11 +81,32 @@ class SaveFieldValuesRequest extends FormRequest
         foreach ($this->fieldsInTheSection() as $field) {
             $names["fields.{$field->id}"] = mb_strtolower($field->label);
             $names["labels.{$field->id}"] = mb_strtolower($field->label);
+            $names = array_merge($names, $this->addressPartsOf($field, "fields.{$field->id}"));
 
             foreach ($field->children as $child) {
                 $names["fields.{$field->id}.*.values.{$child->id}"] = mb_strtolower($child->label);
                 $names["fields.{$field->id}.*.labels.{$child->id}"] = mb_strtolower($child->label);
+                $names = array_merge($names, $this->addressPartsOf($child, "fields.{$field->id}.*.values.{$child->id}"));
             }
+        }
+
+        return $names;
+    }
+
+    /** @return array<string, string> */
+    private function addressPartsOf(Field $field, string $prefix): array
+    {
+        if ($field->type !== FieldTypeEnum::Address) {
+            return [];
+        }
+
+        $names = [];
+
+        foreach (FieldValueFormatter::addressPartNames() as $part => $partName) {
+            $names["{$prefix}.{$part}"] = __(':part of :field', [
+                'part' => mb_strtolower($partName),
+                'field' => mb_strtolower($field->label),
+            ]);
         }
 
         return $names;

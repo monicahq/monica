@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Http\Dav;
 
 use App\Actions\ImportVCard;
+use App\Enums\AddressLabelEnum;
 use App\Enums\FieldTypeEnum;
 use App\Http\Dav\VCardMerger;
 use App\Models\Contact;
@@ -341,6 +342,72 @@ class VCardMergerTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_an_address_marked_home_or_work_as_the_type_a_card_knows(): void
+    {
+        $user = User::factory()->create();
+        $version = Structure::withFields($user, [
+            ['type' => FieldTypeEnum::Address, 'label' => 'Address'],
+        ]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
+        $home = $this->labelOn($version, 0, AddressLabelEnum::Home->value, 'Home');
+        $work = ValueListItem::factory()->create([
+            'account_id' => $home->account_id,
+            'value_list_id' => $home->value_list_id,
+            'key' => AddressLabelEnum::Work->value,
+            'label' => 'Work',
+        ]);
+        $value = $this->value($contact, $version, 0, [
+            'value_string' => null,
+            'value_json' => $this->slough(),
+            'value_list_item_id' => $home->id,
+        ]);
+
+        $this->assertStringContainsString('ADR;TYPE=home:PO Box 12;Suite 3;1725 Slough Avenue;Scranton;PA;18505;USA', new VCardMerger()->merge($contact));
+
+        $value->update(['value_list_item_id' => $work->id]);
+
+        $card = new VCardMerger()->merge($contact->fresh());
+
+        $this->assertStringContainsString('ADR;TYPE=work:PO Box 12;Suite 3;1725 Slough Avenue;Scranton;PA;18505;USA', $card);
+        $this->assertStringNotContainsString('X-ABLabel', $card);
+    }
+
+    #[Test]
+    public function it_writes_an_address_label_no_card_standardised_as_its_wording(): void
+    {
+        $user = User::factory()->create();
+        $version = Structure::withFields($user, [
+            ['type' => FieldTypeEnum::Address, 'label' => 'Address'],
+        ]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
+        $other = $this->labelOn($version, 0, AddressLabelEnum::Other->value, 'Other');
+        $this->value($contact, $version, 0, [
+            'value_string' => null,
+            'value_json' => $this->slough(),
+            'value_list_item_id' => $other->id,
+        ]);
+
+        $card = new VCardMerger()->merge($contact);
+
+        $this->assertMatchesRegularExpression('/item1\.ADR:PO Box 12;Suite 3;1725 Slough Avenue;Scranton;PA;18505;USA/', $card);
+        $this->assertStringContainsString('item1.X-ABLabel:Other', $card);
+        $this->assertStringNotContainsString('TYPE=', $card);
+    }
+
+    #[Test]
+    public function it_writes_the_name_of_the_field_beside_an_address_nobody_labelled(): void
+    {
+        $user = User::factory()->create();
+        $version = Structure::withFields($user, [
+            ['type' => FieldTypeEnum::Address, 'label' => 'Branch'],
+        ]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
+        $this->value($contact, $version, 0, ['value_string' => null, 'value_json' => $this->slough()]);
+
+        $this->assertStringContainsString('X-ABLabel:Branch', new VCardMerger()->merge($contact));
+    }
+
+    #[Test]
     public function it_leaves_a_sensitive_field_out_of_the_card_of_a_key_that_cannot_reach_it(): void
     {
         $user = User::factory()->create();
@@ -420,6 +487,20 @@ class VCardMergerTest extends TestCase
             'field_id' => $field->id,
             'field_key' => $field->key,
         ]);
+    }
+
+    /** @return array<string, string> */
+    private function slough(): array
+    {
+        return [
+            'po_box' => 'PO Box 12',
+            'extended' => 'Suite 3',
+            'street' => '1725 Slough Avenue',
+            'city' => 'Scranton',
+            'region' => 'PA',
+            'postal_code' => '18505',
+            'country' => 'USA',
+        ];
     }
 
     /** @return array<int, Field> */

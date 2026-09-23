@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\ViewModels\Settings\Account\Templates;
 
 use App\Enums\FieldTypeEnum;
+use App\Models\ValueList;
+use Illuminate\Support\Collection;
 
 class FieldCatalogueViewModel
 {
@@ -113,6 +115,31 @@ class FieldCatalogueViewModel
         ));
     }
 
+    /**
+     * @param  Collection<int, ValueList>  $valueLists
+     * @return array<string, int>
+     */
+    public function suppliedLabelListIds(Collection $valueLists): array
+    {
+        $ids = [];
+
+        foreach (FieldTypeEnum::cases() as $type) {
+            $supplied = $type->suppliedLabelList();
+
+            if ($supplied === null) {
+                continue;
+            }
+
+            $list = $valueLists->firstWhere('key', $supplied->value);
+
+            if ($list instanceof ValueList) {
+                $ids[$type->value] = $list->id;
+            }
+        }
+
+        return $ids;
+    }
+
     public static function labelFor(FieldTypeEnum $type): string
     {
         foreach (self::catalogue() as $family) {
@@ -202,7 +229,7 @@ class FieldCatalogueViewModel
                 'types' => [
                     ['key' => 'email', 'label' => __('Email'), 'description' => __('An email address, checked before it is saved, and what it is for.'), 'example' => __('The kennel’s booking address, marked as work'), 'mark' => 'mail', 'preview' => ['kind' => 'labelled', 'label' => __('Work'), 'value' => 'bookings@kennel.example', 'mono' => true]],
                     ['key' => 'phone', 'label' => __('Phone'), 'description' => __('A phone number, stored as written, and what it is for.'), 'example' => __('The out of hours clinic, marked as mobile'), 'mark' => 'device', 'preview' => ['kind' => 'labelled', 'label' => __('Mobile'), 'value' => __('+44 7700 900461'), 'mono' => true]],
-                    ['key' => 'address', 'label' => __('Address'), 'description' => __('Street, city, postcode and country in one block.'), 'example' => __('Where the kennel is'), 'mark' => 'place', 'preview' => ['kind' => 'rows', 'rows' => [[__('Street'), 'full'], [__('City'), 'medium'], [__('Postcode'), 'narrow']]]],
+                    ['key' => 'address', 'label' => __('Address'), 'description' => __('Street, city, postcode and country in one block, and what the address is for.'), 'example' => __('Where the kennel is'), 'mark' => 'place', 'preview' => ['kind' => 'rows', 'label' => __('Home'), 'rows' => [[__('Street'), 'full'], [__('City'), 'medium'], [__('Postcode'), 'narrow'], [__('Country'), 'medium']]]],
                     ['key' => 'repeater', 'label' => __('Repeater'), 'description' => __('A group of fields that can be filled again and again. A repeater inside a repeater is refused.'), 'example' => __('Vaccinations: vaccine, date, next due'), 'mark' => 'layers', 'preview' => ['kind' => 'rows', 'repeats' => true, 'rows' => [[__('Vaccine'), 'full'], [__('Date given'), 'wide'], [__('Next due'), 'narrow']]]],
                     ['key' => 'money', 'label' => __('Money'), 'description' => __('An amount with its currency.'), 'example' => __('What the insurance costs a year'), 'mark' => 'coin', 'preview' => ['kind' => 'input', 'prefix' => __('GBP'), 'value' => __('40.00'), 'mono' => true]],
                     ['key' => 'full_name', 'label' => __('Full name'), 'description' => __('First, middle and last name, sorted properly.'), 'example' => __('The name on the pedigree'), 'mark' => 'profile', 'preview' => ['kind' => 'rows', 'rows' => [[__('First'), 'medium'], [__('Middle'), 'narrow'], [__('Last'), 'medium']]]],

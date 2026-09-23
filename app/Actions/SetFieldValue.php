@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\FieldValueIsNotUnique;
@@ -245,12 +246,27 @@ class SetFieldValue
             'value_number' => $this->value === null ? null : (float) $this->value,
             'value_boolean' => (bool) $this->value,
             'value_date' => $this->readTheDate(),
-            'value_json' => $this->value,
+            'value_json' => $this->field->type === FieldTypeEnum::Address ? $this->address() : $this->value,
             'value_list_item_id' => $this->valueListItem?->id,
             'value_list_item_ids' => array_map(fn (ValueListItem $item): int => $item->id, $this->valueListItems),
             'value_file_id' => $this->file?->id,
             default => $this->value,
         };
+    }
+
+    /** @return array<string, string> */
+    private function address(): array
+    {
+        $given = is_array($this->value) ? $this->value : [];
+        $address = [];
+
+        foreach (FieldValue::ADDRESS_PARTS as $part) {
+            $address[$part] = is_scalar($given[$part] ?? null)
+                ? TextSanitizer::plainText((string) $given[$part])
+                : '';
+        }
+
+        return $address;
     }
 
     private function readTheDate(): mixed

@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\RepetitionOrderEnum;
+use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;
@@ -18,6 +19,7 @@ use App\Models\ValueList;
 use App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Js;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -129,6 +131,18 @@ class FieldControllerTest extends TestCase
             ->assertSee(__('Where do the labels come from?'))
             ->assertSee($list->name)
             ->assertSee('offersALabelList', escape: false);
+    }
+
+    #[Test]
+    public function it_picks_the_supplied_list_of_labels_for_a_type_that_has_one(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $addressLabels = ValueList::factory()->supplied(ValueListEnum::AddressLabels)->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
+            ->assertSee('suppliedLists: '.Js::from(['address' => $addressLabels->id]), escape: false)
+            ->assertSee('x-model="listId"', escape: false);
     }
 
     #[Test]

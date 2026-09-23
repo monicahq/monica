@@ -3,7 +3,7 @@
   "specName": "Edit relationship form",
   "branch": "2026-09-23-edit-relationship-form",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -256,7 +256,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-23T15:31:16.139Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-23T19:34:18.156Z"
     }
   ],
-  "currentTask": "T028"
+  "currentTask": "T028",
+  "telemetryInstanceId": "abeeff81-916d-4ccc-bc94-b03609681167"
 }

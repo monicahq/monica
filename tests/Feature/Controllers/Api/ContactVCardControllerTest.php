@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Actions\ImportVCard;
+use App\Enums\AddressLabelEnum;
 use App\Enums\FieldTypeEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\StructureVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -164,6 +166,58 @@ class ContactVCardControllerTest extends TestCase
             ->where('valuable_id', $returned->id)
             ->where('field_id', $field->id)
             ->value('value_list_item_id'));
+    }
+
+    #[Test]
+    public function an_address_a_device_wrote_survives_an_edit_on_the_screen_and_leaves_as_it_arrived(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = Structure::asTheDefaultOf($user, $vault, [
+            ['type' => FieldTypeEnum::Address, 'label' => 'Address'],
+        ]);
+        $field = $version->sectionVersions()->with('fields')->get()->flatMap(fn ($section) => $section->fields)->first();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'key' => AddressLabelEnum::Work->value,
+            'label' => 'Work',
+        ]);
+        $field->value_list_id = $list->id;
+        $field->save();
+
+        $sent = "BEGIN:VCARD\r\n".
+            "VERSION:4.0\r\n".
+            "UID:dwight\r\n".
+            "N:Schrute;Dwight;;;\r\n".
+            "FN:Dwight Schrute\r\n".
+            "ADR;TYPE=work:PO Box 12;Suite 3;1725 Slough Avenue;Scranton;PA;18505;USA\r\n".
+            "END:VCARD\r\n";
+        $dwight = new ImportVCard(user: $user, vault: $vault, card: $sent, davUri: 'dwight.vcf')->execute();
+        $stored = FieldValue::query()->where('valuable_id', $dwight->id)->where('field_id', $field->id)->sole();
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', [
+                    'vault' => $vault,
+                    'contact' => $dwight,
+                    'structureVersionSection' => StructureVersionSection::query()->where('section_version_id', $field->section_version_id)->sole(),
+                ]),
+                [
+                    'fields' => [$field->id => [...$stored->value_json, 'city' => 'Stamford', 'country' => 'keep']],
+                    'labels' => [$field->id => (string) $stored->value_list_item_id],
+                ],
+            )
+            ->assertSessionHasNoErrors();
+
+        $exported = $this->withToken($user->createToken('Dwight’s script')->plainTextToken)
+            ->get("/api/v1/vaults/{$vault->uuid}/contacts/{$dwight->uuid}/vcard")
+            ->streamedContent();
+
+        $this->assertStringContainsString('ADR;TYPE=work:PO Box 12;Suite 3;1725 Slough Avenue;Stamford;PA;18505;USA', $exported);
     }
 
     #[Test]

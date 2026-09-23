@@ -74,6 +74,25 @@ class CreateDefaultValueListsTest extends TestCase
     }
 
     #[Test]
+    public function it_ends_the_address_labels_with_the_one_that_takes_a_wording_of_its_own(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new CreateDefaultValueLists(user: $user)->execute();
+
+        $list = ValueList::query()->firstWhere('key', ValueListEnum::AddressLabels->value);
+        $items = $list->items()->orderBy('position')->get();
+
+        $this->assertEquals(
+            ['Home', 'Work', 'Holiday home', 'Other', 'Custom...'],
+            $items->pluck('label_translation_key')->all(),
+        );
+        $this->assertTrue($items->last()->takesATypedWording());
+    }
+
+    #[Test]
     public function it_starts_the_long_lists_with_ten_choices_rather_than_all_there_are(): void
     {
         Queue::fake();

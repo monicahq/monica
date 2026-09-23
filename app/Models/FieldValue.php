@@ -118,6 +118,15 @@ class FieldValue extends Model
     public const int PLACEHOLDER_YEAR = 1900;
 
     /**
+     * The parts an address is written in, in the order a card carries them in
+     * its ADR property. Every address holds all seven in `value_json`, an empty
+     * string standing for a part nobody filled in, whoever wrote it.
+     *
+     * @var list<string>
+     */
+    public const array ADDRESS_PARTS = ['po_box', 'extended', 'street', 'city', 'region', 'postal_code', 'country'];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

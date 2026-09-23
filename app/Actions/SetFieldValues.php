@@ -8,6 +8,7 @@ use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
+use App\Enums\ValueListEnum;
 use App\Exceptions\FieldIsRequired;
 use App\Exceptions\ReminderNeedsADate;
 use App\Models\Contact;
@@ -18,6 +19,7 @@ use App\Models\FieldValueRow;
 use App\Models\Reminder;
 use App\Models\StructureVersionSection;
 use App\Models\User;
+use App\Models\ValueList;
 use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\UploadedFile;
@@ -328,7 +330,9 @@ class SetFieldValues
             valuable: $this->record,
             field: $field,
             row: $row,
-            value: $this->scalarFor($field, $given),
+            value: $field->type === FieldTypeEnum::Address
+                ? $this->addressFor($field, is_array($given) ? $given : [], $row)
+                : $this->scalarFor($field, $given),
             valueListItem: $this->chosenItem($field, $given) ?? $this->chosenLabel($field, $label),
             labelWording: $wording === null ? null : (string) $wording,
             valueListItems: $this->chosenItems($field, $given),
@@ -524,7 +528,7 @@ class SetFieldValues
         }
 
         if (is_array($given)) {
-            return $given === [];
+            return array_all($given, fn (mixed $part): bool => $this->isBlank($part));
         }
 
         return $given === null || mb_trim((string) $given) === '';
@@ -537,6 +541,54 @@ class SetFieldValues
         }
 
         return $field->type === FieldTypeEnum::Boolean ? filter_var($given, FILTER_VALIDATE_BOOLEAN) : $given;
+    }
+
+    /**
+     * @param  array<string, mixed>  $given
+     * @return array<string, mixed>
+     */
+    private function addressFor(Field $field, array $given, ?FieldValueRow $row): array
+    {
+        $country = $given['country'] ?? '';
+
+        if ($country === 'keep') {
+            $stored = FieldValue::query()
+                ->where('valuable_type', $this->record->getMorphClass())
+                ->where('valuable_id', $this->record->id)
+                ->where('field_id', $field->id)
+                ->where('field_value_row_id', $row?->id)
+                ->first();
+
+            return array_merge($given, ['country' => (string) ($stored->value_json['country'] ?? '')]);
+        }
+
+        if ($country === '') {
+            return array_merge($given, ['country' => '']);
+        }
+
+        if (filter_var($country, FILTER_VALIDATE_INT) === false) {
+            throw new InvalidArgumentException('A country is picked from the list of countries rather than typed.');
+        }
+
+        $item = ValueListItem::query()
+            ->whereKey($country)
+            ->where('account_id', $this->user->account_id)
+            ->first();
+
+        if ($item === null) {
+            throw new ModelNotFoundException('This country is in another account.');
+        }
+
+        $countries = ValueList::query()
+            ->where('account_id', $this->user->account_id)
+            ->where('key', ValueListEnum::Countries->value)
+            ->first();
+
+        if ($item->value_list_id !== $countries?->id) {
+            throw new InvalidArgumentException("The item {$item->label} is not on the list of countries.");
+        }
+
+        return array_merge($given, ['country' => $item->label]);
     }
 
     private function chosenLabel(Field $field, mixed $label): ?ValueListItem

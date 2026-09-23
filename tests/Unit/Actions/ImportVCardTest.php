@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\ImportVCard;
+use App\Enums\AddressLabelEnum;
 use App\Enums\FieldTypeEnum;
 use App\Models\Contact;
 use App\Models\Field;
@@ -141,6 +142,55 @@ class ImportVCardTest extends TestCase
         )->execute();
 
         $this->assertEquals($boat->id, $this->valueOf($contact, $version, 0)->value_list_item_id);
+    }
+
+    #[Test]
+    public function it_reads_the_type_of_an_address_as_the_label_of_the_address(): void
+    {
+        $version = Structure::asTheDefaultOf($this->user, $this->vault, [
+            ['type' => FieldTypeEnum::Address, 'label' => 'Address'],
+        ]);
+        $this->labelOn($version, 0, AddressLabelEnum::Home->value, 'Home');
+        $work = $this->labelOn($version, 0, AddressLabelEnum::Work->value, 'Work');
+
+        $contact = new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: $this->cardCarrying("ADR;TYPE=work:PO Box 12;Suite 3;1725 Slough Avenue;Scranton;PA;18505;Lackawanna\r\n"),
+            davUri: 'dwight.vcf',
+        )->execute();
+
+        $stored = $this->valueOf($contact, $version, 0);
+
+        $this->assertEquals($work->id, $stored->value_list_item_id);
+        $this->assertEquals([
+            'po_box' => 'PO Box 12',
+            'extended' => 'Suite 3',
+            'street' => '1725 Slough Avenue',
+            'city' => 'Scranton',
+            'region' => 'PA',
+            'postal_code' => '18505',
+            'country' => 'Lackawanna',
+        ], $stored->value_json);
+    }
+
+    #[Test]
+    public function it_prefers_the_wording_a_device_wrote_beside_an_address_over_its_type(): void
+    {
+        $version = Structure::asTheDefaultOf($this->user, $this->vault, [
+            ['type' => FieldTypeEnum::Address, 'label' => 'Address'],
+        ]);
+        $this->labelOn($version, 0, AddressLabelEnum::Work->value, 'Work');
+        $other = $this->labelOn($version, 0, AddressLabelEnum::Other->value, 'Other');
+
+        $contact = new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: $this->cardCarrying("item1.ADR;TYPE=work:;;Schrute Farms;Honesdale;PA;18431;USA\r\nitem1.X-ABLabel:Other\r\n"),
+            davUri: 'dwight.vcf',
+        )->execute();
+
+        $this->assertEquals($other->id, $this->valueOf($contact, $version, 0)->value_list_item_id);
     }
 
     #[Test]

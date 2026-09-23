@@ -16,6 +16,7 @@
 
 @php
   use App\Enums\FieldTypeEnum;
+  use App\Helpers\FieldValueFormatter;
 
   $type = $field->type;
 
@@ -29,6 +30,10 @@
       : collect();
 
   $kind = $type->usesALabelList() ? ($value?->label_wording ?: $value?->valueListItem?->label) : null;
+
+  $line = $type === FieldTypeEnum::Address
+      ? FieldValueFormatter::addressLine($value?->value_json)
+      : $value?->value_string;
 @endphp
 
 @switch(true)
@@ -86,9 +91,9 @@
     </span>
     @break
 
-  @case($type->usesALabelList() && $value?->value_string !== null)
+  @case($type->usesALabelList() && $line !== null)
     <span class="flex flex-wrap items-center gap-1.75">
-      <span class="text-base text-ink">{{ $value->value_string }}</span>
+      <span class="text-base text-ink">{{ $line }}</span>
 
       @if ($kind !== null)
         <x-badge>{{ $kind }}</x-badge>

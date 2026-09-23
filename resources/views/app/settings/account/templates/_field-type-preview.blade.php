@@ -74,6 +74,14 @@
     </div>
   @elseif ($kind === 'rows')
     <div class="grid gap-2">
+      @if (isset($preview['label']))
+        <div class="{{ $box }} flex w-5/12 items-center gap-1.5 px-2.5 py-1.5">
+          <span class="min-w-0 truncate text-sm text-ink">{{ $preview['label'] }}</span>
+
+          <x-icon name="chevron-down" :size="14" class="ml-auto shrink-0 text-muted" />
+        </div>
+      @endif
+
       @foreach ($preview['rows'] as [$rowLabel, $width])
         <div class="grid gap-1 {{ ['full' => 'w-full', 'wide' => 'w-9/12', 'medium' => 'w-8/12', 'narrow' => 'w-6/12'][$width] }}">
           <span class="text-label text-muted">{{ $rowLabel }}</span>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Seeders;
 
+use App\Enums\AddressLabelEnum;
 use App\Enums\ContactCategoryEnum;
 use App\Enums\DefaultFieldEnum;
 use App\Models\Contact;
@@ -76,6 +77,21 @@ class ExampleAccountSeederTest extends TestCase
                 ->value('value_text'),
         );
 
+        $gunther = Contact::query()->where('first_name', 'Gunther')->firstOrFail();
+        $home = FieldValue::query()->where('valuable_id', $joey->id)->where('field_key', DefaultFieldEnum::Address->value)->sole();
+        $work = FieldValue::query()->where('valuable_id', $gunther->id)->where('field_key', DefaultFieldEnum::Address->value)->sole();
+
+        $this->assertEquals([
+            'po_box' => '',
+            'extended' => '',
+            'street' => '90 Bedford Street, apartment 19',
+            'city' => 'New York',
+            'region' => '',
+            'postal_code' => 'NY 10014',
+            'country' => 'United States',
+        ], $home->value_json);
+        $this->assertSame(AddressLabelEnum::Home->value, $home->valueListItem->key);
+        $this->assertSame(AddressLabelEnum::Work->value, $work->valueListItem->key);
         $ross = Contact::query()->where('first_name', 'Ross')->firstOrFail();
         $category = FieldValue::query()
             ->where('valuable_id', $ross->id)
@@ -84,8 +100,6 @@ class ExampleAccountSeederTest extends TestCase
         $family = ValueListItem::query()->where('key', ContactCategoryEnum::Family->value)->firstOrFail();
 
         $this->assertEquals([$family->id], $category->value_list_item_ids);
-
-        $gunther = Contact::query()->where('first_name', 'Gunther')->firstOrFail();
 
         $this->assertDatabaseMissing('field_values', [
             'valuable_id' => $gunther->id,

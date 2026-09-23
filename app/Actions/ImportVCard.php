@@ -266,10 +266,9 @@ class ImportVCard
     private function address(Property $onTheCard): ?array
     {
         $parts = $onTheCard->getParts();
-        $keys = ['po_box', 'extended', 'street', 'city', 'region', 'postal_code', 'country'];
         $address = [];
 
-        foreach ($keys as $index => $key) {
+        foreach (FieldValue::ADDRESS_PARTS as $index => $key) {
             $address[$key] = trim((string) ($parts[$index] ?? ''));
         }
 

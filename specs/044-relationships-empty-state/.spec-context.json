@@ -3,7 +3,7 @@
   "specName": "Relationships empty state",
   "branch": "2026-09-23-relationships-empty-state",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -144,7 +144,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-23T14:47:42.056Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-23T19:34:18.156Z"
     }
   ],
-  "currentTask": "T014"
+  "currentTask": "T014",
+  "telemetryInstanceId": "f77fc200-0bfa-4abe-afcf-373159f46f88"
 }

@@ -10,6 +10,7 @@ use App\Actions\CreateContact;
 use App\Actions\CreateFieldValueRow;
 use App\Actions\CreateReminder;
 use App\Actions\SetFieldValue;
+use App\Enums\AddressLabelEnum;
 use App\Enums\ContactCategoryEnum;
 use App\Enums\DefaultFieldEnum;
 use App\Enums\EmailLabelEnum;
@@ -121,8 +122,16 @@ class ExampleAccountSeeder extends Seeder
         $this->writeChoice($contact, DefaultFieldEnum::Category, ValueListEnum::ContactCategories, $person['category']->value);
         $this->writeChoice($contact, DefaultFieldEnum::Gender, ValueListEnum::Genders, $person['gender']->value);
 
-        foreach ([DefaultFieldEnum::Address] as $field) {
-            $this->writeValue($contact, $field, $person[$field->value]);
+        if ($person['address'] !== null) {
+            [$address, $label] = $person['address'];
+
+            new SetFieldValue(
+                user: $this->user,
+                valuable: $contact,
+                field: $this->fields[DefaultFieldEnum::Address->value],
+                value: $address,
+                valueListItem: $this->item(ValueListEnum::AddressLabels, $label->value),
+            )->execute();
         }
 
         $repeated = [
@@ -186,7 +195,7 @@ class ExampleAccountSeeder extends Seeder
         if (is_array($value)) {
             $valueList = ValueList::query()->where('key', $field->valueList()->value)->first();
             if ($valueList === null) {
-                throw new \Exception("Value list not found for field: " . $field->value);
+                throw new \Exception('Value list not found for field: '.$field->value);
             }
             $valueListItem = $valueList->items()->where('key', $value[1])->first();
             $value = $value[0];
@@ -246,8 +255,8 @@ class ExampleAccountSeeder extends Seeder
     /** @return list<array<string, mixed>> */
     private function cast(): array
     {
-        $apartment20 = ['street' => '90 Bedford Street, apartment 20', 'city' => 'New York', 'postcode' => 'NY 10014', 'country' => 'United States'];
-        $apartment19 = ['street' => '90 Bedford Street, apartment 19', 'city' => 'New York', 'postcode' => 'NY 10014', 'country' => 'United States'];
+        $apartment20 = ['street' => '90 Bedford Street, apartment 20', 'city' => 'New York', 'postal_code' => 'NY 10014', 'country' => 'United States'];
+        $apartment19 = ['street' => '90 Bedford Street, apartment 19', 'city' => 'New York', 'postal_code' => 'NY 10014', 'country' => 'United States'];
 
         return [
             [
@@ -262,7 +271,7 @@ class ExampleAccountSeeder extends Seeder
                 'birthday' => '1969-04-22',
                 'email' => [self::EMAIL, EmailLabelEnum::Personal],
                 'phone' => ['+1 212 555 0120', PhoneLabelEnum::Home],
-                'address' => $apartment20,
+                'address' => [$apartment20, AddressLabelEnum::Home],
                 'note' => 'Head chef. Eleven categories of towel. The cleaning is not a problem, it is a system.',
                 'reminder' => null,
             ],
@@ -278,7 +287,7 @@ class ExampleAccountSeeder extends Seeder
                 'birthday' => '1969-05-05',
                 'email' => ['rachel.green@fortunata.example', EmailLabelEnum::Personal],
                 'phone' => ['+1 212 555 0105', PhoneLabelEnum::Home],
-                'address' => $apartment20,
+                'address' => [$apartment20, AddressLabelEnum::Home],
                 'note' => 'Walked out on Barry and turned up at Central Perk in the wedding dress. Fashion, at last.',
                 'reminder' => [
                     'name' => 'Rachel’s birthday',
@@ -298,7 +307,7 @@ class ExampleAccountSeeder extends Seeder
                 'birthday' => '1967-10-18',
                 'email' => ['ross.geller@prehistorymuseum.example', EmailLabelEnum::Personal],
                 'phone' => ['+1 212 555 0118', PhoneLabelEnum::Home],
-                'address' => ['street' => '15 Grove Street', 'city' => 'New York', 'postcode' => 'NY 10014', 'country' => 'United States'],
+                'address' => [['street' => '15 Grove Street', 'city' => 'New York', 'postal_code' => 'NY 10014', 'country' => 'United States'], AddressLabelEnum::Home],
                 'note' => 'My brother. Palaeontologist. Three divorces and counting. Insists they were on a break.',
                 'reminder' => [
                     'name' => 'Ross’s birthday',
@@ -318,7 +327,7 @@ class ExampleAccountSeeder extends Seeder
                 'birthday' => '1968-04-08',
                 'email' => ['chandler.bing@bingstatistical.example', EmailLabelEnum::Work],
                 'phone' => ['+1 212 555 0108', PhoneLabelEnum::Mobile],
-                'address' => $apartment20,
+                'address' => [$apartment20, AddressLabelEnum::Home],
                 'note' => 'My husband. Statistical analysis and data reconfiguration, which nobody can repeat back. Hates Thanksgiving, and has since 1978.',
                 'reminder' => [
                     'name' => 'Chandler’s birthday',
@@ -338,7 +347,7 @@ class ExampleAccountSeeder extends Seeder
                 'birthday' => '1968-01-09',
                 'email' => ['joey.tribbiani@daysofourlives.example', EmailLabelEnum::Work],
                 'phone' => ['+1 212 555 0109', PhoneLabelEnum::Mobile],
-                'address' => $apartment19,
+                'address' => [$apartment19, AddressLabelEnum::Home],
                 'note' => 'Doctor Drake Ramoray on Days of Our Lives. Does not share food. Seven sisters.',
                 'reminder' => [
                     'name' => 'Joey’s birthday',
@@ -358,7 +367,7 @@ class ExampleAccountSeeder extends Seeder
                 'birthday' => '1969-02-16',
                 'email' => ['phoebe.buffay@smellycat.example', EmailLabelEnum::Personal],
                 'phone' => ['+1 212 555 0116', PhoneLabelEnum::Home],
-                'address' => ['street' => '5 Morton Street, apartment 14', 'city' => 'New York', 'postcode' => 'NY 10014', 'country' => 'United States'],
+                'address' => [['street' => '5 Morton Street, apartment 14', 'city' => 'New York', 'postal_code' => 'NY 10014', 'country' => 'United States'], AddressLabelEnum::Home],
                 'note' => 'Massage therapist, and the only person I know who wrote Smelly Cat. Twin sister Ursula, who is not to be trusted.',
                 'reminder' => [
                     'name' => 'Phoebe’s birthday',
@@ -394,7 +403,7 @@ class ExampleAccountSeeder extends Seeder
                 'birthday' => null,
                 'email' => ['gunther@centralperk.example', EmailLabelEnum::Work],
                 'phone' => ['+1 212 555 0100', PhoneLabelEnum::Home],
-                'address' => ['street' => 'Central Perk, 199 Lafayette Street', 'city' => 'New York', 'postcode' => 'NY 10012', 'country' => 'United States'],
+                'address' => [['street' => 'Central Perk, 199 Lafayette Street', 'city' => 'New York', 'postal_code' => 'NY 10012', 'country' => 'United States'], AddressLabelEnum::Work],
                 'note' => 'Runs Central Perk. Has been in love with Rachel for years and has told nobody but us.',
                 'reminder' => null,
             ],
@@ -442,7 +451,7 @@ class ExampleAccountSeeder extends Seeder
                 'birthday' => null,
                 'email' => ['emily.waltham@waltham.example', EmailLabelEnum::Personal],
                 'phone' => ['+44 20 7946 0102', PhoneLabelEnum::Work],
-                'address' => ['street' => 'Montague Street', 'city' => 'London', 'postcode' => 'WC1B 5BP', 'country' => 'United Kingdom'],
+                'address' => [['street' => 'Montague Street', 'city' => 'London', 'postal_code' => 'WC1B 5BP', 'country' => 'United Kingdom'], AddressLabelEnum::Home],
                 'note' => 'Ross married her in London in 1998 and said the wrong name at the altar. Mine, in a manner of speaking.',
                 'reminder' => null,
             ],
@@ -530,7 +539,7 @@ class ExampleAccountSeeder extends Seeder
                 'birthday' => null,
                 'email' => ['jack.geller@geller.example', EmailLabelEnum::Personal],
                 'phone' => ['+1 516 555 0130', PhoneLabelEnum::Home],
-                'address' => ['street' => null, 'city' => 'Long Island', 'postcode' => 'NY 11501', 'country' => 'United States'],
+                'address' => [['street' => null, 'city' => 'Long Island', 'postal_code' => 'NY 11501', 'country' => 'United States'], AddressLabelEnum::Home],
                 'note' => 'Dad. Sold the Porsche story to anybody who would listen.',
                 'reminder' => null,
             ],
@@ -546,7 +555,7 @@ class ExampleAccountSeeder extends Seeder
                 'birthday' => null,
                 'email' => ['judy.geller@geller.example', EmailLabelEnum::Personal],
                 'phone' => ['+1 516 555 0131', PhoneLabelEnum::Home],
-                'address' => ['street' => null, 'city' => 'Long Island', 'postcode' => 'NY 11501', 'country' => 'United States'],
+                'address' => [['street' => null, 'city' => 'Long Island', 'postal_code' => 'NY 11501', 'country' => 'United States'], AddressLabelEnum::Home],
                 'note' => 'Mum. Ross is the favourite and she has never once pretended otherwise.',
                 'reminder' => null,
             ],
@@ -562,7 +571,7 @@ class ExampleAccountSeeder extends Seeder
                 'birthday' => null,
                 'email' => null,
                 'phone' => '+1 212 555 0119',
-                'address' => ['street' => '90 Bedford Street', 'city' => 'New York', 'postcode' => 'NY 10014', 'country' => 'United States'],
+                'address' => [['street' => '90 Bedford Street', 'city' => 'New York', 'postal_code' => 'NY 10014', 'country' => 'United States'], AddressLabelEnum::Home],
                 'note' => 'Lived below us and banged on the ceiling with a broom. Died in 1995 and left us everything he had.',
                 'reminder' => null,
             ],

@@ -267,6 +267,25 @@ class CreateDefaultTemplateTest extends TestCase
     }
 
     #[Test]
+    public function it_points_the_supplied_address_field_at_the_address_labels_list_of_the_account(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        $address = Field::query()->firstWhere('key', DefaultFieldEnum::Address->value);
+        $addressLabels = ValueList::query()
+            ->where('account_id', $user->account_id)
+            ->where('key', ValueListEnum::AddressLabels->value)
+            ->first();
+
+        $this->assertSame(FieldTypeEnum::Address, $address->type);
+        $this->assertEquals($addressLabels->id, $address->value_list_id);
+    }
+
+    #[Test]
     public function it_says_what_may_be_uploaded_into_the_fields_that_take_a_file(): void
     {
         Queue::fake();

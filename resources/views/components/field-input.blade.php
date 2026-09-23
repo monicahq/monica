@@ -32,6 +32,9 @@
 
 @php
   use App\Enums\FieldTypeEnum;
+  use App\Enums\ValueListEnum;
+  use App\Helpers\FieldValueFormatter;
+  use App\Models\ValueList;
 
   $name ??= "fields[{$field->id}]";
   $id ??= "field-{$field->id}";
@@ -49,6 +52,27 @@
 
   $chosen = $value?->value_list_item_id;
   $chosenMany = $value?->value_list_item_ids ?? [];
+
+  $countries = collect();
+  $chosenCountry = null;
+  $keptCountry = null;
+
+  if ($type === FieldTypeEnum::Address) {
+      $countries = ValueList::query()
+          ->where('account_id', $field->account_id)
+          ->where('key', ValueListEnum::Countries->value)
+          ->first()
+          ?->items
+          ->where('is_active', true)
+          ->sortBy('position')
+          ->values() ?? collect();
+
+      $storedCountry = mb_trim((string) ($value?->value_json['country'] ?? ''));
+      $chosenCountry = $countries->first(fn ($item): bool => mb_strtolower($item->label) === mb_strtolower($storedCountry));
+      $keptCountry = $storedCountry !== '' && $chosenCountry === null ? $storedCountry : null;
+  }
+
+  $errorKey = str_replace(['][', '[', ']'], ['.', '.', ''], $name);
 
   $dateShown = $value?->value_date?->format('Y-m-d');
 
@@ -245,6 +269,69 @@
         <x-field-reminder :field="$field" :reminder="$reminder" :name="$reminderName" :id="$id.'-reminder'" :messages="$messages" />
       @endif
     </div>
+    @break
+
+  @case($type === FieldTypeEnum::Address)
+    <fieldset class="flex w-full flex-col gap-3">
+      <legend class="w-full text-label text-ink">
+        {{ $field->label }}
+
+        @if (! $field->is_required)
+          <span class="text-xs font-normal text-muted">{{ __('optional') }}</span>
+        @endif
+      </legend>
+
+      @if ($field->help_text)
+        <p class="text-xs text-muted">{{ $field->help_text }}</p>
+      @endif
+
+      <x-combo-box
+        class="sm:w-40"
+        :items="$items"
+        :id="$id.'-label'"
+        :name="$labelName"
+        :wording-name="$wordingName"
+        :chosen="$chosenLabel"
+        :wording="$value?->label_wording"
+      />
+
+      <div class="grid gap-3 sm:grid-cols-2">
+        @foreach (FieldValueFormatter::addressPartNames() as $part => $partName)
+          <div @class(['sm:col-span-2' => $part === 'street'])>
+            @if ($part === 'country')
+              <x-select
+                :id="$id.'-country'"
+                :name="$name.'[country]'"
+                :label="$partName"
+                :error="$messages?->get($errorKey.'.country')"
+              >
+                <option value="">{{ __('Not recorded') }}</option>
+
+                @if ($keptCountry !== null)
+                  <option value="keep" selected>{{ $keptCountry }}</option>
+                @endif
+
+                @foreach ($countries as $country)
+                  <option value="{{ $country->id }}" @selected($chosenCountry?->id === $country->id)>{{ $country->label }}</option>
+                @endforeach
+              </x-select>
+            @else
+              <x-input
+                :type="$field->is_sensitive ? 'password' : 'text'"
+                :id="$id.'-'.$part"
+                :name="$name.'['.$part.']'"
+                :label="$partName"
+                :value="$value?->value_json[$part] ?? ''"
+                :error="$messages?->get($errorKey.'.'.$part)"
+                :allow-password-manager="! $field->is_sensitive"
+              />
+            @endif
+          </div>
+        @endforeach
+      </div>
+
+      <x-error :id="$error ? $id.'-error' : null" :messages="$error" />
+    </fieldset>
     @break
 
   @case($type->usesALabelList())
