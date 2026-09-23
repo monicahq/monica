@@ -126,7 +126,7 @@ nothing to say about itself is still missing its first line.
 ## Test Classes
 
 - A test file MUST contain the test class and nothing else.
-- Every class a test needs (a stub, a fake, a notification standing in for a real one) MUST live in its own file under `tests/Fixtures`, in a namespace that mirrors the application (e.g. `Tests\Fixtures\Notifications\SomethingHappened`), whether or not it is used by a single test. The folder is empty today.
+- Every class a test needs (a stub, a fake, a notification standing in for a real one) MUST live in its own file under `tests/Fixtures`, in a namespace that mirrors the application (e.g. `Tests\Fixtures\Notifications\SomethingHappened`), whether or not it is used by a single test.
 - Use descriptive test method names and follow the arrange, act, assert pattern.
 
 ## Whitespace
@@ -299,8 +299,7 @@ count for every shipped locale, and a locale missing from that table fails the s
 - Resources/Transformers: plural form + `Resource` or `Transformer` suffix.
 - Jobs: describe the action performed.
 - Events: use tense to indicate timing (before vs. after).
-- Listeners: action name + `Listener` suffix.
+- Listeners: named after what they do, with no suffix (`RecordEmailSent`, `HandleStripeRefund`).
 - Commands: add a `Command` suffix to avoid collisions.
-- Mailables: add a `Mail` suffix.
 - Enums: singular, with the `Enum` suffix: `GenderEnum`, `UserActionEnum`, `FieldTypeEnum`. Every
   enum in `app/Enums` is named that way except the older `EmailType`.

@@ -5,7 +5,7 @@ description: Build a complete API surface for a given model or concept. Use when
 
 # API writer
 
-The API mirrors the web controllers under `Api`, returns Eloquent Resources, and reuses the same Actions. You MUST use the existing `collections` API (controller, resource, routes, tests, docs) as the reference implementation.
+The API mirrors the web controllers under `Api`, returns Eloquent Resources, and reuses the same Actions. Use the `contacts` API as the reference implementation: `Api/ContactController`, `ContactResource`, its routes in `routes/api.php`, `ContactControllerTest` and `resources/docs/api/06-contacts.php`.
 
 A user belongs to exactly one account, so there MUST be no tenant prefix in the URLs: every endpoint MUST be scoped through `$request->user()->account`.
 
@@ -13,29 +13,29 @@ A user belongs to exactly one account, so there MUST be no tenant prefix in the 
 
 You MUST read the web controller, if it exists (`app/Http/Controllers/App/…`), and extract:
 
-- The **resource name** (singular, e.g. `Collection`)
+- The **resource name** (singular, e.g. `Contact`)
 - Which **Actions** are used (`CreateXxx`, `UpdateXxx`, `DestroyXxx`)
 - The **validated fields** and their rules
-- The **permission model**. You MUST check the Action's `validate()` method (owners and editors write, viewers read)
+- The **refusals**. Read the Action's `validate()`: an account carries no role, so it checks that the records belong to the account and that the vault matches
 
 ## Step 2 — Create the Eloquent Resource
 
-You MUST create `app/Http/Resources/{Resource}Resource.php`, using `CollectionResource` as the reference.
+You MUST create `app/Http/Resources/{Resource}Resource.php`, using `ContactResource` as the reference.
 
 - You MUST add a `/** @mixin {Model} */` docblock and extend `JsonResource`.
-- `type` MUST be the snake_case resource name (e.g. `'collection_type'`).
-- `id` MUST be cast to string.
+- `type` MUST be the snake_case resource name (e.g. `'contact'`, `'entity_type'`).
+- `id` is the model's `uuid` when it has one, cast to string otherwise.
 - `attributes` MUST contain the relevant model fields, and you MUST render timestamps as Unix integers via `->timestamp` (use `?->timestamp` for nullable ones like `updated_at`).
-- `links.self` MUST point to the `show` route (e.g. `route('api.collections.show', $this->id)`; nested resources pass both parameters).
+- `links.self` MUST point to the `show` route (e.g. `route('api.v1.contacts.show', [$this->vault, $this->resource])`).
 
 ## Step 3 — Create the API controller
 
 You MUST follow the [controllers skill](../controllers/SKILL.md), then create `app/Http/Controllers/Api/{Resource}Controller.php`, mirroring the web controller's location under `Api` instead of `App` (auth lives in `Api/Auth`, user-scoped administration in `Api/Administration`).
 
-- You MUST only use these methods: `index`, `show`, `create`, `update`, `destroy`. You MUST extract extra actions to their own controller (e.g. `CollectionTypeCollectionController` for the sync endpoint).
+- You MUST only use these methods: `index`, `show`, `create`, `update`, `destroy`. You MUST extract extra actions to their own controller (e.g. `ContactVCardController` for the vCard endpoint).
 - You MUST NOT put domain logic in the controller. You MUST call the Actions and pass `user: $request->user()` with named arguments.
-- You MUST read route parameters with `$request->route()->parameter('collection')`.
-- You MUST scope every lookup to the account and let it throw: `$request->user()->account->collections()->findOrFail($id)` (no try/catch, the framework returns 404).
+- Take route parameters as typed `string` arguments, in URL order: `show(Request $request, string $vault, string $contact)`.
+- Scope every lookup to the account and let it throw with `findOrFail()` (no try/catch, the framework returns 404), as `ContactController` does.
 - You MUST type-hint the return: `AnonymousResourceCollection` from `index`, `JsonResponse` from `show`/`create`/`update`, `Response` from `destroy`.
 - You MUST set the status codes explicitly: `200` for `show`/`update`, `201` for `create` via `->response()->setStatusCode(...)`, and `response()->noContent(204)` for `destroy`.
 - `index` MUST return `{Resource}::collection($paginated)`, ordered, and paginated with `per_page` clamped to `config('app.maximum_items_per_page')`.
@@ -44,13 +44,13 @@ You MUST follow the [controllers skill](../controllers/SKILL.md), then create `a
 
 - You MUST add the routes to `routes/api.php`, inside the `auth:sanctum` middleware group.
 - You MUST add the controller `use` import in alphabetical order with the other imports.
-- URLs MUST be plural kebab-case (`collection-types`), and route parameters camelCase (`{collectionType}`).
-- You MUST name routes `{resource}` for the index and `{resource}.{action}` for the rest, in camelCase (the group adds the `api.` prefix): `collections`, `collections.show`, `collectionTypes.customFields.update`.
-- You MUST constrain numeric IDs with `->where('collection', '[1-9][0-9]*')`.
+- URLs MUST be plural kebab-case (`entity-types`), and route parameters camelCase (`{entityType}`).
+- You MUST name routes `{resource}` for the index and `{resource}.{action}` for the rest, in camelCase (the group adds the `api.v1.` prefix): `contacts`, `contacts.show`, `contacts.vcard.show`.
+- Constrain a numeric id parameter with `->where('apiKey', '[1-9][0-9]*')`. A uuid parameter needs none.
 
 ## Step 5 — Write tests
 
-You MUST create `tests/Feature/Controllers/Api/{Resource}ControllerTest.php`, and you MUST follow the conventions of the existing files there (e.g. `CollectionControllerTest.php`) and the rules in `.claude/rules/testing.md`: PHPUnit classes, `#[Test]` methods named in snake_case, `use RefreshDatabase;`, and a shared `$jsonStructure` property.
+You MUST create `tests/Feature/Controllers/Api/{Resource}ControllerTest.php`, and you MUST follow the conventions of the existing files there (e.g. `ContactControllerTest.php`) and the rules in `.claude/rules/testing.md`: PHPUnit classes, `#[Test]` methods named in snake_case, `use RefreshDatabase;`, and a shared `$jsonStructure` property.
 
 - You MUST authenticate with `Sanctum::actingAs($user)`. `User::factory()` creates an account owner.
 - You MUST make requests with `$this->json('METHOD', '/api/…', $data)`.

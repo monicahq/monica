@@ -18,8 +18,8 @@ description: Conventions for defining views. Use when the user wants to create o
   query the database, call an Action, or decide anything the product cares about. 30 views and 23
   components hold one, and every one of them turns a value that was already computed into what the
   screen shows. The same rule applies inside a component.
-- You SHOULD create and maintain PHPDoc blocks at the top of every view file.
-- You MUST create and maintain PHPDoc blocks for components.
+- Every view and component opens with the `{{-- --}}` line and `@var` block described in
+  [code-style.md](../../rules/code-style.md).
 - When passing variables to a partial using `@include`, you MUST explicitly pass all required variables. Relying on the parent scope is not enough, even though Blade makes those variables reachable, because a partial that names what it needs can be read on its own.
 
 ```blade
@@ -34,16 +34,6 @@ description: Conventions for defining views. Use when the user wants to create o
 
 - You MUST make sure each view is responsive.
 
-
-## Example
-```
-<?php
-/**
- * @var \App\Models\User $user
- * @var \Illuminate\Support\Collection<int, \App\Models\Post> $posts
- */
-?>
-```
 
 ## Accessibility
 
@@ -65,9 +55,10 @@ description: Conventions for defining views. Use when the user wants to create o
 
 - Components are anonymous. You MUST write the blade file in `resources/views/components`, declare
   what it takes with `@props([...])`, and document it in a `{{-- --}}` block at the top with one
-  `@var` per prop, as 46 of the 51 components do. A component class belongs in `app/View/Components`
+  `@var` per prop. A component class belongs in `app/View/Components`
   only for a layout (`Shell`, `AccountLayout`, `AdminLayout`, `GuestLayout`, `MarketplaceLayout`).
 - Every template, a component included, MUST open with a one line `{{-- --}}` comment saying what the
   view is, before the `@var` block. The rule and its examples are in
   [code-style.md](../../rules/code-style.md).
-- As soon as you notice that a piece of view is repeated in multiple places, you MUST create a component for it.
+- Extract a component when the same markup stands in three files, or in two when it carries an
+  accessibility contract. The rule is in [components.md](../../rules/components.md).

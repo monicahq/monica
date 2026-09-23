@@ -26,9 +26,9 @@ public function show(Request $request, Vault $vault, Contact $contact): View
 }
 ```
 
-- The model itself refuses another account first: eleven models override `getRouteKeyName()` to
-  return `uuid`, and six override `resolveRouteBinding()` to scope the lookup to
-  `auth()->user()?->account_id`. The controller then refuses the wrong vault, and the Action checks
+- The model itself refuses another account first: it names `uuid` as its route key with the
+  `#[RouteKey]` attribute, and the `ResolvesModelInAccount` or `ResolvesModelInVault` trait scopes the
+  lookup to the signed in account. The controller then refuses the wrong vault, and the Action checks
   the account again in its `validate()`. An account carries no role, so nothing else is a permission
   check inside it. The one capacity is the administrator, which is instance wide and belongs to the
   `administrator` middleware, never to a controller or an Action.

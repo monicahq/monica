@@ -7,7 +7,7 @@ description: Use when creating or editing database migrations in the project.
 
 ## Rules
 
-- You MUST generate a migration with `php artisan make:migration <name> --no-interaction` rather than writing the file by hand, then rename the generated file to the next free sequential prefix. The generator stamps the clock; this repository sequences by hand, and 52 of its 53 migrations carry a suffix between `000000` and `000008`. Renaming is what keeps the two compatible.
+- You MUST generate a migration with `php artisan make:migration <name> --no-interaction` rather than writing the file by hand, then rename the generated file to the next free sequential prefix. The generator stamps the clock; this repository sequences by hand, with a suffix between `000000` and `000008`. Renaming is what keeps the two compatible.
 - You MUST create one table per migration. When a table needs a foreign key on a table created later, you MUST name the migration file so that it runs first (e.g. `0000_01_01_000000_create_companies_table.php` before `0001_01_01_000000_create_users_table.php`), or add the constraint in the later migration with `Schema::table()`.
 - When adding foreign keys, you MUST NOT use the `constrained()` method.
 - You MUST comment a field by using `->comment('...')` to explain what the field is for.

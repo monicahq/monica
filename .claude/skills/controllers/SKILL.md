@@ -41,7 +41,6 @@ description: Conventions for writing thin HTTP controllers that validate input a
 - You MUST validate the request data, and you MUST NOT sanitize it. In the validation, you MUST NOT check if an object exists by checking if the id exists in the database - this is done in Actions. You MUST make sure the validation rules match the fields of the model, as defined in the migration (ie length of a given string).
 - You MUST pass everything to the Action through its constructor, with named arguments, then call
   `->execute()` with none: `(new CreateContact(user: $request->user(), vault: $vault, firstName: $validated['first_name']))->execute()`.
-  All 135 actions read that way.
 - You MUST prepare the data for the view in a ViewModel, and pass it to the view.
 - You MUST type-hint the return of every method (`View`, `RedirectResponse`, `JsonResponse`, `AnonymousResourceCollection`, `Response`).
 - You MUST use `return redirect()->route('home.index')` instead of `return to_route('home.index')`.

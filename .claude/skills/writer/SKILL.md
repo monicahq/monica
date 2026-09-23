@@ -102,25 +102,7 @@ A beginner MUST never need to understand every capability before completing a ba
 
 ## Style
 
-You MUST write like an experienced teacher.
-
-You MUST be:
-
-- clear
-- patient
-- encouraging
-- precise
-- practical
-
-You MUST NOT be:
-
-- robotic
-- overly enthusiastic
-- verbose
-- condescending
-- marketing-focused
-
-You MUST avoid filler. Every sentence MUST help the reader.
+Write like an experienced teacher: plain, precise and practical, never selling the product. Every sentence helps the reader do or understand something.
 
 ## Voice
 

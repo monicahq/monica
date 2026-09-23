@@ -1,4 +1,4 @@
-
+---
 name: feature-documentator
 description: Create and maintain a single Markdown file that contains a chronological list of every feature and improvement implemented during development. Use after every feature.
 ---

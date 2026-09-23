@@ -1,6 +1,6 @@
 ## General
 
-- Do not tell me I am right all the time. Be critical. We're equals. Try to be neutral and objective.
+- Do not tell me I am right all the time. Be critical. We're equals. Be neutral and objective.
 - Do not excessively use emojis.
 - Remove all mannered prose.
 - Add quiet flags to noisy commands
@@ -28,7 +28,7 @@ When two sources disagree, follow this order.
 
 - Write code as simply as possible - do not over-engineer so anyone can understand it.
 - Do not extract a private method just because a few lines are repeated twice. If the repeated code is short and not business critical, repeat it inline rather than naming and hiding it behind a helper. Extract only when the logic is non-trivial, reused in several places, or its own concept worth naming.
-- Always follow the Laravel best practices and how we structure our codebase.
+- Follow how the codebase is structured. The Laravel best practices apply only where the project has no answer, as the precedence list above says.
 - When you write tests, read the testing rules in `rules/testing.md` and follow them.
 - When writing code, follow the coding standards in `rules/code-style.md`.
 - ALWAYS warn users before making a destructive action in the UI.
@@ -95,20 +95,13 @@ the rule.
   grouped like the controllers (`Vaults`, `Settings`, `Marketplace`, `Admin`, `Auth`). A rich page
   keeps one main view model and delegates its blocks to small objects next to it
   (`MarketplaceStatistics`).
-- `app/View/Components`: the five layout classes (`Shell`, `AccountLayout`, `AdminLayout`, `GuestLayout`, `MarketplaceLayout`). The 86 components under `resources/views/components` are anonymous, with `@props`.
+- `app/View/Components`: the five layout classes (`Shell`, `AccountLayout`, `AdminLayout`, `GuestLayout`, `MarketplaceLayout`). The components under `resources/views/components` are anonymous, with `@props`.
 - `resources/views`: `app` for the logged in screens, `components` for shared UI, `layouts` and `partials` for the shell, `shared` for what a private link opens, `vendor` for the views a package publishes, which is where the email templates live.
 - `resources/css` and `resources/js`: the Tailwind theme and the Alpine setup.
 - `routes`: `web.php` (logged in), `api.php` (the JSON API), `auth.php`, `console.php`.
 - `database`: `migrations`, `factories`, `seeders`.
 - `lang`: one JSON file per locale.
 - `tests`: `Unit` (models, actions, jobs, mails, helpers, view models, enums), `Feature` (controllers and views), `Fixtures` (the classes a test needs). PHPUnit only.
-
-> **TODO (rules, corrected 2026-09-08)**: the API surface those two skills describe exists now. There
-> is an `Api` controller namespace, a `routes/api.php`, an `app/Http/Resources` and a docs portal
-> under `resources/docs/api`, so `api-writer` and `api-docs-writer` apply as written. What is left is
-> their worked example: both use `collections`, and there is no such model, controller or resource
-> here, so an agent following one literally still looks for files that are not there. Point them at a
-> resource that exists, `contacts` or `entity-types`.
 
 > **TODO (rules, 2026-09-08)**: this section describes the repository tree a second time, which the
 > constitution's Governance forbids: it says this file must point at `.specify/memory/constitution.md`
@@ -331,7 +324,7 @@ Read `.claude/rules/code-style.md`, `.claude/rules/testing.md` and the project s
 
 | laravel-best-practices | The project does |
 | --- | --- |
-| Actions expose `handle(array $data)` and take services in the constructor | Constructor takes the promoted `readonly` inputs, one public `execute()`. 135 actions, no `handle()` |
+| Actions expose `handle(array $data)` and take services in the constructor | Constructor takes the promoted `readonly` inputs, one public `execute()`, no `handle()` |
 | `Route::resource()` and `apiResource()` | One named route per line. Zero `Route::resource` |
 | Route names in `snake_case` with dots | camelCase segments: `contacts.shareLinks.create` |
 | Form Request classes for validation | Inline `$request->validate()`. One Form Request in the application |

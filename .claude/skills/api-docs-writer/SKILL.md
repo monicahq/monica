@@ -21,8 +21,8 @@ For the resource being documented, you MUST read:
 - the API controller (`app/Http/Controllers/Api/…`): every public method,
 - `routes/api.php`: exact URL, verb and route name per endpoint,
 - the Eloquent Resource (`app/Http/Resources/…`): exact response shape,
-- the Actions' `validate()`: permissions (owners and editors vs any member),
-- a sibling definition file (e.g. `resources/docs/api/05-collections.php`): to match tone and structure.
+- the Actions' `validate()`: what the endpoint refuses,
+- a sibling definition file (e.g. `resources/docs/api/06-contacts.php`): to match tone and structure.
 
 ## Step 2 — Write the definition file
 
@@ -30,12 +30,12 @@ You MUST create a numbered file in `resources/docs/api`, or add sections to an e
 
 ```php
 [
-    'id' => 'collections-list',           // unique, kebab-case; used as the anchor and in /docs/{id}.md
-    'title' => 'List collections',        // section heading
-    'label' => 'List collections',        // sidebar label; defaults to title
+    'id' => 'contacts-index',             // unique, kebab-case; used as the anchor and in /docs/{id}.md
+    'title' => 'List contacts',           // section heading
+    'label' => 'List contacts',           // sidebar label; defaults to title
     'method' => 'GET',
-    'path' => '/collections',             // route path, with {parameters} exactly as in routes/api.php
-    'examplePath' => '/collections/1',    // path used in code samples; defaults to path
+    'path' => '/vaults/{vault}/contacts',  // route path, with {parameters} exactly as in routes/api.php
+    'examplePath' => '/vaults/1/contacts', // path used in code samples; defaults to path
     'auth' => true,                       // false drops the Authorization header from the samples
     'description' => '…',                 // first paragraph under the title
     'body' => ['…'],                      // optional extra paragraphs
