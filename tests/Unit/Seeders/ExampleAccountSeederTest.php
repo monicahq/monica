@@ -25,7 +25,7 @@ class ExampleAccountSeederTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_puts_monica_in_as_the_only_user_of_the_account(): void
+    public function it_puts_monica_in_as_the_only_user_and_the_me_contact_of_the_vault(): void
     {
         new ExampleAccountSeeder()->run();
 
@@ -35,20 +35,7 @@ class ExampleAccountSeederTest extends TestCase
             'last_name' => 'Geller',
             'email' => ExampleAccountSeeder::EMAIL,
         ]);
-    }
-
-    #[Test]
-    public function it_confirms_her_address_so_the_account_can_be_used(): void
-    {
-        new ExampleAccountSeeder()->run();
-
         $this->assertNotNull(User::query()->firstOrFail()->email_verified_at);
-    }
-
-    #[Test]
-    public function it_writes_her_down_as_the_me_contact_of_the_vault(): void
-    {
-        new ExampleAccountSeeder()->run();
 
         $vault = Vault::query()->firstOrFail();
         $me = Contact::query()->where('vault_id', $vault->id)->where('is_me', true)->firstOrFail();
@@ -59,7 +46,7 @@ class ExampleAccountSeederTest extends TestCase
     }
 
     #[Test]
-    public function it_fills_the_vault_with_the_rest_of_the_cast(): void
+    public function it_fills_the_vault_with_the_rest_of_the_cast_as_the_show_gives_them(): void
     {
         new ExampleAccountSeeder()->run();
 
@@ -68,12 +55,6 @@ class ExampleAccountSeederTest extends TestCase
         foreach (['Rachel', 'Ross', 'Chandler', 'Joey', 'Phoebe'] as $firstName) {
             $this->assertDatabaseHas('contacts', ['first_name' => $firstName]);
         }
-    }
-
-    #[Test]
-    public function it_writes_the_values_the_show_gives_a_person(): void
-    {
-        new ExampleAccountSeeder()->run();
 
         $joey = Contact::query()->where('first_name', 'Joey')->firstOrFail();
 
@@ -94,29 +75,15 @@ class ExampleAccountSeederTest extends TestCase
                 ->where('field_key', DefaultFieldEnum::Note->value)
                 ->value('value_text'),
         );
-    }
-
-    #[Test]
-    public function it_files_a_person_under_the_category_they_belong_to(): void
-    {
-        new ExampleAccountSeeder()->run();
 
         $ross = Contact::query()->where('first_name', 'Ross')->firstOrFail();
-
         $category = FieldValue::query()
             ->where('valuable_id', $ross->id)
             ->where('field_key', DefaultFieldEnum::Category->value)
             ->firstOrFail();
-
         $family = ValueListItem::query()->where('key', ContactCategoryEnum::Family->value)->firstOrFail();
 
         $this->assertEquals([$family->id], $category->value_list_item_ids);
-    }
-
-    #[Test]
-    public function it_leaves_the_birthday_empty_for_somebody_the_show_never_dates(): void
-    {
-        new ExampleAccountSeeder()->run();
 
         $gunther = Contact::query()->where('first_name', 'Gunther')->firstOrFail();
 
@@ -125,12 +92,6 @@ class ExampleAccountSeederTest extends TestCase
             'field_key' => DefaultFieldEnum::Birthday->value,
         ]);
         $this->assertFalse(Reminder::query()->where('remindable_id', $gunther->id)->exists());
-    }
-
-    #[Test]
-    public function it_marks_a_few_of_them_favourite(): void
-    {
-        new ExampleAccountSeeder()->run();
 
         $favourites = Contact::query()->where('is_favourite', true)->pluck('first_name');
 
@@ -138,39 +99,23 @@ class ExampleAccountSeederTest extends TestCase
         $this->assertContains('Rachel', $favourites);
         $this->assertContains('Ross', $favourites);
         $this->assertContains('Chandler', $favourites);
+
+        $this->assertTrue(Contact::query()->where('last_name', 'Heckles')->firstOrFail()->is_archived);
     }
 
     #[Test]
-    public function it_archives_the_neighbour_who_died(): void
-    {
-        new ExampleAccountSeeder()->run();
-
-        $heckles = Contact::query()->where('last_name', 'Heckles')->firstOrFail();
-
-        $this->assertTrue($heckles->is_archived);
-    }
-
-    #[Test]
-    public function it_sets_a_reminder_on_every_birthday_but_monicas_own(): void
+    public function it_sets_a_different_reminder_on_every_birthday_but_monicas_own(): void
     {
         new ExampleAccountSeeder()->run();
 
         $birthdays = FieldValue::query()->where('field_key', DefaultFieldEnum::Birthday->value)->count();
         $monica = Contact::query()->where('is_me', true)->firstOrFail();
-
-        $this->assertEquals($birthdays - 1, Reminder::query()->count());
-        $this->assertGreaterThanOrEqual(5, Reminder::query()->count());
-        $this->assertEquals(Reminder::query()->count(), Reminder::query()->where('is_active', true)->count());
-        $this->assertFalse(Reminder::query()->where('remindable_id', $monica->id)->exists());
-    }
-
-    #[Test]
-    public function it_varies_what_the_reminders_say_and_when_they_warn(): void
-    {
-        new ExampleAccountSeeder()->run();
-
         $reminders = Reminder::query()->get();
 
+        $this->assertEquals($birthdays - 1, $reminders->count());
+        $this->assertGreaterThanOrEqual(5, $reminders->count());
+        $this->assertEquals($reminders->count(), $reminders->where('is_active', true)->count());
+        $this->assertFalse(Reminder::query()->where('remindable_id', $monica->id)->exists());
         $this->assertEquals($reminders->count(), $reminders->pluck('name')->unique()->count());
         $this->assertGreaterThan(1, $reminders->pluck('moments')->map(fn (array $moments): string => json_encode($moments))->unique()->count());
     }

@@ -19,6 +19,8 @@ use App\Models\Template;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Foundation\Testing\WithCachedConfig;
+use Illuminate\Foundation\Testing\WithCachedRoutes;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
 use Override;
@@ -27,6 +29,9 @@ use Tests\Fixtures\Stripe\FakeStripeClient;
 
 abstract class TestCase extends BaseTestCase
 {
+    use WithCachedConfig;
+    use WithCachedRoutes;
+
     #[Override]
     protected function setUp(): void
     {
@@ -34,6 +39,9 @@ abstract class TestCase extends BaseTestCase
 
         $this->clearConfig();
         Account::forgetAddressPreferences();
+
+        // A failed sign in otherwise waits 200 ms, so that its duration reveals nothing to an attacker.
+        config(['auth.timebox_duration' => 0]);
     }
 
     #[Override]

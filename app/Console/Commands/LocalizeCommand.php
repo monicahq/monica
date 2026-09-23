@@ -11,7 +11,8 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Illuminate\Translation\MessageSelector;
-use LaravelLang\Locales\Facades\Locales;
+use LaravelLang\Publisher\Helpers\Config;
+use LaravelLang\Publisher\Processors\Update;
 use LaravelLang\Publisher\Resources\Translation;
 use LaravelLang\Publisher\Services\Converters\Text\SmartPunctuationDecorator;
 use RecursiveDirectoryIterator;
@@ -451,12 +452,12 @@ class LocalizeCommand extends Command
             }
         }
 
-        $update = new \LaravelLang\Publisher\Processors\Update(
+        $update = new Update(
             output: $this->output,
-            locales: Locales::raw()->installed(),
-            decorator: new SmartPunctuationDecorator(app(\LaravelLang\Publisher\Helpers\Config::class)),
-            config: app(\LaravelLang\Publisher\Helpers\Config::class),
-            translation: ($translation = new Translation()),
+            locales: ['en'],
+            decorator: new SmartPunctuationDecorator(app(Config::class)),
+            config: app(Config::class),
+            translation: ($translation = new Translation),
         );
         $update->prepare()->collect();
 

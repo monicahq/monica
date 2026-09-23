@@ -19,7 +19,7 @@ class DatabaseSeederTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_seeds_the_catalogue_and_the_example_account_together(): void
+    public function it_seeds_the_catalogue_and_one_example_account_however_often_it_runs(): void
     {
         $this->seed(DatabaseSeeder::class);
 
@@ -27,21 +27,9 @@ class DatabaseSeederTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => ExampleAccountSeeder::EMAIL]);
         $this->assertGreaterThanOrEqual(15, Contact::query()->count());
         $this->assertGreaterThanOrEqual(5, Reminder::query()->count());
-    }
-
-    #[Test]
-    public function it_gives_every_contact_the_name_it_is_sorted_and_searched_by(): void
-    {
-        $this->seed(DatabaseSeeder::class);
-
         $this->assertEquals(0, Contact::query()->whereNull('sort_name')->count());
         $this->assertEquals(0, Contact::query()->whereNull('search_key')->count());
-    }
 
-    #[Test]
-    public function it_can_be_run_again_without_building_a_second_account(): void
-    {
-        $this->seed(DatabaseSeeder::class);
         $this->seed(DatabaseSeeder::class);
 
         $this->assertCount(1, User::all());

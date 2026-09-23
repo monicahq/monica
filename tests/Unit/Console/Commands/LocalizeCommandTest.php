@@ -279,6 +279,7 @@ class LocalizeCommandTest extends TestCase
     #[Test]
     public function it_names_the_call_rather_than_the_placeholder_when_the_call_is_the_mistake(): void
     {
+        $this->app->useLangPath($this->langPath);
         $this->writeScratch('return __(\'Just one thing|Several things\');');
 
         Artisan::call('monica:localize', ['--check' => true]);
@@ -293,6 +294,7 @@ class LocalizeCommandTest extends TestCase
     #[Test]
     public function it_leaves_a_sentence_carrying_one_wording_alone(): void
     {
+        $this->app->useLangPath($this->langPath);
         $this->writeScratch('return __(\'Just one thing\');');
 
         Artisan::call('monica:localize', ['--check' => true]);
@@ -303,6 +305,7 @@ class LocalizeCommandTest extends TestCase
     #[Test]
     public function it_leaves_a_sentence_that_merely_opens_with_a_bracket_alone(): void
     {
+        $this->app->useLangPath($this->langPath);
         $this->writeScratch('return __(\'[Draft] something\');');
 
         Artisan::call('monica:localize', ['--check' => true]);
@@ -350,6 +353,7 @@ class LocalizeCommandTest extends TestCase
     #[Test]
     public function it_refuses_a_pinned_wording_in_a_view_even_with_a_comparison_beside_it(): void
     {
+        $this->app->useLangPath($this->langPath);
         $this->writeScratchView(
             '@if ($other > 0)<span>x</span>@endif'."\n".'{{ trans_choice(\'{1}Just the one|:count of them\', $n) }}'
         );
@@ -362,6 +366,7 @@ class LocalizeCommandTest extends TestCase
     #[Test]
     public function it_accepts_a_wording_pinned_to_one_number_when_zero_is_kept_away(): void
     {
+        $this->app->useLangPath($this->langPath);
         $this->writeScratch(
             'if ($n === 0) { return __(\'none at all\'); } return trans_choice(\'{1}Just the one|:count of them\', $n);'
         );
@@ -374,6 +379,7 @@ class LocalizeCommandTest extends TestCase
     #[Test]
     public function it_leaves_a_count_compared_to_zero_alone_because_an_empty_state_is_not_a_plural(): void
     {
+        $this->app->useLangPath($this->langPath);
         $this->writeScratch(
             'if ($n === 0) { return __(\'none at all\'); } return trans_choice(\':count widget|:count widgets\', $n);'
         );
