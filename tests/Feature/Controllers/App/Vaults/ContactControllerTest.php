@@ -48,8 +48,7 @@ class ContactControllerTest extends TestCase
             ->assertSee('Michael Scott')
             ->assertSee('Dwight Schrute')
             ->assertSee('Prison Mike')
-            ->assertSee('Basic contact')
-            ->assertSee('All 2 people in this vault, on a single list.');
+            ->assertSee('Basic contact');
     }
 
     #[Test]

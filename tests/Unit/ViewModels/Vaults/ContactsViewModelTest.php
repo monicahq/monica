@@ -266,23 +266,12 @@ class ContactsViewModelTest extends TestCase
         $this->contact($vault, 'Dwight', 'Schrute');
 
         $everybody = new ContactsViewModel(user: $user, vault: $vault);
-        $this->assertEquals('All 2 people in this vault, on a single list.', $everybody->resultLine());
+        $this->assertSame('', $everybody->resultLine());
         $this->assertEquals('End of the list. 2 people, no pages.', $everybody->endLine());
 
         $narrowed = new ContactsViewModel(user: $user, vault: $vault, query: 'schrute');
         $this->assertEquals('1 of 2 shown.', $narrowed->resultLine());
         $this->assertEquals('End of the list. One person, no pages.', $narrowed->endLine());
-    }
-
-    #[Test]
-    public function it_says_nothing_about_who_is_in_a_vault_that_holds_nobody(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $empty = new ContactsViewModel(user: $user, vault: $vault);
-
-        $this->assertSame('', $empty->resultLine());
     }
 
     #[Test]

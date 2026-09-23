@@ -23,7 +23,7 @@ enum ContactGroupingEnum: string implements Translatable
             self::Everyone => 'Everybody',
             self::Favourites => 'Favourites',
             self::Archived => 'Archived',
-            self::NamesOnly => 'Names only',
+            self::NamesOnly => 'Partial contacts',
         };
     }
 

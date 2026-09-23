@@ -139,19 +139,15 @@ class ContactsViewModel
 
     public function resultLine(): string
     {
-        if ($this->isNarrowed()) {
-            return trans_choice(
-                ':count of :total shown.|:count of :total shown.',
-                $this->matchingCount(),
-                ['total' => $this->headcount()],
-            );
-        }
-
-        if ($this->headcount() === 0) {
+        if (! $this->isNarrowed()) {
             return '';
         }
 
-        return trans_choice('{1}One person in this vault.|All :count people in this vault, on a single list.', $this->headcount());
+        return trans_choice(
+            ':count of :total shown.|:count of :total shown.',
+            $this->matchingCount(),
+            ['total' => $this->headcount()],
+        );
     }
 
     public function endLine(): string
