@@ -39,6 +39,7 @@ class ContactRelationshipController extends Controller
                 vault: $vault,
                 contact: $contact,
                 query: (string) $request->string('query'),
+                preselectedTypeId: (string) $request->string('type'),
             ),
         ]);
     }
@@ -77,7 +78,11 @@ class ContactRelationshipController extends Controller
             return back()->withInput()->withErrors(['mode' => $e->getMessage()]);
         }
 
-        return redirect()->route('contacts.show', ['vault' => $vault, 'contact' => $contact])
+        return redirect()->route('contacts.show', [
+            'vault' => $vault,
+            'contact' => $contact,
+            'page' => ContactViewModel::PAGE_RELATIONSHIPS,
+        ])
             ->with('status', __('The relationship is recorded.'))
             ->with('status_description', __('It reads from both records at once, so there is no reverse to add.'));
     }

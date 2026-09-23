@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\DefaultFieldEnum;
+use App\Enums\RelationshipCategoryEnum;
 use App\Enums\RelationshipTypeEnum;
 use App\Models\Contact;
 use App\Models\FieldValue;
@@ -224,6 +225,125 @@ class RelationshipsBlockTest extends TestCase
         $this->link($vault, $judy, $ross, $this->typeOf($user, RelationshipTypeEnum::Sibling, $family));
 
         $this->assertSame(2, new RelationshipsBlock(vault: $vault, contact: $judy)->total());
+    }
+
+    #[Test]
+    public function it_lists_the_categories_the_account_offers_in_its_order(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactOn($vault, 'Michael', 'Scott');
+
+        $work = $this->categoryOf($user, 'Professional', 1);
+        $family = $this->categoryOf($user, 'Family', 2);
+        $paper = $this->categoryOf($user, 'Dunder Mifflin', 3);
+
+        $this->typeOf($user, RelationshipTypeEnum::Colleague, $work);
+        $this->typeOf($user, RelationshipTypeEnum::Sibling, $family);
+        $this->typeOf($user, RelationshipTypeEnum::Friend, $paper);
+
+        $categories = new RelationshipsBlock(vault: $vault, contact: $michael)->emptyCategories();
+
+        $this->assertSame(['Professional', 'Family', 'Dunder Mifflin'], array_column($categories, 'label'));
+        $this->assertSame('Add to Family', $categories[1]['addLabel']);
+    }
+
+    #[Test]
+    public function it_leaves_out_a_category_that_offers_nothing(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactOn($vault, 'Michael', 'Scott');
+
+        $family = $this->categoryOf($user, 'Family', 1);
+        $work = $this->categoryOf($user, 'Professional', 2);
+        $friends = $this->categoryOf($user, 'Friendship', 3);
+
+        $this->typeOf($user, RelationshipTypeEnum::Sibling, $family);
+        $this->typeOf($user, RelationshipTypeEnum::Colleague, $work)->update(['is_active' => false]);
+        $this->typeOf($user, RelationshipTypeEnum::Friend, $friends);
+        $friends->update(['is_active' => false]);
+
+        $categories = new RelationshipsBlock(vault: $vault, contact: $michael)->emptyCategories();
+
+        $this->assertSame(['Family'], array_column($categories, 'label'));
+    }
+
+    #[Test]
+    public function it_names_up_to_four_types_under_a_category(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactOn($vault, 'Michael', 'Scott');
+        $family = $this->categoryOf($user, 'Family', 1);
+
+        foreach ([RelationshipTypeEnum::ParentChild, RelationshipTypeEnum::Sibling, RelationshipTypeEnum::Cousin, RelationshipTypeEnum::Spouse, RelationshipTypeEnum::Partner] as $position => $case) {
+            $this->typeOf($user, $case, $family)->update(['position' => $position + 1]);
+        }
+
+        $categories = new RelationshipsBlock(vault: $vault, contact: $michael)->emptyCategories();
+
+        $this->assertSame('Parent / Child, Sibling, Cousin, Spouse', $categories[0]['line']);
+    }
+
+    #[Test]
+    public function it_adds_to_a_category_starting_from_its_first_type(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactOn($vault, 'Michael', 'Scott');
+        $family = $this->categoryOf($user, 'Family', 1);
+
+        $this->typeOf($user, RelationshipTypeEnum::Sibling, $family)->update(['position' => 2]);
+        $parent = $this->typeOf($user, RelationshipTypeEnum::ParentChild, $family);
+
+        $categories = new RelationshipsBlock(vault: $vault, contact: $michael)->emptyCategories();
+
+        $this->assertSame(
+            route('contacts.relationships.new', ['vault' => $vault, 'contact' => $michael, 'type' => $parent->id]),
+            $categories[0]['addUrl'],
+        );
+    }
+
+    #[Test]
+    public function it_marks_each_supplied_category_with_its_own_icon(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactOn($vault, 'Michael', 'Scott');
+
+        foreach (RelationshipCategoryEnum::cases() as $position => $case) {
+            $category = RelationshipCategory::factory()->system($case)->create([
+                'account_id' => $user->account_id,
+                'position' => $position + 1,
+            ]);
+            RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id]);
+        }
+
+        RelationshipType::factory()->create([
+            'account_id' => $user->account_id,
+            'relationship_category_id' => $this->categoryOf($user, 'Dunder Mifflin', 10)->id,
+        ]);
+
+        $categories = new RelationshipsBlock(vault: $vault, contact: $michael)->emptyCategories();
+
+        $this->assertSame(
+            ['family', 'heart', 'people', 'organization', 'relationship', 'relationship'],
+            array_column($categories, 'icon'),
+        );
+    }
+
+    #[Test]
+    public function it_links_to_the_relationship_types_settings(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactOn($vault, 'Michael', 'Scott');
+
+        $block = new RelationshipsBlock(vault: $vault, contact: $michael);
+
+        $this->assertSame([], $block->emptyCategories());
+        $this->assertSame(route('settings.relationshipTypes.index'), $block->settingsUrl());
     }
 
     private function link(Vault $vault, Contact $one, Contact $other, RelationshipType $type): Relationship

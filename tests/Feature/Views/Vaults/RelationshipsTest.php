@@ -6,6 +6,8 @@ namespace Tests\Feature\Views\Vaults;
 
 use App\Models\Contact;
 use App\Models\Relationship;
+use App\Models\RelationshipCategory;
+use App\Models\RelationshipType;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactViewModel;
@@ -34,12 +36,25 @@ class RelationshipsTest extends TestCase
     }
 
     #[Test]
-    public function it_says_nobody_is_connected_yet_and_offers_the_first_relationship(): void
+    public function it_offers_each_category_a_first_relationship_can_go_under(): void
+    {
+        $family = RelationshipCategory::factory()->create(['account_id' => $this->user->account_id, 'name' => 'Family', 'position' => 1]);
+        $work = RelationshipCategory::factory()->create(['account_id' => $this->user->account_id, 'name' => 'Dunder Mifflin', 'position' => 2]);
+        $sibling = RelationshipType::factory()->create(['account_id' => $this->user->account_id, 'relationship_category_id' => $family->id, 'name' => 'Sibling']);
+        RelationshipType::factory()->create(['account_id' => $this->user->account_id, 'relationship_category_id' => $work->id, 'name' => 'Regional manager']);
+
+        $this->tab()
+            ->assertSeeInOrder(['Family', 'Sibling', 'Dunder Mifflin', 'Regional manager'])
+            ->assertSee('aria-label="Add to Family"', false)
+            ->assertSee(route('contacts.relationships.new', ['vault' => $this->vault, 'contact' => $this->judy, 'type' => $sibling->id]), false);
+    }
+
+    #[Test]
+    public function it_points_to_the_relationship_types_when_none_is_offered(): void
     {
         $this->tab()
-            ->assertSee('Judy')
-            ->assertSee(__('Add a relationship'))
-            ->assertSee(route('contacts.relationships.new', ['vault' => $this->vault, 'contact' => $this->judy]));
+            ->assertSee('Nobody is written down as connected to Judy yet.')
+            ->assertSee(route('settings.relationshipTypes.index'));
     }
 
     #[Test]

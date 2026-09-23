@@ -17,6 +17,7 @@ class RelationshipFormViewModel
         private readonly Vault $vault,
         private readonly Contact $contact,
         private readonly string $query = '',
+        private readonly string $preselectedTypeId = '',
     ) {}
 
     public function user(): User
@@ -79,7 +80,7 @@ class RelationshipFormViewModel
         return $this->query;
     }
 
-    /** @return array<int, array{label: string, types: array<int, array{value: int, label: string, roleA: string, roleB: string, isSymmetric: bool}>}> */
+    /** @return array<int, array{key: string|null, label: string, types: array<int, array{value: int, label: string, name: string, roleA: string, roleB: string, isSymmetric: bool}>}> */
     public function typeGroups(): array
     {
         return $this->choices()->groups();
@@ -137,7 +138,7 @@ class RelationshipFormViewModel
     public function values(): array
     {
         return [
-            'typeId' => (string) old('relationship_type_id', ''),
+            'typeId' => (string) old('relationship_type_id', $this->offeredTypeId()),
             'mode' => (string) old('mode', ''),
             'firstName' => (string) old('first_name', ''),
             'lastName' => (string) old('last_name', ''),
@@ -177,6 +178,19 @@ class RelationshipFormViewModel
                 'needOther' => __('Say who the other side is.'),
             ],
         ];
+    }
+
+    /**
+     * The type the form was opened with, when the account offers it. Anything else opens the form
+     * with nothing chosen, since a stale or foreign link is no reason to refuse the screen.
+     */
+    private function offeredTypeId(): string
+    {
+        if (! array_key_exists((int) $this->preselectedTypeId, $this->typeMap())) {
+            return '';
+        }
+
+        return $this->preselectedTypeId;
     }
 
     private function otherContactName(string $id): string

@@ -17,6 +17,7 @@ use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
+use App\ViewModels\Vaults\ContactViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
@@ -39,6 +40,23 @@ class ContactRelationshipControllerTest extends TestCase
             ->assertSee('Parent ↔ Child', escape: false)
             ->assertSee('Sibling')
             ->assertSee('Michael Scott');
+    }
+
+    #[Test]
+    public function it_opens_the_form_with_the_type_it_was_asked_for(): void
+    {
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user, 'Michael', 'Scott');
+        $sibling = $this->typesOf($user)['sibling'];
+
+        $this->actingAs($user)
+            ->get(route('contacts.relationships.new', ['vault' => $contact->vault, 'contact' => $contact, 'type' => $sibling->id]))
+            ->assertStatus(200)
+            ->assertSee("<option value=\"{$sibling->id}\" selected", escape: false);
+
+        $this->actingAs($user)
+            ->get(route('contacts.relationships.new', ['vault' => $contact->vault, 'contact' => $contact, 'type' => 999999]))
+            ->assertStatus(200);
     }
 
     #[Test]
@@ -69,7 +87,11 @@ class ContactRelationshipControllerTest extends TestCase
                 'mode' => 'existing',
                 'other_contact_id' => $other->id,
             ])
-            ->assertRedirect(route('contacts.show', ['vault' => $contact->vault, 'contact' => $contact]))
+            ->assertRedirect(route('contacts.show', [
+                'vault' => $contact->vault,
+                'contact' => $contact,
+                'page' => ContactViewModel::PAGE_RELATIONSHIPS,
+            ]))
             ->assertSessionHas('status');
 
         $this->assertDatabaseHas('relationships', [

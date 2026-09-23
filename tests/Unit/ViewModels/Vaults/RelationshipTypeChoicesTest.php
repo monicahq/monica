@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Enums\RelationshipCategoryEnum;
 use App\Enums\RelationshipTypeEnum;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
@@ -81,6 +82,44 @@ class RelationshipTypeChoicesTest extends TestCase
         $user = User::factory()->create();
 
         $this->assertFalse(new RelationshipTypeChoices(accountId: $user->account_id)->any());
+    }
+
+    #[Test]
+    public function it_says_which_supplied_category_a_group_is(): void
+    {
+        $user = User::factory()->create();
+        $family = RelationshipCategory::factory()->system(RelationshipCategoryEnum::Family)->create([
+            'account_id' => $user->account_id,
+            'position' => 1,
+        ]);
+        $paper = $this->categoryOf($user, 'Dunder Mifflin', 2);
+
+        $this->typeOf($user, RelationshipTypeEnum::Sibling, $family);
+        $this->typeOf($user, RelationshipTypeEnum::Colleague, $paper);
+
+        $groups = new RelationshipTypeChoices(accountId: $user->account_id)->groups();
+
+        $this->assertSame('family', $groups[0]['key']);
+        $this->assertNull($groups[1]['key']);
+    }
+
+    #[Test]
+    public function it_carries_the_name_of_each_type(): void
+    {
+        $user = User::factory()->create();
+        $family = $this->categoryOf($user, 'Family', 1);
+        $this->typeOf($user, RelationshipTypeEnum::ParentChild, $family);
+        RelationshipType::factory()->create([
+            'account_id' => $user->account_id,
+            'relationship_category_id' => $family->id,
+            'name' => 'Beet farm partner',
+            'position' => 2,
+        ]);
+
+        $types = new RelationshipTypeChoices(accountId: $user->account_id)->groups()[0]['types'];
+
+        $this->assertSame('Parent / Child', $types[0]['name']);
+        $this->assertSame('Beet farm partner', $types[1]['name']);
     }
 
     private function categoryOf(User $user, string $name, int $position): RelationshipCategory

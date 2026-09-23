@@ -187,7 +187,51 @@ class RelationshipFormViewModelTest extends TestCase
         $this->assertCount(RelationshipFormViewModel::CANDIDATE_LIMIT, $candidates);
     }
 
-    private function viewModelFor(User $user): RelationshipFormViewModel
+    #[Test]
+    public function it_chooses_the_type_it_was_opened_with(): void
+    {
+        $user = User::factory()->create();
+        $family = $this->categoryOf($user, 'Family', 1);
+        $this->typeOn($family, RelationshipTypeEnum::ParentChild);
+        $sibling = $this->typeOn($family, RelationshipTypeEnum::Sibling);
+
+        $viewModel = $this->viewModelFor($user, (string) $sibling->id);
+
+        $this->assertSame((string) $sibling->id, $viewModel->values()['typeId']);
+        $this->assertSame((string) $sibling->id, $viewModel->projection()['typeId']);
+    }
+
+    #[Test]
+    public function it_ignores_a_type_it_does_not_offer(): void
+    {
+        $user = User::factory()->create();
+        $family = $this->categoryOf($user, 'Family', 1);
+        $closed = $this->categoryOf($user, 'Scranton branch', 2, isActive: false);
+        $withdrawn = $this->typeOn($family, RelationshipTypeEnum::Sibling);
+        $withdrawn->update(['is_active' => false]);
+        $hidden = $this->typeOn($closed, RelationshipTypeEnum::Colleague);
+        $theirs = RelationshipType::factory()->create();
+
+        foreach ([(string) $withdrawn->id, (string) $hidden->id, (string) $theirs->id, 'abc'] as $preselected) {
+            $this->assertSame('', $this->viewModelFor($user, $preselected)->values()['typeId']);
+        }
+    }
+
+    #[Test]
+    public function it_keeps_what_was_submitted_over_the_type_it_was_opened_with(): void
+    {
+        $user = User::factory()->create();
+        $family = $this->categoryOf($user, 'Family', 1);
+        $parent = $this->typeOn($family, RelationshipTypeEnum::ParentChild);
+        $sibling = $this->typeOn($family, RelationshipTypeEnum::Sibling);
+
+        request()->setLaravelSession(session()->driver());
+        session()->flashInput(['relationship_type_id' => (string) $parent->id]);
+
+        $this->assertSame((string) $parent->id, $this->viewModelFor($user, (string) $sibling->id)->values()['typeId']);
+    }
+
+    private function viewModelFor(User $user, string $preselectedTypeId = ''): RelationshipFormViewModel
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
@@ -195,6 +239,7 @@ class RelationshipFormViewModelTest extends TestCase
             user: $user,
             vault: $vault,
             contact: $this->contactOn($vault, 'Michael', 'Scott'),
+            preselectedTypeId: $preselectedTypeId,
         );
     }
 

@@ -22,7 +22,7 @@ class RelationshipTypeChoices
         private readonly ?RelationshipType $keeping = null,
     ) {}
 
-    /** @return array<int, array{label: string, types: array<int, array{value: int, label: string, roleA: string, roleB: string, isSymmetric: bool}>}> */
+    /** @return array<int, array{key: string|null, label: string, types: array<int, array{value: int, label: string, name: string, roleA: string, roleB: string, isSymmetric: bool}>}> */
     public function groups(): array
     {
         return once(function (): array {
@@ -40,11 +40,13 @@ class RelationshipTypeChoices
 
             return $categories
                 ->map(fn (RelationshipCategory $category): array => [
+                    'key' => $category->key,
                     'label' => $category->name,
                     'types' => $category->types
                         ->map(fn (RelationshipType $type): array => [
                             'value' => $type->id,
                             'label' => $this->label($type),
+                            'name' => $type->name,
                             'roleA' => $type->role_a,
                             'roleB' => $type->role_b,
                             'isSymmetric' => $type->is_symmetric,

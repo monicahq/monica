@@ -67,6 +67,40 @@ class RelationshipsBlock
         return __('Nobody is written down as connected to :name yet.', ['name' => $this->contact->first_name ?? $this->contact->name]);
     }
 
+    /**
+     * The categories a first link can go under, in the account's order, for the tab while it is empty.
+     *
+     * They are read from the same choices the add form offers, so a row never proposes a type the
+     * form would not accept.
+     *
+     * @return array<int, array{label: string, icon: string, line: string, addUrl: string, addLabel: string}>
+     */
+    public function emptyCategories(): array
+    {
+        return array_map(fn (array $group): array => [
+            'label' => $group['label'],
+            'icon' => match ($group['key']) {
+                'family' => 'family',
+                'romantic' => 'heart',
+                'friendship' => 'people',
+                'professional' => 'organization',
+                default => 'relationship',
+            },
+            'line' => implode(__(', '), array_column(array_slice($group['types'], 0, 4), 'name')),
+            'addUrl' => route('contacts.relationships.new', [
+                'vault' => $this->vault,
+                'contact' => $this->contact,
+                'type' => $group['types'][0]['value'],
+            ]),
+            'addLabel' => __('Add to :category', ['category' => $group['label']]),
+        ], $this->choices()->groups());
+    }
+
+    public function settingsUrl(): string
+    {
+        return route('settings.relationshipTypes.index');
+    }
+
     public function addRelationshipUrl(): string
     {
         return route('contacts.relationships.new', ['vault' => $this->vault, 'contact' => $this->contact]);
@@ -100,6 +134,11 @@ class RelationshipsBlock
             'vault' => $this->vault,
             'filter' => ContactGroupingEnum::NamesOnly->value,
         ]);
+    }
+
+    private function choices(): RelationshipTypeChoices
+    {
+        return once(fn (): RelationshipTypeChoices => new RelationshipTypeChoices(accountId: $this->contact->account_id));
     }
 
     /** @return Collection<int, Relationship> */

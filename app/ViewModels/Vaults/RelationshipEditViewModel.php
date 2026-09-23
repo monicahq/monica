@@ -70,7 +70,7 @@ class RelationshipEditViewModel
         ]);
     }
 
-    /** @return array<int, array{label: string, types: array<int, array{value: int, label: string, roleA: string, roleB: string, isSymmetric: bool}>}> */
+    /** @return array<int, array{key: string|null, label: string, types: array<int, array{value: int, label: string, name: string, roleA: string, roleB: string, isSymmetric: bool}>}> */
     public function typeGroups(): array
     {
         return $this->choices()->groups();

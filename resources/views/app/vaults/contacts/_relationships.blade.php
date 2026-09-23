@@ -3,13 +3,31 @@
   @var \App\ViewModels\Vaults\RelationshipsBlock $relationships
   @var \App\ViewModels\Vaults\FamilyTreeBlock $tree
 --}}
-@if ($relationships->holdsNothing())
-  <x-panel :title="__('Relationships')" icon="relationship">
+@if ($relationships->holdsNothing() && $relationships->emptyCategories() !== [])
+  <x-panel :flush="true">
+    @foreach ($relationships->emptyCategories() as $category)
+      <x-row :icon="$category['icon']" :title="$category['label']" :description="$category['line']">
+        <x-slot:end>
+          <x-button.ghost
+            :href="$category['addUrl']"
+            data-turbo="true"
+            size="small"
+            aria-label="{{ $category['addLabel'] }}"
+          >
+            <x-slot:icon><x-icon name="plus" :size="15" :stroke-width="1.6" /></x-slot:icon>
+            {{ __('Add') }}
+          </x-button.ghost>
+        </x-slot:end>
+      </x-row>
+    @endforeach
+  </x-panel>
+@elseif ($relationships->holdsNothing())
+  <x-panel>
     <p class="text-sm text-pretty text-muted">{{ $relationships->emptyLine() }}</p>
 
     <div class="mt-3.5">
-      <x-button.secondary :href="$relationships->addRelationshipUrl()" data-turbo="true" size="small">
-        {{ __('Add a relationship') }}
+      <x-button.secondary :href="$relationships->settingsUrl()" data-turbo="true" size="small">
+        {{ __('Set up relationship types') }}
       </x-button.secondary>
     </div>
   </x-panel>
