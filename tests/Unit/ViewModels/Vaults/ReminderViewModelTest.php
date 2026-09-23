@@ -88,6 +88,21 @@ class ReminderViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_names_the_reader_s_zone_only_when_the_rule_was_frozen_in_another(): void
+    {
+        $reminder = $this->reminderAbout($user = User::factory()->create(['timezone' => 'Europe/Paris']));
+
+        $this->assertSame([null, null, null, null], array_column($this->viewModel($user, $reminder)->schedule()['fields'], 'note'));
+
+        $user->update(['timezone' => 'America/New_York']);
+
+        $this->assertSame(
+            [null, null, null, 'Fixed when the reminder was made. Yours is America/New_York.'],
+            array_column($this->viewModel($user, $reminder)->schedule()['fields'], 'note'),
+        );
+    }
+
+    #[Test]
     public function it_lists_every_moment_the_rule_fires_at(): void
     {
         $reminder = $this->reminderAbout($user = User::factory()->create());

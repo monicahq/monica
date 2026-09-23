@@ -1,93 +1,112 @@
-{{-- One reminder on the list: when it fires, who it is about, and what it says. --}}
+{{-- One reminder on the list, drawn as an envelope: when it fires, who it is about, and what it says. --}}
 {{--
   @var \App\ViewModels\Vaults\ReminderRow $row
   @var bool $linkToReminder  false on the reminder's own screen, which is where this row is already
 --}}
-<div
-  @class([
-    'relative flex items-stretch rounded-lg border border-hairline bg-canvas shadow-panel transition-colors duration-(--duration-fast) ease-out hover:border-hairline-strong',
-  ])
->
-  <span aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden rounded-lg">
-    <span class="absolute inset-x-0 top-0 h-6.5 bg-hairline/40 [clip-path:polygon(0_0,100%_0,50%_100%)]"></span>
+@php
+  $isLink = ($linkToReminder ?? true) && $row->reminderUrl() !== null;
+  $item = 'flex w-full cursor-pointer items-center gap-2.5 rounded-xs px-2.5 py-2 text-left font-sans text-sm text-ink transition-colors hover:bg-hover focus-ring-inset';
+@endphp
+<div class="relative flex flex-wrap items-center gap-x-5 gap-y-3 rounded-lg border border-hairline bg-canvas px-5 pt-7 pb-4.5 shadow-panel transition-colors duration-(--duration-fast) ease-out hover:border-hairline-strong">
+  <span aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-5.5 rounded-t-lg bg-card [clip-path:polygon(0_0,100%_0,50%_100%)]"></span>
 
-    <span
-      @class([
-        'absolute inset-y-0 left-0 w-1',
-        'bg-[repeating-linear-gradient(135deg,var(--color-warning)_0_6px,transparent_6px_12px)]' => $row->isLate(),
-        'bg-[repeating-linear-gradient(135deg,var(--color-hairline-strong)_0_6px,transparent_6px_12px)]' => ! $row->isLate(),
-      ])
-    ></span>
-  </span>
+  <{{ $isLink ? 'a' : 'div' }}
+    @if ($isLink) href="{{ $row->reminderUrl() }}" data-turbo="true" @endif
+    @class([
+      'relative flex min-w-0 flex-[1_1_320px] items-center gap-5 text-body no-underline',
+      'rounded-md focus-ring' => $isLink,
+    ])
+  >
+    <span class="flex flex-none flex-col items-center gap-1">
+      <span class="flex w-14 flex-col items-center rounded-xs border-[1.5px] border-dashed border-hairline-strong bg-canvas py-1.5">
+        <span class="text-[10px] font-semibold tracking-[0.1em] text-muted uppercase">{{ $row->month() }}</span>
+        <span class="text-[22px] leading-tight font-semibold text-ink">{{ $row->day() }}</span>
+      </span>
 
-  <div class="relative flex flex-none flex-col items-center gap-1 py-2.75 pl-3.5">
-    <span class="flex w-15.5 flex-col items-center rounded border-2 border-dashed border-hairline-strong px-0.75 py-1">
-      <span class="text-[9px] font-semibold tracking-[0.1em] text-muted uppercase">{{ $row->month() }}</span>
-      <span class="text-[19px] leading-tight font-semibold text-ink">{{ $row->day() }}</span>
-      <span class="text-[9px] tracking-[0.06em] text-muted-soft">{{ $row->year() }}</span>
+      @if ($row->cadence() !== '')
+        <span class="flex items-center gap-1 text-xs text-muted">
+          <x-icon :name="$row->cadenceIcon()" :size="13" :stroke-width="1.5" class="shrink-0" />
+          {{ $row->cadence() }}
+        </span>
+      @endif
     </span>
 
-    @if ($row->cadence() !== '')
-      <span class="flex items-center gap-1">
-        <x-icon :name="$row->cadenceIcon()" :size="11" :stroke-width="1.5" class="shrink-0 text-muted-soft" />
-        <span class="text-[10px] text-muted">{{ $row->cadence() }}</span>
-      </span>
-    @endif
-  </div>
+    <span class="flex min-w-0 flex-col gap-1.5">
+      <span class="flex min-w-0 items-center gap-2">
+        @if ($row->contactName() === null)
+          <span class="text-[13.5px] font-semibold text-muted">{{ __('A deleted contact') }}</span>
+        @elseif ($isLink)
+          <x-contact-avatar :name="$row->contactName()" :url="$row->avatarUrl()" :size="24" />
 
-  <div class="relative flex min-w-0 flex-1 flex-wrap items-center gap-x-3.5 gap-y-2.5 py-3 pr-3.5 pl-4">
-    <div class="flex min-w-0 flex-1 basis-full flex-col gap-1.5 sm:basis-0">
-      <div class="flex min-w-0 items-center gap-2.25">
-        @if ($row->contactName() !== null)
-          <x-contact-avatar :name="$row->contactName()" :url="$row->avatarUrl()" :size="26" />
+          <span class="truncate text-[13.5px] font-semibold text-ink">{{ $row->contactName() }}</span>
+
+          <x-icon name="chevron-right" :size="14" :stroke-width="1.6" class="shrink-0 text-muted" />
+        @else
+          <x-contact-avatar :name="$row->contactName()" :url="$row->avatarUrl()" :size="24" />
 
           <a
             href="{{ $row->contactUrl() }}"
             data-turbo="true"
             class="truncate text-[13.5px] font-semibold text-ink no-underline transition-colors duration-(--duration-fast) ease-out hover:text-link"
           >{{ $row->contactName() }}</a>
-        @else
-          <span class="text-[13.5px] font-semibold text-muted">{{ __('A deleted contact') }}</span>
         @endif
-      </div>
+      </span>
 
-      <div class="flex min-w-0 items-start gap-2 border-t border-dashed border-hairline pt-1.5">
-        <x-icon :name="$row->icon()" :size="15" :stroke-width="1.5" class="mt-px shrink-0 text-muted" />
+      <span class="flex min-w-0 items-start gap-1.5 text-sm text-pretty text-body">
+        <x-icon :name="$row->icon()" :size="15" :stroke-width="1.5" class="mt-0.5 shrink-0 text-muted" />
 
-        <span class="min-w-0 text-[13.5px] leading-snug text-pretty text-body">{{ $row->text() }}</span>
-      </div>
-    </div>
+        <span class="min-w-0">
+          {{ $row->text() }} ·
+          <x-tooltip :text="$row->exact()" :focusable="! $isLink">
+            <span
+              @class([
+                'border-b border-dotted border-hairline-strong whitespace-nowrap',
+                'text-warning' => $row->isLate(),
+              ])
+            >{{ $row->relative() }}</span>
+          </x-tooltip>
+        </span>
+      </span>
+    </span>
+  </{{ $isLink ? 'a' : 'div' }}>
 
-    <x-tooltip :text="$row->exact()" :focusable="true" class="flex-none max-sm:ml-auto">
-      <span
-        @class([
-          'border-b border-dotted border-hairline-strong text-xs whitespace-nowrap',
-          'text-warning' => $row->isLate(),
-          'text-muted' => ! $row->isLate(),
-        ])
-      >{{ $row->relative() }}</span>
-    </x-tooltip>
+  <div class="relative flex flex-none items-center gap-2 max-sm:ml-auto">
+    @include('app.vaults.reminders._dismiss', ['row' => $row])
 
-    <div class="flex flex-none items-center gap-1.5">
-      @if (($linkToReminder ?? true) && $row->reminderUrl() !== null)
-        <x-icon-button
-          :href="$row->reminderUrl()"
-          data-turbo="true"
-          icon="reminder"
-          :label="__('Open this reminder')"
-          align="right"
-        />
+    <x-actions-menu variant="ghost" :text="__('More')" :label="__('More actions for :name', ['name' => $row->text()])">
+      <x-slot:glyph>
+        <x-icon name="chevron-down" :size="14" :stroke-width="1.7" ::class="menuOpen && 'rotate-180'" class="order-last transition-transform duration-[170ms]" />
+      </x-slot:glyph>
+
+      @include('app.vaults.reminders._postpone', ['row' => $row, 'inMenu' => true])
+
+      <x-modal.form
+        :title="__('Send yourself a test?')"
+        :description="__('This reminder is emailed to you now, as it will arrive. Nothing else changes.')"
+        :confirm="__('Send it')"
+        method="post"
+        :action="$row->testUrl()"
+      >
+        <x-slot:trigger>
+          <button type="button" role="menuitem" @click="menuOpen = false; $refs.menuTrigger.focus(); open = true" class="{{ $item }}">
+            <x-icon name="mail" :size="16" :stroke-width="1.5" class="shrink-0" />
+
+            {{ __('Send me a test') }}
+          </button>
+        </x-slot:trigger>
+      </x-modal.form>
+
+      @if ($isLink)
+        <div role="separator" class="my-1 h-px bg-hairline"></div>
+
+        <x-actions-menu.item :href="$row->reminderUrl()" data-turbo="true">
+          <x-slot:icon>
+            <x-icon name="arrow-right" :size="16" :stroke-width="1.5" />
+          </x-slot:icon>
+
+          {{ __('Go to the reminder') }}
+        </x-actions-menu.item>
       @endif
-
-      @include('app.vaults.reminders._postpone', ['row' => $row])
-
-      <x-form method="post" :action="$row->testUrl()" class="contents">
-        <x-icon-button type="submit" icon="mail" :label="__('Send it to me now')" align="right" />
-      </x-form>
-
-      <x-form method="put" :action="$row->dismissUrl()" class="contents">
-        <x-icon-button type="submit" icon="check" :label="__('Dismiss this reminder')" align="right" />
-      </x-form>
-    </div>
+    </x-actions-menu>
   </div>
 </div>

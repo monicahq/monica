@@ -1,5 +1,8 @@
 {{-- The dialog that moves one deadline to a later instant. --}}
-{{-- @var \App\ViewModels\Vaults\ReminderRow $row --}}
+{{--
+  @var \App\ViewModels\Vaults\ReminderRow $row
+  @var bool $inMenu  true when the dialog opens from an actions menu, which takes focus back on close
+--}}
 <x-modal.form
   :title="$row->text()"
   :confirm="__('Move it')"
@@ -8,7 +11,20 @@
   :open="$errors->has('postponement')"
 >
   <x-slot:trigger>
-    <x-icon-button icon="clock" :label="__('Remind me later')" align="right" @click="open = true" />
+    @if ($inMenu ?? false)
+      <button
+        type="button"
+        role="menuitem"
+        @click="menuOpen = false; $refs.menuTrigger.focus(); open = true"
+        class="flex w-full cursor-pointer items-center gap-2.5 rounded-xs px-2.5 py-2 text-left font-sans text-sm text-ink transition-colors hover:bg-hover focus-ring-inset"
+      >
+        <x-icon name="clock" :size="16" :stroke-width="1.5" class="shrink-0" />
+
+        {{ __('Remind me later') }}
+      </button>
+    @else
+      <x-icon-button icon="clock" :label="__('Remind me later')" align="right" @click="open = true" />
+    @endif
   </x-slot:trigger>
 
   <x-slot:header>

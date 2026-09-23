@@ -12,7 +12,7 @@
     <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" current="reminders" />
   </x-slot:sidebar>
 
-  <x-page-header :title="$viewModel->title()" :description="$viewModel->intro()" />
+  <x-page-header :title="$viewModel->title()" />
 
   @include('app.vaults.reminders._tabs', [
     'activeUrl' => $viewModel->activeUrl(),

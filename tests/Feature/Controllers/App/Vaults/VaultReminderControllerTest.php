@@ -200,6 +200,20 @@ class VaultReminderControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_asks_before_it_dismisses_a_reminder(): void
+    {
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $occurrence = $this->deadline($this->ruleAbout($user, $vault, 'Holly', 'Flax'), '+2 days');
+
+        $response = $this->actingAs($user)->get(route('reminders.index', $vault));
+
+        $response->assertSee('Dismiss “Holly’s birthday”?', escape: false);
+        $response->assertSee('This one will not be sent. The next one stays scheduled.');
+        $response->assertSee("/reminders/occurrences/{$occurrence->uuid}/dismissal", escape: false);
+    }
+
+    #[Test]
     public function the_postpone_dialog_names_every_instant_and_the_zone_they_are_read_in(): void
     {
         $user = User::factory()->create(['timezone' => 'Europe/Paris']);

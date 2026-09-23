@@ -139,9 +139,27 @@ class ReminderControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]));
 
-        $response->assertSee('aria-label="Dismiss this reminder"', escape: false);
         $response->assertSee('aria-label="Remind me later"', escape: false);
-        $response->assertSee('aria-label="Send it to me now"', escape: false);
+        $response->assertSee('aria-haspopup="menu"', escape: false);
+        $response->assertSee('Send me a test');
+        $response->assertDontSee('Go to the reminder');
+    }
+
+    #[Test]
+    public function it_asks_before_it_dismisses_or_sends_a_test(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $rule = $this->ruleAbout($user, $vault);
+        $occurrence = $this->deadline($rule, '+9 days');
+
+        $response = $this->actingAs($user)->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]));
+
+        $response->assertSee('Dismiss “Stanley’s birthday”?', escape: false);
+        $response->assertSee('This one will not be sent. The next one stays scheduled.');
+        $response->assertSee('Send yourself a test?');
+        $response->assertSee(route('reminders.occurrences.dismissal.update', ['vault' => $vault, 'reminderOccurrence' => $occurrence]), escape: false);
+        $response->assertSee(route('reminders.occurrences.testNotification.create', ['vault' => $vault, 'reminderOccurrence' => $occurrence]), escape: false);
     }
 
     #[Test]
@@ -168,7 +186,7 @@ class ReminderControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('reminders.index', $vault));
 
         $response->assertSee(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]), escape: false);
-        $response->assertSee('aria-label="Open this reminder"', escape: false);
+        $response->assertSee('Go to the reminder');
     }
 
     #[Test]
@@ -181,7 +199,7 @@ class ReminderControllerTest extends TestCase
 
         $this->actingAs($user)
             ->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]))
-            ->assertDontSee('aria-label="Open this reminder"', escape: false);
+            ->assertDontSee('Go to the reminder');
     }
 
     #[Test]

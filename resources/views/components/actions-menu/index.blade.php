@@ -4,12 +4,14 @@
   @var string|null $text
   @var string $width
   @var string $align
+  @var string $variant
 --}}
 @props([
   'label',
   'text' => null,
   'width' => 'default',
   'align' => 'right',
+  'variant' => 'secondary',
 ])
 
 @php
@@ -26,9 +28,11 @@
 @endphp
 
 <div x-data="{ menuOpen: false }" @ajax:before.window="menuOpen = false" class="relative flex">
-  <x-button.secondary
+  <x-button
+    :variant="$variant"
     type="button"
     size="small"
+    x-ref="menuTrigger"
     @click="menuOpen = ! menuOpen"
     @click.outside="menuOpen = false"
     @keydown.escape.window="menuOpen = false"
@@ -43,7 +47,7 @@
     @endisset
 
     {{ $text }}
-  </x-button.secondary>
+  </x-button>
 
   <div
     x-cloak

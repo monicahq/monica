@@ -4,7 +4,6 @@
   $state = $viewModel->state();
   $next = $viewModel->next();
   $schedule = $viewModel->schedule();
-  $delivery = $viewModel->delivery();
   $contact = $viewModel->contact();
   $occurrences = $viewModel->occurrences();
   $nextRow = $occurrences[0] ?? null;
@@ -80,11 +79,9 @@
 
     @if ($next['isScheduled'] && $nextRow !== null)
       <div class="flex flex-none items-center gap-1.5">
-        @include('app.vaults.reminders._postpone', ['row' => $nextRow])
+        @include('app.vaults.reminders._postpone', ['row' => $nextRow, 'inMenu' => false])
 
-        <x-form method="put" :action="$nextRow->dismissUrl()" class="contents">
-          <x-icon-button type="submit" icon="check" :label="__('Dismiss this reminder')" align="right" />
-        </x-form>
+        @include('app.vaults.reminders._dismiss', ['row' => $nextRow])
       </div>
     @endif
   </div>
@@ -96,7 +93,10 @@
           <div class="flex min-w-0 flex-col gap-1">
             <dt class="text-[11px] font-semibold tracking-caption uppercase text-muted">{{ $field['label'] }}</dt>
             <dd class="text-sm text-ink">{{ $field['value'] }}</dd>
-            <dd class="text-xs text-pretty text-muted">{{ $field['note'] }}</dd>
+
+            @if ($field['note'] !== null)
+              <dd class="text-xs text-pretty text-muted">{{ $field['note'] }}</dd>
+            @endif
           </div>
         @endforeach
       </dl>
@@ -121,29 +121,7 @@
     </div>
   </x-panel>
 
-  <x-panel :title="__('Delivery')" :subtitle="__('Where each notification goes, and what it says.')" icon="mail">
-    <dl class="grid gap-4 sm:grid-cols-3">
-      <div class="flex min-w-0 flex-col gap-1">
-        <dt class="text-[11px] font-semibold tracking-caption uppercase text-muted">{{ __('Channels') }}</dt>
-        <dd @class(['text-sm', 'text-error' => $delivery['isSilent'], 'text-ink' => ! $delivery['isSilent']])>{{ $delivery['channels'] }}</dd>
-        <dd class="text-xs text-pretty text-muted">{{ $delivery['channelsNote'] }}</dd>
-      </div>
-
-      <div class="flex min-w-0 flex-col gap-1">
-        <dt class="text-[11px] font-semibold tracking-caption uppercase text-muted">{{ __('What it says') }}</dt>
-        <dd class="text-sm text-ink">{{ $delivery['says'] }}</dd>
-        <dd class="text-xs text-pretty text-muted">{{ $delivery['saysNote'] }}</dd>
-      </div>
-
-      <div class="flex min-w-0 flex-col gap-1">
-        <dt class="text-[11px] font-semibold tracking-caption uppercase text-muted">{{ __('Last delivered') }}</dt>
-        <dd class="text-sm text-ink">{{ $delivery['lastSent'] ?? __('Never') }}</dd>
-        <dd class="text-xs text-pretty text-muted">{{ $delivery['lastSentNote'] }}</dd>
-      </div>
-    </dl>
-  </x-panel>
-
-  <x-panel :title="__('Still to come')" :subtitle="__('The deadlines this reminder has produced and not yet finished with.')" icon="reminder" :flush="true">
+  <x-panel :title="__('Still to come')" icon="reminder" :flush="true">
     @forelse ($occurrences as $row)
       <div class="border-t border-hairline px-4 py-3.5 first:border-t-0">
         @include('app.vaults.reminders.row', ['row' => $row, 'linkToReminder' => false])
@@ -162,7 +140,7 @@
   </x-panel>
 
   @if ($history !== [])
-    <x-panel :title="__('History')" :subtitle="__('Everything that has happened to this reminder, newest first.')" icon="timeline">
+    <x-panel :title="__('History')" icon="timeline">
       @include('app.vaults.reminders._history', ['entries' => $history])
     </x-panel>
   @endif

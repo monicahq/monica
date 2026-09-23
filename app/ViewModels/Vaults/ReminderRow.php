@@ -267,6 +267,15 @@ class ReminderRow
         return $this->occurrence->reminder?->cadence->recurs() === true ? 'calendar-repeat' : 'calendar';
     }
 
+    public function dismissalNote(): string
+    {
+        if ($this->occurrence->reminder?->cadence->recurs() === true) {
+            return __('This one will not be sent. The next one stays scheduled.');
+        }
+
+        return __('This one will not be sent, and nothing comes after it.');
+    }
+
     public function icon(): string
     {
         $key = $this->occurrence->reminder?->field?->key;

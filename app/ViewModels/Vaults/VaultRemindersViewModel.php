@@ -41,17 +41,6 @@ class VaultRemindersViewModel
         return __('Reminders');
     }
 
-    public function intro(): string
-    {
-        return implode(' ', [
-            trans_choice(
-                'Everything this vault will remind you about in the next :count day, and everything it already has.|Everything this vault will remind you about in the next :count days, and everything it already has.',
-                $this->horizonInDays(),
-            ),
-            __('A reminder reaches you in the app and by email, at the hour its own rule sets.'),
-        ]);
-    }
-
     public function groupBy(): string
     {
         return $this->groupBy === self::GroupByContact ? self::GroupByContact : self::GroupByWhen;

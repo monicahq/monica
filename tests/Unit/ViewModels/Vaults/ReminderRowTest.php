@@ -65,6 +65,30 @@ class ReminderRowTest extends TestCase
     }
 
     #[Test]
+    public function it_tells_a_repeating_rule_the_next_one_stays_when_one_is_dismissed(): void
+    {
+        $user = User::factory()->create();
+        $rule = $this->ruleAbout($user);
+
+        $row = $this->rowFor($user, $rule, '2027-05-12 07:00:00');
+
+        $this->assertSame('This one will not be sent. The next one stays scheduled.', $row->dismissalNote());
+    }
+
+    #[Test]
+    public function it_promises_no_next_one_when_a_rule_that_fires_once_is_dismissed(): void
+    {
+        $user = User::factory()->create();
+        $rule = $this->ruleAbout($user);
+        $rule->cadence = ReminderCadenceEnum::Once;
+        $rule->save();
+
+        $row = $this->rowFor($user, $rule, '2027-05-12 07:00:00');
+
+        $this->assertSame('This one will not be sent, and nothing comes after it.', $row->dismissalNote());
+    }
+
+    #[Test]
     public function it_counts_the_years_of_a_rhythm_somebody_set_themselves(): void
     {
         $user = User::factory()->create();

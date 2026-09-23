@@ -13,7 +13,7 @@
     <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" current="reminders" />
   </x-slot:sidebar>
 
-  <x-page-header :title="$viewModel->title()" :description="$viewModel->intro()" />
+  <x-page-header :title="$viewModel->title()" />
 
   @include('app.vaults.reminders._tabs', [
     'activeUrl' => $viewModel->activeUrl(),
@@ -58,7 +58,7 @@
       @foreach ($groups as $group)
         <section
           @class([
-            'relative flex flex-col gap-3.5 rounded-xl px-5 pt-4.5 pb-5.5',
+            'relative flex flex-col gap-3.5 rounded-xl',
             'border border-warning-edge bg-warning-tint' => $group['isOverdue'],
           ])
         >

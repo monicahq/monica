@@ -174,18 +174,6 @@ class VaultRemindersViewModelTest extends TestCase
         $this->assertStringEndsWith("/vaults/{$vault->slug}/reminders/by-contact", $viewModel->groupedByContactUrl());
     }
 
-    #[Test]
-    public function it_says_how_far_ahead_it_looks_and_how_a_reminder_arrives(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $intro = $this->viewModelFor($user, $vault)->intro();
-
-        $this->assertStringContainsString('90 days', $intro);
-        $this->assertStringContainsString('in the app and by email', $intro);
-    }
-
     private function viewModelFor(User $user, Vault $vault, string $groupBy = VaultRemindersViewModel::GroupByWhen): VaultRemindersViewModel
     {
         return new VaultRemindersViewModel(user: $user, vault: $vault, groupBy: $groupBy);

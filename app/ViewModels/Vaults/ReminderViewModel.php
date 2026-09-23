@@ -152,7 +152,7 @@ class ReminderViewModel
     }
 
     /**
-     * @return array{fields: list<array{label: string, value: string, note: string}>, moments: list<array{label: string, date: string|null}>}
+     * @return array{fields: list<array{label: string, value: string, note: string|null}>, moments: list<array{label: string, date: string|null}>}
      */
     public function schedule(): array
     {
@@ -163,25 +163,25 @@ class ReminderViewModel
                 [
                     'label' => __('Repeats'),
                     'value' => ReminderWords::cadence($this->reminder->cadence, $this->reminder->frequency_interval),
-                    'note' => __('For as long as the date stays on the record.'),
+                    'note' => null,
                 ],
                 [
                     'label' => __('Source date'),
                     'value' => $date === null
                         ? __('Gone')
                         : DateFormatEnum::write($date->locale(app()->getLocale()), $this->dateFormat()),
-                    'note' => __(':label, on the record.', ['label' => $this->reminder->field->label]),
+                    'note' => null,
                 ],
                 [
                     'label' => __('Time'),
                     'value' => mb_substr($this->reminder->time_of_day, 0, 5),
-                    'note' => __('The hour the reminder is sent at.'),
+                    'note' => null,
                 ],
                 [
                     'label' => __('Time zone'),
                     'value' => $this->reminder->timezone,
                     'note' => $this->reminder->timezone === $this->user->timezone
-                        ? __('Fixed when the reminder was made, and the same as yours.')
+                        ? null
                         : __('Fixed when the reminder was made. Yours is :zone.', ['zone' => $this->user->timezone]),
                 ],
             ],

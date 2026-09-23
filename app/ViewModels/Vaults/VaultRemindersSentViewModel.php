@@ -37,11 +37,6 @@ class VaultRemindersSentViewModel
         return __('Reminders');
     }
 
-    public function intro(): string
-    {
-        return __('Every reminder this vault has sent, newest first, and what became of it afterwards.');
-    }
-
     /** @return list<ReminderRow> */
     public function rows(): array
     {
