@@ -1,17 +1,27 @@
 {{-- The button that unfolds the rest of what may be done here, and the menu it unfolds. --}}
 {{--
   @var string $label
+  @var string|null $text
   @var string $width
+  @var string $align
 --}}
 @props([
   'label',
+  'text' => null,
   'width' => 'default',
+  'align' => 'right',
 ])
 
 @php
   $panel = match ($width) {
     'wide' => 'w-64',
+    'columns' => 'max-h-105 w-90 max-w-[calc(100vw-48px)] overflow-y-auto',
     default => 'w-56',
+  };
+
+  $side = match ($align) {
+    'left' => 'left-0',
+    default => 'right-0',
   };
 @endphp
 
@@ -24,20 +34,22 @@
     @keydown.escape.window="menuOpen = false"
     ::aria-expanded="menuOpen ? 'true' : 'false'"
     aria-haspopup="menu"
-    :aria-label="$label"
+    :aria-label="$text === null ? $label : null"
   >
     @isset($glyph)
       {{ $glyph }}
     @else
-      <x-icon name="menu" :size="15" :stroke-width="1.6" />
+      <x-icon :name="$text === null ? 'menu' : 'plus'" :size="15" :stroke-width="1.6" />
     @endisset
+
+    {{ $text }}
   </x-button.secondary>
 
   <div
     x-cloak
     x-show="menuOpen"
     role="menu"
-    class="absolute top-[calc(100%+6px)] right-0 z-40 flex {{ $panel }} flex-col gap-0.5 rounded-lg border border-hairline bg-card p-1.5 shadow-lg"
+    class="absolute top-[calc(100%+6px)] {{ $side }} z-40 flex {{ $panel }} flex-col gap-0.5 rounded-lg border border-hairline bg-card p-1.5 shadow-lg"
   >
     {{ $slot }}
   </div>

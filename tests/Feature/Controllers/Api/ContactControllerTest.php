@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api;
 
+use App\Enums\ContactListColumnSourceEnum;
 use App\Enums\NameOrderEnum;
 use App\Models\Contact;
+use App\Models\ContactListColumn;
 use App\Models\File;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -76,6 +78,26 @@ class ContactControllerTest extends TestCase
         $response->assertJsonPath('meta.total', 2);
         $response->assertJsonPath('data.0.attributes.name', 'Pam Beesly');
         $response->assertJsonPath('data.1.attributes.name', 'Michael Scott');
+    }
+
+    #[Test]
+    public function it_lists_each_contact_with_the_columns_the_vault_shows(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Andy', 'nickname' => 'Nard Dog']);
+        ContactListColumn::factory()->create(['vault_id' => $vault->id, 'source' => ContactListColumnSourceEnum::Nickname, 'position' => 1]);
+        ContactListColumn::factory()->create(['vault_id' => $vault->id, 'source' => ContactListColumnSourceEnum::Email, 'is_visible' => false, 'position' => 2]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts");
+
+        $response->assertOk();
+        $response->assertJsonStructure(['data' => [['columns' => [['source', 'section', 'field_key', 'values']]]]]);
+        $response->assertJsonCount(1, 'data.0.columns');
+        $response->assertJsonPath('data.0.columns.0.source', 'nickname');
+        $response->assertJsonPath('data.0.columns.0.values', ['Nard Dog']);
     }
 
     #[Test]

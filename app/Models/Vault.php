@@ -249,6 +249,17 @@ class Vault extends Model
     }
 
     /**
+     * Get the columns the list of people shows here, after the name, in their
+     * order. None until somebody chooses them, and the defaults apply until then.
+     *
+     * @return HasMany<ContactListColumn, $this>
+     */
+    public function contactListColumns(): HasMany
+    {
+        return $this->hasMany(ContactListColumn::class)->orderBy('position');
+    }
+
+    /**
      * Get the private links opened onto the vault itself, newest first. The
      * links pointing at one of its contacts are not these: they hang off the
      * contact, and carry the vault only to say where that contact lives.

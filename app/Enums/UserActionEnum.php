@@ -50,6 +50,7 @@ enum UserActionEnum: string implements Translatable
     case VaultRestoration = 'vault_restored';
     case VaultDefaultTemplateSet = 'vault_default_template_set';
     case VaultDefaultTemplateRemoved = 'vault_default_template_removed';
+    case ContactListColumnsUpdate = 'contact_list_columns_updated';
     case FileUpload = 'file_uploaded';
     case FileDeletion = 'file_deleted';
     case OrphanedFilesSwept = 'orphaned_files_swept';
@@ -241,6 +242,7 @@ enum UserActionEnum: string implements Translatable
             self::OrphanedFilesSwept => 'Removed :count file nothing pointed at any more|Removed :count files nothing pointed at any more',
             self::VaultDefaultTemplateSet => 'Made :name the template new records start from here',
             self::VaultDefaultTemplateRemoved => 'Stopped starting new records from :name here',
+            self::ContactListColumnsUpdate => 'Changed the columns of the list of people in :name',
             self::ValueListsSeeded => 'Set up the value lists the account starts with',
             self::ValueListCreation => 'Created the value list :name',
             self::ValueListUpdate => 'Updated the value list :name',

@@ -98,6 +98,7 @@ use App\Http\Controllers\App\Vaults\ContactDuplicateController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateDismissalController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateSearchController;
 use App\Http\Controllers\App\Vaults\ContactFavouriteController;
+use App\Http\Controllers\App\Vaults\ContactListColumnController;
 use App\Http\Controllers\App\Vaults\ContactMergeController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
 use App\Http\Controllers\App\Vaults\ContactRelationshipController;
@@ -165,6 +166,9 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('vaults/{vault}/files/{file}', [FileController::class, 'show'])
         ->whereUuid('file')
         ->name('files.show');
+
+    Route::get('vaults/{vault}/contact-list-columns/edit', [ContactListColumnController::class, 'edit'])->name('contactListColumns.edit');
+    Route::put('vaults/{vault}/contact-list-columns', [ContactListColumnController::class, 'update'])->name('contactListColumns.update');
 
     Route::get('vaults/{vault}/contacts/new', [ContactController::class, 'new'])->name('contacts.new');
     Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');

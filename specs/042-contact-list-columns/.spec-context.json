@@ -1,0 +1,35 @@
+{
+  "workflow": "speckit",
+  "specName": "Contact list columns",
+  "branch": "2026-09-22-contact-lists",
+  "currentStep": "tasks",
+  "status": "ready-to-implement",
+  "history": [
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-23T01:15:06.773Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-23T01:19:05.998Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-23T01:20:08.034Z"
+    }
+  ],
+  "step_summaries": {
+    "implement": {
+      "summary": "30 of 31 tasks done; T031 screenshots blocked on local setup"
+    }
+  }
+}

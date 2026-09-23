@@ -188,6 +188,10 @@ class ApiDocsCodeSamples
 
     private function javascriptValue(mixed $value): string
     {
+        if ($value === null || is_array($value)) {
+            return (string) json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        }
+
         if (is_bool($value)) {
             return $value ? 'true' : 'false';
         }
@@ -201,6 +205,18 @@ class ApiDocsCodeSamples
 
     private function phpValue(mixed $value): string
     {
+        if ($value === null) {
+            return 'null';
+        }
+
+        if (is_array($value)) {
+            $items = array_is_list($value)
+                ? array_map(fn (mixed $item): string => $this->phpValue($item), $value)
+                : array_map(fn (string|int $key, mixed $item): string => "'{$key}' => ".$this->phpValue($item), array_keys($value), $value);
+
+            return '['.implode(', ', $items).']';
+        }
+
         if (is_bool($value)) {
             return $value ? 'true' : 'false';
         }

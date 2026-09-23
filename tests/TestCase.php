@@ -5,11 +5,17 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\Enums\SsoProviderEnum;
+use App\Enums\VersionStatusEnum;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\Reminder;
+use App\Models\Section;
+use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
+use App\Models\Template;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -314,5 +320,44 @@ abstract class TestCase extends BaseTestCase
             'field_id' => $field->id,
             'created_by_user_id' => $user->id,
         ]);
+    }
+
+    /**
+     * A contact template whose published version places the given sections, each section named
+     * after a key of the array and holding a text field under each of its keys.
+     *
+     * @param  array<string, list<string>>  $sections
+     * @return array<string, Section>
+     */
+    protected function contactTemplateCarrying(User $user, string $name, array $sections): array
+    {
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => $name]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $placed = [];
+
+        foreach ($sections as $sectionName => $keys) {
+            $section = Section::query()->firstWhere(['account_id' => $user->account_id, 'name' => $sectionName])
+                ?? Section::factory()->create(['account_id' => $user->account_id, 'name' => $sectionName]);
+            $sectionVersion = SectionVersion::query()->firstWhere('section_id', $section->id)
+                ?? SectionVersion::factory()->create(['section_id' => $section->id]);
+
+            foreach ($keys as $key) {
+                if (! $sectionVersion->fields()->where('key', $key)->exists()) {
+                    Field::factory()->create(['section_version_id' => $sectionVersion->id, 'key' => $key, 'label' => Str::headline($key)]);
+                }
+            }
+
+            StructureVersionSection::factory()->create([
+                'structure_version_id' => $version->id,
+                'section_version_id' => $sectionVersion->id,
+            ]);
+
+            $placed[$sectionName] = $section;
+        }
+
+        $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+        $template->structure->update(['published_version_id' => $version->id]);
+
+        return $placed;
     }
 }

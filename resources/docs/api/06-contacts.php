@@ -206,13 +206,65 @@ $writeParams = [
     ['name' => 'structure_version_id', 'type' => 'integer', 'required' => false, 'description' => 'The published version of one of your active contact templates, which says what the contact\'s page holds. Left out, the contact starts from whatever this vault publishes for contacts. A draft, a version belonging to somebody else, and a version describing something other than a contact are each refused.'],
 ];
 
+$contactColumns = [
+    ['source' => 'email', 'section' => null, 'field_key' => null, 'values' => ['pam@dundermifflin.com', 'pambeesly@gmail.com']],
+    ['source' => 'phone', 'section' => null, 'field_key' => null, 'values' => ['+1 570 555 0162 (Work)']],
+    ['source' => 'last-spoke', 'section' => null, 'field_key' => null, 'values' => []],
+];
+
+$otherContactColumns = [
+    ['source' => 'email', 'section' => null, 'field_key' => null, 'values' => ['dwight@schrutefarms.com']],
+    ['source' => 'phone', 'section' => null, 'field_key' => null, 'values' => []],
+    ['source' => 'last-spoke', 'section' => null, 'field_key' => null, 'values' => ['3 weeks ago']],
+];
+
+$sectionId = '5e8b2c17-9f04-4d6a-b3e1-7a20c4d95f18';
+
+$columns = [
+    ['source' => 'field', 'section' => $sectionId, 'field_key' => 'company', 'heading' => 'Employer', 'default_heading' => 'Company', 'is_visible' => true, 'is_supplied' => true],
+    ['source' => 'email', 'section' => null, 'field_key' => null, 'heading' => null, 'default_heading' => 'Email', 'is_visible' => true, 'is_supplied' => true],
+    ['source' => 'template', 'section' => null, 'field_key' => null, 'heading' => null, 'default_heading' => 'Template', 'is_visible' => false, 'is_supplied' => true],
+];
+
+$columnFields = [
+    ['name' => 'data', 'type' => 'array', 'description' => 'Every column after the name, in the order the screen shows them.'],
+    ['name' => 'data[]', 'type' => 'object', 'description' => 'One column.'],
+    ['name' => 'data[].source', 'type' => 'string', 'description' => 'What the column shows: nickname, email, phone, birthday, template, last-spoke, added, or field for a field of a template. The name is not a column: it is always shown, always first, and never listed.'],
+    ['name' => 'data[].section', 'type' => 'uuid', 'description' => 'For a field, the identifier of the section holding it, or null. A section can sit in several templates, so one column covers every template placing it, in every version.'],
+    ['name' => 'data[].field_key', 'type' => 'string', 'description' => 'For a field, its key inside the section, or null.'],
+    ['name' => 'data[].heading', 'type' => 'string', 'description' => 'The heading somebody wrote, or null for the default.'],
+    ['name' => 'data[].default_heading', 'type' => 'string', 'description' => 'What the column is called when nobody renamed it, in the language of the request. Read only.'],
+    ['name' => 'data[].is_visible', 'type' => 'boolean', 'description' => 'Whether the screen shows the column. A hidden column keeps its place and its heading.'],
+    ['name' => 'data[].is_supplied', 'type' => 'boolean', 'description' => 'False when no active contact template carries the field any more. The column is kept, and the list leaves it out until a template carries the field again. Read only.'],
+    ['name' => 'meta', 'type' => 'object', 'description' => 'About the columns as a whole.'],
+    ['name' => 'meta.is_default', 'type' => 'boolean', 'description' => 'True when the vault never chose, and these are the defaults.'],
+];
+
+$columnParams = [
+    ['name' => 'columns', 'type' => 'array', 'required' => true, 'description' => 'Every column after the name, in the order the screen shows them. It replaces whatever the vault held. An empty array puts the defaults back; to show the name alone, send the columns with is_visible false.'],
+    ['name' => 'columns.*.source', 'type' => 'string', 'required' => true, 'description' => 'One of the sources listed above. The same source may appear once, and the same field once.'],
+    ['name' => 'columns.*.section', 'type' => 'uuid', 'required' => false, 'description' => 'Required when the source is field: the section holding it, which has to be one of yours.'],
+    ['name' => 'columns.*.field_key', 'type' => 'string', 'required' => false, 'description' => 'Required when the source is field, up to 64 characters. The field has to be carried by the published version of one of your active contact templates, unless the vault already shows it, which lets a column no template supplies any more be kept.'],
+    ['name' => 'columns.*.heading', 'type' => 'string', 'required' => false, 'description' => 'Up to 255 characters. Empty or null keeps the default heading.'],
+    ['name' => 'columns.*.is_visible', 'type' => 'boolean', 'required' => true, 'description' => 'Whether the screen shows the column.'],
+];
+
 return [
     'name' => 'Contacts',
     'description' => 'The people a vault holds, their names, their pictures and the template version each one is read through.',
     'sections' => [
         [
             'id' => 'contacts-index',
-            'returnFields' => ApiDocsFields::page('contact', 'contact', 'contacts', $contactAttributes),
+            'returnFields' => [
+                ...ApiDocsFields::page('contact', 'contact', 'contacts', $contactAttributes),
+                ['name' => 'data[].columns', 'type' => 'array', 'description' => 'What the people screen of this vault shows beside the name, in its order. Hidden columns, and columns no template supplies any more, are left out.'],
+                ['name' => 'data[].columns[]', 'type' => 'object', 'description' => 'One column.'],
+                ['name' => 'data[].columns[].source', 'type' => 'string', 'description' => 'What the column shows, one of the sources the column endpoints below list.'],
+                ['name' => 'data[].columns[].section', 'type' => 'uuid', 'description' => 'For a field of a template, the section holding it, or null.'],
+                ['name' => 'data[].columns[].field_key', 'type' => 'string', 'description' => 'For a field of a template, its key inside the section, or null.'],
+                ['name' => 'data[].columns[].values', 'type' => 'array', 'description' => 'What this person holds in the column, written the way the screen writes it. Empty when they hold nothing.'],
+                ['name' => 'data[].columns[].values[]', 'type' => 'string', 'description' => 'One value.'],
+            ],
             'title' => 'List contacts',
             'label' => 'List contacts',
             'method' => 'GET',
@@ -223,13 +275,17 @@ return [
                 'The default order is by name, not by when somebody was written down, so that a program and a person looking at the same vault are looking at the same list. The order always ends on the identifier, which is what stops a contact being skipped or repeated by a page boundary moving while you page through.',
                 'Three groups of people are never in the list you asked for. Archived contacts are only in the archived filter. Partial contacts, somebody mentioned in a relationship and reduced to a first name, are in none of the three until they are filled in. And a deleted contact is in none of them at all.',
                 'A vault holding nobody answers with an empty list rather than an error.',
+                'Each contact also carries columns: what the people screen of this vault shows beside the name, in its order, and the values each one holds for this person. A column holding several values, somebody with two email addresses, lists them all. A column holding nothing lists nothing. The values are written the way the screen writes them, dates included, and the raw dates stay in the attributes. The columns are the ones chosen with the endpoints below, or the defaults until somebody chooses.',
             ],
             'rateLimit' => 'Sixty requests per minute, per token.',
             'pathParams' => [$vaultParam],
             'queryParams' => $listParams,
             'returns' => 'A page of contact objects, and how many there are in all. A vault belonging to somebody else answers 404.',
             'response' => [
-                'data' => [$contact, $otherContact],
+                'data' => [
+                    [...$contact, 'columns' => $contactColumns],
+                    [...$otherContact, 'columns' => $otherContactColumns],
+                ],
                 'meta' => [
                     'page' => 1,
                     'per_page' => 25,
@@ -434,6 +490,46 @@ return [
             ],
             'returns' => 'The contact object as it now reads, on its new version. A contact belonging to somebody else, a version not on offer, or the wrong vault each answer 404 and the contact is left where it was.',
             'response' => ['data' => $contact],
+        ],
+        [
+            'id' => 'contact-list-columns-show',
+            'title' => 'Get the columns of the people screen',
+            'label' => 'Get the list columns',
+            'method' => 'GET',
+            'path' => '/vaults/{vault}/contact-list-columns',
+            'examplePath' => '/vaults/'.$vaultId.'/contact-list-columns',
+            'description' => 'Read which columns the people screen of a vault shows beside the name, what they are called and in what order.',
+            'body' => [
+                'A vault that never chose answers with the defaults: email, phone and last spoke shown, the template hidden. The meta says which of the two you are reading.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$vaultParam],
+            'returnFields' => $columnFields,
+            'returns' => 'Every column after the name. A vault belonging to somebody else answers 404.',
+            'response' => ['data' => $columns, 'meta' => ['is_default' => false]],
+        ],
+        [
+            'id' => 'contact-list-columns-update',
+            'title' => 'Choose the columns of the people screen',
+            'label' => 'Choose the list columns',
+            'method' => 'PUT',
+            'path' => '/vaults/{vault}/contact-list-columns',
+            'examplePath' => '/vaults/'.$vaultId.'/contact-list-columns',
+            'description' => 'Replace the columns the people screen of a vault shows, in one call.',
+            'body' => [
+                'This changes what the screen shows and nothing written on any contact. It is written to your account journal.',
+                'Asking for the same column twice, or for a field no template carries, answers 422 and leaves the columns as they were.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => [$vaultParam],
+            'bodyParams' => $columnParams,
+            'exampleBody' => ['columns' => [
+                ['source' => 'field', 'section' => $sectionId, 'field_key' => 'company', 'heading' => 'Employer', 'is_visible' => true],
+                ['source' => 'email', 'heading' => null, 'is_visible' => true],
+            ]],
+            'returnFields' => $columnFields,
+            'returns' => 'The columns as they now stand. A vault or a section belonging to somebody else answers 404.',
+            'response' => ['data' => $columns, 'meta' => ['is_default' => false]],
         ],
     ],
 ];

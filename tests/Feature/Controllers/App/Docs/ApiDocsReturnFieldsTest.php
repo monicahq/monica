@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Docs;
 
 use App\Actions\MergeContacts;
+use App\Enums\ContactListColumnSourceEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NotificationChannelEnum;
 use App\Enums\VersionStatusEnum;
@@ -12,6 +13,7 @@ use App\Helpers\AvailableLocales;
 use App\Helpers\StripeCatalogue;
 use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
+use App\Models\ContactListColumn;
 use App\Models\EmailSent;
 use App\Models\EntityType;
 use App\Models\Field;
@@ -1177,9 +1179,30 @@ class ApiDocsReturnFieldsTest extends TestCase
 
             'contacts-index' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-                $this->contactWithAPicture($vault);
+                $this->contactWithAPicture($vault)->update(['nickname' => 'Big Tuna']);
+                ContactListColumn::factory()->create(['vault_id' => $vault->id, 'source' => ContactListColumnSourceEnum::Nickname]);
 
                 return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts");
+            }),
+
+            'contact-list-columns-show' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $work = $this->contactTemplateCarrying($user, 'Professional', ['Work' => ['company']])['Work'];
+                ContactListColumn::factory()->field($work, 'company')->create(['vault_id' => $vault->id, 'heading' => 'Employer']);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contact-list-columns");
+            }),
+
+            'contact-list-columns-update' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $work = $this->contactTemplateCarrying($user, 'Professional', ['Work' => ['company']])['Work'];
+
+                return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contact-list-columns", [
+                    'columns' => [
+                        ['source' => 'field', 'section' => $work->uuid, 'field_key' => 'company', 'heading' => 'Employer', 'is_visible' => true],
+                        ['source' => 'email', 'heading' => null, 'is_visible' => true],
+                    ],
+                ]);
             }),
 
             'contacts-show' => $this->asSomebody(function (User $user): TestResponse {

@@ -37,7 +37,7 @@
   @endif
 
   <div id="contacts" x-merge="replace" class="flex flex-col gap-3.5">
-    <div class="flex flex-wrap items-center gap-x-4 gap-y-2.5">
+    <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
       <div class="flex flex-wrap items-center gap-2">
         @foreach ($viewModel->filters() as $filter)
           <x-chip
@@ -50,47 +50,29 @@
         @endforeach
       </div>
 
-      <form method="get" action="{{ $viewModel->searchUrl() }}" x-target.push="contacts" class="flex flex-wrap items-center gap-2 sm:ml-auto">
-        <input type="hidden" name="query" value="{{ $viewModel->query() }}" />
+      <div class="ml-auto flex min-w-0 items-center justify-end gap-2">
+        <x-icon-button :href="$viewModel->customiseUrl()" icon="layers" :label="__('Customise view')" align="right" data-turbo="true" />
 
-        <label for="sort" class="text-xs text-pretty text-muted">{{ __('Sorted by') }}</label>
+        <form method="get" action="{{ $viewModel->searchUrl() }}" x-target.push="contacts" role="search" class="w-72 max-w-full">
+          <input type="hidden" name="sort" value="{{ $viewModel->sort() }}" />
+          <input type="hidden" name="direction" value="{{ $viewModel->direction() }}" />
 
-        <x-select id="sort" size="small" class="w-38">
-          @foreach ($viewModel->sorts() as $sort)
-            <option value="{{ $sort['value'] }}" @selected($sort['isCurrent'])>{{ $sort['label'] }}</option>
-          @endforeach
-        </x-select>
-
-        <x-select id="direction" size="small" :aria-label="__('Which way round the order runs')" class="w-36">
-          @foreach ($viewModel->directions() as $direction)
-            <option value="{{ $direction['value'] }}" @selected($direction['isCurrent'])>{{ $direction['label'] }}</option>
-          @endforeach
-        </x-select>
-
-        <x-button.secondary size="small">{{ __('Order the list') }}</x-button.secondary>
-      </form>
+          <x-input
+            type="search"
+            id="query"
+            size="small"
+            :value="$viewModel->query()"
+            :placeholder="__('Search names and nicknames')"
+            :aria-label="__('Search the people in this vault')"
+            class="w-full"
+          />
+        </form>
+      </div>
     </div>
 
-    <div class="flex flex-wrap items-center gap-x-4 gap-y-2.5">
-      <form method="get" action="{{ $viewModel->searchUrl() }}" x-target.push="contacts" class="flex items-center gap-2">
-        <input type="hidden" name="sort" value="{{ $viewModel->sort() }}" />
-        <input type="hidden" name="direction" value="{{ $viewModel->direction() }}" />
-
-        <x-input
-          type="search"
-          id="query"
-          size="small"
-          :value="$viewModel->query()"
-          :placeholder="__('Search names and nicknames')"
-          :aria-label="__('Search the people in this vault')"
-          class="w-60"
-        />
-
-        <x-button.secondary size="small">{{ __('Search') }}</x-button.secondary>
-      </form>
-
-      <p class="sm:ml-auto text-sm text-pretty text-muted">{{ $viewModel->resultLine() }}</p>
-    </div>
+    @if ($viewModel->resultLine() !== '')
+      <p class="text-sm text-pretty text-muted">{{ $viewModel->resultLine() }}</p>
+    @endif
 
     <x-panel :flush="true">
       @if ($viewModel->vaultIsEmpty())
@@ -124,8 +106,42 @@
           <p class="max-w-[44ch] text-base text-pretty text-muted">{{ __('Try a shorter search, or another filter above.') }}</p>
         </div>
       @else
-        <div id="contact-rows" x-merge="append">
-          @include('app.vaults.contacts._groups')
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-190 border-collapse text-left">
+            <caption class="sr-only">{{ __('People') }}</caption>
+
+            <thead>
+              <tr class="border-b border-hairline">
+                @foreach ($viewModel->headings() as $heading)
+                  <th scope="col" @if ($heading['ariaSort'] !== null) aria-sort="{{ $heading['ariaSort'] }}" @endif class="px-4 py-3 text-xs font-medium whitespace-nowrap first:pl-4">
+                    @if ($heading['url'] !== null)
+                      <a
+                        href="{{ $heading['url'] }}"
+                        x-target.push="contacts"
+                        @class([
+                          '-mx-1.5 inline-flex items-center gap-1 rounded-xs px-1.5 py-0.5 no-underline focus-ring-inset',
+                          'text-ink' => $heading['ariaSort'] !== null,
+                          'text-muted hover:text-ink' => $heading['ariaSort'] === null,
+                        ])
+                      >
+                        {{ $heading['label'] }}
+
+                        @if ($heading['ariaSort'] !== null)
+                          <x-icon :name="$heading['ariaSort'] === 'ascending' ? 'chevron-down' : 'chevron-up'" :size="14" :stroke-width="1.4" />
+                        @endif
+                      </a>
+                    @else
+                      <span class="text-muted">{{ $heading['label'] }}</span>
+                    @endif
+                  </th>
+                @endforeach
+              </tr>
+            </thead>
+
+            <tbody id="contact-rows" x-merge="append">
+              @include('app.vaults.contacts._groups', ['viewModel' => $viewModel])
+            </tbody>
+          </table>
         </div>
 
         <x-slot:footer id="pagination" class="flex flex-wrap items-center gap-3">

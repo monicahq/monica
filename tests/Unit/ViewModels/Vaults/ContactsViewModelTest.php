@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\ContactGroupingEnum;
+use App\Enums\ContactListColumnSourceEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\SortDirectionEnum;
-use App\Helpers\LocaleCollation;
 use App\Models\Contact;
+use App\Models\ContactListColumn;
 use App\Models\File;
+use App\Models\Section;
 use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
@@ -25,30 +27,6 @@ use Tests\TestCase;
 class ContactsViewModelTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_writes_a_row_the_way_it_is_read(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->contact($vault, 'Michael', 'Scott', [
-            'nickname' => 'Prison Mike',
-            'is_favourite' => true,
-            'last_interaction_at' => '2026-08-04 09:00:00',
-        ]);
-
-        $person = new ContactsViewModel(user: $user, vault: $vault)->groups()[0]['people'][0];
-
-        $this->assertEquals('Michael Scott', $person['name']);
-        $this->assertEquals('Prison Mike', $person['nickname']);
-        $this->assertTrue($person['isFavourite']);
-        $this->assertFalse($person['isArchived']);
-        $this->assertEquals('Aug 4, 2026', $person['when']);
-        $this->assertEquals('last spoke', $person['whenLabel']);
-        $this->assertEquals('Basic contact', $person['template']);
-        $this->assertNull($person['avatarUrl']);
-    }
 
     #[Test]
     public function it_says_where_the_picture_of_a_row_is_read_from(): void
@@ -68,79 +46,6 @@ class ContactsViewModelTest extends TestCase
             route('files.show', ['vault' => $vault, 'file' => $file]),
             $person['avatarUrl'],
         );
-    }
-
-    #[Test]
-    public function it_ends_the_row_on_the_day_somebody_was_written_down_until_they_have_been_spoken_to(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->contact($vault, 'Dwight', 'Schrute', ['created_at' => '2019-03-02 09:00:00']);
-
-        $person = new ContactsViewModel(user: $user, vault: $vault)->groups()[0]['people'][0];
-
-        $this->assertNull($person['nickname']);
-        $this->assertEquals('Mar 2, 2019', $person['when']);
-        $this->assertEquals('added', $person['whenLabel']);
-    }
-
-    #[Test]
-    public function it_groups_the_rows_under_the_letter_they_begin_with(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->contact($vault, 'Michael', 'Scott');
-        $this->contact($vault, 'Dwight', 'Schrute');
-        $this->contact($vault, 'Pam', 'Beesly');
-
-        $groups = new ContactsViewModel(user: $user, vault: $vault)->groups();
-
-        $this->assertCount(2, $groups);
-        $this->assertEquals('B', $groups[0]['letter']);
-        $this->assertEquals('Pam Beesly', $groups[0]['people'][0]['name']);
-        $this->assertEquals('S', $groups[1]['letter']);
-        $this->assertCount(2, $groups[1]['people']);
-    }
-
-    #[Test]
-    public function it_leaves_the_letters_off_a_list_that_is_not_in_name_order(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->contact($vault, 'Michael', 'Scott');
-        $this->contact($vault, 'Pam', 'Beesly');
-
-        $groups = new ContactsViewModel(
-            user: $user,
-            vault: $vault,
-            sort: ContactSortEnum::Added,
-        )->groups();
-
-        $this->assertCount(1, $groups);
-        $this->assertNull($groups[0]['letter']);
-        $this->assertCount(2, $groups[0]['people']);
-    }
-
-    #[Test]
-    public function it_leaves_the_letter_off_a_run_the_page_before_it_had_already_started(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        foreach (range(1, 51) as $number) {
-            $this->contact($vault, "Schrute {$number}", 'Farms');
-        }
-
-        Paginator::currentPageResolver(fn (): int => 2);
-
-        $groups = new ContactsViewModel(user: $user, vault: $vault)->groups();
-
-        $this->assertCount(1, $groups);
-        $this->assertNull($groups[0]['letter']);
-        $this->assertCount(1, $groups[0]['people']);
     }
 
     #[Test]
@@ -285,44 +190,6 @@ class ContactsViewModelTest extends TestCase
         $matchingNobody = new ContactsViewModel(user: $user, vault: $vault, query: 'beesly');
 
         $this->assertSame('', $matchingNobody->endLine());
-    }
-
-    #[Test]
-    public function it_offers_the_order_in_the_words_of_what_is_being_ordered(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $byName = collect(new ContactsViewModel(user: $user, vault: $vault)->directions());
-        $this->assertEquals(['A to Z', 'Z to A'], $byName->pluck('label')->all());
-        $this->assertTrue($byName->firstWhere('value', 'asc')['isCurrent']);
-
-        $byDate = collect(new ContactsViewModel(
-            user: $user,
-            vault: $vault,
-            sort: ContactSortEnum::LastSpoke,
-            direction: SortDirectionEnum::Descending,
-        )->directions());
-
-        $this->assertEquals(['Newest first', 'Oldest first'], $byDate->pluck('label')->all());
-        $this->assertTrue($byDate->firstWhere('value', 'desc')['isCurrent']);
-    }
-
-    #[Test]
-    public function it_marks_the_order_the_list_is_in(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $sorts = collect(new ContactsViewModel(
-            user: $user,
-            vault: $vault,
-            sort: ContactSortEnum::Added,
-        )->sorts());
-
-        $this->assertEquals(['name', 'nickname', 'last-spoke', 'added'], $sorts->pluck('value')->all());
-        $this->assertTrue($sorts->firstWhere('value', 'added')['isCurrent']);
-        $this->assertFalse($sorts->firstWhere('value', 'name')['isCurrent']);
     }
 
     #[Test]
@@ -480,77 +347,6 @@ class ContactsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_files_an_accented_name_under_the_letter_its_language_files_it_under(): void
-    {
-        $user = $this->readerIn('fr_FR');
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->contact($vault, 'Elodie', 'Élodie');
-        $this->contact($vault, 'Erin', 'Erin');
-
-        $groups = new ContactsViewModel(user: $user, vault: $vault)->groups();
-
-        $this->assertCount(1, $groups);
-        $this->assertSame('E', $groups[0]['letter']);
-        $this->assertCount(2, $groups[0]['people']);
-    }
-
-    #[Test]
-    public function it_keeps_the_turkish_dotted_and_dotless_i_under_their_own_headings(): void
-    {
-        $user = $this->readerIn('tr_TR');
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->contact($vault, 'Deniz', 'ışık');
-        $this->contact($vault, 'Deniz', 'irmak');
-
-        $letters = array_column(new ContactsViewModel(user: $user, vault: $vault)->groups(), 'letter');
-
-        $this->assertContains('I', $letters);
-        $this->assertContains('İ', $letters);
-        $this->assertCount(2, $letters);
-    }
-
-    #[Test]
-    public function it_files_a_name_that_does_not_begin_with_a_letter_under_one_catch_all_heading(): void
-    {
-        $user = $this->readerIn('en');
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->contact($vault, 'Ryan', '3 amigos');
-        $this->contact($vault, 'Kelly', '"quoted"');
-
-        $letters = array_column(new ContactsViewModel(user: $user, vault: $vault)->groups(), 'letter');
-
-        $this->assertSame(['#'], array_values(array_unique($letters)));
-    }
-
-    #[Test]
-    public function it_gives_no_heading_that_disagrees_with_the_people_under_it(): void
-    {
-        $user = $this->readerIn('fr_FR');
-        $vault = $this->vaultReadyForContacts($user);
-
-        foreach (['Élodie', 'Erin', 'Ångström', 'Schrute', 'Œuvre', 'ñuñez'] as $surname) {
-            $this->contact($vault, 'Reader', $surname);
-        }
-
-        $disagreements = [];
-
-        foreach (new ContactsViewModel(user: $user, vault: $vault)->groups() as $group) {
-            foreach ($group['people'] as $person) {
-                $surname = mb_substr($person['name'], mb_strpos($person['name'], ' ') + 1);
-
-                if (LocaleCollation::headingLetter(mb_strtolower($surname), 'fr_FR') !== $group['letter']) {
-                    $disagreements[] = $surname;
-                }
-            }
-        }
-
-        $this->assertSame([], $disagreements);
-    }
-
-    #[Test]
     public function it_finds_a_french_name_typed_without_its_accent(): void
     {
         $user = $this->readerIn('fr_FR');
@@ -655,5 +451,120 @@ class ContactsViewModelTest extends TestCase
             ->all();
 
         $this->assertSame($expected, $this->surnamesOrderedFor($user, $vault));
+    }
+
+    #[Test]
+    public function it_shows_the_default_columns_until_the_vault_chooses_its_own(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $headings = new ContactsViewModel(user: $user, vault: $vault)->headings();
+
+        $this->assertSame(['Name', 'Email', 'Phone number', 'Last spoke'], array_column($headings, 'label'));
+    }
+
+    #[Test]
+    public function it_writes_a_row_the_way_it_is_read(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Dwight', 'Schrute', ['is_archived' => true]);
+
+        $person = new ContactsViewModel(user: $user, vault: $vault, grouping: ContactGroupingEnum::Archived)->groups()[0]['people'][0];
+
+        $this->assertEquals('Dwight Schrute', $person['name']);
+        $this->assertTrue($person['isArchived']);
+        $this->assertNull($person['avatarUrl']);
+        $this->assertSame([[], [], []], array_column($person['cells'], 'values'));
+        $this->assertSame(['—', '—', 'Not yet'], array_column($person['cells'], 'whenEmpty'));
+    }
+
+    #[Test]
+    public function it_puts_the_favourites_first_under_a_heading_of_their_own(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Pam', 'Beesly');
+        $this->contact($vault, 'Michael', 'Scott', ['is_favourite' => true]);
+        $this->contact($vault, 'Dwight', 'Schrute');
+
+        $groups = new ContactsViewModel(user: $user, vault: $vault)->groups();
+
+        $this->assertSame(['Favourites', 'Everybody else'], array_column($groups, 'label'));
+        $this->assertSame([1, 2], array_column($groups, 'count'));
+        $this->assertEquals('Michael Scott', $groups[0]['people'][0]['name']);
+        $this->assertFalse($groups[0]['people'][0]['showsStar']);
+    }
+
+    #[Test]
+    public function it_does_not_split_a_list_holding_no_favourite_or_another_grouping(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Pam', 'Beesly');
+        $this->contact($vault, 'Michael', 'Scott', ['is_favourite' => true]);
+
+        $everybody = new ContactsViewModel(user: $user, vault: $vault, query: 'Pam')->groups();
+        $favourites = new ContactsViewModel(user: $user, vault: $vault, grouping: ContactGroupingEnum::Favourites)->groups();
+
+        $this->assertSame([null], array_column($everybody, 'label'));
+        $this->assertSame([null], array_column($favourites, 'label'));
+        $this->assertTrue($favourites[0]['people'][0]['showsStar']);
+    }
+
+    #[Test]
+    public function it_repeats_no_heading_when_a_page_opens_inside_a_run(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->contact($vault, 'Michael', 'Scott', ['is_favourite' => true]);
+
+        foreach (range(1, 51) as $number) {
+            $this->contact($vault, "Schrute {$number}", 'Farms');
+        }
+
+        Paginator::currentPageResolver(fn (): int => 2);
+
+        $groups = new ContactsViewModel(user: $user, vault: $vault)->groups();
+
+        $this->assertCount(1, $groups);
+        $this->assertNull($groups[0]['label']);
+        $this->assertCount(2, $groups[0]['people']);
+    }
+
+    #[Test]
+    public function it_leaves_out_a_hidden_column_and_one_no_template_supplies(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $section = Section::factory()->create(['account_id' => $user->account_id]);
+
+        ContactListColumn::factory()->create(['vault_id' => $vault->id, 'source' => ContactListColumnSourceEnum::Email, 'heading' => 'Where to write', 'position' => 1]);
+        ContactListColumn::factory()->create(['vault_id' => $vault->id, 'source' => ContactListColumnSourceEnum::Phone, 'is_visible' => false, 'position' => 2]);
+        ContactListColumn::factory()->field($section, 'sales_region')->create(['vault_id' => $vault->id, 'position' => 3]);
+
+        $headings = new ContactsViewModel(user: $user, vault: $vault)->headings();
+
+        $this->assertSame(['Name', 'Where to write'], array_column($headings, 'label'));
+    }
+
+    #[Test]
+    public function it_links_a_heading_to_its_order_and_says_which_way_the_list_runs(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $headings = new ContactsViewModel(user: $user, vault: $vault)->headings();
+
+        $this->assertSame('ascending', $headings[0]['ariaSort']);
+        $this->assertStringContainsString('sort=name&direction=desc', (string) $headings[0]['url']);
+        $this->assertNull($headings[1]['url']);
+        $this->assertNull($headings[3]['ariaSort']);
+        $this->assertStringContainsString('sort=last-spoke&direction=desc', (string) $headings[3]['url']);
     }
 }

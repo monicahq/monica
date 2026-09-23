@@ -47,8 +47,9 @@ class ContactControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Michael Scott')
             ->assertSee('Dwight Schrute')
-            ->assertSee('Prison Mike')
-            ->assertSee('Basic contact');
+            ->assertSeeInOrder(['Name', 'Email', 'Phone number', 'Last spoke'])
+            ->assertSee(route('contactListColumns.edit', $vault))
+            ->assertSee('aria-label="Customise view"', escape: false);
     }
 
     #[Test]
@@ -164,7 +165,7 @@ class ContactControllerTest extends TestCase
 
         preg_match_all('/x-target(\.push)?="contacts"/', $page, $targets);
 
-        $this->assertCount(6, $targets[0]);
+        $this->assertCount(5, $targets[0]);
         $this->assertSame($targets[0], array_filter($targets[0], fn (string $target): bool => str_contains($target, '.push')));
     }
 
@@ -423,8 +424,8 @@ class ContactControllerTest extends TestCase
             ->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'sort' => 'shoe-size', 'direction' => 'sideways']))
             ->assertStatus(200)
             ->assertSee('Michael Scott')
-            ->assertSee('<option value="name" selected>Name</option>', escape: false)
-            ->assertSee('<option value="asc" selected>A to Z</option>', escape: false);
+            ->assertSee('aria-sort="ascending"', escape: false)
+            ->assertSee('sort=name&amp;direction=desc', escape: false);
     }
 
     #[Test]

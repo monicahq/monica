@@ -10,9 +10,12 @@ use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\SortDirectionEnum;
+use App\Helpers\ContactListCatalogue;
+use App\Helpers\ContactListCells;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
+use App\Models\ContactListColumn;
 use App\Models\StructureVersion;
 use App\Models\Vault;
 use App\Rules\PublishedContactStructureVersion;
@@ -52,8 +55,24 @@ class ContactController extends Controller
             ->with(['vault', 'structureVersion.structure.owner', 'avatar'])
             ->paginate($perPage);
 
+        $columns = new ContactListCatalogue($vault->account)->shownColumnsOf($vault);
+        $cells = new ContactListCells(
+            user: $request->user(),
+            vault: $vault,
+            columns: $columns,
+            contacts: $contacts->items(),
+        );
+
         return response()->json([
-            'data' => ContactResource::collection($contacts->items())->resolve(),
+            'data' => array_map(fn (Contact $contact): array => [
+                ...ContactResource::make($contact)->resolve(),
+                'columns' => array_map(fn (ContactListColumn $column, array $values): array => [
+                    'source' => $column->source->value,
+                    'section' => $column->section?->uuid,
+                    'field_key' => $column->field_key,
+                    'values' => $values,
+                ], $columns, $cells->for($contact)),
+            ], $contacts->items()),
             'meta' => [
                 'page' => $contacts->currentPage(),
                 'per_page' => $contacts->perPage(),

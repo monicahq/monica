@@ -1,45 +1,72 @@
-{{-- The rows of the list, in runs under the letter they begin with. --}}
+{{-- The rows of the table of people, the favourites first under a heading of their own. --}}
 {{-- @var \App\ViewModels\Vaults\ContactsViewModel $viewModel --}}
+@php
+  $width = count($viewModel->headings());
+@endphp
 @foreach ($viewModel->groups() as $group)
-  @if ($group['letter'] !== null)
-    <h2 class="flex items-center gap-2.5 border-b border-hairline bg-card px-4.5 py-2.25 uppercase text-xs tracking-caption text-muted">{{ $group['letter'] }}</h2>
+  @if ($group['label'] !== null)
+    <tr>
+      <th scope="colgroup" colspan="{{ $width }}" class="px-4 pt-4 pb-1.5 text-left font-normal">
+        <span class="flex items-center gap-2">
+          <x-caption>{{ $group['label'] }}</x-caption>
+          <span class="text-xs text-muted">{{ $group['count'] }}</span>
+        </span>
+      </th>
+    </tr>
   @endif
 
   @foreach ($group['people'] as $person)
-    <x-row :href="$person['url']">
-      <x-slot:leading>
-        <x-contact-avatar :name="$person['name']" :url="$person['avatarUrl']" :size="40" />
-      </x-slot:leading>
+    <tr class="relative border-t border-hairline transition-colors duration-(--duration-fast) ease-out hover:bg-hover">
+      <td class="px-4 py-2.75">
+        <span class="flex min-w-0 items-center gap-3">
+          <x-contact-avatar :name="$person['name']" :url="$person['avatarUrl']" :size="32" />
 
-      <p class="flex flex-wrap items-center gap-x-2 gap-y-1">
-        <span class="text-base font-semibold text-ink">{{ $person['name'] }}</span>
+          <a href="{{ $person['url'] }}" data-turbo="true" class="truncate text-base font-semibold text-ink no-underline after:absolute after:inset-0 focus-ring-inset">{{ $person['name'] }}</a>
 
-        @if ($person['isFavourite'])
-          <span class="flex shrink-0 text-warning">
-            <x-icon name="star" :size="14" :label="__('Favourite')" />
-          </span>
-        @endif
+          @if ($person['showsStar'])
+            <span class="flex shrink-0 text-ink-soft">
+              <x-icon name="star" :size="14" :label="__('Favourite')" />
+            </span>
+          @endif
 
-        @if ($person['isArchived'])
-          <x-badge>{{ __('Archived') }}</x-badge>
-        @endif
-      </p>
+          @if ($person['isArchived'])
+            <x-badge>{{ __('Archived') }}</x-badge>
+          @endif
+        </span>
+      </td>
 
-      @if ($person['nickname'])
-        <p class="mt-px text-sm text-pretty text-muted">{{ __('Known as :nickname', ['nickname' => $person['nickname']]) }}</p>
-      @endif
+      @foreach ($person['cells'] as $cell)
+        <td class="max-w-0 px-4 py-2.75 text-sm">
+          @if ($cell['values'] === [])
+            <span class="whitespace-nowrap text-muted">{{ $cell['whenEmpty'] }}</span>
+          @else
+            <div x-data="{ open: false }" class="flex min-w-0 flex-col gap-1">
+              <span class="flex min-w-0 items-center gap-1.5">
+                <span class="truncate text-body">{{ $cell['values'][0] }}</span>
 
-      <x-slot:end>
-        <span class="hidden w-36 truncate text-right text-sm text-pretty text-muted lg:block">{{ $person['template'] }}</span>
+                @if ($cell['moreLabel'] !== null)
+                  <button
+                    type="button"
+                    @click="open = ! open"
+                    :aria-expanded="open.toString()"
+                    aria-expanded="false"
+                    aria-label="{{ $cell['moreLabel'] }}"
+                    class="relative z-10 flex-none cursor-pointer rounded-xs bg-card px-1.5 text-xs text-body focus-ring"
+                  >+{{ count($cell['values']) - 1 }}</button>
+                @endif
+              </span>
 
-        <div class="text-right">
-          <b class="block text-sm font-semibold whitespace-nowrap text-ink">{{ $person['when'] }}</b>
-
-          <span class="block text-xs whitespace-nowrap text-muted">{{ $person['whenLabel'] }}</span>
-        </div>
-
-        <x-icon name="chevron-right" :size="16" :stroke-width="1.6" class="text-muted" />
-      </x-slot:end>
-    </x-row>
+              @if ($cell['moreLabel'] !== null)
+                <span x-show="open" x-cloak class="flex flex-col gap-1">
+                  @foreach (array_slice($cell['values'], 1) as $value)
+                    <span class="truncate text-body">{{ $value }}</span>
+                  @endforeach
+                </span>
+              @endif
+            </div>
+          @endif
+        </td>
+      @endforeach
+    </tr>
   @endforeach
 @endforeach

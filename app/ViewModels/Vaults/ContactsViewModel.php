@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Enums\ContactGroupingEnum;
+use App\Enums\ContactListColumnSourceEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\SortDirectionEnum;
-use App\Helpers\LocaleCollation;
+use App\Helpers\ContactListCatalogue;
+use App\Helpers\ContactListCells;
 use App\Models\Contact;
+use App\Models\ContactListColumn;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,6 +26,9 @@ class ContactsViewModel
 
     /** @var array<string, int> */
     private array $counts = [];
+
+    /** @var list<ContactListColumn>|null */
+    private ?array $columns = null;
 
     public function __construct(
         private readonly User $user,
@@ -54,48 +60,130 @@ class ContactsViewModel
     }
 
     /**
-     * @return array<int, array{letter: string|null, people: array<int, array{name: string, isFavourite: bool, isArchived: bool, nickname: string|null, avatarUrl: string|null, template: string, when: string, whenLabel: string, url: string}>}>
+     * The headings of the table, the name first. A heading the list can be ordered by links to that
+     * order, and the one it is ordered by says which way round.
+     *
+     * @return list<array{label: string, url: string|null, ariaSort: string|null}>
+     */
+    public function headings(): array
+    {
+        $headings = [$this->heading(__('Name'), ContactSortEnum::Name)];
+
+        foreach ($this->columns() as $column) {
+            $headings[] = $this->heading($this->catalogue()->headingOf($column), $column->source->sort());
+        }
+
+        return $headings;
+    }
+
+    /**
+     * The people on this page, in runs. Everybody puts the favourites first, under a heading of
+     * their own, and a page opening in the middle of a run repeats no heading.
+     *
+     * @return list<array{label: string|null, count: int|null, people: list<array{name: string, isFavourite: bool, isArchived: bool, showsStar: bool, avatarUrl: string|null, url: string, cells: list<array{values: list<string>, whenEmpty: string, moreLabel: string|null}>}>}>
      */
     public function groups(): array
     {
-        $carriedOver = $this->isGrouped() ? $this->letterBefore() : null;
+        $contacts = $this->contacts()->items();
+        $cells = new ContactListCells(
+            user: $this->user,
+            vault: $this->vault,
+            columns: $this->columns(),
+            contacts: $contacts,
+        );
+
+        $favouriteBefore = $this->splitsFavourites() ? $this->favouriteBefore() : null;
         $groups = [];
-        $openLetter = null;
+        $openRun = null;
 
-        foreach ($this->contacts()->items() as $contact) {
-            $letter = $this->isGrouped() ? $this->letterOf($contact) : null;
+        foreach ($contacts as $contact) {
+            $run = $this->splitsFavourites() ? $contact->is_favourite : null;
 
-            if ($groups === [] || $letter !== $openLetter) {
-                $continuesThePreviousPage = $groups === [] && $letter === $carriedOver;
+            if ($groups === [] || $run !== $openRun) {
+                $continuesThePreviousPage = $groups === [] && $run !== null && $run === $favouriteBefore;
 
-                $groups[] = ['letter' => $continuesThePreviousPage ? null : $letter, 'people' => []];
-                $openLetter = $letter;
+                $groups[] = [
+                    'label' => $run === null || $continuesThePreviousPage ? null : ($run ? __('Favourites') : __('Everybody else')),
+                    'count' => $run === null || $continuesThePreviousPage ? null : $this->runCount($run),
+                    'people' => [],
+                ];
+                $openRun = $run;
             }
 
-            $groups[array_key_last($groups)]['people'][] = $this->rowFor($contact);
+            $groups[array_key_last($groups)]['people'][] = $this->rowFor($contact, $cells->for($contact));
         }
 
         return $groups;
     }
 
     /**
-     * @return array{name: string, isFavourite: bool, isArchived: bool, nickname: string|null, avatarUrl: string|null, template: string, when: string, whenLabel: string, url: string}
+     * @param  list<list<string>>  $cells
+     * @return array{name: string, isFavourite: bool, isArchived: bool, showsStar: bool, avatarUrl: string|null, url: string, cells: list<array{values: list<string>, whenEmpty: string, moreLabel: string|null}>}
      */
-    private function rowFor(Contact $contact): array
+    private function rowFor(Contact $contact, array $cells): array
     {
+        $columns = $this->columns();
+
         return [
             'name' => $contact->name,
             'isFavourite' => $contact->is_favourite,
             'isArchived' => $contact->is_archived,
-            'nickname' => $contact->nickname,
+            'showsStar' => $contact->is_favourite && ! $this->splitsFavourites(),
             'avatarUrl' => $contact->avatar === null
                 ? null
                 : route('files.show', ['vault' => $this->vault, 'file' => $contact->avatar]),
-            'template' => $contact->structureVersion->structure->owner->name,
-            'when' => ($contact->last_interaction_at ?? $contact->created_at)->isoFormat('ll'),
-            'whenLabel' => $contact->last_interaction_at === null ? __('added') : __('last spoke'),
             'url' => route('contacts.show', ['vault' => $this->vault, 'contact' => $contact]),
+            'cells' => array_map(fn (array $values, ContactListColumn $column): array => [
+                'values' => $values,
+                'whenEmpty' => $column->source === ContactListColumnSourceEnum::LastSpoke ? __('Not yet') : '—',
+                'moreLabel' => count($values) > 1 ? trans_choice('Show :count more|Show :count more', count($values) - 1) : null,
+            ], $cells, $columns),
         ];
+    }
+
+    /**
+     * The columns the table shows after the name: the ones the vault saved, or the defaults, less
+     * those hidden and those no template supplies any more.
+     *
+     * @return list<ContactListColumn>
+     */
+    public function columns(): array
+    {
+        return $this->columns ??= $this->catalogue()->shownColumnsOf($this->vault);
+    }
+
+    public function customiseUrl(): string
+    {
+        return route('contactListColumns.edit', $this->vault);
+    }
+
+    /** @return array{label: string, url: string|null, ariaSort: string|null} */
+    private function heading(string $label, ?ContactSortEnum $sort): array
+    {
+        if ($sort === null) {
+            return ['label' => $label, 'url' => null, 'ariaSort' => null];
+        }
+
+        $isCurrent = $sort === $this->sort;
+        $firstWay = $sort->isChronological() ? SortDirectionEnum::Descending : SortDirectionEnum::Ascending;
+        $otherWay = $this->direction === SortDirectionEnum::Ascending ? SortDirectionEnum::Descending : SortDirectionEnum::Ascending;
+
+        return [
+            'label' => $label,
+            'url' => route('contacts.index', [
+                'vault' => $this->vault,
+                'filter' => $this->grouping->value,
+                'query' => $this->query === '' ? null : $this->query,
+                'sort' => $sort->value,
+                'direction' => ($isCurrent ? $otherWay : $firstWay)->value,
+            ]),
+            'ariaSort' => $isCurrent ? ($this->direction === SortDirectionEnum::Ascending ? 'ascending' : 'descending') : null,
+        ];
+    }
+
+    private function catalogue(): ContactListCatalogue
+    {
+        return once(fn (): ContactListCatalogue => new ContactListCatalogue($this->vault->account));
     }
 
     /**
@@ -111,30 +199,6 @@ class ContactsViewModel
             'url' => $this->url(grouping: $grouping),
             'isCurrent' => $grouping === $this->grouping,
         ], ContactGroupingEnum::cases());
-    }
-
-    /** @return array<int, array{value: string, label: string, isCurrent: bool}> */
-    public function sorts(): array
-    {
-        return array_map(fn (array $sort): array => [
-            'value' => $sort['key'],
-            'label' => $sort['label'],
-            'isCurrent' => $sort['key'] === $this->sort->value,
-        ], self::definitions());
-    }
-
-    /** @return array<int, array{value: string, label: string, isCurrent: bool}> */
-    public function directions(): array
-    {
-        $labels = $this->sort->isChronological()
-            ? [SortDirectionEnum::Descending->value => __('Newest first'), SortDirectionEnum::Ascending->value => __('Oldest first')]
-            : [SortDirectionEnum::Ascending->value => __('A to Z'), SortDirectionEnum::Descending->value => __('Z to A')];
-
-        return array_map(fn (string $key): array => [
-            'value' => $key,
-            'label' => $labels[$key],
-            'isCurrent' => $key === $this->direction->value,
-        ], array_keys($labels));
     }
 
     public function resultLine(): string
@@ -249,7 +313,9 @@ class ContactsViewModel
     /** @return Builder<Contact> */
     private function ordered(): Builder
     {
-        return $this->matching()->sortedBy($this->sort, $this->direction);
+        return $this->matching()
+            ->when($this->splitsFavourites(), fn (Builder $query): Builder => $query->orderByDesc('is_favourite'))
+            ->sortedBy($this->sort, $this->direction);
     }
 
     /** @return Builder<Contact> */
@@ -266,28 +332,17 @@ class ContactsViewModel
         return mb_trim($this->query);
     }
 
-    /** @return array<int, array{key: string, label: string}> */
-    private static function definitions(): array
+    private function splitsFavourites(): bool
     {
-        return [
-            ['key' => ContactSortEnum::Name->value, 'label' => __('Name')],
-            ['key' => ContactSortEnum::Nickname->value, 'label' => __('Nickname')],
-            ['key' => ContactSortEnum::LastSpoke->value, 'label' => __('Last spoke')],
-            ['key' => ContactSortEnum::Added->value, 'label' => __('Added')],
-        ];
+        return $this->grouping === ContactGroupingEnum::Everyone && $this->runCount(true) > 0;
     }
 
-    private function isGrouped(): bool
+    private function runCount(bool $favourites): int
     {
-        return $this->sort === ContactSortEnum::Name;
+        return $this->counts[$favourites ? 'favourites-first' : 'everybody-else'] ??= $this->matching()->where('is_favourite', $favourites)->count();
     }
 
-    private function letterOf(Contact $contact): string
-    {
-        return LocaleCollation::headingLetter($contact->sort_name);
-    }
-
-    private function letterBefore(): ?string
+    private function favouriteBefore(): ?bool
     {
         if ($this->contacts()->currentPage() === 1) {
             return null;
@@ -297,7 +352,7 @@ class ContactsViewModel
             ->skip(($this->contacts()->currentPage() - 1) * self::PER_PAGE - 1)
             ->first();
 
-        return $contact === null ? null : $this->letterOf($contact);
+        return $contact?->is_favourite;
     }
 
     private function countOf(ContactGroupingEnum $grouping): int

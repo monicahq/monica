@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContactDuplicateController;
 use App\Http\Controllers\Api\ContactDuplicateDismissalController;
 use App\Http\Controllers\Api\ContactFavouriteController;
+use App\Http\Controllers\Api\ContactListColumnController;
 use App\Http\Controllers\Api\ContactMeController;
 use App\Http\Controllers\Api\ContactMergeController;
 use App\Http\Controllers\Api\ContactNameController;
@@ -210,6 +211,9 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::delete('vaults/{vault}/merges/{merge}', [ContactMergeController::class, 'destroy'])->where(['merge' => '[0-9a-fA-F-]{36}'])->name('merges.destroy');
         Route::get('vaults/{vault}/duplicates', [ContactDuplicateController::class, 'index'])->name('duplicates');
         Route::put('vaults/{vault}/duplicates/{candidate}/dismissal', [ContactDuplicateDismissalController::class, 'update'])->where(['candidate' => '[1-9][0-9]*'])->name('duplicates.dismissal.update');
+
+        Route::get('vaults/{vault}/contact-list-columns', [ContactListColumnController::class, 'show'])->name('contactListColumns.show');
+        Route::put('vaults/{vault}/contact-list-columns', [ContactListColumnController::class, 'update'])->name('contactListColumns.update');
 
         Route::get('vaults/{vault}/contacts', [ContactController::class, 'index'])->name('contacts');
         Route::get('vaults/{vault}/contacts/me', [ContactMeController::class, 'show'])->name('contacts.me');
