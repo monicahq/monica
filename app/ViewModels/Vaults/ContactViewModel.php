@@ -88,11 +88,6 @@ class ContactViewModel
         return $this->contact->name;
     }
 
-    public function nickname(): ?string
-    {
-        return $this->contact->nickname;
-    }
-
     public function isFavourite(): bool
     {
         return $this->contact->is_favourite;
@@ -563,11 +558,6 @@ class ContactViewModel
         return __('This page has no sections yet. What it asks about :name is decided on the template.', [
             'name' => $this->contact->first_name ?? $this->contact->name,
         ]);
-    }
-
-    public function relationshipLine(): string
-    {
-        return __('Written down :when.', ['when' => $this->contact->created_at->diffForHumans()]);
     }
 
     /** @return array<int, array{icon: string, label: string, value: string, reminder: string|null}> */

@@ -48,17 +48,11 @@
     <div class="min-w-60 flex-1">
       <h1 class="text-page-title text-balance text-ink">{{ $viewModel->title() }}</h1>
 
-      <p class="mt-2 text-base text-body">
-        {{ $viewModel->relationshipLine() }}
-
-        @if ($viewModel->nickname())
-          {{ __('Known as :nickname.', ['nickname' => $viewModel->nickname()]) }}
-        @endif
-
-        @if ($viewModel->isArchived())
-          <x-badge class="ml-1 align-middle">{{ __('Archived') }}</x-badge>
-        @endif
-      </p>
+      @if ($viewModel->isArchived())
+        <p class="mt-2">
+          <x-badge>{{ __('Archived') }}</x-badge>
+        </p>
+      @endif
 
       <ul id="contact-facts" x-merge="replace" class="mt-4 flex list-none flex-wrap gap-x-5.5 gap-y-2">
         @foreach ($viewModel->headerFacts() as $fact)

@@ -1006,12 +1006,11 @@ class ContactControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user, 'Someone in the family');
-        $michael = $this->contact($vault, 'Michael', 'Scott', ['nickname' => 'Prison Mike']);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
 
         $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
             ->assertStatus(200)
             ->assertSee('Michael Scott')
-            ->assertSee('Prison Mike')
             ->assertSee('Overview')
             ->assertSee('History');
     }
