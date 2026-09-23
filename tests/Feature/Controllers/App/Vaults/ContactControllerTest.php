@@ -1073,17 +1073,13 @@ class ContactControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Friend, version 2')
             ->assertSee('Friend, version 1')
-            ->assertSee('On this version')
-            ->assertSee('First template')
-            ->assertSee('applied by you')
-            ->assertSee('chosen when they were written down')
-            ->assertSee('Ways to connect is its own section now.')
-            ->assertSee('Move to this version')
-            ->assertSee('A version only decides what this page shows.');
+            ->assertSee('A template defines the sections and fields on this contact’s profile.')
+            ->assertSee('Revert to Friend, version 1?')
+            ->assertSee('name="structure_version_id" value="'.$first->id.'"', escape: false);
     }
 
     #[Test]
-    public function the_version_history_keeps_the_banner_off_its_own_tab(): void
+    public function the_version_history_offers_a_newer_version_like_every_other_page(): void
     {
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user, 'Friend');
@@ -1098,8 +1094,6 @@ class ContactControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'version-history']))
             ->assertStatus(200)
-            ->assertDontSee('Version 2 of the Friend template is ready')
-            ->assertSee('Version 2 exists and this contact is not on it.')
             ->assertSee('Apply version 2');
     }
 

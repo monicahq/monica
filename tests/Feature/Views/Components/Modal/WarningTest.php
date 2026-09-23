@@ -55,4 +55,17 @@ class WarningTest extends TestCase
         $rendered->assertSee('action="/settings/account/life-event-categories/9"', escape: false);
         $rendered->assertSee('value="delete"', escape: false);
     }
+
+    #[Test]
+    public function it_sends_the_fields_it_is_given_with_the_form(): void
+    {
+        $rendered = $this->blade(
+            '<x-modal.warning method="put" action="/vaults/1/contacts/2/template-version"><p>This contact changes version.</p><x-slot:trigger><button type="button">Revert</button></x-slot:trigger><x-slot:fields><input type="hidden" name="structure_version_id" value="7" /></x-slot:fields></x-modal.warning>',
+        );
+
+        $this->assertMatchesRegularExpression(
+            '/<form[^>]*action="\/vaults\/1\/contacts\/2\/template-version".*name="structure_version_id" value="7".*<\/form>/s',
+            (string) $rendered,
+        );
+    }
 }

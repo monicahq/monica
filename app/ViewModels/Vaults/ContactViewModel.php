@@ -149,6 +149,11 @@ class ContactViewModel
         return route('contacts.vcard.show', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
+    public function versionHistoryUrl(): string
+    {
+        return $this->urlTo(self::PAGE_VERSION_HISTORY);
+    }
+
     public function undoableMerge(): ?ContactMerge
     {
         return once(fn (): ?ContactMerge => ContactMerge::query()
@@ -243,7 +248,6 @@ class ContactViewModel
             'count' => null,
             'url' => $this->urlTo(null),
             'isSelected' => $this->onOverview(),
-            'isPinned' => false,
         ]];
 
         foreach ($this->contact->structureVersion->pages as $page) {
@@ -256,7 +260,6 @@ class ContactViewModel
                 'count' => $fields === 0 ? null : $fields,
                 'url' => $this->urlTo($page->key),
                 'isSelected' => $page->is($selected),
-                'isPinned' => false,
             ];
         }
 
@@ -267,17 +270,6 @@ class ContactViewModel
             'count' => $this->relationships()->total() === 0 ? null : $this->relationships()->total(),
             'url' => $this->urlTo(self::PAGE_RELATIONSHIPS),
             'isSelected' => $this->onRelationships(),
-            'isPinned' => false,
-        ];
-
-        $tabs[] = [
-            'key' => self::PAGE_VERSION_HISTORY,
-            'label' => __('Version history'),
-            'icon' => 'timeline',
-            'count' => null,
-            'url' => $this->urlTo(self::PAGE_VERSION_HISTORY),
-            'isSelected' => $this->onVersionHistory(),
-            'isPinned' => true,
         ];
 
         return $tabs;
@@ -309,7 +301,7 @@ class ContactViewModel
         return $this->selectedPageKey === self::PAGE_VERSION_HISTORY;
     }
 
-    /** @return array<int, array<string, mixed>> */
+    /** @return array<int, array{date: string, ago: string, title: string, isCurrent: bool, span: string, revert: array{url: string, versionId: int, title: string, confirm: string, cancel: string, body: string}|null, refusal: string|null, spaceBelow: int}> */
     public function versionHistory(): array
     {
         $chain = $this->versionChain();
@@ -321,41 +313,34 @@ class ContactViewModel
             $version = $leg['version'];
             $until = $chain[$index + 1]['from'] ?? null;
             $isCurrent = $index === $last;
+            $title = __(':template, version :number', [
+                'template' => $version->structure->owner->name,
+                'number' => $version->version_number,
+            ]);
 
             $entries[] = [
                 'date' => $leg['from']->isoFormat('LL'),
                 'ago' => $leg['from']->diffForHumans(),
-                'title' => __(':template, version :number', [
-                    'template' => $version->structure->owner->name,
-                    'number' => $version->version_number,
-                ]),
-                'badge' => match (true) {
-                    $isCurrent => __('On this version'),
-                    $index === 0 => __('First template'),
-                    default => null,
-                },
+                'title' => $title,
                 'isCurrent' => $isCurrent,
-                'who' => $this->whoApplied($leg, $index === 0),
-                'body' => $version->change_note,
                 'span' => $this->spanOf($leg['from'], $until, $isCurrent),
-                'goBack' => $this->wayBackTo($version, $isCurrent),
-                'note' => $isCurrent || $version->status === VersionStatusEnum::Published
-                    ? null
-                    : __('This version has been retired, so nothing can be put back on it.'),
+                'revert' => $this->revertTo($version, $title, $isCurrent),
+                'refusal' => $this->whyNoRevertTo($version, $isCurrent),
+                'spaceBelow' => $index === 0 ? 0 : $this->spaceFor(from: $chain[$index - 1]['from'], until: $leg['from']),
             ];
         }
 
         return array_reverse($entries);
     }
 
-    /** @return array<int, array{version: StructureVersion, from: CarbonImmutable, by: User|null}> */
+    /** @return array<int, array{version: StructureVersion, from: CarbonImmutable}> */
     private function versionChain(): array
     {
         return once(function (): array {
             $stamps = RecordSnapshot::query()
                 ->where('snapshotable_type', $this->contact->getMorphClass())
                 ->where('snapshotable_id', $this->contact->id)
-                ->with(['structureVersion.structure.owner', 'createdBy'])
+                ->with('structureVersion.structure.owner')
                 ->orderBy('created_at')
                 ->orderBy('id')
                 ->get()
@@ -365,7 +350,7 @@ class ContactViewModel
             $versions = array_map(fn (RecordSnapshot $stamp): StructureVersion => $stamp->structureVersion, $stamps);
             $versions[] = $this->contact->structureVersion;
 
-            $chain = [['version' => $versions[0], 'from' => $this->contact->created_at, 'by' => null]];
+            $chain = [['version' => $versions[0], 'from' => $this->contact->created_at]];
 
             foreach ($stamps as $index => $stamp) {
                 if ($versions[$index + 1]->is($versions[$index])) {
@@ -375,28 +360,11 @@ class ContactViewModel
                 $chain[] = [
                     'version' => $versions[$index + 1],
                     'from' => $stamp->created_at,
-                    'by' => $stamp->createdBy,
                 ];
             }
 
             return $chain;
         });
-    }
-
-    /** @param  array{version: StructureVersion, from: CarbonImmutable, by: User|null}  $leg */
-    private function whoApplied(array $leg, bool $isFirst): string
-    {
-        if ($isFirst) {
-            return __('chosen when they were written down');
-        }
-
-        if ($leg['by'] === null) {
-            return __('applied by the system');
-        }
-
-        return $leg['by']->is($this->user)
-            ? __('applied by you')
-            : __('applied by :name', ['name' => $leg['by']->name]);
     }
 
     private function spanOf(CarbonImmutable $from, ?CarbonImmutable $until, bool $isCurrent): string
@@ -408,10 +376,22 @@ class ContactViewModel
             : __('In use for :duration.', ['duration' => $duration]);
     }
 
-    /** @return array{url: string, versionId: int, label: string}|null */
-    private function wayBackTo(StructureVersion $version, bool $isCurrent): ?array
+    private function spaceFor(CarbonImmutable $from, CarbonImmutable $until): int
     {
-        if ($isCurrent || $version->status !== VersionStatusEnum::Published) {
+        return (int) min(96, 20 + round($from->diffInDays($until) / 2));
+    }
+
+    private function canRevertTo(StructureVersion $version, bool $isCurrent): bool
+    {
+        return ! $isCurrent
+            && $version->status === VersionStatusEnum::Published
+            && $version->structure_id === $this->contact->structureVersion->structure_id;
+    }
+
+    /** @return array{url: string, versionId: int, title: string, confirm: string, cancel: string, body: string}|null */
+    private function revertTo(StructureVersion $version, string $title, bool $isCurrent): ?array
+    {
+        if (! $this->canRevertTo($version, $isCurrent)) {
             return null;
         }
 
@@ -421,59 +401,37 @@ class ContactViewModel
                 'contact' => $this->contact,
             ]),
             'versionId' => $version->id,
-            'label' => __('Move to this version'),
-        ];
-    }
-
-    /** @return array<int, array{label: string, value: string}> */
-    public function versionStats(): array
-    {
-        $chain = $this->versionChain();
-
-        $templates = collect($chain)
-            ->map(fn (array $leg): int => $leg['version']->structure_id)
-            ->unique()
-            ->count();
-
-        return [
-            ['label' => __('Templates used'), 'value' => (string) $templates],
-            ['label' => __('Versions applied'), 'value' => (string) count($chain)],
-            ['label' => __('On this one since'), 'value' => end($chain)['from']->isoFormat('LL')],
-        ];
-    }
-
-    /** @return array{template: string, number: int, since: string, shows: string} */
-    public function currentVersion(): array
-    {
-        $version = $this->contact->structureVersion;
-        $chain = $this->versionChain();
-
-        $sections = $version->assembly->count();
-        $fields = $version->assembly
-            ->sum(fn (StructureVersionSection $row): int => $this->storedFields($row->sectionVersion->fields)->count());
-
-        return [
-            'template' => $version->structure->owner->name,
-            'number' => $version->version_number,
-            'since' => end($chain)['from']->isoFormat('LL'),
-            'shows' => implode(', ', [
-                trans_choice(':count section|:count sections', $sections),
-                trans_choice(':count field|:count fields', $fields),
+            'title' => __('Revert to :version?', ['version' => $title]),
+            'confirm' => __('Revert'),
+            'cancel' => __('Stay on version :number', ['number' => $this->contact->structureVersion->version_number]),
+            'body' => __('This contact will show the sections and fields of version :number again. Answers in fields that version does not have are hidden, not deleted, and come back when you move to a version that has them. This is recorded in the version history.', [
+                'number' => $version->version_number,
             ]),
         ];
     }
 
-    public function setAsideLine(): string
+    private function whyNoRevertTo(StructureVersion $version, bool $isCurrent): ?string
+    {
+        if ($isCurrent || $this->canRevertTo($version, $isCurrent)) {
+            return null;
+        }
+
+        if ($version->status !== VersionStatusEnum::Published) {
+            return __('This version has been retired, so nothing can be put back on it.');
+        }
+
+        return __('This version belongs to another template, so it cannot be reverted to here.');
+    }
+
+    public function setAsideLine(): ?string
     {
         $count = $this->setAsideCount();
 
-        $invariant = __('A version only decides what this page shows.');
-
         if ($count === 0) {
-            return "{$invariant} ".__('Nothing is hidden. Every answer written here is on a page where it can be seen.');
+            return null;
         }
 
-        return "{$invariant} ".trans_choice('{1}One value written under another version is hidden, and comes back with the version that shows it.|:count values written under other versions are hidden, and come back with the version that shows them.', $count);
+        return trans_choice('{1}One value written under another version is hidden.|:count values written under other versions are hidden.', $count);
     }
 
     public function setAsideCount(): int

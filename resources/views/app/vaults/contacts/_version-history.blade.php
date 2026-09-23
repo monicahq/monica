@@ -1,141 +1,86 @@
-{{-- Every template this record has rendered from, and when each was applied. --}}
+{{-- Every template version this record has been on, newest first, with the way back to an older one. --}}
 {{-- @var \App\ViewModels\Vaults\ContactViewModel $viewModel --}}
-@php
-  $current = $viewModel->currentVersion();
-  $setAside = $viewModel->setAsideCount();
-@endphp
+<div class="mx-auto flex w-full max-w-205 flex-col gap-6">
+  <x-notice tone="info">
+    {{ __('A template defines the sections and fields on this contact’s profile. This page shows which versions the contact has used and lets you return to an earlier one. All the information you’ve entered is kept, even if some of it isn’t visible in the version you choose.') }}
+  </x-notice>
 
-<div class="flex flex-wrap items-start gap-x-6 gap-y-4">
-  <p class="max-w-prose text-sm text-pretty text-muted">
-    {{ __('Every template this contact has been on, and when it changed. Nothing here was automatic. Each line is a version somebody applied.') }}
-  </p>
-
-  <dl class="ml-auto flex flex-wrap gap-x-8 gap-y-3">
-    @foreach ($viewModel->versionStats() as $stat)
-      <div class="flex flex-col gap-0.5">
-        <dt class="text-xs tracking-caption text-muted uppercase">{{ $stat['label'] }}</dt>
-
-        <dd class="text-section-title text-ink">{{ $stat['value'] }}</dd>
-      </div>
-    @endforeach
-  </dl>
-</div>
-
-<div class="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
   <ol class="flex list-none flex-col">
     @foreach ($viewModel->versionHistory() as $entry)
-      <li class="grid grid-cols-[92px_36px_minmax(0,1fr)] gap-x-3.5 max-xs:grid-cols-[28px_minmax(0,1fr)]">
-        <div class="flex flex-col gap-0.5 pt-4 text-right max-xs:hidden">
-          <span class="text-sm font-semibold text-ink">{{ $entry['date'] }}</span>
+      <li class="grid grid-cols-[132px_32px_minmax(0,1fr)] gap-x-4 max-xs:grid-cols-[32px_minmax(0,1fr)]">
+        <div class="flex flex-col items-end gap-0.5 pt-3.5 text-right max-xs:hidden">
+          <span class="text-sm font-medium text-ink">{{ $entry['date'] }}</span>
 
           <span class="text-xs text-muted">{{ $entry['ago'] }}</span>
         </div>
 
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-center" aria-hidden="true">
+          <span @class(['h-3 w-px shrink-0 bg-hairline', 'invisible' => $loop->first])></span>
+
           <span
             @class([
-              'mt-3.5 flex size-8 shrink-0 items-center justify-center rounded-sm border ',
-              $entry['isCurrent'] ? 'border-ink bg-ink text-white' : 'border-hairline bg-canvas text-muted',
+              'flex size-8 shrink-0 items-center justify-center rounded-full border',
+              $entry['isCurrent'] ? 'border-ink bg-ink text-card' : 'border-hairline bg-card text-muted',
             ])
-            aria-hidden="true"
           >
-            <x-icon name="timeline" :size="16" :stroke-width="1.7" />
+            <x-icon name="layers" :size="14" />
           </span>
 
-          @unless ($loop->last)
-            <span class="min-h-6 w-0.5 flex-1 bg-hairline"></span>
-          @endunless
+          <span @class(['w-px flex-1 bg-hairline', 'invisible' => $loop->last])></span>
         </div>
 
-        <div
-          @class([
-            'mt-3.5 mb-5 flex flex-col gap-2.5 rounded-lg border px-4.5 py-4',
-            $entry['isCurrent'] ? 'border-hairline-strong border-b-2 bg-canvas ' : 'border-hairline bg-canvas',
-          ])
-        >
-          <div class="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-            <h3 class="text-card-title text-ink">{{ $entry['title'] }}</h3>
+        <div style="padding-bottom: {{ $entry['spaceBelow'] }}px">
+          <div
+            @class([
+              'flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-lg border bg-card px-4 py-3.5',
+              $entry['isCurrent'] ? 'border-ink' : 'border-hairline',
+            ])
+          >
+            <div class="flex flex-wrap items-center gap-2">
+              <h3 class="text-base font-semibold text-ink">{{ $entry['title'] }}</h3>
 
-            @if ($entry['badge'])
-              <x-badge :tone="$entry['isCurrent'] ? 'accent' : 'neutral'">{{ $entry['badge'] }}</x-badge>
-            @endif
+              @if ($entry['isCurrent'])
+                <x-badge tone="accent">{{ __('Current') }}</x-badge>
+              @endif
 
-            <span class="ml-auto text-xs text-muted">{{ $entry['who'] }}</span>
-          </div>
+              <span class="w-full text-xs text-muted xs:hidden">{{ $entry['date'] }}</span>
+            </div>
 
-          <p class="text-xs text-muted xs:hidden">{{ $entry['date'] }}</p>
+            <div class="flex flex-wrap items-center gap-3">
+              <span class="text-xs text-muted">{{ $entry['span'] }}</span>
 
-          @if ($entry['body'])
-            <p class="max-w-prose text-sm text-pretty text-body">{{ $entry['body'] }}</p>
-          @endif
+              @if ($entry['revert'])
+                <x-modal.warning
+                  method="put"
+                  :action="$entry['revert']['url']"
+                  :title="$entry['revert']['title']"
+                  :confirm="$entry['revert']['confirm']"
+                  :cancel="$entry['revert']['cancel']"
+                >
+                  <x-slot:trigger>
+                    <x-button.secondary type="button" size="small" @click="open = true">{{ __('Revert') }}</x-button.secondary>
+                  </x-slot:trigger>
 
-          <div class="flex flex-wrap items-center gap-3 border-t border-hairline pt-3">
-            <span class="text-xs text-muted">{{ $entry['span'] }}</span>
+                  <p>{{ $entry['revert']['body'] }}</p>
 
-            @if ($entry['goBack'])
-              <x-form method="put" :action="$entry['goBack']['url']" class="ml-auto">
-                <input type="hidden" name="structure_version_id" value="{{ $entry['goBack']['versionId'] }}" />
-
-                <x-button.secondary size="small">{{ $entry['goBack']['label'] }}</x-button.secondary>
-              </x-form>
-            @elseif ($entry['note'])
-              <span class="ml-auto max-w-reading-narrow text-xs text-pretty text-placeholder">{{ $entry['note'] }}</span>
-            @endif
+                  <x-slot:fields>
+                    <input type="hidden" name="structure_version_id" value="{{ $entry['revert']['versionId'] }}" />
+                  </x-slot:fields>
+                </x-modal.warning>
+              @elseif ($entry['refusal'])
+                <span class="max-w-reading-narrow text-xs text-pretty text-placeholder">{{ $entry['refusal'] }}</span>
+              @endif
+            </div>
           </div>
         </div>
       </li>
     @endforeach
   </ol>
 
-  <div class="flex flex-col gap-4">
-    <x-panel :title="__('On right now')" icon="file" :flush="true">
-      <dl class="grid gap-0">
-        <div class="grid grid-cols-[100px_minmax(0,1fr)] items-baseline gap-3 border-b border-hairline px-4.5 py-3">
-          <dt class="text-sm text-muted">{{ __('Template') }}</dt>
-
-          <dd class="text-base font-semibold text-ink">{{ $current['template'] }}</dd>
-        </div>
-
-        <div class="grid grid-cols-[100px_minmax(0,1fr)] items-baseline gap-3 border-b border-hairline px-4.5 py-3">
-          <dt class="text-sm text-muted">{{ __('Version') }}</dt>
-
-          <dd class="flex flex-wrap items-baseline gap-2">
-            <span class="font-mono text-sm text-ink">v{{ $current['number'] }}</span>
-
-            <span class="text-xs text-muted">{{ __('since :date', ['date' => $current['since']]) }}</span>
-          </dd>
-        </div>
-
-        <div class="grid grid-cols-[100px_minmax(0,1fr)] items-baseline gap-3 px-4.5 py-3">
-          <dt class="text-sm text-muted">{{ __('Shows') }}</dt>
-
-          <dd class="text-base text-ink">{{ $current['shows'] }}</dd>
-        </div>
-      </dl>
-    </x-panel>
-
-    @if ($update = $viewModel->templateUpdate())
-      <x-notice tone="info" icon="file">
-        {{ __('Version :number exists and this contact is not on it. Applying it is recorded on this history like any other change.', ['number' => $update['number']]) }}
-
-        <x-slot:action>
-          <x-form method="put" :action="$update['applyUrl']">
-            <x-button size="small">{{ $update['label'] }}</x-button>
-          </x-form>
-        </x-slot:action>
-      </x-notice>
-    @endif
-
-    <x-notice tone="warning">
-      {{ $viewModel->setAsideLine() }}
-
-      @if ($setAside > 0)
-        <x-slot:action>
-          <x-button.secondary :href="$viewModel->setAsideUrl()" data-turbo="true" size="small">
-            {{ __('Unused answers') }}
-          </x-button.secondary>
-        </x-slot:action>
-      @endif
-    </x-notice>
-  </div>
+  @if ($setAside = $viewModel->setAsideLine())
+    <p class="text-sm text-pretty text-muted">
+      {{ $setAside }}
+      <x-link :href="$viewModel->setAsideUrl()" turbo>{{ __('Unused answers') }}</x-link>
+    </p>
+  @endif
 </div>

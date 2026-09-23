@@ -250,10 +250,9 @@ class ContactViewModelTest extends TestCase
 
         $tabs = $viewModel->pages();
 
-        $this->assertCount(3, $tabs);
+        $this->assertCount(2, $tabs);
         $this->assertSame(ContactViewModel::PAGE_OVERVIEW, $tabs[0]['key']);
         $this->assertSame(ContactViewModel::PAGE_RELATIONSHIPS, $tabs[1]['key']);
-        $this->assertSame(ContactViewModel::PAGE_VERSION_HISTORY, $tabs[2]['key']);
         $this->assertTrue($viewModel->onOverview());
     }
 
@@ -436,37 +435,63 @@ class ContactViewModelTest extends TestCase
 
         $this->assertCount(1, $history);
         $this->assertSame('Friend, version 1', $history[0]['title']);
-        $this->assertSame('On this version', $history[0]['badge']);
-        $this->assertSame('chosen when they were written down', $history[0]['who']);
         $this->assertTrue($history[0]['isCurrent']);
-        $this->assertNull($history[0]['goBack']);
+        $this->assertNull($history[0]['revert']);
+        $this->assertNull($history[0]['refusal']);
+        $this->assertSame(0, $history[0]['spaceBelow']);
         $this->assertStringContainsString('and counting', $history[0]['span']);
     }
 
     #[Test]
-    public function every_move_is_a_line_saying_who_applied_it_and_when(): void
+    public function an_older_version_of_the_same_template_offers_a_revert_that_warns_first(): void
     {
         $user = User::factory()->create();
         $first = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]], 'Friend');
         $contact = $this->contact($user, $first);
-        $second = $this->publish($first, 2, 'Ways to connect is its own section now.');
+        $second = $this->publish($first, 2);
 
         $this->moved($contact, $first, $second, $user, now()->subDays(3));
 
         $history = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->versionHistory();
 
         $this->assertCount(2, $history);
-
         $this->assertSame('Friend, version 2', $history[0]['title']);
-        $this->assertSame('applied by you', $history[0]['who']);
-        $this->assertSame('Ways to connect is its own section now.', $history[0]['body']);
         $this->assertTrue($history[0]['isCurrent']);
+        $this->assertNull($history[0]['revert']);
 
-        $this->assertSame('Friend, version 1', $history[1]['title']);
-        $this->assertSame('First template', $history[1]['badge']);
-        $this->assertSame('chosen when they were written down', $history[1]['who']);
-        $this->assertSame('Move to this version', $history[1]['goBack']['label']);
-        $this->assertSame($first->id, $history[1]['goBack']['versionId']);
+        $revert = $history[1]['revert'];
+
+        $this->assertSame($first->id, $revert['versionId']);
+        $this->assertSame(route('contacts.templateVersion.update', ['vault' => $contact->vault, 'contact' => $contact]), $revert['url']);
+        $this->assertSame('Revert to Friend, version 1?', $revert['title']);
+        $this->assertSame('Stay on version 2', $revert['cancel']);
+        $this->assertStringContainsString('hidden, not deleted', $revert['body']);
+        $this->assertNull($history[1]['refusal']);
+    }
+
+    #[Test]
+    public function the_space_below_a_version_grows_with_how_long_the_one_under_it_was_in_use(): void
+    {
+        $user = User::factory()->create();
+        $first = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $contact = $this->contact($user, $first, ['created_at' => now()->subDays(400)]);
+        $second = $this->publish($first, 2);
+        $third = $this->publish($second, 3);
+
+        $this->moved($contact, $first, $second, $user, now()->subDays(340));
+        $this->moved($contact, $second, $third, $user, now()->subDays(300));
+
+        $history = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->versionHistory();
+
+        $this->assertSame(40, $history[0]['spaceBelow']);
+        $this->assertSame(50, $history[1]['spaceBelow']);
+        $this->assertSame(0, $history[2]['spaceBelow']);
+
+        $this->moved($contact, $third, $first, $user, now()->subDays(10));
+
+        $history = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact->refresh())->versionHistory();
+
+        $this->assertSame(96, $history[0]['spaceBelow']);
     }
 
     #[Test]
@@ -490,7 +515,7 @@ class ContactViewModelTest extends TestCase
     }
 
     #[Test]
-    public function a_retired_version_says_why_there_is_no_way_back_to_it(): void
+    public function a_retired_version_says_why_it_cannot_be_reverted_to(): void
     {
         $user = User::factory()->create();
         $first = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
@@ -502,8 +527,24 @@ class ContactViewModelTest extends TestCase
 
         $history = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact->refresh())->versionHistory();
 
-        $this->assertNull($history[1]['goBack']);
-        $this->assertSame('This version has been retired, so nothing can be put back on it.', $history[1]['note']);
+        $this->assertNull($history[1]['revert']);
+        $this->assertSame('This version has been retired, so nothing can be put back on it.', $history[1]['refusal']);
+    }
+
+    #[Test]
+    public function a_version_of_another_template_says_why_it_cannot_be_reverted_to(): void
+    {
+        $user = User::factory()->create();
+        $first = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]], 'Acquaintance');
+        $contact = $this->contact($user, $first);
+        $elsewhere = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]], 'Friend');
+
+        $this->moved($contact, $first, $elsewhere, $user, now()->subDay());
+
+        $history = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact->refresh())->versionHistory();
+
+        $this->assertNull($history[1]['revert']);
+        $this->assertSame('This version belongs to another template, so it cannot be reverted to here.', $history[1]['refusal']);
     }
 
     #[Test]
@@ -527,47 +568,13 @@ class ContactViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_counts_the_templates_and_the_versions_the_contact_has_been_on(): void
-    {
-        $user = User::factory()->create();
-        $first = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]], 'Acquaintance');
-        $contact = $this->contact($user, $first);
-        $elsewhere = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]], 'Friend');
-
-        $this->moved($contact, $first, $elsewhere, $user, now()->subDay());
-
-        $stats = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->versionStats();
-
-        $this->assertSame(['label' => 'Templates used', 'value' => '2'], $stats[0]);
-        $this->assertSame(['label' => 'Versions applied', 'value' => '2'], $stats[1]);
-        $this->assertSame('On this one since', $stats[2]['label']);
-    }
-
-    #[Test]
-    public function it_says_what_the_version_in_use_shows(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee'], 'Diet' => ['Allergies']]], 'Friend');
-        $contact = $this->contact($user, $version);
-
-        $current = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->currentVersion();
-
-        $this->assertSame('Friend', $current['template']);
-        $this->assertSame(1, $current['number']);
-        $this->assertSame('2 sections, 2 fields', $current['shows']);
-    }
-
-    #[Test]
-    public function it_says_how_much_is_being_kept_out_of_sight(): void
+    public function it_says_how_much_is_being_kept_out_of_sight_only_when_something_is(): void
     {
         $user = User::factory()->create();
         $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
         $contact = $this->contact($user, $version);
 
-        $viewModel = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact);
-
-        $this->assertSame(0, $viewModel->setAsideCount());
-        $this->assertStringContainsString('Nothing is hidden', $viewModel->setAsideLine());
+        $this->assertNull(new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->setAsideLine());
 
         $knee = $this->fieldCalled($version, 'Knee');
         $this->write($contact, $knee, 'Sore')->update(['is_detached' => true, 'detached_at' => now()]);
@@ -575,11 +582,11 @@ class ContactViewModelTest extends TestCase
         $viewModel = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact->refresh());
 
         $this->assertSame(1, $viewModel->setAsideCount());
-        $this->assertStringContainsString('One value written under another version', $viewModel->setAsideLine());
+        $this->assertSame('One value written under another version is hidden.', $viewModel->setAsideLine());
     }
 
     #[Test]
-    public function version_history_is_a_tab_of_its_own_pinned_to_the_end(): void
+    public function version_history_is_reached_from_the_actions_menu_rather_than_a_tab(): void
     {
         $user = User::factory()->create();
         $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
@@ -593,12 +600,13 @@ class ContactViewModelTest extends TestCase
         );
 
         $tabs = $viewModel->pages();
-        $last = end($tabs);
 
-        $this->assertSame(ContactViewModel::PAGE_VERSION_HISTORY, $last['key']);
-        $this->assertTrue($last['isPinned']);
-        $this->assertTrue($last['isSelected']);
-        $this->assertFalse($tabs[0]['isSelected']);
+        $this->assertNotContains(ContactViewModel::PAGE_VERSION_HISTORY, array_column($tabs, 'key'));
+        $this->assertNotContains(true, array_column($tabs, 'isSelected'));
+        $this->assertSame(
+            route('contacts.show', ['vault' => $contact->vault, 'contact' => $contact, 'page' => 'version-history']),
+            $viewModel->versionHistoryUrl(),
+        );
 
         $this->assertTrue($viewModel->onVersionHistory());
         $this->assertFalse($viewModel->onOverview());

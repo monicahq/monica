@@ -99,6 +99,13 @@
           </x-slot:icon>
           {{ __('Export as vCard') }}
         </x-actions-menu.item>
+
+        <x-actions-menu.item :href="$viewModel->versionHistoryUrl()" data-turbo="true">
+          <x-slot:icon>
+            <x-icon name="timeline" :size="15" :stroke-width="1.6" />
+          </x-slot:icon>
+          {{ __('Version history') }}
+        </x-actions-menu.item>
       </x-actions-menu>
     </div>
 
@@ -125,12 +132,11 @@
         :count="$page['count']"
         :count-label="$page['count'] === null ? null : trans_choice(':count entry on this page|:count entries on this page', $page['count'])"
         data-turbo="true"
-        @class(['ml-auto' => $page['isPinned']])
       >{{ $page['label'] }}</x-tabs.item>
     @endforeach
   </x-tabs>
 
-  @if (! $viewModel->onVersionHistory() && $update = $viewModel->templateUpdate())
+  @if ($update = $viewModel->templateUpdate())
     <x-notice tone="info" icon="file" :title="$update['title']">
       {{ $update['body'] }}
 

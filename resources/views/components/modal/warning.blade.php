@@ -48,6 +48,8 @@
         </div>
 
         <x-form :method="$method" :action="$action" {{ $attributes }} class="flex flex-col-reverse gap-3 border-t border-hairline bg-sunken px-5 py-3.5 sm:flex-row sm:justify-end">
+          {{ $fields ?? '' }}
+
           <x-button.secondary size="small" type="button" @click="open = false">{{ $cancel ?? __('Keep it') }}</x-button.secondary>
 
           <x-button.danger size="small">{{ $confirm ?? __('Delete') }}</x-button.danger>
