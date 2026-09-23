@@ -5,7 +5,7 @@
     <li class="grid grid-cols-[7.5rem_1.25rem_minmax(0,1fr)] items-start gap-3 pb-4.5 last:pb-0">
       <div class="flex flex-col items-end gap-px pt-px">
         <span class="text-xs whitespace-nowrap text-body">{{ $entry['date'] }}</span>
-        <span class="font-mono text-[11.5px] whitespace-nowrap text-muted-soft">{{ $entry['time'] }}</span>
+        <span class="font-mono text-2xs whitespace-nowrap text-muted-soft">{{ $entry['time'] }}</span>
       </div>
 
       <div aria-hidden="true" class="relative flex self-stretch justify-center">

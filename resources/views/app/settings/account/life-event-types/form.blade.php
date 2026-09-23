@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <p class="max-w-[56ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
+    <p class="max-w-reading text-base text-pretty text-body">{{ $viewModel->description() }}</p>
 
     <p id="life-event-type-availability" class="sr-only">{{ $viewModel->availabilityHelp() }}</p>
   </header>

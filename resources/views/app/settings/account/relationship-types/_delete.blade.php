@@ -19,6 +19,6 @@
       {{ __('Delete this type') }}
     </x-button.secondary>
 
-    <p id="relationship-type-delete-reason" class="max-w-[48ch] text-xs text-pretty text-muted">{{ $viewModel->deleteBlockedReason() }}</p>
+    <p id="relationship-type-delete-reason" class="max-w-reading-narrow text-xs text-pretty text-muted">{{ $viewModel->deleteBlockedReason() }}</p>
   </div>
 @endif

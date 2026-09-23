@@ -18,7 +18,7 @@
   ])->filter(fn (array $toast): bool => filled($toast['title']));
 @endphp
 
-<div class="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex flex-col items-end p-4 sm:p-6" role="status" aria-live="polite">
+<div class="pointer-events-none fixed print:hidden inset-x-0 bottom-0 z-50 flex flex-col items-end p-4 sm:p-6" role="status" aria-live="polite">
   <div x-sync x-merge="replace" id="notifications" class="pointer-events-auto flex w-full max-w-sm flex-col gap-3">
     @foreach ($toasts as $toast)
       <div

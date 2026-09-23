@@ -20,7 +20,7 @@
 
           <x-badge :tone="$viewModel->isEditable() ? 'warning' : 'success'">{{ $viewModel->statusLabel() }}</x-badge>
 
-          <code class="font-mono text-[12.5px] text-muted">{{ $viewModel->versionLabel() }}</code>
+          <code class="font-mono text-xs text-muted">{{ $viewModel->versionLabel() }}</code>
         </div>
 
         <p class="text-sm text-pretty text-muted">
@@ -117,7 +117,7 @@
               x-show="! adding"
               type="button"
               @click="adding = true; $nextTick(() => $refs.name.focus())"
-              class="flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-lg border border-dashed border-hairline-strong px-5 py-5 text-sm font-semibold text-ink transition-colors duration-[110ms] hover:bg-hover"
+              class="flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-lg border border-dashed border-hairline-strong px-5 py-5 text-sm font-semibold text-ink transition-colors duration-(--duration-fast) hover:bg-hover"
             >
               <x-icon name="plus" :size="16" :stroke-width="1.6" />
               {{ $viewModel->selectedPage() === null ? __('Add a section') : __('Add a section to :page', ['page' => $viewModel->selectedPage()->label]) }}
@@ -170,7 +170,7 @@
     </div>
 
     <div class="flex flex-wrap items-center gap-4 border-t border-hairline pt-4">
-      <p class="max-w-[64ch] text-sm text-pretty text-muted">{{ $viewModel->publishingNote() }}</p>
+      <p class="max-w-prose text-sm text-pretty text-muted">{{ $viewModel->publishingNote() }}</p>
 
       @if ($viewModel->isEditable() && $version?->previous_version_id !== null)
         <div class="ml-auto">

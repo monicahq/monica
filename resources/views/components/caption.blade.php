@@ -11,4 +11,4 @@
   };
 @endphp
 
-<span {{ $attributes->class(['text-[11px] font-medium tracking-caption uppercase', $colour]) }}>{{ $slot }}</span>
+<span {{ $attributes->class(['text-2xs font-medium tracking-caption uppercase', $colour]) }}>{{ $slot }}</span>

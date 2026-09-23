@@ -18,7 +18,7 @@
 
   <div class="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
     <div class="flex min-w-0 flex-col gap-6">
-      <x-page-header :title="$viewModel->heading()" :description="$viewModel->intro()" class="max-w-[66ch]" />
+      <x-page-header :title="$viewModel->heading()" :description="$viewModel->intro()" class="max-w-prose" />
 
       @if ($url)
         <div class="flex flex-col gap-3.5 rounded-lg border border-hairline bg-canvas p-5">
@@ -65,7 +65,7 @@
               <x-badge tone="danger">{{ __('Wrong password') }}</x-badge>
             @endif
 
-            <span class="min-w-0 max-w-70 truncate font-mono text-[11.5px] text-placeholder">{{ $visit['agent'] }}</span>
+            <span class="min-w-0 max-w-70 truncate font-mono text-2xs text-placeholder">{{ $visit['agent'] }}</span>
           </div>
         @empty
           <p class="px-4.5 py-4 text-sm text-pretty text-muted">{{ $viewModel->visitsEmptyLine() }}</p>

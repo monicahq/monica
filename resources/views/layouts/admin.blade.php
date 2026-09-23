@@ -9,7 +9,7 @@
   </head>
 
   <body class="bg-page font-sans text-body antialiased">
-    <header class="sticky top-0 z-5 border-b border-hairline bg-primary text-on-primary">
+    <header class="sticky print:hidden top-0 z-5 border-b border-hairline bg-primary text-on-primary">
       <div class="mx-auto flex h-14 max-w-280 items-center gap-3 px-4 sm:px-6">
         <x-logo :size="24" />
 

@@ -118,7 +118,7 @@
               <div class="min-w-0 flex-1">
                 <p class="truncate text-base font-semibold text-ink" x-text="previewName"></p>
 
-                <p class="truncate font-mono text-[12.5px] text-muted" x-text="previewSlug"></p>
+                <p class="truncate font-mono text-xs text-muted" x-text="previewSlug"></p>
               </div>
             </div>
 
@@ -160,12 +160,12 @@
                     :class="colour === @js($option['value']) ? 'border-ink' : 'border-hairline-strong'"
                     class="{{ $swatch }} bg-canvas"
                   >
-                    <span style="background: {{ $option['value'] }}" class="size-[18px] rounded-xs"></span>
+                    <span style="background: {{ $option['value'] }}" class="size-4.5 rounded-xs"></span>
                   </button>
                 @endforeach
               </div>
 
-              <p class="font-mono text-[12.5px] text-muted" x-text="colour"></p>
+              <p class="font-mono text-xs text-muted" x-text="colour"></p>
 
               <x-error :id="$errors->has('colour') ? 'colour-error' : null" :messages="$errors->get('colour')" />
             </fieldset>
@@ -184,7 +184,7 @@
               <div class="flex flex-wrap items-center gap-x-6 gap-y-1">
                 <span class="text-xs text-pretty text-muted">{{ $viewModel->recordCount() }}</span>
 
-                <span class="font-mono text-[12.5px] break-all text-muted">{{ $viewModel->uuid() }}</span>
+                <span class="font-mono text-xs break-all text-muted">{{ $viewModel->uuid() }}</span>
               </div>
             </x-slot:footer>
           @endif

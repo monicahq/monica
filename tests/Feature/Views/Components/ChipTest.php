@@ -16,7 +16,7 @@ class ChipTest extends TestCase
 
         $rendered->assertSee('<a', escape: false);
         $rendered->assertSee('All', escape: false);
-        $rendered->assertDontSee('aria-pressed', escape: false);
+        $rendered->assertDontSee('aria-pressed=', escape: false);
     }
 
     #[Test]

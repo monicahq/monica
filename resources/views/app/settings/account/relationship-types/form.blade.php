@@ -19,7 +19,7 @@
       @endif
     </div>
 
-    <p class="max-w-[56ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
+    <p class="max-w-reading text-base text-pretty text-body">{{ $viewModel->description() }}</p>
   </header>
 
   <div

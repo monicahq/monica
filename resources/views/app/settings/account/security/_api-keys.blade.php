@@ -41,7 +41,7 @@
     </div>
   </div>
 
-  <div class="flex w-full items-center gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0">
+  <div class="flex w-full items-center gap-3 border-b border-hairline px-4 py-3.5 text-left transition-colors duration-(--duration-fast) ease-out last:border-b-0">
     <div class="min-w-0 flex-1">
       <p class="text-base font-semibold text-ink">{{ $viewModel->apiKeysHeader() }}</p>
     </div>

@@ -52,6 +52,6 @@ class TabsTest extends TestCase
 
         $rendered->assertSee('<button', escape: false);
         $rendered->assertDontSee('role="tab"', escape: false);
-        $rendered->assertDontSee('aria-selected', escape: false);
+        $rendered->assertDontSee('aria-selected=', escape: false);
     }
 }

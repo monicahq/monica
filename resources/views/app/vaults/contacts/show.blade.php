@@ -5,7 +5,7 @@
   $unbuilt = $viewModel->unbuilt();
 
   $inert = 'inline-flex h-8.5 cursor-default items-center gap-2 rounded-md border border-hairline px-3.25 '
-    .'font-sans text-[13.5px] font-semibold text-placeholder';
+    .'font-sans text-base font-semibold text-placeholder';
 @endphp
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:breadcrumb>
@@ -21,7 +21,7 @@
     <div
       id="contact-favourite"
       x-merge="replace"
-      class="relative shrink-0 rounded-full border-2 p-[3px] transition-colors duration-(--duration-fast) ease-out {{ $viewModel->isFavourite() ? 'border-warning-ring' : 'border-transparent' }}"
+      class="relative shrink-0 rounded-full border-2 p-0.75 transition-colors duration-(--duration-fast) ease-out {{ $viewModel->isFavourite() ? 'border-warning-ring' : 'border-transparent' }}"
     >
       <x-contact-avatar :name="$viewModel->title()" :url="$viewModel->avatarUrl()" :size="104" />
 
@@ -161,7 +161,7 @@
           />
 
           <div class="mt-3 flex items-center gap-3 border-t border-hairline pt-3">
-            <span class="max-w-[44ch] text-xs text-pretty text-muted">{{ $unbuilt['compose'] }}</span>
+            <span class="max-w-reading-narrow text-xs text-pretty text-muted">{{ $unbuilt['compose'] }}</span>
 
             <span aria-disabled="true" class="{{ $inert }} ml-auto">{{ __('Save to their history') }}</span>
           </div>
@@ -174,7 +174,7 @@
             <p class="text-sm text-pretty text-muted">{{ $viewModel->historyNote() }}</p>
           </div>
 
-          <ol class="relative list-none pl-7.5 before:absolute before:top-1.5 before:bottom-1.5 before:left-2.75 before:w-0.5 before:rounded-[1px] before:bg-hairline before:content-['']">
+          <ol class="relative list-none pl-7.5 before:absolute before:top-1.5 before:bottom-1.5 before:left-2.75 before:w-0.5 before:rounded-[1px] before:bg-hairline">
             @foreach ($viewModel->history() as $entry)
               <li class="relative pb-6 last:pb-0">
                 <span

@@ -66,7 +66,7 @@
     <div class="flex min-w-0 flex-1 flex-col gap-1">
       <span
         @class([
-          'text-[11px] font-semibold tracking-caption uppercase',
+          'text-2xs font-semibold tracking-caption uppercase',
           'text-success' => $next['tone'] === 'success',
           'text-muted' => $next['tone'] !== 'success',
         ])
@@ -91,7 +91,7 @@
       <dl class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         @foreach ($schedule['fields'] as $field)
           <div class="flex min-w-0 flex-col gap-1">
-            <dt class="text-[11px] font-semibold tracking-caption uppercase text-muted">{{ $field['label'] }}</dt>
+            <dt class="text-2xs font-semibold tracking-caption uppercase text-muted">{{ $field['label'] }}</dt>
             <dd class="text-sm text-ink">{{ $field['value'] }}</dd>
 
             @if ($field['note'] !== null)
@@ -147,7 +147,7 @@
 
   <x-panel :title="__('Delete this reminder')" tone="danger" icon="info">
     <div class="flex flex-wrap items-center justify-between gap-5">
-      <p class="max-w-[60ch] text-sm leading-relaxed text-pretty text-body">
+      <p class="max-w-prose text-sm leading-relaxed text-pretty text-body">
         {{ __('This removes the reminder and everything recorded about it. The date it reads stays on the record, and you can ask to be reminded of it again whenever you want.') }}
       </p>
 

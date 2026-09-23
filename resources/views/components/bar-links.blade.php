@@ -23,7 +23,7 @@
     >
       <x-icon :name="$link['icon']" :size="18" :stroke-width="1.5" />
 
-      <span class="hidden min-[900px]:inline">{{ $link['label'] }}</span>
+      <span class="hidden topbar-labels:inline">{{ $link['label'] }}</span>
     </a>
   @endforeach
 

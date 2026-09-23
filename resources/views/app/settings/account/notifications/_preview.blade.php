@@ -10,7 +10,7 @@
   <div class="flex items-center justify-between gap-2 px-0.5 pb-2.5">
     <x-caption>{{ __('Preview') }}</x-caption>
 
-    <span class="text-[11px] text-muted-soft">{{ $on ? __('What you will see') : __('Switched off') }}</span>
+    <span class="text-2xs text-muted-soft">{{ $on ? __('What you will see') : __('Switched off') }}</span>
   </div>
 
   <div class="relative flex h-42 flex-col overflow-hidden rounded-lg border border-hairline bg-canvas">
@@ -35,18 +35,18 @@
           </span>
 
           <div class="min-w-0">
-            <p class="text-[11px] font-semibold text-ink">{{ $title }}</p>
-            <p class="mt-0.5 text-[11px] text-muted">{{ $body }}</p>
+            <p class="text-2xs font-semibold text-ink">{{ $title }}</p>
+            <p class="mt-0.5 text-2xs text-muted">{{ $body }}</p>
           </div>
         </div>
       @else
         <div class="absolute inset-x-2.5 bottom-2.5 flex h-13 items-center justify-center rounded-lg border border-dashed border-hairline-strong">
-          <span class="text-[11px] text-muted">{{ __('Nothing arrives here') }}</span>
+          <span class="text-2xs text-muted">{{ __('Nothing arrives here') }}</span>
         </div>
       @endif
     @elseif ($channel['preview'] === 'inbox')
       <div class="flex h-6.5 shrink-0 items-center border-b border-hairline bg-card px-2.5">
-        <span class="text-[11px] text-muted">{{ __('Inbox') }}</span>
+        <span class="text-2xs text-muted">{{ __('Inbox') }}</span>
       </div>
 
       @if ($on)
@@ -56,9 +56,9 @@
           </span>
 
           <div class="min-w-0 flex-1">
-            <p class="text-[11px] font-semibold text-ink">{{ config('app.name') }}</p>
-            <p class="mt-0.5 text-[11px] font-medium text-ink-soft">{{ $title }}</p>
-            <p class="mt-0.5 text-[11px] text-muted">{{ $body }}</p>
+            <p class="text-2xs font-semibold text-ink">{{ config('app.name') }}</p>
+            <p class="mt-0.5 text-2xs font-medium text-ink-soft">{{ $title }}</p>
+            <p class="mt-0.5 text-2xs text-muted">{{ $body }}</p>
           </div>
         </div>
       @else
@@ -68,8 +68,8 @@
       @if ($on)
         <div class="flex flex-1 flex-col justify-end gap-2 p-2.5">
           <div class="max-w-[86%] rounded-lg rounded-bl-xs border border-hairline bg-card p-2.5">
-            <p class="text-[11px] font-semibold text-ink">{{ $title }}</p>
-            <p class="mt-0.5 text-[11px] text-muted">{{ $body }}</p>
+            <p class="text-2xs font-semibold text-ink">{{ $title }}</p>
+            <p class="mt-0.5 text-2xs text-muted">{{ $body }}</p>
           </div>
         </div>
       @else

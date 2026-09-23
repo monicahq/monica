@@ -18,15 +18,15 @@
   {{ $trigger }}
 
   <template x-teleport="body">
-    <div x-cloak x-show="open" class="fixed inset-0 z-70 flex items-end justify-center p-4 sm:items-center">
+    <div x-cloak x-show="open" class="fixed print:hidden inset-0 z-70 flex items-end justify-center p-4 sm:items-center">
       <div x-show="open" x-transition.opacity.duration.170ms @click="open = false" class="absolute inset-0 bg-scrim" aria-hidden="true"></div>
 
       <div
         x-show="open"
         x-trap.noscroll.inert="open"
-        x-transition:enter="transition ease-out duration-[220ms]"
+        x-transition:enter="transition ease-out duration-(--duration-slow)"
         x-transition:enter-start="translate-y-2 opacity-0"
-        x-transition:leave="transition ease-out duration-[170ms]"
+        x-transition:leave="transition ease-out duration-(--duration-standard)"
         x-transition:leave-end="opacity-0"
         role="dialog"
         aria-modal="true"

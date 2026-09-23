@@ -25,7 +25,7 @@
   <h1 class="text-page-title text-balance text-ink">{{ $title ?? $slot }}</h1>
 
   @isset($description)
-    <p class="max-w-[56ch] text-base text-pretty text-body">{{ $description }}</p>
+    <p class="max-w-reading text-base text-pretty text-body">{{ $description }}</p>
   @endisset
 
   @if ($hasActions)

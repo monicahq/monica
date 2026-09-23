@@ -59,7 +59,7 @@
         maxlength="255"
         required
         @if ($renameErrors->has('name')) aria-invalid="true" aria-describedby="category-name-{{ $category['id'] }}-error" @endif
-        class="h-8 max-w-[280px] rounded-md border border-hairline-strong bg-input px-3 font-sans text-sm text-ink focus:border-focus focus:ring-[3px] focus:ring-focus-ring/20 focus:outline-none aria-[invalid=true]:border-error"
+        class="h-8 max-w-70 rounded-md border border-hairline-strong bg-input px-3 font-sans text-sm text-ink focus-ring-field aria-[invalid=true]:border-error"
       />
 
       <x-button type="submit" size="small">{{ __('Save') }}</x-button>
@@ -114,7 +114,7 @@
       @include('app.settings.account.relationship-types._row', ['type' => $type])
     @empty
       <div class="flex flex-wrap items-center gap-x-6 gap-y-3 px-4 py-5">
-        <p class="min-w-[200px] flex-1 text-sm text-pretty text-body">{{ __('Nothing in this category yet. Types you add here are listed under its name.') }}</p>
+        <p class="min-w-50 flex-1 text-sm text-pretty text-body">{{ __('Nothing in this category yet. Types you add here are listed under its name.') }}</p>
 
         <x-button.secondary :href="route('settings.relationshipTypes.new', ['category' => $category['id']])" data-turbo="true" class="shrink-0">
           {{ __('Add a type here') }}

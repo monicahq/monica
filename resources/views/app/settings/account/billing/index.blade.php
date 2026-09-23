@@ -102,34 +102,34 @@
       <x-panel>
         <dl class="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
           <div>
-            <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Access') }}</dt>
+            <dt class="text-2xs font-medium tracking-caption text-muted-soft uppercase">{{ __('Access') }}</dt>
             <dd class="text-base text-ink">{{ $viewModel->accessKindLabel() }}</dd>
           </div>
 
           @if ($viewModel->purchasedAt() !== null && ! $viewModel->wasGranted())
             <div>
-              <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Bought on') }}</dt>
+              <dt class="text-2xs font-medium tracking-caption text-muted-soft uppercase">{{ __('Bought on') }}</dt>
               <dd class="text-base text-ink">{{ $viewModel->purchasedAt()->isoFormat('LL') }}</dd>
             </div>
           @endif
 
           @if ($viewModel->renewsAt() !== null)
             <div>
-              <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Renews on') }}</dt>
+              <dt class="text-2xs font-medium tracking-caption text-muted-soft uppercase">{{ __('Renews on') }}</dt>
               <dd class="text-base text-ink">{{ $viewModel->renewsAt()->isoFormat('LL') }}</dd>
             </div>
           @endif
 
           @if ($viewModel->endsAt() !== null && $viewModel->isEnding())
             <div>
-              <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Ends on') }}</dt>
+              <dt class="text-2xs font-medium tracking-caption text-muted-soft uppercase">{{ __('Ends on') }}</dt>
               <dd class="text-base text-ink">{{ $viewModel->endsAt()->isoFormat('LL') }}</dd>
             </div>
           @endif
 
           @if ($viewModel->billingEmail() !== null)
             <div>
-              <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Billing address') }}</dt>
+              <dt class="text-2xs font-medium tracking-caption text-muted-soft uppercase">{{ __('Billing address') }}</dt>
               <dd class="text-base text-ink">{{ $viewModel->billingEmail() }}</dd>
             </div>
           @endif
@@ -141,17 +141,17 @@
           @endif
 
           <div>
-            <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Vaults') }}</dt>
+            <dt class="text-2xs font-medium tracking-caption text-muted-soft uppercase">{{ __('Vaults') }}</dt>
             <dd class="text-base text-ink">{{ $viewModel->vaultsHeld() }}</dd>
           </div>
 
           <div>
-            <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Contacts') }}</dt>
+            <dt class="text-2xs font-medium tracking-caption text-muted-soft uppercase">{{ __('Contacts') }}</dt>
             <dd class="text-base text-ink">{{ $viewModel->contactsHeld() }}</dd>
           </div>
 
           <div>
-            <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ __('Storage') }}</dt>
+            <dt class="text-2xs font-medium tracking-caption text-muted-soft uppercase">{{ __('Storage') }}</dt>
             <dd class="text-base text-ink">{{ $viewModel->storageHeld() }}</dd>
           </div>
         </dl>

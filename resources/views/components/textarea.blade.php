@@ -30,9 +30,9 @@
   $describedBy = trim(($helpId ?? '').' '.($errorId ?? ''));
 
   $control = 'w-full rounded-md border border-hairline-strong bg-input px-3 py-2.75 font-sans text-ink '
-    .'transition-[border-color,box-shadow] duration-(--duration-fast) ease-out '
+    .'transition duration-(--duration-fast) ease-out '
     .'placeholder:text-placeholder hover:border-muted-soft '
-    .'focus:border-focus focus:ring-[3px] focus:ring-focus-ring/20 focus:outline-none '
+    .'focus-ring-field '
     .'disabled:cursor-default disabled:bg-hover disabled:text-muted '
     .'aria-[invalid=true]:border-error aria-[invalid=true]:ring-[3px] aria-[invalid=true]:ring-error/20 '
     .'min-h-24 resize-y text-[16px] leading-[1.6] sm:text-base';

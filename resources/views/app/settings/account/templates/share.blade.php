@@ -14,7 +14,7 @@
     ]"
   wide
 >
-  <header class="flex max-w-[66ch] flex-col gap-2">
+  <header class="flex max-w-prose flex-col gap-2">
     <h1 class="text-page-title text-ink">{{ __('Share :name', ['name' => $template->name]) }}</h1>
 
     <p class="text-base text-pretty text-body">
@@ -48,7 +48,7 @@
         <div class="flex items-center gap-2.5 rounded-md border border-hairline bg-card px-3.5 py-3">
           <x-icon name="file" :size="16" :stroke-width="1.6" class="text-muted" />
 
-          <code class="min-w-0 truncate font-mono text-[12.5px] text-ink">{{ $viewModel->fileName() }}</code>
+          <code class="min-w-0 truncate font-mono text-xs text-ink">{{ $viewModel->fileName() }}</code>
 
           <span class="ml-auto shrink-0 text-xs text-muted">{{ $viewModel->sizeLabel() }}</span>
         </div>

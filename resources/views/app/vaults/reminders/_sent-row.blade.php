@@ -9,23 +9,23 @@
         <a
           href="{{ $row->contactUrl() }}"
           data-turbo="true"
-          class="truncate text-[13.5px] font-semibold text-ink no-underline transition-colors duration-(--duration-fast) ease-out hover:text-link"
+          class="truncate text-base font-semibold text-ink no-underline transition-colors duration-(--duration-fast) ease-out hover:text-link"
         >{{ $row->contactName() }}</a>
 
         <span class="flex min-w-0 items-center gap-1.5">
           <x-icon :name="$row->icon()" :size="13" :stroke-width="1.5" class="shrink-0 text-muted" />
 
-          <span class="min-w-0 truncate text-[12.5px] text-body">{{ $row->text() }}</span>
+          <span class="min-w-0 truncate text-xs text-body">{{ $row->text() }}</span>
         </span>
       </div>
     @else
       <div class="flex min-w-0 flex-col">
-        <span class="text-[13.5px] font-semibold text-muted">{{ __('A deleted contact') }}</span>
+        <span class="text-base font-semibold text-muted">{{ __('A deleted contact') }}</span>
 
         <span class="flex min-w-0 items-center gap-1.5">
           <x-icon :name="$row->icon()" :size="13" :stroke-width="1.5" class="shrink-0 text-muted" />
 
-          <span class="min-w-0 truncate text-[12.5px] text-body">{{ $row->text() }}</span>
+          <span class="min-w-0 truncate text-xs text-body">{{ $row->text() }}</span>
         </span>
       </div>
     @endif

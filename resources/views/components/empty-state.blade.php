@@ -23,7 +23,7 @@
   @endisset
 
   @if (trim($slot->toHtml()) !== '')
-    <p class="max-w-[44ch] text-base text-pretty text-muted">{{ $slot }}</p>
+    <p class="max-w-reading-narrow text-base text-pretty text-muted">{{ $slot }}</p>
   @endif
 
   @isset($action)

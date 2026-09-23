@@ -29,9 +29,9 @@
         </div>
 
         <div class="space-y-0.5">
-          <p class="text-[15px] font-semibold text-ink">{{ $viewModel->founderName() }}</p>
+          <p class="text-card-title text-ink">{{ $viewModel->founderName() }}</p>
 
-          <p class="text-[13px] text-muted">{{ $viewModel->founderRole() }}</p>
+          <p class="text-sm text-muted">{{ $viewModel->founderRole() }}</p>
         </div>
 
         <x-button :href="$viewModel->createVaultUrl()" data-turbo="true" class="max-sm:w-full sm:ml-auto">{{ __('Create your first vault') }}</x-button>
@@ -69,7 +69,7 @@
               <span class="sr-only">{{ $step['done'] ? __('Done') : __('Not done yet') }}</span>
             </p>
 
-            <p class="text-[13px] leading-relaxed text-pretty text-muted">{{ $step['description'] }}</p>
+            <p class="text-sm leading-relaxed text-pretty text-muted">{{ $step['description'] }}</p>
           </div>
 
           @if (! $step['done'] && $step['url'])
@@ -87,6 +87,6 @@
       <line x1="8" y1="4.9" x2="8" y2="5"></line>
     </svg>
 
-    <p class="text-[13px] leading-relaxed text-pretty text-muted">{{ $viewModel->importNote() }}</p>
+    <p class="text-sm leading-relaxed text-pretty text-muted">{{ $viewModel->importNote() }}</p>
   </div>
 </x-account-layout>

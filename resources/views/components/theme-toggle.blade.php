@@ -20,8 +20,8 @@
     $attributes->class([
       'relative inline-flex size-8 cursor-pointer items-center justify-center rounded-md',
       $colours,
-      "after:absolute after:-inset-1.5 after:content-['']",
-      'transition-[background-color,color,transform] duration-(--duration-fast) ease-out',
+      "after:absolute after:-inset-1.5",
+      'transition duration-(--duration-fast) ease-out',
       '',
       'focus-ring',
     ])

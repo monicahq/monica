@@ -22,7 +22,7 @@
 <span
   {{
     $attributes->class([
-      'inline-flex h-5.5 items-center gap-1.25 rounded-full border px-2.25 font-sans text-[11.5px] font-medium whitespace-nowrap',
+      'inline-flex h-5.5 items-center gap-1.25 rounded-full border px-2.25 font-sans text-2xs font-medium whitespace-nowrap',
       $tint,
     ])
   }}

@@ -29,7 +29,7 @@
           x-show="navOpen"
           x-transition.opacity.duration.150ms
           @click="navOpen = false"
-          class="fixed inset-0 z-30 bg-scrim lg:hidden"
+          class="fixed print:hidden inset-0 z-30 bg-scrim lg:hidden"
           aria-hidden="true"
         ></div>
       @endisset
@@ -77,7 +77,7 @@
         </div>
 
         @isset($footer)
-          <footer class="sticky bottom-0 z-5 shrink-0 border-t border-hairline bg-canvas">
+          <footer class="sticky print:hidden bottom-0 z-5 shrink-0 border-t border-hairline bg-canvas">
             <div
               @class([
                 'mx-auto flex flex-wrap items-center gap-4 px-4 py-3 sm:px-6',

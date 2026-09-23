@@ -19,7 +19,7 @@
       <h1 class="text-page-title text-balance text-ink">{{ $vault->name }}</h1>
 
       @if ($viewModel->description())
-        <p class="max-w-[60ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
+        <p class="max-w-prose text-base text-pretty text-body">{{ $viewModel->description() }}</p>
       @endif
     </div>
 
@@ -81,7 +81,7 @@
             <a
               href="{{ $person['url'] }}"
               data-turbo="true"
-              class="flex items-center gap-3 border-b border-hairline-soft px-4 py-2.5 transition-colors duration-[110ms] hover:bg-hover"
+              class="flex items-center gap-3 border-b border-hairline-soft px-4 py-2.5 transition-colors duration-(--duration-fast) hover:bg-hover"
             >
               <x-contact-avatar :name="$person['name']" :url="$person['avatarUrl']" :size="34" />
 
@@ -100,7 +100,7 @@
           <a
             href="{{ $viewModel->allContactsUrl() }}"
             data-turbo="true"
-            class="mt-auto block px-4 py-3 text-sm text-pretty text-muted transition-colors duration-[110ms] hover:bg-hover hover:text-ink"
+            class="mt-auto block px-4 py-3 text-sm text-pretty text-muted transition-colors duration-(--duration-fast) hover:bg-hover hover:text-ink"
           >{{ $viewModel->allPeopleLabel() }}</a>
         </div>
       @endif
@@ -132,7 +132,7 @@
       <a
         href="{{ $viewModel->settingsUrl() }}"
         data-turbo="true"
-        class="overflow-hidden rounded-lg border border-hairline bg-canvas flex flex-1 flex-col transition-colors duration-[110ms] hover:bg-hover"
+        class="overflow-hidden rounded-lg border border-hairline bg-canvas flex flex-1 flex-col transition-colors duration-(--duration-fast) hover:bg-hover"
       >
         @foreach ($viewModel->settingsRows() as $row)
           <span class="block border-b border-hairline-soft px-4 py-3">

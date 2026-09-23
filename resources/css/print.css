@@ -5,95 +5,12 @@
  * It is pulled into the build by `app.css`, which every layout loads, so any
  * screen prints this way without a screen having to ask.
  *
- * Print has three jobs here. Drop the interface, because a bar that scrolls, a
- * dock that navigates and a toast that fades are all things the reader cannot
- * use once the page is ink. Give the page back its full width, because the
- * reading column and the room kept clear for the dock are both screen concerns.
- * And print dark in ink on white, because a page held in dark mode would
- * otherwise come out pale text no one can read.
- *
- * What belongs to one layout is not written here. The shell states its own print
- * behaviour in `layouts/shell.blade.php` with `print:` utilities, next to the
- * markup that makes it necessary, so that restructuring the layout carries it
- * along instead of leaving this file pointing at an element that moved.
+ * The rest of print lives elsewhere. The dark palette in `app.css` applies on
+ * screen only, so paper always takes the light one. The bars, docks, toasts and
+ * modals carry `print:hidden` next to their own markup, and the shell states its
+ * own print behaviour in `layouts/shell.blade.php` with `print:` utilities.
  */
 @media print {
-  /*
-   * The light palette, forced even when the window is in dark mode. Dark mode is
-   * a class on <html> that turns the design tokens down. The browser drops the
-   * dark backgrounds when it prints but keeps the pale text that went with them,
-   * so a dark page would print as near white text on white. Re-stating the light
-   * values here fixes it: `html.dark` outranks the `.dark` block that set them,
-   * so these win with no order to depend on.
-   *
-   * Every token `.dark` overrides is restated, at the value `:root` gives it. A
-   * token left out keeps its dark value on paper, so the list is deliberately
-   * whole rather than trimmed to the ones that look like they matter.
-   */
-  html.dark {
-    --page: #ffffff;
-    --canvas: #ffffff;
-    --card: #fafafa;
-    --sunken: #fafafa;
-    --input: #ffffff;
-    --hairline: #e4e4e7;
-    --hairline-strong: #d4d4d8;
-    --hairline-soft: #f4f4f5;
-    --hover: #f4f4f5;
-    --scrim: rgb(9 9 11 / 0.5);
-    --ink: #09090b;
-    --ink-soft: #27272a;
-    --body: #52525b;
-    --muted: #71717a;
-    --muted-soft: #a1a1aa;
-    --placeholder: #71717a;
-    --focus: #09090b;
-    --focus-ring: #09090b;
-    --map-water: #f3f1ec;
-    --map-land: #d6d3cb;
-    --map-coast: #f3f1ec;
-    --map-graticule: rgb(29 29 32 / 0.09);
-    --map-band: rgb(63 95 208 / 0.13);
-    --map-marker: #3f5fd0;
-    --primary: #18181b;
-    --on-primary: #fafafa;
-    --action-primary: #18181b;
-    --action-primary-hover: #27272a;
-    --action-primary-text: #fafafa;
-    --text-link: #09090b;
-    --text-link-hover: #09090b;
-    --success: #15803d;
-    --success-tint: #f0fdf4;
-    --success-edge: #bbf7d0;
-    --warning: #b45309;
-    --warning-tint: #fffbeb;
-    --warning-edge: #fde68a;
-    --warning-ring: #d8b96e;
-    --danger: #b91c1c;
-    --danger-hover: #991b1b;
-    --danger-tint: #fef2f2;
-    --danger-edge: #fecaca;
-    --topbar: #ffffff;
-    --topbar-hairline: #e4e4e7;
-    --pop-shadow: rgba(9, 9, 11, 0.16);
-    --quote-shadow: rgba(9, 9, 11, 0.14);
-    --quote-bands: #f4f4f5, #efeff2, #eceaef, #f0edee, #f4f2f0, #fafafa;
-    color-scheme: light;
-  }
-
-  /*
-   * The interface, gone. The dock, its scrim, the launcher, the toaster and every
-   * modal are fixed, and the bars that top the account, admin, marketplace and
-   * docs layouts are sticky. Nothing in the content sits out of flow, so hiding
-   * what does leaves only what was being read. A panel's own header is neither
-   * sticky nor fixed, so it stays, and so does a panel held to the side with
-   * `lg:sticky`, which is a different class.
-   */
-  .fixed,
-  .sticky {
-    display: none !important;
-  }
-
   /*
    * The reading column runs the full page. On screen `main` is capped at a
    * reading width, centred, and padded at the foot to clear the floating dock. On

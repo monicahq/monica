@@ -45,7 +45,7 @@
           <x-badge>{{ __('Your section') }}</x-badge>
         @endif
 
-        <code class="ml-auto font-mono text-[12px] text-muted-soft">{{ $section['fieldLabel'] }}</code>
+        <code class="ml-auto font-mono text-xs text-muted-soft">{{ $section['fieldLabel'] }}</code>
 
         @if ($isShareable)
           <x-button.ghost
@@ -81,7 +81,7 @@
                   name="page"
                   aria-label="{{ __('Move this section to another page') }}"
                   @change="$el.form.requestSubmit()"
-                  class="inline-flex h-8.5 cursor-pointer appearance-none items-center rounded-md px-2 font-sans text-[13.5px] font-semibold text-ink-soft transition-[background-color,color] duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink"
+                  class="inline-flex h-8.5 cursor-pointer appearance-none items-center rounded-md px-2 font-sans text-base font-semibold text-ink-soft transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink"
                 >
                   <option value="" selected>{{ __('Move to') }}</option>
 
@@ -166,7 +166,7 @@
         <a
           href="{{ route('settings.fields.new', [$template, $section['id']]) }}"
           data-turbo="true"
-          class="flex w-full items-center gap-2.5 rounded-md px-2.5 py-2.5 text-sm text-body transition-colors duration-[110ms] hover:bg-hover hover:text-ink"
+          class="flex w-full items-center gap-2.5 rounded-md px-2.5 py-2.5 text-sm text-body transition-colors duration-(--duration-fast) hover:bg-hover hover:text-ink"
         >
           <span class="flex w-4 justify-center text-muted" aria-hidden="true">
             <x-icon name="plus" :size="15" :stroke-width="1.6" />

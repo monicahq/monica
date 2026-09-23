@@ -38,7 +38,7 @@
     class="absolute right-0 z-20 mt-1 w-88 max-w-[calc(100vw-2rem)] overflow-hidden rounded-lg border border-hairline bg-canvas shadow-pop"
   >
     <div class="flex items-center gap-2.5 border-b border-hairline px-3 py-2.5">
-      <h2 id="notification-bar-heading" class="text-[13px] font-semibold text-ink">{{ __('Notifications') }}</h2>
+      <h2 id="notification-bar-heading" class="text-sm font-semibold text-ink">{{ __('Notifications') }}</h2>
 
       @if ($unread > 0)
         <form action="{{ route('notifications.readAll.update') }}" method="post" class="ml-auto" x-show="confirming" x-cloak>
@@ -47,7 +47,7 @@
 
           <button
             type="submit"
-            class="cursor-pointer rounded-md px-1.5 py-1 text-[12px] font-medium text-danger transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
+            class="cursor-pointer rounded-md px-1.5 py-1 text-xs font-medium text-danger transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
           >
             {{ __('Yes, mark every one as read') }}
           </button>
@@ -57,7 +57,7 @@
           type="button"
           @click="confirming = true"
           x-show="! confirming"
-          class="ml-auto cursor-pointer rounded-md px-1.5 py-1 text-[12px] text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
+          class="ml-auto cursor-pointer rounded-md px-1.5 py-1 text-xs text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
         >
           {{ __('Mark every one as read') }}
         </button>
@@ -65,7 +65,7 @@
     </div>
 
     @if ($notifications->isEmpty())
-      <p class="px-3 py-6 text-center text-[13px] text-muted">{{ __('Nothing to catch up on.') }}</p>
+      <p class="px-3 py-6 text-center text-sm text-muted">{{ __('Nothing to catch up on.') }}</p>
     @else
       <ul class="max-h-96 divide-y divide-hairline overflow-y-auto">
         @foreach ($notifications as $notification)
@@ -86,16 +86,16 @@
                     <span aria-hidden="true" class="size-1.5 shrink-0 rounded-full bg-danger"></span>
                   @endunless
 
-                  <span class="min-w-0 flex-1 truncate text-[13px] font-medium text-ink">{{ $notification['title'] }}</span>
+                  <span class="min-w-0 flex-1 truncate text-sm font-medium text-ink">{{ $notification['title'] }}</span>
 
                   @unless ($notification['is_read'])
                     <span class="sr-only">{{ __('Not read yet.') }}</span>
                   @endunless
                 </span>
 
-                <span class="text-[12px] text-body">{{ $notification['body'] }}</span>
+                <span class="text-xs text-body">{{ $notification['body'] }}</span>
 
-                <span class="text-[11px] text-muted-soft">{{ $notification['when'] }}</span>
+                <span class="text-2xs text-muted-soft">{{ $notification['when'] }}</span>
               </button>
             </form>
           </li>

@@ -4,7 +4,7 @@
   <header class="flex flex-col gap-2">
     <h1 class="text-page-title text-ink">{{ __('Moderation') }}</h1>
 
-    <p class="max-w-[64ch] text-base text-pretty text-body">
+    <p class="max-w-prose text-base text-pretty text-body">
       @if ($viewModel->waitingCount() === 0)
         {{ __('Nothing is waiting for a decision.') }}
       @else

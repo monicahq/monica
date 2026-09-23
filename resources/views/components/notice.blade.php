@@ -50,7 +50,7 @@
       <p class="text-base font-semibold text-ink">{{ $title }}</p>
     @endif
 
-    <p class="mt-[3px] text-sm text-pretty text-body">{{ $slot }}</p>
+    <p class="mt-0.75 text-sm text-pretty text-body">{{ $slot }}</p>
   </div>
 
   @isset($action)

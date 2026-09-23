@@ -24,7 +24,7 @@
       maxlength="255"
       required
       @if ($renameErrors->has('name')) aria-invalid="true" aria-describedby="category-name-{{ $category['id'] }}-error" @endif
-      class="h-8 max-w-70 rounded-md border border-hairline-strong bg-input px-3 font-sans text-sm text-ink focus:border-focus focus:ring-[3px] focus:ring-focus-ring/20 focus:outline-none aria-[invalid=true]:border-error"
+      class="h-8 max-w-70 rounded-md border border-hairline-strong bg-input px-3 font-sans text-sm text-ink focus-ring-field aria-[invalid=true]:border-error"
     />
 
     <x-button type="submit" size="small">{{ __('Save') }}</x-button>
@@ -47,7 +47,7 @@
 
     <x-actions-menu :label="__('More actions for :name', ['name' => $category['name']])" width="wide">
       <x-slot:glyph>
-        <x-icon name="chevron-down" :size="14" :stroke-width="1.7" ::class="menuOpen && 'rotate-180'" class="transition-transform duration-[170ms]" />
+        <x-icon name="chevron-down" :size="14" :stroke-width="1.7" ::class="menuOpen && 'rotate-180'" class="transition-transform duration-(--duration-standard)" />
       </x-slot:glyph>
 
       @unless ($category['isFirst'])

@@ -29,9 +29,9 @@
   @class([
     $shell,
     'cursor-pointer border-hairline bg-canvas text-base text-ink',
-    'transition-[background-color,border-color] duration-(--duration-fast) ease-out',
-    'hover:bg-hover has-[:checked]:border-hairline-strong has-[:checked]:bg-hover',
-    'has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-focus-ring/45',
+    'transition-colors duration-(--duration-fast) ease-out',
+    'hover:bg-hover has-checked:border-hairline-strong has-checked:bg-hover',
+    'has-focus-visible:ring-[3px] has-focus-visible:ring-focus-ring/45',
     'items-start' => $hint !== null,
   ])
 >

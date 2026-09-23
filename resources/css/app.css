@@ -6,7 +6,13 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark {
+    @media screen {
+        &:where(.dark, .dark *) {
+            @slot;
+        }
+    }
+}
 
 @theme {
     --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
@@ -38,6 +44,9 @@
     --text-xs: 12.5px;
     --text-xs--line-height: 1.4;
 
+    --text-2xs: 11px;
+    --text-2xs--line-height: 1.4;
+
     --text-label: 12px;
     --text-label--line-height: 1.4;
     --text-label--font-weight: 500;
@@ -62,6 +71,12 @@
     --text-lg--letter-spacing: -0.02em;
 
     --tracking-caption: 0.08em;
+
+    --container-reading-narrow: 44ch;
+    --container-reading: 56ch;
+
+    --breakpoint-xs: 35rem;
+    --breakpoint-topbar-labels: 56.25rem;
 
     --color-page: var(--page);
     --color-canvas: var(--canvas);
@@ -243,7 +258,6 @@
     --duration-fast: 150ms;
     --duration-standard: 170ms;
     --duration-slow: 220ms;
-    --press-translate: 0px;
 
     --pop-shadow: rgba(9, 9, 11, 0.16);
     --quote-shadow: rgba(9, 9, 11, 0.14);
@@ -253,66 +267,68 @@
     color-scheme: light;
 }
 
-.dark {
-    --page: #09090b;
-    --canvas: #09090b;
-    --card: #18181b;
-    --sunken: #18181b;
-    --input: #09090b;
+@media screen {
+    .dark {
+        --page: #09090b;
+        --canvas: #09090b;
+        --card: #18181b;
+        --sunken: #18181b;
+        --input: #09090b;
 
-    --hairline: #27272a;
-    --hairline-strong: #3f3f46;
-    --hairline-soft: #1f1f23;
-    --hover: #27272a;
-    --scrim: rgb(0 0 0 / 0.7);
+        --hairline: #27272a;
+        --hairline-strong: #3f3f46;
+        --hairline-soft: #1f1f23;
+        --hover: #27272a;
+        --scrim: rgb(0 0 0 / 0.7);
 
-    --ink: #fafafa;
-    --ink-soft: #e4e4e7;
-    --body: #d4d4d8;
-    --muted: #a1a1aa;
-    --muted-soft: #71717a;
-    --placeholder: #a1a1aa;
+        --ink: #fafafa;
+        --ink-soft: #e4e4e7;
+        --body: #d4d4d8;
+        --muted: #a1a1aa;
+        --muted-soft: #71717a;
+        --placeholder: #a1a1aa;
 
-    --focus: #d4d4d8;
-    --focus-ring: #d4d4d8;
+        --focus: #d4d4d8;
+        --focus-ring: #d4d4d8;
 
-    --map-water: #17171a;
-    --map-land: #35343a;
-    --map-coast: #17171a;
-    --map-graticule: rgb(240 240 238 / 0.10);
-    --map-band: rgb(147 167 240 / 0.18);
-    --map-marker: #93a7f0;
+        --map-water: #17171a;
+        --map-land: #35343a;
+        --map-coast: #17171a;
+        --map-graticule: rgb(240 240 238 / 0.10);
+        --map-band: rgb(147 167 240 / 0.18);
+        --map-marker: #93a7f0;
 
-    --primary: #fafafa;
-    --on-primary: #18181b;
-    --action-primary: #fafafa;
-    --action-primary-hover: #ffffff;
-    --action-primary-text: #18181b;
+        --primary: #fafafa;
+        --on-primary: #18181b;
+        --action-primary: #fafafa;
+        --action-primary-hover: #ffffff;
+        --action-primary-text: #18181b;
 
-    --text-link: #fafafa;
-    --text-link-hover: #ffffff;
+        --text-link: #fafafa;
+        --text-link-hover: #ffffff;
 
-    --success: #4ade80;
-    --success-tint: #0c2318;
-    --success-edge: #14532d;
-    --warning: #fbbf24;
-    --warning-tint: #271a06;
-    --warning-edge: #78350f;
-    --warning-ring: #78350f;
-    --danger: #f87171;
-    --danger-hover: #fca5a5;
-    --danger-tint: #2a1214;
-    --danger-edge: #7f1d1d;
+        --success: #4ade80;
+        --success-tint: #0c2318;
+        --success-edge: #14532d;
+        --warning: #fbbf24;
+        --warning-tint: #271a06;
+        --warning-edge: #78350f;
+        --warning-ring: #78350f;
+        --danger: #f87171;
+        --danger-hover: #fca5a5;
+        --danger-tint: #2a1214;
+        --danger-edge: #7f1d1d;
 
-    --topbar: #09090b;
-    --topbar-hairline: #27272a;
+        --topbar: #09090b;
+        --topbar-hairline: #27272a;
 
-    --pop-shadow: rgba(0, 0, 0, 0.6);
-    --quote-shadow: rgba(0, 0, 0, 0.5);
+        --pop-shadow: rgba(0, 0, 0, 0.6);
+        --quote-shadow: rgba(0, 0, 0, 0.5);
 
-    --quote-bands: #18181b, #1b1b1f, #1f1d22, #201e1e, #1e1d1a, #18181b;
+        --quote-bands: #18181b, #1b1b1f, #1f1d22, #201e1e, #1e1d1a, #18181b;
 
-    color-scheme: dark;
+        color-scheme: dark;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -320,8 +336,7 @@
         --duration-fast: 0ms;
         --duration-standard: 0ms;
         --duration-slow: 0ms;
-        --press-translate: 0px;
-    }
+        }
 
     .animate-toast-in,
     .animate-toast-out,
@@ -349,6 +364,10 @@
 
 @utility focus-ring-inset {
     @apply focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none;
+}
+
+@utility focus-ring-field {
+    @apply focus:border-focus focus:ring-[3px] focus:ring-focus-ring/20 focus:outline-none;
 }
 
 @utility dim-when-busy {

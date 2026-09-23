@@ -15,7 +15,7 @@
   wide
 >
   <div class="flex flex-wrap items-start justify-between gap-x-8 gap-y-6">
-    <header class="flex max-w-[62ch] min-w-0 flex-col gap-2">
+    <header class="flex max-w-prose min-w-0 flex-col gap-2">
       <x-caption class="flex items-center gap-2">
         <x-icon name="note" :size="15" :stroke-width="1.6" />
         {{ __('One section of :name', ['name' => $template->name]) }}
@@ -49,7 +49,7 @@
         <div class="flex items-center gap-2.5 rounded-md border border-hairline bg-card px-3.5 py-3">
           <x-icon name="file" :size="16" :stroke-width="1.6" class="text-muted" />
 
-          <code class="min-w-0 truncate font-mono text-[12.5px] text-ink">{{ $viewModel->fileName() }}</code>
+          <code class="min-w-0 truncate font-mono text-xs text-ink">{{ $viewModel->fileName() }}</code>
 
           <span class="ml-auto shrink-0 text-xs text-muted">{{ $viewModel->sizeLabel() }}</span>
         </div>

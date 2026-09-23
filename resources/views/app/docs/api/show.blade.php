@@ -13,11 +13,11 @@
 
   <body class="bg-page font-sans text-body antialiased">
     <div x-data="{ lang: 'curl', query: '' }">
-      <header class="sticky top-0 z-5 border-b border-hairline bg-canvas">
-        <div class="mx-auto flex h-14 max-w-[97.5rem] items-center gap-3.5 px-4 sm:px-7">
+      <header class="sticky print:hidden top-0 z-5 border-b border-hairline bg-canvas">
+        <div class="mx-auto flex h-14 max-w-390 items-center gap-3.5 px-4 sm:px-7">
           <a href="{{ route('home.index') }}" class="flex shrink-0 items-center gap-2.5 text-ink rounded-md focus-ring">
             <x-logo :height="22" />
-            <span class="text-[16px] font-semibold tracking-[-0.02em]">{{ config('app.name') }}</span>
+            <span class="text-lg">{{ config('app.name') }}</span>
           </a>
 
           <div class="ml-auto flex shrink-0 items-center gap-2.5">
@@ -33,7 +33,7 @@
 
       <x-api-docs.subheader />
 
-      <div class="mx-auto flex max-w-[97.5rem] items-start">
+      <div class="mx-auto flex max-w-390 items-start">
         <x-api-docs.sidebar :navigation="$navigation" :current="$section->id" />
 
         <main id="main-content" tabindex="-1" class="min-h-[calc(100vh-7rem)] min-w-0 flex-1 bg-canvas px-4 py-8 focus:outline-none sm:px-7 sm:pb-24">

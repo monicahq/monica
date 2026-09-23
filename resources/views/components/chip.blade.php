@@ -28,11 +28,11 @@
     $attributes->class([
       'inline-flex h-8 cursor-pointer items-center gap-1.75 rounded-full border border-hairline bg-canvas px-3.25',
       'font-sans text-sm font-medium whitespace-nowrap text-body no-underline ',
-      'transition-[background-color,border-color,box-shadow] duration-(--duration-fast) ease-out',
+      'transition duration-(--duration-fast) ease-out',
       'hover:bg-hover hover:text-ink ',
       'focus-ring',
       'aria-[current=true]:border-primary aria-[current=true]:bg-primary aria-[current=true]:text-on-primary',
-      'aria-[pressed=true]:border-primary aria-[pressed=true]:bg-primary aria-[pressed=true]:text-on-primary',
+      'aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-on-primary',
     ])
   }}
 >
@@ -43,6 +43,6 @@
   {{ $slot }}
 
   @if ($count !== null)
-    <span class="font-mono text-[12px] opacity-70">{{ $count }}</span>
+    <span class="font-mono text-xs opacity-70">{{ $count }}</span>
   @endif
 </{{ $tag }}>

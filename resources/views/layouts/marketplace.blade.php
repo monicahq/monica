@@ -9,7 +9,7 @@
   </head>
 
   <body class="bg-page font-sans text-body antialiased">
-    <header class="sticky top-0 z-5 flex h-14 items-center gap-3 border-b border-hairline bg-canvas/85 px-4 backdrop-blur-[8px] sm:px-6">
+    <header class="sticky print:hidden top-0 z-5 flex h-14 items-center gap-3 border-b border-hairline bg-canvas/85 px-4 backdrop-blur-sm sm:px-6">
       <a href="{{ route('home.index') }}" class="flex items-center gap-2.25 no-underline">
         <x-logo :size="26" />
 

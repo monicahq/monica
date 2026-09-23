@@ -83,7 +83,7 @@
             <fieldset>
               <legend class="sr-only">{{ __('What it describes') }}</legend>
 
-              <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-hover focus-ring-inset">
+              <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-colors duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-hover focus-ring-inset">
                 <input type="radio" name="applies_to" value="contact" x-model="appliesTo" class="mt-1" />
 
                 <span class="min-w-0 flex-1">
@@ -93,7 +93,7 @@
               </label>
 
               @if ($viewModel->hasEntityTypes())
-                <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-hover focus-ring-inset">
+                <label class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-colors duration-(--duration-fast) ease-out last:border-b-0 cursor-pointer hover:bg-hover focus-ring-inset">
                   <input type="radio" name="applies_to" value="entity" x-model="appliesTo" class="mt-1" />
 
                   <span class="min-w-0 flex-1">

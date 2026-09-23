@@ -25,7 +25,7 @@
 
       <h1 class="mt-2 text-page-title text-balance text-ink">{{ $viewModel->title() }}</h1>
 
-      <p class="mt-2 max-w-[66ch] text-base text-pretty text-muted">{{ $viewModel->intro() }}</p>
+      <p class="mt-2 max-w-prose text-base text-pretty text-muted">{{ $viewModel->intro() }}</p>
     </div>
 
     <div class="flex shrink-0 items-center gap-3.5 rounded-lg border border-hairline bg-canvas px-4 py-3.5 ">

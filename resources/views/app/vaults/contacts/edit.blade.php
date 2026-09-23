@@ -166,7 +166,7 @@
 
   <x-panel :title="__('Delete contact')" icon="people">
     <div class="flex flex-wrap items-center gap-3.5">
-      <p id="delete-contact-reason" class="max-w-[60ch] text-sm text-pretty text-muted">{{ $viewModel->deleteDescription() }}</p>
+      <p id="delete-contact-reason" class="max-w-prose text-sm text-pretty text-muted">{{ $viewModel->deleteDescription() }}</p>
 
       @if ($viewModel->mayBeDeleted())
         <x-modal.warning

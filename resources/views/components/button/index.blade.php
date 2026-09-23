@@ -15,7 +15,7 @@
 @php
   $base = 'inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border '
     .'font-sans font-medium whitespace-nowrap no-underline '
-    .'transition-[background-color,box-shadow,border-color] duration-(--duration-fast) ease-out '
+    .'transition duration-(--duration-fast) ease-out '
     .'focus-ring '
     .'disabled:pointer-events-none disabled:cursor-default disabled:opacity-50 disabled:shadow-none '
     .'aria-disabled:pointer-events-none aria-disabled:cursor-default aria-disabled:opacity-50 aria-disabled:shadow-none';

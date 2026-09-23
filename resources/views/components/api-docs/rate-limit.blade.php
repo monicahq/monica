@@ -7,6 +7,6 @@
 
   <p class="text-[14px] leading-relaxed text-body">
     {{ $section->rateLimit }}
-    Every answer carries the budget left in <span class="font-mono text-[13px] text-ink">X-RateLimit-Remaining</span>.
+    Every answer carries the budget left in <span class="font-mono text-sm text-ink">X-RateLimit-Remaining</span>.
   </p>
 </div>

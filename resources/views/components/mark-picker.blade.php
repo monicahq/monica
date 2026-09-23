@@ -82,7 +82,7 @@
             name="chevron-down"
             :size="14"
             :stroke-width="1.6"
-            class="text-muted transition-transform duration-[170ms]"
+            class="text-muted transition-transform duration-(--duration-standard)"
             ::class="openIcon && 'rotate-180'"
           />
         </button>
@@ -91,9 +91,9 @@
           x-cloak
           x-show="openIcon"
           @click.outside="openIcon = false"
-          x-transition:enter="transition ease-out duration-[170ms]"
+          x-transition:enter="transition ease-out duration-(--duration-standard)"
           x-transition:enter-start="opacity-0"
-          x-transition:leave="transition ease-out duration-[110ms]"
+          x-transition:leave="transition ease-out duration-(--duration-fast)"
           x-transition:leave-end="opacity-0"
           id="{{ $id }}-icon-picker"
           role="dialog"
@@ -159,7 +159,7 @@
             name="chevron-down"
             :size="14"
             :stroke-width="1.6"
-            class="text-muted transition-transform duration-[170ms]"
+            class="text-muted transition-transform duration-(--duration-standard)"
             ::class="openColour && 'rotate-180'"
           />
         </button>
@@ -168,9 +168,9 @@
           x-cloak
           x-show="openColour"
           @click.outside="openColour = false"
-          x-transition:enter="transition ease-out duration-[170ms]"
+          x-transition:enter="transition ease-out duration-(--duration-standard)"
           x-transition:enter-start="opacity-0"
-          x-transition:leave="transition ease-out duration-[110ms]"
+          x-transition:leave="transition ease-out duration-(--duration-fast)"
           x-transition:leave-end="opacity-0"
           id="{{ $id }}-colour-picker"
           role="dialog"
@@ -245,7 +245,7 @@
       name="chevron-down"
       :size="15"
       :stroke-width="1.6"
-      class="text-muted transition-transform duration-[170ms]"
+      class="text-muted transition-transform duration-(--duration-standard)"
       ::class="open && 'rotate-180'"
     />
 
@@ -258,9 +258,9 @@
   x-show="open"
   @click.outside="open = false"
   x-anchor.bottom-start.offset.6="$refs.trigger"
-  x-transition:enter="transition ease-out duration-[170ms]"
+  x-transition:enter="transition ease-out duration-(--duration-standard)"
   x-transition:enter-start="opacity-0"
-  x-transition:leave="transition ease-out duration-[110ms]"
+  x-transition:leave="transition ease-out duration-(--duration-fast)"
   x-transition:leave-end="opacity-0"
   id="{{ $id }}-mark-picker"
   class="z-40 flex w-72 max-w-[calc(100vw-2rem)] flex-col gap-3.5 rounded-lg border border-hairline bg-canvas p-3.5 shadow-pop"
@@ -310,9 +310,9 @@
           class="{{ $swatch }} bg-canvas"
         >
           @if ($option['swatch'] === null)
-            <span class="size-[18px] rounded-xs border border-hairline-strong bg-card"></span>
+            <span class="size-4.5 rounded-xs border border-hairline-strong bg-card"></span>
           @else
-            <span class="size-[18px] rounded-xs" style="background: {{ $option['swatch'] }}"></span>
+            <span class="size-4.5 rounded-xs" style="background: {{ $option['swatch'] }}"></span>
           @endif
 
           <span class="sr-only">{{ $option['label'] }}</span>

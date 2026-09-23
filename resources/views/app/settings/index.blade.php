@@ -12,7 +12,7 @@
 
     <h1 class="mt-1.5 text-page-title text-ink">{{ __('Settings') }}</h1>
 
-    <p class="max-w-[52ch] text-base text-pretty text-body">{{ $viewModel->description() }}</p>
+    <p class="max-w-reading text-base text-pretty text-body">{{ $viewModel->description() }}</p>
 
     <p class="mt-0.5 text-xs text-pretty text-muted">{{ $viewModel->signedInAs() }}</p>
   </header>

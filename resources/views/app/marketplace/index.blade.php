@@ -4,7 +4,7 @@
   <header class="flex flex-col gap-2.5">
     <h1 class="text-page-title text-ink">{{ __('Marketplace') }}</h1>
 
-    <p class="max-w-[62ch] text-base text-pretty text-body">
+    <p class="max-w-prose text-base text-pretty text-body">
       {{ __('Discover templates and sections built by the community. Everything you install becomes your own private, editable copy.') }}
     </p>
 
@@ -69,7 +69,7 @@
             @if ($category['isCurrent']) aria-current="true" @endif
             @class([
               'flex items-start gap-3 rounded-lg border p-3.5 no-underline ',
-              'transition-[background-color,border-color,transform] duration-(--duration-fast) ease-out',
+              'transition duration-(--duration-fast) ease-out',
               'hover:bg-hover ',
               'focus-ring',
               'border-ink bg-card' => $category['isCurrent'],
@@ -176,7 +176,7 @@
     <div class="flex min-w-0 flex-col gap-0.5">
       <p class="text-sm font-semibold text-ink">{{ __('Built something worth sharing?') }}</p>
 
-      <p class="max-w-[66ch] text-sm text-pretty text-body">
+      <p class="max-w-prose text-sm text-pretty text-body">
         {{ __('Open a template or a section and choose to share it on the marketplace. You keep your own copy, and other people get theirs.') }}
       </p>
     </div>

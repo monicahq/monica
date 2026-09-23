@@ -27,7 +27,7 @@
         ['label' => __('What it holds'), 'value' => $viewModel->vaultsLine().', '.$viewModel->contactsLine()],
       ] as $fact)
         <div>
-          <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ $fact['label'] }}</dt>
+          <dt class="text-2xs font-medium tracking-caption text-muted-soft uppercase">{{ $fact['label'] }}</dt>
           <dd class="text-base text-ink">{{ $fact['value'] }}</dd>
         </div>
       @endforeach
@@ -45,7 +45,7 @@
       <dl class="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
         @foreach ($viewModel->billingFacts() as $fact)
           <div>
-            <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ $fact['label'] }}</dt>
+            <dt class="text-2xs font-medium tracking-caption text-muted-soft uppercase">{{ $fact['label'] }}</dt>
             <dd class="text-base text-ink">{{ $fact['value'] }}</dd>
           </div>
         @endforeach
@@ -72,7 +72,7 @@
           ['label' => __('Last signed in'), 'value' => $viewModel->lastSignedInLine()],
         ] as $fact)
           <div>
-            <dt class="text-[11px] font-medium tracking-caption text-muted-soft uppercase">{{ $fact['label'] }}</dt>
+            <dt class="text-2xs font-medium tracking-caption text-muted-soft uppercase">{{ $fact['label'] }}</dt>
             <dd class="text-base text-ink">{{ $fact['value'] }}</dd>
           </div>
         @endforeach

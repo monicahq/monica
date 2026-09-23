@@ -18,8 +18,8 @@
   $panelId = $id.'-panel';
 
   $control = 'rounded-sm border border-hairline-strong bg-input px-2.5 py-1.5 font-sans text-sm text-ink '
-    .'transition-[border-color] duration-(--duration-fast) ease-out '
-    .'focus:border-focus focus:ring-[3px] focus:ring-focus-ring/20 focus:outline-none';
+    .'transition-colors duration-(--duration-fast) ease-out '
+    .'focus-ring-field';
 @endphp
 
 <div class="flex flex-col gap-2.5" x-data="fieldReminder(@js($reminder->live()))">
@@ -69,7 +69,7 @@
     <fieldset class="flex flex-col gap-2">
       <legend class="text-label text-ink">{{ __('How often') }}</legend>
 
-      <div class="grid gap-2 min-[560px]:grid-cols-2">
+      <div class="grid gap-2 xs:grid-cols-2">
         <x-option-row
           :id="$id.'-once'"
           :name="$name.'[recurs]'"
@@ -214,7 +214,7 @@
       </div>
     </fieldset>
 
-    <div class="grid gap-3 min-[560px]:grid-cols-[minmax(0,160px)_minmax(0,1fr)]">
+    <div class="grid gap-3 xs:grid-cols-[minmax(0,160px)_minmax(0,1fr)]">
       <x-input
         type="time"
         :id="$id.'-time'"

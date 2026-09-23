@@ -27,7 +27,7 @@
 <span
   {{
     $attributes->class([
-      'font-mono text-[11px] font-medium tracking-[0.02em]',
+      'font-mono text-2xs font-medium tracking-wide',
       $colour,
       'rounded-xs px-1.75 py-0.5 '.$tint => $tinted,
     ])

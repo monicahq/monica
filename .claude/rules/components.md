@@ -35,11 +35,16 @@ than like a component:
 Read the component before you call it. Every one opens with a line saying what it is and a `@var`
 block naming its props, and that is the whole documentation.
 
-## Three class recipes have names, and the long form is wrong
-`focus-ring`, `focus-ring-inset` and `dim-when-busy` are declared with `@utility` in
-`resources/css/app.css`. Write the name. Never write out
+## Four class recipes have names, and the long form is wrong
+`focus-ring`, `focus-ring-inset`, `focus-ring-field` and `dim-when-busy` are declared with `@utility`
+in `resources/css/app.css`. Write the name. Never write out
 `focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none` again, nor the
-inset variant of it, nor `transition-opacity [&[aria-busy]]:opacity-60`.
+inset variant of it, nor the field variant a text control takes on `:focus`, nor
+`transition-opacity [&[aria-busy]]:opacity-60`.
+
+`focus-ring` answers the element's own `:focus-visible`. A control drawn by a sibling or a parent
+(`peer-focus-visible:`, `has-focus-visible:`, `focus-within:`) writes its ring out, because the
+recipe placed under one of those variants would ask for both states at once.
 
 The long forms were spelled out 68 times across 46 files. At that length a missing piece is invisible
 in review, which is the whole argument for giving the recipe a name.

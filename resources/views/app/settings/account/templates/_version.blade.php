@@ -37,10 +37,10 @@
 
         <span class="text-sm font-semibold text-ink">{{ $entry->dateLine() }}</span>
 
-        <code class="ml-auto font-mono text-[12px] text-muted">{{ $entry->basedOn() }}</code>
+        <code class="ml-auto font-mono text-xs text-muted">{{ $entry->basedOn() }}</code>
       </span>
 
-      <span class="mt-2 block max-w-[66ch] text-sm text-pretty text-body">{{ $entry->changeNote() }}</span>
+      <span class="mt-2 block max-w-prose text-sm text-pretty text-body">{{ $entry->changeNote() }}</span>
 
       <span class="mt-1.5 block text-sm text-muted">{{ $entry->summary() }} · {{ $entry->counts() }}</span>
 
@@ -51,7 +51,7 @@
           name="chevron-down"
           :size="15"
           :stroke-width="1.6"
-          class="text-muted transition-transform duration-[170ms]"
+          class="text-muted transition-transform duration-(--duration-standard)"
           ::class="open && 'rotate-180'"
         />
       </span>
@@ -61,11 +61,11 @@
       @foreach ($entry->pages() as $page)
         <div>
           <div class="flex items-center gap-2.5 border-b border-hairline bg-card px-4 py-2.5">
-            <span class="text-[11px] tracking-[0.08em] text-muted uppercase">{{ $page['position'] }}</span>
+            <span class="text-2xs tracking-caption text-muted uppercase">{{ $page['position'] }}</span>
 
             <span class="text-sm font-semibold text-ink">{{ $page['label'] }}</span>
 
-            <code class="ml-auto font-mono text-[12px] text-muted">{{ $page['meta'] }}</code>
+            <code class="ml-auto font-mono text-xs text-muted">{{ $page['meta'] }}</code>
           </div>
 
           @forelse ($page['sections'] as $section)
@@ -82,7 +82,7 @@
 
                 <span class="text-sm font-semibold text-ink">{{ $section['name'] }}</span>
 
-                <code class="font-mono text-[12px] text-muted">{{ $section['version'] }}</code>
+                <code class="font-mono text-xs text-muted">{{ $section['version'] }}</code>
 
                 @if ($section['isNew'])
                   <x-badge tone="info">{{ __('New in this version') }}</x-badge>

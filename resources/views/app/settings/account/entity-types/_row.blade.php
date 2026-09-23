@@ -24,7 +24,7 @@
       @endunless
     </p>
 
-    <p class="truncate font-mono text-[12.5px] text-muted">{{ $type['slug'] }}</p>
+    <p class="truncate font-mono text-xs text-muted">{{ $type['slug'] }}</p>
   </div>
 
   <div class="ml-auto flex shrink-0 items-center gap-2.5">

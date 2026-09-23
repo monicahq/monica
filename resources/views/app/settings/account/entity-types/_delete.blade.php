@@ -19,7 +19,7 @@
       {{ __('Delete this type') }}
     </x-button.secondary>
 
-    <p id="entity-type-delete-reason" class="max-w-[48ch] text-xs text-pretty text-muted">
+    <p id="entity-type-delete-reason" class="max-w-reading-narrow text-xs text-pretty text-muted">
       {{ __('This type cannot be deleted while records are filed under it. Turn it off above to stop new ones being made.') }}
     </p>
   </div>

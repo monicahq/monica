@@ -30,7 +30,7 @@
           <x-caption>{{ $list['label'] }}</x-caption>
 
           @if ($list['count'] > 0)
-            <span class="text-[11px] font-medium text-muted">{{ $list['count'] }}</span>
+            <span class="text-2xs font-medium text-muted">{{ $list['count'] }}</span>
           @endif
         </h3>
 

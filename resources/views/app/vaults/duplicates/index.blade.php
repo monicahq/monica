@@ -48,7 +48,7 @@
             $row = $viewModel->row($candidate);
           @endphp
 
-          <li class="grid gap-2 border-b border-hairline px-4.5 py-3.5 last:border-b-0 min-[640px]:grid-cols-[minmax(0,1fr)_auto] min-[640px]:items-center">
+          <li class="grid gap-2 border-b border-hairline px-4.5 py-3.5 last:border-b-0 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
             <div class="grid gap-0.5">
               <span class="text-sm font-semibold text-ink">
                 {{ __(':name and :other', ['name' => $row['name'], 'other' => $row['other_name']]) }}

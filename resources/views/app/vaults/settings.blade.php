@@ -65,7 +65,7 @@
                     aria-label="{{ $option['label'] }}"
                     :aria-pressed="colour === @js($option['value']) ? 'true' : 'false'"
                     @click="colour = @js($option['value'])"
-                    :class="colour === @js($option['value']) ? 'border-ink shadow-[inset_0_0_0_2px_var(--canvas)]' : 'border-transparent shadow-[0_1px_2px_rgb(29_29_32_/_0.12)]'"
+                    :class="colour === @js($option['value']) ? 'border-ink inset-ring-2 inset-ring-canvas' : 'border-transparent shadow-control'"
                     style="background: {{ $option['value'] }}"
                     class="size-8.5 cursor-pointer rounded-[10px] border-2 transition-transform duration-(--duration-fast) ease-out hover:-translate-y-px focus-ring"
                   ></button>
@@ -129,16 +129,16 @@
     @else
       <div class="flex flex-col gap-3">
         @if ($viewModel->currentTemplateName())
-          <p class="max-w-[60ch] text-sm text-pretty text-body">
+          <p class="max-w-prose text-sm text-pretty text-body">
             {{ __('Contacts here start from :name.', ['name' => $viewModel->currentTemplateName()]) }}
           </p>
         @else
-          <p class="max-w-[60ch] text-sm text-pretty text-body">
+          <p class="max-w-prose text-sm text-pretty text-body">
             {{ __('Nothing is set, so whoever writes a contact down here picks a template themselves.') }}
           </p>
         @endif
 
-        <p class="max-w-[60ch] text-sm text-pretty text-muted">
+        <p class="max-w-prose text-sm text-pretty text-muted">
           {{ __('Your account has no published contact template to choose from.') }}
           <x-link :href="$viewModel->templatesUrl()" turbo>{{ __('Your templates') }}</x-link>
         </p>
@@ -148,7 +148,7 @@
 
   <x-panel :title="__('Delete this vault')" icon="vault" tone="danger">
     <div class="flex flex-wrap items-center gap-3.5">
-      <div class="flex max-w-[60ch] flex-col gap-2 text-sm text-pretty text-muted">
+      <div class="flex max-w-prose flex-col gap-2 text-sm text-pretty text-muted">
         <p>{{ __('Everything filed in this vault is deleted with it: the contacts, and everything written about them.') }}</p>
 
         <p>{{ __('Nothing in the application restores a vault, so this cannot be undone.') }}</p>

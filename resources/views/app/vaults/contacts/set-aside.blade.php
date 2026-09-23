@@ -36,11 +36,11 @@
     <x-panel :title="__('Answers to questions no longer asked')" icon="file" :flush="true">
       <dl class="grid gap-0">
         @foreach ($values as $value)
-          <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-baseline gap-4 border-b border-hairline px-4.5 py-3 last:border-b-0 max-[560px]:grid-cols-1 max-[560px]:gap-0.5">
+          <div class="grid grid-cols-2 items-baseline gap-4 border-b border-hairline px-4.5 py-3 last:border-b-0 max-xs:grid-cols-1 max-xs:gap-0.5">
             <dt class="flex flex-col gap-0.5">
               <span class="text-sm font-semibold text-ink">{{ $value['label'] }}</span>
 
-              <span class="font-mono text-[11px] text-placeholder">{{ $value['key'] }}</span>
+              <span class="font-mono text-2xs text-placeholder">{{ $value['key'] }}</span>
             </dt>
 
             <dd class="flex flex-col gap-0.5">

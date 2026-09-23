@@ -17,7 +17,7 @@
     type="button"
     @click="open = ! open"
     :aria-expanded="open ? 'true' : 'false'"
-    class="flex w-full items-start gap-3 px-4 py-3.5 text-left transition-[background-color] duration-(--duration-fast) ease-out cursor-pointer hover:bg-hover focus-ring-inset"
+    class="flex w-full items-start gap-3 px-4 py-3.5 text-left transition-colors duration-(--duration-fast) ease-out cursor-pointer hover:bg-hover focus-ring-inset"
   >
     <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-plum-tint text-plum">
       <x-icon name="mail" :size="18" :stroke-width="1.5" />
@@ -42,7 +42,7 @@
         name="chevron-down"
         :size="16"
         :stroke-width="1.6"
-        class="text-muted transition-transform duration-[170ms]"
+        class="text-muted transition-transform duration-(--duration-standard)"
         ::class="open && 'rotate-180'"
       />
     </span>

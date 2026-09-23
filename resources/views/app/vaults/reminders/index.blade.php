@@ -39,7 +39,7 @@
     </x-panel>
   @else
     <div id="reminders-toggle" x-merge="replace" class="flex items-center gap-2">
-      <span id="reminders-grouping" class="text-[12.5px] text-muted">{{ __('Grouped by') }}</span>
+      <span id="reminders-grouping" class="text-xs text-muted">{{ __('Grouped by') }}</span>
 
       <div class="flex items-center gap-1.5" role="group" aria-labelledby="reminders-grouping">
         @if ($byContact)
@@ -69,13 +69,13 @@
 
             <span
               @class([
-                'text-[11px] font-semibold tracking-caption uppercase',
+                'text-2xs font-semibold tracking-caption uppercase',
                 'text-warning' => $group['isOverdue'],
                 'text-muted' => ! $group['isOverdue'],
               ])
             >{{ $group['title'] }}</span>
 
-            <span class="text-[12.5px] text-muted-soft">{{ $group['count'] }}</span>
+            <span class="text-xs text-muted-soft">{{ $group['count'] }}</span>
           </h2>
 
           <div class="flex flex-col gap-2.5">

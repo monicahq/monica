@@ -26,7 +26,7 @@
         @if ($items === []) aria-current="page" @endif
         class="flex min-w-0 cursor-pointer items-center gap-2 rounded-md border border-transparent px-1.5 py-1 text-left text-sm text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
       >
-        <span style="background: {{ $vault->colour }}" class="{{ $tile }} size-5.5 text-[11px]" aria-hidden="true">{{ $initial }}</span>
+        <span style="background: {{ $vault->colour }}" class="{{ $tile }} size-5.5 text-2xs" aria-hidden="true">{{ $initial }}</span>
 
         <span class="truncate font-semibold">{{ $vault->name }}</span>
 
@@ -45,9 +45,9 @@
         x-cloak
         x-show="open"
         x-anchor.bottom-start.offset.6="$refs.trigger"
-        x-transition:enter="transition ease-out duration-[170ms]"
+        x-transition:enter="transition ease-out duration-(--duration-standard)"
         x-transition:enter-start="opacity-0"
-        x-transition:leave="transition ease-out duration-[110ms]"
+        x-transition:leave="transition ease-out duration-(--duration-fast)"
         x-transition:leave-end="opacity-0"
         id="{{ $panelId }}"
         class="z-40 w-74 max-w-[calc(100vw-2rem)] rounded-lg border border-hairline bg-canvas p-1.5 shadow-pop"
@@ -63,12 +63,12 @@
                 @if ($option->is($vault)) aria-current="true" @endif
                 class="flex w-full items-center gap-2.5 rounded-sm px-2.5 py-2 no-underline transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset aria-[current=true]:bg-hover"
               >
-                <span style="background: {{ $option->colour }}" class="{{ $tile }} size-6 text-[11px]" aria-hidden="true">{{ mb_strtoupper(mb_substr($option->name, 0, 1)) }}</span>
+                <span style="background: {{ $option->colour }}" class="{{ $tile }} size-6 text-2xs" aria-hidden="true">{{ mb_strtoupper(mb_substr($option->name, 0, 1)) }}</span>
 
                 <span class="flex min-w-0 flex-1 flex-col">
-                  <span class="truncate text-[13px] font-semibold text-ink">{{ $option->name }}</span>
+                  <span class="truncate text-sm font-semibold text-ink">{{ $option->name }}</span>
 
-                  <span class="text-[11px] text-muted">{{ trans_choice(':count person|:count people', $option->contact_count) }}</span>
+                  <span class="text-2xs text-muted">{{ trans_choice(':count person|:count people', $option->contact_count) }}</span>
                 </span>
 
                 <span class="flex w-4 shrink-0 items-center justify-center text-ink {{ $option->is($vault) ? '' : 'opacity-0' }}">
@@ -84,7 +84,7 @@
         <a
           href="{{ route('vaults.new') }}"
           data-turbo="true"
-          class="mt-1.5 flex items-center gap-2 rounded-sm px-2.5 py-2 text-[13px] text-body no-underline transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring-inset"
+          class="mt-1.5 flex items-center gap-2 rounded-sm px-2.5 py-2 text-sm text-body no-underline transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring-inset"
         >
           <x-icon name="plus" :size="15" :stroke-width="1.6" />
 
@@ -94,7 +94,7 @@
     </div>
   @elseif ($items === [])
     <span class="flex min-w-0 items-center gap-2 border border-transparent px-1.5 py-1 text-ink" aria-current="page">
-      <span style="background: {{ $vault->colour }}" class="{{ $tile }} size-5.5 text-[11px]" aria-hidden="true">{{ $initial }}</span>
+      <span style="background: {{ $vault->colour }}" class="{{ $tile }} size-5.5 text-2xs" aria-hidden="true">{{ $initial }}</span>
 
       <span class="truncate font-semibold">{{ $vault->name }}</span>
     </span>
@@ -104,7 +104,7 @@
       data-turbo="true"
       class="flex min-w-0 items-center gap-2 rounded-md border border-transparent px-1.5 py-1 text-ink no-underline transition-colors duration-(--duration-fast) ease-out focus-ring"
     >
-      <span style="background: {{ $vault->colour }}" class="{{ $tile }} size-5.5 text-[11px]" aria-hidden="true">{{ $initial }}</span>
+      <span style="background: {{ $vault->colour }}" class="{{ $tile }} size-5.5 text-2xs" aria-hidden="true">{{ $initial }}</span>
 
       <span class="truncate font-semibold">{{ $vault->name }}</span>
     </a>

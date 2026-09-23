@@ -20,7 +20,7 @@
           @click="lang = '{{ $key }}'"
           :aria-pressed="lang === '{{ $key }}' ? 'true' : 'false'"
           :class="lang === '{{ $key }}' ? 'bg-primary text-on-primary font-medium' : 'text-body hover:text-ink'"
-          class="cursor-pointer rounded-xs px-2.5 py-1 text-[12px] whitespace-nowrap transition-colors duration-(--duration-fast) ease-out focus-ring"
+          class="cursor-pointer rounded-xs px-2.5 py-1 text-xs whitespace-nowrap transition-colors duration-(--duration-fast) ease-out focus-ring"
         >{{ $sample['label'] }}</button>
       @endforeach
     </div>
@@ -28,7 +28,7 @@
     <button
       type="button"
       @click="window.copyText(samples[lang]).then((ok) => { copied = ok; setTimeout(() => (copied = false), 1600) })"
-      class="ml-auto cursor-pointer rounded-xs px-2 py-1 text-[12px] text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
+      class="ml-auto cursor-pointer rounded-xs px-2 py-1 text-xs text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
       aria-live="polite"
       x-text="copied ? 'Copied' : 'Copy'"
     >Copy</button>
@@ -37,7 +37,7 @@
   @foreach ($samples as $key => $sample)
     <div x-show="lang === '{{ $key }}'" class="overflow-x-auto px-4 py-3.5">
       @foreach ($sample['lines'] as $line)
-        <div class="font-mono text-[12.5px] leading-[1.75] whitespace-pre">@foreach ($line['parts'] as $part)<span class="{{ $part['colour'] === 'brand' ? 'text-ink' : 'text-muted' }}">{{ $part['text'] }}</span>@endforeach</div>
+        <div class="font-mono text-xs leading-[1.75] whitespace-pre">@foreach ($line['parts'] as $part)<span class="{{ $part['colour'] === 'brand' ? 'text-ink' : 'text-muted' }}">{{ $part['text'] }}</span>@endforeach</div>
       @endforeach
     </div>
   @endforeach

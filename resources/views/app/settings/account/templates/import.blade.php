@@ -9,7 +9,7 @@
 >
   <div class="grid items-start gap-7 lg:grid-cols-[minmax(0,1fr)_20rem]">
     <div class="flex min-w-0 flex-col gap-5" x-data="{ file: @js(old('file', $viewModel->raw())) }">
-      <x-page-header :title="$viewModel->title()" :description="$viewModel->intro()" class="max-w-[66ch]" />
+      <x-page-header :title="$viewModel->title()" :description="$viewModel->intro()" class="max-w-prose" />
 
       <div id="import" x-merge="replace" class="flex flex-col gap-5 dim-when-busy">
         <x-panel>
@@ -23,7 +23,7 @@
               :rows="12"
               spellcheck="false"
               x-model="file"
-              class="font-mono text-[12.5px] leading-relaxed"
+              class="font-mono text-xs leading-relaxed"
             />
 
             <div class="flex flex-wrap items-center gap-3">
@@ -97,7 +97,7 @@
                   </x-button>
                 </x-form>
 
-                <span class="max-w-[42ch] text-xs text-pretty text-ink-soft">
+                <span class="max-w-reading-narrow text-xs text-pretty text-ink-soft">
                   {{ __('Nothing is published. You review it, then put the records you choose on it yourself.') }}
                 </span>
               </div>
@@ -110,7 +110,7 @@
         {{ __('A file only carries the structure. It holds no record, no value, no date and no photo. Importing one never touches what you already have.') }}
       </x-notice>
 
-      <p class="max-w-[70ch] text-sm text-pretty text-muted">
+      <p class="max-w-prose text-sm text-pretty text-muted">
         {{ __('Files written by any Monica running format :version are readable here. A file from a newer format says which version wrote it, so you know what to ask for.', ['version' => $viewModel->formatVersion()]) }}
       </p>
     </div>
@@ -118,7 +118,7 @@
     <x-panel :title="__('How it goes')" flush>
       @foreach ($viewModel->steps() as $index => $step)
         <div class="flex gap-3.5 border-b border-hairline px-4.5 py-3.5 last:border-b-0">
-          <span class="flex size-6.5 shrink-0 items-center justify-center rounded-sm bg-hover font-mono text-[13px] text-ink-soft">
+          <span class="flex size-6.5 shrink-0 items-center justify-center rounded-sm bg-hover font-mono text-sm text-ink-soft">
             {{ $index + 1 }}
           </span>
 

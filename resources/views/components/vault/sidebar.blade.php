@@ -8,7 +8,7 @@
 --}}
 
 @php
-  $item = 'flex min-h-8 items-center gap-2.5 rounded-md px-2 py-1.5 text-nav transition-[background-color,box-shadow,color] duration-(--duration-fast) ease-out max-lg:min-h-10';
+  $item = 'flex min-h-8 items-center gap-2.5 rounded-md px-2 py-1.5 text-nav transition duration-(--duration-fast) ease-out max-lg:min-h-10';
 
   $sections = [
     ['key' => 'dashboard', 'label' => __('Dashboard'), 'icon' => 'heart', 'url' => route('vaults.show', $vault), 'badge' => null],
@@ -24,7 +24,7 @@
 <aside
   id="main-nav"
   :class="navOpen && 'max-lg:translate-x-0!'"
-  class="fixed inset-y-0 left-0 z-40 flex w-62 flex-col border-r border-hairline bg-card transition-transform duration-(--duration-slow) ease-out max-lg:-translate-x-full lg:static lg:h-full lg:w-auto lg:translate-x-0"
+  class="fixed print:hidden inset-y-0 left-0 z-40 flex w-62 flex-col border-r border-hairline bg-card transition-transform duration-(--duration-slow) ease-out max-lg:-translate-x-full lg:static lg:h-full lg:w-auto lg:translate-x-0"
 >
   <div class="flex items-center gap-2.5 px-4 pt-3.5 pb-2.5">
     <a
@@ -50,7 +50,7 @@
   </div>
 
   <nav aria-label="{{ __('This vault') }}" class="min-h-0 flex-1 space-y-px overflow-y-auto px-2 pt-1.5 pb-3">
-    <h2 class="px-2 pt-4 pb-2.5 text-[11px] font-medium tracking-caption text-muted-soft uppercase first:pt-1">{{ __('This vault') }}</h2>
+    <h2 class="px-2 pt-4 pb-2.5 text-2xs font-medium tracking-caption text-muted-soft uppercase first:pt-1">{{ __('This vault') }}</h2>
 
     @foreach ($sections as $section)
       @if ($section['url'])

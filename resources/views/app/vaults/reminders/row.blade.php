@@ -19,7 +19,7 @@
   >
     <span class="flex flex-none flex-col items-center gap-1">
       <span class="flex w-14 flex-col items-center rounded-xs border-[1.5px] border-dashed border-hairline-strong bg-canvas py-1.5">
-        <span class="text-[10px] font-semibold tracking-[0.1em] text-muted uppercase">{{ $row->month() }}</span>
+        <span class="text-[10px] font-semibold tracking-widest text-muted uppercase">{{ $row->month() }}</span>
         <span class="text-[22px] leading-tight font-semibold text-ink">{{ $row->day() }}</span>
       </span>
 
@@ -34,11 +34,11 @@
     <span class="flex min-w-0 flex-col gap-1.5">
       <span class="flex min-w-0 items-center gap-2">
         @if ($row->contactName() === null)
-          <span class="text-[13.5px] font-semibold text-muted">{{ __('A deleted contact') }}</span>
+          <span class="text-base font-semibold text-muted">{{ __('A deleted contact') }}</span>
         @elseif ($isLink)
           <x-contact-avatar :name="$row->contactName()" :url="$row->avatarUrl()" :size="24" />
 
-          <span class="truncate text-[13.5px] font-semibold text-ink">{{ $row->contactName() }}</span>
+          <span class="truncate text-base font-semibold text-ink">{{ $row->contactName() }}</span>
 
           <x-icon name="chevron-right" :size="14" :stroke-width="1.6" class="shrink-0 text-muted" />
         @else
@@ -47,7 +47,7 @@
           <a
             href="{{ $row->contactUrl() }}"
             data-turbo="true"
-            class="truncate text-[13.5px] font-semibold text-ink no-underline transition-colors duration-(--duration-fast) ease-out hover:text-link"
+            class="truncate text-base font-semibold text-ink no-underline transition-colors duration-(--duration-fast) ease-out hover:text-link"
           >{{ $row->contactName() }}</a>
         @endif
       </span>
@@ -75,7 +75,7 @@
 
     <x-actions-menu variant="ghost" :text="__('More')" :label="__('More actions for :name', ['name' => $row->text()])">
       <x-slot:glyph>
-        <x-icon name="chevron-down" :size="14" :stroke-width="1.7" ::class="menuOpen && 'rotate-180'" class="order-last transition-transform duration-[170ms]" />
+        <x-icon name="chevron-down" :size="14" :stroke-width="1.7" ::class="menuOpen && 'rotate-180'" class="order-last transition-transform duration-(--duration-standard)" />
       </x-slot:glyph>
 
       @include('app.vaults.reminders._postpone', ['row' => $row, 'inMenu' => true])

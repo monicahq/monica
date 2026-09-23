@@ -108,7 +108,6 @@
         x-cloak
         x-show="type === @js($kind)"
         :disabled="type !== @js($kind)"
-        @if ($chosen) style="display: flex" @endif
         @disabled(! $chosen)
         class="m-0 flex min-w-0 flex-wrap items-end gap-2.5 border-0 p-0"
       >
@@ -158,7 +157,6 @@
       x-cloak
       x-show="@js($choiceTypes).includes(type)"
       :disabled="! @js($choiceTypes).includes(type)"
-      @if ($offersChoices) style="display: flex" @endif
       @disabled(! $offersChoices)
       class="m-0 flex min-w-0 flex-col gap-1.5 border-0 p-0"
     >

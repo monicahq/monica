@@ -23,7 +23,7 @@
         <div class="flex flex-col gap-1.5 border-t border-hairline-soft py-4 {{ $indents[$depth] }}">
           <div class="flex flex-wrap items-baseline gap-2.5">
             <span class="font-mono text-[14px] font-semibold break-all text-ink">{{ $field['name'] }}</span>
-            <span class="font-mono text-[12px] text-muted">{{ $field['type'] }}</span>
+            <span class="font-mono text-xs text-muted">{{ $field['type'] }}</span>
           </div>
 
           <p class="text-[14px] leading-relaxed text-pretty text-body">{{ $field['description'] }}</p>

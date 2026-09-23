@@ -35,7 +35,7 @@
       :class="draggingId === {{ $field['id'] }} && 'opacity-40'"
     @endif
     @class([
-      'grid w-full items-center gap-2.5 rounded-md border px-2.5 py-2.5 text-left transition-colors duration-[110ms] hover:bg-hover',
+      'grid w-full items-center gap-2.5 rounded-md border px-2.5 py-2.5 text-left transition-colors duration-(--duration-fast) hover:bg-hover',
       'grid-cols-[auto_minmax(90px,1fr)_minmax(0,auto)]' => $mayReorder,
       'grid-cols-[minmax(90px,1fr)_minmax(0,auto)]' => ! $mayReorder,
       'border-hairline-strong bg-sunken' => $field['isSelected'],

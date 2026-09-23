@@ -16,19 +16,19 @@
 >
   <div class="grid items-start gap-7 lg:grid-cols-[minmax(0,1fr)_20rem]">
     <div class="flex min-w-0 flex-col gap-5">
-      <x-page-header :title="__('Export :name', ['name' => $viewModel->name()])" :description="__('One section, taken from :name. Short enough to read at once.', ['name' => $template->name])" class="max-w-[66ch]" />
+      <x-page-header :title="__('Export :name', ['name' => $viewModel->name()])" :description="__('One section, taken from :name. Short enough to read at once.', ['name' => $template->name])" class="max-w-prose" />
 
       <x-panel flush>
         <div class="flex items-center gap-3 border-b border-hairline bg-card px-4 py-3">
           <x-icon name="file" :size="16" :stroke-width="1.6" class="text-muted" />
 
-          <code class="min-w-0 truncate font-mono text-[12.5px] text-ink">{{ $viewModel->fileName() }}</code>
+          <code class="min-w-0 truncate font-mono text-xs text-ink">{{ $viewModel->fileName() }}</code>
 
           <span class="ml-auto shrink-0 text-xs text-muted">{{ $viewModel->lineLabel() }}</span>
         </div>
 
         <pre
-          class="max-h-[26rem] overflow-auto px-5 py-4 font-mono text-[12.5px] leading-relaxed text-ink-soft"
+          class="max-h-104 overflow-auto px-5 py-4 font-mono text-xs leading-relaxed text-ink-soft"
         >{{ $viewModel->json() }}</pre>
       </x-panel>
 

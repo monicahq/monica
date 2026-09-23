@@ -11,7 +11,7 @@
 <a
   href="{{ $href }}"
   role="menuitem"
-  {{ $attributes->class(['flex items-center gap-2.5 rounded-sm px-2.5 py-2.25 text-base text-ink no-underline transition-[background-color] duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset']) }}
+  {{ $attributes->class(['flex items-center gap-2.5 rounded-sm px-2.5 py-2.25 text-base text-ink no-underline transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset']) }}
 >
   <x-icon :name="$icon" :size="16" :stroke-width="1.6" class="text-muted" />
 

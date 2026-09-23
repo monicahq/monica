@@ -16,7 +16,7 @@
 
 @php
   $term = match ($labelStyle) {
-      'caption' => 'text-[11px] font-medium tracking-caption text-muted-soft uppercase',
+      'caption' => 'text-2xs font-medium tracking-caption text-muted-soft uppercase',
       default => 'text-sm text-muted',
   };
 @endphp
@@ -26,7 +26,7 @@
     $attributes->class([
       'grid grid-cols-[var(--detail-label-width)_minmax(0,1fr)] items-baseline gap-4',
       'border-b border-hairline px-4.5 py-3 last:border-b-0',
-      'max-[560px]:grid-cols-1 max-[560px]:gap-0.5',
+      'max-xs:grid-cols-1 max-xs:gap-0.5',
     ])
   }}
 >

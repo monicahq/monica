@@ -91,7 +91,7 @@
           @else
             <span
               aria-disabled="true"
-              class="inline-flex h-8.5 cursor-default items-center rounded-md px-3.25 font-sans text-[13.5px] font-semibold text-placeholder opacity-50"
+              class="inline-flex h-8.5 cursor-default items-center rounded-md px-3.25 font-sans text-base font-semibold text-placeholder opacity-50"
             >{{ __('Remove') }}</span>
           @endif
         </div>
@@ -123,7 +123,7 @@
 
         <div x-cloak x-show="reordering" class="flex flex-wrap items-center gap-2 rounded-md border border-dashed border-hairline-strong bg-sunken px-3 py-2.5">
           @foreach ($pages as $index => $page)
-            <span class="flex items-center gap-1 rounded-sm border border-hairline bg-canvas py-1 pr-1 pl-2.5 text-[13px] text-body">
+            <span class="flex items-center gap-1 rounded-sm border border-hairline bg-canvas py-1 pr-1 pl-2.5 text-sm text-body">
               {{ $page['label'] }}
 
               @foreach ([['position' => $index, 'label' => __('Move :name left', ['name' => $page['label']]), 'flip' => true, 'shown' => $index > 0], ['position' => $index + 2, 'label' => __('Move :name right', ['name' => $page['label']]), 'flip' => false, 'shown' => $index < count($pages) - 1]] as $move)
@@ -136,7 +136,7 @@
                   >
                     <input type="hidden" name="position" value="{{ $move['position'] }}" />
 
-                    <button type="submit" aria-label="{{ $move['label'] }}" class="flex size-6 cursor-pointer items-center justify-center rounded-xs text-muted transition-colors duration-[110ms] hover:bg-hover hover:text-ink">
+                    <button type="submit" aria-label="{{ $move['label'] }}" class="flex size-6 cursor-pointer items-center justify-center rounded-xs text-muted transition-colors duration-(--duration-fast) hover:bg-hover hover:text-ink">
                       <x-icon name="chevron-right" :size="14" :stroke-width="1.7" :class="$move['flip'] ? 'rotate-180' : ''" />
                     </button>
                   </x-form>

@@ -32,7 +32,7 @@
         :size="15"
         :stroke-width="1.9"
         :label="__('More actions')"
-        class="transition-transform duration-[170ms]"
+        class="transition-transform duration-(--duration-standard)"
         ::class="open && 'rotate-180'"
       />
     </x-button>
@@ -41,9 +41,9 @@
       x-cloak
       x-show="open"
       x-anchor.bottom-end.offset.6="$refs.trigger"
-      x-transition:enter="transition ease-out duration-[170ms]"
+      x-transition:enter="transition ease-out duration-(--duration-standard)"
       x-transition:enter-start="opacity-0"
-      x-transition:leave="transition ease-out duration-[110ms]"
+      x-transition:leave="transition ease-out duration-(--duration-fast)"
       x-transition:leave-end="opacity-0"
       role="menu"
       class="z-40 w-64 max-w-[calc(100vw-2rem)] rounded-lg border border-hairline bg-canvas p-1.5 shadow-pop"
