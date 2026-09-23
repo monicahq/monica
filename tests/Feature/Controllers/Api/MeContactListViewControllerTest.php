@@ -103,16 +103,4 @@ class MeContactListViewControllerTest extends TestCase
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors(['sort', 'direction']);
     }
-
-    #[Test]
-    public function it_refuses_a_caller_with_no_token(): void
-    {
-        $response = $this->json('PUT', route('api.v1.me.contactListView.update'), [
-            'grouping' => 'favourites',
-            'sort' => 'name',
-            'direction' => 'asc',
-        ]);
-
-        $response->assertUnauthorized();
-    }
 }

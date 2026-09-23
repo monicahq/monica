@@ -91,16 +91,6 @@ class ProfileControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_only_offers_removing_a_photo_when_there_is_one(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
-            ->get(route('settings.profile.index'))
-            ->assertDontSee('id="photo-delete-form"', escape: false);
-    }
-
-    #[Test]
     public function the_button_that_removes_the_photo_is_worded(): void
     {
         Queue::fake();
@@ -119,14 +109,6 @@ class ProfileControllerTest extends TestCase
             ->assertSee('x-text="confirming ? confirmLabel : removeLabel"', escape: false)
             ->assertSee("removeLabel: 'Remove the photo'", escape: false)
             ->assertDontSee('@js(', escape: false);
-    }
-
-    #[Test]
-    public function it_redirects_a_visitor_who_is_not_signed_in(): void
-    {
-        $response = $this->get(route('settings.profile.index'));
-
-        $response->assertRedirect(route('auth.login.new'));
     }
 
     #[Test]

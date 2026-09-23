@@ -28,12 +28,20 @@ class UpdateLifeEventTypePositionTest extends TestCase
         $user = User::factory()->create();
         $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
         $first = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id, 'position' => 1]);
-        $second = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id, 'position' => 2]);
+        $second = LifeEventType::factory()->create([
+            'account_id' => $user->account_id,
+            'life_event_category_id' => $category->id,
+            'name' => 'Warehouse visit',
+            'position' => 2,
+        ]);
 
         new UpdateLifeEventTypePosition(user: $user, lifeEventType: $second, position: 1)->execute();
 
         $this->assertSame(1, $second->refresh()->position);
         $this->assertSame(2, $first->refresh()->position);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventTypePositionUpdate
+            && $job->parameters === ['name' => 'Warehouse visit']);
     }
 
     #[Test]
@@ -100,19 +108,5 @@ class UpdateLifeEventTypePositionTest extends TestCase
         } finally {
             $this->assertSame(3, $type->refresh()->position);
         }
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'name' => 'Warehouse visit']);
-
-        new UpdateLifeEventTypePosition(user: $user, lifeEventType: $type, position: 1)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventTypePositionUpdate
-            && $job->parameters === ['name' => 'Warehouse visit']);
     }
 }

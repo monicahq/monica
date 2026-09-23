@@ -151,21 +151,6 @@ class FieldControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_relation_field_that_does_not_say_what_it_points_at(): void
-    {
-        Queue::fake();
-        [$user, $template, $row] = $this->placement();
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', $this->url($template, $row).'/fields', [
-            'type' => 'relation',
-            'label' => 'Vet',
-            'relation_target' => 'entity',
-        ])->assertUnprocessable()->assertJsonValidationErrors(['type']);
-    }
-
-    #[Test]
     public function it_adds_a_field_of_every_type_the_product_offers(): void
     {
         Queue::fake();

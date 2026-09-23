@@ -161,20 +161,6 @@ class VaultDefaultTemplateControllerTest extends TestCase
             ->assertSessionHasErrors('structure_version_id');
     }
 
-    #[Test]
-    public function it_does_not_find_a_vault_of_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $elsewhere = Vault::factory()->create();
-        $chosen = $this->publishedContactTemplate($michael, 'Work contact');
-
-        $this->actingAs($michael)->put(route('vaults.defaultTemplate.update', $elsewhere), [
-            'structure_version_id' => $chosen->structure->published_version_id,
-        ])->assertNotFound();
-    }
-
     private function publishedContactTemplate(User $user, string $name): Template
     {
         $template = Template::factory()->create([

@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\ReminderInactiveReasonEnum;
-use App\Enums\UserActionEnum;
 use App\Models\Contact;
-use App\Models\Log;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -63,62 +61,6 @@ class ReminderControllerTest extends TestCase
 
         $response->assertSee(route('reminders.index', $vault), escape: false);
         $response->assertSee(route('contacts.show', ['vault' => $vault, 'contact' => $rule->remindable]), escape: false);
-    }
-
-    #[Test]
-    public function it_shows_what_is_still_ahead(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $rule = $this->ruleAbout($user, $vault);
-        $this->deadline($rule, '+9 days');
-
-        $response = $this->actingAs($user)->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]));
-
-        $response->assertSee('Next notification');
-    }
-
-    #[Test]
-    public function it_says_why_a_reminder_has_gone_quiet_and_claims_no_next_date(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $rule = $this->ruleAbout($user, $vault);
-        $rule->update([
-            'is_active' => false,
-            'inactive_reason' => ReminderInactiveReasonEnum::RecordArchived,
-            'deactivated_at' => now(),
-        ]);
-
-        $response = $this->actingAs($user)->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]));
-
-        $response->assertStatus(200);
-        $response->assertSee('Nothing is scheduled');
-        $response->assertSee('archived');
-        $response->assertDontSee('Next notification');
-    }
-
-    #[Test]
-    public function it_shows_what_has_happened_to_the_reminder(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $rule = $this->ruleAbout($user, $vault);
-
-        Log::factory()->create([
-            'account_id' => $rule->account_id,
-            'vault_id' => $rule->vault_id,
-            'user_id' => $user->id,
-            'action' => UserActionEnum::ReminderCreation->value,
-            'parameters' => ['label' => 'Birthday', 'name' => 'Stanley Hudson'],
-            'loggable_type' => Reminder::class,
-            'loggable_id' => $rule->id,
-        ]);
-
-        $response = $this->actingAs($user)->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]));
-
-        $response->assertSee('History');
-        $response->assertSee('Asked to be reminded of Birthday on Stanley Hudson');
     }
 
     #[Test]
@@ -203,21 +145,6 @@ class ReminderControllerTest extends TestCase
     }
 
     #[Test]
-    public function a_reminder_of_another_account_is_not_found(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $stranger = User::factory()->create();
-        $theirVault = Vault::factory()->create(['account_id' => $stranger->account_id]);
-        $theirs = $this->ruleAbout($stranger, $theirVault);
-
-        $this->actingAs($user)
-            ->get(route('reminders.show', ['vault' => $vault, 'reminder' => $theirs]))
-            ->assertStatus(404);
-    }
-
-    #[Test]
     public function a_reminder_of_another_vault_of_the_same_account_is_not_found(): void
     {
         $user = User::factory()->create();
@@ -228,17 +155,6 @@ class ReminderControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('reminders.show', ['vault' => $here, 'reminder' => $rule]))
             ->assertStatus(404);
-    }
-
-    #[Test]
-    public function a_visitor_is_sent_to_sign_in(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $rule = $this->ruleAbout($user, $vault);
-
-        $this->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]))
-            ->assertRedirect(route('auth.login.new'));
     }
 
     #[Test]
@@ -300,23 +216,6 @@ class ReminderControllerTest extends TestCase
 
         $this->assertSoftDeleted($rule);
         $this->assertDatabaseHas('field_values', ['id' => $value->id, 'value_date' => '1984-02-03 00:00:00']);
-    }
-
-    #[Test]
-    public function deleting_a_reminder_of_another_account_is_not_found(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $stranger = User::factory()->create();
-        $theirVault = Vault::factory()->create(['account_id' => $stranger->account_id]);
-        $theirs = $this->ruleAbout($stranger, $theirVault);
-
-        $this->actingAs($user)
-            ->delete(route('reminders.destroy', ['vault' => $vault, 'reminder' => $theirs]))
-            ->assertStatus(404);
-
-        $this->assertNotSoftDeleted($theirs);
     }
 
     #[Test]

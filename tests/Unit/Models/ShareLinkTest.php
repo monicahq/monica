@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Models\Contact;
 use App\Models\ShareLink;
 use App\Models\ShareLinkVisit;
-use App\Models\User;
-use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -16,45 +13,6 @@ use Tests\TestCase;
 class ShareLinkTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account_and_to_a_vault(): void
-    {
-        $shareLink = ShareLink::factory()->create();
-
-        $this->assertTrue($shareLink->account()->exists());
-        $this->assertTrue($shareLink->vault()->exists());
-    }
-
-    #[Test]
-    public function it_points_at_a_contact(): void
-    {
-        $shareLink = ShareLink::factory()->create();
-
-        $this->assertInstanceOf(Contact::class, $shareLink->shareable);
-        $this->assertEquals($shareLink->shareable->vault_id, $shareLink->vault_id);
-    }
-
-    #[Test]
-    public function it_points_at_a_whole_vault(): void
-    {
-        $vault = Vault::factory()->create();
-
-        $shareLink = ShareLink::factory()->forVault($vault)->create();
-
-        $this->assertInstanceOf(Vault::class, $shareLink->shareable);
-        $this->assertEquals($vault->id, $shareLink->vault_id);
-    }
-
-    #[Test]
-    public function it_belongs_to_the_user_who_made_it(): void
-    {
-        $user = User::factory()->create();
-
-        $shareLink = ShareLink::factory()->create(['created_by_user_id' => $user->id]);
-
-        $this->assertTrue($shareLink->createdBy()->exists());
-    }
 
     #[Test]
     public function it_has_many_visits(): void
@@ -77,18 +35,6 @@ class ShareLinkTest extends TestCase
         $this->assertFalse($shareLink->includes_relationships);
         $this->assertFalse($shareLink->includes_groups);
         $this->assertFalse($shareLink->includes_sensitive_fields);
-    }
-
-    #[Test]
-    public function it_holds_what_the_owner_kept_back(): void
-    {
-        $shareLink = ShareLink::factory()->create([
-            'excluded_section_ids' => [12, 34],
-            'excluded_life_event_ids' => [56],
-        ]);
-
-        $this->assertEquals([12, 34], $shareLink->fresh()->excluded_section_ids);
-        $this->assertEquals([56], $shareLink->fresh()->excluded_life_event_ids);
     }
 
     #[Test]

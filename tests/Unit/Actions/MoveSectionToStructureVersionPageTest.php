@@ -33,10 +33,16 @@ class MoveSectionToStructureVersionPageTest extends TestCase
         $user = User::factory()->create();
         $structureVersion = StructureVersion::factory()->create(['account_id' => $user->account_id]);
         $general = $structureVersion->pages()->firstOrFail();
-        $health = StructureVersionPage::factory()->create(['structure_version_id' => $structureVersion->id]);
+        $health = StructureVersionPage::factory()->create([
+            'structure_version_id' => $structureVersion->id,
+            'label' => 'Health',
+        ]);
+        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Beet facts']);
+        $sectionVersion = SectionVersion::factory()->create(['section_id' => $section->id]);
         $row = StructureVersionSection::factory()->create([
             'structure_version_id' => $structureVersion->id,
             'structure_version_page_id' => $general->id,
+            'section_version_id' => $sectionVersion->id,
         ]);
 
         $result = new MoveSectionToStructureVersionPage(
@@ -48,6 +54,13 @@ class MoveSectionToStructureVersionPageTest extends TestCase
         $this->assertInstanceOf(StructureVersionSection::class, $result);
         $this->assertEquals($health->id, $row->refresh()->structure_version_page_id);
         $this->assertEquals(1, $row->position);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::SectionMovedToPage
+                && $job->parameters === ['section' => 'Beet facts', 'label' => 'Health'],
+        );
     }
 
     #[Test]
@@ -175,35 +188,5 @@ class MoveSectionToStructureVersionPageTest extends TestCase
         $this->expectException(PublishedVersionIsFrozen::class);
 
         new MoveSectionToStructureVersionPage(user: $user, row: $row, page: $health)->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_move(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $structureVersion = StructureVersion::factory()->create(['account_id' => $user->account_id]);
-        $general = $structureVersion->pages()->firstOrFail();
-        $health = StructureVersionPage::factory()->create([
-            'structure_version_id' => $structureVersion->id,
-            'label' => 'Health',
-        ]);
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Beet facts']);
-        $sectionVersion = SectionVersion::factory()->create(['section_id' => $section->id]);
-        $row = StructureVersionSection::factory()->create([
-            'structure_version_id' => $structureVersion->id,
-            'structure_version_page_id' => $general->id,
-            'section_version_id' => $sectionVersion->id,
-        ]);
-
-        new MoveSectionToStructureVersionPage(user: $user, row: $row, page: $health)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::SectionMovedToPage
-                && $job->parameters === ['section' => 'Beet facts', 'label' => 'Health'],
-        );
     }
 }

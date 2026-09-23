@@ -56,6 +56,23 @@ class UpdateContactNameTest extends TestCase
             'name_order' => NameOrderEnum::FamilyFirst->value,
             'sort_name' => 'halpert pam',
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactNameUpdate
+                && $job->account->id === $user->account_id
+                && $job->user->id === $user->id
+                && $job->vault->id === $vault->id
+                && $job->isAbout($contact)
+                && $job->parameters === ['name' => 'Halpert Pam']
+                && $job->changes === [
+                    'prefix' => ['before' => null, 'after' => 'Mrs'],
+                    'last_name' => ['before' => 'Beesly', 'after' => 'Halpert'],
+                    'maiden_name' => ['before' => null, 'after' => 'Beesly'],
+                    'nickname' => ['before' => null, 'after' => 'Pammy'],
+                ],
+        );
     }
 
     #[Test]
@@ -145,39 +162,5 @@ class UpdateContactNameTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateContactName(user: $user, contact: $contact, firstName: 'Dwight')->execute();
-    }
-
-    #[Test]
-    public function it_logs_what_changed(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create([
-            'account_id' => $user->account_id,
-            'vault_id' => $vault->id,
-            'first_name' => 'Michael',
-            'last_name' => 'Scott',
-        ]);
-
-        new UpdateContactName(
-            user: $user,
-            contact: $contact,
-            firstName: 'Michael',
-            lastName: 'Scarn',
-        )->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactNameUpdate
-                && $job->account->id === $user->account_id
-                && $job->user->id === $user->id
-                && $job->vault->id === $vault->id
-                && $job->isAbout($contact)
-                && $job->parameters === ['name' => 'Michael Scarn']
-                && $job->changes === ['last_name' => ['before' => 'Scott', 'after' => 'Scarn']],
-        );
     }
 }

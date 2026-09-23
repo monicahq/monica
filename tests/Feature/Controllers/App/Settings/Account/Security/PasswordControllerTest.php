@@ -108,14 +108,6 @@ class PasswordControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_redirects_a_visitor_who_is_not_signed_in(): void
-    {
-        $response = $this->put(route('settings.password.update'), []);
-
-        $response->assertRedirect(route('auth.login.new'));
-    }
-
-    #[Test]
     public function it_removes_the_password_of_somebody_who_holds_a_passkey(): void
     {
         Queue::fake();
@@ -143,34 +135,6 @@ class PasswordControllerTest extends TestCase
 
         $response->assertSessionHasErrors('password');
         $this->assertNotNull($user->refresh()->password);
-    }
-
-    #[Test]
-    public function it_refuses_to_remove_the_password_where_a_passkey_could_not_be_used(): void
-    {
-        Queue::fake();
-
-        URL::forceScheme('http');
-
-        $user = User::factory()->create();
-        Passkey::factory()->create(['user_id' => $user->id]);
-
-        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.password.destroy'));
-
-        $response->assertSessionHasErrors('password');
-        $this->assertNotNull($user->refresh()->password);
-    }
-
-    #[Test]
-    public function it_refuses_to_remove_the_password_of_a_single_sign_on_account(): void
-    {
-        Queue::fake();
-        URL::forceScheme('https');
-
-        $user = User::factory()->singleSignOn()->create();
-
-        $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.password.destroy'))
-            ->assertSessionHasErrors('password');
     }
 
     #[Test]
@@ -221,13 +185,6 @@ class PasswordControllerTest extends TestCase
         ])->assertSessionHasErrors('new_password');
 
         $this->assertNull($user->refresh()->password);
-    }
-
-    #[Test]
-    public function it_refuses_a_guest_on_both_new_routes(): void
-    {
-        $this->post(route('settings.password.create'), [])->assertRedirect(route('auth.login.new'));
-        $this->delete(route('settings.password.destroy'))->assertRedirect(route('auth.login.new'));
     }
 
     #[Test]

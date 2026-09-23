@@ -278,40 +278,6 @@ class TemplateBuilderControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_only_the_sections_of_the_page_named_in_the_query_string(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $events = StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'label' => 'Life events']);
-        $this->sectionOn($user, $version, $version->pages()->firstOrFail(), 'Paper stock');
-        $this->sectionOn($user, $version, $events, 'Jobs');
-
-        $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
-            ->assertStatus(200)
-            ->assertSee('Paper stock')
-            ->assertDontSee('Jobs');
-
-        $this->actingAs($user)->get(route('settings.templateBuilder.index', ['template' => $template, 'page' => $events->key]))
-            ->assertStatus(200)
-            ->assertSee('Jobs')
-            ->assertDontSee('Paper stock');
-    }
-
-    #[Test]
-    public function it_falls_back_to_the_first_page_when_the_one_asked_for_is_unknown(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $this->sectionOn($user, $version, $version->pages()->firstOrFail(), 'Paper stock');
-
-        $this->actingAs($user)->get(route('settings.templateBuilder.index', ['template' => $template, 'page' => 'nothing-answers-to-this']))
-            ->assertStatus(200)
-            ->assertSee('Paper stock');
-    }
-
-    #[Test]
     public function it_offers_to_move_a_section_only_once_there_is_another_page(): void
     {
         $user = User::factory()->create();
@@ -342,23 +308,6 @@ class TemplateBuilderControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_show_the_template_of_another_account(): void
-    {
-        $michael = User::factory()->create();
-        $template = Template::factory()->create();
-
-        $this->actingAs($michael)->get(route('settings.templateBuilder.index', $template))->assertNotFound();
-    }
-
-    #[Test]
-    public function it_turns_a_visitor_away(): void
-    {
-        $template = Template::factory()->create();
-
-        $this->get(route('settings.templateBuilder.index', $template))->assertRedirect(route('auth.login.new'));
-    }
-
-    #[Test]
     public function it_offers_the_version_history_once_the_template_has_more_than_one_version(): void
     {
         $user = User::factory()->create();
@@ -375,20 +324,6 @@ class TemplateBuilderControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Version history');
         $response->assertSee('href="'.route('settings.templateVersions.index', $template).'"', escape: false);
-    }
-
-    #[Test]
-    public function it_hides_the_version_history_while_the_template_has_a_single_version(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
-
-        $response = $this->actingAs($user)->get(route('settings.templateBuilder.index', $template));
-
-        $response->assertStatus(200);
-        $response->assertDontSee('Version history');
-        $response->assertDontSee('href="'.route('settings.templateVersions.index', $template).'"', escape: false);
     }
 
     private function sectionOn(User $user, StructureVersion $version, StructureVersionPage $page, string $name): StructureVersionSection

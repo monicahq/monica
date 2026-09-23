@@ -41,6 +41,11 @@ class ExportTemplateTest extends TestCase
         $this->assertEquals(StructureFile::FORMAT_VERSION, $file['monica']['format_version']);
         $this->assertEquals('Dunder Mifflin contact', $file['template']['name']);
         $this->assertArrayHasKey('exported_at', $file);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::TemplateExported
+                && $job->parameters === ['name' => 'Dunder Mifflin contact'];
+        });
     }
 
     #[Test]
@@ -85,22 +90,6 @@ class ExportTemplateTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new ExportTemplate(user: $user, template: $template)->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_action(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = $this->publishedTemplate($user);
-
-        new ExportTemplate(user: $user, template: $template)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::TemplateExported
-                && $job->parameters === ['name' => 'Dunder Mifflin contact'];
-        });
     }
 
     private function publishedTemplate(User $user): Template

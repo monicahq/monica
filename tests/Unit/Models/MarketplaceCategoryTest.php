@@ -6,7 +6,6 @@ namespace Tests\Unit\Models;
 
 use App\Enums\MarketplaceCategoryEnum;
 use App\Models\MarketplaceCategory;
-use App\Models\MarketplaceListing;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -16,16 +15,6 @@ class MarketplaceCategoryTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_sits_under_another_category(): void
-    {
-        $health = MarketplaceCategory::factory()->create();
-        $followUp = MarketplaceCategory::factory()->under($health)->create();
-
-        $this->assertTrue($followUp->parent()->exists());
-        $this->assertEquals($health->id, $followUp->parent->id);
-    }
-
-    #[Test]
     public function it_lists_the_categories_under_it_in_order(): void
     {
         $health = MarketplaceCategory::factory()->create();
@@ -33,15 +22,6 @@ class MarketplaceCategoryTest extends TestCase
         MarketplaceCategory::factory()->under($health)->create(['position' => 1]);
 
         $this->assertEquals([1, 2], $health->children->pluck('position')->all());
-    }
-
-    #[Test]
-    public function it_has_many_listings(): void
-    {
-        $category = MarketplaceCategory::factory()->create();
-        MarketplaceListing::factory()->create(['marketplace_category_id' => $category->id]);
-
-        $this->assertTrue($category->listings()->exists());
     }
 
     #[Test]

@@ -440,10 +440,4 @@ class EntityTypeControllerTest extends TestCase
         $this->json('DELETE', "/api/v1/entity-types/{$entityType->uuid}")->assertNotFound();
         $this->assertNotSoftDeleted($entityType);
     }
-
-    #[Test]
-    public function it_refuses_a_caller_holding_no_credential(): void
-    {
-        $this->json('GET', '/api/v1/entity-types')->assertUnauthorized();
-    }
 }

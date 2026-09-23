@@ -52,29 +52,6 @@ class NotificationChannelControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_switch_on_a_channel_with_nothing_behind_it_and_says_what_is_missing(): void
-    {
-        $this->signedIn();
-
-        $response = $this->put(route('settings.notifications.update', 'sms'), ['is_enabled' => '1']);
-
-        $response->assertSessionHasErrors('channel');
-    }
-
-    #[Test]
-    public function it_refuses_to_switch_on_a_text_message_nobody_has_proved(): void
-    {
-        $this->signedIn();
-
-        $response = $this->put(route('settings.notifications.update', 'sms'), [
-            'is_enabled' => '1',
-            'destination' => '+15705550172',
-        ]);
-
-        $response->assertSessionHasErrors('channel');
-    }
-
-    #[Test]
     public function it_says_when_the_channel_being_switched_off_is_the_last_one_that_works(): void
     {
         $user = $this->signedIn();
@@ -217,12 +194,6 @@ class NotificationChannelControllerTest extends TestCase
         $this->signedIn();
 
         $this->put(route('settings.notifications.update', 'carrier-pigeon'), ['is_enabled' => '0'])->assertStatus(404);
-    }
-
-    #[Test]
-    public function a_visitor_is_sent_to_sign_in(): void
-    {
-        $this->get(route('settings.notifications.index'))->assertRedirect();
     }
 
     private function signedIn(): User

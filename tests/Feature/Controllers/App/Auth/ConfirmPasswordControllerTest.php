@@ -34,14 +34,6 @@ class ConfirmPasswordControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_sends_a_visitor_to_sign_in(): void
-    {
-        $response = $this->get(route('auth.confirmPassword.new'));
-
-        $response->assertRedirect(route('auth.login.new'));
-    }
-
-    #[Test]
     public function it_confirms_the_right_password(): void
     {
         Queue::fake();

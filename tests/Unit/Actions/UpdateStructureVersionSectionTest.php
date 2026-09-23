@@ -11,9 +11,9 @@ use App\Exceptions\PublishedVersionIsFrozen;
 use App\Jobs\LogUserAction;
 use App\Models\Section;
 use App\Models\SectionVersion;
-use App\Models\Template;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,7 +31,14 @@ class UpdateStructureVersionSectionTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $row = StructureVersionSection::factory()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
+        $structureVersion = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
+        $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $structureVersion->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
 
         new UpdateStructureVersionSection(
             user: $user,
@@ -44,6 +51,11 @@ class UpdateStructureVersionSectionTest extends TestCase
 
         $this->assertEquals('Where they live', $row->title_override);
         $this->assertTrue($row->is_collapsed_by_default);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::TemplateSectionUpdate
+                && $job->parameters === ['section' => 'Address', 'name' => 'Contact'];
+        });
     }
 
     #[Test]
@@ -109,28 +121,5 @@ class UpdateStructureVersionSectionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateStructureVersionSection(user: $michael, row: $row)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
-        $structureVersion = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
-        $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
-        $row = StructureVersionSection::factory()->create([
-            'structure_version_id' => $structureVersion->id,
-            'section_version_id' => $sectionVersion->id,
-        ]);
-
-        new UpdateStructureVersionSection(user: $user, row: $row)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::TemplateSectionUpdate
-                && $job->parameters === ['section' => 'Address', 'name' => 'Contact'];
-        });
     }
 }

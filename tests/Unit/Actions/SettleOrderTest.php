@@ -51,6 +51,9 @@ class SettleOrderTest extends TestCase
         $this->assertSame($order->id, $result->id);
         $this->assertDatabaseHas('stripe_orders', ['id' => $order->id, 'stripe_status' => StripeOrder::PAID]);
         $this->assertTrue($account->fresh()->hasFullAccess());
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::FullAccessPurchased
+            && $job->isAbout($order));
     }
 
     #[Test]
@@ -191,22 +194,5 @@ class SettleOrderTest extends TestCase
 
         Notification::assertNothingSent();
         $this->assertTrue($account->fresh()->hasFullAccess());
-    }
-
-    #[Test]
-    public function it_writes_the_purchase_into_the_account_journal(): void
-    {
-        Queue::fake();
-        Notification::fake();
-
-        $michael = User::factory()->create();
-        $account = $michael->account;
-        $order = StripeOrder::factory()->create(['account_id' => $account->id, 'stripe_id' => 'cs_test_scranton']);
-        $this->stripe->respondTo('checkout/sessions*', $this->stripeCheckoutSession(id: 'cs_test_scranton', paymentStatus: 'paid'));
-
-        new SettleOrder(account: $account, sessionId: 'cs_test_scranton')->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::FullAccessPurchased
-            && $job->isAbout($order));
     }
 }

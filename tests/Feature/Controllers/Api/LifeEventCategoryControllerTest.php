@@ -163,22 +163,6 @@ class LifeEventCategoryControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_the_supplied_wording_of_a_group_through_the_translator(): void
-    {
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->system(LifeEventCategoryEnum::HealthAndWellbeing)->create([
-            'account_id' => $user->account_id,
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', "/api/v1/life-event-categories/{$category->uuid}")
-            ->assertOk()
-            ->assertJsonPath('data.attributes.is_system', true)
-            ->assertJsonPath('data.attributes.name', __('Health and wellbeing'));
-    }
-
-    #[Test]
     public function it_reads_the_words_the_user_wrote_whatever_language_is_asked_for(): void
     {
         $user = User::factory()->create();

@@ -6,7 +6,6 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
-use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -139,42 +138,6 @@ class TemplatePageControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_keeps_a_page_that_still_holds_sections(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $page = StructureVersionPage::factory()->create(['structure_version_id' => $version->id]);
-        StructureVersionSection::factory()->create([
-            'structure_version_id' => $version->id,
-            'structure_version_page_id' => $page->id,
-        ]);
-
-        $this->actingAs($user)->delete(route('settings.templatePages.destroy', [$template, $page]))
-            ->assertSessionHas('error');
-
-        $this->assertModelExists($page);
-    }
-
-    #[Test]
-    public function it_keeps_the_last_page_of_a_template(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $page = $version->pages()->sole();
-
-        $this->actingAs($user)->delete(route('settings.templatePages.destroy', [$template, $page]))
-            ->assertSessionHas('error');
-
-        $this->assertModelExists($page);
-    }
-
-    #[Test]
     public function it_does_not_find_a_page_of_another_template(): void
     {
         Queue::fake();
@@ -200,14 +163,5 @@ class TemplatePageControllerTest extends TestCase
 
         $this->actingAs($user)->delete(route('settings.templatePages.destroy', [$template, $theirs]))
             ->assertNotFound();
-    }
-
-    #[Test]
-    public function it_keeps_somebody_who_is_not_signed_in_out(): void
-    {
-        $template = Template::factory()->create();
-
-        $this->post(route('settings.templatePages.create', $template), ['label' => 'Life events'])
-            ->assertRedirect(route('auth.login.new'));
     }
 }

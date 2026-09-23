@@ -36,17 +36,6 @@ class DisableTwoFactorAuthenticationTest extends TestCase
         $this->assertNull($user->two_factor_confirmed_at);
         $this->assertNull($user->two_factor_recovery_codes);
         $this->assertFalse($user->usesTwoFactorAuthentication());
-    }
-
-    #[Test]
-    public function it_logs_the_change(): void
-    {
-        Queue::fake();
-
-        $account = Account::factory()->create();
-        $user = User::factory()->twoFactor()->create(['account_id' => $account->id]);
-
-        new DisableTwoFactorAuthentication(user: $user)->execute();
 
         Queue::assertPushedOn(
             queue: 'low',

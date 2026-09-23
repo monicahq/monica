@@ -27,7 +27,11 @@ class UpdateEntityTypePositionTest extends TestCase
         $user = User::factory()->create();
         $animals = EntityType::factory()->create(['account_id' => $user->account_id, 'position' => 1]);
         $companies = EntityType::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
-        $recipes = EntityType::factory()->create(['account_id' => $user->account_id, 'position' => 3]);
+        $recipes = EntityType::factory()->create([
+            'account_id' => $user->account_id,
+            'name_plural' => 'Recipes',
+            'position' => 3,
+        ]);
 
         $moved = new UpdateEntityTypePosition(user: $user, entityType: $recipes, position: 1)->execute();
 
@@ -35,6 +39,11 @@ class UpdateEntityTypePositionTest extends TestCase
         $this->assertSame(1, $recipes->refresh()->position);
         $this->assertSame(2, $animals->refresh()->position);
         $this->assertSame(3, $companies->refresh()->position);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::EntityTypePositionUpdate
+                && $job->parameters === ['name' => 'Recipes'];
+        });
     }
 
     #[Test]
@@ -103,25 +112,5 @@ class UpdateEntityTypePositionTest extends TestCase
         } finally {
             $this->assertSame(2, $entityType->refresh()->position);
         }
-    }
-
-    #[Test]
-    public function it_writes_the_move_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->create([
-            'account_id' => $user->account_id,
-            'name_plural' => 'Recipes',
-            'position' => 1,
-        ]);
-
-        new UpdateEntityTypePosition(user: $user, entityType: $entityType, position: 1)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::EntityTypePositionUpdate
-                && $job->parameters === ['name' => 'Recipes'];
-        });
     }
 }

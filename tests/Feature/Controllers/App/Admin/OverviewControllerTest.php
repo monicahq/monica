@@ -18,14 +18,6 @@ class OverviewControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_is_closed_to_somebody_who_does_not_run_the_instance(): void
-    {
-        $jim = User::factory()->create();
-
-        $this->actingAs($jim)->get(route('admin.overview.index'))->assertNotFound();
-    }
-
-    #[Test]
     public function it_is_the_first_thing_an_administrator_sees(): void
     {
         $michael = $this->administrator();
@@ -49,19 +41,6 @@ class OverviewControllerTest extends TestCase
         $response->assertSee('last 30 days', escape: false);
         $response->assertSee('right now', escape: false);
         $response->assertSee('2 MB', escape: false);
-    }
-
-    #[Test]
-    public function it_reads_as_an_empty_instance_rather_than_as_a_broken_one(): void
-    {
-        $michael = User::factory()->create();
-        Administrator::factory()->create(['user_id' => $michael->id]);
-        Account::query()->whereKeyNot($michael->account_id)->delete();
-
-        $response = $this->actingAs($michael)->get(route('admin.overview.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('0 B', escape: false);
     }
 
     #[Test]

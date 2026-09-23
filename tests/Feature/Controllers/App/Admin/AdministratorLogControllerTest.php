@@ -36,29 +36,6 @@ class AdministratorLogControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_the_most_recent_thing_first(): void
-    {
-        $michael = $this->administrator();
-
-        AdministratorLog::factory()->create([
-            'user_id' => $michael->id,
-            'action' => AdministratorActionEnum::UserDeactivated->value,
-            'parameters' => ['name' => 'Todd Packer'],
-            'created_at' => now()->subDay(),
-        ]);
-        AdministratorLog::factory()->create([
-            'user_id' => $michael->id,
-            'action' => AdministratorActionEnum::UserReactivated->value,
-            'parameters' => ['name' => 'Todd Packer'],
-            'created_at' => now(),
-        ]);
-
-        $response = $this->actingAs($michael)->get(route('admin.logs.index'));
-
-        $response->assertSeeInOrder(['Reactivated Todd Packer', 'Deactivated Todd Packer'], escape: false);
-    }
-
-    #[Test]
     public function it_narrows_the_record_to_one_administrator(): void
     {
         $michael = $this->administrator();
@@ -104,18 +81,6 @@ class AdministratorLogControllerTest extends TestCase
 
         $response->assertSee('Granted lifetime access to the account of Dwight Schrute', escape: false);
         $response->assertDontSee('Deactivated Todd Packer', escape: false);
-    }
-
-    #[Test]
-    public function it_hands_back_one_page_at_a_time(): void
-    {
-        $michael = $this->administrator();
-
-        AdministratorLog::factory()->count(26)->create(['user_id' => $michael->id]);
-
-        $response = $this->actingAs($michael)->get(route('admin.logs.index'));
-
-        $response->assertSee('Load more', escape: false);
     }
 
     #[Test]

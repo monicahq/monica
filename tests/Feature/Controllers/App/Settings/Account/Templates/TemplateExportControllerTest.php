@@ -84,15 +84,6 @@ class TemplateExportControllerTest extends TestCase
         $this->actingAs($user)->get(route('settings.templateExport.show', $template))->assertNotFound();
     }
 
-    #[Test]
-    public function it_does_not_hand_over_a_template_in_another_account(): void
-    {
-        $template = $this->publishedTemplate(User::factory()->create());
-
-        $this->actingAs(User::factory()->create())->get(route('settings.templateExport.show', $template))
-            ->assertNotFound();
-    }
-
     private function publishedTemplate(User $user): Template
     {
         $template = Template::factory()->create([

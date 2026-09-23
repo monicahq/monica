@@ -12,12 +12,10 @@ use App\Enums\SortDirectionEnum;
 use App\Helpers\LocaleCollation;
 use App\Models\Account;
 use App\Models\Contact;
-use App\Models\File;
 use App\Models\Relationship;
 use App\Models\RelationshipType;
 use App\Models\Reminder;
 use App\Models\ShareLink;
-use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
@@ -28,63 +26,6 @@ use Tests\TestCase;
 class ContactTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $account = Account::factory()->create();
-        $contact = Contact::factory()->create(['account_id' => $account->id]);
-
-        $this->assertTrue($contact->account()->exists());
-        $this->assertTrue($account->is($contact->account));
-    }
-
-    #[Test]
-    public function it_belongs_to_a_vault(): void
-    {
-        $vault = Vault::factory()->create();
-        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-
-        $this->assertTrue($contact->vault()->exists());
-        $this->assertTrue($vault->is($contact->vault));
-    }
-
-    #[Test]
-    public function it_belongs_to_the_structure_version_its_page_renders_from(): void
-    {
-        $version = StructureVersion::factory()->published()->create();
-        $contact = Contact::factory()->create(['structure_version_id' => $version->id]);
-
-        $this->assertTrue($contact->structureVersion()->exists());
-        $this->assertTrue($version->is($contact->structureVersion));
-    }
-
-    #[Test]
-    public function it_belongs_to_the_file_its_avatar_was_uploaded_as(): void
-    {
-        $vault = Vault::factory()->create();
-        $file = File::factory()->create([
-            'account_id' => $vault->account_id,
-            'vault_id' => $vault->id,
-        ]);
-        $contact = Contact::factory()->create([
-            'account_id' => $vault->account_id,
-            'vault_id' => $vault->id,
-            'avatar_file_id' => $file->id,
-        ]);
-
-        $this->assertTrue($contact->avatar()->exists());
-        $this->assertTrue($file->is($contact->avatar));
-    }
-
-    #[Test]
-    public function it_has_no_avatar_when_it_is_shown_as_the_initials_the_product_draws(): void
-    {
-        $contact = Contact::factory()->create();
-
-        $this->assertNull($contact->avatar_file_id);
-        $this->assertNull($contact->avatar);
-    }
 
     #[Test]
     public function it_holds_the_private_links_opened_onto_its_page(): void
@@ -113,28 +54,6 @@ class ContactTest extends TestCase
         $this->assertIsInt($contact->id);
         $this->assertEquals('slug', $contact->getRouteKeyName());
         $this->assertEquals($contact->slug, $contact->getRouteKey());
-    }
-
-    #[Test]
-    public function it_casts_the_flags_the_counts_and_the_dates(): void
-    {
-        $contact = Contact::factory()->me()->favourite()->archived()->create([
-            'name_order' => NameOrderEnum::FamilyFirst,
-            'life_event_count' => 12,
-            'last_life_event_at' => now(),
-            'last_consulted_at' => now(),
-        ]);
-
-        $contact->refresh();
-
-        $this->assertTrue($contact->is_me);
-        $this->assertTrue($contact->is_favourite);
-        $this->assertTrue($contact->is_archived);
-        $this->assertFalse($contact->is_partial);
-        $this->assertSame(12, $contact->life_event_count);
-        $this->assertEquals(NameOrderEnum::FamilyFirst, $contact->name_order);
-        $this->assertInstanceOf(CarbonImmutable::class, $contact->last_life_event_at);
-        $this->assertInstanceOf(CarbonImmutable::class, $contact->last_consulted_at);
     }
 
     #[Test]

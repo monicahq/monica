@@ -167,19 +167,6 @@ class ContactVCardControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_answers_not_found_for_a_contact_in_another_account(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $stranger = Contact::factory()->create();
-
-        $this->withToken($user->createToken('Michael’s script')->plainTextToken)
-            ->getJson("/api/v1/vaults/{$stranger->vault->uuid}/contacts/{$stranger->uuid}/vcard")
-            ->assertNotFound();
-    }
-
-    #[Test]
     public function it_answers_not_found_for_a_contact_reached_through_the_wrong_vault(): void
     {
         Queue::fake();
@@ -195,22 +182,6 @@ class ContactVCardControllerTest extends TestCase
         $this->withToken($user->createToken('Michael’s script')->plainTextToken)
             ->getJson("/api/v1/vaults/{$otherVault->uuid}/contacts/{$contact->uuid}/vcard")
             ->assertNotFound();
-    }
-
-    #[Test]
-    public function it_refuses_a_caller_carrying_no_key(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create([
-            'account_id' => $user->account_id,
-            'vault_id' => $vault->id,
-        ]);
-
-        $this->getJson("/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/vcard")
-            ->assertUnauthorized();
     }
 
     /** @return array{0: User, 1: Vault, 2: Contact} */

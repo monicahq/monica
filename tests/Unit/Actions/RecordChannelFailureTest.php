@@ -43,6 +43,7 @@ class RecordChannelFailureTest extends TestCase
     public function it_switches_the_channel_off_once_the_refusals_reach_the_threshold(): void
     {
         NotificationFacade::fake();
+        Queue::fake();
         $channel = $this->channel();
         $channel->update(['consecutive_failures' => (int) config('monica.notification_channel_failure_threshold') - 1]);
 
@@ -53,6 +54,15 @@ class RecordChannelFailureTest extends TestCase
             'is_enabled' => false,
             'disabled_reason' => 'The token has been revoked.',
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::NotificationChannelGaveUp
+                && $job->user === null
+                && $job->source === LogSourceEnum::System
+                && $job->parameters === ['name' => 'Telegram', 'reason' => 'The token has been revoked.'],
+        );
     }
 
     #[Test]
@@ -110,26 +120,6 @@ class RecordChannelFailureTest extends TestCase
         $channel->clearFailures();
 
         $this->assertSame(0, $channel->refresh()->consecutive_failures);
-    }
-
-    #[Test]
-    public function it_logs_that_the_product_gave_up_on_the_channel(): void
-    {
-        NotificationFacade::fake();
-        Queue::fake();
-        $channel = $this->channel();
-        $channel->update(['consecutive_failures' => (int) config('monica.notification_channel_failure_threshold') - 1]);
-
-        new RecordChannelFailure(channel: $channel, reason: 'The token has been revoked.')->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::NotificationChannelGaveUp
-                && $job->user === null
-                && $job->source === LogSourceEnum::System
-                && $job->parameters === ['name' => 'Telegram', 'reason' => 'The token has been revoked.'],
-        );
     }
 
     #[Test]

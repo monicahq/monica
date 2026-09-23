@@ -45,35 +45,6 @@ class ContactDuplicateControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_opens_when_one_of_a_pair_has_been_deleted(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $candidate = $this->candidateIn($vault, 'Jim', 'Jimmy');
-        $candidate->otherContact->delete();
-
-        $response = $this->actingAs($user)->get(route('vaults.duplicates.index', $vault));
-
-        $response->assertStatus(200);
-        $response->assertDontSee('Jimmy Halpert');
-        $response->assertSee('Nothing looks doubled');
-    }
-
-    #[Test]
-    public function it_lists_nothing_from_another_vault(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-        $this->candidateIn($elsewhere, 'Jim', 'Jimmy');
-
-        $response = $this->actingAs($user)->get(route('vaults.duplicates.index', $vault));
-
-        $response->assertStatus(200);
-        $response->assertDontSee('Jimmy Halpert');
-    }
-
-    #[Test]
     public function it_dismisses_a_pair_for_good(): void
     {
         Queue::fake();
@@ -110,26 +81,6 @@ class ContactDuplicateControllerTest extends TestCase
         );
 
         $response->assertStatus(404);
-    }
-
-    #[Test]
-    public function it_does_not_find_a_vault_of_another_account(): void
-    {
-        $user = User::factory()->create();
-        $stranger = Vault::factory()->create();
-
-        $this->actingAs($user)
-            ->get(route('vaults.duplicates.index', $stranger))
-            ->assertStatus(404);
-    }
-
-    #[Test]
-    public function a_visitor_is_sent_to_sign_in(): void
-    {
-        $vault = Vault::factory()->create();
-
-        $this->get(route('vaults.duplicates.index', $vault))
-            ->assertRedirect(route('auth.login.new'));
     }
 
     private function candidateIn(Vault $vault, string $first, string $second): ContactDuplicateCandidate

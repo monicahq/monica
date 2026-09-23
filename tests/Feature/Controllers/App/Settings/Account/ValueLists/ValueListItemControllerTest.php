@@ -176,14 +176,4 @@ class ValueListItemControllerTest extends TestCase
 
         $this->assertNotSoftDeleted($item);
     }
-
-    #[Test]
-    public function it_refuses_a_visitor_who_is_not_signed_in(): void
-    {
-        $this->post(route('settings.valueListItems.create', 1), ['label' => 'Salesman'])
-            ->assertRedirect(route('auth.login.new'));
-
-        $this->delete(route('settings.valueListItems.destroy', 1))
-            ->assertRedirect(route('auth.login.new'));
-    }
 }

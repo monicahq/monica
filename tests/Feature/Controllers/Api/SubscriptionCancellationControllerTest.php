@@ -48,20 +48,4 @@ class SubscriptionCancellationControllerTest extends TestCase
             ->assertUnprocessable()
             ->assertJsonValidationErrors('subscription');
     }
-
-    #[Test]
-    public function it_refuses_an_account_with_no_subscription(): void
-    {
-        $michael = User::factory()->create();
-        Sanctum::actingAs($michael);
-
-        $this->json('DELETE', route('api.v1.billing.subscription.cancellation.destroy'))
-            ->assertUnprocessable();
-    }
-
-    #[Test]
-    public function it_refuses_a_request_with_no_token(): void
-    {
-        $this->json('DELETE', route('api.v1.billing.subscription.cancellation.destroy'))->assertUnauthorized();
-    }
 }

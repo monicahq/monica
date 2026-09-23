@@ -43,6 +43,15 @@ class CreateValueListTest extends TestCase
             'allows_user_values' => true,
             'position' => 1,
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListCreation
+                && $job->account->id === $user->account_id
+                && $job->isAbout($list)
+                && $job->parameters === ['name' => 'Dundie awards'],
+        );
     }
 
     #[Test]
@@ -90,24 +99,5 @@ class CreateValueListTest extends TestCase
 
         $this->assertEquals('Dundie awards', $list->name);
         $this->assertNull($list->description);
-    }
-
-    #[Test]
-    public function it_logs_the_creation(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $list = new CreateValueList(user: $user, name: 'Dundie awards')->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListCreation
-                && $job->account->id === $user->account_id
-                && $job->isAbout($list)
-                && $job->parameters === ['name' => 'Dundie awards'],
-        );
     }
 }

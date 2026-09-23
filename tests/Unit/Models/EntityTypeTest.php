@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Models\Account;
 use App\Models\EntityType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -13,26 +12,6 @@ use Tests\TestCase;
 class EntityTypeTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $account = Account::factory()->create();
-        $entityType = EntityType::factory()->create(['account_id' => $account->id]);
-
-        $this->assertTrue($entityType->account()->exists());
-        $this->assertTrue($account->is($entityType->account));
-    }
-
-    #[Test]
-    public function an_account_has_many_of_them(): void
-    {
-        $account = Account::factory()->create();
-        EntityType::factory()->count(2)->create(['account_id' => $account->id]);
-
-        $this->assertTrue($account->entityTypes()->exists());
-        $this->assertCount(2, $account->entityTypes);
-    }
 
     #[Test]
     public function it_gets_an_unguessable_identifier_and_keeps_a_number_for_a_key(): void

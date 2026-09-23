@@ -32,11 +32,20 @@ class DestroyFieldValueTest extends TestCase
 
         $user = User::factory()->create();
         $contact = $this->contactOf($user);
-        $value = $this->valueOn($user, $contact);
+        $value = $this->valueOn($user, $contact, [
+            'field_id' => Field::factory()->create(['account_id' => $user->account_id, 'label' => 'City'])->id,
+        ]);
 
         new DestroyFieldValue(user: $user, fieldValue: $value)->execute();
 
         $this->assertModelMissing($value);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FieldValueCleared
+                && $job->parameters === ['label' => 'City', 'name' => 'Pam Beesly'],
+        );
     }
 
     #[Test]
@@ -95,27 +104,6 @@ class DestroyFieldValueTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DestroyFieldValue(user: $user, fieldValue: FieldValue::factory()->create())->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_clearing(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $value = $this->valueOn($user, $contact, [
-            'field_id' => Field::factory()->create(['account_id' => $user->account_id, 'label' => 'City'])->id,
-        ]);
-
-        new DestroyFieldValue(user: $user, fieldValue: $value)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FieldValueCleared
-                && $job->parameters === ['label' => 'City', 'name' => 'Pam Beesly'],
-        );
     }
 
     private function contactOf(User $user): Contact

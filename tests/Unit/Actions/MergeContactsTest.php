@@ -54,6 +54,8 @@ class MergeContactsTest extends TestCase
             'merged_by_user_id' => $user->id,
             'undone_at' => null,
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactsMerged);
     }
 
     #[Test]
@@ -265,19 +267,6 @@ class MergeContactsTest extends TestCase
             ['kind' => 'value_moved', 'id' => $value->id, 'from' => $james->id],
             $merge->ledger
         );
-    }
-
-    #[Test]
-    public function it_writes_to_the_changelog(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        [$jim, $james] = $this->twoContactsOf($user);
-
-        new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactsMerged);
     }
 
     #[Test]

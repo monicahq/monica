@@ -21,24 +21,6 @@ class ReminderOccurrenceTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_an_account_a_vault_and_a_rule(): void
-    {
-        $occurrence = ReminderOccurrence::factory()->create();
-
-        $this->assertTrue($occurrence->account()->exists());
-        $this->assertTrue($occurrence->vault()->exists());
-        $this->assertTrue($occurrence->reminder()->exists());
-    }
-
-    #[Test]
-    public function it_is_reachable_by_its_rule(): void
-    {
-        $occurrence = ReminderOccurrence::factory()->create();
-
-        $this->assertTrue($occurrence->reminder->occurrences()->exists());
-    }
-
-    #[Test]
     public function it_keeps_the_two_instants_apart(): void
     {
         $occurrence = ReminderOccurrence::factory()->create();

@@ -12,10 +12,10 @@ use App\Exceptions\SectionIsAlreadyInTheStructureVersion;
 use App\Jobs\LogUserAction;
 use App\Models\Section;
 use App\Models\SectionVersion;
-use App\Models\Template;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -34,8 +34,10 @@ class AddSectionToStructureVersionTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $structureVersion = StructureVersion::factory()->create(['account_id' => $user->account_id]);
-        $sectionVersion = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
+        $structureVersion = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
+        $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
 
         $row = new AddSectionToStructureVersion(
             user: $user,
@@ -55,6 +57,11 @@ class AddSectionToStructureVersionTest extends TestCase
             'title_override' => 'Where they live',
             'is_collapsed_by_default' => true,
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::SectionAddedToTemplate
+                && $job->parameters === ['section' => 'Address', 'name' => 'Contact'];
+        });
     }
 
     #[Test]
@@ -293,28 +300,5 @@ class AddSectionToStructureVersionTest extends TestCase
             structureVersion: $structureVersion,
             sectionVersion: $sectionVersion,
         )->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_addition_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
-        $structureVersion = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
-        $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
-
-        new AddSectionToStructureVersion(
-            user: $user,
-            structureVersion: $structureVersion,
-            sectionVersion: $sectionVersion,
-        )->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::SectionAddedToTemplate
-                && $job->parameters === ['section' => 'Address', 'name' => 'Contact'];
-        });
     }
 }

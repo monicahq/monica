@@ -109,12 +109,4 @@ class CheckoutReturnControllerTest extends TestCase
         $response->assertRedirect(route('settings.billing.index'));
         $response->assertSessionHasErrors('offer');
     }
-
-    #[Test]
-    public function it_is_closed_to_a_visitor(): void
-    {
-        $response = $this->get(route('settings.checkoutReturn.show', ['session_id' => 'cs_test_scranton']));
-
-        $response->assertRedirect(route('auth.login.new'));
-    }
 }

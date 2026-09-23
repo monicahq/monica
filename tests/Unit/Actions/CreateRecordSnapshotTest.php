@@ -54,6 +54,14 @@ class CreateRecordSnapshotTest extends TestCase
             'created_by_user_id' => $user->id,
             'restored_at' => null,
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::RecordSnapshotTaken
+                && $job->isAbout($snapshot)
+                && $job->parameters === ['name' => 'Pam Beesly', 'reason' => 'manual'],
+        );
     }
 
     #[Test]
@@ -232,25 +240,6 @@ class CreateRecordSnapshotTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new CreateRecordSnapshot(user: $user, record: Contact::factory()->create())->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_capture(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-
-        $snapshot = new CreateRecordSnapshot(user: $user, record: $contact)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::RecordSnapshotTaken
-                && $job->isAbout($snapshot)
-                && $job->parameters === ['name' => 'Pam Beesly', 'reason' => 'manual'],
-        );
     }
 
     private function contactOf(User $user): Contact

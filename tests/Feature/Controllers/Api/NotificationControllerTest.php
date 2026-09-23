@@ -17,7 +17,7 @@ class NotificationControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @var array<string, mixed> */
+    /** @var array<int|string, mixed> */
     private array $jsonStructure = [
         'type',
         'id',
@@ -108,23 +108,6 @@ class NotificationControllerTest extends TestCase
         $this->notification($them, 'Their business');
 
         $this->json('GET', route('api.v1.notifications'))->assertJsonCount(0, 'data');
-    }
-
-    #[Test]
-    public function a_notification_of_another_account_is_not_found(): void
-    {
-        $this->signedIn();
-        $theirs = Account::factory()->create();
-        $them = User::factory()->create(['account_id' => $theirs->id]);
-        $notification = $this->notification($them, 'Their business');
-
-        $this->json('GET', route('api.v1.notifications.show', $notification->uuid))->assertNotFound();
-    }
-
-    #[Test]
-    public function it_refuses_a_caller_who_has_not_signed_in(): void
-    {
-        $this->json('GET', route('api.v1.notifications'))->assertUnauthorized();
     }
 
     private function signedIn(): User

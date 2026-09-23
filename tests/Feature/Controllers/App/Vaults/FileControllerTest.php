@@ -47,20 +47,6 @@ class FileControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_find_a_file_in_another_account(): void
-    {
-        Storage::fake('local');
-
-        $user = User::factory()->create();
-        $stranger = User::factory()->create();
-        $theirs = Vault::factory()->create(['account_id' => $stranger->account_id]);
-        $file = $this->fileIn($theirs, $stranger, 'lease.pdf');
-
-        $this->actingAs($user)->get(route('files.show', ['vault' => $theirs, 'file' => $file]))
-            ->assertNotFound();
-    }
-
-    #[Test]
     public function it_does_not_find_a_file_whose_bytes_have_gone(): void
     {
         Storage::fake('local');
@@ -77,19 +63,6 @@ class FileControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('files.show', ['vault' => $vault, 'file' => $file]))
             ->assertNotFound();
-    }
-
-    #[Test]
-    public function it_asks_whoever_is_not_signed_in_to_sign_in(): void
-    {
-        Storage::fake('local');
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $file = $this->fileIn($vault, $user, 'lease.pdf');
-
-        $this->get(route('files.show', ['vault' => $vault, 'file' => $file]))
-            ->assertRedirect(route('auth.login.new'));
     }
 
     private function fileIn(Vault $vault, User $user, string $name): File

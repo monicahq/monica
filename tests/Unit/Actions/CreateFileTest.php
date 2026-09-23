@@ -49,6 +49,14 @@ class CreateFileTest extends TestCase
         $this->assertEquals($user->id, $file->uploaded_by_user_id);
 
         Storage::disk('local')->assertExists($file->path);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FileUpload
+                && $job->account->id === $user->account_id
+                && $job->parameters === ['name' => 'contract.pdf'],
+        );
     }
 
     #[Test]
@@ -235,24 +243,5 @@ class CreateFileTest extends TestCase
             upload: UploadedFile::fake()->create('scan.pdf', 1),
             vault: $elsewhere,
         )->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_upload(): void
-    {
-        Queue::fake();
-        Storage::fake('local');
-
-        $user = User::factory()->create();
-
-        new CreateFile(user: $user, upload: UploadedFile::fake()->create('contract.pdf', 1))->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FileUpload
-                && $job->account->id === $user->account_id
-                && $job->parameters === ['name' => 'contract.pdf'],
-        );
     }
 }

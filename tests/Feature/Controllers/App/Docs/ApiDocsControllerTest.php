@@ -50,29 +50,6 @@ class ApiDocsControllerTest extends TestCase
     }
 
     #[Test]
-    public function every_page_carries_the_whole_sidebar(): void
-    {
-        $response = $this->get(route('docs.api.show', ['section' => 'status-show']));
-
-        $response->assertSee('Getting started');
-        $response->assertSee('Resources');
-        $response->assertSee('Health');
-        $response->assertSee('Your profile');
-        $response->assertSee('API keys');
-        $response->assertSee('Logs');
-        $response->assertSee('Emails sent');
-        $response->assertSee('Vaults');
-        $response->assertSee('Contacts');
-        $response->assertSee('Templates');
-        $response->assertSee('Kinds of record');
-        $response->assertSee('Relationship categories');
-        $response->assertSee('Relationship types');
-        $response->assertSee('Life event categories');
-        $response->assertSee('Introduction');
-        $response->assertSee('Pagination');
-    }
-
-    #[Test]
     public function the_sidebar_links_to_pages_rather_than_to_anchors(): void
     {
         $response = $this->get(route('docs.api.show', ['section' => 'status-show']));
@@ -115,18 +92,6 @@ class ApiDocsControllerTest extends TestCase
 
         $response->assertSee('Rate limit');
         $response->assertSee('X-RateLimit-Remaining');
-    }
-
-    #[Test]
-    public function it_describes_every_field_the_endpoint_returns(): void
-    {
-        $response = $this->get(route('docs.api.show', ['section' => 'vaults-index']));
-
-        $response->assertSee('Returns');
-        $response->assertSee('data[].attributes.name', escape: false);
-        $response->assertSee('timestamp');
-        $response->assertSee('Up to 255 characters', escape: false);
-        $response->assertSee('meta.total', escape: false);
     }
 
     #[Test]

@@ -18,16 +18,6 @@ class ModerationControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_is_closed_to_somebody_who_does_not_run_the_instance(): void
-    {
-        $jim = User::factory()->create();
-        $version = MarketplaceListingVersion::factory()->create();
-
-        $this->actingAs($jim)->get(route('admin.moderation.index'))->assertNotFound();
-        $this->actingAs($jim)->get(route('admin.moderation.show', ['version' => $version->id]))->assertNotFound();
-    }
-
-    #[Test]
     public function it_lists_what_is_waiting_with_what_a_moderator_needs_to_pick_one_up(): void
     {
         $category = MarketplaceCategory::factory()->create(['name_translation_key' => 'Work']);
@@ -48,26 +38,6 @@ class ModerationControllerTest extends TestCase
         $response->assertSee('Michael Scott', escape: false);
         $response->assertSee('Work', escape: false);
         $response->assertSee('waiting', escape: false);
-    }
-
-    #[Test]
-    public function it_shows_what_has_waited_longest_first(): void
-    {
-        $newest = MarketplaceListing::factory()->submitted()->create(['name' => 'Second In']);
-        MarketplaceListingVersion::factory()->create([
-            'marketplace_listing_id' => $newest->id,
-            'created_at' => now(),
-        ]);
-
-        $oldest = MarketplaceListing::factory()->submitted()->create(['name' => 'First In']);
-        MarketplaceListingVersion::factory()->create([
-            'marketplace_listing_id' => $oldest->id,
-            'created_at' => now()->subMonth(),
-        ]);
-
-        $response = $this->actingAs($this->administrator())->get(route('admin.moderation.index'));
-
-        $response->assertSeeInOrder(['First In', 'Second In'], escape: false);
     }
 
     #[Test]

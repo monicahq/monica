@@ -46,6 +46,11 @@ class CreateSectionTest extends TestCase
             'is_active' => true,
             'published_version_id' => null,
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::SectionCreation
+                && $job->parameters === ['name' => 'Medical follow up'];
+        });
     }
 
     #[Test]
@@ -129,21 +134,6 @@ class CreateSectionTest extends TestCase
         $section = new CreateSection(user: $user, name: '<script>alert(1)</script>Address')->execute();
 
         $this->assertEquals('Address', $section->name);
-    }
-
-    #[Test]
-    public function it_writes_the_creation_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new CreateSection(user: $user, name: 'Address')->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::SectionCreation
-                && $job->parameters === ['name' => 'Address'];
-        });
     }
 
     #[Test]

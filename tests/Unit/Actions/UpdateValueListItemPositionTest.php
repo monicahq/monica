@@ -26,10 +26,18 @@ class UpdateValueListItemPositionTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $list = ValueList::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Phone labels',
+        ]);
         $first = $this->item($user->account_id, $list->id, 1);
         $second = $this->item($user->account_id, $list->id, 2);
-        $third = $this->item($user->account_id, $list->id, 3);
+        $third = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'label' => 'Fax',
+            'position' => 3,
+        ]);
 
         $result = new UpdateValueListItemPosition(user: $user, item: $third, position: 1)->execute();
 
@@ -37,6 +45,13 @@ class UpdateValueListItemPositionTest extends TestCase
         $this->assertSame(1, $third->refresh()->position);
         $this->assertSame(2, $first->refresh()->position);
         $this->assertSame(3, $second->refresh()->position);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListItemPositionUpdate
+                && $job->parameters === ['label' => 'Fax', 'name' => 'Phone labels'],
+        );
     }
 
     #[Test]
@@ -104,32 +119,6 @@ class UpdateValueListItemPositionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateValueListItemPosition(user: $user, item: $item, position: 1)->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_move(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Phone labels',
-        ]);
-        $item = ValueListItem::factory()->create([
-            'account_id' => $user->account_id,
-            'value_list_id' => $list->id,
-            'label' => 'Fax',
-        ]);
-
-        new UpdateValueListItemPosition(user: $user, item: $item, position: 1)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListItemPositionUpdate
-                && $job->parameters === ['label' => 'Fax', 'name' => 'Phone labels'],
-        );
     }
 
     private function item(int $accountId, int $listId, int $position): ValueListItem

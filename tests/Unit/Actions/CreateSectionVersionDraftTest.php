@@ -28,7 +28,7 @@ class CreateSectionVersionDraftTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $section = Section::factory()->create(['account_id' => $user->account_id]);
+        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
         $published = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
 
         $draft = new CreateSectionVersionDraft(user: $user, sectionVersion: $published)->execute();
@@ -38,6 +38,11 @@ class CreateSectionVersionDraftTest extends TestCase
         $this->assertEquals(VersionStatusEnum::Draft, $draft->status);
         $this->assertEquals($published->id, $draft->previous_version_id);
         $this->assertEquals(0, $draft->usage_count);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::SectionVersionDrafted
+                && $job->parameters === ['name' => 'Address', 'version' => 2];
+        });
     }
 
     #[Test]
@@ -129,22 +134,5 @@ class CreateSectionVersionDraftTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new CreateSectionVersionDraft(user: $michael, sectionVersion: $version)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_draft_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
-        $published = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
-
-        new CreateSectionVersionDraft(user: $user, sectionVersion: $published)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::SectionVersionDrafted
-                && $job->parameters === ['name' => 'Address', 'version' => 2];
-        });
     }
 }

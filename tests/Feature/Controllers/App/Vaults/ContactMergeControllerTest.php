@@ -40,41 +40,6 @@ class ContactMergeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_offer_the_contact_itself(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = $this->contactIn($vault, $this->publishedContactVersion($user), 'Jim', 'Halpert');
-
-        $response = $this->actingAs($user)->get(
-            route('contacts.merge.new', ['vault' => $vault, 'contact' => $contact])
-        );
-
-        $response->assertStatus(200);
-        $response->assertSee('Nobody to merge with');
-    }
-
-    #[Test]
-    public function it_shows_both_sides_of_a_difference(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->publishedContactVersion($user);
-        $field = $this->fieldCarriedBy($version);
-        [$jim, $james] = $this->twoContactsOf($user, $version);
-        $this->valueFor($jim, $field, 'jim@dundermifflin.com');
-        $this->valueFor($james, $field, 'james@dundermifflin.com');
-
-        $response = $this->actingAs($user)->get(
-            route('contacts.merge.show', ['vault' => $jim->vault, 'contact' => $jim, 'other' => $james])
-        );
-
-        $response->assertStatus(200);
-        $response->assertSee('jim@dundermifflin.com');
-        $response->assertSee('james@dundermifflin.com');
-        $response->assertSee('This absorbs a contact');
-    }
-
-    #[Test]
     public function it_opens_either_record_from_the_screen(): void
     {
         $user = User::factory()->create();
@@ -157,21 +122,6 @@ class ContactMergeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_find_a_contact_of_another_account(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = $this->contactIn($vault, $this->publishedContactVersion($user), 'Jim', 'Halpert');
-        $stranger = Contact::factory()->create();
-
-        $response = $this->actingAs($user)->get(
-            route('contacts.merge.show', ['vault' => $vault, 'contact' => $contact, 'other' => $stranger])
-        );
-
-        $response->assertStatus(404);
-    }
-
-    #[Test]
     public function it_does_not_find_a_contact_reached_through_the_wrong_vault(): void
     {
         $user = User::factory()->create();
@@ -186,17 +136,6 @@ class ContactMergeControllerTest extends TestCase
         );
 
         $response->assertStatus(404);
-    }
-
-    #[Test]
-    public function it_does_not_find_the_screen_for_a_visitor(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = $this->contactIn($vault, $this->publishedContactVersion($user), 'Jim', 'Halpert');
-
-        $this->get(route('contacts.merge.new', ['vault' => $vault, 'contact' => $contact]))
-            ->assertRedirect(route('auth.login.new'));
     }
 
     #[Test]
@@ -247,21 +186,6 @@ class ContactMergeControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Undo the merge');
         $response->assertSee('James Halpert');
-    }
-
-    #[Test]
-    public function it_refuses_to_undo_a_merge_twice(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        [$jim, $james] = $this->twoContactsOf($user);
-        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
-        $url = route('vaults.merges.destroy', ['vault' => $jim->vault, 'contactMerge' => $merge]);
-
-        $this->actingAs($user)->delete($url);
-
-        $this->actingAs($user)->delete($url)->assertSessionHasErrors('merge');
     }
 
     #[Test]

@@ -8,8 +8,6 @@ use App\Models\Account;
 use App\Models\ShareLink;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\VaultDefaultTemplate;
-use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -17,16 +15,6 @@ use Tests\TestCase;
 class VaultTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $account = Account::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $account->id]);
-
-        $this->assertTrue($vault->account()->exists());
-        $this->assertTrue($account->is($vault->account));
-    }
 
     #[Test]
     public function it_gets_an_unguessable_identifier_and_keeps_a_number_for_a_key(): void
@@ -43,23 +31,6 @@ class VaultTest extends TestCase
     }
 
     #[Test]
-    public function it_casts_the_position_the_count_the_default_and_the_last_visit(): void
-    {
-        $vault = Vault::factory()->default()->create([
-            'position' => 3,
-            'contact_count' => 12,
-            'last_visited_at' => now(),
-        ]);
-
-        $vault->refresh();
-
-        $this->assertSame(3, $vault->position);
-        $this->assertSame(12, $vault->contact_count);
-        $this->assertTrue($vault->is_default);
-        $this->assertInstanceOf(CarbonImmutable::class, $vault->last_visited_at);
-    }
-
-    #[Test]
     public function it_holds_no_contact_and_no_visit_to_begin_with(): void
     {
         $vault = Vault::factory()->create();
@@ -67,16 +38,6 @@ class VaultTest extends TestCase
         $this->assertSame(0, $vault->contact_count);
         $this->assertFalse($vault->is_default);
         $this->assertNull($vault->last_visited_at);
-    }
-
-    #[Test]
-    public function it_holds_the_structures_a_new_record_starts_on(): void
-    {
-        $vault = Vault::factory()->create();
-        $default = VaultDefaultTemplate::factory()->create(['vault_id' => $vault->id]);
-
-        $this->assertTrue($vault->defaultTemplates()->exists());
-        $this->assertTrue($default->is($vault->defaultTemplates->first()));
     }
 
     #[Test]

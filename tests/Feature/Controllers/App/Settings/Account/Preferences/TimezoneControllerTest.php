@@ -74,23 +74,6 @@ class TimezoneControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_zone_the_product_does_not_know(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-
-        $response = $this->actingAs($user)->put(route('settings.timezone.update'), [
-            'timezone' => 'Nowhere/Here',
-        ]);
-
-        $response->assertSessionHasErrors('timezone');
-
-        $this->assertDatabaseHas('users', [
-            'id' => $user->id,
-            'timezone' => 'Europe/Paris',
-        ]);
-    }
-
-    #[Test]
     public function it_refuses_a_deprecated_alias(): void
     {
         $user = User::factory()->create(['timezone' => 'Europe/Paris']);
@@ -285,13 +268,5 @@ class TimezoneControllerTest extends TestCase
             'id' => $user->id,
             'timezone' => 'Asia/Hong_Kong',
         ]);
-    }
-
-    #[Test]
-    public function it_refuses_a_visitor_who_is_not_signed_in(): void
-    {
-        $response = $this->put(route('settings.timezone.update'), ['timezone' => 'Asia/Tokyo']);
-
-        $response->assertRedirect(route('auth.login.new'));
     }
 }

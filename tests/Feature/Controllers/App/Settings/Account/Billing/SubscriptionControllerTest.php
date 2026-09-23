@@ -116,11 +116,4 @@ class SubscriptionControllerTest extends TestCase
         $response->assertSee(route('settings.subscription.update', ['price' => 'price_yearly']), escape: false);
         $response->assertSee(route('settings.checkout.store', ['price' => 'price_lifetime']), escape: false);
     }
-
-    #[Test]
-    public function it_refuses_a_visitor(): void
-    {
-        $this->delete(route('settings.subscription.destroy'))->assertRedirect(route('auth.login.new'));
-        $this->put(route('settings.subscription.update', ['price' => 'price_yearly']))->assertRedirect(route('auth.login.new'));
-    }
 }

@@ -57,6 +57,12 @@ class CreateTemplateTest extends TestCase
             'entity_type_id' => null,
             'published_version_id' => null,
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job) use ($user): bool {
+            return $job->action === UserActionEnum::TemplateCreation
+                && $job->parameters === ['name' => 'Contact']
+                && $job->user->is($user);
+        });
     }
 
     #[Test]
@@ -214,21 +220,5 @@ class CreateTemplateTest extends TestCase
         $template = new CreateTemplate(user: $user, name: '<b>Contact</b>')->execute();
 
         $this->assertEquals('Contact', $template->name);
-    }
-
-    #[Test]
-    public function it_writes_the_creation_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new CreateTemplate(user: $user, name: 'Contact')->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job) use ($user): bool {
-            return $job->action === UserActionEnum::TemplateCreation
-                && $job->parameters === ['name' => 'Contact']
-                && $job->user->is($user);
-        });
     }
 }

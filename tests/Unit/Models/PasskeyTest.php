@@ -16,15 +16,6 @@ class PasskeyTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_a_user(): void
-    {
-        $passkey = Passkey::factory()->create();
-
-        $this->assertTrue($passkey->user()->exists());
-        $this->assertInstanceOf(User::class, $passkey->user);
-    }
-
-    #[Test]
     public function it_states_that_it_has_never_been_used(): void
     {
         $passkey = Passkey::factory()->create();
@@ -40,15 +31,6 @@ class PasskeyTest extends TestCase
 
         $this->assertTrue($passkey->hasBeenUsed());
         $this->assertNotNull($passkey->last_used_at);
-    }
-
-    #[Test]
-    public function it_keeps_the_credential_as_a_structure_rather_than_a_string(): void
-    {
-        $passkey = Passkey::factory()->create();
-
-        $this->assertIsArray($passkey->credential);
-        $this->assertArrayHasKey('publicKeyCredentialId', $passkey->credential);
     }
 
     #[Test]

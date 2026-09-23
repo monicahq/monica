@@ -19,22 +19,6 @@ class AccountStorageLimitControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_is_closed_to_somebody_who_does_not_run_the_instance(): void
-    {
-        $jim = User::factory()->create();
-        $todd = User::factory()->create();
-        $untouched = $todd->account->storage_limit_in_bytes;
-
-        $this->actingAs($jim)
-            ->put(route('admin.accounts.storageLimit.update', ['account' => $todd->account_id]), [
-                'storage_limit_in_bytes' => 1024,
-            ])
-            ->assertNotFound();
-
-        $this->assertEquals($untouched, $todd->account->refresh()->storage_limit_in_bytes);
-    }
-
-    #[Test]
     public function it_sets_a_limit(): void
     {
         $todd = User::factory()->create();

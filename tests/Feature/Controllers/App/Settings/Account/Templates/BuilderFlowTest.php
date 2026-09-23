@@ -88,23 +88,6 @@ class BuilderFlowTest extends TestCase
     }
 
     #[Test]
-    public function it_opens_a_published_template_read_only(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
-        $template->structure->update(['published_version_id' => $version->id]);
-
-        $this->actingAs($user)
-            ->get(route('settings.templateBuilder.index', $template))
-            ->assertOk()
-            ->assertSee(__('Create a new version'))
-            ->assertDontSee(__('Add a section'));
-    }
-
-    #[Test]
     public function it_gives_a_shared_section_its_own_version_before_editing_it(): void
     {
         Queue::fake();

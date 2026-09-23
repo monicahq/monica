@@ -51,6 +51,9 @@ class UpdateLifeEventTypeTest extends TestCase
             'icon' => 'star',
             'colour' => '#a8447a',
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventTypeUpdate
+            && $job->parameters === ['name' => 'Dundie awards']);
     }
 
     #[Test]
@@ -208,28 +211,5 @@ class UpdateLifeEventTypeTest extends TestCase
             lifeEventCategory: $category,
             name: 'Anything',
         )->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-        $type = LifeEventType::factory()->create([
-            'account_id' => $user->account_id,
-            'life_event_category_id' => $category->id,
-        ]);
-
-        new UpdateLifeEventType(
-            user: $user,
-            lifeEventType: $type,
-            lifeEventCategory: $category,
-            name: 'Party planning',
-        )->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventTypeUpdate
-            && $job->parameters === ['name' => 'Party planning']);
     }
 }

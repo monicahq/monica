@@ -26,11 +26,19 @@ class DestroyEntityTypeTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
+        $entityType = EntityType::factory()->create([
+            'account_id' => $user->account_id,
+            'name_plural' => 'Wine bottles',
+        ]);
 
         new DestroyEntityType(user: $user, entityType: $entityType)->execute();
 
         $this->assertSoftDeleted($entityType);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::EntityTypeDeletion
+                && $job->parameters === ['name' => 'Wine bottles'];
+        });
     }
 
     #[Test]
@@ -66,24 +74,5 @@ class DestroyEntityTypeTest extends TestCase
         } finally {
             $this->assertNotSoftDeleted($entityType);
         }
-    }
-
-    #[Test]
-    public function it_writes_the_deletion_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->create([
-            'account_id' => $user->account_id,
-            'name_plural' => 'Wine bottles',
-        ]);
-
-        new DestroyEntityType(user: $user, entityType: $entityType)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::EntityTypeDeletion
-                && $job->parameters === ['name' => 'Wine bottles'];
-        });
     }
 }

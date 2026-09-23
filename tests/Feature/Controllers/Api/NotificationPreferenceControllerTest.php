@@ -16,7 +16,7 @@ class NotificationPreferenceControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @var array<string, mixed> */
+    /** @var array<int|string, mixed> */
     private array $jsonStructure = [
         'type',
         'id',
@@ -74,12 +74,6 @@ class NotificationPreferenceControllerTest extends TestCase
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors('delivery_mode');
-    }
-
-    #[Test]
-    public function it_refuses_a_caller_who_has_not_signed_in(): void
-    {
-        $this->json('GET', route('api.v1.notificationPreferences.show'))->assertUnauthorized();
     }
 
     private function signedIn(): User

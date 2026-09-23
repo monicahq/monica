@@ -38,6 +38,8 @@ class DismissReminderOccurrenceTest extends TestCase
         $this->assertSame(ReminderOccurrenceStatusEnum::Dismissed, $occurrence->status);
         $this->assertNotNull($occurrence->dismissed_at);
         $this->assertModelExists($occurrence);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderOccurrenceDismissal);
     }
 
     #[Test]
@@ -140,17 +142,6 @@ class DismissReminderOccurrenceTest extends TestCase
 
         $this->assertNull($sent->refresh()->failed_at);
         $this->assertNotNull($sent->sent_at);
-    }
-
-    #[Test]
-    public function it_writes_a_line_in_the_journal(): void
-    {
-        Queue::fake();
-        [$user, $occurrence] = $this->deadline();
-
-        new DismissReminderOccurrence(user: $user, occurrence: $occurrence)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderOccurrenceDismissal);
     }
 
     /** @return array{0: User, 1: ReminderOccurrence} */

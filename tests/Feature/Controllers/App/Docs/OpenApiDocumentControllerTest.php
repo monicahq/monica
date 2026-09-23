@@ -30,19 +30,6 @@ class OpenApiDocumentControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_describes_the_api_rather_than_a_fragment_of_it(): void
-    {
-        $response = $this->get(route('docs.api.openapi'));
-
-        $paths = $response->json('paths');
-
-        $this->assertCount(
-            count(array_unique(array_column(new ApiDocsViewModel()->registeredRoutes(), 'path'))),
-            $paths,
-        );
-    }
-
-    #[Test]
     public function it_serves_the_document_at_an_address_naming_the_api_version(): void
     {
         $this->get('/docs/api/v1/openapi')->assertOk();

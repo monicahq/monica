@@ -32,22 +32,6 @@ class NoSelfServiceCapacityTest extends TestCase
     }
 
     #[Test]
-    public function somebody_who_just_signed_up_cannot_tell_the_admin_space_exists(): void
-    {
-        $this->post(route('auth.register.create'), [
-            'first_name' => 'Michael',
-            'last_name' => 'Scott',
-            'email' => 'michael.scott@dundermifflin.com',
-            'password' => 'thatswhatshesaid',
-            'password_confirmation' => 'thatswhatshesaid',
-            'terms' => '1',
-        ]);
-
-        $this->get('admin')->assertNotFound();
-        $this->get('admin/logs')->assertNotFound();
-    }
-
-    #[Test]
     public function editing_your_own_profile_cannot_hand_you_the_capacity(): void
     {
         $jim = User::factory()->create();

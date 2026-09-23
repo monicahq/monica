@@ -43,6 +43,11 @@ class UpdateSectionTest extends TestCase
         $this->assertEquals('Where they live', $section->name);
         $this->assertEquals('Street, town, country', $section->description);
         $this->assertEquals('info', $section->icon);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::SectionUpdate
+                && $job->parameters === ['name' => 'Where they live'];
+        });
     }
 
     #[Test]
@@ -152,21 +157,5 @@ class UpdateSectionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateSection(user: $michael, section: $section, name: 'Address')->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $section = Section::factory()->create(['account_id' => $user->account_id]);
-
-        new UpdateSection(user: $user, section: $section, name: 'Address')->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::SectionUpdate
-                && $job->parameters === ['name' => 'Address'];
-        });
     }
 }

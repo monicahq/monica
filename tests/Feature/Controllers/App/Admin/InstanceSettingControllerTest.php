@@ -69,33 +69,6 @@ class InstanceSettingControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_a_stored_value_untouched_when_it_refuses(): void
-    {
-        Queue::fake();
-        InstanceSetting::factory()->create([
-            'name' => InstanceSettingEnum::FreeContactLimit->value,
-            'value' => '30',
-        ]);
-
-        $this->actingAs($this->administrator())
-            ->put('/admin/configuration/'.InstanceSettingEnum::FreeContactLimit->value, ['value' => 'nonsense']);
-
-        $this->assertEquals('30', InstanceSetting::query()->firstWhere('name', 'free_contact_limit')->value);
-    }
-
-    #[Test]
-    public function it_refuses_a_setting_the_deployment_fixes(): void
-    {
-        Queue::fake();
-
-        $response = $this->actingAs($this->administrator())
-            ->put('/admin/configuration/'.InstanceSettingEnum::SelfHosted->value, ['value' => '1']);
-
-        $response->assertSessionHasErrors('value');
-        $this->assertDatabaseMissing('instance_settings', ['name' => 'self_hosted']);
-    }
-
-    #[Test]
     public function it_does_not_know_a_setting_the_catalogue_does_not_carry(): void
     {
         $response = $this->actingAs($this->administrator())
@@ -137,19 +110,6 @@ class InstanceSettingControllerTest extends TestCase
 
         $response->assertRedirect(route('admin.configuration.index'));
         $this->assertDatabaseMissing('instance_settings', ['name' => 'a_setting_that_was_dropped']);
-    }
-
-    #[Test]
-    public function it_refuses_to_remove_a_live_setting_through_the_orphan_route(): void
-    {
-        Queue::fake();
-        InstanceSetting::factory()->create(['name' => InstanceSettingEnum::FreeContactLimit->value]);
-
-        $response = $this->actingAs($this->administrator())
-            ->delete('/admin/configuration/orphans/'.InstanceSettingEnum::FreeContactLimit->value);
-
-        $response->assertStatus(404);
-        $this->assertDatabaseHas('instance_settings', ['name' => 'free_contact_limit']);
     }
 
     #[Test]

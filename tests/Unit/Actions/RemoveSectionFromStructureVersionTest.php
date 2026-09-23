@@ -34,11 +34,23 @@ class RemoveSectionFromStructureVersionTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $row = StructureVersionSection::factory()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
+        $structureVersion = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
+        $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => $structureVersion->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
 
         new RemoveSectionFromStructureVersion(user: $user, row: $row)->execute();
 
         $this->assertModelMissing($row);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::SectionRemovedFromTemplate
+                && $job->parameters === ['section' => 'Address', 'name' => 'Contact'];
+        });
     }
 
     #[Test]
@@ -128,29 +140,6 @@ class RemoveSectionFromStructureVersionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new RemoveSectionFromStructureVersion(user: $michael, row: $row)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_removal_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
-        $structureVersion = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
-        $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
-        $row = StructureVersionSection::factory()->create([
-            'structure_version_id' => $structureVersion->id,
-            'section_version_id' => $sectionVersion->id,
-        ]);
-
-        new RemoveSectionFromStructureVersion(user: $user, row: $row)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::SectionRemovedFromTemplate
-                && $job->parameters === ['section' => 'Address', 'name' => 'Contact'];
-        });
     }
 
     #[Test]

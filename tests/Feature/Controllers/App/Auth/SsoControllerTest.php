@@ -89,26 +89,6 @@ class SsoControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_deactivated_user(): void
-    {
-        Queue::fake();
-        $this->offer('github');
-
-        User::factory()->create([
-            'is_active' => false,
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
-        ]);
-        $this->mockUser('github');
-
-        $this->get(route('auth.sso.callback', ['provider' => 'github']))
-            ->assertRedirect(route('auth.login.new'))
-            ->assertSessionHasErrors('email');
-
-        $this->assertGuest();
-    }
-
-    #[Test]
     public function it_refuses_an_address_that_belongs_to_somebody_signing_in_another_way(): void
     {
         Queue::fake();
@@ -166,31 +146,6 @@ class SsoControllerTest extends TestCase
 
         $this->get('/sso/myspace/redirect')->assertNotFound();
         $this->get('/sso/myspace/callback')->assertNotFound();
-    }
-
-    #[Test]
-    public function it_offers_only_the_providers_the_instance_made_available(): void
-    {
-        $this->offer('github');
-        $this->offer('google');
-
-        $response = $this->get(route('auth.login.new'));
-
-        $response->assertSee('Continue with GitHub');
-        $response->assertSee('Continue with Google');
-        $response->assertDontSee('Continue with Microsoft');
-        $response->assertDontSee('Continue with Facebook');
-    }
-
-    #[Test]
-    public function it_shows_the_sign_in_screen_unchanged_when_nothing_is_available(): void
-    {
-        config(['monica.sso_installed' => []]);
-
-        $response = $this->get(route('auth.login.new'));
-
-        $response->assertOk();
-        $response->assertDontSee('Continue with');
     }
 
     #[Test]

@@ -34,76 +34,6 @@ class SecurityControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_there_are_no_api_keys_when_none_have_been_made(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('API keys', escape: false);
-        $response->assertSee('Active · no API keys', escape: false);
-        $response->assertSee('No keys yet', escape: false);
-    }
-
-    #[Test]
-    public function it_lists_the_api_keys(): void
-    {
-        $user = User::factory()->create();
-        $user->createToken('Dundie awards bot');
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('Active · 1 API key', escape: false);
-        $response->assertSee('Dundie awards bot', escape: false);
-        $response->assertSee('never used', escape: false);
-        $response->assertDontSee('No API keys yet', escape: false);
-    }
-
-    #[Test]
-    public function it_leaves_out_the_date_when_the_password_was_never_changed(): void
-    {
-        $user = User::factory()->create(['password_changed_at' => null]);
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertStatus(200);
-        $response->assertDontSee('Last changed', escape: false);
-    }
-
-    #[Test]
-    public function it_offers_a_password_to_an_account_created_through_a_provider(): void
-    {
-        $user = User::factory()->singleSignOn()->create();
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('This account has no password.', escape: false);
-        $response->assertSee('Set a password', escape: false);
-        $response->assertDontSee('Current password', escape: false);
-    }
-
-    #[Test]
-    public function it_names_the_provider_that_signs_the_account_in(): void
-    {
-        config([
-            'monica.sso_installed' => ['github', 'google', 'facebook'],
-            'services.google.client_id' => 'dunder-mifflin-scranton',
-            'services.google.client_secret' => 'that-is-what-she-said',
-            'services.google.redirect' => 'https://monica.test/sso/google/callback',
-        ]);
-        $user = User::factory()->singleSignOn()->create();
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('Google', escape: false);
-        $response->assertSee('Signs you in.', escape: false);
-    }
-
-    #[Test]
     public function it_offers_to_turn_two_factor_authentication_on_when_it_is_off(): void
     {
         $user = User::factory()->create(['two_factor_confirmed_at' => null]);
@@ -151,14 +81,6 @@ class SecurityControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('You have used every code. Ask for new ones before you need them.', escape: false);
-    }
-
-    #[Test]
-    public function it_redirects_a_visitor_who_is_not_signed_in(): void
-    {
-        $response = $this->get(route('settings.security.index'));
-
-        $response->assertRedirect(route('auth.login.new'));
     }
 
     #[Test]

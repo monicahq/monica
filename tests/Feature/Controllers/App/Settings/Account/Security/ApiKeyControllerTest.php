@@ -166,16 +166,6 @@ class ApiKeyControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_visitor_who_is_not_signed_in(): void
-    {
-        $this->post(route('settings.apiKeys.create'), ['name' => 'Dundie awards bot'])
-            ->assertRedirect(route('auth.login.new'));
-
-        $this->delete(route('settings.apiKeys.destroy', 1))
-            ->assertRedirect(route('auth.login.new'));
-    }
-
-    #[Test]
     public function it_refuses_to_create_a_key_without_a_confirmed_password(): void
     {
         $user = User::factory()->create();
@@ -214,20 +204,5 @@ class ApiKeyControllerTest extends TestCase
         ]);
 
         $this->assertNotContains('sensitive-fields', $user->tokens()->first()->abilities);
-    }
-
-    #[Test]
-    public function it_shows_the_address_a_device_is_given_and_which_keys_reach_sensitive_fields(): void
-    {
-        $user = User::factory()->create();
-        $user->createToken('Dwight’s phone', ['*', 'sensitive-fields']);
-        $user->createToken('Deployment script', ['*']);
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertOk();
-        $response->assertSee(route('sabre.dav', ['path' => '']), escape: false);
-        $response->assertSee('Reads sensitive fields', escape: false);
-        $response->assertSee('Let this key read the values of fields marked sensitive', escape: false);
     }
 }

@@ -27,11 +27,16 @@ class DestroyLifeEventCategoryTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Volunteering']);
 
         new DestroyLifeEventCategory(user: $user, lifeEventCategory: $category)->execute();
 
         $this->assertSoftDeleted($category);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::LifeEventCategoryDeletion
+                && $job->parameters === ['name' => 'Volunteering'];
+        });
     }
 
     #[Test]
@@ -85,21 +90,5 @@ class DestroyLifeEventCategoryTest extends TestCase
         } finally {
             $this->assertNotSoftDeleted($category);
         }
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Volunteering']);
-
-        new DestroyLifeEventCategory(user: $user, lifeEventCategory: $category)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::LifeEventCategoryDeletion
-                && $job->parameters === ['name' => 'Volunteering'];
-        });
     }
 }

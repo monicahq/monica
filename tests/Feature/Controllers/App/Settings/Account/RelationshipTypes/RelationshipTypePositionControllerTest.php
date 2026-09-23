@@ -52,15 +52,4 @@ class RelationshipTypePositionControllerTest extends TestCase
         $this->actingAs($user)->put(route('settings.relationshipTypePosition.update', $type), ['position' => 0])
             ->assertSessionHasErrors(['position']);
     }
-
-    #[Test]
-    public function a_type_of_another_account_is_not_found(): void
-    {
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        $type = RelationshipType::factory()->create(['account_id' => $dwight->account_id]);
-
-        $this->actingAs($michael)->put(route('settings.relationshipTypePosition.update', $type), ['position' => 1])
-            ->assertStatus(404);
-    }
 }

@@ -29,11 +29,18 @@ class DestroyFieldTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $field = Field::factory()->create(['account_id' => $user->account_id]);
+        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
+        $version = SectionVersion::factory()->create(['section_id' => $section->id]);
+        $field = Field::factory()->create(['section_version_id' => $version->id, 'label' => 'Street']);
 
         new DestroyField(user: $user, field: $field)->execute();
 
         $this->assertModelMissing($field);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::FieldDeletion
+                && $job->parameters === ['label' => 'Street', 'name' => 'Address'];
+        });
     }
 
     #[Test]
@@ -80,23 +87,5 @@ class DestroyFieldTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DestroyField(user: $michael, field: $field)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_deletion_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
-        $version = SectionVersion::factory()->create(['section_id' => $section->id]);
-        $field = Field::factory()->create(['section_version_id' => $version->id, 'label' => 'Street']);
-
-        new DestroyField(user: $user, field: $field)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::FieldDeletion
-                && $job->parameters === ['label' => 'Street', 'name' => 'Address'];
-        });
     }
 }

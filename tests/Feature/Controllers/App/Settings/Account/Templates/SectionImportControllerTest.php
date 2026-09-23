@@ -120,23 +120,6 @@ class SectionImportControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_section_file_asking_for_a_mark_this_version_does_not_offer(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $file = json_decode($this->exportedSection($user), true);
-        $file['section']['icon'] = 'chevron-down';
-        [$template, $page] = $this->draft($user);
-
-        $this->actingAs($user)->post(route('settings.sectionImport.create', [$template, $page]), [
-            'file' => json_encode($file),
-        ])->assertRedirect()->assertSessionHasErrors('file');
-
-        $this->assertEquals(0, StructureVersionSection::query()->where('structure_version_page_id', $page->id)->count());
-    }
-
-    #[Test]
     public function it_refuses_a_file_that_does_not_read_and_writes_nothing(): void
     {
         Queue::fake();
@@ -171,15 +154,6 @@ class SectionImportControllerTest extends TestCase
         [, $elsewhere] = $this->draft($user);
 
         $this->actingAs($user)->get(route('settings.sectionImport.new', [$template, $elsewhere]))->assertNotFound();
-    }
-
-    #[Test]
-    public function it_refuses_a_template_in_another_account(): void
-    {
-        $user = User::factory()->create();
-        [$template, $page] = $this->draft(User::factory()->create());
-
-        $this->actingAs($user)->get(route('settings.sectionImport.new', [$template, $page]))->assertNotFound();
     }
 
     private function exportedSection(User $user, bool $marked = true): string

@@ -49,6 +49,11 @@ class UpdateShareLinkTest extends TestCase
             'includes_relationships' => true,
         ]);
         $this->assertEquals([12], $shareLink->refresh()->excluded_section_ids);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::ShareLinkUpdate
+                && $job->parameters === ['label' => 'For the grandparents'];
+        });
     }
 
     #[Test]
@@ -169,25 +174,6 @@ class UpdateShareLinkTest extends TestCase
             shareLink: $shareLink,
             label: 'For the family',
         )->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_action(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new UpdateShareLink(
-            user: $user,
-            shareLink: $this->shareLink($user),
-            label: 'For the grandparents',
-        )->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::ShareLinkUpdate
-                && $job->parameters === ['label' => 'For the grandparents'];
-        });
     }
 
     /** @param  array<string, mixed>  $attributes */

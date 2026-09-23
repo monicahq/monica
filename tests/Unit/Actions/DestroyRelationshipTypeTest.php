@@ -31,6 +31,8 @@ class DestroyRelationshipTypeTest extends TestCase
         new DestroyRelationshipType(user: $user, relationshipType: $type)->execute();
 
         $this->assertSoftDeleted($type);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipTypeDeletion);
     }
 
     #[Test]
@@ -56,17 +58,5 @@ class DestroyRelationshipTypeTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DestroyRelationshipType(user: $michael, relationshipType: $type)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_deletion_to_the_journal(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
-
-        new DestroyRelationshipType(user: $user, relationshipType: $type)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipTypeDeletion);
     }
 }

@@ -44,6 +44,9 @@ class UpgradeSubscriptionTest extends TestCase
         $this->assertTrue($moved->is($subscription));
         $this->assertSame('price_yearly', $subscription->fresh()->stripe_price);
         $this->assertSame(1, $michael->account->subscriptions()->count());
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::SubscriptionUpgraded
+            && $job->isAbout($subscription));
     }
 
     #[Test]
@@ -139,18 +142,5 @@ class UpgradeSubscriptionTest extends TestCase
         } finally {
             $this->assertSame('price_monthly', $subscription->fresh()->stripe_price);
         }
-    }
-
-    #[Test]
-    public function it_writes_the_move_into_the_account_journal(): void
-    {
-        $michael = User::factory()->create();
-        $subscription = $this->subscribeAccount($michael->account, 'price_monthly');
-        $this->stripe->respondTo('POST subscriptions/*', $this->stripeSubscription('price_yearly'));
-
-        new UpgradeSubscription(user: $michael, priceId: 'price_yearly')->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::SubscriptionUpgraded
-            && $job->isAbout($subscription));
     }
 }

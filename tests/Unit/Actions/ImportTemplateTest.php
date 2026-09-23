@@ -49,6 +49,12 @@ class ImportTemplateTest extends TestCase
             'name' => 'Dunder Mifflin contact',
             'is_system' => false,
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job) use ($template): bool {
+            return $job->action === UserActionEnum::TemplateImported
+                && $job->isAbout($template)
+                && $job->parameters === ['name' => 'Dunder Mifflin contact'];
+        });
     }
 
     #[Test]
@@ -281,22 +287,6 @@ class ImportTemplateTest extends TestCase
 
         $this->assertEquals($templates, Template::query()->count());
         $this->assertEquals($sections, Section::query()->count());
-    }
-
-    #[Test]
-    public function it_logs_the_import(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $template = new ImportTemplate(user: $user, raw: $this->exported($user))->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job) use ($template): bool {
-            return $job->action === UserActionEnum::TemplateImported
-                && $job->isAbout($template)
-                && $job->parameters === ['name' => 'Dunder Mifflin contact'];
-        });
     }
 
     private function exported(User $user): string

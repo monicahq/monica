@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Enums\RelationshipStatusEnum;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Relationship;
-use App\Models\RelationshipType;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,73 +16,6 @@ use Tests\TestCase;
 class RelationshipTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $relationship = Relationship::factory()->create();
-
-        $this->assertTrue($relationship->account()->exists());
-        $this->assertEquals($relationship->account_id, $relationship->account->id);
-    }
-
-    #[Test]
-    public function it_belongs_to_a_vault(): void
-    {
-        $relationship = Relationship::factory()->create();
-
-        $this->assertTrue($relationship->vault()->exists());
-        $this->assertEquals($relationship->vault_id, $relationship->vault->id);
-    }
-
-    #[Test]
-    public function it_belongs_to_a_relationship_type(): void
-    {
-        $relationship = Relationship::factory()->create();
-
-        $this->assertTrue($relationship->relationshipType()->exists());
-        $this->assertInstanceOf(RelationshipType::class, $relationship->relationshipType);
-    }
-
-    #[Test]
-    public function it_belongs_to_a_contact_on_each_side(): void
-    {
-        $relationship = Relationship::factory()->create();
-
-        $this->assertTrue($relationship->contactA()->exists());
-        $this->assertTrue($relationship->contactB()->exists());
-        $this->assertNotEquals($relationship->contactA->id, $relationship->contactB->id);
-    }
-
-    #[Test]
-    public function it_puts_both_contacts_in_the_vault_it_belongs_to(): void
-    {
-        $relationship = Relationship::factory()->create();
-
-        $this->assertEquals($relationship->vault_id, $relationship->contactA->vault_id);
-        $this->assertEquals($relationship->vault_id, $relationship->contactB->vault_id);
-    }
-
-    #[Test]
-    public function it_reads_its_status_as_an_enum(): void
-    {
-        $relationship = Relationship::factory()->ended()->create();
-
-        $this->assertInstanceOf(RelationshipStatusEnum::class, $relationship->status);
-        $this->assertEquals(RelationshipStatusEnum::Ended, $relationship->status);
-    }
-
-    #[Test]
-    public function it_reads_its_dates_as_dates(): void
-    {
-        $relationship = Relationship::factory()->create([
-            'started_on' => '1994-03-05',
-            'ended_on' => '2005-11-21',
-        ]);
-
-        $this->assertEquals('1994-03-05', $relationship->started_on?->toDateString());
-        $this->assertEquals('2005-11-21', $relationship->ended_on?->toDateString());
-    }
 
     #[Test]
     public function it_is_addressed_by_its_uuid(): void

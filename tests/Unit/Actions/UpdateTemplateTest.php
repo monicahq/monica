@@ -38,6 +38,11 @@ class UpdateTemplateTest extends TestCase
 
         $this->assertEquals('Companion animal', $template->name);
         $this->assertEquals('Everything the vet asks', $template->description);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::TemplateUpdate
+                && $job->parameters === ['name' => 'Companion animal'];
+        });
     }
 
     #[Test]
@@ -77,21 +82,5 @@ class UpdateTemplateTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateTemplate(user: $michael, template: $template, name: 'Contact')->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-
-        new UpdateTemplate(user: $user, template: $template, name: 'Contact')->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::TemplateUpdate
-                && $job->parameters === ['name' => 'Contact'];
-        });
     }
 }

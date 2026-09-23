@@ -203,13 +203,4 @@ class ContactAvatarControllerTest extends TestCase
         ])->assertNotFound();
         $this->assertNull($contact->refresh()->avatar_file_id);
     }
-
-    #[Test]
-    public function it_refuses_a_caller_with_no_credential(): void
-    {
-        $vault = Vault::factory()->create();
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
-
-        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar")->assertUnauthorized();
-    }
 }

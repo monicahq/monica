@@ -32,7 +32,7 @@ class PublishSectionVersionTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $section = Section::factory()->create(['account_id' => $user->account_id]);
+        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
         $version = SectionVersion::factory()->create(['section_id' => $section->id]);
 
         new PublishSectionVersion(user: $user, sectionVersion: $version)->execute();
@@ -42,6 +42,11 @@ class PublishSectionVersionTest extends TestCase
         $this->assertEquals(VersionStatusEnum::Published, $version->status);
         $this->assertNotNull($version->published_at);
         $this->assertEquals($version->id, $section->fresh()->published_version_id);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::SectionVersionPublished
+                && $job->parameters === ['name' => 'Address', 'version' => 1];
+        });
     }
 
     #[Test]
@@ -200,22 +205,5 @@ class PublishSectionVersionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new PublishSectionVersion(user: $michael, sectionVersion: $version)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_publication_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
-        $version = SectionVersion::factory()->create(['section_id' => $section->id]);
-
-        new PublishSectionVersion(user: $user, sectionVersion: $version)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::SectionVersionPublished
-                && $job->parameters === ['name' => 'Address', 'version' => 1];
-        });
     }
 }

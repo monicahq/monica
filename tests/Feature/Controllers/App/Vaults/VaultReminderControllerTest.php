@@ -87,22 +87,6 @@ class VaultReminderControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_how_far_ahead_it_looks_and_leaves_out_what_is_further(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->deadline($this->ruleAbout($user, $vault, 'Kevin', 'Malone'), '+2 days');
-        $this->deadline($this->ruleAbout($user, $vault, 'Creed', 'Bratton'), '+240 days');
-
-        $response = $this->actingAs($user)->get(route('reminders.index', $vault));
-
-        $response->assertSee('90 days');
-        $response->assertSee('Kevin Malone');
-        $response->assertDontSee('Creed Bratton');
-    }
-
-    #[Test]
     public function it_leaves_out_a_rule_that_has_produced_nothing_yet(): void
     {
         $user = User::factory()->create();
@@ -114,24 +98,6 @@ class VaultReminderControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertDontSee('Toby Flenderson');
-    }
-
-    #[Test]
-    public function it_tells_nothing_due_soon_apart_from_nothing_set_up(): void
-    {
-        $user = User::factory()->create();
-
-        $bare = Vault::factory()->create(['account_id' => $user->account_id]);
-        $this->actingAs($user)->get(route('reminders.index', $bare))
-            ->assertSee('No reminders in this vault')
-            ->assertSee('built from a date on a contact', escape: false);
-
-        $further = Vault::factory()->create(['account_id' => $user->account_id]);
-        $this->deadline($this->ruleAbout($user, $further), '+240 days');
-
-        $this->actingAs($user)->get(route('reminders.index', $further))
-            ->assertSee('Nothing due yet')
-            ->assertSee('none of them falls in the next 90 days', escape: false);
     }
 
     #[Test]
@@ -148,24 +114,6 @@ class VaultReminderControllerTest extends TestCase
 
         $response->assertSee('Jim Halpert');
         $response->assertDontSee('Dwight Schrute');
-    }
-
-    #[Test]
-    public function a_vault_of_another_account_is_not_found(): void
-    {
-        $user = User::factory()->create();
-        $stranger = User::factory()->create();
-        $theirs = Vault::factory()->create(['account_id' => $stranger->account_id]);
-
-        $this->actingAs($user)->get(route('reminders.index', $theirs))->assertStatus(404);
-    }
-
-    #[Test]
-    public function a_visitor_is_sent_to_sign_in(): void
-    {
-        $vault = Vault::factory()->create();
-
-        $this->get(route('reminders.index', $vault))->assertRedirect(route('auth.login.new'));
     }
 
     #[Test]
@@ -235,19 +183,6 @@ class VaultReminderControllerTest extends TestCase
         $response->assertSee('Europe/Paris');
         $response->assertSee('Grouped by');
         $response->assertSee('When it is sent');
-    }
-
-    #[Test]
-    public function it_counts_more_than_one_reminder_in_a_bucket_as_more_than_one(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $rule = $this->ruleAbout($user, $vault);
-
-        $this->deadline($rule, '-3 days');
-        $this->deadline($rule, '-4 days');
-
-        $this->actingAs($user)->get(route('reminders.index', $vault))->assertSee('2 reminders');
     }
 
     #[Test]
@@ -329,21 +264,6 @@ class VaultReminderControllerTest extends TestCase
     }
 
     #[Test]
-    public function the_sent_tab_leaves_out_a_deadline_that_never_went_anywhere(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->deadline($this->ruleAbout($user, $vault, 'Michael', 'Scott'), '+2 days');
-
-        $response = $this->actingAs($user)->get(route('reminders.sent', $vault));
-
-        $response->assertStatus(200);
-        $response->assertDontSee('Michael Scott');
-        $response->assertSee('Nothing has been sent yet');
-    }
-
-    #[Test]
     public function a_sent_row_survives_the_rule_that_made_it(): void
     {
         $user = User::factory()->create(['timezone' => 'Europe/Paris']);
@@ -357,44 +277,6 @@ class VaultReminderControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('A deleted contact');
-    }
-
-    #[Test]
-    public function the_sent_tab_never_says_a_reminder_was_completed(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->sent($this->ruleAbout($user, $vault), '-3 days');
-
-        $response = $this->actingAs($user)->get(route('reminders.sent', $vault));
-
-        $response->assertSee('Still open');
-        $response->assertDontSee('Completed');
-    }
-
-    #[Test]
-    public function the_sent_tab_refuses_a_vault_of_another_account(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create();
-
-        $this->actingAs($user)->get(route('reminders.sent', $vault))->assertStatus(404);
-    }
-
-    #[Test]
-    public function the_sent_tab_leaves_out_what_another_vault_has_sent(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $other = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->sent($this->ruleAbout($user, $other, 'Michael', 'Scott'), '-3 days');
-
-        $response = $this->actingAs($user)->get(route('reminders.sent', $vault));
-
-        $response->assertStatus(200);
-        $response->assertDontSee('Michael Scott');
     }
 
     private function ruleAbout(User $user, Vault $vault, string $first = 'Stanley', string $last = 'Hudson'): Reminder

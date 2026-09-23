@@ -6,11 +6,10 @@ namespace Tests\Unit\Models;
 
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
-use App\Models\Account;
-use App\Models\Template;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -19,17 +18,6 @@ use Tests\TestCase;
 class StructureVersionPageTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account_and_a_structure_version(): void
-    {
-        $page = StructureVersionPage::factory()->create();
-
-        $this->assertTrue($page->account()->exists());
-        $this->assertTrue($page->structureVersion()->exists());
-        $this->assertInstanceOf(Account::class, $page->account);
-        $this->assertInstanceOf(StructureVersion::class, $page->structureVersion);
-    }
 
     #[Test]
     public function it_holds_the_sections_placed_on_it_in_order(): void

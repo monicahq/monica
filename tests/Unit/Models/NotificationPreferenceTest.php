@@ -14,22 +14,6 @@ class NotificationPreferenceTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $preference = NotificationPreference::factory()->create();
-
-        $this->assertTrue($preference->account()->exists());
-    }
-
-    #[Test]
-    public function it_is_reachable_from_the_account(): void
-    {
-        $preference = NotificationPreference::factory()->create();
-
-        $this->assertTrue($preference->account->notificationPreference()->exists());
-    }
-
-    #[Test]
     public function it_knows_whether_everything_is_folded_into_a_summary(): void
     {
         $immediate = NotificationPreference::factory()->create();

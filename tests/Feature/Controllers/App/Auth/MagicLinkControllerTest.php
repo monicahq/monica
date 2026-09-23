@@ -137,19 +137,6 @@ class MagicLinkControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_link_that_ran_out_of_time_even_where_the_signature_still_stands(): void
-    {
-        Queue::fake();
-
-        $link = $this->linkFor(User::factory()->create(), ['expires_at' => now()->subMinute()]);
-
-        $response = $this->get($this->signedUrlFor($link, now()->addMinutes(5)));
-
-        $response->assertRedirect(route('auth.magicLink.new'));
-        $this->assertGuest();
-    }
-
-    #[Test]
     public function it_refuses_a_link_whose_signature_ran_out(): void
     {
         Queue::fake();
@@ -172,36 +159,6 @@ class MagicLinkControllerTest extends TestCase
         $response = $this->get($this->signedUrlFor($link).'&intended=home');
 
         $response->assertForbidden();
-        $this->assertGuest();
-    }
-
-    #[Test]
-    public function it_refuses_a_token_that_does_not_match_the_link_it_names(): void
-    {
-        Queue::fake();
-
-        $link = $this->linkFor(User::factory()->create());
-
-        $response = $this->get(URL::temporarySignedRoute(
-            'auth.magicLink.show',
-            now()->addMinutes(5),
-            ['token' => str_repeat('z', 64)],
-        ));
-
-        $response->assertRedirect(route('auth.magicLink.new'));
-        $this->assertGuest();
-    }
-
-    #[Test]
-    public function it_refuses_a_link_it_has_never_seen(): void
-    {
-        $response = $this->get(URL::temporarySignedRoute(
-            'auth.magicLink.show',
-            now()->addMinutes(5),
-            ['token' => self::TOKEN],
-        ));
-
-        $response->assertRedirect(route('auth.magicLink.new'));
         $this->assertGuest();
     }
 

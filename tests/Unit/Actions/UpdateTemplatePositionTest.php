@@ -27,13 +27,18 @@ class UpdateTemplatePositionTest extends TestCase
         $user = User::factory()->create();
         $contact = Template::factory()->create(['account_id' => $user->account_id, 'position' => 1]);
         $pet = Template::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
-        $car = Template::factory()->create(['account_id' => $user->account_id, 'position' => 3]);
+        $car = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Car', 'position' => 3]);
 
         new UpdateTemplatePosition(user: $user, template: $car, position: 1)->execute();
 
         $this->assertEquals(1, $car->fresh()->position);
         $this->assertEquals(2, $contact->fresh()->position);
         $this->assertEquals(3, $pet->fresh()->position);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::TemplatePositionUpdate
+                && $job->parameters === ['name' => 'Car'];
+        });
     }
 
     #[Test]
@@ -77,21 +82,5 @@ class UpdateTemplatePositionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateTemplatePosition(user: $michael, template: $template, position: 1)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_move_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
-
-        new UpdateTemplatePosition(user: $user, template: $template, position: 1)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::TemplatePositionUpdate
-                && $job->parameters === ['name' => 'Contact'];
-        });
     }
 }

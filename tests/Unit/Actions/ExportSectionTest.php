@@ -45,6 +45,11 @@ class ExportSectionTest extends TestCase
         $this->assertEquals(StructureFile::FORMAT_VERSION, $file['monica']['format_version']);
         $this->assertEquals('Personal details', $file['section']['name']);
         $this->assertCount(1, $file['section']['fields']);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::SectionExported
+                && $job->parameters === ['section' => 'Personal details', 'name' => 'Dunder Mifflin contact'];
+        });
     }
 
     #[Test]
@@ -106,22 +111,6 @@ class ExportSectionTest extends TestCase
         $this->expectException(ListingHasNothingToPublish::class);
 
         new ExportSection(user: $user, template: $row->structureVersion->structure->owner, row: $row->fresh())->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_action(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $row = $this->publishedRow($user);
-
-        new ExportSection(user: $user, template: $row->structureVersion->structure->owner, row: $row)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::SectionExported
-                && $job->parameters === ['section' => 'Personal details', 'name' => 'Dunder Mifflin contact'];
-        });
     }
 
     private function publishedRow(User $user, bool $withAValueList = false): StructureVersionSection

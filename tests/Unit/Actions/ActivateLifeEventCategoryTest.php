@@ -25,12 +25,20 @@ class ActivateLifeEventCategoryTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->inactive()->create(['account_id' => $user->account_id]);
+        $category = LifeEventCategory::factory()->inactive()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Volunteering',
+        ]);
 
         $settled = new ActivateLifeEventCategory(user: $user, lifeEventCategory: $category)->execute();
 
         $this->assertInstanceOf(LifeEventCategory::class, $settled);
         $this->assertTrue($category->refresh()->is_active);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::LifeEventCategoryActivated
+                && $job->parameters === ['name' => 'Volunteering'];
+        });
     }
 
     #[Test]
@@ -81,24 +89,5 @@ class ActivateLifeEventCategoryTest extends TestCase
         } finally {
             $this->assertFalse($category->refresh()->is_active);
         }
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->inactive()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Volunteering',
-        ]);
-
-        new ActivateLifeEventCategory(user: $user, lifeEventCategory: $category)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::LifeEventCategoryActivated
-                && $job->parameters === ['name' => 'Volunteering'];
-        });
     }
 }

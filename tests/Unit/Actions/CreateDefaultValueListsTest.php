@@ -44,6 +44,15 @@ class CreateDefaultValueListsTest extends TestCase
                 'position' => $position + 1,
             ]);
         }
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListsSeeded
+                && $job->account->id === $user->account_id
+                && $job->user->id === $user->id,
+        );
+        Queue::assertPushed(LogUserAction::class, 1);
     }
 
     #[Test]
@@ -140,25 +149,6 @@ class CreateDefaultValueListsTest extends TestCase
         new CreateDefaultValueLists(user: $user)->execute();
 
         $this->assertEquals(0, ValueList::query()->where('account_id', $elsewhere->account_id)->count());
-    }
-
-    #[Test]
-    public function it_logs_the_seeding_once_rather_than_list_by_list(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new CreateDefaultValueLists(user: $user)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListsSeeded
-                && $job->account->id === $user->account_id
-                && $job->user->id === $user->id,
-        );
-        Queue::assertPushed(LogUserAction::class, 1);
     }
 
     #[Test]

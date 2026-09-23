@@ -48,6 +48,8 @@ class CreateRelationshipTypeTest extends TestCase
             'is_symmetric' => false,
             'is_active' => true,
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipTypeCreation);
     }
 
     #[Test]
@@ -150,23 +152,5 @@ class CreateRelationshipTypeTest extends TestCase
             roleA: 'Beet buddy',
             roleB: 'Beet buddy',
         )->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_addition_to_the_journal(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-
-        new CreateRelationshipType(
-            user: $user,
-            relationshipCategory: $category,
-            name: 'Neighbour',
-            roleA: 'Neighbour',
-            roleB: 'Neighbour',
-        )->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipTypeCreation);
     }
 }

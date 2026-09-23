@@ -43,25 +43,6 @@ class ApiDocsMarkdownControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_the_verb_and_the_path_the_way_a_client_would_send_them(): void
-    {
-        $response = $this->get(route('docs.api.markdown.show', ['section' => 'me-update']));
-
-        $response->assertSee('`PUT /api/v1/me`', escape: false);
-    }
-
-    #[Test]
-    public function it_carries_the_samples_in_fenced_blocks(): void
-    {
-        $response = $this->get(route('docs.api.markdown.show', ['section' => 'me-show']));
-
-        $response->assertSee('```sh', escape: false);
-        $response->assertSee('```javascript', escape: false);
-        $response->assertSee('```php', escape: false);
-        $response->assertSee('```json', escape: false);
-    }
-
-    #[Test]
     public function it_escapes_nothing_because_it_is_not_a_web_page(): void
     {
         $response = $this->get(route('docs.api.markdown.show', ['section' => 'me-show']));
@@ -69,24 +50,6 @@ class ApiDocsMarkdownControllerTest extends TestCase
         $response->assertDontSee('&quot;', escape: false);
         $response->assertDontSee('&#039;', escape: false);
         $response->assertDontSee('&gt;', escape: false);
-    }
-
-    #[Test]
-    public function it_says_when_an_endpoint_answers_with_no_body(): void
-    {
-        $response = $this->get(route('docs.api.markdown.show', ['section' => 'logout-destroy']));
-
-        $response->assertSee('`204`, with no body.', escape: false);
-    }
-
-    #[Test]
-    public function it_carries_the_fields_of_the_answer_as_bullets(): void
-    {
-        $response = $this->get(route('docs.api.markdown.show', ['section' => 'vaults-index']));
-
-        $response->assertSee('## Returns');
-        $response->assertSee('- `data[].attributes.name` (string):', escape: false);
-        $response->assertSee('- `meta.total` (integer):', escape: false);
     }
 
     #[Test]

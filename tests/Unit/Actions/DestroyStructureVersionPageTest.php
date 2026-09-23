@@ -32,11 +32,21 @@ class DestroyStructureVersionPageTest extends TestCase
 
         $user = User::factory()->create();
         $structureVersion = StructureVersion::factory()->create(['account_id' => $user->account_id]);
-        $page = StructureVersionPage::factory()->create(['structure_version_id' => $structureVersion->id]);
+        $page = StructureVersionPage::factory()->create([
+            'structure_version_id' => $structureVersion->id,
+            'label' => 'Health',
+        ]);
 
         new DestroyStructureVersionPage(user: $user, page: $page)->execute();
 
         $this->assertModelMissing($page);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::TemplatePageDeletion
+                && $job->parameters['label'] === 'Health',
+        );
     }
 
     #[Test]
@@ -115,27 +125,5 @@ class DestroyStructureVersionPageTest extends TestCase
         $this->expectException(PublishedVersionIsFrozen::class);
 
         new DestroyStructureVersionPage(user: $user, page: $page)->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_page_being_taken_off(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $structureVersion = StructureVersion::factory()->create(['account_id' => $user->account_id]);
-        $page = StructureVersionPage::factory()->create([
-            'structure_version_id' => $structureVersion->id,
-            'label' => 'Health',
-        ]);
-
-        new DestroyStructureVersionPage(user: $user, page: $page)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::TemplatePageDeletion
-                && $job->parameters['label'] === 'Health',
-        );
     }
 }

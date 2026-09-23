@@ -71,20 +71,6 @@ class RelationshipCategoryControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_rename_a_supplied_category(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->system()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->put(route('settings.relationshipCategories.update', $category), ['name' => 'Dunder Mifflin'])
-            ->assertRedirect(route('settings.relationshipTypes.index'))
-            ->assertSessionHas('error');
-
-        $this->assertEquals('Family', $category->refresh()->name);
-    }
-
-    #[Test]
     public function it_deletes_an_empty_category(): void
     {
         Queue::fake();
@@ -114,37 +100,5 @@ class RelationshipCategoryControllerTest extends TestCase
             ->assertSessionHas('error');
 
         $this->assertNotSoftDeleted($category);
-    }
-
-    #[Test]
-    public function it_refuses_to_delete_a_supplied_category(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->system()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->delete(route('settings.relationshipCategories.destroy', $category))
-            ->assertRedirect(route('settings.relationshipTypes.index'))
-            ->assertSessionHas('error');
-
-        $this->assertNotSoftDeleted($category);
-    }
-
-    #[Test]
-    public function a_category_of_another_account_is_not_found(): void
-    {
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $dwight->account_id]);
-
-        $this->actingAs($michael)->put(route('settings.relationshipCategories.update', $category), ['name' => 'Beets'])->assertStatus(404);
-        $this->actingAs($michael)->delete(route('settings.relationshipCategories.destroy', $category))->assertStatus(404);
-    }
-
-    #[Test]
-    public function it_sends_a_visitor_to_sign_in(): void
-    {
-        $this->post(route('settings.relationshipCategories.create'), ['name' => 'Neighbourhood'])
-            ->assertRedirect(route('auth.login.new'));
     }
 }

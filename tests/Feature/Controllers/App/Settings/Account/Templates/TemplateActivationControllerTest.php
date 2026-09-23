@@ -43,16 +43,4 @@ class TemplateActivationControllerTest extends TestCase
 
         $this->assertTrue($template->fresh()->is_active);
     }
-
-    #[Test]
-    public function it_refuses_a_template_from_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $template = Template::factory()->create();
-
-        $this->actingAs($michael)->put(route('settings.templateActivation.update', $template), ['active' => '0'])
-            ->assertNotFound();
-    }
 }

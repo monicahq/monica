@@ -33,17 +33,6 @@ class ChannelProofControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_send_a_code_for_a_channel_that_has_nothing_to_prove(): void
-    {
-        NotificationFacade::fake();
-        $this->readyTextMessage();
-
-        $response = $this->post(route('settings.notifications.proof.store', 'telegram'));
-
-        $response->assertSessionHasErrors('proof');
-    }
-
-    #[Test]
     public function typing_the_code_back_proves_the_number(): void
     {
         $user = $this->readyTextMessage();
@@ -70,20 +59,6 @@ class ChannelProofControllerTest extends TestCase
         $response = $this->put(route('settings.notifications.proof.update', 'sms'), ['code' => '000000']);
 
         $response->assertSessionHasErrors(['code' => 'That is not the code we sent.']);
-    }
-
-    #[Test]
-    public function an_expired_code_says_it_expired(): void
-    {
-        $user = $this->readyTextMessage();
-        $this->channel($user)->update([
-            'proof_code_hash' => Hash::make('123456'),
-            'proof_expires_at' => now()->subMinute(),
-        ]);
-
-        $response = $this->put(route('settings.notifications.proof.update', 'sms'), ['code' => '123456']);
-
-        $response->assertSessionHasErrors(['code' => 'This code has expired. Ask for another one.']);
     }
 
     #[Test]

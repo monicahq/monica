@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Models\Account;
-use App\Models\Section;
-use App\Models\SectionVersion;
-use App\Models\Template;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
-use App\Models\StructureVersionSection;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -103,48 +100,6 @@ class StructureVersionPageControllerTest extends TestCase
             ->assertNoContent();
 
         $this->assertModelMissing($page);
-    }
-
-    #[Test]
-    public function it_refuses_to_delete_a_page_that_still_holds_sections(): void
-    {
-        Queue::fake();
-        [$user, $template, $version] = $this->draft();
-        $page = StructureVersionPage::factory()->create([
-            'structure_version_id' => $version->id,
-            'position' => 2,
-        ]);
-        StructureVersionSection::factory()->create([
-            'structure_version_id' => $version->id,
-            'structure_version_page_id' => $page->id,
-            'section_version_id' => SectionVersion::factory()->create([
-                'section_id' => Section::factory()->create(['account_id' => $user->account_id])->id,
-            ])->id,
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('DELETE', "/api/v1/templates/{$template->uuid}/versions/1/pages/{$page->uuid}")
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors(['page']);
-
-        $this->assertModelExists($page);
-    }
-
-    #[Test]
-    public function it_refuses_to_delete_the_only_page_a_version_has(): void
-    {
-        Queue::fake();
-        [$user, $template, $version] = $this->draft();
-        $page = $version->pages()->sole();
-
-        Sanctum::actingAs($user);
-
-        $this->json('DELETE', "/api/v1/templates/{$template->uuid}/versions/1/pages/{$page->uuid}")
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors(['page']);
-
-        $this->assertModelExists($page);
     }
 
     #[Test]

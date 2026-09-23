@@ -49,6 +49,14 @@ class UpdateStructureVersionPageTest extends TestCase
             'key' => 'health',
             'label' => 'Medical',
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::TemplatePageUpdate
+                && $job->account->id === $user->account_id
+                && $job->parameters['label'] === 'Medical',
+        );
     }
 
     #[Test]
@@ -130,25 +138,5 @@ class UpdateStructureVersionPageTest extends TestCase
         $this->expectException(PublishedVersionIsFrozen::class);
 
         new UpdateStructureVersionPage(user: $user, page: $page, label: 'Health')->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_rename(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $structureVersion = StructureVersion::factory()->create(['account_id' => $user->account_id]);
-        $page = $structureVersion->pages()->firstOrFail();
-
-        new UpdateStructureVersionPage(user: $user, page: $page, label: 'Medical')->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::TemplatePageUpdate
-                && $job->account->id === $user->account_id
-                && $job->parameters['label'] === 'Medical',
-        );
     }
 }

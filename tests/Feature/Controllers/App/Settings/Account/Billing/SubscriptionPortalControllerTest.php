@@ -116,10 +116,4 @@ class SubscriptionPortalControllerTest extends TestCase
             ->assertSee('Lifetime access', escape: false)
             ->assertDontSee(route('settings.subscriptionPortal.show'), escape: false);
     }
-
-    #[Test]
-    public function it_refuses_a_visitor(): void
-    {
-        $this->get(route('settings.subscriptionPortal.show'))->assertRedirect(route('auth.login.new'));
-    }
 }

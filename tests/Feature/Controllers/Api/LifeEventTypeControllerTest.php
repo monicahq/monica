@@ -148,25 +148,6 @@ class LifeEventTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_a_supplied_type_in_the_language_asked_for(): void
-    {
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-        $type = LifeEventType::factory()->supplied()->create([
-            'account_id' => $user->account_id,
-            'life_event_category_id' => $category->id,
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', "/api/v1/life-event-types/{$type->uuid}");
-
-        $response->assertOk();
-        $response->assertJsonPath('data.attributes.name', __('Call'));
-        $response->assertJsonPath('data.attributes.is_system', true);
-    }
-
-    #[Test]
     public function it_returns_not_found_for_a_life_event_type_from_another_account(): void
     {
         $user = User::factory()->create();

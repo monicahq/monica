@@ -15,23 +15,6 @@ class SectionTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $section = Section::factory()->create();
-
-        $this->assertTrue($section->account()->exists());
-    }
-
-    #[Test]
-    public function it_has_many_versions(): void
-    {
-        $section = Section::factory()->create();
-        SectionVersion::factory()->create(['section_id' => $section->id, 'version_number' => 1]);
-
-        $this->assertTrue($section->versions()->exists());
-    }
-
-    #[Test]
     public function it_lists_its_versions_newest_first(): void
     {
         $section = Section::factory()->create();
@@ -39,17 +22,6 @@ class SectionTest extends TestCase
         SectionVersion::factory()->create(['section_id' => $section->id, 'version_number' => 2]);
 
         $this->assertEquals([2, 1], $section->versions->pluck('version_number')->all());
-    }
-
-    #[Test]
-    public function it_points_at_the_version_it_offers(): void
-    {
-        $section = Section::factory()->create();
-        $version = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
-        $section->published_version_id = $version->id;
-        $section->save();
-
-        $this->assertTrue($section->publishedVersion()->exists());
     }
 
     #[Test]

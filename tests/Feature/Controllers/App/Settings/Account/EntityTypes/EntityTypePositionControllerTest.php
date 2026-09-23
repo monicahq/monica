@@ -48,30 +48,4 @@ class EntityTypePositionControllerTest extends TestCase
         $this->actingAs($user)->put(route('settings.entityTypePosition.update', $entityType), ['position' => '0'])
             ->assertSessionHasErrors('position');
     }
-
-    #[Test]
-    public function it_refuses_to_move_a_type_in_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        $entityType = EntityType::factory()->create([
-            'account_id' => $dwight->account_id,
-            'slug' => 'beets',
-            'position' => 2,
-        ]);
-
-        $this->actingAs($michael)->put(route('settings.entityTypePosition.update', 'beets'), ['position' => '1'])
-            ->assertNotFound();
-
-        $this->assertSame(2, $entityType->refresh()->position);
-    }
-
-    #[Test]
-    public function it_refuses_a_visitor_who_is_not_signed_in(): void
-    {
-        $this->put(route('settings.entityTypePosition.update', 'animals'), ['position' => '1'])
-            ->assertRedirect(route('auth.login.new'));
-    }
 }

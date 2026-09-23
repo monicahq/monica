@@ -48,57 +48,6 @@ class RelationshipTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_marks_the_types_the_product_supplied(): void
-    {
-        $user = User::factory()->create();
-        RelationshipType::factory()->system(RelationshipTypeEnum::Friend)->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('settings.relationshipTypes.index'))
-            ->assertStatus(200)
-            ->assertSee('Supplied');
-    }
-
-    #[Test]
-    public function it_marks_the_types_that_are_no_longer_offered(): void
-    {
-        $user = User::factory()->create();
-        RelationshipType::factory()->inactive()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('settings.relationshipTypes.index'))
-            ->assertStatus(200)
-            ->assertSee('Not offered');
-    }
-
-    #[Test]
-    public function it_says_when_a_category_holds_nothing(): void
-    {
-        $user = User::factory()->create();
-        RelationshipCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Other']);
-
-        $this->actingAs($user)->get(route('settings.relationshipTypes.index'))
-            ->assertStatus(200)
-            ->assertSee('Nothing in this category yet', escape: false);
-    }
-
-    #[Test]
-    public function it_leaves_out_what_another_account_holds(): void
-    {
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        RelationshipCategory::factory()->create(['account_id' => $dwight->account_id, 'name' => 'Beet farming']);
-
-        $this->actingAs($michael)->get(route('settings.relationshipTypes.index'))
-            ->assertStatus(200)
-            ->assertDontSee('Beet farming');
-    }
-
-    #[Test]
-    public function it_sends_a_visitor_to_sign_in(): void
-    {
-        $this->get(route('settings.relationshipTypes.index'))->assertRedirect(route('auth.login.new'));
-    }
-
-    #[Test]
     public function it_shows_the_form_that_adds_a_type(): void
     {
         $user = User::factory()->create();
@@ -230,18 +179,6 @@ class RelationshipTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_what_a_supplied_type_feeds(): void
-    {
-        $user = User::factory()->create();
-        $type = RelationshipType::factory()->system(RelationshipTypeEnum::ParentChild)->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('settings.relationshipTypes.edit', $type))
-            ->assertStatus(200)
-            ->assertSee('Feeds the family tree')
-            ->assertSee('A supplied type keeps its direction', escape: false);
-    }
-
-    #[Test]
     public function it_rewords_a_type(): void
     {
         Queue::fake();
@@ -324,31 +261,5 @@ class RelationshipTypeControllerTest extends TestCase
             ->assertSessionHas('status');
 
         $this->assertSoftDeleted($type);
-    }
-
-    #[Test]
-    public function it_refuses_to_delete_a_supplied_type_and_says_why(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $type = RelationshipType::factory()->system(RelationshipTypeEnum::Friend)->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->delete(route('settings.relationshipTypes.destroy', $type))
-            ->assertRedirect(route('settings.relationshipTypes.index'))
-            ->assertSessionHas('error');
-
-        $this->assertNotSoftDeleted($type);
-    }
-
-    #[Test]
-    public function a_type_of_another_account_is_not_found(): void
-    {
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        $type = RelationshipType::factory()->create(['account_id' => $dwight->account_id]);
-
-        $this->actingAs($michael)->get(route('settings.relationshipTypes.edit', $type))->assertStatus(404);
-        $this->actingAs($michael)->put(route('settings.relationshipTypes.update', $type), [])->assertStatus(404);
-        $this->actingAs($michael)->delete(route('settings.relationshipTypes.destroy', $type))->assertStatus(404);
     }
 }

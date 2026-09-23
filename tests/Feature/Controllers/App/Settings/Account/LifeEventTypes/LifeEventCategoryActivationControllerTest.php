@@ -46,18 +46,4 @@ class LifeEventCategoryActivationControllerTest extends TestCase
 
         $this->assertDatabaseHas('life_event_categories', ['id' => $category->id, 'is_active' => true]);
     }
-
-    #[Test]
-    public function it_answers_not_found_for_a_category_of_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $dwight->account_id]);
-
-        $this->actingAs($michael)
-            ->put(route('settings.lifeEventCategoryActivation.update', $category), ['is_active' => 0])
-            ->assertStatus(404);
-    }
 }

@@ -9,7 +9,6 @@ use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
 use App\Helpers\LocaleResolution;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
@@ -79,33 +78,6 @@ class PreferenceControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_every_zone_as_something_to_pick(): void
-    {
-        $user = User::factory()->create(['timezone' => 'UTC']);
-
-        $response = $this->actingAs($user)->get(route('settings.preferences.index'));
-
-        $response->assertSee('Asia/Tokyo', escape: false);
-        $response->assertSee('America/Argentina/Buenos_Aires', escape: false);
-        $response->assertSee('tokyo japan asia/tokyo', escape: false);
-    }
-
-    #[Test]
-    public function it_reads_the_footer_preview_in_the_zone_the_account_is_in(): void
-    {
-        Carbon::setTestNow(Carbon::create(2026, 7, 31, 17, 45));
-
-        $user = User::factory()->create([
-            'timezone' => 'Asia/Tokyo',
-            'time_format' => TimeFormatEnum::TwentyFourHour,
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.preferences.index'));
-
-        $response->assertSee('It is 02:45', escape: false);
-    }
-
-    #[Test]
     public function it_says_the_zone_was_the_nearest_one_when_it_came_from_the_map(): void
     {
         $user = User::factory()->create(['timezone' => 'Asia/Tokyo']);
@@ -125,14 +97,6 @@ class PreferenceControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.preferences.index'));
 
         $response->assertDontSee('nearest', escape: false);
-    }
-
-    #[Test]
-    public function it_refuses_a_visitor_who_is_not_signed_in(): void
-    {
-        $response = $this->get(route('settings.preferences.index'));
-
-        $response->assertRedirect(route('auth.login.new'));
     }
 
     #[Test]

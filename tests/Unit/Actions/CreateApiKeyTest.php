@@ -41,6 +41,15 @@ class CreateApiKeyTest extends TestCase
             'tokenable_type' => User::class,
             'name' => 'Dundie awards bot',
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ApiKeyCreation
+                && $job->account->id === $account->id
+                && $job->user->id === $user->id
+                && $job->parameters === ['name' => 'Dundie awards bot', 'scopes' => [], 'client' => 'script'],
+        );
     }
 
     #[Test]
@@ -85,26 +94,6 @@ class CreateApiKeyTest extends TestCase
         new CreateApiKey(user: $user, name: 'Deployment script')->execute();
 
         $this->assertNull($user->tokens()->first()->last_used_at);
-    }
-
-    #[Test]
-    public function it_logs_the_creation(): void
-    {
-        Queue::fake();
-
-        $account = Account::factory()->create();
-        $user = User::factory()->create(['account_id' => $account->id]);
-
-        new CreateApiKey(user: $user, name: 'Dundie awards bot')->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ApiKeyCreation
-                && $job->account->id === $account->id
-                && $job->user->id === $user->id
-                && $job->parameters === ['name' => 'Dundie awards bot', 'scopes' => [], 'client' => 'script'],
-        );
     }
 
     #[Test]

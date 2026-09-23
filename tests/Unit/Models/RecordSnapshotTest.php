@@ -4,16 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Enums\SnapshotReasonEnum;
 use App\Exceptions\SnapshotIsImmutable;
-use App\Models\Account;
-use App\Models\Contact;
-use App\Models\Entity;
 use App\Models\RecordSnapshot;
-use App\Models\StructureVersion;
-use App\Models\User;
-use App\Models\Vault;
-use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -21,99 +13,6 @@ use Tests\TestCase;
 class RecordSnapshotTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $account = Account::factory()->create();
-        $snapshot = RecordSnapshot::factory()->create(['account_id' => $account->id]);
-
-        $this->assertTrue($snapshot->account()->exists());
-        $this->assertTrue($account->is($snapshot->account));
-    }
-
-    #[Test]
-    public function it_belongs_to_a_vault(): void
-    {
-        $vault = Vault::factory()->create();
-        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
-        $snapshot = RecordSnapshot::factory()->create([
-            'snapshotable_id' => $contact->id,
-            'vault_id' => $vault->id,
-        ]);
-
-        $this->assertTrue($snapshot->vault()->exists());
-        $this->assertTrue($vault->is($snapshot->vault));
-    }
-
-    #[Test]
-    public function it_belongs_to_the_record_it_captured(): void
-    {
-        $entity = Entity::factory()->create(['name' => 'Dunder Mifflin']);
-        $snapshot = RecordSnapshot::factory()->create([
-            'snapshotable_type' => Entity::class,
-            'snapshotable_id' => $entity->id,
-            'account_id' => $entity->account_id,
-            'vault_id' => $entity->vault_id,
-            'structure_version_id' => $entity->structure_version_id,
-        ]);
-
-        $this->assertTrue($entity->is($snapshot->snapshotable));
-    }
-
-    #[Test]
-    public function it_belongs_to_the_structure_the_record_was_on(): void
-    {
-        $version = StructureVersion::factory()->published()->create();
-        $contact = Contact::factory()->create(['structure_version_id' => $version->id]);
-        $snapshot = RecordSnapshot::factory()->create(['snapshotable_id' => $contact->id]);
-
-        $this->assertTrue($snapshot->structureVersion()->exists());
-        $this->assertTrue($version->is($snapshot->structureVersion));
-    }
-
-    #[Test]
-    public function it_belongs_to_whoever_triggered_it(): void
-    {
-        $user = User::factory()->create();
-        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
-        $snapshot = RecordSnapshot::factory()->create([
-            'snapshotable_id' => $contact->id,
-            'created_by_user_id' => $user->id,
-        ]);
-
-        $this->assertTrue($snapshot->createdBy()->exists());
-        $this->assertTrue($user->is($snapshot->createdBy));
-    }
-
-    #[Test]
-    public function it_belongs_to_nobody_when_the_product_took_it_on_its_own(): void
-    {
-        $snapshot = RecordSnapshot::factory()->create();
-
-        $this->assertNull($snapshot->created_by_user_id);
-        $this->assertNull($snapshot->createdBy);
-    }
-
-    #[Test]
-    public function it_casts_the_reason_the_payload_and_the_dates(): void
-    {
-        $snapshot = RecordSnapshot::factory()->create([
-            'reason' => SnapshotReasonEnum::TemplateChange,
-            'payload' => ['record' => ['first_name' => 'Michael']],
-            'file_ids' => [4, 8],
-            'restored_at' => now(),
-            'expires_at' => now()->addYear(),
-        ]);
-
-        $snapshot->refresh();
-
-        $this->assertEquals(SnapshotReasonEnum::TemplateChange, $snapshot->reason);
-        $this->assertEquals(['record' => ['first_name' => 'Michael']], $snapshot->payload);
-        $this->assertEquals([4, 8], $snapshot->file_ids);
-        $this->assertInstanceOf(CarbonImmutable::class, $snapshot->restored_at);
-        $this->assertInstanceOf(CarbonImmutable::class, $snapshot->expires_at);
-    }
 
     #[Test]
     public function it_refuses_to_have_the_state_it_captured_rewritten(): void

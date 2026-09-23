@@ -31,14 +31,6 @@ class TwoFactorControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_visitor_who_is_not_signed_in(): void
-    {
-        $response = $this->get(route('settings.twoFactor.new'));
-
-        $response->assertRedirect(route('auth.login.new'));
-    }
-
-    #[Test]
     public function it_turns_two_factor_authentication_on(): void
     {
         Queue::fake();

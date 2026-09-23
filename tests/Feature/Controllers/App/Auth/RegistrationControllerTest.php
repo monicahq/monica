@@ -41,15 +41,6 @@ class RegistrationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_links_to_the_terms_of_use_and_the_privacy_policy(): void
-    {
-        $response = $this->get(route('auth.register.new'));
-
-        $response->assertSee(config('monica.terms_url'));
-        $response->assertSee(config('monica.privacy_url'));
-    }
-
-    #[Test]
     public function it_creates_an_account_and_its_first_user(): void
     {
         Queue::fake();

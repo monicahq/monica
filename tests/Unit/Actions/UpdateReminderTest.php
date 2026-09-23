@@ -55,6 +55,16 @@ class UpdateReminderTest extends TestCase
         ]);
         $this->assertEquals([['direction' => 'after', 'amount' => 2, 'unit' => 'weeks']], $reminder->fresh()->moments);
         $this->assertStringStartsWith('18:30', (string) $reminder->fresh()->time_of_day);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderUpdate
+                && $job->account->id === $user->account_id
+                && $job->vault->id === $reminder->vault_id
+                && $job->isAbout($reminder)
+                && $job->parameters === ['label' => 'Birthday', 'name' => $reminder->remindable->name],
+        );
     }
 
     #[Test]
@@ -192,33 +202,6 @@ class UpdateReminderTest extends TestCase
             moments: self::MOMENTS,
             timeOfDay: '09:00',
         )->execute();
-    }
-
-    #[Test]
-    public function it_writes_a_line_in_the_journal(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $reminder = $this->ruleOf($user);
-
-        new UpdateReminder(
-            user: $user,
-            reminder: $reminder,
-            cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
-            timeOfDay: '09:00',
-        )->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderUpdate
-                && $job->account->id === $user->account_id
-                && $job->vault->id === $reminder->vault_id
-                && $job->isAbout($reminder)
-                && $job->parameters === ['label' => 'Birthday', 'name' => $reminder->remindable->name],
-        );
     }
 
     private function ruleOf(User $user): Reminder

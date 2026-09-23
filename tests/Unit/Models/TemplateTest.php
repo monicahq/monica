@@ -17,24 +17,6 @@ class TemplateTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $template = Template::factory()->create();
-
-        $this->assertTrue($template->account()->exists());
-    }
-
-    #[Test]
-    public function it_owns_one_structure(): void
-    {
-        $template = Template::factory()->create();
-
-        $this->assertTrue($template->structure()->exists());
-        $this->assertEquals($template->id, $template->structure->owner_id);
-        $this->assertEquals(Template::class, $template->structure->owner_type);
-    }
-
-    #[Test]
     public function it_describes_the_kind_of_record_through_its_structure(): void
     {
         $entityType = EntityType::factory()->create();

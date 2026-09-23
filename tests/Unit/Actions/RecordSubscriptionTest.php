@@ -47,6 +47,9 @@ class RecordSubscriptionTest extends TestCase
             'billing_email' => 'michael.scott@dundermifflin.com',
         ]);
         $this->assertTrue($account->fresh()->hasFullAccess());
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::SubscriptionStarted
+            && $job->isAbout($subscription));
     }
 
     #[Test]
@@ -61,21 +64,6 @@ class RecordSubscriptionTest extends TestCase
         new RecordSubscription(account: $michael->account, subscription: $subscription)->execute();
 
         Notification::assertSentToTimes($michael, AccessUnlocked::class, 1);
-    }
-
-    #[Test]
-    public function it_writes_the_subscription_into_the_account_journal(): void
-    {
-        Queue::fake();
-        Notification::fake();
-
-        $michael = User::factory()->create();
-        $subscription = $this->subscribeAccount($michael->account);
-
-        new RecordSubscription(account: $michael->account, subscription: $subscription)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::SubscriptionStarted
-            && $job->isAbout($subscription));
     }
 
     #[Test]

@@ -100,34 +100,4 @@ class LifeEventCategoryControllerTest extends TestCase
         $response->assertSessionHas('error');
         $this->assertNotSoftDeleted($category);
     }
-
-    #[Test]
-    public function it_refuses_to_delete_a_category_the_product_supplied(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->system()->create(['account_id' => $user->account_id]);
-
-        $response = $this->actingAs($user)->delete(route('settings.lifeEventCategories.destroy', $category));
-
-        $response->assertSessionHas('error');
-        $this->assertNotSoftDeleted($category);
-    }
-
-    #[Test]
-    public function it_answers_not_found_for_a_category_of_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $dwight->account_id, 'name' => 'Beets']);
-
-        $this->actingAs($michael)
-            ->put(route('settings.lifeEventCategories.update', $category), ['name' => 'Stolen'])
-            ->assertStatus(404);
-
-        $this->assertSame('Beets', $category->refresh()->name);
-    }
 }

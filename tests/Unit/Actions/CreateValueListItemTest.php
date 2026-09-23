@@ -27,7 +27,10 @@ class CreateValueListItemTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $list = ValueList::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Contact categories',
+        ]);
 
         $item = new CreateValueListItem(
             user: $user,
@@ -54,6 +57,14 @@ class CreateValueListItemTest extends TestCase
             'is_active' => true,
             'usage_count' => 0,
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListItemCreation
+                && $job->isAbout($item)
+                && $job->parameters === ['label' => 'Beet farmer', 'name' => 'Contact categories'],
+        );
     }
 
     #[Test]
@@ -122,27 +133,5 @@ class CreateValueListItemTest extends TestCase
         $this->assertEquals('Beet farmer', $item->label);
         $this->assertNull($item->description);
         $this->assertNull($item->colour);
-    }
-
-    #[Test]
-    public function it_logs_the_addition(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Contact categories',
-        ]);
-
-        $item = new CreateValueListItem(user: $user, valueList: $list, label: 'Beet farmer')->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListItemCreation
-                && $job->isAbout($item)
-                && $job->parameters === ['label' => 'Beet farmer', 'name' => 'Contact categories'],
-        );
     }
 }

@@ -254,14 +254,6 @@ class StructureVersionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_caller_holding_no_token(): void
-    {
-        $template = Template::factory()->create();
-
-        $this->json('GET', "/api/v1/templates/{$template->uuid}/versions")->assertUnauthorized();
-    }
-
-    #[Test]
     public function it_opens_a_draft_from_the_published_version(): void
     {
         Queue::fake();
@@ -338,26 +330,6 @@ class StructureVersionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_for_a_change_note_from_the_second_version_on(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $first = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
-        StructureVersion::factory()->create([
-            'structure_id' => $template->structure->id,
-            'version_number' => 2,
-            'previous_version_id' => $first->id,
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/2/publication", [])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors(['change_note']);
-    }
-
-    #[Test]
     public function it_refuses_to_publish_a_version_with_no_page_at_all(): void
     {
         Queue::fake();
@@ -373,21 +345,6 @@ class StructureVersionControllerTest extends TestCase
             ->assertJsonValidationErrors(['version']);
 
         $this->assertEquals(VersionStatusEnum::Draft, $version->refresh()->status);
-    }
-
-    #[Test]
-    public function it_refuses_to_publish_something_that_is_already_published(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/publication", ['change_note' => 'Again.'])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors(['version']);
     }
 
     #[Test]

@@ -26,13 +26,25 @@ class SetDefaultVaultTest extends TestCase
 
         $user = User::factory()->create();
         $held = Vault::factory()->default()->create(['account_id' => $user->account_id]);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Schrute Farms',
+        ]);
 
         $result = new SetDefaultVault(user: $user, vault: $vault)->execute();
 
         $this->assertInstanceOf(Vault::class, $result);
         $this->assertTrue($vault->refresh()->is_default);
         $this->assertFalse($held->refresh()->is_default);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultDefaultSet
+                && $job->account->id === $user->account_id
+                && $job->vault->id === $vault->id
+                && $job->parameters === ['name' => 'Schrute Farms'],
+        );
     }
 
     #[Test]
@@ -74,28 +86,5 @@ class SetDefaultVaultTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new SetDefaultVault(user: $user, vault: $vault)->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_change(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Schrute Farms',
-        ]);
-
-        new SetDefaultVault(user: $user, vault: $vault)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultDefaultSet
-                && $job->account->id === $user->account_id
-                && $job->vault->id === $vault->id
-                && $job->parameters === ['name' => 'Schrute Farms'],
-        );
     }
 }

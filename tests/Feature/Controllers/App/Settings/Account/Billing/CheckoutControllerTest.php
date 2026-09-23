@@ -78,11 +78,4 @@ class CheckoutControllerTest extends TestCase
         $response->assertSessionHasErrors('offer');
         $this->assertFalse($michael->account->fresh()->hasFullAccess());
     }
-
-    #[Test]
-    public function it_refuses_a_visitor(): void
-    {
-        $this->post(route('settings.checkout.store', ['price' => 'price_lifetime']))
-            ->assertRedirect(route('auth.login.new'));
-    }
 }

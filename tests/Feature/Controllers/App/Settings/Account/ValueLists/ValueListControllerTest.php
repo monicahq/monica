@@ -84,21 +84,6 @@ class ValueListControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_out_the_lists_of_another_account(): void
-    {
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        ValueList::factory()->create([
-            'account_id' => $dwight->account_id,
-            'name' => 'Beet varieties',
-        ]);
-
-        $this->actingAs($michael)->get(route('settings.valueLists.index'))
-            ->assertStatus(200)
-            ->assertDontSee('Beet varieties');
-    }
-
-    #[Test]
     public function it_creates_a_list(): void
     {
         Queue::fake();
@@ -232,15 +217,5 @@ class ValueListControllerTest extends TestCase
             ->assertNotFound();
 
         $this->assertNotSoftDeleted($list);
-    }
-
-    #[Test]
-    public function it_refuses_a_visitor_who_is_not_signed_in(): void
-    {
-        $this->get(route('settings.valueLists.index'))
-            ->assertRedirect(route('auth.login.new'));
-
-        $this->post(route('settings.valueLists.create'), ['name' => 'Job titles'])
-            ->assertRedirect(route('auth.login.new'));
     }
 }

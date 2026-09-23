@@ -41,6 +41,8 @@ class PostponeReminderOccurrenceTest extends TestCase
         $this->assertTrue($occurrence->original_scheduled_for->equalTo($original));
         $this->assertSame(1, $occurrence->postponed_count);
         $this->assertSame(ReminderOccurrenceStatusEnum::Postponed, $occurrence->status);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderOccurrencePostponement);
     }
 
     #[Test]
@@ -195,21 +197,6 @@ class PostponeReminderOccurrenceTest extends TestCase
             occurrence: $elsewhere,
             until: CarbonImmutable::now()->addDay(),
         )->execute();
-    }
-
-    #[Test]
-    public function it_writes_a_line_in_the_journal(): void
-    {
-        Queue::fake();
-        [$user, $occurrence] = $this->deadline();
-
-        new PostponeReminderOccurrence(
-            user: $user,
-            occurrence: $occurrence,
-            until: CarbonImmutable::now()->addDay(),
-        )->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderOccurrencePostponement);
     }
 
     /** @return array{0: User, 1: ReminderOccurrence} */

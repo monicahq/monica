@@ -34,17 +34,6 @@ class RegenerateTwoFactorRecoveryCodesTest extends TestCase
         $this->assertCount(8, $codes);
         $this->assertNotContains('scranton-1', $codes);
         $this->assertNotContains('scranton-2', $codes);
-    }
-
-    #[Test]
-    public function it_logs_the_change(): void
-    {
-        Queue::fake();
-
-        $account = Account::factory()->create();
-        $user = User::factory()->twoFactor()->create(['account_id' => $account->id]);
-
-        new RegenerateTwoFactorRecoveryCodes(user: $user)->execute();
 
         Queue::assertPushedOn(
             queue: 'low',

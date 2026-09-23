@@ -119,24 +119,6 @@ class ContactMergeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_resolution_the_preview_never_reported(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        [$jim, $james] = $this->twoContactsOf($user);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', $this->url($jim, $james), [
-            'resolutions' => [['field_key' => 'invented', 'row' => null, 'keep' => 'kept']],
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('resolutions');
-    }
-
-    #[Test]
     public function it_refuses_a_resolution_it_cannot_read(): void
     {
         Queue::fake();
@@ -240,22 +222,6 @@ class ContactMergeControllerTest extends TestCase
 
         $response->assertNoContent();
         $this->assertNotSoftDeleted($james);
-    }
-
-    #[Test]
-    public function it_refuses_to_undo_a_merge_twice(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        [$jim, $james] = $this->twoContactsOf($user);
-        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
-        $url = "/api/v1/vaults/{$jim->vault->uuid}/merges/{$merge->uuid}";
-
-        Sanctum::actingAs($user);
-
-        $this->json('DELETE', $url)->assertNoContent();
-        $this->json('DELETE', $url)->assertUnprocessable()->assertJsonValidationErrors('merge');
     }
 
     #[Test]

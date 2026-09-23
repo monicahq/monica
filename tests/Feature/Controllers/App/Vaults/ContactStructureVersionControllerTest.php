@@ -38,31 +38,6 @@ class ContactStructureVersionControllerTest extends TestCase
     }
 
     #[Test]
-    public function the_banner_is_offered_on_the_contact_page_and_goes_once_it_is_applied(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = $this->template($user);
-        $michael = $this->contact($user, $template->versions()->firstOrFail());
-        $this->publish($template, 2);
-
-        $this->actingAs($user)
-            ->get(route('contacts.show', ['vault' => $michael->vault, 'contact' => $michael]))
-            ->assertStatus(200)
-            ->assertSee('Version 2 of the Friend template is ready')
-            ->assertSee('Apply version 2');
-
-        $this->actingAs($user)
-            ->put(route('contacts.templateVersion.update', ['vault' => $michael->vault, 'contact' => $michael]));
-
-        $this->actingAs($user)
-            ->get(route('contacts.show', ['vault' => $michael->vault, 'contact' => $michael]))
-            ->assertStatus(200)
-            ->assertDontSee('Apply version 2');
-    }
-
-    #[Test]
     public function it_puts_the_contact_back_on_a_version_it_names(): void
     {
         Queue::fake();
@@ -166,20 +141,6 @@ class ContactStructureVersionControllerTest extends TestCase
 
         $this->actingAs($user)
             ->put(route('contacts.templateVersion.update', ['vault' => $elsewhere, 'contact' => $michael]))
-            ->assertNotFound();
-    }
-
-    #[Test]
-    public function a_contact_in_another_account_cannot_be_reached(): void
-    {
-        $user = User::factory()->create();
-        $stranger = User::factory()->create();
-        $template = $this->template($stranger);
-        $theirs = $this->contact($stranger, $template->versions()->firstOrFail());
-        $this->publish($template, 2);
-
-        $this->actingAs($user)
-            ->put(route('contacts.templateVersion.update', ['vault' => $theirs->vault, 'contact' => $theirs]))
             ->assertNotFound();
     }
 

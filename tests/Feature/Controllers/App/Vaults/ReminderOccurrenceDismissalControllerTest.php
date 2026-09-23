@@ -95,16 +95,6 @@ class ReminderOccurrenceDismissalControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_deadline_of_another_account(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create();
-        $occurrence = $this->deadlineFor($this->rule($vault), '+2 days', 'a');
-
-        $this->actingAs($user)->put($this->url($vault, $occurrence))->assertStatus(404);
-    }
-
-    #[Test]
     public function it_refuses_a_deadline_reached_through_the_wrong_vault(): void
     {
         $user = User::factory()->create();

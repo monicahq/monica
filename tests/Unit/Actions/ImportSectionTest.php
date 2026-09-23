@@ -49,6 +49,12 @@ class ImportSectionTest extends TestCase
         $this->assertEquals($page->id, $row->structure_version_page_id);
         $this->assertEquals('Personal details', $row->sectionVersion->section->name);
         $this->assertCount(3, $row->sectionVersion->fields);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job) use ($template): bool {
+            return $job->action === UserActionEnum::SectionImported
+                && $job->isAbout($template)
+                && $job->parameters === ['section' => 'Personal details', 'name' => $template->name];
+        });
     }
 
     #[Test]
@@ -181,24 +187,6 @@ class ImportSectionTest extends TestCase
         }
 
         $this->assertEquals($sections, Section::query()->count());
-    }
-
-    #[Test]
-    public function it_logs_the_import(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $file = $this->exportedSection($user);
-        [$template, $page] = $this->draft($user);
-
-        new ImportSection(user: $user, template: $template, page: $page, raw: $file)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job) use ($template): bool {
-            return $job->action === UserActionEnum::SectionImported
-                && $job->isAbout($template)
-                && $job->parameters === ['section' => 'Personal details', 'name' => $template->name];
-        });
     }
 
     private function exportedSection(User $user): string

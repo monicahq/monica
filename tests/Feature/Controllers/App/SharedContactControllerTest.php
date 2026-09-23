@@ -45,6 +45,19 @@ class SharedContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_out_a_field_marked_sensitive(): void
+    {
+        $contact = $this->sharedContact();
+        $this->linkOnto($contact);
+
+        $this->get(route('share.show', ['token' => self::TOKEN, 'page' => 'work']))
+            ->assertStatus(200)
+            ->assertSee('Dunder Mifflin')
+            ->assertDontSee('Social security number')
+            ->assertDontSee('123-45-6789');
+    }
+
+    #[Test]
     public function it_writes_the_visit_down_and_counts_it(): void
     {
         $contact = $this->sharedContact();
@@ -68,30 +81,6 @@ class SharedContactControllerTest extends TestCase
         $this->get(route('share.show', ['token' => str_repeat('a', 64)]))
             ->assertStatus(200)
             ->assertSee('This link no longer works');
-    }
-
-    #[Test]
-    public function it_says_the_same_thing_about_an_expired_link(): void
-    {
-        $contact = $this->sharedContact();
-        $this->linkOnto($contact, ['expires_at' => now()->subDay()]);
-
-        $this->get(route('share.show', ['token' => self::TOKEN]))
-            ->assertStatus(200)
-            ->assertSee('This link no longer works')
-            ->assertDontSee('Michael Scott');
-    }
-
-    #[Test]
-    public function it_says_the_same_thing_about_a_revoked_link(): void
-    {
-        $contact = $this->sharedContact();
-        $this->linkOnto($contact, ['revoked_at' => now()->subHour()]);
-
-        $this->get(route('share.show', ['token' => self::TOKEN]))
-            ->assertStatus(200)
-            ->assertSee('This link no longer works')
-            ->assertDontSee('Michael Scott');
     }
 
     #[Test]
@@ -179,83 +168,6 @@ class SharedContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_out_a_section_the_link_holds_back(): void
-    {
-        $contact = $this->sharedContact();
-        $doctors = $this->sectionNamed($contact, 'Doctors');
-        $this->linkOnto($contact, ['excluded_section_ids' => [$doctors->id]]);
-
-        $this->get(route('share.show', ['token' => self::TOKEN]))
-            ->assertStatus(200)
-            ->assertSee('Facts')
-            ->assertDontSee('Doctors')
-            ->assertDontSee('Dr Ferrand');
-    }
-
-    #[Test]
-    public function it_leaves_out_a_field_marked_sensitive(): void
-    {
-        $contact = $this->sharedContact();
-        $this->linkOnto($contact);
-
-        $this->get(route('share.show', ['token' => self::TOKEN, 'page' => 'work']))
-            ->assertStatus(200)
-            ->assertSee('Dunder Mifflin')
-            ->assertDontSee('Social security number')
-            ->assertDontSee('123-45-6789');
-    }
-
-    #[Test]
-    public function it_shows_a_field_marked_sensitive_when_the_link_says_so(): void
-    {
-        $contact = $this->sharedContact();
-        $this->linkOnto($contact, ['includes_sensitive_fields' => true]);
-
-        $this->get(route('share.show', ['token' => self::TOKEN, 'page' => 'work']))
-            ->assertStatus(200)
-            ->assertSee('123-45-6789');
-    }
-
-    #[Test]
-    public function it_draws_a_tab_for_each_page_that_still_has_something_on_it(): void
-    {
-        $contact = $this->sharedContact();
-        $this->linkOnto($contact);
-
-        $this->get(route('share.show', ['token' => self::TOKEN]))
-            ->assertStatus(200)
-            ->assertSee('Overview')
-            ->assertSee('Work');
-    }
-
-    #[Test]
-    public function a_page_whose_every_section_is_held_back_is_not_a_tab(): void
-    {
-        $contact = $this->sharedContact();
-        $work = $this->sectionNamed($contact, 'Where they worked');
-        $this->linkOnto($contact, ['excluded_section_ids' => [$work->id]]);
-
-        $this->get(route('share.show', ['token' => self::TOKEN]))
-            ->assertStatus(200)
-            ->assertDontSee('Work')
-            ->assertSee('Facts');
-    }
-
-    #[Test]
-    public function one_page_left_means_no_tab_list(): void
-    {
-        $contact = $this->sharedContact();
-        $facts = $this->sectionNamed($contact, 'Facts');
-        $doctors = $this->sectionNamed($contact, 'Doctors');
-        $this->linkOnto($contact, ['excluded_section_ids' => [$facts->id, $doctors->id]]);
-
-        $this->get(route('share.show', ['token' => self::TOKEN]))
-            ->assertStatus(200)
-            ->assertSee('Where they worked')
-            ->assertDontSee('role="tablist"', false);
-    }
-
-    #[Test]
     public function it_opens_the_page_named_in_the_address(): void
     {
         $contact = $this->sharedContact();
@@ -265,29 +177,6 @@ class SharedContactControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Where they worked')
             ->assertSee('Dunder Mifflin');
-    }
-
-    #[Test]
-    public function it_falls_back_to_a_shared_page_when_the_address_names_one_that_is_held_back(): void
-    {
-        $contact = $this->sharedContact();
-        $work = $this->sectionNamed($contact, 'Where they worked');
-        $this->linkOnto($contact, ['excluded_section_ids' => [$work->id]]);
-
-        $this->get(route('share.show', ['token' => self::TOKEN, 'page' => 'work']))
-            ->assertStatus(200)
-            ->assertSee('Facts');
-    }
-
-    #[Test]
-    public function it_says_who_shared_it(): void
-    {
-        $contact = $this->sharedContact();
-        $this->linkOnto($contact, ['created_by_user_id' => $contact->account->user->id]);
-
-        $this->get(route('share.show', ['token' => self::TOKEN]))
-            ->assertStatus(200)
-            ->assertSee('Shared with you by');
     }
 
     #[Test]
@@ -397,11 +286,5 @@ class SharedContactControllerTest extends TestCase
             'field_key' => $field->key,
             'value_string' => $value,
         ]);
-    }
-
-    private function sectionNamed(Contact $contact, string $name): StructureVersionSection
-    {
-        return $contact->structureVersion->assembly
-            ->first(fn (StructureVersionSection $row): bool => $row->sectionVersion->section->name === $name);
     }
 }

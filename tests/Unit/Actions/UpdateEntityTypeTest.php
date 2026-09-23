@@ -47,6 +47,13 @@ class UpdateEntityTypeTest extends TestCase
             'name_plural' => 'Pets',
             'description' => 'The ones with fur',
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::EntityTypeUpdate
+                && $job->parameters === ['name' => 'Pets']
+                && $job->changes['name_singular'] === ['before' => 'Animal', 'after' => 'Pet']
+                && $job->changes['name_plural'] === ['before' => 'Animals', 'after' => 'Pets'];
+        });
     }
 
     #[Test]
@@ -108,32 +115,5 @@ class UpdateEntityTypeTest extends TestCase
             nameSingular: 'Beet',
             namePlural: 'Beets',
         )->execute();
-    }
-
-    #[Test]
-    public function it_writes_what_changed_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->create([
-            'account_id' => $user->account_id,
-            'name_singular' => 'Animal',
-            'name_plural' => 'Animals',
-        ]);
-
-        new UpdateEntityType(
-            user: $user,
-            entityType: $entityType,
-            nameSingular: 'Pet',
-            namePlural: 'Pets',
-        )->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::EntityTypeUpdate
-                && $job->parameters === ['name' => 'Pets']
-                && $job->changes['name_singular'] === ['before' => 'Animal', 'after' => 'Pet']
-                && $job->changes['name_plural'] === ['before' => 'Animals', 'after' => 'Pets'];
-        });
     }
 }

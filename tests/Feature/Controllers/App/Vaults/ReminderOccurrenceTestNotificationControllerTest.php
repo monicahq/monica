@@ -70,20 +70,6 @@ class ReminderOccurrenceTestNotificationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_deadline_of_another_account(): void
-    {
-        Notification::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create();
-        $occurrence = $this->deadline($vault);
-
-        $this->actingAs($user)->post($this->url($vault, $occurrence))->assertStatus(404);
-
-        Notification::assertNothingSent();
-    }
-
-    #[Test]
     public function it_refuses_a_deadline_reached_through_the_wrong_vault(): void
     {
         Notification::fake();

@@ -44,6 +44,7 @@ class CreateDefaultRelationshipTypesTest extends TestCase
     #[Test]
     public function it_gives_the_account_the_ten_supplied_types(): void
     {
+        Queue::fake();
         $user = $this->michael();
 
         $types = new CreateDefaultRelationshipTypes(user: $user)->execute();
@@ -61,6 +62,8 @@ class CreateDefaultRelationshipTypesTest extends TestCase
             'is_system' => true,
             'is_active' => true,
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipTypesSeeded);
     }
 
     #[Test]
@@ -116,23 +119,13 @@ class CreateDefaultRelationshipTypesTest extends TestCase
         );
     }
 
-    #[Test]
-    public function it_writes_the_seeding_to_the_journal(): void
-    {
-        Queue::fake();
-        $user = $this->michael();
-
-        new CreateDefaultRelationshipTypes(user: $user)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipTypesSeeded);
-    }
-
     private function michael(): User
     {
         $account = Account::factory()->create();
 
         return $this->assignUserToAccount(user: User::factory()->make(), account: $account);
     }
+
     #[Test]
     public function it_writes_nothing_when_the_account_already_has_them(): void
     {

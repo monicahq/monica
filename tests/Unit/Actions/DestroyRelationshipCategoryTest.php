@@ -32,6 +32,8 @@ class DestroyRelationshipCategoryTest extends TestCase
         new DestroyRelationshipCategory(user: $user, relationshipCategory: $category)->execute();
 
         $this->assertSoftDeleted($category);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipCategoryDeletion);
     }
 
     #[Test]
@@ -73,17 +75,5 @@ class DestroyRelationshipCategoryTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DestroyRelationshipCategory(user: $michael, relationshipCategory: $category)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_deletion_to_the_journal(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-
-        new DestroyRelationshipCategory(user: $user, relationshipCategory: $category)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipCategoryDeletion);
     }
 }

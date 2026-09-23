@@ -61,7 +61,7 @@ class CreateShareLinkTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Famille']);
 
         $shareLink = new CreateShareLink(
             user: $user,
@@ -72,6 +72,11 @@ class CreateShareLinkTest extends TestCase
         $this->assertEquals(Vault::class, $shareLink->shareable_type);
         $this->assertEquals($vault->id, $shareLink->shareable_id);
         $this->assertEquals($vault->id, $shareLink->vault_id);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::ShareLinkCreation
+                && $job->parameters === ['label' => 'For Michael', 'name' => 'Famille'];
+        });
     }
 
     #[Test]
@@ -188,25 +193,5 @@ class CreateShareLinkTest extends TestCase
             shareable: Contact::factory()->create(),
             label: 'For the family',
         )->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_action(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Famille']);
-
-        new CreateShareLink(
-            user: $user,
-            shareable: $vault,
-            label: 'For Michael',
-        )->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::ShareLinkCreation
-                && $job->parameters === ['label' => 'For Michael', 'name' => 'Famille'];
-        });
     }
 }

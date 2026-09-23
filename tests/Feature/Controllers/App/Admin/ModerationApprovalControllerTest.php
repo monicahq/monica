@@ -19,19 +19,6 @@ class ModerationApprovalControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_is_closed_to_somebody_who_does_not_run_the_instance(): void
-    {
-        $jim = User::factory()->create();
-        $version = MarketplaceListingVersion::factory()->create();
-
-        $this->actingAs($jim)
-            ->post(route('admin.moderation.approval.create', ['version' => $version->id]))
-            ->assertNotFound();
-
-        $this->assertEquals(MarketplaceVersionStatusEnum::Submitted, $version->fresh()->status);
-    }
-
-    #[Test]
     public function it_lets_a_version_into_the_catalogue(): void
     {
         $listing = MarketplaceListing::factory()->submitted()->create();

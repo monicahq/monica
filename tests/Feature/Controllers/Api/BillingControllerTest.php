@@ -183,12 +183,6 @@ class BillingControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_request_with_no_token(): void
-    {
-        $this->json('GET', route('api.v1.billing'))->assertUnauthorized();
-    }
-
-    #[Test]
     public function it_answers_the_latest_payment_and_nothing_older(): void
     {
         $michael = User::factory()->create();

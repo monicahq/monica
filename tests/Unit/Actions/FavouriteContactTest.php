@@ -26,12 +26,29 @@ class FavouriteContactTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'first_name' => 'Jim',
+            'last_name' => 'Halpert',
+        ]);
 
         $contact = new FavouriteContact(user: $user, contact: $contact)->execute();
 
         $this->assertTrue($contact->is_favourite);
         $this->assertDatabaseHas('contacts', ['id' => $contact->id, 'is_favourite' => true]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactFavourited
+                && $job->account->id === $user->account_id
+                && $job->user->id === $user->id
+                && $job->vault->id === $vault->id
+                && $job->isAbout($contact)
+                && $job->parameters === ['name' => 'Jim Halpert'],
+        );
     }
 
     #[Test]
@@ -45,33 +62,5 @@ class FavouriteContactTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new FavouriteContact(user: $user, contact: $contact)->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_pinning(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create([
-            'account_id' => $user->account_id,
-            'vault_id' => $vault->id,
-            'first_name' => 'Jim',
-            'last_name' => 'Halpert',
-        ]);
-
-        new FavouriteContact(user: $user, contact: $contact)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactFavourited
-                && $job->account->id === $user->account_id
-                && $job->user->id === $user->id
-                && $job->vault->id === $vault->id
-                && $job->isAbout($contact)
-                && $job->parameters === ['name' => 'Jim Halpert'],
-        );
     }
 }

@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Models;
 
 use App\Enums\ValueListEnum;
-use App\Models\Account;
 use App\Models\ValueList;
-use App\Models\ValueListItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -15,30 +13,6 @@ use Tests\TestCase;
 class ValueListTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $account = Account::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $account->id]);
-
-        $this->assertTrue($list->account()->exists());
-        $this->assertTrue($account->is($list->account));
-    }
-
-    #[Test]
-    public function it_has_many_items(): void
-    {
-        $list = ValueList::factory()->create();
-        ValueListItem::factory()->create([
-            'account_id' => $list->account_id,
-            'value_list_id' => $list->id,
-            'label' => 'Mobile',
-        ]);
-
-        $this->assertTrue($list->items()->exists());
-        $this->assertEquals('Mobile', $list->items->first()->label);
-    }
 
     #[Test]
     public function it_reads_by_the_name_the_user_gave_it(): void
@@ -65,18 +39,6 @@ class ValueListTest extends TestCase
         $this->app->setLocale('fr_FR');
 
         $this->assertEquals('Étiquettes de téléphone', $list->name);
-    }
-
-    #[Test]
-    public function it_casts_what_it_is_and_what_it_allows(): void
-    {
-        $list = ValueList::factory()->supplied()->create(['position' => 2]);
-
-        $list->refresh();
-
-        $this->assertTrue($list->is_system);
-        $this->assertTrue($list->allows_user_values);
-        $this->assertSame(2, $list->position);
     }
 
     #[Test]

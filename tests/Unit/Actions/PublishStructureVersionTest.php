@@ -36,7 +36,7 @@ class PublishStructureVersionTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
         $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
         new PublishStructureVersion(user: $user, structureVersion: $version)->execute();
@@ -45,6 +45,11 @@ class PublishStructureVersionTest extends TestCase
 
         $this->assertEquals(VersionStatusEnum::Published, $version->status);
         $this->assertNotNull($version->published_at);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::TemplateVersionPublished
+                && $job->parameters === ['name' => 'Contact', 'version' => 1];
+        });
     }
 
     #[Test]
@@ -266,23 +271,6 @@ class PublishStructureVersionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new PublishStructureVersion(user: $michael, structureVersion: $version)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_publication_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-
-        new PublishStructureVersion(user: $user, structureVersion: $version)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::TemplateVersionPublished
-                && $job->parameters === ['name' => 'Contact', 'version' => 1];
-        });
     }
 
     #[Test]

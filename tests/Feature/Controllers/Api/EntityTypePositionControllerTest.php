@@ -102,14 +102,4 @@ class EntityTypePositionControllerTest extends TestCase
         $response->assertNotFound();
         $this->assertSame(4, $entityType->refresh()->position);
     }
-
-    #[Test]
-    public function it_refuses_a_caller_holding_no_credential(): void
-    {
-        $entityType = EntityType::factory()->create();
-
-        $this->json('PUT', "/api/v1/entity-types/{$entityType->uuid}/position", [
-            'position' => 1,
-        ])->assertUnauthorized();
-    }
 }

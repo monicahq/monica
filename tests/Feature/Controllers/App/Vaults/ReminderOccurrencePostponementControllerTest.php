@@ -102,24 +102,6 @@ class ReminderOccurrencePostponementControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_deadline_somebody_has_already_dealt_with(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $occurrence = $this->deadline($vault, '+2 days');
-        $occurrence->status = ReminderOccurrenceStatusEnum::Dismissed;
-        $occurrence->save();
-
-        $response = $this->actingAs($user)->put($this->url($vault, $occurrence), [
-            'preset' => ReminderPostponePresetEnum::Tomorrow->value,
-        ]);
-
-        $response->assertSessionHasErrors('postponement');
-
-        $this->assertEquals(ReminderOccurrenceStatusEnum::Dismissed, $occurrence->refresh()->status);
-    }
-
-    #[Test]
     public function it_refuses_a_request_naming_neither_a_preset_nor_a_date(): void
     {
         $user = User::factory()->create();
@@ -181,18 +163,6 @@ class ReminderOccurrencePostponementControllerTest extends TestCase
             $originally->format('Y-m-d H:i:s'),
             $occurrence->refresh()->original_scheduled_for->format('Y-m-d H:i:s'),
         );
-    }
-
-    #[Test]
-    public function it_refuses_a_deadline_of_another_account(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create();
-        $occurrence = $this->deadline($vault, '+2 days');
-
-        $this->actingAs($user)
-            ->put($this->url($vault, $occurrence), ['preset' => ReminderPostponePresetEnum::Tomorrow->value])
-            ->assertStatus(404);
     }
 
     #[Test]

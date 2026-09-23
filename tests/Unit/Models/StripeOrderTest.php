@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Models;
 
 use App\Enums\OfferKindEnum;
-use App\Models\Account;
 use App\Models\StripeOrder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -14,15 +13,6 @@ use Tests\TestCase;
 class StripeOrderTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $order = StripeOrder::factory()->create();
-
-        $this->assertTrue($order->account()->exists());
-        $this->assertInstanceOf(Account::class, $order->account);
-    }
 
     #[Test]
     public function it_is_settled_only_once_stripe_calls_it_paid(): void

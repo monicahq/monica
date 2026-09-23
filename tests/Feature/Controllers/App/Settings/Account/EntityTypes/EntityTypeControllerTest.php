@@ -34,21 +34,6 @@ class EntityTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_out_the_types_of_another_account(): void
-    {
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        EntityType::factory()->create([
-            'account_id' => $dwight->account_id,
-            'name_plural' => 'Beet varieties',
-        ]);
-
-        $this->actingAs($michael)->get(route('settings.entityTypes.index'))
-            ->assertStatus(200)
-            ->assertDontSee('Beet varieties');
-    }
-
-    #[Test]
     public function it_says_when_a_type_is_not_active(): void
     {
         $user = User::factory()->create();
@@ -451,46 +436,5 @@ class EntityTypeControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Edit Animal')
             ->assertDontSee('Edit Beet');
-    }
-
-    #[Test]
-    public function it_refuses_to_touch_a_type_in_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        $entityType = EntityType::factory()->create([
-            'account_id' => $dwight->account_id,
-            'slug' => 'beets',
-        ]);
-
-        $this->actingAs($michael)->get(route('settings.entityTypes.edit', 'beets'))
-            ->assertNotFound();
-
-        $this->actingAs($michael)->put(route('settings.entityTypes.update', 'beets'), [
-            'name_singular' => 'Mine',
-            'name_plural' => 'Mine',
-            'icon' => 'profile',
-            'colour' => '#3f5fd0',
-        ])->assertNotFound();
-
-        $this->actingAs($michael)->delete(route('settings.entityTypes.destroy', 'beets'))
-            ->assertNotFound();
-
-        $this->assertNotSoftDeleted($entityType);
-    }
-
-    #[Test]
-    public function it_refuses_a_visitor_who_is_not_signed_in(): void
-    {
-        $this->get(route('settings.entityTypes.index'))
-            ->assertRedirect(route('auth.login.new'));
-
-        $this->get(route('settings.entityTypes.new'))
-            ->assertRedirect(route('auth.login.new'));
-
-        $this->post(route('settings.entityTypes.create'), [])
-            ->assertRedirect(route('auth.login.new'));
     }
 }

@@ -17,16 +17,6 @@ class NotificationChannelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $account = Account::factory()->create();
-        $channel = $this->row($account, NotificationChannelEnum::Email);
-
-        $this->assertTrue($channel->account()->exists());
-        $this->assertSame($account->id, $channel->account->id);
-    }
-
-    #[Test]
     public function a_channel_that_asks_for_nothing_is_set_up_from_the_start(): void
     {
         $channel = NotificationChannel::factory()->channel(NotificationChannelEnum::Email)->make();

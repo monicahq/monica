@@ -171,19 +171,6 @@ class TemplateSectionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_template_from_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $template = Template::factory()->create();
-        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-
-        $this->actingAs($michael)->post(route('settings.templateSections.create', $template), ['name' => 'Health'])
-            ->assertNotFound();
-    }
-
-    #[Test]
     public function it_refuses_an_assembly_from_another_account(): void
     {
         Queue::fake();

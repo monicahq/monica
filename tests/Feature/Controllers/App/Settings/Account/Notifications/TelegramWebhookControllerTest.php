@@ -67,19 +67,6 @@ class TelegramWebhookControllerTest extends TestCase
     }
 
     #[Test]
-    public function an_expired_token_is_not_found_either(): void
-    {
-        $channel = $this->awaitingConnection('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-        $channel->update(['proof_expires_at' => now()->subMinute()]);
-
-        $this->withHeader('X-Telegram-Bot-Api-Secret-Token', 'testing-webhook-secret')
-            ->postJson(route('telegram.webhook'), $this->update('/start '.str_repeat('a', 64), 918273645))
-            ->assertNotFound();
-
-        $this->assertNull($channel->refresh()->destination);
-    }
-
-    #[Test]
     public function ordinary_chatter_in_the_conversation_is_ignored(): void
     {
         $channel = $this->awaitingConnection('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');

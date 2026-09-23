@@ -58,20 +58,6 @@ class ContactShareLinkControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_out_a_link_onto_somebody_else(): void
-    {
-        $user = User::factory()->create();
-        $michael = $this->contactOf($user);
-        $dwight = $this->contactOn($michael->vault, 'Dwight', 'Schrute');
-        ShareLink::factory()->for($dwight, 'shareable')->create(['label' => 'For the beet farm']);
-
-        $this->actingAs($user)
-            ->get(route('contacts.shareLinks.index', ['vault' => $michael->vault, 'contact' => $michael]))
-            ->assertStatus(200)
-            ->assertDontSee('For the beet farm');
-    }
-
-    #[Test]
     public function it_offers_the_form_with_every_section_going_out(): void
     {
         $user = User::factory()->create();
@@ -186,29 +172,6 @@ class ContactShareLinkControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('The link is live')
             ->assertSee('The address is not here');
-    }
-
-    #[Test]
-    public function it_lists_the_visits_a_link_had(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $link = ShareLink::factory()->for($contact, 'shareable')->create(['view_count' => 2]);
-        $link->visits()->create([
-            'account_id' => $link->account_id,
-            'ip_address' => '198.51.100.7',
-            'user_agent' => 'Dunder Mifflin Explorer',
-            'password_was_required' => false,
-            'password_failed' => false,
-            'viewed_at' => now(),
-        ]);
-
-        $this->actingAs($user)
-            ->get(route('contacts.shareLinks.show', ['vault' => $contact->vault, 'contact' => $contact, 'shareLink' => $link]))
-            ->assertStatus(200)
-            ->assertSee('Opened 2 times')
-            ->assertSee('198.51.100.7')
-            ->assertSee('Dunder Mifflin Explorer');
     }
 
     #[Test]
@@ -383,19 +346,6 @@ class ContactShareLinkControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_revoke_twice(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $link = ShareLink::factory()->for($contact, 'shareable')->revoked()->create();
-
-        $this->actingAs($user)
-            ->delete(route('contacts.shareLinks.destroy', ['vault' => $contact->vault, 'contact' => $contact, 'shareLink' => $link]))
-            ->assertSessionHas('error');
-    }
-
-    #[Test]
     public function it_refuses_a_link_that_is_onto_another_contact(): void
     {
         $user = User::factory()->create();
@@ -405,16 +355,6 @@ class ContactShareLinkControllerTest extends TestCase
 
         $this->actingAs($user)
             ->get(route('contacts.shareLinks.show', ['vault' => $michael->vault, 'contact' => $michael, 'shareLink' => $link]))
-            ->assertNotFound();
-    }
-
-    #[Test]
-    public function it_refuses_somebody_in_another_account(): void
-    {
-        $contact = $this->contactOf(User::factory()->create());
-
-        $this->actingAs(User::factory()->create())
-            ->get(route('contacts.shareLinks.index', ['vault' => $contact->vault, 'contact' => $contact]))
             ->assertNotFound();
     }
 

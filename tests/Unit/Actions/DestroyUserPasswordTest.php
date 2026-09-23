@@ -49,14 +49,6 @@ class DestroyUserPasswordTest extends TestCase
         $this->assertNull($user->password);
         $this->assertNull($user->password_changed_at);
         $this->assertTrue($user->usesPasswordlessSignIn());
-    }
-
-    #[Test]
-    public function it_writes_the_removal_down(): void
-    {
-        Queue::fake();
-
-        new DestroyUserPassword(user: $this->userWithAPasskey())->execute();
 
         Queue::assertPushedOn(
             queue: 'low',

@@ -31,12 +31,24 @@ class DestroyVaultTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Schrute Farms',
+        ]);
         Vault::factory()->default()->create(['account_id' => $user->account_id]);
 
         new DestroyVault(user: $user, vault: $vault)->execute();
 
         $this->assertSoftDeleted('vaults', ['id' => $vault->id]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultDeletion
+                && $job->account->id === $user->account_id
+                && $job->vault->id === $vault->id
+                && $job->parameters === ['name' => 'Schrute Farms'],
+        );
     }
 
     #[Test]
@@ -221,29 +233,5 @@ class DestroyVaultTest extends TestCase
         $this->assertNotNull($ontoTheVault->refresh()->revoked_at);
         $this->assertNotNull($ontoTheContact->refresh()->revoked_at);
         $this->assertNull($elsewhere->refresh()->revoked_at);
-    }
-
-    #[Test]
-    public function it_logs_the_deletion_with_the_name_the_vault_had(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Schrute Farms',
-        ]);
-        Vault::factory()->default()->create(['account_id' => $user->account_id]);
-
-        new DestroyVault(user: $user, vault: $vault)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultDeletion
-                && $job->account->id === $user->account_id
-                && $job->vault->id === $vault->id
-                && $job->parameters === ['name' => 'Schrute Farms'],
-        );
     }
 }

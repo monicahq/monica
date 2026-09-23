@@ -48,6 +48,17 @@ class CreateVaultTest extends TestCase
             'position' => 1,
             'contact_count' => 0,
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultCreation
+                && $job->account->id === $user->account_id
+                && $job->user->id === $user->id
+                && $job->vault->id === $vault->id
+                && $job->isAbout($vault)
+                && $job->parameters === ['name' => 'Dunder Mifflin'],
+        );
     }
 
     #[Test]
@@ -165,27 +176,6 @@ class CreateVaultTest extends TestCase
         $vault = new CreateVault(user: $user, name: 'Dunder Mifflin')->execute();
 
         $this->assertEquals(0, VaultDefaultTemplate::query()->where('vault_id', $vault->id)->count());
-    }
-
-    #[Test]
-    public function it_logs_the_creation(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $vault = new CreateVault(user: $user, name: 'Dunder Mifflin')->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultCreation
-                && $job->account->id === $user->account_id
-                && $job->user->id === $user->id
-                && $job->vault->id === $vault->id
-                && $job->isAbout($vault)
-                && $job->parameters === ['name' => 'Dunder Mifflin'],
-        );
     }
 
     #[Test]

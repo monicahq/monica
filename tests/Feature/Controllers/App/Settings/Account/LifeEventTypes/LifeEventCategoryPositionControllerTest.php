@@ -45,18 +45,4 @@ class LifeEventCategoryPositionControllerTest extends TestCase
             ->put(route('settings.lifeEventCategoryPosition.update', $category), ['position' => 'first'])
             ->assertSessionHasErrors('position');
     }
-
-    #[Test]
-    public function it_answers_not_found_for_a_category_of_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $dwight->account_id, 'position' => 3]);
-
-        $this->actingAs($michael)
-            ->put(route('settings.lifeEventCategoryPosition.update', $category), ['position' => 1])
-            ->assertStatus(404);
-    }
 }

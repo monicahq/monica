@@ -87,14 +87,6 @@ class PhotoControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_redirects_a_visitor_who_is_not_signed_in(): void
-    {
-        $response = $this->post(route('settings.photo.update'));
-
-        $response->assertRedirect(route('auth.login.new'));
-    }
-
-    #[Test]
     public function it_serves_a_version_of_the_photo(): void
     {
         Queue::fake();

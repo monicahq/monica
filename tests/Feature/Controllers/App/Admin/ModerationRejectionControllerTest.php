@@ -19,21 +19,6 @@ class ModerationRejectionControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_is_closed_to_somebody_who_does_not_run_the_instance(): void
-    {
-        $jim = User::factory()->create();
-        $version = MarketplaceListingVersion::factory()->create();
-
-        $this->actingAs($jim)
-            ->post(route('admin.moderation.rejection.create', ['version' => $version->id]), [
-                'reason' => 'No.',
-            ])
-            ->assertNotFound();
-
-        $this->assertEquals(MarketplaceVersionStatusEnum::Submitted, $version->fresh()->status);
-    }
-
-    #[Test]
     public function it_refuses_to_refuse_without_a_reason(): void
     {
         $version = MarketplaceListingVersion::factory()->create();

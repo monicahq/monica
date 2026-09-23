@@ -228,25 +228,6 @@ class ContactFavouriteControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_find_a_contact_of_another_account(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $stranger = User::factory()->create();
-        $contact = $this->contactOf($stranger);
-
-        $this->actingAs($user)
-            ->put(route('contacts.favourite.update', ['vault' => $contact->vault, 'contact' => $contact]), [
-                'favourite' => true,
-            ])
-            ->assertNotFound()
-            ->assertSessionMissing('status');
-
-        $this->assertFalse($contact->refresh()->is_favourite);
-    }
-
-    #[Test]
     public function it_does_not_find_a_contact_reached_through_another_vault_of_the_same_account(): void
     {
         Queue::fake();
@@ -261,21 +242,6 @@ class ContactFavouriteControllerTest extends TestCase
             ])
             ->assertNotFound()
             ->assertSessionMissing('status');
-
-        $this->assertFalse($contact->refresh()->is_favourite);
-    }
-
-    #[Test]
-    public function it_refuses_a_visitor(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-
-        $this->put(route('contacts.favourite.update', ['vault' => $contact->vault, 'contact' => $contact]), [
-            'favourite' => true,
-        ])->assertRedirect(route('auth.login.new'));
 
         $this->assertFalse($contact->refresh()->is_favourite);
     }

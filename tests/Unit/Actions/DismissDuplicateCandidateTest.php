@@ -37,6 +37,8 @@ class DismissDuplicateCandidateTest extends TestCase
             'dismissed_by_user_id' => $user->id,
         ]);
         $this->assertNotNull($dismissed->dismissed_at);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::DuplicateCandidateDismissed);
     }
 
     #[Test]
@@ -71,19 +73,6 @@ class DismissDuplicateCandidateTest extends TestCase
 
         $this->assertEquals($was->toIso8601String(), $candidate->fresh()->dismissed_at->toIso8601String());
         $this->assertEquals($other->id, $candidate->fresh()->dismissed_by_user_id);
-    }
-
-    #[Test]
-    public function it_writes_to_the_changelog(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $candidate = $this->candidateOf($user);
-
-        new DismissDuplicateCandidate(user: $user, candidate: $candidate)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::DuplicateCandidateDismissed);
     }
 
     #[Test]

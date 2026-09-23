@@ -25,6 +25,8 @@ class UpdateNotificationChannelTest extends TestCase
     #[Test]
     public function it_saves_a_destination_and_switches_the_channel_on(): void
     {
+        Queue::fake();
+
         [$user, $channel] = $this->channel(NotificationChannelEnum::Sms);
         $channel->fill(['destination' => '+15705550172', 'proven_at' => now()])->save();
 
@@ -39,6 +41,16 @@ class UpdateNotificationChannelTest extends TestCase
 
         $this->assertTrue($channel->is_enabled);
         $this->assertSame('+15705550172', $channel->destination);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::NotificationChannelEnabled
+                && $job->account->id === $user->account_id
+                && $job->user->id === $user->id
+                && $job->parameters === ['name' => 'Text message']
+                && $job->isAbout($channel),
+        );
     }
 
     #[Test]
@@ -182,31 +194,6 @@ class UpdateNotificationChannelTest extends TestCase
             channel: $theirs,
             isEnabled: false,
         )->execute();
-    }
-
-    #[Test]
-    public function it_logs_switching_a_channel_on(): void
-    {
-        Queue::fake();
-        [$user, $channel] = $this->channel(NotificationChannelEnum::Sms);
-        $channel->fill(['destination' => '+15705550172', 'proven_at' => now()])->save();
-
-        new UpdateNotificationChannel(
-            user: $user,
-            channel: $channel,
-            isEnabled: true,
-            destination: '+15705550172',
-        )->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::NotificationChannelEnabled
-                && $job->account->id === $user->account_id
-                && $job->user->id === $user->id
-                && $job->parameters === ['name' => 'Text message']
-                && $job->isAbout($channel),
-        );
     }
 
     #[Test]

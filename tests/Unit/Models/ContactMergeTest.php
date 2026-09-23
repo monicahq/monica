@@ -7,7 +7,6 @@ namespace Tests\Unit\Models;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactMerge;
-use App\Models\RecordSnapshot;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,51 +18,12 @@ class ContactMergeTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_an_account_and_to_a_vault(): void
-    {
-        $merge = ContactMerge::factory()->create();
-
-        $this->assertTrue($merge->account()->exists());
-        $this->assertTrue($merge->vault()->exists());
-        $this->assertEquals($merge->keptContact->vault_id, $merge->vault_id);
-    }
-
-    #[Test]
-    public function it_belongs_to_the_contact_that_survived_and_the_one_absorbed(): void
-    {
-        $merge = ContactMerge::factory()->create();
-
-        $this->assertInstanceOf(Contact::class, $merge->keptContact);
-        $this->assertInstanceOf(Contact::class, $merge->mergedContact);
-        $this->assertNotEquals($merge->kept_contact_id, $merge->merged_contact_id);
-    }
-
-    #[Test]
     public function it_still_reaches_the_absorbed_contact_once_it_is_soft_deleted(): void
     {
         $merge = ContactMerge::factory()->create();
         $merge->mergedContact->delete();
 
         $this->assertInstanceOf(Contact::class, $merge->fresh()->mergedContact);
-    }
-
-    #[Test]
-    public function it_belongs_to_the_snapshot_taken_before_it_ran(): void
-    {
-        $merge = ContactMerge::factory()->create();
-
-        $this->assertInstanceOf(RecordSnapshot::class, $merge->snapshot);
-        $this->assertEquals($merge->kept_contact_id, $merge->snapshot->snapshotable_id);
-    }
-
-    #[Test]
-    public function it_belongs_to_the_users_who_ran_it_and_reversed_it(): void
-    {
-        $user = User::factory()->create();
-        $merge = ContactMerge::factory()->undoneBy($user)->create(['merged_by_user_id' => $user->id]);
-
-        $this->assertInstanceOf(User::class, $merge->mergedBy);
-        $this->assertInstanceOf(User::class, $merge->undoneBy);
     }
 
     #[Test]

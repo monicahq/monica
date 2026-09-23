@@ -54,6 +54,14 @@ class UpdatePreferencesTest extends TestCase
             'date_format' => 'm/d/Y',
             'number_format' => 'space_comma',
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserPreferencesUpdate
+                && $job->account->id === $account->id
+                && $job->user->id === $user->id,
+        );
     }
 
     #[Test]
@@ -77,29 +85,6 @@ class UpdatePreferencesTest extends TestCase
             'date_format' => null,
             'number_format' => null,
         ]);
-    }
-
-    #[Test]
-    public function it_logs_the_change(): void
-    {
-        Queue::fake();
-
-        $account = Account::factory()->create();
-        $user = User::factory()->create(['account_id' => $account->id]);
-
-        new UpdatePreferences(
-            user: $user,
-            locale: 'de_DE',
-            timeFormat: TimeFormatEnum::TwelveHour,
-        )->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserPreferencesUpdate
-                && $job->account->id === $account->id
-                && $job->user->id === $user->id,
-        );
     }
 
     #[Test]

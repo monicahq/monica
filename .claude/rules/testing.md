@@ -2,8 +2,18 @@
 
 ## Core philosophy
 
-- Every model, controller, action, helper, job, mail, service and view model should have a corresponding test.
+- Test a rule once, in the layer that owns it. A rule tested again one layer up is a second copy to
+  keep in step, and it proves nothing the first test did not.
+
+  | Layer | Owns |
+  | --- | --- |
+  | Action | Business rules, refusals, the account check, and what it writes to the journal |
+  | View model | What a screen shows: grouping, ordering, labels, empty states, what is left out |
+  | Controller | The HTTP around the action: the route answers, validation written inline in the controller, the response shape, the wrong vault |
+  | `tests/Feature/RouteProtectionTest.php` | That every route asks who is signed in, and that every bound model is looked up inside the account |
+
 - Tests should cover the main functionality and important edge cases, not every single line of code.
+- A class with nothing of its own to prove gets no test file. Not every model or controller has one.
 - Use the popular tv show The Office (US version) when you need data to prove a point.
 - We use PHPUnit for testing. There is no Pest test and no browser test in the suite.
 
@@ -21,12 +31,16 @@
 
 ## Model tests
 
-- Assert relationships exist with `$model->relation()->exists()` (belongs to, has many).
-- Test accessors and computed attributes, including their fallback/null cases.
+- Do not test a plain relationship or a cast. Larastan reads the generic on every relationship, and
+  every test that loads one exercises it. Test a relationship only when it carries a condition of its
+  own (a filter, an ordering, a pivot column).
+- Test accessors, scopes, computed attributes and model events, including their fallback/null cases.
 
 ## Action tests
 
 - Fake the queue with `Queue::fake()` and assert dispatched jobs with `Queue::assertPushedOn()`.
+- Assert the `LogUserAction` an action dispatches inside the test of what the action does, not in a
+  test of its own.
 - Assert persisted state with `assertDatabaseHas()`, which names the columns, and the returned type
   with `assertInstanceOf()`. Use `assertModelExists()`, `assertModelMissing()` and
   `assertSoftDeleted()` when only the existence of the row is in question.
@@ -67,10 +81,23 @@
 - Assert API responses with `assertOk()`, `assertCreated()`, `assertNoContent()`, `assertNotFound()` and `assertUnprocessable()`.
 - Define a shared `$jsonStructure` property and assert it with `assertJsonStructure()`; assert values with `assertJsonPath()` and `assertJsonCount()`.
 - Assert validation failures with `assertUnprocessable()` and `assertJsonValidationErrors()`.
-- Test the compartments: a record reached through another account, or through the wrong vault of the
-  same account, returns not found, and a list of another account's records comes back empty.
-  `resolveRouteBinding()` refuses the account, the controller refuses the vault with
-  `abort_unless(..., 404)`.
+- A controller test proves what the controller does and nothing the action or the view model already
+  proves. For each route: it answers, validation written inline in the controller refuses what it
+  should, and the response has its shape (the redirect and the flash, or the JSON structure). One
+  refusal from the action per controller is enough to prove it reaches the reader as an error on the
+  form or as a 422. The other refusals belong to the action test.
+- A screen is proven to render with one test asserting the copy the reader needs to recognise it. What
+  the screen lists, groups, labels or leaves out is the view model's test.
+- Do not write a "visitor is sent to sign in" test per controller. `RouteProtectionTest` checks every
+  route; a route that is public is added to its list.
+- Test the compartments the controller owns: a record reached through the wrong vault of the same
+  account returns not found, which the controller refuses with `abort_unless(..., 404)`. A record of
+  another account needs no controller test when the route binds it (a typed model parameter) and its
+  model uses `ResolvesModelInAccount` or `ResolvesModelInVault`: those traits are tested once, and
+  `RouteProtectionTest` checks every bound model uses one. A controller that takes a `string` and runs
+  its own query, which most API controllers do, is scoped by that query, and its test proves it.
+- A list endpoint still proves that another account's records are left out, since the query is the
+  controller's or the view model's own.
 - Assert persisted changes via `refresh()` and deletions via `assertModelMissing()`.
 - Fake the queue with `Queue::fake()` when the controller dispatches jobs.
 - Make a user an administrator with `Administrator::factory()->create(['user_id' => $user->id])`, and

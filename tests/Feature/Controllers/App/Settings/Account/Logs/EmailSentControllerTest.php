@@ -52,23 +52,6 @@ class EmailSentControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_hides_the_emails_sent_to_somebody_else(): void
-    {
-        $user = User::factory()->create();
-        $stranger = User::factory()->create();
-        EmailSent::factory()->create([
-            'account_id' => $stranger->account_id,
-            'user_id' => $stranger->id,
-            'subject' => 'Your magic link',
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
-
-        $response->assertStatus(200);
-        $response->assertDontSee('Your magic link', escape: false);
-    }
-
-    #[Test]
     public function it_offers_to_load_more_when_a_page_is_not_enough(): void
     {
         $user = User::factory()->create();
@@ -97,14 +80,6 @@ class EmailSentControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertDontSee('Load more', escape: false);
-    }
-
-    #[Test]
-    public function it_redirects_a_visitor_who_is_not_signed_in(): void
-    {
-        $response = $this->get(route('settings.emailsSent.index'));
-
-        $response->assertRedirect(route('auth.login.new'));
     }
 
     #[Test]

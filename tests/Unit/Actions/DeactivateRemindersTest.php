@@ -33,10 +33,11 @@ class DeactivateRemindersTest extends TestCase
 
         $user = User::factory()->create();
         $reminder = $this->ruleOf($user);
+        $contact = $reminder->remindable;
 
         $count = new DeactivateReminders(
             user: $user,
-            subject: $reminder->remindable,
+            subject: $contact,
             reason: ReminderInactiveReasonEnum::RecordArchived,
         )->execute();
 
@@ -47,6 +48,16 @@ class DeactivateRemindersTest extends TestCase
             'inactive_reason' => ReminderInactiveReasonEnum::RecordArchived->value,
         ]);
         $this->assertNotNull($reminder->fresh()->deactivated_at);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderDeactivation
+                && $job->account->id === $user->account_id
+                && $job->vault->id === $contact->vault_id
+                && $job->isAbout($contact)
+                && $job->parameters === ['name' => $contact->name, 'count' => 1],
+        );
     }
 
     #[Test]
@@ -111,32 +122,6 @@ class DeactivateRemindersTest extends TestCase
 
         $this->assertSame(0, $count);
         $this->assertEquals(ReminderInactiveReasonEnum::FieldRemoved, $reminder->fresh()->inactive_reason);
-    }
-
-    #[Test]
-    public function it_logs_how_many_rules_went_quiet(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $reminder = $this->ruleOf($user);
-        $contact = $reminder->remindable;
-
-        new DeactivateReminders(
-            user: $user,
-            subject: $contact,
-            reason: ReminderInactiveReasonEnum::RecordArchived,
-        )->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderDeactivation
-                && $job->account->id === $user->account_id
-                && $job->vault->id === $contact->vault_id
-                && $job->isAbout($contact)
-                && $job->parameters === ['name' => $contact->name, 'count' => 1],
-        );
     }
 
     #[Test]

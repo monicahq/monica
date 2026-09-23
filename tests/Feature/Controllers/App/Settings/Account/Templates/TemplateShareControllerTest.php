@@ -53,15 +53,6 @@ class TemplateShareControllerTest extends TestCase
             ->assertNotFound();
     }
 
-    #[Test]
-    public function it_does_not_show_a_template_in_another_account(): void
-    {
-        $template = $this->publishedTemplate(User::factory()->create());
-
-        $this->actingAs(User::factory()->create())->get(route('settings.templateShare.index', $template))
-            ->assertNotFound();
-    }
-
     private function publishedTemplate(User $user): Template
     {
         $template = Template::factory()->create([

@@ -25,6 +25,7 @@ class StartChannelConnectionTest extends TestCase
     #[Test]
     public function it_mints_a_token_that_lapses(): void
     {
+        Queue::fake();
         [$user, $channel] = $this->channel(NotificationChannelEnum::Telegram);
 
         $connection = new StartChannelConnection(user: $user, channel: $channel);
@@ -39,6 +40,13 @@ class StartChannelConnectionTest extends TestCase
             now()->addMinutes((int) config('monica.notification_proof_code_minutes'))->timestamp,
             $channel->proof_expires_at->timestamp,
             1,
+        );
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::NotificationChannelConnectionStarted
+                && $job->parameters === ['name' => 'Telegram'],
         );
     }
 
@@ -88,22 +96,6 @@ class StartChannelConnectionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new StartChannelConnection(user: $user, channel: $theirs)->execute();
-    }
-
-    #[Test]
-    public function it_logs_that_connecting_was_started(): void
-    {
-        Queue::fake();
-        [$user, $channel] = $this->channel(NotificationChannelEnum::Telegram);
-
-        new StartChannelConnection(user: $user, channel: $channel)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::NotificationChannelConnectionStarted
-                && $job->parameters === ['name' => 'Telegram'],
-        );
     }
 
     #[Test]

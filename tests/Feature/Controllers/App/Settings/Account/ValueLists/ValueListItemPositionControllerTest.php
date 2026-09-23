@@ -84,11 +84,4 @@ class ValueListItemPositionControllerTest extends TestCase
 
         $this->assertSame(2, $item->refresh()->position);
     }
-
-    #[Test]
-    public function it_refuses_a_visitor_who_is_not_signed_in(): void
-    {
-        $this->put(route('settings.valueListItemPosition.update', 1), ['position' => '1'])
-            ->assertRedirect(route('auth.login.new'));
-    }
 }

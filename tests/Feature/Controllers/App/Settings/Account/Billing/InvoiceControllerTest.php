@@ -47,17 +47,6 @@ class InvoiceControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_so_plainly_when_nothing_was_ever_paid(): void
-    {
-        $michael = User::factory()->create();
-
-        $response = $this->actingAs($michael)->get(route('settings.invoices.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('No payment yet', escape: false);
-    }
-
-    #[Test]
     public function it_sends_the_reader_to_the_invoice_stripe_holds(): void
     {
         $michael = User::factory()->create();
@@ -100,17 +89,6 @@ class InvoiceControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_never_lists_another_account_payments(): void
-    {
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        Payment::factory()->create(['account_id' => $dwight->account_id, 'invoice_number' => 'SF-0001']);
-
-        $this->actingAs($michael)->get(route('settings.invoices.index'))
-            ->assertDontSee('SF-0001', escape: false);
-    }
-
-    #[Test]
     public function it_counts_the_payments_on_the_tab(): void
     {
         $michael = User::factory()->create();
@@ -118,11 +96,5 @@ class InvoiceControllerTest extends TestCase
 
         $this->actingAs($michael)->get(route('settings.billing.index'))
             ->assertSee(route('settings.invoices.index'), escape: false);
-    }
-
-    #[Test]
-    public function it_refuses_a_visitor(): void
-    {
-        $this->get(route('settings.invoices.index'))->assertRedirect(route('auth.login.new'));
     }
 }

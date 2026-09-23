@@ -77,16 +77,6 @@ class SetAsideValueControllerTest extends TestCase
             ->assertNotFound();
     }
 
-    #[Test]
-    public function it_refuses_somebody_in_another_account(): void
-    {
-        $contact = $this->contactOf(User::factory()->create());
-
-        $this->actingAs(User::factory()->create())
-            ->get(route('contacts.setAside.index', ['vault' => $contact->vault, 'contact' => $contact]))
-            ->assertNotFound();
-    }
-
     private function contactOf(User $user): Contact
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);

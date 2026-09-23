@@ -22,23 +22,6 @@ class StructureVersionSectionTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $row = StructureVersionSection::factory()->create();
-
-        $this->assertTrue($row->account()->exists());
-    }
-
-    #[Test]
-    public function it_belongs_to_a_structure_version_and_to_an_exact_section(): void
-    {
-        $row = StructureVersionSection::factory()->create();
-
-        $this->assertTrue($row->structureVersion()->exists());
-        $this->assertTrue($row->sectionVersion()->exists());
-    }
-
-    #[Test]
     public function it_takes_its_account_from_the_structure_version_it_belongs_to(): void
     {
         $row = StructureVersionSection::factory()->create();

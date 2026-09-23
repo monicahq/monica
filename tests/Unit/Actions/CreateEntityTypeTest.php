@@ -45,6 +45,12 @@ class CreateEntityTypeTest extends TestCase
             'is_active' => true,
             'entity_count' => 0,
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job) use ($user): bool {
+            return $job->action === UserActionEnum::EntityTypeCreation
+                && $job->parameters === ['name' => 'Wine bottles']
+                && $job->user->is($user);
+        });
     }
 
     #[Test]
@@ -218,21 +224,5 @@ class CreateEntityTypeTest extends TestCase
 
         $this->assertEquals('Animal', $entityType->name_singular);
         $this->assertEquals('Animals', $entityType->name_plural);
-    }
-
-    #[Test]
-    public function it_writes_the_creation_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new CreateEntityType(user: $user, nameSingular: 'Animal', namePlural: 'Animals')->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job) use ($user): bool {
-            return $job->action === UserActionEnum::EntityTypeCreation
-                && $job->parameters === ['name' => 'Animals']
-                && $job->user->is($user);
-        });
     }
 }

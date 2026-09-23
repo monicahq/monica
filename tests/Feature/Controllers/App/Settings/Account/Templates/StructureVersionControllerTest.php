@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
 use App\Enums\VersionStatusEnum;
-use App\Models\Template;
 use App\Models\StructureVersion;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -68,18 +68,6 @@ class StructureVersionControllerTest extends TestCase
             ->assertSessionHas('error');
 
         $this->assertModelExists($published);
-    }
-
-    #[Test]
-    public function it_refuses_a_template_from_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $template = Template::factory()->create();
-        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
-
-        $this->actingAs($michael)->post(route('settings.templateVersions.create', $template))->assertNotFound();
     }
 
     #[Test]

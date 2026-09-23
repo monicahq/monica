@@ -101,11 +101,4 @@ class ValueListItemActivationControllerTest extends TestCase
 
         $this->assertTrue($item->refresh()->is_active);
     }
-
-    #[Test]
-    public function it_refuses_a_visitor_who_is_not_signed_in(): void
-    {
-        $this->put(route('settings.valueListItemActivation.update', 1), ['active' => '0'])
-            ->assertRedirect(route('auth.login.new'));
-    }
 }

@@ -49,6 +49,8 @@ class UndoContactMergeTest extends TestCase
             'undone_by_user_id' => $user->id,
         ]);
         $this->assertNotNull($merge->fresh()->undone_at);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactMergeUndone);
     }
 
     #[Test]
@@ -209,20 +211,6 @@ class UndoContactMergeTest extends TestCase
         new UndoContactMerge(user: $user, merge: $merge)->execute();
 
         $this->assertTrue($jim->fresh()->is_partial);
-    }
-
-    #[Test]
-    public function it_writes_to_the_changelog(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        [$jim, $james] = $this->twoContactsOf($user);
-        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
-
-        new UndoContactMerge(user: $user, merge: $merge)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactMergeUndone);
     }
 
     #[Test]

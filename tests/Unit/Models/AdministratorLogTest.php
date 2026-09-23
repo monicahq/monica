@@ -6,9 +6,7 @@ namespace Tests\Unit\Models;
 
 use App\Enums\AdministratorActionEnum;
 use App\Exceptions\LogIsAppendOnly;
-use App\Models\Account;
 use App\Models\AdministratorLog;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -16,38 +14,6 @@ use Tests\TestCase;
 class AdministratorLogTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_the_administrator_who_took_the_action(): void
-    {
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-        $entry = AdministratorLog::factory()->create(['user_id' => $user->id]);
-
-        $this->assertTrue($entry->user()->exists());
-        $this->assertEquals('michael.scott@dundermifflin.com', $entry->user->email);
-    }
-
-    #[Test]
-    public function it_belongs_to_the_account_the_action_was_taken_on(): void
-    {
-        $account = Account::factory()->create();
-        $entry = AdministratorLog::factory()->create(['account_id' => $account->id]);
-
-        $this->assertTrue($entry->account()->exists());
-        $this->assertTrue($account->is($entry->account));
-    }
-
-    #[Test]
-    public function it_points_at_what_was_acted_on(): void
-    {
-        $user = User::factory()->create();
-        $entry = AdministratorLog::factory()->create([
-            'subject_type' => $user->getMorphClass(),
-            'subject_id' => $user->id,
-        ]);
-
-        $this->assertTrue($user->is($entry->subject));
-    }
 
     #[Test]
     public function it_falls_back_to_the_address_when_the_administrator_is_gone(): void

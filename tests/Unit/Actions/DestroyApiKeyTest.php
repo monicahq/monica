@@ -32,6 +32,15 @@ class DestroyApiKeyTest extends TestCase
 
         $this->assertModelMissing($apiKey);
         $this->assertSame(0, $user->tokens()->count());
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ApiKeyDeletion
+                && $job->account->id === $account->id
+                && $job->user->id === $user->id
+                && $job->parameters === ['name' => 'Dundie awards bot'],
+        );
     }
 
     #[Test]
@@ -50,26 +59,5 @@ class DestroyApiKeyTest extends TestCase
         } finally {
             $this->assertModelExists($apiKey);
         }
-    }
-
-    #[Test]
-    public function it_logs_the_revocation_with_the_name_the_key_had(): void
-    {
-        Queue::fake();
-
-        $account = Account::factory()->create();
-        $user = User::factory()->create(['account_id' => $account->id]);
-        $apiKey = $user->createToken('Dundie awards bot')->accessToken;
-
-        new DestroyApiKey(user: $user, apiKeyId: $apiKey->id)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ApiKeyDeletion
-                && $job->account->id === $account->id
-                && $job->user->id === $user->id
-                && $job->parameters === ['name' => 'Dundie awards bot'],
-        );
     }
 }

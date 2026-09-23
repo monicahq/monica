@@ -92,35 +92,6 @@ class LifeEventTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_nothing_of_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        LifeEventType::factory()->create(['account_id' => $dwight->account_id, 'name' => 'Beet farming']);
-
-        $response = $this->actingAs($michael)->get(route('settings.lifeEventTypes.index'));
-
-        $response->assertStatus(200);
-        $response->assertDontSee('Beet farming');
-    }
-
-    #[Test]
-    public function it_answers_not_found_for_a_category_of_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $dwight->account_id]);
-
-        $this->actingAs($michael)
-            ->get(route('settings.lifeEventTypes.category', $category))
-            ->assertStatus(404);
-    }
-
-    #[Test]
     public function it_opens_the_form_that_adds_a_type(): void
     {
         Queue::fake();
@@ -396,20 +367,6 @@ class LifeEventTypeControllerTest extends TestCase
 
         $response->assertRedirect(route('settings.lifeEventTypes.category', $to));
         $this->assertSame($to->id, $type->refresh()->life_event_category_id);
-    }
-
-    #[Test]
-    public function it_answers_not_found_for_a_type_of_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        $type = LifeEventType::factory()->create(['account_id' => $dwight->account_id]);
-
-        $this->actingAs($michael)
-            ->get(route('settings.lifeEventTypes.edit', $type))
-            ->assertStatus(404);
     }
 
     #[Test]

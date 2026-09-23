@@ -72,7 +72,8 @@ class CreateFieldTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
+        $version = SectionVersion::factory()->create(['section_id' => $section->id]);
 
         $field = new CreateField(
             user: $user,
@@ -98,6 +99,11 @@ class CreateFieldTest extends TestCase
             'position' => 1,
             'is_required' => true,
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::FieldCreation
+                && $job->parameters === ['label' => 'Shoe size', 'name' => 'Address'];
+        });
     }
 
     #[Test]
@@ -583,22 +589,5 @@ class CreateFieldTest extends TestCase
         )->execute();
 
         $this->assertEquals('Street', $field->label);
-    }
-
-    #[Test]
-    public function it_writes_the_creation_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
-        $version = SectionVersion::factory()->create(['section_id' => $section->id]);
-
-        new CreateField(user: $user, sectionVersion: $version, type: FieldTypeEnum::Text, label: 'Street')->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::FieldCreation
-                && $job->parameters === ['label' => 'Street', 'name' => 'Address'];
-        });
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\FieldTypeEnum;
-use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
@@ -58,30 +57,6 @@ class ContactSectionControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('name="fields['.$knee->id.']"', false)
             ->assertSee('Save this section');
-    }
-
-    #[Test]
-    public function it_leaves_every_other_block_reading(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $michael = $this->contact($vault, 'Michael', 'Scott');
-
-        $version = $this->versionWithSections($user, 'Health', ['Ongoing' => 'Knee', 'Diet' => 'Allergies']);
-        $michael->update(['structure_version_id' => $version->id]);
-        $knee = Field::query()->where('label', 'Knee')->firstOrFail();
-        $allergies = Field::query()->where('label', 'Allergies')->firstOrFail();
-
-        $this->actingAs($user)
-            ->get(route('contacts.sections.edit', [
-                'vault' => $vault,
-                'contact' => $michael,
-                'structureVersionSection' => $this->sectionNamed($version, 'Ongoing'),
-            ]))
-            ->assertStatus(200)
-            ->assertSee('name="fields['.$knee->id.']"', false)
-            ->assertDontSee('name="fields['.$allergies->id.']"', false)
-            ->assertSee('Allergies');
     }
 
     #[Test]
@@ -279,32 +254,6 @@ class ContactSectionControllerTest extends TestCase
         $this->actingAs($user)
             ->put(
                 route('contacts.sections.update', ['vault' => $elsewhere, 'contact' => $michael, 'structureVersionSection' => $section]),
-                ['fields' => []],
-            )
-            ->assertNotFound();
-    }
-
-    #[Test]
-    public function it_does_not_find_a_block_of_somebody_in_another_account(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $stranger = User::factory()->create();
-        $theirs = $this->vaultReadyForContacts($stranger);
-        $michael = $this->contact($theirs, 'Michael', 'Scott');
-
-        $version = $this->versionWithSections($stranger, 'Health', ['Ongoing' => 'Knee']);
-        $michael->update(['structure_version_id' => $version->id]);
-        $section = $this->sectionNamed($version, 'Ongoing');
-
-        $this->actingAs($user)
-            ->get(route('contacts.sections.edit', ['vault' => $theirs, 'contact' => $michael, 'structureVersionSection' => $section]))
-            ->assertNotFound();
-
-        $this->actingAs($user)
-            ->put(
-                route('contacts.sections.update', ['vault' => $theirs, 'contact' => $michael, 'structureVersionSection' => $section]),
                 ['fields' => []],
             )
             ->assertNotFound();
@@ -544,7 +493,6 @@ class ContactSectionControllerTest extends TestCase
             ->assertSee('enctype="multipart/form-data"', false);
     }
 
-    /** @return array{0: Field, 1: Field, 2: Field} */
     #[Test]
     public function it_offers_a_reminder_under_every_date_it_draws(): void
     {
@@ -709,84 +657,6 @@ class ContactSectionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_marks_a_watched_date_when_the_block_is_being_read(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $michael = $this->contact($vault, 'Michael', 'Scott');
-
-        [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['structure_version_id' => $version->id]);
-
-        $this->actingAs($user)->put(route('contacts.sections.update', [
-            'vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $this->sectionNamed($version, 'Dates'),
-        ]), [
-            'fields' => [$birthday->id => '1984-02-03'],
-            'reminders' => [$birthday->id => $this->askedFor()],
-        ]);
-
-        $this->actingAs($user)
-            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'important']))
-            ->assertStatus(200)
-            ->assertSee('7 days before')
-            ->assertSee('M8 6.6V9.2l1.9 1.3', false);
-    }
-
-    #[Test]
-    public function it_marks_nothing_beside_a_date_nobody_asked_to_be_told_about(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $michael = $this->contact($vault, 'Michael', 'Scott');
-
-        [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['structure_version_id' => $version->id]);
-
-        $this->actingAs($user)->put(route('contacts.sections.update', [
-            'vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $this->sectionNamed($version, 'Dates'),
-        ]), ['fields' => [$birthday->id => '1984-02-03']]);
-
-        $this->actingAs($user)
-            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'important']))
-            ->assertStatus(200)
-            ->assertDontSee('M8 6.6V9.2l1.9 1.3', false);
-    }
-
-    #[Test]
-    public function it_marks_nothing_beside_a_date_whose_rule_has_gone_quiet(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $michael = $this->contact($vault, 'Michael', 'Scott');
-
-        [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
-        $michael->update(['structure_version_id' => $version->id]);
-
-        $this->actingAs($user)->put(route('contacts.sections.update', [
-            'vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $this->sectionNamed($version, 'Dates'),
-        ]), [
-            'fields' => [$birthday->id => '1984-02-03'],
-            'reminders' => [$birthday->id => $this->askedFor()],
-        ]);
-
-        Reminder::query()->firstOrFail()->update([
-            'is_active' => false,
-            'inactive_reason' => ReminderInactiveReasonEnum::RecordArchived,
-            'deactivated_at' => now(),
-        ]);
-
-        $this->actingAs($user)
-            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'important']))
-            ->assertStatus(200)
-            ->assertDontSee('M8 6.6V9.2l1.9 1.3', false);
-    }
-
-    /** @return array{0: StructureVersion, 1: Field} */
-    #[Test]
     #[DataProvider('badMoments')]
     public function it_sends_the_block_back_open_when_the_moments_say_nothing_usable(array $moments): void
     {
@@ -896,6 +766,7 @@ class ContactSectionControllerTest extends TestCase
         ]);
     }
 
+    /** @return array{0: StructureVersion, 1: Field} */
     private function versionWithADate(User $user, FieldTypeEnum $type): array
     {
         $version = $this->versionWithSections($user, 'Important', ['Dates' => 'Birthday']);
@@ -923,6 +794,7 @@ class ContactSectionControllerTest extends TestCase
         ], $changes);
     }
 
+    /** @return array{0: Field, 1: Field, 2: Field} */
     private function documentsOn(User $user, Contact $contact): array
     {
         $version = $this->versionWithSections($user, 'Information', ['Documents' => 'Document']);

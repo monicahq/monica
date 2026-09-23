@@ -15,19 +15,6 @@ class UserActivationControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_is_closed_to_somebody_who_does_not_run_the_instance(): void
-    {
-        $jim = User::factory()->create();
-        $todd = User::factory()->create();
-
-        $this->actingAs($jim)
-            ->delete(route('admin.accounts.activation.destroy', ['account' => $todd->account_id]))
-            ->assertNotFound();
-
-        $this->assertTrue($todd->refresh()->is_active);
-    }
-
-    #[Test]
     public function it_stops_a_user_signing_in(): void
     {
         $todd = User::factory()->create();

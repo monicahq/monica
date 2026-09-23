@@ -33,6 +33,8 @@ class UpdateRelationshipCategoryTest extends TestCase
             'id' => $category->id,
             'name' => 'Around the block',
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipCategoryUpdate);
     }
 
     #[Test]
@@ -58,17 +60,5 @@ class UpdateRelationshipCategoryTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateRelationshipCategory(user: $michael, relationshipCategory: $category, name: 'Beet farming')->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_journal(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-
-        new UpdateRelationshipCategory(user: $user, relationshipCategory: $category, name: 'Around the block')->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipCategoryUpdate);
     }
 }

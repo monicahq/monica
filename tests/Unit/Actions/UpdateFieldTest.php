@@ -67,7 +67,9 @@ class UpdateFieldTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $field = Field::factory()->create(['account_id' => $user->account_id, 'label' => 'Street']);
+        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
+        $version = SectionVersion::factory()->create(['section_id' => $section->id]);
+        $field = Field::factory()->create(['section_version_id' => $version->id, 'label' => 'Street']);
 
         new UpdateField(
             user: $user,
@@ -86,6 +88,11 @@ class UpdateFieldTest extends TestCase
         $this->assertEquals('1725 Slough Avenue', $field->placeholder);
         $this->assertTrue($field->is_required);
         $this->assertTrue($field->is_sensitive);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::FieldUpdate
+                && $job->parameters === ['label' => 'Street address', 'name' => 'Address'];
+        });
     }
 
     #[Test]
@@ -204,23 +211,5 @@ class UpdateFieldTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateField(user: $michael, field: $field, label: 'Street')->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
-        $version = SectionVersion::factory()->create(['section_id' => $section->id]);
-        $field = Field::factory()->create(['section_version_id' => $version->id]);
-
-        new UpdateField(user: $user, field: $field, label: 'Street')->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::FieldUpdate
-                && $job->parameters === ['label' => 'Street', 'name' => 'Address'];
-        });
     }
 }

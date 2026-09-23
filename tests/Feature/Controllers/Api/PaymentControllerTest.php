@@ -152,10 +152,4 @@ class PaymentControllerTest extends TestCase
         $response->assertJsonPath('meta.per_page', 2);
         $response->assertJsonPath('meta.total', 3);
     }
-
-    #[Test]
-    public function it_refuses_a_request_with_no_token(): void
-    {
-        $this->json('GET', route('api.v1.billing.payments'))->assertUnauthorized();
-    }
 }

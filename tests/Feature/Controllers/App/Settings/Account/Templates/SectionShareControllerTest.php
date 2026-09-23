@@ -34,17 +34,6 @@ class SectionShareControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_lists_the_fields_that_are_going_out(): void
-    {
-        $user = User::factory()->create();
-        $row = $this->publishedRow($user);
-
-        $this->actingAs($user)->get(route('settings.sectionShare.index', [$row->structureVersion->structure->owner, $row->id]))
-            ->assertSee(__('What is going out'))
-            ->assertSee('Nickname');
-    }
-
-    #[Test]
     public function it_does_not_show_a_section_on_another_template(): void
     {
         $user = User::factory()->create();
@@ -52,16 +41,6 @@ class SectionShareControllerTest extends TestCase
         $other = Template::factory()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user)->get(route('settings.sectionShare.index', [$other, $row->id]))
-            ->assertNotFound();
-    }
-
-    #[Test]
-    public function it_does_not_show_a_section_in_another_account(): void
-    {
-        $row = $this->publishedRow(User::factory()->create());
-
-        $this->actingAs(User::factory()->create())
-            ->get(route('settings.sectionShare.index', [$row->structureVersion->structure->owner, $row->id]))
             ->assertNotFound();
     }
 

@@ -88,43 +88,6 @@ class LogControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_what_the_application_did_on_its_own(): void
-    {
-        $user = User::factory()->create();
-
-        Log::factory()->bySystem()->create([
-            'account_id' => $user->account_id,
-            'action' => UserActionEnum::UserProfileUpdate->value,
-            'parameters' => ['name' => 'Michael Scott'],
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.logs.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('The system', escape: false);
-        $response->assertSee('Updated the profile of Michael Scott', escape: false);
-    }
-
-    #[Test]
-    public function it_hides_the_logs_of_somebody_else(): void
-    {
-        $user = User::factory()->create();
-        $stranger = User::factory()->create();
-
-        Log::factory()->create([
-            'account_id' => $stranger->account_id,
-            'user_id' => $stranger->id,
-            'action' => UserActionEnum::UserProfileUpdate->value,
-            'parameters' => ['name' => 'Bob Vance'],
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.logs.index'));
-
-        $response->assertStatus(200);
-        $response->assertDontSee('Updated the profile of Bob Vance', escape: false);
-    }
-
-    #[Test]
     public function it_offers_to_load_more_when_a_page_is_not_enough(): void
     {
         $user = User::factory()->create();
@@ -181,45 +144,5 @@ class LogControllerTest extends TestCase
         $response->assertSee('Confirm your email address', escape: false);
         $response->assertSee('Browse all emails', escape: false);
         $response->assertSee(route('settings.emailsSent.index'), escape: false);
-    }
-
-    #[Test]
-    public function it_hides_the_link_to_the_emails_when_there_is_nothing_more_to_read(): void
-    {
-        $user = User::factory()->create();
-        EmailSent::factory()->count(5)->create([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.logs.index'));
-
-        $response->assertStatus(200);
-        $response->assertDontSee('Browse all emails', escape: false);
-    }
-
-    #[Test]
-    public function it_hides_the_emails_sent_to_somebody_else(): void
-    {
-        $user = User::factory()->create();
-        $stranger = User::factory()->create();
-        EmailSent::factory()->create([
-            'account_id' => $stranger->account_id,
-            'user_id' => $stranger->id,
-            'subject' => 'Your beet order is on its way',
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.logs.index'));
-
-        $response->assertStatus(200);
-        $response->assertDontSee('Your beet order is on its way', escape: false);
-    }
-
-    #[Test]
-    public function it_redirects_a_visitor_who_is_not_signed_in(): void
-    {
-        $response = $this->get(route('settings.logs.index'));
-
-        $response->assertRedirect(route('auth.login.new'));
     }
 }

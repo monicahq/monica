@@ -251,12 +251,4 @@ class LoginControllerTest extends TestCase
             ->json('GET', '/api/v1/me')
             ->assertUnauthorized();
     }
-
-    #[Test]
-    public function it_refuses_to_log_out_without_a_token(): void
-    {
-        $response = $this->json('DELETE', '/api/v1/logout');
-
-        $response->assertUnauthorized();
-    }
 }

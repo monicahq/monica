@@ -122,14 +122,6 @@ class MeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_request_without_a_token(): void
-    {
-        $response = $this->json('GET', '/api/v1/me');
-
-        $response->assertUnauthorized();
-    }
-
-    #[Test]
     public function it_updates_the_profile(): void
     {
         Queue::fake();
@@ -205,17 +197,5 @@ class MeControllerTest extends TestCase
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors(['email']);
-    }
-
-    #[Test]
-    public function it_refuses_to_update_without_a_token(): void
-    {
-        $response = $this->json('PUT', '/api/v1/me', [
-            'first_name' => 'Michael',
-            'last_name' => 'Scott',
-            'email' => 'michael.scott@dundermifflin.com',
-        ]);
-
-        $response->assertUnauthorized();
     }
 }

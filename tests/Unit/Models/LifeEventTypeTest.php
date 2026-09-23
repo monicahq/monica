@@ -14,22 +14,6 @@ class LifeEventTypeTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $lifeEventType = LifeEventType::factory()->create();
-
-        $this->assertTrue($lifeEventType->account()->exists());
-    }
-
-    #[Test]
-    public function it_belongs_to_the_category_it_is_filed_under(): void
-    {
-        $lifeEventType = LifeEventType::factory()->create();
-
-        $this->assertTrue($lifeEventType->lifeEventCategory()->exists());
-    }
-
-    #[Test]
     public function it_reads_in_the_language_of_whoever_is_looking_until_it_is_renamed(): void
     {
         $supplied = LifeEventType::factory()->supplied()->create();

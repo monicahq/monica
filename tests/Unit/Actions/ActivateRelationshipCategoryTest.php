@@ -25,12 +25,20 @@ class ActivateRelationshipCategoryTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $relationshipCategory = RelationshipCategory::factory()->inactive()->create(['account_id' => $user->account_id]);
+        $relationshipCategory = RelationshipCategory::factory()->inactive()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+        ]);
 
         $settled = new ActivateRelationshipCategory(user: $user, relationshipCategory: $relationshipCategory)->execute();
 
         $this->assertInstanceOf(RelationshipCategory::class, $settled);
         $this->assertTrue($relationshipCategory->refresh()->is_active);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::RelationshipCategoryActivated
+                && $job->parameters === ['name' => 'Dunder Mifflin'];
+        });
     }
 
     #[Test]
@@ -65,24 +73,5 @@ class ActivateRelationshipCategoryTest extends TestCase
         } finally {
             $this->assertFalse($relationshipCategory->refresh()->is_active);
         }
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $relationshipCategory = RelationshipCategory::factory()->inactive()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Dunder Mifflin',
-        ]);
-
-        new ActivateRelationshipCategory(user: $user, relationshipCategory: $relationshipCategory)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::RelationshipCategoryActivated
-                && $job->parameters === ['name' => 'Dunder Mifflin'];
-        });
     }
 }

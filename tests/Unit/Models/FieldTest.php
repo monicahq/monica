@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Models;
 
 use App\Enums\FieldTypeEnum;
-use App\Enums\RelationTargetEnum;
 use App\Enums\RepetitionOrderEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
-use App\Models\EntityType;
 use App\Models\Field;
-use App\Models\Reminder;
 use App\Models\SectionVersion;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,36 +18,6 @@ use Tests\TestCase;
 class FieldTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account_and_to_a_section(): void
-    {
-        $field = Field::factory()->create();
-
-        $this->assertTrue($field->account()->exists());
-        $this->assertTrue($field->sectionVersion()->exists());
-    }
-
-    #[Test]
-    public function it_belongs_to_the_list_its_choices_come_from(): void
-    {
-        $field = Field::factory()->choice()->create();
-
-        $this->assertTrue($field->valueList()->exists());
-        $this->assertTrue($field->type->usesValueList());
-    }
-
-    #[Test]
-    public function it_belongs_to_the_kind_of_record_it_points_at(): void
-    {
-        $entityType = EntityType::factory()->create();
-        $field = Field::factory()->relation()->create([
-            'relation_target' => RelationTargetEnum::Entity,
-            'relation_entity_type_id' => $entityType->id,
-        ]);
-
-        $this->assertTrue($field->relationEntityType()->exists());
-    }
 
     #[Test]
     public function it_holds_the_fields_inside_a_repeater(): void
@@ -106,20 +73,6 @@ class FieldTest extends TestCase
         $this->assertTrue($field->type->canDriveAReminder());
         $this->assertTrue(FieldTypeEnum::Date->canDriveAReminder());
         $this->assertFalse(FieldTypeEnum::Text->canDriveAReminder());
-    }
-
-    #[Test]
-    public function it_reads_its_settings_back_as_arrays(): void
-    {
-        $field = Field::factory()->create([
-            'default_value' => ['scranton'],
-            'options' => ['max' => 10],
-            'validation' => ['min_length' => 2],
-        ]);
-
-        $this->assertEquals(['scranton'], $field->fresh()->default_value);
-        $this->assertEquals(['max' => 10], $field->fresh()->options);
-        $this->assertEquals(['min_length' => 2], $field->fresh()->validation);
     }
 
     #[Test]
@@ -190,14 +143,5 @@ class FieldTest extends TestCase
         $field = Field::factory()->create();
 
         $this->assertEquals($field->sectionVersion->account_id, $field->account_id);
-    }
-
-    #[Test]
-    public function it_knows_every_reminder_rule_reading_it(): void
-    {
-        $reminder = Reminder::factory()->create();
-
-        $this->assertTrue($reminder->field->reminders()->exists());
-        $this->assertEquals([$reminder->id], $reminder->field->reminders()->pluck('id')->all());
     }
 }

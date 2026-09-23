@@ -18,35 +18,6 @@ class SectionVersionTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $version = SectionVersion::factory()->create();
-
-        $this->assertTrue($version->account()->exists());
-    }
-
-    #[Test]
-    public function it_belongs_to_a_section(): void
-    {
-        $version = SectionVersion::factory()->create();
-
-        $this->assertTrue($version->section()->exists());
-    }
-
-    #[Test]
-    public function it_belongs_to_the_version_it_was_made_from(): void
-    {
-        $first = SectionVersion::factory()->published()->create();
-        $second = SectionVersion::factory()->create([
-            'section_id' => $first->section_id,
-            'version_number' => 2,
-            'previous_version_id' => $first->id,
-        ]);
-
-        $this->assertTrue($second->previousVersion()->exists());
-    }
-
-    #[Test]
     public function it_owns_the_fields_in_order(): void
     {
         $version = SectionVersion::factory()->create();
@@ -137,15 +108,5 @@ class SectionVersionTest extends TestCase
         $version = SectionVersion::factory()->create();
 
         $this->assertEquals($version->section->account_id, $version->account_id);
-    }
-
-    #[Test]
-    public function it_reads_its_snapshot_of_the_value_lists_back_as_an_array(): void
-    {
-        $version = SectionVersion::factory()->create([
-            'resolved_value_lists' => [7 => ['id' => 7, 'key' => 'genders', 'items' => []]],
-        ]);
-
-        $this->assertEquals('genders', $version->fresh()->resolved_value_lists[7]['key']);
     }
 }

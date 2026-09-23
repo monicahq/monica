@@ -55,6 +55,15 @@ class SetFieldValueTest extends TestCase
             'value_string' => 'Scranton',
             'is_detached' => false,
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FieldValueSet
+                && $job->vault->id === $contact->vault_id
+                && $job->isAbout($value)
+                && $job->parameters === ['label' => 'City', 'name' => 'Pam Beesly'],
+        );
     }
 
     #[Test]
@@ -882,27 +891,6 @@ class SetFieldValueTest extends TestCase
             field: Field::factory()->create(),
             value: 'Scranton',
         )->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_value_without_writing_down_what_it_was(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $field = $this->fieldOf($user, ['label' => 'City']);
-
-        $value = new SetFieldValue(user: $user, valuable: $contact, field: $field, value: 'Scranton')->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FieldValueSet
-                && $job->vault->id === $contact->vault_id
-                && $job->isAbout($value)
-                && $job->parameters === ['label' => 'City', 'name' => 'Pam Beesly'],
-        );
     }
 
     private function contactOf(User $user): Contact

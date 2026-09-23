@@ -129,15 +129,6 @@ class SsoControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_visitor_who_is_not_signed_in(): void
-    {
-        $this->offer('github');
-
-        $this->get(route('settings.sso.redirect', ['provider' => 'github']))->assertRedirect(route('auth.login.new'));
-        $this->delete(route('settings.sso.destroy'))->assertRedirect(route('auth.login.new'));
-    }
-
-    #[Test]
     public function it_refuses_to_reach_the_provider_without_a_confirmed_password(): void
     {
         $this->offer('github');

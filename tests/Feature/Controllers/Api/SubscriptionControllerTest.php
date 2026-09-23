@@ -56,17 +56,6 @@ class SubscriptionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_move_on_an_account_with_no_subscription(): void
-    {
-        $michael = User::factory()->create();
-        Sanctum::actingAs($michael);
-
-        $this->json('PUT', route('api.v1.billing.subscription.update'), ['price_id' => 'price_yearly'])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors('price_id');
-    }
-
-    #[Test]
     public function it_refuses_a_move_that_is_not_up(): void
     {
         $michael = User::factory()->create();
@@ -76,17 +65,6 @@ class SubscriptionControllerTest extends TestCase
         $this->json('PUT', route('api.v1.billing.subscription.update'), ['price_id' => 'price_monthly'])
             ->assertUnprocessable()
             ->assertJsonValidationErrors('price_id');
-    }
-
-    #[Test]
-    public function it_refuses_a_move_on_a_subscription_that_is_ending(): void
-    {
-        $michael = User::factory()->create();
-        $this->subscribeAccount($michael->account, 'price_monthly', 'active', now()->addWeek());
-        Sanctum::actingAs($michael);
-
-        $this->json('PUT', route('api.v1.billing.subscription.update'), ['price_id' => 'price_yearly'])
-            ->assertUnprocessable();
     }
 
     #[Test]
@@ -100,23 +78,5 @@ class SubscriptionControllerTest extends TestCase
 
         $this->assertNotNull($subscription->fresh()->ends_at);
         $this->assertTrue($michael->account->fresh()->hasFullAccess());
-    }
-
-    #[Test]
-    public function it_refuses_to_cancel_what_there_is_nothing_of(): void
-    {
-        $michael = User::factory()->create();
-        Sanctum::actingAs($michael);
-
-        $this->json('DELETE', route('api.v1.billing.subscription.destroy'))
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors('subscription');
-    }
-
-    #[Test]
-    public function it_refuses_a_request_with_no_token(): void
-    {
-        $this->json('PUT', route('api.v1.billing.subscription.update'), ['price_id' => 'price_yearly'])->assertUnauthorized();
-        $this->json('DELETE', route('api.v1.billing.subscription.destroy'))->assertUnauthorized();
     }
 }

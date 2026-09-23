@@ -11,7 +11,6 @@ use App\Models\Log;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -260,21 +259,5 @@ class LogControllerTest extends TestCase
             ->assertOk()
             ->assertJsonMissingPath('data.attributes.changes')
             ->assertDontSee('mscott@dundermifflin.com');
-    }
-
-    #[Test]
-    #[DataProvider('endpoints')]
-    public function it_refuses_a_caller_without_a_key(string $method, string $url): void
-    {
-        $this->json($method, $url)->assertUnauthorized();
-    }
-
-    /** @return array<string, array{string, string}> */
-    public static function endpoints(): array
-    {
-        return [
-            'list' => ['GET', '/api/v1/logs'],
-            'show' => ['GET', '/api/v1/logs/1'],
-        ];
     }
 }

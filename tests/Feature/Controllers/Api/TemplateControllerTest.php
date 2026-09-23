@@ -168,12 +168,6 @@ class TemplateControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_caller_holding_no_token(): void
-    {
-        $this->json('GET', '/api/v1/templates')->assertUnauthorized();
-    }
-
-    #[Test]
     public function it_creates_a_template(): void
     {
         Queue::fake();

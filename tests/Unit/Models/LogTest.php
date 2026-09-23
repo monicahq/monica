@@ -10,7 +10,6 @@ use App\Exceptions\LogIsAppendOnly;
 use App\Models\Account;
 use App\Models\Log;
 use App\Models\User;
-use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -18,59 +17,6 @@ use Tests\TestCase;
 class LogTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $account = Account::factory()->create();
-        $log = Log::factory()->create(['account_id' => $account->id]);
-
-        $this->assertTrue($log->account()->exists());
-        $this->assertTrue($account->is($log->account));
-    }
-
-    #[Test]
-    public function it_belongs_to_a_user(): void
-    {
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-        $log = Log::factory()->create([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-        ]);
-
-        $this->assertTrue($log->user()->exists());
-        $this->assertEquals('michael.scott@dundermifflin.com', $log->user->email);
-    }
-
-    #[Test]
-    public function it_belongs_to_the_vault_the_action_touched(): void
-    {
-        $vault = Vault::factory()->create(['name' => 'Schrute Farms']);
-        $log = Log::factory()->create([
-            'account_id' => $vault->account_id,
-            'vault_id' => $vault->id,
-        ]);
-
-        $this->assertTrue($log->vault()->exists());
-        $this->assertEquals('Schrute Farms', $log->vault->name);
-    }
-
-    #[Test]
-    public function it_touches_no_vault_when_the_action_is_about_the_whole_account(): void
-    {
-        $log = Log::factory()->create();
-
-        $this->assertNull($log->vault_id);
-        $this->assertNull($log->vault);
-    }
-
-    #[Test]
-    public function it_casts_the_parameters_to_an_array(): void
-    {
-        $log = Log::factory()->create(['parameters' => ['name' => 'Dunder Mifflin']]);
-
-        $this->assertEquals(['name' => 'Dunder Mifflin'], $log->refresh()->parameters);
-    }
 
     #[Test]
     public function it_gives_the_name_of_whoever_performed_the_action(): void
@@ -132,21 +78,6 @@ class LogTest extends TestCase
         $log = Log::factory()->create(['user_email' => 'michael.scott@dundermifflin.com']);
 
         $this->assertFalse($log->wasPerformedBySystem());
-    }
-
-    #[Test]
-    public function it_points_at_the_object_the_action_was_performed_on(): void
-    {
-        $user = User::factory()->create();
-        $log = Log::factory()->create([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-            'loggable_type' => $user->getMorphClass(),
-            'loggable_id' => $user->id,
-        ]);
-
-        $this->assertTrue($log->loggable()->exists());
-        $this->assertTrue($user->is($log->loggable));
     }
 
     #[Test]

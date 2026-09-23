@@ -32,7 +32,7 @@ class SetVaultDefaultTemplateTest extends TestCase
 
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $version = $this->publishedVersion(Template::factory()->create(['account_id' => $user->account_id]));
+        $version = $this->publishedVersion(Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Basic contact']));
 
         $default = new SetVaultDefaultTemplate(
             user: $user,
@@ -49,6 +49,17 @@ class SetVaultDefaultTemplateTest extends TestCase
             'entity_type_id' => null,
             'structure_version_id' => $version->id,
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultDefaultTemplateSet
+                && $job->account->id === $user->account_id
+                && $job->user->id === $user->id
+                && $job->vault->id === $vault->id
+                && $job->isAbout($default)
+                && $job->parameters === ['name' => 'Basic contact'],
+        );
     }
 
     #[Test]
@@ -181,29 +192,6 @@ class SetVaultDefaultTemplateTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         new SetVaultDefaultTemplate(user: $user, vault: $vault, structureVersion: $version)->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_change(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $version = $this->publishedVersion(Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Basic contact']));
-
-        $default = new SetVaultDefaultTemplate(user: $user, vault: $vault, structureVersion: $version)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultDefaultTemplateSet
-                && $job->account->id === $user->account_id
-                && $job->user->id === $user->id
-                && $job->vault->id === $vault->id
-                && $job->isAbout($default)
-                && $job->parameters === ['name' => 'Basic contact'],
-        );
     }
 
     private function publishedVersion(Template $template): StructureVersion

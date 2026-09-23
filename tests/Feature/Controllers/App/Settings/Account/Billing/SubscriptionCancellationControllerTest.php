@@ -58,10 +58,4 @@ class SubscriptionCancellationControllerTest extends TestCase
         $response->assertSee('You can change your mind until then.', escape: false);
         $response->assertSee(route('settings.subscriptionCancellation.destroy'), escape: false);
     }
-
-    #[Test]
-    public function it_refuses_a_visitor(): void
-    {
-        $this->delete(route('settings.subscriptionCancellation.destroy'))->assertRedirect(route('auth.login.new'));
-    }
 }

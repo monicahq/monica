@@ -50,6 +50,9 @@ class RestoreAccessTest extends TestCase
         $this->assertDatabaseHas('stripe_orders', ['id' => $order->id, 'stripe_status' => StripeOrder::PAID]);
         $this->assertSame(1, StripeOrder::query()->count());
         Notification::assertSentToTimes($michael, AccessUnlocked::class, 1);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::FullAccessRestored
+            && $job->isAbout($payment));
     }
 
     #[Test]
@@ -141,21 +144,5 @@ class RestoreAccessTest extends TestCase
 
         $this->assertTrue($account->fresh()->hasFullAccess());
         Notification::assertNothingSent();
-    }
-
-    #[Test]
-    public function it_writes_the_restoration_into_the_account_journal(): void
-    {
-        $michael = User::factory()->create();
-        StripeOrder::factory()->refunded()->create(['account_id' => $michael->account_id]);
-        $payment = Payment::factory()->create([
-            'account_id' => $michael->account_id,
-            'stripe_subscription_id' => null,
-        ]);
-
-        new RestoreAccess(account: $michael->account, payment: $payment)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::FullAccessRestored
-            && $job->isAbout($payment));
     }
 }

@@ -45,18 +45,4 @@ class LifeEventTypePositionControllerTest extends TestCase
             ->put(route('settings.lifeEventTypePosition.update', $type), ['position' => 'first'])
             ->assertSessionHasErrors('position');
     }
-
-    #[Test]
-    public function it_answers_not_found_for_a_type_of_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        $type = LifeEventType::factory()->create(['account_id' => $dwight->account_id, 'position' => 3]);
-
-        $this->actingAs($michael)
-            ->put(route('settings.lifeEventTypePosition.update', $type), ['position' => 1])
-            ->assertStatus(404);
-    }
 }

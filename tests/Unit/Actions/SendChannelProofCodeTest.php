@@ -29,6 +29,7 @@ class SendChannelProofCodeTest extends TestCase
     public function it_sends_a_code_to_the_destination_and_keeps_only_its_hash(): void
     {
         NotificationFacade::fake();
+        Queue::fake();
         [$user, $channel] = $this->readyTextMessage();
 
         new SendChannelProofCode(user: $user, channel: $channel)->execute();
@@ -47,6 +48,13 @@ class SendChannelProofCodeTest extends TestCase
                     && Hash::check($sent->code, (string) $channel->proof_code_hash)
                     && $sent->via($channel->account->user) === ['vonage'];
             },
+        );
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::NotificationChannelProofRequested
+                && $job->parameters === ['name' => 'Text message'],
         );
     }
 
@@ -136,23 +144,6 @@ class SendChannelProofCodeTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new SendChannelProofCode(user: $user, channel: $theirs)->execute();
-    }
-
-    #[Test]
-    public function it_logs_that_a_code_was_asked_for(): void
-    {
-        NotificationFacade::fake();
-        Queue::fake();
-        [$user, $channel] = $this->readyTextMessage();
-
-        new SendChannelProofCode(user: $user, channel: $channel)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::NotificationChannelProofRequested
-                && $job->parameters === ['name' => 'Text message'],
-        );
     }
 
     /** @return array{0: User, 1: NotificationChannel} */

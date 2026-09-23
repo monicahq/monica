@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Enums\DateFormatEnum;
 use App\Enums\NameOrderEnum;
-use App\Enums\NumberFormatEnum;
 use App\Enums\SsoProviderEnum;
 use App\Models\Account;
-use App\Models\EmailSent;
 use App\Models\Passkey;
 use App\Models\User;
 use App\Models\Vault;
-use Carbon\CarbonImmutable;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,16 +20,6 @@ use Tests\TestCase;
 class UserTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $account = Account::factory()->create();
-        $user = User::factory()->create(['account_id' => $account->id]);
-
-        $this->assertTrue($user->account()->exists());
-        $this->assertTrue($account->is($user->account));
-    }
 
     #[Test]
     public function it_is_the_only_user_of_its_account(): void
@@ -75,20 +61,6 @@ class UserTest extends TestCase
         $this->assertFalse($withoutPhoto->hasPhoto());
         $this->assertEquals('photos/1/abc_96.webp', $withPhoto->photoVariantPath(96));
         $this->assertEquals([96, 192], User::photoPixelSizes());
-    }
-
-    #[Test]
-    public function it_has_many_emails_sent(): void
-    {
-        $user = User::factory()->create();
-        EmailSent::factory()->create([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-            'subject' => 'Somebody signed in from a new place',
-        ]);
-
-        $this->assertTrue($user->emailsSent()->exists());
-        $this->assertEquals('Somebody signed in from a new place', $user->emailsSent->first()->subject);
     }
 
     #[Test]
@@ -139,42 +111,6 @@ class UserTest extends TestCase
     }
 
     #[Test]
-    public function it_casts_the_dates_and_the_active_flag(): void
-    {
-        $user = User::factory()->inactive()->create([
-            'last_login_at' => now(),
-            'password_changed_at' => '2026-07-31 09:30:00',
-        ]);
-
-        $user->refresh();
-
-        $this->assertFalse($user->is_active);
-        $this->assertNotNull($user->last_login_at);
-        $this->assertNotNull($user->email_verified_at);
-        $this->assertInstanceOf(CarbonImmutable::class, $user->password_changed_at);
-    }
-
-    #[Test]
-    public function it_carries_the_preferences_that_decide_how_things_are_rendered(): void
-    {
-        $user = User::factory()->create([
-            'locale' => 'fr_FR',
-            'timezone' => 'America/New_York',
-            'date_format' => DateFormatEnum::DayFirst,
-            'number_format' => NumberFormatEnum::SpaceAndComma,
-            'name_order' => NameOrderEnum::FamilyFirst,
-        ]);
-
-        $user->refresh();
-
-        $this->assertEquals('fr_FR', $user->locale);
-        $this->assertEquals('America/New_York', $user->timezone);
-        $this->assertEquals(DateFormatEnum::DayFirst, $user->date_format);
-        $this->assertEquals(NumberFormatEnum::SpaceAndComma, $user->number_format);
-        $this->assertEquals(NameOrderEnum::FamilyFirst, $user->name_order);
-    }
-
-    #[Test]
     public function it_falls_back_to_the_time_zone_of_the_instance_and_to_the_given_name_first(): void
     {
         $user = User::factory()->create();
@@ -210,16 +146,6 @@ class UserTest extends TestCase
     {
         $this->assertFalse(User::factory()->unverified()->create()->hasVerifiedEmail());
         $this->assertTrue(User::factory()->create()->hasVerifiedEmail());
-    }
-
-    #[Test]
-    public function it_has_passkeys(): void
-    {
-        $user = User::factory()->create();
-        Passkey::factory()->count(2)->create(['user_id' => $user->id]);
-
-        $this->assertTrue($user->passkeys()->exists());
-        $this->assertCount(2, $user->passkeys);
     }
 
     #[Test]

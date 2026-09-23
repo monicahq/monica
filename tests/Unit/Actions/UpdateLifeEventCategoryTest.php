@@ -32,6 +32,11 @@ class UpdateLifeEventCategoryTest extends TestCase
 
         $this->assertInstanceOf(LifeEventCategory::class, $updated);
         $this->assertEquals('Bénévolat', $category->refresh()->name);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::LifeEventCategoryUpdate
+                && $job->parameters === ['name' => 'Bénévolat'];
+        });
     }
 
     #[Test]
@@ -102,21 +107,5 @@ class UpdateLifeEventCategoryTest extends TestCase
         } finally {
             $this->assertEquals('Volunteering', $category->refresh()->name);
         }
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-
-        new UpdateLifeEventCategory(user: $user, lifeEventCategory: $category, name: 'Bénévolat')->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::LifeEventCategoryUpdate
-                && $job->parameters === ['name' => 'Bénévolat'];
-        });
     }
 }

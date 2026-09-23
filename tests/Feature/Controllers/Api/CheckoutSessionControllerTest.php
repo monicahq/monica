@@ -90,11 +90,4 @@ class CheckoutSessionControllerTest extends TestCase
         $this->json('POST', route('api.v1.billing.checkoutSessions.create'), ['price_id' => 'price_lifetime'])
             ->assertStatus(503);
     }
-
-    #[Test]
-    public function it_refuses_a_request_with_no_token(): void
-    {
-        $this->json('POST', route('api.v1.billing.checkoutSessions.create'), ['price_id' => 'price_lifetime'])
-            ->assertUnauthorized();
-    }
 }

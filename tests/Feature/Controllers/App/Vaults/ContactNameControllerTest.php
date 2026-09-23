@@ -91,18 +91,6 @@ class ContactNameControllerTest extends TestCase
             ->assertNotFound();
     }
 
-    #[Test]
-    public function it_refuses_somebody_in_another_account(): void
-    {
-        $contact = $this->contactOf(User::factory()->create());
-
-        $this->actingAs(User::factory()->create())
-            ->put(route('contacts.name.update', ['vault' => $contact->vault, 'contact' => $contact]), [
-                'first_name' => 'Somebody else',
-            ])
-            ->assertNotFound();
-    }
-
     private function contactOf(User $user): Contact
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);

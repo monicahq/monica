@@ -34,6 +34,15 @@ class DestroyReminderTest extends TestCase
 
         $this->assertSoftDeleted($reminder);
         $this->assertEquals(1, Reminder::query()->withTrashed()->count());
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderRemoval
+                && $job->account->id === $user->account_id
+                && $job->vault->id === $reminder->vault_id
+                && $job->parameters === ['label' => 'Birthday', 'name' => $reminder->remindable->name],
+        );
     }
 
     #[Test]
@@ -77,26 +86,6 @@ class DestroyReminderTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DestroyReminder(user: $user, reminder: $this->ruleOf($somebodyElse))->execute();
-    }
-
-    #[Test]
-    public function it_writes_a_line_in_the_journal(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $reminder = $this->ruleOf($user);
-
-        new DestroyReminder(user: $user, reminder: $reminder)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderRemoval
-                && $job->account->id === $user->account_id
-                && $job->vault->id === $reminder->vault_id
-                && $job->parameters === ['label' => 'Birthday', 'name' => $reminder->remindable->name],
-        );
     }
 
     private function ruleOf(User $user): Reminder

@@ -83,23 +83,6 @@ class NotificationControllerTest extends TestCase
         $this->assertNull($notification->refresh()->read_at);
     }
 
-    #[Test]
-    public function a_notification_of_another_account_is_not_found(): void
-    {
-        $this->signedIn();
-        $theirs = Account::factory()->create();
-        $them = User::factory()->create(['account_id' => $theirs->id]);
-        $notification = $this->notification($them, 'Their business');
-
-        $this->put(route('notifications.read.update', $notification->uuid))->assertStatus(404);
-    }
-
-    #[Test]
-    public function a_visitor_is_sent_to_sign_in(): void
-    {
-        $this->get(route('notifications.index'))->assertRedirect();
-    }
-
     private function signedIn(): User
     {
         $account = Account::factory()->create();

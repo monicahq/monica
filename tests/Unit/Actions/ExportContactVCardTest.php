@@ -45,6 +45,8 @@ class ExportContactVCardTest extends TestCase
         $this->assertStringContainsString('VERSION:4.0', $card);
         $this->assertStringContainsString('N:Schrute;Dwight;;;', $card);
         $this->assertStringContainsString('UID:'.$contact->uuid, $card);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactExported);
     }
 
     #[Test]
@@ -87,23 +89,6 @@ class ExportContactVCardTest extends TestCase
         )->execute();
 
         $this->assertStringNotContainsString('+15705551212', $card);
-    }
-
-    #[Test]
-    public function it_writes_the_export_down_in_the_journal(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create([
-            'vault_id' => $vault->id,
-            'account_id' => $user->account_id,
-        ]);
-
-        new ExportContactVCard(user: $user, contact: $contact)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactExported);
     }
 
     #[Test]

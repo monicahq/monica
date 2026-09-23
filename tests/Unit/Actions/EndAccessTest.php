@@ -128,6 +128,8 @@ class EndAccessTest extends TestCase
 
         $this->assertFalse($michael->account->fresh()->hasFullAccess());
         Notification::assertSentTo($michael, AccessEnded::class);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::FullAccessEnded);
     }
 
     #[Test]
@@ -182,15 +184,5 @@ class EndAccessTest extends TestCase
         new EndAccess(account: $account, reason: AccessEndReasonEnum::Cancelled)->execute();
 
         Notification::assertNothingSent();
-    }
-
-    #[Test]
-    public function it_writes_the_end_of_access_into_the_account_journal(): void
-    {
-        $michael = User::factory()->create();
-
-        new EndAccess(account: $michael->account, reason: AccessEndReasonEnum::Cancelled)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::FullAccessEnded);
     }
 }

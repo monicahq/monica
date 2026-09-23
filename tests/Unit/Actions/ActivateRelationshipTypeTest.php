@@ -25,12 +25,20 @@ class ActivateRelationshipTypeTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $relationshipType = RelationshipType::factory()->inactive()->create(['account_id' => $user->account_id]);
+        $relationshipType = RelationshipType::factory()->inactive()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+        ]);
 
         $settled = new ActivateRelationshipType(user: $user, relationshipType: $relationshipType)->execute();
 
         $this->assertInstanceOf(RelationshipType::class, $settled);
         $this->assertTrue($relationshipType->refresh()->is_active);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::RelationshipTypeActivated
+                && $job->parameters === ['name' => 'Dunder Mifflin'];
+        });
     }
 
     #[Test]
@@ -65,24 +73,5 @@ class ActivateRelationshipTypeTest extends TestCase
         } finally {
             $this->assertFalse($relationshipType->refresh()->is_active);
         }
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $relationshipType = RelationshipType::factory()->inactive()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Dunder Mifflin',
-        ]);
-
-        new ActivateRelationshipType(user: $user, relationshipType: $relationshipType)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::RelationshipTypeActivated
-                && $job->parameters === ['name' => 'Dunder Mifflin'];
-        });
     }
 }

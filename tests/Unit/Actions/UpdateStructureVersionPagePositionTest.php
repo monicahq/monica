@@ -36,6 +36,13 @@ class UpdateStructureVersionPagePositionTest extends TestCase
         $this->assertEquals(1, $work->refresh()->position);
         $this->assertEquals(2, $general->refresh()->position);
         $this->assertEquals(3, $health->refresh()->position);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::TemplatePagePositionUpdate
+                && $job->parameters['label'] === 'Work',
+        );
     }
 
     #[Test]
@@ -81,24 +88,5 @@ class UpdateStructureVersionPagePositionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateStructureVersionPagePosition(user: $user, page: $page, position: 1)->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_move(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $structureVersion = StructureVersion::factory()->create(['account_id' => $user->account_id]);
-        $page = StructureVersionPage::factory()->create(['structure_version_id' => $structureVersion->id, 'label' => 'Health']);
-
-        new UpdateStructureVersionPagePosition(user: $user, page: $page, position: 1)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::TemplatePagePositionUpdate
-                && $job->parameters['label'] === 'Health',
-        );
     }
 }

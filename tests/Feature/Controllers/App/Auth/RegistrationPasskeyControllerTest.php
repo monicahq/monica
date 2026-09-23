@@ -130,12 +130,6 @@ class RegistrationPasskeyControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_guest_on_the_step(): void
-    {
-        $this->get(route('auth.registerPasskey.new'))->assertRedirect(route('auth.login.new'));
-    }
-
-    #[Test]
     public function it_refuses_somebody_already_signed_in_from_creating_another_account(): void
     {
         Queue::fake();

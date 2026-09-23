@@ -503,23 +503,6 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_delete_the_contact_representing_the_caller(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $me = Contact::factory()->me()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$me->uuid}");
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['contact']);
-        $response->assertJsonPath('errors.contact.0', 'This is the contact that represents you, and it stays. Everything on the record is written from its point of view.');
-        $this->assertNotSoftDeleted($me);
-    }
-
-    #[Test]
     public function it_does_not_delete_a_contact_of_another_account(): void
     {
         $user = User::factory()->create();
@@ -530,17 +513,6 @@ class ContactControllerTest extends TestCase
 
         $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")->assertNotFound();
         $this->assertNotSoftDeleted($contact);
-    }
-
-    #[Test]
-    public function it_refuses_a_caller_with_no_credential(): void
-    {
-        $vault = Vault::factory()->create();
-
-        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts")->assertUnauthorized();
-        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/".fake()->uuid())->assertUnauthorized();
-        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", ['first_name' => 'Pam'])->assertUnauthorized();
-        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/".fake()->uuid())->assertUnauthorized();
     }
 
     private function vaultReadyForContacts(User $user): Vault

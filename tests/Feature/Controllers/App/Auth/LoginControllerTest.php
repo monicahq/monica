@@ -57,22 +57,6 @@ class LoginControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_suspended_user(): void
-    {
-        Queue::fake();
-
-        User::factory()->inactive()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $response = $this->post(route('auth.login.create'), [
-            'email' => 'michael.scott@dundermifflin.com',
-            'password' => 'password',
-        ]);
-
-        $response->assertSessionHasErrors('email');
-        $this->assertGuest();
-    }
-
-    #[Test]
     public function it_sends_somebody_who_uses_two_factor_to_the_challenge(): void
     {
         Queue::fake();

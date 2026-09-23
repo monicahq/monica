@@ -57,6 +57,10 @@ class UpdateRelationshipTest extends TestCase
             'id' => $relationship->id,
             'relationship_type_id' => $sibling->id,
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipUpdate
+            && $job->parameters['name'] === 'Judy Geller'
+            && $job->parameters['other'] === 'Ross Geller');
     }
 
     #[Test]
@@ -329,28 +333,6 @@ class UpdateRelationshipTest extends TestCase
         )->execute();
 
         $this->assertCount(0, Contact::query()->currentPartnersOf($monica)->get());
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_journal(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = $this->vaultOf($user);
-        $relationship = $this->relationshipOn($vault, $user);
-
-        new UpdateRelationship(
-            user: $user,
-            vault: $vault,
-            relationship: $relationship,
-            relationshipType: $relationship->relationshipType,
-            status: RelationshipStatusEnum::Ended,
-        )->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipUpdate
-            && $job->parameters['name'] === 'Judy Geller'
-            && $job->parameters['other'] === 'Ross Geller');
     }
 
     private function relationshipOn(Vault $vault, User $user): Relationship

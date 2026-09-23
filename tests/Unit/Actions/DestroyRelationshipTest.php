@@ -45,6 +45,10 @@ class DestroyRelationshipTest extends TestCase
         )->execute();
 
         $this->assertSoftDeleted($relationship);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipDeletion
+            && $job->parameters['name'] === 'Judy Geller'
+            && $job->parameters['other'] === 'Ross Geller');
     }
 
     #[Test]
@@ -121,22 +125,6 @@ class DestroyRelationshipTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DestroyRelationship(user: $user, vault: $vault, relationship: $relationship)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_removal_to_the_journal(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = $this->vaultOf($user);
-        $relationship = $this->relationshipOn($vault, $user);
-
-        new DestroyRelationship(user: $user, vault: $vault, relationship: $relationship)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipDeletion
-            && $job->parameters['name'] === 'Judy Geller'
-            && $job->parameters['other'] === 'Ross Geller');
     }
 
     private function relationshipOn(Vault $vault, User $user): Relationship

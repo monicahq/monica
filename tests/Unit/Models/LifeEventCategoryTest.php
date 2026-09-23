@@ -17,16 +17,6 @@ class LifeEventCategoryTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $account = Account::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $account->id]);
-
-        $this->assertTrue($category->account()->exists());
-        $this->assertTrue($account->is($category->account));
-    }
-
-    #[Test]
     public function an_account_has_many_of_them_in_order(): void
     {
         $account = Account::factory()->create();
@@ -54,28 +44,6 @@ class LifeEventCategoryTest extends TestCase
         ]);
 
         $this->assertEquals('Pour moi', $category->name);
-    }
-
-    #[Test]
-    public function it_casts_what_it_holds(): void
-    {
-        $category = LifeEventCategory::factory()->system()->create(['position' => 3]);
-
-        $this->assertIsBool($category->is_system);
-        $this->assertIsBool($category->is_active);
-        $this->assertIsInt($category->position);
-        $this->assertTrue($category->is_system);
-        $this->assertTrue($category->is_active);
-        $this->assertSame(3, $category->position);
-    }
-
-    #[Test]
-    public function it_has_many_life_event_natures(): void
-    {
-        $category = LifeEventCategory::factory()->create();
-        LifeEventType::factory()->create(['life_event_category_id' => $category->id]);
-
-        $this->assertTrue($category->lifeEventTypes()->exists());
     }
 
     #[Test]

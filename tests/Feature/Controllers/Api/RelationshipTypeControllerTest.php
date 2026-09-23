@@ -143,23 +143,6 @@ class RelationshipTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_the_supplied_wording_of_a_type_through_the_translator(): void
-    {
-        $user = User::factory()->create();
-        $type = RelationshipType::factory()->system(RelationshipTypeEnum::ParentChild)->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', "/api/v1/relationship-types/{$type->uuid}");
-
-        $response->assertOk();
-        $response->assertJsonPath('data.attributes.is_system', true);
-        $response->assertJsonPath('data.attributes.system_behavior', 'genealogy_parentage');
-        $response->assertJsonPath('data.attributes.name', __($type->name_translation_key));
-        $response->assertJsonPath('data.attributes.role_a', __($type->role_a_translation_key));
-    }
-
-    #[Test]
     public function it_reads_the_words_the_user_wrote_whatever_language_is_asked_for(): void
     {
         $user = User::factory()->create();
@@ -484,30 +467,6 @@ class RelationshipTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_change_the_direction_of_a_supplied_type(): void
-    {
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-        $type = RelationshipType::factory()->system(RelationshipTypeEnum::ParentChild)->create([
-            'account_id' => $user->account_id,
-            'relationship_category_id' => $category->id,
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}", [
-            'relationship_category_id' => $category->uuid,
-            'name' => 'Parent / Child',
-            'role_a' => 'Parent',
-            'is_symmetric' => true,
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['is_symmetric']);
-        $this->assertFalse($type->refresh()->is_symmetric);
-    }
-
-    #[Test]
     public function it_refuses_to_change_the_direction_of_a_type_relationships_use(): void
     {
         $user = User::factory()->create();
@@ -550,43 +509,6 @@ class RelationshipTypeControllerTest extends TestCase
 
         $this->json('DELETE', "/api/v1/relationship-types/{$type->uuid}")->assertNoContent();
         $this->assertSoftDeleted($type);
-    }
-
-    #[Test]
-    public function it_refuses_to_delete_a_supplied_type(): void
-    {
-        $user = User::factory()->create();
-        $type = RelationshipType::factory()->system()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('DELETE', "/api/v1/relationship-types/{$type->uuid}");
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['relationshipType']);
-        $this->assertNotSoftDeleted($type);
-    }
-
-    #[Test]
-    public function it_refuses_to_delete_a_type_relationships_use(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
-        Relationship::factory()->create([
-            'account_id' => $user->account_id,
-            'vault_id' => $vault->id,
-            'relationship_type_id' => $type->id,
-            'contact_a_id' => Contact::factory()->create(['vault_id' => $vault->id])->id,
-            'contact_b_id' => Contact::factory()->create(['vault_id' => $vault->id])->id,
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('DELETE', "/api/v1/relationship-types/{$type->uuid}")->assertUnprocessable();
-
-        $response->assertJsonValidationErrors(['relationshipType']);
-        $this->assertNotSoftDeleted($type);
     }
 
     #[Test]

@@ -12,12 +12,12 @@ use App\Jobs\LogUserAction;
 use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
-use App\Models\Vault;
-use App\Models\VaultDefaultTemplate;
 use Tests\TestCase;
 
 class DestroyTemplateTest extends TestCase
@@ -30,11 +30,16 @@ class DestroyTemplateTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
 
         new DestroyTemplate(user: $user, template: $template)->execute();
 
         $this->assertSoftDeleted($template);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::TemplateDeletion
+                && $job->parameters === ['name' => 'Contact'];
+        });
     }
 
     #[Test]
@@ -77,22 +82,6 @@ class DestroyTemplateTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DestroyTemplate(user: $michael, template: $template)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_deletion_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
-
-        new DestroyTemplate(user: $user, template: $template)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::TemplateDeletion
-                && $job->parameters === ['name' => 'Contact'];
-        });
     }
 
     #[Test]

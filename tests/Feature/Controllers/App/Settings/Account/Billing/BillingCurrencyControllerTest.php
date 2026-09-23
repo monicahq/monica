@@ -67,11 +67,4 @@ class BillingCurrencyControllerTest extends TestCase
 
         $response->assertSee('$10.00/month', escape: false);
     }
-
-    #[Test]
-    public function it_refuses_a_visitor(): void
-    {
-        $this->put(route('settings.billingCurrency.update'), ['currency' => 'usd'])
-            ->assertRedirect(route('auth.login.new'));
-    }
 }

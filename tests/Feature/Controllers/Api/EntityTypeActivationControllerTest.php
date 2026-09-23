@@ -115,14 +115,4 @@ class EntityTypeActivationControllerTest extends TestCase
         $response->assertNotFound();
         $this->assertTrue($entityType->refresh()->is_active);
     }
-
-    #[Test]
-    public function it_refuses_a_caller_holding_no_credential(): void
-    {
-        $entityType = EntityType::factory()->create();
-
-        $this->json('PUT', "/api/v1/entity-types/{$entityType->uuid}/activation", [
-            'is_active' => false,
-        ])->assertUnauthorized();
-    }
 }

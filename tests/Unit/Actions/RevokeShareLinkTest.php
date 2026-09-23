@@ -28,12 +28,17 @@ class RevokeShareLinkTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $shareLink = $this->shareLink($user);
+        $shareLink = $this->shareLink($user, ['label' => 'For the family']);
 
         new RevokeShareLink(user: $user, shareLink: $shareLink)->execute();
 
         $this->assertNotNull($shareLink->refresh()->revoked_at);
         $this->assertFalse($shareLink->isUsable());
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::ShareLinkRevocation
+                && $job->parameters === ['label' => 'For the family'];
+        });
     }
 
     #[Test]
@@ -74,24 +79,6 @@ class RevokeShareLinkTest extends TestCase
         $this->expectException(ShareLinkIsRevoked::class);
 
         new RevokeShareLink(user: $user, shareLink: $shareLink)->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_action(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new RevokeShareLink(
-            user: $user,
-            shareLink: $this->shareLink($user, ['label' => 'For the family']),
-        )->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::ShareLinkRevocation
-                && $job->parameters === ['label' => 'For the family'];
-        });
     }
 
     /** @param  array<string, mixed>  $attributes */

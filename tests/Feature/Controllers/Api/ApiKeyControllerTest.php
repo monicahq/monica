@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Sanctum\Sanctum;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -258,24 +257,6 @@ class ApiKeyControllerTest extends TestCase
         $this->withHeader('Authorization', "Bearer {$apiKey->plainTextToken}")
             ->json('GET', '/api/v1/api-keys')
             ->assertUnauthorized();
-    }
-
-    #[Test]
-    #[DataProvider('endpoints')]
-    public function it_refuses_a_caller_without_a_key(string $method, string $url): void
-    {
-        $this->json($method, $url)->assertUnauthorized();
-    }
-
-    /** @return array<string, array{string, string}> */
-    public static function endpoints(): array
-    {
-        return [
-            'list' => ['GET', '/api/v1/api-keys'],
-            'show' => ['GET', '/api/v1/api-keys/1'],
-            'create' => ['POST', '/api/v1/api-keys'],
-            'destroy' => ['DELETE', '/api/v1/api-keys/1'],
-        ];
     }
 
     #[Test]

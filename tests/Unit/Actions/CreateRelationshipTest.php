@@ -63,6 +63,8 @@ class CreateRelationshipTest extends TestCase
             'contact_b_id' => $dwight->id,
             'status' => RelationshipStatusEnum::Current->value,
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipCreation);
     }
 
     #[Test]
@@ -84,27 +86,6 @@ class CreateRelationshipTest extends TestCase
         )->execute();
 
         $this->assertEquals(1, Relationship::query()->count());
-    }
-
-    #[Test]
-    public function it_records_it_in_the_history(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = $this->vaultOf($user);
-        $michael = $this->contactOn($vault, 'Michael', 'Scott');
-        $dwight = $this->contactOn($vault, 'Dwight', 'Schrute');
-
-        new CreateRelationship(
-            user: $user,
-            vault: $vault,
-            contact: $michael,
-            relationshipType: $this->typeOf($user, RelationshipTypeEnum::ParentChild),
-            otherContact: $dwight,
-        )->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipCreation);
     }
 
     #[Test]

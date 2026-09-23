@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Enums\RelationshipBehaviorEnum;
 use App\Enums\RelationshipTypeEnum;
 use App\Models\Account;
 use App\Models\Relationship;
-use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,38 +16,6 @@ use Tests\TestCase;
 class RelationshipTypeTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $account = Account::factory()->create();
-        $type = RelationshipType::factory()->create(['account_id' => $account->id]);
-
-        $this->assertTrue($type->account()->exists());
-        $this->assertTrue($account->is($type->account));
-    }
-
-    #[Test]
-    public function it_belongs_to_a_category(): void
-    {
-        $category = RelationshipCategory::factory()->create();
-        $type = RelationshipType::factory()->create([
-            'account_id' => $category->account_id,
-            'relationship_category_id' => $category->id,
-        ]);
-
-        $this->assertTrue($type->relationshipCategory()->exists());
-        $this->assertTrue($category->is($type->relationshipCategory));
-    }
-
-    #[Test]
-    public function an_account_has_many_of_them(): void
-    {
-        $account = Account::factory()->create();
-        RelationshipType::factory()->count(2)->create(['account_id' => $account->id]);
-
-        $this->assertCount(2, $account->relationshipTypes);
-    }
 
     #[Test]
     public function it_gets_an_unguessable_identifier(): void
@@ -85,14 +51,6 @@ class RelationshipTypeTest extends TestCase
         $this->assertEquals('Best friend', $type->name);
         $this->assertEquals('Best friend', $type->role_a);
         $this->assertEquals('Best friend', $type->role_b);
-    }
-
-    #[Test]
-    public function it_reads_its_protected_behaviour_as_an_enum(): void
-    {
-        $type = RelationshipType::factory()->system(RelationshipTypeEnum::Spouse)->create();
-
-        $this->assertEquals(RelationshipBehaviorEnum::Romantic, $type->system_behavior);
     }
 
     #[Test]

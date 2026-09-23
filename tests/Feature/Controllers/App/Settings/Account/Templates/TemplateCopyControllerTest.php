@@ -52,16 +52,4 @@ class TemplateCopyControllerTest extends TestCase
         $this->assertFalse($copy->is_system);
         $this->assertNull($copy->structure->published_version_id);
     }
-
-    #[Test]
-    public function it_does_not_copy_the_template_of_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $template = Template::factory()->create();
-        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-
-        $this->actingAs($michael)->post(route('settings.templateCopy.create', $template))->assertNotFound();
-    }
 }

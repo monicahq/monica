@@ -26,6 +26,7 @@ class ConfirmChannelProofCodeTest extends TestCase
     #[Test]
     public function the_right_code_proves_the_destination_is_the_accounts_own(): void
     {
+        Queue::fake();
         [$user, $channel] = $this->awaitingCode();
 
         new ConfirmChannelProofCode(user: $user, channel: $channel, code: '123456')->execute();
@@ -36,6 +37,12 @@ class ConfirmChannelProofCodeTest extends TestCase
         $this->assertNull($channel->proof_code_hash);
         $this->assertNull($channel->proof_expires_at);
         $this->assertSame(0, $channel->proof_attempts);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::NotificationChannelProven,
+        );
     }
 
     #[Test]
@@ -113,21 +120,6 @@ class ConfirmChannelProofCodeTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new ConfirmChannelProofCode(user: $user, channel: $theirs, code: '123456')->execute();
-    }
-
-    #[Test]
-    public function it_logs_that_the_destination_was_proved(): void
-    {
-        Queue::fake();
-        [$user, $channel] = $this->awaitingCode();
-
-        new ConfirmChannelProofCode(user: $user, channel: $channel, code: '123456')->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::NotificationChannelProven,
-        );
     }
 
     #[Test]

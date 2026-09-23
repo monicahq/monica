@@ -11,9 +11,9 @@ use App\Exceptions\PublishedVersionIsFrozen;
 use App\Jobs\LogUserAction;
 use App\Models\Section;
 use App\Models\SectionVersion;
-use App\Models\Template;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,16 +31,28 @@ class UpdateStructureVersionSectionPositionTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $version = StructureVersion::factory()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
+        $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
         $first = StructureVersionSection::factory()->create(['structure_version_id' => $version->id, 'position' => 1]);
         $second = StructureVersionSection::factory()->create(['structure_version_id' => $version->id, 'position' => 2]);
-        $third = StructureVersionSection::factory()->create(['structure_version_id' => $version->id, 'position' => 3]);
+        $third = StructureVersionSection::factory()->create([
+            'structure_version_id' => $version->id,
+            'section_version_id' => $sectionVersion->id,
+            'position' => 3,
+        ]);
 
         new UpdateStructureVersionSectionPosition(user: $user, row: $third, position: 1)->execute();
 
         $this->assertEquals(1, $third->fresh()->position);
         $this->assertEquals(2, $first->fresh()->position);
         $this->assertEquals(3, $second->fresh()->position);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::TemplateSectionPositionUpdate
+                && $job->parameters === ['section' => 'Address', 'name' => 'Contact'];
+        });
     }
 
     #[Test]
@@ -101,28 +113,5 @@ class UpdateStructureVersionSectionPositionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateStructureVersionSectionPosition(user: $michael, row: $row, position: 1)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_move_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
-        $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
-        $row = StructureVersionSection::factory()->create([
-            'structure_version_id' => $version->id,
-            'section_version_id' => $sectionVersion->id,
-        ]);
-
-        new UpdateStructureVersionSectionPosition(user: $user, row: $row, position: 1)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::TemplateSectionPositionUpdate
-                && $job->parameters === ['section' => 'Address', 'name' => 'Contact'];
-        });
     }
 }

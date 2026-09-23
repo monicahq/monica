@@ -264,12 +264,6 @@ class EmailSentControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_caller_without_a_token(): void
-    {
-        $this->json('GET', '/api/v1/emails-sent')->assertUnauthorized();
-    }
-
-    #[Test]
     public function it_shows_one_email_that_was_sent(): void
     {
         $account = Account::factory()->create();
@@ -341,14 +335,6 @@ class EmailSentControllerTest extends TestCase
         Sanctum::actingAs($user);
 
         $this->json('GET', '/api/v1/emails-sent/99999')->assertNotFound();
-    }
-
-    #[Test]
-    public function it_refuses_a_caller_without_a_token_asking_for_one_email(): void
-    {
-        $emailSent = EmailSent::factory()->create();
-
-        $this->json('GET', "/api/v1/emails-sent/{$emailSent->id}")->assertUnauthorized();
     }
 
     #[Test]

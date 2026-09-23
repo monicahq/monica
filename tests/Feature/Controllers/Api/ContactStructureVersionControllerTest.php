@@ -6,8 +6,8 @@ namespace Tests\Feature\Controllers\Api;
 
 use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
-use App\Models\Template;
 use App\Models\StructureVersion;
+use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -158,14 +158,5 @@ class ContactStructureVersionControllerTest extends TestCase
         Sanctum::actingAs($user);
 
         $this->json('PUT', "/api/v1/vaults/{$other->uuid}/contacts/{$contact->uuid}/template-version", [])->assertNotFound();
-    }
-
-    #[Test]
-    public function it_refuses_a_caller_with_no_credential(): void
-    {
-        $vault = Vault::factory()->create();
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
-
-        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/template-version", [])->assertUnauthorized();
     }
 }

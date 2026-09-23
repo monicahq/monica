@@ -32,7 +32,10 @@ class CreateFieldValueRowTest extends TestCase
 
         $user = User::factory()->create();
         $contact = $this->contactOf($user);
-        $field = Field::factory()->repeater()->create(['account_id' => $user->account_id]);
+        $field = Field::factory()->repeater()->create([
+            'account_id' => $user->account_id,
+            'label' => 'Phone numbers',
+        ]);
 
         $row = new CreateFieldValueRow(user: $user, valuable: $contact, field: $field)->execute();
 
@@ -45,6 +48,14 @@ class CreateFieldValueRowTest extends TestCase
             'field_id' => $field->id,
             'position' => 1,
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FieldValueRowCreation
+                && $job->isAbout($row)
+                && $job->parameters === ['label' => 'Phone numbers', 'name' => 'Pam Beesly'],
+        );
     }
 
     #[Test]
@@ -144,29 +155,6 @@ class CreateFieldValueRowTest extends TestCase
             valuable: $contact,
             field: Field::factory()->repeater()->create(),
         )->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_repetition(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $field = Field::factory()->repeater()->create([
-            'account_id' => $user->account_id,
-            'label' => 'Phone numbers',
-        ]);
-
-        $row = new CreateFieldValueRow(user: $user, valuable: $contact, field: $field)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FieldValueRowCreation
-                && $job->isAbout($row)
-                && $job->parameters === ['label' => 'Phone numbers', 'name' => 'Pam Beesly'],
-        );
     }
 
     private function contactOf(User $user): Contact

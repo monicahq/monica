@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account;
 
-use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -97,18 +96,6 @@ class AccountControllerTest extends TestCase
         $response->assertSee('Delete your account', escape: false);
         $response->assertSee('We keep no copy, so nothing can be recovered afterwards.', escape: false);
         $response->assertSee(route('settings.account.destroy'), escape: false);
-    }
-
-    #[Test]
-    public function it_redirects_a_visitor_who_is_not_signed_in(): void
-    {
-        $account = Account::factory()->create();
-
-        $response = $this->delete(route('settings.account.destroy'));
-
-        $response->assertRedirect(route('auth.login.new'));
-
-        $this->assertModelExists($account);
     }
 
     #[Test]

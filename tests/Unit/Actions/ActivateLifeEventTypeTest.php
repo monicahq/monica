@@ -25,12 +25,15 @@ class ActivateLifeEventTypeTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $type = LifeEventType::factory()->inactive()->create(['account_id' => $user->account_id]);
+        $type = LifeEventType::factory()->inactive()->create(['account_id' => $user->account_id, 'name' => 'Dundie awards']);
 
         $returned = new ActivateLifeEventType(user: $user, lifeEventType: $type)->execute();
 
         $this->assertInstanceOf(LifeEventType::class, $returned);
         $this->assertDatabaseHas('life_event_types', ['id' => $type->id, 'is_active' => true]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventTypeActivated
+            && $job->parameters === ['name' => 'Dundie awards']);
     }
 
     #[Test]
@@ -80,19 +83,5 @@ class ActivateLifeEventTypeTest extends TestCase
         } finally {
             $this->assertDatabaseHas('life_event_types', ['id' => $type->id, 'is_active' => false]);
         }
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $type = LifeEventType::factory()->inactive()->create(['account_id' => $user->account_id, 'name' => 'Dundie awards']);
-
-        new ActivateLifeEventType(user: $user, lifeEventType: $type)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventTypeActivated
-            && $job->parameters === ['name' => 'Dundie awards']);
     }
 }

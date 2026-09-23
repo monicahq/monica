@@ -36,13 +36,16 @@ class CancelSubscriptionTest extends TestCase
     public function it_stops_the_subscription_renewing_at_the_end_of_the_paid_period(): void
     {
         $michael = User::factory()->create();
-        $this->subscribeAccount($michael->account);
+        $subscribed = $this->subscribeAccount($michael->account);
 
         $subscription = new CancelSubscription(user: $michael)->execute();
 
         $this->assertInstanceOf(Subscription::class, $subscription);
         $this->assertSame('2026-10-07', $subscription->ends_at?->format('Y-m-d'));
         $this->assertTrue($michael->account->fresh()->hasFullAccess());
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::SubscriptionCancelled
+            && $job->isAbout($subscribed));
     }
 
     #[Test]
@@ -87,17 +90,5 @@ class CancelSubscriptionTest extends TestCase
         $this->subscribeAccount($michael->account, 'price_monthly', 'canceled', now()->subDay());
 
         new CancelSubscription(user: $michael)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_cancellation_into_the_account_journal(): void
-    {
-        $michael = User::factory()->create();
-        $subscription = $this->subscribeAccount($michael->account);
-
-        new CancelSubscription(user: $michael)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::SubscriptionCancelled
-            && $job->isAbout($subscription));
     }
 }

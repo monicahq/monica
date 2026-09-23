@@ -28,11 +28,21 @@ class DestroyValueListTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $list = ValueList::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dundie awards',
+        ]);
 
         new DestroyValueList(user: $user, valueList: $list)->execute();
 
         $this->assertSoftDeleted('value_lists', ['id' => $list->id]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListDeletion
+                && $job->parameters === ['name' => 'Dundie awards'],
+        );
     }
 
     #[Test]
@@ -78,26 +88,5 @@ class DestroyValueListTest extends TestCase
         $this->expectException(AuthorizationException::class);
 
         new DestroyValueList(user: $user, valueList: $list)->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_deletion_with_the_name_the_list_had(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Dundie awards',
-        ]);
-
-        new DestroyValueList(user: $user, valueList: $list)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListDeletion
-                && $job->parameters === ['name' => 'Dundie awards'],
-        );
     }
 }

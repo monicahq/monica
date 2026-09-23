@@ -16,9 +16,9 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\RecordSnapshot;
 use App\Models\SectionVersion;
-use App\Models\Template;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
+use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -48,6 +48,14 @@ class MoveRecordToStructureVersionTest extends TestCase
         )->execute();
 
         $this->assertEquals($to->id, $moved->structure_version_id);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::RecordMovedToTemplateVersion
+                && $job->isAbout($contact)
+                && $job->parameters === ['name' => 'Pam Beesly', 'version' => $to->version_number],
+        );
     }
 
     #[Test]
@@ -248,26 +256,6 @@ class MoveRecordToStructureVersionTest extends TestCase
             record: $this->contactOf($user),
             structureVersion: StructureVersion::factory()->published()->create(),
         )->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_move(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $to = $this->publishedContactVersion($user);
-
-        new MoveRecordToStructureVersion(user: $user, record: $contact, structureVersion: $to)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::RecordMovedToTemplateVersion
-                && $job->isAbout($contact)
-                && $job->parameters === ['name' => 'Pam Beesly', 'version' => $to->version_number],
-        );
     }
 
     private function contactOf(User $user): Contact

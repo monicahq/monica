@@ -122,33 +122,6 @@ class StructureVersionPublicationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_explains_why_a_published_version_cannot_be_published_again(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $published = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
-
-        $this->actingAs($user)->put(route('settings.templateVersionPublication.update', [$template, $published]))
-            ->assertRedirect()
-            ->assertSessionHas('error');
-    }
-
-    #[Test]
-    public function it_refuses_a_template_from_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $template = Template::factory()->create();
-        $draft = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-
-        $this->actingAs($michael)->put(route('settings.templateVersionPublication.update', [$template, $draft]))
-            ->assertNotFound();
-    }
-
-    #[Test]
     public function it_does_not_find_a_draft_of_another_template(): void
     {
         Queue::fake();

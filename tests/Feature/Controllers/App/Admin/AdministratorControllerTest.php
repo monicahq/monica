@@ -15,19 +15,6 @@ class AdministratorControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_is_closed_to_somebody_who_does_not_run_the_instance(): void
-    {
-        $jim = User::factory()->create();
-        $michael = $this->administrator();
-
-        $this->actingAs($jim)->get(route('admin.administrators.index'))->assertNotFound();
-        $this->actingAs($jim)->post(route('admin.administrators.create'), ['email' => $jim->email])->assertNotFound();
-        $this->actingAs($jim)->delete(route('admin.administrators.destroy', ['user' => $michael->id]))->assertNotFound();
-
-        $this->assertDatabaseCount('administrators', 1);
-    }
-
-    #[Test]
     public function it_lists_everybody_who_runs_the_instance(): void
     {
         $michael = $this->administrator('Michael', 'Scott');
@@ -85,20 +72,6 @@ class AdministratorControllerTest extends TestCase
 
         $response->assertSessionHasErrors(['email' => 'Nobody on this instance uses that address.']);
         $this->assertDatabaseCount('administrators', 1);
-    }
-
-    #[Test]
-    public function it_refuses_to_grant_a_capacity_already_held(): void
-    {
-        $michael = $this->administrator();
-        $dwight = $this->administrator();
-
-        $response = $this->actingAs($michael)->post(route('admin.administrators.create'), [
-            'email' => $dwight->email,
-        ]);
-
-        $response->assertSessionHasErrors('email');
-        $this->assertDatabaseCount('administrators', 2);
     }
 
     #[Test]

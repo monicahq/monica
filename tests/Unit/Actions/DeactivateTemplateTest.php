@@ -26,11 +26,16 @@ class DeactivateTemplateTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
 
         new DeactivateTemplate(user: $user, template: $template)->execute();
 
         $this->assertFalse($template->fresh()->is_active);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::TemplateDeactivated
+                && $job->parameters === ['name' => 'Contact'];
+        });
     }
 
     #[Test]
@@ -58,21 +63,5 @@ class DeactivateTemplateTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DeactivateTemplate(user: $michael, template: $template)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
-
-        new DeactivateTemplate(user: $user, template: $template)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::TemplateDeactivated
-                && $job->parameters === ['name' => 'Contact'];
-        });
     }
 }

@@ -49,6 +49,12 @@ class CreateLifeEventTypeTest extends TestCase
             'is_active' => true,
             'position' => 1,
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventTypeCreation,
+        );
     }
 
     #[Test]
@@ -126,22 +132,5 @@ class CreateLifeEventTypeTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new CreateLifeEventType(user: $user, lifeEventCategory: $category, name: 'Trip')->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_creation_to_the_journal(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-
-        new CreateLifeEventType(user: $user, lifeEventCategory: $category, name: 'Hike')->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventTypeCreation,
-        );
     }
 }

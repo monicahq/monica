@@ -9,44 +9,15 @@ use App\Exceptions\PublishedVersionIsFrozen;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use PHPUnit\Framework\Attributes\Test;
 use App\Models\Template;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class StructureVersionTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $version = StructureVersion::factory()->create();
-
-        $this->assertTrue($version->account()->exists());
-    }
-
-    #[Test]
-    public function it_belongs_to_a_template(): void
-    {
-        $version = StructureVersion::factory()->create();
-
-        $this->assertTrue($version->structure->owner()->exists());
-    }
-
-    #[Test]
-    public function it_belongs_to_the_version_it_was_made_from(): void
-    {
-        $first = StructureVersion::factory()->published()->create();
-        $second = StructureVersion::factory()->create([
-            'structure_id' => $first->structure_id,
-            'version_number' => 2,
-            'previous_version_id' => $first->id,
-        ]);
-
-        $this->assertTrue($second->previousVersion()->exists());
-    }
 
     #[Test]
     public function it_carries_its_sections_in_order(): void

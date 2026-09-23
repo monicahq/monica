@@ -32,7 +32,11 @@ class DestroyFieldValueRowTest extends TestCase
 
         $user = User::factory()->create();
         $contact = $this->contactOf($user);
-        $row = $this->rowOn($user, $contact);
+        $field = Field::factory()->repeater()->create([
+            'account_id' => $user->account_id,
+            'label' => 'Phone numbers',
+        ]);
+        $row = $this->rowOn($user, $contact, $field);
         $value = FieldValue::factory()->create([
             'account_id' => $user->account_id,
             'vault_id' => $contact->vault_id,
@@ -45,6 +49,13 @@ class DestroyFieldValueRowTest extends TestCase
 
         $this->assertModelMissing($row);
         $this->assertModelMissing($value);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FieldValueRowDeletion
+                && $job->parameters === ['label' => 'Phone numbers', 'name' => 'Pam Beesly'],
+        );
     }
 
     #[Test]
@@ -127,29 +138,6 @@ class DestroyFieldValueRowTest extends TestCase
         new DestroyFieldValueRow(user: $user, row: FieldValueRow::factory()->create())->execute();
     }
 
-    #[Test]
-    public function it_logs_the_removal(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $field = Field::factory()->repeater()->create([
-            'account_id' => $user->account_id,
-            'label' => 'Phone numbers',
-        ]);
-        $row = $this->rowOn($user, $contact, $field);
-
-        new DestroyFieldValueRow(user: $user, row: $row)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FieldValueRowDeletion
-                && $job->parameters === ['label' => 'Phone numbers', 'name' => 'Pam Beesly'],
-        );
-    }
-
     private function contactOf(User $user): Contact
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -168,7 +156,7 @@ class DestroyFieldValueRowTest extends TestCase
             'account_id' => $user->account_id,
             'valuable_type' => Contact::class,
             'valuable_id' => $contact->id,
-            'field_id' => $field?->id ?? Field::factory()->repeater()->create(['account_id' => $user->account_id])->id,
+            'field_id' => $field->id ?? Field::factory()->repeater()->create(['account_id' => $user->account_id])->id,
             'position' => $position,
         ]);
     }

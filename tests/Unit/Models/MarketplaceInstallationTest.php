@@ -6,7 +6,6 @@ namespace Tests\Unit\Models;
 
 use App\Enums\MarketplaceUpdateDecisionEnum;
 use App\Models\MarketplaceInstallation;
-use App\Models\Template;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -14,39 +13,6 @@ use Tests\TestCase;
 class MarketplaceInstallationTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $installation = MarketplaceInstallation::factory()->create();
-
-        $this->assertTrue($installation->account()->exists());
-    }
-
-    #[Test]
-    public function it_belongs_to_a_listing_and_to_the_exact_version_it_copied(): void
-    {
-        $installation = MarketplaceInstallation::factory()->create();
-
-        $this->assertTrue($installation->listing()->exists());
-        $this->assertTrue($installation->version()->exists());
-    }
-
-    #[Test]
-    public function it_points_at_the_local_copy(): void
-    {
-        $installation = MarketplaceInstallation::factory()->create();
-
-        $this->assertInstanceOf(Template::class, $installation->installable);
-    }
-
-    #[Test]
-    public function the_local_copy_belongs_to_the_account_that_installed_it(): void
-    {
-        $installation = MarketplaceInstallation::factory()->create();
-
-        $this->assertEquals($installation->account_id, $installation->installable->account_id);
-    }
 
     #[Test]
     public function it_knows_nothing_is_waiting_when_the_copy_is_current(): void

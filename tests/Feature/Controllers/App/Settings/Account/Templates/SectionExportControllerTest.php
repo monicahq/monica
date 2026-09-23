@@ -84,16 +84,6 @@ class SectionExportControllerTest extends TestCase
             ->assertNotFound();
     }
 
-    #[Test]
-    public function it_does_not_hand_over_a_section_in_another_account(): void
-    {
-        $row = $this->publishedRow(User::factory()->create());
-
-        $this->actingAs(User::factory()->create())
-            ->get(route('settings.sectionExport.show', [$row->structureVersion->structure->owner, $row->id]))
-            ->assertNotFound();
-    }
-
     private function publishedRow(User $user): StructureVersionSection
     {
         $template = Template::factory()->create([

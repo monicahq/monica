@@ -27,11 +27,26 @@ class DestroyValueListItemTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $item = ValueListItem::factory()->create(['account_id' => $user->account_id]);
+        $list = ValueList::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Phone labels',
+        ]);
+        $item = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'label' => 'Fax',
+        ]);
 
         new DestroyValueListItem(user: $user, item: $item)->execute();
 
         $this->assertSoftDeleted('value_list_items', ['id' => $item->id]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListItemDeletion
+                && $job->parameters === ['label' => 'Fax', 'name' => 'Phone labels'],
+        );
     }
 
     #[Test]
@@ -58,31 +73,5 @@ class DestroyValueListItemTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DestroyValueListItem(user: $user, item: $item)->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_removal_with_the_label_the_choice_had(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Phone labels',
-        ]);
-        $item = ValueListItem::factory()->create([
-            'account_id' => $user->account_id,
-            'value_list_id' => $list->id,
-            'label' => 'Fax',
-        ]);
-
-        new DestroyValueListItem(user: $user, item: $item)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListItemDeletion
-                && $job->parameters === ['label' => 'Fax', 'name' => 'Phone labels'],
-        );
     }
 }

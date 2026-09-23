@@ -138,21 +138,6 @@ class RelationshipCategoryControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_the_supplied_wording_of_a_category_through_the_translator(): void
-    {
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->system()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', "/api/v1/relationship-categories/{$category->uuid}");
-
-        $response->assertOk();
-        $response->assertJsonPath('data.attributes.is_system', true);
-        $response->assertJsonPath('data.attributes.name', __($category->name_translation_key));
-    }
-
-    #[Test]
     public function it_returns_not_found_for_a_category_of_another_account(): void
     {
         $user = User::factory()->create();
@@ -259,37 +244,6 @@ class RelationshipCategoryControllerTest extends TestCase
 
         $this->json('DELETE', "/api/v1/relationship-categories/{$category->uuid}")->assertNoContent();
         $this->assertSoftDeleted($category);
-    }
-
-    #[Test]
-    public function it_refuses_to_delete_a_supplied_category(): void
-    {
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->system()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('DELETE', "/api/v1/relationship-categories/{$category->uuid}");
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['relationshipCategory']);
-        $this->assertNotSoftDeleted($category);
-    }
-
-    #[Test]
-    public function it_refuses_to_delete_a_category_that_still_holds_a_type(): void
-    {
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-        RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('DELETE', "/api/v1/relationship-categories/{$category->uuid}");
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['relationshipCategory']);
-        $this->assertNotSoftDeleted($category);
     }
 
     #[Test]

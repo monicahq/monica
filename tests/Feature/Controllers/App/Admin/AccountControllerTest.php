@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Admin;
 
-use App\Helpers\StripeCatalogue;
-use App\Models\Account;
 use App\Models\Administrator;
-use App\Models\StripeOrder;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -16,16 +13,6 @@ use Tests\TestCase;
 class AccountControllerTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_is_closed_to_somebody_who_does_not_run_the_instance(): void
-    {
-        $jim = User::factory()->create();
-        $account = Account::factory()->create();
-
-        $this->actingAs($jim)->get(route('admin.accounts.index'))->assertNotFound();
-        $this->actingAs($jim)->get(route('admin.accounts.show', ['account' => $account->id]))->assertNotFound();
-    }
 
     #[Test]
     public function it_finds_an_account_by_address(): void
@@ -83,31 +70,6 @@ class AccountControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_an_account_with_no_ceiling_as_unlimited(): void
-    {
-        $account = Account::factory()->create(['storage_limit_in_bytes' => null, 'storage_used_in_bytes' => 0]);
-
-        $response = $this->actingAs($this->administrator())
-            ->get(route('admin.accounts.show', ['account' => $account->id]));
-
-        $response->assertSee('no limit', escape: false);
-    }
-
-    #[Test]
-    public function it_marks_the_facts_that_mean_nothing_on_a_self_hosted_account(): void
-    {
-        config(['monica.self_hosted' => true]);
-
-        $account = Account::factory()->create(['billing_email' => null]);
-
-        $response = $this->actingAs($this->administrator())
-            ->get(route('admin.accounts.show', ['account' => $account->id]));
-
-        $response->assertSee('Not applicable', escape: false);
-        $response->assertSee('Self-hosted', escape: false);
-    }
-
-    #[Test]
     public function it_still_renders_for_an_account_whose_person_was_deleted(): void
     {
         $dwight = User::factory()->create(['first_name' => 'Dwight', 'last_name' => 'Schrute']);
@@ -122,77 +84,11 @@ class AccountControllerTest extends TestCase
         $response->assertSee('The person on this account was deleted', escape: false);
     }
 
-    #[Test]
-    public function it_still_renders_for_an_account_holding_no_vault(): void
-    {
-        $account = Account::factory()->create();
-
-        $response = $this->actingAs($this->administrator())
-            ->get(route('admin.accounts.show', ['account' => $account->id]));
-
-        $response->assertStatus(200);
-        $response->assertSee('0 vaults', escape: false);
-    }
-
-    #[Test]
-    public function it_names_a_deleted_person_in_the_results_rather_than_showing_nobody(): void
-    {
-        $dwight = User::factory()->create([
-            'first_name' => 'Dwight',
-            'last_name' => 'Schrute',
-            'email' => 'dwight.schrute@dundermifflin.com',
-        ]);
-        $dwight->delete();
-
-        $response = $this->actingAs($this->administrator())
-            ->get(route('admin.accounts.index', ['query' => 'schrute']));
-
-        $response->assertSee('Dwight Schrute', escape: false);
-        $response->assertSee('deleted', escape: false);
-        $response->assertDontSee('nobody on this account', escape: false);
-    }
-
     private function administrator(): User
     {
         $michael = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
         Administrator::factory()->create(['user_id' => $michael->id]);
 
         return $michael;
-    }
-
-    #[Test]
-    public function it_shows_the_order_the_subscription_and_the_way_to_stripe(): void
-    {
-        config(['cashier.secret' => 'sk_test_dundermifflin']);
-        StripeCatalogue::forget();
-        $this->fakeStripe();
-
-        $todd = User::factory()->create();
-        $todd->account->forceFill(['stripe_id' => 'cus_dundermifflin'])->save();
-        StripeOrder::factory()->refunded()->create(['account_id' => $todd->account_id]);
-        $this->subscribeAccount($todd->account);
-
-        $response = $this->actingAs($this->administrator())
-            ->get(route('admin.accounts.show', ['account' => $todd->account_id]));
-
-        $response->assertStatus(200);
-        $response->assertSee(__('Billing'), escape: false);
-        $response->assertSee('refunded', escape: false);
-        $response->assertSee(__('Monthly subscription'), escape: false);
-        $response->assertSee('https://dashboard.stripe.com/test/customers/cus_dundermifflin', escape: false);
-        $response->assertSee(__('See the customer on Stripe'), escape: false);
-    }
-
-    #[Test]
-    public function it_offers_no_way_to_stripe_for_an_account_it_has_never_heard_of(): void
-    {
-        $todd = User::factory()->create();
-        $todd->account->update(['access_granted_at' => now()]);
-
-        $response = $this->actingAs($this->administrator())
-            ->get(route('admin.accounts.show', ['account' => $todd->account_id]));
-
-        $response->assertDontSee(__('See the customer on Stripe'), escape: false);
-        $response->assertSee(__('Billing'), escape: false);
     }
 }

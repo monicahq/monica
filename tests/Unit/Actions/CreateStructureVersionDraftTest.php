@@ -30,7 +30,7 @@ class CreateStructureVersionDraftTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
         $published = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
         $draft = new CreateStructureVersionDraft(user: $user, structureVersion: $published)->execute();
@@ -40,6 +40,11 @@ class CreateStructureVersionDraftTest extends TestCase
         $this->assertEquals(VersionStatusEnum::Draft, $draft->status);
         $this->assertEquals($published->id, $draft->previous_version_id);
         $this->assertEquals(0, $draft->record_count);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::TemplateVersionDrafted
+                && $job->parameters === ['name' => 'Contact', 'version' => 2];
+        });
     }
 
     #[Test]
@@ -168,23 +173,6 @@ class CreateStructureVersionDraftTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new CreateStructureVersionDraft(user: $michael, structureVersion: $version)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_draft_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
-        $published = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
-
-        new CreateStructureVersionDraft(user: $user, structureVersion: $published)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::TemplateVersionDrafted
-                && $job->parameters === ['name' => 'Contact', 'version' => 2];
-        });
     }
 
     #[Test]

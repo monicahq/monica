@@ -31,18 +31,6 @@ class TemplateControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_out_the_templates_of_another_account(): void
-    {
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        Template::factory()->create(['account_id' => $dwight->account_id, 'name' => 'Beet varieties']);
-
-        $this->actingAs($michael)->get(route('settings.templates.index'))
-            ->assertStatus(200)
-            ->assertDontSee('Beet varieties');
-    }
-
-    #[Test]
     public function it_narrows_the_list_from_the_query_string(): void
     {
         $user = User::factory()->create();
@@ -176,15 +164,6 @@ class TemplateControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_show_the_template_of_another_account(): void
-    {
-        $michael = User::factory()->create();
-        $template = Template::factory()->create();
-
-        $this->actingAs($michael)->get(route('settings.templates.edit', $template))->assertNotFound();
-    }
-
-    #[Test]
     public function it_renames_a_template(): void
     {
         Queue::fake();
@@ -231,11 +210,5 @@ class TemplateControllerTest extends TestCase
             ->assertSessionHas('error');
 
         $this->assertNotSoftDeleted($template);
-    }
-
-    #[Test]
-    public function it_turns_a_visitor_away(): void
-    {
-        $this->get(route('settings.templates.index'))->assertRedirect(route('auth.login.new'));
     }
 }

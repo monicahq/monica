@@ -40,15 +40,4 @@ class RelationshipCategoryPositionControllerTest extends TestCase
         $this->actingAs($user)->put(route('settings.relationshipCategoryPosition.update', $category), ['position' => 'first'])
             ->assertSessionHasErrors(['position']);
     }
-
-    #[Test]
-    public function a_category_of_another_account_is_not_found(): void
-    {
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $dwight->account_id]);
-
-        $this->actingAs($michael)->put(route('settings.relationshipCategoryPosition.update', $category), ['position' => 1])
-            ->assertStatus(404);
-    }
 }

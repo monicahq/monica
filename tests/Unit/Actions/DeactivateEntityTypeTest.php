@@ -25,12 +25,20 @@ class DeactivateEntityTypeTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
+        $entityType = EntityType::factory()->create([
+            'account_id' => $user->account_id,
+            'name_plural' => 'Wine bottles',
+        ]);
 
         $deactivated = new DeactivateEntityType(user: $user, entityType: $entityType)->execute();
 
         $this->assertInstanceOf(EntityType::class, $deactivated);
         $this->assertFalse($entityType->refresh()->is_active);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::EntityTypeDeactivated
+                && $job->parameters === ['name' => 'Wine bottles'];
+        });
     }
 
     #[Test]
@@ -69,24 +77,5 @@ class DeactivateEntityTypeTest extends TestCase
         } finally {
             $this->assertTrue($entityType->refresh()->is_active);
         }
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->create([
-            'account_id' => $user->account_id,
-            'name_plural' => 'Wine bottles',
-        ]);
-
-        new DeactivateEntityType(user: $user, entityType: $entityType)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::EntityTypeDeactivated
-                && $job->parameters === ['name' => 'Wine bottles'];
-        });
     }
 }

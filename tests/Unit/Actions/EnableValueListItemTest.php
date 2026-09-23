@@ -27,12 +27,27 @@ class EnableValueListItemTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $item = ValueListItem::factory()->disabled()->create(['account_id' => $user->account_id]);
+        $list = ValueList::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Phone labels',
+        ]);
+        $item = ValueListItem::factory()->disabled()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'label' => 'Fax',
+        ]);
 
         $result = new EnableValueListItem(user: $user, item: $item)->execute();
 
         $this->assertInstanceOf(ValueListItem::class, $result);
         $this->assertTrue($item->refresh()->is_active);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListItemEnabled
+                && $job->parameters === ['label' => 'Fax', 'name' => 'Phone labels'],
+        );
     }
 
     #[Test]
@@ -66,31 +81,5 @@ class EnableValueListItemTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new EnableValueListItem(user: $user, item: $item)->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_change(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Phone labels',
-        ]);
-        $item = ValueListItem::factory()->disabled()->create([
-            'account_id' => $user->account_id,
-            'value_list_id' => $list->id,
-            'label' => 'Fax',
-        ]);
-
-        new EnableValueListItem(user: $user, item: $item)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListItemEnabled
-                && $job->parameters === ['label' => 'Fax', 'name' => 'Phone labels'],
-        );
     }
 }

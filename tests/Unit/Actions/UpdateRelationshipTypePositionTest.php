@@ -33,6 +33,8 @@ class UpdateRelationshipTypePositionTest extends TestCase
 
         $this->assertEquals(1, $second->refresh()->position);
         $this->assertEquals(2, $first->refresh()->position);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipTypePositionUpdate);
     }
 
     #[Test]
@@ -93,19 +95,6 @@ class UpdateRelationshipTypePositionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateRelationshipTypePosition(user: $michael, relationshipType: $type, position: 1)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_move_to_the_journal(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-        $type = $this->typeIn($user, $category, 'Sibling', 1);
-
-        new UpdateRelationshipTypePosition(user: $user, relationshipType: $type, position: 1)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipTypePositionUpdate);
     }
 
     private function typeIn(User $user, RelationshipCategory $category, string $name, int $position): RelationshipType

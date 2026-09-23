@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Enums\OfferKindEnum;
-use App\Models\Account;
 use App\Models\Payment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -14,15 +12,6 @@ use Tests\TestCase;
 class PaymentTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account(): void
-    {
-        $payment = Payment::factory()->create();
-
-        $this->assertTrue($payment->account()->exists());
-        $this->assertInstanceOf(Account::class, $payment->account);
-    }
 
     #[Test]
     public function it_writes_the_total_and_the_tax_for_the_reader(): void
@@ -50,13 +39,5 @@ class PaymentTest extends TestCase
 
         $this->assertFalse($purchase->isForSubscription());
         $this->assertTrue($renewal->isForSubscription());
-    }
-
-    #[Test]
-    public function it_keeps_the_offer_paid_for_as_an_enum(): void
-    {
-        $payment = Payment::factory()->forSubscription('yearly')->create();
-
-        $this->assertSame(OfferKindEnum::Yearly, $payment->kind);
     }
 }

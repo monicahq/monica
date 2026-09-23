@@ -70,19 +70,6 @@ class ContactVCardControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_answers_not_found_for_a_contact_in_another_account(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $stranger = Contact::factory()->create();
-
-        $this->actingAs($user)
-            ->get(route('contacts.vcard.show', ['vault' => $stranger->vault, 'contact' => $stranger]))
-            ->assertStatus(404);
-    }
-
-    #[Test]
     public function it_answers_not_found_for_a_contact_reached_through_the_wrong_vault(): void
     {
         Queue::fake();
@@ -94,17 +81,6 @@ class ContactVCardControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('contacts.vcard.show', ['vault' => $otherVault, 'contact' => $contact]))
             ->assertStatus(404);
-    }
-
-    #[Test]
-    public function it_refuses_a_visitor_who_is_not_signed_in(): void
-    {
-        Queue::fake();
-
-        $contact = $this->contactOf(User::factory()->create());
-
-        $this->get(route('contacts.vcard.show', ['vault' => $contact->vault, 'contact' => $contact]))
-            ->assertRedirect();
     }
 
     private function contactOf(User $user): Contact

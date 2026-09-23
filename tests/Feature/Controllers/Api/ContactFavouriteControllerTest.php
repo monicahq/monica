@@ -122,13 +122,4 @@ class ContactFavouriteControllerTest extends TestCase
         $this->json('PUT', "/api/v1/vaults/{$other->uuid}/contacts/{$contact->uuid}/favourite", ['favourite' => true])->assertNotFound();
         $this->assertFalse($contact->refresh()->is_favourite);
     }
-
-    #[Test]
-    public function it_refuses_a_caller_with_no_credential(): void
-    {
-        $vault = Vault::factory()->create();
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
-
-        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/favourite", ['favourite' => true])->assertUnauthorized();
-    }
 }

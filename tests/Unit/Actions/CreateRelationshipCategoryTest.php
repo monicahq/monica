@@ -36,15 +36,6 @@ class CreateRelationshipCategoryTest extends TestCase
             'position' => 3,
         ]);
         $this->assertNull($category->key);
-    }
-
-    #[Test]
-    public function it_writes_the_addition_to_the_journal(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-
-        new CreateRelationshipCategory(user: $user, name: 'Neighbourhood')->execute();
 
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipCategoryCreation);
     }

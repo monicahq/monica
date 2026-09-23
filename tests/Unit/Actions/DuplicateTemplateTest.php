@@ -39,6 +39,11 @@ class DuplicateTemplateTest extends TestCase
         $this->assertEquals('copy-of-contact', $copy->slug);
         $this->assertEquals($template->applies_to, $copy->applies_to);
         $this->assertFalse($copy->is_system);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::TemplateDuplication
+                && $job->parameters === ['source' => 'Contact', 'name' => 'Copy of Contact'];
+        });
     }
 
     #[Test]
@@ -183,22 +188,5 @@ class DuplicateTemplateTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DuplicateTemplate(user: $michael, template: $template)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_copy_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Contact']);
-        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-
-        new DuplicateTemplate(user: $user, template: $template)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::TemplateDuplication
-                && $job->parameters === ['source' => 'Contact', 'name' => 'Copy of Contact'];
-        });
     }
 }

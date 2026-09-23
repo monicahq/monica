@@ -67,6 +67,17 @@ class CreateReminderTest extends TestCase
             'is_active' => true,
             'created_by_user_id' => $user->id,
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderCreation
+                && $job->account->id === $user->account_id
+                && $job->user->id === $user->id
+                && $job->vault->id === $value->vault_id
+                && $job->isAbout($reminder)
+                && $job->parameters === ['label' => 'Birthday', 'name' => $value->valuable->name],
+        );
     }
 
     #[Test]
@@ -313,34 +324,6 @@ class CreateReminderTest extends TestCase
             moments: self::MOMENTS,
             timeOfDay: '09:00',
         )->execute();
-    }
-
-    #[Test]
-    public function it_writes_a_line_in_the_journal(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $value = $this->dateOf($user);
-
-        $reminder = new CreateReminder(
-            user: $user,
-            fieldValue: $value,
-            cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
-            timeOfDay: '09:00',
-        )->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderCreation
-                && $job->account->id === $user->account_id
-                && $job->user->id === $user->id
-                && $job->vault->id === $value->vault_id
-                && $job->isAbout($reminder)
-                && $job->parameters === ['label' => 'Birthday', 'name' => $value->valuable->name],
-        );
     }
 
     private function dateOf(User $user, ?Field $field = null): FieldValue

@@ -218,15 +218,6 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_caller_without_a_token_on_every_read(): void
-    {
-        $vault = Vault::factory()->create();
-
-        $this->json('GET', '/api/v1/vaults')->assertUnauthorized();
-        $this->json('GET', "/api/v1/vaults/{$vault->uuid}")->assertUnauthorized();
-    }
-
-    #[Test]
     public function it_creates_a_vault(): void
     {
         Queue::fake();
@@ -318,23 +309,6 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_colour_written_in_capitals(): void
-    {
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/vaults', [
-            'name' => 'Dunder Mifflin',
-            'colour' => '#4F8A49',
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('colour');
-        $this->assertDatabaseCount('vaults', 0);
-    }
-
-    #[Test]
     public function it_refuses_a_vault_without_a_name(): void
     {
         $user = User::factory()->create();
@@ -401,15 +375,6 @@ class VaultControllerTest extends TestCase
                 && $job->vault->id === $vault->id
                 && $job->parameters === ['name' => 'Dunder Mifflin'],
         );
-    }
-
-    #[Test]
-    public function it_refuses_a_caller_without_a_token(): void
-    {
-        $response = $this->json('POST', '/api/v1/vaults', ['name' => 'Dunder Mifflin']);
-
-        $response->assertUnauthorized();
-        $this->assertDatabaseCount('vaults', 0);
     }
 
     #[Test]
@@ -920,47 +885,6 @@ class VaultControllerTest extends TestCase
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors('structure_version_id');
         $this->assertDatabaseCount('vaults', 0);
-    }
-
-    #[Test]
-    public function it_refuses_a_structure_version_from_another_account(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $stranger = User::factory()->create();
-        $elsewhere = $this->publishedContactTemplate($stranger, 'Beet varieties');
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/vaults', [
-            'name' => 'Dunder Mifflin',
-            'structure_version_id' => $elsewhere->structure->published_version_id,
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('structure_version_id');
-    }
-
-    #[Test]
-    public function it_refuses_a_structure_version_that_describes_something_other_than_a_contact(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->forEntity()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
-        $template->structure->update(['published_version_id' => $version->id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/vaults', [
-            'name' => 'Dunder Mifflin',
-            'structure_version_id' => $version->id,
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('structure_version_id');
     }
 
     #[Test]

@@ -34,16 +34,17 @@ class ReactivateRemindersTest extends TestCase
 
         $user = User::factory()->create();
         $reminder = $this->ruleOf($user);
+        $contact = $reminder->remindable;
 
         new DeactivateReminders(
             user: $user,
-            subject: $reminder->remindable,
+            subject: $contact,
             reason: ReminderInactiveReasonEnum::RecordArchived,
         )->execute();
 
         $count = new ReactivateReminders(
             user: $user,
-            subject: $reminder->remindable,
+            subject: $contact,
             reason: ReminderInactiveReasonEnum::RecordArchived,
         )->execute();
 
@@ -54,6 +55,15 @@ class ReactivateRemindersTest extends TestCase
             'inactive_reason' => null,
             'deactivated_at' => null,
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderReactivation
+                && $job->account->id === $user->account_id
+                && $job->isAbout($contact)
+                && $job->parameters === ['name' => $contact->name, 'count' => 1],
+        );
     }
 
     #[Test]
@@ -103,28 +113,6 @@ class ReactivateRemindersTest extends TestCase
 
         $this->assertSame(1, $count);
         $this->assertTrue($reminder->fresh()->is_active);
-    }
-
-    #[Test]
-    public function it_logs_how_many_rules_came_back(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $reminder = $this->ruleOf($user);
-        $contact = $reminder->remindable;
-
-        new DeactivateReminders(user: $user, subject: $contact, reason: ReminderInactiveReasonEnum::RecordDeleted)->execute();
-        new ReactivateReminders(user: $user, subject: $contact, reason: ReminderInactiveReasonEnum::RecordDeleted)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ReminderReactivation
-                && $job->account->id === $user->account_id
-                && $job->isAbout($contact)
-                && $job->parameters === ['name' => $contact->name, 'count' => 1],
-        );
     }
 
     #[Test]

@@ -81,31 +81,12 @@ class TemplateImportControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_file_holding_one_section(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = $this->publishedTemplate($user);
-        $file = StructureFile::encode(StructureFile::ofSection($template->publishedVersion->assembly->first()));
-
-        $this->actingAs($user)->post(route('settings.templateImport.create'), ['file' => $file])
-            ->assertSessionHasErrors('file');
-    }
-
-    #[Test]
     public function it_asks_for_something_to_read(): void
     {
         $user = User::factory()->create();
 
         $this->actingAs($user)->post(route('settings.templateImport.create'), ['file' => ''])
             ->assertSessionHasErrors('file');
-    }
-
-    #[Test]
-    public function it_keeps_the_screen_to_the_people_who_are_logged_in(): void
-    {
-        $this->get(route('settings.templateImport.new'))->assertRedirect(route('auth.login.new'));
     }
 
     private function exported(User $user): string

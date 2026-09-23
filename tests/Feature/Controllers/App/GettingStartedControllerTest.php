@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App;
 
 use App\Models\User;
-use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -25,37 +24,5 @@ class GettingStartedControllerTest extends TestCase
             ->assertSee('Create your first vault')
             ->assertSee('Getting set up')
             ->assertSee('0 of 5 done');
-    }
-
-    #[Test]
-    public function the_letter_is_signed_by_both_of_the_people_who_write_it(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('gettingStarted.index'))->assertStatus(200);
-
-        $response->assertSee('We are Regis and Alexis');
-        $response->assertSee('Regis and Alexis');
-        $response->assertSee('The two of us build Monica');
-        $response->assertSee('alt="Regis"', escape: false);
-        $response->assertSee('alt="Alexis"', escape: false);
-        $response->assertDontSee('Write to');
-    }
-
-    #[Test]
-    public function it_ticks_off_what_the_account_has_already_been_through(): void
-    {
-        $user = User::factory()->create();
-        Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('gettingStarted.index'))
-            ->assertStatus(200)
-            ->assertSee('1 of 5 done');
-    }
-
-    #[Test]
-    public function it_keeps_somebody_who_is_not_signed_in_out(): void
-    {
-        $this->get(route('gettingStarted.index'))->assertRedirect(route('auth.login.new'));
     }
 }

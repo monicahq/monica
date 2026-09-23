@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,34 +13,6 @@ use Tests\TestCase;
 class ContactDuplicateCandidateTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_belongs_to_an_account_and_to_a_vault(): void
-    {
-        $candidate = ContactDuplicateCandidate::factory()->create();
-
-        $this->assertTrue($candidate->account()->exists());
-        $this->assertTrue($candidate->vault()->exists());
-    }
-
-    #[Test]
-    public function it_belongs_to_the_two_contacts_of_the_pair(): void
-    {
-        $candidate = ContactDuplicateCandidate::factory()->create();
-
-        $this->assertInstanceOf(Contact::class, $candidate->contact);
-        $this->assertInstanceOf(Contact::class, $candidate->otherContact);
-        $this->assertEquals($candidate->contact->vault_id, $candidate->otherContact->vault_id);
-    }
-
-    #[Test]
-    public function it_belongs_to_the_user_who_ruled_it_out(): void
-    {
-        $user = User::factory()->create();
-        $candidate = ContactDuplicateCandidate::factory()->dismissedBy($user)->create();
-
-        $this->assertInstanceOf(User::class, $candidate->dismissedBy);
-    }
 
     #[Test]
     public function it_knows_whether_it_was_ruled_out(): void

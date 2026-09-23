@@ -14,15 +14,6 @@ class ShareLinkVisitTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_belongs_to_an_account_and_to_a_link(): void
-    {
-        $visit = ShareLinkVisit::factory()->create();
-
-        $this->assertTrue($visit->account()->exists());
-        $this->assertTrue($visit->shareLink()->exists());
-    }
-
-    #[Test]
     public function it_keeps_the_account_of_the_link_it_records(): void
     {
         $visit = ShareLinkVisit::factory()->create();

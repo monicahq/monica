@@ -34,6 +34,13 @@ class DestroyFileTest extends TestCase
         new DestroyFile(account: $user->account, file: $file, user: $user)->execute();
 
         Storage::disk('local')->assertMissing($file->path);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FileDeletion
+                && $job->parameters === ['name' => 'contract.pdf'],
+        );
     }
 
     #[Test]
@@ -124,25 +131,6 @@ class DestroyFileTest extends TestCase
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FileDeletion
                 && $job->user === null,
-        );
-    }
-
-    #[Test]
-    public function it_logs_the_deletion_with_the_name_the_file_had(): void
-    {
-        Queue::fake();
-        Storage::fake('local');
-
-        $user = User::factory()->create();
-        $file = $this->fileOnDisk($user);
-
-        new DestroyFile(account: $user->account, file: $file, user: $user)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FileDeletion
-                && $job->parameters === ['name' => 'contract.pdf'],
         );
     }
 

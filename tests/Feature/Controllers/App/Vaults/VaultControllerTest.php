@@ -6,7 +6,6 @@ namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\StructureAppliesToEnum;
 use App\Jobs\RecordVaultVisit;
-use App\Models\Contact;
 use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
@@ -46,47 +45,6 @@ class VaultControllerTest extends TestCase
         $this->actingAs($user)->get(route('vaults.index'))
             ->assertStatus(200)
             ->assertSee('No vault yet');
-    }
-
-    #[Test]
-    public function it_says_when_each_vault_was_opened_and_puts_the_latest_first(): void
-    {
-        $user = User::factory()->create();
-
-        Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Travail',
-            'position' => 1,
-            'last_visited_at' => now()->subWeek(),
-        ]);
-
-        Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Famille',
-            'position' => 2,
-            'last_visited_at' => now()->subHour(),
-        ]);
-
-        $response = $this->actingAs($user)->get(route('vaults.index'));
-
-        $response->assertStatus(200);
-        $response->assertSeeInOrder(['Famille', 'Travail']);
-        $response->assertSee('Opened 1 hour ago');
-    }
-
-    #[Test]
-    public function a_card_shows_the_faces_in_the_vault_and_what_it_owes_this_month(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 18]);
-
-        Contact::factory()->count(5)->create(['vault_id' => $vault->id]);
-
-        $this->actingAs($user)->get(route('vaults.index'))
-            ->assertStatus(200)
-            ->assertSee('and 14 more')
-            ->assertSee('Open tasks')
-            ->assertSee('Dates this month');
     }
 
     #[Test]
@@ -136,19 +94,6 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_the_last_people_written_down_and_leads_to_all_of_them(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 1]);
-        Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
-
-        $this->actingAs($user)->get(route('vaults.show', $vault))
-            ->assertStatus(200)
-            ->assertSee('Pam Beesly')
-            ->assertSee(route('contacts.index', $vault));
-    }
-
-    #[Test]
     public function it_asks_for_the_first_person_rather_than_leading_to_an_empty_list(): void
     {
         $user = User::factory()->create();
@@ -158,20 +103,6 @@ class VaultControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Nobody here yet')
             ->assertSee('Add the first person');
-    }
-
-    #[Test]
-    public function it_draws_the_parts_of_a_vault_that_have_no_model_yet_without_offering_them(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('vaults.show', $vault))
-            ->assertStatus(200)
-            ->assertSee('Nothing you owe anyone')
-            ->assertSee('No dates to keep')
-            ->assertSee('No files yet')
-            ->assertDontSee('Journal');
     }
 
     #[Test]
@@ -257,15 +188,6 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_find_a_vault_of_another_account(): void
-    {
-        $user = User::factory()->create();
-        $elsewhere = Vault::factory()->create(['name' => 'Vance Refrigeration']);
-
-        $this->actingAs($user)->get(route('vaults.show', $elsewhere))->assertNotFound();
-    }
-
-    #[Test]
     public function it_shows_the_form_that_opens_a_vault(): void
     {
         $user = User::factory()->create();
@@ -285,23 +207,6 @@ class VaultControllerTest extends TestCase
             ->assertStatus(200)
             ->assertDontSee('aria-label="Breadcrumb"', escape: false)
             ->assertSee('Cancel');
-    }
-
-    #[Test]
-    public function it_keeps_somebody_who_is_not_signed_in_out(): void
-    {
-        $this->get(route('vaults.new'))->assertRedirect(route('auth.login.new'));
-    }
-
-    #[Test]
-    public function it_says_what_ticking_the_default_box_would_cost(): void
-    {
-        $user = User::factory()->create();
-        Vault::factory()->default()->create(['account_id' => $user->account_id, 'name' => 'Personal']);
-
-        $this->actingAs($user)->get(route('vaults.new'))
-            ->assertStatus(200)
-            ->assertSee('Personal stays the default.');
     }
 
     #[Test]
@@ -386,24 +291,6 @@ class VaultControllerTest extends TestCase
             'applies_to' => StructureAppliesToEnum::Contact->value,
             'structure_version_id' => $chosen->structure->published_version_id,
         ]);
-    }
-
-    #[Test]
-    public function it_asks_which_template_only_once_there_is_a_choice(): void
-    {
-        $user = User::factory()->create();
-        $this->publishedContactTemplate($user, 'Standard contact');
-
-        $this->actingAs($user)->get(route('vaults.new'))
-            ->assertStatus(200)
-            ->assertDontSee('Default template');
-
-        $this->publishedContactTemplate($user, 'Work contact');
-
-        $this->actingAs($user)->get(route('vaults.new'))
-            ->assertStatus(200)
-            ->assertSee('Default template')
-            ->assertSee('Work contact');
     }
 
     #[Test]
@@ -532,22 +419,6 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_rename_a_vault_of_another_account(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $elsewhere = Vault::factory()->create(['name' => 'Vance Refrigeration']);
-
-        $this->actingAs($user)->put(route('vaults.update', $elsewhere), [
-            'name' => 'Schrute Farms',
-            'colour' => '#4f8a49',
-        ])->assertNotFound();
-
-        $this->assertEquals('Vance Refrigeration', $elsewhere->refresh()->name);
-    }
-
-    #[Test]
     public function it_deletes_a_vault(): void
     {
         Queue::fake();
@@ -576,19 +447,6 @@ class VaultControllerTest extends TestCase
         $response->assertRedirect(route('gettingStarted.index'));
         $response->assertSessionHas('status');
         $this->assertSoftDeleted('vaults', ['id' => $vault->id]);
-    }
-
-    #[Test]
-    public function it_does_not_delete_a_vault_of_another_account(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $elsewhere = Vault::factory()->create(['name' => 'Vance Refrigeration']);
-
-        $this->actingAs($user)->delete(route('vaults.destroy', $elsewhere))->assertNotFound();
-
-        $this->assertNotSoftDeleted('vaults', ['id' => $elsewhere->id]);
     }
 
     private function publishedContactTemplate(User $user, string $name, bool $system = false): Template
@@ -693,16 +551,6 @@ class VaultControllerTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
 
         $this->actingAs($user)->get(url("/vaults/{$vault->uuid}"))->assertStatus(200);
-    }
-
-    #[Test]
-    public function it_does_not_find_the_readable_address_of_another_account(): void
-    {
-        $user = User::factory()->create();
-        $theirs = Vault::factory()->create(['name' => 'Schrute Farms']);
-
-        $this->actingAs($user)->get(url("/vaults/{$theirs->slug}"))->assertNotFound();
-        $this->actingAs($user)->get(url("/vaults/{$theirs->uuid}"))->assertNotFound();
     }
 
     #[Test]

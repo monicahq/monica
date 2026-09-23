@@ -33,6 +33,12 @@ class DestroyLifeEventTypeTest extends TestCase
         new DestroyLifeEventType(user: $user, lifeEventType: $lifeEventType)->execute();
 
         $this->assertSoftDeleted($lifeEventType);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventTypeDeletion,
+        );
     }
 
     #[Test]
@@ -61,22 +67,6 @@ class DestroyLifeEventTypeTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DestroyLifeEventType(user: $user, lifeEventType: $elsewhere)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_deletion_to_the_journal(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new DestroyLifeEventType(user: $user, lifeEventType: $this->lifeEventType($user))->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventTypeDeletion,
-        );
     }
 
     #[Test]

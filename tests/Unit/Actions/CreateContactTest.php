@@ -71,6 +71,17 @@ class CreateContactTest extends TestCase
             'is_favourite' => false,
             'life_event_count' => 0,
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactCreation
+                && $job->account->id === $user->account_id
+                && $job->user->id === $user->id
+                && $job->vault->id === $vault->id
+                && $job->isAbout($contact)
+                && $job->parameters === ['name' => 'Michael Gary Scott'],
+        );
     }
 
     #[Test]
@@ -397,34 +408,6 @@ class CreateContactTest extends TestCase
             structureVersion: $version,
             firstName: 'Dwight',
         )->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_creation(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $contact = new CreateContact(
-            user: $user,
-            vault: $vault,
-            structureVersion: $this->publishedContactVersion($user->account),
-            firstName: 'Michael',
-            lastName: 'Scott',
-        )->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactCreation
-                && $job->account->id === $user->account_id
-                && $job->user->id === $user->id
-                && $job->vault->id === $vault->id
-                && $job->isAbout($contact)
-                && $job->parameters === ['name' => 'Michael Scott'],
-        );
     }
 
     #[Test]

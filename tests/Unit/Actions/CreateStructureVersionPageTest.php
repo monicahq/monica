@@ -46,6 +46,14 @@ class CreateStructureVersionPageTest extends TestCase
             'label_translation_key' => null,
             'position' => 2,
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::TemplatePageCreation
+                && $job->account->id === $user->account_id
+                && $job->parameters['label'] === 'Health',
+        );
     }
 
     #[Test]
@@ -135,24 +143,5 @@ class CreateStructureVersionPageTest extends TestCase
         $this->expectException(PublishedVersionIsFrozen::class);
 
         new CreateStructureVersionPage(user: $user, structureVersion: $structureVersion, label: 'Health')->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_page_being_added(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $structureVersion = StructureVersion::factory()->create(['account_id' => $user->account_id]);
-
-        new CreateStructureVersionPage(user: $user, structureVersion: $structureVersion, label: 'Health')->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::TemplatePageCreation
-                && $job->account->id === $user->account_id
-                && $job->parameters['label'] === 'Health',
-        );
     }
 }

@@ -44,19 +44,6 @@ class StructureOwnershipTest extends TestCase
     }
 
     #[Test]
-    public function a_structure_names_the_owner_it_belongs_to(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = new CreateTemplate(user: $user, name: 'Contact')->execute();
-        $lifeEventType = $this->lifeEventType($user);
-
-        $this->assertTrue($template->structure->owner->is($template));
-        $this->assertTrue($lifeEventType->structure->owner->is($lifeEventType));
-    }
-
-    #[Test]
     public function both_kinds_publish_through_the_same_action(): void
     {
         Queue::fake();

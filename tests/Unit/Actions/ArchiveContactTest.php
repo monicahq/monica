@@ -27,12 +27,29 @@ class ArchiveContactTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'first_name' => 'Roy',
+            'last_name' => 'Anderson',
+        ]);
 
-        $contact = new ArchiveContact(user: $user, contact: $contact)->execute();
+        $archived = new ArchiveContact(user: $user, contact: $contact)->execute();
 
-        $this->assertTrue($contact->is_archived);
+        $this->assertTrue($archived->is_archived);
         $this->assertDatabaseHas('contacts', ['id' => $contact->id, 'is_archived' => true]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactArchived
+                && $job->account->id === $user->account_id
+                && $job->user->id === $user->id
+                && $job->vault->id === $vault->id
+                && $job->isAbout($contact)
+                && $job->parameters === ['name' => 'Roy Anderson'],
+        );
     }
 
     #[Test]
@@ -60,34 +77,6 @@ class ArchiveContactTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new ArchiveContact(user: $user, contact: $contact)->execute();
-    }
-
-    #[Test]
-    public function it_logs_the_archiving(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create([
-            'account_id' => $user->account_id,
-            'vault_id' => $vault->id,
-            'first_name' => 'Roy',
-            'last_name' => 'Anderson',
-        ]);
-
-        new ArchiveContact(user: $user, contact: $contact)->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactArchived
-                && $job->account->id === $user->account_id
-                && $job->user->id === $user->id
-                && $job->vault->id === $vault->id
-                && $job->isAbout($contact)
-                && $job->parameters === ['name' => 'Roy Anderson'],
-        );
     }
 
     #[Test]

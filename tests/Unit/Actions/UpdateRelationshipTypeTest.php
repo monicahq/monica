@@ -52,6 +52,8 @@ class UpdateRelationshipTypeTest extends TestCase
             'role_a' => 'Mentor',
             'role_b' => 'Mentee',
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipTypeUpdate);
     }
 
     #[Test]
@@ -292,30 +294,5 @@ class UpdateRelationshipTypeTest extends TestCase
             isSymmetric: true,
             isActive: true,
         )->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_change_to_the_journal(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-        $type = RelationshipType::factory()->create([
-            'account_id' => $user->account_id,
-            'relationship_category_id' => $category->id,
-        ]);
-
-        new UpdateRelationshipType(
-            user: $user,
-            relationshipType: $type,
-            relationshipCategory: $category,
-            name: 'Neighbour',
-            roleA: 'Neighbour',
-            roleB: 'Neighbour',
-            isSymmetric: true,
-            isActive: true,
-        )->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipTypeUpdate);
     }
 }

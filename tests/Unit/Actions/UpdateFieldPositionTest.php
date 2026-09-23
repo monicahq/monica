@@ -29,16 +29,22 @@ class UpdateFieldPositionTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
+        $version = SectionVersion::factory()->create(['section_id' => $section->id]);
         $street = Field::factory()->create(['section_version_id' => $version->id, 'position' => 1]);
         $city = Field::factory()->create(['section_version_id' => $version->id, 'position' => 2]);
-        $country = Field::factory()->create(['section_version_id' => $version->id, 'position' => 3]);
+        $country = Field::factory()->create(['section_version_id' => $version->id, 'label' => 'Country', 'position' => 3]);
 
         new UpdateFieldPosition(user: $user, field: $country, position: 1)->execute();
 
         $this->assertEquals(1, $country->fresh()->position);
         $this->assertEquals(2, $street->fresh()->position);
         $this->assertEquals(3, $city->fresh()->position);
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::FieldPositionUpdate
+                && $job->parameters === ['label' => 'Country', 'name' => 'Address'];
+        });
     }
 
     #[Test]
@@ -110,23 +116,5 @@ class UpdateFieldPositionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateFieldPosition(user: $michael, field: $field, position: 1)->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_move_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
-        $version = SectionVersion::factory()->create(['section_id' => $section->id]);
-        $field = Field::factory()->create(['section_version_id' => $version->id, 'label' => 'Street']);
-
-        new UpdateFieldPosition(user: $user, field: $field, position: 1)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::FieldPositionUpdate
-                && $job->parameters === ['label' => 'Street', 'name' => 'Address'];
-        });
     }
 }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings;
 
-use App\Models\EntityType;
-use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -50,17 +48,6 @@ class SettingsControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_sends_whoever_wants_to_delete_their_account_to_the_confirmation(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('settings.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee(route('settings.profile.index').'#delete-your-account', escape: false);
-    }
-
-    #[Test]
     public function it_draws_what_has_not_been_built_without_offering_it(): void
     {
         $user = User::factory()->create();
@@ -74,43 +61,6 @@ class SettingsControllerTest extends TestCase
         $content = str($response->getContent())->after('</header>')->before('</main>')->toString();
 
         $this->assertStringNotContainsString('href="#"', $content);
-    }
-
-    #[Test]
-    public function it_says_whether_two_factor_authentication_is_on(): void
-    {
-        $without = User::factory()->create();
-
-        $this->actingAs($without)
-            ->get(route('settings.index'))
-            ->assertSee('Two-factor off', escape: false);
-
-        $with = User::factory()->create([
-            'two_factor_secret' => encrypt('DWIGHTSCHRUTE'),
-            'two_factor_confirmed_at' => now(),
-        ]);
-
-        $this->actingAs($with)
-            ->get(route('settings.index'))
-            ->assertSee('Two-factor on', escape: false);
-    }
-
-    #[Test]
-    public function it_counts_what_the_account_holds(): void
-    {
-        $user = User::factory()->create();
-
-        Template::factory()->count(3)->create(['account_id' => $user->account_id]);
-        EntityType::factory()->count(2)->create(['account_id' => $user->account_id]);
-
-        $other = User::factory()->create();
-        Template::factory()->create(['account_id' => $other->account_id]);
-
-        $response = $this->actingAs($user)->get(route('settings.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('3 templates', escape: false);
-        $response->assertSee('2 types', escape: false);
     }
 
     #[Test]
@@ -190,13 +140,5 @@ class SettingsControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertDontSee('Sabre', escape: false);
         $response->assertDontSee(route('vaults.show', $theirs), escape: false);
-    }
-
-    #[Test]
-    public function it_turns_a_guest_away(): void
-    {
-        $response = $this->get(route('settings.index'));
-
-        $response->assertRedirect(route('auth.login.new'));
     }
 }

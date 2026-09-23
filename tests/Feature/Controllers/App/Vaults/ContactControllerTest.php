@@ -9,7 +9,6 @@ use App\Enums\NameOrderEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
-use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\Section;
 use App\Models\SectionVersion;
@@ -93,7 +92,7 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Michael', 'Scott');
         $this->contact($vault, 'Dwight', 'Schrute', ['is_archived' => true]);
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'archived']))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'archived']))
             ->assertSee('Dwight Schrute')
             ->assertDontSee('Michael Scott')
             ->assertSee('1 of 1 shown.');
@@ -108,7 +107,7 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Michael', 'Scott', ['is_favourite' => true]);
         $this->contact($vault, 'Dwight', 'Schrute');
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'favourites']))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'favourites']))
             ->assertSee('Michael Scott')
             ->assertDontSee('Dwight Schrute');
     }
@@ -137,7 +136,7 @@ class ContactControllerTest extends TestCase
         $this->contact($vault, 'Michael', 'Scott');
         $this->contact($vault, 'Bob', 'Vance', ['is_partial' => true]);
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'filter' => 'names-only']))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'names-only']))
             ->assertStatus(200)
             ->assertSee('Bob Vance')
             ->assertDontSee('Michael Scott');
@@ -242,19 +241,6 @@ class ContactControllerTest extends TestCase
                 'sort' => 'name',
                 'direction' => 'asc',
             ]));
-    }
-
-    #[Test]
-    public function it_records_nothing_for_a_contact_list_in_another_account(): void
-    {
-        $user = User::factory()->create();
-        $somebodyElse = User::factory()->create();
-        $theirVault = $this->vaultReadyForContacts($somebodyElse);
-
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $theirVault, 'filter' => 'archived']))
-            ->assertStatus(404);
-
-        $this->assertNull($user->refresh()->contact_list_grouping);
     }
 
     #[Test]
@@ -387,25 +373,6 @@ class ContactControllerTest extends TestCase
             mb_strpos((string) $descending, 'Dwight Schrute'),
             mb_strpos((string) $descending, 'Michael Scott'),
         );
-    }
-
-    #[Test]
-    public function it_draws_the_letters_only_over_a_list_that_is_in_name_order(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->contact($vault, 'Michael', 'Scott');
-
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all']))
-            ->assertSee('>S</h2>', escape: false);
-
-        $content = str($this->actingAs($user)
-            ->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'sort' => 'added', 'direction' => 'desc']))
-            ->assertSee('Michael Scott')
-            ->getContent())->after('</header>')->before('</main>')->toString();
-
-        $this->assertStringNotContainsString('</h2>', $content);
     }
 
     #[Test]
@@ -662,45 +629,6 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_the_template_only_when_there_is_more_than_one(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->actingAs($user)->get(route('contacts.new', $vault))
-            ->assertDontSee('name="structure_version_id"', false);
-
-        $this->publishedContactTemplate($user, 'Work contact');
-
-        $this->actingAs($user)->get(route('contacts.new', $vault))
-            ->assertSee('name="structure_version_id"', false)
-            ->assertSee('Work contact');
-    }
-
-    #[Test]
-    public function it_says_nothing_about_itself_while_it_can_do_its_job(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user, 'Standard contact');
-
-        $this->actingAs($user)->get(route('contacts.new', $vault))
-            ->assertStatus(200)
-            ->assertDontSee('Standard contact')
-            ->assertDontSee('no template for new contacts to start from');
-    }
-
-    #[Test]
-    public function it_says_so_when_the_vault_has_nothing_to_start_a_contact_from(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('contacts.new', $vault))
-            ->assertStatus(200)
-            ->assertSee('This vault has no template for new contacts to start from.');
-    }
-
-    #[Test]
     public function it_goes_back_to_the_empty_form_when_another_one_is_coming(): void
     {
         Queue::fake();
@@ -909,17 +837,6 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_find_the_vault_of_another_account(): void
-    {
-        $user = User::factory()->create();
-        $elsewhere = Vault::factory()->create();
-
-        $this->actingAs($user)->get(route('contacts.new', $elsewhere))->assertNotFound();
-        $this->actingAs($user)->post(route('contacts.create', $elsewhere), ['first_name' => 'Michael'])
-            ->assertNotFound();
-    }
-
-    #[Test]
     public function it_offers_one_way_in_to_the_things_the_template_has_no_say_over(): void
     {
         $user = User::factory()->create();
@@ -985,22 +902,6 @@ class ContactControllerTest extends TestCase
             ->assertSee('Scott', false)
             ->assertSee('Delete contact')
             ->assertSee(route('contacts.destroy', ['vault' => $vault, 'contact' => $michael]), false);
-    }
-
-    #[Test]
-    public function the_record_draws_the_picture_of_the_contact(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $file = File::factory()->image()->create([
-            'account_id' => $user->account_id,
-            'vault_id' => $vault->id,
-        ]);
-        $pam = $this->contact($vault, 'Pam', 'Beesly', ['avatar_file_id' => $file->id]);
-
-        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $pam]))
-            ->assertStatus(200)
-            ->assertSee(route('files.show', ['vault' => $vault, 'file' => $file]), false);
     }
 
     #[Test]
@@ -1084,23 +985,6 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_delete_the_contact_that_represents_you(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $me = $this->contact($vault, 'Michael', 'Scott', ['is_me' => true]);
-
-        $this->actingAs($user)
-            ->delete(route('contacts.destroy', ['vault' => $vault, 'contact' => $me]))
-            ->assertRedirect(route('contacts.edit', ['vault' => $vault, 'contact' => $me]))
-            ->assertSessionHasErrors('contact');
-
-        $this->assertNotSoftDeleted($me);
-    }
-
-    #[Test]
     public function it_does_not_edit_or_delete_somebody_reached_through_the_wrong_vault(): void
     {
         Queue::fake();
@@ -1114,24 +998,6 @@ class ContactControllerTest extends TestCase
             ->assertNotFound();
 
         $this->actingAs($user)->delete(route('contacts.destroy', ['vault' => $elsewhere, 'contact' => $michael]))
-            ->assertNotFound();
-    }
-
-    #[Test]
-    public function it_does_not_edit_or_delete_somebody_in_another_account(): void
-    {
-        Queue::fake();
-
-        $stranger = User::factory()->create();
-        $theirs = $this->vaultReadyForContacts($stranger);
-        $michael = $this->contact($theirs, 'Michael', 'Scott');
-
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->get(route('contacts.edit', ['vault' => $theirs, 'contact' => $michael]))
-            ->assertNotFound();
-
-        $this->actingAs($user)->delete(route('contacts.destroy', ['vault' => $theirs, 'contact' => $michael]))
             ->assertNotFound();
     }
 
@@ -1151,83 +1017,6 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_the_sections_of_the_page_the_address_names(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $michael = $this->contact($vault, 'Michael', 'Scott');
-
-        $version = $this->versionWithAPage($user, 'Health', 'Ongoing', 'Knee');
-        $michael->update(['structure_version_id' => $version->id]);
-
-        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'health']))
-            ->assertStatus(200)
-            ->assertSee('Ongoing')
-            ->assertSee('Knee')
-            ->assertDontSee('History');
-    }
-
-    #[Test]
-    public function it_draws_no_control_until_a_block_is_opened(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $michael = $this->contact($vault, 'Michael', 'Scott');
-
-        $version = $this->versionWithAPage($user, 'Health', 'Ongoing', 'Knee');
-        $michael->update(['structure_version_id' => $version->id]);
-        $field = Field::query()->where('label', 'Knee')->firstOrFail();
-        $section = StructureVersionSection::query()->where('structure_version_id', $version->id)->sole();
-
-        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'health']))
-            ->assertStatus(200)
-            ->assertDontSee('name="fields['.$field->id.']"', false)
-            ->assertSee(route('contacts.sections.edit', [
-                'vault' => $vault,
-                'contact' => $michael,
-                'structureVersionSection' => $section,
-            ]), false);
-    }
-
-    #[Test]
-    public function it_shows_what_was_written_in_a_field(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $michael = $this->contact($vault, 'Michael', 'Scott');
-
-        $version = $this->versionWithAPage($user, 'Health', 'Ongoing', 'Knee');
-        $michael->update(['structure_version_id' => $version->id]);
-        $field = Field::query()->where('label', 'Knee')->firstOrFail();
-
-        FieldValue::factory()->create([
-            'account_id' => $michael->account_id,
-            'vault_id' => $michael->vault_id,
-            'valuable_type' => Contact::class,
-            'valuable_id' => $michael->id,
-            'field_id' => $field->id,
-            'field_key' => $field->key,
-            'value_string' => 'Twisted it skiing',
-        ]);
-
-        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'health']))
-            ->assertStatus(200)
-            ->assertSee('Twisted it skiing', false);
-    }
-
-    #[Test]
-    public function a_page_the_version_does_not_have_opens_the_overview(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $michael = $this->contact($vault, 'Michael', 'Scott');
-
-        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'schrute-farms']))
-            ->assertStatus(200)
-            ->assertSee('History');
-    }
-
-    #[Test]
     public function it_does_not_find_somebody_kept_in_another_vault(): void
     {
         $user = User::factory()->create();
@@ -1236,18 +1025,6 @@ class ContactControllerTest extends TestCase
         $michael = $this->contact($elsewhere, 'Michael', 'Scott');
 
         $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
-            ->assertNotFound();
-    }
-
-    #[Test]
-    public function it_does_not_find_somebody_in_another_account(): void
-    {
-        $user = User::factory()->create();
-        $stranger = User::factory()->create();
-        $theirs = $this->vaultReadyForContacts($stranger);
-        $michael = $this->contact($theirs, 'Michael', 'Scott');
-
-        $this->actingAs($user)->get(route('contacts.show', ['vault' => $theirs, 'contact' => $michael]))
             ->assertNotFound();
     }
 
@@ -1270,24 +1047,6 @@ class ContactControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('contacts.show', ['vault' => $elsewhere, 'contact' => $jim, 'page' => 'relationships']))
             ->assertNotFound();
-    }
-
-    #[Test]
-    public function the_record_offers_its_version_history_as_a_tab(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $michael = $this->contact($vault, 'Michael', 'Scott');
-
-        $this->actingAs($user)
-            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
-            ->assertStatus(200)
-            ->assertSee('Version history')
-            ->assertSee(route('contacts.show', [
-                'vault' => $vault,
-                'contact' => $michael,
-                'page' => 'version-history',
-            ]), false);
     }
 
     #[Test]
@@ -1377,34 +1136,6 @@ class ContactControllerTest extends TestCase
         );
     }
 
-    private function versionWithAPage(User $user, string $pageLabel, string $sectionName, string $fieldLabel): StructureVersion
-    {
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-
-        $page = StructureVersionPage::factory()->create([
-            'structure_version_id' => $version->id,
-            'account_id' => $version->account_id,
-            'key' => Str::slug($pageLabel),
-            'label' => $pageLabel,
-        ]);
-
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => $sectionName]);
-        $sectionVersion = SectionVersion::factory()->create(['section_id' => $section->id]);
-
-        Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => $fieldLabel]);
-
-        StructureVersionSection::factory()->create([
-            'structure_version_id' => $version->id,
-            'structure_version_page_id' => $page->id,
-            'section_version_id' => $sectionVersion->id,
-        ]);
-
-        $version->update(['status' => VersionStatusEnum::Published]);
-
-        return $version->refresh();
-    }
-
     private function contactOnAVersionOf(User $user, Vault $vault, int $sections, int $choiceFields = 0): Contact
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);
@@ -1491,7 +1222,7 @@ class ContactControllerTest extends TestCase
     {
         $request = Request::create($path, 'GET');
 
-        foreach (Route::getRoutes() as $route) {
+        foreach (Route::getRoutes()->getRoutes() as $route) {
             if ($route->matches($request)) {
                 return $route->getName();
             }
@@ -1500,7 +1231,6 @@ class ContactControllerTest extends TestCase
         return null;
     }
 
-    /** @param  array<string, mixed>  $attributes */
     #[Test]
     public function it_offers_the_star_to_a_contact_who_is_not_a_favourite(): void
     {
@@ -1537,6 +1267,7 @@ class ContactControllerTest extends TestCase
             ->assertDontSee('Add Michael Scott to favourites');
     }
 
+    /** @param  array<string, mixed>  $attributes */
     private function contact(Vault $vault, string $firstName, string $lastName, array $attributes = []): Contact
     {
         return Contact::factory()->create([
@@ -1575,48 +1306,6 @@ class ContactControllerTest extends TestCase
         $template->structure->update(['published_version_id' => $version->id]);
 
         return $template;
-    }
-
-    #[Test]
-    public function it_finds_a_name_typed_without_its_accent(): void
-    {
-        $user = User::factory()->create(['locale' => 'fr_FR']);
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->contact($vault, 'Dwight', 'Élodie');
-        $this->contact($vault, 'Michael', 'Scott');
-
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'query' => 'elodie']))
-            ->assertStatus(200)
-            ->assertSee('Dwight Élodie')
-            ->assertDontSee('Michael Scott');
-    }
-
-    #[Test]
-    public function it_says_so_when_a_search_matches_nobody(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->contact($vault, 'Michael', 'Scott');
-
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'query' => 'Bob Vance of Vance Refrigeration']))
-            ->assertStatus(200)
-            ->assertSee('Nothing matches')
-            ->assertDontSee('Michael Scott');
-    }
-
-    #[Test]
-    public function it_files_a_name_under_the_letter_the_readers_language_files_it_under(): void
-    {
-        $user = User::factory()->create(['locale' => 'fr_FR']);
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->contact($vault, 'Dwight', 'Élodie');
-
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all']))
-            ->assertStatus(200)
-            ->assertSee('Dwight Élodie');
     }
 
     #[Test]
@@ -1704,17 +1393,6 @@ class ContactControllerTest extends TestCase
 
         $this->actingAs($user)->get(url("/vaults/{$elsewhere->slug}/contacts/{$contact->slug}"))->assertNotFound();
         $this->actingAs($user)->get(url("/vaults/{$elsewhere->slug}/contacts/{$contact->uuid}"))->assertNotFound();
-    }
-
-    #[Test]
-    public function it_does_not_find_the_readable_address_of_another_account(): void
-    {
-        $user = User::factory()->create();
-        $theirs = Contact::factory()->create(['first_name' => 'Dwight', 'last_name' => 'Schrute']);
-
-        $this->actingAs($user)
-            ->get(url("/vaults/{$theirs->vault->slug}/contacts/{$theirs->slug}"))
-            ->assertNotFound();
     }
 
     #[Test]

@@ -16,19 +16,6 @@ class AccountLifetimeAccessControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_is_closed_to_somebody_who_does_not_run_the_instance(): void
-    {
-        $jim = User::factory()->create();
-        $todd = User::factory()->create();
-
-        $this->actingAs($jim)
-            ->post(route('admin.accounts.lifetimeAccess.create', ['account' => $todd->account_id]))
-            ->assertNotFound();
-
-        $this->assertFalse($todd->account->refresh()->hasFullAccess());
-    }
-
-    #[Test]
     public function it_grants_lifetime_access_straight_away(): void
     {
         $todd = User::factory()->create();

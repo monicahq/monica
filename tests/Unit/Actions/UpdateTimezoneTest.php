@@ -10,7 +10,6 @@ use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -39,6 +38,15 @@ class UpdateTimezoneTest extends TestCase
             'id' => $user->id,
             'timezone' => 'Europe/Lisbon',
         ]);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserTimezoneUpdate
+                && $job->account->id === $user->account_id
+                && $job->user->id === $user->id
+                && $job->parameters === ['name' => 'Europe/Lisbon'],
+        );
     }
 
     #[Test]
@@ -67,28 +75,5 @@ class UpdateTimezoneTest extends TestCase
             'date_format' => 'Y-m-d',
             'number_format' => 'space_comma',
         ]);
-    }
-
-    #[Test]
-    public function it_logs_the_change_with_the_zone_it_settled_on(): void
-    {
-        Queue::fake();
-
-        $account = Account::factory()->create();
-        $user = User::factory()->create(['account_id' => $account->id]);
-
-        new UpdateTimezone(
-            user: $user,
-            timezone: 'Pacific/Auckland',
-        )->execute();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserTimezoneUpdate
-                && $job->account->id === $account->id
-                && $job->user->id === $user->id
-                && $job->parameters === ['name' => 'Pacific/Auckland'],
-        );
     }
 }

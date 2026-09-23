@@ -31,6 +31,10 @@ class CreateDefaultLifeEventCategoriesTest extends TestCase
         $this->assertCount(8, $categories);
         $this->assertInstanceOf(LifeEventCategory::class, $categories[0]);
         $this->assertEquals(8, LifeEventCategory::query()->where('account_id', $user->account_id)->count());
+
+        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
+            return $job->action === UserActionEnum::LifeEventCategoriesSeeded;
+        });
     }
 
     #[Test]
@@ -90,19 +94,6 @@ class CreateDefaultLifeEventCategoriesTest extends TestCase
         $this->assertEquals(8, LifeEventCategory::query()->where('account_id', $dwight->account_id)->count());
     }
 
-    #[Test]
-    public function it_writes_the_change_to_the_logs(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new CreateDefaultLifeEventCategories(user: $user)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
-            return $job->action === UserActionEnum::LifeEventCategoriesSeeded;
-        });
-    }
     #[Test]
     public function it_writes_nothing_when_the_account_already_has_them(): void
     {

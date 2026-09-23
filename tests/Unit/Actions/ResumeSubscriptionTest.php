@@ -43,6 +43,9 @@ class ResumeSubscriptionTest extends TestCase
         $this->assertTrue($resumed->is($subscription));
         $this->assertNull($resumed->fresh()->ends_at);
         $this->assertSame('false', $this->stripe->lastParams('POST subscriptions/*')['cancel_at_period_end']);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::SubscriptionResumed
+            && $job->isAbout($subscription));
     }
 
     #[Test]
@@ -91,17 +94,5 @@ class ResumeSubscriptionTest extends TestCase
         } finally {
             $this->assertNotNull($subscription->fresh()->ends_at);
         }
-    }
-
-    #[Test]
-    public function it_writes_the_change_of_mind_into_the_account_journal(): void
-    {
-        $michael = User::factory()->create();
-        $subscription = $this->subscribeAccount($michael->account, 'price_monthly', 'active', now()->addWeek());
-
-        new ResumeSubscription(user: $michael)->execute();
-
-        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::SubscriptionResumed
-            && $job->isAbout($subscription));
     }
 }
