@@ -99,7 +99,7 @@ export default (projection) => ({
             return this.copy.ready;
         }
 
-        return this.hasType ? this.copy.needOther : this.copy.needType;
+        return this.hasType ? this.copy.needOther : '';
     },
 
     sentence(one, two, role) {

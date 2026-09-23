@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
-use App\Enums\ContactGroupingEnum;
 use App\Enums\RelationshipStatusEnum;
 use App\Models\Contact;
 use App\Models\Relationship;
@@ -104,36 +103,6 @@ class RelationshipsBlock
     public function addRelationshipUrl(): string
     {
         return route('contacts.relationships.new', ['vault' => $this->vault, 'contact' => $this->contact]);
-    }
-
-    /**
-     * How many of the people linked here are a name and nothing else.
-     */
-    public function namesWaiting(): int
-    {
-        return once(fn (): int => $this->relationships()
-            ->filter(fn (Relationship $relationship): bool => $this->other($relationship)->is_partial)
-            ->count());
-    }
-
-    public function namesWaitingLine(): string
-    {
-        if ($this->namesWaiting() === 0) {
-            return '';
-        }
-
-        return trans_choice(
-            '{1}One name is waiting for a record|:count names are waiting for a record',
-            $this->namesWaiting(),
-        );
-    }
-
-    public function namesWaitingUrl(): string
-    {
-        return route('contacts.index', [
-            'vault' => $this->vault,
-            'filter' => ContactGroupingEnum::NamesOnly->value,
-        ]);
     }
 
     private function choices(): RelationshipTypeChoices

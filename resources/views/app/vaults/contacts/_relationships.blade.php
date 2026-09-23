@@ -128,18 +128,6 @@
             </x-panel>
           </section>
         @endforeach
-
-        @if ($relationships->namesWaiting() > 0)
-          <x-notice tone="quiet" :title="$relationships->namesWaitingLine()">
-            {{ __('A name is enough to record a relationship. Give one a record when you have something to write about them.') }}
-
-            <x-slot:action>
-              <x-button.secondary :href="$relationships->namesWaitingUrl()" data-turbo="true" size="small">
-                {{ __('Review names') }}
-              </x-button.secondary>
-            </x-slot:action>
-          </x-notice>
-        @endif
       </div>
 
       <aside class="min-w-0 xl:sticky xl:top-6">

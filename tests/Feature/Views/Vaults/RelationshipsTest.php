@@ -83,32 +83,6 @@ class RelationshipsTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_the_way_to_the_names_waiting_for_a_record(): void
-    {
-        $ruth = $this->personIn('Ruth', 'Geller');
-        $ruth->update(['is_partial' => true]);
-        $this->parentage($this->judy, $ruth);
-
-        $link = route('contacts.index', ['vault' => $this->vault, 'filter' => 'names-only']);
-
-        $this->tab()
-            ->assertSee(__('Review names'))
-            ->assertSee($link);
-
-        $this->actingAs($this->user)->get($link)
-            ->assertStatus(200)
-            ->assertSee('Ruth Geller');
-    }
-
-    #[Test]
-    public function it_says_nothing_about_names_waiting_when_everybody_has_a_record(): void
-    {
-        $this->parentage($this->judy, $this->personIn('Ross', 'Geller'));
-
-        $this->tab()->assertDontSee(__('Review names'));
-    }
-
-    #[Test]
     public function the_manage_chip_says_whether_it_is_pressed(): void
     {
         $this->parentage($this->judy, $this->personIn('Ross', 'Geller'));
@@ -170,13 +144,57 @@ class RelationshipsTest extends TestCase
             ]))
             ->assertStatus(200)
             ->assertSee(__('Edit this relationship'))
-            ->assertSee(__('Which way round'))
-            ->assertSee(__('Is it still going'))
+            ->assertSee(__('Relationship'))
+            ->assertSee('Judy Geller is Ross Geller’s parent.')
+            ->assertSee(__('This relationship has ended'))
             ->assertSee(__('Started on'))
             ->assertSee(__('Ended on'))
-            ->assertSee('name="status"', escape: false)
+            ->assertDontSee(__('Create a contact record for this person'))
+            ->assertSee('name="relationship"', escape: false)
+            ->assertSee('name="has_ended"', escape: false)
             ->assertSee('name="started_on"', escape: false)
             ->assertSee('name="ended_on"', escape: false);
+    }
+
+    #[Test]
+    public function the_form_renames_a_partial_contact_and_says_why(): void
+    {
+        $ross = $this->personIn('Ross', 'Geller');
+        $ross->update(['is_partial' => true]);
+        $relationship = $this->parentage($this->judy, $ross);
+
+        $this->actingAs($this->user)
+            ->get(route('contacts.relationships.edit', [
+                'vault' => $this->vault,
+                'contact' => $this->judy,
+                'relationship' => $relationship,
+            ]))
+            ->assertStatus(200)
+            ->assertSee(__(':name has no contact record, so their name is changed here.', ['name' => 'Ross']))
+            ->assertSee('aria-describedby="first_name-help"', escape: false)
+            ->assertSee('name="mode" value="known"', escape: false)
+            ->assertSee(__('Create a contact record for this person'));
+    }
+
+    #[Test]
+    public function the_form_offers_to_name_a_nameless_contact(): void
+    {
+        $ross = $this->personIn('Ross', 'Geller');
+        $ross->update(['is_partial' => true, 'first_name' => null, 'last_name' => null]);
+        $relationship = $this->parentage($this->judy, $ross);
+
+        $this->actingAs($this->user)
+            ->get(route('contacts.relationships.edit', [
+                'vault' => $this->vault,
+                'contact' => $this->judy,
+                'relationship' => $relationship,
+            ]))
+            ->assertStatus(200)
+            ->assertSee(__('I do not know their name'))
+            ->assertSee(__('I know their name now'))
+            ->assertSee(__('Create a contact record for this person'))
+            ->assertSee('name="mode"', escape: false)
+            ->assertDontSee('name="mode" value="known"', escape: false);
     }
 
     private function tab(): TestResponse

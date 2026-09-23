@@ -91,6 +91,7 @@ class ContactRelationshipController extends Controller
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
         abort_unless($relationship->vault_id === $vault->id, 404);
+        abort_unless($relationship->involves($contact), 404);
 
         return view('app.vaults.contacts.relationships.edit', [
             'viewModel' => new RelationshipEditViewModel(
@@ -106,40 +107,46 @@ class ContactRelationshipController extends Controller
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
         abort_unless($relationship->vault_id === $vault->id, 404);
+        abort_unless($relationship->involves($contact), 404);
 
         $validated = $request->validate([
-            'relationship_type_id' => [
-                'required',
-                'integer',
-                Rule::exists('relationship_types', 'id')->where('account_id', $request->user()->account_id),
-            ],
-            'status' => ['required', 'string', Rule::in(RelationshipStatusEnum::values())],
+            'relationship' => ['required', 'string', 'regex:/^\d+-[ab]$/'],
+            'has_ended' => ['nullable', 'boolean'],
             'started_on' => ['nullable', 'date'],
             'ended_on' => ['nullable', 'date'],
-            'swapped' => ['nullable', 'boolean'],
+            'mode' => ['nullable', 'string', Rule::in(['unknown', 'known'])],
+            'first_name' => ['required_if:mode,known', 'nullable', 'string', 'max:255'],
+            'last_name' => ['nullable', 'string', 'max:255'],
+            'creates_record' => ['nullable', 'boolean'],
         ]);
+
+        [$typeId, $side] = explode('-', $validated['relationship']);
 
         $relationshipType = RelationshipType::query()
             ->where('account_id', $request->user()->account_id)
-            ->findOrFail($validated['relationship_type_id']);
+            ->findOrFail((int) $typeId);
+
+        $renames = ($validated['mode'] ?? null) === 'known';
 
         try {
             new UpdateRelationship(
                 user: $request->user(),
                 vault: $vault,
+                contact: $contact,
                 relationship: $relationship,
                 relationshipType: $relationshipType,
-                status: RelationshipStatusEnum::from($validated['status']),
-                startedOn: $validated['started_on'] === null ? null : CarbonImmutable::parse($validated['started_on']),
-                endedOn: $validated['ended_on'] === null ? null : CarbonImmutable::parse($validated['ended_on']),
-                swapped: $request->boolean('swapped'),
+                status: $request->boolean('has_ended') ? RelationshipStatusEnum::Ended : RelationshipStatusEnum::Current,
+                startedOn: ($validated['started_on'] ?? null) === null ? null : CarbonImmutable::parse($validated['started_on']),
+                endedOn: ($validated['ended_on'] ?? null) === null ? null : CarbonImmutable::parse($validated['ended_on']),
+                contactHoldsRoleA: $side === 'a',
+                otherFirstName: $renames ? $validated['first_name'] : null,
+                otherLastName: $renames ? ($validated['last_name'] ?? null) : null,
+                createsRecord: $request->boolean('creates_record'),
             )->execute();
-        } catch (RelationshipTypeIsNotAvailable $e) {
-            return back()->withInput()->withErrors(['relationship_type_id' => $e->getMessage()]);
+        } catch (RelationshipTypeIsNotAvailable|RelationshipWouldLoopParentage $e) {
+            return back()->withInput()->withErrors(['relationship' => $e->getMessage()]);
         } catch (RelationshipDatesAreOutOfOrder $e) {
             return back()->withInput()->withErrors(['ended_on' => $e->getMessage()]);
-        } catch (RelationshipWouldLoopParentage $e) {
-            return back()->withInput()->withErrors(['relationship_type_id' => $e->getMessage()]);
         }
 
         return $this->backToTheTab($vault, $contact, __('The relationship is changed.'));

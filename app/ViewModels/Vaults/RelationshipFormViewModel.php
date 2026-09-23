@@ -45,11 +45,6 @@ class RelationshipFormViewModel
         return __('Say how somebody is connected to :name.', ['name' => $this->contact->name]);
     }
 
-    public function typeHelp(): string
-    {
-        return __('Both sides are recorded at once, so you never add the reverse by hand.');
-    }
-
     public function action(): string
     {
         return route('contacts.relationships.create', ['vault' => $this->vault, 'contact' => $this->contact]);
@@ -151,7 +146,7 @@ class RelationshipFormViewModel
     /**
      * Everything the form needs in one payload, so no translated string is written into a script.
      *
-     * @return array{types: array<int, array{roleA: string, roleB: string, isSymmetric: bool}>, contactName: string, searchUrl: string, query: string, typeId: string, mode: string, firstName: string, lastName: string, otherContactId: string, otherContactName: string, swapped: bool, copy: array{nameless: string, sentence: string, inverse: string, ready: string, needType: string, needOther: string}}
+     * @return array{types: array<int, array{roleA: string, roleB: string, isSymmetric: bool}>, contactName: string, searchUrl: string, query: string, typeId: string, mode: string, firstName: string, lastName: string, otherContactId: string, otherContactName: string, swapped: bool, copy: array{nameless: string, sentence: string, inverse: string, ready: string, needOther: string}}
      */
     public function projection(): array
     {
@@ -174,7 +169,6 @@ class RelationshipFormViewModel
                 'sentence' => __(':one is :two’s :role.'),
                 'inverse' => __('On the other side: :sentence'),
                 'ready' => __('Saved on both records at once.'),
-                'needType' => __('Choose a relationship type to carry on.'),
                 'needOther' => __('Say who the other side is.'),
             ],
         ];

@@ -184,35 +184,6 @@ class RelationshipsBlockTest extends TestCase
     }
 
     #[Test]
-    public function it_counts_how_many_linked_people_are_waiting_for_a_record(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $judy = $this->contactOn($vault, 'Judy', 'Geller');
-        $type = $this->typeOf($user, RelationshipTypeEnum::ParentChild, $this->categoryOf($user, 'Family', 1));
-
-        $ruth = $this->contactOn($vault, 'Ruth', 'Geller');
-        $ruth->update(['is_partial' => true]);
-
-        $this->link($vault, $judy, $ruth, $type);
-        $this->link($vault, $judy, $this->contactOn($vault, 'Ross', 'Geller'), $type);
-
-        $this->assertSame(1, new RelationshipsBlock(vault: $vault, contact: $judy)->namesWaiting());
-    }
-
-    #[Test]
-    public function it_counts_nobody_waiting_when_everybody_has_a_record(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $judy = $this->contactOn($vault, 'Judy', 'Geller');
-
-        $this->link($vault, $judy, $this->contactOn($vault, 'Ross', 'Geller'), $this->typeOf($user, RelationshipTypeEnum::ParentChild, $this->categoryOf($user, 'Family', 1)));
-
-        $this->assertSame(0, new RelationshipsBlock(vault: $vault, contact: $judy)->namesWaiting());
-    }
-
-    #[Test]
     public function it_answers_twice_for_a_pair_linked_under_two_natures(): void
     {
         $user = User::factory()->create();

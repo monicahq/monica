@@ -9,9 +9,16 @@ use App\Models\Contact;
 use App\Models\Relationship;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Support\Str;
 
 class RelationshipEditViewModel
 {
+    public const string OTHER_HAS_A_RECORD = 'record';
+
+    public const string OTHER_IS_NAMED = 'named';
+
+    public const string OTHER_IS_NAMELESS = 'nameless';
+
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
@@ -42,8 +49,8 @@ class RelationshipEditViewModel
     public function description(): string
     {
         return __('Between :one and :two.', [
-            'one' => $this->relationship->contactA->name,
-            'two' => $this->relationship->contactB->name,
+            'one' => $this->contact->name,
+            'two' => $this->otherName($this->otherRole()),
         ]);
     }
 
@@ -70,67 +77,130 @@ class RelationshipEditViewModel
         ]);
     }
 
-    /** @return array<int, array{key: string|null, label: string, types: array<int, array{value: int, label: string, name: string, roleA: string, roleB: string, isSymmetric: bool}>}> */
-    public function typeGroups(): array
+    /**
+     * Every nature on offer, each written as the sentences it can produce between the two people.
+     * The value names the nature and the role the page's contact holds, `a` carrying `role_a`.
+     *
+     * @return array<int, array{label: string, options: array<int, array{value: string, label: string, otherRole: string}>}>
+     */
+    public function sentenceGroups(): array
     {
-        return $this->choices()->groups();
+        return collect($this->choices()->groups())
+            ->map(fn (array $group): array => [
+                'label' => $group['label'],
+                'options' => collect($group['types'])
+                    ->flatMap(function (array $type): array {
+                        $options = [[
+                            'value' => "{$type['value']}-a",
+                            'label' => $this->sentence(
+                                one: $this->contact->name,
+                                two: $this->otherName($type['roleB']),
+                                role: $type['roleA'],
+                            ),
+                            'otherRole' => $type['roleB'],
+                        ]];
+
+                        if ($type['isSymmetric']) {
+                            return $options;
+                        }
+
+                        $options[] = [
+                            'value' => "{$type['value']}-b",
+                            'label' => $this->sentence(
+                                one: Str::ucfirst($this->otherName($type['roleA'])),
+                                two: $this->contact->name,
+                                role: $type['roleA'],
+                            ),
+                            'otherRole' => $type['roleA'],
+                        ];
+
+                        return $options;
+                    })
+                    ->all(),
+            ])
+            ->all();
     }
 
-    /** @return array<int, array{roleA: string, roleB: string, isSymmetric: bool}> */
-    public function typeMap(): array
+    public function otherSide(): Contact
     {
-        return $this->choices()->map();
+        return $this->relationship->contact_a_id === $this->contact->id
+            ? $this->relationship->contactB
+            : $this->relationship->contactA;
+    }
+
+    public function otherState(): string
+    {
+        $other = $this->otherSide();
+
+        if (! $other->is_partial) {
+            return self::OTHER_HAS_A_RECORD;
+        }
+
+        return $other->isNameless() ? self::OTHER_IS_NAMELESS : self::OTHER_IS_NAMED;
     }
 
     /**
-     * Which way round the link reads, named after the two people rather than after A and B.
-     *
-     * @return array<int, array{value: string, label: string}>
+     * The role the other person holds in the sentence chosen when the screen opens.
      */
-    public function directions(): array
+    public function otherRole(): string
     {
         $type = $this->relationship->relationshipType;
 
-        if ($type->is_symmetric) {
-            return [];
-        }
-
-        return [
-            ['value' => '0', 'label' => __(':name is the :role.', [
-                'name' => $this->relationship->contactA->name,
-                'role' => $type->role_a,
-            ])],
-            ['value' => '1', 'label' => __(':name is the :role.', [
-                'name' => $this->relationship->contactB->name,
-                'role' => $type->role_a,
-            ])],
-        ];
+        return $this->relationship->contact_a_id === $this->contact->id ? $type->role_b : $type->role_a;
     }
 
-    /** @return array<int, array{value: string, label: string}> */
-    public function statuses(): array
+    public function renameLine(): string
     {
-        return [
-            ['value' => RelationshipStatusEnum::Current->value, 'label' => __('Still going')],
-            ['value' => RelationshipStatusEnum::Ended->value, 'label' => __('Over')],
-        ];
+        return __(':name has no contact record, so their name is changed here.', [
+            'name' => $this->otherSide()->first_name,
+        ]);
     }
 
-    public function isSymmetric(): bool
-    {
-        return $this->relationship->relationshipType->is_symmetric;
-    }
-
-    /** @return array{typeId: string, status: string, startedOn: string, endedOn: string, swapped: string} */
+    /** @return array{relationship: string, hasEnded: bool, startedOn: string, endedOn: string, mode: string, firstName: string, lastName: string, createsRecord: bool} */
     public function values(): array
     {
+        $other = $this->otherSide();
+
         return [
-            'typeId' => (string) old('relationship_type_id', (string) $this->relationship->relationship_type_id),
-            'status' => (string) old('status', $this->relationship->status->value),
+            'relationship' => (string) old('relationship', $this->storedSentence()),
+            'hasEnded' => session()->hasOldInput()
+                ? (bool) old('has_ended')
+                : $this->relationship->status === RelationshipStatusEnum::Ended,
             'startedOn' => (string) old('started_on', $this->relationship->started_on?->format('Y-m-d') ?? ''),
             'endedOn' => (string) old('ended_on', $this->relationship->ended_on?->format('Y-m-d') ?? ''),
-            'swapped' => (string) old('swapped', '0'),
+            'mode' => (string) old('mode', $this->otherState() === self::OTHER_IS_NAMED ? 'known' : 'unknown'),
+            'firstName' => (string) old('first_name', $other->first_name ?? ''),
+            'lastName' => (string) old('last_name', $other->last_name ?? ''),
+            'createsRecord' => (bool) old('creates_record'),
         ];
+    }
+
+    private function storedSentence(): string
+    {
+        $type = $this->relationship->relationshipType;
+        $side = $type->is_symmetric || $this->relationship->contact_a_id === $this->contact->id ? 'a' : 'b';
+
+        return "{$type->id}-{$side}";
+    }
+
+    private function sentence(string $one, string $two, string $role): string
+    {
+        return __(':one is :two’s :role.', [
+            'one' => $one,
+            'two' => $two,
+            'role' => mb_strtolower($role),
+        ]);
+    }
+
+    private function otherName(string $role): string
+    {
+        $other = $this->otherSide();
+
+        if ($other->isNameless()) {
+            return __('an unnamed :role', ['role' => mb_strtolower($role)]);
+        }
+
+        return $other->name;
     }
 
     /**

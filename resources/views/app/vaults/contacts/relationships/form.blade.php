@@ -31,7 +31,6 @@
               x-model="typeId"
               x-on:change="chooseType()"
               :label="__('Relationship type')"
-              :help="$viewModel->typeHelp()"
               :error="$errors->get('relationship_type_id')"
               required
             >

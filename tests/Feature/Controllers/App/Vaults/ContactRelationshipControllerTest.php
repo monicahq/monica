@@ -326,7 +326,9 @@ class ContactRelationshipControllerTest extends TestCase
             ]))
             ->assertStatus(200)
             ->assertSee('Edit this relationship')
-            ->assertSee('Still going');
+            ->assertSee('Judy Geller is Ross Geller’s parent.')
+            ->assertSee('This relationship has ended')
+            ->assertSee('Save changes');
     }
 
     #[Test]
@@ -348,8 +350,8 @@ class ContactRelationshipControllerTest extends TestCase
                 'contact' => $contact,
                 'relationship' => $relationship,
             ]), [
-                'relationship_type_id' => $sibling->id,
-                'status' => RelationshipStatusEnum::Ended->value,
+                'relationship' => "{$sibling->id}-a",
+                'has_ended' => '1',
                 'started_on' => '1990-04-01',
                 'ended_on' => '2001-06-30',
             ])
@@ -367,7 +369,35 @@ class ContactRelationshipControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_change_without_a_status(): void
+    public function it_keeps_a_relationship_going_when_the_box_is_left_unticked(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+        $relationship->update(['status' => RelationshipStatusEnum::Ended, 'ended_on' => '2001-06-30']);
+        $contact = Contact::query()->findOrFail($relationship->contact_a_id);
+
+        $this->actingAs($user)
+            ->put(route('contacts.relationships.update', [
+                'vault' => $relationship->vault,
+                'contact' => $contact,
+                'relationship' => $relationship,
+            ]), [
+                'relationship' => "{$relationship->relationship_type_id}-a",
+                'ended_on' => '2001-06-30',
+            ])
+            ->assertSessionHas('status');
+
+        $this->assertDatabaseHas('relationships', [
+            'id' => $relationship->id,
+            'status' => RelationshipStatusEnum::Current->value,
+            'ended_on' => null,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_relationship_value_it_cannot_read(): void
     {
         $user = User::factory()->create();
         $relationship = $this->relationshipOf($user);
@@ -378,8 +408,80 @@ class ContactRelationshipControllerTest extends TestCase
                 'vault' => $relationship->vault,
                 'contact' => $contact,
                 'relationship' => $relationship,
-            ]), ['relationship_type_id' => $relationship->relationship_type_id])
-            ->assertSessionHasErrors('status');
+            ]), ['relationship' => "{$relationship->relationship_type_id}-x"])
+            ->assertSessionHasErrors('relationship');
+    }
+
+    #[Test]
+    public function it_renames_a_partial_contact_through_the_form(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+        $contact = Contact::query()->findOrFail($relationship->contact_a_id);
+        $relationship->contactB->update(['is_partial' => true, 'first_name' => null, 'last_name' => null]);
+
+        $this->actingAs($user)
+            ->put(route('contacts.relationships.update', [
+                'vault' => $relationship->vault,
+                'contact' => $contact,
+                'relationship' => $relationship,
+            ]), [
+                'relationship' => "{$relationship->relationship_type_id}-a",
+                'mode' => 'known',
+                'first_name' => 'Ben',
+                'last_name' => 'Geller',
+                'creates_record' => '1',
+            ])
+            ->assertSessionHas('status');
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $relationship->contact_b_id,
+            'first_name' => 'Ben',
+            'last_name' => 'Geller',
+            'is_partial' => false,
+        ]);
+    }
+
+    #[Test]
+    public function it_asks_for_a_first_name_when_the_name_is_said_to_be_known_now(): void
+    {
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+        $contact = Contact::query()->findOrFail($relationship->contact_a_id);
+
+        $this->actingAs($user)
+            ->put(route('contacts.relationships.update', [
+                'vault' => $relationship->vault,
+                'contact' => $contact,
+                'relationship' => $relationship,
+            ]), [
+                'relationship' => "{$relationship->relationship_type_id}-a",
+                'mode' => 'known',
+            ])
+            ->assertSessionHasErrors('first_name');
+    }
+
+    #[Test]
+    public function it_refuses_a_relationship_that_does_not_involve_the_contact(): void
+    {
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+        $stray = $this->contactOn($relationship->vault, 'Rachel', 'Green');
+        $urls = [
+            'vault' => $relationship->vault,
+            'contact' => $stray,
+            'relationship' => $relationship,
+        ];
+
+        $this->actingAs($user)
+            ->get(route('contacts.relationships.edit', $urls))
+            ->assertStatus(404);
+
+        $this->actingAs($user)
+            ->put(route('contacts.relationships.update', $urls), ['relationship' => "{$relationship->relationship_type_id}-a"])
+            ->assertStatus(404);
     }
 
     #[Test]

@@ -107,6 +107,14 @@ class Relationship extends Model
     }
 
     /**
+     * Whether the contact is on one side of this relationship or the other.
+     */
+    public function involves(Contact $contact): bool
+    {
+        return $this->contact_a_id === $contact->id || $this->contact_b_id === $contact->id;
+    }
+
+    /**
      * Get the account the relationship belongs to.
      *
      * @return BelongsTo<Account, $this>

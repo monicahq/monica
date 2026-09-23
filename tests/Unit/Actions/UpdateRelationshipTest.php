@@ -47,6 +47,7 @@ class UpdateRelationshipTest extends TestCase
         $changed = new UpdateRelationship(
             user: $user,
             vault: $vault,
+            contact: $relationship->contactA,
             relationship: $relationship,
             relationshipType: $sibling,
             status: RelationshipStatusEnum::Current,
@@ -64,30 +65,70 @@ class UpdateRelationshipTest extends TestCase
     }
 
     #[Test]
-    public function it_swaps_which_person_carries_which_role(): void
+    public function it_gives_the_contact_the_role_it_is_said_to_hold(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
         $vault = $this->vaultOf($user);
         $relationship = $this->relationshipOn($vault, $user);
-        $judy = $relationship->contact_a_id;
-        $ross = $relationship->contact_b_id;
+        $judy = $relationship->contactA;
+        $ross = $relationship->contactB;
 
         new UpdateRelationship(
             user: $user,
             vault: $vault,
+            contact: $judy,
             relationship: $relationship,
             relationshipType: $relationship->relationshipType,
             status: RelationshipStatusEnum::Current,
-            swapped: true,
+            contactHoldsRoleA: false,
         )->execute();
 
         $this->assertDatabaseHas('relationships', [
             'id' => $relationship->id,
-            'contact_a_id' => $ross,
-            'contact_b_id' => $judy,
+            'contact_a_id' => $ross->id,
+            'contact_b_id' => $judy->id,
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::RelationshipUpdate
+            && $job->parameters['name'] === 'Ross Geller'
+            && $job->parameters['other'] === 'Judy Geller');
+
+        new UpdateRelationship(
+            user: $user,
+            vault: $vault,
+            contact: $judy,
+            relationship: $relationship->refresh(),
+            relationshipType: $relationship->relationshipType,
+            status: RelationshipStatusEnum::Current,
+            contactHoldsRoleA: true,
+        )->execute();
+
+        $this->assertDatabaseHas('relationships', [
+            'id' => $relationship->id,
+            'contact_a_id' => $judy->id,
+            'contact_b_id' => $ross->id,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_contact_the_relationship_does_not_involve(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $relationship = $this->relationshipOn($vault, $user);
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new UpdateRelationship(
+            user: $user,
+            vault: $vault,
+            contact: $this->contactOn($vault, 'Rachel', 'Green'),
+            relationship: $relationship,
+            relationshipType: $relationship->relationshipType,
+            status: RelationshipStatusEnum::Current,
+        )->execute();
     }
 
     #[Test]
@@ -103,10 +144,11 @@ class UpdateRelationshipTest extends TestCase
         new UpdateRelationship(
             user: $user,
             vault: $vault,
+            contact: $relationship->contactA,
             relationship: $relationship,
             relationshipType: $this->typeOf($user, RelationshipTypeEnum::Sibling),
             status: RelationshipStatusEnum::Current,
-            swapped: true,
+            contactHoldsRoleA: false,
         )->execute();
 
         $this->assertDatabaseHas('relationships', ['id' => $relationship->id, 'contact_a_id' => $lower]);
@@ -124,9 +166,11 @@ class UpdateRelationshipTest extends TestCase
         new UpdateRelationship(
             user: $user,
             vault: $vault,
+            contact: $relationship->contactA,
             relationship: $relationship,
             relationshipType: $relationship->relationshipType,
             status: RelationshipStatusEnum::Ended,
+            endedOn: CarbonImmutable::parse('2001-06-30'),
         )->execute();
 
         $this->assertDatabaseHas('relationships', [
@@ -137,15 +181,237 @@ class UpdateRelationshipTest extends TestCase
         new UpdateRelationship(
             user: $user,
             vault: $vault,
+            contact: $relationship->contactA,
             relationship: $relationship->refresh(),
             relationshipType: $relationship->relationshipType,
             status: RelationshipStatusEnum::Current,
+            endedOn: CarbonImmutable::parse('2001-06-30'),
         )->execute();
 
         $this->assertDatabaseHas('relationships', [
             'id' => $relationship->id,
             'status' => RelationshipStatusEnum::Current->value,
         ]);
+        $this->assertNull($relationship->refresh()->ended_on);
+    }
+
+    #[Test]
+    public function it_ends_a_relationship_on_a_date_nobody_wrote_down(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $relationship = $this->relationshipOn($vault, $user);
+
+        new UpdateRelationship(
+            user: $user,
+            vault: $vault,
+            contact: $relationship->contactA,
+            relationship: $relationship,
+            relationshipType: $relationship->relationshipType,
+            status: RelationshipStatusEnum::Ended,
+        )->execute();
+
+        $this->assertDatabaseHas('relationships', [
+            'id' => $relationship->id,
+            'status' => RelationshipStatusEnum::Ended->value,
+            'ended_on' => null,
+        ]);
+    }
+
+    #[Test]
+    public function it_renames_a_partial_contact_on_the_other_side(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $relationship = $this->relationshipOn($vault, $user);
+        $relationship->contactB->update(['is_partial' => true, 'first_name' => 'Ben', 'last_name' => null]);
+
+        new UpdateRelationship(
+            user: $user,
+            vault: $vault,
+            contact: $relationship->contactA,
+            relationship: $relationship,
+            relationshipType: $relationship->relationshipType,
+            status: RelationshipStatusEnum::Current,
+            otherFirstName: 'Ben',
+            otherLastName: 'Geller',
+        )->execute();
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $relationship->contact_b_id,
+            'first_name' => 'Ben',
+            'last_name' => 'Geller',
+        ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactNameUpdate
+            && $job->parameters['name'] === 'Ben Geller');
+    }
+
+    #[Test]
+    public function it_keeps_every_other_part_of_the_name(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $relationship = $this->relationshipOn($vault, $user);
+        $relationship->contactB->update(['is_partial' => true, 'middle_name' => 'Hilda', 'nickname' => 'Benny']);
+
+        new UpdateRelationship(
+            user: $user,
+            vault: $vault,
+            contact: $relationship->contactA,
+            relationship: $relationship,
+            relationshipType: $relationship->relationshipType,
+            status: RelationshipStatusEnum::Current,
+            otherFirstName: 'Ben',
+            otherLastName: 'Geller',
+        )->execute();
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $relationship->contact_b_id,
+            'first_name' => 'Ben',
+            'middle_name' => 'Hilda',
+            'nickname' => 'Benny',
+        ]);
+    }
+
+    #[Test]
+    public function it_leaves_the_name_alone_when_none_is_given(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $relationship = $this->relationshipOn($vault, $user);
+        $relationship->contactB->update(['is_partial' => true, 'first_name' => null, 'last_name' => null]);
+
+        new UpdateRelationship(
+            user: $user,
+            vault: $vault,
+            contact: $relationship->contactA,
+            relationship: $relationship,
+            relationshipType: $relationship->relationshipType,
+            status: RelationshipStatusEnum::Current,
+        )->execute();
+
+        $this->assertTrue($relationship->contactB->refresh()->isNameless());
+        Queue::assertNotPushed(LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactNameUpdate);
+    }
+
+    #[Test]
+    public function it_gives_a_partial_contact_a_record_of_their_own(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $relationship = $this->relationshipOn($vault, $user);
+        $relationship->contactB->update(['is_partial' => true]);
+
+        new UpdateRelationship(
+            user: $user,
+            vault: $vault,
+            contact: $relationship->contactA,
+            relationship: $relationship,
+            relationshipType: $relationship->relationshipType,
+            status: RelationshipStatusEnum::Current,
+            createsRecord: true,
+        )->execute();
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $relationship->contact_b_id,
+            'is_partial' => false,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_record_for_a_contact_who_already_has_one(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $relationship = $this->relationshipOn($vault, $user);
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new UpdateRelationship(
+            user: $user,
+            vault: $vault,
+            contact: $relationship->contactA,
+            relationship: $relationship,
+            relationshipType: $relationship->relationshipType,
+            status: RelationshipStatusEnum::Current,
+            createsRecord: true,
+        )->execute();
+    }
+
+    #[Test]
+    public function it_refuses_to_rename_a_contact_with_a_record(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $relationship = $this->relationshipOn($vault, $user);
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new UpdateRelationship(
+            user: $user,
+            vault: $vault,
+            contact: $relationship->contactA,
+            relationship: $relationship,
+            relationshipType: $relationship->relationshipType,
+            status: RelationshipStatusEnum::Current,
+            otherFirstName: 'Emma',
+        )->execute();
+    }
+
+    #[Test]
+    public function it_leaves_the_name_unchanged_when_the_change_is_refused(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $parentage = $this->typeOf($user, RelationshipTypeEnum::ParentChild);
+        $judy = $this->contactOn($vault, 'Judy', 'Geller');
+        $ross = $this->contactOn($vault, 'Ross', 'Geller');
+        $judy->update(['is_partial' => true]);
+
+        Relationship::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'relationship_type_id' => $parentage->id,
+            'contact_a_id' => $judy->id,
+            'contact_b_id' => $ross->id,
+        ]);
+
+        $sibling = Relationship::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'relationship_type_id' => $this->typeOf($user, RelationshipTypeEnum::Sibling)->id,
+            'contact_a_id' => $ross->id,
+            'contact_b_id' => $judy->id,
+        ]);
+
+        try {
+            new UpdateRelationship(
+                user: $user,
+                vault: $vault,
+                contact: $ross,
+                relationship: $sibling,
+                relationshipType: $parentage,
+                status: RelationshipStatusEnum::Current,
+                otherFirstName: 'Sandra',
+            )->execute();
+
+            $this->fail('The change should have been refused.');
+        } catch (RelationshipWouldLoopParentage) {
+            $this->assertSame('Judy', $judy->refresh()->first_name);
+        }
     }
 
     #[Test]
@@ -160,6 +426,7 @@ class UpdateRelationshipTest extends TestCase
         new UpdateRelationship(
             user: $user,
             vault: $vault,
+            contact: $relationship->contactA,
             relationship: $relationship,
             relationshipType: $relationship->relationshipType,
             status: RelationshipStatusEnum::Ended,
@@ -173,6 +440,7 @@ class UpdateRelationshipTest extends TestCase
         new UpdateRelationship(
             user: $user,
             vault: $vault,
+            contact: $relationship->contactA,
             relationship: $relationship->refresh(),
             relationshipType: $relationship->relationshipType,
             status: RelationshipStatusEnum::Current,
@@ -194,6 +462,7 @@ class UpdateRelationshipTest extends TestCase
         new UpdateRelationship(
             user: $user,
             vault: $vault,
+            contact: $relationship->contactA,
             relationship: $relationship,
             relationshipType: $relationship->relationshipType,
             status: RelationshipStatusEnum::Ended,
@@ -235,6 +504,7 @@ class UpdateRelationshipTest extends TestCase
         new UpdateRelationship(
             user: $user,
             vault: $vault,
+            contact: $ross,
             relationship: $sibling,
             relationshipType: $parentage,
             status: RelationshipStatusEnum::Current,
@@ -254,6 +524,7 @@ class UpdateRelationshipTest extends TestCase
         new UpdateRelationship(
             user: $user,
             vault: $vault,
+            contact: $relationship->contactA,
             relationship: $relationship,
             relationshipType: $relationship->relationshipType->refresh(),
             status: RelationshipStatusEnum::Ended,
@@ -279,6 +550,7 @@ class UpdateRelationshipTest extends TestCase
         new UpdateRelationship(
             user: $user,
             vault: $vault,
+            contact: $relationship->contactA,
             relationship: $relationship,
             relationshipType: $sibling->refresh(),
             status: RelationshipStatusEnum::Current,
@@ -298,6 +570,7 @@ class UpdateRelationshipTest extends TestCase
         new UpdateRelationship(
             user: $user,
             vault: $vault,
+            contact: $relationship->contactA,
             relationship: $relationship,
             relationshipType: $relationship->relationshipType,
             status: RelationshipStatusEnum::Current,
@@ -327,6 +600,7 @@ class UpdateRelationshipTest extends TestCase
         new UpdateRelationship(
             user: $user,
             vault: $vault,
+            contact: $monica,
             relationship: $relationship,
             relationshipType: $relationship->relationshipType,
             status: RelationshipStatusEnum::Ended,
