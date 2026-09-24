@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Enums\LifeEventTypeEnum;
 use App\Enums\DefaultPageEnum;
 use App\Enums\FieldTypeEnum;
+use App\Enums\LifeEventTypeEnum;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
@@ -99,8 +99,8 @@ class CreateDefaultLifeEventTypes implements ShouldQueue
             'name' => null,
             'name_translation_key' => $case->label(),
             'description' => null,
-            'icon' => null,
-            'colour' => null,
+            'icon' => $case->icon(),
+            'colour' => $case->colour()->value,
             'is_system' => true,
             'is_active' => true,
             'position' => $this->positions[$key],

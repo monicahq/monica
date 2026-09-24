@@ -7,9 +7,11 @@ namespace Tests\Unit\ViewModels\Vaults;
 use App\Actions\CreateLifeEvent;
 use App\Enums\DateFormatEnum;
 use App\Enums\FieldTypeEnum;
+use App\Enums\VaultColourEnum;
 use App\Models\Contact;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
+use App\Models\Section;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactTimelineBlock;
@@ -116,6 +118,19 @@ class ContactTimelineBlockTest extends TestCase
         $lifeEvent->lifeEventType->update(['name' => 'Booze cruise', 'is_active' => false]);
 
         $this->assertEquals('Booze cruise', $this->block($user, $vault, $jim)->years()[0]['entries'][0]['title']);
+    }
+
+    #[Test]
+    public function it_marks_a_life_event_with_the_glyph_and_colour_of_its_type(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+        $this->lifeEventWith($jim, '2026-06-01', 'Dundies')->lifeEventType->update(['icon' => 'star', 'colour' => VaultColourEnum::Plum->value]);
+        $this->lifeEventWith($jim, '2026-05-01', 'Fun run')->lifeEventType->update(['icon' => null, 'colour' => null]);
+
+        $entries = $this->block($user, $vault, $jim)->years()[0]['entries'];
+
+        $this->assertSame(['star', Section::DEFAULT_ICON], array_column($entries, 'icon'));
+        $this->assertSame([VaultColourEnum::Plum->tint(), VaultColourEnum::neutralTint()], array_column($entries, 'tint'));
     }
 
     #[Test]

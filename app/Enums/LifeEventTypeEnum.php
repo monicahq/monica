@@ -107,6 +107,98 @@ enum LifeEventTypeEnum: string implements Translatable
         };
     }
 
+    public function icon(): string
+    {
+        return match ($this) {
+            self::Call => 'phone',
+            self::Message => 'mail',
+            self::Meal => 'food',
+            self::Visit => 'home',
+            self::TimeTogether => 'people',
+            self::Argument => 'relationship',
+            self::Marriage => 'heart',
+            self::Birth => 'family',
+            self::Separation => 'relationship',
+            self::Meeting => 'people',
+            self::Interview => 'profile',
+            self::NewJob => 'briefcase',
+            self::SchoolClass => 'book',
+            self::Training => 'target',
+            self::Graduation => 'graduation',
+            self::MedicalAppointment => 'calendar',
+            self::Therapy => 'journal',
+            self::Illness => 'health',
+            self::HospitalStay => 'organization',
+            self::Exercise => 'activity',
+            self::Move => 'car',
+            self::HomeImprovement => 'home',
+            self::MajorPurchase => 'coin',
+            self::HouseholdTask => 'tasks',
+            self::Restaurant => 'food',
+            self::Concert => 'music',
+            self::Cinema => 'star',
+            self::Reading => 'book',
+            self::Game => 'ball',
+            self::Hobby => 'target',
+            self::Trip => 'globe',
+            self::Holiday => 'plane',
+            self::Hike => 'activity',
+            self::Excursion => 'place',
+            self::Reflection => 'journal',
+            self::Decision => 'target',
+            self::Achievement => 'star',
+            self::Memory => 'memory',
+            self::SpiritualEvent => 'heart',
+            self::OtherLifeEvent => 'timeline',
+        };
+    }
+
+    public function colour(): VaultColourEnum
+    {
+        return match ($this) {
+            self::Call => VaultColourEnum::Blue,
+            self::Message => VaultColourEnum::Teal,
+            self::Meal => VaultColourEnum::Amber,
+            self::Visit => VaultColourEnum::Green,
+            self::TimeTogether => VaultColourEnum::Violet,
+            self::Argument => VaultColourEnum::Rust,
+            self::Marriage => VaultColourEnum::Plum,
+            self::Birth => VaultColourEnum::Amber,
+            self::Separation => VaultColourEnum::Slate,
+            self::Meeting => VaultColourEnum::Blue,
+            self::Interview => VaultColourEnum::Violet,
+            self::NewJob => VaultColourEnum::Green,
+            self::SchoolClass => VaultColourEnum::Amber,
+            self::Training => VaultColourEnum::Teal,
+            self::Graduation => VaultColourEnum::Plum,
+            self::MedicalAppointment => VaultColourEnum::Blue,
+            self::Therapy => VaultColourEnum::Teal,
+            self::Illness => VaultColourEnum::Rust,
+            self::HospitalStay => VaultColourEnum::Violet,
+            self::Exercise => VaultColourEnum::Green,
+            self::Move => VaultColourEnum::Teal,
+            self::HomeImprovement => VaultColourEnum::Amber,
+            self::MajorPurchase => VaultColourEnum::Green,
+            self::HouseholdTask => VaultColourEnum::Slate,
+            self::Restaurant => VaultColourEnum::Rust,
+            self::Concert => VaultColourEnum::Violet,
+            self::Cinema => VaultColourEnum::Plum,
+            self::Reading => VaultColourEnum::Teal,
+            self::Game => VaultColourEnum::Green,
+            self::Hobby => VaultColourEnum::Amber,
+            self::Trip => VaultColourEnum::Blue,
+            self::Holiday => VaultColourEnum::Teal,
+            self::Hike => VaultColourEnum::Green,
+            self::Excursion => VaultColourEnum::Amber,
+            self::Reflection => VaultColourEnum::Violet,
+            self::Decision => VaultColourEnum::Blue,
+            self::Achievement => VaultColourEnum::Amber,
+            self::Memory => VaultColourEnum::Plum,
+            self::SpiritualEvent => VaultColourEnum::Teal,
+            self::OtherLifeEvent => VaultColourEnum::Slate,
+        };
+    }
+
     public function category(): LifeEventCategoryEnum
     {
         return match ($this) {

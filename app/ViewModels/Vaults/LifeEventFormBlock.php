@@ -271,7 +271,7 @@ class LifeEventFormBlock
         ];
     }
 
-    /** @return array{id: int, name: string, categoryName: string, icon: string, fieldCountLabel: string, fieldsUrl: string} */
+    /** @return array{id: int, name: string, categoryName: string, icon: string, colour: ?string, fieldCountLabel: string, fieldsUrl: string} */
     private function typeRow(LifeEventType $type, LifeEventCategory $category): array
     {
         $fieldCount = $this->countFieldsOf($type);
@@ -281,6 +281,7 @@ class LifeEventFormBlock
             'name' => $type->name,
             'categoryName' => $category->name,
             'icon' => in_array($type->icon, Section::ICONS, true) ? (string) $type->icon : Section::DEFAULT_ICON,
+            'colour' => $type->colour,
             'fieldCountLabel' => $fieldCount === 0 ? __('No extra fields') : trans_choice(':count field|:count fields', $fieldCount),
             'fieldsUrl' => route('contacts.lifeEventFields.index', [
                 'vault' => $this->vault,

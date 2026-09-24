@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Enums\DateFormatEnum;
+use App\Enums\VaultColourEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\FieldValueFormatter;
 use App\Models\Contact;
@@ -32,7 +33,7 @@ class ContactTimelineBlock
         private readonly ?int $editedId = null,
     ) {}
 
-    /** @return array<int, array{year: int, countLabel: string, showsHeading: bool, entries: array<int, array{id: int, icon: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string, deleteLine: string}>}> */
+    /** @return array<int, array{year: int, countLabel: string, showsHeading: bool, entries: array<int, array{id: int, icon: string, tint: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string, deleteLine: string}>}> */
     public function years(): array
     {
         return once(function (): array {
@@ -153,7 +154,7 @@ class ContactTimelineBlock
             ?->happened_on->year;
     }
 
-    /** @return array{id: int, icon: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string, deleteLine: string} */
+    /** @return array{id: int, icon: string, tint: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string, deleteLine: string} */
     private function entry(LifeEvent $lifeEvent): array
     {
         $icon = $lifeEvent->lifeEventType->icon;
@@ -173,6 +174,7 @@ class ContactTimelineBlock
         return [
             'id' => $lifeEvent->id,
             'icon' => in_array($icon, Section::ICONS, true) ? $icon : Section::DEFAULT_ICON,
+            'tint' => VaultColourEnum::tintFor($lifeEvent->lifeEventType->colour),
             'title' => $lifeEvent->name,
             'date' => $this->write($lifeEvent->happened_on, $this->withoutTheYear($this->dateFormat())),
             'details' => $this->detailsOf($lifeEvent),

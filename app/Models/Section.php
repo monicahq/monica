@@ -94,11 +94,11 @@ class Section extends Model
      * @var list<string>
      */
     public const array ICONS = [
-        'profile', 'note', 'relationship', 'family', 'timeline', 'calendar', 'reminder',
+        'profile', 'people', 'note', 'relationship', 'family', 'timeline', 'calendar', 'reminder',
         'tasks', 'memory', 'journal', 'file', 'mail', 'phone', 'place',
         'home', 'briefcase', 'organization', 'graduation', 'health', 'activity', 'ball',
         'food', 'gift', 'pet', 'plane', 'globe', 'book', 'music',
-        'coin', 'car', 'target', 'tag', 'heart', 'lock', 'layers',
+        'coin', 'car', 'target', 'tag', 'heart', 'star', 'lock', 'layers',
     ];
 
     /**

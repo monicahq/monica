@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace Tests\Unit\Jobs;
 
 use App\Actions\CreateDefaultLifeEventCategories;
+use App\Enums\FieldTypeEnum;
 use App\Enums\LifeEventCategoryEnum;
 use App\Enums\LifeEventTypeEnum;
-use App\Enums\FieldTypeEnum;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
+use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
 use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\LogUserAction;
-use App\Models\LifeEventType;
 use App\Models\Field;
+use App\Models\LifeEventType;
+use App\Models\Section;
 use App\Models\User;
 use App\Models\ValueList;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -42,6 +44,8 @@ class CreateDefaultLifeEventTypesTest extends TestCase
             'key' => 'medical_appointment',
             'name' => null,
             'name_translation_key' => 'Medical appointment',
+            'icon' => 'calendar',
+            'colour' => VaultColourEnum::Blue->value,
             'is_system' => true,
             'is_active' => true,
         ]);
@@ -80,6 +84,14 @@ class CreateDefaultLifeEventTypesTest extends TestCase
                 ->all();
 
             $this->assertEquals(range(1, count($positions)), $positions);
+        }
+    }
+
+    #[Test]
+    public function it_seeds_no_glyph_a_type_may_not_be_marked_with(): void
+    {
+        foreach (LifeEventTypeEnum::cases() as $case) {
+            $this->assertContains($case->icon(), Section::ICONS, "{$case->value} asks for a glyph outside the set.");
         }
     }
 

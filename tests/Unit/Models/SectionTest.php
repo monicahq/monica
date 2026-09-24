@@ -58,9 +58,9 @@ class SectionTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_thirty_five_glyphs(): void
+    public function it_offers_thirty_seven_glyphs(): void
     {
-        $this->assertCount(35, Section::ICONS);
+        $this->assertCount(37, Section::ICONS);
         $this->assertSame(array_values(array_unique(Section::ICONS)), Section::ICONS);
     }
 
@@ -76,7 +76,7 @@ class SectionTest extends TestCase
         $duplicates = array_keys(array_diff_key($drawn, array_unique($drawn)));
 
         $this->assertSame([], $duplicates, implode(', ', $duplicates).' offered to a section but not drawn.');
-        $this->assertCount(35, array_unique($drawn));
+        $this->assertCount(37, array_unique($drawn));
     }
 
     #[Test]

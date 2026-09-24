@@ -55,8 +55,10 @@
       <ol class="relative flex list-none flex-col before:absolute before:top-5 before:bottom-5 before:left-3.75 before:w-px before:bg-hairline">
         @foreach ($year['entries'] as $entry)
           <li class="relative grid grid-cols-[2rem_minmax(0,1fr)] gap-x-4 py-2">
-            <span class="relative flex size-8 items-center justify-center rounded-full border border-hairline bg-card text-muted" aria-hidden="true">
-              <x-icon :name="$entry['icon']" :size="15" />
+            <span class="relative flex size-8 rounded-full bg-card" aria-hidden="true">
+              <span class="flex size-full items-center justify-center rounded-full border {{ $entry['tint'] }}">
+                <x-icon :name="$entry['icon']" :size="15" />
+              </span>
             </span>
 
             @if ($entry['isEditing'])

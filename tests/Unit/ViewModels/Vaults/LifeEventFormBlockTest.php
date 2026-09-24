@@ -7,9 +7,11 @@ namespace Tests\Unit\ViewModels\Vaults;
 use App\Actions\CreateLifeEvent;
 use App\Actions\ReplaceLifeEventTypeFields;
 use App\Enums\FieldTypeEnum;
+use App\Enums\VaultColourEnum;
 use App\Models\Contact;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
+use App\Models\Section;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\LifeEventFormBlock;
@@ -40,6 +42,20 @@ class LifeEventFormBlockTest extends TestCase
         $this->assertEquals(['Home', 'Work'], array_column($categories, 'name'));
         $this->assertEquals(['Meeting', 'Sales call'], array_column($categories[1]['types'], 'name'));
         $this->assertEquals(2, $categories[1]['typeCount']);
+    }
+
+    #[Test]
+    public function it_marks_each_type_with_its_glyph_and_colour_and_falls_back_to_the_blank_page(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+        LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id, 'name' => 'Sales call', 'icon' => 'phone', 'colour' => VaultColourEnum::Blue->value, 'position' => 1]);
+        LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id, 'name' => 'Prank', 'icon' => null, 'colour' => null, 'position' => 2]);
+
+        $types = $this->block($user, $vault, $jim)->categories()[0]['types'];
+
+        $this->assertSame(['phone', Section::DEFAULT_ICON], array_column($types, 'icon'));
+        $this->assertSame([VaultColourEnum::Blue->value, null], array_column($types, 'colour'));
     }
 
     #[Test]

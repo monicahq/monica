@@ -335,7 +335,7 @@ class TemplateBuilderViewModelTest extends TestCase
 
         $glyphs = new TemplateBuilderViewModel(user: $user, template: $template)->glyphs();
 
-        $this->assertCount(35, $glyphs);
+        $this->assertCount(37, $glyphs);
         $this->assertContains('health', $glyphs);
     }
 

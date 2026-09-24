@@ -72,6 +72,7 @@
                 <div class="border-t border-hairline">
                   @forelse ($category['types'] as $type)
                     <button type="button" x-on:click="pick({{ $type['id'] }}, @js($type['name']), @js($type['categoryName']), @js($type['fieldsUrl']))" class="{{ $row }}">
+                      <x-section-mark :icon="$type['icon']" :colour="$type['colour']" />
                       <span class="min-w-0 flex-1 font-medium text-ink">{{ $type['name'] }}</span>
                       <span x-show="changing && type && type.id === {{ $type['id'] }}" x-cloak><x-badge>{{ __('Current') }}</x-badge></span>
                       <span class="text-sm text-muted">{{ $type['fieldCountLabel'] }}</span>
@@ -100,7 +101,7 @@
                   x-on:click="pick({{ $type['id'] }}, @js($type['name']), @js($type['categoryName']), @js($type['fieldsUrl']))"
                   class="{{ $row }}"
                 >
-                  <span class="text-muted" aria-hidden="true"><x-icon :name="$type['icon']" :size="16" /></span>
+                  <x-section-mark :icon="$type['icon']" :colour="$type['colour']" />
                   <span class="flex min-w-0 flex-1 flex-col">
                     <span class="font-medium text-ink">{{ $type['name'] }}</span>
                     <span class="text-sm text-muted">{{ $type['categoryName'] }}</span>
@@ -125,10 +126,18 @@
 
     <div x-show="step === 'details'" x-cloak>
       <div class="flex flex-wrap items-center justify-between gap-3 border-b border-hairline p-5">
-        <p class="flex min-w-0 flex-col">
-          <span class="text-xs text-muted" x-text="type ? type.categoryName : ''"></span>
-          <span class="font-medium text-ink" x-text="type ? type.name : ''"></span>
-        </p>
+        <div class="flex min-w-0 items-center gap-3">
+          @foreach ($form->categories() as $category)
+            @foreach ($category['types'] as $type)
+              <x-section-mark :icon="$type['icon']" :colour="$type['colour']" :size="32" x-show="type && type.id === {{ $type['id'] }}" x-cloak />
+            @endforeach
+          @endforeach
+
+          <p class="flex min-w-0 flex-col">
+            <span class="text-xs text-muted" x-text="type ? type.categoryName : ''"></span>
+            <span class="font-medium text-ink" x-text="type ? type.name : ''"></span>
+          </p>
+        </div>
 
         <x-button.secondary type="button" size="small" x-on:click="changeType($el)">{{ __('Change type') }}</x-button.secondary>
       </div>
