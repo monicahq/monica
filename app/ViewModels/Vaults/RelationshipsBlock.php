@@ -66,6 +66,16 @@ class RelationshipsBlock
         return __('Nobody is written down as connected to :name yet.', ['name' => $this->contact->first_name ?? $this->contact->name]);
     }
 
+    public function emptyTitle(): string
+    {
+        return __('Document relationships on :name', ['name' => $this->contact->first_name ?? $this->contact->name]);
+    }
+
+    public function emptyExplanation(): string
+    {
+        return __('Who :name is to the people you know. Each link is written both ways, so it shows on their page too.', ['name' => $this->contact->first_name ?? $this->contact->name]);
+    }
+
     /**
      * The categories a first link can go under, in the account's order, for the tab while it is empty.
      *

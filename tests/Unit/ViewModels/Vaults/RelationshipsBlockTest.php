@@ -36,6 +36,8 @@ class RelationshipsBlockTest extends TestCase
         $this->assertTrue($block->holdsNothing());
         $this->assertSame(0, $block->total());
         $this->assertStringContainsString('Judy', $block->emptyLine());
+        $this->assertSame('Document relationships on Judy', $block->emptyTitle());
+        $this->assertStringStartsWith('Who Judy is to the people you know.', $block->emptyExplanation());
     }
 
     #[Test]

@@ -44,6 +44,7 @@ class RelationshipsTest extends TestCase
         RelationshipType::factory()->create(['account_id' => $this->user->account_id, 'relationship_category_id' => $work->id, 'name' => 'Regional manager']);
 
         $this->tab()
+            ->assertSee('Document relationships on Judy')
             ->assertSeeInOrder(['Family', 'Sibling', 'Dunder Mifflin', 'Regional manager'])
             ->assertSee('aria-label="Add to Family"', false)
             ->assertSee(route('contacts.relationships.new', ['vault' => $this->vault, 'contact' => $this->judy, 'type' => $sibling->id]), false);
