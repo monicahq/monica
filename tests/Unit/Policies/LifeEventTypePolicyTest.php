@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policies;
 
+use App\Models\LifeEvent;
 use App\Models\LifeEventType;
 use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use PHPUnit\Framework\Attributes\Test;
@@ -34,6 +36,18 @@ class LifeEventTypePolicyTest extends TestCase
 
         $this->assertTrue($response->denied());
         $this->assertStringContainsString('came with your account and stays', (string) $response->message());
+    }
+
+    #[Test]
+    public function it_refuses_deleting_a_type_a_life_event_was_recorded_with(): void
+    {
+        $user = User::factory()->create();
+        $lifeEvent = LifeEvent::factory()->create(['vault_id' => Vault::factory()->create(['account_id' => $user->account_id])->id]);
+
+        $response = Gate::forUser($user)->inspect('delete', $lifeEvent->lifeEventType);
+
+        $this->assertTrue($response->denied());
+        $this->assertStringContainsString('Life events were recorded with this type', (string) $response->message());
     }
 
     #[Test]

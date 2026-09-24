@@ -10,6 +10,8 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\File;
+use App\Models\LifeEvent;
+use App\Models\LifeEventParticipant;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
@@ -1007,12 +1009,74 @@ class ContactControllerTest extends TestCase
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user, 'Someone in the family');
         $michael = $this->contact($vault, 'Michael', 'Scott');
+        $lifeEvent = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Dinner party at the condo']);
+        LifeEventParticipant::factory()->create(['life_event_id' => $lifeEvent->id, 'participant_id' => $michael->id]);
 
         $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
             ->assertStatus(200)
             ->assertSee('Michael Scott')
             ->assertSee('Overview')
-            ->assertSee('History');
+            ->assertSee('Timeline')
+            ->assertSee('Dinner party at the condo');
+    }
+
+    #[Test]
+    public function it_links_the_other_people_on_the_timeline_who_have_a_page(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user, 'Someone in the family');
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        $jan = $this->contact($vault, 'Jan', 'Levinson');
+        $astrid = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Astrid', 'is_partial' => true]);
+        $lifeEvent = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Dinner party at the condo']);
+        LifeEventParticipant::factory()->create(['life_event_id' => $lifeEvent->id, 'participant_id' => $michael->id]);
+        LifeEventParticipant::factory()->create(['life_event_id' => $lifeEvent->id, 'participant_id' => $jan->id, 'position' => 1]);
+        LifeEventParticipant::factory()->create(['life_event_id' => $lifeEvent->id, 'participant_id' => $astrid->id, 'position' => 2]);
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertOk()
+            ->assertSee('href="'.route('contacts.show', ['vault' => $vault, 'contact' => $jan]).'"', escape: false)
+            ->assertDontSee('href="'.route('contacts.show', ['vault' => $vault, 'contact' => $astrid]).'"', escape: false)
+            ->assertSee('Astrid');
+    }
+
+    #[Test]
+    public function it_offers_to_record_a_life_event_from_the_page(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user, 'Someone in the family');
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertOk()
+            ->assertSee('Add a life event')
+            ->assertSee('x-data="lifeEventPanel(', escape: false)
+            ->assertSee('aria-controls="life-event-panel"', escape: false)
+            ->assertSee('Add the first life event')
+            ->assertDontSee('Write a note');
+    }
+
+    #[Test]
+    public function it_opens_the_panel_on_the_type_chosen_when_the_life_event_came_back_refused(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user, 'Someone in the family');
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        $prank = $this->lifeEventTypeAsking($user, 'Prank', ['Victim' => FieldTypeEnum::Text]);
+
+        $this->actingAs($user)
+            ->from(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->post(route('contacts.lifeEvents.create', ['vault' => $vault, 'contact' => $michael]), [
+                'life_event_type_id' => $prank->id,
+            ])
+            ->assertRedirect();
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertOk()
+            ->assertSee('Victim')
+            ->assertSee('\u0022step\u0022:\u0022details\u0022', escape: false);
     }
 
     #[Test]

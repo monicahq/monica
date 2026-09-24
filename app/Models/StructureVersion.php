@@ -9,6 +9,7 @@ use App\Exceptions\PublishedVersionIsFrozen;
 use Carbon\CarbonImmutable;
 use Database\Factories\StructureVersionFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -230,6 +231,23 @@ class StructureVersion extends Model
             ])
             ->orderBy('structure_version_page_id')
             ->orderBy('position');
+    }
+
+    /**
+     * The fields a record written on this version is filled in with, in the
+     * order the version places them: top level only, since a repeater carries
+     * its children, and never a heading, a divider or a line of help.
+     *
+     * @return Collection<int, Field>
+     */
+    public function inputFields(): Collection
+    {
+        return new Collection($this->assembly
+            ->flatMap(fn (StructureVersionSection $section): Collection => $section->sectionVersion->fields
+                ->whereNull('parent_field_id')
+                ->filter(fn (Field $field): bool => $field->type->hasAnInput()))
+            ->values()
+            ->all());
     }
 
     /**

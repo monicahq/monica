@@ -22,6 +22,7 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\File;
+use App\Models\LifeEvent;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\SectionVersion;
@@ -65,6 +66,46 @@ class SetFieldValuesTest extends TestCase
         $this->assertSame(2, $written);
         $this->assertDatabaseHas('field_values', ['field_id' => $city->id, 'value_string' => 'Scranton']);
         $this->assertDatabaseHas('field_values', ['field_id' => $notes->id, 'value_text' => 'Sells paper.']);
+    }
+
+    #[Test]
+    public function it_writes_the_values_of_a_life_event(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $lifeEventType = $this->lifeEventTypeAsking($user, 'Sales call', [
+            'Client' => FieldTypeEnum::Text,
+            'Reams sold' => FieldTypeEnum::Number,
+        ]);
+        $lifeEvent = LifeEvent::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => Vault::factory()->create(['account_id' => $user->account_id])->id,
+            'life_event_type_id' => $lifeEventType->id,
+            'structure_version_id' => $lifeEventType->structure->published_version_id,
+        ]);
+        $section = StructureVersionSection::query()->where('structure_version_id', $lifeEvent->structure_version_id)->firstOrFail();
+        $client = $section->sectionVersion->fields->firstWhere('label', 'Client');
+        $reams = $section->sectionVersion->fields->firstWhere('label', 'Reams sold');
+
+        new SetFieldValues(
+            user: $user,
+            record: $lifeEvent,
+            section: $section,
+            values: [$client->id => 'Blue Cross of Pennsylvania', $reams->id => '40'],
+        )->execute();
+
+        $this->assertDatabaseHas('field_values', [
+            'valuable_type' => LifeEvent::class,
+            'valuable_id' => $lifeEvent->id,
+            'field_id' => $client->id,
+            'value_string' => 'Blue Cross of Pennsylvania',
+        ]);
+        $this->assertDatabaseHas('field_values', [
+            'valuable_type' => LifeEvent::class,
+            'valuable_id' => $lifeEvent->id,
+            'field_id' => $reams->id,
+        ]);
     }
 
     #[Test]

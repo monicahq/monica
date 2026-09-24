@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use App\Actions\ReplaceLifeEventTypeFields;
+use App\Enums\FieldTypeEnum;
 use App\Enums\SsoProviderEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\LifeEventCategory;
+use App\Models\LifeEventType;
 use App\Models\Reminder;
 use App\Models\Section;
 use App\Models\SectionVersion;
@@ -328,6 +332,43 @@ abstract class TestCase extends BaseTestCase
             'field_id' => $field->id,
             'created_by_user_id' => $user->id,
         ]);
+    }
+
+    /**
+     * A life event type of the user's account, in a category of its own, whose published version asks
+     * for one ungrouped field under each label given, of the type given.
+     *
+     * @param  array<string, FieldTypeEnum>  $fields
+     */
+    protected function lifeEventTypeAsking(User $user, string $name, array $fields = []): LifeEventType
+    {
+        $lifeEventType = LifeEventType::factory()->create([
+            'account_id' => $user->account_id,
+            'life_event_category_id' => LifeEventCategory::factory()->create(['account_id' => $user->account_id])->id,
+            'name' => $name,
+        ]);
+
+        if ($fields === []) {
+            return $lifeEventType;
+        }
+
+        new ReplaceLifeEventTypeFields(
+            user: $user,
+            lifeEventType: $lifeEventType,
+            groups: [],
+            fields: array_map(fn (string $label, FieldTypeEnum $type): array => [
+                'key' => null,
+                'group' => '',
+                'label' => $label,
+                'type' => $type->value,
+                'is_required' => false,
+                'help_text' => null,
+                'settings' => [],
+                'choices' => [],
+            ], array_keys($fields), array_values($fields)),
+        )->execute();
+
+        return $lifeEventType->refresh();
     }
 
     /**

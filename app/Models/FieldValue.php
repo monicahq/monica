@@ -59,7 +59,7 @@ use Override;
  * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
  * @property-read Vault $vault
- * @property-read Contact|Entity $valuable
+ * @property-read Contact|Entity|LifeEvent $valuable
  * @property-read Field $field
  * @property-read FieldValueRow|null $row
  * @property-read ValueListItem|null $valueListItem

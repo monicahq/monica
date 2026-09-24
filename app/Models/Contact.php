@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Override;
@@ -415,6 +416,19 @@ class Contact extends Model
     public function fieldValueRows(): MorphMany
     {
         return $this->morphMany(FieldValueRow::class, 'valuable');
+    }
+
+    /**
+     * Get the life events the contact took part in. Being named in a narrative
+     * does not count: only participation puts a life event here.
+     *
+     * @return MorphToMany<LifeEvent, $this>
+     */
+    public function lifeEvents(): MorphToMany
+    {
+        return $this->morphToMany(LifeEvent::class, 'participant', 'life_event_participants')
+            ->withPivot('position')
+            ->withTimestamps();
     }
 
     /**

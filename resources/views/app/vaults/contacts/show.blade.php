@@ -3,9 +3,6 @@
 @php
   $vault = $viewModel->vault();
   $unbuilt = $viewModel->unbuilt();
-
-  $inert = 'inline-flex h-8.5 cursor-default items-center gap-2 rounded-md border border-hairline px-3.25 '
-    .'font-sans text-base font-semibold text-placeholder';
 @endphp
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:breadcrumb>
@@ -158,46 +155,55 @@
   @elseif ($viewModel->onOverview())
     <div class="grid items-start gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
       <div class="flex flex-col gap-5">
-        <x-panel :title="__('Write a note')" icon="note">
-          <x-textarea
-            id="entry"
-            :placeholder="__('A call, a visit, something they said.')"
-            :rows="3"
-            disabled
-          />
+        <section
+          id="contact-timeline"
+          x-merge="replace"
+          x-data="lifeEventPanel(@js($viewModel->lifeEventForm()->projection()))"
+          data-life-event-panel
+          aria-labelledby="contact-timeline-title"
+          class="flex flex-col gap-5"
+        >
+          <div class="flex flex-wrap items-end justify-between gap-3 px-0.5">
+            <h2 id="contact-timeline-title" class="text-section-title text-ink">{{ __('Timeline') }}</h2>
 
-          <div class="mt-3 flex items-center gap-3 border-t border-hairline pt-3">
-            <span class="max-w-reading-narrow text-xs text-pretty text-muted">{{ $unbuilt['compose'] }}</span>
-
-            <span aria-disabled="true" class="{{ $inert }} ml-auto">{{ __('Save to their history') }}</span>
+            <x-button.secondary
+              type="button"
+              x-ref="addButton"
+              x-on:click="show()"
+              x-bind:aria-expanded="open ? 'true' : 'false'"
+              aria-controls="life-event-panel"
+              x-bind:disabled="open"
+            >
+              <x-slot:icon><x-icon name="plus" :size="16" /></x-slot:icon>
+              {{ __('Add a life event') }}
+            </x-button.secondary>
           </div>
-        </x-panel>
 
-        <section class="flex flex-col gap-3.5">
-          <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 px-0.5">
-            <h2 class="text-section-title text-ink">{{ __('History') }}</h2>
+          @if ($deleted = $viewModel->deletedLifeEvent())
+            <div x-data="{ shown: true }" x-show="shown">
+              <x-notice tone="quiet" icon="check-circle">
+                {{ $deleted['line'] }}
 
-            <p class="text-sm text-pretty text-muted">{{ $viewModel->historyNote() }}</p>
-          </div>
+                <x-slot:action>
+                  <div class="flex items-center gap-2">
+                    <x-form method="put" :action="$deleted['restoreUrl']" x-target="contact-timeline">
+                      <x-button.secondary size="small" x-autofocus>{{ __('Undo') }}</x-button.secondary>
+                    </x-form>
 
-          <ol class="relative list-none pl-7.5 before:absolute before:top-1.5 before:bottom-1.5 before:left-2.75 before:w-0.5 before:rounded-[1px] before:bg-hairline">
-            @foreach ($viewModel->history() as $entry)
-              <li class="relative pb-6 last:pb-0">
-                <span
-                  class="absolute top-px -left-7.5 flex size-6 items-center justify-center rounded-full bg-card text-muted ring-4 ring-page"
-                  aria-hidden="true"
-                >
-                  <x-icon :name="$entry['icon']" :size="14" :stroke-width="1.6" />
-                </span>
+                    <button type="button" x-on:click="shown = false" class="focus-ring flex size-7 items-center justify-center rounded-md text-muted hover:bg-hover hover:text-ink" aria-label="{{ __('Dismiss') }}">
+                      <x-icon name="close" :size="14" />
+                    </button>
+                  </div>
+                </x-slot:action>
+              </x-notice>
+            </div>
+          @endif
 
-                <p class="text-xs text-muted">{{ $entry['when'] }}</p>
+          @unless ($viewModel->lifeEventForm()->isEditing() && $viewModel->timeline()->lists((int) $viewModel->lifeEventForm()->editingId()))
+            @include('app.vaults.contacts._life-event-panel', ['form' => $viewModel->lifeEventForm()])
+          @endunless
 
-                <p class="mt-0.5 text-base font-semibold text-pretty text-ink">{{ $entry['title'] }}</p>
-
-                <p class="mt-1.5 max-w-180 text-sm text-pretty text-body">{{ $entry['body'] }}</p>
-              </li>
-            @endforeach
-          </ol>
+          @include('app.vaults.contacts._timeline', ['timeline' => $viewModel->timeline(), 'form' => $viewModel->lifeEventForm()])
         </section>
       </div>
 

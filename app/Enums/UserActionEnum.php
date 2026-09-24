@@ -86,6 +86,10 @@ enum UserActionEnum: string implements Translatable
     case LifeEventTypeDeactivated = 'life_event_type_deactivated';
     case LifeEventTypeDeletion = 'life_event_type_deleted';
     case LifeEventTypeFieldsPublished = 'life_event_type_fields_published';
+    case LifeEventCreation = 'life_event_created';
+    case LifeEventUpdate = 'life_event_updated';
+    case LifeEventDeletion = 'life_event_deleted';
+    case LifeEventRestoration = 'life_event_restored';
     case RelationshipTypesSeeded = 'relationship_types_seeded';
     case RelationshipCategoryCreation = 'relationship_category_created';
     case RelationshipCategoryUpdate = 'relationship_category_updated';
@@ -275,6 +279,10 @@ enum UserActionEnum: string implements Translatable
             self::LifeEventTypeDeactivated => 'Stopped offering the life event type :name',
             self::LifeEventTypeDeletion => 'Deleted the life event type :name',
             self::LifeEventTypeFieldsPublished => 'Published version :version of the custom fields of the life event type :name',
+            self::LifeEventCreation => 'Recorded the life event :type on the timeline of :name',
+            self::LifeEventUpdate => 'Changed the life event :type on the timeline of :name',
+            self::LifeEventDeletion => 'Deleted the life event :type from the timeline of :name',
+            self::LifeEventRestoration => 'Brought back the life event :type on the timeline of :name',
             self::RelationshipTypesSeeded => 'Set up the relationship types the account starts with',
             self::RelationshipCategoryCreation => 'Created the relationship category :name',
             self::RelationshipCategoryUpdate => 'Renamed the relationship category :name',

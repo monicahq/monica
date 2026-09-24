@@ -33,7 +33,7 @@ use Override;
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
  * @property-read Account $account
- * @property-read Contact|Entity $valuable
+ * @property-read Contact|Entity|LifeEvent $valuable
  * @property-read Field $field
  */
 #[Fillable([

@@ -11,6 +11,7 @@ use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\Field;
 use App\Models\FieldValueRow;
+use App\Models\LifeEvent;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use InvalidArgumentException;
@@ -24,7 +25,7 @@ class CreateFieldValueRow
 
     public function __construct(
         private readonly User $user,
-        private readonly Contact|Entity $valuable,
+        private readonly Contact|Entity|LifeEvent $valuable,
         private readonly Field $field,
     ) {}
 

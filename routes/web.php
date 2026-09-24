@@ -98,6 +98,10 @@ use App\Http\Controllers\App\Vaults\ContactDuplicateController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateDismissalController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateSearchController;
 use App\Http\Controllers\App\Vaults\ContactFavouriteController;
+use App\Http\Controllers\App\Vaults\ContactLifeEventCandidateController;
+use App\Http\Controllers\App\Vaults\ContactLifeEventController;
+use App\Http\Controllers\App\Vaults\ContactLifeEventFieldController;
+use App\Http\Controllers\App\Vaults\ContactLifeEventRestorationController;
 use App\Http\Controllers\App\Vaults\ContactListColumnController;
 use App\Http\Controllers\App\Vaults\ContactMergeController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
@@ -242,6 +246,28 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::post('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'create'])
         ->name('contacts.merge.create');
+
+    Route::post('vaults/{vault}/contacts/{contact}/life-events', [ContactLifeEventController::class, 'create'])
+        ->name('contacts.lifeEvents.create');
+
+    Route::get('vaults/{vault}/contacts/{contact}/life-events/{lifeEvent}/edit', [ContactLifeEventController::class, 'edit'])
+        ->name('contacts.lifeEvents.edit');
+
+    Route::put('vaults/{vault}/contacts/{contact}/life-events/{lifeEvent}', [ContactLifeEventController::class, 'update'])
+        ->name('contacts.lifeEvents.update');
+
+    Route::delete('vaults/{vault}/contacts/{contact}/life-events/{lifeEvent}', [ContactLifeEventController::class, 'destroy'])
+        ->name('contacts.lifeEvents.destroy');
+
+    Route::put('vaults/{vault}/contacts/{contact}/life-events/{lifeEventUuid}/restoration', [ContactLifeEventRestorationController::class, 'update'])
+        ->whereUuid('lifeEventUuid')
+        ->name('contacts.lifeEventRestoration.update');
+
+    Route::get('vaults/{vault}/contacts/{contact}/life-events/types/{lifeEventType}/fields', [ContactLifeEventFieldController::class, 'index'])
+        ->name('contacts.lifeEventFields.index');
+
+    Route::get('vaults/{vault}/contacts/{contact}/life-events/candidates', [ContactLifeEventCandidateController::class, 'index'])
+        ->name('contacts.lifeEventCandidates.index');
 
     Route::get('vaults/{vault}/contacts/{contact}/relationships/new', [ContactRelationshipController::class, 'new'])
         ->name('contacts.relationships.new');

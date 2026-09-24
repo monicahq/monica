@@ -1,5 +1,18 @@
 <!--
 Sync Impact Report
+Version change: 2.4.0 -> 2.4.1
+Rationale: the product renamed activity to life event (commit a681d13e and spec/models/036), and five
+passages here still said activity. Wording only, no obligation changes, so PATCH.
+
+Modified: principle VI (the frozen version a life event type owns), principle VII (the fixed concepts),
+and two Product Invariants (what a vault holds, what the Me contact carries).
+Added: none.
+Removed: none.
+
+Follow-up owed by the pull request that adopts this: none.
+-->
+<!--
+Sync Impact Report
 <!--
 Sync Impact Report
 Version change: 2.3.1 -> 2.4.0
@@ -110,7 +123,7 @@ No change made by another person, or by the system, may alter what somebody alre
 them explicitly accepting it.
 
 - A published structure version or section version is frozen, whether a template owns it or an
-  activity type does. A modification creates a new version beside it, with its own change note.
+  life event type does. A modification creates a new version beside it, with its own change note.
   Pages, page order and the placement of sections on pages are part of the frozen structure version.
   The rule cascades: renaming a value list option elsewhere in the product MUST NOT change the
   behavior of a version published yesterday. A draft, by contrast, stays
@@ -130,8 +143,8 @@ else editing your data.
 ### VII. A Stable Core, Unlimited Personalisation
 
 Nine concepts are fixed and MUST NOT be made personalisable in their nature: Account, Vault,
-Contact, Activity, Relationship, Group, the Me identity, Reminders and the Changelog. Fixed means
-the concept and not its content. An Activity is always something that happened on a date, possibly
+Contact, Life event, Relationship, Group, the Me identity, Reminders and the Changelog. Fixed means
+the concept and not its content. A Life event is always something that happened on a date, possibly
 with people, while the list of natures and the fields each one carries is entirely configurable. A
 Contact always carries a structured name, in all its components, while gender, date of birth and
 description are ordinary configurable fields that happen to be supplied by default.
@@ -229,10 +242,10 @@ an amendment.
   change may reintroduce them. The instance administrator capacity is not a counterexample: it
   governs the instance, meaning moderation, accounts and storage, and never the contents of somebody
   else's vaults.
-- A vault is a compartment, not a permission boundary. A contact, entity or activity belongs to
+- A vault is a compartment, not a permission boundary. A contact, entity or life event belongs to
   exactly one vault, and moving data between vaults is an explicit, recorded action.
 - Every account has exactly one Me contact. It is a real contact, carrying a template, fields,
-  activities and relationships, but it MUST NOT be deleted or merged into another contact, and it
+  life events and relationships, but it MUST NOT be deleted or merged into another contact, and it
   MUST stay stably identifiable by the API, MCP, imports and modules.
 - Sharing is a revocable read only link, never collaboration. A share is scoped to one record or one
   vault, protected by an unguessable token, optionally given an expiry and a password, and
@@ -402,4 +415,4 @@ test and the translations for the change under review, and to say which of the e
 change had to satisfy. Complexity that steps outside these principles MUST be justified in the pull
 request or removed.
 
-**Version**: 2.4.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-15
+**Version**: 2.4.1 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-23

@@ -16,6 +16,7 @@ use App\Models\Entity;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
+use App\Models\LifeEvent;
 use App\Models\Reminder;
 use App\Models\StructureVersionSection;
 use App\Models\User;
@@ -47,7 +48,7 @@ class SetFieldValues
      */
     public function __construct(
         private readonly User $user,
-        private readonly Contact|Entity $record,
+        private readonly Contact|Entity|LifeEvent $record,
         private readonly StructureVersionSection $section,
         private readonly array $values,
         private readonly array $labels = [],

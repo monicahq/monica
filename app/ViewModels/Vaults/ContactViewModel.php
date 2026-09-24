@@ -12,6 +12,7 @@ use App\Models\ContactMerge;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
+use App\Models\LifeEvent;
 use App\Models\RecordSnapshot;
 use App\Models\Reminder;
 use App\Models\Section;
@@ -42,6 +43,12 @@ class ContactViewModel
         private readonly Contact $contact,
         private readonly ?string $selectedPageKey = null,
         private readonly ?StructureVersionSection $editingSection = null,
+        private readonly int $timelinePage = 1,
+        private readonly ?int $lifeEventJustAddedId = null,
+        private readonly ?LifeEvent $editingLifeEvent = null,
+        private readonly ?int $lifeEventEditedId = null,
+        private readonly ?string $deletedLifeEventUuid = null,
+        private readonly ?string $deletedLifeEventLine = null,
     ) {}
 
     /** @return Collection<int, FieldValue> */
@@ -568,31 +575,12 @@ class ContactViewModel
         return $facts;
     }
 
-    /** @return array<int, array{icon: string, when: string, title: string, body: string}> */
-    public function history(): array
-    {
-        return [[
-            'icon' => 'people',
-            'when' => $this->contact->created_at->isoFormat('LL'),
-            'title' => __('You added :name', ['name' => $this->contact->name]),
-            'body' => __('Everything you write about them from now on appears here, newest first.'),
-        ]];
-    }
-
-    public function historyNote(): string
-    {
-        return __('Everything you have written about :name, newest first.', [
-            'name' => $this->contact->first_name ?? $this->contact->name,
-        ]);
-    }
-
     /** @return array<string, string> */
     public function unbuilt(): array
     {
         $name = $this->contact->first_name ?? $this->contact->name;
 
         return [
-            'compose' => __('A call, a visit, something they said. Writing it down is the next thing this screen will do.'),
             'relationships' => __('Who :name is to the other people in this vault, once relationships exist.', ['name' => $name]),
             'reminders' => __('Birthdays and anything else you ask to be told about, in good time.'),
         ];
@@ -741,6 +729,51 @@ class ContactViewModel
             vault: $this->vault,
             contact: $this->contact,
         ));
+    }
+
+    public function timeline(): ContactTimelineBlock
+    {
+        return once(fn (): ContactTimelineBlock => new ContactTimelineBlock(
+            user: $this->user,
+            vault: $this->vault,
+            contact: $this->contact,
+            page: max(1, $this->timelinePage),
+            justAddedId: $this->lifeEventJustAddedId,
+            editingId: $this->editingLifeEvent?->id,
+            editedId: $this->lifeEventEditedId,
+        ));
+    }
+
+    public function lifeEventForm(): LifeEventFormBlock
+    {
+        return once(fn (): LifeEventFormBlock => new LifeEventFormBlock(
+            user: $this->user,
+            vault: $this->vault,
+            contact: $this->contact,
+            lifeEvent: $this->editingLifeEvent,
+        ));
+    }
+
+    /**
+     * The life event deleted a moment ago, with the way to take it back. It is
+     * offered once: after a reload the flash is gone, and so is the offer.
+     *
+     * @return array{line: string, restoreUrl: string}|null
+     */
+    public function deletedLifeEvent(): ?array
+    {
+        if ($this->deletedLifeEventUuid === null || $this->deletedLifeEventLine === null) {
+            return null;
+        }
+
+        return [
+            'line' => $this->deletedLifeEventLine,
+            'restoreUrl' => route('contacts.lifeEventRestoration.update', [
+                'vault' => $this->vault,
+                'contact' => $this->contact,
+                'lifeEventUuid' => $this->deletedLifeEventUuid,
+            ]),
+        ];
     }
 
     public function relationships(): RelationshipsBlock

@@ -75,6 +75,11 @@ class ContactController extends Controller
                 vault: $vault,
                 contact: $contact,
                 selectedPageKey: $page,
+                timelinePage: $request->integer('timelinePage', 1),
+                lifeEventJustAddedId: $request->session()->get('lifeEventJustAdded'),
+                lifeEventEditedId: $request->session()->get('lifeEventEdited'),
+                deletedLifeEventUuid: $request->session()->get('lifeEventDeleted'),
+                deletedLifeEventLine: $request->session()->get('lifeEventDeletedLine'),
             ),
         ]);
     }
