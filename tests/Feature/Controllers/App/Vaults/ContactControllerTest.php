@@ -1052,7 +1052,8 @@ class ContactControllerTest extends TestCase
             ->assertSee('Add a life event')
             ->assertSee('x-data="lifeEventPanel(', escape: false)
             ->assertSee('aria-controls="life-event-panel"', escape: false)
-            ->assertSee('Add the first life event')
+            ->assertSee('Nothing on Michael’s timeline yet')
+            ->assertDontSee('You added Michael Scott')
             ->assertDontSee('Write a note');
     }
 

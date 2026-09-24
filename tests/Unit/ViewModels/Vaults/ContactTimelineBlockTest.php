@@ -244,29 +244,6 @@ class ContactTimelineBlockTest extends TestCase
         $this->assertEquals('07-03', $this->block($user, $vault, $jim)->years()[0]['entries'][0]['date']);
     }
 
-    #[Test]
-    public function it_ends_the_last_page_with_the_day_the_contact_was_added(): void
-    {
-        [$user, $vault, $jim] = $this->jim();
-
-        $creation = $this->block($user, $vault, $jim)->creationEntry();
-
-        $this->assertEquals('You added Jim Halpert', $creation['title'] ?? null);
-    }
-
-    #[Test]
-    public function it_keeps_the_day_the_contact_was_added_off_a_page_with_more_after_it(): void
-    {
-        [$user, $vault, $jim] = $this->jim();
-
-        for ($day = 1; $day <= ContactTimelineBlock::PER_PAGE + 1; $day++) {
-            $this->lifeEventWith($jim, now()->setDate(2026, 1, 1)->addDays($day)->toDateString(), "Prank {$day}");
-        }
-
-        $this->assertNull($this->block($user, $vault, $jim)->creationEntry());
-        $this->assertNotNull($this->block($user, $vault, $jim, page: 2)->creationEntry());
-    }
-
     /** @return array{0: User, 1: Vault, 2: Contact} */
     private function jim(): array
     {

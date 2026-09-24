@@ -77,27 +77,14 @@ class ContactTimelineBlock
         return $this->paginator()->nextPageUrl();
     }
 
-    /** @return array{title: string, date: string}|null */
-    public function creationEntry(): ?array
-    {
-        if ($this->paginator()->hasMorePages()) {
-            return null;
-        }
-
-        return [
-            'title' => __('You added :name', ['name' => $this->contact->name]),
-            'date' => $this->write($this->contact->created_at, $this->dateFormat()),
-        ];
-    }
-
     public function emptyTitle(): string
     {
-        return __('Nothing else yet');
+        return __('Nothing on :name’s timeline yet', ['name' => $this->contact->first_name ?? $this->contact->name]);
     }
 
     public function emptyLine(): string
     {
-        return __('Moves, new jobs, weddings and the things you do together land here with their date, newest first.');
+        return __('Life events, things you did together and changes to :name’s relationships land here, newest first.', ['name' => $this->contact->first_name ?? $this->contact->name]);
     }
 
     /** @return Paginator<int, LifeEvent> */

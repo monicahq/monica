@@ -5,42 +5,12 @@
 --}}
 <div id="contact-timeline-rows" x-merge="append" class="flex flex-col gap-6">
   @if ($timeline->holdsNothing())
-    @php
-      $creation = $timeline->creationEntry();
-    @endphp
-
-    <ol class="relative flex list-none flex-col gap-5 before:absolute before:top-8 before:bottom-4 before:left-3.75 before:w-px before:bg-hairline">
-      <li class="relative grid grid-cols-[2rem_minmax(0,1fr)] gap-x-4">
-        <span class="relative flex size-8 items-center justify-center rounded-full border border-hairline bg-card text-muted" aria-hidden="true">
-          <x-icon name="profile" :size="15" />
-        </span>
-
-        <p class="flex flex-wrap items-baseline gap-x-2 gap-y-1 pt-1.5 text-base">
-          <span class="font-medium text-ink">{{ $creation['title'] ?? '' }}</span>
-          <span class="text-sm text-muted">· {{ $creation['date'] ?? '' }}</span>
-        </p>
-      </li>
-
-      <li class="relative grid grid-cols-[2rem_minmax(0,1fr)] gap-x-4">
-        <span class="relative flex size-8 items-center justify-center rounded-full border border-dashed border-hairline-strong bg-canvas text-muted-soft" aria-hidden="true">
-          <x-icon name="plus" :size="15" />
-        </span>
-
-        <div class="flex min-w-0 flex-col gap-3 rounded-lg border border-dashed border-hairline-strong p-4">
-          <div class="flex flex-col gap-1">
-            <p class="font-medium text-ink">{{ $timeline->emptyTitle() }}</p>
-            <p class="text-sm text-pretty text-muted">{{ $timeline->emptyLine() }}</p>
-          </div>
-
-          <div>
-            <x-button.secondary type="button" size="small" x-on:click="show()" x-bind:disabled="open">
-              <x-slot:icon><x-icon name="plus" :size="15" /></x-slot:icon>
-              {{ __('Add the first life event') }}
-            </x-button.secondary>
-          </div>
-        </div>
-      </li>
-    </ol>
+    <x-panel :flush="true">
+      <x-empty-state :title="$timeline->emptyTitle()">
+        <x-slot:icon><x-icon name="timeline" :size="28" :stroke-width="1.5" /></x-slot:icon>
+        {{ $timeline->emptyLine() }}
+      </x-empty-state>
+    </x-panel>
   @endif
 
   @foreach ($timeline->years() as $year)
@@ -133,21 +103,6 @@
       </ol>
     </div>
   @endforeach
-
-  @if (! $timeline->holdsNothing() && ($creation = $timeline->creationEntry()))
-    <ol class="relative flex list-none flex-col">
-      <li class="relative grid grid-cols-[2rem_minmax(0,1fr)] gap-x-4 py-2">
-        <span class="relative flex size-8 items-center justify-center rounded-full border border-hairline bg-card text-muted" aria-hidden="true">
-          <x-icon name="profile" :size="15" />
-        </span>
-
-        <p class="flex flex-wrap items-baseline gap-x-2 gap-y-1 pt-1.5 text-base">
-          <span class="font-medium text-ink">{{ $creation['title'] }}</span>
-          <span class="text-sm text-muted">· {{ $creation['date'] }}</span>
-        </p>
-      </li>
-    </ol>
-  @endif
 </div>
 
 <div id="contact-timeline-pagination">
