@@ -25,6 +25,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Show instance deletion notice
+    |--------------------------------------------------------------------------
+    |
+    | Displays a notice on the login page warning users that this instance
+    | and all its data will be deleted. Meant for the hosted instance only.
+    |
+    */
+    'show_deletion_notice' => (bool) env('APP_SHOW_DELETION_NOTICE', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Commit hash of the application
     |--------------------------------------------------------------------------
     |

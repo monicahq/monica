@@ -23,6 +23,7 @@ const props = defineProps({
   userless: Boolean,
   autologin: Boolean,
   beta: Boolean,
+  showDeletionNotice: Boolean,
 });
 const webauthn = ref(false);
 const publicKeyRef = ref(null);
@@ -89,6 +90,7 @@ const useWebauthn = () => {
     </h1>
 
     <div
+      v-if="showDeletionNotice"
       role="alert"
       class="mt-6 flex w-full items-start gap-3 border border-amber-200 bg-amber-50 px-6 py-4 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-100 rounded-lg sm:max-w-4xl">
       <TriangleAlert class="h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400" aria-hidden="true" />
