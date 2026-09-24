@@ -43,6 +43,7 @@ class LoginController extends Controller
             'wallpaperUrl' => WallpaperHelper::getRandomWallpaper(),
             'providers' => $providers,
             'beta' => $request->cookie('beta') !== 'false',
+            'showDeletionNotice' => (bool) config('monica.show_deletion_notice'),
         ]);
     }
 
