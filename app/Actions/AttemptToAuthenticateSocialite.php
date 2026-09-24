@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Actions\Fortify\CreateNewUser;
+use App\Helpers\SignupHelper;
 use App\Models\User;
 use App\Models\UserToken;
 use Illuminate\Auth\Events\Failed;
@@ -88,7 +89,7 @@ class AttemptToAuthenticateSocialite
             $this->checkUserAssociation($request, $user, $driver);
         } else {
             // New association: create user or add token to existing user
-            $user = tap($this->getUserOrCreate($socialite), function ($user) use ($driver, $socialite) {
+            $user = tap($this->getUserOrCreate($request, $driver, $socialite), function ($user) use ($driver, $socialite) {
                 $this->createUserToken($user, $driver, $socialite);
             });
         }
@@ -109,10 +110,14 @@ class AttemptToAuthenticateSocialite
     /**
      * Get authenticated user.
      */
-    private function getUserOrCreate(SocialiteUser $socialite): User
+    private function getUserOrCreate(Request $request, string $driver, SocialiteUser $socialite): User
     {
         if ($user = Auth::user()) {
             return $user;
+        }
+
+        if (! app(SignupHelper::class)->isEnabled()) {
+            $this->throwFailedAuthenticationException($request, $driver, trans('Registration is currently disabled'));
         }
 
         return $this->createUser($socialite);

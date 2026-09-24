@@ -192,4 +192,57 @@ class SocialiteCallbackControllerTest extends TestCase
             'user_id' => $user->id,
         ]);
     }
+
+    /** @test */
+    public function it_wont_create_user_if_signup_is_disabled(): void
+    {
+        config(['monica.disable_signup' => true]);
+        User::factory()->create();
+
+        $mock = $this->getMock();
+        $this->mockSocialite($mock->getClient());
+
+        session()->put('state', 'state');
+
+        $response = $this->get('/auth/test/callback?code=thecode&state=state');
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('test');
+        $this->assertGuest();
+
+        $this->assertDatabaseMissing('users', [
+            'email' => 'customer@legit.com',
+        ]);
+        $this->assertDatabaseMissing('user_tokens', [
+            'driver_id' => 12345,
+            'driver' => 'test',
+        ]);
+    }
+
+    /** @test */
+    public function it_logs_in_existing_user_if_signup_is_disabled(): void
+    {
+        config(['monica.disable_signup' => true]);
+
+        $user = User::factory()->create(['email' => 'customer@legit.com']);
+        UserToken::factory()->create([
+            'driver_id' => 12345,
+            'driver' => 'test',
+            'user_id' => $user->id,
+            'email' => 'customer@legit.com',
+            'format' => 'oauth2',
+            'token' => 'token',
+        ]);
+
+        $mock = $this->getMock();
+        $this->mockSocialite($mock->getClient());
+
+        session()->put('state', 'state');
+
+        $response = $this->get('/auth/test/callback?code=thecode&state=state');
+
+        $response->assertStatus(302);
+        $response->assertRedirect(config('app.url'));
+        $this->assertAuthenticatedAs($user);
+    }
 }
