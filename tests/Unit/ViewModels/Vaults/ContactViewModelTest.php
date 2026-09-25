@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Enums\DateFormatEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
@@ -12,6 +13,7 @@ use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\FieldValueRow;
 use App\Models\File;
 use App\Models\RecordSnapshot;
 use App\Models\Relationship;
@@ -1029,6 +1031,153 @@ class ContactViewModelTest extends TestCase
         $this->assertInstanceOf(FamilyTreeBlock::class, $tree);
         $this->assertSame('Michael Scott', $tree->subject()['name']);
         $this->assertSame($tree, $viewModel->familyTree());
+    }
+
+    #[Test]
+    public function it_reads_a_repeater_of_one_long_text_as_notes(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['General' => ['Notes' => ['Notes']]]);
+        $contact = $this->contact($user, $version);
+        $notes = $this->noteRepeater($version, 'Notes');
+        $row = $this->writeNote($contact, $notes, 'Allergic to strawberries.');
+
+        $field = $this->sectionsOn($user, $contact, 'general')[0]['fields'][0];
+
+        $this->assertFalse($field['notes']['showsLabel']);
+        $this->assertCount(1, $field['notes']['entries']);
+        $this->assertSame($row->id, $field['notes']['entries'][0]['id']);
+        $this->assertSame(['Allergic to strawberries.'], $field['notes']['entries'][0]['shown']);
+        $this->assertSame([], $field['notes']['entries'][0]['hidden']);
+    }
+
+    #[Test]
+    public function it_names_a_note_repeater_whose_label_is_not_the_section_name(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['General' => ['Health' => ['Medical history']]]);
+        $contact = $this->contact($user, $version);
+        $this->noteRepeater($version, 'Medical history');
+
+        $field = $this->sectionsOn($user, $contact, 'general')[0]['fields'][0];
+
+        $this->assertTrue($field['notes']['showsLabel']);
+        $this->assertSame([], $field['notes']['entries']);
+    }
+
+    #[Test]
+    public function it_keeps_the_first_two_paragraphs_of_a_note_in_sight(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['General' => ['Notes' => ['Notes']]]);
+        $contact = $this->contact($user, $version);
+        $notes = $this->noteRepeater($version, 'Notes');
+        $this->writeNote($contact, $notes, "Regional manager.\n\nWorld’s best boss mug.\nBought it himself.\n\nImprov class.\n\n\nDinner party.\r\n\r\nScott’s Tots.");
+
+        $entry = $this->sectionsOn($user, $contact, 'general')[0]['fields'][0]['notes']['entries'][0];
+
+        $this->assertSame(['Regional manager.', "World’s best boss mug.\nBought it himself."], $entry['shown']);
+        $this->assertSame(['Improv class.', 'Dinner party.', 'Scott’s Tots.'], $entry['hidden']);
+    }
+
+    #[Test]
+    public function it_leaves_out_a_note_row_with_nothing_written(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['General' => ['Notes' => ['Notes']]]);
+        $contact = $this->contact($user, $version);
+        $notes = $this->noteRepeater($version, 'Notes');
+        $this->writeNote($contact, $notes, "  \n ");
+        $kept = $this->writeNote($contact, $notes, 'Hates Toby.');
+
+        $entries = $this->sectionsOn($user, $contact, 'general')[0]['fields'][0]['notes']['entries'];
+
+        $this->assertCount(1, $entries);
+        $this->assertSame($kept->id, $entries[0]['id']);
+    }
+
+    #[Test]
+    public function it_dates_a_note_in_the_date_format_of_the_reader(): void
+    {
+        $user = User::factory()->create(['date_format' => DateFormatEnum::YearFirst, 'timezone' => 'Pacific/Auckland']);
+        $version = $this->version($user, ['General' => ['Notes' => ['Notes']]]);
+        $contact = $this->contact($user, $version);
+        $notes = $this->noteRepeater($version, 'Notes');
+        $this->writeNote($contact, $notes, 'Dundie night.', CarbonImmutable::parse('2026-09-24 20:00:00', 'UTC'));
+
+        $entry = $this->sectionsOn($user, $contact, 'general')[0]['fields'][0]['notes']['entries'][0];
+
+        $this->assertSame('Added 2026-09-25', $entry['addedLine']);
+    }
+
+    #[Test]
+    public function it_does_not_read_a_standalone_long_text_or_a_mixed_repeater_as_notes(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['General' => ['Notes' => ['Remarks', 'Visits']]]);
+        $contact = $this->contact($user, $version);
+        $this->fieldCalled($version, 'Remarks')->update(['type' => FieldTypeEnum::Textarea]);
+        $this->noteRepeater($version, 'Visits', [FieldTypeEnum::Textarea, FieldTypeEnum::Date]);
+
+        $fields = $this->sectionsOn($user, $contact, 'general')[0]['fields'];
+
+        $this->assertNull($fields[0]['notes']);
+        $this->assertNull($fields[1]['notes']);
+    }
+
+    /** @return array<int, array<string, mixed>> */
+    private function sectionsOn(User $user, Contact $contact, string $pageKey): array
+    {
+        return (new ContactViewModel(
+            user: $user,
+            vault: $contact->vault,
+            contact: $contact,
+            selectedPageKey: $pageKey,
+        ))->sections();
+    }
+
+    /** @param  array<int, FieldTypeEnum>  $childTypes */
+    private function noteRepeater(StructureVersion $version, string $label, array $childTypes = [FieldTypeEnum::Textarea]): Field
+    {
+        $repeater = $this->fieldCalled($version, $label);
+        $repeater->update(['type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+
+        foreach ($childTypes as $index => $type) {
+            Field::factory()->create([
+                'section_version_id' => $repeater->section_version_id,
+                'parent_field_id' => $repeater->id,
+                'type' => $type,
+                'label' => "{$label} {$index}",
+                'position' => $index + 1,
+            ]);
+        }
+
+        return $repeater->refresh();
+    }
+
+    private function writeNote(Contact $contact, Field $repeater, string $text, ?CarbonImmutable $at = null): FieldValueRow
+    {
+        $row = FieldValueRow::factory()->create([
+            'valuable_id' => $contact->id,
+            'field_id' => $repeater->id,
+            'position' => FieldValueRow::query()->where('field_id', $repeater->id)->count() + 1,
+        ]);
+
+        if ($at !== null) {
+            $row->forceFill(['created_at' => $at])->save();
+        }
+
+        $child = $repeater->children->first();
+
+        FieldValue::factory()->create([
+            'valuable_id' => $contact->id,
+            'field_id' => $child->id,
+            'field_value_row_id' => $row->id,
+            'value_string' => null,
+            'value_text' => $text,
+        ]);
+
+        return $row;
     }
 
     private function contact(User $user, StructureVersion $version, array $attributes = []): Contact

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Enums\DateFormatEnum;
+use App\Enums\FieldTypeEnum;
 use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
+use App\Helpers\AvailableLocales;
 use App\Helpers\FieldValueFormatter;
 use App\Models\Contact;
 use App\Models\ContactMerge;
@@ -589,11 +592,66 @@ class ContactViewModel
                 'rawValue' => $this->values()->get($field->id),
                 'isEditable' => $field->type->hasAnInput(),
                 'rows' => $this->repetitionsOf($field),
+                'notes' => $this->notesOf($field, $row),
                 'reminder' => $this->reminderFor($field),
                 'reminderMark' => $this->reminderMarkOn($field),
             ])
             ->values()
             ->all();
+    }
+
+    /** @return array{showsLabel: bool, entries: array<int, array{id: int, shown: array<int, string>, hidden: array<int, string>, addedLine: string}>}|null */
+    private function notesOf(Field $field, StructureVersionSection $row): ?array
+    {
+        if (! $this->readsAsNotes($field)) {
+            return null;
+        }
+
+        $entries = [];
+
+        foreach ($this->repetitions()->get($field->id, collect()) as $repetition) {
+            $text = trim((string) $repetition->values->first()?->value_text);
+
+            if ($text === '') {
+                continue;
+            }
+
+            $paragraphs = preg_split('/\R\s*\R/', $text) ?: [$text];
+
+            $entries[] = [
+                'id' => $repetition->id,
+                'shown' => array_slice($paragraphs, 0, 2),
+                'hidden' => array_slice($paragraphs, 2),
+                'addedLine' => __('Added :date', [
+                    'date' => DateFormatEnum::write(
+                        $repetition->created_at->setTimezone($this->user->timezone),
+                        $this->dateFormat(),
+                    ),
+                ]),
+            ];
+        }
+
+        return [
+            'showsLabel' => $field->label !== $this->nameOf($row),
+            'entries' => $entries,
+        ];
+    }
+
+    private function readsAsNotes(Field $field): bool
+    {
+        if (! $field->type->isRepeater()) {
+            return false;
+        }
+
+        $answers = $field->children->filter(fn (Field $child): bool => $child->type->storesValue());
+
+        return $answers->count() === 1 && $answers->first()->type === FieldTypeEnum::Textarea;
+    }
+
+    private function dateFormat(): string
+    {
+        return $this->user->date_format->value
+            ?? (string) AvailableLocales::details(app()->getLocale())['date_format'];
     }
 
     private function reminderFor(Field $field): ?ContactReminderBlock

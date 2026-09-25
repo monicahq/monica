@@ -1092,6 +1092,92 @@ class ContactSectionControllerTest extends TestCase
         ], $changes);
     }
 
+    #[Test]
+    public function it_shows_a_note_across_its_section(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        [$notes, $note] = $this->notesOn($user, $michael);
+        $this->writeNote($michael, $notes, $note, 'Hates Toby with a passion.');
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'notebook']))
+            ->assertStatus(200)
+            ->assertSee('Hates Toby with a passion.')
+            ->assertSee('Added ');
+    }
+
+    #[Test]
+    public function it_folds_a_long_note_behind_read_more(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        [$notes, $note] = $this->notesOn($user, $michael);
+        $row = $this->writeNote($michael, $notes, $note, "Regional manager.\n\nImprov class.\n\nDinner party.\n\nScott’s Tots.\n\nThe Dundies.");
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'notebook']))
+            ->assertStatus(200)
+            ->assertSee('Read more')
+            ->assertSee('aria-controls="note-'.$row->id.'-rest"', false)
+            ->assertSee('id="note-'.$row->id.'-rest"', false)
+            ->assertSee('The Dundies.');
+    }
+
+    #[Test]
+    public function it_offers_to_add_a_note_when_there_is_none(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        $this->notesOn($user, $michael);
+        $version = $michael->refresh()->structureVersion;
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael, 'page' => 'notebook']))
+            ->assertStatus(200)
+            ->assertSee('No note yet')
+            ->assertSee('Add a note')
+            ->assertSee(route('contacts.sections.edit', [
+                'vault' => $vault,
+                'contact' => $michael,
+                'structureVersionSection' => $this->sectionNamed($version, 'Notes'),
+            ]), false);
+    }
+
+    /** @return array{0: Field, 1: Field} */
+    private function notesOn(User $user, Contact $contact): array
+    {
+        $version = $this->versionWithSections($user, 'Notebook', ['Notes' => 'Notes']);
+        $contact->update(['structure_version_id' => $version->id]);
+
+        $notes = Field::query()->where('label', 'Notes')->firstOrFail();
+        $notes->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
+        $notes->update(['type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+
+        return [$notes, $this->childOf($notes, 'Note', ['type' => FieldTypeEnum::Textarea])];
+    }
+
+    private function writeNote(Contact $contact, Field $notes, Field $note, string $text): FieldValueRow
+    {
+        $row = FieldValueRow::factory()->create([
+            'valuable_id' => $contact->id,
+            'field_id' => $notes->id,
+        ]);
+
+        FieldValue::factory()->create([
+            'valuable_id' => $contact->id,
+            'field_id' => $note->id,
+            'field_value_row_id' => $row->id,
+            'value_string' => null,
+            'value_text' => $text,
+        ]);
+
+        return $row;
+    }
+
     /** @return array{0: Field, 1: Field, 2: Field} */
     private function documentsOn(User $user, Contact $contact): array
     {

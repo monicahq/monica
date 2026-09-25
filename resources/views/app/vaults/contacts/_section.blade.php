@@ -67,15 +67,19 @@
   @else
     <x-detail-list label-width="140px">
       @forelse ($section['fields'] as $field)
-        <x-detail-list.row :label="$field['label']" value-class="">
-          <x-field-value
-            :field="$field['field']"
-            :value="$field['rawValue']"
-            :formatted="$field['value']"
-            :rows="$field['rows']"
-            :reminder="$field['reminderMark']"
-          />
-        </x-detail-list.row>
+        @if ($field['notes'] !== null)
+          @include('app.vaults.contacts._notes', ['field' => $field, 'section' => $section])
+        @else
+          <x-detail-list.row :label="$field['label']" value-class="">
+            <x-field-value
+              :field="$field['field']"
+              :value="$field['rawValue']"
+              :formatted="$field['value']"
+              :rows="$field['rows']"
+              :reminder="$field['reminderMark']"
+            />
+          </x-detail-list.row>
+        @endif
       @empty
         <p class="px-4.5 py-3 text-sm text-pretty text-muted">{{ __('This section asks nothing yet.') }}</p>
       @endforelse

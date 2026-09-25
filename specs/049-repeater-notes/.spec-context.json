@@ -1,0 +1,37 @@
+{
+  "workflow": "speckit",
+  "specName": "Notes in a repeater",
+  "branch": "2026-09-25-contact-notes-design",
+  "currentStep": "implement",
+  "status": "implementing",
+  "history": [
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-25T13:52:40.486Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-25T14:10:18.222Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-25T14:15:46.721Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-25T14:27:19.743Z"
+    }
+  ]
+}
