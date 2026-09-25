@@ -1,0 +1,37 @@
+{
+  "workflow": "speckit",
+  "specName": "Entity types in the vault navigation",
+  "branch": "2026-09-25-vault-entity-navigation",
+  "currentStep": "implement",
+  "status": "implemented",
+  "history": [
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-25T18:53:11.075Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-25T18:55:37.572Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-25T18:56:36.275Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-25T19:00:42.535Z"
+    }
+  ]
+}

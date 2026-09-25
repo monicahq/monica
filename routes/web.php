@@ -110,6 +110,7 @@ use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\ContactShareLinkController;
 use App\Http\Controllers\App\Vaults\ContactStructureVersionController;
 use App\Http\Controllers\App\Vaults\ContactVCardController;
+use App\Http\Controllers\App\Vaults\EntityController;
 use App\Http\Controllers\App\Vaults\FileController;
 use App\Http\Controllers\App\Vaults\ReminderController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceDismissalController;
@@ -177,6 +178,8 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::get('vaults/{vault}/contact-list-columns/edit', [ContactListColumnController::class, 'edit'])->name('contactListColumns.edit');
     Route::put('vaults/{vault}/contact-list-columns', [ContactListColumnController::class, 'update'])->name('contactListColumns.update');
+
+    Route::get('vaults/{vault}/entities/{entityType}', [EntityController::class, 'index'])->name('entities.index');
 
     Route::get('vaults/{vault}/contacts/new', [ContactController::class, 'new'])->name('contacts.new');
     Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');

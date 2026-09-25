@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\StructureAppliesToEnum;
+use App\Enums\VersionStatusEnum;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInAccount;
 use Carbon\CarbonImmutable;
 use Database\Factories\EntityTypeFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\RouteKey;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -139,5 +142,47 @@ class EntityType extends Model
     public function entities(): HasMany
     {
         return $this->hasMany(Entity::class);
+    }
+
+    /**
+     * Get the template each vault starts a record of this kind from.
+     *
+     * @return HasMany<VaultDefaultTemplate, $this>
+     */
+    public function vaultDefaultTemplates(): HasMany
+    {
+        return $this->hasMany(VaultDefaultTemplate::class);
+    }
+
+    /**
+     * Scope the types a vault shows in its navigation. A type is shown when it is active and the
+     * vault starts its records from an active, published template, or when the vault still holds a
+     * record of it, archived or not, so that turning a type off never hides what was written.
+     *
+     * @param  Builder<EntityType>  $query
+     */
+    public function scopeVisibleInVault(Builder $query, Vault $vault): void
+    {
+        $query->where(function (Builder $query) use ($vault): void {
+            $query
+                ->where(function (Builder $query) use ($vault): void {
+                    $query->where('is_active', true)
+                        ->whereHas('vaultDefaultTemplates', function (Builder $query) use ($vault): void {
+                            $query->where('vault_id', $vault->id)
+                                ->where('applies_to', StructureAppliesToEnum::Entity)
+                                ->whereHas('structureVersion', function (Builder $query): void {
+                                    $query->where('status', VersionStatusEnum::Published)
+                                        ->whereHas('structure', function (Builder $query): void {
+                                            $query->whereHasMorph('owner', [Template::class], function (Builder $query): void {
+                                                $query->where('is_active', true);
+                                            });
+                                        });
+                                });
+                        });
+                })
+                ->orWhereHas('entities', function (Builder $query) use ($vault): void {
+                    $query->where('vault_id', $vault->id);
+                });
+        });
     }
 }

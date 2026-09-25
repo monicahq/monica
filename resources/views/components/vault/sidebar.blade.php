@@ -5,6 +5,7 @@
   @var string $current
   @var int|null $taskCount
   @var int $reminderCount
+  @var list<array{key: string, name: string, icon: string, colour: string, url: string}> $entityTypes
 --}}
 
 @php
@@ -80,6 +81,23 @@
             <span class="ml-auto text-xs text-muted">{{ $section['badge'] }}</span>
           @endif
         </span>
+      @endif
+
+      @if ($section['key'] === 'contacts')
+        @foreach ($entityTypes as $type)
+          <a
+            href="{{ $type['url'] }}"
+            data-turbo="true"
+            @if ($current === $type['key']) aria-current="page" @endif
+            class="{{ $item }} {{ $current === $type['key'] ? 'bg-canvas font-medium text-ink shadow-nav-active' : 'text-body hover:bg-hover hover:text-ink' }} focus-ring"
+          >
+            <span class="flex shrink-0" style="color: {{ $type['colour'] }}">
+              <x-entity-icon :name="$type['icon']" :size="16" />
+            </span>
+
+            <span class="min-w-0 truncate">{{ $type['name'] }}</span>
+          </a>
+        @endforeach
       @endif
     @endforeach
   </nav>

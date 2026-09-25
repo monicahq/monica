@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Tests\Feature\Views\Components;
 
 use App\Models\Contact;
+use App\Models\EntityType;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -35,6 +37,37 @@ class SidebarTest extends TestCase
         $rendered->assertSee('Dashboard');
         $rendered->assertSee('People');
         $rendered->assertSee('Vault settings');
+    }
+
+    #[Test]
+    public function the_vault_column_lists_the_types_of_the_vault_under_people_in_their_order(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $this->visibleType($vault, 'Animals', 2);
+        $this->visibleType($vault, 'Companies', 1);
+
+        $this->actingAs($user)->blade(
+            '<x-vault.sidebar :user="$user" :vault="$vault" current="dashboard" />',
+            ['user' => $user, 'vault' => $vault],
+        )->assertSeeInOrder(['People', 'Companies', 'Animals', 'Tasks']);
+    }
+
+    #[Test]
+    public function the_vault_column_marks_the_type_being_read_as_the_current_page(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $type = $this->visibleType($vault, 'Animals', 1);
+
+        $this->actingAs($user)->blade(
+            '<x-vault.sidebar :user="$user" :vault="$vault" :current="$current" />',
+            ['user' => $user, 'vault' => $vault, 'current' => "entity-type-{$type->slug}"],
+        )->assertSeeInOrder([
+            'href="'.route('entities.index', ['vault' => $vault, 'entityType' => $type]).'"',
+            'aria-current="page"',
+            'Animals',
+        ], escape: false);
     }
 
     #[Test]
@@ -207,5 +240,17 @@ class SidebarTest extends TestCase
             'original_scheduled_for' => $instant,
             'local_date' => $instant->toDateString(),
         ]);
+    }
+
+    private function visibleType(Vault $vault, string $plural, int $position): EntityType
+    {
+        $type = EntityType::factory()->create([
+            'account_id' => $vault->account_id,
+            'name_plural' => $plural,
+            'position' => $position,
+        ]);
+        VaultDefaultTemplate::factory()->forEntity($type)->create(['vault_id' => $vault->id]);
+
+        return $type;
     }
 }

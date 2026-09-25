@@ -1,0 +1,70 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\ViewModels\Vaults;
+
+use App\Models\Entity;
+use App\Models\EntityType;
+use App\Models\User;
+use App\Models\Vault;
+use App\ViewModels\Vaults\EntitiesViewModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class EntitiesViewModelTest extends TestCase
+{
+    use RefreshDatabase;
+
+    #[Test]
+    public function it_lists_the_records_of_this_type_in_this_vault_by_name(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+        Entity::factory()->create(['vault_id' => $vault->id, 'entity_type_id' => $type->id, 'name' => 'Mose']);
+        Entity::factory()->create(['vault_id' => $vault->id, 'entity_type_id' => $type->id, 'name' => 'Garbage']);
+
+        $entities = new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->entities();
+
+        $this->assertSame(['Garbage', 'Mose'], array_column($entities, 'name'));
+    }
+
+    #[Test]
+    public function it_leaves_out_the_records_of_another_vault_and_another_type(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+        $stamford = Vault::factory()->create(['account_id' => $user->account_id]);
+        $other = EntityType::factory()->create(['account_id' => $user->account_id]);
+        Entity::factory()->create(['vault_id' => $stamford->id, 'entity_type_id' => $type->id, 'name' => 'Bandit']);
+        Entity::factory()->create(['vault_id' => $vault->id, 'entity_type_id' => $other->id, 'name' => 'Schrute Farms']);
+
+        $this->assertSame([], new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->entities());
+    }
+
+    #[Test]
+    public function it_marks_an_archived_record(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+        Entity::factory()->archived()->create(['vault_id' => $vault->id, 'entity_type_id' => $type->id]);
+
+        $this->assertTrue(new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->entities()[0]['isArchived']);
+    }
+
+    #[Test]
+    public function it_names_the_type_in_its_empty_state(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+
+        $this->assertSame('No Animals in this vault yet', new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->emptyTitle());
+    }
+
+    /** @return array{0: User, 1: Vault, 2: EntityType} */
+    private function vaultWithType(): array
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $type = EntityType::factory()->create(['account_id' => $user->account_id, 'name_plural' => 'Animals']);
+
+        return [$user, $vault, $type];
+    }
+}
