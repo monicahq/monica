@@ -3009,7 +3009,6 @@
     "Which sections a person page carries.": "人のページに含まれるセクション。",
     "Which template the contact uses.": "連絡先が使っているテンプレート。",
     "Which transport carries the email this instance sends.": "このインスタンスが送るメールを運ぶ送信方式。",
-    "Who :name is to the other people in this vault, once relationships exist.": "関係が作られると、:nameがこの保管庫の他の人にとってどういう存在かが分かります。",
     "Who :name is to the people you know. Each link is written both ways, so it shows on their page too.": "知り合いにとって :name がどんな存在か。各つながりは双方向に記録されるため、相手のページにも表示されます。",
     "Who changed what and when, and everything technical": "誰がいつ何を変更したか、および技術的な情報すべて",
     "Who holds this role": "この役割を担うのは誰か",

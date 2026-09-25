@@ -2,7 +2,6 @@
 {{-- @var \App\ViewModels\Vaults\ContactViewModel $viewModel --}}
 @php
   $vault = $viewModel->vault();
-  $unbuilt = $viewModel->unbuilt();
 @endphp
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:breadcrumb>
@@ -209,10 +208,6 @@
 
       <div class="flex flex-col gap-5">
         @include('app.vaults.contacts._immediate-family', ['family' => $viewModel->immediateFamily()])
-
-        <x-panel :title="__('Reminders')" icon="reminder">
-          <p class="text-sm text-pretty text-muted">{{ $unbuilt['reminders'] }}</p>
-        </x-panel>
       </div>
     </div>
   @else

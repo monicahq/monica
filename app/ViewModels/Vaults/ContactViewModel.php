@@ -575,17 +575,6 @@ class ContactViewModel
         return $facts;
     }
 
-    /** @return array<string, string> */
-    public function unbuilt(): array
-    {
-        $name = $this->contact->first_name ?? $this->contact->name;
-
-        return [
-            'relationships' => __('Who :name is to the other people in this vault, once relationships exist.', ['name' => $name]),
-            'reminders' => __('Birthdays and anything else you ask to be told about, in good time.'),
-        ];
-    }
-
     /** @return array<int, array<string, mixed>> */
     private function fieldsIn(StructureVersionSection $row): array
     {
