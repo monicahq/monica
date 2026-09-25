@@ -275,6 +275,12 @@ const navigateToSelected = () => {
                   {{ $t('Download as vCard') }}
                 </Link>
               </li>
+              <!-- export as json -->
+              <li class="mb-2">
+                <Link :href="route('contact.export.json', { contact: data.contact.id })" class="cursor-pointer text-blue-500 hover:underline">
+                  {{ $t('Exportar a JSON') }}
+                </Link>
+              </li>
               <!-- delete contact -->
               <li v-if="data.options.can_be_deleted">
                 <span class="cursor-pointer text-blue-500 hover:underline" @click="deletingContact = true">

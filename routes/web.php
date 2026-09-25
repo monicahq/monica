@@ -147,6 +147,7 @@ use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
+use App\Domains\Contact\ManageContact\Web\Controllers\ContactJsonExportController;
 
 Route::get('/', function () {
     if (! Auth::check()) {
@@ -255,7 +256,7 @@ Route::middleware([
                     Route::delete('', [ContactController::class, 'destroy'])->name('contact.destroy');
 
                     Route::post('vcard', [ContactVCardController::class, 'download'])->name('contact.vcard.download')->withoutMiddleware([HandleInertiaRequests::class]);
-
+                    Route::get('/contacts/{contact}/export/json', ContactJsonExportController::class)->name('contact.export.json');
                     // quick facts
                     Route::get('quickFacts/{template}', [ContactQuickFactController::class, 'show'])->name('contact.quick_fact.show');
                     Route::post('quickFacts/{template}', [ContactQuickFactController::class, 'store'])->name('contact.quick_fact.store');
