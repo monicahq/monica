@@ -156,6 +156,11 @@ class LifeEventFormBlock
         return $this->contact->first_name ?? $this->contact->name;
     }
 
+    public function vault(): Vault
+    {
+        return $this->vault;
+    }
+
     /**
      * The type the reader had chosen when the form came back refused, so the
      * panel opens where they were rather than at the start.
@@ -307,7 +312,7 @@ class LifeEventFormBlock
         return $this->lifeEvent->fieldValues()
             ->attached()
             ->whereNull('field_value_row_id')
-            ->with(['field', 'valueListItem', 'file'])
+            ->with(['field', 'valueListItem', 'file', 'relatedContact', 'relatedEntity'])
             ->get()
             ->keyBy('field_id');
     }

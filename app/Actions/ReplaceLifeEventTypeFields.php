@@ -8,9 +8,9 @@ use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
 use App\Enums\RepetitionOrderEnum;
 use App\Helpers\FieldSettingsCatalogue;
-use App\Models\LifeEventType;
 use App\Models\EntityType;
 use App\Models\Field;
+use App\Models\LifeEventType;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
@@ -378,7 +378,7 @@ class ReplaceLifeEventTypeFields
                 'repeat_max' => $settled['repeat_max'] = (int) $value,
                 'repetition_order' => $settled['repetition_order'] = RepetitionOrderEnum::tryFrom($value),
                 'relation_target' => $this->pointAt($settled, $value),
-                'accepted_mime_types' => $options['accepted_mime_types'] = $this->commaSeparated($value),
+                'accepted_mime_types' => $options['accepted_mime_types'] = FieldSettingsCatalogue::commaSeparated($value),
                 'max_length', 'min', 'max', 'decimals', 'max_choices' => $options[$setting['key']] = (int) $value,
                 default => $options[$setting['key']] = $value,
             };
@@ -394,22 +394,17 @@ class ReplaceLifeEventTypeFields
      */
     private function pointAt(array &$settled, string $value): void
     {
-        if ($value === RelationTargetEnum::Contact->value) {
-            $settled['relation_target'] = RelationTargetEnum::Contact;
+        [$target, $entityTypeId] = FieldSettingsCatalogue::target($value) ?? [RelationTargetEnum::Entity, null];
 
+        $settled['relation_target'] = $target;
+
+        if ($target === RelationTargetEnum::Contact) {
             return;
         }
 
-        $settled['relation_target'] = RelationTargetEnum::Entity;
         $settled['relation_entity_type'] = EntityType::query()
             ->where('account_id', $this->user->account_id)
-            ->find((int) str_replace(RelationTargetEnum::Entity->value.':', '', $value));
-    }
-
-    /** @return list<string> */
-    private function commaSeparated(string $value): array
-    {
-        return array_values(array_filter(array_map(trim(...), explode(',', $value)), fn (string $part): bool => $part !== ''));
+            ->find($entityTypeId);
     }
 
     /**

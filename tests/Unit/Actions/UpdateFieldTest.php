@@ -8,6 +8,7 @@ use App\Actions\UpdateField;
 use App\Enums\FieldTypeEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
+use App\Exceptions\AcceptedFileKindIsNotValid;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Jobs\LogUserAction;
 use App\Models\Field;
@@ -217,6 +218,58 @@ class UpdateFieldTest extends TestCase
         $this->expectException(PublishedVersionIsFrozen::class);
 
         new UpdateField(user: $user, field: $field->fresh(), label: 'Something else')->execute();
+    }
+
+    #[Test]
+    public function it_saves_the_kinds_of_file_a_field_takes(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $field = Field::factory()->create(['account_id' => $user->account_id, 'type' => FieldTypeEnum::File, 'label' => 'Contract']);
+
+        new UpdateField(
+            user: $user,
+            field: $field,
+            label: 'Contract',
+            options: ['accepted_mime_types' => ['application/pdf', 'image/png']],
+        )->execute();
+
+        $this->assertEquals(['accepted_mime_types' => ['application/pdf', 'image/png']], $field->refresh()->options);
+    }
+
+    #[Test]
+    public function it_refuses_a_kind_of_file_that_is_not_a_mime_type(): void
+    {
+        $user = User::factory()->create();
+        $field = Field::factory()->create(['account_id' => $user->account_id, 'type' => FieldTypeEnum::File]);
+
+        $this->expectException(AcceptedFileKindIsNotValid::class);
+
+        new UpdateField(user: $user, field: $field, label: 'Contract', options: ['accepted_mime_types' => ['pdf']])->execute();
+    }
+
+    #[Test]
+    public function it_refuses_more_kinds_of_file_than_a_field_may_take(): void
+    {
+        $user = User::factory()->create();
+        $field = Field::factory()->create(['account_id' => $user->account_id, 'type' => FieldTypeEnum::File]);
+        $kinds = array_map(fn (int $number): string => "application/x-dunder-{$number}", range(1, Field::MAX_ACCEPTED_MIME_TYPES + 1));
+
+        $this->expectException(AcceptedFileKindIsNotValid::class);
+
+        new UpdateField(user: $user, field: $field, label: 'Contract', options: ['accepted_mime_types' => $kinds])->execute();
+    }
+
+    #[Test]
+    public function it_refuses_an_image_field_taking_something_that_is_not_an_image(): void
+    {
+        $user = User::factory()->create();
+        $field = Field::factory()->create(['account_id' => $user->account_id, 'type' => FieldTypeEnum::Image]);
+
+        $this->expectException(AcceptedFileKindIsNotValid::class);
+
+        new UpdateField(user: $user, field: $field, label: 'Photo', options: ['accepted_mime_types' => ['image/png', 'application/pdf']])->execute();
     }
 
     #[Test]

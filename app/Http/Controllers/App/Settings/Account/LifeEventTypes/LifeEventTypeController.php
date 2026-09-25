@@ -12,6 +12,7 @@ use App\Actions\ReplaceLifeEventTypeFields;
 use App\Actions\UpdateLifeEventType;
 use App\Enums\FieldTypeEnum;
 use App\Enums\VaultColourEnum;
+use App\Exceptions\AcceptedFileKindIsNotValid;
 use App\Http\Controllers\Controller;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -69,29 +70,35 @@ class LifeEventTypeController extends Controller
 
         [$groups, $fields] = $this->layout($request);
 
-        $lifeEventType = DB::transaction(function () use ($request, $validated, $groups, $fields): LifeEventType {
-            $lifeEventType = new CreateLifeEventType(
-                user: $request->user(),
-                lifeEventCategory: $this->category($request, (int) $validated['life_event_category_id']),
-                name: $validated['name'],
-                description: $validated['description'] ?? null,
-                icon: $validated['icon'] ?? null,
-                colour: $validated['colour'] ?? null,
-            )->execute();
+        try {
+            $lifeEventType = DB::transaction(function () use ($request, $validated, $groups, $fields): LifeEventType {
+                $lifeEventType = new CreateLifeEventType(
+                    user: $request->user(),
+                    lifeEventCategory: $this->category($request, (int) $validated['life_event_category_id']),
+                    name: $validated['name'],
+                    description: $validated['description'] ?? null,
+                    icon: $validated['icon'] ?? null,
+                    colour: $validated['colour'] ?? null,
+                )->execute();
 
-            new ReplaceLifeEventTypeFields(
-                user: $request->user(),
-                lifeEventType: $lifeEventType,
-                groups: $groups,
-                fields: $fields,
-            )->execute();
+                new ReplaceLifeEventTypeFields(
+                    user: $request->user(),
+                    lifeEventType: $lifeEventType,
+                    groups: $groups,
+                    fields: $fields,
+                )->execute();
 
-            if (! $request->boolean('is_active')) {
-                new DeactivateLifeEventType(user: $request->user(), lifeEventType: $lifeEventType)->execute();
-            }
+                if (! $request->boolean('is_active')) {
+                    new DeactivateLifeEventType(user: $request->user(), lifeEventType: $lifeEventType)->execute();
+                }
 
-            return $lifeEventType;
-        });
+                return $lifeEventType;
+            });
+        } catch (AcceptedFileKindIsNotValid $e) {
+            return redirect()->route('settings.lifeEventTypes.new')
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
 
         return redirect()->route('settings.lifeEventTypes.category', $lifeEventType->lifeEventCategory)
             ->with('status', __('The type is added.'))
@@ -135,7 +142,7 @@ class LifeEventTypeController extends Controller
 
                 $this->settleAvailability($request, $lifeEventType);
             });
-        } catch (AuthorizationException $e) {
+        } catch (AuthorizationException|AcceptedFileKindIsNotValid $e) {
             return redirect()->route('settings.lifeEventTypes.edit', $lifeEventType)
                 ->withInput()
                 ->with('error', $e->getMessage());

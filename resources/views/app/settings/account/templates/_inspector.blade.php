@@ -44,6 +44,35 @@
             <p class="text-xs text-muted">{{ __('Fixed when the field was added. To change it, remove the field and add the one you want.') }}</p>
           </div>
 
+          @if ($field['isRelation'])
+            <div class="flex flex-col gap-1.5">
+              <p class="flex items-baseline gap-1.5 text-label text-ink">{{ __('Points at') }}</p>
+
+              <p class="rounded-md border border-hairline bg-sunken px-3 py-2 text-sm text-ink">{{ $field['relationTargetLabel'] }}</p>
+
+              <p class="text-xs text-muted">{{ __('Fixed when the field was added.') }}</p>
+
+              @if ($field['relationTargetIsInactive'])
+                <x-notice tone="warning">{{ __('This kind of record is turned off. Values already written stay.') }}</x-notice>
+              @endif
+            </div>
+          @endif
+
+          @if ($field['holdsAFile'])
+            <x-input
+              id="accepted_mime_types"
+              name="accepted_mime_types"
+              :value="old('accepted_mime_types', $field['acceptedMimeTypes'])"
+              :label="__('Kinds of file taken')"
+              optional
+              placeholder="image/png, application/pdf"
+              :help="__('Leave it empty to take any file. An image field takes images only.')"
+              :error="$errors->get('accepted_mime_types')"
+              maxlength="1000"
+              :disabled="! $viewModel->isEditable()"
+            />
+          @endif
+
           <x-input
             id="help_text"
             name="help_text"
@@ -112,6 +141,16 @@
             <x-button size="small" class="self-start">{{ __('Save the field') }}</x-button>
           @endif
         </x-form>
+
+        @if ($field['addInsideUrl'])
+          <div class="flex flex-col items-start gap-2.5 border-t border-hairline pt-4">
+            <p class="text-sm text-pretty text-muted">{{ __('What is asked on every repetition is added inside the repeater.') }}</p>
+
+            <x-button.secondary size="small" :href="$field['addInsideUrl']" data-turbo="true">
+              {{ __('Add a field inside') }}
+            </x-button.secondary>
+          </div>
+        @endif
 
         @if ($viewModel->isEditable())
           <div class="flex flex-col items-start gap-2.5 border-t border-hairline pt-4">

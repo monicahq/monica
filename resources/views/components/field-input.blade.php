@@ -13,6 +13,7 @@
   @var array<string, mixed>|null $reminder
   @var string|null $reminderName
   @var \Illuminate\Support\ViewErrorBag|null $messages
+  @var \App\Models\Vault|null $vault
 --}}
 @props([
   'field',
@@ -28,6 +29,7 @@
   'reminder' => null,
   'reminderName' => null,
   'messages' => null,
+  'vault' => null,
 ])
 
 @php
@@ -83,7 +85,23 @@
 
 @switch(true)
   @case($type->isRepeater())
-    <x-field-repetitions :field="$field" :rows="$rows" :error="$error" />
+    <x-field-repetitions :field="$field" :rows="$rows" :error="$error" :vault="$vault" />
+    @break
+
+  @case($type->isRelation() && $vault !== null)
+    @php
+      $related = $value?->relatedContact ?? $value?->relatedEntity;
+    @endphp
+
+    <x-record-picker
+      :id="$id"
+      :name="$name"
+      :url="route('fields.choices.index', ['vault' => $vault, 'field' => $field])"
+      :label="$field->label"
+      :chosen="$related?->uuid"
+      :chosen-name="$related?->name"
+      :error="$error"
+    />
     @break
 
   @case($type->holdsAFile())
@@ -380,7 +398,7 @@
     </fieldset>
     @break
 
-  @case($type->hasAnInput())
+  @case($type->hasAnInput() && ! $type->isRelation())
     <x-input
       :type="match ($type) {
           FieldTypeEnum::Number => 'number',

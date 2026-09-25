@@ -55,13 +55,9 @@ class StructureFileReader
 
     public const int MAX_ITEMS_PER_LIST = 500;
 
-    public const int MAX_MIME_TYPES = 20;
-
     public const int MAX_DEFAULT_VALUES = 50;
 
     private const string COLOUR = '/^#[0-9a-f]{6}$/';
-
-    private const string MIME_TYPE = '#^[a-z0-9!\#$&^_.+-]+/[a-z0-9!\#$&^_.+-]+$#';
 
     private int $fieldCount = 0;
 
@@ -701,12 +697,12 @@ class StructureFileReader
             return null;
         }
 
-        if (! is_array($accepted) || ! array_is_list($accepted) || count($accepted) > self::MAX_MIME_TYPES) {
+        if (! is_array($accepted) || ! array_is_list($accepted) || count($accepted) > Field::MAX_ACCEPTED_MIME_TYPES) {
             $this->refuse(__('A field in this file says which kinds of file it takes in a way that cannot be read, at :path.', ['path' => $path]));
         }
 
         foreach ($accepted as $mime) {
-            if (! is_string($mime) || preg_match(self::MIME_TYPE, $mime) !== 1) {
+            if (! is_string($mime) || preg_match(Field::MIME_TYPE_PATTERN, $mime) !== 1) {
                 $this->refuse(__('A field in this file takes a kind of file that is not named as a mime type.'));
             }
         }

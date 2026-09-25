@@ -419,7 +419,7 @@ return [
                 'The record is written on the published version of the template the vault uses for this kind. Everything is written together or nothing is: a value refused in any section leaves no record behind.',
                 'A field you leave out starts with the default its template gives it, as it would on a new contact. Send it empty to leave it empty.',
                 'A type the vault does not show answers 404. A type the vault still shows because it holds records of it answers 422 with the reason on name when the type was turned off, when the vault has no published template for it, or when that template requires something that cannot be filled in here.',
-                'Relation fields cannot be filled in here yet, and neither can a repeating group that requires one.',
+                'A relation field takes the id of the record it names: a contact, or a record of the kind the field points at. It has to be in the same vault, and anything else answers 422 on that field.',
             ],
             'rateLimit' => 'Sixty requests per minute, per token.',
             'pathParams' => $entityPathParams,

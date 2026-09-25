@@ -149,7 +149,8 @@ class FieldTest extends TestCase
     public function it_can_be_filled_in_when_it_has_a_control_of_its_own(): void
     {
         $this->assertTrue(Field::factory()->create()->canBeFilledIn());
-        $this->assertFalse(Field::factory()->relation()->create()->canBeFilledIn());
+        $this->assertTrue(Field::factory()->relation()->create()->canBeFilledIn());
+        $this->assertFalse(Field::factory()->create(['type' => FieldTypeEnum::Avatar])->canBeFilledIn());
         $this->assertFalse(Field::factory()->layout()->create()->canBeFilledIn());
     }
 
@@ -165,10 +166,11 @@ class FieldTest extends TestCase
 
         $this->assertTrue($caregivers->refresh()->canBeFilledIn());
 
-        Field::factory()->relation()->create([
+        Field::factory()->create([
             'section_version_id' => $caregivers->section_version_id,
             'parent_field_id' => $caregivers->id,
-            'label' => 'Person',
+            'type' => FieldTypeEnum::Avatar,
+            'label' => 'Portrait',
             'is_required' => true,
         ]);
 

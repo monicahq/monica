@@ -66,6 +66,8 @@ class UpdateField
             throw new ModelNotFoundException('This value list is in another account.');
         }
 
+        Field::refuseKindsItCannotTake($this->field->type, $this->options);
+
         if ($this->field->type->usesValueList() && $this->valueList === null) {
             throw new InvalidArgumentException('A field that offers choices has to say which list they come from.');
         }

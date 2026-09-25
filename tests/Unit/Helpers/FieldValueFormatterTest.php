@@ -8,6 +8,8 @@ use App\Enums\DateFormatEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NumberFormatEnum;
 use App\Helpers\FieldValueFormatter;
+use App\Models\Contact;
+use App\Models\Entity;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\User;
@@ -28,6 +30,21 @@ class FieldValueFormatterTest extends TestCase
 
         $this->assertEquals('Scranton', new FieldValueFormatter($user)->format(
             $this->value($user, FieldTypeEnum::Text, ['value_string' => 'Scranton']),
+        ));
+    }
+
+    #[Test]
+    public function it_reads_a_relation_back_as_the_name_of_the_record_it_names(): void
+    {
+        $user = User::factory()->create();
+        $jan = Contact::factory()->create(['account_id' => $user->account_id, 'first_name' => 'Jan', 'last_name' => 'Levinson']);
+        $sprinkles = Entity::factory()->create(['name' => 'Sprinkles']);
+
+        $this->assertEquals('Jan Levinson', new FieldValueFormatter($user)->format(
+            $this->value($user, FieldTypeEnum::Relation, ['related_contact_id' => $jan->id]),
+        ));
+        $this->assertEquals('Sprinkles', new FieldValueFormatter($user)->format(
+            $this->value($user, FieldTypeEnum::Relation, ['related_entity_id' => $sprinkles->id]),
         ));
     }
 

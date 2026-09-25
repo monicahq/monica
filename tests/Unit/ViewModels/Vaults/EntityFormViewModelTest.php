@@ -39,19 +39,19 @@ class EntityFormViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_out_relation_and_avatar_fields(): void
+    public function it_draws_relation_fields_and_leaves_out_avatar_fields(): void
     {
         [$user, $vault, $type] = $this->farm();
         $version = $this->entityDefaultCarrying($vault, $type, [
             'Animal details' => ['species' => FieldTypeEnum::Text, 'owner' => FieldTypeEnum::Relation, 'picture' => FieldTypeEnum::Avatar],
-            'People' => ['keeper' => FieldTypeEnum::Relation],
+            'Photos' => ['portrait' => FieldTypeEnum::Avatar],
         ]);
 
         $pages = $this->viewModel($user, $vault, $type, $version)->pages();
 
         $this->assertSame(['Animal details'], array_column($pages[0]['sections'], 'name'));
         $this->assertSame(
-            ['Species'],
+            ['Species', 'Owner'],
             array_map(fn (array $field): string => $field['field']->label, $pages[0]['sections'][0]['fields']),
         );
     }

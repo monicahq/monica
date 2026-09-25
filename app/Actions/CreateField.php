@@ -84,6 +84,8 @@ class CreateField
             throw new ModelNotFoundException('This entity type is in another account.');
         }
 
+        Field::refuseKindsItCannotTake($this->type, $this->options);
+
         $this->validateParent();
 
         if ($this->type->usesValueList() && $this->valueList === null) {

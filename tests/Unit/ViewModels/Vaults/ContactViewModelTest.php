@@ -192,7 +192,7 @@ class ContactViewModelTest extends TestCase
 
         $field = Field::query()->where('label', 'Doctor')->firstOrFail();
         $field->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
-        $field->update(['type' => FieldTypeEnum::Relation]);
+        $field->update(['type' => FieldTypeEnum::Avatar]);
 
         $sections = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health'))->sections();
 

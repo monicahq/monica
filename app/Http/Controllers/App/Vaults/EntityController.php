@@ -70,7 +70,7 @@ class EntityController extends Controller
                 'label_wordings' => ['array'],
                 'year_is_unknown' => ['array'],
                 'month_is_unknown' => ['array'],
-            ], FieldValueRules::for($fields)),
+            ], FieldValueRules::for($fields, $vault)),
             [],
             $fields->mapWithKeys(fn (Field $field): array => ["fields.{$field->id}" => mb_strtolower($field->label)])->all(),
         );

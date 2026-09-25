@@ -28,6 +28,7 @@ class ContactLifeEventFieldController extends Controller
         return view('app.vaults.contacts._life-event-fields', [
             'lifeEventType' => $lifeEventType,
             'fields' => $form->fieldsOf($lifeEventType),
+            'vault' => $vault,
         ]);
     }
 }

@@ -194,7 +194,7 @@ class SharedContactViewModel
         return $row->sectionVersion->fields
             ->whereNull('parent_field_id')
             ->filter(fn (Field $field): bool => $field->type->storesValue())
-            ->reject(fn (Field $field): bool => $field->type->holdsAFile() || $field->type->isRepeater())
+            ->reject(fn (Field $field): bool => $field->type->holdsAFile() || $field->type->isRepeater() || $field->type->isRelation())
             ->reject(fn (Field $field): bool => $field->is_sensitive && ! $this->shareLink->includes_sensitive_fields)
             ->values();
     }

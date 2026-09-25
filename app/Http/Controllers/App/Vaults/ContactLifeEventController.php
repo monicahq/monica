@@ -42,7 +42,7 @@ class ContactLifeEventController extends Controller
 
         $lifeEventType = $this->typeFrom($request, $validated);
 
-        $values = $this->valuesFrom($request, $lifeEventType->structure?->publishedVersion);
+        $values = $this->valuesFrom($request, $vault, $lifeEventType->structure?->publishedVersion);
 
         $participants = $this->participantsFrom($vault, $contact, $validated);
 
@@ -106,7 +106,7 @@ class ContactLifeEventController extends Controller
                 ? $lifeEvent->structureVersion
                 : $lifeEventType->structure?->publishedVersion;
 
-            $values = $this->valuesFrom($request, $version);
+            $values = $this->valuesFrom($request, $vault, $version);
         } catch (ValidationException $e) {
             throw $e->redirectTo($editUrl);
         }
@@ -188,12 +188,12 @@ class ContactLifeEventController extends Controller
     }
 
     /** @return array<int, mixed> */
-    private function valuesFrom(Request $request, ?StructureVersion $version): array
+    private function valuesFrom(Request $request, Vault $vault, ?StructureVersion $version): array
     {
         $fields = $version?->inputFields() ?? new Collection;
 
         return $request->validate(
-            FieldValueRules::for($fields),
+            FieldValueRules::for($fields, $vault),
             [],
             $fields->mapWithKeys(fn (Field $field): array => ["fields.{$field->id}" => mb_strtolower($field->label)])->all(),
         )['fields'] ?? [];

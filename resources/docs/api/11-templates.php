@@ -891,7 +891,7 @@ return [
                 ['name' => 'is_unique', 'type' => 'boolean', 'required' => false, 'description' => 'Whether two records may hold the same value.'],
                 ['name' => 'value_list_id', 'type' => 'integer', 'required' => false, 'description' => 'The list a field offering choices takes them from.'],
                 ['name' => 'default_value', 'type' => 'object', 'required' => false, 'description' => 'What the field starts filled with.'],
-                ['name' => 'options', 'type' => 'object', 'required' => false, 'description' => 'Settings belonging to this kind of field alone.'],
+                ['name' => 'options', 'type' => 'object', 'required' => false, 'description' => 'Settings belonging to this kind of field alone. A file or image field takes accepted_mime_types, a list of at most 20 mime types such as image/png, and an image field takes image types only. Anything else answers 422 on options.'],
                 ['name' => 'validation', 'type' => 'object', 'required' => false, 'description' => 'Extra rules a value has to satisfy.'],
                 ['name' => 'repeat_min', 'type' => 'integer', 'required' => false, 'description' => 'The fewest repetitions allowed.'],
                 ['name' => 'repeat_max', 'type' => 'integer', 'required' => false, 'description' => 'The most repetitions allowed.'],

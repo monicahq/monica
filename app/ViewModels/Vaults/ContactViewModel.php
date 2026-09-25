@@ -61,7 +61,7 @@ class ContactViewModel
             ->fieldValues()
             ->attached()
             ->whereNull('field_value_row_id')
-            ->with(['field', 'valueListItem', 'file.vault'])
+            ->with(['field', 'valueListItem', 'file.vault', 'relatedContact', 'relatedEntity'])
             ->get()
             ->keyBy('field_id'));
     }
@@ -699,7 +699,7 @@ class ContactViewModel
     {
         return once(fn (): Collection => $this->contact
             ->fieldValueRows()
-            ->with(['values' => fn ($query) => $query->attached()->with(['field', 'valueListItem', 'file.vault'])])
+            ->with(['values' => fn ($query) => $query->attached()->with(['field', 'valueListItem', 'file.vault', 'relatedContact', 'relatedEntity'])])
             ->orderBy('position')
             ->orderBy('id')
             ->get()

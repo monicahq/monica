@@ -247,6 +247,7 @@
           @include('app.vaults.contacts._life-event-fields', [
             'lifeEventType' => $oldType,
             'fields' => $oldType ? $form->fieldsOf($oldType) : [],
+            'vault' => $form->vault(),
           ])
 
           <div class="flex flex-wrap gap-2">

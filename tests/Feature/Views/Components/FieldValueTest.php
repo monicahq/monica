@@ -129,7 +129,7 @@ class FieldValueTest extends TestCase
     #[Test]
     public function a_type_nothing_can_fill_in_yet_says_that_rather_than_reading_as_empty(): void
     {
-        $this->render(new Field(['type' => FieldTypeEnum::Relation, 'label' => 'Introduced by']), null, null)
+        $this->render(new Field(['type' => FieldTypeEnum::Avatar, 'label' => 'Portrait']), null, null)
             ->assertSee('This kind of field cannot be filled in here yet.');
     }
 

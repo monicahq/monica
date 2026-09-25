@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\RelationTargetEnum;
 use App\Enums\RepetitionOrderEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
+use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
@@ -235,6 +237,46 @@ class FieldControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_adds_a_relation_pointing_at_a_kind_of_record(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $animals = EntityType::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->post(route('settings.fields.create', [$template, $row]), [
+            'type' => FieldTypeEnum::Relation->value,
+            'label' => 'Mother',
+            'relation_target' => "entity:{$animals->id}",
+        ])->assertRedirect();
+
+        $this->assertDatabaseHas('fields', [
+            'label' => 'Mother',
+            'relation_target' => RelationTargetEnum::Entity->value,
+            'relation_entity_type_id' => $animals->id,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_relation_pointing_at_a_kind_of_record_that_is_turned_off(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $animals = EntityType::factory()->create(['account_id' => $user->account_id, 'is_active' => false]);
+
+        $this->actingAs($user)->post(route('settings.fields.create', [$template, $row]), [
+            'type' => FieldTypeEnum::Relation->value,
+            'label' => 'Mother',
+            'relation_target' => "entity:{$animals->id}",
+        ])->assertSessionHasErrors('relation_target');
+
+        $this->assertDatabaseMissing('fields', ['label' => 'Mother']);
+    }
+
+    #[Test]
     public function it_refuses_a_type_the_first_version_does_not_ship(): void
     {
         Queue::fake();
@@ -361,6 +403,72 @@ class FieldControllerTest extends TestCase
         $this->actingAs($user)->put(route('settings.fields.update', [$template, $row, $field]), ['label' => 'Mass']);
 
         $this->assertEquals('weight', $field->fresh()->key);
+    }
+
+    #[Test]
+    public function it_keeps_the_settings_the_inspector_does_not_show(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $field = Field::factory()->create([
+            'section_version_id' => $row->section_version_id,
+            'key' => 'person',
+            'type' => FieldTypeEnum::Text,
+            'is_unique' => true,
+            'default_value' => ['Dwight Schrute'],
+            'options' => ['distinct_in_list' => true],
+        ]);
+
+        $this->actingAs($user)->put(route('settings.fields.update', [$template, $row, $field]), ['label' => 'Caregiver'])
+            ->assertRedirect();
+
+        $field->refresh();
+
+        $this->assertEquals('Caregiver', $field->label);
+        $this->assertTrue($field->is_unique);
+        $this->assertEquals(['Dwight Schrute'], $field->default_value);
+        $this->assertEquals(['distinct_in_list' => true], $field->options);
+    }
+
+    #[Test]
+    public function it_saves_the_kinds_of_file_a_field_takes_and_keeps_its_other_settings(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $field = Field::factory()->create([
+            'section_version_id' => $row->section_version_id,
+            'key' => 'photo',
+            'type' => FieldTypeEnum::Image,
+            'options' => ['accepted_mime_types' => ['image/gif'], 'shown_large' => true],
+        ]);
+
+        $this->actingAs($user)->put(route('settings.fields.update', [$template, $row, $field]), [
+            'label' => 'Photo',
+            'accepted_mime_types' => 'image/png, image/jpeg,',
+        ])->assertRedirect();
+
+        $this->assertEquals(['shown_large' => true, 'accepted_mime_types' => ['image/png', 'image/jpeg']], $field->refresh()->options);
+    }
+
+    #[Test]
+    public function it_refuses_a_kind_of_file_that_is_not_a_mime_type(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $field = Field::factory()->create(['section_version_id' => $row->section_version_id, 'key' => 'contract', 'type' => FieldTypeEnum::File]);
+
+        $this->actingAs($user)->put(route('settings.fields.update', [$template, $row, $field]), [
+            'label' => 'Contract',
+            'accepted_mime_types' => 'pdf',
+        ])->assertSessionHasErrors('accepted_mime_types');
+
+        $this->assertNull($field->refresh()->options);
     }
 
     #[Test]

@@ -124,6 +124,7 @@ class CreateEntity
     private function defaults(): array
     {
         return $this->version->inputFields()
+            ->reject(fn (Field $field): bool => $field->type->isRelation())
             ->filter(fn (Field $field): bool => $field->default_value !== null)
             ->mapWithKeys(fn (Field $field): array => [
                 $field->id => is_array($field->default_value) && $field->type !== FieldTypeEnum::Multiselect

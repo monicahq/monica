@@ -17,8 +17,11 @@ use App\Enums\RepetitionOrderEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\FieldIsRequired;
+use App\Exceptions\FieldValueIsNotUnique;
 use App\Exceptions\ReminderNeedsADate;
 use App\Models\Contact;
+use App\Models\Entity;
+use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
@@ -643,17 +646,83 @@ class SetFieldValuesTest extends TestCase
 
         $user = User::factory()->create();
         $contact = $this->contactOf($user);
-        $relation = $this->fieldOn($contact, ['type' => FieldTypeEnum::Relation, 'is_required' => true]);
+        $avatar = $this->fieldOn($contact, ['type' => FieldTypeEnum::Avatar, 'is_required' => true]);
 
         $written = new SetFieldValues(
             user: $user,
             record: $contact,
-            section: $this->sectionOf($relation),
-            values: [$relation->id => 'anything'],
+            section: $this->sectionOf($avatar),
+            values: [$avatar->id => 'anything'],
         )->execute();
 
         $this->assertSame(0, $written);
         $this->assertSame(0, FieldValue::query()->count());
+    }
+
+    #[Test]
+    public function it_writes_a_relation_to_somebody_by_their_uuid(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $manager = $this->fieldOn($contact, ['type' => FieldTypeEnum::Relation, 'relation_target' => RelationTargetEnum::Contact]);
+        $michael = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $contact->vault_id]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($manager),
+            values: [$manager->id => $michael->uuid],
+        )->execute();
+
+        $this->assertDatabaseHas('field_values', ['field_id' => $manager->id, 'related_contact_id' => $michael->id]);
+    }
+
+    #[Test]
+    public function it_writes_a_relation_to_a_record_by_its_uuid(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $animals = EntityType::factory()->create(['account_id' => $user->account_id]);
+        $pet = $this->fieldOn($contact, [
+            'type' => FieldTypeEnum::Relation,
+            'relation_target' => RelationTargetEnum::Entity,
+            'relation_entity_type_id' => $animals->id,
+        ]);
+        $sprinkles = Entity::factory()->create(['vault_id' => $contact->vault_id, 'entity_type_id' => $animals->id]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($pet),
+            values: [$pet->id => $sprinkles->uuid],
+        )->execute();
+
+        $this->assertDatabaseHas('field_values', ['field_id' => $pet->id, 'related_entity_id' => $sprinkles->id]);
+    }
+
+    #[Test]
+    public function it_refuses_a_relation_to_somebody_of_another_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $manager = $this->fieldOn($contact, ['type' => FieldTypeEnum::Relation, 'relation_target' => RelationTargetEnum::Contact]);
+        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
+        $karen = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $elsewhere->id]);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($manager),
+            values: [$manager->id => $karen->uuid],
+        )->execute();
     }
 
     #[Test]
@@ -922,6 +991,62 @@ class SetFieldValuesTest extends TestCase
             record: $contact,
             section: $this->sectionOf($caregivers),
             values: [$caregivers->id => [['values' => [$role->id => 'Pet sitter']]]],
+        )->execute();
+    }
+
+    #[Test]
+    public function it_writes_the_person_each_caregiver_row_names(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $caregivers = $this->fieldOn($contact, ['key' => 'caregivers', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $person = $this->childOf($caregivers, ['key' => 'caregiver_person', 'type' => FieldTypeEnum::Relation, 'relation_target' => RelationTargetEnum::Contact]);
+        $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $contact->vault_id]);
+        $angela = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $contact->vault_id]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($caregivers),
+            values: [$caregivers->id => [
+                ['values' => [$person->id => $dwight->uuid]],
+                ['values' => [$person->id => $angela->uuid]],
+            ]],
+        )->execute();
+
+        $this->assertSame(2, FieldValueRow::query()->count());
+        $this->assertDatabaseHas('field_values', ['field_id' => $person->id, 'related_contact_id' => $dwight->id]);
+        $this->assertDatabaseHas('field_values', ['field_id' => $person->id, 'related_contact_id' => $angela->id]);
+    }
+
+    #[Test]
+    public function it_refuses_the_same_caregiver_twice_in_a_list_that_asks_for_distinct_people(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $caregivers = $this->fieldOn($contact, ['key' => 'caregivers', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $person = $this->childOf($caregivers, [
+            'key' => 'caregiver_person',
+            'type' => FieldTypeEnum::Relation,
+            'relation_target' => RelationTargetEnum::Contact,
+            'options' => ['distinct_in_list' => true],
+        ]);
+        $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $contact->vault_id]);
+
+        $this->expectException(FieldValueIsNotUnique::class);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($caregivers),
+            values: [$caregivers->id => [
+                ['values' => [$person->id => $dwight->uuid]],
+                ['values' => [$person->id => $dwight->uuid]],
+            ]],
         )->execute();
     }
 

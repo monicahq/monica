@@ -5,11 +5,17 @@ declare(strict_types=1);
 namespace App\ViewModels\Settings\Account\Templates;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\RelationTargetEnum;
+use App\Models\EntityType;
 use App\Models\ValueList;
 use Illuminate\Support\Collection;
 
 class FieldCatalogueViewModel
 {
+    public function __construct(
+        private readonly bool $insideARepeater = false,
+    ) {}
+
     /**
      * @return array<int, array{name: string, blurb: string, types: array<int, array{key: string, label: string, description: string, example: string, mark: string, preview: array<string, mixed>, isAvailable: bool}>}>
      */
@@ -19,7 +25,7 @@ class FieldCatalogueViewModel
             'name' => $family['name'],
             'blurb' => $family['blurb'],
             'types' => array_map(self::describe(...), $family['types']),
-        ], self::catalogue());
+        ], $this->offered());
     }
 
     /**
@@ -29,7 +35,7 @@ class FieldCatalogueViewModel
     {
         return array_merge(...array_map(
             fn (array $family): array => array_map(self::describe(...), $family['types']),
-            self::catalogue(),
+            $this->offered(),
         ));
     }
 
@@ -115,6 +121,30 @@ class FieldCatalogueViewModel
         ));
     }
 
+    /** @return array<int, string> */
+    public function relationTypes(): array
+    {
+        return array_values(array_map(
+            fn (FieldTypeEnum $type): string => $type->value,
+            array_filter(FieldTypeEnum::cases(), fn (FieldTypeEnum $type): bool => $type->isRelation()),
+        ));
+    }
+
+    /**
+     * @param  Collection<int, EntityType>  $entityTypes
+     * @return array<string, string>
+     */
+    public function relationTargets(Collection $entityTypes): array
+    {
+        $targets = [RelationTargetEnum::Contact->value => __('Somebody in the vault')];
+
+        foreach ($entityTypes as $entityType) {
+            $targets[RelationTargetEnum::Entity->value.':'.$entityType->id] = $entityType->name_plural;
+        }
+
+        return $targets;
+    }
+
     /**
      * @param  Collection<int, ValueList>  $valueLists
      * @return array<string, int>
@@ -168,6 +198,27 @@ class FieldCatalogueViewModel
             'preview' => $type['preview'],
             'isAvailable' => FieldTypeEnum::tryFrom($type['key']) !== null,
         ];
+    }
+
+    /**
+     * The families shown on the screen. A field added inside a repeater cannot
+     * be a repeater itself, so that one is left out there.
+     *
+     * @return array<int, array{name: string, blurb: string, types: array<int, array{key: string, label: string, description: string, example: string, mark: string, preview: array<string, mixed>}>}>
+     */
+    private function offered(): array
+    {
+        if (! $this->insideARepeater) {
+            return self::catalogue();
+        }
+
+        return array_map(fn (array $family): array => [
+            ...$family,
+            'types' => array_values(array_filter(
+                $family['types'],
+                fn (array $type): bool => $type['key'] !== FieldTypeEnum::Repeater->value,
+            )),
+        ], self::catalogue());
     }
 
     /**

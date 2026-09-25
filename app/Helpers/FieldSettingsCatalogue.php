@@ -123,6 +123,39 @@ class FieldSettingsCatalogue
     }
 
     /**
+     * Read what a relation points at out of the value a screen sent for it:
+     * `contact`, or `entity:` followed by the number of an entity type. The
+     * number is not looked up here, since only the caller knows whose it is.
+     *
+     * @return array{0: RelationTargetEnum, 1: int|null}|null
+     */
+    public static function target(string $value): ?array
+    {
+        if ($value === RelationTargetEnum::Contact->value) {
+            return [RelationTargetEnum::Contact, null];
+        }
+
+        $prefix = RelationTargetEnum::Entity->value.':';
+
+        if (! str_starts_with($value, $prefix) || ! ctype_digit(substr($value, strlen($prefix)))) {
+            return null;
+        }
+
+        return [RelationTargetEnum::Entity, (int) substr($value, strlen($prefix))];
+    }
+
+    /**
+     * Split a line of several things written one after the other, dropping the
+     * blanks a stray comma leaves behind.
+     *
+     * @return list<string>
+     */
+    public static function commaSeparated(string $value): array
+    {
+        return array_values(array_filter(array_map(trim(...), explode(',', $value)), fn (string $part): bool => $part !== ''));
+    }
+
+    /**
      * @param  array<int, string>  $entityTypes
      * @return array<string, string>
      */

@@ -70,12 +70,12 @@ class FieldTypeEnumTest extends TestCase
         $this->assertTrue(FieldTypeEnum::RecurringDate->hasAnInput());
         $this->assertTrue(FieldTypeEnum::Multiselect->hasAnInput());
         $this->assertTrue(FieldTypeEnum::Address->hasAnInput());
+        $this->assertTrue(FieldTypeEnum::Relation->hasAnInput());
     }
 
     #[Test]
     public function it_says_which_types_still_need_machinery_of_their_own(): void
     {
-        $this->assertFalse(FieldTypeEnum::Relation->hasAnInput());
         $this->assertFalse(FieldTypeEnum::Avatar->hasAnInput());
     }
 

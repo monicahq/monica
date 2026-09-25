@@ -62,6 +62,7 @@ use App\Http\Controllers\App\Settings\Account\Security\RecoveryCodeController;
 use App\Http\Controllers\App\Settings\Account\Security\SecurityController;
 use App\Http\Controllers\App\Settings\Account\Security\SsoController;
 use App\Http\Controllers\App\Settings\Account\Security\TwoFactorController;
+use App\Http\Controllers\App\Settings\Account\Templates\ChildFieldController;
 use App\Http\Controllers\App\Settings\Account\Templates\FieldController;
 use App\Http\Controllers\App\Settings\Account\Templates\FieldPositionController;
 use App\Http\Controllers\App\Settings\Account\Templates\SectionExportController;
@@ -111,6 +112,7 @@ use App\Http\Controllers\App\Vaults\ContactShareLinkController;
 use App\Http\Controllers\App\Vaults\ContactStructureVersionController;
 use App\Http\Controllers\App\Vaults\ContactVCardController;
 use App\Http\Controllers\App\Vaults\EntityController;
+use App\Http\Controllers\App\Vaults\FieldChoiceController;
 use App\Http\Controllers\App\Vaults\FileController;
 use App\Http\Controllers\App\Vaults\ReminderController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceDismissalController;
@@ -180,6 +182,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('vaults/{vault}/contact-list-columns', [ContactListColumnController::class, 'update'])->name('contactListColumns.update');
 
     Route::get('vaults/{vault}/entities/{entityType}', [EntityController::class, 'index'])->name('entities.index');
+    Route::get('vaults/{vault}/fields/{field}/choices', [FieldChoiceController::class, 'index'])->whereNumber('field')->name('fields.choices.index');
     Route::get('vaults/{vault}/entities/{entityType}/new', [EntityController::class, 'new'])->name('entities.new');
     Route::post('vaults/{vault}/entities/{entityType}', [EntityController::class, 'create'])->name('entities.create');
 
@@ -476,6 +479,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('settings/account/templates/{template}/sections/{structureVersionSection}/page', [TemplateSectionPageController::class, 'update'])->whereNumber('structureVersionSection')->name('settings.templateSectionPage.update');
 
     Route::get('settings/account/templates/{template}/sections/{structureVersionSection}/fields/new', [FieldController::class, 'new'])->whereNumber('structureVersionSection')->name('settings.fields.new');
+    Route::get('settings/account/templates/{template}/sections/{structureVersionSection}/fields/{field}/fields/new', [ChildFieldController::class, 'new'])->whereNumber(['structureVersionSection', 'field'])->name('settings.childFields.new');
     Route::post('settings/account/templates/{template}/sections/{structureVersionSection}/fields', [FieldController::class, 'create'])->whereNumber('structureVersionSection')->name('settings.fields.create');
     Route::put('settings/account/templates/{template}/sections/{structureVersionSection}/fields/{field}', [FieldController::class, 'update'])->whereNumber(['structureVersionSection', 'field'])->name('settings.fields.update');
     Route::delete('settings/account/templates/{template}/sections/{structureVersionSection}/fields/{field}', [FieldController::class, 'destroy'])->whereNumber(['structureVersionSection', 'field'])->name('settings.fields.destroy');

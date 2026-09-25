@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\RelationTargetEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
@@ -353,6 +354,12 @@ class SetFieldValues
             return;
         }
 
+        if ($field->type->isRelation()) {
+            $this->saveTheRelation($field, (string) $given, $row);
+
+            return;
+        }
+
         new SetFieldValue(
             user: $this->user,
             valuable: $this->record,
@@ -366,6 +373,26 @@ class SetFieldValues
             valueListItems: $this->chosenItems($field, $given),
             yearIsUnknown: (bool) ($this->yearIsUnknown[$field->id] ?? false),
             monthIsUnknown: (bool) ($this->monthIsUnknown[$field->id] ?? false),
+        )->execute();
+
+        $this->written++;
+    }
+
+    private function saveTheRelation(Field $field, string $uuid, ?FieldValueRow $row): void
+    {
+        $pointsAtSomebody = $field->relation_target === RelationTargetEnum::Contact;
+
+        new SetFieldValue(
+            user: $this->user,
+            valuable: $this->record,
+            field: $field,
+            row: $row,
+            relatedContact: $pointsAtSomebody
+                ? Contact::query()->where('vault_id', $this->record->vault_id)->where('uuid', $uuid)->first()
+                : null,
+            relatedEntity: $pointsAtSomebody
+                ? null
+                : Entity::query()->where('vault_id', $this->record->vault_id)->where('uuid', $uuid)->first(),
         )->execute();
 
         $this->written++;

@@ -300,10 +300,10 @@ class FieldInputTest extends TestCase
     public function an_address_no_longer_says_it_cannot_be_filled_in_here(): void
     {
         $address = $this->addressField();
-        $relation = Field::factory()->create(['type' => FieldTypeEnum::Relation]);
+        $divider = Field::factory()->layout()->create();
 
         $this->render($address)->assertDontSee('This kind of field cannot be filled in here yet.');
-        $this->render($relation)->assertSee('This kind of field cannot be filled in here yet.');
+        $this->render($divider)->assertSee('This kind of field cannot be filled in here yet.');
     }
 
     #[Test]

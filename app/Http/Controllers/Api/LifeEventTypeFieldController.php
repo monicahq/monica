@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Actions\ReplaceLifeEventTypeFields;
 use App\Enums\FieldTypeEnum;
+use App\Exceptions\AcceptedFileKindIsNotValid;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StructureVersionSectionResource;
 use App\Models\LifeEventType;
@@ -52,7 +53,7 @@ class LifeEventTypeFieldController extends Controller
                 groups: $this->groups($request),
                 fields: $this->fields($request),
             )->execute();
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException|AcceptedFileKindIsNotValid $e) {
             throw ValidationException::withMessages(['fields' => $e->getMessage()]);
         }
 

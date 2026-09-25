@@ -43,6 +43,29 @@ class SharedContactViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_never_names_the_people_a_relation_points_at(): void
+    {
+        $contact = $this->sharedContact();
+        $lives = Field::query()->where('label', 'Lives')->firstOrFail();
+        $boss = Field::factory()->relation()->create(['section_version_id' => $lives->section_version_id, 'label' => 'Boss']);
+        $david = Contact::factory()->create(['vault_id' => $contact->vault_id, 'first_name' => 'David', 'last_name' => 'Wallace']);
+        FieldValue::factory()->create([
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $boss->id,
+            'field_key' => $boss->key,
+            'value_string' => null,
+            'related_contact_id' => $david->id,
+        ]);
+
+        $sections = $this->viewModel($this->linkOnto($contact), $contact)->sections();
+
+        $this->assertSame([['label' => 'Lives', 'value' => 'Scranton']], $sections[0]['fields']);
+    }
+
+    #[Test]
     public function it_carries_the_mark_of_each_section_it_draws(): void
     {
         $contact = $this->sharedContact();

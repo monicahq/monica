@@ -11,6 +11,7 @@ use App\Actions\UpdateField;
 use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
 use App\Enums\RepetitionOrderEnum;
+use App\Exceptions\AcceptedFileKindIsNotValid;
 use App\Exceptions\CannotNestARepeater;
 use App\Http\Resources\FieldResource;
 use App\Models\EntityType;
@@ -42,7 +43,7 @@ class FieldController extends TemplateScopedController
             'relation_entity_type_id' => [
                 'nullable',
                 'string',
-                Rule::exists('entity_types', 'uuid')->where('account_id', $request->user()->account_id),
+                Rule::exists('entity_types', 'uuid')->where('account_id', $request->user()->account_id)->where('is_active', true),
             ],
             'parent_id' => ['nullable', 'integer'],
         ]);
@@ -126,6 +127,8 @@ class FieldController extends TemplateScopedController
             )->execute();
         } catch (InvalidArgumentException $e) {
             throw ValidationException::withMessages(['value_list_id' => $e->getMessage()]);
+        } catch (AcceptedFileKindIsNotValid $e) {
+            throw ValidationException::withMessages(['options' => $e->getMessage()]);
         }
 
         return new FieldResource($field->refresh())->response()->setStatusCode(200);

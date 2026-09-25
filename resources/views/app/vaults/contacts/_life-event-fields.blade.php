@@ -2,6 +2,7 @@
 {{--
   @var \App\Models\LifeEventType|null $lifeEventType
   @var array<int, array{id: int, label: string, field: \App\Models\Field, rawValue: \App\Models\FieldValue|null, hasOldValue: bool}> $fields
+  @var \App\Models\Vault $vault
 --}}
 <div id="life-event-custom-fields" x-merge="replace" class="flex flex-col gap-3.5">
   @foreach ($fields as $field)
@@ -25,6 +26,7 @@
         :reminder="null"
         :messages="$errors"
         :error="$errors->get('fields.'.$field['id'])"
+        :vault="$vault"
       />
 
       <button type="button" x-on:click="closePiece('field-{{ $field['id'] }}')" aria-label="{{ __('Remove :name', ['name' => $field['label']]) }}" class="focus-ring absolute top-0 right-0 rounded-sm text-xs font-medium text-muted hover:text-ink hover:underline">{{ __('Remove') }}</button>

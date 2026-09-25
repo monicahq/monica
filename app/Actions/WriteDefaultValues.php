@@ -42,7 +42,7 @@ class WriteDefaultValues
         return $this->record->structureVersion->assembly
             ->flatMap(fn ($row): Collection => $row->sectionVersion->fields)
             ->whereNull('parent_field_id')
-            ->filter(fn (Field $field): bool => $field->type->hasAnInput())
+            ->filter(fn (Field $field): bool => $field->type->hasAnInput() && ! $field->type->isRelation())
             ->filter(fn (Field $field): bool => $field->default_value !== null)
             ->values();
     }

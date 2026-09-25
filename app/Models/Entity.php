@@ -242,6 +242,26 @@ class Entity extends Model
     }
 
     /**
+     * Scope the query to the records whose name holds the given term, folded
+     * for the language it is read in, the same way a contact is searched. A
+     * blank term leaves the query as it is.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeMatchingSearch(Builder $query, string $term, ?string $locale = null): void
+    {
+        $term = mb_trim($term);
+
+        if ($term === '') {
+            return;
+        }
+
+        $folded = LocaleCollation::foldForSearch($term, $locale);
+
+        $query->whereLike('search_key', "%{$folded}%", caseSensitive: true);
+    }
+
+    /**
      * Get the letters drawn on the generated avatar. They are the first letter
      * of the first two words of the name, since an entity has no name parts to
      * pick from.

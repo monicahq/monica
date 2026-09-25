@@ -9,6 +9,7 @@ use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
 use App\Enums\RepetitionOrderEnum;
 use App\Enums\UserActionEnum;
+use App\Exceptions\AcceptedFileKindIsNotValid;
 use App\Exceptions\CannotNestARepeater;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Jobs\LogUserAction;
@@ -507,6 +508,23 @@ class CreateFieldTest extends TestCase
         )->execute();
 
         $this->assertEquals($entityType->id, $field->relation_entity_type_id);
+    }
+
+    #[Test]
+    public function it_refuses_an_image_field_taking_something_that_is_not_an_image(): void
+    {
+        $user = User::factory()->create();
+        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
+
+        $this->expectException(AcceptedFileKindIsNotValid::class);
+
+        new CreateField(
+            user: $user,
+            sectionVersion: $version,
+            type: FieldTypeEnum::Image,
+            label: 'Photo',
+            options: ['accepted_mime_types' => ['application/pdf']],
+        )->execute();
     }
 
     #[Test]

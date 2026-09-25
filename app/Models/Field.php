@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
 use App\Enums\RepetitionOrderEnum;
+use App\Exceptions\AcceptedFileKindIsNotValid;
 use App\Exceptions\PublishedVersionIsFrozen;
 use Carbon\CarbonImmutable;
 use Database\Factories\FieldFactory;
@@ -108,6 +109,50 @@ class Field extends Model
      * builds one has to respect while it is still making it unique.
      */
     public const int KEY_LENGTH = 64;
+
+    /**
+     * What a kind of file a file field takes has to look like: a mime type,
+     * type and subtype, such as `image/png`. A structure file and the builder
+     * are both held to it.
+     */
+    public const string MIME_TYPE_PATTERN = '#^[a-z0-9!\#$&^_.+-]+/[a-z0-9!\#$&^_.+-]+$#';
+
+    /**
+     * How many kinds of file one field may take.
+     */
+    public const int MAX_ACCEPTED_MIME_TYPES = 20;
+
+    /**
+     * Refuse the kinds of file a field of the given type is set to take when
+     * one is not written as a mime type, when there are too many of them, or
+     * when an image field is told to take something that is not an image.
+     *
+     * @param  array<string, mixed>|null  $options
+     *
+     * @throws AcceptedFileKindIsNotValid
+     */
+    public static function refuseKindsItCannotTake(FieldTypeEnum $type, ?array $options): void
+    {
+        $kinds = $options['accepted_mime_types'] ?? null;
+
+        if ($kinds === null || ! $type->holdsAFile()) {
+            return;
+        }
+
+        if (! is_array($kinds) || count($kinds) > self::MAX_ACCEPTED_MIME_TYPES) {
+            throw new AcceptedFileKindIsNotValid('A field takes at most '.self::MAX_ACCEPTED_MIME_TYPES.' kinds of file.');
+        }
+
+        foreach ($kinds as $kind) {
+            if (! is_string($kind) || preg_match(self::MIME_TYPE_PATTERN, $kind) !== 1) {
+                throw new AcceptedFileKindIsNotValid('“'.(is_string($kind) ? $kind : '').'” is not a kind of file.');
+            }
+
+            if ($type !== FieldTypeEnum::File && ! str_starts_with($kind, 'image/')) {
+                throw new AcceptedFileKindIsNotValid('An image field only takes kinds of image.');
+            }
+        }
+    }
 
     /**
      * A field is as frozen as the section it sits in. It is created, edited and

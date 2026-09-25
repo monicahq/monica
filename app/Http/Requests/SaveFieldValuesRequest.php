@@ -49,7 +49,7 @@ class SaveFieldValuesRequest extends FormRequest
             'reminders.*.moments.*.direction' => ['nullable', Rule::in(ReminderMomentDirectionEnum::values())],
             'reminders.*.moments.*.amount' => ['nullable', 'integer'],
             'reminders.*.moments.*.unit' => ['nullable', Rule::in(ReminderMomentUnitEnum::values())],
-        ], FieldValueRules::for($this->fieldsInTheSection()));
+        ], FieldValueRules::for($this->fieldsInTheSection(), $this->route('vault')));
     }
 
     /** @return array<int, callable> */

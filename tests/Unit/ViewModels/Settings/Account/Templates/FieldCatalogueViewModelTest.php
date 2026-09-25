@@ -6,8 +6,10 @@ namespace Tests\Unit\ViewModels\Settings\Account\Templates;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\ValueListEnum;
+use App\Models\EntityType;
 use App\Models\ValueList;
 use App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel;
+use Illuminate\Database\Eloquent\Collection;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -65,6 +67,34 @@ class FieldCatalogueViewModelTest extends TestCase
         $this->assertContains('multiselect', $needing);
         $this->assertContains('radio', $needing);
         $this->assertNotContains('text', $needing);
+    }
+
+    #[Test]
+    public function it_offers_no_repeater_to_a_field_added_inside_one(): void
+    {
+        $inside = array_column(new FieldCatalogueViewModel(insideARepeater: true)->types(), 'key');
+
+        $this->assertNotContains('repeater', $inside);
+        $this->assertContains('relation', $inside);
+        $this->assertContains('repeater', array_column($this->catalogue()->types(), 'key'));
+    }
+
+    #[Test]
+    public function it_says_which_types_point_at_a_record(): void
+    {
+        $this->assertSame(['relation'], $this->catalogue()->relationTypes());
+    }
+
+    #[Test]
+    public function it_offers_somebody_in_the_vault_then_every_kind_of_record_it_is_given(): void
+    {
+        $animals = new EntityType(['name_plural' => 'Animals']);
+        $animals->id = 12;
+
+        $this->assertSame(
+            ['contact' => __('Somebody in the vault'), 'entity:12' => 'Animals'],
+            $this->catalogue()->relationTargets(new Collection([$animals])),
+        );
     }
 
     #[Test]

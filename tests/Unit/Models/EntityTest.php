@@ -82,6 +82,20 @@ class EntityTest extends TestCase
     }
 
     #[Test]
+    public function it_finds_the_records_whose_name_holds_what_was_typed(): void
+    {
+        $vault = Vault::factory()->create();
+        $sprinkles = Entity::factory()->create(['vault_id' => $vault->id, 'name' => 'Sprinkles']);
+        Entity::factory()->create(['vault_id' => $vault->id, 'name' => 'Bandit']);
+
+        $found = Entity::query()->matchingSearch('SPRINK')->get();
+
+        $this->assertCount(1, $found);
+        $this->assertTrue($sprinkles->is($found->first()));
+        $this->assertCount(2, Entity::query()->matchingSearch('  ')->get());
+    }
+
+    #[Test]
     public function it_is_reachable_only_through_the_vault_it_lives_in(): void
     {
         $user = User::factory()->create();

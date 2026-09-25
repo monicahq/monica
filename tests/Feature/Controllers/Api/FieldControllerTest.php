@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\Api;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\VersionStatusEnum;
+use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
@@ -203,6 +204,44 @@ class FieldControllerTest extends TestCase
         $response->assertJsonPath('data.attributes.is_sensitive', true);
         $response->assertJsonPath('data.attributes.is_unique', true);
         $response->assertJsonPath('data.attributes.validation.max', 120);
+    }
+
+    #[Test]
+    public function it_refuses_a_relation_to_a_kind_of_record_that_is_turned_off(): void
+    {
+        Queue::fake();
+        [$user, $template, $row] = $this->placement();
+        $animals = EntityType::factory()->create(['account_id' => $user->account_id, 'is_active' => false]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', $this->url($template, $row).'/fields', [
+            'type' => 'relation',
+            'label' => 'Mother',
+            'relation_target' => 'entity',
+            'relation_entity_type_id' => $animals->uuid,
+        ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('relation_entity_type_id');
+    }
+
+    #[Test]
+    public function it_refuses_a_kind_of_file_that_is_not_a_mime_type(): void
+    {
+        Queue::fake();
+        [$user, $template, $row] = $this->placement();
+        $field = Field::factory()->create(['section_version_id' => $row->section_version_id, 'type' => FieldTypeEnum::File, 'position' => 1]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $this->url($template, $row)."/fields/{$field->id}", [
+            'label' => 'Contract',
+            'help_text' => null,
+            'placeholder' => null,
+            'options' => ['accepted_mime_types' => ['pdf']],
+        ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('options');
     }
 
     #[Test]

@@ -45,6 +45,7 @@
           :reminder="$field['reminder']"
           :messages="$errors"
           :error="$errors->get('fields.'.$field['id'])"
+          :vault="$viewModel->vault()"
         />
       @empty
         <p class="text-sm text-pretty text-muted">{{ __('This section asks nothing yet.') }}</p>

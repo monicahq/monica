@@ -55,6 +55,7 @@ class FieldValueFormatter
             FieldTypeEnum::Multiselect => $this->choices($value),
             FieldTypeEnum::File, FieldTypeEnum::Image,
             FieldTypeEnum::Avatar => $this->blankToNull($value->file?->original_name),
+            FieldTypeEnum::Relation => $value->relatedContact->name ?? $value->relatedEntity?->name,
             default => null,
         };
     }

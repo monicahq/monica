@@ -335,6 +335,14 @@ class TemplateBuilderViewModel
             'isRepeater' => $field->type->isRepeater(),
             'repetitionOrder' => ($field->repetition_order ?? RepetitionOrderEnum::NewestLast)->value,
             'sectionName' => $this->pathTo($row),
+            'isRelation' => $field->type->isRelation(),
+            'relationTargetLabel' => $field->relationEntityType->name_plural ?? __('Somebody in the vault'),
+            'relationTargetIsInactive' => $field->relationEntityType !== null && ! $field->relationEntityType->is_active,
+            'holdsAFile' => $field->type->holdsAFile(),
+            'acceptedMimeTypes' => implode(', ', $field->acceptedMimeTypes()),
+            'addInsideUrl' => $field->type->isRepeater() && $this->isEditable() && $row !== null
+                ? route('settings.childFields.new', [$this->template, $row, $field])
+                : null,
         ];
     }
 
@@ -388,7 +396,7 @@ class TemplateBuilderViewModel
             ->whereKey($this->selectedFieldId)
             ->where('account_id', $this->user->account_id)
             ->whereIn('section_version_id', $this->version()?->assembly->pluck('section_version_id') ?? [])
-            ->with('sectionVersion.section')
+            ->with(['sectionVersion.section', 'relationEntityType'])
             ->first());
     }
 

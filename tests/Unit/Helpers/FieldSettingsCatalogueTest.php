@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Helpers;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\RelationTargetEnum;
 use App\Helpers\FieldSettingsCatalogue;
 use App\Models\Field;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -92,6 +93,23 @@ class FieldSettingsCatalogueTest extends TestCase
             'image/png, application/pdf',
             FieldSettingsCatalogue::read('accepted_mime_types', ['accepted_mime_types' => ['image/png', 'application/pdf']], null),
         );
+    }
+
+    #[Test]
+    public function it_reads_what_a_relation_points_at(): void
+    {
+        $this->assertSame([RelationTargetEnum::Contact, null], FieldSettingsCatalogue::target('contact'));
+        $this->assertSame([RelationTargetEnum::Entity, 12], FieldSettingsCatalogue::target('entity:12'));
+        $this->assertNull(FieldSettingsCatalogue::target('entity:'));
+        $this->assertNull(FieldSettingsCatalogue::target('entity:dunder'));
+        $this->assertNull(FieldSettingsCatalogue::target('mifflin'));
+    }
+
+    #[Test]
+    public function it_splits_a_line_of_several_things_and_drops_the_blanks(): void
+    {
+        $this->assertSame(['image/png', 'application/pdf'], FieldSettingsCatalogue::commaSeparated(' image/png, ,application/pdf,'));
+        $this->assertSame([], FieldSettingsCatalogue::commaSeparated(''));
     }
 
     #[Test]

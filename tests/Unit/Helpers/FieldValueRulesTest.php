@@ -6,11 +6,16 @@ namespace Tests\Unit\Helpers;
 
 use App\Enums\CountryEnum;
 use App\Enums\FieldTypeEnum;
+use App\Enums\RelationTargetEnum;
 use App\Enums\ValueListEnum;
 use App\Helpers\FieldValueRules;
+use App\Models\Contact;
+use App\Models\Entity;
+use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Validator;
 use PHPUnit\Framework\Attributes\Test;
@@ -293,6 +298,50 @@ class FieldValueRulesTest extends TestCase
         $this->assertEquals(['nullable', 'string', 'max:255'], $rules["{$prefix}.street"]);
         $this->assertArrayHasKey("{$prefix}.country", $rules);
         $this->assertArrayHasKey("fields.{$addresses->id}.*.labels.{$address->id}", $rules);
+    }
+
+    #[Test]
+    public function it_accepts_somebody_of_the_vault_the_values_are_written_in(): void
+    {
+        $scranton = Vault::factory()->create();
+        $field = Field::factory()->relation()->create(['account_id' => $scranton->account_id]);
+        $jim = Contact::factory()->create(['vault_id' => $scranton->id]);
+
+        $validator = Validator::make(['fields' => [$field->id => $jim->uuid]], FieldValueRules::for(collect([$field]), $scranton));
+
+        $this->assertFalse($validator->fails());
+    }
+
+    #[Test]
+    public function it_refuses_somebody_of_another_vault_or_nobody_at_all(): void
+    {
+        $scranton = Vault::factory()->create();
+        $stamford = Vault::factory()->create(['account_id' => $scranton->account_id]);
+        $field = Field::factory()->relation()->create(['account_id' => $scranton->account_id]);
+        $andy = Contact::factory()->create(['vault_id' => $stamford->id]);
+        $rules = FieldValueRules::for(collect([$field]), $scranton);
+
+        $this->assertTrue(Validator::make(['fields' => [$field->id => $andy->uuid]], $rules)->fails());
+        $this->assertTrue(Validator::make(['fields' => [$field->id => 'not-a-record']], $rules)->fails());
+    }
+
+    #[Test]
+    public function it_refuses_a_record_of_another_kind_than_the_relation_asks_for(): void
+    {
+        $scranton = Vault::factory()->create();
+        $animals = EntityType::factory()->create(['account_id' => $scranton->account_id]);
+        $plants = EntityType::factory()->create(['account_id' => $scranton->account_id]);
+        $field = Field::factory()->relation()->create([
+            'account_id' => $scranton->account_id,
+            'relation_target' => RelationTargetEnum::Entity,
+            'relation_entity_type_id' => $animals->id,
+        ]);
+        $sprinkles = Entity::factory()->create(['vault_id' => $scranton->id, 'entity_type_id' => $animals->id]);
+        $fern = Entity::factory()->create(['vault_id' => $scranton->id, 'entity_type_id' => $plants->id]);
+        $rules = FieldValueRules::for(collect([$field]), $scranton);
+
+        $this->assertFalse(Validator::make(['fields' => [$field->id => $sprinkles->uuid]], $rules)->fails());
+        $this->assertTrue(Validator::make(['fields' => [$field->id => $fern->uuid]], $rules)->fails());
     }
 
     private function countryOf(Field $field, CountryEnum $country, bool $active = true): ValueListItem

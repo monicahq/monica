@@ -2,15 +2,18 @@
 {{--
   @var \App\Models\StructureVersionSection $row
   @var string $sectionName
+  @var \App\Models\Field|null $parent
   @var string $backHref
   @var string $backLabel
   @var string $current
   @var string $action
   @var \App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel $catalogue
   @var \Illuminate\Support\Collection<int, \App\Models\ValueList> $valueLists
+  @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\EntityType> $entityTypes
   @var \App\Models\User $user
 --}}
 @php
+  $parent ??= null;
   $types = $catalogue->types();
   $pickable = array_values(array_map(fn (array $type): string => $type['key'], array_filter($types, fn (array $type): bool => $type['isAvailable'])));
   $footerLines = $catalogue->footerLines($sectionName);
@@ -71,6 +74,7 @@
       suppliedLists: {{ Js::from($catalogue->suppliedLabelListIds($valueLists)) }},
       listId: {{ Js::from(old('value_list_id', '')) }},
       listPicked: {{ Js::from(old('value_list_id', '') !== '') }},
+      relationTypes: {{ Js::from($catalogue->relationTypes()) }},
       get needle() { return this.query.trim().toLowerCase() },
       matches(key) { return this.needle === '' || this.index[key].includes(this.needle) },
       get shown() { return Object.keys(this.index).filter(key => this.matches(key)).length },
@@ -80,10 +84,15 @@
       get offersChoices() { return this.needsAList.includes(this.type) },
       get offersALabel() { return this.offersALabelList.includes(this.type) },
       get offersAList() { return this.offersChoices || this.offersALabel },
+      get isRelation() { return this.relationTypes.includes(this.type) },
     }"
     class="flex flex-col gap-7"
   >
-    <x-page-header :title="__('What goes in :section?', ['section' => $sectionName])" :description="__('The type decides what people can write, how it is checked and how it is searched. Pick the closest one. The panel shows how it appears on a record.')" />
+    @if ($parent !== null)
+      <input type="hidden" name="parent_id" value="{{ $parent->id }}">
+    @endif
+
+    <x-page-header :title="$parent === null ? __('What goes in :section?', ['section' => $sectionName]) : __('What goes inside :repeater?', ['repeater' => $parent->label])" :description="__('The type decides what people can write, how it is checked and how it is searched. Pick the closest one. The panel shows how it appears on a record.')" />
 
     <section class="flex flex-col gap-3">
       <h2 class="text-section-title text-ink">{{ __('What is it called?') }}</h2>
@@ -273,5 +282,20 @@
       </x-panel>
     </section>
 
+    <section x-cloak x-show="isRelation" class="flex flex-col gap-3">
+      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h2 class="shrink-0 text-section-title text-ink">{{ __('What does it point at?') }}</h2>
+
+        <p class="text-sm text-pretty text-muted">{{ __('A relation names somebody in the vault, or a record of one of your kinds of record. This is fixed once the field is added.') }}</p>
+      </div>
+
+      <x-panel>
+        <x-select id="relation_target" :label="__('Points at')" ::required="isRelation" :error="$errors->get('relation_target')" class="max-w-96">
+          @foreach ($catalogue->relationTargets($entityTypes) as $value => $label)
+            <option value="{{ $value }}" @selected(old('relation_target', 'contact') === $value)>{{ $label }}</option>
+          @endforeach
+        </x-select>
+      </x-panel>
+    </section>
   </x-form>
 </x-settings.page>

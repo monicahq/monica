@@ -137,6 +137,23 @@ class CreateEntityTest extends TestCase
     }
 
     #[Test]
+    public function it_starts_no_relation_with_a_default_since_a_template_cannot_name_a_record(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $type = EntityType::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->entityDefaultCarrying($vault, $type, ['People' => ['owner' => FieldTypeEnum::Relation]]);
+        $owner = $this->field($version, 'owner');
+        Field::query()->whereKey($owner->id)->update(['default_value' => json_encode(['Dwight'])]);
+
+        $entity = new CreateEntity(user: $user, vault: $vault, entityType: $type, name: 'Mose’s goat')->execute();
+
+        $this->assertDatabaseMissing('field_values', ['valuable_id' => $entity->id, 'field_id' => $owner->id]);
+    }
+
+    #[Test]
     public function it_refuses_a_name_left_empty_once_cleaned(): void
     {
         [$user, $vault, $type] = $this->farmWithGoats();

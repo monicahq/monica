@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\FieldTypeEnum;
+use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\Field;
@@ -13,7 +14,9 @@ use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -146,6 +149,80 @@ class EntityControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_a_search_for_the_person_each_caregiver_names(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+        [, $caregivers, $person] = $this->animalWithCaregivers($vault, $type);
+
+        $this->actingAs($user)->get(route('entities.new', ['vault' => $vault, 'entityType' => $type]))
+            ->assertStatus(200)
+            ->assertSee('x-data="recordPicker(', escape: false)
+            ->assertSee("name=\"fields[{$caregivers->id}][0][values][{$person->id}]\"", escape: false);
+    }
+
+    #[Test]
+    public function it_creates_an_animal_with_two_caregivers(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $type] = $this->vaultWithType();
+        [$version, $caregivers, $person] = $this->animalWithCaregivers($vault, $type);
+        $dwight = Contact::factory()->create(['vault_id' => $vault->id]);
+        $mose = Contact::factory()->create(['vault_id' => $vault->id]);
+
+        $this->actingAs($user)->post(route('entities.create', ['vault' => $vault, 'entityType' => $type]), [
+            'name' => 'Sprinkles',
+            'structure_version_id' => $version->id,
+            'fields' => [$caregivers->id => [
+                ['values' => [$person->id => $dwight->uuid]],
+                ['values' => [$person->id => $mose->uuid]],
+            ]],
+        ])->assertRedirect(route('entities.index', ['vault' => $vault, 'entityType' => $type]));
+
+        $this->assertDatabaseHas('field_values', ['field_id' => $person->id, 'related_contact_id' => $dwight->id]);
+        $this->assertDatabaseHas('field_values', ['field_id' => $person->id, 'related_contact_id' => $mose->id]);
+    }
+
+    #[Test]
+    public function it_refuses_a_caregiver_from_another_vault(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $type] = $this->vaultWithType();
+        [$version, $caregivers, $person] = $this->animalWithCaregivers($vault, $type);
+        $stamford = Vault::factory()->create(['account_id' => $user->account_id]);
+        $andy = Contact::factory()->create(['vault_id' => $stamford->id]);
+
+        $this->actingAs($user)->post(route('entities.create', ['vault' => $vault, 'entityType' => $type]), [
+            'name' => 'Sprinkles',
+            'structure_version_id' => $version->id,
+            'fields' => [$caregivers->id => [['values' => [$person->id => $andy->uuid]]]],
+        ])->assertSessionHasErrors("fields.{$caregivers->id}.0.values.{$person->id}");
+
+        $this->assertDatabaseMissing('entities', ['name' => 'Sprinkles']);
+    }
+
+    #[Test]
+    public function it_refuses_an_upload_of_a_kind_the_field_does_not_take(): void
+    {
+        Queue::fake();
+        Storage::fake();
+
+        [$user, $vault, $type] = $this->vaultWithType();
+        $version = $this->entityDefaultCarrying($vault, $type, ['Photos' => ['photo' => FieldTypeEnum::Image]]);
+        $photo = $version->inputFields()->firstOrFail();
+        $photo->update(['options' => ['accepted_mime_types' => ['image/png']]]);
+
+        $this->actingAs($user)->post(route('entities.create', ['vault' => $vault, 'entityType' => $type]), [
+            'name' => 'Sprinkles',
+            'structure_version_id' => $version->id,
+            'fields' => [$photo->id => UploadedFile::fake()->create('scranton.pdf', 12, 'application/pdf')],
+        ])->assertSessionHasErrors("fields.{$photo->id}");
+
+        $this->assertDatabaseMissing('entities', ['name' => 'Sprinkles']);
+    }
+
+    #[Test]
     public function it_refuses_an_entity_without_a_name(): void
     {
         [$user, $vault, $type] = $this->vaultWithType();
@@ -213,6 +290,23 @@ class EntityControllerTest extends TestCase
             'name' => '<b></b>',
             'structure_version_id' => $version->id,
         ])->assertSessionHasErrors(['name' => 'Write a name for this record.']);
+    }
+
+    /** @return array{0: StructureVersion, 1: Field, 2: Field} */
+    private function animalWithCaregivers(Vault $vault, EntityType $type): array
+    {
+        $version = $this->entityDefaultCarrying($vault, $type, ['People' => ['caregivers' => FieldTypeEnum::Repeater]]);
+        $caregivers = $version->inputFields()->firstOrFail();
+        $caregivers->update(['is_repeatable' => true]);
+        $person = Field::factory()->relation()->create([
+            'section_version_id' => $caregivers->section_version_id,
+            'parent_field_id' => $caregivers->id,
+            'key' => 'caregiver_person',
+            'label' => 'Person',
+            'is_required' => true,
+        ]);
+
+        return [$version, $caregivers, $person];
     }
 
     /**

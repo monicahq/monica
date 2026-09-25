@@ -9,7 +9,7 @@
 @php
   $isChild ??= false;
   $isEditable ??= false;
-  $mayReorder = $isEditable && ! $isChild && isset($template, $sectionId);
+  $mayReorder = $isEditable && isset($template, $sectionId);
 @endphp
 
 <div @if ($mayReorder) data-row-id="{{ $field['id'] }}" @endif class="relative">
@@ -76,7 +76,7 @@
   @endif
 
   @if ($field['children'] !== [])
-    <div class="ml-3.5 flex flex-col gap-0.5 border-l border-hairline pl-2.5">
+    <div @if ($mayReorder) x-data="sortableRows" data-sortable @endif class="ml-3.5 flex flex-col gap-0.5 border-l border-hairline pl-2.5">
       @foreach ($field['children'] as $child)
         @include('app.settings.account.templates._field', [
           'field' => $child,

@@ -54,7 +54,7 @@ enum FieldTypeEnum: string
         return in_array($this, [
             self::Text, self::Textarea, self::Number, self::Boolean, self::Url,
             self::Email, self::Phone, self::Select, self::Multiselect, self::Radio,
-            self::Date, self::RecurringDate, self::File, self::Image, self::Address,
+            self::Date, self::RecurringDate, self::Relation, self::File, self::Image, self::Address,
             self::Repeater,
         ], true);
     }

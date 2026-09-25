@@ -14,6 +14,7 @@ import confirmPassword from './confirm-password';
 import contactListColumns from './contact-list-columns';
 import fieldReminder from './field-reminder';
 import passkey from './passkey';
+import recordPicker from './record-picker';
 import relationshipForm from './relationship-form';
 import timezonePicker from './timezone-picker';
 
@@ -28,6 +29,7 @@ Alpine.data('confirmPassword', confirmPassword);
 Alpine.data('contactListColumns', contactListColumns);
 Alpine.data('fieldReminder', fieldReminder);
 Alpine.data('passkey', passkey);
+Alpine.data('recordPicker', recordPicker);
 Alpine.data('relationshipForm', relationshipForm);
 Alpine.data('timezonePicker', timezonePicker);
 
@@ -117,7 +119,9 @@ Alpine.data('sortableRows', () => ({
             return;
         }
 
-        const ids = Array.from(rows.querySelectorAll('[data-row-id]')).map((row) => Number(row.dataset.rowId));
+        const ids = Array.from(rows.querySelectorAll('[data-row-id]'))
+            .filter((row) => row.parentElement.closest('[data-sortable]') === rows)
+            .map((row) => Number(row.dataset.rowId));
         const from = ids.indexOf(draggedId);
         const to = ids.indexOf(targetId);
 

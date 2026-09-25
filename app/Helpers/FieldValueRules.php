@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Helpers;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\RelationTargetEnum;
 use App\Enums\ValueListEnum;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
+use App\Models\Vault;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
@@ -17,10 +19,14 @@ use Illuminate\Validation\Rule;
 class FieldValueRules
 {
     /**
+     * The rules for the values of the given fields. A relation may only name a
+     * record of the vault the values are written in, so the vault is given for
+     * the fields that point at one.
+     *
      * @param  Collection<int, Field>  $fields
      * @return array<string, array<int, mixed>>
      */
-    public static function for(Collection $fields): array
+    public static function for(Collection $fields, ?Vault $vault = null): array
     {
         $rules = [];
 
@@ -30,12 +36,12 @@ class FieldValueRules
             }
 
             if ($field->type->isRepeater()) {
-                $rules = array_merge($rules, self::forRepetitionsOf($field));
+                $rules = array_merge($rules, self::forRepetitionsOf($field, $vault));
 
                 continue;
             }
 
-            $rules["fields.{$field->id}"] = self::forOne($field);
+            $rules["fields.{$field->id}"] = self::forOne($field, vault: $vault);
 
             if ($field->type === FieldTypeEnum::Multiselect) {
                 $rules["fields.{$field->id}.*"] = self::choiceRule($field);
@@ -55,7 +61,7 @@ class FieldValueRules
     }
 
     /** @return array<string, array<int, mixed>> */
-    private static function forRepetitionsOf(Field $field): array
+    private static function forRepetitionsOf(Field $field, ?Vault $vault): array
     {
         $rules = [
             "fields.{$field->id}" => array_filter([
@@ -74,7 +80,7 @@ class FieldValueRules
                 continue;
             }
 
-            $rules["fields.{$field->id}.*.values.{$child->id}"] = self::forOne($child, required: false);
+            $rules["fields.{$field->id}.*.values.{$child->id}"] = self::forOne($child, required: false, vault: $vault);
 
             if ($child->type === FieldTypeEnum::Multiselect) {
                 $rules["fields.{$field->id}.*.values.{$child->id}.*"] = self::choiceRule($child);
@@ -94,7 +100,7 @@ class FieldValueRules
     }
 
     /** @return array<int, mixed> */
-    private static function forOne(Field $field, ?bool $required = null): array
+    private static function forOne(Field $field, ?bool $required = null, ?Vault $vault = null): array
     {
         $required ??= $field->is_required;
 
@@ -111,8 +117,30 @@ class FieldValueRules
             FieldTypeEnum::Select, FieldTypeEnum::Radio => [self::choiceRule($field)],
             FieldTypeEnum::Multiselect, FieldTypeEnum::Address => ['array'],
             FieldTypeEnum::File, FieldTypeEnum::Image, FieldTypeEnum::Avatar => self::fileRules($field),
+            FieldTypeEnum::Relation => self::relationRules($field, $vault),
             default => [],
         });
+    }
+
+    /**
+     * A relation is written as the uuid of the record it names, which has to be
+     * in the vault and, for a kind of record, of the kind the field asks for.
+     *
+     * @return array<int, mixed>
+     */
+    private static function relationRules(Field $field, ?Vault $vault): array
+    {
+        if ($vault === null) {
+            return ['string'];
+        }
+
+        if ($field->relation_target === RelationTargetEnum::Contact) {
+            return ['string', Rule::exists('contacts', 'uuid')->where('vault_id', $vault->id)->whereNull('deleted_at')];
+        }
+
+        $exists = Rule::exists('entities', 'uuid')->where('vault_id', $vault->id)->whereNull('deleted_at');
+
+        return ['string', $field->relation_entity_type_id === null ? $exists : $exists->where('entity_type_id', $field->relation_entity_type_id)];
     }
 
     /** @return array<string, array<int, mixed>> */

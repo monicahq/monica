@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\RelationTargetEnum;
+use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
+use App\Models\Field;
 use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
@@ -135,6 +138,57 @@ class EntityControllerTest extends TestCase
         $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$type->uuid}/entities", ['name' => 'Mose’s goat'])
             ->assertUnprocessable()
             ->assertJsonValidationErrors('name');
+    }
+
+    #[Test]
+    public function it_creates_an_entity_naming_somebody_in_the_vault(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $type, $owner] = $this->farmWithAnOwner();
+        $dwight = Contact::factory()->create(['vault_id' => $vault->id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$type->uuid}/entities", [
+            'name' => 'Mose’s goat',
+            'fields' => [$owner->id => $dwight->uuid],
+        ])->assertCreated();
+
+        $this->assertDatabaseHas('field_values', ['field_id' => $owner->id, 'related_contact_id' => $dwight->id]);
+    }
+
+    #[Test]
+    public function it_refuses_to_name_somebody_of_another_vault(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $type, $owner] = $this->farmWithAnOwner();
+        $stamford = Vault::factory()->create(['account_id' => $user->account_id]);
+        $andy = Contact::factory()->create(['vault_id' => $stamford->id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$type->uuid}/entities", [
+            'name' => 'Mose’s goat',
+            'fields' => [$owner->id => $andy->uuid],
+        ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors("fields.{$owner->id}");
+    }
+
+    /** @return array{0: User, 1: Vault, 2: EntityType, 3: Field} */
+    private function farmWithAnOwner(): array
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Schrute Farms']);
+        $type = EntityType::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->entityDefaultCarrying($vault, $type, ['People' => ['owner' => FieldTypeEnum::Relation]]);
+
+        $owner = $version->inputFields()->firstOrFail();
+        $owner->update(['relation_target' => RelationTargetEnum::Contact]);
+
+        return [$user, $vault, $type, $owner];
     }
 
     /** @return array{0: User, 1: Vault, 2: EntityType, 3: StructureVersion} */

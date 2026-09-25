@@ -103,9 +103,10 @@ class EntityTypePolicyTest extends TestCase
         $version = $this->entityDefaultCarrying($vault, $type, ['People' => ['caregivers' => FieldTypeEnum::Repeater]]);
         $caregivers = $version->inputFields()->firstOrFail();
         Field::query()->whereKey($caregivers->id)->update(['is_required' => true]);
-        Field::factory()->relation()->create([
+        Field::factory()->create([
             'section_version_id' => $caregivers->section_version_id,
             'parent_field_id' => $caregivers->id,
+            'type' => FieldTypeEnum::Avatar,
             'is_required' => true,
         ]);
 
@@ -113,6 +114,22 @@ class EntityTypePolicyTest extends TestCase
 
         $this->assertTrue($response->denied());
         $this->assertStringContainsString('requires something that cannot be filled in here yet', (string) $response->message());
+    }
+
+    #[Test]
+    public function it_lets_somebody_add_an_entity_whose_template_requires_a_relation_in_a_repeater(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+        $version = $this->entityDefaultCarrying($vault, $type, ['People' => ['caregivers' => FieldTypeEnum::Repeater]]);
+        $caregivers = $version->inputFields()->firstOrFail();
+        Field::query()->whereKey($caregivers->id)->update(['is_required' => true]);
+        Field::factory()->relation()->create([
+            'section_version_id' => $caregivers->section_version_id,
+            'parent_field_id' => $caregivers->id,
+            'is_required' => true,
+        ]);
+
+        $this->assertTrue(Gate::forUser($user)->inspect('addEntity', [$type, $vault])->allowed());
     }
 
     #[Test]

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Settings\Account\Templates;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\RelationTargetEnum;
 use App\Enums\VersionStatusEnum;
+use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
@@ -186,6 +188,66 @@ class TemplateBuilderViewModelTest extends TestCase
         $this->assertEquals('Weight', $viewModel->selectedField()['label']);
         $this->assertEquals($row->id, $viewModel->selectedField()['rowId']);
         $this->assertTrue($viewModel->sections()[0]['fields'][0]['isSelected']);
+    }
+
+    #[Test]
+    public function it_says_what_an_open_relation_points_at(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $contact = Field::factory()->create([
+            'section_version_id' => $row->section_version_id,
+            'type' => FieldTypeEnum::Relation,
+            'relation_target' => RelationTargetEnum::Contact,
+        ]);
+        $animals = EntityType::factory()->create(['account_id' => $user->account_id, 'name_plural' => 'Animals', 'is_active' => false]);
+        $entity = Field::factory()->create([
+            'section_version_id' => $row->section_version_id,
+            'type' => FieldTypeEnum::Relation,
+            'relation_target' => RelationTargetEnum::Entity,
+            'relation_entity_type_id' => $animals->id,
+        ]);
+
+        $toSomebody = new TemplateBuilderViewModel(user: $user, template: $template->fresh(), selectedFieldId: $contact->id)->selectedField();
+        $toAnAnimal = new TemplateBuilderViewModel(user: $user, template: $template->fresh(), selectedFieldId: $entity->id)->selectedField();
+
+        $this->assertTrue($toSomebody['isRelation']);
+        $this->assertEquals(__('Somebody in the vault'), $toSomebody['relationTargetLabel']);
+        $this->assertFalse($toSomebody['relationTargetIsInactive']);
+        $this->assertEquals('Animals', $toAnAnimal['relationTargetLabel']);
+        $this->assertTrue($toAnAnimal['relationTargetIsInactive']);
+    }
+
+    #[Test]
+    public function it_offers_to_add_a_field_inside_an_open_repeater_of_a_draft(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $caregivers = Field::factory()->create(['section_version_id' => $row->section_version_id, 'type' => FieldTypeEnum::Repeater]);
+        $weight = Field::factory()->create(['section_version_id' => $row->section_version_id, 'type' => FieldTypeEnum::Number]);
+
+        $repeater = new TemplateBuilderViewModel(user: $user, template: $template->fresh(), selectedFieldId: $caregivers->id)->selectedField();
+        $number = new TemplateBuilderViewModel(user: $user, template: $template->fresh(), selectedFieldId: $weight->id)->selectedField();
+
+        $this->assertEquals(route('settings.childFields.new', [$template, $row, $caregivers]), $repeater['addInsideUrl']);
+        $this->assertNull($number['addInsideUrl']);
+    }
+
+    #[Test]
+    public function it_gives_the_kinds_of_file_an_open_field_takes_as_one_line(): void
+    {
+        $user = User::factory()->create();
+        [$template, $row] = $this->templateCarryingASection($user);
+        $field = Field::factory()->create([
+            'section_version_id' => $row->section_version_id,
+            'type' => FieldTypeEnum::Image,
+            'options' => ['accepted_mime_types' => ['image/png', 'image/jpeg']],
+        ]);
+
+        $selected = new TemplateBuilderViewModel(user: $user, template: $template->fresh(), selectedFieldId: $field->id)->selectedField();
+
+        $this->assertTrue($selected['holdsAFile']);
+        $this->assertEquals('image/png, image/jpeg', $selected['acceptedMimeTypes']);
     }
 
     #[Test]

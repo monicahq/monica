@@ -3,11 +3,13 @@
   @var \App\Models\Field $field
   @var array<int, array{id: int, fields: array<int, array<string, mixed>>}> $rows
   @var string|array<int, string>|null $error
+  @var \App\Models\Vault|null $vault
 --}}
 @props([
   'field',
   'rows' => [],
   'error' => null,
+  'vault' => null,
 ])
 
 @php
@@ -55,6 +57,7 @@
                 :label-name="'fields['.$field->id.']['.($rowOffset + $index).'][labels]['.$answer['id'].']'"
                 :wording-name="'fields['.$field->id.']['.($rowOffset + $index).'][label_wordings]['.$answer['id'].']'"
                 :year-name="'fields['.$field->id.']['.($rowOffset + $index).'][unknown_year]['.$answer['id'].']'"
+                :vault="$vault"
               />
             @endforeach
 
@@ -91,6 +94,7 @@
                 :label-name="'fields['.$field->id.']['.($blankOffset + $blank).'][labels]['.$child->id.']'"
                 :wording-name="'fields['.$field->id.']['.($blankOffset + $blank).'][label_wordings]['.$child->id.']'"
                 :year-name="'fields['.$field->id.']['.($blankOffset + $blank).'][unknown_year]['.$child->id.']'"
+                :vault="$vault"
               />
             @endforeach
           </fieldset>

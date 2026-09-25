@@ -51,6 +51,7 @@
                     :reminder="null"
                     :messages="$errors"
                     :error="$errors->get('fields.'.$field['id'])"
+                    :vault="$viewModel->vault()"
                   />
                 @endforeach
               </div>
