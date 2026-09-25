@@ -7,8 +7,17 @@
 >
   <x-page-header :title="__('Contacts and more')" :description="__('You already have profiles for people. Create other kinds of profiles for the pets, companies, or things you want to remember. Each has its own information, organized into sections, just like a contact.')" />
 
-  <section aria-label="{{ __('Kinds of profile') }}" class="flex flex-col gap-3">
-    <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
+  <section aria-label="{{ __('Kinds of profile') }}" class="flex flex-col gap-3 rounded-lg border-[1.5px] border-dashed border-hairline-strong p-4">
+    <p class="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-base">
+      <span class="inline-flex items-center gap-1.5 font-semibold text-ink">
+        <x-icon name="info" :size="16" />
+        {{ __('Examples only') }}
+      </span>
+
+      <span class="text-pretty text-muted">{{ __('These previews show how profiles work. They aren’t in your vault.') }}</span>
+    </p>
+
+    <div aria-hidden="true" class="pointer-events-none grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4 opacity-85 select-none">
       @foreach ($viewModel->examples() as $example)
         <x-panel :title="$example['kind']" :icon="$example['icon']" :flush="true">
           <div class="flex flex-col gap-3.5 p-4">
@@ -22,7 +31,7 @@
               @foreach ($example['fields'] as $field)
                 <div class="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-3">
                   <dt class="text-base text-muted">{{ $field }}</dt>
-                  <dd aria-hidden="true" class="m-0 h-2 rounded-sm border border-dashed border-hairline-strong bg-card"></dd>
+                  <dd class="m-0 h-2 rounded-sm border border-dashed border-hairline-strong bg-card"></dd>
                 </div>
               @endforeach
             </dl>
@@ -36,8 +45,6 @@
         </x-panel>
       @endforeach
     </div>
-
-    <p class="px-0.5 text-base text-pretty text-muted">{{ __('Fields shown are examples. A type says what you keep track of, and its templates define the fields. Pets and companies do not use the relationships people have.') }}</p>
   </section>
 
   <section aria-label="{{ __('Create') }}" class="flex flex-wrap items-center gap-x-5 gap-y-3">
@@ -83,7 +90,5 @@
         @endforeach
       </div>
     </x-panel>
-
-    <p class="px-0.5 text-xs text-pretty text-muted">{{ __('Turning a type off keeps its profiles and stops new ones being made.') }}</p>
   </x-page-section>
 </x-settings.page>

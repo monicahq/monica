@@ -28,7 +28,7 @@ things, and three example cards show a contact (Judy Geller), a pet (Garfield) a
 (Central Perk), each with example field names and a caption.
 
 **Independent Test**: open the screen for an account with no custom type and check the heading, the
-explanation, the three example cards and the note under them.
+explanation, and the three example cards in their "Examples only" box.
 
 **Acceptance Scenarios**:
 
@@ -36,11 +36,8 @@ explanation, the three example cards and the note under them.
    design's explanation under the heading.
 2. **Given** any account, **Then** three example cards show: Contacts marked "Built in", Pets and
    Companies marked "Example", each with a name, three field names and a caption.
-3. **Given** the example cards, **Then** the empty field bars are hidden from assistive technology
-   and the field names are read as a description list.
-4. **Given** the example cards, **Then** a note under them says the fields are examples, that a type
-   says what is kept track of and its templates define the fields, and that pets and companies do
-   not use the relationships people have.
+3. **Given** the example cards, **Then** they sit in a dashed box headed "Examples only", with a line
+   saying they are previews and not in the vault, and the cards are hidden from assistive technology.
 
 ---
 
@@ -95,8 +92,8 @@ the order, the counts and the Contacts row.
 ### Functional Requirements
 
 - **FR-001**: The screen MUST be titled "Contacts and more" and show the design's explanation.
-- **FR-002**: The screen MUST show the three example profiles from the design; they are fixed
-  illustrations, not data, and every string in them MUST be translatable.
+- **FR-002**: The screen MUST show the three example profiles from the design inside a box marked
+  "Examples only"; they are fixed illustrations, not data, and every string MUST be translatable.
 - **FR-003**: The screen MUST offer "Create a profile type", leading to the existing create form.
 - **FR-004**: The list MUST start with a Contacts row counting the account's contacts across all its
   vaults, not reorderable, not editable, and stating in text that it is built in and permanent.
@@ -105,7 +102,7 @@ the order, the counts and the Contacts row.
 - **FR-006**: The drag instruction MUST show only when there is at least one custom type.
 - **FR-007**: The slug line, the singular name next to the plural, the "types · records" summary and
   the "No types yet" empty state MUST be removed from this screen.
-- **FR-008**: The footnote about turning a type off MUST stay, reworded to speak of profiles.
+- **FR-008**: The footnote about turning a type off MUST be removed.
 - **FR-009**: No string outside this screen may change.
 - **FR-010**: The screen MUST meet WCAG 2.2 AA (keyboard, screen reader, contrast, 200% zoom).
 
@@ -127,7 +124,7 @@ the order, the counts and the Contacts row.
 
 ## Assumptions
 
-- The design omits Edit, the inactive marker and the footnote; they are kept because removing them
+- The design omits Edit and the inactive marker; they are kept because removing them
   would take away what the screen does today. The design is followed for layout and wording.
 - The design shows a drag handle on the Contacts row; contacts have no position among entity types,
   so the row is pinned first instead.

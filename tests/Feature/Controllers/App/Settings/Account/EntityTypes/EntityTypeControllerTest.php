@@ -25,7 +25,8 @@ class EntityTypeControllerTest extends TestCase
             ->assertSee('Contacts and more')
             ->assertSee('Garfield')
             ->assertSee('Central Perk')
-            ->assertSee('Fields shown are examples')
+            ->assertSee('Examples only')
+            ->assertSee('They aren’t in your vault.')
             ->assertSee('Create a profile type')
             ->assertSee(route('settings.entityTypes.new'));
     }
