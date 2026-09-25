@@ -1,4 +1,4 @@
-{{-- One kind of record, on the list that orders them. --}}
+{{-- One profile type, on the list that orders them. --}}
 {{-- @var array $type --}}
 <x-sortable-row
   :row-id="$type['id']"
@@ -15,16 +15,12 @@
 
   <div class="min-w-0 flex-1">
     <p class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-      <span class="text-base font-semibold text-ink">{{ $type['nameSingular'] }}</span>
-
-      <span class="text-xs text-pretty text-muted">{{ $type['namePlural'] }}</span>
+      <span class="text-base font-semibold text-ink">{{ $type['namePlural'] }}</span>
 
       @unless ($type['isActive'])
         <x-badge tone="outline">{{ __('Not active') }}</x-badge>
       @endunless
     </p>
-
-    <p class="truncate font-mono text-xs text-muted">{{ $type['slug'] }}</p>
   </div>
 
   <div class="ml-auto flex shrink-0 items-center gap-2.5">

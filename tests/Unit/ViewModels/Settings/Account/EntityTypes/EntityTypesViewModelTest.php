@@ -6,6 +6,7 @@ namespace Tests\Unit\ViewModels\Settings\Account\EntityTypes;
 
 use App\Models\EntityType;
 use App\Models\User;
+use App\Models\Vault;
 use App\ViewModels\Settings\Account\EntityTypes\EntityTypesViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -66,40 +67,57 @@ class EntityTypesViewModelTest extends TestCase
         $this->assertSame('#4f8a49', $row['colour']);
         $this->assertSame('color-mix(in srgb, #4f8a49 12%, transparent)', $row['tint']);
         $this->assertTrue($row['isActive']);
-        $this->assertSame('4 records', $row['countLabel']);
+        $this->assertSame('4 profiles', $row['countLabel']);
     }
 
     #[Test]
     public function it_says_how_much_a_type_holds(): void
     {
-        $this->assertSame('no records', EntityTypesViewModel::countLabel(0));
-        $this->assertSame('1 record', EntityTypesViewModel::countLabel(1));
-        $this->assertSame('9 records', EntityTypesViewModel::countLabel(9));
+        $this->assertSame('No profiles yet', EntityTypesViewModel::countLabel(0));
+        $this->assertSame('1 profile', EntityTypesViewModel::countLabel(1));
+        $this->assertSame('9 profiles', EntityTypesViewModel::countLabel(9));
     }
 
     #[Test]
-    public function it_sums_the_records_of_every_type_for_the_heading(): void
+    public function it_counts_the_contacts_of_every_vault_of_the_account(): void
     {
-        $user = User::factory()->create();
-        EntityType::factory()->used(4)->create(['account_id' => $user->account_id]);
-        EntityType::factory()->used(7)->create(['account_id' => $user->account_id]);
+        $michael = User::factory()->create();
+        $dwight = User::factory()->create();
+        Vault::factory()->create(['account_id' => $michael->account_id, 'contact_count' => 3]);
+        Vault::factory()->create(['account_id' => $michael->account_id, 'contact_count' => 4]);
+        Vault::factory()->create(['account_id' => $dwight->account_id, 'contact_count' => 9]);
 
         $this->assertSame(
-            '2 types · 11 records across all vaults',
-            new EntityTypesViewModel(user: $user)->summary(),
+            ['countLabel' => '7 profiles'],
+            new EntityTypesViewModel(user: $michael)->contacts(),
         );
     }
 
     #[Test]
-    public function it_says_so_when_the_account_has_one_of_each(): void
+    public function it_says_whether_the_account_has_a_type_of_its_own(): void
     {
         $user = User::factory()->create();
-        EntityType::factory()->used(1)->create(['account_id' => $user->account_id]);
 
-        $this->assertSame(
-            '1 type · 1 record across all vaults',
-            new EntityTypesViewModel(user: $user)->summary(),
-        );
+        $this->assertFalse(new EntityTypesViewModel(user: $user)->hasTypes());
+
+        EntityType::factory()->create(['account_id' => $user->account_id]);
+
+        $this->assertTrue(new EntityTypesViewModel(user: $user)->hasTypes());
+    }
+
+    #[Test]
+    public function it_gives_three_example_profiles_with_three_fields_each(): void
+    {
+        $user = User::factory()->create();
+
+        $examples = new EntityTypesViewModel(user: $user)->examples();
+
+        $this->assertCount(3, $examples);
+        $this->assertSame(['Judy Geller', 'Garfield', 'Central Perk'], array_column($examples, 'name'));
+
+        foreach ($examples as $example) {
+            $this->assertCount(3, $example['fields']);
+        }
     }
 
     #[Test]

@@ -1,40 +1,89 @@
-{{-- The kinds of record the account invented, beyond the people every account keeps. --}}
+{{-- The kinds of profile the account keeps: contacts, and the types it made itself. --}}
 {{-- @var \App\ViewModels\Settings\Account\EntityTypes\EntityTypesViewModel $viewModel --}}
 <x-settings.page
-  :title="__('Kinds of record')"
+  :title="__('Contacts and more')"
   :user="$viewModel->user()"
   current="entity-types"
 >
-  <x-page-header :title="__('Kinds of record')" :description="__('A vault can hold more than people: animals, companies, cars, anything you want to keep track of. You decide what they are called and where they appear.')">
-    <x-slot:actions>
-      <x-button :href="route('settings.entityTypes.new')" data-turbo="true" class="max-sm:w-full">
-        {{ __('Create a type') }}
-      </x-button>
-    </x-slot:actions>
-  </x-page-header>
+  <x-page-header :title="__('Contacts and more')" :description="__('You already have profiles for people. Create other kinds of profiles for the pets, companies, or things you want to remember. Each has its own information, organized into sections, just like a contact.')" />
+
+  <section aria-label="{{ __('Kinds of profile') }}" class="flex flex-col gap-3">
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
+      @foreach ($viewModel->examples() as $example)
+        <x-panel :title="$example['kind']" :icon="$example['icon']" :flush="true">
+          <div class="flex flex-col gap-3.5 p-4">
+            <div class="flex items-center gap-2.5">
+              <x-avatar-initials :name="$example['name']" :size="36" />
+
+              <span class="text-card-title text-ink">{{ $example['name'] }}</span>
+            </div>
+
+            <dl class="m-0 flex flex-col gap-2">
+              @foreach ($example['fields'] as $field)
+                <div class="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-3">
+                  <dt class="text-base text-muted">{{ $field }}</dt>
+                  <dd aria-hidden="true" class="m-0 h-2 rounded-sm border border-dashed border-hairline-strong bg-card"></dd>
+                </div>
+              @endforeach
+            </dl>
+          </div>
+
+          <x-slot:action>
+            <x-badge>{{ $example['tag'] }}</x-badge>
+          </x-slot:action>
+
+          <x-slot:footer class="text-muted">{{ $example['caption'] }}</x-slot:footer>
+        </x-panel>
+      @endforeach
+    </div>
+
+    <p class="px-0.5 text-base text-pretty text-muted">{{ __('Fields shown are examples. A type says what you keep track of, and its templates define the fields. Pets and companies do not use the relationships people have.') }}</p>
+  </section>
+
+  <section aria-label="{{ __('Create') }}" class="flex flex-wrap items-center gap-x-5 gap-y-3">
+    <x-button :href="route('settings.entityTypes.new')" data-turbo="true" class="max-sm:w-full">
+      <x-icon name="plus" :size="16" />
+      {{ __('Create a profile type') }}
+    </x-button>
+
+    <p class="flex-[1_1_280px] text-base text-pretty text-muted">{{ __('Start with a kind, such as “Pets.” You’ll add individual pets, such as “Garfield,” afterward.') }}</p>
+  </section>
 
   <x-page-section
-    :title="__('Your types')"
-    :description="__('Drag a row to change the order they appear in the vault navigation.')"
+    :title="__('Your profile types')"
+    :description="$viewModel->hasTypes() ? __('Drag a row to change the order in the vault navigation.') : null"
   >
-    <x-slot:aside>{{ $viewModel->summary() }}</x-slot:aside>
-
     <x-panel :flush="true">
-      <div id="entity-types" x-merge="replace" x-data="sortableRows" data-sortable class="dim-when-busy">
-        @forelse ($viewModel->types() as $type)
-          @include('app.settings.account.entity-types._row', ['type' => $type])
-        @empty
-          <x-empty-state :title="__('No types yet')">
-            <x-slot:icon>
-              <x-icon name="organization" :size="30" :stroke-width="1.4" />
-            </x-slot:icon>
+      <div @class(['flex items-center gap-3 py-3.5 pr-4 pl-11', 'border-b border-hairline' => $viewModel->hasTypes()])>
+        <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-hover text-body" aria-hidden="true">
+          <x-icon name="profile" :size="16" />
+        </span>
 
-            {{ __('Make one for the thing you keep losing track of. It appears in every vault in this account.') }}
-          </x-empty-state>
-        @endforelse
+        <div class="min-w-0 flex-1">
+          <p class="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <span class="text-base font-semibold text-ink">{{ __('Contacts') }}</span>
+
+            <x-badge>{{ __('Built in') }}</x-badge>
+          </p>
+
+          <p class="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-muted">
+            <span>{{ $viewModel->contacts()['countLabel'] }}</span>
+            <span aria-hidden="true">·</span>
+            <span class="inline-flex items-center gap-1">
+              <x-icon name="lock" :size="14" />
+              {{ __('Can’t be deleted') }}
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <div id="entity-types" x-merge="replace" x-data="sortableRows" data-sortable class="dim-when-busy">
+        @foreach ($viewModel->types() as $type)
+          @include('app.settings.account.entity-types._row', ['type' => $type])
+        @endforeach
       </div>
     </x-panel>
 
-    <p class="px-0.5 text-xs text-pretty text-muted">{{ __('Turning a type off keeps its records and stops new ones being made.') }}</p>
+    <p class="px-0.5 text-xs text-pretty text-muted">{{ __('Turning a type off keeps its profiles and stops new ones being made.') }}</p>
   </x-page-section>
 </x-settings.page>

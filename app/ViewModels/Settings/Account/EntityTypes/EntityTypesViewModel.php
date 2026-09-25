@@ -6,6 +6,7 @@ namespace App\ViewModels\Settings\Account\EntityTypes;
 
 use App\Models\EntityType;
 use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Database\Eloquent\Builder;
 
 class EntityTypesViewModel
@@ -37,15 +38,56 @@ class EntityTypesViewModel
             ->all();
     }
 
-    public function summary(): string
+    /**
+     * @return array{countLabel: string}
+     */
+    public function contacts(): array
     {
-        $types = $this->query()->count();
-        $records = (int) $this->query()->sum('entity_count');
+        $count = (int) Vault::query()
+            ->where('account_id', $this->user->account_id)
+            ->sum('contact_count');
 
-        return __(':types · :records', [
-            'types' => trans_choice(':count type|:count types', $types),
-            'records' => trans_choice(':count record across all vaults|:count records across all vaults', $records),
-        ]);
+        return [
+            'countLabel' => self::countLabel($count),
+        ];
+    }
+
+    public function hasTypes(): bool
+    {
+        return $this->query()->exists();
+    }
+
+    /**
+     * @return array<int, array{icon: string, kind: string, tag: string, name: string, fields: array<int, string>, caption: string}>
+     */
+    public function examples(): array
+    {
+        return [
+            [
+                'icon' => 'profile',
+                'kind' => __('Contacts'),
+                'tag' => __('Built in'),
+                'name' => __('Judy Geller'),
+                'fields' => [__('Birthday'), __('Phone'), __('Notes')],
+                'caption' => __('Your profiles for people'),
+            ],
+            [
+                'icon' => 'pet',
+                'kind' => __('Pets'),
+                'tag' => __('Example'),
+                'name' => __('Garfield'),
+                'fields' => [__('Species'), __('Birthday'), __('Notes')],
+                'caption' => __('A profile for each pet'),
+            ],
+            [
+                'icon' => 'organization',
+                'kind' => __('Companies'),
+                'tag' => __('Example'),
+                'name' => __('Central Perk'),
+                'fields' => [__('Address'), __('Website'), __('Notes')],
+                'caption' => __('A profile for each company'),
+            ],
+        ];
     }
 
     public function user(): User
@@ -61,10 +103,10 @@ class EntityTypesViewModel
     public static function countLabel(int $count): string
     {
         if ($count === 0) {
-            return __('no records');
+            return __('No profiles yet');
         }
 
-        return trans_choice(':count record|:count records', $count);
+        return trans_choice(':count profile|:count profiles', $count);
     }
 
     /** @return Builder<EntityType> */

@@ -114,7 +114,7 @@ class SidebarTest extends TestCase
             'Preferences',
             'Logs',
             'Personalisation',
-            'Kinds of record',
+            'Contacts and more',
             'Templates',
             'Value lists',
             'Account',

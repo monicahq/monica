@@ -16,7 +16,22 @@ class EntityTypeControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_lists_the_types_of_the_account(): void
+    public function it_explains_what_a_profile_type_is(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->get(route('settings.entityTypes.index'))
+            ->assertStatus(200)
+            ->assertSee('Contacts and more')
+            ->assertSee('Garfield')
+            ->assertSee('Central Perk')
+            ->assertSee('Fields shown are examples')
+            ->assertSee('Create a profile type')
+            ->assertSee(route('settings.entityTypes.new'));
+    }
+
+    #[Test]
+    public function it_lists_the_types_of_the_account_after_its_contacts(): void
     {
         $user = User::factory()->create();
         EntityType::factory()->create([
@@ -28,9 +43,20 @@ class EntityTypeControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('settings.entityTypes.index'))
             ->assertStatus(200)
-            ->assertSee('Wine bottle')
-            ->assertSee('Wine bottles')
-            ->assertSee('wine-bottles');
+            ->assertSeeInOrder(['Your profile types', 'Contacts', 'Built in', 'Can’t be deleted', 'Wine bottles'])
+            ->assertSee(route('settings.entityTypes.edit', 'wine-bottles'))
+            ->assertSee('Drag a row to change the order');
+    }
+
+    #[Test]
+    public function it_offers_no_ordering_without_a_type_of_its_own(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->get(route('settings.entityTypes.index'))
+            ->assertStatus(200)
+            ->assertSee('Can’t be deleted')
+            ->assertDontSee('Drag a row to change the order');
     }
 
     #[Test]
