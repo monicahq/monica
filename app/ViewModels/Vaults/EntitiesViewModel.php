@@ -42,6 +42,27 @@ class EntitiesViewModel
         return $this->entityType->is_active;
     }
 
+    public function addUrl(): string
+    {
+        return route('entities.new', ['vault' => $this->vault, 'entityType' => $this->entityType]);
+    }
+
+    public function addLabel(): string
+    {
+        return __('Add :name', ['name' => $this->entityType->name_singular]);
+    }
+
+    /**
+     * Why nothing can be added here, or null when something can. A turned-off type already says so
+     * in its notice, which the refused control points at instead of repeating it.
+     */
+    public function addRefusal(): ?string
+    {
+        $response = $this->user->inspect('addEntity', [$this->entityType, $this->vault]);
+
+        return $response->denied() ? (string) $response->message() : null;
+    }
+
     public function emptyTitle(): string
     {
         return __('No :name in this vault yet', ['name' => $this->entityType->name_plural]);

@@ -10,6 +10,7 @@ use App\Enums\SsoProviderEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\LifeEventCategory;
@@ -21,6 +22,8 @@ use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithCachedConfig;
@@ -408,5 +411,50 @@ abstract class TestCase extends BaseTestCase
         $template->structure->update(['published_version_id' => $version->id]);
 
         return $placed;
+    }
+
+    /**
+     * A published template for the entity type, set as its default in the vault, placing one
+     * section per key of the array, each holding a field per key of its own, of the type given.
+     *
+     * @param  array<string, array<string, FieldTypeEnum>>  $sections
+     */
+    protected function entityDefaultCarrying(Vault $vault, EntityType $entityType, array $sections): StructureVersion
+    {
+        $template = Template::factory()->forEntity($entityType)->create(['account_id' => $vault->account_id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $sectionPosition = 1;
+
+        foreach ($sections as $sectionName => $fields) {
+            $section = Section::factory()->create(['account_id' => $vault->account_id, 'name' => $sectionName]);
+            $sectionVersion = SectionVersion::factory()->create(['section_id' => $section->id]);
+            $position = 1;
+
+            foreach ($fields as $key => $type) {
+                Field::factory()->create([
+                    'section_version_id' => $sectionVersion->id,
+                    'key' => $key,
+                    'label' => Str::headline($key),
+                    'type' => $type,
+                    'position' => $position++,
+                ]);
+            }
+
+            StructureVersionSection::factory()->create([
+                'structure_version_id' => $version->id,
+                'section_version_id' => $sectionVersion->id,
+                'position' => $sectionPosition++,
+            ]);
+        }
+
+        $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+        $template->structure->update(['published_version_id' => $version->id]);
+
+        VaultDefaultTemplate::factory()->forEntity($entityType)->create([
+            'vault_id' => $vault->id,
+            'structure_version_id' => $version->id,
+        ]);
+
+        return $version->refresh();
     }
 }

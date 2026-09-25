@@ -15,6 +15,7 @@ use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\ContactListColumn;
 use App\Models\EmailSent;
+use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
@@ -954,6 +955,23 @@ class ApiDocsReturnFieldsTest extends TestCase
                 $entityType = EntityType::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
 
                 return $this->json('PUT', "/api/v1/entity-types/{$entityType->uuid}/position", ['position' => 1]);
+            }),
+
+            'entities-index' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
+                $this->entityDefaultCarrying($vault, $entityType, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+                Entity::factory()->create(['vault_id' => $vault->id, 'entity_type_id' => $entityType->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/entity-types/{$entityType->uuid}/entities");
+            }),
+
+            'entities-create' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
+                $this->entityDefaultCarrying($vault, $entityType, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+
+                return $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$entityType->uuid}/entities", ['name' => 'Mose’s goat']);
             }),
 
             'life-event-categories-index' => $this->asSomebody(function (User $user): TestResponse {

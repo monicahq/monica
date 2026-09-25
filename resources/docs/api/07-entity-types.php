@@ -93,6 +93,51 @@ $entityTypeAttributes = [
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null if it has not changed since it was declared.'],
 ];
 
+$entity = [
+    'type' => 'entity',
+    'id' => '9b1e6c42-7a35-4f08-b2d9-5c8e41a7f031',
+    'attributes' => [
+        'name' => 'Mose’s goat',
+        'entity_type_id' => '4c2b9f10-5e37-4a6d-8b91-0f7c3d2a8e64',
+        'initials' => 'MG',
+        'avatar_colour' => '#22c55e',
+        'avatar' => null,
+        'is_archived' => false,
+        'structure_version_id' => 12,
+        'template_name' => 'Basic animal',
+        'created_at' => 1758844800,
+        'updated_at' => 1758844800,
+    ],
+];
+
+$entityAttributes = [
+    ['name' => 'name', 'type' => 'string', 'description' => 'What the record is called, up to 255 characters. It is how the record is listed and sorted, and it is reduced to plain text when it is written down.'],
+    ['name' => 'entity_type_id', 'type' => 'uuid', 'description' => 'The kind of record it is. It never changes.'],
+    ['name' => 'initials', 'type' => 'string', 'description' => 'The first letter of the first two words of the name, drawn on the generated avatar.'],
+    ['name' => 'avatar_colour', 'type' => 'string', 'description' => 'The background the generated avatar is drawn on. It is picked when the record is written down and kept afterwards.'],
+    ['name' => 'avatar', 'type' => 'object', 'description' => 'The picture standing in for the record, with its id and url, or null when it is drawn as its initials.'],
+    ['name' => 'is_archived', 'type' => 'boolean', 'description' => 'Whether the record was put away. An archived record is still listed.'],
+    ['name' => 'structure_version_id', 'type' => 'integer', 'description' => 'The exact version of the template the record was written on. A record stays on that version until somebody moves it.'],
+    ['name' => 'template_name', 'type' => 'string', 'description' => 'The name of the template that version belongs to.'],
+    ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the record was written down, as a count of seconds since 1970.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null.'],
+];
+
+$entityPathParams = [
+    [
+        'name' => 'vault',
+        'type' => 'string',
+        'required' => true,
+        'description' => 'The vault the records live in, named either by the readable name it reports as slug or by the identifier it reports as id. Both answer.',
+    ],
+    [
+        'name' => 'entityType',
+        'type' => 'uuid',
+        'required' => true,
+        'description' => 'The kind of record. A type the vault does not use, which is one with no published template set for it there and no record in it, answers 404.',
+    ],
+];
+
 return [
     'name' => 'Kinds of record',
     'description' => 'The sorts of thing a vault keeps besides people, each with its own template and its own place in the order.',
@@ -335,6 +380,92 @@ return [
             ],
             'returns' => 'The entity type object as it now reads, carrying its new position. A type belonging to somebody else answers 404 and nothing is renumbered.',
             'response' => ['data' => $entityType],
+        ],
+        [
+            'id' => 'entities-index',
+            'returnFields' => ApiDocsFields::page('entity', 'record', 'records', $entityAttributes, false),
+            'title' => 'List the records of a kind',
+            'label' => 'List records',
+            'method' => 'GET',
+            'path' => '/vaults/{vault}/entity-types/{entityType}/entities',
+            'examplePath' => '/vaults/schrute-farms/entity-types/4c2b9f10-5e37-4a6d-8b91-0f7c3d2a8e64/entities',
+            'description' => 'List the records of one kind kept in one vault, by name.',
+            'body' => [
+                'Archived records are listed with the others and marked. A record of the same kind in another vault is never listed here.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => $entityPathParams,
+            'queryParams' => $pageParams,
+            'returns' => 'A page of entity objects, and how many there are in all. A vault or a type belonging to somebody else answers 404.',
+            'response' => [
+                'data' => [$entity],
+                'meta' => [
+                    'page' => 1,
+                    'per_page' => 25,
+                    'total' => 1,
+                ],
+            ],
+        ],
+        [
+            'id' => 'entities-create',
+            'returnFields' => ApiDocsFields::one('entity', 'record', $entityAttributes, false),
+            'title' => 'Create a record',
+            'label' => 'Create a record',
+            'method' => 'POST',
+            'path' => '/vaults/{vault}/entity-types/{entityType}/entities',
+            'examplePath' => '/vaults/schrute-farms/entity-types/4c2b9f10-5e37-4a6d-8b91-0f7c3d2a8e64/entities',
+            'description' => 'Write down a record of one kind in one vault, with what its template asks.',
+            'body' => [
+                'The record is written on the published version of the template the vault uses for this kind. Everything is written together or nothing is: a value refused in any section leaves no record behind.',
+                'A field you leave out starts with the default its template gives it, as it would on a new contact. Send it empty to leave it empty.',
+                'A type the vault does not show answers 404. A type the vault still shows because it holds records of it answers 422 with the reason on name when the type was turned off, when the vault has no published template for it, or when that template requires something that cannot be filled in here.',
+                'Relation fields cannot be filled in here yet, and neither can a repeating group that requires one.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per token.',
+            'pathParams' => $entityPathParams,
+            'bodyParams' => [
+                [
+                    'name' => 'name',
+                    'type' => 'string',
+                    'required' => true,
+                    'description' => 'What the record is called, up to 255 characters.',
+                    'example' => 'Mose’s goat',
+                ],
+                [
+                    'name' => 'fields',
+                    'type' => 'object',
+                    'required' => false,
+                    'description' => 'The values, keyed by the id of the field they fill in, each checked against what its field accepts. A field left out writes nothing. Files are sent as multipart under fields[id].',
+                    'example' => ['381' => 'Goat'],
+                ],
+                [
+                    'name' => 'labels',
+                    'type' => 'object',
+                    'required' => false,
+                    'description' => 'The label picked beside a value, keyed by field id, for a field that carries one.',
+                ],
+                [
+                    'name' => 'label_wordings',
+                    'type' => 'object',
+                    'required' => false,
+                    'description' => 'The wording typed when the picked label is the open one, keyed by field id.',
+                ],
+                [
+                    'name' => 'year_is_unknown',
+                    'type' => 'object',
+                    'required' => false,
+                    'description' => 'True for a recurring date whose year nobody knows, keyed by field id.',
+                ],
+                [
+                    'name' => 'month_is_unknown',
+                    'type' => 'object',
+                    'required' => false,
+                    'description' => 'True for a recurring date whose month nobody knows, keyed by field id.',
+                ],
+            ],
+            'returns' => 'The entity object that was written down. A vault or a type belonging to somebody else answers 404.',
+            'responseStatus' => 201,
+            'response' => ['data' => $entity],
         ],
     ],
 ];

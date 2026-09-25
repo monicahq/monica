@@ -144,4 +144,34 @@ class FieldTest extends TestCase
 
         $this->assertEquals($field->sectionVersion->account_id, $field->account_id);
     }
+
+    #[Test]
+    public function it_can_be_filled_in_when_it_has_a_control_of_its_own(): void
+    {
+        $this->assertTrue(Field::factory()->create()->canBeFilledIn());
+        $this->assertFalse(Field::factory()->relation()->create()->canBeFilledIn());
+        $this->assertFalse(Field::factory()->layout()->create()->canBeFilledIn());
+    }
+
+    #[Test]
+    public function it_leaves_out_a_repeater_whose_required_child_has_no_control(): void
+    {
+        $caregivers = Field::factory()->repeater()->create(['label' => 'Caregivers']);
+        Field::factory()->create([
+            'section_version_id' => $caregivers->section_version_id,
+            'parent_field_id' => $caregivers->id,
+            'label' => 'Role',
+        ]);
+
+        $this->assertTrue($caregivers->refresh()->canBeFilledIn());
+
+        Field::factory()->relation()->create([
+            'section_version_id' => $caregivers->section_version_id,
+            'parent_field_id' => $caregivers->id,
+            'label' => 'Person',
+            'is_required' => true,
+        ]);
+
+        $this->assertFalse($caregivers->refresh()->canBeFilledIn());
+    }
 }

@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\ContactNameController;
 use App\Http\Controllers\Api\ContactStructureVersionController;
 use App\Http\Controllers\Api\ContactVCardController;
 use App\Http\Controllers\Api\EmailSentController;
+use App\Http\Controllers\Api\EntityController;
 use App\Http\Controllers\Api\EntityTypeActivationController;
 use App\Http\Controllers\Api\EntityTypeController;
 use App\Http\Controllers\Api\EntityTypePositionController;
@@ -136,6 +137,8 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
         Route::put('entity-types/{entityType}/activation', [EntityTypeActivationController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.activation.update');
         Route::put('entity-types/{entityType}/position', [EntityTypePositionController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.position.update');
+        Route::get('vaults/{vault}/entity-types/{entityType}/entities', [EntityController::class, 'index'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entities');
+        Route::post('vaults/{vault}/entity-types/{entityType}/entities', [EntityController::class, 'create'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entities.create');
 
         Route::get('life-event-categories', [LifeEventCategoryController::class, 'index'])->name('lifeEventCategories');
         Route::get('life-event-categories/{lifeEventCategory}', [LifeEventCategoryController::class, 'show'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.show');

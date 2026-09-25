@@ -213,6 +213,26 @@ class Field extends Model
     }
 
     /**
+     * Whether a screen can fill the field in. A field with no control of its own cannot, a relation
+     * among them, and neither can a repeater asking on each repetition for such a field as
+     * required, since no repetition of it could ever be saved.
+     */
+    public function canBeFilledIn(): bool
+    {
+        if (! $this->type->hasAnInput()) {
+            return false;
+        }
+
+        if (! $this->type->isRepeater()) {
+            return true;
+        }
+
+        return $this->children->doesntContain(
+            fn (Field $child): bool => $child->is_required && ! $child->type->hasAnInput(),
+        );
+    }
+
+    /**
      * Get what a repeater asks for on each repetition.
      *
      * @return HasMany<Field, $this>

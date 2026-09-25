@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Enums\FieldTypeEnum;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\User;
@@ -59,6 +60,30 @@ class EntitiesViewModelTest extends TestCase
     }
 
     /** @return array{0: User, 1: Vault, 2: EntityType} */
+    #[Test]
+    public function it_offers_the_way_to_add_one(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+        $type->update(['name_singular' => 'Animal']);
+        $this->entityDefaultCarrying($vault, $type, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+
+        $viewModel = new EntitiesViewModel(user: $user, vault: $vault, entityType: $type);
+
+        $this->assertNull($viewModel->addRefusal());
+        $this->assertSame('Add Animal', $viewModel->addLabel());
+        $this->assertSame(route('entities.new', ['vault' => $vault, 'entityType' => $type]), $viewModel->addUrl());
+    }
+
+    #[Test]
+    public function it_says_why_nothing_can_be_added(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+
+        $refusal = new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->addRefusal();
+
+        $this->assertStringContainsString('Nothing can be added until this vault has a published template', (string) $refusal);
+    }
+
     private function vaultWithType(): array
     {
         $user = User::factory()->create();

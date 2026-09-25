@@ -155,6 +155,29 @@ class EntityType extends Model
     }
 
     /**
+     * Get the published version a new record of this kind starts from in the vault, which is null
+     * when the vault has no default for it or when that default can no longer be used: a version
+     * that is not published, or a template that was turned off. The type being turned off is a
+     * separate question, asked by the policy.
+     */
+    public function defaultVersionIn(Vault $vault): ?StructureVersion
+    {
+        return $this->vaultDefaultTemplates()
+            ->where('vault_id', $vault->id)
+            ->where('applies_to', StructureAppliesToEnum::Entity)
+            ->whereHas('structureVersion', function (Builder $query): void {
+                $query->where('status', VersionStatusEnum::Published)
+                    ->whereHas('structure', function (Builder $query): void {
+                        $query->whereHasMorph('owner', [Template::class], function (Builder $query): void {
+                            $query->where('is_active', true);
+                        });
+                    });
+            })
+            ->first()
+            ?->structureVersion;
+    }
+
+    /**
      * Scope the types a vault shows in its navigation. A type is shown when it is active and the
      * vault starts its records from an active, published template, or when the vault still holds a
      * record of it, archived or not, so that turning a type off never hides what was written.
