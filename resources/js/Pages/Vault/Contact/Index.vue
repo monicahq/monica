@@ -85,6 +85,13 @@ const update = () => {
                   :text="$t('Add a contact')"
                   class="ms-3"
                   :icon="'plus'" />
+
+                <pretty-link
+                  v-if="layoutData.vault.permission.at_least_editor"
+                  :href="data.url.contact.import"
+                  :text="$t('Import')"
+                  class="ms-3"
+                  :icon="'upload'" />
               </div>
             </div>
 
