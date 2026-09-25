@@ -40,6 +40,7 @@ class UserFactory extends Factory
             'timezone' => 'UTC',
             'time_format' => TimeFormatEnum::TwentyFourHour,
             'name_order' => NameOrderEnum::GivenFirst,
+            'welcomed_at' => now(),
             'remember_token' => Str::random(10),
         ];
     }
@@ -48,6 +49,13 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes): array => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    public function notWelcomed(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'welcomed_at' => null,
         ]);
     }
 

@@ -39,6 +39,7 @@ return new class extends Migration
             $table->timestamp('two_factor_confirmed_at')->nullable()->comment('when the user finished enrolling in two factor authentication, null while it is not in use');
             $table->text('two_factor_recovery_codes')->nullable()->comment('encrypted list of single use recovery codes for two factor authentication');
             $table->datetime('last_saved_at')->nullable()->comment('when the user last saved their own profile, shown on that screen');
+            $table->datetime('welcomed_at')->nullable()->comment('when the user pressed Let me in on the welcome screen, null until then');
             $table->rememberToken()->comment('remember token');
             $table->timestamps();
             $table->softDeletes();

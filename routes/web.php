@@ -121,6 +121,7 @@ use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
 use App\Http\Controllers\App\Vaults\VaultReminderController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
+use App\Http\Controllers\App\WelcomeController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -159,6 +160,9 @@ Route::post('s/{token}', [SharedContactPasswordController::class, 'create'])
 
 Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->group(function (): void {
     Route::get('getting-started', [GettingStartedController::class, 'index'])->name('gettingStarted.index');
+
+    Route::get('welcome', [WelcomeController::class, 'index'])->name('welcome.index');
+    Route::put('welcome', [WelcomeController::class, 'update'])->name('welcome.update');
 
     Route::get('vaults', [VaultController::class, 'index'])->name('vaults.index');
     Route::get('vaults/new', [VaultController::class, 'new'])->name('vaults.new');

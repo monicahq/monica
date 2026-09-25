@@ -19,6 +19,10 @@ class HomeController extends Controller
             return redirect()->route('auth.login.new');
         }
 
+        if ($user->welcomed_at === null) {
+            return redirect()->route('welcome.index');
+        }
+
         $hasAVault = Vault::query()->where('account_id', $user->account_id)->exists();
 
         if ($hasAVault) {

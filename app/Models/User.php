@@ -69,6 +69,7 @@ use Override;
  * @property CarbonImmutable|null $two_factor_confirmed_at
  * @property array<int, string>|null $two_factor_recovery_codes
  * @property CarbonImmutable|null $last_saved_at
+ * @property CarbonImmutable|null $welcomed_at
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
@@ -160,6 +161,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             'two_factor_confirmed_at' => 'datetime',
             'two_factor_recovery_codes' => 'encrypted:array',
             'last_saved_at' => 'datetime',
+            'welcomed_at' => 'datetime',
         ];
     }
 

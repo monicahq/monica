@@ -21,6 +21,16 @@ class HomeControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_sends_somebody_who_has_not_been_welcomed_to_the_welcome_screen(): void
+    {
+        $user = User::factory()->notWelcomed()->create();
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('home.index'))
+            ->assertRedirect(route('welcome.index'));
+    }
+
+    #[Test]
     public function it_sends_an_account_that_holds_nothing_to_the_screen_that_says_what_to_do_first(): void
     {
         $user = User::factory()->create();

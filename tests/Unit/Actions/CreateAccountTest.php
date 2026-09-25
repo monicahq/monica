@@ -50,6 +50,7 @@ class CreateAccountTest extends TestCase
             'first_name' => 'Michael',
             'last_name' => 'Scott',
             'email' => 'michael.scott@dundermifflin.com',
+            'welcomed_at' => null,
         ]);
 
         $this->assertTrue(Hash::check('thatswhatshesaid', $user->password));

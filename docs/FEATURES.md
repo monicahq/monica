@@ -31,3 +31,5 @@ A chronological list of every feature and improvement shipped during development
 * Settings/account/security: Created and revoked an API key without reloading the page.
 * Foundation: Dropped companies and employees. An account holds users, and every user of an account can do the same things.
 * Settings/account/profile: Let somebody change the email address they sign in with.
+* Welcome: Greeted a new account once with a letter from the people behind Monica, before anything else.
+* API/profile: Let an application dismiss the welcome screen and read when it was dismissed.

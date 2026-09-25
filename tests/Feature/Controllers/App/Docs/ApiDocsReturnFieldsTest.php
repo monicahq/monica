@@ -560,6 +560,8 @@ class ApiDocsReturnFieldsTest extends TestCase
                 'direction' => 'desc',
             ])),
 
+            'me-welcome-update' => $this->asSomebody(fn (User $user): TestResponse => $this->json('PUT', '/api/v1/me/welcome')),
+
             'api-keys-index' => $this->asSomebody(function (User $user): TestResponse {
                 $user->createToken('Dundie awards bot');
 
