@@ -182,4 +182,20 @@ class CreateDefaultValueListsTest extends TestCase
 
         $this->assertSame(count(ValueListEnum::cases()), ValueList::query()->where('account_id', $user->account_id)->count());
     }
+
+    #[Test]
+    public function it_adds_only_the_lists_an_account_lacks(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        new CreateDefaultValueLists(user: $user)->execute();
+        ValueList::query()->where('account_id', $user->account_id)->where('key', ValueListEnum::AnimalSexes->value)->forceDelete();
+
+        $added = new CreateDefaultValueLists(user: $user, lists: [ValueListEnum::Genders, ValueListEnum::AnimalSexes])->execute();
+
+        $this->assertSame([ValueListEnum::AnimalSexes->value], array_map(fn (ValueList $list): string => $list->key, $added));
+        $this->assertSame(1, ValueList::query()->where('account_id', $user->account_id)->where('key', ValueListEnum::Genders->value)->count());
+        $this->assertSame(3, ValueList::query()->where('key', ValueListEnum::AnimalSexes->value)->sole()->items()->count());
+    }
 }

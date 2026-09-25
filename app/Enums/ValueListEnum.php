@@ -19,6 +19,7 @@ enum ValueListEnum: string implements Translatable
     case EmailLabels = 'email_labels';
     case AddressLabels = 'address_labels';
     case WebsiteLabels = 'website_labels';
+    case AnimalSexes = 'animal_sexes';
 
     public function label(): string
     {
@@ -32,6 +33,7 @@ enum ValueListEnum: string implements Translatable
             self::EmailLabels => 'Email labels',
             self::AddressLabels => 'Address labels',
             self::WebsiteLabels => 'Website labels',
+            self::AnimalSexes => 'Animal sexes',
         };
     }
 
@@ -47,6 +49,7 @@ enum ValueListEnum: string implements Translatable
             self::EmailLabels => 'What an email address is for',
             self::AddressLabels => 'What an address is for',
             self::WebsiteLabels => 'What a link points at',
+            self::AnimalSexes => 'Whether an animal is female or male',
         };
     }
 
@@ -63,6 +66,7 @@ enum ValueListEnum: string implements Translatable
             self::EmailLabels => EmailLabelEnum::cases(),
             self::AddressLabels => AddressLabelEnum::cases(),
             self::WebsiteLabels => WebsiteLabelEnum::cases(),
+            self::AnimalSexes => AnimalSexEnum::cases(),
         };
     }
 

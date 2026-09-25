@@ -96,7 +96,7 @@ class EntityType extends Model
      *
      * @var list<string>
      */
-    public const array ICONS = ['profile', 'logs', 'security', 'preferences', 'key', 'device', 'info', 'activity', 'mail', 'sun', 'moon', 'check'];
+    public const array ICONS = ['profile', 'logs', 'security', 'preferences', 'key', 'device', 'info', 'activity', 'mail', 'sun', 'moon', 'check', 'pet'];
 
     public const string DEFAULT_ICON = 'profile';
 

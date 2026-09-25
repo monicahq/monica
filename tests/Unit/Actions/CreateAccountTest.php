@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateAccount;
+use App\Enums\DefaultTemplateEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\CreateDefaultTemplate;
@@ -135,6 +136,7 @@ class CreateAccountTest extends TestCase
                 'email_labels',
                 'address_labels',
                 'website_labels',
+                'animal_sexes',
             ],
             $lists->pluck('key')->all(),
         );
@@ -161,11 +163,12 @@ class CreateAccountTest extends TestCase
         )->execute();
 
         Queue::assertPushedWithChain(SeedNotificationPreference::class, [
-            SeedValueLists::class,
-            SeedLifeEventCategories::class,
-            CreateDefaultTemplate::class,
-            CreateDefaultLifeEventTypes::class,
-            SeedRelationshipTypes::class,
+            new SeedValueLists(user: $user),
+            new SeedLifeEventCategories(user: $user),
+            new CreateDefaultTemplate(user: $user),
+            new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal),
+            new CreateDefaultLifeEventTypes(user: $user),
+            new SeedRelationshipTypes(user: $user),
         ]);
 
         Queue::assertPushedOn(
@@ -202,7 +205,7 @@ class CreateAccountTest extends TestCase
             password: 'thatswhatshesaid',
         )->execute();
 
-        $template = Template::query()->where('account_id', $user->account_id)->sole();
+        $template = Template::query()->where('account_id', $user->account_id)->where('slug', 'basic-contact')->sole();
 
         $this->assertEquals('Basic contact', $template->name);
         $this->assertTrue($template->is_system);

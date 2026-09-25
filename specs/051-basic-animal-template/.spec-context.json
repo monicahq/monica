@@ -1,0 +1,37 @@
+{
+  "workflow": "speckit",
+  "specName": "Basic animal template",
+  "branch": "2026-09-25-basic-animal-template",
+  "currentStep": "implement",
+  "status": "implemented",
+  "history": [
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-25T18:17:50.422Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-25T18:20:55.013Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-25T18:22:11.250Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-25T18:36:32.570Z"
+    }
+  ]
+}

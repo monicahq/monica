@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Enums\DefaultTemplateEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\StructureAppliesToEnum;
+use App\Jobs\CreateDefaultTemplate;
 use App\Models\Contact;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -14,6 +16,7 @@ use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use App\ViewModels\Vaults\ContactFormViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -53,6 +56,22 @@ class ContactFormViewModelTest extends TestCase
 
         $this->assertTrue($viewModel->showsTemplates());
         $this->assertCount(2, $viewModel->templates());
+    }
+
+    #[Test]
+    public function it_does_not_offer_the_animal_template_to_a_contact(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+
+        $viewModel = new ContactFormViewModel(user: $user, vault: $vault);
+
+        $this->assertFalse($viewModel->showsTemplates());
+        $this->assertNotContains('Basic animal', array_column($viewModel->templates(), 'name'));
     }
 
     #[Test]

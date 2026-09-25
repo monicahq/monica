@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\DefaultTemplateEnum;
 use App\Enums\SsoProviderEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\CreateDefaultLifeEventTypes;
@@ -94,6 +95,7 @@ class CreateAccount
             new SeedValueLists(user: $this->user),
             new SeedLifeEventCategories(user: $this->user),
             new CreateDefaultTemplate(user: $this->user),
+            new CreateDefaultTemplate(user: $this->user, supplied: DefaultTemplateEnum::BasicAnimal),
             new CreateDefaultLifeEventTypes(user: $this->user),
             new SeedRelationshipTypes(user: $this->user),
         ])->onQueue('high')->dispatch();

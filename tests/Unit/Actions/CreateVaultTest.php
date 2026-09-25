@@ -6,8 +6,10 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\CreateVault;
 use App\Actions\UpdateVault;
+use App\Enums\DefaultTemplateEnum;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
+use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -163,6 +165,30 @@ class CreateVaultTest extends TestCase
             'applies_to' => StructureAppliesToEnum::Contact->value,
             'entity_type_id' => null,
             'structure_version_id' => $version->id,
+        ]);
+    }
+
+    #[Test]
+    public function it_gives_a_new_vault_the_animal_default(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+        $animal = Template::query()->where('account_id', $user->account_id)->where('slug', 'basic-animal')->sole();
+
+        $vault = new CreateVault(user: $user, name: 'Schrute Farms')->execute();
+
+        $this->assertDatabaseHas('vault_default_templates', [
+            'vault_id' => $vault->id,
+            'applies_to' => StructureAppliesToEnum::Entity->value,
+            'entity_type_id' => $animal->structure->entity_type_id,
+            'structure_version_id' => $animal->structure->published_version_id,
+        ]);
+        $this->assertDatabaseHas('vault_default_templates', [
+            'vault_id' => $vault->id,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
         ]);
     }
 

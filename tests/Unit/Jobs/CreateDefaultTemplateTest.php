@@ -10,6 +10,7 @@ use App\Enums\DefaultPageEnum;
 use App\Enums\DefaultSectionEnum;
 use App\Enums\DefaultTemplateEnum;
 use App\Enums\FieldTypeEnum;
+use App\Enums\RelationTargetEnum;
 use App\Enums\RepetitionOrderEnum;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
@@ -17,8 +18,12 @@ use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
+use App\Models\EntityType;
 use App\Models\Field;
+use App\Models\FieldValue;
+use App\Models\FieldValueRow;
 use App\Models\Section;
+use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\ValueList;
@@ -151,6 +156,7 @@ class CreateDefaultTemplateTest extends TestCase
         $user = $this->userWithValueLists();
 
         new CreateDefaultTemplate(user: $user)->handle();
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
 
         foreach (DefaultSectionEnum::cases() as $case) {
             $this->assertDatabaseHas('sections', [
@@ -209,6 +215,7 @@ class CreateDefaultTemplateTest extends TestCase
         $user = $this->userWithValueLists();
 
         new CreateDefaultTemplate(user: $user)->handle();
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
 
         foreach (DefaultSectionEnum::cases() as $case) {
             $version = Section::query()->firstWhere('slug', $case->value)->publishedVersion;
@@ -592,6 +599,255 @@ class CreateDefaultTemplateTest extends TestCase
 
         $this->assertTrue($others->isNotEmpty());
         $this->assertTrue($others->every(fn (Field $field): bool => $field->is_identifying === false));
+    }
+
+    #[Test]
+    public function it_gives_the_account_an_animal_type_before_its_template(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+
+        $this->assertDatabaseHas('entity_types', [
+            'account_id' => $user->account_id,
+            'slug' => 'animals',
+            'name_singular' => 'Animal',
+            'name_plural' => 'Animals',
+            'description' => 'Pets and other animals you want to remember.',
+            'icon' => 'pet',
+            'is_active' => true,
+        ]);
+
+        $this->assertDatabaseHas('templates', [
+            'account_id' => $user->account_id,
+            'name_translation_key' => 'Basic animal',
+            'slug' => 'basic-animal',
+            'is_system' => true,
+            'is_active' => true,
+        ]);
+    }
+
+    #[Test]
+    public function it_restricts_the_animal_template_to_that_type(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+
+        $type = EntityType::query()->where('account_id', $user->account_id)->sole();
+        $structure = $this->animalTemplate($user)->structure;
+
+        $this->assertSame(StructureAppliesToEnum::Entity, $structure->applies_to);
+        $this->assertSame($type->id, $structure->entity_type_id);
+    }
+
+    #[Test]
+    public function it_publishes_the_animal_template_and_each_of_its_sections(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+
+        $version = $this->animalTemplate($user)->structure->publishedVersion;
+
+        $this->assertSame(1, $version->version_number);
+        $this->assertSame(VersionStatusEnum::Published, $version->status);
+
+        foreach ($version->assembly as $row) {
+            $this->assertSame(VersionStatusEnum::Published, $row->sectionVersion->status);
+            $this->assertSame(1, $row->sectionVersion->version_number);
+        }
+    }
+
+    #[Test]
+    public function it_lays_the_animal_template_out_as_supplied(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+
+        $version = $this->animalTemplate($user)->structure->publishedVersion;
+        $pages = $version->pages()->orderBy('position')->get();
+
+        $this->assertSame(['general'], $pages->pluck('key')->all());
+        $this->assertSame('General', $pages->first()->label_translation_key);
+
+        $sections = $version->assembly()->get();
+
+        $this->assertSame(
+            ['animal-details', 'animal-people', 'animal-care', 'animal-notes'],
+            $sections->map(fn ($row): string => $row->sectionVersion->section->slug)->all(),
+        );
+
+        $fields = $sections->flatMap(fn ($row) => $row->sectionVersion->fields()->orderBy('parent_field_id')->orderBy('position')->get())
+            ->mapWithKeys(fn (Field $field): array => [$field->key => $field->type])
+            ->all();
+
+        $this->assertEquals([
+            'species' => FieldTypeEnum::Text,
+            'breed' => FieldTypeEnum::Text,
+            'sex' => FieldTypeEnum::Select,
+            'birthday' => FieldTypeEnum::RecurringDate,
+            'adoption_date' => FieldTypeEnum::RecurringDate,
+            'microchip_number' => FieldTypeEnum::Text,
+            'caregivers' => FieldTypeEnum::Repeater,
+            'caregiver_person' => FieldTypeEnum::Relation,
+            'caregiver_role' => FieldTypeEnum::Text,
+            'food_and_routine' => FieldTypeEnum::Textarea,
+            'health_and_care' => FieldTypeEnum::Textarea,
+            'animal_notes' => FieldTypeEnum::Textarea,
+        ], $fields);
+    }
+
+    #[Test]
+    public function it_offers_female_male_and_unknown_with_none_chosen(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+
+        $sex = Field::query()->where('account_id', $user->account_id)->where('key', 'sex')->sole();
+
+        $this->assertNull($sex->default_value);
+        $this->assertSame(ValueListEnum::AnimalSexes->value, $sex->valueList->key);
+        $this->assertSame(['female', 'male', 'unknown'], $sex->valueList->items()->orderBy('position')->pluck('key')->all());
+    }
+
+    #[Test]
+    public function it_asks_for_a_person_on_every_caregiver_row_and_nothing_else(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+
+        $person = Field::query()->where('account_id', $user->account_id)->where('key', 'caregiver_person')->sole();
+
+        $this->assertTrue($person->is_required);
+        $this->assertSame(RelationTargetEnum::Contact, $person->relation_target);
+        $this->assertTrue($person->options['distinct_in_list']);
+        $this->assertSame('caregivers', $person->parent->key);
+        $this->assertFalse($person->is_unique);
+
+        $this->assertSame(
+            ['caregiver_person'],
+            Field::query()
+                ->where('account_id', $user->account_id)
+                ->where('is_required', true)
+                ->pluck('key')
+                ->all(),
+        );
+    }
+
+    #[Test]
+    public function it_writes_no_value_and_no_row(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+
+        $this->assertSame(0, FieldValue::query()->where('account_id', $user->account_id)->count());
+        $this->assertSame(0, FieldValueRow::query()->where('account_id', $user->account_id)->count());
+    }
+
+    #[Test]
+    public function it_sets_the_animal_default_of_every_vault(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+        $vaults = Vault::factory()->count(2)->create(['account_id' => $user->account_id]);
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+
+        $template = $this->animalTemplate($user);
+
+        foreach ($vaults as $vault) {
+            $this->assertDatabaseHas('vault_default_templates', [
+                'vault_id' => $vault->id,
+                'applies_to' => StructureAppliesToEnum::Entity->value,
+                'entity_type_id' => $template->structure->entity_type_id,
+                'structure_version_id' => $template->structure->published_version_id,
+            ]);
+        }
+    }
+
+    #[Test]
+    public function it_keeps_a_default_somebody_chose(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $chosen = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+
+        VaultDefaultTemplate::query()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'applies_to' => StructureAppliesToEnum::Contact,
+            'entity_type_id' => null,
+            'structure_version_id' => $chosen->id,
+        ]);
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        $this->assertSame(
+            $chosen->id,
+            VaultDefaultTemplate::query()->where('vault_id', $vault->id)->sole()->structure_version_id,
+        );
+    }
+
+    #[Test]
+    public function it_writes_nothing_the_second_time(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+
+        $this->assertSame(1, EntityType::query()->where('account_id', $user->account_id)->count());
+        $this->assertSame(1, Template::query()->where('account_id', $user->account_id)->count());
+        $this->assertSame(4, Section::query()->where('account_id', $user->account_id)->count());
+        $this->assertSame(1, VaultDefaultTemplate::query()->where('account_id', $user->account_id)->count());
+    }
+
+    #[Test]
+    public function it_leaves_another_account_alone(): void
+    {
+        Queue::fake();
+
+        $michael = $this->userWithValueLists();
+        $dwight = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $michael, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+
+        $this->assertSame(0, EntityType::query()->where('account_id', $dwight->account_id)->count());
+        $this->assertSame(0, Template::query()->where('account_id', $dwight->account_id)->count());
+    }
+
+    private function animalTemplate(User $user): Template
+    {
+        return Template::query()
+            ->where('account_id', $user->account_id)
+            ->where('slug', DefaultTemplateEnum::BasicAnimal->value)
+            ->sole();
     }
 
     private function userWithValueLists(): User

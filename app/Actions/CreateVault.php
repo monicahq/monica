@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\DefaultTemplateEnum;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Helpers\TextSanitizer;
@@ -34,6 +35,7 @@ class CreateVault
         $this->refuseAboveTheCeiling();
         $this->create();
         $this->seedTheContactDefault();
+        $this->seedTheAnimalDefault();
         $this->log();
 
         return $this->vault;
@@ -88,6 +90,30 @@ class CreateVault
             'vault_id' => $this->vault->id,
             'applies_to' => StructureAppliesToEnum::Contact,
             'entity_type_id' => null,
+            'structure_version_id' => $template->structure->published_version_id,
+        ]);
+    }
+
+    private function seedTheAnimalDefault(): void
+    {
+        $template = Template::query()
+            ->where('account_id', $this->user->account_id)
+            ->where('is_system', true)
+            ->where('slug', DefaultTemplateEnum::BasicAnimal->value)
+            ->whereHas('structure', function (Builder $query): void {
+                $query->whereNotNull('published_version_id');
+            })
+            ->first();
+
+        if ($template === null) {
+            return;
+        }
+
+        VaultDefaultTemplate::query()->create([
+            'account_id' => $this->user->account_id,
+            'vault_id' => $this->vault->id,
+            'applies_to' => StructureAppliesToEnum::Entity,
+            'entity_type_id' => $template->structure->entity_type_id,
             'structure_version_id' => $template->structure->published_version_id,
         ]);
     }

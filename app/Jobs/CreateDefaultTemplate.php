@@ -7,11 +7,11 @@ namespace App\Jobs;
 use App\Enums\DefaultFieldEnum;
 use App\Enums\DefaultSectionEnum;
 use App\Enums\DefaultTemplateEnum;
-use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\ValueListSnapshot;
+use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
@@ -29,9 +29,10 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Give a fresh account the template it starts with, so the first contact somebody writes down has
- * somewhere to go. It is a job rather than part of creating the account, because it writes a couple
- * of dozen rows nobody is looking at yet.
+ * Give a fresh account one of the templates it starts with, so the first contact or animal somebody
+ * writes down has somewhere to go. It is a job rather than part of creating the account, because it
+ * writes a couple of dozen rows nobody is looking at yet. It does nothing when the account already
+ * has that template, so running it again is safe.
  */
 class CreateDefaultTemplate implements ShouldQueue
 {
@@ -41,18 +42,26 @@ class CreateDefaultTemplate implements ShouldQueue
 
     private StructureVersion $version;
 
+    private ?EntityType $entityType = null;
+
     /** @var array<string, int> */
     private array $valueLists;
 
     public function __construct(
         public User $user,
+        public DefaultTemplateEnum $supplied = DefaultTemplateEnum::BasicContact,
     ) {}
 
     public function handle(): void
     {
+        if ($this->alreadySupplied()) {
+            return;
+        }
+
         $this->readValueLists();
 
         DB::transaction(function (): void {
+            $this->createEntityType();
             $this->createTemplate();
             $this->createPages();
             $this->publish();
@@ -60,6 +69,41 @@ class CreateDefaultTemplate implements ShouldQueue
         });
 
         $this->log();
+    }
+
+    private function alreadySupplied(): bool
+    {
+        return Template::query()
+            ->withTrashed()
+            ->where('account_id', $this->user->account_id)
+            ->where('is_system', true)
+            ->where('slug', $this->supplied->value)
+            ->exists();
+    }
+
+    private function createEntityType(): void
+    {
+        $type = $this->supplied->entityType();
+
+        if ($type === null) {
+            return;
+        }
+
+        $position = EntityType::query()->where('account_id', $this->user->account_id)->max('position') ?? 0;
+        $locale = $this->user->locale;
+
+        $this->entityType = EntityType::query()->create([
+            'account_id' => $this->user->account_id,
+            'name_singular' => __($type['singular'], locale: $locale),
+            'name_plural' => __($type['plural'], locale: $locale),
+            'slug' => $type['slug'],
+            'description' => __($type['description'], locale: $locale),
+            'icon' => $type['icon'],
+            'colour' => $type['colour'],
+            'position' => $position + 1,
+            'is_active' => true,
+            'entity_count' => 0,
+        ]);
     }
 
     private function readValueLists(): void
@@ -72,7 +116,8 @@ class CreateDefaultTemplate implements ShouldQueue
 
     private function createTemplate(): void
     {
-        $supplied = DefaultTemplateEnum::BasicContact;
+        $supplied = $this->supplied;
+        $position = Template::query()->where('account_id', $this->user->account_id)->max('position') ?? 0;
 
         $this->template = Template::query()->create([
             'account_id' => $this->user->account_id,
@@ -83,7 +128,7 @@ class CreateDefaultTemplate implements ShouldQueue
             'is_system' => true,
             'is_active' => true,
             'locale' => config('app.locale'),
-            'position' => 1,
+            'position' => $position + 1,
         ]);
 
         $structure = Structure::query()->create([
@@ -91,7 +136,7 @@ class CreateDefaultTemplate implements ShouldQueue
             'owner_type' => Template::class,
             'owner_id' => $this->template->id,
             'applies_to' => $supplied->appliesTo(),
-            'entity_type_id' => null,
+            'entity_type_id' => $this->entityType?->id,
             'published_version_id' => null,
         ]);
 
@@ -112,11 +157,11 @@ class CreateDefaultTemplate implements ShouldQueue
     {
         $pagePosition = 1;
 
-        foreach (DefaultTemplateEnum::BasicContact->pages() as $pageCase) {
+        foreach ($this->supplied->pages() as $pageCase) {
             $page = StructureVersionPage::query()->create([
                 'account_id' => $this->user->account_id,
                 'structure_version_id' => $this->version->id,
-                'key' => $pageCase->value,
+                'key' => $pageCase->key(),
                 'label' => null,
                 'label_translation_key' => $pageCase->label(),
                 'position' => $pagePosition,
@@ -202,7 +247,7 @@ class CreateDefaultTemplate implements ShouldQueue
                 'help_text' => null,
                 'placeholder' => null,
                 'position' => $position,
-                'is_required' => false,
+                'is_required' => $field->isRequired(),
                 'is_sensitive' => false,
                 'is_highlighted' => $field->isHighlighted(),
                 'is_unique' => false,
@@ -216,7 +261,7 @@ class CreateDefaultTemplate implements ShouldQueue
                 'repeat_min' => null,
                 'repeat_max' => null,
                 'parent_field_id' => $parent?->id,
-                'relation_target' => null,
+                'relation_target' => $field->relationTarget(),
                 'relation_entity_type_id' => null,
             ]);
 
@@ -253,11 +298,11 @@ class CreateDefaultTemplate implements ShouldQueue
         Vault::query()
             ->where('account_id', $this->user->account_id)
             ->each(function (Vault $vault): void {
-                VaultDefaultTemplate::query()->updateOrCreate(
+                VaultDefaultTemplate::query()->firstOrCreate(
                     [
                         'vault_id' => $vault->id,
-                        'applies_to' => StructureAppliesToEnum::Contact,
-                        'entity_type_id' => null,
+                        'applies_to' => $this->supplied->appliesTo(),
+                        'entity_type_id' => $this->entityType?->id,
                     ],
                     [
                         'account_id' => $this->user->account_id,
@@ -275,6 +320,6 @@ class CreateDefaultTemplate implements ShouldQueue
             action: UserActionEnum::DefaultTemplateSeeded,
             parameters: ['name' => $this->template->name],
             loggable: $this->template,
-        )->onQueue('low');
+        )->onQueue('low')->afterCommit();
     }
 }

@@ -797,6 +797,50 @@ class SetFieldValueTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_the_same_contact_twice_in_a_list_that_asks_for_distinct_people(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $contact->vault_id]);
+        $repeater = Field::factory()->repeater()->create(['account_id' => $user->account_id]);
+        $person = Field::factory()->relation()->create([
+            'account_id' => $user->account_id,
+            'parent_field_id' => $repeater->id,
+            'label' => 'Person',
+            'options' => ['distinct_in_list' => true],
+        ]);
+
+        new SetFieldValue(user: $user, valuable: $contact, field: $person, row: $this->rowOn($user, $contact, $repeater, 1), relatedContact: $dwight)->execute();
+
+        $this->expectException(FieldValueIsNotUnique::class);
+        $this->expectExceptionMessage('Person is already in this list.');
+
+        new SetFieldValue(user: $user, valuable: $contact, field: $person, row: $this->rowOn($user, $contact, $repeater, 2), relatedContact: $dwight)->execute();
+    }
+
+    #[Test]
+    public function it_allows_the_same_contact_twice_without_the_setting(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $contact->vault_id]);
+        $repeater = Field::factory()->repeater()->create(['account_id' => $user->account_id]);
+        $person = Field::factory()->relation()->create([
+            'account_id' => $user->account_id,
+            'parent_field_id' => $repeater->id,
+        ]);
+
+        new SetFieldValue(user: $user, valuable: $contact, field: $person, row: $this->rowOn($user, $contact, $repeater, 1), relatedContact: $dwight)->execute();
+        new SetFieldValue(user: $user, valuable: $contact, field: $person, row: $this->rowOn($user, $contact, $repeater, 2), relatedContact: $dwight)->execute();
+
+        $this->assertSame(2, FieldValue::query()->where('field_id', $person->id)->count());
+    }
+
+    #[Test]
     public function it_keeps_the_repetitions_of_the_same_field_apart(): void
     {
         Queue::fake();

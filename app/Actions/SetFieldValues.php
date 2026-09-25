@@ -65,6 +65,7 @@ class SetFieldValues
         $fields = $this->fieldsInTheSection();
 
         $this->refuseAnEmptyRequiredField($fields);
+        $this->refuseARowMissingARequiredField($fields);
         $this->refuseAReminderWithNoDate($fields);
 
         DB::transaction(function () use ($fields): void {
@@ -111,6 +112,32 @@ class SetFieldValues
 
         if ($missing instanceof Field) {
             throw new FieldIsRequired("{$missing->label} has to be filled in.");
+        }
+    }
+
+    /** @param  Collection<int, Field>  $fields */
+    private function refuseARowMissingARequiredField(Collection $fields): void
+    {
+        foreach ($fields->filter(fn (Field $field): bool => $field->type->isRepeater()) as $repeater) {
+            $given = $this->given($repeater);
+            $children = $this->childrenOf($repeater);
+            $required = $repeater->children->filter(fn (Field $child): bool => $child->is_required && $child->type->storesValue());
+
+            foreach (is_array($given) ? $given : [] as $repetition) {
+                $values = is_array($repetition['values'] ?? null) ? $repetition['values'] : [];
+
+                if ($this->nothingWasFilledIn($children, $values)) {
+                    continue;
+                }
+
+                $missing = $required->first(
+                    fn (Field $child): bool => $child->is_required && $this->isBlank($values[$child->id] ?? null),
+                );
+
+                if ($missing instanceof Field) {
+                    throw new FieldIsRequired("{$missing->label} has to be filled in.");
+                }
+            }
         }
     }
 

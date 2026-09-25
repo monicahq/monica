@@ -21,6 +21,7 @@
     'mail' => '<rect x="2.2" y="3.8" width="11.6" height="8.4" rx="1.5"></rect><path d="m2.6 4.8 5.4 3.8 5.4-3.8"></path>',
     'sun' => '<circle cx="8" cy="8" r="3"></circle><line x1="8" y1="1.6" x2="8" y2="3"></line><line x1="8" y1="13" x2="8" y2="14.4"></line><line x1="1.6" y1="8" x2="3" y2="8"></line><line x1="13" y1="8" x2="14.4" y2="8"></line>',
     'moon' => '<path d="M13 9.6A5.6 5.6 0 0 1 6.4 3a5.6 5.6 0 1 0 6.6 6.6"></path>',
+    'pet' => '<ellipse cx="4.9" cy="5.6" rx="1.3" ry="1.7"></ellipse><ellipse cx="8.6" cy="4.4" rx="1.3" ry="1.8"></ellipse><ellipse cx="12" cy="6.3" rx="1.3" ry="1.6"></ellipse><path d="M8.2 8.4c2 0 3.6 1.4 3.6 3 0 1.2-1 1.9-2.2 1.6-1-.3-1.8-.3-2.8 0-1.2.3-2.2-.4-2.2-1.6 0-1.6 1.6-3 3.6-3Z"></path>',
     'check' => '<circle cx="8" cy="8" r="5.6"></circle><path d="m5.4 8.2 1.9 1.9 3.4-3.9"></path>',
   ];
 

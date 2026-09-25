@@ -13,22 +13,29 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Give a fresh account the value lists it starts with, so the first field somebody builds has
- * something to offer.
+ * something to offer. Given a few lists, it adds only those the account does not hold yet, which is
+ * how an existing account receives a list the product started supplying later.
  */
 class CreateDefaultValueLists
 {
+    /** @param  list<ValueListEnum>|null  $lists */
     public function __construct(
         private readonly User $user,
+        private readonly ?array $lists = null,
     ) {}
 
     /** @return list<ValueList> */
     public function execute(): array
     {
-        if ($this->user->account->valueLists()->exists()) {
+        if ($this->lists === null && $this->user->account->valueLists()->exists()) {
             return [];
         }
 
         $lists = DB::transaction(fn (): array => $this->create());
+
+        if ($lists === []) {
+            return [];
+        }
 
         $this->log();
 
@@ -39,9 +46,14 @@ class CreateDefaultValueLists
     private function create(): array
     {
         $lists = [];
-        $position = 1;
+        $held = $this->user->account->valueLists()->withTrashed()->whereNotNull('key')->pluck('key')->all();
+        $position = ($this->user->account->valueLists()->max('position') ?? 0) + 1;
 
-        foreach (ValueListEnum::cases() as $case) {
+        foreach ($this->lists ?? ValueListEnum::cases() as $case) {
+            if (in_array($case->value, $held, true)) {
+                continue;
+            }
+
             $list = ValueList::query()->create([
                 'account_id' => $this->user->account_id,
                 'key' => $case->value,
@@ -91,6 +103,6 @@ class CreateDefaultValueLists
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::ValueListsSeeded,
-        )->onQueue('low');
+        )->onQueue('low')->afterCommit();
     }
 }

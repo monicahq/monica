@@ -289,6 +289,8 @@ class SetFieldValue
 
     private function refuseADuplicate(): void
     {
+        $this->refuseADuplicateInTheList();
+
         if (! $this->field->is_unique || $this->columnValue === null || is_array($this->columnValue)) {
             return;
         }
@@ -302,6 +304,29 @@ class SetFieldValue
 
         if ($taken) {
             throw new FieldValueIsNotUnique("Another record in this vault already holds this {$this->field->label}.");
+        }
+    }
+
+    private function refuseADuplicateInTheList(): void
+    {
+        if (($this->field->options['distinct_in_list'] ?? false) !== true) {
+            return;
+        }
+
+        if ($this->columnValue === null || is_array($this->columnValue)) {
+            return;
+        }
+
+        $taken = FieldValue::query()
+            ->where('valuable_type', $this->valuable->getMorphClass())
+            ->where('valuable_id', $this->valuable->id)
+            ->where('field_id', $this->field->id)
+            ->where($this->column, $this->columnValue)
+            ->when($this->existing !== null, fn (Builder $query): Builder => $query->whereKeyNot($this->existing->id))
+            ->exists();
+
+        if ($taken) {
+            throw new FieldValueIsNotUnique("{$this->field->label} is already in this list.");
         }
     }
 

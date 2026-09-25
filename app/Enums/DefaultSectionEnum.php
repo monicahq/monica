@@ -15,6 +15,10 @@ enum DefaultSectionEnum: string implements Translatable
     case Documents = 'documents';
     case Photos = 'photos';
     case Notes = 'notes';
+    case AnimalDetails = 'animal-details';
+    case AnimalPeople = 'animal-people';
+    case AnimalCare = 'animal-care';
+    case AnimalNotes = 'animal-notes';
 
     public function label(): string
     {
@@ -25,6 +29,10 @@ enum DefaultSectionEnum: string implements Translatable
             self::Documents => 'Documents',
             self::Photos => 'Photos',
             self::Notes => 'Notes',
+            self::AnimalDetails => 'Animal details',
+            self::AnimalPeople => 'People',
+            self::AnimalCare => 'Care',
+            self::AnimalNotes => 'Notes',
         };
     }
 
@@ -37,6 +45,10 @@ enum DefaultSectionEnum: string implements Translatable
             self::Documents => 'file',
             self::Photos => 'memory',
             self::Notes => 'note',
+            self::AnimalDetails => 'pet',
+            self::AnimalPeople => 'people',
+            self::AnimalCare => 'health',
+            self::AnimalNotes => 'note',
         };
     }
 
@@ -49,6 +61,10 @@ enum DefaultSectionEnum: string implements Translatable
             self::Addresses => VaultColourEnum::Amber,
             self::Documents => VaultColourEnum::Slate,
             self::Photos => VaultColourEnum::Violet,
+            self::AnimalDetails => VaultColourEnum::Amber,
+            self::AnimalPeople => VaultColourEnum::Blue,
+            self::AnimalCare => VaultColourEnum::Teal,
+            self::AnimalNotes => VaultColourEnum::Green,
         };
     }
 
@@ -77,6 +93,24 @@ enum DefaultSectionEnum: string implements Translatable
             ],
             self::Notes => [
                 DefaultFieldEnum::Notes,
+            ],
+            self::AnimalDetails => [
+                DefaultFieldEnum::Species,
+                DefaultFieldEnum::Breed,
+                DefaultFieldEnum::Sex,
+                DefaultFieldEnum::Birthday,
+                DefaultFieldEnum::AdoptionDate,
+                DefaultFieldEnum::MicrochipNumber,
+            ],
+            self::AnimalPeople => [
+                DefaultFieldEnum::Caregivers,
+            ],
+            self::AnimalCare => [
+                DefaultFieldEnum::FoodAndRoutine,
+                DefaultFieldEnum::HealthAndCare,
+            ],
+            self::AnimalNotes => [
+                DefaultFieldEnum::AnimalNotes,
             ],
         };
     }

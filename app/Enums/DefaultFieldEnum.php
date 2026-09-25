@@ -26,6 +26,17 @@ enum DefaultFieldEnum: string implements Translatable
     case Caption = 'caption';
     case Notes = 'notes';
     case Note = 'note';
+    case Species = 'species';
+    case Breed = 'breed';
+    case Sex = 'sex';
+    case AdoptionDate = 'adoption_date';
+    case MicrochipNumber = 'microchip_number';
+    case Caregivers = 'caregivers';
+    case CaregiverPerson = 'caregiver_person';
+    case CaregiverRole = 'caregiver_role';
+    case FoodAndRoutine = 'food_and_routine';
+    case HealthAndCare = 'health_and_care';
+    case AnimalNotes = 'animal_notes';
 
     public function label(): string
     {
@@ -47,6 +58,17 @@ enum DefaultFieldEnum: string implements Translatable
             self::Caption => 'Caption',
             self::Notes => 'Notes',
             self::Note => 'Note',
+            self::Species => 'Species',
+            self::Breed => 'Breed',
+            self::Sex => 'Sex',
+            self::AdoptionDate => 'Adoption date',
+            self::MicrochipNumber => 'Microchip number',
+            self::Caregivers => 'Caregivers',
+            self::CaregiverPerson => 'Person',
+            self::CaregiverRole => 'Role',
+            self::FoodAndRoutine => 'Food and routine',
+            self::HealthAndCare => 'Health and care notes',
+            self::AnimalNotes => 'Notes',
         };
     }
 
@@ -70,6 +92,17 @@ enum DefaultFieldEnum: string implements Translatable
             self::Caption => FieldTypeEnum::Text,
             self::Notes => FieldTypeEnum::Repeater,
             self::Note => FieldTypeEnum::Textarea,
+            self::Species => FieldTypeEnum::Text,
+            self::Breed => FieldTypeEnum::Text,
+            self::Sex => FieldTypeEnum::Select,
+            self::AdoptionDate => FieldTypeEnum::RecurringDate,
+            self::MicrochipNumber => FieldTypeEnum::Text,
+            self::Caregivers => FieldTypeEnum::Repeater,
+            self::CaregiverPerson => FieldTypeEnum::Relation,
+            self::CaregiverRole => FieldTypeEnum::Text,
+            self::FoodAndRoutine => FieldTypeEnum::Textarea,
+            self::HealthAndCare => FieldTypeEnum::Textarea,
+            self::AnimalNotes => FieldTypeEnum::Textarea,
         };
     }
 
@@ -88,11 +121,12 @@ enum DefaultFieldEnum: string implements Translatable
             self::Notes => [self::Note],
             self::Emails => [self::Email],
             self::Phones => [self::Phone],
+            self::Caregivers => [self::CaregiverPerson, self::CaregiverRole],
             default => [],
         };
     }
 
-    /** @return array<string, list<string>>|null */
+    /** @return array<string, list<string>|bool>|null */
     public function options(): ?array
     {
         return match ($this) {
@@ -111,6 +145,7 @@ enum DefaultFieldEnum: string implements Translatable
                 'image/gif',
                 'image/webp',
             ]],
+            self::CaregiverPerson => ['distinct_in_list' => true],
             default => null,
         };
     }
@@ -123,6 +158,7 @@ enum DefaultFieldEnum: string implements Translatable
             self::Email => ValueListEnum::EmailLabels,
             self::Phone => ValueListEnum::PhoneLabels,
             self::Address => ValueListEnum::AddressLabels,
+            self::Sex => ValueListEnum::AnimalSexes,
             default => null,
         };
     }
@@ -133,8 +169,19 @@ enum DefaultFieldEnum: string implements Translatable
             self::Notes => RepetitionOrderEnum::NewestFirst,
             self::Emails => RepetitionOrderEnum::NewestLast,
             self::Phones => RepetitionOrderEnum::NewestLast,
+            self::Caregivers => RepetitionOrderEnum::NewestLast,
             default => null,
         };
+    }
+
+    public function isRequired(): bool
+    {
+        return $this === self::CaregiverPerson;
+    }
+
+    public function relationTarget(): ?RelationTargetEnum
+    {
+        return $this === self::CaregiverPerson ? RelationTargetEnum::Contact : null;
     }
 
     public function isHighlighted(): bool

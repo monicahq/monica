@@ -8,6 +8,7 @@ use App\Actions\SetFieldValue;
 use App\Actions\SetFieldValues;
 use App\Enums\CountryEnum;
 use App\Enums\FieldTypeEnum;
+use App\Enums\RelationTargetEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
@@ -868,6 +869,60 @@ class SetFieldValuesTest extends TestCase
         $this->assertSame('USA', $first->fresh()->value_json['country']);
         $this->assertSame('Stamford', $first->fresh()->value_json['city']);
         $this->assertSame('Canada', $second->fresh()->value_json['country']);
+    }
+
+    #[Test]
+    public function it_refuses_a_row_missing_a_required_field(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $caregivers = $this->fieldOn($contact, ['key' => 'caregivers', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $person = $this->childOf($caregivers, ['key' => 'caregiver_person', 'label' => 'Person', 'is_required' => true]);
+        $role = $this->childOf($caregivers, ['key' => 'caregiver_role']);
+
+        $this->expectException(FieldIsRequired::class);
+        $this->expectExceptionMessage('Person has to be filled in.');
+
+        try {
+            new SetFieldValues(
+                user: $user,
+                record: $contact,
+                section: $this->sectionOf($caregivers),
+                values: [$caregivers->id => [['values' => [$person->id => '', $role->id => 'Pet sitter']]]],
+            )->execute();
+        } finally {
+            $this->assertSame(0, FieldValueRow::query()->count());
+        }
+    }
+
+    #[Test]
+    public function it_refuses_a_caregiver_row_that_names_nobody(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $caregivers = $this->fieldOn($contact, ['key' => 'caregivers', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $this->childOf($caregivers, [
+            'key' => 'caregiver_person',
+            'label' => 'Person',
+            'type' => FieldTypeEnum::Relation,
+            'relation_target' => RelationTargetEnum::Contact,
+            'is_required' => true,
+        ]);
+        $role = $this->childOf($caregivers, ['key' => 'caregiver_role']);
+
+        $this->expectException(FieldIsRequired::class);
+        $this->expectExceptionMessage('Person has to be filled in.');
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($caregivers),
+            values: [$caregivers->id => [['values' => [$role->id => 'Pet sitter']]]],
+        )->execute();
     }
 
     #[Test]
