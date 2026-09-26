@@ -41,4 +41,6 @@ A chronological list of every feature and improvement shipped during development
 * API/templates: Created a new section while placing it in a draft, and refused changes to a published version as invalid instead of failing.
 * Docs: Explained on /docs/mcp how an assistant edits a template through a draft.
 * MCP: Let an assistant create, change, reorder, switch off and delete entity types.
+* MCP: Let an assistant create, change, reorder, switch off and delete relationship types and their categories.
 * Docs: Listed the entity type tools on /docs/mcp and explained what an entity type is.
+* Docs: Listed the relationship type tools on /docs/mcp and explained what a relationship type is.

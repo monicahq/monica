@@ -22,5 +22,6 @@ class McpDocsControllerTest extends TestCase
         $response->assertSee('aria-controls="client-panel-claude-code"', false);
         $response->assertSee('Edit a template');
         $response->assertSee('Manage entity types');
+        $response->assertSee('Manage relationship types');
     }
 }

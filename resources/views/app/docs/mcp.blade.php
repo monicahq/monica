@@ -270,6 +270,14 @@
             @endforeach
           </section>
 
+          <section id="relationship-types" aria-labelledby="relationship-types-heading" class="flex scroll-mt-20 flex-col gap-4">
+            <h2 id="relationship-types-heading" class="{{ $heading }}">Manage relationship types</h2>
+
+            @foreach (McpDocsViewModel::RELATIONSHIP_TYPES as $paragraph)
+              <p class="{{ $prose }}">{!! $inline($paragraph) !!}</p>
+            @endforeach
+          </section>
+
           <section id="troubleshooting" aria-labelledby="troubleshooting-heading" class="flex scroll-mt-20 flex-col gap-4">
             <h2 id="troubleshooting-heading" class="{{ $heading }}">Troubleshooting</h2>
 

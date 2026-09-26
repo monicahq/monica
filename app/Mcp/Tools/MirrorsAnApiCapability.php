@@ -7,6 +7,8 @@ namespace App\Mcp\Tools;
 use App\Models\Contact;
 use App\Models\EntityType;
 use App\Models\Field;
+use App\Models\RelationshipCategory;
+use App\Models\RelationshipType;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
@@ -98,6 +100,28 @@ trait MirrorsAnApiCapability
         }
 
         return $entityType;
+    }
+
+    protected function relationshipType(Request $request, string $address): RelationshipType
+    {
+        $relationshipType = $this->user($request)->account->relationshipTypes()->where('uuid', $address)->first();
+
+        if ($relationshipType === null) {
+            throw $this->doesNotExist(__('That relationship type does not exist.'));
+        }
+
+        return $relationshipType;
+    }
+
+    protected function relationshipCategory(Request $request, string $address): RelationshipCategory
+    {
+        $relationshipCategory = $this->user($request)->account->relationshipCategories()->where('uuid', $address)->first();
+
+        if ($relationshipCategory === null) {
+            throw $this->doesNotExist(__('That relationship category does not exist.'));
+        }
+
+        return $relationshipCategory;
     }
 
     protected function version(Template $template, int $number): StructureVersion

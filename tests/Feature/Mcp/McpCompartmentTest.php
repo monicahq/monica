@@ -8,6 +8,8 @@ use App\Mcp\Servers\EricaServer;
 use App\Mcp\Tools\AddTemplateSection;
 use App\Mcp\Tools\CreateContact;
 use App\Mcp\Tools\DeleteEntityType;
+use App\Mcp\Tools\DeleteRelationshipCategory;
+use App\Mcp\Tools\DeleteRelationshipType;
 use App\Mcp\Tools\DeleteTemplate;
 use App\Mcp\Tools\GetContact;
 use App\Mcp\Tools\GetMeContact;
@@ -19,6 +21,8 @@ use App\Mcp\Tools\SetContactFavourite;
 use App\Mcp\Tools\UpdateContactName;
 use App\Models\Contact;
 use App\Models\EntityType;
+use App\Models\RelationshipCategory;
+use App\Models\RelationshipType;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
@@ -212,6 +216,30 @@ class McpCompartmentTest extends TestCase
 
         EricaServer::actingAs($user)->tool(DeleteEntityType::class, ['entity_type' => $other->uuid])
             ->assertHasErrors(['That entity type does not exist.']);
+
+        $this->assertNotSoftDeleted($other);
+    }
+
+    #[Test]
+    public function it_does_not_delete_a_relationship_type_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $other = RelationshipType::factory()->create();
+
+        EricaServer::actingAs($user)->tool(DeleteRelationshipType::class, ['relationship_type' => $other->uuid])
+            ->assertHasErrors(['That relationship type does not exist.']);
+
+        $this->assertNotSoftDeleted($other);
+    }
+
+    #[Test]
+    public function it_does_not_delete_a_relationship_category_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $other = RelationshipCategory::factory()->create();
+
+        EricaServer::actingAs($user)->tool(DeleteRelationshipCategory::class, ['relationship_category' => $other->uuid])
+            ->assertHasErrors(['That relationship category does not exist.']);
 
         $this->assertNotSoftDeleted($other);
     }

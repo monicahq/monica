@@ -7,10 +7,14 @@ namespace App\Mcp\Servers;
 use App\Mcp\Tools\AddTemplateSection;
 use App\Mcp\Tools\CreateContact;
 use App\Mcp\Tools\CreateEntityType;
+use App\Mcp\Tools\CreateRelationshipCategory;
+use App\Mcp\Tools\CreateRelationshipType;
 use App\Mcp\Tools\CreateTemplate;
 use App\Mcp\Tools\CreateTemplateDraft;
 use App\Mcp\Tools\CreateTemplateField;
 use App\Mcp\Tools\DeleteEntityType;
+use App\Mcp\Tools\DeleteRelationshipCategory;
+use App\Mcp\Tools\DeleteRelationshipType;
 use App\Mcp\Tools\DeleteTemplate;
 use App\Mcp\Tools\DeleteTemplateDraft;
 use App\Mcp\Tools\DeleteTemplateField;
@@ -18,12 +22,15 @@ use App\Mcp\Tools\DuplicateTemplate;
 use App\Mcp\Tools\GetContact;
 use App\Mcp\Tools\GetEntityType;
 use App\Mcp\Tools\GetMeContact;
+use App\Mcp\Tools\GetRelationshipCategory;
+use App\Mcp\Tools\GetRelationshipType;
 use App\Mcp\Tools\GetTemplate;
 use App\Mcp\Tools\GetTemplateVersion;
 use App\Mcp\Tools\ListContacts;
 use App\Mcp\Tools\ListEntityTypes;
 use App\Mcp\Tools\ListLifeEventCategories;
 use App\Mcp\Tools\ListRelationshipCategories;
+use App\Mcp\Tools\ListRelationshipCategoryTypes;
 use App\Mcp\Tools\ListRelationshipTypes;
 use App\Mcp\Tools\ListTemplates;
 use App\Mcp\Tools\ListTemplateVersions;
@@ -33,12 +40,18 @@ use App\Mcp\Tools\RemoveTemplateSection;
 use App\Mcp\Tools\SetContactFavourite;
 use App\Mcp\Tools\SetEntityTypeActivation;
 use App\Mcp\Tools\SetEntityTypePosition;
+use App\Mcp\Tools\SetRelationshipCategoryActivation;
+use App\Mcp\Tools\SetRelationshipCategoryPosition;
+use App\Mcp\Tools\SetRelationshipTypeActivation;
+use App\Mcp\Tools\SetRelationshipTypePosition;
 use App\Mcp\Tools\SetTemplateActivation;
 use App\Mcp\Tools\SetTemplateFieldPosition;
 use App\Mcp\Tools\SetTemplatePosition;
 use App\Mcp\Tools\SetTemplateSectionPosition;
 use App\Mcp\Tools\UpdateContactName;
 use App\Mcp\Tools\UpdateEntityType;
+use App\Mcp\Tools\UpdateRelationshipCategory;
+use App\Mcp\Tools\UpdateRelationshipType;
 use App\Mcp\Tools\UpdateTemplate;
 use App\Mcp\Tools\UpdateTemplateField;
 use App\Mcp\Tools\UpdateTemplateSection;
@@ -70,6 +83,10 @@ draft is published with publish-template-version.
 An entity type is a kind of record the account keeps besides contacts. Its records follow a template
 created with create-template for that entity type. A type still holding records cannot be deleted,
 only switched off with set-entity-type-activation.
+
+A relationship type gives each of two linked contacts a role and is filed under a category. Types and
+categories that came with the account, or that are in use, cannot be deleted, only switched off with
+set-relationship-type-activation or set-relationship-category-activation.
 TEXT)]
 class EricaServer extends Server
 {
@@ -87,7 +104,20 @@ class EricaServer extends Server
         SetEntityTypePosition::class,
         DeleteEntityType::class,
         ListRelationshipCategories::class,
+        GetRelationshipCategory::class,
+        ListRelationshipCategoryTypes::class,
+        CreateRelationshipCategory::class,
+        UpdateRelationshipCategory::class,
+        SetRelationshipCategoryActivation::class,
+        SetRelationshipCategoryPosition::class,
+        DeleteRelationshipCategory::class,
         ListRelationshipTypes::class,
+        GetRelationshipType::class,
+        CreateRelationshipType::class,
+        UpdateRelationshipType::class,
+        SetRelationshipTypeActivation::class,
+        SetRelationshipTypePosition::class,
+        DeleteRelationshipType::class,
         ListTemplateVersions::class,
         ListTemplates::class,
         GetTemplate::class,

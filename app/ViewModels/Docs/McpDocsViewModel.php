@@ -21,6 +21,7 @@ class McpDocsViewModel
         ['id' => 'tools', 'label' => 'Available tools'],
         ['id' => 'templates', 'label' => 'Edit a template'],
         ['id' => 'entity-types', 'label' => 'Manage entity types'],
+        ['id' => 'relationship-types', 'label' => 'Manage relationship types'],
         ['id' => 'troubleshooting', 'label' => 'Troubleshooting'],
         ['id' => 'see-also', 'label' => 'See also'],
     ];
@@ -53,6 +54,12 @@ class McpDocsViewModel
     public const array ENTITY_TYPES = [
         'An entity type is a kind of record your account keeps besides contacts, such as Animal or Wine bottle. Its records follow a template, created with `create-template` and `applies_to` set to `entity`.',
         'A type still holding records cannot be deleted. Switch it off with `set-entity-type-activation` instead: its records stay, and no new one can be added.',
+    ];
+
+    /** @var list<string> */
+    public const array RELATIONSHIP_TYPES = [
+        'A relationship type names how two contacts are linked. It gives each side a role, such as parent and child, or the same role to both, such as siblings, and it is filed under a category such as Family or Work.',
+        'Types and categories that came with your account, and any that are in use, cannot be deleted. Stop offering them with `set-relationship-type-activation` or `set-relationship-category-activation` instead: what is already written with them stays.',
     ];
 
     public const string TEMPLATE_EXAMPLE = 'Asked to add a Hobbies section with a text field and a date field, an assistant calls:';
@@ -259,7 +266,22 @@ class McpDocsViewModel
             ]],
             ['name' => 'Relationship vocabulary', 'changesData' => false, 'tools' => [
                 ['name' => 'list-relationship-types', 'description' => 'Lists the kinds of relationship your account uses, such as parent or colleague.'],
+                ['name' => 'get-relationship-type', 'description' => 'Returns one kind of relationship: its roles, its category, whether it is offered and how many relationships use it.'],
                 ['name' => 'list-relationship-categories', 'description' => 'Lists the categories your account groups relationship types into.'],
+                ['name' => 'get-relationship-category', 'description' => 'Returns one category and how many types it holds.'],
+                ['name' => 'list-relationship-category-types', 'description' => 'Lists the kinds of relationship filed under one category.'],
+            ]],
+            ['name' => 'Relationship vocabulary, changing', 'changesData' => true, 'tools' => [
+                ['name' => 'create-relationship-type', 'description' => 'Adds a kind of relationship, such as godparent and godchild.'],
+                ['name' => 'update-relationship-type', 'description' => 'Renames a kind of relationship, changes its roles or moves it to another category. What you leave out keeps its value.'],
+                ['name' => 'set-relationship-type-activation', 'description' => 'Offers a kind of relationship when contacts are linked, or stops offering it. Existing relationships stay.'],
+                ['name' => 'set-relationship-type-position', 'description' => 'Moves a kind of relationship within its category.'],
+                ['name' => 'delete-relationship-type', 'description' => 'Deletes a kind of relationship you created and nobody uses.'],
+                ['name' => 'create-relationship-category', 'description' => 'Adds a category, such as Sports.'],
+                ['name' => 'update-relationship-category', 'description' => 'Renames a category you created.'],
+                ['name' => 'set-relationship-category-activation', 'description' => 'Offers a category or stops offering it.'],
+                ['name' => 'set-relationship-category-position', 'description' => 'Moves a category to another place in the list.'],
+                ['name' => 'delete-relationship-category', 'description' => 'Deletes a category you created that holds no type.'],
             ]],
             ['name' => 'Life event categories', 'changesData' => false, 'tools' => [
                 ['name' => 'list-life-event-categories', 'description' => 'Lists the categories your account files life events under.'],
@@ -393,6 +415,9 @@ class McpDocsViewModel
         $lines[] = '## Manage entity types';
         $lines[] = '';
         array_push($lines, ...$this->paragraphs(self::ENTITY_TYPES));
+        $lines[] = '## Manage relationship types';
+        $lines[] = '';
+        array_push($lines, ...$this->paragraphs(self::RELATIONSHIP_TYPES));
         $lines[] = '## Troubleshooting';
         $lines[] = '';
 

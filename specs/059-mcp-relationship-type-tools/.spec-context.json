@@ -1,0 +1,37 @@
+{
+  "workflow": "speckit",
+  "specName": "MCP tools for relationship types",
+  "branch": "2026-09-25-mcp-relationship-types",
+  "currentStep": "implement",
+  "status": "implemented",
+  "history": [
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-26T02:59:24.061Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-26T03:02:19.376Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-26T03:04:09.855Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-26T03:10:59.079Z"
+    }
+  ]
+}
