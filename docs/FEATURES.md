@@ -40,3 +40,5 @@ A chronological list of every feature and improvement shipped during development
 * MCP: Let an assistant manage templates, open and publish drafts, and add, change, move and remove their sections and fields.
 * API/templates: Created a new section while placing it in a draft, and refused changes to a published version as invalid instead of failing.
 * Docs: Explained on /docs/mcp how an assistant edits a template through a draft.
+* MCP: Let an assistant create, change, reorder, switch off and delete entity types.
+* Docs: Listed the entity type tools on /docs/mcp and explained what an entity type is.

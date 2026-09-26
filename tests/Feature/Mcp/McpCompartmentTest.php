@@ -7,6 +7,7 @@ namespace Tests\Feature\Mcp;
 use App\Mcp\Servers\EricaServer;
 use App\Mcp\Tools\AddTemplateSection;
 use App\Mcp\Tools\CreateContact;
+use App\Mcp\Tools\DeleteEntityType;
 use App\Mcp\Tools\DeleteTemplate;
 use App\Mcp\Tools\GetContact;
 use App\Mcp\Tools\GetMeContact;
@@ -17,6 +18,7 @@ use App\Mcp\Tools\RemoveTemplateSection;
 use App\Mcp\Tools\SetContactFavourite;
 use App\Mcp\Tools\UpdateContactName;
 use App\Models\Contact;
+use App\Models\EntityType;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
@@ -198,6 +200,18 @@ class McpCompartmentTest extends TestCase
 
         EricaServer::actingAs($user)->tool(DeleteTemplate::class, ['template' => $other->uuid])
             ->assertHasErrors(['That template does not exist.']);
+
+        $this->assertNotSoftDeleted($other);
+    }
+
+    #[Test]
+    public function it_does_not_delete_an_entity_type_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $other = EntityType::factory()->create();
+
+        EricaServer::actingAs($user)->tool(DeleteEntityType::class, ['entity_type' => $other->uuid])
+            ->assertHasErrors(['That entity type does not exist.']);
 
         $this->assertNotSoftDeleted($other);
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Models\Contact;
+use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
@@ -86,6 +87,17 @@ trait MirrorsAnApiCapability
         }
 
         return $template;
+    }
+
+    protected function entityType(Request $request, string $address): EntityType
+    {
+        $entityType = $this->user($request)->account->entityTypes()->where('uuid', $address)->first();
+
+        if ($entityType === null) {
+            throw $this->doesNotExist(__('That entity type does not exist.'));
+        }
+
+        return $entityType;
     }
 
     protected function version(Template $template, int $number): StructureVersion

@@ -20,6 +20,7 @@ class McpDocsViewModel
         ['id' => 'access', 'label' => 'Manage access'],
         ['id' => 'tools', 'label' => 'Available tools'],
         ['id' => 'templates', 'label' => 'Edit a template'],
+        ['id' => 'entity-types', 'label' => 'Manage entity types'],
         ['id' => 'troubleshooting', 'label' => 'Troubleshooting'],
         ['id' => 'see-also', 'label' => 'See also'],
     ];
@@ -46,6 +47,12 @@ class McpDocsViewModel
     public const array TEMPLATES = [
         'A template changes through a draft. Its sections and fields can only change on a draft version, and nothing reaches the records it describes until the draft is published. Deleting a draft throws its changes away.',
         'The tools that change a template, a section or a field keep what you leave out, so asking for one change never clears the others. A field can come back with a new id when its section had to be drafted first. Use the id the tool returns.',
+    ];
+
+    /** @var list<string> */
+    public const array ENTITY_TYPES = [
+        'An entity type is a kind of record your account keeps besides contacts, such as Animal or Wine bottle. Its records follow a template, created with `create-template` and `applies_to` set to `entity`.',
+        'A type still holding records cannot be deleted. Switch it off with `set-entity-type-activation` instead: its records stay, and no new one can be added.',
     ];
 
     public const string TEMPLATE_EXAMPLE = 'Asked to add a Hobbies section with a text field and a date field, an assistant calls:';
@@ -241,6 +248,14 @@ class McpDocsViewModel
             ]],
             ['name' => 'Entity types', 'changesData' => false, 'tools' => [
                 ['name' => 'list-entity-types', 'description' => 'Lists the kinds of record your account keeps besides contacts.'],
+                ['name' => 'get-entity-type', 'description' => 'Returns one kind of record: its names, icon, colour, whether new records can be added and how many exist.'],
+            ]],
+            ['name' => 'Entity types, changing', 'changesData' => true, 'tools' => [
+                ['name' => 'create-entity-type', 'description' => 'Adds a kind of record, such as Animal or Wine bottle.'],
+                ['name' => 'update-entity-type', 'description' => 'Renames a kind of record or changes its description, icon or colour. What you leave out keeps its value.'],
+                ['name' => 'set-entity-type-activation', 'description' => 'Switches a kind of record on or off for new records. Existing ones stay.'],
+                ['name' => 'set-entity-type-position', 'description' => 'Moves a kind of record to another place in the list.'],
+                ['name' => 'delete-entity-type', 'description' => 'Deletes a kind of record that holds no record.'],
             ]],
             ['name' => 'Relationship vocabulary', 'changesData' => false, 'tools' => [
                 ['name' => 'list-relationship-types', 'description' => 'Lists the kinds of relationship your account uses, such as parent or colleague.'],
@@ -375,6 +390,9 @@ class McpDocsViewModel
         }
 
         $lines[] = '';
+        $lines[] = '## Manage entity types';
+        $lines[] = '';
+        array_push($lines, ...$this->paragraphs(self::ENTITY_TYPES));
         $lines[] = '## Troubleshooting';
         $lines[] = '';
 

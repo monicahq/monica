@@ -262,6 +262,14 @@
             </ol>
           </section>
 
+          <section id="entity-types" aria-labelledby="entity-types-heading" class="flex scroll-mt-20 flex-col gap-4">
+            <h2 id="entity-types-heading" class="{{ $heading }}">Manage entity types</h2>
+
+            @foreach (McpDocsViewModel::ENTITY_TYPES as $paragraph)
+              <p class="{{ $prose }}">{!! $inline($paragraph) !!}</p>
+            @endforeach
+          </section>
+
           <section id="troubleshooting" aria-labelledby="troubleshooting-heading" class="flex scroll-mt-20 flex-col gap-4">
             <h2 id="troubleshooting-heading" class="{{ $heading }}">Troubleshooting</h2>
 

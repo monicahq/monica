@@ -100,6 +100,23 @@ class McpChangelogTest extends TestCase
     }
 
     #[Test]
+    public function it_records_an_entity_type_change_as_having_arrived_over_mcp(): void
+    {
+        $user = User::factory()->create();
+        $key = $user->createToken('Dundie awards bot');
+
+        $this->invoke($key->plainTextToken, 'create-entity-type', [
+            'name_singular' => 'Dundie',
+            'name_plural' => 'Dundies',
+        ])->assertOk();
+
+        $this->assertDatabaseHas('logs', [
+            'source' => LogSourceEnum::Mcp->value,
+            'source_detail' => 'Dundie awards bot',
+        ]);
+    }
+
+    #[Test]
     public function a_contact_an_assistant_created_carries_no_marker_of_its_own(): void
     {
         $user = User::factory()->create();
