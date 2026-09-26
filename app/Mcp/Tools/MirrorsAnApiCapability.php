@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Models\Contact;
+use App\Models\EmailSent;
 use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
+use App\Models\Log;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
 use App\Models\SectionVersion;
@@ -146,6 +148,36 @@ trait MirrorsAnApiCapability
         }
 
         return $lifeEventCategory;
+    }
+
+    protected function log(Request $request, string $id): Log
+    {
+        if (preg_match('/^[1-9][0-9]*$/', $id) !== 1) {
+            throw $this->doesNotExist(__('That log entry does not exist.'));
+        }
+
+        $log = $this->user($request)->account->logs()->with('user')->find((int) $id);
+
+        if ($log === null) {
+            throw $this->doesNotExist(__('That log entry does not exist.'));
+        }
+
+        return $log;
+    }
+
+    protected function emailSent(Request $request, string $id): EmailSent
+    {
+        if (preg_match('/^[1-9][0-9]*$/', $id) !== 1) {
+            throw $this->doesNotExist(__('That email does not exist.'));
+        }
+
+        $emailSent = $this->user($request)->account->emailsSent()->find((int) $id);
+
+        if ($emailSent === null) {
+            throw $this->doesNotExist(__('That email does not exist.'));
+        }
+
+        return $emailSent;
     }
 
     protected function version(Template $template, int $number): StructureVersion

@@ -48,3 +48,7 @@ A chronological list of every feature and improvement shipped during development
 * Docs: Listed the life event type tools on /docs/mcp and explained what a life event type is.
 * Admin: Register the Telegram bot, check it and generate its secret from the configuration screen.
 * Fix: The Telegram address answers a token saved on the screen, and refuses a call when no secret is set.
+* MCP: Let an assistant read the account's activity, a page at a time.
+* MCP: Let an assistant read the emails sent to the account and what each said.
+* Settings/account/logs: Stopped keeping any link or web address in the copy of an email sent.
+* Docs: Listed the log tools on /docs/mcp and explained what an assistant can read in the logs.

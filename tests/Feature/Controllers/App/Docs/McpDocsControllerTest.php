@@ -24,5 +24,7 @@ class McpDocsControllerTest extends TestCase
         $response->assertSee('Manage entity types');
         $response->assertSee('Manage relationship types');
         $response->assertSee('Manage life event types');
+        $response->assertSee('Read the logs');
+        $response->assertSee('list-emails-sent');
     }
 }

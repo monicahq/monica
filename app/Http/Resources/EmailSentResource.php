@@ -12,6 +12,13 @@ use Override;
 /** @mixin EmailSent */
 class EmailSentResource extends JsonResource
 {
+    public function __construct(
+        EmailSent $resource,
+        private readonly bool $withBody = false,
+    ) {
+        parent::__construct($resource);
+    }
+
     /** @return array<string, mixed> */
     #[Override]
     public function toArray(Request $request): array
@@ -23,7 +30,7 @@ class EmailSentResource extends JsonResource
                 'email_type' => $this->email_type,
                 'subject' => $this->subject,
                 'email_address' => $this->email_address,
-                'body' => $this->when($request->routeIs('api.v1.emailsSent.show'), fn (): ?string => $this->body),
+                'body' => $this->when($this->withBody, fn (): ?string => $this->body),
                 'delivery_status' => $this->delivery_status->value,
                 'sent_at' => $this->sent_at?->timestamp,
                 'delivered_at' => $this->delivered_at?->timestamp,

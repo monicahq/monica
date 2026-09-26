@@ -10,7 +10,8 @@ use App\Models\User;
 use Stevebauman\Purify\Facades\Purify;
 
 /**
- * Create an Email Sent object.
+ * Record an email that went out, keeping its copy without any link or web address, so a sign-in
+ * link can never be read back from the record.
  */
 class CreateEmailSent
 {
@@ -39,7 +40,9 @@ class CreateEmailSent
     private function sanitize(): void
     {
         $config = ['HTML.ForbiddenElements' => 'a'];
-        $this->updatedBody = Purify::config($config)->clean($this->body);
+        $withoutLinks = Purify::config($config)->clean($this->body);
+
+        $this->updatedBody = preg_replace('~https?://[^\s<>"]+~i', '', $withoutLinks) ?? '';
     }
 
     private function create(): void

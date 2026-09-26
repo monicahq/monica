@@ -23,6 +23,7 @@ class McpDocsViewModel
         ['id' => 'entity-types', 'label' => 'Manage entity types'],
         ['id' => 'relationship-types', 'label' => 'Manage relationship types'],
         ['id' => 'life-event-types', 'label' => 'Manage life event types'],
+        ['id' => 'logs', 'label' => 'Read the logs'],
         ['id' => 'troubleshooting', 'label' => 'Troubleshooting'],
         ['id' => 'see-also', 'label' => 'See also'],
     ];
@@ -67,6 +68,12 @@ class McpDocsViewModel
     public const array LIFE_EVENT_TYPES = [
         'A life event type is a kind of thing that happens to a contact, such as Moved house, filed under a category such as Work or Home. It can ask for fields of its own, set with `replace-life-event-type-fields`, which replaces the whole set and never changes a life event already recorded.',
         'Types and categories that came with your account, and any that are in use, cannot be deleted. Stop offering them with `set-life-event-type-activation` or `set-life-event-category-activation` instead: the life events already recorded stay.',
+    ];
+
+    /** @var list<string> */
+    public const array LOGS = [
+        'The activity lists every change made in your account, newest first: who made it, what it was, where it came from, such as the web, the API or an assistant, and the address it came from. A change made through MCP is marked as coming from an assistant, so you can ask your assistant what it did and check the answer against **Settings → Logs**.',
+        'The emails sent list what Monica sent your account and whether it arrived. Reading one returns what it said, with every link and web address removed before it was kept, so a sign-in link can never be read back from the logs.',
     ];
 
     public const string TEMPLATE_EXAMPLE = 'Asked to add a Hobbies section with a text field and a date field, an assistant calls:';
@@ -311,6 +318,12 @@ class McpDocsViewModel
                 ['name' => 'set-life-event-category-position', 'description' => 'Moves a category to another place in the list.'],
                 ['name' => 'delete-life-event-category', 'description' => 'Deletes a category you created that holds no type.'],
             ]],
+            ['name' => 'Account logs', 'changesData' => false, 'tools' => [
+                ['name' => 'list-logs', 'description' => 'Lists what has been done in your account, newest first, a page at a time.'],
+                ['name' => 'get-log', 'description' => 'Returns one entry of the activity: who, what, from where and when.'],
+                ['name' => 'list-emails-sent', 'description' => 'Lists the emails sent to your account and whether each arrived, a page at a time.'],
+                ['name' => 'get-email-sent', 'description' => 'Returns one email, including what it said with links and web addresses removed.'],
+            ]],
         ];
     }
 
@@ -446,6 +459,9 @@ class McpDocsViewModel
         $lines[] = '## Manage life event types';
         $lines[] = '';
         array_push($lines, ...$this->paragraphs(self::LIFE_EVENT_TYPES));
+        $lines[] = '## Read the logs';
+        $lines[] = '';
+        array_push($lines, ...$this->paragraphs(self::LOGS));
         $lines[] = '## Troubleshooting';
         $lines[] = '';
 

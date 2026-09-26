@@ -64,7 +64,7 @@ $emailAttributes = [
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the record was written, as a count of seconds. Usually the same second it was sent, and not the same field.'],
 ];
 
-$emailBody = ['name' => 'body', 'type' => 'string', 'description' => 'The copy that was sent, or null for a record written before we kept it. It is carried only when one email is read, never on a list row, so that asking for a page never turns into a download.'];
+$emailBody = ['name' => 'body', 'type' => 'string', 'description' => 'The copy that was sent, or null for a record written before we kept it. It is carried only when one email is read, never on a list row, so that asking for a page never turns into a download. Links and web addresses are removed from the copy before it is kept, so a sign-in link can never be read back.'];
 
 $emailAttributesWithBody = [
     ...array_slice($emailAttributes, 0, 3),

@@ -37,6 +37,6 @@ class EmailSentController extends Controller
     {
         $email = $request->user()->account->emailsSent()->findOrFail($emailSent);
 
-        return new EmailSentResource($email)->response()->setStatusCode(200);
+        return new EmailSentResource($email, withBody: true)->response()->setStatusCode(200);
     }
 }

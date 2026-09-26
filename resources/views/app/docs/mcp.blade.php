@@ -286,6 +286,14 @@
             @endforeach
           </section>
 
+          <section id="logs" aria-labelledby="logs-heading" class="flex scroll-mt-20 flex-col gap-4">
+            <h2 id="logs-heading" class="{{ $heading }}">Read the logs</h2>
+
+            @foreach (McpDocsViewModel::LOGS as $paragraph)
+              <p class="{{ $prose }}">{!! $inline($paragraph) !!}</p>
+            @endforeach
+          </section>
+
           <section id="troubleshooting" aria-labelledby="troubleshooting-heading" class="flex scroll-mt-20 flex-col gap-4">
             <h2 id="troubleshooting-heading" class="{{ $heading }}">Troubleshooting</h2>
 

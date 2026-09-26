@@ -24,20 +24,24 @@ use App\Mcp\Tools\DeleteTemplateDraft;
 use App\Mcp\Tools\DeleteTemplateField;
 use App\Mcp\Tools\DuplicateTemplate;
 use App\Mcp\Tools\GetContact;
+use App\Mcp\Tools\GetEmailSent;
 use App\Mcp\Tools\GetEntityType;
 use App\Mcp\Tools\GetLifeEventCategory;
 use App\Mcp\Tools\GetLifeEventType;
 use App\Mcp\Tools\GetLifeEventTypeFields;
+use App\Mcp\Tools\GetLog;
 use App\Mcp\Tools\GetMeContact;
 use App\Mcp\Tools\GetRelationshipCategory;
 use App\Mcp\Tools\GetRelationshipType;
 use App\Mcp\Tools\GetTemplate;
 use App\Mcp\Tools\GetTemplateVersion;
 use App\Mcp\Tools\ListContacts;
+use App\Mcp\Tools\ListEmailsSent;
 use App\Mcp\Tools\ListEntityTypes;
 use App\Mcp\Tools\ListLifeEventCategories;
 use App\Mcp\Tools\ListLifeEventCategoryTypes;
 use App\Mcp\Tools\ListLifeEventTypes;
+use App\Mcp\Tools\ListLogs;
 use App\Mcp\Tools\ListRelationshipCategories;
 use App\Mcp\Tools\ListRelationshipCategoryTypes;
 use App\Mcp\Tools\ListRelationshipTypes;
@@ -108,6 +112,9 @@ A life event type is a kind of thing that happens to a contact, filed under a ca
 for fields of its own. replace-life-event-type-fields replaces the whole set and never changes a life
 event already recorded. Types and categories that came with the account, or that are in use, cannot be
 deleted, only switched off with set-life-event-type-activation or set-life-event-category-activation.
+
+The account's activity and the emails it was sent are read with list-logs and list-emails-sent, a
+page at a time, newest first, with the total. Read one email with get-email-sent to see what it said.
 TEXT)]
 class EricaServer extends Server
 {
@@ -132,6 +139,10 @@ class EricaServer extends Server
         DeleteLifeEventType::class,
         GetLifeEventTypeFields::class,
         ReplaceLifeEventTypeFields::class,
+        ListLogs::class,
+        GetLog::class,
+        ListEmailsSent::class,
+        GetEmailSent::class,
         ListContacts::class,
         ListEntityTypes::class,
         GetEntityType::class,
