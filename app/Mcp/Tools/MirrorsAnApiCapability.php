@@ -7,6 +7,8 @@ namespace App\Mcp\Tools;
 use App\Models\Contact;
 use App\Models\EntityType;
 use App\Models\Field;
+use App\Models\LifeEventCategory;
+use App\Models\LifeEventType;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
 use App\Models\SectionVersion;
@@ -122,6 +124,28 @@ trait MirrorsAnApiCapability
         }
 
         return $relationshipCategory;
+    }
+
+    protected function lifeEventType(Request $request, string $address): LifeEventType
+    {
+        $lifeEventType = $this->user($request)->account->lifeEventTypes()->where('uuid', $address)->first();
+
+        if ($lifeEventType === null) {
+            throw $this->doesNotExist(__('That life event type does not exist.'));
+        }
+
+        return $lifeEventType;
+    }
+
+    protected function lifeEventCategory(Request $request, string $address): LifeEventCategory
+    {
+        $lifeEventCategory = $this->user($request)->account->lifeEventCategories()->where('uuid', $address)->first();
+
+        if ($lifeEventCategory === null) {
+            throw $this->doesNotExist(__('That life event category does not exist.'));
+        }
+
+        return $lifeEventCategory;
     }
 
     protected function version(Template $template, int $number): StructureVersion

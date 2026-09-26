@@ -7,12 +7,16 @@ namespace App\Mcp\Servers;
 use App\Mcp\Tools\AddTemplateSection;
 use App\Mcp\Tools\CreateContact;
 use App\Mcp\Tools\CreateEntityType;
+use App\Mcp\Tools\CreateLifeEventCategory;
+use App\Mcp\Tools\CreateLifeEventType;
 use App\Mcp\Tools\CreateRelationshipCategory;
 use App\Mcp\Tools\CreateRelationshipType;
 use App\Mcp\Tools\CreateTemplate;
 use App\Mcp\Tools\CreateTemplateDraft;
 use App\Mcp\Tools\CreateTemplateField;
 use App\Mcp\Tools\DeleteEntityType;
+use App\Mcp\Tools\DeleteLifeEventCategory;
+use App\Mcp\Tools\DeleteLifeEventType;
 use App\Mcp\Tools\DeleteRelationshipCategory;
 use App\Mcp\Tools\DeleteRelationshipType;
 use App\Mcp\Tools\DeleteTemplate;
@@ -21,6 +25,9 @@ use App\Mcp\Tools\DeleteTemplateField;
 use App\Mcp\Tools\DuplicateTemplate;
 use App\Mcp\Tools\GetContact;
 use App\Mcp\Tools\GetEntityType;
+use App\Mcp\Tools\GetLifeEventCategory;
+use App\Mcp\Tools\GetLifeEventType;
+use App\Mcp\Tools\GetLifeEventTypeFields;
 use App\Mcp\Tools\GetMeContact;
 use App\Mcp\Tools\GetRelationshipCategory;
 use App\Mcp\Tools\GetRelationshipType;
@@ -29,6 +36,8 @@ use App\Mcp\Tools\GetTemplateVersion;
 use App\Mcp\Tools\ListContacts;
 use App\Mcp\Tools\ListEntityTypes;
 use App\Mcp\Tools\ListLifeEventCategories;
+use App\Mcp\Tools\ListLifeEventCategoryTypes;
+use App\Mcp\Tools\ListLifeEventTypes;
 use App\Mcp\Tools\ListRelationshipCategories;
 use App\Mcp\Tools\ListRelationshipCategoryTypes;
 use App\Mcp\Tools\ListRelationshipTypes;
@@ -37,9 +46,14 @@ use App\Mcp\Tools\ListTemplateVersions;
 use App\Mcp\Tools\ListVaults;
 use App\Mcp\Tools\PublishTemplateVersion;
 use App\Mcp\Tools\RemoveTemplateSection;
+use App\Mcp\Tools\ReplaceLifeEventTypeFields;
 use App\Mcp\Tools\SetContactFavourite;
 use App\Mcp\Tools\SetEntityTypeActivation;
 use App\Mcp\Tools\SetEntityTypePosition;
+use App\Mcp\Tools\SetLifeEventCategoryActivation;
+use App\Mcp\Tools\SetLifeEventCategoryPosition;
+use App\Mcp\Tools\SetLifeEventTypeActivation;
+use App\Mcp\Tools\SetLifeEventTypePosition;
 use App\Mcp\Tools\SetRelationshipCategoryActivation;
 use App\Mcp\Tools\SetRelationshipCategoryPosition;
 use App\Mcp\Tools\SetRelationshipTypeActivation;
@@ -50,6 +64,8 @@ use App\Mcp\Tools\SetTemplatePosition;
 use App\Mcp\Tools\SetTemplateSectionPosition;
 use App\Mcp\Tools\UpdateContactName;
 use App\Mcp\Tools\UpdateEntityType;
+use App\Mcp\Tools\UpdateLifeEventCategory;
+use App\Mcp\Tools\UpdateLifeEventType;
 use App\Mcp\Tools\UpdateRelationshipCategory;
 use App\Mcp\Tools\UpdateRelationshipType;
 use App\Mcp\Tools\UpdateTemplate;
@@ -87,6 +103,11 @@ only switched off with set-entity-type-activation.
 A relationship type gives each of two linked contacts a role and is filed under a category. Types and
 categories that came with the account, or that are in use, cannot be deleted, only switched off with
 set-relationship-type-activation or set-relationship-category-activation.
+
+A life event type is a kind of thing that happens to a contact, filed under a category, and it can ask
+for fields of its own. replace-life-event-type-fields replaces the whole set and never changes a life
+event already recorded. Types and categories that came with the account, or that are in use, cannot be
+deleted, only switched off with set-life-event-type-activation or set-life-event-category-activation.
 TEXT)]
 class EricaServer extends Server
 {
@@ -95,6 +116,22 @@ class EricaServer extends Server
         GetContact::class,
         GetMeContact::class,
         ListLifeEventCategories::class,
+        GetLifeEventCategory::class,
+        ListLifeEventCategoryTypes::class,
+        CreateLifeEventCategory::class,
+        UpdateLifeEventCategory::class,
+        SetLifeEventCategoryActivation::class,
+        SetLifeEventCategoryPosition::class,
+        DeleteLifeEventCategory::class,
+        ListLifeEventTypes::class,
+        GetLifeEventType::class,
+        CreateLifeEventType::class,
+        UpdateLifeEventType::class,
+        SetLifeEventTypeActivation::class,
+        SetLifeEventTypePosition::class,
+        DeleteLifeEventType::class,
+        GetLifeEventTypeFields::class,
+        ReplaceLifeEventTypeFields::class,
         ListContacts::class,
         ListEntityTypes::class,
         GetEntityType::class,

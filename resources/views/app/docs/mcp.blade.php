@@ -278,6 +278,14 @@
             @endforeach
           </section>
 
+          <section id="life-event-types" aria-labelledby="life-event-types-heading" class="flex scroll-mt-20 flex-col gap-4">
+            <h2 id="life-event-types-heading" class="{{ $heading }}">Manage life event types</h2>
+
+            @foreach (McpDocsViewModel::LIFE_EVENT_TYPES as $paragraph)
+              <p class="{{ $prose }}">{!! $inline($paragraph) !!}</p>
+            @endforeach
+          </section>
+
           <section id="troubleshooting" aria-labelledby="troubleshooting-heading" class="flex scroll-mt-20 flex-col gap-4">
             <h2 id="troubleshooting-heading" class="{{ $heading }}">Troubleshooting</h2>
 

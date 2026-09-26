@@ -23,5 +23,6 @@ class McpDocsControllerTest extends TestCase
         $response->assertSee('Edit a template');
         $response->assertSee('Manage entity types');
         $response->assertSee('Manage relationship types');
+        $response->assertSee('Manage life event types');
     }
 }

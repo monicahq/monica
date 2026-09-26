@@ -1,0 +1,37 @@
+{
+  "workflow": "speckit",
+  "specName": "MCP tools for life event types",
+  "branch": "2026-09-25-mcp-life-event-types",
+  "currentStep": "implement",
+  "status": "implemented",
+  "history": [
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-26T03:15:30.895Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-26T03:18:27.018Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-26T03:20:16.515Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-26T03:26:44.825Z"
+    }
+  ]
+}

@@ -22,6 +22,7 @@ class McpDocsViewModel
         ['id' => 'templates', 'label' => 'Edit a template'],
         ['id' => 'entity-types', 'label' => 'Manage entity types'],
         ['id' => 'relationship-types', 'label' => 'Manage relationship types'],
+        ['id' => 'life-event-types', 'label' => 'Manage life event types'],
         ['id' => 'troubleshooting', 'label' => 'Troubleshooting'],
         ['id' => 'see-also', 'label' => 'See also'],
     ];
@@ -60,6 +61,12 @@ class McpDocsViewModel
     public const array RELATIONSHIP_TYPES = [
         'A relationship type names how two contacts are linked. It gives each side a role, such as parent and child, or the same role to both, such as siblings, and it is filed under a category such as Family or Work.',
         'Types and categories that came with your account, and any that are in use, cannot be deleted. Stop offering them with `set-relationship-type-activation` or `set-relationship-category-activation` instead: what is already written with them stays.',
+    ];
+
+    /** @var list<string> */
+    public const array LIFE_EVENT_TYPES = [
+        'A life event type is a kind of thing that happens to a contact, such as Moved house, filed under a category such as Work or Home. It can ask for fields of its own, set with `replace-life-event-type-fields`, which replaces the whole set and never changes a life event already recorded.',
+        'Types and categories that came with your account, and any that are in use, cannot be deleted. Stop offering them with `set-life-event-type-activation` or `set-life-event-category-activation` instead: the life events already recorded stay.',
     ];
 
     public const string TEMPLATE_EXAMPLE = 'Asked to add a Hobbies section with a text field and a date field, an assistant calls:';
@@ -283,8 +290,26 @@ class McpDocsViewModel
                 ['name' => 'set-relationship-category-position', 'description' => 'Moves a category to another place in the list.'],
                 ['name' => 'delete-relationship-category', 'description' => 'Deletes a category you created that holds no type.'],
             ]],
-            ['name' => 'Life event categories', 'changesData' => false, 'tools' => [
+            ['name' => 'Life event vocabulary', 'changesData' => false, 'tools' => [
                 ['name' => 'list-life-event-categories', 'description' => 'Lists the categories your account files life events under.'],
+                ['name' => 'get-life-event-category', 'description' => 'Returns one category and how many types it holds.'],
+                ['name' => 'list-life-event-category-types', 'description' => 'Lists the kinds of life event filed under one category.'],
+                ['name' => 'list-life-event-types', 'description' => 'Lists the kinds of life event your account can record, such as Moved house.'],
+                ['name' => 'get-life-event-type', 'description' => 'Returns one kind of life event: its icon, colour, category and whether it is offered.'],
+                ['name' => 'get-life-event-type-fields', 'description' => 'Returns the fields a kind of life event asks for, in their groups.'],
+            ]],
+            ['name' => 'Life event vocabulary, changing', 'changesData' => true, 'tools' => [
+                ['name' => 'create-life-event-type', 'description' => 'Adds a kind of life event, such as Ran a marathon.'],
+                ['name' => 'update-life-event-type', 'description' => 'Renames a kind of life event, changes its description, icon or colour, or moves it to another category. What you leave out keeps its value.'],
+                ['name' => 'set-life-event-type-activation', 'description' => 'Offers a kind of life event, or stops offering it. Life events already recorded stay.'],
+                ['name' => 'set-life-event-type-position', 'description' => 'Moves a kind of life event within its category.'],
+                ['name' => 'replace-life-event-type-fields', 'description' => 'Replaces the fields a kind of life event asks for. A field you leave out is no longer asked for; life events already recorded keep theirs.'],
+                ['name' => 'delete-life-event-type', 'description' => 'Deletes a kind of life event you created and nobody used.'],
+                ['name' => 'create-life-event-category', 'description' => 'Adds a category, such as Sport.'],
+                ['name' => 'update-life-event-category', 'description' => 'Renames a category.'],
+                ['name' => 'set-life-event-category-activation', 'description' => 'Offers a category or stops offering it.'],
+                ['name' => 'set-life-event-category-position', 'description' => 'Moves a category to another place in the list.'],
+                ['name' => 'delete-life-event-category', 'description' => 'Deletes a category you created that holds no type.'],
             ]],
         ];
     }
@@ -418,6 +443,9 @@ class McpDocsViewModel
         $lines[] = '## Manage relationship types';
         $lines[] = '';
         array_push($lines, ...$this->paragraphs(self::RELATIONSHIP_TYPES));
+        $lines[] = '## Manage life event types';
+        $lines[] = '';
+        array_push($lines, ...$this->paragraphs(self::LIFE_EVENT_TYPES));
         $lines[] = '## Troubleshooting';
         $lines[] = '';
 

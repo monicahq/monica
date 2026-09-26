@@ -44,3 +44,5 @@ A chronological list of every feature and improvement shipped during development
 * MCP: Let an assistant create, change, reorder, switch off and delete relationship types and their categories.
 * Docs: Listed the entity type tools on /docs/mcp and explained what an entity type is.
 * Docs: Listed the relationship type tools on /docs/mcp and explained what a relationship type is.
+* MCP: Let an assistant create, change, reorder, switch off and delete life event types and their categories, and choose the fields a type asks for.
+* Docs: Listed the life event type tools on /docs/mcp and explained what a life event type is.
