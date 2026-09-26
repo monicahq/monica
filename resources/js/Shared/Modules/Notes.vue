@@ -25,6 +25,8 @@
           :required="true"
           :maxlength="65535"
           :markdown="true"
+          :submit-on-ctrl-enter="true"
+          @ctrl-enter="submit()"
           :textarea-class="'block w-full mb-3'" />
 
         <!-- title -->
