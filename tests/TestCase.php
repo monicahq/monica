@@ -49,6 +49,10 @@ abstract class TestCase extends BaseTestCase
 
         // A failed sign in otherwise waits 200 ms, so that its duration reveals nothing to an attacker.
         config(['auth.timebox_duration' => 0]);
+
+        // The test client parses addresses with parse_url, which turns the bytes a UTF-8 locale on macOS
+        // calls control characters into underscores and so breaks addresses written in another alphabet.
+        setlocale(LC_CTYPE, 'C');
     }
 
     #[Override]
