@@ -7,8 +7,17 @@ namespace Tests\Unit\Seeders;
 use App\Enums\AddressLabelEnum;
 use App\Enums\ContactCategoryEnum;
 use App\Enums\DefaultFieldEnum;
+use App\Enums\RelationshipCategoryEnum;
+use App\Enums\RelationshipStatusEnum;
+use App\Enums\RelationshipTypeEnum;
 use App\Models\Contact;
 use App\Models\FieldValue;
+use App\Models\LifeEvent;
+use App\Models\LifeEventCategory;
+use App\Models\LifeEventParticipant;
+use App\Models\LifeEventType;
+use App\Models\Relationship;
+use App\Models\RelationshipType;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -180,5 +189,109 @@ class ExampleAccountSeederTest extends TestCase
 
         $this->assertCount(1, User::all());
         $this->assertEquals($contacts, Contact::query()->count());
+    }
+
+    #[Test]
+    public function it_links_every_person_to_somebody_as_the_show_does(): void
+    {
+        new ExampleAccountSeeder()->run();
+
+        $linked = Relationship::query()->pluck('contact_a_id')->merge(Relationship::query()->pluck('contact_b_id'))->unique();
+
+        $this->assertEquals(25, Contact::query()->count());
+        $this->assertCount(0, Contact::query()->whereNotIn('id', $linked)->pluck('first_name'));
+
+        $ross = Contact::query()->where('first_name', 'Ross')->firstOrFail();
+        $ben = Contact::query()->where('first_name', 'Ben')->firstOrFail();
+        $monica = Contact::query()->where('is_me', true)->firstOrFail();
+        $chandler = Contact::query()->where('first_name', 'Chandler')->firstOrFail();
+
+        $this->assertDatabaseHas('relationships', [
+            'relationship_type_id' => RelationshipType::query()->where('key', RelationshipTypeEnum::ParentChild->value)->value('id'),
+            'contact_a_id' => $ross->id,
+            'contact_b_id' => $ben->id,
+        ]);
+        $this->assertDatabaseHas('relationships', [
+            'relationship_type_id' => RelationshipType::query()->where('key', RelationshipTypeEnum::Spouse->value)->value('id'),
+            'contact_a_id' => min($monica->id, $chandler->id),
+            'contact_b_id' => max($monica->id, $chandler->id),
+            'status' => RelationshipStatusEnum::Current->value,
+            'started_on' => '2001-05-17 00:00:00',
+        ]);
+    }
+
+    #[Test]
+    public function it_marks_the_relationships_the_show_ended_as_ended(): void
+    {
+        new ExampleAccountSeeder()->run();
+
+        $ross = Contact::query()->where('first_name', 'Ross')->firstOrFail();
+        $carol = Contact::query()->where('first_name', 'Carol')->firstOrFail();
+        $joey = Contact::query()->where('first_name', 'Joey')->firstOrFail();
+        $rachel = Contact::query()->where('first_name', 'Rachel')->firstOrFail();
+
+        $this->assertDatabaseHas('relationships', [
+            'relationship_type_id' => RelationshipType::query()->where('key', RelationshipTypeEnum::Spouse->value)->value('id'),
+            'contact_a_id' => min($ross->id, $carol->id),
+            'contact_b_id' => max($ross->id, $carol->id),
+            'status' => RelationshipStatusEnum::Ended->value,
+        ]);
+        $this->assertDatabaseHas('relationships', [
+            'relationship_type_id' => RelationshipType::query()->where('key', RelationshipTypeEnum::Partner->value)->value('id'),
+            'contact_a_id' => min($joey->id, $rachel->id),
+            'contact_b_id' => max($joey->id, $rachel->id),
+            'status' => RelationshipStatusEnum::Ended->value,
+            'ended_on' => '2003-10-09 00:00:00',
+        ]);
+    }
+
+    #[Test]
+    public function it_adds_neighbour_as_the_one_custom_relationship_type(): void
+    {
+        new ExampleAccountSeeder()->run();
+
+        $neighbour = RelationshipType::query()->where('is_system', false)->sole();
+
+        $this->assertEquals('Neighbour', $neighbour->name);
+        $this->assertEquals(RelationshipCategoryEnum::Other->value, $neighbour->relationshipCategory->key);
+        $this->assertEquals(4, Relationship::query()->where('relationship_type_id', $neighbour->id)->count());
+    }
+
+    #[Test]
+    public function it_gives_every_person_at_least_twenty_life_events(): void
+    {
+        new ExampleAccountSeeder()->run();
+
+        $this->assertCount(0, Contact::query()->where('life_event_count', '<', 20)->pluck('first_name'));
+
+        $wedding = LifeEvent::query()->where('title', 'Ross marries Emily')->sole();
+
+        $this->assertEquals(9, $wedding->participant_count);
+        $this->assertEquals(9, $wedding->participants()->count());
+    }
+
+    #[Test]
+    public function it_uses_every_life_event_category_and_twenty_types(): void
+    {
+        new ExampleAccountSeeder()->run();
+
+        $types = LifeEventType::query()->whereIn('id', LifeEvent::query()->select('life_event_type_id'))->get();
+
+        $this->assertGreaterThanOrEqual(20, $types->count());
+        $this->assertEquals(LifeEventCategory::query()->count(), $types->pluck('life_event_category_id')->unique()->count());
+    }
+
+    #[Test]
+    public function it_dates_no_event_after_mr_heckles_died(): void
+    {
+        new ExampleAccountSeeder()->run();
+
+        $heckles = Contact::query()->where('last_name', 'Heckles')->firstOrFail();
+        $events = LifeEvent::query()
+            ->whereIn('id', LifeEventParticipant::query()->where('participant_id', $heckles->id)->where('participant_type', $heckles->getMorphClass())->select('life_event_id'))
+            ->get();
+
+        $this->assertGreaterThanOrEqual(20, $events->count());
+        $this->assertEquals('1995-10-05', $events->max('happened_on')->toDateString());
     }
 }

@@ -8,9 +8,13 @@ use App\Actions\ArchiveContact;
 use App\Actions\CreateAccount;
 use App\Actions\CreateContact;
 use App\Actions\CreateFieldValueRow;
+use App\Actions\CreateLifeEvent;
+use App\Actions\CreateRelationship;
+use App\Actions\CreateRelationshipType;
 use App\Actions\CreateReminder;
 use App\Actions\GrantAdministratorAccess;
 use App\Actions\SetFieldValue;
+use App\Actions\UpdateRelationship;
 use App\Enums\AddressLabelEnum;
 use App\Enums\ContactCategoryEnum;
 use App\Enums\DefaultFieldEnum;
@@ -18,6 +22,8 @@ use App\Enums\EmailLabelEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\GenderEnum;
 use App\Enums\PhoneLabelEnum;
+use App\Enums\RelationshipCategoryEnum;
+use App\Enums\RelationshipStatusEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderMomentDirectionEnum;
 use App\Enums\ReminderMomentUnitEnum;
@@ -29,6 +35,7 @@ use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 use App\Models\Vault;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 
@@ -49,6 +56,9 @@ class ExampleAccountSeeder extends Seeder
     /** @var array<string, Field> */
     private array $fields = [];
 
+    /** @var array<string, Contact> */
+    private array $contacts = [];
+
     public function run(): void
     {
         if (User::query()->where('email', self::EMAIL)->exists()) {
@@ -64,6 +74,8 @@ class ExampleAccountSeeder extends Seeder
         $this->createAccount();
         $this->readTheFields();
         $this->createContacts();
+        $this->createRelationships();
+        $this->createLifeEvents();
         $this->grantAdministratorAccess();
 
         $this->command?->info('Signed in as '.self::EMAIL.' with the password '.self::PASSWORD.'.');
@@ -111,6 +123,8 @@ class ExampleAccountSeeder extends Seeder
                 isFavourite: $person['is_favourite'],
             )->execute();
 
+            $this->contacts[trim("{$person['first_name']} {$person['last_name']}")] = $contact;
+
             $birthday = $this->writeValues($contact, $person);
 
             if ($birthday instanceof FieldValue && $person['reminder'] !== null) {
@@ -120,6 +134,67 @@ class ExampleAccountSeeder extends Seeder
             if ($person['is_archived']) {
                 new ArchiveContact(user: $this->user, contact: $contact)->execute();
             }
+        }
+    }
+
+    private function createRelationships(): void
+    {
+        $neighbour = new CreateRelationshipType(
+            user: $this->user,
+            relationshipCategory: $this->user->account->relationshipCategories()->where('key', RelationshipCategoryEnum::Other->value)->firstOrFail(),
+            name: 'Neighbour',
+            roleA: 'Neighbour',
+            roleB: 'Neighbour',
+        )->execute();
+
+        foreach (new ExampleRelationships()->all() as $link) {
+            $relationshipType = $link['type'] === ExampleRelationships::NEIGHBOUR
+                ? $neighbour
+                : $this->user->account->relationshipTypes()->where('key', $link['type'])->firstOrFail();
+
+            $relationship = new CreateRelationship(
+                user: $this->user,
+                vault: $this->vault,
+                contact: $this->contacts[$link['a']],
+                relationshipType: $relationshipType,
+                otherContact: $this->contacts[$link['b']],
+            )->execute();
+
+            if ($link['status'] === RelationshipStatusEnum::Current && $link['started'] === null) {
+                continue;
+            }
+
+            new UpdateRelationship(
+                user: $this->user,
+                vault: $this->vault,
+                contact: $this->contacts[$link['a']],
+                relationship: $relationship,
+                relationshipType: $relationshipType,
+                status: $link['status'],
+                startedOn: $link['started'] === null ? null : CarbonImmutable::parse($link['started']),
+                endedOn: $link['ended'] === null ? null : CarbonImmutable::parse($link['ended']),
+            )->execute();
+        }
+    }
+
+    private function createLifeEvents(): void
+    {
+        $types = $this->user->account->lifeEventTypes()->get()->keyBy('key');
+
+        foreach (new ExampleLifeEvents()->all() as $event) {
+            $people = array_map(fn (string $name): Contact => $this->contacts[$name], $event['participants']);
+
+            new CreateLifeEvent(
+                user: $this->user,
+                vault: $this->vault,
+                contact: array_shift($people),
+                lifeEventType: $types[$event['type']->value],
+                happenedOn: CarbonImmutable::parse($event['date']),
+                title: $event['title'],
+                narrative: $event['narrative'],
+                location: $event['location'],
+                participants: $people,
+            )->execute();
         }
     }
 
@@ -580,6 +655,130 @@ class ExampleAccountSeeder extends Seeder
                 'phone' => '+1 212 555 0119',
                 'address' => [['street' => '90 Bedford Street', 'city' => 'New York', 'postal_code' => 'NY 10014', 'country' => 'United States'], AddressLabelEnum::Home],
                 'note' => 'Lived below us and banged on the ceiling with a broom. Died in 1995 and left us everything he had.',
+                'reminder' => null,
+            ],
+            [
+                'first_name' => 'Jack',
+                'last_name' => 'Bing',
+                'nickname' => null,
+                'is_me' => false,
+                'is_favourite' => false,
+                'is_archived' => false,
+                'category' => ContactCategoryEnum::Family,
+                'gender' => GenderEnum::Man,
+                'birthday' => '2004-05-06',
+                'email' => null,
+                'phone' => null,
+                'address' => null,
+                'note' => 'My son. Adopted at birth from Erica in Ohio, named after my father.',
+                'reminder' => [
+                    'name' => 'Jack’s birthday',
+                    'cadence' => ReminderCadenceEnum::Yearly,
+                    'moments' => [$this->before(1, ReminderMomentUnitEnum::Months), $this->before(1, ReminderMomentUnitEnum::Weeks)],
+                ],
+            ],
+            [
+                'first_name' => 'Erica',
+                'last_name' => 'Bing',
+                'nickname' => null,
+                'is_me' => false,
+                'is_favourite' => false,
+                'is_archived' => false,
+                'category' => ContactCategoryEnum::Family,
+                'gender' => GenderEnum::Woman,
+                'birthday' => '2004-05-06',
+                'email' => null,
+                'phone' => null,
+                'address' => null,
+                'note' => 'My daughter, Jack’s twin. Nobody told us there were two until the delivery room.',
+                'reminder' => [
+                    'name' => 'Erica’s birthday',
+                    'cadence' => ReminderCadenceEnum::Yearly,
+                    'moments' => [$this->before(2, ReminderMomentUnitEnum::Weeks), $this->before(1, ReminderMomentUnitEnum::Days), $this->on()],
+                ],
+            ],
+            [
+                'first_name' => 'Frank',
+                'last_name' => 'Buffay Jr.',
+                'nickname' => null,
+                'is_me' => false,
+                'is_favourite' => false,
+                'is_archived' => false,
+                'category' => ContactCategoryEnum::Acquaintance,
+                'gender' => GenderEnum::Man,
+                'birthday' => null,
+                'email' => ['frank.buffay@buffay.example', EmailLabelEnum::Personal],
+                'phone' => ['+1 212 555 0150', PhoneLabelEnum::Home],
+                'address' => null,
+                'note' => 'Phoebe’s half brother. Married Alice, his old home economics teacher, and Phoebe carried their triplets.',
+                'reminder' => null,
+            ],
+            [
+                'first_name' => 'Ursula',
+                'last_name' => 'Buffay',
+                'nickname' => null,
+                'is_me' => false,
+                'is_favourite' => false,
+                'is_archived' => false,
+                'category' => ContactCategoryEnum::Acquaintance,
+                'gender' => GenderEnum::Woman,
+                'birthday' => '1969-02-16',
+                'email' => null,
+                'phone' => null,
+                'address' => null,
+                'note' => 'Phoebe’s twin. Waitress at Riff’s, then a film actress of a certain kind. Not to be trusted with anything.',
+                'reminder' => [
+                    'name' => 'Ursula’s birthday',
+                    'cadence' => ReminderCadenceEnum::Yearly,
+                    'moments' => [$this->before(4, ReminderMomentUnitEnum::Days)],
+                ],
+            ],
+            [
+                'first_name' => 'Barry',
+                'last_name' => 'Farber',
+                'nickname' => null,
+                'is_me' => false,
+                'is_favourite' => false,
+                'is_archived' => false,
+                'category' => ContactCategoryEnum::Acquaintance,
+                'gender' => GenderEnum::Man,
+                'birthday' => null,
+                'email' => ['barry.farber@farberorthodontics.example', EmailLabelEnum::Work],
+                'phone' => ['+1 516 555 0144', PhoneLabelEnum::Work],
+                'address' => null,
+                'note' => 'Orthodontist. Rachel left him at the altar and he married Mindy instead.',
+                'reminder' => null,
+            ],
+            [
+                'first_name' => 'Nora',
+                'last_name' => 'Bing',
+                'nickname' => null,
+                'is_me' => false,
+                'is_favourite' => false,
+                'is_archived' => false,
+                'category' => ContactCategoryEnum::Family,
+                'gender' => GenderEnum::Woman,
+                'birthday' => null,
+                'email' => ['nora.tyler.bing@noratylerbing.example', EmailLabelEnum::Work],
+                'phone' => ['+1 212 555 0160', PhoneLabelEnum::Work],
+                'address' => null,
+                'note' => 'Chandler’s mother. Writes erotic novels, and kissed Ross once in a restaurant.',
+                'reminder' => null,
+            ],
+            [
+                'first_name' => 'Helena',
+                'last_name' => 'Bing',
+                'nickname' => null,
+                'is_me' => false,
+                'is_favourite' => false,
+                'is_archived' => false,
+                'category' => ContactCategoryEnum::Family,
+                'gender' => GenderEnum::Woman,
+                'birthday' => null,
+                'email' => ['helena.bing@viva-las-gaygas.example', EmailLabelEnum::Work],
+                'phone' => ['+1 702 555 0170', PhoneLabelEnum::Work],
+                'address' => [['street' => null, 'city' => 'Las Vegas', 'postal_code' => 'NV 89109', 'country' => 'United States'], AddressLabelEnum::Work],
+                'note' => 'Chandler’s other parent. Headlines Viva Las Gaygas as Helena Handbasket, and walked Chandler down the aisle in 2001.',
                 'reminder' => null,
             ],
         ];

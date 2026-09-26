@@ -52,3 +52,6 @@ A chronological list of every feature and improvement shipped during development
 * MCP: Let an assistant read the emails sent to the account and what each said.
 * Settings/account/logs: Stopped keeping any link or web address in the copy of an email sent.
 * Docs: Listed the log tools on /docs/mcp and explained what an assistant can read in the logs.
+* Example account: Added Jack and Erica Bing, Frank Buffay Jr., Ursula Buffay, Barry Farber, Nora Bing and Helena Bing to the seeded cast.
+* Example account: Linked every seeded person to the others as the show does, with ended relationships marked as ended.
+* Example account: Gave every seeded person at least twenty life events from the show, across every life event category.

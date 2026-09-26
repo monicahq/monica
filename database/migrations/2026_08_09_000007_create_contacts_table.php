@@ -34,8 +34,8 @@ return new class extends Migration
             $table->boolean('is_favourite')->default(false)->comment('whether the contact is pinned to the top of the list');
             $table->unsignedBigInteger('avatar_file_id')->nullable()->comment('uploaded avatar, null when initials are used instead');
             $table->string('avatar_colour', 7)->comment('background colour of the generated initials avatar');
-            $table->timestamp('last_life_event_at')->nullable()->comment('date of the latest life event the contact participated in, null when none exists');
-            $table->timestamp('last_interaction_at')->nullable()->comment('date of the latest life event the contact and the Me contact both took part in, null when none exists');
+            $table->dateTime('last_life_event_at')->nullable()->comment('date of the latest life event the contact participated in, null when none exists');
+            $table->dateTime('last_interaction_at')->nullable()->comment('date of the latest life event the contact and the Me contact both took part in, null when none exists');
             $table->unsignedInteger('life_event_count')->default(0)->comment('running count of life events the contact took part in');
             $table->timestamp('last_consulted_at')->nullable()->comment('when the user last opened the page, used to order recently viewed');
             $table->string('dav_uri')->nullable()->comment('the .vcf name a device chose when it created the card, null for a contact made here, whose card is its uuid');
