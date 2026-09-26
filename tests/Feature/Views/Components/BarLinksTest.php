@@ -35,12 +35,13 @@ class BarLinksTest extends TestCase
     }
 
     #[Test]
-    public function it_leads_to_the_catalogue_the_settings_and_nowhere_yet_for_the_docs(): void
+    public function it_leads_to_the_docs_the_catalogue_and_the_settings(): void
     {
         $this->blade('<x-bar-links />')
+            ->assertSee('href="'.route('docs.index').'"', escape: false)
             ->assertSee('href="'.route('marketplace.index').'"', escape: false)
             ->assertSee('href="'.route('settings.index').'"', escape: false)
-            ->assertSee('href="#"', escape: false);
+            ->assertDontSee('href="#"', escape: false);
     }
 
     #[Test]

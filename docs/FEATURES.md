@@ -33,3 +33,6 @@ A chronological list of every feature and improvement shipped during development
 * Settings/account/profile: Let somebody change the email address they sign in with.
 * Welcome: Greeted a new account once with a letter from the people behind Monica, before anything else.
 * API/profile: Let an application dismiss the welcome screen and read when it was dismissed.
+* Docs: Added a portal at /docs leading to every documentation area.
+* Docs: Published /llms.txt, which lists the documentation as Markdown for assistants.
+* Top bar: Docs leads to the documentation portal.

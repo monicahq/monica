@@ -17,6 +17,8 @@ use App\Http\Controllers\App\Admin\OverviewController;
 use App\Http\Controllers\App\Admin\UserActivationController;
 use App\Http\Controllers\App\Docs\ApiDocsController;
 use App\Http\Controllers\App\Docs\ApiDocsMarkdownController;
+use App\Http\Controllers\App\Docs\DocsController;
+use App\Http\Controllers\App\Docs\LlmsTextController;
 use App\Http\Controllers\App\Docs\OpenApiDocumentController;
 use App\Http\Controllers\App\GettingStartedController;
 use App\Http\Controllers\App\HomeController;
@@ -130,6 +132,12 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
+Route::get('docs', [DocsController::class, 'index'])
+    ->name('docs.index');
+
+Route::get('llms.txt', [LlmsTextController::class, 'index'])
+    ->name('llmsText.index');
 
 Route::get('docs/api', [ApiDocsController::class, 'index'])
     ->name('docs.api.index');

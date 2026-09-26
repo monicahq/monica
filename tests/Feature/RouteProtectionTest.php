@@ -37,6 +37,8 @@ class RouteProtectionTest extends TestCase
     private array $publicRoutes = [
         'home.index',
         'marketplace.index',
+        'docs.index',
+        'llmsText.index',
         'docs.api.index',
         'docs.api.markdown.index',
         'docs.api.openapi',
