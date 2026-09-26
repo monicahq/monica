@@ -36,3 +36,4 @@ A chronological list of every feature and improvement shipped during development
 * Docs: Added a portal at /docs leading to every documentation area.
 * Docs: Published /llms.txt, which lists the documentation as Markdown for assistants.
 * Top bar: Docs leads to the documentation portal.
+* Docs: Added the MCP page at /docs/mcp, with the setup for each assistant, the tools it gets, and a Markdown version.

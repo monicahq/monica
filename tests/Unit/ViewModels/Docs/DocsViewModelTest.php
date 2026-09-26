@@ -19,7 +19,7 @@ class DocsViewModelTest extends TestCase
         $this->assertSame([
             'Using Monica' => null,
             'API' => route('docs.api.index'),
-            'MCP' => null,
+            'MCP' => route('docs.mcp.index'),
             'CardDAV and CalDAV' => null,
         ], $urls);
     }
@@ -30,6 +30,7 @@ class DocsViewModelTest extends TestCase
         $text = new DocsViewModel()->llmsText();
 
         $this->assertStringContainsString('('.route('docs.api.markdown.index').')', $text);
+        $this->assertStringContainsString('- [MCP]('.route('docs.mcp.markdown.index').')', $text);
 
         foreach (new ApiDocsViewModel()->sections() as $section) {
             $this->assertStringContainsString(

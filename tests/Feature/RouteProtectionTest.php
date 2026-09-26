@@ -44,6 +44,8 @@ class RouteProtectionTest extends TestCase
         'docs.api.openapi',
         'docs.api.show',
         'docs.api.markdown.show',
+        'docs.mcp.index',
+        'docs.mcp.markdown.index',
         'share.show',
         'share.password.create',
         'auth.sso.callback',

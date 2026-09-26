@@ -31,7 +31,7 @@ class DocsViewModel
                 'kind' => __('Reference'),
                 'title' => __('MCP'),
                 'description' => __('Point an assistant at your instance so it can read your directory and record people in it, with the access you have.'),
-                'url' => null,
+                'url' => route('docs.mcp.index'),
             ],
             [
                 'icon' => 'device',
@@ -58,6 +58,11 @@ class DocsViewModel
         foreach (new ApiDocsViewModel()->sections() as $section) {
             $lines[] = "- [{$section->title}](".route('docs.api.markdown.show', ['section' => $section->id]).')';
         }
+
+        $lines[] = '';
+        $lines[] = '## MCP';
+        $lines[] = '';
+        $lines[] = '- [MCP]('.route('docs.mcp.markdown.index').'): connect an assistant to Monica';
 
         return implode("\n", $lines)."\n";
     }

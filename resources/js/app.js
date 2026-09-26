@@ -9,6 +9,7 @@ import ajax from '@imacrayon/alpine-ajax';
 
 import lifeEventTypeFields from './life-event-type-fields';
 import lifeEventPanel from './life-event-panel';
+import mcpDocs from './mcp-docs';
 import apiDocsSidebarScroll from './api-docs-sidebar-scroll';
 import confirmPassword from './confirm-password';
 import contactListColumns from './contact-list-columns';
@@ -24,6 +25,7 @@ Turbo.session.drive = false;
 
 Alpine.data('lifeEventTypeFields', lifeEventTypeFields);
 Alpine.data('lifeEventPanel', lifeEventPanel);
+Alpine.data('mcpDocs', mcpDocs);
 Alpine.data('apiDocsSidebarScroll', apiDocsSidebarScroll);
 Alpine.data('confirmPassword', confirmPassword);
 Alpine.data('contactListColumns', contactListColumns);

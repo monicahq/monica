@@ -19,6 +19,8 @@ use App\Http\Controllers\App\Docs\ApiDocsController;
 use App\Http\Controllers\App\Docs\ApiDocsMarkdownController;
 use App\Http\Controllers\App\Docs\DocsController;
 use App\Http\Controllers\App\Docs\LlmsTextController;
+use App\Http\Controllers\App\Docs\McpDocsController;
+use App\Http\Controllers\App\Docs\McpDocsMarkdownController;
 use App\Http\Controllers\App\Docs\OpenApiDocumentController;
 use App\Http\Controllers\App\GettingStartedController;
 use App\Http\Controllers\App\HomeController;
@@ -138,6 +140,12 @@ Route::get('docs', [DocsController::class, 'index'])
 
 Route::get('llms.txt', [LlmsTextController::class, 'index'])
     ->name('llmsText.index');
+
+Route::get('docs/mcp', [McpDocsController::class, 'index'])
+    ->name('docs.mcp.index');
+
+Route::get('docs/mcp.md', [McpDocsMarkdownController::class, 'index'])
+    ->name('docs.mcp.markdown.index');
 
 Route::get('docs/api', [ApiDocsController::class, 'index'])
     ->name('docs.api.index');
