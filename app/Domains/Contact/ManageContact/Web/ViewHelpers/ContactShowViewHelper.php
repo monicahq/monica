@@ -92,6 +92,11 @@ class ContactShowViewHelper
                     'vault' => $contact->vault,
                     'contact' => $contact,
                 ]),
+                'download_json' => route('contact.export.json', [
+                    'vault' => $contact->vault,
+                    'contact' => $contact,
+                ]),
+
             ],
         ];
     }
@@ -146,6 +151,11 @@ class ContactShowViewHelper
                     'vault' => $contact->vault,
                     'contact' => $contact,
                 ]),
+                'download_json' => route('contact.export.json', [
+                    'vault' => $contact->vault,
+                    'contact' => $contact,
+                ]),
+
             ],
         ];
     }
