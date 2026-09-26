@@ -23,7 +23,7 @@ description: Conventions for writing pull requests, including Conventional Commi
 
 - A pull request that changes anything a person sees MUST carry a screenshot. That covers a new screen, a changed layout, spacing, a component, wording drawn on a page, a state (empty, error, loading), and anything else visible in a browser.
 - The API reference portal at `/docs/api` is the one exception, and a change to it MUST NOT carry a screenshot. Its pages are generated from the definition files in `resources/docs/api`, so a shot of one shows the portal rendering exactly as it always renders, and the endpoints and their wording are what a reviewer has to read. Describe them in a bullet instead. A change to the components or the layout the portal is drawn with is a user interface change like any other and still needs one.
-- You MUST take them with the [take-screenshot skill](../take-screenshot/SKILL.md), which uses Iris. The application is served at `http://monica.test`.
+- You MUST take them with the [take-screenshot skill](../take-screenshot/SKILL.md), which uses Iris. Capture from the address your local server gives the application, and check that the page answers there before capturing it, since `APP_URL` can name another host.
 - A screenshot MUST show the screen as the branch draws it, and nothing else. Never capture the screen as it stood before the change: a reviewer reads the diff for that.
 - Capture from your own branch, with the front end built from it (`bun run build`), so the styles match the markup.
 - Screenshots are temporary review artifacts and MUST stay outside the repository. Write them to `/tmp/<feature>.png`.
