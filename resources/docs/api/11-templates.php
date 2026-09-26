@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Enums\VaultColourEnum;
+use App\Models\Section;
 use App\ViewModels\Docs\ApiDocsFields;
 use App\ViewModels\Docs\ApiDocsViewModel;
 
@@ -739,17 +741,21 @@ return [
             'method' => 'POST',
             'path' => '/templates/{template}/versions/{version}/sections',
             'examplePath' => '/templates/'.$templateId.'/versions/4/sections',
-            'description' => 'Put a section on a page of a draft.',
+            'description' => 'Put a section on a page of a draft, either one your account already has or a new one.',
             'body' => [
-                'This places a section that already exists rather than inventing one. A section is reusable and belongs to your account rather than to a template, so the same one can sit in several templates and in several versions of one template, at a different place each time.',
+                'Send section_id to place a section that already exists, or name to create a new one and place it in the same request. Send exactly one of the two. A section is reusable and belongs to your account rather than to a template, so the same one can sit in several templates and in several versions of one template, at a different place each time.',
+                'A new section can only be created on a draft. On a published version the request is refused as invalid on version, and nothing is created.',
                 'What is placed is a precise version of the section. Say which with section_version_number, or say nothing and the published version is used. That is what stops a change made through one template reaching another: a placement names a version, not a section.',
                 'Where it sits and what it is headed here belong to the placement rather than to the section, so overriding the title changes this template and nothing else. Name a page or leave it out to land on the first one.',
             ],
             'rateLimit' => 'Sixty requests per minute, per token.',
             'pathParams' => [$templateParam, $versionParam],
             'bodyParams' => [
-                ['name' => 'section_id', 'type' => 'uuid', 'required' => true, 'description' => 'The section to place. One belonging to somebody else is refused as invalid, and so is one already on this version.', 'example' => 'd5e8c012-9a34-4b76-8f21-3e7c5a0b1d94'],
-                ['name' => 'section_version_number', 'type' => 'integer', 'required' => false, 'description' => 'Which version of the section to place. The published one when absent. A version that is no longer offered is refused.'],
+                ['name' => 'section_id', 'type' => 'uuid', 'required' => false, 'description' => 'The section to place. Required when name is absent, refused alongside it. One belonging to somebody else is refused as invalid, and so is one already on this version.', 'example' => 'd5e8c012-9a34-4b76-8f21-3e7c5a0b1d94'],
+                ['name' => 'name', 'type' => 'string', 'required' => false, 'description' => 'The name of a new section to create and place. Required when section_id is absent, refused alongside it. At most 255 characters.'],
+                ['name' => 'icon', 'type' => 'string', 'required' => false, 'description' => 'The icon of a new section, only with name. One of '.implode(', ', Section::ICONS).'.'],
+                ['name' => 'colour', 'type' => 'string', 'required' => false, 'description' => 'The colour of a new section, only with name. One of '.implode(', ', VaultColourEnum::values()).'.'],
+                ['name' => 'section_version_number', 'type' => 'integer', 'required' => false, 'description' => 'Which version of the section to place, only with section_id. The published one when absent. A version that is no longer offered is refused.'],
                 ['name' => 'page_id', 'type' => 'uuid', 'required' => false, 'description' => 'The page to place it on. The first page of the version when absent.'],
                 ['name' => 'title_override', 'type' => 'string', 'required' => false, 'description' => 'What to head the block here. The name of the section when absent.', 'example' => 'Where they live'],
                 ['name' => 'is_collapsed_by_default', 'type' => 'boolean', 'required' => false, 'description' => 'Whether the block starts folded shut. False when absent.'],

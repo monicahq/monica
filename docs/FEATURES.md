@@ -37,3 +37,6 @@ A chronological list of every feature and improvement shipped during development
 * Docs: Published /llms.txt, which lists the documentation as Markdown for assistants.
 * Top bar: Docs leads to the documentation portal.
 * Docs: Added the MCP page at /docs/mcp, with the setup for each assistant, the tools it gets, and a Markdown version.
+* MCP: Let an assistant manage templates, open and publish drafts, and add, change, move and remove their sections and fields.
+* API/templates: Created a new section while placing it in a draft, and refused changes to a published version as invalid instead of failing.
+* Docs: Explained on /docs/mcp how an assistant edits a template through a draft.

@@ -6,9 +6,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Actions\MakeSectionVersionEditable;
 use App\Actions\UpdateFieldPosition;
+use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Resources\FieldResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class FieldPositionController extends TemplateScopedController
 {
@@ -21,14 +23,18 @@ class FieldPositionController extends TemplateScopedController
             'position' => ['required', 'integer', 'min:1'],
         ]);
 
-        $sectionVersion = new MakeSectionVersionEditable(user: $request->user(), row: $row)->execute();
-        $field = $sectionVersion->fields()->where('key', $key)->firstOrFail();
+        try {
+            $sectionVersion = new MakeSectionVersionEditable(user: $request->user(), row: $row)->execute();
+            $field = $sectionVersion->fields()->where('key', $key)->firstOrFail();
 
-        new UpdateFieldPosition(
-            user: $request->user(),
-            field: $field,
-            position: (int) $validated['position'],
-        )->execute();
+            new UpdateFieldPosition(
+                user: $request->user(),
+                field: $field,
+                position: (int) $validated['position'],
+            )->execute();
+        } catch (PublishedVersionIsFrozen $e) {
+            throw ValidationException::withMessages(['version' => $e->getMessage()]);
+        }
 
         return new FieldResource($field->refresh())->response()->setStatusCode(200);
     }

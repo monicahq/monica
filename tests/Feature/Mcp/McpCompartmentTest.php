@@ -5,15 +5,21 @@ declare(strict_types=1);
 namespace Tests\Feature\Mcp;
 
 use App\Mcp\Servers\EricaServer;
+use App\Mcp\Tools\AddTemplateSection;
 use App\Mcp\Tools\CreateContact;
+use App\Mcp\Tools\DeleteTemplate;
 use App\Mcp\Tools\GetContact;
 use App\Mcp\Tools\GetMeContact;
 use App\Mcp\Tools\ListContacts;
 use App\Mcp\Tools\ListTemplateVersions;
 use App\Mcp\Tools\ListVaults;
+use App\Mcp\Tools\RemoveTemplateSection;
 use App\Mcp\Tools\SetContactFavourite;
 use App\Mcp\Tools\UpdateContactName;
 use App\Models\Contact;
+use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
@@ -145,6 +151,55 @@ class McpCompartmentTest extends TestCase
         ])->assertHasErrors(['That contact does not exist.']);
 
         $this->assertDatabaseHas('contacts', ['id' => $contact->id, 'is_favourite' => false]);
+    }
+
+    #[Test]
+    public function it_reports_a_section_of_another_template_as_not_existing(): void
+    {
+        $user = User::factory()->create();
+        $asked = Template::factory()->create(['account_id' => $user->account_id]);
+        StructureVersion::factory()->create(['structure_id' => $asked->structure->id]);
+        $elsewhere = Template::factory()->create(['account_id' => $user->account_id]);
+        $row = StructureVersionSection::factory()->create([
+            'structure_version_id' => StructureVersion::factory()->create(['structure_id' => $elsewhere->structure->id])->id,
+            'section_version_id' => SectionVersion::factory()->create(['account_id' => $user->account_id])->id,
+        ]);
+
+        EricaServer::actingAs($user)->tool(RemoveTemplateSection::class, [
+            'template' => $asked->uuid,
+            'version' => 1,
+            'section' => (string) $row->id,
+        ])->assertHasErrors(['That section does not exist.']);
+
+        $this->assertModelExists($row);
+    }
+
+    #[Test]
+    public function it_writes_nothing_into_a_template_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $other = Template::factory()->create();
+        StructureVersion::factory()->create(['structure_id' => $other->structure->id]);
+
+        EricaServer::actingAs($user)->tool(AddTemplateSection::class, [
+            'template' => $other->uuid,
+            'version' => 1,
+            'name' => 'Schrute Farms',
+        ])->assertHasErrors(['That template does not exist.']);
+
+        $this->assertDatabaseMissing('sections', ['name' => 'Schrute Farms']);
+    }
+
+    #[Test]
+    public function it_does_not_delete_a_template_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $other = Template::factory()->create();
+
+        EricaServer::actingAs($user)->tool(DeleteTemplate::class, ['template' => $other->uuid])
+            ->assertHasErrors(['That template does not exist.']);
+
+        $this->assertNotSoftDeleted($other);
     }
 
     #[Test]

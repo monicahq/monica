@@ -68,6 +68,25 @@ class FieldPositionControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_to_move_a_field_on_a_published_version(): void
+    {
+        Queue::fake();
+        [$user, $template, $row] = $this->placement();
+        $field = Field::factory()->create(['section_version_id' => $row->section_version_id, 'position' => 1]);
+        Field::factory()->create(['section_version_id' => $row->section_version_id, 'position' => 2]);
+        $row->sectionVersion->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+        $row->structureVersion->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $this->url($template, $row)."/fields/{$field->id}/position", ['position' => 2])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['version']);
+
+        $this->assertSame(1, $field->refresh()->position);
+    }
+
+    #[Test]
     public function it_validates_the_position(): void
     {
         Queue::fake();

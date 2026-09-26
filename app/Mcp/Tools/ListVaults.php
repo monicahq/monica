@@ -9,8 +9,10 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('List the vaults of the account, the compartments its contacts are filed in.')]
+#[IsReadOnly]
 class ListVaults extends Tool
 {
     use MirrorsAnApiCapability;

@@ -11,8 +11,10 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('List the versions of one template, so a caller can tell a draft from what is published.')]
+#[IsReadOnly]
 class ListTemplateVersions extends Tool
 {
     use MirrorsAnApiCapability;

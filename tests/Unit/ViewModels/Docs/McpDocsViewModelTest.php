@@ -71,17 +71,17 @@ class McpDocsViewModelTest extends TestCase
     #[Test]
     public function it_counts_the_tools_it_lists(): void
     {
-        $this->assertStringStartsWith('MCP currently exposes 13 tools.', new McpDocsViewModel()->toolsSummary()[0]);
+        $this->assertStringStartsWith('MCP currently exposes 32 tools.', new McpDocsViewModel()->toolsSummary()[0]);
     }
 
     #[Test]
-    public function it_marks_only_the_contact_changing_tools_as_changing_data(): void
+    public function it_marks_only_the_groups_that_change_data(): void
     {
         $changing = array_filter(new McpDocsViewModel()->toolGroups(), fn (array $group): bool => $group['changesData']);
 
         $this->assertSame(
-            ['create-contact', 'update-contact-name', 'set-contact-favourite'],
-            array_column(array_merge(...array_column($changing, 'tools')), 'name'),
+            ['Contacts, changing', 'Templates, changing', 'Template drafts', 'Sections', 'Fields'],
+            array_values(array_column($changing, 'name')),
         );
     }
 
@@ -122,6 +122,8 @@ class McpDocsViewModelTest extends TestCase
                 $this->assertStringContainsString($block['code'], $markdown);
             }
         }
+
+        $this->assertStringContainsString("1. `list-templates`, to find the template.\n", $markdown);
     }
 
     #[Test]

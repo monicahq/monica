@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Models\Contact;
+use App\Models\Field;
+use App\Models\SectionVersion;
+use App\Models\StructureVersion;
+use App\Models\StructureVersionPage;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
@@ -81,6 +86,50 @@ trait MirrorsAnApiCapability
         }
 
         return $template;
+    }
+
+    protected function version(Template $template, int $number): StructureVersion
+    {
+        $version = $template->versions()->where('version_number', $number)->first();
+
+        if ($version === null) {
+            throw $this->doesNotExist(__('That version does not exist.'));
+        }
+
+        return $version;
+    }
+
+    protected function section(StructureVersion $version, string $id): StructureVersionSection
+    {
+        $section = $version->assembly()->where('structure_version_sections.id', $id)->first();
+
+        if ($section === null) {
+            throw $this->doesNotExist(__('That section does not exist.'));
+        }
+
+        return $section;
+    }
+
+    protected function field(SectionVersion $sectionVersion, string $id): Field
+    {
+        $field = $sectionVersion->fields()->whereKey($id)->first();
+
+        if ($field === null) {
+            throw $this->doesNotExist(__('That field does not exist.'));
+        }
+
+        return $field;
+    }
+
+    protected function page(StructureVersion $version, string $uuid): StructureVersionPage
+    {
+        $page = $version->pages()->where('uuid', $uuid)->first();
+
+        if ($page === null) {
+            throw $this->doesNotExist(__('That page does not exist.'));
+        }
+
+        return $page;
     }
 
     protected function doesNotExist(string $message): ValidationException

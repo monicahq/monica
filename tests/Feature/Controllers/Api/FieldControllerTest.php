@@ -272,6 +272,23 @@ class FieldControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_to_add_a_field_to_a_published_version(): void
+    {
+        Queue::fake();
+        [$user, $template, $row] = $this->placement();
+        $row->sectionVersion->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+        $row->structureVersion->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', $this->url($template, $row).'/fields', ['type' => 'text', 'label' => 'Nickname'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['version']);
+
+        $this->assertDatabaseMissing('fields', ['label' => 'Nickname']);
+    }
+
+    #[Test]
     public function it_removes_a_field(): void
     {
         Queue::fake();

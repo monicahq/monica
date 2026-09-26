@@ -80,6 +80,26 @@ class McpChangelogTest extends TestCase
     }
 
     #[Test]
+    public function it_records_a_template_change_as_having_arrived_over_mcp(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
+        $key = $user->createToken('Dundie awards bot');
+
+        $this->invoke($key->plainTextToken, 'add-template-section', [
+            'template' => $template->uuid,
+            'version' => 1,
+            'name' => 'Dundie nominations',
+        ])->assertOk();
+
+        $this->assertDatabaseHas('logs', [
+            'source' => LogSourceEnum::Mcp->value,
+            'source_detail' => 'Dundie awards bot',
+        ]);
+    }
+
+    #[Test]
     public function a_contact_an_assistant_created_carries_no_marker_of_its_own(): void
     {
         $user = User::factory()->create();

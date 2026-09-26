@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api;
 
+use App\Enums\VersionStatusEnum;
 use App\Models\Section;
 use App\Models\SectionVersion;
-use App\Models\Template;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -57,6 +58,20 @@ class StructureVersionSectionPositionControllerTest extends TestCase
         $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}/position", ['position' => 0])
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['position']);
+    }
+
+    #[Test]
+    public function it_refuses_to_move_a_section_on_a_published_version(): void
+    {
+        Queue::fake();
+        [$user, $template, $row] = $this->placement();
+        $row->structureVersion->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}/position", ['position' => 2])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['version']);
     }
 
     #[Test]

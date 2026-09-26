@@ -62,6 +62,27 @@ class McpCatalogueTest extends TestCase
         $this->assertEqualsCanonicalizing($onDisk, $this->registeredTools());
     }
 
+    #[Test]
+    public function every_tool_that_reads_says_so_and_every_tool_that_deletes_warns(): void
+    {
+        $mislabelled = [];
+
+        foreach ($this->registeredTools() as $class) {
+            $tool = app($class);
+            $annotations = $tool->annotations();
+
+            if (preg_match('/^(get|list)-/', $tool->name()) && ($annotations['readOnlyHint'] ?? false) !== true) {
+                $mislabelled[] = "{$tool->name()} only reads but is not marked read only";
+            }
+
+            if (preg_match('/^(delete|remove)-/', $tool->name()) && ($annotations['destructiveHint'] ?? false) !== true) {
+                $mislabelled[] = "{$tool->name()} deletes but is not marked destructive";
+            }
+        }
+
+        $this->assertSame([], $mislabelled);
+    }
+
     /** @return array<int, class-string<Tool>> */
     private function registeredTools(): array
     {

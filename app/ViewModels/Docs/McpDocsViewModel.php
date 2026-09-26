@@ -19,6 +19,7 @@ class McpDocsViewModel
         ['id' => 'check', 'label' => 'Check your connection'],
         ['id' => 'access', 'label' => 'Manage access'],
         ['id' => 'tools', 'label' => 'Available tools'],
+        ['id' => 'templates', 'label' => 'Edit a template'],
         ['id' => 'troubleshooting', 'label' => 'Troubleshooting'],
         ['id' => 'see-also', 'label' => 'See also'],
     ];
@@ -39,6 +40,24 @@ class McpDocsViewModel
     public const array ACCESS = [
         'Your assistant acts through its API key. Changes made through MCP are recorded in **Settings → Logs**.',
         'To disconnect an assistant, revoke its key in **Settings → Security and access → API keys**.',
+    ];
+
+    /** @var list<string> */
+    public const array TEMPLATES = [
+        'A template changes through a draft. Its sections and fields can only change on a draft version, and nothing reaches the records it describes until the draft is published. Deleting a draft throws its changes away.',
+        'The tools that change a template, a section or a field keep what you leave out, so asking for one change never clears the others. A field can come back with a new id when its section had to be drafted first. Use the id the tool returns.',
+    ];
+
+    public const string TEMPLATE_EXAMPLE = 'Asked to add a Hobbies section with a text field and a date field, an assistant calls:';
+
+    /** @var list<string> */
+    public const array TEMPLATE_STEPS = [
+        '`list-templates`, to find the template.',
+        '`create-template-draft`, to open a draft and learn its version number.',
+        '`add-template-section` with the name **Hobbies**, which returns the id of the new section.',
+        '`create-template-field` twice: a text field named **Hobby**, then a date field named **Started**.',
+        '`get-template-version`, to check the draft.',
+        '`publish-template-version`, with a note saying what changed.',
     ];
 
     /** @var array{title: string, text: string} */
@@ -191,7 +210,34 @@ class McpDocsViewModel
             ]],
             ['name' => 'Templates', 'changesData' => false, 'tools' => [
                 ['name' => 'list-templates', 'description' => 'Lists the templates of your account.'],
+                ['name' => 'get-template', 'description' => 'Returns one template: its name, what it describes, whether it is active and which version is published.'],
                 ['name' => 'list-template-versions', 'description' => 'Lists the versions of a template.'],
+                ['name' => 'get-template-version', 'description' => 'Returns one version of a template with its pages, sections and fields, and the ids the other template tools take.'],
+            ]],
+            ['name' => 'Templates, changing', 'changesData' => true, 'tools' => [
+                ['name' => 'create-template', 'description' => 'Creates a template for contacts, for a kind of entity or for life events.'],
+                ['name' => 'update-template', 'description' => 'Renames a template or changes its description.'],
+                ['name' => 'duplicate-template', 'description' => 'Copies a template into a new one.'],
+                ['name' => 'set-template-activation', 'description' => 'Switches a template on or off for new records.'],
+                ['name' => 'set-template-position', 'description' => 'Moves a template to another place in the list.'],
+                ['name' => 'delete-template', 'description' => 'Deletes a template that no record uses.'],
+            ]],
+            ['name' => 'Template drafts', 'changesData' => true, 'tools' => [
+                ['name' => 'create-template-draft', 'description' => 'Opens a draft of a template, or returns the one already open.'],
+                ['name' => 'publish-template-version', 'description' => 'Publishes a draft, so the records the template describes start using it.'],
+                ['name' => 'delete-template-draft', 'description' => 'Deletes a draft and every change made in it.'],
+            ]],
+            ['name' => 'Sections', 'changesData' => true, 'tools' => [
+                ['name' => 'add-template-section', 'description' => 'Adds a new section to a draft, or one your account already has.'],
+                ['name' => 'update-template-section', 'description' => 'Changes what a section is headed in a draft and whether it starts folded shut.'],
+                ['name' => 'remove-template-section', 'description' => 'Removes a section from a draft. The section stays in your account.'],
+                ['name' => 'set-template-section-position', 'description' => 'Moves a section to another place on its page.'],
+            ]],
+            ['name' => 'Fields', 'changesData' => true, 'tools' => [
+                ['name' => 'create-template-field', 'description' => 'Adds a field to a section of a draft.'],
+                ['name' => 'update-template-field', 'description' => 'Changes a field. What you leave out keeps its value.'],
+                ['name' => 'delete-template-field', 'description' => 'Deletes a field from a section of a draft.'],
+                ['name' => 'set-template-field-position', 'description' => 'Moves a field to another place in its section.'],
             ]],
             ['name' => 'Entity types', 'changesData' => false, 'tools' => [
                 ['name' => 'list-entity-types', 'description' => 'Lists the kinds of record your account keeps besides contacts.'],
@@ -318,6 +364,17 @@ class McpDocsViewModel
         }
 
         array_push($lines, ...$this->paragraphs($this->toolsSummary()));
+        $lines[] = '## Edit a template';
+        $lines[] = '';
+        array_push($lines, ...$this->paragraphs(self::TEMPLATES));
+        $lines[] = self::TEMPLATE_EXAMPLE;
+        $lines[] = '';
+
+        foreach (self::TEMPLATE_STEPS as $number => $step) {
+            $lines[] = ($number + 1).". {$step}";
+        }
+
+        $lines[] = '';
         $lines[] = '## Troubleshooting';
         $lines[] = '';
 

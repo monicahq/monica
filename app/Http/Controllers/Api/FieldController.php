@@ -13,6 +13,7 @@ use App\Enums\RelationTargetEnum;
 use App\Enums\RepetitionOrderEnum;
 use App\Exceptions\AcceptedFileKindIsNotValid;
 use App\Exceptions\CannotNestARepeater;
+use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Resources\FieldResource;
 use App\Models\EntityType;
 use App\Models\Field;
@@ -48,12 +49,12 @@ class FieldController extends TemplateScopedController
             'parent_id' => ['nullable', 'integer'],
         ]);
 
-        $sectionVersion = new MakeSectionVersionEditable(
-            user: $request->user(),
-            row: $row,
-        )->execute();
-
         try {
+            $sectionVersion = new MakeSectionVersionEditable(
+                user: $request->user(),
+                row: $row,
+            )->execute();
+
             $field = new CreateField(
                 user: $request->user(),
                 sectionVersion: $sectionVersion,
@@ -69,6 +70,8 @@ class FieldController extends TemplateScopedController
             )->execute();
         } catch (CannotNestARepeater|InvalidArgumentException $e) {
             throw ValidationException::withMessages(['type' => $e->getMessage()]);
+        } catch (PublishedVersionIsFrozen $e) {
+            throw ValidationException::withMessages(['version' => $e->getMessage()]);
         }
 
         return new FieldResource($field)->response()->setStatusCode(201);
@@ -100,10 +103,10 @@ class FieldController extends TemplateScopedController
             'repetition_order' => ['nullable', Rule::enum(RepetitionOrderEnum::class)],
         ]);
 
-        $sectionVersion = new MakeSectionVersionEditable(user: $request->user(), row: $row)->execute();
-        $field = $this->fieldIn($sectionVersion, $key);
-
         try {
+            $sectionVersion = new MakeSectionVersionEditable(user: $request->user(), row: $row)->execute();
+            $field = $this->fieldIn($sectionVersion, $key);
+
             new UpdateField(
                 user: $request->user(),
                 field: $field,
@@ -129,6 +132,8 @@ class FieldController extends TemplateScopedController
             throw ValidationException::withMessages(['value_list_id' => $e->getMessage()]);
         } catch (AcceptedFileKindIsNotValid $e) {
             throw ValidationException::withMessages(['options' => $e->getMessage()]);
+        } catch (PublishedVersionIsFrozen $e) {
+            throw ValidationException::withMessages(['version' => $e->getMessage()]);
         }
 
         return new FieldResource($field->refresh())->response()->setStatusCode(200);
@@ -139,12 +144,16 @@ class FieldController extends TemplateScopedController
         $row = $this->findRow($request, $template, $version, $section);
         $key = $this->keyOf($row->sectionVersion, $field);
 
-        $sectionVersion = new MakeSectionVersionEditable(user: $request->user(), row: $row)->execute();
+        try {
+            $sectionVersion = new MakeSectionVersionEditable(user: $request->user(), row: $row)->execute();
 
-        new DestroyField(
-            user: $request->user(),
-            field: $this->fieldIn($sectionVersion, $key),
-        )->execute();
+            new DestroyField(
+                user: $request->user(),
+                field: $this->fieldIn($sectionVersion, $key),
+            )->execute();
+        } catch (PublishedVersionIsFrozen $e) {
+            throw ValidationException::withMessages(['version' => $e->getMessage()]);
+        }
 
         return response()->noContent(204);
     }

@@ -20,5 +20,6 @@ class McpDocsControllerTest extends TestCase
         $response->assertSee(new McpDocsViewModel()->serverAddress());
         $response->assertSee('role="tablist"', false);
         $response->assertSee('aria-controls="client-panel-claude-code"', false);
+        $response->assertSee('Edit a template');
     }
 }

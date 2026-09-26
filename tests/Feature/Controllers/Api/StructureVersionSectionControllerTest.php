@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api;
 
+use App\Enums\VaultColourEnum;
+use App\Enums\VersionStatusEnum;
 use App\Models\Account;
 use App\Models\Section;
 use App\Models\SectionVersion;
-use App\Models\Template;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -89,6 +91,73 @@ class StructureVersionSectionControllerTest extends TestCase
 
         $this->assertSame('Address', $section->refresh()->name);
         $this->assertSame(1, $sectionVersion->refresh()->version_number);
+    }
+
+    #[Test]
+    public function it_creates_a_new_section_in_a_draft(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/templates/{$template->uuid}/versions/1/sections", [
+            'name' => 'Sales',
+            'icon' => 'briefcase',
+            'colour' => VaultColourEnum::Green->value,
+        ]);
+
+        $response->assertCreated();
+        $response->assertJsonStructure($this->jsonStructure);
+        $response->assertJsonPath('data.attributes.section_name', 'Sales');
+
+        $this->assertDatabaseHas('sections', [
+            'account_id' => $user->account_id,
+            'name' => 'Sales',
+            'icon' => 'briefcase',
+            'colour' => VaultColourEnum::Green->value,
+        ]);
+        $this->assertSame('Sales', $version->assembly()->sole()->sectionVersion->section->name);
+    }
+
+    #[Test]
+    public function it_refuses_a_new_section_on_a_published_version_and_writes_nothing(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', "/api/v1/templates/{$template->uuid}/versions/1/sections", ['name' => 'Sales'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['version']);
+
+        $this->assertDatabaseMissing('sections', ['name' => 'Sales']);
+    }
+
+    #[Test]
+    public function it_refuses_a_name_and_a_section_id_together(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
+        $section = Section::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', "/api/v1/templates/{$template->uuid}/versions/1/sections", [
+            'name' => 'Sales',
+            'section_id' => $section->uuid,
+        ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['section_id']);
+
+        $this->assertDatabaseMissing('sections', ['name' => 'Sales']);
     }
 
     #[Test]
@@ -196,6 +265,22 @@ class StructureVersionSectionControllerTest extends TestCase
             ->assertNoContent();
 
         $this->assertModelMissing($row);
+    }
+
+    #[Test]
+    public function it_refuses_to_change_a_placement_on_a_published_version(): void
+    {
+        Queue::fake();
+        [$user, $template, $row] = $this->placement();
+        $row->structureVersion->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}", [
+            'title_override' => 'Home address',
+        ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['version']);
     }
 
     #[Test]

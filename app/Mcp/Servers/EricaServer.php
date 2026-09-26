@@ -4,9 +4,19 @@ declare(strict_types=1);
 
 namespace App\Mcp\Servers;
 
+use App\Mcp\Tools\AddTemplateSection;
 use App\Mcp\Tools\CreateContact;
+use App\Mcp\Tools\CreateTemplate;
+use App\Mcp\Tools\CreateTemplateDraft;
+use App\Mcp\Tools\CreateTemplateField;
+use App\Mcp\Tools\DeleteTemplate;
+use App\Mcp\Tools\DeleteTemplateDraft;
+use App\Mcp\Tools\DeleteTemplateField;
+use App\Mcp\Tools\DuplicateTemplate;
 use App\Mcp\Tools\GetContact;
 use App\Mcp\Tools\GetMeContact;
+use App\Mcp\Tools\GetTemplate;
+use App\Mcp\Tools\GetTemplateVersion;
 use App\Mcp\Tools\ListContacts;
 use App\Mcp\Tools\ListEntityTypes;
 use App\Mcp\Tools\ListLifeEventCategories;
@@ -15,8 +25,17 @@ use App\Mcp\Tools\ListRelationshipTypes;
 use App\Mcp\Tools\ListTemplates;
 use App\Mcp\Tools\ListTemplateVersions;
 use App\Mcp\Tools\ListVaults;
+use App\Mcp\Tools\PublishTemplateVersion;
+use App\Mcp\Tools\RemoveTemplateSection;
 use App\Mcp\Tools\SetContactFavourite;
+use App\Mcp\Tools\SetTemplateActivation;
+use App\Mcp\Tools\SetTemplateFieldPosition;
+use App\Mcp\Tools\SetTemplatePosition;
+use App\Mcp\Tools\SetTemplateSectionPosition;
 use App\Mcp\Tools\UpdateContactName;
+use App\Mcp\Tools\UpdateTemplate;
+use App\Mcp\Tools\UpdateTemplateField;
+use App\Mcp\Tools\UpdateTemplateSection;
 use Laravel\Mcp\Server;
 use Laravel\Mcp\Server\Attributes\Instructions;
 use Laravel\Mcp\Server\Attributes\Name;
@@ -36,6 +55,11 @@ rather than forbidden. Reach a vault by its address, which every listing gives y
 Nothing here invents a rule of its own: each capability answers exactly as the equivalent JSON API
 endpoint would, and a change made here is recorded in the account's changelog as having arrived from
 an assistant.
+
+A template's sections and fields change only on a draft version. Open one with create-template-draft,
+read the section and field ids from get-template-version, and use the ids a changing tool returns,
+since a field can come back with a new one. Nothing reaches the records a template describes until the
+draft is published with publish-template-version.
 TEXT)]
 class EricaServer extends Server
 {
@@ -50,9 +74,28 @@ class EricaServer extends Server
         ListRelationshipTypes::class,
         ListTemplateVersions::class,
         ListTemplates::class,
+        GetTemplate::class,
         ListVaults::class,
         CreateContact::class,
         UpdateContactName::class,
         SetContactFavourite::class,
+        CreateTemplate::class,
+        UpdateTemplate::class,
+        DuplicateTemplate::class,
+        SetTemplateActivation::class,
+        SetTemplatePosition::class,
+        DeleteTemplate::class,
+        GetTemplateVersion::class,
+        CreateTemplateDraft::class,
+        PublishTemplateVersion::class,
+        DeleteTemplateDraft::class,
+        AddTemplateSection::class,
+        UpdateTemplateSection::class,
+        RemoveTemplateSection::class,
+        SetTemplateSectionPosition::class,
+        CreateTemplateField::class,
+        UpdateTemplateField::class,
+        DeleteTemplateField::class,
+        SetTemplateFieldPosition::class,
     ];
 }

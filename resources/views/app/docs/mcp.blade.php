@@ -246,6 +246,22 @@
             @endforeach
           </section>
 
+          <section id="templates" aria-labelledby="templates-heading" class="flex scroll-mt-20 flex-col gap-4">
+            <h2 id="templates-heading" class="{{ $heading }}">Edit a template</h2>
+
+            @foreach (McpDocsViewModel::TEMPLATES as $paragraph)
+              <p class="{{ $prose }}">{{ $paragraph }}</p>
+            @endforeach
+
+            <p class="{{ $prose }}">{{ McpDocsViewModel::TEMPLATE_EXAMPLE }}</p>
+
+            <ol class="list-decimal space-y-1.5 pl-5 {{ $prose }}">
+              @foreach (McpDocsViewModel::TEMPLATE_STEPS as $step)
+                <li>{!! $inline($step) !!}</li>
+              @endforeach
+            </ol>
+          </section>
+
           <section id="troubleshooting" aria-labelledby="troubleshooting-heading" class="flex scroll-mt-20 flex-col gap-4">
             <h2 id="troubleshooting-heading" class="{{ $heading }}">Troubleshooting</h2>
 
