@@ -3,7 +3,7 @@
   "specName": "Edit and delete a life event",
   "branch": "2026-09-23-contact-timeline",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -32,6 +32,14 @@
       "kind": "start",
       "by": "extension",
       "at": "2026-09-24T01:28:15.964Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-26T11:18:10.435Z"
     }
-  ]
+  ],
+  "telemetryInstanceId": "c36f0b89-fb69-4f08-8931-506b2391c543"
 }

@@ -7,6 +7,7 @@ namespace Tests\Feature\Dav;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -61,7 +62,7 @@ class AuthenticationTest extends TestCase
     #[Test]
     public function it_refuses_the_account_password(): void
     {
-        $user = User::factory()->create(['password' => bcrypt('beets')]);
+        $user = User::factory()->create(['password' => Hash::make('beets')]);
 
         $response = $this->dav('PROPFIND', 'dav/', $user->email, 'beets');
 

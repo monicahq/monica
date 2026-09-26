@@ -4,20 +4,6 @@ declare(strict_types=1);
 
 use App\Enums\ContactGroupingEnum;
 use App\Enums\SsoProviderEnum;
-use App\Http\Controllers\App\Admin\AccountController as AdminAccountController;
-use App\Http\Controllers\App\Admin\AccountLifetimeAccessController;
-use App\Http\Controllers\App\Admin\AccountStorageLimitController;
-use App\Http\Controllers\App\Admin\AdministratorController;
-use App\Http\Controllers\App\Admin\AdministratorLogController;
-use App\Http\Controllers\App\Admin\InstanceSettingController;
-use App\Http\Controllers\App\Admin\ModerationApprovalController;
-use App\Http\Controllers\App\Admin\ModerationController;
-use App\Http\Controllers\App\Admin\ModerationRejectionController;
-use App\Http\Controllers\App\Admin\OverviewController;
-use App\Http\Controllers\App\Admin\TelegramRegistrationCheckController;
-use App\Http\Controllers\App\Admin\TelegramRegistrationController;
-use App\Http\Controllers\App\Admin\TelegramWebhookSecretController;
-use App\Http\Controllers\App\Admin\UserActivationController;
 use App\Http\Controllers\App\Docs\ApiDocsController;
 use App\Http\Controllers\App\Docs\ApiDocsMarkdownController;
 use App\Http\Controllers\App\Docs\DocsController;
@@ -179,6 +165,8 @@ Route::post('s/{token}', [SharedContactPasswordController::class, 'create'])
     ->middleware(['throttle:20,1'])
     ->where('token', '[A-Za-z0-9]{64}')
     ->name('share.password.create');
+
+Route::post('telegram/webhook', [TelegramWebhookController::class, 'handleWebhook'])->name('telegram.webhook');
 
 Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->group(function (): void {
     Route::get('getting-started', [GettingStartedController::class, 'index'])->name('gettingStarted.index');
@@ -550,48 +538,5 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('settings/account/profile/photo/{user}/{size}', [PhotoController::class, 'show'])->whereNumber(['user', 'size'])->name('settings.photo.show');
 });
 
-Route::middleware(['administrator'])->group(function (): void {
-    Route::get('admin', [OverviewController::class, 'index'])->name('admin.overview.index');
-
-    Route::get('admin/logs', [AdministratorLogController::class, 'index'])->name('admin.logs.index');
-
-    Route::get('admin/moderation', [ModerationController::class, 'index'])->name('admin.moderation.index');
-    Route::get('admin/moderation/{version}', [ModerationController::class, 'show'])->whereNumber('version')->name('admin.moderation.show');
-    Route::post('admin/moderation/{version}/approval', [ModerationApprovalController::class, 'create'])->whereNumber('version')->name('admin.moderation.approval.create');
-    Route::post('admin/moderation/{version}/rejection', [ModerationRejectionController::class, 'create'])->whereNumber('version')->name('admin.moderation.rejection.create');
-
-    Route::get('admin/accounts', [AdminAccountController::class, 'index'])->name('admin.accounts.index');
-    Route::get('admin/accounts/{account}', [AdminAccountController::class, 'show'])->whereNumber('account')->name('admin.accounts.show');
-
-    Route::put('admin/accounts/{account}/storage-limit', [AccountStorageLimitController::class, 'update'])->whereNumber('account')->name('admin.accounts.storageLimit.update');
-    Route::post('admin/accounts/{account}/lifetime-access', [AccountLifetimeAccessController::class, 'create'])->whereNumber('account')->name('admin.accounts.lifetimeAccess.create');
-    Route::delete('admin/accounts/{account}/lifetime-access', [AccountLifetimeAccessController::class, 'destroy'])->whereNumber('account')->name('admin.accounts.lifetimeAccess.destroy');
-    Route::post('admin/accounts/{account}/activation', [UserActivationController::class, 'create'])->whereNumber('account')->name('admin.accounts.activation.create');
-    Route::delete('admin/accounts/{account}/activation', [UserActivationController::class, 'destroy'])->whereNumber('account')->name('admin.accounts.activation.destroy');
-
-    Route::get('admin/configuration', [InstanceSettingController::class, 'index'])->name('admin.configuration.index');
-    Route::post('admin/configuration/telegram/check', [TelegramRegistrationCheckController::class, 'create'])->name('admin.configuration.telegram.check.create');
-
-    /*
-     * Changing how the instance behaves costs a password or a passkey, the same gate the security
-     * screen puts in front of anything that decides how somebody signs in. The mail transport is
-     * reachable from here, and repointing it takes the password reset and sign in links with it.
-     */
-    Route::middleware(['password.confirm:auth.confirmPassword.new'])->group(function (): void {
-        Route::put('admin/configuration/{setting}', [InstanceSettingController::class, 'update'])->name('admin.configuration.update');
-        Route::delete('admin/configuration/{setting}', [InstanceSettingController::class, 'destroy'])->name('admin.configuration.destroy');
-        Route::delete('admin/configuration/orphans/{name}', [InstanceSettingController::class, 'destroyOrphan'])->name('admin.configuration.orphans.destroy');
-        Route::post('admin/configuration/telegram/registration', [TelegramRegistrationController::class, 'create'])->name('admin.configuration.telegram.registration.create');
-        Route::post('admin/configuration/telegram/secret', [TelegramWebhookSecretController::class, 'create'])->name('admin.configuration.telegram.secret.create');
-    });
-
-    Route::get('admin/administrators', [AdministratorController::class, 'index'])->name('admin.administrators.index');
-    Route::post('admin/administrators', [AdministratorController::class, 'create'])->name('admin.administrators.create');
-    Route::delete('admin/administrators/{user}', [AdministratorController::class, 'destroy'])->whereNumber('user')->name('admin.administrators.destroy');
-});
-
-if (config('services.telegram.installed')) {
-    Route::post('telegram/webhook', [TelegramWebhookController::class, 'handleWebhook'])->name('telegram.webhook');
-}
-
 require __DIR__.'/auth.php';
+require __DIR__.'/administrator.php';

@@ -3,7 +3,7 @@
   "specName": "Welcome screen",
   "branch": "2026-09-24-welcome-screen",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -208,7 +208,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-25T00:28:31.827Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-26T11:18:10.435Z"
     }
   ],
-  "currentTask": "T023"
+  "currentTask": "T023",
+  "telemetryInstanceId": "a2c9b930-6fdb-49c9-aa96-6bc69a98bc38"
 }

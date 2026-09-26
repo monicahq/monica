@@ -3,7 +3,7 @@
   "specName": "MCP tools for entity types",
   "branch": "2026-09-25-mcp-stuff-2",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -232,7 +232,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-26T02:49:20.057Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-26T11:18:10.435Z"
     }
   ],
-  "currentTask": "T025"
+  "currentTask": "T025",
+  "telemetryInstanceId": "6bb8fd6b-d838-4cab-b671-3e348f2fa3fb"
 }

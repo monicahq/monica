@@ -3,7 +3,7 @@
   "specName": "Documentation portal",
   "branch": "2026-09-25-docs-portal",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -160,7 +160,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-26T00:20:26.335Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-26T11:18:10.435Z"
     }
   ],
-  "currentTask": "T016"
+  "currentTask": "T016",
+  "telemetryInstanceId": "d48e151f-e1f7-46ff-8518-3d7dc4c5fe36"
 }

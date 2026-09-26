@@ -9,6 +9,7 @@ use App\Actions\CreateAccount;
 use App\Actions\CreateContact;
 use App\Actions\CreateFieldValueRow;
 use App\Actions\CreateReminder;
+use App\Actions\GrantAdministratorAccess;
 use App\Actions\SetFieldValue;
 use App\Enums\AddressLabelEnum;
 use App\Enums\ContactCategoryEnum;
@@ -63,6 +64,7 @@ class ExampleAccountSeeder extends Seeder
         $this->createAccount();
         $this->readTheFields();
         $this->createContacts();
+        $this->grantAdministratorAccess();
 
         $this->command?->info('Signed in as '.self::EMAIL.' with the password '.self::PASSWORD.'.');
     }
@@ -79,6 +81,11 @@ class ExampleAccountSeeder extends Seeder
         $this->user->markEmailAsVerified();
 
         $this->vault = $this->user->account->vaults()->firstOrFail();
+    }
+
+    private function grantAdministratorAccess(): void
+    {
+        new GrantAdministratorAccess($this->user)->execute();
     }
 
     private function readTheFields(): void

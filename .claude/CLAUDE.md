@@ -98,7 +98,7 @@ the rule.
 - `app/View/Components`: the five layout classes (`Shell`, `AccountLayout`, `AdminLayout`, `GuestLayout`, `MarketplaceLayout`). The components under `resources/views/components` are anonymous, with `@props`.
 - `resources/views`: `app` for the logged in screens, `components` for shared UI, `layouts` and `partials` for the shell, `shared` for what a private link opens, `vendor` for the views a package publishes, which is where the email templates live.
 - `resources/css` and `resources/js`: the Tailwind theme and the Alpine setup.
-- `routes`: `web.php` (logged in), `api.php` (the JSON API), `auth.php`, `console.php`.
+- `routes`: `web.php` (logged in), `api.php` (the JSON API), `administrator.php`, `auth.php`, `console.php`.
 - `database`: `migrations`, `factories`, `seeders`.
 - `lang`: one JSON file per locale.
 - `tests`: `Unit` (models, actions, jobs, mails, helpers, view models, enums), `Feature` (controllers and views), `Fixtures` (the classes a test needs). PHPUnit only.

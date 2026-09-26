@@ -3,7 +3,7 @@
   "specName": "Relation, file and image fields in the template builder",
   "branch": "2026-09-25-template-relation-file-image-fields",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -272,7 +272,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-25T20:55:36.721Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-26T11:18:10.435Z"
     }
   ],
-  "currentTask": "T030"
+  "currentTask": "T030",
+  "telemetryInstanceId": "ad698459-bb2b-4b5d-b495-ae463cc44ab0"
 }

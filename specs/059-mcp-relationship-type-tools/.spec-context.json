@@ -3,7 +3,7 @@
   "specName": "MCP tools for relationship types",
   "branch": "2026-09-25-mcp-relationship-types",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -32,6 +32,14 @@
       "kind": "start",
       "by": "extension",
       "at": "2026-09-26T03:10:59.079Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-26T11:18:10.435Z"
     }
-  ]
+  ],
+  "telemetryInstanceId": "a464ffd5-8e33-4440-9fc5-5edbc1d2a7f6"
 }

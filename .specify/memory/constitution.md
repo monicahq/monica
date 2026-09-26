@@ -290,7 +290,7 @@ an amendment.
     and `partials` for the shell, `shared` for the screens a private link opens, `vendor` for the
     views a package publishes, which is where the email templates live), `docs` for the API
     reference the portal renders, `css` for the Tailwind theme and `js` for the Alpine setup.
-  - `routes/`: `web.php` for the signed in application, `api.php` for the JSON API, `auth.php` for
+  - `routes/`: `web.php` for the signed in application, `administrator.php` for the admin interface, `api.php` for the JSON API, `auth.php` for
     the credentials screens, `console.php` for scheduled work.
   - `database/`: `migrations`, `factories` and `seeders`.
   - `lang/`: one JSON file per locale, written by `php artisan monica:localize` and never by hand.

@@ -151,7 +151,7 @@ nothing to say about itself is still missing its first line.
 ## Routing
 
 - Public-facing URLs use kebab-case.
-- Reference the controller with the class array notation, `[HomeController::class, 'index']`. Every route in `routes/web.php` does.
+- Reference the controller with the class array notation, `[HomeController::class, 'index']`. Every route in `routes/web.php`, `routes/administrator.php` and `routes/api.php` does.
 - Route names use camelCase.
 - Place the HTTP verb first, followed by other options.
 - Route parameters use camelCase.
