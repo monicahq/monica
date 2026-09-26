@@ -229,9 +229,10 @@ enum InstanceSettingEnum: string implements Translatable
     /**
      * What a change to this setting can take away, or null when it can take
      * nothing away. Principle V asks for a warning before a destructive action,
-     * and three of these are destructive in that sense: switching off a
-     * capability strands what it already issued, and shortening a retention
-     * makes data eligible for removal that was not before.
+     * and these are destructive in that sense: switching off a capability
+     * strands what it already issued, shortening a retention makes data
+     * eligible for removal that was not before, and replacing a Telegram
+     * credential leaves the registered bot unable to reach the instance.
      */
     public function warning(): ?string
     {
@@ -239,6 +240,7 @@ enum InstanceSettingEnum: string implements Translatable
             self::MagicLinkEnabled => 'Any sign in link already emailed stops working, and whoever holds one has to ask for another way in.',
             self::NotificationRetentionMonths => 'Notifications older than the new number are swept on the next run, and nothing brings them back.',
             self::OrphanedFileGracePeriodInDays => 'Files detached longer ago than the new number become eligible for the sweep, and a restored record can no longer recover them.',
+            self::TelegramBotToken, self::TelegramBotWebhookSecret => 'Telegram stops reaching this instance until the bot is registered again.',
             default => null,
         };
     }
@@ -252,6 +254,7 @@ enum InstanceSettingEnum: string implements Translatable
         return match ($this) {
             self::MagicLinkEnabled => 'switchedOff',
             self::NotificationRetentionMonths, self::OrphanedFileGracePeriodInDays => 'lowered',
+            self::TelegramBotToken, self::TelegramBotWebhookSecret => 'replaced',
             default => null,
         };
     }

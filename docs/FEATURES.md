@@ -46,3 +46,5 @@ A chronological list of every feature and improvement shipped during development
 * Docs: Listed the relationship type tools on /docs/mcp and explained what a relationship type is.
 * MCP: Let an assistant create, change, reorder, switch off and delete life event types and their categories, and choose the fields a type asks for.
 * Docs: Listed the life event type tools on /docs/mcp and explained what a life event type is.
+* Admin: Register the Telegram bot, check it and generate its secret from the configuration screen.
+* Fix: The Telegram address answers a token saved on the screen, and refuses a call when no secret is set.

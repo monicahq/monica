@@ -203,6 +203,28 @@ class ConfigurationTest extends TestCase
         );
     }
 
+    #[Test]
+    public function it_offers_to_register_the_telegram_bot(): void
+    {
+        $response = $this->actingAs($this->administrator())->get('/admin/configuration');
+
+        $response->assertSee('Register with Telegram');
+        $response->assertSee(route('admin.configuration.telegram.registration.create'), false);
+    }
+
+    #[Test]
+    public function it_keeps_the_registration_control_and_says_what_is_missing(): void
+    {
+        config(['services.telegram.token' => null]);
+
+        $response = $this->actingAs($this->administrator())->get('/admin/configuration');
+
+        $response->assertSee('Register with Telegram');
+        $response->assertSee('id="telegram-unavailable"', false);
+        $response->assertSee('aria-describedby="telegram-unavailable"', false);
+        $response->assertSee('Set the bot token first.');
+    }
+
     private function administrator(): User
     {
         $user = User::factory()->create();

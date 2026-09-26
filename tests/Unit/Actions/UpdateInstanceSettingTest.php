@@ -229,4 +229,22 @@ class UpdateInstanceSettingTest extends TestCase
         );
         Queue::assertNotPushed(LogAdministratorAction::class);
     }
+
+    #[Test]
+    public function it_attributes_a_change_made_with_nobody_signed_in_to_the_system(): void
+    {
+        Queue::fake();
+
+        new UpdateInstanceSetting(
+            administrator: null,
+            setting: InstanceSettingEnum::FreeContactLimit,
+            value: '5',
+        )->execute();
+
+        Queue::assertPushed(
+            LogAdministratorAction::class,
+            fn (LogAdministratorAction $job): bool => $job->administrator === null
+                && $job->action === AdministratorActionEnum::InstanceSettingUpdated,
+        );
+    }
 }

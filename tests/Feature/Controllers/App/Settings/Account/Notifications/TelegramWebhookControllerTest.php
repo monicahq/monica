@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Notifications;
 
+use App\Enums\InstanceSettingEnum;
 use App\Enums\NotificationChannelEnum;
+use App\Helpers\InstanceSettings;
 use App\Models\Account;
+use App\Models\InstanceSetting;
 use App\Models\NotificationChannel;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -115,6 +118,46 @@ class TelegramWebhookControllerTest extends TestCase
 
         $this->assertSame('918273645', $mine->refresh()->destination);
         $this->assertNull($theirs->refresh()->destination);
+    }
+
+    #[Test]
+    public function it_answers_as_not_found_while_no_token_is_in_effect(): void
+    {
+        $channel = $this->awaitingConnection(str_repeat('a', 64));
+        config(['services.telegram.token' => null]);
+
+        $this->withHeader('X-Telegram-Bot-Api-Secret-Token', 'testing-webhook-secret')
+            ->postJson(route('telegram.webhook'), $this->update('/start '.str_repeat('a', 64), 918273645))
+            ->assertNotFound();
+
+        $this->assertNull($channel->refresh()->destination);
+    }
+
+    #[Test]
+    public function it_accepts_a_token_saved_on_the_configuration_screen(): void
+    {
+        $channel = $this->awaitingConnection(str_repeat('a', 64));
+        config(['services.telegram.token' => null, 'instance_deployment.telegram_bot_token' => null]);
+        InstanceSetting::factory()->create(['name' => InstanceSettingEnum::TelegramBotToken->value, 'value' => 'token-saved-by-michael']);
+        InstanceSettings::apply();
+
+        $this->withHeader('X-Telegram-Bot-Api-Secret-Token', 'testing-webhook-secret')
+            ->postJson(route('telegram.webhook'), $this->update('/start '.str_repeat('a', 64), 918273645))
+            ->assertOk();
+
+        $this->assertSame('918273645', $channel->refresh()->destination);
+    }
+
+    #[Test]
+    public function it_refuses_a_call_when_no_secret_is_configured(): void
+    {
+        $channel = $this->awaitingConnection(str_repeat('a', 64));
+        config(['services.telegram.webhook_secret' => null]);
+
+        $this->postJson(route('telegram.webhook'), $this->update('/start '.str_repeat('a', 64), 918273645))
+            ->assertForbidden();
+
+        $this->assertNull($channel->refresh()->destination);
     }
 
     /** @return array<string, mixed> */

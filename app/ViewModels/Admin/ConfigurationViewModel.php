@@ -7,7 +7,9 @@ namespace App\ViewModels\Admin;
 use App\Enums\InstanceSettingEnum;
 use App\Enums\InstanceSettingGroupEnum;
 use App\Helpers\InstanceSettings;
+use App\Helpers\TelegramWebhook;
 use App\Models\InstanceSetting;
+use App\Models\TelegramWebhookRegistration;
 
 /**
  * What the configuration screen of the admin space shows.
@@ -47,10 +49,26 @@ class ConfigurationViewModel
         });
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Replacing a Telegram credential only takes something away while a
+     * registration holds, so the warning is dropped when there is none.
+     *
+     * @return array<string, mixed>
+     */
     private function setting(InstanceSettingEnum $setting): array
     {
-        return InstanceSettings::describe($setting, $this->stored());
+        $described = InstanceSettings::describe($setting, $this->stored());
+
+        if ($setting->warnsWhen() === 'replaced' && ! $this->telegramRegistrationHolds()) {
+            $described['warning'] = null;
+        }
+
+        return $described;
+    }
+
+    private function telegramRegistrationHolds(): bool
+    {
+        return once(fn (): bool => TelegramWebhook::isCurrent(TelegramWebhookRegistration::query()->first()));
     }
 
     /**
@@ -74,5 +92,10 @@ class ConfigurationViewModel
     public function hasOrphaned(): bool
     {
         return $this->orphaned() !== [];
+    }
+
+    public function telegram(): TelegramRegistrationPanel
+    {
+        return new TelegramRegistrationPanel;
     }
 }

@@ -46,6 +46,10 @@
                   current: @js($setting['value']),
                   mode: @js($setting['warnsWhen']),
                   takesSomethingAway(next) {
+                    if (this.mode === 'replaced') {
+                      return String(next) !== ''
+                    }
+
                     return this.mode === 'switchedOff'
                       ? String(this.current) === '1' && String(next) === '0'
                       : Number(next) < Number(this.current)
@@ -120,6 +124,8 @@
       </div>
     </x-page-section>
   @endforeach
+
+  @include('app.admin.configuration._telegram', ['panel' => $viewModel->telegram()])
 
   @if ($viewModel->hasOrphaned())
     <x-page-section

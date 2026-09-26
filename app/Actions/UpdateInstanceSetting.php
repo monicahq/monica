@@ -30,7 +30,7 @@ class UpdateInstanceSetting
     private ?string $before = null;
 
     public function __construct(
-        private readonly User $administrator,
+        private readonly ?User $administrator,
         private readonly InstanceSettingEnum $setting,
         private readonly ?string $value,
     ) {}

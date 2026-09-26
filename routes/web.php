@@ -14,6 +14,9 @@ use App\Http\Controllers\App\Admin\ModerationApprovalController;
 use App\Http\Controllers\App\Admin\ModerationController;
 use App\Http\Controllers\App\Admin\ModerationRejectionController;
 use App\Http\Controllers\App\Admin\OverviewController;
+use App\Http\Controllers\App\Admin\TelegramRegistrationCheckController;
+use App\Http\Controllers\App\Admin\TelegramRegistrationController;
+use App\Http\Controllers\App\Admin\TelegramWebhookSecretController;
 use App\Http\Controllers\App\Admin\UserActivationController;
 use App\Http\Controllers\App\Docs\ApiDocsController;
 use App\Http\Controllers\App\Docs\ApiDocsMarkdownController;
@@ -567,6 +570,7 @@ Route::middleware(['administrator'])->group(function (): void {
     Route::delete('admin/accounts/{account}/activation', [UserActivationController::class, 'destroy'])->whereNumber('account')->name('admin.accounts.activation.destroy');
 
     Route::get('admin/configuration', [InstanceSettingController::class, 'index'])->name('admin.configuration.index');
+    Route::post('admin/configuration/telegram/check', [TelegramRegistrationCheckController::class, 'create'])->name('admin.configuration.telegram.check.create');
 
     /*
      * Changing how the instance behaves costs a password or a passkey, the same gate the security
@@ -577,6 +581,8 @@ Route::middleware(['administrator'])->group(function (): void {
         Route::put('admin/configuration/{setting}', [InstanceSettingController::class, 'update'])->name('admin.configuration.update');
         Route::delete('admin/configuration/{setting}', [InstanceSettingController::class, 'destroy'])->name('admin.configuration.destroy');
         Route::delete('admin/configuration/orphans/{name}', [InstanceSettingController::class, 'destroyOrphan'])->name('admin.configuration.orphans.destroy');
+        Route::post('admin/configuration/telegram/registration', [TelegramRegistrationController::class, 'create'])->name('admin.configuration.telegram.registration.create');
+        Route::post('admin/configuration/telegram/secret', [TelegramWebhookSecretController::class, 'create'])->name('admin.configuration.telegram.secret.create');
     });
 
     Route::get('admin/administrators', [AdministratorController::class, 'index'])->name('admin.administrators.index');
@@ -584,7 +590,7 @@ Route::middleware(['administrator'])->group(function (): void {
     Route::delete('admin/administrators/{user}', [AdministratorController::class, 'destroy'])->whereNumber('user')->name('admin.administrators.destroy');
 });
 
-if (config('services.telegram.installed') && config('services.telegram.token') !== null) {
+if (config('services.telegram.installed')) {
     Route::post('telegram/webhook', [TelegramWebhookController::class, 'handleWebhook'])->name('telegram.webhook');
 }
 

@@ -20,6 +20,7 @@ enum AdministratorActionEnum: string implements Translatable
     case AdministratorAccessWithdrawn = 'administrator_access_withdrawn';
     case InstanceSettingUpdated = 'instance_setting_updated';
     case InstanceSettingReverted = 'instance_setting_reverted';
+    case TelegramWebhookRegistered = 'telegram_webhook_registered';
 
     public function description(): string
     {
@@ -35,6 +36,7 @@ enum AdministratorActionEnum: string implements Translatable
             self::AdministratorAccessWithdrawn => 'Withdrew administrator access from :name',
             self::InstanceSettingUpdated => 'Changed the instance setting :name',
             self::InstanceSettingReverted => 'Put the instance setting :name back to what the deployment supplies',
+            self::TelegramWebhookRegistered => 'Registered the Telegram bot at :url',
         };
     }
 

@@ -99,4 +99,15 @@ class InstanceSettingEnumTest extends TestCase
             );
         }
     }
+
+    #[Test]
+    public function it_warns_when_a_telegram_credential_is_replaced(): void
+    {
+        foreach ([InstanceSettingEnum::TelegramBotToken, InstanceSettingEnum::TelegramBotWebhookSecret] as $setting) {
+            $this->assertSame('replaced', $setting->warnsWhen());
+            $this->assertNotNull($setting->warning());
+        }
+
+        $this->assertNull(InstanceSettingEnum::TelegramBotUrl->warning());
+    }
 }

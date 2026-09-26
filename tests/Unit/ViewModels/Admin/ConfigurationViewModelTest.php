@@ -8,8 +8,10 @@ use App\Enums\InstanceSettingEnum;
 use App\Enums\InstanceSettingGroupEnum;
 use App\Helpers\InstanceSettings;
 use App\Models\InstanceSetting;
+use App\Models\TelegramWebhookRegistration;
 use App\ViewModels\Admin\ConfigurationViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -135,6 +137,27 @@ class ConfigurationViewModelTest extends TestCase
         InstanceSetting::factory()->create(['name' => InstanceSettingEnum::FreeVaultLimit->value]);
 
         $this->assertFalse(new ConfigurationViewModel()->hasOrphaned());
+    }
+
+    #[Test]
+    public function it_warns_before_a_telegram_credential_is_replaced_while_the_bot_is_registered(): void
+    {
+        URL::forceScheme('https');
+        URL::forceRootUrl('https://erica.dundermifflin.com');
+        TelegramWebhookRegistration::factory()->current()->create();
+
+        $this->assertSame('replaced', $this->find(InstanceSettingEnum::TelegramBotWebhookSecret)['warnsWhen']);
+        $this->assertSame(
+            'Telegram stops reaching this instance until the bot is registered again.',
+            $this->find(InstanceSettingEnum::TelegramBotWebhookSecret)['warning'],
+        );
+    }
+
+    #[Test]
+    public function it_does_not_warn_about_a_telegram_credential_while_nothing_is_registered(): void
+    {
+        $this->assertNull($this->find(InstanceSettingEnum::TelegramBotToken)['warning']);
+        $this->assertNull($this->find(InstanceSettingEnum::TelegramBotWebhookSecret)['warning']);
     }
 
     /** @return array<string, mixed> */
