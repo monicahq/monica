@@ -7,6 +7,7 @@ import { ZiggyVue } from 'ziggy-js';
 import { i18nVue } from 'laravel-vue-i18n';
 import { sentry } from './sentry';
 import methods from './methods';
+import { resolveLang } from './locale';
 
 createServer((page) =>
   createInertiaApp({
@@ -29,7 +30,7 @@ createServer((page) =>
           location: new URL(page.props.ziggy.location),
         })
         .use(i18nVue, {
-          resolve: (lang) => resolvePageComponent(`../../lang/${lang}.json`, import.meta.glob('../../lang/*.json')),
+          resolve: resolveLang,
         })
         .use(sentry, page.props.sentry)
         .mixin(methods);
