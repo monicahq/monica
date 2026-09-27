@@ -30,7 +30,8 @@ class DestroyReminder
         DB::transaction(function (): void {
             new CancelReminderOccurrences(
                 reminder: $this->reminder,
-                reason: ReminderOccurrenceCancelledReasonEnum::RuleDisabled,
+                reason: ReminderOccurrenceCancelledReasonEnum::RuleDeleted,
+                includePast: true,
             )->execute();
 
             $this->reminder->delete();
@@ -51,7 +52,7 @@ class DestroyReminder
             user: $this->user,
             action: UserActionEnum::ReminderRemoval,
             vault: $this->reminder->vault,
-            parameters: ['label' => $this->reminder->field->label, 'name' => $this->reminder->remindable->name],
+            parameters: ['label' => $this->reminder->field->label ?? $this->reminder->name, 'name' => $this->reminder->remindable->name],
             loggable: $this->reminder,
         )->onQueue('low');
     }

@@ -7,14 +7,16 @@ namespace App\ViewModels\Vaults;
 use App\Enums\DateFormatEnum;
 use App\Enums\DefaultFieldEnum;
 use App\Enums\NotificationChannelEnum;
+use App\Enums\ReminderAnswerEnum;
 use App\Enums\ReminderCadenceEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
-use App\Enums\ReminderPostponePresetEnum;
+use App\Enums\ReminderOccurrenceCategoryEnum;
+use App\Enums\ReminderSourceEnum;
 use App\Helpers\AvailableLocales;
 use App\Models\Contact;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 
 class ReminderRow
 {
@@ -23,9 +25,14 @@ class ReminderRow
         private readonly ReminderOccurrence $occurrence,
     ) {}
 
-    public function uuid(): string
+    public function uuid(): ?string
     {
         return $this->occurrence->uuid;
+    }
+
+    public function occurrence(): ReminderOccurrence
+    {
+        return $this->occurrence;
     }
 
     public function day(): string
@@ -58,25 +65,13 @@ class ReminderRow
         return $this->sentAt()->toIso8601String();
     }
 
-    public function dismissUrl(): string
+    public function testUrl(): ?string
     {
-        return route('reminders.occurrences.dismissal.update', [
-            'vault' => $this->occurrence->vault,
-            'reminderOccurrence' => $this->occurrence,
-        ]);
-    }
+        if (! $this->occurrence->exists) {
+            return null;
+        }
 
-    public function testUrl(): string
-    {
         return route('reminders.occurrences.testNotification.create', [
-            'vault' => $this->occurrence->vault,
-            'reminderOccurrence' => $this->occurrence,
-        ]);
-    }
-
-    public function postponeUrl(): string
-    {
-        return route('reminders.occurrences.postponement.update', [
             'vault' => $this->occurrence->vault,
             'reminderOccurrence' => $this->occurrence,
         ]);
@@ -109,20 +104,132 @@ class ReminderRow
 
     public function outcome(): string
     {
-        return match ($this->occurrence->status) {
-            ReminderOccurrenceStatusEnum::Dismissed => __('Dismissed'),
-            ReminderOccurrenceStatusEnum::Postponed => __('Postponed'),
-            default => __('Still open'),
-        };
+        if ($this->occurrence->answer === ReminderAnswerEnum::Remembered) {
+            return __('You remembered');
+        }
+
+        if ($this->occurrence->answer === ReminderAnswerEnum::Forgotten) {
+            return __('You forgot');
+        }
+
+        if ($this->occurrence->cancelled_at !== null) {
+            return __('Cancelled');
+        }
+
+        return __('No answer yet');
     }
 
     public function tone(): string
     {
-        return match ($this->occurrence->status) {
-            ReminderOccurrenceStatusEnum::Dismissed => 'neutral',
-            ReminderOccurrenceStatusEnum::Postponed => 'info',
-            default => 'warning',
+        if ($this->occurrence->answer === ReminderAnswerEnum::Remembered) {
+            return 'success';
+        }
+
+        if ($this->occurrence->answer !== null || $this->occurrence->cancelled_at !== null) {
+            return 'neutral';
+        }
+
+        return 'warning';
+    }
+
+    public function answeredLine(): string
+    {
+        $due = DateFormatEnum::write($this->occurrence->local_date->locale(app()->getLocale()), $this->dateFormat());
+
+        if ($this->occurrence->answered_at === null) {
+            return __('Due :date', ['date' => $due]);
+        }
+
+        return __('Due :date · answered :answered', [
+            'date' => $due,
+            'answered' => DateFormatEnum::write(
+                $this->occurrence->answered_at->setTimezone($this->user->timezone)->locale(app()->getLocale()),
+                $this->dateFormat(),
+            ),
+        ]);
+    }
+
+    public function whenLine(): string
+    {
+        return __(':date · :relative', [
+            'date' => DateFormatEnum::write($this->occurrence->local_date->locale(app()->getLocale()), $this->dateFormat()),
+            'relative' => $this->relativeDay(),
+        ]);
+    }
+
+    private function relativeDay(): string
+    {
+        $today = CarbonImmutable::now($this->user->timezone)->startOfDay();
+        $day = CarbonImmutable::parse($this->occurrence->local_date->toDateString(), $this->user->timezone)->startOfDay();
+        $days = (int) $today->diffInDays($day, false);
+
+        return match ($days) {
+            0 => __('today'),
+            1 => __('tomorrow'),
+            -1 => __('yesterday'),
+            default => $day->locale(app()->getLocale())->diffForHumans($today, CarbonInterface::DIFF_RELATIVE_TO_NOW),
         };
+    }
+
+    public function sourceLabel(): ?string
+    {
+        return $this->occurrence->reminder?->field?->label;
+    }
+
+    public function editUrl(): ?string
+    {
+        $rule = $this->occurrence->reminder;
+        $contact = $this->contact();
+
+        if ($rule === null || $rule->deleted_at !== null || $contact === null) {
+            return null;
+        }
+
+        if ($rule->source === ReminderSourceEnum::Manual) {
+            return route('contacts.reminders.edit', ['vault' => $this->occurrence->vault, 'contact' => $contact, 'reminder' => $rule]);
+        }
+
+        return $this->reminderUrl();
+    }
+
+    public function deleteUrl(): ?string
+    {
+        $rule = $this->occurrence->reminder;
+        $contact = $this->contact();
+
+        if ($rule === null || $rule->deleted_at !== null || $contact === null) {
+            return null;
+        }
+
+        return route('contacts.reminders.destroy', ['vault' => $this->occurrence->vault, 'contact' => $contact, 'reminder' => $rule]);
+    }
+
+    public function answerUrl(): ?string
+    {
+        if (! $this->occurrence->exists) {
+            return null;
+        }
+
+        return route('reminders.occurrences.answer.update', [
+            'vault' => $this->occurrence->vault,
+            'reminderOccurrence' => $this->occurrence,
+        ]);
+    }
+
+    public function canRemember(): bool
+    {
+        return $this->user->can('remember', $this->occurrence);
+    }
+
+    public function canForget(): bool
+    {
+        return $this->user->can('forget', $this->occurrence);
+    }
+
+    public function isOverdue(): bool
+    {
+        return $this->occurrence->isActive()
+            && ReminderOccurrenceCategoryEnum::for($this->occurrence, CarbonImmutable::now($this->user->timezone)) === ReminderOccurrenceCategoryEnum::Overdue;
     }
 
     public function currently(): string
@@ -139,7 +246,7 @@ class ReminderRow
     {
         $rule = $this->occurrence->reminder;
 
-        if ($rule === null) {
+        if ($rule === null || $rule->deleted_at !== null) {
             return null;
         }
 
@@ -147,33 +254,6 @@ class ReminderRow
             'vault' => $this->occurrence->vault,
             'reminder' => $rule,
         ]);
-    }
-
-    /** @return array<int, array{value: string, label: string, hint: string}> */
-    public function presets(): array
-    {
-        $rule = $this->occurrence->reminder;
-
-        if ($rule === null) {
-            return [];
-        }
-
-        $presets = [];
-
-        foreach (ReminderPostponePresetEnum::cases() as $preset) {
-            $at = $preset->resolve($rule)->setTimezone($this->zone())->locale(app()->getLocale());
-
-            $presets[] = [
-                'value' => $preset->value,
-                'label' => __($preset->label()),
-                'hint' => __(':date at :time', [
-                    'date' => DateFormatEnum::write($at, $this->dateFormat()),
-                    'time' => $this->user->time_format->format($at),
-                ]),
-            ];
-        }
-
-        return $presets;
     }
 
     public function isLate(): bool
@@ -265,15 +345,6 @@ class ReminderRow
     public function cadenceIcon(): string
     {
         return $this->occurrence->reminder?->cadence->recurs() === true ? 'calendar-repeat' : 'calendar';
-    }
-
-    public function dismissalNote(): string
-    {
-        if ($this->occurrence->reminder?->cadence->recurs() === true) {
-            return __('This one will not be sent. The next one stays scheduled.');
-        }
-
-        return __('This one will not be sent, and nothing comes after it.');
     }
 
     public function icon(): string

@@ -7,7 +7,6 @@ namespace Tests\Unit\Jobs;
 use App\Actions\CreateReminder;
 use App\Enums\EmailType;
 use App\Enums\ReminderCadenceEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Jobs\DeliverDueNotifications;
 use App\Models\FieldValue;
 use App\Models\Notification;
@@ -37,7 +36,7 @@ class DeliverDueNotificationsTest extends TestCase
         $this->assertSame(2, Notification::query()->where('notifiable_id', $occurrence->id)->count());
         $this->assertSame(2, Notification::query()->whereNotNull('sent_at')->count());
         NotificationFacade::assertSentTimes(ReminderDue::class, 1);
-        $this->assertSame(ReminderOccurrenceStatusEnum::Notified, $occurrence->refresh()->status);
+        $this->assertNotNull($occurrence->refresh()->notifications_created_at);
         $this->assertNotNull($occurrence->notified_at);
     }
 
@@ -102,7 +101,7 @@ class DeliverDueNotificationsTest extends TestCase
     {
         CarbonImmutable::setTestNow('2027-05-05 06:59:00');
 
-        $value = FieldValue::factory()->recurringDate('1984-05-12')->create();
+        $value = FieldValue::factory()->recurringDate('1984-05-05')->create();
         $user = User::factory()->create(['account_id' => $value->account_id, 'timezone' => 'Europe/Paris']);
         NotificationPreference::factory()->create(['account_id' => $value->account_id]);
 
@@ -110,7 +109,6 @@ class DeliverDueNotificationsTest extends TestCase
             user: $user,
             fieldValue: $value,
             cadence: ReminderCadenceEnum::Yearly,
-            moments: [['direction' => 'before', 'amount' => 7, 'unit' => 'days']],
             timeOfDay: '09:00',
             timezone: 'Europe/Paris',
         )->execute();
@@ -123,7 +121,7 @@ class DeliverDueNotificationsTest extends TestCase
 
         $this->assertDatabaseHas('emails_sent', ['email_type' => EmailType::ReminderDue->value]);
         $this->assertNotNull($occurrence->refresh()->notified_at);
-        $this->assertSame(ReminderOccurrenceStatusEnum::Notified, $occurrence->status);
+        $this->assertNotNull($occurrence->notifications_created_at);
     }
 
     #[Test]
@@ -131,7 +129,7 @@ class DeliverDueNotificationsTest extends TestCase
     {
         CarbonImmutable::setTestNow('2027-05-05 00:59:00');
 
-        $value = FieldValue::factory()->recurringDate('1984-05-12')->create();
+        $value = FieldValue::factory()->recurringDate('1984-05-05')->create();
         $user = User::factory()->create(['account_id' => $value->account_id, 'timezone' => 'Europe/Paris']);
         NotificationPreference::factory()->quietBetween('22:00', '08:00')->create([
             'account_id' => $value->account_id,
@@ -142,7 +140,6 @@ class DeliverDueNotificationsTest extends TestCase
             user: $user,
             fieldValue: $value,
             cadence: ReminderCadenceEnum::Yearly,
-            moments: [['direction' => 'before', 'amount' => 7, 'unit' => 'days']],
             timeOfDay: '03:00',
             timezone: 'Europe/Paris',
         )->execute();
@@ -162,6 +159,18 @@ class DeliverDueNotificationsTest extends TestCase
         $this->assertSame('2027-05-05 03:00', $occurrence->refresh()->scheduled_for->setTimezone('Europe/Paris')->format('Y-m-d H:i'));
     }
 
+    #[Test]
+    public function it_tells_nobody_about_a_deadline_already_answered(): void
+    {
+        NotificationFacade::fake();
+        $occurrence = $this->dueOccurrence();
+        $occurrence->update(['answer' => 'remembered', 'answered_at' => now()]);
+
+        new DeliverDueNotifications()->handle();
+
+        $this->assertDatabaseCount('notifications', 0);
+    }
+
     private function dueOccurrence(bool $due = true, bool $justNow = false): ReminderOccurrence
     {
         $reminder = Reminder::factory()->create();
@@ -175,7 +184,6 @@ class DeliverDueNotificationsTest extends TestCase
             'account_id' => $reminder->account_id,
             'vault_id' => $reminder->vault_id,
             'scheduled_for' => $justNow ? now()->subMinute() : null,
-            'original_scheduled_for' => $justNow ? now()->subMinute() : null,
         ]));
     }
 }

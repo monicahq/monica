@@ -101,6 +101,7 @@ use App\Http\Controllers\App\Vaults\ContactListColumnController;
 use App\Http\Controllers\App\Vaults\ContactMergeController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
 use App\Http\Controllers\App\Vaults\ContactRelationshipController;
+use App\Http\Controllers\App\Vaults\ContactReminderController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\ContactShareLinkController;
 use App\Http\Controllers\App\Vaults\ContactStructureVersionController;
@@ -109,10 +110,8 @@ use App\Http\Controllers\App\Vaults\EntityController;
 use App\Http\Controllers\App\Vaults\FieldChoiceController;
 use App\Http\Controllers\App\Vaults\FileController;
 use App\Http\Controllers\App\Vaults\ReminderController;
-use App\Http\Controllers\App\Vaults\ReminderOccurrenceDismissalController;
-use App\Http\Controllers\App\Vaults\ReminderOccurrencePostponementController;
+use App\Http\Controllers\App\Vaults\ReminderOccurrenceAnswerController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceTestNotificationController;
-use App\Http\Controllers\App\Vaults\ReminderPauseController;
 use App\Http\Controllers\App\Vaults\SetAsideValueController;
 use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
@@ -304,6 +303,20 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::delete('vaults/{vault}/contacts/{contact}/relationships/{relationship}', [ContactRelationshipController::class, 'destroy'])
         ->name('contacts.relationships.destroy');
 
+    Route::get('vaults/{vault}/contacts/{contact}/reminders/new', [ContactReminderController::class, 'new'])->name('contacts.reminders.new');
+    Route::post('vaults/{vault}/contacts/{contact}/reminders', [ContactReminderController::class, 'create'])->name('contacts.reminders.create');
+    Route::get('vaults/{vault}/contacts/{contact}/reminders/{reminder}/edit', [ContactReminderController::class, 'edit'])
+        ->whereUuid('reminder')
+        ->name('contacts.reminders.edit');
+    Route::put('vaults/{vault}/contacts/{contact}/reminders/{reminder}', [ContactReminderController::class, 'update'])
+        ->whereUuid('reminder')
+        ->name('contacts.reminders.update');
+    Route::delete('vaults/{vault}/contacts/{contact}/reminders/{reminder}', [ContactReminderController::class, 'destroy'])
+        ->whereUuid('reminder')
+        ->name('contacts.reminders.destroy');
+    Route::get('vaults/{vault}/contacts/{contact}/reminders/{filter?}', [ContactReminderController::class, 'index'])
+        ->whereIn('filter', ['all', 'overdue', 'today', 'upcoming', 'history'])
+        ->name('contacts.reminders.index');
     Route::get('vaults/{vault}/contacts/{contact}/vcard', [ContactVCardController::class, 'show'])
         ->name('contacts.vcard.show');
 
@@ -326,12 +339,10 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('vaults/{vault}/reminders', [VaultReminderController::class, 'index'])->name('reminders.index');
     Route::get('vaults/{vault}/reminders/by-contact', [VaultReminderController::class, 'byContact'])->name('reminders.byContact');
     Route::get('vaults/{vault}/reminders/sent', [VaultReminderController::class, 'sent'])->name('reminders.sent');
-    Route::put('vaults/{vault}/reminders/occurrences/{reminderOccurrence}/postponement', [ReminderOccurrencePostponementController::class, 'update'])
+    Route::get('vaults/{vault}/reminders/history', [VaultReminderController::class, 'history'])->name('reminders.history');
+    Route::put('vaults/{vault}/reminders/occurrences/{reminderOccurrence}/answer', [ReminderOccurrenceAnswerController::class, 'update'])
         ->whereUuid('reminderOccurrence')
-        ->name('reminders.occurrences.postponement.update');
-    Route::put('vaults/{vault}/reminders/occurrences/{reminderOccurrence}/dismissal', [ReminderOccurrenceDismissalController::class, 'update'])
-        ->whereUuid('reminderOccurrence')
-        ->name('reminders.occurrences.dismissal.update');
+        ->name('reminders.occurrences.answer.update');
     Route::post('vaults/{vault}/reminders/occurrences/{reminderOccurrence}/test-notification', [ReminderOccurrenceTestNotificationController::class, 'create'])
         ->whereUuid('reminderOccurrence')
         ->middleware('throttle:20,1')
@@ -342,12 +353,6 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::delete('vaults/{vault}/reminders/{reminder}', [ReminderController::class, 'destroy'])
         ->whereUuid('reminder')
         ->name('reminders.destroy');
-    Route::put('vaults/{vault}/reminders/{reminder}/pause', [ReminderPauseController::class, 'update'])
-        ->whereUuid('reminder')
-        ->name('reminders.pause.update');
-    Route::delete('vaults/{vault}/reminders/{reminder}/pause', [ReminderPauseController::class, 'destroy'])
-        ->whereUuid('reminder')
-        ->name('reminders.pause.destroy');
 
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');

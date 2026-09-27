@@ -8,8 +8,8 @@ use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderSourceEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\ReminderIsNotValid;
-use App\Exceptions\ReminderMomentIsNotValid;
 use App\Exceptions\ValueAlreadyHasAReminder;
+use App\Helpers\ReminderSchedule;
 use App\Helpers\ReminderTime;
 use App\Helpers\TextSanitizer;
 use App\Helpers\TimezoneCatalogue;
@@ -17,7 +17,6 @@ use App\Jobs\LogUserAction;
 use App\Models\FieldValue;
 use App\Models\Reminder;
 use App\Models\User;
-use App\Rules\ReminderMoments;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
@@ -30,12 +29,10 @@ class CreateReminder
 
     private string $wording;
 
-    /** @param  array<int, array<array-key, mixed>>  $moments */
     public function __construct(
         private readonly User $user,
         private readonly FieldValue $fieldValue,
         private readonly ReminderCadenceEnum $cadence,
-        private readonly array $moments,
         private readonly string $timeOfDay,
         private readonly ?string $name = null,
         private readonly int $frequencyInterval = 1,
@@ -91,12 +88,6 @@ class CreateReminder
             throw new ReminderIsNotValid(__('There is no date here to be reminded of.'));
         }
 
-        $problem = ReminderMoments::problemWith($this->moments);
-
-        if ($problem !== null) {
-            throw new ReminderMomentIsNotValid($problem);
-        }
-
         if ($this->frequencyInterval < 1 || $this->frequencyInterval > Reminder::MAXIMUM_INTERVAL) {
             throw new ReminderIsNotValid(__('A reminder cannot come back that many times over.'));
         }
@@ -108,6 +99,22 @@ class CreateReminder
         if (TimezoneCatalogue::find($this->zone()) === null) {
             throw new ReminderIsNotValid(__('This is not a time zone the application knows.'));
         }
+
+        if (! ReminderSchedule::hasADateLeft($this->candidate())) {
+            throw new ReminderIsNotValid(__('This date has already passed, so a reminder sent once would never arrive.'));
+        }
+    }
+
+    private function candidate(): Reminder
+    {
+        $rule = new Reminder;
+        $rule->source = ReminderSourceEnum::FieldValue;
+        $rule->cadence = $this->cadence;
+        $rule->frequency_interval = $this->frequencyInterval;
+        $rule->time_of_day = $this->timeOfDay;
+        $rule->timezone = $this->zone();
+
+        return $rule->setRelation('fieldValue', $this->fieldValue);
     }
 
     private function create(): void
@@ -123,7 +130,6 @@ class CreateReminder
             'source' => ReminderSourceEnum::FieldValue,
             'cadence' => $this->cadence,
             'frequency_interval' => $this->cadence->recurs() ? $this->frequencyInterval : 1,
-            'moments' => ReminderMoments::normalise($this->moments),
             'time_of_day' => $this->timeOfDay,
             'timezone' => $this->zone(),
             'is_active' => true,

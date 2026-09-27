@@ -7,7 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\DeliverNotification;
 use App\Enums\NotificationChannelEnum;
 use App\Enums\ReminderInactiveReasonEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
+use App\Enums\ReminderOccurrenceCancelledReasonEnum;
 use App\Models\Contact;
 use App\Models\Notification;
 use App\Models\NotificationChannel;
@@ -15,6 +15,7 @@ use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Notifications\ReminderDue;
+use Carbon\CarbonImmutable;
 use Database\Factories\NotificationFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
@@ -127,13 +128,13 @@ class DeliverNotificationTest extends TestCase
     }
 
     #[Test]
-    public function it_sends_nothing_after_the_deadline_was_dismissed(): void
+    public function it_sends_nothing_about_a_deadline_answered_while_it_waited(): void
     {
         NotificationFacade::fake();
         $notification = $this->notification()->email()->create();
         ReminderOccurrence::query()->findOrFail($notification->notifiable_id)->update([
-            'status' => ReminderOccurrenceStatusEnum::Dismissed,
-            'dismissed_at' => now(),
+            'answer' => 'remembered',
+            'answered_at' => now(),
         ]);
 
         $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
@@ -143,21 +144,34 @@ class DeliverNotificationTest extends TestCase
     }
 
     #[Test]
-    public function it_sends_nothing_prepared_for_an_instant_the_deadline_left_behind(): void
+    public function it_sends_nothing_about_a_deadline_cancelled_while_it_waited(): void
     {
         NotificationFacade::fake();
         $notification = $this->notification()->email()->create();
         ReminderOccurrence::query()->findOrFail($notification->notifiable_id)->update([
-            'status' => ReminderOccurrenceStatusEnum::Postponed,
-            'scheduled_for' => $notification->scheduled_for->addDay(),
-            'postponed_to' => $notification->scheduled_for->addDay(),
-            'postponed_count' => 1,
+            'cancelled_at' => now(),
+            'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::RecordArchived,
         ]);
 
         $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
 
         NotificationFacade::assertNothingSent();
         $this->assertNotNull($notification->refresh()->failed_at);
+    }
+
+    #[Test]
+    public function it_still_sends_a_notification_held_into_the_day_after_its_deadline(): void
+    {
+        NotificationFacade::fake();
+        CarbonImmutable::setTestNow('2027-05-12 21:00:00');
+        $notification = $this->notification()->email()->create([
+            'held_until' => CarbonImmutable::parse('2027-05-13 07:00:00'),
+        ]);
+
+        CarbonImmutable::setTestNow('2027-05-13 07:05:00');
+
+        $this->assertTrue(new DeliverNotification(notification: $notification->refresh())->execute());
+        $this->assertNotNull($notification->refresh()->sent_at);
     }
 
     #[Test]
@@ -377,7 +391,6 @@ class DeliverNotificationTest extends TestCase
             'account_id' => $reminder->account_id,
             'vault_id' => $reminder->vault_id,
             'scheduled_for' => $scheduledFor,
-            'original_scheduled_for' => $scheduledFor,
             'local_date' => $scheduledFor->toDateString(),
         ]);
 

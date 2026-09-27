@@ -10,6 +10,8 @@ use App\Enums\DefaultFieldEnum;
 use App\Enums\RelationshipCategoryEnum;
 use App\Enums\RelationshipStatusEnum;
 use App\Enums\RelationshipTypeEnum;
+use App\Enums\ReminderAnswerEnum;
+use App\Enums\ReminderSourceEnum;
 use App\Models\Contact;
 use App\Models\FieldValue;
 use App\Models\LifeEvent;
@@ -133,14 +135,33 @@ class ExampleAccountSeederTest extends TestCase
 
         $birthdays = FieldValue::query()->where('field_key', DefaultFieldEnum::Birthday->value)->count();
         $monica = Contact::query()->where('is_me', true)->firstOrFail();
-        $reminders = Reminder::query()->get();
+        $reminders = Reminder::query()->where('source', ReminderSourceEnum::FieldValue)->get();
 
         $this->assertEquals($birthdays - 1, $reminders->count());
         $this->assertGreaterThanOrEqual(5, $reminders->count());
         $this->assertEquals($reminders->count(), $reminders->where('is_active', true)->count());
         $this->assertFalse(Reminder::query()->where('remindable_id', $monica->id)->exists());
         $this->assertEquals($reminders->count(), $reminders->pluck('name')->unique()->count());
-        $this->assertGreaterThan(1, $reminders->pluck('moments')->map(fn (array $moments): string => json_encode($moments))->unique()->count());
+    }
+
+    #[Test]
+    public function it_writes_three_reminders_about_chandler_with_the_answers_given_on_their_past_dates(): void
+    {
+        new ExampleAccountSeeder()->run();
+
+        $chandler = Contact::query()->where('first_name', 'Chandler')->firstOrFail();
+        $manual = Reminder::query()
+            ->where('source', ReminderSourceEnum::Manual)
+            ->where('remindable_id', $chandler->id)
+            ->get();
+
+        $this->assertEqualsCanonicalizing(['Call about the flat on Bedford Street', 'Return the foosball table', 'Ask about Tulsa'], $manual->pluck('name')->all());
+
+        $dates = ReminderOccurrence::query()->whereIn('reminder_id', $manual->modelKeys());
+
+        $this->assertSame(3, (clone $dates)->where('answer', ReminderAnswerEnum::Remembered)->count());
+        $this->assertSame(1, (clone $dates)->where('answer', ReminderAnswerEnum::Forgotten)->count());
+        $this->assertTrue((clone $dates)->whereNull('answer')->whereDate('local_date', '<', now()->toDateString())->exists());
     }
 
     #[Test]

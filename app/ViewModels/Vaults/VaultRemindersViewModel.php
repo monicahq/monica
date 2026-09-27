@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Enums\ReminderOccurrenceCategoryEnum;
+use App\Helpers\NextReminderDeadlines;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -76,6 +78,16 @@ class VaultRemindersViewModel
         return ReminderOccurrence::query()->sentInVault($this->vault)->count();
     }
 
+    public function historyUrl(): string
+    {
+        return route('reminders.history', $this->vault);
+    }
+
+    public function historyCount(): int
+    {
+        return ReminderOccurrence::query()->answeredInVault($this->vault)->count();
+    }
+
     /**
      * @return array<int, array{title: string, count: string, isOverdue: bool, rows: list<ReminderRow>}>
      */
@@ -107,13 +119,10 @@ class VaultRemindersViewModel
     public function emptyLine(): string
     {
         if ($this->hasAnyRule()) {
-            return trans_choice(
-                'This vault has reminders, and none of them falls in the next :count day. They will appear here as their dates come closer.|This vault has reminders, and none of them falls in the next :count days. They will appear here as their dates come closer.',
-                $this->horizonInDays(),
-            );
+            return __('This vault has reminders, and none of them has a date coming.');
         }
 
-        return __('A reminder is built from a date on a contact. Open a contact, find a date on their page, and ask to be reminded of it.');
+        return __('Add a reminder from a contact’s page, or ask to be told about a date on it, such as a birthday.');
     }
 
     public function peopleUrl(): string
@@ -126,52 +135,39 @@ class VaultRemindersViewModel
      */
     private function byWhen(): array
     {
-        $now = CarbonImmutable::now($this->user->timezone);
-
-        $boundaries = [
-            __('This week') => $now->endOfWeek(),
-            __('Later this month') => $now->endOfMonth(),
-            __('Next month') => $now->addMonthNoOverflow()->endOfMonth(),
+        $today = $this->today();
+        $buckets = [
+            ReminderOccurrenceCategoryEnum::Overdue->value => [],
+            ReminderOccurrenceCategoryEnum::Today->value => [],
+            ReminderOccurrenceCategoryEnum::Upcoming->value => [],
         ];
 
-        $buckets = [__('Overdue') => [], ...array_map(fn (): array => [], $boundaries), __('Later') => []];
-
         foreach ($this->rows() as $row) {
-            $buckets[$this->bucketFor($row, $now, $boundaries)][] = $row;
+            $buckets[ReminderOccurrenceCategoryEnum::for($row->occurrence(), $today)->value][] = $row;
         }
+
+        $titles = [
+            ReminderOccurrenceCategoryEnum::Overdue->value => __('Overdue'),
+            ReminderOccurrenceCategoryEnum::Today->value => __('Today'),
+            ReminderOccurrenceCategoryEnum::Upcoming->value => __('Upcoming'),
+        ];
 
         $groups = [];
 
-        foreach ($buckets as $title => $rows) {
+        foreach ($buckets as $category => $rows) {
             if ($rows === []) {
                 continue;
             }
 
             $groups[] = [
-                'title' => $title,
+                'title' => $titles[$category],
                 'count' => $this->countLine(count($rows)),
-                'isOverdue' => $title === __('Overdue'),
+                'isOverdue' => $category === ReminderOccurrenceCategoryEnum::Overdue->value,
                 'rows' => $rows,
             ];
         }
 
         return $groups;
-    }
-
-    /** @param  array<string, CarbonImmutable>  $boundaries */
-    private function bucketFor(ReminderRow $row, CarbonImmutable $now, array $boundaries): string
-    {
-        if ($row->dueAt()->lessThan($now)) {
-            return __('Overdue');
-        }
-
-        foreach ($boundaries as $title => $end) {
-            if ($row->dueAt()->lessThanOrEqualTo($end)) {
-                return $title;
-            }
-        }
-
-        return __('Later');
     }
 
     /**
@@ -203,26 +199,34 @@ class VaultRemindersViewModel
             return $this->rows;
         }
 
-        return $this->rows = ReminderOccurrence::query()
-            ->upcomingInVault(
-                vault: $this->vault,
-                until: CarbonImmutable::now()->addDays($this->horizonInDays()),
-            )
+        $waiting = ReminderOccurrence::query()
+            ->awaitingAnswerInVault(vault: $this->vault, untilDay: $this->today())
             ->with(['vault', 'reminder.remindable.avatar', 'reminder.field'])
-            ->get()
+            ->get();
+
+        $rules = Reminder::query()
+            ->where('vault_id', $this->vault->id)
+            ->where('account_id', $this->vault->account_id)
+            ->active()
+            ->with(['vault', 'remindable.avatar', 'field', 'fieldValue'])
+            ->get();
+
+        return $this->rows = $waiting
+            ->concat(NextReminderDeadlines::for($rules, $this->today()))
             ->map(fn (ReminderOccurrence $occurrence): ReminderRow => new ReminderRow(
                 user: $this->user,
                 occurrence: $occurrence,
-            ));
+            ))
+            ->values();
+    }
+
+    private function today(): CarbonImmutable
+    {
+        return CarbonImmutable::now($this->user->timezone)->startOfDay();
     }
 
     private function nobody(): string
     {
         return __('A deleted contact');
-    }
-
-    private function horizonInDays(): int
-    {
-        return (int) config('monica.reminder_generation_window_in_days');
     }
 }

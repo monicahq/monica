@@ -7,11 +7,13 @@ namespace Database\Seeders;
 use App\Actions\ArchiveContact;
 use App\Actions\CreateAccount;
 use App\Actions\CreateContact;
+use App\Actions\CreateContactReminder;
 use App\Actions\CreateFieldValueRow;
 use App\Actions\CreateLifeEvent;
 use App\Actions\CreateRelationship;
 use App\Actions\CreateRelationshipType;
 use App\Actions\CreateReminder;
+use App\Actions\GenerateReminderOccurrences;
 use App\Actions\GrantAdministratorAccess;
 use App\Actions\SetFieldValue;
 use App\Actions\UpdateRelationship;
@@ -24,13 +26,14 @@ use App\Enums\GenderEnum;
 use App\Enums\PhoneLabelEnum;
 use App\Enums\RelationshipCategoryEnum;
 use App\Enums\RelationshipStatusEnum;
+use App\Enums\ReminderAnswerEnum;
 use App\Enums\ReminderCadenceEnum;
-use App\Enums\ReminderMomentDirectionEnum;
-use App\Enums\ReminderMomentUnitEnum;
 use App\Enums\ValueListEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -76,6 +79,7 @@ class ExampleAccountSeeder extends Seeder
         $this->createContacts();
         $this->createRelationships();
         $this->createLifeEvents();
+        $this->createContactReminders();
         $this->grantAdministratorAccess();
 
         $this->command?->info('Signed in as '.self::EMAIL.' with the password '.self::PASSWORD.'.');
@@ -198,6 +202,77 @@ class ExampleAccountSeeder extends Seeder
         }
     }
 
+    /**
+     * Three reminders written by hand about Chandler, and the answers given on their past dates, so
+     * the screen listing his reminders has something in every group.
+     */
+    private function createContactReminders(): void
+    {
+        $chandler = $this->contacts['Chandler Bing'];
+        $today = CarbonImmutable::now($this->user->timezone)->startOfDay();
+        $firstCall = $today->subDay()->subMonthsNoOverflow(3);
+
+        $flat = $this->writtenReminder($chandler, 'Call about the flat on Bedford Street', $firstCall, ReminderCadenceEnum::Monthly);
+        $this->answer($flat, $firstCall, ReminderAnswerEnum::Remembered);
+        $this->answer($flat, $firstCall->addMonthsNoOverflow(1), ReminderAnswerEnum::Remembered);
+        $this->answer($flat, $firstCall->addMonthsNoOverflow(2), ReminderAnswerEnum::Forgotten);
+        $this->answer($flat, $firstCall->addMonthsNoOverflow(3), null);
+
+        $foosball = $this->writtenReminder($chandler, 'Return the foosball table', $today->subDays(45), ReminderCadenceEnum::Once);
+        $this->answer($foosball, $today->subDays(45), ReminderAnswerEnum::Remembered);
+
+        new CreateContactReminder(
+            user: $this->user,
+            contact: $chandler,
+            name: 'Ask about Tulsa',
+            startsOn: $today->addWeeks(5)->toDateString(),
+            cadence: ReminderCadenceEnum::Once,
+            timeOfDay: '09:00',
+        )->execute();
+    }
+
+    /**
+     * A reminder cannot be written with a first date in the past, so an example one is written from
+     * today and then given the date it would have had.
+     */
+    private function writtenReminder(Contact $contact, string $name, CarbonImmutable $firstDate, ReminderCadenceEnum $cadence): Reminder
+    {
+        $reminder = new CreateContactReminder(
+            user: $this->user,
+            contact: $contact,
+            name: $name,
+            startsOn: CarbonImmutable::now($this->user->timezone)->addDay()->toDateString(),
+            cadence: $cadence,
+            timeOfDay: '09:00',
+        )->execute();
+
+        $reminder->occurrences()->delete();
+        $reminder->starts_on = $firstDate;
+        $reminder->save();
+
+        new GenerateReminderOccurrences(reminder: $reminder->refresh())->execute();
+
+        return $reminder;
+    }
+
+    private function answer(Reminder $reminder, CarbonImmutable $day, ?ReminderAnswerEnum $answer): void
+    {
+        $instant = CarbonImmutable::parse($day->toDateString().' 09:00', $reminder->timezone)->utc();
+
+        ReminderOccurrence::query()->create([
+            'account_id' => $reminder->account_id,
+            'vault_id' => $reminder->vault_id,
+            'reminder_id' => $reminder->id,
+            'local_date' => $day->toDateString(),
+            'generation_key' => "{$reminder->schedule_revision}:{$day->toDateString()}",
+            'scheduled_for' => $instant,
+            'notifications_created_at' => $instant,
+            'notified_at' => $instant,
+            'answer' => $answer,
+            'answered_at' => $answer === null ? null : $instant->addHours(3),
+        ]);
+    }
+
     /** @param  array<string, mixed>  $person */
     private function writeValues(Contact $contact, array $person): ?FieldValue
     {
@@ -300,7 +375,7 @@ class ExampleAccountSeeder extends Seeder
     }
 
     /**
-     * @param  array{name: string, cadence: ReminderCadenceEnum, moments: array<int, array<array-key, mixed>>}  $reminder
+     * @param  array{name: string, cadence: ReminderCadenceEnum}  $reminder
      */
     private function createReminder(FieldValue $birthday, array $reminder): void
     {
@@ -308,7 +383,6 @@ class ExampleAccountSeeder extends Seeder
             user: $this->user,
             fieldValue: $birthday,
             cadence: $reminder['cadence'],
-            moments: $reminder['moments'],
             timeOfDay: '09:00',
             name: $reminder['name'],
         )->execute();
@@ -320,18 +394,6 @@ class ExampleAccountSeeder extends Seeder
             ->whereIn('value_list_id', $this->user->account->valueLists()->where('key', $list->value)->select('id'))
             ->where('key', $key)
             ->firstOrFail();
-    }
-
-    /** @return array<array-key, mixed> */
-    private function on(): array
-    {
-        return ['direction' => ReminderMomentDirectionEnum::On->value, 'amount' => null, 'unit' => null];
-    }
-
-    /** @return array<array-key, mixed> */
-    private function before(int $amount, ReminderMomentUnitEnum $unit): array
-    {
-        return ['direction' => ReminderMomentDirectionEnum::Before->value, 'amount' => $amount, 'unit' => $unit->value];
     }
 
     /** @return list<array<string, mixed>> */
@@ -374,7 +436,6 @@ class ExampleAccountSeeder extends Seeder
                 'reminder' => [
                     'name' => 'Rachel’s birthday',
                     'cadence' => ReminderCadenceEnum::Yearly,
-                    'moments' => [$this->before(2, ReminderMomentUnitEnum::Weeks), $this->on()],
                 ],
             ],
             [
@@ -394,7 +455,6 @@ class ExampleAccountSeeder extends Seeder
                 'reminder' => [
                     'name' => 'Ross’s birthday',
                     'cadence' => ReminderCadenceEnum::Yearly,
-                    'moments' => [$this->before(3, ReminderMomentUnitEnum::Months), $this->before(1, ReminderMomentUnitEnum::Weeks), $this->on()],
                 ],
             ],
             [
@@ -414,7 +474,6 @@ class ExampleAccountSeeder extends Seeder
                 'reminder' => [
                     'name' => 'Chandler’s birthday',
                     'cadence' => ReminderCadenceEnum::Yearly,
-                    'moments' => [$this->before(1, ReminderMomentUnitEnum::Months), $this->before(3, ReminderMomentUnitEnum::Days), $this->on()],
                 ],
             ],
             [
@@ -434,7 +493,6 @@ class ExampleAccountSeeder extends Seeder
                 'reminder' => [
                     'name' => 'Joey’s birthday',
                     'cadence' => ReminderCadenceEnum::Yearly,
-                    'moments' => [$this->before(3, ReminderMomentUnitEnum::Months), $this->on()],
                 ],
             ],
             [
@@ -454,7 +512,6 @@ class ExampleAccountSeeder extends Seeder
                 'reminder' => [
                     'name' => 'Phoebe’s birthday',
                     'cadence' => ReminderCadenceEnum::Yearly,
-                    'moments' => [$this->before(3, ReminderMomentUnitEnum::Months), $this->before(1, ReminderMomentUnitEnum::Weeks)],
                 ],
             ],
             [
@@ -586,7 +643,6 @@ class ExampleAccountSeeder extends Seeder
                 'reminder' => [
                     'name' => 'Ben’s birthday',
                     'cadence' => ReminderCadenceEnum::Yearly,
-                    'moments' => [$this->before(2, ReminderMomentUnitEnum::Months), $this->on()],
                 ],
             ],
             [
@@ -606,7 +662,6 @@ class ExampleAccountSeeder extends Seeder
                 'reminder' => [
                     'name' => 'Emma’s birthday',
                     'cadence' => ReminderCadenceEnum::Yearly,
-                    'moments' => [$this->before(3, ReminderMomentUnitEnum::Months), $this->before(1, ReminderMomentUnitEnum::Months), $this->on()],
                 ],
             ],
             [
@@ -674,7 +729,6 @@ class ExampleAccountSeeder extends Seeder
                 'reminder' => [
                     'name' => 'Jack’s birthday',
                     'cadence' => ReminderCadenceEnum::Yearly,
-                    'moments' => [$this->before(1, ReminderMomentUnitEnum::Months), $this->before(1, ReminderMomentUnitEnum::Weeks)],
                 ],
             ],
             [
@@ -694,7 +748,6 @@ class ExampleAccountSeeder extends Seeder
                 'reminder' => [
                     'name' => 'Erica’s birthday',
                     'cadence' => ReminderCadenceEnum::Yearly,
-                    'moments' => [$this->before(2, ReminderMomentUnitEnum::Weeks), $this->before(1, ReminderMomentUnitEnum::Days), $this->on()],
                 ],
             ],
             [
@@ -730,7 +783,6 @@ class ExampleAccountSeeder extends Seeder
                 'reminder' => [
                     'name' => 'Ursula’s birthday',
                     'cadence' => ReminderCadenceEnum::Yearly,
-                    'moments' => [$this->before(4, ReminderMomentUnitEnum::Days)],
                 ],
             ],
             [

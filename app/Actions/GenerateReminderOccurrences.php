@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\ReminderMomentDirectionEnum;
-use App\Enums\ReminderMomentUnitEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
+use App\Enums\ReminderSourceEnum;
 use App\Helpers\ReminderSchedule;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
@@ -39,9 +37,13 @@ class GenerateReminderOccurrences
 
     private function produces(): bool
     {
-        return $this->reminder->is_active
-            && $this->reminder->deleted_at === null
-            && $this->reminder->fieldValue?->value_date !== null;
+        if (! $this->reminder->is_active || $this->reminder->deleted_at !== null) {
+            return false;
+        }
+
+        return $this->reminder->source === ReminderSourceEnum::Manual
+            ? $this->reminder->starts_on !== null
+            : $this->reminder->fieldValue?->value_date !== null;
     }
 
     private function generate(): void
@@ -55,22 +57,27 @@ class GenerateReminderOccurrences
             to: $this->until ?? $now->addDays((int) config('monica.reminder_generation_window_in_days')),
         );
 
+        $taken = ReminderOccurrence::query()
+            ->where('reminder_id', $this->reminder->id)
+            ->whereNull('cancelled_at')
+            ->whereDate('local_date', '>=', $now->setTimezone($this->reminder->timezone)->toDateString())
+            ->get(['local_date'])
+            ->map(fn (ReminderOccurrence $taken): string => $taken->local_date->format('Y-m-d'))
+            ->all();
+
         foreach ($occurrences as $occurrence) {
+            if (in_array($occurrence['local_date']->format('Y-m-d'), $taken, true)) {
+                continue;
+            }
+
             $rows[] = [
                 'uuid' => (string) Str::uuid(),
                 'account_id' => $this->reminder->account_id,
                 'vault_id' => $this->reminder->vault_id,
                 'reminder_id' => $this->reminder->id,
-                'source_local_date' => $occurrence['source_local_date']->format('Y-m-d'),
-                'moment_direction' => $occurrence['direction']->value,
-                'moment_amount' => $occurrence['amount'],
-                'moment_unit' => $occurrence['unit']?->value,
-                'generation_key' => $this->keyFor($occurrence),
-                'scheduled_for' => $occurrence['scheduled_for'],
-                'original_scheduled_for' => $occurrence['scheduled_for'],
                 'local_date' => $occurrence['local_date']->format('Y-m-d'),
-                'status' => ReminderOccurrenceStatusEnum::Pending->value,
-                'postponed_count' => 0,
+                'generation_key' => $this->reminder->schedule_revision.':'.$occurrence['local_date']->format('Y-m-d'),
+                'scheduled_for' => $occurrence['scheduled_for'],
                 'created_at' => $now,
                 'updated_at' => $now,
             ];
@@ -79,19 +86,5 @@ class GenerateReminderOccurrences
         foreach (array_chunk($rows, 200) as $chunk) {
             $this->written += ReminderOccurrence::query()->insertOrIgnore($chunk);
         }
-    }
-
-    /**
-     * @param  array{source_local_date: CarbonImmutable, direction: ReminderMomentDirectionEnum, amount: int|null, unit: ReminderMomentUnitEnum|null, local_date: CarbonImmutable, scheduled_for: CarbonImmutable}  $occurrence
-     */
-    private function keyFor(array $occurrence): string
-    {
-        return implode(':', [
-            $this->reminder->schedule_revision,
-            $occurrence['source_local_date']->format('Y-m-d'),
-            $occurrence['direction']->value,
-            $occurrence['amount'] ?? '',
-            $occurrence['unit']->value ?? '',
-        ]);
     }
 }

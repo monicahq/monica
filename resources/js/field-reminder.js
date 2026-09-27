@@ -1,100 +1,97 @@
 export default (config) => ({
     on: config.on,
-    shown: 0,
-    held: config.held,
-    rows: config.rows,
-    cadence: config.cadence,
-    recurs: config.recurs,
-    interval: config.interval,
+    repeat: config.repeat,
     time: config.time,
-    zone: config.zone,
-
-    plural: null,
+    date: '',
+    yearUnknown: false,
+    touched: false,
 
     init() {
-        try {
-            this.plural = new Intl.PluralRules(config.locale);
-        } catch {
-            this.plural = new Intl.PluralRules('en');
-        }
+        const date = document.getElementById(config.dateId);
+        const year = config.yearId ? document.getElementById(config.yearId) : null;
+
+        this.date = date?.value ?? '';
+        this.yearUnknown = year?.checked ?? false;
+
+        date?.addEventListener('input', () => {
+            this.date = date.value;
+            this.touched = true;
+        });
+
+        year?.addEventListener('change', () => {
+            this.yearUnknown = year.checked;
+            this.touched = true;
+        });
+
+        this.$watch('repeat', () => { this.touched = true; });
+        this.$watch('time', () => { this.touched = true; });
     },
 
-    maximumFor(index) {
-        return config.maximums[this.rows[index].unit] ?? 1;
-    },
+    escape(text) {
+        const span = document.createElement('span');
+        span.textContent = text;
 
-    isDrawn(index) {
-        return index < this.held + this.shown;
-    },
-
-    counts(index) {
-        return this.isDrawn(index) && ! this.rows[index].removed;
-    },
-
-    get active() {
-        return this.rows.filter((row, index) => this.counts(index)).length;
-    },
-
-    /**
-     * Say a phrase at a number, in the wording that number takes in this
-     * language. The server sent one wording per plural category, so the
-     * category is asked for rather than worked out from the number.
-     */
-    counted(forms, count) {
-        const category = this.plural === null ? 'other' : this.plural.select(count);
-        const wording = forms[category] ?? forms.other ?? Object.values(forms)[0] ?? '';
-
-        return wording.replaceAll(':n', String(count));
-    },
-
-    phrase(row) {
-        if (row.direction === 'on') {
-            return config.words.onTheDay;
-        }
-
-        const count = Number(row.amount) || 1;
-        const forms = config.words.units[row.unit] ?? config.words.units.days;
-        const span = this.counted(forms, count);
-
-        return config.words[row.direction === 'before' ? 'before' : 'after'].replace(':span', span);
-    },
-
-    get cadenceWords() {
-        if (! this.recurs) {
-            return config.words.once;
-        }
-
-        const count = Number(this.interval) || 1;
-        const forms = config.words.intervals[this.cadence] ?? config.words.intervals.yearly;
-
-        return this.counted(forms, count);
+        return span.innerHTML;
     },
 
     /**
-     * Join what the moments read as into one list, with the separator and the
-     * pattern this language joins a list by, both of them translated.
+     * The next day the reminder falls on, worked out the way the server's schedule does for the
+     * choices this list offers: once, or every so many years counted from the date. A rhythm the
+     * list only keeps for an older reminder is left to the server's own sentence.
      */
-    listed(said) {
-        if (said.length === 1) {
-            return said[0];
+    nextDate() {
+        const [year, month, day] = this.date.split('-').map(Number);
+
+        if (! month || ! day) {
+            return undefined;
         }
 
-        return config.words.listPattern
-            .replace(':list', said.slice(0, -1).join(config.words.listSeparator))
-            .replace(':last', said[said.length - 1]);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const on = (y) => new Date(y, month - 1, Math.min(day, new Date(y, month, 0).getDate()));
+        const anchor = this.yearUnknown || ! year ? today.getFullYear() : year;
+
+        if (this.repeat === 'once') {
+            const date = on(anchor);
+
+            return date < today ? null : date;
+        }
+
+        const [cadence, interval] = this.repeat.split(':');
+
+        if (cadence !== 'yearly') {
+            return undefined;
+        }
+
+        const step = Math.max(1, Number(interval) || 1);
+        let candidate = anchor;
+
+        while (on(candidate) < today) {
+            candidate += step;
+        }
+
+        return on(candidate);
     },
 
-    get summary() {
-        const said = this.rows.filter((row, index) => this.counts(index)).map((row) => this.phrase(row));
-
-        if (said.length === 0) {
-            return config.words.nothing;
+    get nextLine() {
+        if (! this.touched && config.next !== null) {
+            return config.next;
         }
 
-        return config.words.summary
-            .replace(':moments', this.listed(said))
-            .replace(':cadence', this.cadenceWords)
-            .replace(':time', this.time)
-            .replace(':zone', this.zone);
+        const date = this.nextDate();
+
+        if (date === undefined) {
+            return this.date === '' ? this.escape(config.words.noDate) : (config.next ?? '');
+        }
+
+        if (date === null) {
+            return this.escape(config.words.nothing);
+        }
+
+        const written = new Intl.DateTimeFormat(config.locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+        const when = config.words.when.replace(':date', written).replace(':time', this.time || '09:00');
+
+        return this.escape(config.words.next).replace(':when', `<strong class="font-semibold text-ink">${this.escape(when)}</strong>`);
     },
 });

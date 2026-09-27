@@ -6,7 +6,8 @@ namespace App\ViewModels\Vaults;
 
 use App\Enums\DateFormatEnum;
 use App\Enums\ReminderInactiveReasonEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
+use App\Enums\ReminderOccurrenceCategoryEnum;
+use App\Enums\ReminderSourceEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\ReminderSchedule;
 use App\Models\Contact;
@@ -15,6 +16,8 @@ use App\Models\ReminderOccurrence;
 use App\Models\StructureVersionSection;
 use App\Models\User;
 use App\Models\Vault;
+use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Builder;
 
 class ReminderViewModel
 {
@@ -51,16 +54,24 @@ class ReminderViewModel
 
     public function builtFrom(): string
     {
+        if ($this->reminder->source === ReminderSourceEnum::Manual) {
+            return __('Written about this contact, first on :date.', [
+                'date' => $this->reminder->starts_on === null
+                    ? ''
+                    : DateFormatEnum::write($this->reminder->starts_on->locale(app()->getLocale()), $this->dateFormat()),
+            ]);
+        }
+
         $date = $this->reminder->fieldValue?->value_date;
 
         if ($date === null) {
             return __('Built from :label, which no longer holds a date.', [
-                'label' => $this->reminder->field->label,
+                'label' => $this->reminder->field->label ?? '',
             ]);
         }
 
         return __('Built from :label, :date.', [
-            'label' => $this->reminder->field->label,
+            'label' => $this->reminder->field->label ?? '',
             'date' => DateFormatEnum::write(
                 $date->locale(app()->getLocale()),
                 $this->dateFormat(),
@@ -80,7 +91,7 @@ class ReminderViewModel
     }
 
     /**
-     * @return array{isActive: bool, tone: string, icon: string, label: string, quietBecause: string|null, canResume: bool}
+     * @return array{isActive: bool, tone: string, icon: string, label: string, quietBecause: string|null}
      */
     public function state(): array
     {
@@ -90,9 +101,8 @@ class ReminderViewModel
             'isActive' => $active,
             'tone' => $active ? 'success' : 'neutral',
             'icon' => $active ? 'check' : 'clock',
-            'label' => $active ? __('Active') : __('Paused'),
+            'label' => $active ? __('Active') : __('Stopped'),
             'quietBecause' => $active ? null : $this->quietBecause(),
-            'canResume' => ! $active && ($this->reminder->inactive_reason?->isLiftedByUser() ?? false),
         ];
     }
 
@@ -103,12 +113,11 @@ class ReminderViewModel
             ReminderInactiveReasonEnum::RecordArchived => __('The record it is about is archived. Unarchive it and this reminder starts again on its own.'),
             ReminderInactiveReasonEnum::RecordDeleted => __('The record it is about was deleted. Restore it and this reminder starts again on its own.'),
             ReminderInactiveReasonEnum::FieldRemoved => __('The field it reads has left the structure. Put the field back and this reminder starts again on its own.'),
-            ReminderInactiveReasonEnum::PausedByUser => __('You paused it. Nothing is delivered while it is paused, and the schedule is kept exactly as it was.'),
             null => __('It is stopped.'),
         };
     }
 
-    /** @return array{isScheduled: bool, overline: string, date: string, note: string, tone: string} */
+    /** @return array{isScheduled: bool, overline: string, date: string, note: string, tone: string, row: ReminderRow|null} */
     public function next(): array
     {
         if (! $this->reminder->is_active) {
@@ -118,6 +127,7 @@ class ReminderViewModel
                 'date' => $this->state()['label'],
                 'note' => $this->quietBecause(),
                 'tone' => 'neutral',
+                'row' => null,
             ];
         }
 
@@ -131,14 +141,22 @@ class ReminderViewModel
                 'date' => __('It has already happened'),
                 'note' => __('This reminder is sent once, and its date has passed.'),
                 'tone' => 'neutral',
+                'row' => null,
             ];
         }
 
         $at = $at->setTimezone($this->reminder->timezone)->locale(app()->getLocale());
+        $category = $occurrence === null
+            ? ReminderOccurrenceCategoryEnum::Upcoming
+            : ReminderOccurrenceCategoryEnum::for($occurrence, CarbonImmutable::now($this->user->timezone));
 
         return [
             'isScheduled' => true,
-            'overline' => $occurrence === null ? __('Next, once it is generated') : __('Next notification'),
+            'overline' => match ($category) {
+                ReminderOccurrenceCategoryEnum::Overdue => __('Overdue, waiting for your answer'),
+                ReminderOccurrenceCategoryEnum::Today => __('Today'),
+                ReminderOccurrenceCategoryEnum::Upcoming => __('Next'),
+            },
             'date' => __(':date at :time', [
                 'date' => DateFormatEnum::write($at, $this->dateFormat()),
                 'time' => $this->user->time_format->format($at),
@@ -147,16 +165,19 @@ class ReminderViewModel
                 'zone' => $this->reminder->timezone,
                 'relative' => $at->diffForHumans(),
             ]),
-            'tone' => 'success',
+            'tone' => $category === ReminderOccurrenceCategoryEnum::Overdue ? 'warning' : 'success',
+            'row' => $occurrence === null ? null : $this->rowFor($occurrence),
         ];
     }
 
     /**
-     * @return array{fields: list<array{label: string, value: string, note: string|null}>, moments: list<array{label: string, date: string|null}>}
+     * @return array{fields: list<array{label: string, value: string, note: string|null}>}
      */
     public function schedule(): array
     {
-        $date = $this->reminder->fieldValue?->value_date;
+        $date = $this->reminder->source === ReminderSourceEnum::Manual
+            ? $this->reminder->starts_on
+            : $this->reminder->fieldValue?->value_date;
 
         return [
             'fields' => [
@@ -185,19 +206,7 @@ class ReminderViewModel
                         : __('Fixed when the reminder was made. Yours is :zone.', ['zone' => $this->user->timezone]),
                 ],
             ],
-            'moments' => $this->moments(),
         ];
-    }
-
-    /** @return list<array{label: string, date: string|null}> */
-    private function moments(): array
-    {
-        return array_map(fn (array $moment): array => [
-            'label' => ReminderWords::moment($moment['direction'], $moment['amount'], $moment['unit']),
-            'date' => $moment['date'] === null
-                ? null
-                : DateFormatEnum::write($moment['date']->locale(app()->getLocale()), $this->dateFormat()),
-        ], ReminderSchedule::momentDates($this->reminder));
     }
 
     /**
@@ -222,22 +231,54 @@ class ReminderViewModel
         }
 
         return $this->reminder->occurrences()
-            ->whereIn('status', ReminderOccurrenceStatusEnum::actionable())
-            ->orderBy('scheduled_for')
+            ->active()
+            ->orderBy('local_date')
             ->get()
-            ->map(fn (ReminderOccurrence $occurrence): ReminderRow => new ReminderRow(
-                user: $this->user,
-                occurrence: $occurrence
-                    ->setRelation('reminder', $this->reminder)
-                    ->setRelation('vault', $this->vault),
-            ))
+            ->map(fn (ReminderOccurrence $occurrence): ReminderRow => $this->rowFor($occurrence))
             ->all();
+    }
+
+    /** @return list<array{date: string, outcome: string, tone: string, answeredOn: string|null}> */
+    public function answers(): array
+    {
+        $today = CarbonImmutable::now($this->user->timezone)->toDateString();
+
+        return $this->reminder->occurrences()
+            ->where(function (Builder $query) use ($today): void {
+                $query->whereDate('local_date', '<=', $today)->orWhereNotNull('answer');
+            })
+            ->orderByDesc('local_date')
+            ->limit(50)
+            ->get()
+            ->map(function (ReminderOccurrence $occurrence): array {
+                $row = $this->rowFor($occurrence);
+
+                return [
+                    'date' => DateFormatEnum::write($occurrence->local_date->locale(app()->getLocale()), $this->dateFormat()),
+                    'outcome' => $row->outcome(),
+                    'tone' => $row->tone(),
+                    'answeredOn' => $occurrence->answered_at === null
+                        ? null
+                        : DateFormatEnum::write($occurrence->answered_at->setTimezone($this->user->timezone)->locale(app()->getLocale()), $this->dateFormat()),
+                ];
+            })
+            ->all();
+    }
+
+    private function rowFor(ReminderOccurrence $occurrence): ReminderRow
+    {
+        return new ReminderRow(
+            user: $this->user,
+            occurrence: $occurrence
+                ->setRelation('reminder', $this->reminder)
+                ->setRelation('vault', $this->vault),
+        );
     }
 
     public function stillToComeEmptyLine(): string
     {
         if (! $this->reminder->is_active) {
-            return __('Nothing is scheduled while this reminder is stopped. Its schedule is kept, so it starts again where it was.');
+            return __('Nothing is scheduled while this reminder is stopped.');
         }
 
         return __('Deadlines are produced shortly before they fall due, so a yearly reminder is empty here for most of the year. The schedule above is what it will do.');
@@ -279,6 +320,10 @@ class ReminderViewModel
             return $this->remindersUrl();
         }
 
+        if ($this->reminder->source === ReminderSourceEnum::Manual) {
+            return route('contacts.reminders.edit', ['vault' => $this->vault, 'contact' => $contact, 'reminder' => $this->reminder]);
+        }
+
         return route('contacts.show', array_filter([
             'vault' => $this->vault,
             'contact' => $contact,
@@ -291,20 +336,10 @@ class ReminderViewModel
         $placement = StructureVersionSection::query()
             ->where('account_id', $this->reminder->account_id)
             ->where('structure_version_id', $contact->structure_version_id)
-            ->where('section_version_id', $this->reminder->field->section_version_id)
+            ->where('section_version_id', $this->reminder->field?->section_version_id)
             ->first();
 
         return $placement?->structureVersionPage->key;
-    }
-
-    public function pauseUrl(): string
-    {
-        return route('reminders.pause.update', ['vault' => $this->vault, 'reminder' => $this->reminder]);
-    }
-
-    public function resumeUrl(): string
-    {
-        return route('reminders.pause.destroy', ['vault' => $this->vault, 'reminder' => $this->reminder]);
     }
 
     public function deleteUrl(): string
@@ -315,8 +350,8 @@ class ReminderViewModel
     private function nextOccurrence(): ?ReminderOccurrence
     {
         return $this->reminder->occurrences()
-            ->whereIn('status', ReminderOccurrenceStatusEnum::actionable())
-            ->orderBy('scheduled_for')
+            ->active()
+            ->orderBy('local_date')
             ->first();
     }
 

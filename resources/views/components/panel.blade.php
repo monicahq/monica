@@ -6,6 +6,7 @@
   @var string|null $icon
   @var string|null $tint
   @var bool $flush
+  @var bool $clip  false lets a menu inside unfold past the edge
   @var string $variant
   @var string $tone
   @var \Illuminate\View\ComponentSlot|null $action
@@ -18,6 +19,7 @@
   'icon' => null,
   'tint' => null,
   'flush' => false,
+  'clip' => true,
   'variant' => 'default',
   'tone' => 'default',
 ])
@@ -33,7 +35,7 @@
   $align = $subtitle ? 'items-start' : 'items-center';
 @endphp
 
-<section {{ $attributes->class(['overflow-hidden rounded-lg border shadow-panel', $edge, $surface]) }}>
+<section {{ $attributes->class(['rounded-lg border shadow-panel', 'overflow-hidden' => $clip, $edge, $surface]) }}>
   @if ($title)
     <header class="flex min-h-12 {{ $align }} gap-3 border-b px-4 py-3.5 {{ $band }}">
       @if ($icon)
@@ -61,6 +63,6 @@
   </div>
 
   @isset($footer)
-    <footer {{ $footer->attributes->class(['border-t border-hairline bg-card px-4 py-3 text-sm']) }}>{{ $footer }}</footer>
+    <footer {{ $footer->attributes->class(['border-t border-hairline bg-card px-4 py-3 text-sm', 'rounded-b-lg' => ! $clip]) }}>{{ $footer }}</footer>
   @endisset
 </section>

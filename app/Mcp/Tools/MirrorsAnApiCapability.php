@@ -13,6 +13,8 @@ use App\Models\LifeEventType;
 use App\Models\Log;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
+use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
@@ -222,6 +224,35 @@ trait MirrorsAnApiCapability
         }
 
         return $page;
+    }
+
+    protected function reminder(Contact $contact, string $uuid): Reminder
+    {
+        $reminder = $contact->reminders()
+            ->where('uuid', $uuid)
+            ->with(['vault', 'field', 'fieldValue', 'remindable'])
+            ->first();
+
+        if ($reminder === null) {
+            throw $this->doesNotExist(__('That reminder does not exist.'));
+        }
+
+        return $reminder;
+    }
+
+    protected function reminderOccurrence(Contact $contact, string $uuid): ReminderOccurrence
+    {
+        $occurrence = ReminderOccurrence::query()
+            ->where('account_id', $contact->account_id)
+            ->where('uuid', $uuid)
+            ->whereIn('reminder_id', $contact->reminders()->select('id'))
+            ->first();
+
+        if ($occurrence === null) {
+            throw $this->doesNotExist(__('That reminder date does not exist.'));
+        }
+
+        return $occurrence;
     }
 
     protected function doesNotExist(string $message): ValidationException

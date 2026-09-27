@@ -450,33 +450,38 @@ The setting can be defined at the link level and then tightened life event by li
 A personal CRM that reminds you of nothing is useless. But "reminder" covers four different things that have to be distinguished for the product to behave correctly:
 
 - **the source**: where the need for a reminder comes from (a date entered, an inactivity, a task, a manual entry);
-- **the rule**: the computation logic ("every year, 7 days before");
+- **the rule**: the computation logic ("every year on 12 May");
 - **the occurrence**: a concrete deadline ("5 May 2027 at 9am");
 - **the notification**: what actually reaches the user, on a given channel.
 
-Without that distinction, you can neither postpone a reminder cleanly, nor keep the history of what was done with it, nor correctly deliver several notifications for the same deadline.
+Without that distinction, you can neither keep the history of what was answered for each date, nor correctly deliver one notification per channel for the same deadline.
 
-**Each offset of each cycle produces its own occurrence.** A yearly rule reading 12 May with the offsets "7 days before" and "on the day" produces two occurrences in 2027: 5 May at the chosen local time and 12 May at that time. Each occurrence can then produce one notification on every enabled channel. The offset is applied when the occurrence is generated and is never applied again by the notification. Postponing or dismissing the 5 May occurrence touches neither the 12 May occurrence nor either occurrence of the following year.
+**Each cycle produces one occurrence, on the day itself.** A yearly rule reading 12 May produces one occurrence in 2027, on 12 May at the chosen local time, and it produces one notification on every enabled channel that day. Nothing is sent ahead of the day, and nothing is sent again after it. Answering the 2027 occurrence touches neither the 2028 occurrence nor the rule.
 
 ### 10.2. The types of reminders
 
 - **One off**: a date, once.
 - **Recurring**: every year on 12 May, every Monday and Friday, and so on.
-- **Field based**: the product reads any `date` or `recurring_date` entered on a record and derives deadlines from it, with one or more offsets ("7 days before" and "on the day"). The source provides the record, field and value; the reminder separately defines whether it fires once or recurs, and at which frequency. A complete `date` can therefore drive a recurring reminder. A `recurring_date` is useful when the calendar date itself repeats or its year is unknown, and may suggest a yearly cadence without imposing it. Saving a date never creates a rule silently: the interface offers to add one, prefilled from that context, and the user chooses its wording, cadence, offsets and local time.
+- **Manual**: a reminder somebody writes about a contact, with a date of its own, firing once or recurring.
+- **Field based**: the product reads any `date` or `recurring_date` entered on a record and derives deadlines from it, on the day itself. The source provides the record, field and value; the reminder separately defines whether it fires once or recurs, and at which frequency. A complete `date` can therefore drive a recurring reminder. A `recurring_date` is useful when the calendar date itself repeats or its year is unknown, and may suggest a yearly cadence without imposing it. Saving a date never creates a rule silently: the interface offers to add one, prefilled from that context, and the user chooses its wording, cadence and local time.
 - **Relative to a life event**: "14 days after the last lunch". It relies directly on the journal (see 9).
 - **By inactivity**: "tell me if I have had no contact with this person for 90 days". This is probably the most important reminder in a personal CRM, and the most absent from existing tools. It is computed from the latest dated life event in which the contact participates (see 9.3), so its quality depends on participants and dates being recorded accurately.
 
 ### 10.3. Expected behaviours
 
-**Postponing and dismissing are the two actions on an occurrence.**
+**Two answers, given per date.** Each occurrence waits for the user to say what happened on that date:
 
-- *Postponing* means "not now, remind me at this new date". It moves only this deadline to an exact future instant, keeps its original instant as history, and abandons every delivery still waiting for the old one. It may be done more than once and never touches a sibling or a later cycle.
-- *Dismissing* means "do not interrupt me about this deadline again". It closes this occurrence, abandons every delivery that has not gone out, and makes no claim that an action was completed. Notifications already sent remain as history. Dismissing this year's birthday does not remove next year's.
-- *Deactivating the rule* is the only action that cancels every future deadline, and it is reversible.
+- *I remembered* is offered from the day of the occurrence; *I forgot* from the day after.
+- An answer is recorded in one action, without a confirmation, and it is final: it cannot be undone or changed.
+- Answering takes the occurrence off the active list, abandons its notifications not sent yet, and changes neither the rule nor any other occurrence.
+- An occurrence nobody answered is upcoming before its day, today on its day (also after its notification went out), and overdue from the next day until it is answered. A missing answer never becomes *I forgot*, and a notification sent or read never counts as *I remembered*.
+- The answer and its time are stored on the occurrence, apart from its delivery and its cancellation, so that for any date the product can say whether the user remembered, forgot, or did not answer. The answers are shown in a history.
+
+There is no postponing, dismissing, reopening, undoing or pausing. *Deleting the rule* is the only way to stop it; it drops the occurrences still waiting and keeps every answer already given.
 
 **The time is local, not absolute.** "Every year at 9am" means 9am local time, including after a daylight saving change. The reference zone is frozen when the rule is created, and changing your personal zone later never shifts a reminder that is already set.
 
-**Changes to the source break nothing.** If a date is corrected, future deadlines are recomputed and the history is preserved. If a contact is deleted, future deadlines are cancelled but everything comes back if it is restored. If the field feeding the reminder disappears from a structure, the rule is deactivated and the product **explains why it is inactive** instead of making it disappear.
+**Changes to the source break nothing.** If a date is corrected or the rule changes, deadlines after today are recomputed and every answer is preserved. If a contact is archived or deleted, the deadlines still waiting for an answer are cancelled, and a cancelled deadline is never counted as forgotten. If the field feeding the reminder disappears from a structure, the rule is deactivated and the product **explains why it is inactive** instead of making it disappear.
 
 ### 10.4. How the user is notified
 
@@ -571,7 +576,7 @@ The list of events follows the product, not a sub-part of the product. At minimu
 - **Contacts and entities**: creation, modification, deletion, restoration, merge, change of applied structure.
 - **Life events and journal**: a life event is created, modified or deleted, a day is filled in. This is probably the most useful event to listen to, since it allows rebroadcasting your life to any other tool.
 - **Relationships**: creation, modification, status change, deletion and restoration.
-- **Reminders**: a deadline arrives, it is postponed or dismissed, a rule is deactivated.
+- **Reminders**: a deadline arrives, it is answered, a rule is deactivated or deleted.
 - **Structures**: a template or a section is created or published, a new version is published.
 - **Marketplace**: an item is installed, an update is available, an update is accepted.
 - **Files**: a file is added, detached, deleted.

@@ -12,6 +12,7 @@ use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ReminderViewModel;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -56,21 +57,7 @@ class ReminderViewModelTest extends TestCase
 
         $this->assertFalse($state['isActive']);
         $this->assertNotNull($state['quietBecause']);
-        $this->assertFalse($state['canResume']);
-    }
-
-    #[Test]
-    public function it_lets_somebody_resume_only_what_they_paused(): void
-    {
-        $user = User::factory()->create();
-        $reminder = $this->reminderAbout($user);
-        $reminder->update([
-            'is_active' => false,
-            'inactive_reason' => ReminderInactiveReasonEnum::PausedByUser,
-            'deactivated_at' => now(),
-        ]);
-
-        $this->assertTrue($this->viewModel($user, $reminder->refresh())->state()['canResume']);
+        $this->assertSame('Stopped', $state['label']);
     }
 
     #[Test]
@@ -100,16 +87,6 @@ class ReminderViewModelTest extends TestCase
             [null, null, null, 'Fixed when the reminder was made. Yours is America/New_York.'],
             array_column($this->viewModel($user, $reminder)->schedule()['fields'], 'note'),
         );
-    }
-
-    #[Test]
-    public function it_lists_every_moment_the_rule_fires_at(): void
-    {
-        $reminder = $this->reminderAbout($user = User::factory()->create());
-
-        $moments = $this->viewModel($user, $reminder)->schedule()['moments'];
-
-        $this->assertSame(['7 days before', 'on the day'], array_column($moments, 'label'));
     }
 
     #[Test]
@@ -143,7 +120,7 @@ class ReminderViewModelTest extends TestCase
         $reminder = $this->reminderAbout($user);
         $reminder->update([
             'is_active' => false,
-            'inactive_reason' => ReminderInactiveReasonEnum::PausedByUser,
+            'inactive_reason' => ReminderInactiveReasonEnum::RecordArchived,
             'deactivated_at' => now(),
         ]);
 
@@ -215,6 +192,69 @@ class ReminderViewModelTest extends TestCase
         ]);
 
         $this->assertSame([], $this->viewModel($user, $reminder)->occurrences());
+    }
+
+    #[Test]
+    public function it_offers_the_answers_on_the_next_date_while_it_waits(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-09-26 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $reminder = $this->reminderAbout($user);
+        ReminderOccurrence::factory()->for($reminder)->daysFromNow(-2)->create();
+
+        $next = $this->viewModel($user, $reminder)->next();
+
+        $this->assertSame('Overdue, waiting for your answer', $next['overline']);
+        $this->assertTrue($next['row']->canForget());
+    }
+
+    #[Test]
+    public function it_names_a_date_due_today_and_a_date_still_ahead(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-09-26 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
+
+        $today = $this->reminderAbout($user);
+        ReminderOccurrence::factory()->for($today)->today()->create();
+
+        $ahead = $this->reminderAbout($user);
+        ReminderOccurrence::factory()->for($ahead)->daysFromNow(9)->create();
+
+        $this->assertSame('Today', $this->viewModel($user, $today)->next()['overline']);
+        $this->assertSame('Next', $this->viewModel($user, $ahead)->next()['overline']);
+        $this->assertFalse($this->viewModel($user, $ahead)->next()['row']->canRemember());
+    }
+
+    #[Test]
+    public function it_lists_every_past_date_with_its_answer_newest_first(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-09-26 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $reminder = $this->reminderAbout($user);
+
+        ReminderOccurrence::factory()->for($reminder)->daysFromNow(-365)->forgotten()->create();
+        ReminderOccurrence::factory()->for($reminder)->daysFromNow(-30)->remembered()->create();
+        ReminderOccurrence::factory()->for($reminder)->daysFromNow(-1)->create();
+        ReminderOccurrence::factory()->for($reminder)->daysFromNow(20)->create();
+
+        $answers = $this->viewModel($user, $reminder)->answers();
+
+        $this->assertSame(['No answer yet', 'You remembered', 'You forgot'], array_column($answers, 'outcome'));
+        $this->assertNull($answers[0]['answeredOn']);
+        $this->assertNotNull($answers[1]['answeredOn']);
+    }
+
+    #[Test]
+    public function it_edits_a_written_reminder_on_its_own_form(): void
+    {
+        $user = User::factory()->create();
+        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
+        $reminder = Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create();
+
+        $this->assertSame(
+            route('contacts.reminders.edit', ['vault' => $reminder->vault, 'contact' => $contact, 'reminder' => $reminder]),
+            $this->viewModel($user, $reminder)->editUrl(),
+        );
     }
 
     private function viewModel(User $user, Reminder $reminder): ReminderViewModel

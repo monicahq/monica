@@ -34,8 +34,7 @@ class ReminderControllerTest extends TestCase
         $response->assertSee('Michael Scott');
         $response->assertSee('every year');
         $response->assertSee('Europe/Paris');
-        $response->assertSee('7 days before');
-        $response->assertSee('on the day');
+        $response->assertDontSee('You are told at these moments');
     }
 
     #[Test]
@@ -64,43 +63,52 @@ class ReminderControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_the_two_things_you_do_about_what_is_coming(): void
+    public function it_offers_the_answer_the_day_allows_on_the_next_deadline(): void
     {
         $user = User::factory()->create(['timezone' => 'Europe/Paris']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $rule = $this->ruleAbout($user, $vault);
-        $occurrence = $this->deadline($rule, '+9 days');
+        $occurrence = $this->deadline($rule, 0);
 
         $response = $this->actingAs($user)->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]));
 
         $response->assertSee(
-            route('reminders.occurrences.dismissal.update', ['vault' => $vault, 'reminderOccurrence' => $occurrence]),
+            route('reminders.occurrences.answer.update', ['vault' => $vault, 'reminderOccurrence' => $occurrence]),
             escape: false,
         );
-        $response->assertSee(
-            route('reminders.occurrences.postponement.update', ['vault' => $vault, 'reminderOccurrence' => $occurrence]),
-            escape: false,
-        );
+        $response->assertSee('I remembered');
+        $response->assertDontSee('I forgot');
+        $response->assertDontSee('Pause');
+        $response->assertDontSee('Remind me later');
     }
 
     #[Test]
-    public function it_offers_nothing_to_act_on_when_the_reminder_is_not_firing(): void
+    public function it_offers_both_answers_once_the_day_has_passed(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $rule = $this->ruleAbout($user, $vault);
-        $occurrence = $this->deadline($rule, '+9 days');
-        $rule->update([
-            'is_active' => false,
-            'inactive_reason' => ReminderInactiveReasonEnum::PausedByUser,
-            'deactivated_at' => now(),
-        ]);
+        $this->deadline($rule, -2);
 
         $response = $this->actingAs($user)->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]));
 
-        $response->assertStatus(200);
+        $response->assertSee('Overdue, waiting for your answer');
+        $response->assertSee('I remembered');
+        $response->assertSee('I forgot');
+    }
+
+    #[Test]
+    public function it_offers_no_answer_for_a_deadline_still_to_come(): void
+    {
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $rule = $this->ruleAbout($user, $vault);
+        $occurrence = $this->deadline($rule, 9);
+
+        $response = $this->actingAs($user)->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]));
+
         $response->assertDontSee(
-            route('reminders.occurrences.dismissal.update', ['vault' => $vault, 'reminderOccurrence' => $occurrence]),
+            route('reminders.occurrences.answer.update', ['vault' => $vault, 'reminderOccurrence' => $occurrence]),
             escape: false,
         );
     }
@@ -118,15 +126,32 @@ class ReminderControllerTest extends TestCase
 
         $rule->update([
             'is_active' => false,
-            'inactive_reason' => ReminderInactiveReasonEnum::PausedByUser,
+            'inactive_reason' => ReminderInactiveReasonEnum::RecordArchived,
             'deactivated_at' => now(),
         ]);
 
         $response = $this->actingAs($user)->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]));
 
-        $response->assertSee('Paused');
+        $response->assertSee('Stopped');
         $response->assertSee('Nothing is scheduled');
-        $response->assertSee('You paused it.');
+        $response->assertSee('The record it is about is archived.');
+    }
+
+    #[Test]
+    public function it_lists_every_past_date_with_its_answer(): void
+    {
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $rule = $this->ruleAbout($user, $vault);
+        $this->deadline($rule, -40)->forceFill(['answer' => 'forgotten', 'answered_at' => now()])->save();
+        $this->deadline($rule, -3);
+
+        $response = $this->actingAs($user)->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]));
+
+        $response->assertSee('History');
+        $response->assertSee('What you answered for each date. Answers are kept as they are.');
+        $response->assertSee('You forgot');
+        $response->assertSee('No answer yet');
     }
 
     #[Test]
@@ -135,30 +160,26 @@ class ReminderControllerTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $rule = $this->ruleAbout($user, $vault);
-        $this->deadline($rule, '+9 days');
+        $this->deadline($rule, 9);
 
         $response = $this->actingAs($user)->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]));
 
-        $response->assertSee('aria-label="Remind me later"', escape: false);
         $response->assertSee('aria-haspopup="menu"', escape: false);
         $response->assertSee('Send me a test');
         $response->assertDontSee('Go to the reminder');
     }
 
     #[Test]
-    public function it_asks_before_it_dismisses_or_sends_a_test(): void
+    public function it_asks_before_it_sends_a_test(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $rule = $this->ruleAbout($user, $vault);
-        $occurrence = $this->deadline($rule, '+9 days');
+        $occurrence = $this->deadline($rule, 9);
 
         $response = $this->actingAs($user)->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]));
 
-        $response->assertSee('Dismiss “Stanley’s birthday”?', escape: false);
-        $response->assertSee('This one will not be sent. The next one stays scheduled.');
         $response->assertSee('Send yourself a test?');
-        $response->assertSee(route('reminders.occurrences.dismissal.update', ['vault' => $vault, 'reminderOccurrence' => $occurrence]), escape: false);
         $response->assertSee(route('reminders.occurrences.testNotification.create', ['vault' => $vault, 'reminderOccurrence' => $occurrence]), escape: false);
     }
 
@@ -181,7 +202,7 @@ class ReminderControllerTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $rule = $this->ruleAbout($user, $vault);
-        $this->deadline($rule, '+2 days');
+        $this->deadline($rule, 2);
 
         $response = $this->actingAs($user)->get(route('reminders.index', $vault));
 
@@ -195,7 +216,7 @@ class ReminderControllerTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $rule = $this->ruleAbout($user, $vault);
-        $this->deadline($rule, '+9 days');
+        $this->deadline($rule, 9);
 
         $this->actingAs($user)
             ->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]))
@@ -268,16 +289,14 @@ class ReminderControllerTest extends TestCase
         return $rule;
     }
 
-    private function deadline(Reminder $rule, string $when): ReminderOccurrence
+    private function deadline(Reminder $rule, int $days): ReminderOccurrence
     {
-        $instant = CarbonImmutable::parse($when);
+        $day = CarbonImmutable::now('Europe/Paris')->addDays($days)->startOfDay();
 
         return ReminderOccurrence::factory()->for($rule)->create([
-            'source_local_date' => $instant->toDateString(),
-            'generation_key' => '1:'.$instant->toDateString().':on::',
-            'scheduled_for' => $instant,
-            'original_scheduled_for' => $instant,
-            'local_date' => $instant->toDateString(),
+            'generation_key' => '1:'.$day->toDateString(),
+            'scheduled_for' => $day->setTime(9, 0)->utc(),
+            'local_date' => $day->toDateString(),
         ]);
     }
 }

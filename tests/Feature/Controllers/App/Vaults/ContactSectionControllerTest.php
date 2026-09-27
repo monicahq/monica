@@ -14,6 +14,7 @@ use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\File;
 use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
@@ -31,7 +32,6 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -808,9 +808,12 @@ class ContactSectionControllerTest extends TestCase
                 'structureVersionSection' => $this->sectionNamed($version, 'Dates'),
             ]))
             ->assertStatus(200)
-            ->assertSee('Add a reminder')
+            ->assertSee('Remind me about this date')
+            ->assertSee('I do not know the year')
             ->assertSee('name="reminders['.$birthday->id.'][on]"', false)
-            ->assertSee('name="reminders['.$birthday->id.'][moments][0][direction]"', false);
+            ->assertSee('name="reminders['.$birthday->id.'][repeat]"', false)
+            ->assertSee('name="reminders['.$birthday->id.'][time]"', false)
+            ->assertDontSee('[moments]', false);
     }
 
     #[Test]
@@ -918,7 +921,7 @@ class ContactSectionControllerTest extends TestCase
                 'structureVersionSection' => $this->sectionNamed($version, 'Dates'),
             ]), [
                 'fields' => [$birthday->id => '1984-02-03'],
-                'reminders' => [$birthday->id => $this->askedFor(['cadence' => 'fortnightly'])],
+                'reminders' => [$birthday->id => $this->askedFor(['repeat' => 'fortnightly:1'])],
             ])
             ->assertSessionHasErrors('reminders.'.$birthday->id.'.cadence');
 
@@ -951,63 +954,34 @@ class ContactSectionControllerTest extends TestCase
             ]))
             ->assertStatus(200)
             ->assertSee('value="Ring Michael"', false)
-            ->assertSee('7 days before');
+            ->assertSee('<option value="yearly:1" selected', false)
+            ->assertSee('Next reminder on');
     }
 
     #[Test]
-    #[DataProvider('badMoments')]
-    public function it_sends_the_block_back_open_when_the_moments_say_nothing_usable(array $moments): void
+    public function it_reads_how_often_from_the_one_list_the_panel_offers(): void
     {
         Queue::fake();
 
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user);
         $michael = $this->contact($vault, 'Michael', 'Scott');
 
         [$version, $birthday] = $this->versionWithADate($user, FieldTypeEnum::RecurringDate);
         $michael->update(['structure_version_id' => $version->id]);
-        $section = $this->sectionNamed($version, 'Dates');
 
-        $response = $this->actingAs($user)
-            ->put(route('contacts.sections.update', [
-                'vault' => $vault,
-                'contact' => $michael,
-                'structureVersionSection' => $section,
-            ]), [
-                'fields' => [$birthday->id => '1984-02-03'],
-                'reminders' => [$birthday->id => $this->askedFor(['moments' => $moments])],
-            ]);
+        $this->actingAs($user)->put(route('contacts.sections.update', [
+            'vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $this->sectionNamed($version, 'Dates'),
+        ]), [
+            'fields' => [$birthday->id => '1984-02-03'],
+            'reminders' => [$birthday->id => $this->askedFor(['repeat' => 'yearly:5'])],
+        ])->assertSessionHasNoErrors();
 
-        $response->assertRedirect()->assertSessionHasErrors("reminders.{$birthday->id}.moments");
-        $this->assertDatabaseCount('reminders', 0);
-    }
-
-    /** @return array<string, array{0: array<int, array<string, string|null>>}> */
-    public static function badMoments(): array
-    {
-        return [
-            'the same moment twice' => [[
-                ['direction' => 'before', 'amount' => '7', 'unit' => 'days'],
-                ['direction' => 'before', 'amount' => '7', 'unit' => 'days'],
-            ]],
-            'twenty four months before' => [[
-                ['direction' => 'before', 'amount' => '24', 'unit' => 'months'],
-            ]],
-            'four hundred days before' => [[
-                ['direction' => 'before', 'amount' => '400', 'unit' => 'days'],
-            ]],
-            'sixty weeks after' => [[
-                ['direction' => 'after', 'amount' => '60', 'unit' => 'weeks'],
-            ]],
-            'no moment at all' => [[]],
-            'a moment with no amount' => [[
-                ['direction' => 'before', 'amount' => null, 'unit' => 'days'],
-            ]],
-        ];
+        $this->assertDatabaseHas('reminders', ['cadence' => 'yearly', 'frequency_interval' => 5]);
     }
 
     #[Test]
-    public function it_leaves_the_moments_alone_when_nobody_asked_for_a_reminder(): void
+    public function it_saves_the_date_alone_when_nobody_asked_for_a_reminder(): void
     {
         Queue::fake();
 
@@ -1026,7 +1000,7 @@ class ContactSectionControllerTest extends TestCase
                 'structureVersionSection' => $section,
             ]), [
                 'fields' => [$birthday->id => '1984-02-03'],
-                'reminders' => [$birthday->id => $this->askedFor(['on' => null, 'moments' => []])],
+                'reminders' => [$birthday->id => $this->askedFor(['on' => null])],
             ])
             ->assertRedirect()
             ->assertSessionHas('status', 'Saved.');
@@ -1057,11 +1031,11 @@ class ContactSectionControllerTest extends TestCase
             ])
             ->assertRedirect();
 
-        $this->assertDatabaseHas('reminder_occurrences', [
-            'source_local_date' => '2027-02-03',
-            'local_date' => '2027-01-27',
-            'status' => 'pending',
-        ]);
+        $this->assertSame(
+            ['2027-02-03'],
+            ReminderOccurrence::query()->get()->map(fn (ReminderOccurrence $occurrence): string => $occurrence->local_date->toDateString())->all(),
+        );
+        $this->assertDatabaseHas('reminder_occurrences', ['answer' => null, 'cancelled_at' => null]);
     }
 
     /** @return array{0: StructureVersion, 1: Field} */
@@ -1083,12 +1057,9 @@ class ContactSectionControllerTest extends TestCase
         return array_merge([
             'on' => '1',
             'name' => 'Ring Michael',
-            'recurs' => '1',
-            'cadence' => 'yearly',
-            'interval' => '1',
+            'repeat' => 'yearly:1',
             'time' => '09:00',
             'timezone' => 'Europe/Paris',
-            'moments' => [['direction' => 'before', 'amount' => '7', 'unit' => 'days']],
         ], $changes);
     }
 

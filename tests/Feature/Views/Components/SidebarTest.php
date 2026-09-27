@@ -210,14 +210,16 @@ class SidebarTest extends TestCase
     }
 
     #[Test]
-    public function the_vault_column_offers_the_reminders_and_counts_what_is_coming(): void
+    public function the_vault_column_offers_the_reminders_and_counts_what_awaits_an_answer(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $rule = $this->reminderAbout(user: $user, contact: Contact::factory()->create(['vault_id' => $vault->id]));
 
-        $this->deadline($rule, '+2 days');
-        $this->deadline($rule, '+9 days');
+        $this->deadline($rule, -3);
+        $this->deadline($rule, 0);
+        $this->deadline($rule, 9);
+        $this->deadline($rule, -30)->forceFill(['answer' => 'remembered', 'answered_at' => now()])->save();
 
         $rendered = $this->actingAs($user)->blade(
             '<x-vault.sidebar :user="$user" :vault="$vault" current="reminders" />',
@@ -227,18 +229,17 @@ class SidebarTest extends TestCase
         $rendered->assertSee(route('reminders.index', $vault), escape: false);
         $rendered->assertSee('Reminders');
         $rendered->assertSee('2');
+        $rendered->assertDontSee('>3<', escape: false);
     }
 
-    private function deadline(Reminder $rule, string $when): ReminderOccurrence
+    private function deadline(Reminder $rule, int $days): ReminderOccurrence
     {
-        $instant = CarbonImmutable::parse($when);
+        $day = CarbonImmutable::now($rule->timezone)->addDays($days)->startOfDay();
 
         return ReminderOccurrence::factory()->for($rule)->create([
-            'source_local_date' => $instant->toDateString(),
-            'generation_key' => '1:'.$instant->toDateString().':on::',
-            'scheduled_for' => $instant,
-            'original_scheduled_for' => $instant,
-            'local_date' => $instant->toDateString(),
+            'generation_key' => '1:'.$day->toDateString(),
+            'scheduled_for' => $day->setTime(9, 0)->utc(),
+            'local_date' => $day->toDateString(),
         ]);
     }
 

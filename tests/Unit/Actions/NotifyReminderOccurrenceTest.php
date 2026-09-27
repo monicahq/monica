@@ -8,7 +8,6 @@ use App\Actions\NotifyReminderOccurrence;
 use App\Enums\NotificationChannelEnum;
 use App\Enums\NotificationTypeEnum;
 use App\Enums\ReminderInactiveReasonEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Models\Contact;
 use App\Models\Notification;
 use App\Models\NotificationChannel;
@@ -167,18 +166,17 @@ class NotifyReminderOccurrenceTest extends TestCase
 
         new NotifyReminderOccurrence(occurrence: $occurrence)->execute();
 
-        $this->assertSame(ReminderOccurrenceStatusEnum::Notified, $occurrence->refresh()->status);
+        $this->assertNotNull($occurrence->refresh()->notifications_created_at);
         $this->assertNull($occurrence->notified_at);
-        $this->assertFalse(ReminderOccurrence::query()->due()->pluck('id')->contains($occurrence->id));
+        $this->assertFalse(ReminderOccurrence::query()->dueForNotification()->pluck('id')->contains($occurrence->id));
     }
 
     #[Test]
-    public function it_tells_nobody_twice_about_the_same_deadline(): void
+    public function it_makes_nothing_the_second_time_it_is_asked_about_the_same_deadline(): void
     {
         $occurrence = $this->dueOccurrence();
 
         new NotifyReminderOccurrence(occurrence: $occurrence)->execute();
-        $occurrence->update(['status' => ReminderOccurrenceStatusEnum::Pending]);
         $again = new NotifyReminderOccurrence(occurrence: $occurrence->refresh())->execute();
 
         $this->assertSame(0, $again);
@@ -186,21 +184,29 @@ class NotifyReminderOccurrenceTest extends TestCase
     }
 
     #[Test]
-    public function it_tells_somebody_again_about_a_deadline_they_put_off(): void
+    public function it_tells_nobody_twice_on_one_channel_even_if_the_deadline_is_swept_again(): void
     {
         $occurrence = $this->dueOccurrence();
+
         new NotifyReminderOccurrence(occurrence: $occurrence)->execute();
-
-        $occurrence->update([
-            'status' => ReminderOccurrenceStatusEnum::Postponed,
-            'scheduled_for' => $occurrence->scheduled_for->addDay(),
-            'postponed_count' => 1,
-        ]);
-
+        $occurrence->update(['notifications_created_at' => null]);
         $again = new NotifyReminderOccurrence(occurrence: $occurrence->refresh())->execute();
 
-        $this->assertSame(2, $again);
-        $this->assertSame(4, Notification::query()->where('notifiable_id', $occurrence->id)->count());
+        $this->assertSame(0, $again);
+        $this->assertSame(2, Notification::query()->where('notifiable_id', $occurrence->id)->count());
+    }
+
+    #[Test]
+    public function it_names_the_day_it_is_about_so_a_late_arrival_still_reads_true(): void
+    {
+        $occurrence = $this->dueOccurrence();
+
+        new NotifyReminderOccurrence(occurrence: $occurrence)->execute();
+
+        $this->assertDatabaseHas('notifications', [
+            'notifiable_id' => $occurrence->id,
+            'body' => 'Due '.$occurrence->local_date->locale('en')->isoFormat('LL'),
+        ]);
     }
 
     #[Test]
@@ -230,12 +236,13 @@ class NotifyReminderOccurrenceTest extends TestCase
     }
 
     #[Test]
-    public function it_makes_nothing_about_a_deadline_somebody_has_finished_with(): void
+    public function it_makes_nothing_about_a_deadline_somebody_already_answered(): void
     {
         $occurrence = $this->dueOccurrence();
-        $occurrence->update(['status' => ReminderOccurrenceStatusEnum::Dismissed]);
+        $occurrence->update(['answer' => 'remembered', 'answered_at' => now()]);
 
         $this->assertSame(0, new NotifyReminderOccurrence(occurrence: $occurrence->refresh())->execute());
+        $this->assertDatabaseCount('notifications', 0);
     }
 
     private function dueOccurrence(string $dueAt = '2027-05-12 07:00'): ReminderOccurrence
@@ -253,9 +260,7 @@ class NotifyReminderOccurrenceTest extends TestCase
             'account_id' => $reminder->account_id,
             'vault_id' => $reminder->vault_id,
             'scheduled_for' => $due,
-            'original_scheduled_for' => $due,
             'local_date' => $due->setTimezone('Europe/Paris')->format('Y-m-d'),
-            'source_local_date' => $due->setTimezone('Europe/Paris')->addDays(7)->format('Y-m-d'),
         ]);
     }
 }

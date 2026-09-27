@@ -7,7 +7,6 @@ namespace Tests\Unit\Actions;
 use App\Actions\DeactivateReminders;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -143,13 +142,17 @@ class DeactivateRemindersTest extends TestCase
     }
 
     #[Test]
-    public function it_silences_one_rule_by_hand_and_cancels_what_was_ahead(): void
+    public function it_silences_one_rule_and_cancels_every_deadline_still_waiting(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
         $reminder = $this->ruleOf($user);
-        $occurrence = ReminderOccurrence::factory()->for($reminder)->create([
+        $ahead = ReminderOccurrence::factory()->for($reminder)->create([
+            'account_id' => $reminder->account_id,
+            'vault_id' => $reminder->vault_id,
+        ]);
+        $overdue = ReminderOccurrence::factory()->for($reminder)->past()->create([
             'account_id' => $reminder->account_id,
             'vault_id' => $reminder->vault_id,
         ]);
@@ -157,24 +160,52 @@ class DeactivateRemindersTest extends TestCase
         $count = new DeactivateReminders(
             user: $user,
             subject: $reminder,
-            reason: ReminderInactiveReasonEnum::PausedByUser,
+            reason: ReminderInactiveReasonEnum::ValueCleared,
         )->execute();
 
         $this->assertSame(1, $count);
         $this->assertDatabaseHas('reminders', [
             'id' => $reminder->id,
             'is_active' => false,
-            'inactive_reason' => ReminderInactiveReasonEnum::PausedByUser->value,
+            'inactive_reason' => ReminderInactiveReasonEnum::ValueCleared->value,
         ]);
         $this->assertDatabaseHas('reminder_occurrences', [
-            'id' => $occurrence->id,
-            'status' => ReminderOccurrenceStatusEnum::Cancelled->value,
-            'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::RuleDisabled->value,
+            'id' => $ahead->id,
+            'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::ValueCleared->value,
+        ]);
+        $this->assertDatabaseHas('reminder_occurrences', [
+            'id' => $overdue->id,
+            'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::ValueCleared->value,
         ]);
     }
 
     #[Test]
-    public function it_leaves_the_other_rules_about_the_same_record_alone_when_one_is_paused(): void
+    public function it_leaves_the_answers_already_given_alone(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->ruleOf($user);
+        $answered = ReminderOccurrence::factory()->for($reminder)->past()->forgotten()->create([
+            'account_id' => $reminder->account_id,
+            'vault_id' => $reminder->vault_id,
+        ]);
+
+        new DeactivateReminders(
+            user: $user,
+            subject: $reminder,
+            reason: ReminderInactiveReasonEnum::ValueCleared,
+        )->execute();
+
+        $this->assertDatabaseHas('reminder_occurrences', [
+            'id' => $answered->id,
+            'answer' => 'forgotten',
+            'cancelled_at' => null,
+        ]);
+    }
+
+    #[Test]
+    public function it_leaves_the_other_rules_about_the_same_record_alone_when_one_is_silenced(): void
     {
         Queue::fake();
 
@@ -185,7 +216,7 @@ class DeactivateRemindersTest extends TestCase
         new DeactivateReminders(
             user: $user,
             subject: $reminder,
-            reason: ReminderInactiveReasonEnum::PausedByUser,
+            reason: ReminderInactiveReasonEnum::ValueCleared,
         )->execute();
 
         $this->assertDatabaseHas('reminders', ['id' => $sibling->id, 'is_active' => true]);

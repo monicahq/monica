@@ -18,6 +18,7 @@ use App\Models\FieldValueRow;
 use App\Models\LifeEvent;
 use App\Models\RecordSnapshot;
 use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\Section;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
@@ -528,7 +529,7 @@ class ContactViewModel
         ]);
     }
 
-    /** @return array<int, array{icon: string, label: string, value: string, reminder: string|null}> */
+    /** @return array<int, array{icon: string, label: string, value: string, reminder: string|null, url?: string}> */
     public function headerFacts(): array
     {
         $facts = $this->highlightedFields()
@@ -547,6 +548,18 @@ class ContactViewModel
             'label' => __('Last in touch'),
             'value' => $this->contact->last_interaction_at?->diffForHumans() ?? __('never'),
             'reminder' => null,
+        ];
+
+        $awaiting = $this->awaitingAnswer();
+
+        $facts[] = [
+            'icon' => 'reminder',
+            'label' => __('Reminders'),
+            'value' => $awaiting === 0
+                ? __('none waiting')
+                : trans_choice(':count awaiting an answer|:count awaiting an answer', $awaiting),
+            'reminder' => null,
+            'url' => route('contacts.reminders.index', ['vault' => $this->vault, 'contact' => $this->contact]),
         ];
 
         return $facts;
@@ -682,11 +695,21 @@ class ContactViewModel
         )->mark();
     }
 
+    private function awaitingAnswer(): int
+    {
+        return ReminderOccurrence::query()
+            ->whereIn('reminder_id', $this->contact->reminders()->active()->select('id'))
+            ->active()
+            ->whereDate('local_date', '<=', CarbonImmutable::now($this->user->timezone)->toDateString())
+            ->count();
+    }
+
     /** @return Collection<int, Reminder> */
     private function reminders(): Collection
     {
         return once(fn (): Collection => $this->contact
             ->reminders()
+            ->whereNotNull('field_id')
             ->orderByDesc('is_active')
             ->orderByDesc('id')
             ->get()
@@ -773,6 +796,15 @@ class ContactViewModel
     public function immediateFamily(): ImmediateFamilyBlock
     {
         return once(fn (): ImmediateFamilyBlock => new ImmediateFamilyBlock(
+            vault: $this->vault,
+            contact: $this->contact,
+        ));
+    }
+
+    public function deadlines(): ContactDeadlinesBlock
+    {
+        return once(fn (): ContactDeadlinesBlock => new ContactDeadlinesBlock(
+            user: $this->user,
             vault: $this->vault,
             contact: $this->contact,
         ));

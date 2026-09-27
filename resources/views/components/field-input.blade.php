@@ -240,7 +240,7 @@
     @break
 
   @case($type === FieldTypeEnum::RecurringDate)
-    <div class="flex flex-col gap-1.5">
+    <div class="flex flex-col gap-3">
       <x-input
         type="date"
         :id="$id"
@@ -253,18 +253,14 @@
         :optional="! $field->is_required"
       />
 
-      <x-option-row
-        :id="$id.'-year-unknown'"
-        :name="$yearName"
-        value="1"
-        :checked="(bool) $value?->year_is_unknown"
-        :hint="__('The day and the month are enough for a reminder.')"
-      >
-        {{ __('I do not know the year') }}
-      </x-option-row>
-
       @if ($reminder !== null)
-        <x-field-reminder :field="$field" :reminder="$reminder" :name="$reminderName" :id="$id.'-reminder'" :messages="$messages" />
+        <x-field-reminder :field="$field" :reminder="$reminder" :name="$reminderName" :id="$id.'-reminder'" :date-id="$id" :year-id="$id.'-year-unknown'" :messages="$messages">
+          <x-slot:beside>
+            <x-checkbox :id="$id.'-year-unknown'" :name="$yearName" :checked="(bool) $value?->year_is_unknown">{{ __('I do not know the year') }}</x-checkbox>
+          </x-slot:beside>
+        </x-field-reminder>
+      @else
+        <x-checkbox :id="$id.'-year-unknown'" :name="$yearName" :checked="(bool) $value?->year_is_unknown">{{ __('I do not know the year') }}</x-checkbox>
       @endif
     </div>
     @break
@@ -284,7 +280,7 @@
       />
 
       @if ($reminder !== null)
-        <x-field-reminder :field="$field" :reminder="$reminder" :name="$reminderName" :id="$id.'-reminder'" :messages="$messages" />
+        <x-field-reminder :field="$field" :reminder="$reminder" :name="$reminderName" :id="$id.'-reminder'" :date-id="$id" :messages="$messages" />
       @endif
     </div>
     @break

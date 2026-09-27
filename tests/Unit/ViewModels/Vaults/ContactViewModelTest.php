@@ -18,6 +18,7 @@ use App\Models\File;
 use App\Models\RecordSnapshot;
 use App\Models\Relationship;
 use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
@@ -267,7 +268,7 @@ class ContactViewModelTest extends TestCase
 
         $facts = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact))->headerFacts();
 
-        $this->assertStringContainsString('days ago', end($facts)['value']);
+        $this->assertStringContainsString('days ago', collect($facts)->firstWhere('label', 'Last in touch')['value']);
     }
 
     #[Test]
@@ -279,7 +280,7 @@ class ContactViewModelTest extends TestCase
 
         $facts = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact))->headerFacts();
 
-        $this->assertSame('never', end($facts)['value']);
+        $this->assertSame('never', collect($facts)->firstWhere('label', 'Last in touch')['value']);
     }
 
     #[Test]
@@ -660,25 +661,13 @@ class ContactViewModelTest extends TestCase
         $this->assertEquals('Birthday — Michael Scott', $date['reminder']->placeholder());
         $this->assertEquals('Europe/Paris', $date['reminder']->timezone());
         $this->assertEquals('09:00', $date['reminder']->time());
-        $this->assertTrue($date['reminder']->recurs());
-        $this->assertEquals('yearly', $date['reminder']->cadence());
+        $this->assertEquals('yearly:1', $date['reminder']->repeat());
         $this->assertNull($date['reminder']->nextLine());
         $this->assertNull($date['reminder']->quietBecause());
     }
 
     #[Test]
-    public function it_opens_a_date_with_no_rule_on_one_moment_on_the_day(): void
-    {
-        $user = User::factory()->create();
-        $panel = $this->panelFor($user, null)['reminder'];
-
-        $this->assertCount(1, $panel->moments());
-        $this->assertEquals('on', $panel->moments()[0]['direction']);
-        $this->assertEquals('on the day', $panel->moments()[0]['phrase']);
-    }
-
-    #[Test]
-    public function it_reads_a_saved_rule_back_with_its_moments_in_words(): void
+    public function it_reads_a_saved_rule_back_in_words(): void
     {
         $user = User::factory()->create();
 
@@ -688,25 +677,18 @@ class ContactViewModelTest extends TestCase
             'frequency_interval' => 2,
             'time_of_day' => '18:30:00',
             'timezone' => 'Asia/Tokyo',
-            'moments' => [
-                ['direction' => 'before', 'amount' => 1, 'unit' => 'weeks'],
-                ['direction' => 'on', 'amount' => null, 'unit' => null],
-            ],
         ])['reminder'];
 
         $this->assertTrue($panel->isOn());
         $this->assertEquals('Ring Michael', $panel->name());
-        $this->assertEquals('monthly', $panel->cadence());
-        $this->assertEquals(2, $panel->interval());
+        $this->assertEquals('monthly:2', $panel->repeat());
         $this->assertEquals('18:30', $panel->time());
         $this->assertEquals('Asia/Tokyo', $panel->timezone());
-        $this->assertEquals('1 week before', $panel->moments()[0]['phrase']);
-        $this->assertEquals('on the day', $panel->moments()[1]['phrase']);
         $this->assertEquals(
-            'You will be reminded 1 week before and on the day, every 2 months, at 18:30 Asia/Tokyo.',
+            'You will be reminded on the day, every 2 months, at 18:30 Asia/Tokyo.',
             $panel->summary(),
         );
-        $this->assertStringStartsWith('Next:', $panel->nextLine());
+        $this->assertStringStartsWith('Next reminder on', (string) $panel->nextLine());
     }
 
     #[Test]
@@ -756,12 +738,10 @@ class ContactViewModelTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $field = $this->panelFor($user, [
-            'moments' => [['direction' => 'before', 'amount' => 7, 'unit' => 'days']],
-        ]);
+        $field = $this->panelFor($user, []);
 
         $this->assertSame(
-            'You will be reminded 7 days before, every year, at 09:00 Europe/Paris.',
+            'You will be reminded on the day, every year, at 09:00 Europe/Paris.',
             $field['reminderMark'],
         );
     }
@@ -817,14 +797,46 @@ class ContactViewModelTest extends TestCase
             'remindable_type' => Contact::class,
             'remindable_id' => $contact->id,
             'field_id' => $field->id,
-            'moments' => [['direction' => 'before', 'amount' => 7, 'unit' => 'days']],
         ]);
 
         $facts = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->headerFacts();
 
         $this->assertSame('Birthday', $facts[0]['label']);
-        $this->assertStringContainsString('7 days before', $facts[0]['reminder']);
+        $this->assertStringContainsString('on the day', $facts[0]['reminder']);
         $this->assertNull(end($facts)['reminder']);
+    }
+
+    #[Test]
+    public function the_header_leads_to_the_reminders_with_what_is_waiting_for_an_answer(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $contact = $this->contact($user, $version);
+        $rule = Reminder::factory()->manual($contact, now()->toDateString())->create();
+
+        ReminderOccurrence::factory()->for($rule)->today()->create();
+        ReminderOccurrence::factory()->for($rule)->daysFromNow(-10)->create();
+        ReminderOccurrence::factory()->for($rule)->daysFromNow(-40)->remembered()->create();
+        ReminderOccurrence::factory()->for($rule)->daysFromNow(5)->create();
+
+        $fact = collect(new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->headerFacts())
+            ->firstWhere('label', 'Reminders');
+
+        $this->assertSame('2 awaiting an answer', $fact['value']);
+        $this->assertSame(route('contacts.reminders.index', ['vault' => $contact->vault, 'contact' => $contact]), $fact['url']);
+    }
+
+    #[Test]
+    public function the_header_says_when_no_reminder_is_waiting(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $contact = $this->contact($user, $version);
+
+        $fact = collect(new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->headerFacts())
+            ->firstWhere('label', 'Reminders');
+
+        $this->assertSame('none waiting', $fact['value']);
     }
 
     /**

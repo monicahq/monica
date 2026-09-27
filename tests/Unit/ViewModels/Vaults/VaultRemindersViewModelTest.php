@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Enums\ReminderAnswerEnum;
+use App\Enums\ReminderCadenceEnum;
+use App\Enums\ReminderOccurrenceCancelledReasonEnum;
 use App\Models\Contact;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
@@ -20,107 +23,89 @@ class VaultRemindersViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_puts_every_deadline_in_its_bucket_in_the_order_they_are_drawn(): void
+    public function it_groups_what_waits_into_overdue_today_and_upcoming(): void
     {
-        $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'Europe/Paris'));
-
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $rule = $this->ruleIn($user, $vault);
 
-        $this->deadline($rule, '2026-09-01 09:00:00');
-        $this->deadline($rule, '2026-09-05 09:00:00');
-        $this->deadline($rule, '2026-09-20 09:00:00');
-        $this->deadline($rule, '2026-10-15 09:00:00');
-        $this->deadline($rule, '2026-11-20 09:00:00');
+        $this->deadline($this->onceIn($user, $vault, '2026-09-01'), '2026-09-01');
+        $this->deadline($this->onceIn($user, $vault, '2026-09-03'), '2026-09-03');
+        $this->deadline($this->onceIn($user, $vault, '2026-09-04'), '2026-09-04');
+        $this->deadline($this->onceIn($user, $vault, '2026-09-20'), '2026-09-20');
 
         $groups = $this->viewModelFor($user, $vault)->groups();
 
+        $this->assertSame(['Overdue', 'Today', 'Upcoming'], array_column($groups, 'title'));
+        $this->assertSame(['2 reminders', '1 reminder', '1 reminder'], array_column($groups, 'count'));
+        $this->assertSame([true, false, false], array_column($groups, 'isOverdue'));
+    }
+
+    #[Test]
+    public function it_lists_every_date_a_reminder_left_unanswered(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $monthly = $this->onceIn($user, $vault, '2026-07-04');
+        $monthly->update(['cadence' => ReminderCadenceEnum::Monthly]);
+
+        $this->deadline($monthly, '2026-07-04');
+        $this->deadline($monthly, '2026-08-04');
+
+        $groups = $this->viewModelFor($user, $vault)->groups();
+
+        $this->assertSame('Overdue', $groups[0]['title']);
+        $this->assertCount(2, $groups[0]['rows']);
+    }
+
+    #[Test]
+    public function it_shows_one_upcoming_date_per_reminder_even_beyond_what_is_generated(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $monthly = $this->onceIn($user, $vault, '2026-10-01');
+        $monthly->update(['cadence' => ReminderCadenceEnum::Monthly]);
+        $this->deadline($monthly, '2026-10-01');
+        $this->deadline($monthly, '2026-11-01');
+
+        $yearly = $this->onceIn($user, $vault, '2027-06-01');
+        $yearly->update(['cadence' => ReminderCadenceEnum::Yearly]);
+
+        $groups = $this->viewModelFor($user, $vault)->groups();
+
+        $this->assertSame(['Upcoming'], array_column($groups, 'title'));
         $this->assertSame(
-            ['Overdue', 'This week', 'Later this month', 'Next month', 'Later'],
-            array_column($groups, 'title'),
+            ['2026-10-01', '2027-06-01'],
+            array_map(fn ($row): string => $row->occurrence()->local_date->toDateString(), $groups[0]['rows']),
         );
-
-        foreach ($groups as $group) {
-            $this->assertCount(1, $group['rows']);
-        }
     }
 
     #[Test]
-    public function it_leaves_out_a_bucket_holding_nothing(): void
+    public function it_leaves_out_what_was_answered_or_cancelled(): void
     {
-        $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'Europe/Paris'));
-
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->deadline($this->ruleIn($user, $vault), '2026-09-20 09:00:00');
+        $this->deadline($this->onceIn($user, $vault, '2026-09-01'), '2026-09-01')->update(['answer' => ReminderAnswerEnum::Forgotten, 'answered_at' => now()]);
+        $this->deadline($this->onceIn($user, $vault, '2026-09-02'), '2026-09-02')->update(['cancelled_at' => now(), 'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::RuleChanged]);
 
-        $groups = $this->viewModelFor($user, $vault)->groups();
-
-        $this->assertSame(['Later this month'], array_column($groups, 'title'));
-    }
-
-    #[Test]
-    public function it_puts_a_deadline_due_exactly_now_in_one_bucket_only(): void
-    {
-        $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'Europe/Paris'));
-
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->deadline($this->ruleIn($user, $vault), '2026-09-04 12:00:00');
-
-        $groups = $this->viewModelFor($user, $vault)->groups();
-
-        $this->assertCount(1, $groups);
-        $this->assertCount(1, $groups[0]['rows']);
-        $this->assertSame('This week', $groups[0]['title']);
-    }
-
-    #[Test]
-    public function it_marks_only_the_overdue_bucket_as_overdue(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $rule = $this->ruleIn($user, $vault);
-
-        $this->deadline($rule, CarbonImmutable::now()->subDays(3)->toDateTimeString());
-        $this->deadline($rule, CarbonImmutable::now()->addDays(40)->toDateTimeString());
-
-        $groups = $this->viewModelFor($user, $vault)->groups();
-
-        $this->assertTrue($groups[0]['isOverdue']);
-        $this->assertFalse($groups[1]['isOverdue']);
-    }
-
-    #[Test]
-    public function it_counts_what_each_bucket_holds_in_words(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $rule = $this->ruleIn($user, $vault);
-
-        $this->deadline($rule, CarbonImmutable::now()->subDays(3)->toDateTimeString());
-
-        $one = $this->viewModelFor($user, $vault)->groups();
-        $this->assertSame('1 reminder', $one[0]['count']);
-
-        $this->deadline($rule, CarbonImmutable::now()->subDays(4)->toDateTimeString());
-
-        $two = $this->viewModelFor($user, $vault)->groups();
-        $this->assertSame('2 reminders', $two[0]['count']);
+        $this->assertSame([], $this->viewModelFor($user, $vault)->groups());
     }
 
     #[Test]
     public function it_groups_by_contact_in_alphabetical_order_and_marks_nothing_overdue(): void
     {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->deadline($this->ruleIn($user, $vault, 'Zoe', 'Vance'), CarbonImmutable::now()->addDays(2)->toDateTimeString());
-        $this->deadline($this->ruleIn($user, $vault, 'Angela', 'Martin'), CarbonImmutable::now()->subDays(2)->toDateTimeString());
-        $this->deadline($this->ruleIn($user, $vault, 'Élodie', 'Bernard'), CarbonImmutable::now()->addDays(3)->toDateTimeString());
+        $this->deadline($this->onceIn($user, $vault, '2026-09-06', 'Zoe', 'Vance'), '2026-09-06');
+        $this->deadline($this->onceIn($user, $vault, '2026-09-02', 'Angela', 'Martin'), '2026-09-02');
+        $this->deadline($this->onceIn($user, $vault, '2026-09-07', 'Élodie', 'Bernard'), '2026-09-07');
 
         $groups = $this->viewModelFor($user, $vault, VaultRemindersViewModel::GroupByContact)->groups();
 
@@ -144,9 +129,10 @@ class VaultRemindersViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_tells_a_vault_with_nothing_set_up_apart_from_one_with_nothing_due_soon(): void
+    public function it_tells_a_vault_with_nothing_set_up_apart_from_one_with_nothing_coming(): void
     {
-        $user = User::factory()->create();
+        $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
 
         $bare = Vault::factory()->create(['account_id' => $user->account_id]);
         $bareModel = $this->viewModelFor($user, $bare);
@@ -154,13 +140,13 @@ class VaultRemindersViewModelTest extends TestCase
         $this->assertFalse($bareModel->hasAnyRule());
         $this->assertSame('No reminders in this vault', $bareModel->emptyTitle());
 
-        $further = Vault::factory()->create(['account_id' => $user->account_id]);
-        $this->deadline($this->ruleIn($user, $further), CarbonImmutable::now()->addDays(240)->toDateTimeString());
-        $furtherModel = $this->viewModelFor($user, $further);
+        $done = Vault::factory()->create(['account_id' => $user->account_id]);
+        $this->deadline($this->onceIn($user, $done, '2026-08-01'), '2026-08-01')->update(['answer' => ReminderAnswerEnum::Remembered, 'answered_at' => now()]);
+        $doneModel = $this->viewModelFor($user, $done);
 
-        $this->assertTrue($furtherModel->hasAnyRule());
-        $this->assertSame('Nothing due yet', $furtherModel->emptyTitle());
-        $this->assertSame([], $furtherModel->groups());
+        $this->assertTrue($doneModel->hasAnyRule());
+        $this->assertSame('Nothing due yet', $doneModel->emptyTitle());
+        $this->assertSame([], $doneModel->groups());
     }
 
     #[Test]
@@ -179,28 +165,26 @@ class VaultRemindersViewModelTest extends TestCase
         return new VaultRemindersViewModel(user: $user, vault: $vault, groupBy: $groupBy);
     }
 
-    private function ruleIn(User $user, Vault $vault, string $first = 'Stanley', string $last = 'Hudson'): Reminder
+    private function onceIn(User $user, Vault $vault, string $startsOn, string $first = 'Stanley', string $last = 'Hudson'): Reminder
     {
-        return $this->reminderAbout(
-            user: $user,
-            contact: Contact::factory()->create([
-                'vault_id' => $vault->id,
-                'first_name' => $first,
-                'last_name' => $last,
-            ]),
-        );
+        $contact = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'first_name' => $first,
+            'last_name' => $last,
+        ]);
+
+        return Reminder::factory()->manual($contact, $startsOn)->once()->create(['timezone' => 'UTC']);
     }
 
-    private function deadline(Reminder $rule, string $instant): ReminderOccurrence
+    private function deadline(Reminder $rule, string $day): ReminderOccurrence
     {
-        $due = CarbonImmutable::parse($instant);
+        $due = CarbonImmutable::parse("{$day} 09:00:00", 'UTC');
 
         return ReminderOccurrence::factory()->for($rule)->create([
-            'source_local_date' => $due->toDateString(),
-            'generation_key' => '1:'.$due->format('Y-m-d H:i:s').':on::',
+            'generation_key' => '1:'.$day,
             'scheduled_for' => $due,
-            'original_scheduled_for' => $due,
-            'local_date' => $due->toDateString(),
+            'local_date' => $day,
         ]);
     }
 }

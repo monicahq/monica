@@ -187,8 +187,8 @@ enum UserActionEnum: string implements Translatable
     case ReminderRemoval = 'reminder_removed';
     case ReminderDeactivation = 'reminders_deactivated';
     case ReminderReactivation = 'reminders_reactivated';
-    case ReminderOccurrencePostponement = 'reminder_occurrence_postponed';
-    case ReminderOccurrenceDismissal = 'reminder_occurrence_dismissed';
+    case ReminderOccurrenceRemembered = 'reminder_occurrence_remembered';
+    case ReminderOccurrenceForgotten = 'reminder_occurrence_forgotten';
     case NotificationChannelEnabled = 'notification_channel_enabled';
     case NotificationChannelDisabled = 'notification_channel_disabled';
     case NotificationChannelUpdate = 'notification_channel_updated';
@@ -381,8 +381,8 @@ enum UserActionEnum: string implements Translatable
             self::ReminderRemoval => 'Removed the reminder on :label on :name',
             self::ReminderDeactivation => 'Stopped :count reminder about :name|Stopped :count reminders about :name',
             self::ReminderReactivation => 'Restored :count reminder about :name|Restored :count reminders about :name',
-            self::ReminderOccurrencePostponement => 'Postponed the reminder :name until :date',
-            self::ReminderOccurrenceDismissal => 'Dismissed the reminder :name of :date',
+            self::ReminderOccurrenceRemembered => 'Remembered :name on :date',
+            self::ReminderOccurrenceForgotten => 'Forgot :name on :date',
             self::NotificationChannelEnabled => 'Switched :name on for notifications',
             self::NotificationChannelDisabled => 'Switched :name off for notifications',
             self::NotificationChannelUpdate => 'Changed the settings of :name',

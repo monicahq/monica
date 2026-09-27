@@ -41,8 +41,8 @@ class SendTestReminderNotification
         $this->user->notify(new ReminderDue(
             reminderName: $reminder->name,
             recordName: $record instanceof Contact ? $record->name : '',
-            sourceDate: $this->occurrence->source_local_date->format('Y-m-d'),
-            whenItIsAbout: $this->occurrence->howFarOff($locale),
+            sourceDate: $this->occurrence->local_date->format('Y-m-d'),
+            whenItIsAbout: __('Due :date', ['date' => $this->occurrence->local_date->locale($locale)->isoFormat('LL')], $locale),
             channel: $this->emailChannel(),
         )->locale($locale));
     }

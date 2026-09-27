@@ -6,7 +6,7 @@ namespace App\Enums;
 
 enum ReminderOccurrenceCancelledReasonEnum: string
 {
-    case RuleDisabled = 'rule_disabled';
+    case RuleDeleted = 'rule_deleted';
     case RecordArchived = 'record_archived';
     case RecordDeleted = 'record_deleted';
     case FieldRemoved = 'field_removed';
@@ -17,7 +17,7 @@ enum ReminderOccurrenceCancelledReasonEnum: string
     public function isReversible(): bool
     {
         return in_array($this, [
-            self::RuleDisabled,
+            self::RuleDeleted,
             self::RecordArchived,
             self::RecordDeleted,
             self::FieldRemoved,
@@ -31,7 +31,6 @@ enum ReminderOccurrenceCancelledReasonEnum: string
             ReminderInactiveReasonEnum::RecordArchived => self::RecordArchived,
             ReminderInactiveReasonEnum::RecordDeleted => self::RecordDeleted,
             ReminderInactiveReasonEnum::FieldRemoved => self::FieldRemoved,
-            ReminderInactiveReasonEnum::PausedByUser => self::RuleDisabled,
         };
     }
 

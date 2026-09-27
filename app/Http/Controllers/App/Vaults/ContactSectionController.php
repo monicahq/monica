@@ -10,7 +10,6 @@ use App\Exceptions\FieldValueIsNotUnique;
 use App\Exceptions\NotEnoughRepetitions;
 use App\Exceptions\NotEnoughStorageLeft;
 use App\Exceptions\ReminderIsNotValid;
-use App\Exceptions\ReminderMomentIsNotValid;
 use App\Exceptions\ReminderNeedsADate;
 use App\Exceptions\TooManyRepetitions;
 use App\Exceptions\ValueAlreadyHasAReminder;
@@ -57,7 +56,7 @@ class ContactSectionController extends Controller
                 monthIsUnknown: $request->validated('month_is_unknown', []),
                 reminders: $request->validated('reminders', []),
             )->execute();
-        } catch (FieldIsRequired|FieldValueIsNotUnique|NotEnoughRepetitions|NotEnoughStorageLeft|ReminderIsNotValid|ReminderMomentIsNotValid|ReminderNeedsADate|TooManyRepetitions|ValueAlreadyHasAReminder $e) {
+        } catch (FieldIsRequired|FieldValueIsNotUnique|NotEnoughRepetitions|NotEnoughStorageLeft|ReminderIsNotValid|ReminderNeedsADate|TooManyRepetitions|ValueAlreadyHasAReminder $e) {
             return redirect()
                 ->route('contacts.sections.edit', ['vault' => $vault, 'contact' => $contact, 'structureVersionSection' => $structureVersionSection])
                 ->withInput()

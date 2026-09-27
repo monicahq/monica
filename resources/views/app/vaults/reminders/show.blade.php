@@ -6,7 +6,7 @@
   $schedule = $viewModel->schedule();
   $contact = $viewModel->contact();
   $occurrences = $viewModel->occurrences();
-  $nextRow = $occurrences[0] ?? null;
+  $answers = $viewModel->answers();
   $history = $viewModel->history();
 @endphp
 <x-shell :title="$viewModel->title()">
@@ -42,16 +42,6 @@
     </div>
 
     <div class="flex shrink-0 items-center gap-2">
-      @if ($state['isActive'])
-        <x-form method="put" :action="$viewModel->pauseUrl()" class="contents">
-          <x-button.secondary type="submit">{{ __('Pause') }}</x-button.secondary>
-        </x-form>
-      @elseif ($state['canResume'])
-        <x-form method="delete" :action="$viewModel->resumeUrl()" class="contents">
-          <x-button.secondary type="submit">{{ __('Start it again') }}</x-button.secondary>
-        </x-form>
-      @endif
-
       <x-button :href="$viewModel->editUrl()" data-turbo="true">{{ __('Edit reminder') }}</x-button>
     </div>
   </div>
@@ -77,11 +67,9 @@
       <span class="text-sm text-pretty text-body">{{ $next['note'] }}</span>
     </div>
 
-    @if ($next['isScheduled'] && $nextRow !== null)
+    @if ($next['row'] !== null)
       <div class="flex flex-none items-center gap-1.5">
-        @include('app.vaults.reminders._postpone', ['row' => $nextRow, 'inMenu' => false])
-
-        @include('app.vaults.reminders._dismiss', ['row' => $nextRow])
+        @include('app.vaults.reminders._answers', ['row' => $next['row']])
       </div>
     @endif
   </div>
@@ -100,35 +88,17 @@
           </div>
         @endforeach
       </dl>
-
-      <div class="flex flex-col gap-2.5 border-t border-hairline pt-4">
-        <span class="text-sm font-medium text-ink">{{ __('You are told at these moments') }}</span>
-
-        <ul class="flex flex-wrap items-center gap-2">
-          @foreach ($schedule['moments'] as $moment)
-            <li class="inline-flex h-7.5 items-center gap-2 rounded-md border border-hairline bg-card px-2.75 text-sm text-body">
-              <x-icon name="calendar" :size="14" :stroke-width="1.6" class="shrink-0 text-muted" />
-
-              <span>{{ $moment['label'] }}</span>
-
-              @if ($moment['date'] !== null)
-                <span class="text-muted-soft">{{ $moment['date'] }}</span>
-              @endif
-            </li>
-          @endforeach
-        </ul>
-      </div>
     </div>
   </x-panel>
 
-  <x-panel :title="__('Still to come')" icon="reminder" :flush="true">
+  <x-panel :title="__('Still open')" icon="reminder" :flush="true">
     @forelse ($occurrences as $row)
       <div class="border-t border-hairline px-4 py-3.5 first:border-t-0">
         @include('app.vaults.reminders.row', ['row' => $row, 'linkToReminder' => false])
       </div>
     @empty
       <div class="p-4">
-        <x-empty-state :title="__('Nothing to come')">
+        <x-empty-state :title="__('Nothing open')">
           <x-slot:icon>
             <x-icon name="reminder" :size="30" :stroke-width="1.4" />
           </x-slot:icon>
@@ -139,8 +109,34 @@
     @endforelse
   </x-panel>
 
+  <x-panel :title="__('History')" :subtitle="__('What you answered for each date. Answers are kept as they are.')" icon="check" :flush="true">
+    @forelse ($answers as $answer)
+      <div class="flex flex-wrap items-center justify-between gap-3 border-t border-hairline px-4 py-3 first:border-t-0">
+        <span class="text-sm text-ink">{{ $answer['date'] }}</span>
+
+        <span class="flex items-center gap-2.5">
+          @if ($answer['answeredOn'] !== null)
+            <span class="text-xs text-muted">{{ __('answered :date', ['date' => $answer['answeredOn']]) }}</span>
+          @endif
+
+          <x-badge :tone="$answer['tone']">{{ $answer['outcome'] }}</x-badge>
+        </span>
+      </div>
+    @empty
+      <div class="p-4">
+        <x-empty-state :title="__('No dates yet')">
+          <x-slot:icon>
+            <x-icon name="check" :size="30" :stroke-width="1.4" />
+          </x-slot:icon>
+
+          {{ __('Once a date has come, it is listed here with what you answered.') }}
+        </x-empty-state>
+      </div>
+    @endforelse
+  </x-panel>
+
   @if ($history !== [])
-    <x-panel :title="__('History')" icon="timeline">
+    <x-panel :title="__('Activity')" icon="timeline">
       @include('app.vaults.reminders._history', ['entries' => $history])
     </x-panel>
   @endif
@@ -148,7 +144,7 @@
   <x-panel :title="__('Delete this reminder')" tone="danger" icon="info">
     <div class="flex flex-wrap items-center justify-between gap-5">
       <p class="max-w-prose text-sm leading-relaxed text-pretty text-body">
-        {{ __('This removes the reminder and everything recorded about it. The date it reads stays on the record, and you can ask to be reminded of it again whenever you want.') }}
+        {{ __('This stops the reminder for good. Nothing further is delivered, and dates still waiting for an answer are dropped.') }}
       </p>
 
       <x-modal.warning
@@ -160,7 +156,7 @@
           <x-button.danger type="button" @click="open = true">{{ __('Delete reminder') }}</x-button.danger>
         </x-slot:trigger>
 
-        {{ __('Its history is deleted with it, and nothing further will be delivered. The date on the record is not touched.') }}
+        {{ __('This cannot be undone. The answers you already gave stay on the contact’s reminders.') }}
       </x-modal.warning>
     </div>
   </x-panel>

@@ -52,9 +52,9 @@ class Sidebar extends Component
     private function reminderCount(): int
     {
         return ReminderOccurrence::query()
-            ->upcomingInVault(
+            ->awaitingAnswerInVault(
                 vault: $this->vault,
-                until: CarbonImmutable::now()->addDays((int) config('monica.reminder_generation_window_in_days')),
+                untilDay: CarbonImmutable::now($this->user->timezone),
             )
             ->count();
     }

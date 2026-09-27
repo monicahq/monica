@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\ReminderInactiveReasonEnum;
+use App\Enums\ReminderSourceEnum;
 use App\Enums\SnapshotReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\ContactChangedSinceThePreview;
@@ -242,6 +243,10 @@ class MergeContacts
             $reminder->save();
 
             $this->ledger[] = ['kind' => 'reminder_moved', 'id' => $reminder->id, 'from' => $this->absorbed->id];
+
+            if ($reminder->source === ReminderSourceEnum::Manual) {
+                continue;
+            }
 
             $source = $reminder->field_value_id === null
                 ? null

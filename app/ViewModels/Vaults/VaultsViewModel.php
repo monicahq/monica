@@ -125,9 +125,9 @@ class VaultsViewModel
     private function dateCount(Vault $vault): int
     {
         return ReminderOccurrence::query()
-            ->upcomingInVault(
+            ->awaitingAnswerInVault(
                 vault: $vault,
-                until: CarbonImmutable::now($this->user->timezone)->endOfMonth(),
+                untilDay: CarbonImmutable::now($this->user->timezone)->endOfMonth(),
             )
             ->count();
     }

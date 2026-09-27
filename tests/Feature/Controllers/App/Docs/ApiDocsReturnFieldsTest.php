@@ -29,6 +29,8 @@ use App\Models\NotificationPreference;
 use App\Models\Payment;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
+use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\StripeOrder;
@@ -1368,6 +1370,62 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}");
             }),
 
+            'reminders-index' => $this->asSomebody(function (User $user): TestResponse {
+                $reminder = $this->aManualReminder($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$reminder->vault->uuid}/contacts/{$reminder->remindable->uuid}/reminders");
+            }),
+
+            'reminders-create' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+                return $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/reminders", [
+                    'name' => 'Ask how the art school application went',
+                    'starts_on' => now()->addWeek()->toDateString(),
+                    'cadence' => 'monthly',
+                    'time' => '09:00',
+                ]);
+            }),
+
+            'reminders-show' => $this->asSomebody(function (User $user): TestResponse {
+                $reminder = $this->aManualReminder($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$reminder->vault->uuid}/contacts/{$reminder->remindable->uuid}/reminders/{$reminder->uuid}");
+            }),
+
+            'reminders-update' => $this->asSomebody(function (User $user): TestResponse {
+                $reminder = $this->aManualReminder($user);
+
+                return $this->json('PUT', "/api/v1/vaults/{$reminder->vault->uuid}/contacts/{$reminder->remindable->uuid}/reminders/{$reminder->uuid}", [
+                    'name' => 'Ask how the art school application went',
+                    'cadence' => 'yearly',
+                    'time' => '10:00',
+                ]);
+            }),
+
+            'reminders-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $reminder = $this->aManualReminder($user);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$reminder->vault->uuid}/contacts/{$reminder->remindable->uuid}/reminders/{$reminder->uuid}");
+            }),
+
+            'reminder-occurrences-index' => $this->asSomebody(function (User $user): TestResponse {
+                $reminder = $this->aManualReminder($user);
+                ReminderOccurrence::factory()->past()->remembered()->create(['reminder_id' => $reminder->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$reminder->vault->uuid}/contacts/{$reminder->remindable->uuid}/reminder-occurrences?category=history");
+            }),
+
+            'reminder-occurrences-answer' => $this->asSomebody(function (User $user): TestResponse {
+                $reminder = $this->aManualReminder($user);
+                $occurrence = ReminderOccurrence::factory()->past()->create(['reminder_id' => $reminder->id]);
+
+                return $this->json('PUT', "/api/v1/vaults/{$reminder->vault->uuid}/contacts/{$reminder->remindable->uuid}/reminder-occurrences/{$occurrence->uuid}/answer", [
+                    'answer' => 'remembered',
+                ]);
+            }),
+
             default => null,
         };
     }
@@ -1482,6 +1540,14 @@ class ApiDocsReturnFieldsTest extends TestCase
         ]);
 
         return $type;
+    }
+
+    private function aManualReminder(User $user): Reminder
+    {
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        return Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create();
     }
 
     private function asSomebody(callable $call): TestResponse

@@ -45,15 +45,15 @@ updated_at                  datetime
 
 ## Rules
 
-- One occurrence can produce several notifications, one per enabled channel (10.1). A reminder's moments have already become separate occurrences before this layer is reached: a notification copies its occurrence's effective `scheduled_for` and never applies the moment offset again.
+- One occurrence produces at most one notification per enabled channel (10.1), on its day. A notification copies its occurrence's `scheduled_for` and never shifts it.
 - Quiet hours are applied here (10.4). A notification due at 3am is held and delivered at 8am. `scheduled_for` keeps when it was due, `held_until` says when it may go, and the two are never conflated.
 - Digest mode folds notifications into one (10.4). The folded ones keep their rows and point at the digest, so the history stays complete.
 - A notification never goes to somebody viewing a share link (10.4, 4.4). Share link viewers are not users of the account and receive nothing.
 - A held notification is checked again before it goes out, and it does not go out if the record it is about was archived or deleted while it waited. A reminder due at 3am on a contact archived at 7am must not arrive at 8am. The row stays, with `failure_reason` saying why nothing was sent, since a notification that was silently dropped is indistinguishable from one that was never scheduled.
 - `locale` is stored so a language bug is visible after the fact, as on [EmailSent](005-email-sent-in-progress.md).
 - Nothing is deleted silently. A failed delivery keeps its reason, and is retried up to `notification_maximum_attempts` before being abandoned.
-- **Nobody is told twice.** A unique index over `notifiable_type, notifiable_id, channel, user_id, scheduled_for` refuses a second row about the same thing on the same channel. The instant is in the key because putting a deadline off moves it, and somebody who asked to be told later has to be told later: without it a postponed deadline could never produce a second notification. A digest leaves the first two columns null and collides with nothing on any of the three drivers.
-- **An obsolete delivery never escapes.** Postponing an occurrence abandons every unsent notification for its former instant, and dismissing it abandons every unsent notification for that occurrence. Delivery checks both the occurrence state and that the notification still names its current `scheduled_for`, so a row already held by quiet hours or picked up by a worker cannot outlive the action. Sent rows remain as history.
+- **Nobody is told twice.** A unique index over `notifiable_type, notifiable_id, channel, user_id` refuses a second row about the same thing on the same channel. There is no reminder after the first. A digest leaves the first two columns null and collides with nothing on any of the three drivers.
+- **An obsolete delivery never escapes.** Answering an occurrence abandons every unsent notification for it, and delivery checks again that the occurrence is still active before anything goes out, so a row held by quiet hours or picked up by a worker cannot outlive the answer. Sent rows remain as history, and sending or reading one never counts as an answer.
 - `held_until` is always written rather than left null when nothing holds the notification, so the sweep that finds what may go out is one comparison instead of two.
 - The name is `App\Models\Notification` and has nothing to do with Laravel's own notification system, which lives in `app/Notifications` and carries the framework's email verification.
 

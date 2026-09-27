@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
-use App\Enums\ReminderMomentDirectionEnum;
-use App\Enums\ReminderMomentUnitEnum;
+use App\Enums\ReminderSourceEnum;
 use App\Models\Reminder;
 use Carbon\CarbonImmutable;
 
@@ -36,49 +35,13 @@ class ReminderSchedule
     }
 
     /**
-     * @return list<array{direction: ReminderMomentDirectionEnum, amount: int|null, unit: ReminderMomentUnitEnum|null, date: CarbonImmutable|null}>
-     */
-    public static function momentDates(Reminder $reminder, ?CarbonImmutable $from = null): array
-    {
-        $next = self::nextDate($reminder, $from);
-        $moments = [];
-
-        foreach ($reminder->moments as $moment) {
-            $direction = ReminderMomentDirectionEnum::tryFrom((string) ($moment['direction'] ?? ''));
-
-            if ($direction === null) {
-                continue;
-            }
-
-            $unit = $direction->needsAnAmount()
-                ? ReminderMomentUnitEnum::tryFrom((string) ($moment['unit'] ?? ''))
-                : null;
-
-            $amount = $direction->needsAnAmount() ? (int) ($moment['amount'] ?? 0) : null;
-
-            $moments[] = [
-                'direction' => $direction,
-                'amount' => $amount,
-                'unit' => $unit,
-                'date' => $next === null ? null : self::shift($next, $direction, $amount, $unit),
-            ];
-        }
-
-        return $moments;
-    }
-
-    /**
-     * @return list<array{source_local_date: CarbonImmutable, direction: ReminderMomentDirectionEnum, amount: int|null, unit: ReminderMomentUnitEnum|null, local_date: CarbonImmutable, scheduled_for: CarbonImmutable}>
+     * Every deadline the rule produces between two instants: one per cycle, on the cycle's own day.
+     *
+     * @return list<array{local_date: CarbonImmutable, scheduled_for: CarbonImmutable}>
      */
     public static function occurrencesBetween(Reminder $reminder, CarbonImmutable $from, CarbonImmutable $to): array
     {
         if ($to->lessThan($from)) {
-            return [];
-        }
-
-        $moments = self::normalisedMoments($reminder);
-
-        if ($moments === []) {
             return [];
         }
 
@@ -88,33 +51,40 @@ class ReminderSchedule
             return [];
         }
 
-        $reach = self::reachOf($moments);
-        $scanStart = $from->setTimezone($reminder->timezone)->startOfDay()->subDays($reach['after']);
-        $scanEnd = $to->setTimezone($reminder->timezone)->startOfDay()->addDays($reach['before']);
+        $scanStart = $from->setTimezone($reminder->timezone)->startOfDay();
+        $scanEnd = $to->setTimezone($reminder->timezone)->startOfDay();
 
         $occurrences = [];
 
         foreach (self::cycles($reminder, $anchor, $scanStart, $scanEnd) as $cycle) {
-            foreach ($moments as $moment) {
-                $localDate = self::shift($cycle, $moment['direction'], $moment['amount'], $moment['unit']);
-                $instant = self::instantOf($reminder, $localDate);
+            $instant = self::instantOf($reminder, $cycle);
 
-                if ($instant->lessThan($from) || $instant->greaterThan($to)) {
-                    continue;
-                }
-
-                $occurrences[] = [
-                    'source_local_date' => $cycle,
-                    'direction' => $moment['direction'],
-                    'amount' => $moment['amount'],
-                    'unit' => $moment['unit'],
-                    'local_date' => $localDate,
-                    'scheduled_for' => $instant,
-                ];
+            if ($instant->lessThan($from) || $instant->greaterThan($to)) {
+                continue;
             }
+
+            $occurrences[] = [
+                'local_date' => $cycle,
+                'scheduled_for' => $instant,
+            ];
         }
 
         return $occurrences;
+    }
+
+    public static function hasADateLeft(Reminder $reminder): bool
+    {
+        if ($reminder->cadence->recurs()) {
+            return true;
+        }
+
+        $date = self::nextDate($reminder);
+
+        if ($date === null) {
+            return false;
+        }
+
+        return self::instantOf($reminder, $date)->greaterThan(CarbonImmutable::now());
     }
 
     public static function instantOf(Reminder $reminder, CarbonImmutable $localDate): CarbonImmutable
@@ -122,58 +92,6 @@ class ReminderSchedule
         $time = mb_substr($reminder->time_of_day, 0, 5);
 
         return CarbonImmutable::parse("{$localDate->format('Y-m-d')} {$time}", $reminder->timezone)->utc();
-    }
-
-    /**
-     * @return list<array{direction: ReminderMomentDirectionEnum, amount: int|null, unit: ReminderMomentUnitEnum|null}>
-     */
-    private static function normalisedMoments(Reminder $reminder): array
-    {
-        $moments = [];
-
-        foreach ($reminder->moments as $moment) {
-            $direction = ReminderMomentDirectionEnum::tryFrom((string) ($moment['direction'] ?? ''));
-
-            if ($direction === null) {
-                continue;
-            }
-
-            $carries = $direction->needsAnAmount();
-
-            $moments[] = [
-                'direction' => $direction,
-                'amount' => $carries ? (int) ($moment['amount'] ?? 0) : null,
-                'unit' => $carries ? ReminderMomentUnitEnum::tryFrom((string) ($moment['unit'] ?? '')) : null,
-            ];
-        }
-
-        return $moments;
-    }
-
-    /**
-     * @param  list<array{direction: ReminderMomentDirectionEnum, amount: int|null, unit: ReminderMomentUnitEnum|null}>  $moments
-     * @return array{before: int, after: int}
-     */
-    private static function reachOf(array $moments): array
-    {
-        $reach = ['before' => 0, 'after' => 0];
-
-        foreach ($moments as $moment) {
-            if ($moment['unit'] === null || $moment['amount'] === null) {
-                continue;
-            }
-
-            $days = $moment['amount'] * match ($moment['unit']) {
-                ReminderMomentUnitEnum::Days => 1,
-                ReminderMomentUnitEnum::Weeks => 7,
-                ReminderMomentUnitEnum::Months => 31,
-            };
-
-            $side = $moment['direction'] === ReminderMomentDirectionEnum::Before ? 'before' : 'after';
-            $reach[$side] = max($reach[$side], $days);
-        }
-
-        return $reach;
     }
 
     /** @return list<CarbonImmutable> */
@@ -207,6 +125,12 @@ class ReminderSchedule
 
     private static function anchor(Reminder $reminder, ?CarbonImmutable $from): ?CarbonImmutable
     {
+        if ($reminder->source === ReminderSourceEnum::Manual) {
+            return $reminder->starts_on === null
+                ? null
+                : CarbonImmutable::parse($reminder->starts_on->format('Y-m-d'), $reminder->timezone)->startOfDay();
+        }
+
         $value = $reminder->fieldValue;
 
         if ($value?->value_date === null) {
@@ -255,21 +179,6 @@ class ReminderSchedule
             'weekly' => $anchor->addWeeks($count),
             'monthly' => $anchor->addMonthsNoOverflow($count),
             default => $anchor->addYearsNoOverflow($count),
-        };
-    }
-
-    private static function shift(CarbonImmutable $date, ReminderMomentDirectionEnum $direction, ?int $amount, ?ReminderMomentUnitEnum $unit): CarbonImmutable
-    {
-        if (! $direction->needsAnAmount() || $amount === null || $unit === null) {
-            return $date;
-        }
-
-        $signed = $direction === ReminderMomentDirectionEnum::Before ? -$amount : $amount;
-
-        return match ($unit) {
-            ReminderMomentUnitEnum::Days => $date->addDays($signed),
-            ReminderMomentUnitEnum::Weeks => $date->addWeeks($signed),
-            ReminderMomentUnitEnum::Months => $date->addMonthsNoOverflow($signed),
         };
     }
 }

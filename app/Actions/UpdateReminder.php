@@ -6,36 +6,37 @@ namespace App\Actions;
 
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
+use App\Enums\ReminderSourceEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\ReminderIsNotValid;
-use App\Exceptions\ReminderMomentIsNotValid;
+use App\Helpers\ReminderSchedule;
 use App\Helpers\ReminderTime;
 use App\Helpers\TextSanitizer;
 use App\Helpers\TimezoneCatalogue;
 use App\Jobs\LogUserAction;
 use App\Models\Reminder;
 use App\Models\User;
-use App\Rules\ReminderMoments;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Change what a reminder says and when it fires.
+ * Change what a reminder says and when it fires, and, for a reminder somebody wrote about a contact,
+ * the date it starts from. Answers already given are never touched.
  */
 class UpdateReminder
 {
     private string $wording;
 
-    /** @param  array<int, array<array-key, mixed>>  $moments */
     public function __construct(
         private readonly User $user,
         private readonly Reminder $reminder,
         private readonly ReminderCadenceEnum $cadence,
-        private readonly array $moments,
         private readonly string $timeOfDay,
         private readonly ?string $name = null,
         private readonly int $frequencyInterval = 1,
         private readonly ?string $timezone = null,
+        private readonly ?string $startsOn = null,
     ) {}
 
     public function execute(): Reminder
@@ -45,6 +46,11 @@ class UpdateReminder
 
         DB::transaction(function (): void {
             $moved = $this->scheduleIsMoving();
+
+            if ($moved) {
+                $this->cancelWhatIsAhead();
+            }
+
             $this->update();
 
             if ($moved) {
@@ -61,9 +67,21 @@ class UpdateReminder
     {
         return $this->reminder->cadence !== $this->cadence
             || $this->reminder->frequency_interval !== $this->intervalToStore()
-            || ReminderMoments::normalise($this->reminder->moments) !== ReminderMoments::normalise($this->moments)
+            || ($this->startsOn !== null && $this->startsOn !== $this->reminder->starts_on?->format('Y-m-d'))
             || mb_substr($this->reminder->time_of_day, 0, 5) !== mb_substr($this->timeOfDay, 0, 5)
             || ($this->timezone !== null && $this->timezone !== $this->reminder->timezone);
+    }
+
+    private function candidate(): Reminder
+    {
+        $rule = $this->reminder->replicate();
+        $rule->cadence = $this->cadence;
+        $rule->frequency_interval = $this->intervalToStore();
+        $rule->time_of_day = $this->timeOfDay;
+        $rule->timezone = $this->timezone ?? $this->reminder->timezone;
+        $rule->starts_on = $this->startsOn ?? $this->reminder->starts_on;
+
+        return $rule->setRelation('fieldValue', $this->reminder->fieldValue);
     }
 
     private function intervalToStore(): int
@@ -71,13 +89,17 @@ class UpdateReminder
         return $this->cadence->recurs() ? $this->frequencyInterval : 1;
     }
 
-    private function rebuildTheDeadlines(): void
+    private function cancelWhatIsAhead(): void
     {
         new CancelReminderOccurrences(
             reminder: $this->reminder,
             reason: ReminderOccurrenceCancelledReasonEnum::RuleChanged,
+            includePast: false,
         )->execute();
+    }
 
+    private function rebuildTheDeadlines(): void
+    {
         $this->reminder->schedule_revision++;
         $this->reminder->save();
 
@@ -88,10 +110,12 @@ class UpdateReminder
     {
         $given = TextSanitizer::nullablePlainText($this->name);
 
-        $this->wording = $given ?? __(':label — :name', [
-            'label' => $this->reminder->field->label,
-            'name' => $this->reminder->remindable->name,
-        ]);
+        $this->wording = $given ?? ($this->reminder->field === null
+            ? $this->reminder->name
+            : __(':label — :name', [
+                'label' => $this->reminder->field->label,
+                'name' => $this->reminder->remindable->name,
+            ]));
     }
 
     private function validate(): void
@@ -100,22 +124,34 @@ class UpdateReminder
             throw new ModelNotFoundException('This reminder is in another account.');
         }
 
-        $problem = ReminderMoments::problemWith($this->moments);
+        if ($this->startsOn !== null && $this->reminder->source !== ReminderSourceEnum::Manual) {
+            throw new ReminderIsNotValid(__('This reminder reads its date from the contact.'), field: 'starts_on');
+        }
 
-        if ($problem !== null) {
-            throw new ReminderMomentIsNotValid($problem);
+        if ($this->startsOn !== null && CarbonImmutable::hasFormat($this->startsOn, 'Y-m-d') === false) {
+            throw new ReminderIsNotValid(__('This is not a date.'), field: 'starts_on');
         }
 
         if ($this->frequencyInterval < 1 || $this->frequencyInterval > Reminder::MAXIMUM_INTERVAL) {
-            throw new ReminderIsNotValid(__('A reminder cannot come back that many times over.'));
+            throw new ReminderIsNotValid(__('A reminder cannot come back that many times over.'), field: 'interval');
         }
 
         if (! ReminderTime::isATime($this->timeOfDay)) {
-            throw new ReminderIsNotValid(__('This is not a time of day.'));
+            throw new ReminderIsNotValid(__('This is not a time of day.'), field: 'time');
         }
 
         if ($this->timezone !== null && TimezoneCatalogue::find($this->timezone) === null) {
-            throw new ReminderIsNotValid(__('This is not a time zone the application knows.'));
+            throw new ReminderIsNotValid(__('This is not a time zone the application knows.'), field: 'timezone');
+        }
+
+        $today = CarbonImmutable::now($this->timezone ?? $this->reminder->timezone)->toDateString();
+
+        if ($this->startsOn !== null && $this->startsOn !== $this->reminder->starts_on?->format('Y-m-d') && $this->startsOn < $today) {
+            throw new ReminderIsNotValid(__('A reminder cannot start in the past.'), field: 'starts_on');
+        }
+
+        if ($this->scheduleIsMoving() && ! ReminderSchedule::hasADateLeft($this->candidate())) {
+            throw new ReminderIsNotValid(__('This date has already passed, so a reminder sent once would never arrive.'), field: 'starts_on');
         }
     }
 
@@ -124,7 +160,7 @@ class UpdateReminder
         $this->reminder->name = $this->wording;
         $this->reminder->cadence = $this->cadence;
         $this->reminder->frequency_interval = $this->intervalToStore();
-        $this->reminder->moments = ReminderMoments::normalise($this->moments);
+        $this->reminder->starts_on = $this->startsOn ?? $this->reminder->starts_on;
         $this->reminder->time_of_day = $this->timeOfDay;
         $this->reminder->timezone = $this->timezone ?? $this->reminder->timezone;
         $this->reminder->save();
@@ -137,7 +173,7 @@ class UpdateReminder
             user: $this->user,
             action: UserActionEnum::ReminderUpdate,
             vault: $this->reminder->vault,
-            parameters: ['label' => $this->reminder->field->label, 'name' => $this->reminder->remindable->name],
+            parameters: ['label' => $this->reminder->field->label ?? $this->reminder->name, 'name' => $this->reminder->remindable->name],
             loggable: $this->reminder,
         )->onQueue('low');
     }

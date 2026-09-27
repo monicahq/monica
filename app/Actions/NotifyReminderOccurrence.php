@@ -6,7 +6,6 @@ namespace App\Actions;
 
 use App\Enums\NotificationChannelEnum;
 use App\Enums\NotificationTypeEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Helpers\QuietHours;
 use App\Models\Notification;
 use App\Models\NotificationChannel;
@@ -30,7 +29,7 @@ class NotifyReminderOccurrence
 
     public function execute(): int
     {
-        if (! $this->occurrence->status->awaitsDelivery()) {
+        if ($this->occurrence->notifications_created_at !== null || ! $this->occurrence->isActive()) {
             return 0;
         }
 
@@ -93,12 +92,12 @@ class NotifyReminderOccurrence
             'notifiable_type' => ReminderOccurrence::class,
             'notifiable_id' => $this->occurrence->id,
             'title' => $reminder->name,
-            'body' => $this->occurrence->howFarOff($locale),
+            'body' => __('Due :date', ['date' => $this->occurrence->local_date->locale($locale)->isoFormat('LL')], $locale),
             'payload' => json_encode([
                 'reminder_uuid' => $reminder->uuid,
                 'occurrence_uuid' => $this->occurrence->uuid,
                 'record_name' => $reminder->remindable?->name,
-                'source_local_date' => $this->occurrence->source_local_date->format('Y-m-d'),
+                'local_date' => $this->occurrence->local_date->format('Y-m-d'),
             ]),
             'locale' => $locale,
             'scheduled_for' => $this->occurrence->scheduled_for,
@@ -118,7 +117,7 @@ class NotifyReminderOccurrence
 
     private function markTheDeadlineDealtWith(): void
     {
-        $this->occurrence->status = ReminderOccurrenceStatusEnum::Notified;
+        $this->occurrence->notifications_created_at = now();
         $this->occurrence->save();
     }
 }

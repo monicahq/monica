@@ -54,7 +54,13 @@
         @foreach ($viewModel->headerFacts() as $fact)
           <li class="flex items-center gap-1.75 text-sm text-body">
             <x-icon :name="$fact['icon']" :size="16" :stroke-width="1.5" class="text-muted" />
-            {{ $fact['label'] }} <b class="font-semibold text-ink">{{ $fact['value'] }}</b>
+            @if (isset($fact['url']))
+              <a href="{{ $fact['url'] }}" data-turbo="true" class="rounded-xs text-body no-underline hover:text-link focus-ring">
+                {{ $fact['label'] }} <b class="font-semibold text-ink">{{ $fact['value'] }}</b>
+              </a>
+            @else
+              {{ $fact['label'] }} <b class="font-semibold text-ink">{{ $fact['value'] }}</b>
+            @endif
 
             @if ($fact['reminder'])
               <x-tooltip :text="$fact['reminder']">
@@ -208,6 +214,8 @@
 
       <div class="flex flex-col gap-5">
         @include('app.vaults.contacts._immediate-family', ['family' => $viewModel->immediateFamily()])
+
+        @include('app.vaults.contacts._reminders', ['deadlines' => $viewModel->deadlines()])
       </div>
     </div>
   @else

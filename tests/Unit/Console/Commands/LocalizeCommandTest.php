@@ -101,6 +101,17 @@ class LocalizeCommandTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_a_counted_phrase_handed_to_the_browser(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->writeScratch('return implode(\\App\\Helpers\\CountedPhraseWordings::of(\':count gadget|:count gadgets\'));');
+
+        $this->artisan('monica:localize')->assertSuccessful();
+
+        $this->assertArrayHasKey(':count gadget|:count gadgets', $this->translations('en'));
+    }
+
+    #[Test]
     public function it_ignores_a_call_written_inside_a_comment(): void
     {
         $this->app->useLangPath($this->langPath);

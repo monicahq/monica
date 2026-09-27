@@ -14,7 +14,7 @@ class ReminderOccurrenceCancelledReasonEnumTest extends TestCase
     #[Test]
     public function it_knows_which_cancellations_come_back(): void
     {
-        $this->assertTrue(ReminderOccurrenceCancelledReasonEnum::RuleDisabled->isReversible());
+        $this->assertTrue(ReminderOccurrenceCancelledReasonEnum::RuleDeleted->isReversible());
         $this->assertTrue(ReminderOccurrenceCancelledReasonEnum::RecordArchived->isReversible());
         $this->assertTrue(ReminderOccurrenceCancelledReasonEnum::RecordDeleted->isReversible());
         $this->assertTrue(ReminderOccurrenceCancelledReasonEnum::FieldRemoved->isReversible());
@@ -47,25 +47,13 @@ class ReminderOccurrenceCancelledReasonEnumTest extends TestCase
             ReminderOccurrenceCancelledReasonEnum::FieldRemoved,
             ReminderOccurrenceCancelledReasonEnum::forInactiveReason(ReminderInactiveReasonEnum::FieldRemoved),
         );
-        $this->assertSame(
-            ReminderOccurrenceCancelledReasonEnum::RuleDisabled,
-            ReminderOccurrenceCancelledReasonEnum::forInactiveReason(ReminderInactiveReasonEnum::PausedByUser),
-        );
-    }
-
-    #[Test]
-    public function it_brings_back_what_somebody_paused(): void
-    {
-        $this->assertTrue(
-            ReminderOccurrenceCancelledReasonEnum::forInactiveReason(ReminderInactiveReasonEnum::PausedByUser)->isReversible(),
-        );
     }
 
     #[Test]
     public function it_lists_its_values(): void
     {
         $this->assertEquals([
-            'rule_disabled',
+            'rule_deleted',
             'record_archived',
             'record_deleted',
             'field_removed',

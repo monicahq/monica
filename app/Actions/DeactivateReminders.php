@@ -61,6 +61,7 @@ class DeactivateReminders
                 new CancelReminderOccurrences(
                     reminder: $rule,
                     reason: ReminderOccurrenceCancelledReasonEnum::forInactiveReason($this->reason),
+                    includePast: true,
                 )->execute();
             }
         });

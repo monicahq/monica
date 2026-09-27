@@ -34,9 +34,8 @@ return new class extends Migration
             $table->unsignedBigInteger('digest_id')->nullable()->comment('summary it was folded into, null when it went out on its own');
             $table->timestamps();
 
-            // The instant is in the key because putting a deadline off moves it, and somebody who
-            // asked to be told later has to be told a second time.
-            $table->unique(['notifiable_type', 'notifiable_id', 'channel', 'user_id', 'scheduled_for'], 'notifications_told_once_unique');
+            // A deadline is told once per channel, and never again.
+            $table->unique(['notifiable_type', 'notifiable_id', 'channel', 'user_id'], 'notifications_told_once_unique');
 
             $table->index(['held_until', 'sent_at']);
             $table->index(['user_id', 'read_at']);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Http\Dav;
 
 use App\Enums\FieldTypeEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Http\Dav\ICalendarWriter;
 use App\Models\Contact;
 use App\Models\FieldValue;
@@ -77,8 +76,7 @@ class ICalendarWriterTest extends TestCase
             'vault_id' => $vault->id,
             'reminder_id' => $reminder->id,
             'scheduled_for' => $at,
-            'original_scheduled_for' => $at,
-            'status' => ReminderOccurrenceStatusEnum::Pending,
+            'local_date' => $at->toDateString(),
         ]);
 
         $written = new ICalendarWriter()->reminder($occurrence);
@@ -106,7 +104,6 @@ class ICalendarWriterTest extends TestCase
             'account_id' => $vault->account_id,
             'vault_id' => $vault->id,
             'reminder_id' => $reminder->id,
-            'status' => ReminderOccurrenceStatusEnum::Pending,
         ]);
 
         $this->assertStringContainsString(

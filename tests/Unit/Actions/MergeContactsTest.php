@@ -18,6 +18,7 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\RecordSnapshot;
+use App\Models\Reminder;
 use App\Models\SectionVersion;
 use App\Models\ShareLink;
 use App\Models\StructureVersion;
@@ -174,6 +175,20 @@ class MergeContactsTest extends TestCase
             'valuable_id' => $jim->id,
             'is_detached' => true,
         ]);
+    }
+
+    #[Test]
+    public function it_keeps_a_reminder_written_by_hand_about_the_absorbed_contact_going(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $reminder = Reminder::factory()->manual($james, now()->addWeek()->toDateString())->create();
+
+        new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'remindable_id' => $jim->id, 'is_active' => true]);
     }
 
     #[Test]

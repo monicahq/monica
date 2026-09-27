@@ -11,7 +11,6 @@ use App\Actions\GenerateReminderOccurrences;
 use App\Actions\UpdateReminder;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Models\Contact;
 use App\Models\FieldValue;
 use App\Models\Reminder;
@@ -32,28 +31,23 @@ class ReconcileReminderOccurrencesTest extends TestCase
     {
         Queue::fake();
         [$user, $reminder] = $this->ruleWithDeadlines();
-        $before = ReminderOccurrence::query()->where('reminder_id', $reminder->id)->pluck('id');
+        $before = ReminderOccurrence::query()->where('reminder_id', $reminder->id)->firstOrFail();
 
         new UpdateReminder(
             user: $user,
             reminder: $reminder,
             cadence: ReminderCadenceEnum::Yearly,
-            moments: [['direction' => 'on', 'amount' => null, 'unit' => null]],
             timeOfDay: '18:00',
         )->execute();
 
-        foreach ($before as $id) {
-            $this->assertDatabaseHas('reminder_occurrences', [
-                'id' => $id,
-                'status' => ReminderOccurrenceStatusEnum::Cancelled->value,
-                'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::RuleChanged->value,
-            ]);
-        }
-
+        $this->assertDatabaseHas('reminder_occurrences', [
+            'id' => $before->id,
+            'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::RuleChanged->value,
+        ]);
         $this->assertSame(2, $reminder->refresh()->schedule_revision);
         $this->assertDatabaseHas('reminder_occurrences', [
-            'generation_key' => '2:2027-05-12:on::',
-            'status' => ReminderOccurrenceStatusEnum::Pending->value,
+            'generation_key' => '2:2027-05-12',
+            'cancelled_at' => null,
         ]);
     }
 
@@ -68,85 +62,79 @@ class ReconcileReminderOccurrencesTest extends TestCase
             user: $user,
             reminder: $reminder,
             cadence: $reminder->cadence,
-            moments: $reminder->moments,
             timeOfDay: $reminder->time_of_day,
-            name: 'A better wording',
+            name: 'Ask Michael about the Scranton branch',
         )->execute();
 
         $this->assertSame(1, $reminder->refresh()->schedule_revision);
         $this->assertSame($before, ReminderOccurrence::query()->where('reminder_id', $reminder->id)->count());
-        $this->assertSame(0, ReminderOccurrence::query()->where('status', ReminderOccurrenceStatusEnum::Cancelled->value)->count());
+        $this->assertSame(0, ReminderOccurrence::query()->whereNotNull('cancelled_at')->count());
     }
 
     #[Test]
-    public function the_storage_order_of_a_moments_keys_is_not_a_schedule_change(): void
+    public function changing_the_schedule_leaves_an_overdue_deadline_waiting_for_its_answer(): void
     {
         Queue::fake();
         [$user, $reminder] = $this->ruleWithDeadlines();
-        $before = ReminderOccurrence::query()->where('reminder_id', $reminder->id)->count();
-
-        $reminder->moments = array_map(fn (array $moment): array => [
-            'unit' => $moment['unit'],
-            'amount' => $moment['amount'],
-            'direction' => $moment['direction'],
-        ], $reminder->moments);
+        $overdue = $this->overdueDeadline($reminder);
 
         new UpdateReminder(
             user: $user,
             reminder: $reminder,
-            cadence: $reminder->cadence,
-            moments: $reminder->moments,
-            timeOfDay: $reminder->time_of_day,
+            cadence: ReminderCadenceEnum::Monthly,
+            timeOfDay: '09:00',
         )->execute();
 
-        $this->assertSame(1, $reminder->refresh()->schedule_revision);
-        $this->assertSame($before, ReminderOccurrence::query()->where('reminder_id', $reminder->id)->count());
-        $this->assertSame(0, ReminderOccurrence::query()->where('status', ReminderOccurrenceStatusEnum::Cancelled->value)->count());
+        $this->assertNull($overdue->refresh()->cancelled_at);
+        $this->assertNull($overdue->cancelled_reason);
     }
 
     #[Test]
-    public function no_reconciliation_ever_touches_a_deadline_that_has_passed(): void
+    public function changing_the_schedule_never_touches_an_answer(): void
     {
         Queue::fake();
         [$user, $reminder] = $this->ruleWithDeadlines();
-        $behind = ReminderOccurrence::factory()->past()->create([
+        $answered = ReminderOccurrence::factory()->past()->forgotten()->create([
             'reminder_id' => $reminder->id,
             'account_id' => $reminder->account_id,
             'vault_id' => $reminder->vault_id,
-            'generation_key' => '1:2026-05-12:on::',
         ]);
 
         new UpdateReminder(
             user: $user,
             reminder: $reminder,
             cadence: ReminderCadenceEnum::Monthly,
-            moments: [['direction' => 'on', 'amount' => null, 'unit' => null]],
             timeOfDay: '09:00',
         )->execute();
 
-        $this->assertSame(ReminderOccurrenceStatusEnum::Pending, $behind->refresh()->status);
-        $this->assertNull($behind->cancelled_reason);
+        $this->assertDatabaseHas('reminder_occurrences', [
+            'id' => $answered->id,
+            'answer' => 'forgotten',
+            'cancelled_at' => null,
+        ]);
     }
 
     #[Test]
-    public function taking_the_rule_away_takes_its_deadlines_ahead_with_it(): void
+    public function taking_the_rule_away_takes_every_deadline_still_waiting_with_it(): void
     {
         Queue::fake();
         [$user, $reminder] = $this->ruleWithDeadlines();
+        $this->overdueDeadline($reminder);
 
         new DestroyReminder(user: $user, reminder: $reminder)->execute();
 
         $this->assertSame(2, ReminderOccurrence::query()
             ->where('reminder_id', $reminder->id)
-            ->where('cancelled_reason', ReminderOccurrenceCancelledReasonEnum::RuleDisabled->value)
+            ->where('cancelled_reason', ReminderOccurrenceCancelledReasonEnum::RuleDeleted->value)
             ->count());
     }
 
     #[Test]
-    public function archiving_the_record_cancels_its_deadlines(): void
+    public function archiving_the_record_cancels_its_deadlines_overdue_ones_included(): void
     {
         Queue::fake();
         [$user, $reminder] = $this->ruleWithDeadlines();
+        $this->overdueDeadline($reminder);
         $contact = Contact::query()->findOrFail($reminder->remindable_id);
 
         new ArchiveContact(user: $user, contact: $contact)->execute();
@@ -166,7 +154,7 @@ class ReconcileReminderOccurrencesTest extends TestCase
 
         new DestroyContact(user: $user, contact: $contact)->execute();
 
-        $this->assertSame(2, ReminderOccurrence::query()
+        $this->assertSame(1, ReminderOccurrence::query()
             ->where('cancelled_reason', ReminderOccurrenceCancelledReasonEnum::RecordDeleted->value)
             ->count());
     }
@@ -189,5 +177,14 @@ class ReconcileReminderOccurrencesTest extends TestCase
         new GenerateReminderOccurrences(reminder: $reminder)->execute();
 
         return [$user, $reminder->refresh()];
+    }
+
+    private function overdueDeadline(Reminder $reminder): ReminderOccurrence
+    {
+        return ReminderOccurrence::factory()->past()->create([
+            'reminder_id' => $reminder->id,
+            'account_id' => $reminder->account_id,
+            'vault_id' => $reminder->vault_id,
+        ]);
     }
 }

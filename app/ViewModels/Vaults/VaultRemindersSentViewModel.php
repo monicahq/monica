@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault;
-use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Pagination\Paginator;
 
 class VaultRemindersSentViewModel
@@ -81,12 +81,7 @@ class VaultRemindersSentViewModel
 
     public function activeCount(): int
     {
-        return ReminderOccurrence::query()
-            ->upcomingInVault(
-                vault: $this->vault,
-                until: CarbonImmutable::now()->addDays((int) config('monica.reminder_generation_window_in_days')),
-            )
-            ->count();
+        return new VaultRemindersViewModel(user: $this->user, vault: $this->vault)->activeCount();
     }
 
     public function sentCount(): int
@@ -94,13 +89,39 @@ class VaultRemindersSentViewModel
         return ReminderOccurrence::query()->sentInVault($this->vault)->count();
     }
 
+    public function historyUrl(): string
+    {
+        return route('reminders.history', $this->vault);
+    }
+
+    public function historyCount(): int
+    {
+        return ReminderOccurrence::query()->answeredInVault($this->vault)->count();
+    }
+
     /** @return Paginator<int, ReminderOccurrence> */
     private function occurrences(): Paginator
     {
-        return $this->occurrences ??= ReminderOccurrence::query()
+        if ($this->occurrences !== null) {
+            return $this->occurrences;
+        }
+
+        $page = ReminderOccurrence::query()
             ->sentInVault($this->vault)
-            ->with(['vault', 'reminder.remindable.avatar', 'reminder.field', 'notifications'])
+            ->with(['vault', 'notifications'])
             ->simplePaginate(self::PER_PAGE)
             ->withQueryString();
+
+        $rules = Reminder::withTrashed()
+            ->whereIn('id', collect($page->items())->pluck('reminder_id')->unique())
+            ->with(['remindable.avatar', 'field'])
+            ->get()
+            ->keyBy('id');
+
+        foreach ($page->items() as $occurrence) {
+            $occurrence->setRelation('reminder', $rules->get($occurrence->reminder_id));
+        }
+
+        return $this->occurrences = $page;
     }
 }

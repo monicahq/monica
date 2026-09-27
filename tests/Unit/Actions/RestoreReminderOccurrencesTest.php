@@ -6,7 +6,6 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\RestoreReminderOccurrences;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,45 +30,47 @@ class RestoreReminderOccurrencesTest extends TestCase
         $this->assertSame(1, $restored);
         $this->assertDatabaseHas('reminder_occurrences', [
             'id' => $cancelled->id,
-            'status' => ReminderOccurrenceStatusEnum::Pending->value,
             'cancelled_reason' => null,
             'cancelled_at' => null,
-            'status_before_cancellation' => null,
         ]);
     }
 
     #[Test]
-    public function it_puts_a_deadline_back_into_the_state_it_was_in(): void
+    public function it_keeps_a_restored_deadline_from_being_told_a_second_time(): void
     {
         $reminder = Reminder::factory()->create();
-        $cancelled = $this->deadline(
-            $reminder,
-            ReminderOccurrenceCancelledReasonEnum::RecordDeleted,
-            before: ReminderOccurrenceStatusEnum::Notified,
-        );
+        $cancelled = ReminderOccurrence::factory()
+            ->notified()
+            ->cancelled(ReminderOccurrenceCancelledReasonEnum::RecordDeleted)
+            ->create([
+                'reminder_id' => $reminder->id,
+                'account_id' => $reminder->account_id,
+                'vault_id' => $reminder->vault_id,
+            ]);
 
         new RestoreReminderOccurrences(
             reminder: $reminder,
             reason: ReminderOccurrenceCancelledReasonEnum::RecordDeleted,
         )->execute();
 
-        $this->assertSame(ReminderOccurrenceStatusEnum::Notified, $cancelled->refresh()->status);
+        $this->assertNotNull($cancelled->refresh()->notifications_created_at);
+        $this->assertNull($cancelled->cancelled_at);
     }
 
     #[Test]
     public function it_leaves_a_deadline_cancelled_for_another_reason_alone(): void
     {
         $reminder = Reminder::factory()->create();
-        $archived = $this->deadline($reminder, ReminderOccurrenceCancelledReasonEnum::RecordArchived);
-        $fieldGone = $this->deadline($reminder, ReminderOccurrenceCancelledReasonEnum::FieldRemoved);
+        $archived = $this->deadline($reminder, ReminderOccurrenceCancelledReasonEnum::RecordArchived, days: 7);
+        $fieldGone = $this->deadline($reminder, ReminderOccurrenceCancelledReasonEnum::FieldRemoved, days: 8);
 
         new RestoreReminderOccurrences(
             reminder: $reminder,
             reason: ReminderOccurrenceCancelledReasonEnum::RecordArchived,
         )->execute();
 
-        $this->assertSame(ReminderOccurrenceStatusEnum::Pending, $archived->refresh()->status);
-        $this->assertSame(ReminderOccurrenceStatusEnum::Cancelled, $fieldGone->refresh()->status);
+        $this->assertNull($archived->refresh()->cancelled_at);
+        $this->assertNotNull($fieldGone->refresh()->cancelled_at);
         $this->assertSame(ReminderOccurrenceCancelledReasonEnum::FieldRemoved, $fieldGone->cancelled_reason);
     }
 
@@ -77,7 +78,7 @@ class RestoreReminderOccurrencesTest extends TestCase
     public function it_never_resurrects_a_deadline_whose_instant_went_by_while_it_was_cancelled(): void
     {
         $reminder = Reminder::factory()->create();
-        $gone = $this->deadline($reminder, ReminderOccurrenceCancelledReasonEnum::RecordArchived, past: true);
+        $gone = $this->deadline($reminder, ReminderOccurrenceCancelledReasonEnum::RecordArchived, days: -3);
 
         $restored = new RestoreReminderOccurrences(
             reminder: $reminder,
@@ -85,16 +86,16 @@ class RestoreReminderOccurrencesTest extends TestCase
         )->execute();
 
         $this->assertSame(0, $restored);
-        $this->assertSame(ReminderOccurrenceStatusEnum::Cancelled, $gone->refresh()->status);
+        $this->assertNotNull($gone->refresh()->cancelled_at);
     }
 
     #[Test]
     public function it_never_puts_back_what_a_new_schedule_replaced(): void
     {
         $reminder = Reminder::factory()->create();
-        $replaced = $this->deadline($reminder, ReminderOccurrenceCancelledReasonEnum::RuleChanged);
-        $corrected = $this->deadline($reminder, ReminderOccurrenceCancelledReasonEnum::SourceChanged);
-        $cleared = $this->deadline($reminder, ReminderOccurrenceCancelledReasonEnum::ValueCleared);
+        $replaced = $this->deadline($reminder, ReminderOccurrenceCancelledReasonEnum::RuleChanged, days: 7);
+        $corrected = $this->deadline($reminder, ReminderOccurrenceCancelledReasonEnum::SourceChanged, days: 8);
+        $cleared = $this->deadline($reminder, ReminderOccurrenceCancelledReasonEnum::ValueCleared, days: 9);
 
         foreach ([
             ReminderOccurrenceCancelledReasonEnum::RuleChanged,
@@ -104,24 +105,17 @@ class RestoreReminderOccurrencesTest extends TestCase
             $this->assertSame(0, new RestoreReminderOccurrences(reminder: $reminder, reason: $reason)->execute());
         }
 
-        $this->assertSame(ReminderOccurrenceStatusEnum::Cancelled, $replaced->refresh()->status);
-        $this->assertSame(ReminderOccurrenceStatusEnum::Cancelled, $corrected->refresh()->status);
-        $this->assertSame(ReminderOccurrenceStatusEnum::Cancelled, $cleared->refresh()->status);
+        $this->assertNotNull($replaced->refresh()->cancelled_at);
+        $this->assertNotNull($corrected->refresh()->cancelled_at);
+        $this->assertNotNull($cleared->refresh()->cancelled_at);
     }
 
-    private function deadline(
-        Reminder $reminder,
-        ReminderOccurrenceCancelledReasonEnum $reason,
-        ReminderOccurrenceStatusEnum $before = ReminderOccurrenceStatusEnum::Pending,
-        bool $past = false,
-    ): ReminderOccurrence {
-        $factory = ReminderOccurrence::factory()->cancelled($reason, $before);
-
-        return ($past ? $factory->past() : $factory)->create([
+    private function deadline(Reminder $reminder, ReminderOccurrenceCancelledReasonEnum $reason, int $days = 7): ReminderOccurrence
+    {
+        return ReminderOccurrence::factory()->daysFromNow($days)->cancelled($reason)->create([
             'reminder_id' => $reminder->id,
             'account_id' => $reminder->account_id,
             'vault_id' => $reminder->vault_id,
-            'generation_key' => '1:'.fake()->unique()->numerify('2027-##-##').':on::',
         ]);
     }
 }

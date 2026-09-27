@@ -116,7 +116,7 @@ class CalendarBackend implements BackendInterface, SyncSupport
     #[Override]
     public function deleteCalendarObject($calendarId, $objectUri): void
     {
-        throw new Forbidden('This calendar is read only. Dismissing and postponing are gestures of the application.');
+        throw new Forbidden('This calendar is read only. A reminder is answered in the application.');
     }
 
     /** @return array<int, string> */
@@ -232,7 +232,7 @@ class CalendarBackend implements BackendInterface, SyncSupport
         $entries = [];
 
         $occurrences = ReminderOccurrence::query()
-            ->upcomingInVault($vault, $this->horizon())
+            ->awaitingAnswerInVault($vault, $this->horizon())
             ->with(['reminder.remindable'])
             ->get();
 

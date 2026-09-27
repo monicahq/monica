@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Dav;
 
 use App\Enums\FieldTypeEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Models\Contact;
 use App\Models\FieldValue;
 use App\Models\Reminder;
@@ -135,30 +134,29 @@ class CalendarTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_out_a_deadline_that_was_dismissed_or_cancelled(): void
+    public function it_leaves_out_a_deadline_that_was_answered_or_cancelled(): void
     {
         $vault = $this->vault();
         $open = $this->occurrence($vault, CarbonImmutable::now()->addDays(2), 'Still open');
-        $dismissed = $this->occurrence($vault, CarbonImmutable::now()->addDays(2), 'Dismissed', ReminderOccurrenceStatusEnum::Dismissed);
-        $cancelled = $this->occurrence($vault, CarbonImmutable::now()->addDays(2), 'Cancelled', ReminderOccurrenceStatusEnum::Cancelled);
+        $answered = $this->occurrence($vault, CarbonImmutable::now()->subDay(), 'Answered', ['answer' => 'remembered', 'answered_at' => now()]);
+        $cancelled = $this->occurrence($vault, CarbonImmutable::now()->addDays(2), 'Cancelled', ['cancelled_at' => now(), 'cancelled_reason' => 'record_archived']);
 
         $list = $this->dav('PROPFIND', $this->reminders($vault), depth: '1');
 
         $list->assertSee($open->uuid.'.ics', escape: false);
-        $list->assertDontSee($dismissed->uuid.'.ics', escape: false);
+        $list->assertDontSee($answered->uuid.'.ics', escape: false);
         $list->assertDontSee($cancelled->uuid.'.ics', escape: false);
     }
 
     #[Test]
-    public function it_holds_a_postponed_deadline_at_its_new_time(): void
+    public function it_keeps_an_overdue_deadline_nobody_answered(): void
     {
         $vault = $this->vault();
-        $postponed = $this->occurrence($vault, CarbonImmutable::now()->addDays(9), 'Postponed', ReminderOccurrenceStatusEnum::Postponed);
+        $overdue = $this->occurrence($vault, CarbonImmutable::now()->subDays(3), 'Send the photos from the wedding');
 
-        $entry = $this->dav('GET', $this->reminders($vault).$postponed->uuid.'.ics');
+        $list = $this->dav('PROPFIND', $this->reminders($vault), depth: '1');
 
-        $entry->assertOk();
-        $this->assertStringContainsString('DUE:'.$postponed->scheduled_for->utc()->format('Ymd\THis\Z'), $this->bodyOf($entry));
+        $list->assertSee($overdue->uuid.'.ics', escape: false);
     }
 
     #[Test]
@@ -210,7 +208,8 @@ class CalendarTest extends TestCase
         return 'dav/calendars/'.$this->user->email.'/'.$vault->uuid.'-reminders/';
     }
 
-    private function occurrence(Vault $vault, CarbonImmutable $at, string $name, ?ReminderOccurrenceStatusEnum $status = null): ReminderOccurrence
+    /** @param  array<string, mixed>  $attributes */
+    private function occurrence(Vault $vault, CarbonImmutable $at, string $name, array $attributes = []): ReminderOccurrence
     {
         $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
         $reminder = Reminder::factory()->create([
@@ -226,8 +225,8 @@ class CalendarTest extends TestCase
             'vault_id' => $vault->id,
             'reminder_id' => $reminder->id,
             'scheduled_for' => $at,
-            'original_scheduled_for' => $at,
-            'status' => $status ?? ReminderOccurrenceStatusEnum::Pending,
+            'local_date' => $at->toDateString(),
+            ...$attributes,
         ]);
     }
 

@@ -25,7 +25,7 @@ use SplFileInfo;
 class LocalizeCommand extends Command
 {
     /** @var list<string> */
-    private const array FUNCTIONS = ['__', 'trans', 'trans_choice', '@lang'];
+    private const array FUNCTIONS = ['__', 'trans', 'trans_choice', '@lang', 'CountedPhraseWordings::of'];
 
     private const string COVERS_EVERY_NUMBER = '[0,*]';
 

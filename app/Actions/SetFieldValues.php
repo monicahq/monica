@@ -188,6 +188,7 @@ class SetFieldValues
         new CancelReminderOccurrences(
             reminder: $rule,
             reason: ReminderOccurrenceCancelledReasonEnum::SourceChanged,
+            includePast: false,
         )->execute();
 
         $rule->schedule_revision++;
@@ -245,7 +246,6 @@ class SetFieldValues
             user: $this->user,
             fieldValue: $value,
             cadence: $this->cadenceFor($field),
-            moments: $this->momentsFor($field),
             timeOfDay: $this->timeFor($field),
             name: $this->asked($field, 'name'),
             frequencyInterval: (int) ($this->asked($field, 'interval') ?? 1),
@@ -259,7 +259,6 @@ class SetFieldValues
             user: $this->user,
             reminder: $rule,
             cadence: $this->cadenceFor($field),
-            moments: $this->momentsFor($field),
             timeOfDay: $this->timeFor($field),
             name: $this->asked($field, 'name'),
             frequencyInterval: (int) ($this->asked($field, 'interval') ?? 1),
@@ -301,14 +300,6 @@ class SetFieldValues
         }
 
         return ReminderCadenceEnum::tryFrom((string) $this->asked($field, 'cadence')) ?? ReminderCadenceEnum::Yearly;
-    }
-
-    /** @return array<int, array<array-key, mixed>> */
-    private function momentsFor(Field $field): array
-    {
-        $moments = $this->reminders[$field->id]['moments'] ?? [];
-
-        return is_array($moments) ? array_values(array_filter($moments, 'is_array')) : [];
     }
 
     private function timeFor(Field $field): string

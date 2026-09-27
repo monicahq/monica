@@ -63,7 +63,11 @@ class ReactivateReminders
                     reason: ReminderOccurrenceCancelledReasonEnum::forInactiveReason($this->reason),
                 )->execute();
 
-                new GenerateReminderOccurrences(reminder: $rule->refresh())->execute();
+                $rule->refresh();
+                $rule->schedule_revision++;
+                $rule->save();
+
+                new GenerateReminderOccurrences(reminder: $rule)->execute();
             }
         });
     }

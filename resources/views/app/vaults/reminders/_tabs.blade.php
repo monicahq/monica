@@ -1,9 +1,11 @@
-{{-- The two ways of reading this vault's reminders: what is coming, and what has already gone out. --}}
+{{-- The ways of reading this vault's reminders: what is coming, what has gone out, what was answered. --}}
 {{--
   @var string $activeUrl
   @var string $sentUrl
   @var int $activeCount
   @var int $sentCount
+  @var string $historyUrl
+  @var int $historyCount
   @var string $current
 --}}
 <x-tabs>
@@ -22,4 +24,12 @@
     :count-label="trans_choice(':count reminder already sent|:count reminders already sent', $sentCount)"
     data-turbo="true"
   >{{ __('Sent') }}</x-tabs.item>
+
+  <x-tabs.item
+    :href="$historyUrl"
+    :selected="$current === 'history'"
+    :count="$historyCount"
+    :count-label="trans_choice(':count answer kept|:count answers kept', $historyCount)"
+    data-turbo="true"
+  >{{ __('History') }}</x-tabs.item>
 </x-tabs>

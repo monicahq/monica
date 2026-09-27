@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\ReminderCadenceEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Models\Contact;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
@@ -27,8 +26,8 @@ class VaultReminderControllerTest extends TestCase
         $user = User::factory()->create(['timezone' => 'Europe/Paris']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->deadline($this->ruleAbout($user, $vault, 'Michael', 'Scott'), '-3 days');
-        $this->deadline($this->ruleAbout($user, $vault, 'Pam', 'Beesly'), '+2 days');
+        $this->deadline($this->ruleAbout($user, $vault, 'Michael', 'Scott'), -3);
+        $this->deadline($this->ruleAbout($user, $vault, 'Pam', 'Beesly'), 2);
 
         $response = $this->actingAs($user)->get(route('reminders.index', $vault));
 
@@ -46,7 +45,7 @@ class VaultReminderControllerTest extends TestCase
         $user = User::factory()->create(['timezone' => 'Europe/Paris']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->deadline($this->ruleAbout($user, $vault), '-4 days');
+        $this->deadline($this->ruleAbout($user, $vault), -4);
 
         $response = $this->actingAs($user)->get(route('reminders.index', $vault));
 
@@ -61,8 +60,8 @@ class VaultReminderControllerTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->deadline($this->ruleAbout($user, $vault, 'Angela', 'Martin'), '+2 days');
-        $this->deadline($this->ruleAbout($user, $vault, 'Zoe', 'Vance'), '+3 days');
+        $this->deadline($this->ruleAbout($user, $vault, 'Angela', 'Martin'), 2);
+        $this->deadline($this->ruleAbout($user, $vault, 'Zoe', 'Vance'), 3);
 
         $response = $this->actingAs($user)->get(route('reminders.byContact', $vault));
 
@@ -78,7 +77,7 @@ class VaultReminderControllerTest extends TestCase
         $user = User::factory()->create(['timezone' => 'Europe/Paris']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->deadline($this->ruleAbout($user, $vault, 'Angela', 'Martin'), '-3 days');
+        $this->deadline($this->ruleAbout($user, $vault, 'Angela', 'Martin'), -3);
 
         $response = $this->actingAs($user)->get(route('reminders.index', ['vault' => $vault, 'group' => 'contact']));
 
@@ -87,7 +86,7 @@ class VaultReminderControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_out_a_rule_that_has_produced_nothing_yet(): void
+    public function it_shows_the_next_date_of_a_rule_that_has_produced_nothing_yet(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -97,7 +96,23 @@ class VaultReminderControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('reminders.index', $vault));
 
         $response->assertStatus(200);
-        $response->assertDontSee('Toby Flenderson');
+        $response->assertSee('Upcoming');
+        $response->assertSee('Toby Flenderson');
+    }
+
+    #[Test]
+    public function it_groups_what_is_waiting_into_overdue_today_and_upcoming(): void
+    {
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->deadline($this->ruleAbout($user, $vault, 'Michael', 'Scott'), -3);
+        $this->deadline($this->ruleAbout($user, $vault, 'Pam', 'Beesly'), 0);
+        $this->deadline($this->ruleAbout($user, $vault, 'Jim', 'Halpert'), 5);
+
+        $response = $this->actingAs($user)->get(route('reminders.index', $vault));
+
+        $response->assertSeeInOrder(['Overdue', 'Michael Scott', 'Today', 'Pam Beesly', 'Upcoming', 'Jim Halpert']);
     }
 
     #[Test]
@@ -107,8 +122,8 @@ class VaultReminderControllerTest extends TestCase
         $here = Vault::factory()->create(['account_id' => $user->account_id]);
         $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->deadline($this->ruleAbout($user, $here, 'Jim', 'Halpert'), '+2 days');
-        $this->deadline($this->ruleAbout($user, $elsewhere, 'Dwight', 'Schrute'), '+2 days');
+        $this->deadline($this->ruleAbout($user, $here, 'Jim', 'Halpert'), 2);
+        $this->deadline($this->ruleAbout($user, $elsewhere, 'Dwight', 'Schrute'), 2);
 
         $response = $this->actingAs($user)->get(route('reminders.index', $here));
 
@@ -122,7 +137,7 @@ class VaultReminderControllerTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->deadline($this->ruleAbout($user, $vault), '+2 days');
+        $this->deadline($this->ruleAbout($user, $vault), 2);
 
         DB::enableQueryLog();
         $this->actingAs($user)->get(route('reminders.index', $vault));
@@ -130,7 +145,7 @@ class VaultReminderControllerTest extends TestCase
         DB::flushQueryLog();
 
         foreach (range(1, 6) as $ignored) {
-            $this->deadline($this->ruleAbout($user, $vault), '+3 days');
+            $this->deadline($this->ruleAbout($user, $vault), 3);
         }
 
         DB::flushQueryLog();
@@ -147,7 +162,7 @@ class VaultReminderControllerTest extends TestCase
         $user = User::factory()->create(['timezone' => 'Europe/Paris']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->sent($this->ruleAbout($user, $vault), '-2 days');
+        $this->sent($this->ruleAbout($user, $vault), -2);
 
         DB::enableQueryLog();
         $this->actingAs($user)->get(route('reminders.sent', $vault));
@@ -155,7 +170,7 @@ class VaultReminderControllerTest extends TestCase
         DB::flushQueryLog();
 
         foreach (range(1, 6) as $day) {
-            $this->sent($this->ruleAbout($user, $vault), "-{$day} days");
+            $this->sent($this->ruleAbout($user, $vault), -$day);
         }
 
         DB::flushQueryLog();
@@ -172,7 +187,7 @@ class VaultReminderControllerTest extends TestCase
         $user = User::factory()->create(['timezone' => 'Europe/Paris']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->deadline($this->ruleAbout($user, $vault, 'Holly', 'Flax'), '+2 days');
+        $this->deadline($this->ruleAbout($user, $vault, 'Holly', 'Flax'), 2);
 
         $response = $this->actingAs($user)->get(route('reminders.index', $vault));
 
@@ -186,63 +201,19 @@ class VaultReminderControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_a_way_to_put_a_reminder_off(): void
+    public function an_overdue_reminder_offers_both_answers(): void
     {
         $user = User::factory()->create(['timezone' => 'Europe/Paris']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $rule = $this->ruleAbout($user, $vault);
-        $occurrence = $this->deadline($rule, '+2 days');
+        $occurrence = $this->deadline($this->ruleAbout($user, $vault), -2);
 
         $response = $this->actingAs($user)->get(route('reminders.index', $vault));
 
-        $response->assertSee('Remind me later');
-        $response->assertSee("/reminders/occurrences/{$occurrence->uuid}/postponement", escape: false);
-    }
-
-    #[Test]
-    public function it_asks_before_it_dismisses_a_reminder(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $occurrence = $this->deadline($this->ruleAbout($user, $vault, 'Holly', 'Flax'), '+2 days');
-
-        $response = $this->actingAs($user)->get(route('reminders.index', $vault));
-
-        $response->assertSee('Dismiss “Holly’s birthday”?', escape: false);
-        $response->assertSee('This one will not be sent. The next one stays scheduled.');
-        $response->assertSee("/reminders/occurrences/{$occurrence->uuid}/dismissal", escape: false);
-    }
-
-    #[Test]
-    public function the_postpone_dialog_names_every_instant_and_the_zone_they_are_read_in(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->deadline($this->ruleAbout($user, $vault), '+2 days');
-
-        $response = $this->actingAs($user)->get(route('reminders.index', $vault));
-
-        foreach (['In an hour', 'Tomorrow', 'In a week', 'In a month'] as $preset) {
-            $response->assertSee($preset);
-        }
-
-        $response->assertSee('Europe/Paris');
-    }
-
-    #[Test]
-    public function the_postpone_dialog_opens_on_the_reminder_and_where_it_stands(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->deadline($this->ruleAbout($user, $vault, 'Holly', 'Flax'), '+2 days');
-
-        $response = $this->actingAs($user)->get(route('reminders.index', $vault));
-
-        $response->assertSee('Holly’s birthday', escape: false);
-        $response->assertSee('Currently set for');
-        $response->assertDontSee('Remind me later</p>', escape: false);
+        $response->assertSee(route('reminders.occurrences.answer.update', ['vault' => $vault, 'reminderOccurrence' => $occurrence]), escape: false);
+        $response->assertSee('name="answer" value="remembered"', escape: false);
+        $response->assertSee('name="answer" value="forgotten"', escape: false);
+        $response->assertDontSee('Dismiss');
+        $response->assertDontSee('Remind me later');
     }
 
     #[Test]
@@ -252,14 +223,43 @@ class VaultReminderControllerTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $rule = $this->ruleAbout($user, $vault);
 
-        $this->deadline($rule, '+2 days');
-        $this->sent($rule, '-6 days');
+        $this->deadline($rule, 2);
+        $this->sent($rule, -6);
 
         $response = $this->actingAs($user)->get(route('reminders.index', $vault));
 
         $response->assertStatus(200);
-        $response->assertSeeInOrder(['Coming up', 'Sent']);
+        $response->assertSeeInOrder(['Coming up', 'Sent', 'History']);
         $response->assertSee(route('reminders.sent', $vault), escape: false);
+        $response->assertSee(route('reminders.history', $vault), escape: false);
+    }
+
+    #[Test]
+    public function the_history_tab_lists_what_was_answered_latest_answer_first(): void
+    {
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->answered($this->ruleAbout($user, $vault, 'Michael', 'Scott'), -9, 'remembered', CarbonImmutable::now()->subDays(8));
+        $this->answered($this->ruleAbout($user, $vault, 'Pam', 'Beesly'), -3, 'forgotten', CarbonImmutable::now()->subDay());
+        $this->deadline($this->ruleAbout($user, $vault, 'Jim', 'Halpert'), -2);
+
+        $response = $this->actingAs($user)->get(route('reminders.history', $vault));
+
+        $response->assertStatus(200);
+        $response->assertSeeInOrder(['Pam’s birthday', 'You forgot', 'Michael’s birthday', 'You remembered'], escape: false);
+        $response->assertDontSee('Jim Halpert');
+    }
+
+    #[Test]
+    public function the_history_tab_says_so_when_nothing_was_answered(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)
+            ->get(route('reminders.history', $vault))
+            ->assertSee('No answers yet');
     }
 
     #[Test]
@@ -268,8 +268,8 @@ class VaultReminderControllerTest extends TestCase
         $user = User::factory()->create(['timezone' => 'Europe/Paris']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $this->sent($this->ruleAbout($user, $vault, 'Michael', 'Scott'), '-9 days');
-        $this->sent($this->ruleAbout($user, $vault, 'Pam', 'Beesly'), '-2 days');
+        $this->sent($this->ruleAbout($user, $vault, 'Michael', 'Scott'), -9);
+        $this->sent($this->ruleAbout($user, $vault, 'Pam', 'Beesly'), -2);
 
         $response = $this->actingAs($user)->get(route('reminders.sent', $vault));
 
@@ -284,13 +284,14 @@ class VaultReminderControllerTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $rule = $this->ruleAbout($user, $vault, 'Michael', 'Scott');
 
-        $this->sent($rule, '-3 days');
+        $this->sent($rule, -3);
         $rule->delete();
 
         $response = $this->actingAs($user)->get(route('reminders.sent', $vault));
 
         $response->assertStatus(200);
-        $response->assertSee('A deleted contact');
+        $response->assertSee('Michael Scott');
+        $response->assertDontSee('A deleted contact');
     }
 
     private function ruleAbout(User $user, Vault $vault, string $first = 'Stanley', string $last = 'Hudson'): Reminder
@@ -310,26 +311,33 @@ class VaultReminderControllerTest extends TestCase
         return $rule;
     }
 
-    private function deadline(Reminder $rule, string $when): ReminderOccurrence
+    private function deadline(Reminder $rule, int $days): ReminderOccurrence
     {
-        $instant = CarbonImmutable::parse($when);
+        $day = CarbonImmutable::now('Europe/Paris')->addDays($days)->startOfDay();
 
         return ReminderOccurrence::factory()->for($rule)->create([
-            'source_local_date' => $instant->toDateString(),
-            'generation_key' => '1:'.$instant->toDateString().':on::',
-            'scheduled_for' => $instant,
-            'original_scheduled_for' => $instant,
-            'local_date' => $instant->toDateString(),
+            'generation_key' => '1:'.$day->toDateString(),
+            'scheduled_for' => $day->setTime(9, 0)->utc(),
+            'local_date' => $day->toDateString(),
         ]);
     }
 
-    private function sent(Reminder $rule, string $when): ReminderOccurrence
+    private function sent(Reminder $rule, int $days): ReminderOccurrence
     {
-        $occurrence = $this->deadline($rule, $when);
+        $occurrence = $this->deadline($rule, $days);
 
-        $occurrence->notified_at = CarbonImmutable::parse($when);
-        $occurrence->status = ReminderOccurrenceStatusEnum::Notified;
+        $occurrence->notifications_created_at = $occurrence->scheduled_for;
+        $occurrence->notified_at = $occurrence->scheduled_for;
         $occurrence->save();
+
+        return $occurrence;
+    }
+
+    private function answered(Reminder $rule, int $days, string $answer, CarbonImmutable $at): ReminderOccurrence
+    {
+        $occurrence = $this->deadline($rule, $days);
+
+        $occurrence->forceFill(['answer' => $answer, 'answered_at' => $at])->save();
 
         return $occurrence;
     }

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Mcp\Servers;
 
 use App\Mcp\Tools\AddTemplateSection;
+use App\Mcp\Tools\AnswerReminderOccurrence;
 use App\Mcp\Tools\CreateContact;
+use App\Mcp\Tools\CreateContactReminder;
 use App\Mcp\Tools\CreateEntityType;
 use App\Mcp\Tools\CreateLifeEventCategory;
 use App\Mcp\Tools\CreateLifeEventType;
@@ -14,6 +16,7 @@ use App\Mcp\Tools\CreateRelationshipType;
 use App\Mcp\Tools\CreateTemplate;
 use App\Mcp\Tools\CreateTemplateDraft;
 use App\Mcp\Tools\CreateTemplateField;
+use App\Mcp\Tools\DeleteContactReminder;
 use App\Mcp\Tools\DeleteEntityType;
 use App\Mcp\Tools\DeleteLifeEventCategory;
 use App\Mcp\Tools\DeleteLifeEventType;
@@ -24,6 +27,7 @@ use App\Mcp\Tools\DeleteTemplateDraft;
 use App\Mcp\Tools\DeleteTemplateField;
 use App\Mcp\Tools\DuplicateTemplate;
 use App\Mcp\Tools\GetContact;
+use App\Mcp\Tools\GetContactReminder;
 use App\Mcp\Tools\GetEmailSent;
 use App\Mcp\Tools\GetEntityType;
 use App\Mcp\Tools\GetLifeEventCategory;
@@ -35,6 +39,8 @@ use App\Mcp\Tools\GetRelationshipCategory;
 use App\Mcp\Tools\GetRelationshipType;
 use App\Mcp\Tools\GetTemplate;
 use App\Mcp\Tools\GetTemplateVersion;
+use App\Mcp\Tools\ListContactReminderOccurrences;
+use App\Mcp\Tools\ListContactReminders;
 use App\Mcp\Tools\ListContacts;
 use App\Mcp\Tools\ListEmailsSent;
 use App\Mcp\Tools\ListEntityTypes;
@@ -67,6 +73,7 @@ use App\Mcp\Tools\SetTemplateFieldPosition;
 use App\Mcp\Tools\SetTemplatePosition;
 use App\Mcp\Tools\SetTemplateSectionPosition;
 use App\Mcp\Tools\UpdateContactName;
+use App\Mcp\Tools\UpdateContactReminder;
 use App\Mcp\Tools\UpdateEntityType;
 use App\Mcp\Tools\UpdateLifeEventCategory;
 use App\Mcp\Tools\UpdateLifeEventType;
@@ -115,6 +122,12 @@ deleted, only switched off with set-life-event-type-activation or set-life-event
 
 The account's activity and the emails it was sent are read with list-logs and list-emails-sent, a
 page at a time, newest first, with the total. Read one email with get-email-sent to see what it said.
+
+A reminder about a contact is told on its day and never ahead of it. Each date it produces waits for
+the user to say whether they remembered it or forgot it, and answer-reminder-occurrence records that
+answer on their word only: remembered from the date's day, forgotten from the day after. An answer is
+final. A date nobody answered is not forgotten, and a notification sent or read is not remembered.
+There is no pause: delete-contact-reminder is the only way to stop a reminder, and the answers stay.
 TEXT)]
 class EricaServer extends Server
 {
@@ -173,6 +186,13 @@ class EricaServer extends Server
         CreateContact::class,
         UpdateContactName::class,
         SetContactFavourite::class,
+        ListContactReminders::class,
+        GetContactReminder::class,
+        CreateContactReminder::class,
+        UpdateContactReminder::class,
+        DeleteContactReminder::class,
+        ListContactReminderOccurrences::class,
+        AnswerReminderOccurrence::class,
         CreateTemplate::class,
         UpdateTemplate::class,
         DuplicateTemplate::class,

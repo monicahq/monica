@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\DeactivateReminders;
+use App\Actions\GenerateReminderOccurrences;
 use App\Actions\ReactivateReminders;
+use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -151,7 +152,7 @@ class ReactivateRemindersTest extends TestCase
     }
 
     #[Test]
-    public function it_brings_back_a_rule_somebody_paused_by_hand(): void
+    public function it_brings_back_a_rule_and_the_deadlines_ahead_of_it(): void
     {
         Queue::fake();
 
@@ -165,13 +166,13 @@ class ReactivateRemindersTest extends TestCase
         new DeactivateReminders(
             user: $user,
             subject: $reminder,
-            reason: ReminderInactiveReasonEnum::PausedByUser,
+            reason: ReminderInactiveReasonEnum::RecordArchived,
         )->execute();
 
         $count = new ReactivateReminders(
             user: $user,
             subject: $reminder,
-            reason: ReminderInactiveReasonEnum::PausedByUser,
+            reason: ReminderInactiveReasonEnum::RecordArchived,
         )->execute();
 
         $this->assertSame(1, $count);
@@ -182,9 +183,28 @@ class ReactivateRemindersTest extends TestCase
         ]);
         $this->assertDatabaseHas('reminder_occurrences', [
             'id' => $occurrence->id,
-            'status' => ReminderOccurrenceStatusEnum::Pending->value,
+            'cancelled_at' => null,
             'cancelled_reason' => null,
         ]);
+    }
+
+    #[Test]
+    public function it_produces_new_deadlines_when_the_old_ones_cannot_be_brought_back(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'first_name' => 'Oscar']);
+        $reminder = Reminder::factory()->manual($contact, now()->addDays(3)->toDateString())->create([
+            'cadence' => ReminderCadenceEnum::Monthly,
+            'timezone' => 'UTC',
+        ]);
+        new GenerateReminderOccurrences(reminder: $reminder)->execute();
+
+        new DeactivateReminders(user: $user, subject: $reminder, reason: ReminderInactiveReasonEnum::ValueCleared)->execute();
+        new ReactivateReminders(user: $user, subject: $reminder, reason: ReminderInactiveReasonEnum::ValueCleared)->execute();
+
+        $this->assertTrue(ReminderOccurrence::query()->where('reminder_id', $reminder->id)->active()->exists());
     }
 
     #[Test]
@@ -205,24 +225,23 @@ class ReactivateRemindersTest extends TestCase
         new DeactivateReminders(
             user: $user,
             subject: $reminder,
-            reason: ReminderInactiveReasonEnum::PausedByUser,
+            reason: ReminderInactiveReasonEnum::ValueCleared,
         )->execute();
 
         new ReactivateReminders(
             user: $user,
             subject: $reminder,
-            reason: ReminderInactiveReasonEnum::PausedByUser,
+            reason: ReminderInactiveReasonEnum::ValueCleared,
         )->execute();
 
         $this->assertDatabaseHas('reminder_occurrences', [
             'id' => $archived->id,
-            'status' => ReminderOccurrenceStatusEnum::Cancelled->value,
             'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::RecordArchived->value,
         ]);
     }
 
     #[Test]
-    public function it_refuses_to_resume_a_rule_the_system_silenced(): void
+    public function it_refuses_to_bring_back_a_rule_silenced_for_another_reason(): void
     {
         Queue::fake();
 
@@ -238,7 +257,7 @@ class ReactivateRemindersTest extends TestCase
         $count = new ReactivateReminders(
             user: $user,
             subject: $reminder,
-            reason: ReminderInactiveReasonEnum::PausedByUser,
+            reason: ReminderInactiveReasonEnum::ValueCleared,
         )->execute();
 
         $this->assertSame(0, $count);

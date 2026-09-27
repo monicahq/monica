@@ -6,18 +6,14 @@ namespace App\Http\Requests;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderCadenceEnum;
-use App\Enums\ReminderMomentDirectionEnum;
-use App\Enums\ReminderMomentUnitEnum;
 use App\Helpers\FieldValueFormatter;
 use App\Helpers\FieldValueRules;
 use App\Models\Field;
 use App\Models\Reminder;
 use App\Models\StructureVersionSection;
-use App\Rules\ReminderMoments;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 use Override;
 use RuntimeException;
 
@@ -26,6 +22,41 @@ class SaveFieldValuesRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    /**
+     * The date panel asks how often in one list, `once` or a cadence and its interval such as
+     * `yearly:2`, and the action reads them as three answers. A value that is neither is left as it
+     * is, so the rule on `recurs` refuses it.
+     */
+    #[Override]
+    protected function prepareForValidation(): void
+    {
+        $reminders = $this->input('reminders');
+
+        if (! is_array($reminders)) {
+            return;
+        }
+
+        foreach ($reminders as $fieldId => $reminder) {
+            $repeat = is_array($reminder) ? ($reminder['repeat'] ?? null) : null;
+
+            if (! is_string($repeat)) {
+                continue;
+            }
+
+            if ($repeat === 'once') {
+                $reminders[$fieldId] = [...$reminder, 'recurs' => '0'];
+
+                continue;
+            }
+
+            [$cadence, $interval] = array_pad(explode(':', $repeat, 2), 2, null);
+
+            $reminders[$fieldId] = [...$reminder, 'recurs' => '1', 'cadence' => $cadence, 'interval' => $interval];
+        }
+
+        $this->merge(['reminders' => $reminders]);
     }
 
     /** @return array<string, mixed> */
@@ -45,31 +76,7 @@ class SaveFieldValuesRequest extends FormRequest
             'reminders.*.interval' => ['nullable', 'integer', 'min:1', 'max:'.Reminder::MAXIMUM_INTERVAL],
             'reminders.*.time' => ['nullable', 'date_format:H:i'],
             'reminders.*.timezone' => ['nullable', 'string', 'timezone'],
-            'reminders.*.moments' => ['nullable', 'array'],
-            'reminders.*.moments.*.direction' => ['nullable', Rule::in(ReminderMomentDirectionEnum::values())],
-            'reminders.*.moments.*.amount' => ['nullable', 'integer'],
-            'reminders.*.moments.*.unit' => ['nullable', Rule::in(ReminderMomentUnitEnum::values())],
         ], FieldValueRules::for($this->fieldsInTheSection(), $this->route('vault')));
-    }
-
-    /** @return array<int, callable> */
-    public function after(): array
-    {
-        return [
-            function (Validator $validator): void {
-                foreach ((array) $this->input('reminders', []) as $fieldId => $reminder) {
-                    if (! filter_var($reminder['on'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
-                        continue;
-                    }
-
-                    $problem = ReminderMoments::problemWith($reminder['moments'] ?? []);
-
-                    if ($problem !== null) {
-                        $validator->errors()->add("reminders.{$fieldId}.moments", $problem);
-                    }
-                }
-            },
-        ];
     }
 
     /** @return array<string, string> */

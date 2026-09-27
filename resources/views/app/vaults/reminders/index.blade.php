@@ -20,6 +20,8 @@
     'sentUrl' => $viewModel->sentUrl(),
     'activeCount' => $viewModel->activeCount(),
     'sentCount' => $viewModel->sentCount(),
+    'historyUrl' => $viewModel->historyUrl(),
+    'historyCount' => $viewModel->historyCount(),
     'current' => 'active',
   ])
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Vaults;
 
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Models\NotificationPreference;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
@@ -108,12 +107,9 @@ class ReminderOccurrenceTestNotificationControllerTest extends TestCase
         return ReminderOccurrence::factory()->for($rule)->create([
             'account_id' => $rule->account_id,
             'vault_id' => $rule->vault_id,
-            'source_local_date' => $instant->toDateString(),
-            'generation_key' => '1:'.$instant->toDateString().':a',
+            'generation_key' => '1:'.$instant->toDateString(),
             'scheduled_for' => $instant,
-            'original_scheduled_for' => $instant,
             'local_date' => $instant->toDateString(),
-            'status' => ReminderOccurrenceStatusEnum::Pending,
             'notified_at' => null,
         ]);
     }

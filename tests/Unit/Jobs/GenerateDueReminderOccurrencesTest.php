@@ -27,8 +27,8 @@ class GenerateDueReminderOccurrencesTest extends TestCase
 
         new GenerateDueReminderOccurrences()->handle();
 
-        $this->assertSame(2, ReminderOccurrence::query()->where('reminder_id', $first->id)->count());
-        $this->assertSame(2, ReminderOccurrence::query()->where('reminder_id', $second->id)->count());
+        $this->assertSame(1, ReminderOccurrence::query()->where('reminder_id', $first->id)->count());
+        $this->assertSame(1, ReminderOccurrence::query()->where('reminder_id', $second->id)->count());
     }
 
     #[Test]
@@ -55,7 +55,7 @@ class GenerateDueReminderOccurrencesTest extends TestCase
         new GenerateDueReminderOccurrences()->handle();
         new GenerateDueReminderOccurrences()->handle();
 
-        $this->assertDatabaseCount('reminder_occurrences', 2);
+        $this->assertDatabaseCount('reminder_occurrences', 1);
     }
 
     private function rule(string $date): Reminder

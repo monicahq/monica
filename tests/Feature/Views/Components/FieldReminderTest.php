@@ -26,7 +26,7 @@ class FieldReminderTest extends TestCase
     {
         $rendered = $this->render();
 
-        $rendered->assertSee('Add a reminder', escape: false);
+        $rendered->assertSee('Remind me about this date', escape: false);
         $rendered->assertSee('name="reminders[', escape: false);
         $rendered->assertSee('aria-controls="field-panel"', escape: false);
         $rendered->assertSee(':aria-expanded="on"', escape: false);
@@ -44,60 +44,38 @@ class FieldReminderTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_for_the_wording_the_cadence_the_moments_the_hour_and_the_zone(): void
+    public function it_asks_how_often_at_what_hour_in_which_zone_and_what_it_will_say(): void
     {
         $rendered = $this->render();
 
-        $rendered->assertSee('What it should say', escape: false);
-        $rendered->assertSee('How often', escape: false);
-        $rendered->assertSee('Every time it comes round', escape: false);
-        $rendered->assertSee('Comes back', escape: false);
-        $rendered->assertSee('When to be told', escape: false);
-        $rendered->assertSee('Local time', escape: false);
+        $rendered->assertSee('Repeats', escape: false);
+        $rendered->assertSee('name="reminders[7][repeat]"', escape: false);
+        $rendered->assertSee('At', escape: false);
         $rendered->assertSee('Time zone', escape: false);
-        $rendered->assertSee('Add another moment', escape: false);
+        $rendered->assertSee('It will say', escape: false);
+        $rendered->assertSee('You will be notified on the day. The time zone is yours by default.', escape: false);
+        $rendered->assertDontSee('[moments]', escape: false);
     }
 
     #[Test]
-    public function the_cadence_stays_in_the_flow_whether_the_rule_comes_back_or_not(): void
+    public function it_offers_once_and_every_so_many_years(): void
     {
         $rendered = $this->render();
 
-        $rendered->assertSee('Comes back', escape: false);
-        $rendered->assertSee('x-bind:disabled="! recurs"', escape: false);
-        $rendered->assertDontSee('x-show="recurs"', escape: false);
+        $rendered->assertSeeInOrder(['Only once', 'Every year', 'Every 2 years', 'Every 5 years', 'Every 10 years'], escape: false);
+        $rendered->assertSee('<option value="yearly:1" selected', escape: false);
     }
 
     #[Test]
-    public function every_moment_carries_a_direction_an_amount_and_a_unit(): void
+    public function it_keeps_offering_a_rhythm_the_list_no_longer_suggests_to_the_reminder_that_has_it(): void
     {
-        $rendered = $this->render();
+        $rendered = $this->render($this->rule([
+            'cadence' => ReminderCadenceEnum::Monthly,
+            'frequency_interval' => 4,
+        ]));
 
-        $rendered->assertSee('[moments][0][direction]', escape: false);
-        $rendered->assertSee('[moments][0][amount]', escape: false);
-        $rendered->assertSee('[moments][0][unit]', escape: false);
-        $rendered->assertSee('On the day', escape: false);
-        $rendered->assertSee('Before', escape: false);
-        $rendered->assertSee('After', escape: false);
-    }
-
-    #[Test]
-    public function it_draws_blank_moments_the_page_reveals_one_at_a_time(): void
-    {
-        $rendered = $this->render();
-
-        $rendered->assertSee('[moments][3][direction]', escape: false);
-        $rendered->assertSee('x-on:click="shown++"', escape: false);
-        $rendered->assertDontSee('[moments][4][direction]', escape: false);
-    }
-
-    #[Test]
-    public function a_moment_can_be_removed_and_never_the_last_one(): void
-    {
-        $rendered = $this->render();
-
-        $rendered->assertSee('Remove this moment', escape: false);
-        $rendered->assertSee('x-show="active > 1"', escape: false);
+        $rendered->assertSee('<option value="monthly:4" selected', escape: false);
+        $rendered->assertSee('Every 4 months', escape: false);
     }
 
     #[Test]
@@ -109,28 +87,28 @@ class FieldReminderTest extends TestCase
             'frequency_interval' => 4,
             'time_of_day' => '18:30:00',
             'timezone' => 'Asia/Tokyo',
-            'moments' => [['direction' => 'before', 'amount' => 3, 'unit' => 'weeks']],
         ]));
 
         $rendered->assertSee('value="Ring Michael"', escape: false);
         $rendered->assertSee('value="18:30"', escape: false);
-        $rendered->assertSee('value="4"', escape: false);
-        $rendered->assertSee('3 weeks before', escape: false);
-        $rendered->assertSee('Asia/Tokyo', escape: false);
+        $rendered->assertSee('<option value="monthly:4" selected', escape: false);
+        $rendered->assertSee('<option value="Asia/Tokyo" selected', escape: false);
     }
 
     #[Test]
-    public function it_summarises_the_rule_in_one_sentence_and_says_when_it_next_falls(): void
+    public function it_says_when_the_next_reminder_falls_and_at_what_hour(): void
     {
+        $this->travelTo('2026-09-27 12:00:00');
+
         $rendered = $this->render($this->rule([
             'cadence' => ReminderCadenceEnum::Yearly,
             'time_of_day' => '09:00:00',
             'timezone' => 'Europe/Paris',
-            'moments' => [['direction' => 'before', 'amount' => 7, 'unit' => 'days']],
         ]));
 
-        $rendered->assertSee('You will be reminded 7 days before, every year, at 09:00 Europe/Paris.', escape: false);
-        $rendered->assertSee('Next:', escape: false);
+        $rendered->assertSee('Next reminder on', escape: false);
+        $rendered->assertSee('February 3, 2027 at 09:00', escape: false);
+        $rendered->assertSee('aria-live="polite"', escape: false);
     }
 
     #[Test]
@@ -188,10 +166,9 @@ class FieldReminderTest extends TestCase
 
         $rendered->assertSee('x-data="fieldReminder(', escape: false);
         $rendered->assertSee('locale', escape: false);
-        $rendered->assertSee('listPattern', escape: false);
+        $rendered->assertSee('dateId', escape: false);
         $rendered->assertDontSee('count === 1', escape: false);
         $rendered->assertDontSee('pair.one', escape: false);
-        $rendered->assertDontSee('phrase(row) {', escape: false);
     }
 
     private function render(?Reminder $reminder = null): TestView
@@ -215,7 +192,7 @@ class FieldReminderTest extends TestCase
         );
 
         return $this->blade(
-            '<x-field-reminder :field="$field" :reminder="$reminder" name="reminders[7]" id="field" />',
+            '<x-field-reminder :field="$field" :reminder="$reminder" name="reminders[7]" id="field" date-id="date" />',
             ['field' => $value->field, 'reminder' => $block],
         );
     }

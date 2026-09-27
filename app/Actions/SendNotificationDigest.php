@@ -8,6 +8,7 @@ use App\Enums\NotificationTypeEnum;
 use App\Models\Account;
 use App\Models\Notification;
 use App\Models\NotificationChannel;
+use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Notifications\NotificationDigest;
 use Illuminate\Support\Collection;
@@ -79,7 +80,11 @@ class SendNotificationDigest
             ->where('channel', $channel->channel->value)
             ->where('type', '!=', NotificationTypeEnum::Digest->value)
             ->orderBy('scheduled_for')
-            ->get();
+            ->with('notifiable')
+            ->get()
+            ->filter(fn (Notification $notification): bool => ! $notification->notifiable instanceof ReminderOccurrence
+                || $notification->notifiable->isStillWarranted())
+            ->values();
     }
 
     /** @param  Collection<int, Notification>  $waiting */

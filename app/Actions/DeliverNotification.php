@@ -73,7 +73,7 @@ class DeliverNotification
         $occurrence = $this->notification->notifiable;
 
         return ! $occurrence instanceof ReminderOccurrence
-            || $occurrence->isStillWarranted($this->notification->scheduled_for);
+            || $occurrence->refresh()->isStillWarranted();
     }
 
     private function hand(): void
@@ -94,7 +94,7 @@ class DeliverNotification
         $user->notify(new ReminderDue(
             reminderName: $this->notification->title,
             recordName: (string) ($payload['record_name'] ?? ''),
-            sourceDate: (string) ($payload['source_local_date'] ?? ''),
+            sourceDate: (string) ($payload['local_date'] ?? ''),
             whenItIsAbout: $this->notification->body,
             channel: $channel,
         )->locale($this->notification->locale));

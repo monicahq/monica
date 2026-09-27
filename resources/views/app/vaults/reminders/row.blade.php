@@ -61,7 +61,7 @@
             <span
               @class([
                 'border-b border-dotted border-hairline-strong whitespace-nowrap',
-                'text-warning' => $row->isLate(),
+                'text-warning' => $row->isOverdue(),
               ])
             >{{ $row->relative() }}</span>
           </x-tooltip>
@@ -71,30 +71,30 @@
   </{{ $isLink ? 'a' : 'div' }}>
 
   <div class="relative flex flex-none items-center gap-2 max-sm:ml-auto">
-    @include('app.vaults.reminders._dismiss', ['row' => $row])
+    @include('app.vaults.reminders._answers', ['row' => $row])
 
     <x-actions-menu variant="ghost" :text="__('More')" :label="__('More actions for :name', ['name' => $row->text()])">
       <x-slot:glyph>
         <x-icon name="chevron-down" :size="14" :stroke-width="1.7" ::class="menuOpen && 'rotate-180'" class="order-last transition-transform duration-(--duration-standard)" />
       </x-slot:glyph>
 
-      @include('app.vaults.reminders._postpone', ['row' => $row, 'inMenu' => true])
+      @if ($row->testUrl() !== null)
+        <x-modal.form
+          :title="__('Send yourself a test?')"
+          :description="__('This reminder is emailed to you now, as it will arrive. Nothing else changes.')"
+          :confirm="__('Send it')"
+          method="post"
+          :action="$row->testUrl()"
+        >
+          <x-slot:trigger>
+            <button type="button" role="menuitem" @click="menuOpen = false; $refs.menuTrigger.focus(); open = true" class="{{ $item }}">
+              <x-icon name="mail" :size="16" :stroke-width="1.5" class="shrink-0" />
 
-      <x-modal.form
-        :title="__('Send yourself a test?')"
-        :description="__('This reminder is emailed to you now, as it will arrive. Nothing else changes.')"
-        :confirm="__('Send it')"
-        method="post"
-        :action="$row->testUrl()"
-      >
-        <x-slot:trigger>
-          <button type="button" role="menuitem" @click="menuOpen = false; $refs.menuTrigger.focus(); open = true" class="{{ $item }}">
-            <x-icon name="mail" :size="16" :stroke-width="1.5" class="shrink-0" />
-
-            {{ __('Send me a test') }}
-          </button>
-        </x-slot:trigger>
-      </x-modal.form>
+              {{ __('Send me a test') }}
+            </button>
+          </x-slot:trigger>
+        </x-modal.form>
+      @endif
 
       @if ($isLink)
         <div role="separator" class="my-1 h-px bg-hairline"></div>

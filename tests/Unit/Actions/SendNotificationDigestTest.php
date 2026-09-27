@@ -7,6 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\SendNotificationDigest;
 use App\Enums\NotificationChannelEnum;
 use App\Enums\NotificationTypeEnum;
+use App\Enums\ReminderAnswerEnum;
 use App\Models\Account;
 use App\Models\Notification;
 use App\Models\NotificationChannel;
@@ -138,6 +139,21 @@ class SendNotificationDigestTest extends TestCase
 
         $this->assertSame(0, new SendNotificationDigest(account: $account)->execute());
         $this->assertSame(1, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
+    }
+
+    #[Test]
+    public function it_leaves_out_a_deadline_answered_while_its_notification_waited(): void
+    {
+        NotificationFacade::fake();
+        [$account, $user] = $this->account();
+        Notification::factory()->count(2)->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
+        $answered = Notification::factory()->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
+        $answered->notifiable->update(['answer' => ReminderAnswerEnum::Remembered, 'answered_at' => now()]);
+
+        $folded = new SendNotificationDigest(account: $account)->execute();
+
+        $this->assertSame(2, $folded);
+        $this->assertNull($answered->refresh()->digest_id);
     }
 
     /** @return array{0: Account, 1: User} */

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Models\Contact;
 use App\Models\File;
 use App\Models\Reminder;
@@ -182,9 +181,7 @@ class VaultsViewModelTest extends TestCase
                 'account_id' => $user->account_id,
                 'vault_id' => $vault->id,
                 'reminder_id' => $reminder->id,
-                'status' => ReminderOccurrenceStatusEnum::Pending,
-                'source_local_date' => $when->toDateString(),
-                'generation_key' => "1:{$when->toDateString()}:on::",
+                'generation_key' => "1:{$when->toDateString()}",
                 'scheduled_for' => $when,
                 'local_date' => $when->toDateString(),
             ]);

@@ -7,9 +7,8 @@ namespace Tests\Unit\Actions;
 use App\Actions\GenerateReminderOccurrences;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
-use App\Enums\ReminderMomentDirectionEnum;
-use App\Enums\ReminderMomentUnitEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
+use App\Enums\ReminderOccurrenceCancelledReasonEnum;
+use App\Models\Contact;
 use App\Models\FieldValue;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
@@ -24,26 +23,21 @@ class GenerateReminderOccurrencesTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_writes_one_deadline_for_every_moment_of_the_cycle(): void
+    public function it_writes_one_deadline_on_the_day_of_each_cycle(): void
     {
         CarbonImmutable::setTestNow('2027-05-01 06:00:00');
         $reminder = $this->rule('1984-05-12');
 
         $written = new GenerateReminderOccurrences(reminder: $reminder)->execute();
 
-        $this->assertSame(2, $written);
+        $this->assertSame(1, $written);
         $this->assertDatabaseHas('reminder_occurrences', [
             'reminder_id' => $reminder->id,
-            'source_local_date' => '2027-05-12',
-            'moment_direction' => ReminderMomentDirectionEnum::Before->value,
-            'moment_amount' => 7,
-            'moment_unit' => ReminderMomentUnitEnum::Days->value,
-            'generation_key' => '1:2027-05-12:before:7:days',
-            'status' => ReminderOccurrenceStatusEnum::Pending->value,
-        ]);
-        $this->assertDatabaseHas('reminder_occurrences', [
-            'reminder_id' => $reminder->id,
-            'generation_key' => '1:2027-05-12:on::',
+            'local_date' => '2027-05-12',
+            'generation_key' => '1:2027-05-12',
+            'answer' => null,
+            'cancelled_at' => null,
+            'notifications_created_at' => null,
         ]);
     }
 
@@ -55,11 +49,10 @@ class GenerateReminderOccurrencesTest extends TestCase
 
         new GenerateReminderOccurrences(reminder: $reminder)->execute();
 
-        $occurrence = ReminderOccurrence::query()->where('generation_key', '1:2027-05-12:on::')->firstOrFail();
+        $occurrence = ReminderOccurrence::query()->where('generation_key', '1:2027-05-12')->firstOrFail();
 
         $this->assertSame('2027-05-12 07:00:00', $occurrence->scheduled_for->format('Y-m-d H:i:s'));
         $this->assertSame('2027-05-12', $occurrence->local_date->format('Y-m-d'));
-        $this->assertTrue($occurrence->scheduled_for->equalTo($occurrence->original_scheduled_for));
     }
 
     #[Test]
@@ -88,7 +81,7 @@ class GenerateReminderOccurrencesTest extends TestCase
         $again = new GenerateReminderOccurrences(reminder: $reminder)->execute();
 
         $this->assertSame(0, $again);
-        $this->assertSame(2, ReminderOccurrence::query()->where('reminder_id', $reminder->id)->count());
+        $this->assertSame(1, ReminderOccurrence::query()->where('reminder_id', $reminder->id)->count());
     }
 
     #[Test]
@@ -104,31 +97,53 @@ class GenerateReminderOccurrencesTest extends TestCase
             'account_id' => $reminder->account_id,
             'vault_id' => $reminder->vault_id,
             'reminder_id' => $reminder->id,
-            'source_local_date' => '2027-05-12',
-            'moment_direction' => ReminderMomentDirectionEnum::On->value,
-            'generation_key' => '1:2027-05-12:on::',
-            'scheduled_for' => now(),
-            'original_scheduled_for' => now(),
             'local_date' => '2027-05-12',
-            'status' => ReminderOccurrenceStatusEnum::Pending->value,
+            'generation_key' => '1:2027-05-12',
+            'scheduled_for' => now(),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
         $this->assertSame(0, $written);
-        $this->assertSame(2, ReminderOccurrence::query()->where('reminder_id', $reminder->id)->count());
+        $this->assertSame(1, ReminderOccurrence::query()->where('reminder_id', $reminder->id)->count());
     }
 
     #[Test]
-    public function it_never_writes_a_deadline_that_has_already_gone(): void
+    public function it_never_writes_a_deadline_whose_hour_has_already_passed_today(): void
     {
-        CarbonImmutable::setTestNow('2027-05-08 06:00:00');
+        CarbonImmutable::setTestNow('2027-05-12 08:00:00');
         $reminder = $this->rule('1984-05-12');
 
         new GenerateReminderOccurrences(reminder: $reminder)->execute();
 
-        $this->assertDatabaseMissing('reminder_occurrences', ['generation_key' => '1:2027-05-12:before:7:days']);
-        $this->assertDatabaseHas('reminder_occurrences', ['generation_key' => '1:2027-05-12:on::']);
+        $this->assertDatabaseMissing('reminder_occurrences', ['generation_key' => '1:2027-05-12']);
+    }
+
+    #[Test]
+    public function it_writes_today_s_deadline_while_its_hour_is_still_ahead(): void
+    {
+        CarbonImmutable::setTestNow('2027-05-12 06:00:00');
+        $reminder = $this->rule('1984-05-12');
+
+        new GenerateReminderOccurrences(reminder: $reminder)->execute();
+
+        $this->assertDatabaseHas('reminder_occurrences', ['generation_key' => '1:2027-05-12']);
+    }
+
+    #[Test]
+    public function it_anchors_a_manual_reminder_on_the_date_it_carries(): void
+    {
+        CarbonImmutable::setTestNow('2027-05-01 06:00:00');
+        $contact = Contact::factory()->create(['first_name' => 'Pam']);
+        $reminder = Reminder::factory()->manual($contact, '2027-05-20')->create([
+            'cadence' => ReminderCadenceEnum::Monthly,
+        ]);
+
+        new GenerateReminderOccurrences(reminder: $reminder)->execute();
+
+        $this->assertDatabaseHas('reminder_occurrences', ['reminder_id' => $reminder->id, 'local_date' => '2027-05-20']);
+        $this->assertDatabaseHas('reminder_occurrences', ['reminder_id' => $reminder->id, 'local_date' => '2027-06-20']);
+        $this->assertDatabaseMissing('reminder_occurrences', ['reminder_id' => $reminder->id, 'local_date' => '2027-04-20']);
     }
 
     #[Test]
@@ -167,17 +182,17 @@ class GenerateReminderOccurrencesTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_the_deadlines_of_a_rule_that_fires_once_and_then_no_more(): void
+    public function it_writes_the_deadline_of_a_rule_that_fires_once_and_then_no_more(): void
     {
         CarbonImmutable::setTestNow('2027-05-01 06:00:00');
         $reminder = $this->rule('2027-05-12', ReminderCadenceEnum::Once);
 
-        $this->assertSame(2, new GenerateReminderOccurrences(reminder: $reminder)->execute());
+        $this->assertSame(1, new GenerateReminderOccurrences(reminder: $reminder)->execute());
 
         CarbonImmutable::setTestNow('2028-05-01 06:00:00');
 
         $this->assertSame(0, new GenerateReminderOccurrences(reminder: $reminder)->execute());
-        $this->assertSame(2, ReminderOccurrence::query()->where('reminder_id', $reminder->id)->count());
+        $this->assertSame(1, ReminderOccurrence::query()->where('reminder_id', $reminder->id)->count());
     }
 
     #[Test]
@@ -197,46 +212,42 @@ class GenerateReminderOccurrencesTest extends TestCase
         $reminder = $this->rule('1984-05-12');
         new GenerateReminderOccurrences(reminder: $reminder)->execute();
 
+        ReminderOccurrence::query()->where('reminder_id', $reminder->id)->update([
+            'cancelled_at' => now(),
+            'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::RuleChanged,
+        ]);
         $reminder->update(['schedule_revision' => 2, 'time_of_day' => '10:00:00']);
 
-        $this->assertSame(2, new GenerateReminderOccurrences(reminder: $reminder->refresh())->execute());
-        $this->assertDatabaseHas('reminder_occurrences', ['generation_key' => '2:2027-05-12:on::']);
-        $this->assertSame(4, ReminderOccurrence::query()->where('reminder_id', $reminder->id)->count());
+        $this->assertSame(1, new GenerateReminderOccurrences(reminder: $reminder->refresh())->execute());
+        $this->assertDatabaseHas('reminder_occurrences', ['generation_key' => '2:2027-05-12', 'cancelled_at' => null]);
     }
 
     #[Test]
-    public function it_never_puts_back_a_deadline_somebody_has_acted_on(): void
+    public function it_skips_a_day_that_already_has_a_deadline_after_the_schedule_changed(): void
     {
-        CarbonImmutable::setTestNow('2027-05-01 06:00:00');
+        CarbonImmutable::setTestNow('2027-05-12 06:00:00');
         $reminder = $this->rule('1984-05-12');
         new GenerateReminderOccurrences(reminder: $reminder)->execute();
 
-        $onTheDay = ReminderOccurrence::query()->where('generation_key', '1:2027-05-12:on::')->firstOrFail();
-        $onTheDay->update([
-            'status' => ReminderOccurrenceStatusEnum::Postponed,
-            'scheduled_for' => $onTheDay->scheduled_for->addDays(3),
-            'postponed_count' => 1,
-        ]);
+        $reminder->update(['schedule_revision' => 2]);
 
-        $written = new GenerateReminderOccurrences(reminder: $reminder)->execute();
-
-        $this->assertSame(0, $written);
-        $this->assertSame(1, ReminderOccurrence::query()->where('generation_key', '1:2027-05-12:on::')->count());
-        $this->assertSame(ReminderOccurrenceStatusEnum::Postponed, $onTheDay->refresh()->status);
+        $this->assertSame(0, new GenerateReminderOccurrences(reminder: $reminder->refresh())->execute());
+        $this->assertSame(1, ReminderOccurrence::query()->where('local_date', '2027-05-12')->count());
     }
 
     #[Test]
-    public function it_never_puts_back_a_deadline_somebody_dismissed(): void
+    public function it_never_puts_back_a_deadline_somebody_answered(): void
     {
-        CarbonImmutable::setTestNow('2027-05-01 06:00:00');
+        CarbonImmutable::setTestNow('2027-05-12 06:00:00');
         $reminder = $this->rule('1984-05-12');
         new GenerateReminderOccurrences(reminder: $reminder)->execute();
 
-        ReminderOccurrence::query()->where('generation_key', '1:2027-05-12:on::')
-            ->update(['status' => ReminderOccurrenceStatusEnum::Dismissed, 'dismissed_at' => now()]);
+        ReminderOccurrence::query()->where('generation_key', '1:2027-05-12')
+            ->update(['answer' => 'remembered', 'answered_at' => now()]);
+        $reminder->update(['schedule_revision' => 2]);
 
-        $this->assertSame(0, new GenerateReminderOccurrences(reminder: $reminder)->execute());
-        $this->assertSame(2, ReminderOccurrence::query()->where('reminder_id', $reminder->id)->count());
+        $this->assertSame(0, new GenerateReminderOccurrences(reminder: $reminder->refresh())->execute());
+        $this->assertSame(1, ReminderOccurrence::query()->where('reminder_id', $reminder->id)->count());
     }
 
     private function rule(string $date, ReminderCadenceEnum $cadence = ReminderCadenceEnum::Yearly): Reminder

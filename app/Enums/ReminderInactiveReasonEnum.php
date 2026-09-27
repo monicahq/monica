@@ -10,12 +10,6 @@ enum ReminderInactiveReasonEnum: string
     case RecordArchived = 'record_archived';
     case RecordDeleted = 'record_deleted';
     case FieldRemoved = 'field_removed';
-    case PausedByUser = 'paused_by_user';
-
-    public function isLiftedByUser(): bool
-    {
-        return $this === self::PausedByUser;
-    }
 
     /** @return list<string> */
     public static function values(): array

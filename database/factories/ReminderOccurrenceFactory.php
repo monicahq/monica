@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\ReminderMomentDirectionEnum;
-use App\Enums\ReminderMomentUnitEnum;
+use App\Enums\ReminderAnswerEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -28,64 +26,68 @@ class ReminderOccurrenceFactory extends Factory
             'reminder_id' => Reminder::factory(),
             'account_id' => fn (array $attributes): int => Reminder::query()->findOrFail($attributes['reminder_id'])->account_id,
             'vault_id' => fn (array $attributes): int => Reminder::query()->findOrFail($attributes['reminder_id'])->vault_id,
-            'source_local_date' => $scheduledFor->toDateString(),
-            'moment_direction' => ReminderMomentDirectionEnum::On,
-            'moment_amount' => null,
-            'moment_unit' => null,
-            'generation_key' => fn (array $attributes): string => '1:'.$attributes['source_local_date'].':on::',
-            'scheduled_for' => $scheduledFor,
-            'original_scheduled_for' => $scheduledFor,
             'local_date' => $scheduledFor->toDateString(),
-            'status' => ReminderOccurrenceStatusEnum::Pending,
-            'postponed_to' => null,
-            'postponed_count' => 0,
+            'generation_key' => fn (array $attributes): string => '1:'.$attributes['local_date'],
+            'scheduled_for' => $scheduledFor,
+            'notifications_created_at' => null,
             'notified_at' => null,
-            'dismissed_at' => null,
+            'answer' => null,
+            'answered_at' => null,
             'cancelled_at' => null,
-            'status_before_cancellation' => null,
             'cancelled_reason' => null,
         ];
     }
 
-    public function daysBefore(int $amount = 7): static
-    {
-        return $this->state(fn (array $attributes): array => [
-            'moment_direction' => ReminderMomentDirectionEnum::Before,
-            'moment_amount' => $amount,
-            'moment_unit' => ReminderMomentUnitEnum::Days,
-            'generation_key' => '1:'.$attributes['source_local_date'].':before:'.$amount.':days',
-        ]);
-    }
-
     public function past(): static
     {
-        $scheduledFor = now()->subDays(3)->startOfHour();
+        return $this->daysFromNow(-3);
+    }
+
+    public function today(): static
+    {
+        return $this->daysFromNow(0);
+    }
+
+    public function daysFromNow(int $days): static
+    {
+        $scheduledFor = now()->addDays($days)->startOfHour();
 
         return $this->state(fn (array $attributes): array => [
             'scheduled_for' => $scheduledFor,
-            'original_scheduled_for' => $scheduledFor,
             'local_date' => $scheduledFor->toDateString(),
-            'source_local_date' => $scheduledFor->toDateString(),
+            'generation_key' => '1:'.$scheduledFor->toDateString(),
         ]);
     }
 
-    public function cancelled(
-        ReminderOccurrenceCancelledReasonEnum $reason = ReminderOccurrenceCancelledReasonEnum::RecordArchived,
-        ReminderOccurrenceStatusEnum $before = ReminderOccurrenceStatusEnum::Pending,
-    ): static {
+    public function cancelled(ReminderOccurrenceCancelledReasonEnum $reason = ReminderOccurrenceCancelledReasonEnum::RecordArchived): static
+    {
         return $this->state(fn (array $attributes): array => [
-            'status' => ReminderOccurrenceStatusEnum::Cancelled,
             'cancelled_at' => now(),
             'cancelled_reason' => $reason,
-            'status_before_cancellation' => $before,
         ]);
     }
 
     public function notified(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'status' => ReminderOccurrenceStatusEnum::Notified,
+            'notifications_created_at' => now(),
             'notified_at' => now(),
+        ]);
+    }
+
+    public function remembered(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'answer' => ReminderAnswerEnum::Remembered,
+            'answered_at' => now(),
+        ]);
+    }
+
+    public function forgotten(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'answer' => ReminderAnswerEnum::Forgotten,
+            'answered_at' => now(),
         ]);
     }
 }

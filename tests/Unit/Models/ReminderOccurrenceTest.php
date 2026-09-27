@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Models\Contact;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
@@ -21,41 +20,51 @@ class ReminderOccurrenceTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_keeps_the_two_instants_apart(): void
+    public function it_is_active_until_it_is_answered_or_cancelled(): void
     {
-        $occurrence = ReminderOccurrence::factory()->create();
+        $waiting = ReminderOccurrence::factory()->create();
+        $remembered = ReminderOccurrence::factory()->remembered()->create();
+        $cancelled = ReminderOccurrence::factory()->cancelled()->create();
 
-        $this->assertTrue($occurrence->scheduled_for->equalTo($occurrence->original_scheduled_for));
+        $this->assertTrue($waiting->isActive());
+        $this->assertFalse($remembered->isActive());
+        $this->assertFalse($cancelled->isActive());
+
+        $found = ReminderOccurrence::query()->active()->pluck('id');
+
+        $this->assertSame([$waiting->id], $found->all());
     }
 
     #[Test]
-    public function it_finds_the_deadlines_whose_instant_has_arrived(): void
+    public function it_finds_the_deadlines_somebody_answered(): void
+    {
+        $waiting = ReminderOccurrence::factory()->create();
+        $remembered = ReminderOccurrence::factory()->remembered()->create();
+        $forgotten = ReminderOccurrence::factory()->forgotten()->create();
+
+        $found = ReminderOccurrence::query()->answered()->pluck('id');
+
+        $this->assertTrue($found->contains($remembered->id));
+        $this->assertTrue($found->contains($forgotten->id));
+        $this->assertFalse($found->contains($waiting->id));
+    }
+
+    #[Test]
+    public function it_finds_the_active_deadlines_whose_instant_has_arrived_and_nobody_told_about(): void
     {
         $due = ReminderOccurrence::factory()->past()->create();
         $ahead = ReminderOccurrence::factory()->create();
+        $told = ReminderOccurrence::factory()->past()->notified()->create();
+        $answered = ReminderOccurrence::factory()->past()->remembered()->create();
+        $cancelled = ReminderOccurrence::factory()->past()->cancelled()->create();
 
-        $found = ReminderOccurrence::query()->due()->pluck('id');
+        $found = ReminderOccurrence::query()->dueForNotification()->pluck('id');
 
-        $this->assertTrue($found->contains($due->id));
+        $this->assertSame([$due->id], $found->all());
         $this->assertFalse($found->contains($ahead->id));
-    }
-
-    #[Test]
-    public function it_still_delivers_a_deadline_somebody_put_off(): void
-    {
-        $postponed = ReminderOccurrence::factory()->past()->create([
-            'status' => ReminderOccurrenceStatusEnum::Postponed,
-        ]);
-
-        $this->assertTrue(ReminderOccurrence::query()->due()->pluck('id')->contains($postponed->id));
-    }
-
-    #[Test]
-    public function it_does_not_deliver_a_deadline_already_told_about(): void
-    {
-        $notified = ReminderOccurrence::factory()->past()->notified()->create();
-
-        $this->assertFalse(ReminderOccurrence::query()->due()->pluck('id')->contains($notified->id));
+        $this->assertFalse($found->contains($told->id));
+        $this->assertFalse($found->contains($answered->id));
+        $this->assertFalse($found->contains($cancelled->id));
     }
 
     #[Test]
@@ -71,16 +80,6 @@ class ReminderOccurrenceTest extends TestCase
     }
 
     #[Test]
-    public function it_says_whether_somebody_may_still_act_on_it(): void
-    {
-        $pending = ReminderOccurrence::factory()->create();
-        $cancelled = ReminderOccurrence::factory()->cancelled()->create();
-
-        $this->assertTrue($pending->isActionable());
-        $this->assertFalse($cancelled->isActionable());
-    }
-
-    #[Test]
     public function it_refuses_two_deadlines_with_the_same_identity_under_one_rule(): void
     {
         $occurrence = ReminderOccurrence::factory()->create();
@@ -90,13 +89,9 @@ class ReminderOccurrenceTest extends TestCase
             'account_id' => $occurrence->account_id,
             'vault_id' => $occurrence->vault_id,
             'reminder_id' => $occurrence->reminder_id,
-            'source_local_date' => $occurrence->source_local_date->toDateString(),
-            'moment_direction' => $occurrence->moment_direction->value,
+            'local_date' => $occurrence->local_date->toDateString(),
             'generation_key' => $occurrence->generation_key,
             'scheduled_for' => $occurrence->scheduled_for,
-            'original_scheduled_for' => $occurrence->original_scheduled_for,
-            'local_date' => $occurrence->local_date->toDateString(),
-            'status' => ReminderOccurrenceStatusEnum::Pending->value,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -106,90 +101,53 @@ class ReminderOccurrenceTest extends TestCase
     }
 
     #[Test]
-    public function it_finds_what_one_vault_will_still_remind_somebody_about_in_the_order_it_happens(): void
+    public function it_finds_what_one_vault_is_still_waiting_on_in_date_order_up_to_the_day_given(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $rule = $this->ruleIn(user: $user, vault: $vault);
 
         $late = $this->deadline($rule, '-3 days');
-        $soon = $this->deadline($rule, '+2 days');
-        $later = $this->deadline($rule, '+30 days');
+        $today = $this->deadline($rule, 'now');
+        $ahead = $this->deadline($rule, '+2 days');
 
         $found = ReminderOccurrence::query()
-            ->upcomingInVault(vault: $vault, until: CarbonImmutable::now()->addDays(90))
+            ->awaitingAnswerInVault(vault: $vault, untilDay: CarbonImmutable::now())
             ->pluck('id')
             ->all();
 
-        $this->assertSame([$late->id, $soon->id, $later->id], $found);
+        $this->assertSame([$late->id, $today->id], $found);
+        $this->assertNotContains($ahead->id, $found);
     }
 
     #[Test]
-    public function it_leaves_out_what_is_beyond_the_window_it_is_given(): void
+    public function it_leaves_out_of_what_is_waiting_a_deadline_answered_cancelled_or_whose_rule_went_quiet(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $rule = $this->ruleIn(user: $user, vault: $vault);
 
-        $inside = $this->deadline($rule, '+80 days');
-        $beyond = $this->deadline($rule, '+240 days');
-
-        $found = ReminderOccurrence::query()
-            ->upcomingInVault(vault: $vault, until: CarbonImmutable::now()->addDays(90))
-            ->pluck('id');
-
-        $this->assertTrue($found->contains($inside->id));
-        $this->assertFalse($found->contains($beyond->id));
-    }
-
-    #[Test]
-    public function it_leaves_out_a_deadline_somebody_has_finished_with(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $rule = $this->ruleIn(user: $user, vault: $vault);
-
-        $pending = $this->deadline($rule, '+7 days');
-        $dismissed = $this->deadline($rule, '+8 days', ['status' => ReminderOccurrenceStatusEnum::Dismissed]);
-        $cancelled = $this->deadline($rule, '+9 days', [
-            'status' => ReminderOccurrenceStatusEnum::Cancelled,
-            'cancelled_at' => now(),
-        ]);
-
-        $found = ReminderOccurrence::query()
-            ->upcomingInVault(vault: $vault, until: CarbonImmutable::now()->addDays(90))
-            ->pluck('id');
-
-        $this->assertTrue($found->contains($pending->id));
-        $this->assertFalse($found->contains($dismissed->id));
-        $this->assertFalse($found->contains($cancelled->id));
-    }
-
-    #[Test]
-    public function it_leaves_out_a_deadline_whose_rule_has_gone_quiet_or_been_taken_away(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $waiting = $this->deadline($rule, '-1 day');
+        $answered = $this->deadline($rule, '-2 days', ['answer' => 'forgotten', 'answered_at' => now()]);
+        $cancelled = $this->deadline($rule, '-3 days', ['cancelled_at' => now(), 'cancelled_reason' => 'record_archived']);
 
         $quiet = $this->ruleIn(user: $user, vault: $vault);
         $quiet->is_active = false;
         $quiet->save();
-        $ofQuiet = $this->deadline($quiet, '+7 days');
-
-        $removed = $this->ruleIn(user: $user, vault: $vault);
-        $ofRemoved = $this->deadline($removed, '+7 days');
-        $removed->delete();
+        $ofQuiet = $this->deadline($quiet, '-1 day');
 
         $found = ReminderOccurrence::query()
-            ->upcomingInVault(vault: $vault, until: CarbonImmutable::now()->addDays(90))
+            ->awaitingAnswerInVault(vault: $vault, untilDay: CarbonImmutable::now())
             ->pluck('id');
 
+        $this->assertSame([$waiting->id], $found->all());
+        $this->assertFalse($found->contains($answered->id));
+        $this->assertFalse($found->contains($cancelled->id));
         $this->assertFalse($found->contains($ofQuiet->id));
-        $this->assertFalse($found->contains($ofRemoved->id));
     }
 
     #[Test]
-    public function it_leaves_out_the_deadlines_of_another_vault_and_of_another_account(): void
+    public function it_leaves_out_what_another_vault_or_another_account_is_waiting_on(): void
     {
         $user = User::factory()->create();
         $here = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -198,81 +156,74 @@ class ReminderOccurrenceTest extends TestCase
         $stranger = User::factory()->create();
         $theirVault = Vault::factory()->create(['account_id' => $stranger->account_id]);
 
-        $ofMine = $this->deadline($this->ruleIn(user: $user, vault: $here), '+7 days');
-        $ofOtherVault = $this->deadline($this->ruleIn(user: $user, vault: $elsewhere), '+7 days');
-        $ofStranger = $this->deadline($this->ruleIn(user: $stranger, vault: $theirVault), '+7 days');
+        $ofMine = $this->deadline($this->ruleIn(user: $user, vault: $here), '-1 day');
+        $this->deadline($this->ruleIn(user: $user, vault: $elsewhere), '-1 day');
+        $this->deadline($this->ruleIn(user: $stranger, vault: $theirVault), '-1 day');
 
         $found = ReminderOccurrence::query()
-            ->upcomingInVault(vault: $here, until: CarbonImmutable::now()->addDays(90))
+            ->awaitingAnswerInVault(vault: $here, untilDay: CarbonImmutable::now())
             ->pluck('id');
 
-        $this->assertTrue($found->contains($ofMine->id));
-        $this->assertFalse($found->contains($ofOtherVault->id));
-        $this->assertFalse($found->contains($ofStranger->id));
+        $this->assertSame([$ofMine->id], $found->all());
     }
 
     #[Test]
-    public function it_finds_what_one_vault_has_already_sent_most_recent_first(): void
+    public function it_finds_what_one_vault_answered_the_latest_answer_first(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
+        $rule = $this->ruleIn(user: $user, vault: $vault);
+
+        $older = $this->deadline($rule, '-9 days', ['answer' => 'remembered', 'answered_at' => now()->subDays(8)]);
+        $newer = $this->deadline($rule, '-2 days', ['answer' => 'forgotten', 'answered_at' => now()->subDay()]);
+        $this->deadline($rule, '-1 day');
+        $this->deadline($this->ruleIn(user: $user, vault: $elsewhere), '-1 day', ['answer' => 'remembered', 'answered_at' => now()]);
+
+        $found = ReminderOccurrence::query()->answeredInVault(vault: $vault)->pluck('id');
+
+        $this->assertSame([$newer->id, $older->id], $found->all());
+    }
+
+    #[Test]
+    public function it_finds_what_one_vault_has_already_sent_most_recent_first_even_once_its_rule_is_gone(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $rule = $this->ruleIn(user: $user, vault: $vault);
 
-        $older = $this->deadline($rule, '-9 days', [
-            'status' => ReminderOccurrenceStatusEnum::Notified,
-            'notified_at' => now()->subDays(9),
-        ]);
-        $newer = $this->deadline($rule, '-1 day', [
-            'status' => ReminderOccurrenceStatusEnum::Notified,
-            'notified_at' => now()->subDay(),
-        ]);
-        $neverSent = $this->deadline($rule, '+7 days');
+        $older = $this->deadline($rule, '-9 days', ['notified_at' => now()->subDays(9)]);
+        $newer = $this->deadline($rule, '-1 day', ['notified_at' => now()->subDay()]);
+        $this->deadline($rule, '+7 days');
+
+        $rule->delete();
 
         $found = ReminderOccurrence::query()->sentInVault(vault: $vault)->pluck('id');
 
         $this->assertSame([$newer->id, $older->id], $found->all());
-        $this->assertFalse($found->contains($neverSent->id));
     }
 
     #[Test]
-    public function it_keeps_what_was_sent_after_its_rule_is_taken_away(): void
+    public function it_is_still_warranted_only_while_active_its_rule_live_and_its_contact_not_archived(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
         $rule = $this->ruleIn(user: $user, vault: $vault);
+        $waiting = $this->deadline($rule, 'now');
+        $answered = $this->deadline($rule, '-1 day', ['answer' => 'remembered', 'answered_at' => now()]);
 
-        $sent = $this->deadline($rule, '-1 day', [
-            'status' => ReminderOccurrenceStatusEnum::Notified,
-            'notified_at' => now()->subDay(),
-        ]);
+        $archivedContact = Contact::factory()->create(['vault_id' => $vault->id, 'is_archived' => true]);
+        $ofArchived = $this->deadline($this->reminderAbout(user: $user, contact: $archivedContact), 'now');
 
-        $rule->delete();
+        $removed = $this->ruleIn(user: $user, vault: $vault);
+        $ofRemoved = $this->deadline($removed, 'now');
+        $removed->delete();
 
-        $this->assertTrue(
-            ReminderOccurrence::query()->sentInVault(vault: $vault)->pluck('id')->contains($sent->id),
-        );
-    }
-
-    #[Test]
-    public function it_leaves_out_what_another_vault_sent(): void
-    {
-        $user = User::factory()->create();
-        $here = Vault::factory()->create(['account_id' => $user->account_id]);
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $ofMine = $this->deadline($this->ruleIn(user: $user, vault: $here), '-1 day', [
-            'status' => ReminderOccurrenceStatusEnum::Notified,
-            'notified_at' => now()->subDay(),
-        ]);
-        $ofOther = $this->deadline($this->ruleIn(user: $user, vault: $elsewhere), '-1 day', [
-            'status' => ReminderOccurrenceStatusEnum::Notified,
-            'notified_at' => now()->subDay(),
-        ]);
-
-        $found = ReminderOccurrence::query()->sentInVault(vault: $here)->pluck('id');
-
-        $this->assertTrue($found->contains($ofMine->id));
-        $this->assertFalse($found->contains($ofOther->id));
+        $this->assertTrue($waiting->refresh()->isStillWarranted());
+        $this->assertFalse($answered->refresh()->isStillWarranted());
+        $this->assertFalse($ofArchived->refresh()->isStillWarranted());
+        $this->assertFalse($ofRemoved->refresh()->isStillWarranted());
     }
 
     private function ruleIn(User $user, Vault $vault): Reminder
@@ -289,11 +240,9 @@ class ReminderOccurrenceTest extends TestCase
         $instant = CarbonImmutable::parse($when);
 
         return ReminderOccurrence::factory()->for($rule)->create(array_merge([
-            'source_local_date' => $instant->toDateString(),
-            'generation_key' => '1:'.$instant->toDateString().':on::',
-            'scheduled_for' => $instant,
-            'original_scheduled_for' => $instant,
             'local_date' => $instant->toDateString(),
+            'generation_key' => '1:'.$instant->toDateString().':'.Str::random(6),
+            'scheduled_for' => $instant,
         ], $attributes));
     }
 }

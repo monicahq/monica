@@ -6,8 +6,6 @@ namespace Database\Factories;
 
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
-use App\Enums\ReminderMomentDirectionEnum;
-use App\Enums\ReminderMomentUnitEnum;
 use App\Enums\ReminderSourceEnum;
 use App\Models\Contact;
 use App\Models\FieldValue;
@@ -35,18 +33,7 @@ class ReminderFactory extends Factory
             'source' => ReminderSourceEnum::FieldValue,
             'cadence' => ReminderCadenceEnum::Yearly,
             'frequency_interval' => 1,
-            'moments' => [
-                [
-                    'direction' => ReminderMomentDirectionEnum::Before->value,
-                    'amount' => 7,
-                    'unit' => ReminderMomentUnitEnum::Days->value,
-                ],
-                [
-                    'direction' => ReminderMomentDirectionEnum::On->value,
-                    'amount' => null,
-                    'unit' => null,
-                ],
-            ],
+            'starts_on' => null,
             'time_of_day' => '09:00:00',
             'timezone' => 'Europe/Paris',
             'schedule_revision' => 1,
@@ -55,6 +42,21 @@ class ReminderFactory extends Factory
             'deactivated_at' => null,
             'created_by_user_id' => null,
         ];
+    }
+
+    public function manual(Contact $contact, string $startsOn): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'field_value_id' => null,
+            'field_id' => null,
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+            'remindable_type' => Contact::class,
+            'remindable_id' => $contact->id,
+            'name' => 'Call about the flat on Bedford Street',
+            'source' => ReminderSourceEnum::Manual,
+            'starts_on' => $startsOn,
+        ]);
     }
 
     public function once(): static

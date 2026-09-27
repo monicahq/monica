@@ -6,6 +6,7 @@ namespace App\Http\Controllers\App\Vaults;
 
 use App\Http\Controllers\Controller;
 use App\Models\Vault;
+use App\ViewModels\Vaults\VaultRemindersHistoryViewModel;
 use App\ViewModels\Vaults\VaultRemindersSentViewModel;
 use App\ViewModels\Vaults\VaultRemindersViewModel;
 use Illuminate\Http\Request;
@@ -39,6 +40,16 @@ class VaultReminderController extends Controller
     {
         return view('app.vaults.reminders.sent', [
             'viewModel' => new VaultRemindersSentViewModel(
+                user: $request->user(),
+                vault: $vault,
+            ),
+        ]);
+    }
+
+    public function history(Request $request, Vault $vault): View
+    {
+        return view('app.vaults.reminders.history', [
+            'viewModel' => new VaultRemindersHistoryViewModel(
                 user: $request->user(),
                 vault: $vault,
             ),

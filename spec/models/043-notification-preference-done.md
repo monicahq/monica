@@ -45,7 +45,7 @@ updated_at                  datetime
 - Quiet hours hold a notification, they never drop it (10.4). Something due at 3am arrives at 8am, and the occurrence keeps its real due time ([ReminderOccurrence](041-reminder-occurrence-done.md)).
 - Quiet hours may cross midnight. 22:00 to 08:00 is the obvious setting and the naive comparison gets it wrong.
 - Exceptions defined on a single rule take precedence over these preferences (10.4). `type_overrides` holds the per type layer and the per rule layer lives on the rule itself.
-- Notification preferences add no second lead time to a reminder. When the user wants to be told is expressed by the rule's moments, and each moment has already become an occurrence at that exact time before delivery begins. Moving the notification earlier here would apply the offset twice.
+- Notification preferences add no lead time to a reminder. A reminder is told on its day at its rule's hour, and nothing here moves it earlier. Quiet hours or the digest may hold it into the next day; it still goes out unless the occurrence was answered or cancelled by then.
 - Turning every channel off is allowed. Somebody who wants no notifications should not have to disable every rule to get silence.
 - Push must exist server side in v1 even though the mobile applications come later (3.8).
 

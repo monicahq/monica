@@ -22,17 +22,17 @@ class CountedPhraseWordingsTest extends TestCase
     #[Test]
     public function it_gives_polish_all_three_of_its_wordings_under_the_names_the_browser_uses(): void
     {
-        $forms = CountedPhraseWordings::of(':count week|:count weeks', 'pl_PL');
+        $forms = CountedPhraseWordings::of(':count reminder|:count reminders', 'pl_PL');
 
-        $this->assertSame(':n tydzień', $forms['one']);
-        $this->assertSame(':n tygodnie', $forms['few']);
-        $this->assertSame(':n tygodni', $forms['many']);
+        $this->assertSame(':n przypomnienie', $forms['one']);
+        $this->assertSame(':n przypomnienia', $forms['few']);
+        $this->assertSame(':n przypomnień', $forms['many']);
     }
 
     #[Test]
     public function polish_reads_a_third_wording_that_two_forms_could_never_reach(): void
     {
-        $forms = CountedPhraseWordings::of(':count week|:count weeks', 'pl_PL');
+        $forms = CountedPhraseWordings::of(':count reminder|:count reminders', 'pl_PL');
 
         $this->assertNotSame($forms['one'], $forms['few']);
         $this->assertNotSame($forms['few'], $forms['many']);
@@ -42,7 +42,7 @@ class CountedPhraseWordingsTest extends TestCase
     #[Test]
     public function it_leaves_the_number_for_whoever_says_the_phrase_to_fill_in(): void
     {
-        foreach (CountedPhraseWordings::of(':count day|:count days', 'fr_FR') as $wording) {
+        foreach (CountedPhraseWordings::of(':count reminder|:count reminders', 'fr_FR') as $wording) {
             $this->assertStringContainsString(':n', $wording);
         }
     }
@@ -59,7 +59,7 @@ class CountedPhraseWordingsTest extends TestCase
     #[Test]
     public function it_gives_turkish_the_same_wording_at_every_number(): void
     {
-        $forms = CountedPhraseWordings::of(':count month|:count months', 'tr_TR');
+        $forms = CountedPhraseWordings::of(':count reminder|:count reminders', 'tr_TR');
 
         $this->assertSame($forms['one'], $forms['other']);
     }
@@ -69,6 +69,6 @@ class CountedPhraseWordingsTest extends TestCase
     {
         app()->setLocale('fr_FR');
 
-        $this->assertSame(':n jour', CountedPhraseWordings::of(':count day|:count days')['one']);
+        $this->assertSame(':n rappel', CountedPhraseWordings::of(':count reminder|:count reminders')['one']);
     }
 }

@@ -7,11 +7,9 @@ namespace Tests\Unit\Actions;
 use App\Actions\CreateReminder;
 use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderCadenceEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Enums\ReminderSourceEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\ReminderIsNotValid;
-use App\Exceptions\ReminderMomentIsNotValid;
 use App\Exceptions\ValueAlreadyHasAReminder;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -30,11 +28,6 @@ class CreateReminderTest extends TestCase
 {
     use RefreshDatabase;
 
-    private const array MOMENTS = [
-        ['direction' => 'before', 'amount' => 7, 'unit' => 'days'],
-        ['direction' => 'on', 'amount' => 1, 'unit' => 'days'],
-    ];
-
     #[Test]
     public function it_writes_a_rule_reading_one_exact_value(): void
     {
@@ -47,7 +40,6 @@ class CreateReminderTest extends TestCase
             user: $user,
             fieldValue: $value,
             cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
             timeOfDay: '09:00',
             name: 'Ring Michael',
         )->execute();
@@ -92,7 +84,6 @@ class CreateReminderTest extends TestCase
             user: $user,
             fieldValue: $value,
             cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
             timeOfDay: '09:00',
             name: null,
         )->execute();
@@ -112,7 +103,6 @@ class CreateReminderTest extends TestCase
             user: $user,
             fieldValue: $value,
             cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
             timeOfDay: '09:00',
         )->execute();
 
@@ -135,7 +125,6 @@ class CreateReminderTest extends TestCase
             user: $user,
             fieldValue: $this->dateOf($user),
             cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
             timeOfDay: '09:00',
             timezone: 'Australia/Sydney',
         )->execute();
@@ -144,43 +133,40 @@ class CreateReminderTest extends TestCase
     }
 
     #[Test]
-    public function it_drops_the_amount_from_a_moment_that_falls_on_the_day_itself(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $reminder = new CreateReminder(
-            user: $user,
-            fieldValue: $this->dateOf($user),
-            cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
-            timeOfDay: '09:00',
-        )->execute();
-
-        $this->assertEquals([
-            ['direction' => 'before', 'amount' => 7, 'unit' => 'days'],
-            ['direction' => 'on', 'amount' => null, 'unit' => null],
-        ], $reminder->moments);
-    }
-
-    #[Test]
     public function it_forgets_an_interval_a_rule_that_fires_once_can_never_use(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
+        $value = $this->dateOf($user);
+        $value->update(['value_date' => now()->addMonth()->toDateString()]);
 
         $reminder = new CreateReminder(
             user: $user,
-            fieldValue: $this->dateOf($user),
+            fieldValue: $value,
             cadence: ReminderCadenceEnum::Once,
-            moments: self::MOMENTS,
             timeOfDay: '09:00',
             frequencyInterval: 4,
         )->execute();
 
         $this->assertEquals(1, $reminder->frequency_interval);
+    }
+
+    #[Test]
+    public function it_refuses_a_reminder_sent_once_on_a_date_already_gone(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        $this->expectException(ReminderIsNotValid::class);
+
+        new CreateReminder(
+            user: $user,
+            fieldValue: $this->dateOf($user),
+            cadence: ReminderCadenceEnum::Once,
+            timeOfDay: '09:00',
+        )->execute();
     }
 
     #[Test]
@@ -195,7 +181,6 @@ class CreateReminderTest extends TestCase
             user: $user,
             fieldValue: $value,
             cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
             timeOfDay: '09:00',
         )->execute();
 
@@ -205,7 +190,6 @@ class CreateReminderTest extends TestCase
             user: $user,
             fieldValue: $value,
             cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
             timeOfDay: '09:00',
         )->execute();
     }
@@ -225,7 +209,6 @@ class CreateReminderTest extends TestCase
             user: $user,
             fieldValue: $value,
             cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
             timeOfDay: '09:00',
         )->execute();
     }
@@ -246,25 +229,6 @@ class CreateReminderTest extends TestCase
             user: $user,
             fieldValue: $value,
             cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
-            timeOfDay: '09:00',
-        )->execute();
-    }
-
-    #[Test]
-    public function it_refuses_a_rule_with_no_moment_to_tell_anybody_about(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $this->expectException(ReminderMomentIsNotValid::class);
-
-        new CreateReminder(
-            user: $user,
-            fieldValue: $this->dateOf($user),
-            cadence: ReminderCadenceEnum::Yearly,
-            moments: [],
             timeOfDay: '09:00',
         )->execute();
     }
@@ -282,7 +246,6 @@ class CreateReminderTest extends TestCase
             user: $user,
             fieldValue: $this->dateOf($user),
             cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
             timeOfDay: '09:00',
             timezone: 'Middle/Earth',
         )->execute();
@@ -301,7 +264,6 @@ class CreateReminderTest extends TestCase
             user: $user,
             fieldValue: $this->dateOf($user),
             cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
             timeOfDay: '09:00',
             frequencyInterval: 100,
         )->execute();
@@ -321,7 +283,6 @@ class CreateReminderTest extends TestCase
             user: $user,
             fieldValue: $this->dateOf($somebodyElse),
             cadence: ReminderCadenceEnum::Yearly,
-            moments: self::MOMENTS,
             timeOfDay: '09:00',
         )->execute();
     }
@@ -354,14 +315,14 @@ class CreateReminderTest extends TestCase
             user: $user,
             fieldValue: $value,
             cadence: ReminderCadenceEnum::Yearly,
-            moments: [['direction' => 'on', 'amount' => null, 'unit' => null]],
             timeOfDay: '09:00',
         )->execute();
 
         $this->assertDatabaseHas('reminder_occurrences', [
             'reminder_id' => $reminder->id,
-            'generation_key' => '1:2027-05-12:on::',
-            'status' => ReminderOccurrenceStatusEnum::Pending->value,
+            'generation_key' => '1:2027-05-12',
+            'local_date' => '2027-05-12',
+            'answer' => null,
         ]);
     }
 

@@ -35,7 +35,7 @@ class DeliverDueNotifications implements ShouldQueue
         $made = 0;
 
         ReminderOccurrence::query()
-            ->due()
+            ->dueForNotification()
             ->with('reminder.remindable', 'account.user')
             ->chunkById(200, function ($occurrences) use (&$made): void {
                 foreach ($occurrences as $occurrence) {

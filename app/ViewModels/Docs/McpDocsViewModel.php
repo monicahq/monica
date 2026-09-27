@@ -236,6 +236,17 @@ class McpDocsViewModel
                 ['name' => 'update-contact-name', 'description' => 'Changes a contact’s first, middle or last name, or nickname.'],
                 ['name' => 'set-contact-favourite', 'description' => 'Marks a contact as a favourite, or removes the mark.'],
             ]],
+            ['name' => 'Reminders, reading', 'changesData' => false, 'tools' => [
+                ['name' => 'list-contact-reminders', 'description' => 'Lists the reminders about a contact.'],
+                ['name' => 'get-contact-reminder', 'description' => 'Returns one reminder: what it says, where its date comes from, how often it comes back and its next date.'],
+                ['name' => 'list-contact-reminder-occurrences', 'description' => 'Lists the dates the reminders about a contact produced, with what was answered for each.'],
+            ]],
+            ['name' => 'Reminders, changing', 'changesData' => true, 'tools' => [
+                ['name' => 'create-contact-reminder', 'description' => 'Writes a reminder about a contact with a date of its own.'],
+                ['name' => 'update-contact-reminder', 'description' => 'Changes what a reminder says and when it comes back.'],
+                ['name' => 'delete-contact-reminder', 'description' => 'Stops a reminder for good. The answers already given stay.'],
+                ['name' => 'answer-reminder-occurrence', 'description' => 'Records whether you remembered a date or forgot it. The answer is final.'],
+            ]],
             ['name' => 'Templates', 'changesData' => false, 'tools' => [
                 ['name' => 'list-templates', 'description' => 'Lists the templates of your account.'],
                 ['name' => 'get-template', 'description' => 'Returns one template: its name, what it describes, whether it is active and which version is published.'],

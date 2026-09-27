@@ -57,7 +57,7 @@ class ReminderHistoryTest extends TestCase
             'account_id' => $reminder->account_id,
             'vault_id' => $reminder->vault_id,
             'user_id' => $user->id,
-            'action' => UserActionEnum::ReminderOccurrenceDismissal->value,
+            'action' => UserActionEnum::ReminderOccurrenceForgotten->value,
             'parameters' => ['name' => 'Birthday', 'date' => '12 May 2026'],
             'loggable_type' => ReminderOccurrence::class,
             'loggable_id' => $occurrence->id,
@@ -66,7 +66,7 @@ class ReminderHistoryTest extends TestCase
         $entries = new ReminderHistory(user: $user, reminder: $reminder)->get();
 
         $this->assertCount(1, $entries);
-        $this->assertSame('Dismissed the reminder Birthday of 12 May 2026', $entries[0]['title']);
+        $this->assertSame('Forgot Birthday on 12 May 2026', $entries[0]['title']);
     }
 
     #[Test]

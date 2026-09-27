@@ -12,7 +12,6 @@ use App\Enums\RelationTargetEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Enums\RepetitionOrderEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
@@ -1529,10 +1528,6 @@ class SetFieldValuesTest extends TestCase
             'cadence' => ReminderCadenceEnum::Yearly->value,
             'is_active' => true,
         ]);
-        $this->assertEquals(
-            [['direction' => 'before', 'amount' => 7, 'unit' => 'days'], ['direction' => 'on', 'amount' => null, 'unit' => null]],
-            Reminder::query()->firstWhere('field_value_id', $value->id)->moments,
-        );
     }
 
     #[Test]
@@ -1589,12 +1584,13 @@ class SetFieldValuesTest extends TestCase
         $contact = $this->contactOf($user);
         $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::RecurringDate]);
         $section = $this->sectionOf($field);
+        $nextMonth = now()->addMonth()->toDateString();
 
         new SetFieldValues(
             user: $user,
             record: $contact,
             section: $section,
-            values: [$field->id => '1984-02-03'],
+            values: [$field->id => $nextMonth],
             reminders: [$field->id => $this->asked()],
         )->execute();
 
@@ -1602,7 +1598,7 @@ class SetFieldValuesTest extends TestCase
             user: $user,
             record: $contact,
             section: $section,
-            values: [$field->id => '1984-02-03'],
+            values: [$field->id => $nextMonth],
             reminders: [$field->id => $this->asked(['name' => 'Send a card', 'recurs' => '0'])],
         )->execute();
 
@@ -1732,10 +1728,6 @@ class SetFieldValuesTest extends TestCase
             'interval' => '1',
             'time' => '09:00',
             'timezone' => 'Europe/Paris',
-            'moments' => [
-                0 => ['direction' => 'before', 'amount' => '7', 'unit' => 'days'],
-                2 => ['direction' => 'on', 'amount' => '1', 'unit' => 'days'],
-            ],
         ], $changes);
     }
 
@@ -1869,14 +1861,13 @@ class SetFieldValuesTest extends TestCase
         foreach ($before as $id) {
             $this->assertDatabaseHas('reminder_occurrences', [
                 'id' => $id,
-                'status' => ReminderOccurrenceStatusEnum::Cancelled->value,
                 'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::SourceChanged->value,
             ]);
         }
 
         $this->assertDatabaseHas('reminder_occurrences', [
-            'source_local_date' => '2027-02-10',
-            'status' => ReminderOccurrenceStatusEnum::Pending->value,
+            'local_date' => '2027-02-10',
+            'cancelled_at' => null,
         ]);
     }
 
@@ -1902,7 +1893,7 @@ class SetFieldValuesTest extends TestCase
         }
 
         $this->assertSame(0, ReminderOccurrence::query()
-            ->where('status', ReminderOccurrenceStatusEnum::Cancelled->value)
+            ->whereNotNull('cancelled_at')
             ->count());
     }
 
@@ -1934,7 +1925,7 @@ class SetFieldValuesTest extends TestCase
         )->execute();
 
         $this->assertSame(0, ReminderOccurrence::query()
-            ->where('status', '!=', ReminderOccurrenceStatusEnum::Cancelled->value)
+            ->whereNull('cancelled_at')
             ->count());
         $this->assertSame(0, ReminderOccurrence::query()
             ->where('cancelled_reason', '!=', ReminderOccurrenceCancelledReasonEnum::ValueCleared->value)
@@ -1969,7 +1960,7 @@ class SetFieldValuesTest extends TestCase
         )->execute();
 
         $this->assertSame(0, ReminderOccurrence::query()
-            ->where('cancelled_reason', '!=', ReminderOccurrenceCancelledReasonEnum::RuleDisabled->value)
+            ->where('cancelled_reason', '!=', ReminderOccurrenceCancelledReasonEnum::RuleDeleted->value)
             ->count());
     }
 

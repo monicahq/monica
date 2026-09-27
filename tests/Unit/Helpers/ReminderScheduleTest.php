@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Helpers;
 
 use App\Enums\ReminderCadenceEnum;
-use App\Enums\ReminderMomentDirectionEnum;
-use App\Enums\ReminderMomentUnitEnum;
 use App\Helpers\ReminderSchedule;
+use App\Models\Contact;
 use App\Models\FieldValue;
 use App\Models\Reminder;
 use Carbon\CarbonImmutable;
@@ -116,57 +115,43 @@ class ReminderScheduleTest extends TestCase
     }
 
     #[Test]
-    public function it_counts_every_moment_from_the_day_the_rule_falls_on(): void
-    {
-        $reminder = $this->ruleOn('1984-03-31', ReminderCadenceEnum::Yearly);
-        $reminder->moments = [
-            ['direction' => 'before', 'amount' => 7, 'unit' => 'days'],
-            ['direction' => 'before', 'amount' => 1, 'unit' => 'months'],
-            ['direction' => 'after', 'amount' => 2, 'unit' => 'weeks'],
-            ['direction' => 'on', 'amount' => null, 'unit' => null],
-        ];
-        $reminder->save();
-
-        $moments = ReminderSchedule::momentDates($reminder, CarbonImmutable::parse('2026-09-02', 'Europe/Paris'));
-
-        $this->assertCount(4, $moments);
-        $this->assertEquals('2027-03-24', $moments[0]['date']->format('Y-m-d'));
-        $this->assertEquals('2027-02-28', $moments[1]['date']->format('Y-m-d'));
-        $this->assertEquals('2027-04-14', $moments[2]['date']->format('Y-m-d'));
-        $this->assertEquals('2027-03-31', $moments[3]['date']->format('Y-m-d'));
-        $this->assertEquals(ReminderMomentDirectionEnum::Before, $moments[0]['direction']);
-        $this->assertEquals(ReminderMomentUnitEnum::Days, $moments[0]['unit']);
-        $this->assertNull($moments[3]['amount']);
-        $this->assertNull($moments[3]['unit']);
-    }
-
-    #[Test]
-    public function it_still_says_what_a_rule_with_nothing_ahead_of_it_asks_for(): void
-    {
-        $reminder = $this->ruleOn('2020-12-25', ReminderCadenceEnum::Once);
-
-        $moments = ReminderSchedule::momentDates($reminder, CarbonImmutable::parse('2026-09-02', 'Europe/Paris'));
-
-        $this->assertCount(2, $moments);
-        $this->assertNull($moments[0]['date']);
-        $this->assertEquals(ReminderMomentDirectionEnum::Before, $moments[0]['direction']);
-    }
-
-    #[Test]
-    public function it_enumerates_one_deadline_per_moment_of_a_cycle(): void
+    public function it_enumerates_one_deadline_per_cycle_on_the_day_itself(): void
     {
         $reminder = $this->ruleOn('1984-05-12', ReminderCadenceEnum::Yearly);
 
         $found = $this->between($reminder, '2027-01-01', '2027-12-31');
 
-        $this->assertEquals(['2027-05-05 07:00', '2027-05-12 07:00'], $found);
+        $this->assertEquals(['2027-05-12 07:00'], $found);
+    }
+
+    #[Test]
+    public function it_anchors_a_manual_rule_on_the_date_it_carries(): void
+    {
+        $contact = Contact::factory()->create();
+        $reminder = Reminder::factory()->manual($contact, '2026-11-02')->create([
+            'cadence' => ReminderCadenceEnum::Monthly,
+            'frequency_interval' => 3,
+        ]);
+
+        $this->assertEquals('2026-11-02', $this->next($reminder, '2026-09-26'));
+        $this->assertEquals('2027-02-02', $this->next($reminder, '2026-11-03'));
+        $this->assertEquals(['2026-11-02 08:00', '2027-02-02 08:00'], $this->between($reminder, '2026-09-26', '2027-03-31'));
+    }
+
+    #[Test]
+    public function it_enumerates_nothing_for_a_manual_rule_without_a_date(): void
+    {
+        $reminder = Reminder::factory()->manual(Contact::factory()->create(), '2026-11-02')->create();
+        $reminder->starts_on = null;
+
+        $this->assertEquals([], $this->between($reminder, '2026-09-26', '2027-03-31'));
     }
 
     #[Test]
     public function it_converts_the_local_hour_of_the_rule_into_an_instant(): void
     {
         $reminder = $this->ruleOn('1984-05-12', ReminderCadenceEnum::Yearly);
-        $reminder->update(['moments' => [$this->onTheDay()], 'time_of_day' => '09:00:00']);
+        $reminder->update(['time_of_day' => '09:00:00']);
 
         $this->assertEquals(['2027-05-12 07:00'], $this->between($reminder, '2027-01-01', '2027-12-31'));
     }
@@ -175,43 +160,16 @@ class ReminderScheduleTest extends TestCase
     public function it_reads_the_hour_in_the_zone_frozen_on_the_rule_and_not_the_reader_one(): void
     {
         $reminder = $this->ruleOn('1984-05-12', ReminderCadenceEnum::Yearly);
-        $reminder->update(['moments' => [$this->onTheDay()], 'timezone' => 'America/New_York']);
+        $reminder->update(['timezone' => 'America/New_York']);
 
         $this->assertEquals(['2027-05-12 13:00'], $this->between($reminder, '2027-01-01', '2027-12-31'));
-    }
-
-    #[Test]
-    public function it_finds_a_moment_before_a_cycle_that_is_itself_outside_the_window(): void
-    {
-        $reminder = $this->ruleOn('1984-05-12', ReminderCadenceEnum::Yearly);
-        $reminder->update(['moments' => [$this->before(7, ReminderMomentUnitEnum::Days)]]);
-
-        $this->assertEquals(['2027-05-05 07:00'], $this->between($reminder, '2027-05-01', '2027-05-06'));
-    }
-
-    #[Test]
-    public function it_finds_a_moment_after_a_cycle_already_gone_by(): void
-    {
-        $reminder = $this->ruleOn('1984-05-12', ReminderCadenceEnum::Yearly);
-        $reminder->update(['moments' => [$this->after(10, ReminderMomentUnitEnum::Days)]]);
-
-        $this->assertEquals(['2027-05-22 07:00'], $this->between($reminder, '2027-05-20', '2027-05-25'));
-    }
-
-    #[Test]
-    public function it_counts_a_moment_in_months_rather_than_in_days(): void
-    {
-        $reminder = $this->ruleOn('1984-03-01', ReminderCadenceEnum::Yearly);
-        $reminder->update(['moments' => [$this->before(3, ReminderMomentUnitEnum::Months)]]);
-
-        $this->assertEquals(['2026-12-01 08:00'], $this->between($reminder, '2026-11-01', '2026-12-31'));
     }
 
     #[Test]
     public function it_moves_a_local_time_the_clocks_went_forward_through_past_the_gap(): void
     {
         $reminder = $this->ruleOn('2027-03-28', ReminderCadenceEnum::Yearly);
-        $reminder->update(['moments' => [$this->onTheDay()], 'time_of_day' => '02:30:00']);
+        $reminder->update(['time_of_day' => '02:30:00']);
 
         $this->assertEquals(['2027-03-28 01:30'], $this->between($reminder, '2027-03-01', '2027-03-31'));
     }
@@ -220,7 +178,7 @@ class ReminderScheduleTest extends TestCase
     public function it_resolves_a_local_time_that_happens_twice_to_the_later_of_them(): void
     {
         $reminder = $this->ruleOn('2027-10-31', ReminderCadenceEnum::Yearly);
-        $reminder->update(['moments' => [$this->onTheDay()], 'time_of_day' => '02:30:00']);
+        $reminder->update(['time_of_day' => '02:30:00']);
 
         $this->assertEquals(['2027-10-31 01:30'], $this->between($reminder, '2027-10-01', '2027-10-31'));
     }
@@ -229,7 +187,6 @@ class ReminderScheduleTest extends TestCase
     public function it_enumerates_every_cycle_a_weekly_rule_falls_on_inside_the_window(): void
     {
         $reminder = $this->ruleOn('2027-01-04', ReminderCadenceEnum::Weekly);
-        $reminder->update(['moments' => [$this->onTheDay()]]);
 
         $this->assertEquals([
             '2027-01-04 08:00',
@@ -242,7 +199,6 @@ class ReminderScheduleTest extends TestCase
     public function it_never_drifts_off_the_twenty_ninth_of_february_while_enumerating(): void
     {
         $reminder = $this->ruleOn('2024-02-29', ReminderCadenceEnum::Yearly);
-        $reminder->update(['moments' => [$this->onTheDay()]]);
 
         $this->assertEquals(['2028-02-29 08:00'], $this->between($reminder, '2028-01-01', '2028-12-31'));
     }
@@ -251,7 +207,6 @@ class ReminderScheduleTest extends TestCase
     public function it_clamps_a_monthly_rule_anchored_on_the_thirty_first_onto_a_shorter_month(): void
     {
         $reminder = $this->ruleOn('2027-01-31', ReminderCadenceEnum::Monthly);
-        $reminder->update(['moments' => [$this->onTheDay()]]);
 
         $this->assertEquals(['2027-02-28 08:00'], $this->between($reminder, '2027-02-01', '2027-02-28'));
     }
@@ -260,7 +215,6 @@ class ReminderScheduleTest extends TestCase
     public function it_enumerates_a_rule_that_fires_once_exactly_once(): void
     {
         $reminder = $this->ruleOn('2027-05-12', ReminderCadenceEnum::Once);
-        $reminder->update(['moments' => [$this->onTheDay()]]);
 
         $this->assertEquals(['2027-05-12 07:00'], $this->between($reminder, '2027-01-01', '2030-12-31'));
         $this->assertEquals([], $this->between($reminder, '2028-01-01', '2030-12-31'));
@@ -316,23 +270,5 @@ class ReminderScheduleTest extends TestCase
             fn (array $occurrence): string => $occurrence['scheduled_for']->format('Y-m-d H:i'),
             $occurrences,
         );
-    }
-
-    /** @return array{direction: string, amount: null, unit: null} */
-    private function onTheDay(): array
-    {
-        return ['direction' => ReminderMomentDirectionEnum::On->value, 'amount' => null, 'unit' => null];
-    }
-
-    /** @return array{direction: string, amount: int, unit: string} */
-    private function before(int $amount, ReminderMomentUnitEnum $unit): array
-    {
-        return ['direction' => ReminderMomentDirectionEnum::Before->value, 'amount' => $amount, 'unit' => $unit->value];
-    }
-
-    /** @return array{direction: string, amount: int, unit: string} */
-    private function after(int $amount, ReminderMomentUnitEnum $unit): array
-    {
-        return ['direction' => ReminderMomentDirectionEnum::After->value, 'amount' => $amount, 'unit' => $unit->value];
     }
 }

@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
-use App\Enums\ReminderMomentUnitEnum;
 use App\Enums\ReminderSourceEnum;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInVault;
@@ -33,10 +32,16 @@ use Override;
  * deadline and the notification is what reaches somebody. The rule is the only
  * one of the four somebody configures; the other three follow from it.
  *
- * It hangs off the value it reads rather than off the pair of record and field.
- * That is what caps it at one live rule per value, and it is what makes a date
- * inside a repetition work with nothing added: each repetition's answer is its
- * own row, so each can carry its own rule.
+ * It comes from one of two sources. A manual rule is written by somebody about a
+ * contact and carries its own first date in `starts_on`. A field rule hangs off
+ * the date value it reads rather than off the pair of record and field. That is
+ * what caps it at one live rule per value, and it is what makes a date inside a
+ * repetition work with nothing added: each repetition's answer is its own row,
+ * so each can carry its own rule. Exactly one of `starts_on` and `field_id` is
+ * set, depending on the source.
+ *
+ * Every date it produces is a deadline on the day itself. Nothing is sent ahead
+ * of the day, and nothing is sent again after it.
  *
  * The zone is frozen when the rule is made. "Every year at 9am" means 9am where
  * somebody was when they asked for it, and moving away later must not shift a
@@ -46,9 +51,9 @@ use Override;
  * how often the rule fires, because section 10.2 requires a date driven rule to
  * be free to fire once or to come round again.
  *
- * A rule that stops applying is deactivated, says why and keeps the way back
- * open. Unticking the box is a soft delete for the same reason: nothing here
- * disappears without an explanation.
+ * A rule that stops applying is deactivated and says why. There is no pause:
+ * deleting is the only way somebody stops a rule, and it is a soft delete, so
+ * the answers given to its past deadlines stay readable.
  *
  * @property int $id
  * @property string $uuid
@@ -56,13 +61,13 @@ use Override;
  * @property int $vault_id
  * @property string $remindable_type
  * @property int $remindable_id
- * @property int $field_id
+ * @property int|null $field_id
  * @property int|null $field_value_id
  * @property string $name
  * @property ReminderSourceEnum $source
+ * @property CarbonImmutable|null $starts_on
  * @property ReminderCadenceEnum $cadence
  * @property int $frequency_interval
- * @property array<array-key, mixed> $moments
  * @property string $time_of_day
  * @property string $timezone
  * @property int $schedule_revision
@@ -76,7 +81,7 @@ use Override;
  * @property-read Account $account
  * @property-read Vault $vault
  * @property-read Contact|Entity $remindable
- * @property-read Field $field
+ * @property-read Field|null $field
  * @property-read FieldValue|null $fieldValue
  * @property-read User|null $createdBy
  * @property-read Collection<int, ReminderOccurrence> $occurrences
@@ -91,9 +96,9 @@ use Override;
     'field_value_id',
     'name',
     'source',
+    'starts_on',
     'cadence',
     'frequency_interval',
-    'moments',
     'time_of_day',
     'timezone',
     'schedule_revision',
@@ -110,18 +115,6 @@ class Reminder extends Model
     use HasUuids;
     use ResolvesModelInVault;
     use SoftDeletes;
-
-    /**
-     * The fewest days, weeks or months a moment may name. One is the floor
-     * because a moment of nothing is the day itself, which has its own
-     * direction.
-     *
-     * There is no matching ceiling here, because how far a moment may reach
-     * depends on what it counts in: {@see ReminderMomentUnitEnum::maximumAmount()}
-     * carries it, and one number for all three units is what let "365 months
-     * before" through.
-     */
-    public const int MINIMUM_AMOUNT = 1;
 
     /**
      * The most times over a cadence may be spaced out. "Every ninety-nine years"
@@ -164,7 +157,7 @@ class Reminder extends Model
             'cadence' => ReminderCadenceEnum::class,
             'frequency_interval' => 'integer',
             'schedule_revision' => 'integer',
-            'moments' => 'array',
+            'starts_on' => 'immutable_date',
             'is_active' => 'boolean',
             'inactive_reason' => ReminderInactiveReasonEnum::class,
             'deactivated_at' => 'datetime',
@@ -238,9 +231,8 @@ class Reminder extends Model
     /**
      * Get the concrete deadlines the rule has produced.
      *
-     * One cycle produces one of these for every moment, so a yearly rule with
-     * two moments leaves two rows a year rather than one with two notifications
-     * hanging off it. That is what makes putting one off touch only that one.
+     * One cycle produces exactly one, on the day itself, and each carries its
+     * own answer, so answering this year's birthday leaves next year's alone.
      *
      * @return HasMany<ReminderOccurrence, $this>
      */

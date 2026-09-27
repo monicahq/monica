@@ -5,41 +5,54 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
-use App\Enums\ReminderOccurrenceStatusEnum;
+use App\Models\Notification;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
-use Illuminate\Support\Facades\DB;
+use Carbon\CarbonImmutable;
 
 /**
- * Take away the deadlines a rule has ahead of it, for the reason given.
+ * Take away the deadlines of a rule still waiting for an answer, for the reason given: every one of
+ * them when the rule or its contact goes away, or only those after today when the schedule changes.
  */
 class CancelReminderOccurrences
 {
     public function __construct(
         private readonly Reminder $reminder,
         private readonly ReminderOccurrenceCancelledReasonEnum $reason,
+        private readonly bool $includePast,
     ) {}
 
     public function execute(): int
     {
-        return DB::transaction(function (): int {
-            $cancelled = 0;
+        $query = ReminderOccurrence::query()
+            ->where('reminder_id', $this->reminder->id)
+            ->active();
 
-            foreach (ReminderOccurrenceStatusEnum::actionable() as $status) {
-                $cancelled += ReminderOccurrence::query()
-                    ->where('reminder_id', $this->reminder->id)
-                    ->stillAhead()
-                    ->where('status', $status)
-                    ->update([
-                        'status' => ReminderOccurrenceStatusEnum::Cancelled,
-                        'status_before_cancellation' => $status,
-                        'cancelled_at' => now(),
-                        'cancelled_reason' => $this->reason,
-                        'updated_at' => now(),
-                    ]);
-            }
+        if (! $this->includePast) {
+            $query->whereDate('local_date', '>', CarbonImmutable::now($this->reminder->timezone)->toDateString());
+        }
 
-            return $cancelled;
-        });
+        $cancelled = $query->pluck('id');
+
+        if ($cancelled->isEmpty()) {
+            return 0;
+        }
+
+        Notification::query()
+            ->where('notifiable_type', ReminderOccurrence::class)
+            ->whereIn('notifiable_id', $cancelled)
+            ->whereNull('sent_at')
+            ->whereNull('failed_at')
+            ->update([
+                'failed_at' => now(),
+                'failure_reason' => __('The reminder was cancelled.'),
+                'updated_at' => now(),
+            ]);
+
+        return ReminderOccurrence::query()->whereIn('id', $cancelled)->update([
+            'cancelled_at' => now(),
+            'cancelled_reason' => $this->reason,
+            'updated_at' => now(),
+        ]);
     }
 }

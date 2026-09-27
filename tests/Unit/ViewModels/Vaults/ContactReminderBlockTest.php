@@ -19,19 +19,9 @@ class ContactReminderBlockTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_hands_the_panel_every_wording_the_language_needs_rather_than_a_singular_and_a_plural(): void
+    public function it_starts_a_new_reminder_on_every_year(): void
     {
-        app()->setLocale('pl_PL');
-
-        $words = $this->block()->live()['words'];
-
-        $this->assertSame(':n tydzień', $words['units']['weeks']['one']);
-        $this->assertSame(':n tygodnie', $words['units']['weeks']['few']);
-        $this->assertSame(':n tygodni', $words['units']['weeks']['many']);
-
-        $this->assertSame('co rok', $words['intervals']['yearly']['one']);
-        $this->assertSame('co :n lata', $words['intervals']['yearly']['few']);
-        $this->assertSame('co :n lat', $words['intervals']['yearly']['many']);
+        $this->assertSame('yearly:1', $this->block()->repeat());
     }
 
     #[Test]
@@ -43,81 +33,45 @@ class ContactReminderBlockTest extends TestCase
     }
 
     #[Test]
-    public function it_hands_the_panel_the_separator_and_the_pattern_a_list_is_joined_by(): void
+    public function it_reads_a_saved_rhythm_back_as_one_choice_of_the_list(): void
     {
-        app()->setLocale('fr_FR');
+        $once = Reminder::factory()->once()->create();
+        $everyFewYears = Reminder::factory()->everyFewYears(5)->create();
 
-        $words = $this->block()->live()['words'];
-
-        $this->assertSame(', ', $words['listSeparator']);
-        $this->assertSame(':list et :last', $words['listPattern']);
+        $this->assertSame('once', $this->block($once)->repeat());
+        $this->assertSame('yearly:5', $this->block($everyFewYears)->repeat());
     }
 
     #[Test]
-    public function it_pads_the_moments_with_the_blanks_the_panel_reveals_one_at_a_time(): void
+    public function it_offers_once_and_four_yearly_rhythms_and_keeps_an_older_one_on_offer(): void
     {
-        $reminder = Reminder::factory()->create();
-        $block = $this->block($reminder);
+        $this->assertSame(['once', 'yearly:1', 'yearly:2', 'yearly:5', 'yearly:10'], array_keys($this->block()->repeats()));
 
-        $held = count($block->moments());
+        $monthly = Reminder::factory()->create(['cadence' => ReminderCadenceEnum::Monthly, 'frequency_interval' => 3]);
 
-        $this->assertCount($held + $block->blanks(), $block->rows());
-        $this->assertSame($held, $block->live()['held']);
+        $this->assertSame('Every 3 months', $this->block($monthly)->repeats()['monthly:3']);
     }
 
     #[Test]
-    public function every_blank_moment_offers_a_week_before_the_date(): void
+    public function it_says_when_a_saved_rule_next_falls_and_nothing_for_a_new_one(): void
     {
-        $rows = $this->block()->rows();
-        $blank = end($rows);
+        $this->travelTo('2026-09-27 12:00:00');
 
-        $this->assertSame('before', $blank['direction']);
-        $this->assertSame(7, $blank['amount']);
-        $this->assertSame('days', $blank['unit']);
-        $this->assertFalse($blank['removed']);
+        $reminder = Reminder::factory()->create(['time_of_day' => '09:00:00', 'timezone' => 'UTC']);
+
+        $this->assertNull($this->block()->nextLine());
+        $this->assertStringContainsString('Next reminder on', (string) $this->block($reminder)->nextLine());
+        $this->assertStringContainsString('at 09:00', (string) $this->block($reminder)->nextLine());
     }
 
     #[Test]
-    public function it_says_how_much_of_each_unit_a_moment_may_ask_for(): void
+    public function it_says_a_saved_rule_is_told_on_the_day_at_its_hour(): void
     {
-        $maximums = $this->block()->live()['maximums'];
-
-        $this->assertArrayHasKey('days', $maximums);
-        $this->assertArrayHasKey('weeks', $maximums);
-        $this->assertArrayHasKey('months', $maximums);
-        $this->assertGreaterThan(0, $maximums['days']);
-    }
-
-    #[Test]
-    public function it_names_the_directions_the_units_and_the_cadences_the_controls_offer(): void
-    {
-        $block = $this->block();
-
-        $this->assertSame(['on', 'before', 'after'], array_keys($block->directions()));
-        $this->assertSame(['days', 'weeks', 'months'], array_keys($block->units()));
-        $this->assertSame('On the day', $block->directions()['on']);
-        $this->assertSame('days', $block->units()['days']);
-
-        $this->assertArrayNotHasKey(ReminderCadenceEnum::Once->value, $block->cadences());
-        $this->assertArrayHasKey(ReminderCadenceEnum::Yearly->value, $block->cadences());
-    }
-
-    #[Test]
-    public function it_joins_the_moments_of_a_saved_rule_with_the_pattern_and_not_with_an_english_and(): void
-    {
-        app()->setLocale('fr_FR');
-
-        $reminder = Reminder::factory()->create([
-            'moments' => [
-                ['direction' => 'before', 'amount' => 7, 'unit' => 'days'],
-                ['direction' => 'on', 'amount' => null, 'unit' => null],
-            ],
-        ]);
+        $reminder = Reminder::factory()->create(['time_of_day' => '08:30:00', 'timezone' => 'America/New_York']);
 
         $summary = $this->block($reminder)->summary();
 
-        $this->assertStringContainsString(' et ', $summary);
-        $this->assertStringNotContainsString(' and ', $summary);
+        $this->assertSame('You will be reminded on the day, every year, at 08:30 America/New_York.', $summary);
     }
 
     private function block(?Reminder $reminder = null): ContactReminderBlock

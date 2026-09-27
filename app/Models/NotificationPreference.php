@@ -22,10 +22,8 @@ use Override;
  * rather than a handful of columns scattered over the account, because delivery
  * reads all of it together on every single send.
  *
- * It adds no second lead time. When somebody wants to be told is said by the
- * rule's moments, and each moment has already become a deadline at that exact
- * instant before delivery begins. Moving a notification earlier here would apply
- * the offset twice.
+ * It adds no lead time. A reminder is told on its day and at its rule's hour,
+ * and nothing here moves a notification earlier than that.
  *
  * Which channels are switched on is not here. That is one row per channel in
  * `notification_channels`, because a channel carries a destination, a

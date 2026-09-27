@@ -18,6 +18,8 @@ use App\Http\Controllers\Api\ContactListColumnController;
 use App\Http\Controllers\Api\ContactMeController;
 use App\Http\Controllers\Api\ContactMergeController;
 use App\Http\Controllers\Api\ContactNameController;
+use App\Http\Controllers\Api\ContactReminderController;
+use App\Http\Controllers\Api\ContactReminderOccurrenceController;
 use App\Http\Controllers\Api\ContactStructureVersionController;
 use App\Http\Controllers\Api\ContactVCardController;
 use App\Http\Controllers\Api\EmailSentController;
@@ -53,6 +55,7 @@ use App\Http\Controllers\Api\RelationshipCategoryTypeController;
 use App\Http\Controllers\Api\RelationshipTypeActivationController;
 use App\Http\Controllers\Api\RelationshipTypeController;
 use App\Http\Controllers\Api\RelationshipTypePositionController;
+use App\Http\Controllers\Api\ReminderOccurrenceAnswerController;
 use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\StructureVersionController;
 use App\Http\Controllers\Api\StructureVersionPageController;
@@ -233,5 +236,21 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::post('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'update'])->name('contacts.avatar.update');
         Route::delete('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'destroy'])->name('contacts.avatar.destroy');
         Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])->name('contacts.templateVersion.update');
+
+        Route::get('vaults/{vault}/contacts/{contact}/reminders', [ContactReminderController::class, 'index'])->name('contacts.reminders');
+        Route::post('vaults/{vault}/contacts/{contact}/reminders', [ContactReminderController::class, 'create'])->name('contacts.reminders.create');
+        Route::get('vaults/{vault}/contacts/{contact}/reminders/{reminder}', [ContactReminderController::class, 'show'])
+            ->where('reminder', '[0-9a-fA-F-]{36}')
+            ->name('contacts.reminders.show');
+        Route::put('vaults/{vault}/contacts/{contact}/reminders/{reminder}', [ContactReminderController::class, 'update'])
+            ->where('reminder', '[0-9a-fA-F-]{36}')
+            ->name('contacts.reminders.update');
+        Route::delete('vaults/{vault}/contacts/{contact}/reminders/{reminder}', [ContactReminderController::class, 'destroy'])
+            ->where('reminder', '[0-9a-fA-F-]{36}')
+            ->name('contacts.reminders.destroy');
+        Route::get('vaults/{vault}/contacts/{contact}/reminder-occurrences', [ContactReminderOccurrenceController::class, 'index'])->name('contacts.reminderOccurrences');
+        Route::put('vaults/{vault}/contacts/{contact}/reminder-occurrences/{occurrence}/answer', [ReminderOccurrenceAnswerController::class, 'update'])
+            ->where('occurrence', '[0-9a-fA-F-]{36}')
+            ->name('contacts.reminderOccurrences.answer.update');
     });
 });

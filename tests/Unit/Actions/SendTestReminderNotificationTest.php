@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\SendTestReminderNotification;
-use App\Enums\ReminderOccurrenceStatusEnum;
 use App\Models\NotificationPreference;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
@@ -48,7 +47,7 @@ class SendTestReminderNotificationTest extends TestCase
 
         Notification::assertSentTo($user, ReminderDue::class, function (ReminderDue $notification) use ($occurrence): bool {
             return $notification->reminderName === 'Stanley Hudson'
-                && $notification->whenItIsAbout === $occurrence->howFarOff('en');
+                && $notification->whenItIsAbout === 'Due '.$occurrence->local_date->locale('en')->isoFormat('LL');
         });
     }
 
@@ -61,7 +60,7 @@ class SendTestReminderNotificationTest extends TestCase
         $occurrence = $this->deadline($user);
         $was = [
             'notified_at' => $occurrence->notified_at,
-            'status' => $occurrence->status,
+            'notifications_created_at' => $occurrence->notifications_created_at,
             'scheduled_for' => $occurrence->scheduled_for->format('Y-m-d H:i:s'),
         ];
 
@@ -70,7 +69,8 @@ class SendTestReminderNotificationTest extends TestCase
         $occurrence->refresh();
 
         $this->assertEquals($was['notified_at'], $occurrence->notified_at);
-        $this->assertEquals($was['status'], $occurrence->status);
+        $this->assertEquals($was['notifications_created_at'], $occurrence->notifications_created_at);
+        $this->assertNull($occurrence->answer);
         $this->assertEquals($was['scheduled_for'], $occurrence->scheduled_for->format('Y-m-d H:i:s'));
     }
 
@@ -141,12 +141,9 @@ class SendTestReminderNotificationTest extends TestCase
         return ReminderOccurrence::factory()->for($rule)->create([
             'account_id' => $rule->account_id,
             'vault_id' => $rule->vault_id,
-            'source_local_date' => $instant->toDateString(),
-            'generation_key' => '1:'.$instant->toDateString().':a',
+            'generation_key' => '1:'.$instant->toDateString(),
             'scheduled_for' => $instant,
-            'original_scheduled_for' => $instant,
             'local_date' => $instant->toDateString(),
-            'status' => ReminderOccurrenceStatusEnum::Pending,
             'notified_at' => null,
         ]);
     }

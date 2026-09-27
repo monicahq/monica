@@ -30,9 +30,8 @@ use Override;
  * failures, are both things the product has to say, and they should arrive where
  * everything else arrives rather than through mechanisms of their own.
  *
- * The moment has already been applied before this layer is reached. A rule's
- * moments became separate deadlines, so a notification copies its deadline's
- * instant and never shifts it again.
+ * A deadline is told once per channel, and a notification copies its deadline's
+ * instant and never shifts it.
  *
  * `scheduled_for` and `held_until` are two different facts and are never
  * conflated. The first is when the thing was due; the second is the first moment
