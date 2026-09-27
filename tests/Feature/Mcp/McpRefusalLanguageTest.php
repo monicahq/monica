@@ -24,7 +24,7 @@ class McpRefusalLanguageTest extends TestCase
 
         $response = $this->withToken($key->plainTextToken)
             ->withHeader('Accept-Language', 'fr-FR')
-            ->postJson('/api/mcp', $this->askFor($unreachable->uuid));
+            ->postJson('/mcp', $this->askFor($unreachable->uuid));
 
         $response->assertOk();
         $this->assertStringContainsString('Ce coffre n’existe pas.', $response->getContent());
@@ -47,7 +47,7 @@ class McpRefusalLanguageTest extends TestCase
 
         $this->withToken($key->plainTextToken)
             ->withHeader('Accept-Language', 'de-DE')
-            ->postJson('/api/mcp', $this->askFor($unreachable->uuid))
+            ->postJson('/mcp', $this->askFor($unreachable->uuid))
             ->assertOk();
 
         $this->assertSame($overTheJsonApi, App::getLocale());
@@ -62,7 +62,7 @@ class McpRefusalLanguageTest extends TestCase
         $unreachable = Vault::factory()->create();
 
         $response = $this->withToken($key->plainTextToken)
-            ->postJson('/api/mcp', $this->askFor($unreachable->uuid));
+            ->postJson('/mcp', $this->askFor($unreachable->uuid));
 
         $response->assertOk();
         $this->assertStringContainsString('That vault does not exist.', $response->getContent());

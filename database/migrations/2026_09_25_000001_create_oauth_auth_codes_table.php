@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('oauth_auth_codes', function (Blueprint $table): void {
+            $table->char('id', 80)->primary()->comment('primary key, the authorization code handed to the client');
+            $table->unsignedBigInteger('user_id')->index()->comment('user who approved the client');
+            $table->uuid('client_id')->comment('client the code was issued to');
+            $table->text('scopes')->nullable()->comment('scopes the user granted, as JSON');
+            $table->boolean('revoked')->comment('whether the code has been used or withdrawn');
+            $table->dateTime('expires_at')->nullable()->comment('when the code stops being exchangeable for a token');
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('client_id')->references('id')->on('oauth_clients')->cascadeOnDelete();
+        });
+    }
+};

@@ -14,9 +14,12 @@ use App\Http\Responses\PasskeyLoginResponse;
 use App\Models\Account;
 use App\Models\Passkey;
 use App\Models\User;
+use App\ViewModels\Auth\OAuthAuthorizationViewModel;
 use Carbon\CarbonImmutable;
+use Carbon\CarbonInterval;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +34,8 @@ use Laravel\Passkeys\Contracts\PasskeyConfirmationResponse as PasskeyConfirmatio
 use Laravel\Passkeys\Contracts\PasskeyDeletedResponse as PasskeyDeletedResponseContract;
 use Laravel\Passkeys\Contracts\PasskeyLoginResponse as PasskeyLoginResponseContract;
 use Laravel\Passkeys\Passkeys;
+use Laravel\Passport\AccessToken;
+use Laravel\Passport\Passport;
 use Override;
 use SocialiteProviders\Manager\SocialiteWasCalled;
 
@@ -42,6 +47,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->configurePasskeys();
+
+        Passport::$deviceCodeGrantEnabled = false;
     }
 
     /**
@@ -97,6 +104,31 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaultsProduction();
         $this->configureBilling();
         $this->configureSingleSignOn();
+        $this->configurePassport();
+    }
+
+    /**
+     * Passport exists only so an assistant can reach the MCP server through OAuth. An access token
+     * lives a day and is renewed through its refresh token, so a revoked assistant loses access
+     * within a day even when it holds on to what it was given.
+     */
+    private function configurePassport(): void
+    {
+        Passport::tokensExpireIn(CarbonInterval::day());
+        Passport::refreshTokensExpireIn(CarbonInterval::days(30));
+
+        Passport::authorizationView(fn (array $parameters): Response => response()->view('app.auth.oauth-authorize', [
+            'viewModel' => new OAuthAuthorizationViewModel(
+                client: $parameters['client'],
+                authToken: $parameters['authToken'],
+                user: $parameters['user'],
+                redirectUri: $parameters['request']->string('redirect_uri')->toString(),
+                scopes: $parameters['scopes'],
+            ),
+        ]));
+        Passport::tokensCan([
+            'mcp' => __('Use MCP server'),
+        ]);
     }
 
     private function configureBilling(): void
@@ -124,8 +156,14 @@ class AppServiceProvider extends ServiceProvider
                 return Limit::none();
             }
 
+            $token = $request->user()?->currentAccessToken();
+
+            if ($token instanceof AccessToken) {
+                return Limit::perMinute(60)->by("oauth:{$token->oauth_access_token_id}");
+            }
+
             return Limit::perMinute(60)
-                ->by((string) ($request->user()?->currentAccessToken()?->getKey() ?: $request->ip()));
+                ->by((string) ($token?->getKey() ?: $request->ip()));
         });
         RateLimiter::for('passkey', fn (Request $request): Limit => Limit::perMinute(self::MAX_LOGIN_ATTEMPTS)
             ->by($request->string('credential.id')->lower()->toString().'|'.$request->ip()));

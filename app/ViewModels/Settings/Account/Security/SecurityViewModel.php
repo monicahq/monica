@@ -11,6 +11,8 @@ use App\Helpers\PasskeyAvailability;
 use App\Helpers\SsoProviderAvailability;
 use App\Models\User;
 use App\ViewModels\Auth\ConfirmPasswordViewModel;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class SecurityViewModel
@@ -58,6 +60,29 @@ class SecurityViewModel
                 'lastUsedAt' => $apiKey->last_used_at?->diffForHumans(),
                 'reachesSensitiveFields' => in_array(ApiKeyScopeEnum::SensitiveFields->value, $apiKey->abilities ?? [], true),
             ])
+            ->all();
+    }
+
+    /** @return list<array{clientId: string, name: string, connectedAt: string}> */
+    public function connectedAssistants(): array
+    {
+        return $this->user->oauthAccessTokens()
+            ->with('client')
+            ->where('revoked', false)
+            ->where(fn (Builder $query) => $query
+                ->where('expires_at', '>', now())
+                ->orWhereHas('refreshToken', fn (Builder $refresh) => $refresh
+                    ->where('revoked', false)
+                    ->where('expires_at', '>', now())))
+            ->oldest()
+            ->get()
+            ->groupBy('client_id')
+            ->map(fn (Collection $tokens): array => [
+                'clientId' => (string) $tokens->first()->client_id,
+                'name' => $tokens->first()->client->name,
+                'connectedAt' => $tokens->first()->created_at->diffForHumans(),
+            ])
+            ->values()
             ->all();
     }
 

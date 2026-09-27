@@ -18,7 +18,7 @@ class McpDocsViewModelTest extends TestCase
     {
         config(['app.url' => 'https://monica.test/crm/']);
 
-        $this->assertSame('https://monica.test/crm/api/mcp', new McpDocsViewModel()->serverAddress());
+        $this->assertSame('https://monica.test/crm/mcp', new McpDocsViewModel()->serverAddress());
     }
 
     #[Test]

@@ -200,7 +200,7 @@ class McpChangelogTest extends TestCase
     /** @param  array<string, mixed>  $arguments */
     private function invoke(string $token, string $tool, array $arguments): TestResponse
     {
-        return $this->withToken($token)->postJson('/api/mcp', [
+        return $this->withToken($token)->postJson('/mcp', [
             'jsonrpc' => '2.0',
             'id' => 1,
             'method' => 'tools/call',

@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Support\Facades\Schema;
-use Laravel\Mcp\Server\Attributes\Description;
+use Laravel\Passport\Passport;
 
 #[Signature(<<<'EOF'
 monica:setup
@@ -29,6 +30,7 @@ class SetupApplicationCommand extends Command
 
         if ($this->runs('build')) {
             $this->linkStorage();
+            $this->generateOAuthKeys();
             $this->clearApplicationCache();
             $this->resetCompiledFiles();
             $this->cacheConfiguration();
@@ -61,6 +63,24 @@ class SetupApplicationCommand extends Command
         }
 
         $this->artisan('Linking the storage folder into public', 'storage:link');
+    }
+
+    /**
+     * The keys sign the tokens an assistant holds, so they are made once and kept. Replacing them
+     * would disconnect every assistant, which is why an existing pair, or a pair the environment
+     * supplies, is left alone.
+     */
+    private function generateOAuthKeys(): void
+    {
+        if (config('passport.private_key') !== null) {
+            return;
+        }
+
+        if (file_exists(Passport::keyPath('oauth-private.key'))) {
+            return;
+        }
+
+        $this->artisan('Generating the keys that sign OAuth tokens', 'passport:keys');
     }
 
     private function clearApplicationCache(): void

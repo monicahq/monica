@@ -31,6 +31,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification as LaravelNotification;
 use Laravel\Passkeys\Contracts\PasskeyUser;
 use Laravel\Passkeys\PasskeyAuthenticatable;
+use Laravel\Passport\Token;
 use Laravel\Sanctum\HasApiTokens;
 use Override;
 
@@ -193,6 +194,18 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     public function logs(): HasMany
     {
         return $this->hasMany(Log::class);
+    }
+
+    /**
+     * Get the OAuth access tokens the user granted to assistants. The API keys are the Sanctum
+     * tokens behind tokens(); Passport's own trait cannot sit next to Sanctum's, so this relation
+     * is declared here instead.
+     *
+     * @return HasMany<Token, $this>
+     */
+    public function oauthAccessTokens(): HasMany
+    {
+        return $this->hasMany(Token::class);
     }
 
     /**

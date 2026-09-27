@@ -101,7 +101,7 @@ class McpDocsViewModel
 
     public function serverAddress(): string
     {
-        return "{$this->instanceAddress()}/api/mcp";
+        return "{$this->instanceAddress()}/mcp";
     }
 
     /**
@@ -347,7 +347,7 @@ class McpDocsViewModel
 
         return [
             ['title' => 'The assistant is refused', 'text' => 'The key is wrong or revoked. Create a new one in **Settings → Security and access → API keys** and update your configuration.'],
-            ['title' => 'The server cannot be reached', 'text' => 'Check that the address ends in `/api/mcp` and that your instance is reachable from the machine running the assistant.'],
+            ['title' => 'The server cannot be reached', 'text' => 'Check that the address ends in `/mcp` and that your instance is reachable from the machine running the assistant.'],
             ['title' => 'The key is empty', 'text' => 'The assistant cannot see `MONICA_API_KEY`. Set it in the environment the assistant starts from, then restart it. Desktop apps often do not read your terminal’s variables.'],
             ['title' => 'Too many requests', 'text' => $limit],
         ];

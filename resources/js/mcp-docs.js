@@ -32,7 +32,7 @@ export default ({ instance, server, tabs, sections }) => ({
     get serverAddress() {
         const typed = this.address.trim().replace(/\/+$/, '');
 
-        return `${typed === '' ? instance : typed}/api/mcp`;
+        return `${typed === '' ? instance : typed}/mcp`;
     },
 
     swap(text) {

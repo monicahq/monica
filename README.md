@@ -92,8 +92,8 @@ where `APP_KEY` names none, waits for the database to answer and runs `php artis
 Every step of it is safe to repeat, so it runs on every start.
 
 `monica:setup` is the command that brings an installation to a state it can serve from. It links
-the storage folder into public, clears the application cache, resets the compiled configuration,
-routes, views and events, and migrates. In production it compiles those files instead of clearing
+the storage folder into public, generates the keys that sign OAuth tokens when there are none, clears
+the application cache, resets the compiled configuration, routes, views and events, and migrates. In production it compiles those files instead of clearing
 them, and caches the configuration. `--build` runs only the steps that prepare the checkout and
 `--deploy` only the step that touches the database, so a deployment can split the two.
 
@@ -101,6 +101,11 @@ The entrypoint calls it twice, `--deploy` before `--build`. Caching the configur
 while the cache table is missing, and on a database nobody has migrated yet that table only appears
 once the migrations have run. Run in the command's own order, the first start of a fresh
 installation would serve its whole life with the configuration uncached.
+
+The OAuth keys are written to `storage/oauth-private.key` and `storage/oauth-public.key`. They sign
+the tokens of every assistant connected to the MCP server, so they have to outlive the container:
+keep `storage` on a persistent volume, or pass the keys as `PASSPORT_PRIVATE_KEY` and
+`PASSPORT_PUBLIC_KEY`, in which case none are generated. New keys disconnect every assistant.
 
 The image does not run it at build time. In production the command caches the configuration, and a
 configuration cached from `.env.docker` would ignore every value passed to `docker run` afterwards.

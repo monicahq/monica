@@ -68,10 +68,7 @@ use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\TemplateDuplicateController;
 use App\Http\Controllers\Api\TemplatePositionController;
 use App\Http\Controllers\Api\VaultController;
-use App\Http\Middleware\SetMcpLogSource;
-use App\Mcp\Servers\EricaServer;
 use Illuminate\Support\Facades\Route;
-use Laravel\Mcp\Facades\Mcp;
 
 Route::prefix('v1')->name('api.v1.')->group(function (): void {
     Route::get('status', [StatusController::class, 'show'])->middleware('throttle:60,1')->name('status');
@@ -79,7 +76,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
     Route::post('register', [RegistrationController::class, 'store'])->middleware('throttle:6,1')->name('register');
     Route::post('login', [LoginController::class, 'store'])->middleware('throttle:6,1')->name('login');
 
-    Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function (): void {
+    Route::middleware(['auth:sanctum'])->group(function (): void {
         Route::delete('logout', [LoginController::class, 'destroy'])->name('logout');
 
         Route::get('me', [MeController::class, 'show'])->name('me');
@@ -238,7 +235,3 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])->name('contacts.templateVersion.update');
     });
 });
-
-Mcp::web('mcp', EricaServer::class)
-    ->middleware(['auth:sanctum', 'throttle:mcp', SetMcpLogSource::class])
-    ->withoutMiddleware('throttle:api');

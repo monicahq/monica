@@ -53,8 +53,12 @@ return Application::configure(basePath: dirname(__DIR__))
             SubstituteBindings::class,
         ]);
 
-        $middleware->api(prepend: [
+        $middleware->api(remove: [
+            SubstituteBindings::class,
+        ]);
+        $middleware->api(append: [
             SetApiLocale::class,
+            SubstituteBindings::class,
         ]);
 
         $middleware->redirectGuestsTo(fn (): string => route('auth.login.new'));
@@ -65,6 +69,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // removing a passkey sits under the same prefix and is an ordinary form submission.
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*')
+                || $request->is('mcp')
                 || $request->is('passkeys/*')
                 || $request->is('user/passkeys')
                 || $request->is('user/passkeys/options'),

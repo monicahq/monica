@@ -13,6 +13,7 @@
         "laravel-best-practices",
         "testing-best-practices",
         "mcp-development",
+        "passport-development",
         "socialite-development",
         "tailwindcss-development"
     ]

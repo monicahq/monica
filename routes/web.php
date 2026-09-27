@@ -49,6 +49,7 @@ use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipCate
 use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipTypeController;
 use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipTypePositionController;
 use App\Http\Controllers\App\Settings\Account\Security\ApiKeyController;
+use App\Http\Controllers\App\Settings\Account\Security\ConnectedAssistantController;
 use App\Http\Controllers\App\Settings\Account\Security\PasskeyController;
 use App\Http\Controllers\App\Settings\Account\Security\PasswordController;
 use App\Http\Controllers\App\Settings\Account\Security\RecoveryCodeController;
@@ -531,6 +532,8 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
         Route::post('settings/account/security/api-keys', [ApiKeyController::class, 'create'])->name('settings.apiKeys.create');
         Route::delete('settings/account/security/api-keys/{apiKey}', [ApiKeyController::class, 'destroy'])->whereNumber('apiKey')->name('settings.apiKeys.destroy');
+
+        Route::delete('settings/account/security/assistants/{client}', [ConnectedAssistantController::class, 'destroy'])->whereUuid('client')->name('settings.connectedAssistants.destroy');
     });
 
     Route::post('settings/account/profile/photo', [PhotoController::class, 'update'])->name('settings.photo.update');

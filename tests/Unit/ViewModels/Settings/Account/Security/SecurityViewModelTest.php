@@ -129,6 +129,43 @@ class SecurityViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_gives_one_line_per_connected_assistant_however_often_it_renewed_its_token(): void
+    {
+        $user = User::factory()->create();
+        $first = $this->oauthTokenFor(user: $user);
+        $this->oauthTokenFor(user: $user, client: $first->client);
+
+        $assistants = new SecurityViewModel(user: $user)->connectedAssistants();
+
+        $this->assertCount(1, $assistants);
+        $this->assertSame((string) $first->client_id, $assistants[0]['clientId']);
+        $this->assertSame('Schrute Farms Assistant', $assistants[0]['name']);
+    }
+
+    #[Test]
+    public function it_leaves_out_the_assistants_that_can_no_longer_reach_the_account(): void
+    {
+        $user = User::factory()->create();
+        $this->oauthTokenFor(user: $user, revoked: true);
+        $this->oauthTokenFor(user: $user, expiresAt: now()->subMinute()->toImmutable(), refreshExpiresAt: now()->subMinute()->toImmutable());
+        $this->oauthTokenFor(user: User::factory()->create());
+
+        $this->assertSame([], new SecurityViewModel(user: $user)->connectedAssistants());
+    }
+
+    #[Test]
+    public function it_keeps_an_idle_assistant_that_can_still_renew_its_access(): void
+    {
+        $user = User::factory()->create();
+        $token = $this->oauthTokenFor(user: $user, expiresAt: now()->subDays(2)->toImmutable());
+
+        $assistants = new SecurityViewModel(user: $user)->connectedAssistants();
+
+        $this->assertCount(1, $assistants);
+        $this->assertSame((string) $token->client_id, $assistants[0]['clientId']);
+    }
+
+    #[Test]
     public function it_names_the_provider_that_signs_the_user_in(): void
     {
         $this->offer('github');

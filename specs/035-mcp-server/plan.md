@@ -28,7 +28,7 @@ requires an amendment, and FR-006 asked for a Me contact the API does not carry,
 | Language, dependencies | PHP 8.4, Laravel 13, Sanctum. One new required dependency, `laravel/mcp` v1.0.0, approved 2026-09-14. |
 | Storage | One column, `client` on `personal_access_tokens`, one migration, `up()` only. No table is created. |
 | Testing | PHPUnit, `php artisan test --compact`. The package ships `EricaServer::tools()` and `EricaServer::actingAs($user)->tool(...)`, so a tool is testable without HTTP. |
-| Target, type | Linux server, hosted and self hosted alike. `POST /api/mcp`, registered in `routes/api.php`. |
+| Target, type | Linux server, hosted and self hosted alike. `POST /mcp`, registered in `routes/api.php`. |
 | Performance | A list is one query per tool, the same one the API runs. Nothing is added to the request path of any existing screen or endpoint. |
 | Constraints | `throttle:mcp`, per key, `Limit::none()` when `monica.self_hosted`. The number is configuration, which `spec/models/006` fixes deliberately. |
 | Scope | 13 tools, 1 server, 1 middleware, 1 enum, 1 migration, 1 API controller, 1 route group, 1 docs page, 6 test classes. Roughly 30 files, 24 of them new. |

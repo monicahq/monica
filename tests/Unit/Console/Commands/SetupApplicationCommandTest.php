@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Console\Commands;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Passport\Passport;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -65,6 +66,37 @@ class SetupApplicationCommandTest extends TestCase
     {
         $this->artisan('monica:setup', ['--force' => true, '--build' => true])
             ->doesntExpectOutputToContain('Linking the storage folder into public')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function it_generates_the_keys_that_sign_oauth_tokens_when_there_are_none(): void
+    {
+        $keys = sys_get_temp_dir().'/'.uniqid('oauth-keys-');
+        mkdir($keys);
+        Passport::loadKeysFrom($keys);
+
+        try {
+            $this->artisan('monica:setup', ['--force' => true, '--build' => true])
+                ->expectsOutputToContain('Generating the keys that sign OAuth tokens')
+                ->assertSuccessful();
+
+            $this->assertFileExists("{$keys}/oauth-private.key");
+            $this->assertFileExists("{$keys}/oauth-public.key");
+        } finally {
+            array_map(unlink(...), glob("{$keys}/*"));
+            rmdir($keys);
+            Passport::$keyPath = null;
+        }
+    }
+
+    #[Test]
+    public function it_keeps_the_oauth_keys_the_environment_supplies(): void
+    {
+        config()->set('passport.private_key', 'the-key-the-environment-supplies');
+
+        $this->artisan('monica:setup', ['--force' => true, '--build' => true])
+            ->doesntExpectOutputToContain('Generating the keys that sign OAuth tokens')
             ->assertSuccessful();
     }
 

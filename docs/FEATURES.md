@@ -55,3 +55,5 @@ A chronological list of every feature and improvement shipped during development
 * Example account: Added Jack and Erica Bing, Frank Buffay Jr., Ursula Buffay, Barry Farber, Nora Bing and Helena Bing to the seeded cast.
 * Example account: Linked every seeded person to the others as the show does, with ended relationships marked as ended.
 * Example account: Gave every seeded person at least twenty life events from the show, across every life event category.
+* MCP: Let an assistant connect to the MCP server through OAuth, after the person allows it on a consent screen.
+* Settings/account/security: Listed the assistants connected through OAuth and let somebody disconnect each one.

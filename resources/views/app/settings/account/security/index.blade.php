@@ -43,10 +43,14 @@
   </x-page-section>
 
   <x-page-section :title="__('API keys')" :description="__('An API key lets a script or another system act as you, with exactly the access you have.')">
-    <x-notice>{{ __('There is nothing to point a key at yet. The API that accepts them is still being built, and a key you make now will work as soon as it is ready.') }}</x-notice>
-
     <x-panel :flush="true">
       @include('app.settings.account.security._api-keys', ['viewModel' => $viewModel])
+    </x-panel>
+  </x-page-section>
+
+  <x-page-section :title="__('Connected assistants')" :description="__('An assistant you connected through OAuth acts as you on the MCP server, without a key of its own.')">
+    <x-panel :flush="true">
+      @include('app.settings.account.security._connected-assistants', ['viewModel' => $viewModel])
     </x-panel>
   </x-page-section>
 </x-settings.page>

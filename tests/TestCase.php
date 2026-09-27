@@ -30,6 +30,9 @@ use Illuminate\Foundation\Testing\WithCachedConfig;
 use Illuminate\Foundation\Testing\WithCachedRoutes;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
+use Laravel\Passport\Client;
+use Laravel\Passport\RefreshToken;
+use Laravel\Passport\Token;
 use Override;
 use Stripe\ApiRequestor;
 use Tests\Fixtures\Stripe\FakeStripeClient;
@@ -313,6 +316,29 @@ abstract class TestCase extends BaseTestCase
         $user->save();
 
         return $user;
+    }
+
+    protected function oauthTokenFor(User $user, ?Client $client = null, bool $revoked = false, ?CarbonImmutable $expiresAt = null, ?CarbonImmutable $refreshExpiresAt = null): Token
+    {
+        $client ??= Client::factory()->asPublic()->create(['name' => 'Schrute Farms Assistant']);
+
+        $token = Token::query()->forceCreate([
+            'id' => Str::random(80),
+            'user_id' => $user->id,
+            'client_id' => $client->id,
+            'scopes' => ['mcp:use'],
+            'revoked' => $revoked,
+            'expires_at' => $expiresAt ?? now()->addDay(),
+        ]);
+
+        RefreshToken::query()->forceCreate([
+            'id' => Str::random(80),
+            'access_token_id' => $token->id,
+            'revoked' => false,
+            'expires_at' => $refreshExpiresAt ?? now()->addDays(30),
+        ]);
+
+        return $token;
     }
 
     protected function reminderAbout(User $user, ?Contact $contact = null, ?Field $field = null): Reminder

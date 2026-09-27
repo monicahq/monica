@@ -1,6 +1,6 @@
 # Contract: the capability catalogue
 
-Thirteen capabilities, ten reading and three writing, at `POST /api/mcp`. Every row names the API
+Thirteen capabilities, ten reading and three writing, at `POST /mcp`. Every row names the API
 capability it mirrors, which is what FR-003 requires and what SC-003's test reads back.
 
 A tool answers `Response::json()` carrying the same resource class the API answers with, so a payload

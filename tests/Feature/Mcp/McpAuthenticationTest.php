@@ -16,7 +16,7 @@ class McpAuthenticationTest extends TestCase
     #[Test]
     public function it_refuses_a_request_carrying_no_key(): void
     {
-        $response = $this->postJson('/api/mcp', $this->listTools());
+        $response = $this->postJson('/mcp', $this->listTools());
 
         $response->assertUnauthorized();
     }
@@ -28,7 +28,7 @@ class McpAuthenticationTest extends TestCase
         $key = $user->createToken('Dundie awards bot');
         $key->accessToken->delete();
 
-        $response = $this->withToken($key->plainTextToken)->postJson('/api/mcp', $this->listTools());
+        $response = $this->withToken($key->plainTextToken)->postJson('/mcp', $this->listTools());
 
         $response->assertUnauthorized();
     }
@@ -39,7 +39,7 @@ class McpAuthenticationTest extends TestCase
         $user = User::factory()->create();
         $key = $user->createToken('Dundie awards bot', ['*'], now()->subDay());
 
-        $response = $this->withToken($key->plainTextToken)->postJson('/api/mcp', $this->listTools());
+        $response = $this->withToken($key->plainTextToken)->postJson('/mcp', $this->listTools());
 
         $response->assertUnauthorized();
     }
@@ -50,7 +50,7 @@ class McpAuthenticationTest extends TestCase
         $user = User::factory()->create();
         $key = $user->createToken('Dundie awards bot');
 
-        $response = $this->withToken($key->plainTextToken)->postJson('/api/mcp', $this->listTools());
+        $response = $this->withToken($key->plainTextToken)->postJson('/mcp', $this->listTools());
 
         $response->assertOk();
     }

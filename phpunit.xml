@@ -28,6 +28,7 @@
         <env name="CACHE_STORE" value="array"/>
         <env name="DB_CONNECTION" value="testing"/>
         <env name="MAIL_MAILER" value="array"/>
+        <env name="LOG_CHANNEL" value="null" />
         <env name="MONICA_SELF_HOSTED" value="false"/>
         <env name="VONAGE_KEY" value="testing-key"/>
         <env name="VONAGE_SECRET" value="testing-secret"/>

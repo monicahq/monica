@@ -45,13 +45,13 @@ class McpRateLimitTest extends TestCase
         $untouched = $user->createToken('Deployment script');
 
         foreach (range(1, 61) as $ignored) {
-            $this->withToken($spent->plainTextToken)->postJson('/api/mcp', $this->listTools());
+            $this->withToken($spent->plainTextToken)->postJson('/mcp', $this->listTools());
         }
 
         $this->app['auth']->forgetGuards();
 
         $this->withToken($untouched->plainTextToken)
-            ->postJson('/api/mcp', $this->listTools())
+            ->postJson('/mcp', $this->listTools())
             ->assertOk();
     }
 
@@ -63,17 +63,17 @@ class McpRateLimitTest extends TestCase
         $key = $user->createToken('Dundie awards bot');
 
         foreach (range(1, 60) as $ignored) {
-            $this->withToken($key->plainTextToken)->postJson('/api/mcp', $this->listTools())->assertOk();
+            $this->withToken($key->plainTextToken)->postJson('/mcp', $this->listTools())->assertOk();
         }
 
         $this->withToken($key->plainTextToken)
-            ->postJson('/api/mcp', $this->listTools())
+            ->postJson('/mcp', $this->listTools())
             ->assertStatus(429);
     }
 
     private function resolveLimit(): Limit
     {
-        return RateLimiter::limiter('mcp')(Request::create('/api/mcp', 'POST'));
+        return RateLimiter::limiter('mcp')(Request::create('/mcp', 'POST'));
     }
 
     /** @return array<string, mixed> */

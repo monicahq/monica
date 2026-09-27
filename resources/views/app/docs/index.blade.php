@@ -38,7 +38,7 @@
                   <span class="text-base text-body">CardDAV</span>
                   <span class="truncate font-mono text-xs text-ink-soft">{{ $viewModel->host() }}/dav</span>
                   <span class="text-base text-body">MCP</span>
-                  <span class="truncate font-mono text-xs text-ink-soft">{{ $viewModel->host() }}/api/mcp</span>
+                  <span class="truncate font-mono text-xs text-ink-soft">{{ $viewModel->host() }}/mcp</span>
                 </div>
               </div>
             </div>

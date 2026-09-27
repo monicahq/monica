@@ -31,6 +31,7 @@ enum UserActionEnum: string implements Translatable
     case MagicLinkCreation = 'magic_link_created';
     case ApiKeyCreation = 'api_key_created';
     case ApiKeyDeletion = 'api_key_deleted';
+    case AssistantDisconnection = 'assistant_disconnected';
     case PasskeyAdded = 'passkey_added';
     case PasskeyRenamed = 'passkey_renamed';
     case PasskeyRemoved = 'passkey_removed';
@@ -224,6 +225,7 @@ enum UserActionEnum: string implements Translatable
             self::MagicLinkCreation => 'Asked for a sign-in link',
             self::ApiKeyCreation => 'Created the API key called :name',
             self::ApiKeyDeletion => 'Revoked the API key called :name',
+            self::AssistantDisconnection => 'Disconnected the assistant called :name',
             self::PasskeyAdded => 'Added the passkey called :name',
             self::PasskeyRenamed => 'Renamed a passkey to :name',
             self::PasskeyRemoved => 'Removed the passkey called :name',

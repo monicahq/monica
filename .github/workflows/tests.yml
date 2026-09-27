@@ -121,6 +121,9 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
 
+      - name: Generate OAuth keys
+        run: php artisan passport:keys --no-interaction
+
       - name: Run migrations
         run: php artisan migrate --no-interaction -vvv
 

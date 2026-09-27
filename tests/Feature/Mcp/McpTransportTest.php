@@ -19,8 +19,8 @@ class McpTransportTest extends TestCase
     #[Test]
     public function it_tells_a_client_that_only_post_carries_a_message(): void
     {
-        $this->get('/api/mcp')->assertStatus(405)->assertHeader('Allow', 'POST');
-        $this->delete('/api/mcp')->assertStatus(405)->assertHeader('Allow', 'POST');
+        $this->get('/mcp')->assertStatus(405)->assertHeader('Allow', 'POST');
+        $this->delete('/mcp')->assertStatus(405)->assertHeader('Allow', 'POST');
     }
 
     #[Test]
@@ -29,7 +29,7 @@ class McpTransportTest extends TestCase
         $user = User::factory()->create();
         $key = $user->createToken('Dundie awards bot');
 
-        $response = $this->withToken($key->plainTextToken)->postJson('/api/mcp', [
+        $response = $this->withToken($key->plainTextToken)->postJson('/mcp', [
             'jsonrpc' => '2.0',
             'id' => 1,
             'method' => 'initialize',
@@ -60,7 +60,7 @@ class McpTransportTest extends TestCase
     private function middlewareOnTheEndpoint(): array
     {
         $route = collect(Router::getRoutes()->getRoutes())
-            ->first(fn (Route $route): bool => $route->uri() === 'api/mcp' && in_array('POST', $route->methods(), true));
+            ->first(fn (Route $route): bool => $route->uri() === 'mcp' && in_array('POST', $route->methods(), true));
 
         return array_values(array_filter(
             Router::gatherRouteMiddleware($route),
