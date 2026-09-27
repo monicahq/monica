@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\FieldValue;
+use App\Models\Reminder;
 use App\Models\User;
 use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -55,6 +57,12 @@ class DestroyFieldValue
                 ->whereIn('id', $chosen->all())
                 ->where('usage_count', '>', 0)
                 ->decrement('usage_count');
+
+            $rule = $this->fieldValue->reminder;
+
+            if ($rule instanceof Reminder && $rule->is_active) {
+                new DeactivateReminders(user: $this->user, subject: $rule, reason: ReminderInactiveReasonEnum::ValueCleared)->execute();
+            }
 
             $this->fieldValue->delete();
         });

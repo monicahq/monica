@@ -176,9 +176,9 @@ class VaultRemindersViewModel
     private function byContact(): array
     {
         return $this->rows()
-            ->groupBy(fn (ReminderRow $row): string => $row->contactName() ?? $this->nobody())
-            ->map(fn (Collection $rows, string $name): array => [
-                'title' => $name,
+            ->groupBy(fn (ReminderRow $row): int => $row->contactName() === null ? 0 : (int) $row->occurrence()->reminder?->remindable_id)
+            ->map(fn (Collection $rows): array => [
+                'title' => $rows->first()->contactName() ?? $this->nobody(),
                 'count' => $this->countLine($rows->count()),
                 'isOverdue' => false,
                 'rows' => $rows->values()->all(),

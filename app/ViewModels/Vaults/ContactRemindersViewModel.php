@@ -56,6 +56,11 @@ class ContactRemindersViewModel
         return route('contacts.show', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
+    public function canAdd(): bool
+    {
+        return ! $this->contact->is_archived;
+    }
+
     public function newUrl(): string
     {
         return route('contacts.reminders.new', ['vault' => $this->vault, 'contact' => $this->contact]);

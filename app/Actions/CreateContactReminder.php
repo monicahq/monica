@@ -67,6 +67,10 @@ class CreateContactReminder
             throw new ModelNotFoundException('This contact is in another account.');
         }
 
+        if ($this->contact->is_archived) {
+            throw new ReminderIsNotValid(__('This contact is archived, so a reminder about them would never be sent.'));
+        }
+
         if ($this->wording === '') {
             throw new ReminderIsNotValid(__('Say what the reminder is about.'), field: 'name');
         }

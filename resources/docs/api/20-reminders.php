@@ -183,7 +183,7 @@ return [
                 ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the reminder says. Up to 255 characters.', 'example' => 'Ask how the art school application went'],
                 ['name' => 'starts_on', 'type' => 'string', 'required' => false, 'description' => 'A new first date, for a manual reminder only.', 'example' => '2026-10-14'],
                 ['name' => 'cadence', 'type' => 'string', 'required' => true, 'description' => 'One of once, weekly, monthly or yearly.', 'example' => 'monthly'],
-                ['name' => 'interval', 'type' => 'integer', 'required' => false, 'description' => 'How many of those between two dates, from 1 to 99.', 'example' => '1'],
+                ['name' => 'interval', 'type' => 'integer', 'required' => false, 'description' => 'How many of those between two dates, from 1 to 99. The one it has is kept when left out.', 'example' => '1'],
                 ['name' => 'time', 'type' => 'string', 'required' => true, 'description' => 'The local hour to be told at.', 'example' => '09:00'],
                 ['name' => 'timezone', 'type' => 'string', 'required' => false, 'description' => 'A new time zone. The one it has is kept when left out.', 'example' => 'America/New_York'],
             ],

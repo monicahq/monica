@@ -44,9 +44,10 @@ class UpdateReminder
         $this->sanitize();
         $this->validate();
 
-        DB::transaction(function (): void {
-            $moved = $this->scheduleIsMoving();
+        $moved = $this->scheduleIsMoving();
+        $renamed = $this->wording !== $this->reminder->name;
 
+        DB::transaction(function () use ($moved): void {
             if ($moved) {
                 $this->cancelWhatIsAhead();
             }
@@ -58,7 +59,9 @@ class UpdateReminder
             }
         });
 
-        $this->log();
+        if ($moved || $renamed) {
+            $this->log();
+        }
 
         return $this->reminder;
     }
@@ -151,7 +154,10 @@ class UpdateReminder
         }
 
         if ($this->scheduleIsMoving() && ! ReminderSchedule::hasADateLeft($this->candidate())) {
-            throw new ReminderIsNotValid(__('This date has already passed, so a reminder sent once would never arrive.'), field: 'starts_on');
+            throw new ReminderIsNotValid(
+                __('This date has already passed, so a reminder sent once would never arrive.'),
+                field: $this->reminder->source === ReminderSourceEnum::Manual ? 'starts_on' : 'cadence',
+            );
         }
     }
 

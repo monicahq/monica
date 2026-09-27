@@ -80,6 +80,10 @@ class CreateReminder
             throw new ModelNotFoundException('This value is in another account.');
         }
 
+        if ($this->fieldValue->valuable->is_archived === true) {
+            throw new ReminderIsNotValid(__('This contact is archived, so a reminder about them would never be sent.'));
+        }
+
         if (! $this->fieldValue->field->type->canDriveAReminder()) {
             throw new ReminderIsNotValid(__('This kind of field holds no date to be reminded of.'));
         }

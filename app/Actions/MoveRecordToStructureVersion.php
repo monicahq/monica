@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\SnapshotReasonEnum;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
@@ -12,6 +13,7 @@ use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\FieldValue;
+use App\Models\Reminder;
 use App\Models\StructureVersion;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -125,6 +127,16 @@ class MoveRecordToStructureVersion
         FieldValue::query()
             ->whereIn('id', $leaving->modelKeys())
             ->update(['is_detached' => true, 'detached_at' => now()]);
+
+        Reminder::query()
+            ->whereIn('field_value_id', $leaving->modelKeys())
+            ->active()
+            ->get()
+            ->each(fn (Reminder $rule) => new DeactivateReminders(
+                user: $this->user,
+                subject: $rule,
+                reason: ReminderInactiveReasonEnum::FieldRemoved,
+            )->execute());
     }
 
     private function bringBackWhatItCarriesAgain(): void
@@ -145,6 +157,16 @@ class MoveRecordToStructureVersion
         FieldValue::query()
             ->whereIn('id', $returning->modelKeys())
             ->update(['is_detached' => false, 'detached_at' => null]);
+
+        Reminder::query()
+            ->whereIn('field_value_id', $returning->modelKeys())
+            ->where('inactive_reason', ReminderInactiveReasonEnum::FieldRemoved)
+            ->get()
+            ->each(fn (Reminder $rule) => new ReactivateReminders(
+                user: $this->user,
+                subject: $rule,
+                reason: ReminderInactiveReasonEnum::FieldRemoved,
+            )->execute());
     }
 
     private function log(): void

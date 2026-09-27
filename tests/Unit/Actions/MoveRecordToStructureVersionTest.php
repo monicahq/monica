@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\MoveRecordToStructureVersion;
+use App\Enums\FieldTypeEnum;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\SnapshotReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
@@ -15,6 +17,8 @@ use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\RecordSnapshot;
+use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
@@ -170,6 +174,70 @@ class MoveRecordToStructureVersionTest extends TestCase
 
         $this->assertFalse($value->is_detached);
         $this->assertNull($value->detached_at);
+    }
+
+    #[Test]
+    public function it_stops_the_reminder_on_a_date_the_new_structure_does_not_carry(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $value = FieldValue::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $contact->vault_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => Field::factory()->recurringDate()->create(['account_id' => $user->account_id])->id,
+            'value_string' => null,
+            'value_date' => '1979-03-25',
+        ]);
+        $reminder = Reminder::factory()->for($value, 'fieldValue')->create();
+        $ahead = ReminderOccurrence::factory()->for($reminder)->daysFromNow(3)->create();
+
+        new MoveRecordToStructureVersion(
+            user: $user,
+            record: $contact,
+            structureVersion: $this->publishedContactVersion($user),
+        )->execute();
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::FieldRemoved->value,
+        ]);
+        $this->assertNotNull($ahead->refresh()->cancelled_at);
+    }
+
+    #[Test]
+    public function it_starts_the_reminder_again_on_a_date_the_new_structure_carries_again(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $to = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($to);
+        $field->update(['type' => FieldTypeEnum::RecurringDate]);
+        $value = FieldValue::factory()->detached()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $contact->vault_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'value_string' => null,
+            'value_date' => '1979-03-25',
+        ]);
+        $reminder = Reminder::factory()->for($value, 'fieldValue')->create([
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::FieldRemoved,
+            'deactivated_at' => now(),
+        ]);
+
+        new MoveRecordToStructureVersion(user: $user, record: $contact, structureVersion: $to)->execute();
+
+        $this->assertTrue($reminder->refresh()->is_active);
+        $this->assertNull($reminder->inactive_reason);
     }
 
     #[Test]

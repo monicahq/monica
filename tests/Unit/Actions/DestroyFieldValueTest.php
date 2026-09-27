@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\DestroyFieldValue;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
+use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -104,6 +107,31 @@ class DestroyFieldValueTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DestroyFieldValue(user: $user, fieldValue: FieldValue::factory()->create())->execute();
+    }
+
+    #[Test]
+    public function it_silences_the_reminder_reading_the_date(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $value = $this->valueOn($user, $contact, [
+            'field_id' => Field::factory()->recurringDate()->create(['account_id' => $user->account_id])->id,
+            'value_string' => null,
+            'value_date' => '1984-02-03',
+        ]);
+        $reminder = Reminder::factory()->for($value, 'fieldValue')->create();
+        $ahead = ReminderOccurrence::factory()->for($reminder)->daysFromNow(3)->create();
+
+        new DestroyFieldValue(user: $user, fieldValue: $value)->execute();
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::ValueCleared->value,
+        ]);
+        $this->assertNotNull($ahead->refresh()->cancelled_at);
     }
 
     private function contactOf(User $user): Contact

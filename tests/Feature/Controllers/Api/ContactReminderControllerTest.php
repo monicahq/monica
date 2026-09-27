@@ -140,7 +140,7 @@ class ContactReminderControllerTest extends TestCase
     public function it_changes_a_reminder(): void
     {
         [$user, $vault, $contact] = $this->michaelAndPam();
-        $reminder = Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create();
+        $reminder = Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create(['frequency_interval' => 3]);
 
         Sanctum::actingAs($user);
 
@@ -152,7 +152,7 @@ class ContactReminderControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertJsonPath('data.attributes.name', 'Congratulate her on the gallery');
-        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'name' => 'Congratulate her on the gallery', 'cadence' => 'yearly']);
+        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'name' => 'Congratulate her on the gallery', 'cadence' => 'yearly', 'frequency_interval' => 3]);
     }
 
     #[Test]

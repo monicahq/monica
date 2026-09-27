@@ -148,14 +148,37 @@ class UpdateReminderTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->expectException(ReminderIsNotValid::class);
+        try {
+            new UpdateReminder(
+                user: $user,
+                reminder: $this->ruleOf($user),
+                cadence: ReminderCadenceEnum::Once,
+                timeOfDay: '09:00',
+            )->execute();
+
+            $this->fail('The reminder should have been refused.');
+        } catch (ReminderIsNotValid $e) {
+            $this->assertEquals('cadence', $e->field);
+        }
+    }
+
+    #[Test]
+    public function it_writes_nothing_to_the_journal_when_nothing_changes(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->ruleOf($user);
 
         new UpdateReminder(
             user: $user,
-            reminder: $this->ruleOf($user),
-            cadence: ReminderCadenceEnum::Once,
+            reminder: $reminder,
+            cadence: $reminder->cadence,
             timeOfDay: '09:00',
+            name: $reminder->name,
         )->execute();
+
+        Queue::assertNotPushed(LogUserAction::class);
     }
 
     #[Test]

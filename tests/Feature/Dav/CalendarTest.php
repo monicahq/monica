@@ -149,6 +149,38 @@ class CalendarTest extends TestCase
     }
 
     #[Test]
+    public function it_tells_a_device_which_deadlines_were_answered_since_it_last_looked(): void
+    {
+        $vault = $this->vault();
+        $stayed = $this->occurrence($vault, CarbonImmutable::now()->addDays(2), 'Order the paper for Scranton Business Park');
+
+        $this->travel(2)->seconds();
+
+        $answered = $this->occurrence($vault, CarbonImmutable::now()->subDay(), 'Call Jan about the Utica branch');
+        $token = $this->reminderSyncToken($vault);
+
+        $this->travel(2)->seconds();
+
+        $answered->update(['answer' => 'remembered', 'answered_at' => now()]);
+        $added = $this->occurrence($vault, CarbonImmutable::now()->addDays(5), 'Plan the Dundies');
+
+        $response = $this->dav('REPORT', $this->reminders($vault), depth: '1', body: <<<XML
+            <?xml version="1.0"?>
+            <d:sync-collection xmlns:d="DAV:">
+              <d:sync-token>$token</d:sync-token>
+              <d:sync-level>1</d:sync-level>
+              <d:prop><d:getetag/></d:prop>
+            </d:sync-collection>
+            XML);
+
+        $response->assertStatus(207);
+        $response->assertSee($added->uuid.'.ics', escape: false);
+        $response->assertSee($answered->uuid.'.ics', escape: false);
+        $response->assertSee('404 Not Found', escape: false);
+        $response->assertDontSee($stayed->uuid.'.ics', escape: false);
+    }
+
+    #[Test]
     public function it_keeps_an_overdue_deadline_nobody_answered(): void
     {
         $vault = $this->vault();
@@ -206,6 +238,18 @@ class CalendarTest extends TestCase
     private function reminders(Vault $vault): string
     {
         return 'dav/calendars/'.$this->user->email.'/'.$vault->uuid.'-reminders/';
+    }
+
+    private function reminderSyncToken(Vault $vault): string
+    {
+        $response = $this->dav('PROPFIND', $this->reminders($vault), body: <<<'XML'
+            <?xml version="1.0"?>
+            <d:propfind xmlns:d="DAV:"><d:prop><d:sync-token/></d:prop></d:propfind>
+            XML);
+
+        preg_match('#<d:sync-token>([^<]+)</d:sync-token>#', (string) $response->getContent(), $matches);
+
+        return $matches[1] ?? '';
     }
 
     /** @param  array<string, mixed>  $attributes */

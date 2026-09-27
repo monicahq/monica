@@ -10,7 +10,7 @@ use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceCategoryEnum;
 use App\Enums\ReminderSourceEnum;
 use App\Helpers\AvailableLocales;
-use App\Helpers\ReminderSchedule;
+use App\Helpers\NextReminderDeadlines;
 use App\Models\Contact;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
@@ -19,6 +19,7 @@ use App\Models\User;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\Paginator;
 
 class ReminderViewModel
@@ -39,11 +40,6 @@ class ReminderViewModel
     public function vault(): Vault
     {
         return $this->vault;
-    }
-
-    public function reminder(): Reminder
-    {
-        return $this->reminder;
     }
 
     public function title(): string
@@ -185,11 +181,11 @@ class ReminderViewModel
             ],
             ReminderInactiveReasonEnum::RecordArchived => [
                 'title' => __('Nothing is sent while the record is archived'),
-                'body' => __('The record it is about is archived. Unarchive it and this reminder starts again on its own.'),
+                'body' => __('The record it is about is archived.'),
             ],
             ReminderInactiveReasonEnum::RecordDeleted => [
                 'title' => __('Nothing is sent while the record is deleted'),
-                'body' => __('The record it is about was deleted. Restore it and this reminder starts again on its own.'),
+                'body' => __('The record it is about was deleted.'),
             ],
             ReminderInactiveReasonEnum::FieldRemoved => [
                 'title' => __('This reminder has no field to read'),
@@ -222,15 +218,10 @@ class ReminderViewModel
 
         // Deadlines are produced shortly before they fall due, so the next date is shown before it exists.
         $hasUpcoming = $rows->contains(fn (array $row): bool => $row['category'] === ReminderOccurrenceCategoryEnum::Upcoming);
-        $next = $hasUpcoming ? null : ReminderSchedule::nextDate($this->reminder);
+        $next = $hasUpcoming ? null : NextReminderDeadlines::for(new Collection([$this->reminder]), $today->startOfDay())->first();
 
         if ($next !== null) {
-            $occurrence = new ReminderOccurrence()->forceFill([
-                'local_date' => $next->setTimezone($this->reminder->timezone)->toDateString(),
-                'scheduled_for' => $next,
-            ]);
-
-            $rows->push($this->awaitingEntry($occurrence, $today));
+            $rows->push($this->awaitingEntry($next, $today));
         }
 
         return $rows->values()->all();

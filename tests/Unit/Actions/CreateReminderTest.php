@@ -170,6 +170,25 @@ class CreateReminderTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_date_on_a_contact_who_is_archived(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $value = $this->dateOf($user);
+        Contact::query()->whereKey($value->valuable_id)->update(['is_archived' => true]);
+
+        $this->expectException(ReminderIsNotValid::class);
+
+        new CreateReminder(
+            user: $user,
+            fieldValue: $value->refresh(),
+            cadence: ReminderCadenceEnum::Yearly,
+            timeOfDay: '09:00',
+        )->execute();
+    }
+
+    #[Test]
     public function it_refuses_a_second_reminder_on_one_date(): void
     {
         Queue::fake();

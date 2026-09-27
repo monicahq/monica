@@ -203,17 +203,6 @@ class ReminderOccurrence extends Model
     }
 
     /**
-     * Scope the query to the deadlines that have not happened yet, which are the
-     * only ones a reversed cancellation brings back.
-     *
-     * @param  Builder<$this>  $query
-     */
-    public function scopeStillAhead(Builder $query): void
-    {
-        $query->where('scheduled_for', '>', now());
-    }
-
-    /**
      * Scope the query to what one vault is still waiting on, in date order.
      *
      * There is no lower bound: a deadline whose day has passed without an answer

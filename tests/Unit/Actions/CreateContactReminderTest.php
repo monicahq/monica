@@ -175,6 +175,28 @@ class CreateContactReminderTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_contact_who_is_archived(): void
+    {
+        Queue::fake();
+        CarbonImmutable::setTestNow('2027-05-12 06:00:00');
+
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $contact = $this->contactOf($user);
+        $contact->update(['is_archived' => true]);
+
+        $this->expectException(ReminderIsNotValid::class);
+
+        new CreateContactReminder(
+            user: $user,
+            contact: $contact,
+            name: 'Ask Jim about Stamford',
+            startsOn: '2027-05-20',
+            cadence: ReminderCadenceEnum::Yearly,
+            timeOfDay: '09:00',
+        )->execute();
+    }
+
+    #[Test]
     public function it_refuses_a_contact_of_another_account(): void
     {
         Queue::fake();

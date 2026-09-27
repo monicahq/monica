@@ -68,18 +68,6 @@ class ReminderOccurrenceTest extends TestCase
     }
 
     #[Test]
-    public function it_finds_only_the_deadlines_that_have_not_happened_yet(): void
-    {
-        $ahead = ReminderOccurrence::factory()->create();
-        $behind = ReminderOccurrence::factory()->past()->create();
-
-        $found = ReminderOccurrence::query()->stillAhead()->pluck('id');
-
-        $this->assertTrue($found->contains($ahead->id));
-        $this->assertFalse($found->contains($behind->id));
-    }
-
-    #[Test]
     public function it_refuses_two_deadlines_with_the_same_identity_under_one_rule(): void
     {
         $occurrence = ReminderOccurrence::factory()->create();

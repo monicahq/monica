@@ -150,11 +150,44 @@ class CalendarBackend implements BackendInterface, SyncSupport
             return $this->changesInDates($vault)->since($syncToken);
         }
 
+        return $this->changesInReminders($vault, $syncToken);
+    }
+
+    /**
+     * A deadline leaves the task list once it is answered or cancelled, and a device only drops the
+     * task it holds when it is told the deadline is gone. The comparison is inclusive, as it is for
+     * the dates, since two changes can share a second.
+     *
+     * @return array{syncToken: string, added: array<int, string>, modified: array<int, string>, deleted: array<int, string>}
+     */
+    private function changesInReminders(Vault $vault, ?string $syncToken): array
+    {
+        $shown = collect($this->reminderEntries($vault))->pluck('uri');
+
+        if ($syncToken === null || $syncToken === '') {
+            return [
+                'syncToken' => $this->reminderToken($vault),
+                'added' => $shown->all(),
+                'modified' => [],
+                'deleted' => [],
+            ];
+        }
+
+        $since = CarbonImmutable::createFromTimestamp((int) $syncToken);
+
+        $changed = ReminderOccurrence::query()
+            ->where('vault_id', $vault->id)
+            ->where('updated_at', '>=', $since)
+            ->get(['uuid', 'created_at']);
+
+        $uri = fn (ReminderOccurrence $occurrence): string => "{$occurrence->uuid}.ics";
+        $isShown = fn (ReminderOccurrence $occurrence): bool => $shown->contains($uri($occurrence));
+
         return [
             'syncToken' => $this->reminderToken($vault),
-            'added' => array_column($this->entriesIn($calendarId), 'uri'),
-            'modified' => [],
-            'deleted' => [],
+            'added' => $changed->filter($isShown)->filter(fn (ReminderOccurrence $occurrence): bool => $occurrence->created_at >= $since)->map($uri)->values()->all(),
+            'modified' => $changed->filter($isShown)->filter(fn (ReminderOccurrence $occurrence): bool => $occurrence->created_at < $since)->map($uri)->values()->all(),
+            'deleted' => $changed->reject($isShown)->map($uri)->values()->all(),
         ];
     }
 

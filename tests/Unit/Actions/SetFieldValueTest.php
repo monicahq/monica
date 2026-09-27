@@ -17,10 +17,13 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\File;
+use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 use App\Models\Vault;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -1056,6 +1059,41 @@ class SetFieldValueTest extends TestCase
             field: Field::factory()->create(),
             value: 'Scranton',
         )->execute();
+    }
+
+    #[Test]
+    public function it_moves_the_reminder_reading_a_date_that_moved(): void
+    {
+        Queue::fake();
+        CarbonImmutable::setTestNow('2027-05-01 06:00:00');
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = Field::factory()->recurringDate()->create(['account_id' => $user->account_id]);
+        $value = FieldValue::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $contact->vault_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'value_string' => null,
+            'value_date' => '1984-05-12',
+        ]);
+        $reminder = Reminder::factory()->for($value, 'fieldValue')->create(['timezone' => 'UTC']);
+        $old = ReminderOccurrence::factory()->for($reminder)->create([
+            'local_date' => '2027-05-12',
+            'scheduled_for' => '2027-05-12 09:00:00',
+            'generation_key' => '1:2027-05-12',
+        ]);
+
+        new SetFieldValue(user: $user, valuable: $contact, field: $field, value: '1984-05-20')->execute();
+
+        $this->assertNotNull($old->refresh()->cancelled_at);
+        $this->assertDatabaseHas('reminder_occurrences', [
+            'reminder_id' => $reminder->id,
+            'local_date' => '2027-05-20',
+            'cancelled_at' => null,
+        ]);
     }
 
     private function contactOf(User $user): Contact

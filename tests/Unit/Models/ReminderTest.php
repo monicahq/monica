@@ -15,14 +15,12 @@ class ReminderTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_separates_the_rules_still_firing_from_the_ones_that_have_gone_quiet(): void
+    public function it_keeps_only_the_rules_still_firing(): void
     {
         $firing = Reminder::factory()->create();
-        $quiet = Reminder::factory()->inactive(ReminderInactiveReasonEnum::FieldRemoved)->create();
+        Reminder::factory()->inactive(ReminderInactiveReasonEnum::FieldRemoved)->create();
 
         $this->assertEquals([$firing->id], Reminder::query()->active()->pluck('id')->all());
-        $this->assertEquals([$quiet->id], Reminder::query()->inactive()->pluck('id')->all());
-        $this->assertEquals(ReminderInactiveReasonEnum::FieldRemoved, $quiet->inactive_reason);
     }
 
     #[Test]

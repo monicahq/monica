@@ -20,8 +20,7 @@ class ReminderOccurrenceTestNotificationController extends Controller
             occurrence: $reminderOccurrence,
         )->execute();
 
-        return redirect()
-            ->route('reminders.index', $vault)
+        return back(fallback: route('reminders.index', $vault))
             ->with('status', __('On its way.'))
             ->with('status_description', __('This one was sent to you now. The real one still arrives on the day.'));
     }

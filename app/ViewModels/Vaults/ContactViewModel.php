@@ -710,8 +710,8 @@ class ContactViewModel
         return once(fn (): Collection => $this->contact
             ->reminders()
             ->whereNotNull('field_id')
-            ->orderByDesc('is_active')
-            ->orderByDesc('id')
+            ->orderBy('is_active')
+            ->orderBy('id')
             ->get()
             ->keyBy('field_id')
             ->toBase());

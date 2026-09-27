@@ -65,6 +65,17 @@ class ContactReminderBlockTest extends TestCase
     }
 
     #[Test]
+    public function it_says_the_next_date_is_next_year_once_today_has_been_told(): void
+    {
+        $this->travelTo('2026-09-28 12:00:00');
+        $contact = Contact::factory()->create();
+
+        $reminder = Reminder::factory()->manual($contact, '2026-09-28')->create(['time_of_day' => '09:00:00', 'timezone' => 'UTC']);
+
+        $this->assertStringContainsString('2027', (string) $this->block($reminder)->nextLine());
+    }
+
+    #[Test]
     public function it_says_a_saved_rule_is_told_on_the_day_at_its_hour(): void
     {
         $reminder = Reminder::factory()->create(['time_of_day' => '08:30:00', 'timezone' => 'America/New_York']);

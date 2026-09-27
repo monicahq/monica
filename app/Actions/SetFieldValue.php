@@ -6,6 +6,7 @@ namespace App\Actions;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
+use App\Enums\ReminderOccurrenceCancelledReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\FieldValueIsNotUnique;
 use App\Helpers\TextSanitizer;
@@ -17,6 +18,7 @@ use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\File;
 use App\Models\LifeEvent;
+use App\Models\Reminder;
 use App\Models\User;
 use App\Models\ValueListItem;
 use DateTimeImmutable;
@@ -62,6 +64,7 @@ class SetFieldValue
         $this->readTheColumn();
         $this->refuseADuplicate();
         $this->write();
+        $this->moveTheReminder();
         $this->log();
 
         return $this->fieldValue;
@@ -215,6 +218,47 @@ class SetFieldValue
             'value_list_item_id' => $this->valueListItem?->id,
             'label_wording' => $wording === null || mb_trim($wording) === '' ? null : mb_trim($wording),
         ];
+    }
+
+    private function moveTheReminder(): void
+    {
+        if (! $this->field->type->canDriveAReminder()) {
+            return;
+        }
+
+        $rule = $this->fieldValue->reminder;
+
+        if (! $rule instanceof Reminder || ! $rule->is_active) {
+            return;
+        }
+
+        if ($this->dateSignature($this->existing) === $this->dateSignature($this->fieldValue)) {
+            return;
+        }
+
+        new CancelReminderOccurrences(
+            reminder: $rule,
+            reason: ReminderOccurrenceCancelledReasonEnum::SourceChanged,
+            includePast: false,
+        )->execute();
+
+        $rule->schedule_revision++;
+        $rule->save();
+
+        new GenerateReminderOccurrences(reminder: $rule->refresh())->execute();
+    }
+
+    private function dateSignature(?FieldValue $value): ?string
+    {
+        if ($value?->value_date === null) {
+            return null;
+        }
+
+        return implode('|', [
+            $value->value_date->format('Y-m-d'),
+            $value->year_is_unknown ? 'y' : '',
+            $value->month_is_unknown ? 'm' : '',
+        ]);
     }
 
     private function readTheExistingValue(): void

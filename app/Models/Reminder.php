@@ -250,15 +250,4 @@ class Reminder extends Model
     {
         $query->where('is_active', true);
     }
-
-    /**
-     * Scope the query to the rules that have gone quiet, which a screen shows
-     * and explains rather than hides.
-     *
-     * @param  Builder<$this>  $query
-     */
-    public function scopeInactive(Builder $query): void
-    {
-        $query->where('is_active', false);
-    }
 }

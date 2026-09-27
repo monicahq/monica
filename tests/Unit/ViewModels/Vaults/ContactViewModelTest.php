@@ -692,6 +692,41 @@ class ContactViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_shows_the_live_rule_when_a_quiet_one_sits_on_the_same_date(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Birthday']]]);
+        $contact = $this->contact($user, $version, ['first_name' => 'Michael', 'last_name' => 'Scott']);
+        $field = $this->fieldCalled($version, 'Birthday');
+        $field->update(['type' => FieldTypeEnum::RecurringDate, 'account_id' => $user->account_id]);
+        $value = FieldValue::factory()->create([
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'field_key' => $field->key,
+            'value_string' => null,
+            'value_date' => '1984-02-03',
+        ]);
+        $rule = [
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+            'remindable_type' => Contact::class,
+            'remindable_id' => $contact->id,
+            'field_id' => $field->id,
+        ];
+        Reminder::factory()->for($value, 'fieldValue')->create([...$rule, 'name' => 'Ring Michael']);
+        Reminder::factory()->for($value, 'fieldValue')->create([...$rule, 'name' => 'Absorbed from Michael Klump', 'is_active' => false, 'inactive_reason' => ReminderInactiveReasonEnum::ValueCleared]);
+
+        $panel = collect(
+            new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health')->sections()[0]['fields'],
+        )->firstWhere('label', 'Birthday')['reminder'];
+
+        $this->assertEquals('Ring Michael', $panel->name());
+    }
+
+    #[Test]
     public function it_says_why_a_rule_has_gone_quiet(): void
     {
         $user = User::factory()->create();

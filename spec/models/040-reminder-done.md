@@ -80,7 +80,7 @@ deleted_at                  datetime
 - **A date inside a repetition can hold a rule and no screen offers one.** The panel is drawn only under a date sitting directly in a section.
 - **A field rule cannot be created through the API.** Neither `fields` nor `field_values` carries a `uuid`, so the value it reads cannot be addressed from outside. A field rule can be read, changed and deleted there; a manual rule can be created too.
 - **No webhook.** Each state change is meant to be listenable (14.2), and there is no webhook machinery in the product.
-- **`field_removed` is written by nothing,** and only undoing a contact merge reactivates a rule. A rule silenced by archiving or deleting a contact stays silent.
+- **A rule silenced by archiving or deleting a contact stays silent.** Nothing unarchives or restores a contact yet. A rule silenced because its record moved to a version without the field starts again when the record moves back to one that carries it, and undoing a contact merge reactivates the rules the merge silenced.
 
 ## Decisions taken while building it
 

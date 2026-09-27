@@ -48,7 +48,7 @@ class UpdateContactReminder extends Tool
                 cadence: ReminderCadenceEnum::from($validated['cadence']),
                 timeOfDay: $validated['time'],
                 name: $validated['name'],
-                frequencyInterval: (int) ($validated['interval'] ?? 1),
+                frequencyInterval: (int) ($validated['interval'] ?? $reminder->frequency_interval),
                 timezone: $validated['timezone'] ?? null,
                 startsOn: $validated['starts_on'] ?? null,
             )->execute();
@@ -69,7 +69,7 @@ class UpdateContactReminder extends Tool
             'name' => $schema->string()->description('What the reminder says.')->required(),
             'starts_on' => $schema->string()->description('A new first date, as YYYY-MM-DD, for a reminder written by hand only.'),
             'cadence' => $schema->string()->description('How often it comes back: '.implode(', ', ReminderCadenceEnum::values()).'.')->required(),
-            'interval' => $schema->integer()->description('How many of those between two dates, from 1 to 99.'),
+            'interval' => $schema->integer()->description('How many of those between two dates, from 1 to 99. The current one is kept when left out.'),
             'time' => $schema->string()->description('The local hour to be told at, as HH:MM.')->required(),
             'timezone' => $schema->string()->description('A new time zone. The current one is kept when left out.'),
         ];

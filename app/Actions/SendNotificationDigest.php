@@ -52,6 +52,11 @@ class SendNotificationDigest
 
             $this->hand($user, $channel, $digest);
 
+            ReminderOccurrence::query()
+                ->whereIn('id', $waiting->where('notifiable_type', ReminderOccurrence::class)->pluck('notifiable_id'))
+                ->whereNull('notified_at')
+                ->update(['notified_at' => now()]);
+
             $folded += $waiting->count();
         }
 

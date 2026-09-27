@@ -23,13 +23,15 @@
 
   <x-page-header :title="$viewModel->title()">
     <x-slot:actions>
-      <x-button :href="$viewModel->newUrl()" data-turbo="true" size="small">
-        <x-slot:icon>
-          <x-icon name="plus" :size="15" :stroke-width="1.6" />
-        </x-slot:icon>
+      @if ($viewModel->canAdd())
+        <x-button :href="$viewModel->newUrl()" data-turbo="true" size="small">
+          <x-slot:icon>
+            <x-icon name="plus" :size="15" :stroke-width="1.6" />
+          </x-slot:icon>
 
-        {{ __('Add a reminder') }}
-      </x-button>
+          {{ __('Add a reminder') }}
+        </x-button>
+      @endif
     </x-slot:actions>
   </x-page-header>
 

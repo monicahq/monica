@@ -156,6 +156,18 @@ class SendNotificationDigestTest extends TestCase
         $this->assertNull($answered->refresh()->digest_id);
     }
 
+    #[Test]
+    public function it_marks_the_deadlines_it_carried_as_told(): void
+    {
+        NotificationFacade::fake();
+        [$account, $user] = $this->account();
+        $waiting = Notification::factory()->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
+
+        new SendNotificationDigest(account: $account)->execute();
+
+        $this->assertNotNull($waiting->notifiable->refresh()->notified_at);
+    }
+
     /** @return array{0: Account, 1: User} */
     private function account(): array
     {

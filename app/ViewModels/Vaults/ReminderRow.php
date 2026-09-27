@@ -25,11 +25,6 @@ class ReminderRow
         private readonly ReminderOccurrence $occurrence,
     ) {}
 
-    public function uuid(): ?string
-    {
-        return $this->occurrence->uuid;
-    }
-
     public function occurrence(): ReminderOccurrence
     {
         return $this->occurrence;
@@ -230,16 +225,6 @@ class ReminderRow
     {
         return $this->occurrence->isActive()
             && ReminderOccurrenceCategoryEnum::for($this->occurrence, CarbonImmutable::now($this->user->timezone)) === ReminderOccurrenceCategoryEnum::Overdue;
-    }
-
-    public function currently(): string
-    {
-        $due = $this->dueAt();
-
-        return __('Currently set for :date at :time', [
-            'date' => DateFormatEnum::write($due, $this->dateFormat()),
-            'time' => $this->user->time_format->format($due),
-        ]);
     }
 
     public function reminderUrl(): ?string

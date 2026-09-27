@@ -105,7 +105,7 @@ class ContactReminderController extends Controller
                 cadence: ReminderCadenceEnum::from($validated['cadence']),
                 timeOfDay: $validated['time'],
                 name: $validated['name'],
-                frequencyInterval: (int) ($validated['interval'] ?? 1),
+                frequencyInterval: (int) ($validated['interval'] ?? $reminder->frequency_interval),
                 timezone: $validated['timezone'] ?? null,
                 startsOn: $validated['starts_on'] ?? null,
             )->execute();

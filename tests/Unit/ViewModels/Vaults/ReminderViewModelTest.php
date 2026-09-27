@@ -168,6 +168,21 @@ class ReminderViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_shows_next_year_once_today_is_answered(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-09-28 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
+        $reminder = Reminder::factory()->manual($contact, '2026-09-28')->create(['timezone' => 'UTC']);
+        ReminderOccurrence::factory()->for($reminder)->today()->remembered()->create();
+
+        $awaiting = $this->viewModel($user, $reminder)->awaiting();
+
+        $this->assertSame([ReminderOccurrenceCategoryEnum::Upcoming], array_column($awaiting, 'category'));
+        $this->assertStringContainsString('2027', $awaiting[0]['date']);
+    }
+
+    #[Test]
     public function it_drops_the_dates_still_to_come_while_the_reminder_is_stopped(): void
     {
         $this->travelTo(CarbonImmutable::parse('2026-09-28 12:00:00', 'UTC'));

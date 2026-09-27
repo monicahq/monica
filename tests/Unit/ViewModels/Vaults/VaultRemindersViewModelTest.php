@@ -117,6 +117,21 @@ class VaultRemindersViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_two_contacts_sharing_a_name_apart(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->deadline($this->onceIn($user, $vault, '2026-09-06', 'Michael', 'Scott'), '2026-09-06');
+        $this->deadline($this->onceIn($user, $vault, '2026-09-07', 'Michael', 'Scott'), '2026-09-07');
+
+        $groups = $this->viewModelFor($user, $vault, VaultRemindersViewModel::GroupByContact)->groups();
+
+        $this->assertSame(['Michael Scott', 'Michael Scott'], array_column($groups, 'title'));
+    }
+
+    #[Test]
     public function it_falls_back_to_grouping_by_when_for_a_grouping_nobody_offers(): void
     {
         $user = User::factory()->create();

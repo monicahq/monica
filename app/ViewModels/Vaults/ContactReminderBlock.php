@@ -172,6 +172,10 @@ class ContactReminderBlock
 
         $next = ReminderSchedule::nextDate($this->reminder);
 
+        if ($next instanceof CarbonImmutable && ReminderSchedule::instantOf($this->reminder, $next)->isPast()) {
+            $next = ReminderSchedule::nextDate($this->reminder, $next->addDay());
+        }
+
         if (! $next instanceof CarbonImmutable) {
             return e(__('It has nothing ahead of it any more.'));
         }
@@ -194,8 +198,8 @@ class ContactReminderBlock
 
         return match ($this->reminder->inactive_reason) {
             ReminderInactiveReasonEnum::ValueCleared => __('This reminder is stopped because the date it read is gone. Fill the date in again to start a new one.'),
-            ReminderInactiveReasonEnum::RecordArchived => __('This reminder is stopped because this record is archived. Unarchive it and the reminder starts again.'),
-            ReminderInactiveReasonEnum::RecordDeleted => __('This reminder is stopped because this record was deleted. Restore it and the reminder starts again.'),
+            ReminderInactiveReasonEnum::RecordArchived => __('This reminder is stopped because this record is archived.'),
+            ReminderInactiveReasonEnum::RecordDeleted => __('This reminder is stopped because this record was deleted.'),
             ReminderInactiveReasonEnum::FieldRemoved => __('This reminder is stopped because this field has left the structure. Put the field back and the reminder starts again.'),
             null => __('This reminder is stopped.'),
         };

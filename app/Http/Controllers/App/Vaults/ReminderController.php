@@ -33,7 +33,6 @@ class ReminderController extends Controller
     {
         abort_unless($reminder->vault_id === $vault->id, 404);
 
-        $name = $reminder->name;
         $contact = $reminder->remindable;
 
         new DestroyReminder(user: $request->user(), reminder: $reminder)->execute();
@@ -43,7 +42,7 @@ class ReminderController extends Controller
             : route('reminders.index', $vault);
 
         return redirect($destination)
-            ->with('status', __('Reminder deleted.'))
-            ->with('status_description', __(':name is gone. The date it read is still on the record.', ['name' => $name]));
+            ->with('status', __('The reminder is deleted.'))
+            ->with('status_description', __('The answers you gave are kept.'));
     }
 }

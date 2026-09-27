@@ -81,8 +81,8 @@ return [
             'description' => 'Each vault offers a calendar of the recurring dates on its records, and a task list of the deadlines the reminders screen shows. Both are read only.',
             'body' => [
                 'A recurring date is an all day entry that comes round every year, named after the person and the field it came from. A date whose year is unknown is placed in the current year.',
-                'A deadline is a task due at the moment the product will act on it, which your device shows in whatever timezone it is set to. A postponed deadline moves to its new time; a dismissed or cancelled one is absent, and so is anything beyond the horizon the reminders screen shows.',
-                'Every write to either is refused. Postponing and dismissing are gestures of the application with their own effects, and a date is corrected on the record it belongs to.',
+                'A deadline is a task due at the moment the product will act on it, which your device shows in whatever timezone it is set to. A deadline stays on the list until somebody answers it in the application. An answered or cancelled one is taken off, and so is anything beyond the horizon the reminders screen shows.',
+                'Every write to either is refused. A deadline is answered in the application, and a date is corrected on the record it belongs to.',
             ],
             'rateLimit' => 'Sixty requests per minute, per key.',
         ],

@@ -38,6 +38,22 @@ class ReminderOccurrenceTestNotificationControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_brings_the_reader_back_to_the_grouping_they_sent_it_from(): void
+    {
+        Notification::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $occurrence = $this->deadline($vault);
+
+        $response = $this->actingAs($user)
+            ->from(route('reminders.byContact', $vault))
+            ->post($this->url($vault, $occurrence));
+
+        $response->assertRedirect(route('reminders.byContact', $vault));
+    }
+
+    #[Test]
     public function it_produces_no_row_on_the_list_of_what_was_sent(): void
     {
         Notification::fake();

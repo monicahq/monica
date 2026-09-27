@@ -27,7 +27,7 @@ class UpdateContactReminderTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-        $reminder = Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create();
+        $reminder = Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create(['frequency_interval' => 3]);
 
         EricaServer::actingAs($user)->tool(UpdateContactReminder::class, [
             'vault' => $vault->uuid,
@@ -38,7 +38,7 @@ class UpdateContactReminderTest extends TestCase
             'time' => '10:00',
         ])->assertOk()->assertHasNoErrors();
 
-        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'name' => 'Congratulate her on the gallery', 'cadence' => 'yearly']);
+        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'name' => 'Congratulate her on the gallery', 'cadence' => 'yearly', 'frequency_interval' => 3]);
     }
 
     #[Test]
