@@ -37,7 +37,7 @@
         @if ($list['people'] === [])
           <p class="px-4 pb-3 text-sm text-muted">{{ $list['empty'] }}</p>
         @else
-          <ul class="list-none pb-1">
+          <ul class="list-none">
             @foreach ($list['people'] as $person)
               <li>
                 @if ($person['url'] === null)
