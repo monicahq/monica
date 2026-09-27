@@ -92,6 +92,8 @@ class ContactFeedItem extends Model
 
     public const ACTION_MOOD_TRACKING_EVENT_DESTROYED = 'mood_tracking_event_deleted';
 
+    public const ACTION_CALL_CREATED = 'call_created';
+
     /**
      * The attributes that are mass assignable.
      *
