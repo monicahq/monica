@@ -1,29 +1,26 @@
-{{-- Everything that has happened to one reminder, newest first. --}}
-{{-- @var array<int, array<string, string>> $entries --}}
-<ol class="flex flex-col gap-0">
-  @foreach ($entries as $entry)
-    <li class="grid grid-cols-[7.5rem_1.25rem_minmax(0,1fr)] items-start gap-3 pb-4.5 last:pb-0">
-      <div class="flex flex-col items-end gap-px pt-px">
-        <span class="text-xs whitespace-nowrap text-body">{{ $entry['date'] }}</span>
-        <span class="font-mono text-2xs whitespace-nowrap text-muted-soft">{{ $entry['time'] }}</span>
-      </div>
+{{-- What was sent for one reminder and what was done to it, folded away until somebody asks. --}}
+{{-- @var list<array{date: string, time: string, title: string, note: string, tone: string}> $entries --}}
+<div x-data="{ expanded: false }" class="flex flex-col gap-3 border-t border-hairline pt-5">
+  <button
+    type="button"
+    @click="expanded = ! expanded"
+    :aria-expanded="expanded.toString()"
+    aria-expanded="false"
+    aria-controls="reminder-delivery"
+    class="-ml-0.5 flex w-fit cursor-pointer items-center gap-1.5 rounded-md py-1 pr-1.5 pl-0.5 text-sm font-medium text-body transition-colors hover:bg-hover hover:text-ink focus-ring"
+  >
+    <x-icon name="chevron-right" :size="15" class="transition-transform duration-(--duration-standard) motion-reduce:transition-none" ::class="expanded && 'rotate-90'" />
 
-      <div aria-hidden="true" class="relative flex self-stretch justify-center">
-        <span class="absolute top-4 -bottom-4.5 w-px bg-hairline"></span>
+    {{ __('Delivery details') }}
+  </button>
 
-        <span
-          @class([
-            'relative mt-1 size-2.25 rounded-full ring-3 ring-canvas',
-            'bg-success' => $entry['tone'] === 'success',
-            'bg-muted-soft' => $entry['tone'] !== 'success',
-          ])
-        ></span>
-      </div>
+  <ol id="reminder-delivery" x-cloak x-show="expanded" class="flex flex-col gap-2 pl-5">
+    @foreach ($entries as $entry)
+      <li class="flex flex-wrap gap-x-4 gap-y-0.5 text-sm">
+        <span class="min-w-42 font-mono text-muted">{{ $entry['date'] }} {{ $entry['time'] }}</span>
 
-      <div class="flex min-w-0 flex-col gap-0.5">
-        <span class="text-sm font-semibold text-ink">{{ $entry['title'] }}</span>
-        <span class="text-xs leading-relaxed text-pretty text-body">{{ $entry['note'] }}</span>
-      </div>
-    </li>
-  @endforeach
-</ol>
+        <span class="text-body">{{ $entry['note'] === '' ? $entry['title'] : "{$entry['title']} · {$entry['note']}" }}</span>
+      </li>
+    @endforeach
+  </ol>
+</div>

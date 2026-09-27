@@ -260,7 +260,7 @@ class ReminderRowTest extends TestCase
     }
 
     #[Test]
-    public function it_edits_a_written_reminder_on_its_own_form_and_a_date_reminder_on_its_page(): void
+    public function it_edits_a_written_reminder_on_its_own_form_and_offers_no_form_for_a_date_reminder(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -273,7 +273,7 @@ class ReminderRowTest extends TestCase
         $dateRow = new ReminderRow(user: $user, occurrence: ReminderOccurrence::factory()->for($fromADate)->create());
 
         $this->assertSame(route('contacts.reminders.edit', ['vault' => $vault, 'contact' => $contact, 'reminder' => $manual]), $manualRow->editUrl());
-        $this->assertSame(route('reminders.show', ['vault' => $vault, 'reminder' => $fromADate]), $dateRow->editUrl());
+        $this->assertNull($dateRow->editUrl());
         $this->assertNull($manualRow->sourceLabel());
         $this->assertNotNull($dateRow->sourceLabel());
     }

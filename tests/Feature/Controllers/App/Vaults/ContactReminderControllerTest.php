@@ -35,6 +35,8 @@ class ContactReminderControllerTest extends TestCase
         $response->assertSee('Back to Kevin Malone');
         $response->assertSee('Bring the famous chili');
         $response->assertSee('The day has passed without an answer.');
+        $response->assertSee('View reminder');
+        $response->assertSee(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]), escape: false);
         $response->assertSee(route('contacts.reminders.new', ['vault' => $vault, 'contact' => $kevin]), escape: false);
         $response->assertSeeInOrder(['All', 'Overdue', 'Today', 'Upcoming', 'History']);
     }
@@ -238,7 +240,8 @@ class ContactReminderControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('contacts.reminders.edit', ['vault' => $vault, 'contact' => $kevin, 'reminder' => $rule]))
             ->assertStatus(200)
-            ->assertSee('value="Bring the famous chili"', escape: false);
+            ->assertSee('value="Bring the famous chili"', escape: false)
+            ->assertSee(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]), escape: false);
 
         $this->actingAs($user)
             ->put(route('contacts.reminders.update', ['vault' => $vault, 'contact' => $kevin, 'reminder' => $rule]), [
@@ -249,7 +252,7 @@ class ContactReminderControllerTest extends TestCase
                 'time' => '18:30',
                 'timezone' => 'Europe/Paris',
             ])
-            ->assertRedirect(route('contacts.reminders.index', ['vault' => $vault, 'contact' => $kevin]))
+            ->assertRedirect(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]))
             ->assertSessionHas('status', 'Changes saved');
 
         $this->assertSame('Ask about the band', $rule->refresh()->name);

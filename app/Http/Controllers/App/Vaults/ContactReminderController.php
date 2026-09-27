@@ -106,7 +106,7 @@ class ContactReminderController extends Controller
         }
 
         return redirect()
-            ->route('contacts.reminders.index', ['vault' => $vault, 'contact' => $contact])
+            ->route('reminders.show', ['vault' => $vault, 'reminder' => $reminder])
             ->with('status', __('Changes saved'));
     }
 

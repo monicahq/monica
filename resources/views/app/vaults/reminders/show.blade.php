@@ -1,163 +1,165 @@
-{{-- One reminder, explained. --}}
+{{-- One reminder: who it is about, when it fires, the dates waiting for an answer, and what was answered. --}}
 {{-- @var \App\ViewModels\Vaults\ReminderViewModel $viewModel --}}
 @php
-  $state = $viewModel->state();
-  $next = $viewModel->next();
-  $schedule = $viewModel->schedule();
   $contact = $viewModel->contact();
-  $occurrences = $viewModel->occurrences();
-  $answers = $viewModel->answers();
+  $problem = $viewModel->problem();
+  $awaiting = $viewModel->awaiting();
   $history = $viewModel->history();
+  $historyRows = $viewModel->historyRows();
+  $deliveryLog = $viewModel->deliveryLog();
+  $crumbs = $contact === null
+    ? [['label' => __('Reminders'), 'url' => $viewModel->remindersUrl()]]
+    : [
+        ['label' => __('People'), 'url' => route('contacts.index', $viewModel->vault())],
+        ['label' => $contact['name'], 'url' => $contact['url']],
+        ['label' => __('Reminders'), 'url' => $viewModel->contactRemindersUrl()],
+      ];
+  $badges = [
+    'overdue' => ['tone' => 'danger', 'label' => __('Overdue')],
+    'today' => ['tone' => 'warning', 'label' => __('Today')],
+    'upcoming' => ['tone' => 'neutral', 'label' => __('Upcoming')],
+  ];
 @endphp
 <x-shell :title="$viewModel->title()">
   <x-slot:breadcrumb>
-    <x-breadcrumb.vault :vault="$viewModel->vault()" :items="[['label' => __('Reminders'), 'url' => $viewModel->remindersUrl()],
-        ['label' => $viewModel->title()],]" />
+    <x-breadcrumb.vault :vault="$viewModel->vault()" :items="[...$crumbs, ['label' => $viewModel->title()]]" />
   </x-slot:breadcrumb>
 
   <x-slot:sidebar>
-    <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" current="reminders" />
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" :current="$contact === null ? 'reminders' : 'contacts'" />
   </x-slot:sidebar>
 
-  @if ($contact !== null)
-    @include('app.vaults.reminders._contact-card', [
-      'contact' => $contact,
-      'builtFrom' => $viewModel->builtFrom(),
-    ])
-  @endif
+  <div class="flex flex-col gap-8">
+    <div class="flex flex-wrap items-start gap-x-6 gap-y-4">
+      <div class="flex min-w-70 flex-1 flex-col gap-3">
+        <h1 class="text-page-title text-pretty text-ink">{{ $viewModel->title() }}</h1>
 
-  <div class="flex flex-wrap items-start justify-between gap-4">
-    <div class="flex min-w-0 flex-col gap-2">
-      <x-page-header :title="$viewModel->title()" />
+        <div class="flex flex-col gap-2 text-sm text-body">
+          @if ($contact !== null)
+            <span class="flex items-center gap-2">
+              <x-contact-avatar :name="$contact['name']" :url="$contact['avatarUrl']" :size="20" />
 
-      <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-        <x-badge :tone="$state['tone']" :icon="$state['icon']">{{ $state['label'] }}</x-badge>
-
-        <span class="text-sm text-body">{{ $viewModel->builtFrom() }}</span>
-
-        <span aria-hidden="true" class="text-sm text-muted-soft">·</span>
-
-        <span class="text-sm text-muted">{{ $viewModel->createdLine() }}</span>
-      </div>
-    </div>
-
-    <div class="flex shrink-0 items-center gap-2">
-      <x-button :href="$viewModel->editUrl()" data-turbo="true">{{ __('Edit reminder') }}</x-button>
-    </div>
-  </div>
-
-  <div
-    @class([
-      'flex flex-wrap items-center gap-x-6 gap-y-3 rounded-lg border px-5 py-4',
-      'border-success-edge bg-success-tint' => $next['tone'] === 'success',
-      'border-hairline bg-card' => $next['tone'] !== 'success',
-    ])
-  >
-    <div class="flex min-w-0 flex-1 flex-col gap-1">
-      <span
-        @class([
-          'text-2xs font-semibold tracking-caption uppercase',
-          'text-success' => $next['tone'] === 'success',
-          'text-muted' => $next['tone'] !== 'success',
-        ])
-      >{{ $next['overline'] }}</span>
-
-      <span class="text-xl font-semibold tracking-tight text-ink">{{ $next['date'] }}</span>
-
-      <span class="text-sm text-pretty text-body">{{ $next['note'] }}</span>
-    </div>
-
-    @if ($next['row'] !== null)
-      <div class="flex flex-none items-center gap-1.5">
-        @include('app.vaults.reminders._answers', ['row' => $next['row']])
-      </div>
-    @endif
-  </div>
-
-  <x-panel :title="__('Schedule')" :subtitle="__('How this reminder decides when to tell you.')" icon="calendar-repeat">
-    <div class="flex flex-col gap-4.5">
-      <dl class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        @foreach ($schedule['fields'] as $field)
-          <div class="flex min-w-0 flex-col gap-1">
-            <dt class="text-2xs font-semibold tracking-caption uppercase text-muted">{{ $field['label'] }}</dt>
-            <dd class="text-sm text-ink">{{ $field['value'] }}</dd>
-
-            @if ($field['note'] !== null)
-              <dd class="text-xs text-pretty text-muted">{{ $field['note'] }}</dd>
-            @endif
-          </div>
-        @endforeach
-      </dl>
-    </div>
-  </x-panel>
-
-  <x-panel :title="__('Still open')" icon="reminder" :flush="true">
-    @forelse ($occurrences as $row)
-      <div class="border-t border-hairline px-4 py-3.5 first:border-t-0">
-        @include('app.vaults.reminders.row', ['row' => $row, 'linkToReminder' => false])
-      </div>
-    @empty
-      <div class="p-4">
-        <x-empty-state :title="__('Nothing open')">
-          <x-slot:icon>
-            <x-icon name="reminder" :size="30" :stroke-width="1.4" />
-          </x-slot:icon>
-
-          {{ $viewModel->stillToComeEmptyLine() }}
-        </x-empty-state>
-      </div>
-    @endforelse
-  </x-panel>
-
-  <x-panel :title="__('History')" :subtitle="__('What you answered for each date. Answers are kept as they are.')" icon="check" :flush="true">
-    @forelse ($answers as $answer)
-      <div class="flex flex-wrap items-center justify-between gap-3 border-t border-hairline px-4 py-3 first:border-t-0">
-        <span class="text-sm text-ink">{{ $answer['date'] }}</span>
-
-        <span class="flex items-center gap-2.5">
-          @if ($answer['answeredOn'] !== null)
-            <span class="text-xs text-muted">{{ __('answered :date', ['date' => $answer['answeredOn']]) }}</span>
+              <a href="{{ $contact['url'] }}" data-turbo="true" class="font-medium text-ink underline decoration-hairline-strong underline-offset-2 hover:decoration-ink">{{ $contact['name'] }}</a>
+            </span>
           @endif
 
-          <x-badge :tone="$answer['tone']">{{ $answer['outcome'] }}</x-badge>
-        </span>
+          <span class="flex items-center gap-2">
+            <x-icon name="calendar-repeat" :size="16" class="text-muted" />
+
+            {{ $viewModel->scheduleLine() }}
+          </span>
+
+          @if ($viewModel->sourceLine() !== null)
+            <span class="flex flex-wrap items-center gap-2">
+              <x-icon name="link" :size="16" class="text-muted" />
+
+              {{ $viewModel->sourceLine() }}
+
+              @if ($viewModel->editDateUrl() !== null)
+                <span aria-hidden="true" class="text-muted-soft">·</span>
+
+                <a href="{{ $viewModel->editDateUrl() }}" data-turbo="true" class="underline decoration-hairline-strong underline-offset-2 hover:decoration-ink">{{ __('Edit the date') }}</a>
+              @endif
+            </span>
+          @endif
+        </div>
       </div>
-    @empty
-      <div class="p-4">
-        <x-empty-state :title="__('No dates yet')">
-          <x-slot:icon>
-            <x-icon name="check" :size="30" :stroke-width="1.4" />
-          </x-slot:icon>
 
-          {{ __('Once a date has come, it is listed here with what you answered.') }}
-        </x-empty-state>
+      <div class="flex shrink-0 items-center gap-2">
+        @if ($viewModel->editUrl() !== null)
+          <x-button.secondary :href="$viewModel->editUrl()" data-turbo="true" size="small">{{ __('Edit') }}</x-button.secondary>
+        @endif
+
+        <x-actions-menu :label="__('More actions')">
+          <x-modal.warning
+            :title="__('Delete this reminder?')"
+            :confirm="__('Delete reminder')"
+            :action="$viewModel->deleteUrl()"
+          >
+            <x-slot:trigger>
+              <button
+                type="button"
+                role="menuitem"
+                @click="menuOpen = false; $refs.menuTrigger.focus(); open = true"
+                class="flex w-full cursor-pointer items-center gap-2.5 rounded-xs px-2.5 py-2 text-left font-sans text-sm text-error transition-colors hover:bg-hover focus-ring-inset"
+              >{{ __('Delete reminder') }}</button>
+            </x-slot:trigger>
+
+            {{ $viewModel->deleteLine() }}
+          </x-modal.warning>
+        </x-actions-menu>
       </div>
-    @endforelse
-  </x-panel>
-
-  @if ($history !== [])
-    <x-panel :title="__('Activity')" icon="timeline">
-      @include('app.vaults.reminders._history', ['entries' => $history])
-    </x-panel>
-  @endif
-
-  <x-panel :title="__('Delete this reminder')" tone="danger" icon="info">
-    <div class="flex flex-wrap items-center justify-between gap-5">
-      <p class="max-w-prose text-sm leading-relaxed text-pretty text-body">
-        {{ __('This stops the reminder for good. Nothing further is delivered, and dates still waiting for an answer are dropped.') }}
-      </p>
-
-      <x-modal.warning
-        :title="__('Delete “:name”?', ['name' => $viewModel->title()])"
-        :confirm="__('Delete the reminder')"
-        :action="$viewModel->deleteUrl()"
-      >
-        <x-slot:trigger>
-          <x-button.danger type="button" @click="open = true">{{ __('Delete reminder') }}</x-button.danger>
-        </x-slot:trigger>
-
-        {{ __('This cannot be undone. The answers you already gave stay on the contact’s reminders.') }}
-      </x-modal.warning>
     </div>
-  </x-panel>
+
+    @if ($problem !== null)
+      <x-notice tone="warning" :title="$problem['title']">{{ $problem['body'] }}</x-notice>
+    @endif
+
+    <section aria-labelledby="awaiting-title" class="flex flex-col gap-3">
+      <h2 id="awaiting-title" class="text-base font-semibold text-ink">{{ __('Dates awaiting your response') }}</h2>
+
+      <div class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-panel">
+        @foreach ($awaiting as $entry)
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-2.5 border-t border-hairline px-4 py-3 first:border-t-0">
+            <div class="flex min-w-55 flex-1 flex-wrap items-center gap-x-2.5 gap-y-1.5">
+              <span class="font-semibold text-ink">{{ $entry['date'] }}</span>
+
+              <span class="text-sm text-muted">{{ $entry['row']->relativeDay() }}</span>
+
+              <x-badge :tone="$badges[$entry['category']->value]['tone']">{{ $badges[$entry['category']->value]['label'] }}</x-badge>
+            </div>
+
+            <div class="flex items-center gap-2">
+              @include('app.vaults.reminders._answers', ['row' => $entry['row']])
+            </div>
+          </div>
+        @endforeach
+
+        @if ($problem !== null)
+          <p class="border-t border-hairline px-4 py-3 text-sm text-muted first:border-t-0">{{ __('No upcoming date until this is resolved.') }}</p>
+        @elseif ($awaiting === [])
+          <p class="px-4 py-3 text-sm text-muted">{{ __('Nothing is waiting for an answer, and no date is left to come.') }}</p>
+        @endif
+      </div>
+    </section>
+
+    <section aria-labelledby="history-title" class="flex flex-col gap-3">
+      <h2 id="history-title" class="text-base font-semibold text-ink">{{ __('History') }}</h2>
+
+      @if ($historyRows === [])
+        <p class="text-sm text-muted">{{ __('Each date you answer is kept here, with what you said.') }}</p>
+      @else
+        <x-list-panel
+          :items="$historyRows"
+          id="reminder-history"
+          merge="append"
+          target="reminder-history reminder-history-footer"
+          footer-id="reminder-history-footer"
+          :next-page-url="$history->hasMorePages() ? $history->nextPageUrl() : null"
+        >
+          @foreach ($historyRows as $answer)
+            <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-t border-hairline px-4 py-3 first:border-t-0">
+              <span class="flex min-w-55 flex-1 flex-wrap items-baseline gap-x-2 gap-y-1">
+                <span class="font-semibold text-ink">{{ $answer['date'] }}</span>
+
+                <span aria-hidden="true" class="text-muted">·</span>
+
+                <span class="text-body">{{ $answer['outcome'] }}</span>
+              </span>
+
+              @if ($answer['answered'] !== null)
+                <span class="text-sm text-muted">{{ $answer['answered'] }}</span>
+              @endif
+            </div>
+          @endforeach
+
+          <x-slot:empty></x-slot:empty>
+        </x-list-panel>
+      @endif
+    </section>
+
+    @if ($deliveryLog !== [])
+      @include('app.vaults.reminders._history', ['entries' => $deliveryLog])
+    @endif
+  </div>
 </x-shell>

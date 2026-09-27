@@ -57,6 +57,15 @@ class ContactReminderForm
         return route('contacts.reminders.index', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
+    public function cancelUrl(): string
+    {
+        if ($this->reminder instanceof Reminder) {
+            return route('reminders.show', ['vault' => $this->vault, 'reminder' => $this->reminder]);
+        }
+
+        return $this->remindersUrl();
+    }
+
     public function actionUrl(): string
     {
         if ($this->reminder instanceof Reminder) {

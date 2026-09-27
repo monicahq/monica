@@ -157,7 +157,7 @@ class ReminderRow
         ]);
     }
 
-    private function relativeDay(): string
+    public function relativeDay(): string
     {
         $today = CarbonImmutable::now($this->user->timezone)->startOfDay();
         $day = CarbonImmutable::parse($this->occurrence->local_date->toDateString(), $this->user->timezone)->startOfDay();
@@ -185,11 +185,11 @@ class ReminderRow
             return null;
         }
 
-        if ($rule->source === ReminderSourceEnum::Manual) {
-            return route('contacts.reminders.edit', ['vault' => $this->occurrence->vault, 'contact' => $contact, 'reminder' => $rule]);
+        if ($rule->source !== ReminderSourceEnum::Manual) {
+            return null;
         }
 
-        return $this->reminderUrl();
+        return route('contacts.reminders.edit', ['vault' => $this->occurrence->vault, 'contact' => $contact, 'reminder' => $rule]);
     }
 
     public function deleteUrl(): ?string

@@ -1,0 +1,37 @@
+{
+  "workflow": "speckit",
+  "specName": "Reminder detail page redesign",
+  "branch": "2026-09-27-reminder-detail-page",
+  "currentStep": "implement",
+  "status": "ready-to-implement",
+  "history": [
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-27T22:15:28.511Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-27T22:17:40.531Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-27T22:19:50.704Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-09-27T22:34:28.204Z"
+    }
+  ]
+}

@@ -87,7 +87,7 @@
     </div>
 
     <div class="mt-5 flex items-center justify-end gap-2.5">
-      <x-button.secondary :href="$viewModel->remindersUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
+      <x-button.secondary :href="$viewModel->cancelUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
       <x-button type="submit">{{ $viewModel->isEditing() ? __('Save') : __('Add the reminder') }}</x-button>
     </div>

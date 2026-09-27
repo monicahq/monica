@@ -6,7 +6,11 @@
 <div class="flex flex-wrap items-center gap-x-4 gap-y-3 border-t border-hairline px-4 py-3.5 first:border-t-0">
   <div class="flex min-w-60 flex-1 flex-col gap-1.5">
     <div class="flex flex-wrap items-center gap-2">
-      <span class="font-semibold text-ink">{{ $row->text() }}</span>
+      @if ($row->reminderUrl() !== null)
+        <a href="{{ $row->reminderUrl() }}" data-turbo="true" class="font-semibold text-ink no-underline hover:underline focus-ring rounded-xs">{{ $row->text() }}</a>
+      @else
+        <span class="font-semibold text-ink">{{ $row->text() }}</span>
+      @endif
 
       @if ($answered)
         <x-badge :tone="$row->tone()" :icon="$row->tone() === 'success' ? 'check' : null">{{ $row->outcome() }}</x-badge>

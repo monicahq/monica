@@ -6,6 +6,7 @@ namespace App\Http\Controllers\App\Vaults;
 
 use App\Actions\DestroyReminder;
 use App\Http\Controllers\Controller;
+use App\Models\Contact;
 use App\Models\Reminder;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ReminderViewModel;
@@ -33,11 +34,15 @@ class ReminderController extends Controller
         abort_unless($reminder->vault_id === $vault->id, 404);
 
         $name = $reminder->name;
+        $contact = $reminder->remindable;
 
         new DestroyReminder(user: $request->user(), reminder: $reminder)->execute();
 
-        return redirect()
-            ->route('reminders.index', $vault)
+        $destination = $contact instanceof Contact
+            ? route('contacts.reminders.index', ['vault' => $vault, 'contact' => $contact])
+            : route('reminders.index', $vault);
+
+        return redirect($destination)
             ->with('status', __('Reminder deleted.'))
             ->with('status_description', __(':name is gone. The date it read is still on the record.', ['name' => $name]));
     }
