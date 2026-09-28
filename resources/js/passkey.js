@@ -11,10 +11,6 @@ export default (config) => ({
         this.supported = Passkeys.isSupported();
     },
 
-    chosenName() {
-        return this.$refs.name?.value?.trim() || config.text.defaultName;
-    },
-
     announce(message, failed = false) {
         this.message = message;
         this.failed = failed;
@@ -25,7 +21,7 @@ export default (config) => ({
         this.announce('');
 
         try {
-            await Passkeys.register({ name: this.chosenName() });
+            await Passkeys.register({ name: '_' });
 
             window.location = config.redirectUrl;
         } catch (error) {

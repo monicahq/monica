@@ -34,7 +34,6 @@
           x-data="passkey({{ \Illuminate\Support\Js::from([
             'redirectUrl' => route('auth.registerPasskey.new'),
             'text' => [
-              'defaultName' => __('This device'),
               'cancelled' => __('No passkey was created. Your account exists, but only a link sent to your email address reaches it. Make a passkey, or set a password instead.'),
               'alreadyRegistered' => __('This device already has a passkey here.'),
               'failed' => __('The passkey could not be created. Please try again, or set a password instead.'),

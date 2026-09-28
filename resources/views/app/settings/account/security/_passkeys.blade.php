@@ -12,7 +12,6 @@
       x-data="passkey({{ \Illuminate\Support\Js::from([
         'redirectUrl' => route('settings.security.index'),
         'text' => [
-          'defaultName' => __('This device'),
           'cancelled' => __('No passkey was added. The prompt was dismissed.'),
           'alreadyRegistered' => __('This device already has a passkey here.'),
           'failed' => __('The passkey could not be added. Please try again.'),
@@ -25,23 +24,15 @@
         </div>
 
         <div class="ml-auto flex shrink-0 flex-wrap items-center gap-2.5">
-          <x-input
-            x-ref="name"
-            id="passkey_name"
-            name="passkey_name"
-            :label="__('Name this device')"
-            :placeholder="__('This device')"
-            size="small"
-            class="w-48"
-          />
-
-          <x-button.secondary
-            size="small"
-            type="button"
-            x-show="supported"
-            x-bind:disabled="busy"
-            @click="register()"
-          >{{ __('Add a passkey') }}</x-button.secondary>
+          <form x-data="{ asksForConfirmation: @js($viewModel->credentials()->offersPassword()) }" @submit.prevent="register()">
+            <x-button
+              size="small"
+              type="button"
+              x-show="supported"
+              x-bind:disabled="busy"
+              @click.prevent="asksForConfirmation ? $dispatch('confirm-password', { form: $el.form }) : register()"
+            >{{ __('Add a passkey') }}</x-button>
+          </form>
         </div>
       </div>
 

@@ -7,6 +7,7 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Security;
 use App\Models\Passkey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -131,5 +132,27 @@ class SecurityControllerTest extends TestCase
         $response->assertRedirect(route('settings.security.index'));
 
         $this->assertModelMissing($passkey);
+    }
+
+    #[Test]
+    public function it_asks_for_the_password_before_adding_a_passkey(): void
+    {
+        URL::forceScheme('https');
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('settings.security.index'));
+
+        $response->assertSee('asksForConfirmation: true', escape: false);
+    }
+
+    #[Test]
+    public function it_adds_a_passkey_to_an_account_with_no_password_without_asking(): void
+    {
+        URL::forceScheme('https');
+        $user = User::factory()->create(['password' => null]);
+
+        $response = $this->actingAs($user)->get(route('settings.security.index'));
+
+        $response->assertSee('asksForConfirmation: false', escape: false);
     }
 }

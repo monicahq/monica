@@ -23,7 +23,7 @@ class PasskeyListViewModel
             ->get()
             ->map(fn (Passkey $passkey): array => [
                 'id' => $passkey->id,
-                'name' => $passkey->name,
+                'name' => $passkey->name !== '_' ? $passkey->name : ($passkey->authenticator ?? __('This device')),
                 'addedAt' => $passkey->created_at->diffForHumans(),
                 'lastUsedAt' => $passkey->last_used_at?->diffForHumans(),
             ])

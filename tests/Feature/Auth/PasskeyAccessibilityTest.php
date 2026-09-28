@@ -61,16 +61,6 @@ class PasskeyAccessibilityTest extends TestCase
     }
 
     #[Test]
-    public function the_name_field_is_labelled(): void
-    {
-        $html = $this->secure()->actingAs(User::factory()->create())
-            ->get(route('settings.security.index'))->getContent();
-
-        $this->assertStringContainsString('for="passkey_name"', $html);
-        $this->assertStringContainsString('Name this device', $html);
-    }
-
-    #[Test]
     public function the_removal_warning_is_words_and_not_only_a_colour(): void
     {
         $user = User::factory()->create();

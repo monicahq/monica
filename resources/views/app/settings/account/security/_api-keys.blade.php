@@ -47,12 +47,12 @@
     </div>
 
     <div class="ml-auto flex shrink-0 items-center gap-2.5">
-      <x-button.secondary
+      <x-button
         size="small"
         type="button"
         x-show="! creating"
         @click="creating = true; $nextTick(() => $refs.name.focus())"
-      >{{ __('Create key') }}</x-button.secondary>
+      >{{ __('Create key') }}</x-button>
     </div>
   </div>
 
