@@ -6,6 +6,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\MergeContacts;
 use App\Actions\PreviewContactMerge;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\SnapshotReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
@@ -152,6 +153,33 @@ class MergeContactsTest extends TestCase
 
         $this->assertDatabaseHas('field_values', ['id' => $theirs->id, 'valuable_id' => $jim->id, 'is_detached' => false]);
         $this->assertDatabaseHas('field_values', ['id' => $mine->id, 'valuable_id' => $jim->id, 'is_detached' => true]);
+    }
+
+    #[Test]
+    public function it_stops_the_reminder_on_the_survivors_value_when_the_other_value_is_taken(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        [$jim, $james] = $this->twoContactsOf($user, $version);
+        $mine = Reminder::factory()->create(['field_value_id' => $this->valueFor($jim, $field, 'jim@dundermifflin.com')->id]);
+        $theirs = Reminder::factory()->create(['field_value_id' => $this->valueFor($james, $field, 'james@dundermifflin.com')->id]);
+
+        new MergeContacts(
+            user: $user,
+            kept: $jim,
+            absorbed: $james,
+            resolutions: [['field_key' => $field->key, 'row' => null, 'keep' => 'other']],
+        )->execute();
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $mine->id,
+            'is_active' => false,
+            'inactive_reason' => ReminderInactiveReasonEnum::ValueCleared,
+        ]);
+        $this->assertDatabaseHas('reminders', ['id' => $theirs->id, 'remindable_id' => $jim->id, 'is_active' => true]);
     }
 
     #[Test]

@@ -184,6 +184,14 @@ class MergeContacts
                 $held->save();
 
                 $this->ledger[] = ['kind' => 'value_detached', 'id' => $held->id];
+
+                $rule = $held->reminder;
+
+                if ($rule instanceof Reminder && $rule->is_active) {
+                    $this->ledger[] = ['kind' => 'reminder_deactivated', 'id' => $rule->id];
+
+                    new DeactivateReminders(user: $this->user, subject: $rule, reason: ReminderInactiveReasonEnum::ValueCleared)->execute();
+                }
             }
 
             $value->valuable_id = $this->kept->id;

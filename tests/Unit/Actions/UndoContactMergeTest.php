@@ -15,6 +15,7 @@ use App\Models\ContactMerge;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
+use App\Models\Reminder;
 use App\Models\SectionVersion;
 use App\Models\ShareLink;
 use App\Models\StructureVersion;
@@ -101,6 +102,32 @@ class UndoContactMergeTest extends TestCase
 
         $this->assertDatabaseHas('field_values', ['id' => $mine->id, 'valuable_id' => $jim->id, 'is_detached' => false]);
         $this->assertDatabaseHas('field_values', ['id' => $theirs->id, 'valuable_id' => $james->id]);
+    }
+
+    #[Test]
+    public function it_wakes_up_the_reminder_on_the_value_the_survivor_gave_up(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        [$jim, $james] = $this->twoContactsOf($user, $version);
+        $reminder = Reminder::factory()->create(['field_value_id' => $this->valueFor($jim, $field, 'jim@dundermifflin.com')->id]);
+        $this->valueFor($james, $field, 'james@dundermifflin.com');
+
+        $merge = new MergeContacts(
+            user: $user,
+            kept: $jim,
+            absorbed: $james,
+            resolutions: [['field_key' => $field->key, 'row' => null, 'keep' => 'other']],
+        )->execute();
+
+        $this->assertFalse($reminder->fresh()->is_active);
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'is_active' => true, 'inactive_reason' => null]);
     }
 
     #[Test]
