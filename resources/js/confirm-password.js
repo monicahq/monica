@@ -5,14 +5,30 @@ export default (config) => ({
     failed: false,
     password: '',
     form: null,
-    drawnAt: Date.now(),
 
-    stillConfirmed() {
-        return config.confirmed && (Date.now() - this.drawnAt) / 1000 < config.secondsLeft;
+    async stillConfirmed() {
+        try {
+            const response = await fetch(config.statusUrl, {
+                headers: {
+                    Accept: 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+
+            if (! response.ok) {
+                return false;
+            }
+
+            const status = await response.json();
+
+            return status.confirmed === true;
+        } catch {
+            return false;
+        }
     },
 
-    start(form) {
-        if (this.stillConfirmed()) {
+    async start(form) {
+        if (await this.stillConfirmed()) {
             form.requestSubmit();
 
             return;
@@ -37,8 +53,7 @@ export default (config) => ({
     submit() {
         const form = this.form;
 
-        this.open = false;
-        this.form = null;
+        this.close();
 
         form?.requestSubmit();
     },

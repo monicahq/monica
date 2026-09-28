@@ -6,8 +6,6 @@
   current="security"
 >
   <x-modal.confirm-password
-    :confirmed="$viewModel->passwordIsConfirmed()"
-    :seconds-left="$viewModel->secondsBeforeTheConfirmationExpires()"
     :offers-password="$viewModel->credentials()->offersPassword()"
     :offers-passkey="$viewModel->credentials()->offersPasskey()"
   />

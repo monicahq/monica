@@ -1,22 +1,17 @@
 {{-- The card that asks for a credential before a change to the way somebody signs in. --}}
 {{--
-  @var bool $confirmed
-  @var int $secondsLeft
   @var bool $offersPassword
   @var bool $offersPasskey
 --}}
 @props([
-  'confirmed' => false,
-  'secondsLeft' => 0,
   'offersPassword' => false,
   'offersPasskey' => false,
 ])
 
 <div
   x-data="confirmPassword({{ \Illuminate\Support\Js::from([
-    'confirmed' => $confirmed,
-    'secondsLeft' => $secondsLeft,
     'url' => route('auth.confirmPassword.create'),
+    'statusUrl' => route('auth.passwordConfirmationStatus.show'),
     'text' => [
       'wrong' => __('That is not the right password.'),
       'tooMany' => __('Too many tries. Wait a minute and start again.'),

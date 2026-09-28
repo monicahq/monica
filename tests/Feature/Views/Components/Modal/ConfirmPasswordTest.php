@@ -45,11 +45,15 @@ class ConfirmPasswordTest extends TestCase
     }
 
     #[Test]
-    public function it_submits_straight_through_when_the_password_is_already_confirmed(): void
+    public function it_asks_the_server_whether_the_confirmation_still_holds(): void
     {
-        $this->blade('<x-modal.confirm-password :confirmed="true" :seconds-left="900" :offers-password="true" />')
-            ->assertSee('confirmed\\u0022:true', escape: false)
-            ->assertSee('secondsLeft\\u0022:900', escape: false);
+        $rendered = $this->blade('<x-modal.confirm-password :offers-password="true" />')->__toString();
+
+        preg_match("/confirmPassword\\(JSON\\.parse\\('([^']*)'\\)\\)/", $rendered, $matches);
+
+        $config = json_decode(json_decode("\"{$matches[1]}\""), true);
+
+        $this->assertSame(route('auth.passwordConfirmationStatus.show'), $config['statusUrl']);
     }
 
     #[Test]

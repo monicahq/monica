@@ -60,24 +60,4 @@ class ProfileViewModel
     {
         return new ConfirmPasswordViewModel(user: $this->user);
     }
-
-    public function passwordIsConfirmed(): bool
-    {
-        return $this->secondsBeforeTheConfirmationExpires() > 0;
-    }
-
-    /**
-     * What is left of the window when the screen is drawn. A page left open outlives its own
-     * confirmation, so the screen has to hand the browser a deadline rather than a yes or no.
-     */
-    public function secondsBeforeTheConfirmationExpires(): int
-    {
-        $confirmedAt = session('auth.password_confirmed_at');
-
-        if ($confirmedAt === null) {
-            return 0;
-        }
-
-        return max(0, (int) config('auth.password_timeout') - (time() - (int) $confirmedAt));
-    }
 }

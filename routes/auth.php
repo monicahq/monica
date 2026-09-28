@@ -9,6 +9,7 @@ use App\Http\Controllers\App\Auth\LocaleController;
 use App\Http\Controllers\App\Auth\LoginController;
 use App\Http\Controllers\App\Auth\MagicLinkController;
 use App\Http\Controllers\App\Auth\NewPasswordController;
+use App\Http\Controllers\App\Auth\PasswordConfirmationStatusController;
 use App\Http\Controllers\App\Auth\PasswordResetLinkController;
 use App\Http\Controllers\App\Auth\RegistrationController;
 use App\Http\Controllers\App\Auth\RegistrationPasskeyController;
@@ -92,6 +93,7 @@ Route::middleware(['auth'])->group(function (): void {
     Route::post('confirm-password', [ConfirmPasswordController::class, 'create'])
         ->middleware('throttle:confirm-password')
         ->name('auth.confirmPassword.create');
+    Route::get('confirm-password/status', [PasswordConfirmationStatusController::class, 'show'])->name('auth.passwordConfirmationStatus.show');
 
     Route::get('verify-email', [EmailVerificationController::class, 'show'])->name('auth.verification.notice');
     Route::get('verify-email/{id}/{hash}', [EmailVerificationController::class, 'update'])
