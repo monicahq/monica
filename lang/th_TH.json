@@ -453,7 +453,7 @@
     "Bad Gateway": "เกิดข้อผิดพลาดในเกตเวย์",
     "Bad Request": "คำขอไม่เหมาะสม",
     "Bandwidth Limit Exceeded": "เกินขีดจำกัดแบนด์วิธ",
-    "Based on “:label”": "อิงจาก “:label”",
+    "Based on :name’s “:label”": "อิงจาก “:label” ของ :name",
     "Basic animal": "สัตว์พื้นฐาน",
     "Basic contact": "ผู้ติดต่อพื้นฐาน",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "ก่อนที่จะเขียนอะไรลงไป มีสามอย่างที่ตรวจสอบ คือไฟล์อ่านเป็น JSON ได้ รูปแบบเป็นแบบที่รุ่นนี้เข้าใจ และทุกชื่อกับทุกประเภทฟิลด์ในนั้นมีอยู่ที่นี่ ถ้ามีอะไรผิด ระบบจะบอกว่าส่วนไหน และไม่สร้างอะไรขึ้นมาเลย",

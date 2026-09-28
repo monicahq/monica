@@ -453,7 +453,7 @@
     "Bad Gateway": "Rossz átjáró",
     "Bad Request": "Rossz kérés",
     "Bandwidth Limit Exceeded": "Sávszélesség Korlát túllépés",
-    "Based on “:label”": "Alapja: „:label”",
+    "Based on :name’s “:label”": "Alapja: :name „:label” adata",
     "Basic animal": "Egyszerű állat",
     "Basic contact": "Egyszerű névjegy",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Mielőtt bármi rögzülne, három dolgot ellenőrzünk: hogy a fájl JSON-ként olvasható-e, hogy a formátumot érti-e ez a verzió, és hogy minden név és minden mezőfajta létezik-e itt. Ha valami hibás, megmondjuk, melyik rész az, és semmi nem jön létre.",

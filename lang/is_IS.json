@@ -453,7 +453,7 @@
     "Bad Gateway": "Slæmt hlið",
     "Bad Request": "Slæm beiðni",
     "Bandwidth Limit Exceeded": "Farið yfir bandbreiddarmörk",
-    "Based on “:label”": "Byggt á „:label“",
+    "Based on :name’s “:label”": "Byggt á „:label“ hjá :name",
     "Basic animal": "Einfalt dýr",
     "Basic contact": "Einfaldur tengiliður",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Áður en nokkuð er skrifað eru þrjú atriði yfirfarin: að skráin lesist sem JSON, að sniðið sé eitthvað sem þessi útgáfa skilur, og að hvert nafn og hver reitategund í henni sé til hér. Sé eitthvað að færðu að vita hvaða hluta það varðar, og ekkert er búið til.",

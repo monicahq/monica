@@ -453,7 +453,7 @@
     "Bad Gateway": "잘못된 게이트웨이",
     "Bad Request": "잘못된 요청",
     "Bandwidth Limit Exceeded": "대역폭 제한 초과",
-    "Based on “:label”": "“:label” 기준",
+    "Based on :name’s “:label”": ":name의 “:label” 기준",
     "Basic animal": "기본 동물",
     "Basic contact": "기본 연락처",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "무엇이든 기록되기 전에 세 가지를 확인합니다. 파일이 JSON으로 읽히는지, 형식이 이 버전이 이해하는 것인지, 그리고 그 안의 모든 이름과 모든 필드 종류가 여기에 있는지입니다. 잘못된 것이 있으면 어느 부분인지 알려 주고, 아무것도 만들지 않습니다.",

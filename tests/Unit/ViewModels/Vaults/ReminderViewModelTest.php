@@ -94,13 +94,13 @@ class ReminderViewModelTest extends TestCase
     public function it_sends_a_reminder_built_from_a_date_to_that_date_instead_of_a_form(): void
     {
         $user = User::factory()->create();
-        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
         $reminder = $this->reminderAbout($user, $contact);
 
         $viewModel = $this->viewModel($user, $reminder);
 
         $this->assertNull($viewModel->editUrl());
-        $this->assertSame("Based on “{$reminder->field->label}”", $viewModel->sourceLine());
+        $this->assertSame("Based on Michael Scott’s “{$reminder->field->label}”", $viewModel->sourceLine());
         $this->assertStringStartsWith(route('contacts.show', ['vault' => $reminder->vault, 'contact' => $contact]), $viewModel->editDateUrl());
     }
 

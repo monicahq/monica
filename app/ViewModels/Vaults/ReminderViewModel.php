@@ -127,7 +127,10 @@ class ReminderViewModel
             return null;
         }
 
-        return __('Based on “:label”', ['label' => $this->reminder->field->label ?? '']);
+        return __('Based on :name’s “:label”', [
+            'name' => $this->reminder->remindable->name,
+            'label' => $this->reminder->field->label ?? '',
+        ]);
     }
 
     public function editUrl(): ?string

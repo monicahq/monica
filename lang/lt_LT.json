@@ -453,7 +453,7 @@
     "Bad Gateway": "bloga tinklo sąsaja",
     "Bad Request": "Bloga užklausa",
     "Bandwidth Limit Exceeded": "Duomenų srauto limitas viršytas",
-    "Based on “:label”": "Pagal „:label“",
+    "Based on :name’s “:label”": "Pagal :name „:label“",
     "Basic animal": "Paprastas gyvūnas",
     "Basic contact": "Paprastas kontaktas",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Prieš ką nors įrašant tikrinami trys dalykai: kad failas perskaitomas kaip JSON, kad formatas yra tas, kurį ši versija supranta, ir kad kiekvienas jame esantis pavadinimas bei lauko tipas čia egzistuoja. Jei kas nors ne taip, pasakome, kuri dalis, ir nieko nesukuriame.",

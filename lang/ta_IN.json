@@ -453,7 +453,7 @@
     "Bad Gateway": "மோசமான நுழைவாயில்",
     "Bad Request": "தவறான கோரிக்கை",
     "Bandwidth Limit Exceeded": "அலைவரிசை வரம்பு மீறப்பட்டது",
-    "Based on “:label”": "“:label” அடிப்படையில்",
+    "Based on :name’s “:label”": ":name இன் “:label” அடிப்படையில்",
     "Basic animal": "அடிப்படை விலங்கு",
     "Basic contact": "அடிப்படைத் தொடர்பு",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "எதுவும் எழுதப்படுவதற்கு முன் மூன்று விஷயங்கள் சரிபார்க்கப்படுகின்றன: கோப்பு JSON ஆகப் படிக்கப்படுகிறதா, வடிவம் இந்தப் பதிப்பு புரிந்துகொள்வதுதானா, அதிலுள்ள ஒவ்வொரு பெயரும் ஒவ்வொரு புல வகையும் இங்கே உள்ளதா. ஏதேனும் தவறாக இருந்தால் எந்தப் பகுதி எனச் சொல்லப்படும், எதுவும் உருவாக்கப்படாது.",

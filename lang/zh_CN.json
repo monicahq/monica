@@ -453,7 +453,7 @@
     "Bad Gateway": "网关错误",
     "Bad Request": "请求错误",
     "Bandwidth Limit Exceeded": "超出带宽限制",
-    "Based on “:label”": "基于“:label”",
+    "Based on :name’s “:label”": "基于 :name 的“:label”",
     "Basic animal": "基本动物",
     "Basic contact": "基本联系人",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "写入之前会检查三点：文件能否按 JSON 读取，格式是否为此版本可理解的，以及其中的每个名称和每种字段是否在此存在。若有问题会告知你是哪一部分，且不会创建任何内容。",

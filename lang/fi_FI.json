@@ -453,7 +453,7 @@
     "Bad Gateway": "Huono portti",
     "Bad Request": "Huono pyyntö",
     "Bandwidth Limit Exceeded": "Kaistankäyttörajoitus ylitetty",
-    "Based on “:label”": "Pohjana ”:label”",
+    "Based on :name’s “:label”": "Pohjana ”:label” (:name)",
     "Basic animal": "Peruseläin",
     "Basic contact": "Perusyhteystieto",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Ennen kuin mitään kirjoitetaan, tarkistetaan kolme asiaa: että tiedosto luetaan JSONina, että muoto on sellainen jonka tämä versio ymmärtää, ja että jokainen nimi ja jokainen kenttälaji siinä on olemassa täällä. Jos jokin on väärin, saat tietää mikä osa, eikä mitään luoda.",

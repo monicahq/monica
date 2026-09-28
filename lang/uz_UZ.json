@@ -453,7 +453,7 @@
     "Bad Gateway": "Bad Gateway",
     "Bad Request": "Bad Request",
     "Bandwidth Limit Exceeded": "Bandwidth Limit Exceeded",
-    "Based on “:label”": "“:label” asosida",
+    "Based on :name’s “:label”": ":name ning “:label” asosida",
     "Basic animal": "Oddiy hayvon",
     "Basic contact": "Oddiy kontakt",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Hech narsa yozilishidan oldin uch narsa tekshiriladi: fayl JSON sifatida oʻqiladimi, format bu versiya tushunadigan formatmi va undagi har bir nom hamda har bir maydon turi shu yerda bormi. Biror narsa notoʻgʻri boʻlsa qaysi qismi ekani aytiladi va hech narsa yaratilmaydi.",

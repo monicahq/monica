@@ -453,7 +453,7 @@
     "Bad Gateway": "不正なゲートウェイ",
     "Bad Request": "不正なリクエスト",
     "Bandwidth Limit Exceeded": "帯域幅の制限を超過",
-    "Based on “:label”": "「:label」に基づく",
+    "Based on :name’s “:label”": ":nameの「:label」に基づく",
     "Basic animal": "基本の動物",
     "Basic contact": "基本の連絡先",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "書き込む前に3点を確認します。ファイルがJSONとして読めること、形式をこのバージョンが理解できること、そして中のすべての名前とフィールドの種類がここに存在すること。問題があればどの部分かをお知らせし、何も作成されません。",

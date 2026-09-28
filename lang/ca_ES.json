@@ -453,7 +453,7 @@
     "Bad Gateway": "Porta d’enllaç incorrecta",
     "Bad Request": "Petició dolenta",
     "Bandwidth Limit Exceeded": "Límit d’ample de banda excedit",
-    "Based on “:label”": "Basat en «:label»",
+    "Based on :name’s “:label”": "Basat en «:label» de :name",
     "Basic animal": "Animal bàsic",
     "Basic contact": "Contacte bàsic",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Abans d’escriure res es comproven tres coses: que el fitxer es llegeix com a JSON, que el format és un que aquesta versió entén, i que cada nom i cada tipus de camp que hi ha existeix aquí. Si alguna cosa no va bé, se’t diu quina part és, i no es crea res.",

@@ -453,7 +453,7 @@
     "Bad Gateway": "නරක දොරටුව",
     "Bad Request": "නරක ඉල්ලීම",
     "Bandwidth Limit Exceeded": "කලාප පළල සීමාව ඉක්මවා ඇත",
-    "Based on “:label”": "“:label” මත පදනම්ව",
+    "Based on :name’s “:label”": ":name ගේ “:label” මත පදනම්ව",
     "Basic animal": "මූලික සතා",
     "Basic contact": "මූලික සම්බන්ධතාව",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "කිසිවක් ලියීමට පෙර දේවල් තුනක් පරීක්ෂා කරයි: ගොනුව JSON ලෙස කියවේද, ආකෘතිය මෙම අනුවාදය තේරුම් ගන්නා එකද, සහ එහි ඇති සෑම නමක් සහ සෑම ක්ෂේත්‍ර වර්ගයක් මෙහි තිබේද. යමක් වැරදි නම් කුමන කොටසද ඔබට කියනු ලැබේ, කිසිවක් නිර්මාණය නොවේ.",

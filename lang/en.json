@@ -453,7 +453,7 @@
     "Bad Gateway": "Bad Gateway",
     "Bad Request": "Bad Request",
     "Bandwidth Limit Exceeded": "Bandwidth Limit Exceeded",
-    "Based on “:label”": "Based on “:label”",
+    "Based on :name’s “:label”": "Based on :name’s “:label”",
     "Basic animal": "Basic animal",
     "Basic contact": "Basic contact",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.",

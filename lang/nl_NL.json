@@ -453,7 +453,7 @@
     "Bad Gateway": "Slechte poort",
     "Bad Request": "Foute aanvraag",
     "Bandwidth Limit Exceeded": "Bandbreedte overschreden",
-    "Based on “:label”": "Gebaseerd op “:label”",
+    "Based on :name’s “:label”": "Gebaseerd op “:label” van :name",
     "Basic animal": "Basisdier",
     "Basic contact": "Basiscontact",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Voordat er iets wordt weggeschreven, worden drie dingen gecontroleerd: dat het bestand als JSON leest, dat het formaat er een is dat deze versie begrijpt, en dat elke naam en elke veldsoort erin hier bestaat. Klopt er iets niet, dan hoort u welk deel, en wordt er niets aangemaakt.",

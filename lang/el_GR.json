@@ -453,7 +453,7 @@
     "Bad Gateway": "κακή πύλη",
     "Bad Request": "Κακό αίτημα",
     "Bandwidth Limit Exceeded": "το όριο του εύρους ζώνης έχει ξεπεραστεί",
-    "Based on “:label”": "Με βάση το «:label»",
+    "Based on :name’s “:label”": "Με βάση το «:label» του/της :name",
     "Basic animal": "Βασικό ζώο",
     "Basic contact": "Βασική επαφή",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Πριν γραφτεί οτιδήποτε, ελέγχονται τρία πράγματα: ότι το αρχείο διαβάζεται ως JSON, ότι η μορφή είναι κάποια που αυτή η έκδοση καταλαβαίνει, και ότι κάθε όνομα και κάθε τύπος πεδίου μέσα του υπάρχει εδώ. Αν κάτι δεν είναι σωστό, σας λέμε ποιο μέρος, και δεν δημιουργείται τίποτα.",

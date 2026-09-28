@@ -453,7 +453,7 @@
     "Bad Gateway": "Droch Geata",
     "Bad Request": "Droch-Iarratas",
     "Bandwidth Limit Exceeded": "Sáraíodh Teorainn Bhandaleithead",
-    "Based on “:label”": "Bunaithe ar “:label”",
+    "Based on :name’s “:label”": "Bunaithe ar “:label” de chuid :name",
     "Basic animal": "Ainmhí bunúsach",
     "Basic contact": "Teagmhálaí bunúsach",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Sula scríobhtar aon rud, seiceáiltear trí rud: go léitear an comhad mar JSON, gurb é an fhormáid ceann a thuigeann an leagan seo, agus go bhfuil gach ainm agus gach cineál réimse atá ann ann anseo. Má tá rud éigin cearr, insítear duit cén chuid, agus ní chruthaítear aon rud.",

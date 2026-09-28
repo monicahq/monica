@@ -453,7 +453,7 @@
     "Bad Gateway": "Fehlerhaftes Gateway",
     "Bad Request": "Ungültige Anfrage",
     "Bandwidth Limit Exceeded": "Bandbreitenlimit überschritten",
-    "Based on “:label”": "Basierend auf „:label“",
+    "Based on :name’s “:label”": "Basierend auf „:label“ von :name",
     "Basic animal": "Einfaches Tier",
     "Basic contact": "Einfacher Kontakt",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Bevor irgendetwas geschrieben wird, werden drei Dinge geprüft: dass sich die Datei als JSON lesen lässt, dass das Format eines ist, das diese Version versteht, und dass jeder Name und jede Feldart darin hier existiert. Stimmt etwas nicht, wird Ihnen gesagt, welcher Teil, und nichts wird erstellt.",

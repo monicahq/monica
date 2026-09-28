@@ -453,7 +453,7 @@
     "Bad Gateway": "Cổng Không Hợp Lệ",
     "Bad Request": "Yêu Cầu Không Hợp Lệ",
     "Bandwidth Limit Exceeded": "Giới Hạn Băng Thông",
-    "Based on “:label”": "Dựa trên “:label”",
+    "Based on :name’s “:label”": "Dựa trên “:label” của :name",
     "Basic animal": "Động vật cơ bản",
     "Basic contact": "Liên hệ cơ bản",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Trước khi ghi bất cứ gì, ba điều được kiểm tra: tệp đọc được dưới dạng JSON, định dạng là loại bản này hiểu, và mọi tên cùng mọi loại trường trong đó đều tồn tại ở đây. Nếu có gì sai, bạn được cho biết phần nào, và không có gì được tạo ra.",

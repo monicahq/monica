@@ -453,7 +453,7 @@
     "Bad Gateway": "Geçersiz Ağ Geçidi",
     "Bad Request": "Geçersiz istek",
     "Bandwidth Limit Exceeded": "Bant Genişliği Sınırı Aşıldı",
-    "Based on “:label”": "Temeli: “:label”",
+    "Based on :name’s “:label”": "Temeli: :name için “:label”",
     "Basic animal": "Temel hayvan",
     "Basic contact": "Temel kişi",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Hiçbir şey yazılmadan önce üç şey denetlenir: dosyanın JSON olarak okunduğu, biçimin bu sürümün anladığı biçimlerden biri olduğu, ve içindeki her adın ve her alan türünün burada var olduğu. Bir şey yanlışsa size hangi bölüm olduğu söylenir ve hiçbir şey oluşturulmaz.",

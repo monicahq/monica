@@ -453,7 +453,7 @@
     "Bad Gateway": "খারাপ গেটওয়ে",
     "Bad Request": "খারাপ অনুরোধ",
     "Bandwidth Limit Exceeded": "ব্যান্ডউইথ সীমা অতিক্রম করেছে",
-    "Based on “:label”": "“:label” অনুযায়ী",
+    "Based on :name’s “:label”": ":name-এর “:label” অনুযায়ী",
     "Basic animal": "মৌলিক পশু",
     "Basic contact": "মৌলিক পরিচিতি",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "কিছু লেখার আগে তিনটি জিনিস যাচাই হয়: ফাইলটি JSON হিসেবে পড়া যায় কি না, বিন্যাসটি এই সংস্করণ বোঝে কি না, আর তাতে থাকা প্রতিটি নাম ও প্রতিটি ধরনের ক্ষেত্র এখানে আছে কি না। কিছু ভুল থাকলে আপনাকে বলা হয় কোন অংশ, আর কিছুই তৈরি হয় না।",

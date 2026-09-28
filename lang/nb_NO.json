@@ -453,7 +453,7 @@
     "Bad Gateway": "Dårlig gateway",
     "Bad Request": "Dårlig forespørsel",
     "Bandwidth Limit Exceeded": "Båndbreddekvoten er overskredet",
-    "Based on “:label”": "Basert på «:label»",
+    "Based on :name’s “:label”": "Basert på «:label» for :name",
     "Basic animal": "Enkelt dyr",
     "Basic contact": "Enkel kontakt",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Før noe skrives, kontrolleres tre ting: at filen kan leses som JSON, at formatet er ett denne versjonen forstår, og at hvert navn og hver felttype i den finnes her. Er noe galt, får du vite hvilken del det gjelder, og ingenting opprettes.",

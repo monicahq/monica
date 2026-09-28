@@ -453,7 +453,7 @@
     "Bad Gateway": "Masamang Gateway",
     "Bad Request": "Masamang Kahilingan",
     "Bandwidth Limit Exceeded": "Lumampas sa Limitasyon ng Bandwidth",
-    "Based on “:label”": "Batay sa “:label”",
+    "Based on :name’s “:label”": "Batay sa “:label” ni :name",
     "Basic animal": "Payak na hayop",
     "Basic contact": "Payak na contact",
     "Before anything is written, three things are checked: that the file reads as JSON, that the format is one this version understands, and that every name and every kind of field in it exists here. If something is wrong you are told which part, and nothing is created.": "Bago maitala ang anuman, tatlong bagay ang sinusuri: na nababasa ang file bilang JSON, na ang format ay isang nauunawaan ng bersyong ito, at na ang bawat pangalan at bawat uri ng field sa loob nito ay umiiral dito. Kung may mali, sinasabi sa iyo kung aling bahagi, at wala nang nagagawa.",
