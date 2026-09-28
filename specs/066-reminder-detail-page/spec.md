@@ -51,7 +51,7 @@ When a reminder is stopped, the page says why and how to undo it, instead of a s
 
 1. **Given** a reminder stopped because its date was cleared, **Then** a warning notice titled "This reminder has no date to follow" explains that adding the date again brings the next one back.
 2. **Given** a reminder stopped because the contact is archived, **Then** the notice is titled "Michael Scott is archived" and says restoring the contact starts notifications again.
-3. **Given** any stopped reminder, **Then** upcoming dates are left out, overdue and current dates can still be answered, and the list ends with "No upcoming date until this is resolved."
+3. **Given** any stopped reminder, **Then** no date waits for an answer, since stopping cancels every unanswered date (spec 063 FR-025, research R6), and the list reads "No upcoming date until this is resolved."
 
 ---
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Actions\DeactivateReminders;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceCategoryEnum;
@@ -15,6 +16,7 @@ use App\Models\Vault;
 use App\ViewModels\Vaults\ReminderViewModel;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -183,18 +185,18 @@ class ReminderViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_drops_the_dates_still_to_come_while_the_reminder_is_stopped(): void
+    public function it_leaves_nothing_awaiting_while_the_reminder_is_stopped(): void
     {
-        $this->travelTo(CarbonImmutable::parse('2026-09-28 12:00:00', 'UTC'));
-        $user = User::factory()->create(['timezone' => 'UTC']);
+        Queue::fake();
+
+        $user = User::factory()->create();
         $reminder = $this->reminderAbout($user);
         ReminderOccurrence::factory()->for($reminder)->daysFromNow(-3)->create();
         ReminderOccurrence::factory()->for($reminder)->daysFromNow(9)->create();
-        $reminder->update(['is_active' => false, 'inactive_reason' => ReminderInactiveReasonEnum::ValueCleared, 'deactivated_at' => now()]);
 
-        $awaiting = $this->viewModel($user, $reminder->refresh())->awaiting();
+        new DeactivateReminders(user: $user, subject: $reminder, reason: ReminderInactiveReasonEnum::FieldRemoved)->execute();
 
-        $this->assertSame([ReminderOccurrenceCategoryEnum::Overdue], array_column($awaiting, 'category'));
+        $this->assertSame([], $this->viewModel($user, $reminder->refresh())->awaiting());
     }
 
     #[Test]

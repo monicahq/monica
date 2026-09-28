@@ -204,6 +204,10 @@ class ReminderViewModel
     /** @return list<array{date: string, row: ReminderRow, category: ReminderOccurrenceCategoryEnum}> */
     public function awaiting(): array
     {
+        if (! $this->reminder->is_active) {
+            return [];
+        }
+
         $today = CarbonImmutable::now($this->user->timezone);
 
         $rows = $this->reminder->occurrences()
@@ -211,13 +215,6 @@ class ReminderViewModel
             ->orderBy('local_date')
             ->get()
             ->map(fn (ReminderOccurrence $occurrence): array => $this->awaitingEntry($occurrence, $today));
-
-        if (! $this->reminder->is_active) {
-            return $rows
-                ->reject(fn (array $row): bool => $row['category'] === ReminderOccurrenceCategoryEnum::Upcoming)
-                ->values()
-                ->all();
-        }
 
         // Deadlines are produced shortly before they fall due, so the next date is shown before it exists.
         $hasUpcoming = $rows->contains(fn (array $row): bool => $row['category'] === ReminderOccurrenceCategoryEnum::Upcoming);

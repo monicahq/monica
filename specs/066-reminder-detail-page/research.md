@@ -43,7 +43,8 @@
 
 - **Decision**: `problem()` returns `{title, body}|null`, one pair per `ReminderInactiveReasonEnum`
   case, rendered with `x-notice tone="warning"`. The bodies reuse the wording of `quietBecause()`;
-  titles are new. Upcoming rows are left out while stopped; overdue and today rows stay.
+  titles are new. Nothing is listed while stopped: stopping cancels every unanswered date, overdue
+  and today included, and a stopped reminder projects no next date.
 - **Rationale**: principle VIII (say why and keep the way back) is met by the notice itself.
 
 ## R7. Delivery details
