@@ -19,7 +19,6 @@ class Sidebar extends Component
         public User $user,
         public VaultModel $vault,
         public string $current = 'dashboard',
-        public ?int $taskCount = null,
     ) {}
 
     #[Override]

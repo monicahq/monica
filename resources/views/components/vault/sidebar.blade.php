@@ -3,7 +3,6 @@
   @var \App\Models\User $user
   @var \App\Models\Vault $vault
   @var string $current
-  @var int|null $taskCount
   @var int $reminderCount
   @var list<array{key: string, name: string, icon: string, colour: string, url: string}> $entityTypes
 --}}
@@ -14,9 +13,7 @@
   $sections = [
     ['key' => 'dashboard', 'label' => __('Dashboard'), 'icon' => 'heart', 'url' => route('vaults.show', $vault), 'badge' => null],
     ['key' => 'contacts', 'label' => __('People'), 'icon' => 'people', 'url' => route('contacts.index', $vault), 'badge' => $vault->contact_count > 0 ? (string) $vault->contact_count : null],
-    ['key' => 'tasks', 'label' => __('Tasks'), 'icon' => 'tasks', 'url' => null, 'badge' => $taskCount === null ? null : (string) $taskCount],
     ['key' => 'reminders', 'label' => __('Reminders'), 'icon' => 'reminder', 'url' => route('reminders.index', $vault), 'badge' => $reminderCount > 0 ? (string) $reminderCount : null],
-    ['key' => 'files', 'label' => __('Files'), 'icon' => 'file', 'url' => null, 'badge' => null],
     ['key' => 'vault-settings', 'label' => __('Vault settings'), 'icon' => 'vault', 'url' => route('vaults.settings.index', $vault), 'badge' => null],
   ];
 @endphp

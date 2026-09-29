@@ -50,7 +50,7 @@ class SidebarTest extends TestCase
         $this->actingAs($user)->blade(
             '<x-vault.sidebar :user="$user" :vault="$vault" current="dashboard" />',
             ['user' => $user, 'vault' => $vault],
-        )->assertSeeInOrder(['People', 'Companies', 'Animals', 'Tasks']);
+        )->assertSeeInOrder(['People', 'Companies', 'Animals', 'Reminders']);
     }
 
     #[Test]
@@ -83,7 +83,7 @@ class SidebarTest extends TestCase
     }
 
     #[Test]
-    public function the_vault_column_draws_what_has_not_been_built_without_offering_it(): void
+    public function the_vault_column_does_not_offer_tasks_or_files(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -93,9 +93,9 @@ class SidebarTest extends TestCase
             ['user' => $user, 'vault' => $vault],
         );
 
-        $rendered->assertSee('Tasks');
         $rendered->assertSee('Reminders');
-        $rendered->assertSee('aria-disabled="true"', escape: false);
+        $rendered->assertDontSee('Tasks');
+        $rendered->assertDontSee('Files');
         $rendered->assertDontSee('Journal');
     }
 

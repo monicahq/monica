@@ -18,7 +18,7 @@
   $panel = match ($width) {
     'wide' => 'w-64',
     'columns' => 'max-h-105 w-90 max-w-[calc(100vw-48px)] overflow-y-auto',
-    default => 'w-56',
+    default => 'w-50',
   };
 
   $side = match ($align) {
@@ -53,7 +53,7 @@
     x-cloak
     x-show="menuOpen"
     role="menu"
-    class="absolute top-[calc(100%+6px)] {{ $side }} z-40 flex {{ $panel }} flex-col gap-0.5 rounded-lg border border-hairline bg-card p-1.5 shadow-lg"
+    class="absolute top-[calc(100%+6px)] {{ $side }} z-40 flex {{ $panel }} flex-col rounded-lg border border-hairline bg-canvas p-1 shadow-pop"
   >
     {{ $slot }}
   </div>

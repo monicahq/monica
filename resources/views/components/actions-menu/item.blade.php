@@ -10,7 +10,7 @@
 <a
   href="{{ $href }}"
   role="menuitem"
-  {{ $attributes->class(['flex w-full cursor-pointer items-center gap-2.5 rounded-xs px-2.5 py-2 text-left font-sans text-sm text-ink no-underline transition-colors hover:bg-hover focus-ring-inset']) }}
+  {{ $attributes->class(['flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base text-ink no-underline transition-colors hover:bg-hover focus-ring-inset']) }}
 >
   @isset($icon)
     <span class="shrink-0">{{ $icon }}</span>

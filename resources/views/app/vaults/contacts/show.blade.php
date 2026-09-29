@@ -82,30 +82,20 @@
 
       <x-actions-menu :label="__('More actions for :name', ['name' => $viewModel->contact()->name])">
         <x-actions-menu.item :href="$viewModel->shareLinksUrl()" data-turbo="true">
-          <x-slot:icon>
-            <x-icon name="link" :size="15" :stroke-width="1.6" />
-          </x-slot:icon>
           {{ $viewModel->shareLine() }}
         </x-actions-menu.item>
 
         <x-actions-menu.item :href="$viewModel->mergeUrl()" data-turbo="true">
-          <x-slot:icon>
-            <x-icon name="contact" :size="15" :stroke-width="1.6" />
-          </x-slot:icon>
           {{ __('Merge') }}
         </x-actions-menu.item>
 
+        <div role="separator" class="-mx-1 my-1 h-px bg-hairline"></div>
+
         <x-actions-menu.item :href="$viewModel->vCardUrl()" data-turbo="true">
-          <x-slot:icon>
-            <x-icon name="file" :size="15" :stroke-width="1.6" />
-          </x-slot:icon>
           {{ __('Export as vCard') }}
         </x-actions-menu.item>
 
         <x-actions-menu.item :href="$viewModel->versionHistoryUrl()" data-turbo="true">
-          <x-slot:icon>
-            <x-icon name="timeline" :size="15" :stroke-width="1.6" />
-          </x-slot:icon>
           {{ __('Version history') }}
         </x-actions-menu.item>
       </x-actions-menu>
