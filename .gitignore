@@ -31,3 +31,8 @@ app/Scratch.php
 
 # Boost writes rules here; this project keeps them in .claude/rules
 .ai/
+
+# Lerd writes these for the local environment of one machine
+.lerd.yaml
+.php-version
+.env.before_lerd

@@ -60,6 +60,18 @@ class AuthenticationTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_the_key_of_a_deactivated_person(): void
+    {
+        $user = User::factory()->create();
+        $key = $user->createToken('Dwight’s phone')->plainTextToken;
+        $user->update(['is_active' => false]);
+
+        $response = $this->dav('PROPFIND', 'dav/', $user->email, $key);
+
+        $response->assertStatus(401);
+    }
+
+    #[Test]
     public function it_refuses_the_account_password(): void
     {
         $user = User::factory()->create(['password' => Hash::make('beets')]);

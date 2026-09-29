@@ -28,8 +28,8 @@ class McpDocsViewModel
 
     /** @var list<string> */
     public const array SETUP = [
-        'Create an API key in **Settings → Security and access → API keys**. Under **What will use this key**, choose **AI Assistant** and give the key a recognisable name.',
-        'Copy the key when it appears. Use a separate key for each assistant so you can revoke its access independently.',
+        'An assistant connects in one of two ways. If it supports OAuth, give it the server address and it sends you to Monica to sign in. Monica shows the name the assistant gives itself and the address it sends you back to, and connects it only when you choose **Allow**. No key is needed.',
+        'Otherwise, create an API key in **Settings → Security and access → API keys**. Under **What will use this key**, choose **AI Assistant** and give the key a recognisable name. Copy the key when it appears. Use a separate key for each assistant so you can revoke its access independently.',
     ];
 
     /** @var list<array{prompt: string, note: string}> */
@@ -40,8 +40,8 @@ class McpDocsViewModel
 
     /** @var list<string> */
     public const array ACCESS = [
-        'Your assistant acts through its API key. Changes made through MCP are recorded in **Settings → Logs**.',
-        'To disconnect an assistant, revoke its key in **Settings → Security and access → API keys**.',
+        'Your assistant acts as you, through its API key or its OAuth connection. Changes made through MCP are recorded in **Settings → Logs**, under the assistant’s name.',
+        'To disconnect an assistant connected through OAuth, choose **Disconnect** beside it in **Settings → Security and access → Connected assistants**. To disconnect one using a key, revoke its key in **Settings → Security and access → API keys**. Either takes effect at once.',
     ];
 
     /** @var list<string> */
@@ -65,10 +65,10 @@ class McpDocsViewModel
     /** @var array{title: string, text: string} */
     public const array ACCESS_NOTICE = [
         'title' => 'Your assistant can access all your vaults',
-        'text' => 'Your assistant can use every tool listed below in every vault in your account. Choosing “AI Assistant” when creating an API key only labels the key—it does not limit what your assistant can access or change.',
+        'text' => 'Your assistant can use every tool listed below in every vault in your account, whether it connects with a key or through OAuth. Choosing “AI Assistant” when creating an API key only labels the key—it does not limit what your assistant can access or change.',
     ];
 
-    public const string LAST_UPDATED = '2026-09-28';
+    public const string LAST_UPDATED = '2026-09-29';
 
     public const string SOURCE_URL = 'https://github.com/monicahq/monica';
 
@@ -188,21 +188,23 @@ class McpDocsViewModel
                 'key' => 'claude-desktop',
                 'label' => 'Claude Desktop',
                 'content' => [
-                    $this->notice('warning', 'Request headers are in beta', 'Claude Desktop can send an API key only through the request headers of a custom connector, a beta available to a limited set of organisations. If you see **Request headers** when you add a custom connector, enter the server address, choose **No sign-in**, and add the header `Authorization` with the value `Bearer YOUR_API_KEY`. Otherwise, use Claude Code or another client listed here.'),
+                    $this->text('Add a custom connector with the server address below. Claude opens Monica in your browser: sign in if you are asked to, check the name and the address on the screen, and choose **Allow**. No API key is needed.'),
+                    $this->code('Server address', 'text', [$url]),
                 ],
             ],
             [
                 'key' => 'chatgpt',
                 'label' => 'ChatGPT',
                 'content' => [
-                    $this->notice('quiet', 'Not available yet', 'ChatGPT connects to authenticated MCP servers with OAuth and does not accept custom API keys. Monica does not offer OAuth for MCP yet, so ChatGPT cannot connect to it directly.'),
+                    $this->text('Add a custom connector with the server address below and choose OAuth as its authentication. ChatGPT opens Monica in your browser: sign in if you are asked to, check the name and the address on the screen, and choose **Allow**. Whether custom connectors are offered depends on your ChatGPT plan and settings.'),
+                    $this->code('Server address', 'text', [$url]),
                 ],
             ],
             [
                 'key' => 'other',
                 'label' => 'Other',
                 'content' => [
-                    $this->text('Use a client that supports remote HTTP MCP servers and custom authentication headers:'),
+                    $this->text('Use a client that supports remote HTTP MCP servers. If it supports OAuth, give it the server address alone and allow it when Monica asks. Otherwise, send an API key in a header:'),
                     $this->code('Connection details', 'text', [
                         "Server URL: {$url}",
                         'Header: Authorization: Bearer YOUR_API_KEY',
@@ -347,10 +349,10 @@ class McpDocsViewModel
     {
         $limit = config('monica.self_hosted')
             ? 'This instance sets no limit on MCP requests, so the refusal comes from something in front of it, such as a proxy.'
-            : 'The assistant reached the limit of 60 requests a minute for its key. Wait a minute and ask again.';
+            : 'The assistant reached the limit of 60 requests a minute for its key or its connection. Wait a minute and ask again.';
 
         return [
-            ['title' => 'The assistant is refused', 'text' => 'The key is wrong or revoked. Create a new one in **Settings → Security and access → API keys** and update your configuration.'],
+            ['title' => 'The assistant is refused', 'text' => 'With a key, the key is wrong or revoked: create a new one in **Settings → Security and access → API keys** and update your configuration. With OAuth, the assistant was disconnected or its access expired: remove the connector, add it again, and choose **Allow**.'],
             ['title' => 'The server cannot be reached', 'text' => 'Check that the address ends in `/mcp` and that your instance is reachable from the machine running the assistant.'],
             ['title' => 'The key is empty', 'text' => 'The assistant cannot see `MONICA_API_KEY`. Set it in the environment the assistant starts from, then restart it. Desktop apps often do not read your terminal’s variables.'],
             ['title' => 'Too many requests', 'text' => $limit],
@@ -362,7 +364,7 @@ class McpDocsViewModel
     {
         return [
             ['label' => 'API reference', 'url' => route('docs.api.index')],
-            ['label' => 'API keys', 'url' => route('settings.security.index')],
+            ['label' => 'API keys and connected assistants', 'url' => route('settings.security.index')],
             ['label' => 'Logs', 'url' => route('settings.logs.index')],
         ];
     }

@@ -491,12 +491,12 @@ class Contact extends Model
     /**
      * Scope the query to the people one chip of the contacts list shows.
      *
-     * Somebody still waiting to be filled in is out of all three, and somebody
-     * archived is out of every one but their own, which is what makes archived a
-     * grouping rather than an addition to the others.
+     * Somebody still waiting to be filled in is only in the partial grouping, and
+     * somebody archived is in none of them, since nothing offers a way to archive
+     * or to bring an archived contact back yet.
      *
      * This lives here rather than on the screen that first needed it because the
-     * API answers the same three groupings, and a narrowing kept in a view model
+     * API answers the same groupings, and a narrowing kept in a view model
      * is one the two surfaces would sooner or later disagree about.
      *
      * @param  Builder<$this>  $query
@@ -504,7 +504,7 @@ class Contact extends Model
     public function scopeInGrouping(Builder $query, ContactGroupingEnum $grouping): void
     {
         $query->where('is_partial', $grouping === ContactGroupingEnum::NamesOnly)
-            ->where('is_archived', $grouping === ContactGroupingEnum::Archived)
+            ->where('is_archived', false)
             ->when(
                 $grouping === ContactGroupingEnum::Favourites,
                 fn (Builder $query): Builder => $query->where('is_favourite', true),

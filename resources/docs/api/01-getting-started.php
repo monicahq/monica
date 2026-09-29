@@ -42,7 +42,7 @@ return [
                 'A key acts as you, with exactly the access you have. Make one per integration, so you can revoke it alone.',
                 'Tokens do not expire. They are revoked rather than refreshed, either by logging out or from the security screen.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'response' => [
                 'data' => [
                     'type' => 'user',
@@ -67,6 +67,7 @@ return [
             'auth' => false,
             'description' => 'Most endpoints allow sixty requests per minute. Register and log in allow six, because they take a password and a looser limit would make them a way to guess one.',
             'body' => [
+                'The sixty are counted per user, not per key. Every key you make, and every device syncing over CardDAV, draws on the same budget, so making another key does not raise it.',
                 'Every answer carries the budget left in X-RateLimit-Remaining. A request over the limit answers 429 and says in Retry-After how many seconds to wait.',
             ],
             'rateLimit' => 'Six requests per minute, per address.',
@@ -81,11 +82,12 @@ return [
             'label' => 'Pagination',
             'method' => 'GET',
             'path' => '/vaults',
-            'description' => 'Every endpoint that answers with a list is paginated, and they all page the same way. Pass page to move through the results and per_page to size them, between 1 and 100.',
+            'description' => 'Endpoints that answer with a list are paginated, and they all page the same way. Pass page to move through the results and per_page to size them, between 1 and 100.',
             'body' => [
-                'No endpoint in this version answers with a list yet. The convention is written down first so that the ones that arrive next all follow it, rather than each inventing its own.',
+                'The meta object says which page this is, how many objects a page holds, and how many there are in total, so a caller knows when it has reached the last page.',
+                'Two short lists answer whole, with no meta: the notification channels and the fields a life event type asks for.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => [
                 [
                     'name' => 'page',
@@ -196,7 +198,7 @@ return [
                     'body' => 'A message. The status endpoint answers a status of error instead.',
                 ],
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'responseStatus' => 422,
             'response' => [
                 'message' => 'The first name field is required.',

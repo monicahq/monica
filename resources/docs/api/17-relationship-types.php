@@ -96,7 +96,7 @@ return [
                 'The order is the one the picker offers: the category position first, then the position inside the category. Retired types are listed with the rest, because one that is off is meant to be found again.',
                 'To read one category at a time instead, ask for the types of that category.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => $pageParams,
             'returns' => 'A page of relationship type objects, and how many there are in all.',
             'response' => [
@@ -117,7 +117,7 @@ return [
                 'This is the grouped reading the settings screen shows, one group at a time. The objects are relationship types, described in full in the relationship types reference.',
                 'A category holding nothing answers an empty list rather than an error, which is the state Other is supplied in.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $categoryIdentifier,
             'queryParams' => $pageParams,
             'returns' => 'A page of relationship type objects, and how many the category holds in all.',
@@ -138,7 +138,7 @@ return [
             'body' => [
                 'The relationships written with the type are not in here. This is the vocabulary rather than what was said with it.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'A relationship type object. A type belonging to somebody else answers 404, which is also what a type that never existed answers, and what a deleted one answers.',
             'response' => ['data' => $type],
@@ -156,7 +156,7 @@ return [
                 'The type goes at the end of the category you file it under, and is offered straight away unless you say otherwise. It never acquires a system_behavior: the family tree and romantic history read the types the product supplied, whatever you call yours.',
                 'A name another type of your account already carries is refused, so the picker never offers the same word twice.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 ['name' => 'relationship_category_id', 'type' => 'uuid', 'required' => true, 'description' => 'The group to file the type under. A category belonging to somebody else is refused.', 'example' => '7d1f4a83-2c06-4e59-9b27-8f3a5d0e6c14'],
                 ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the link is called. Up to 255 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused.', 'example' => 'Godparent / Godchild'],
@@ -184,7 +184,7 @@ return [
                 'The direction stays as it is unless you send is_symmetric. Send it against a type the product supplied, or one that relationships already use, and the request is refused rather than quietly ignored, because turning a type round would rewrite what people wrote years ago.',
                 'Whether the type is offered, and where it sits, are not changed here. Each has an address of its own below.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'relationship_category_id', 'type' => 'uuid', 'required' => true, 'description' => 'The group the type sits in. Moving it between groups changes nothing about what the product does with it.', 'example' => '7d1f4a83-2c06-4e59-9b27-8f3a5d0e6c14'],
@@ -209,7 +209,7 @@ return [
                 'Stopping the type being offered is the answer in either case: it leaves the picker, and every relationship written with it keeps reading exactly as before.',
                 'A deletion is recoverable, so an accident is not the end of anything.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'Nothing. A type that is supplied or in use answers 422 naming that reason, and one belonging to somebody else answers 404.',
             'responseStatus' => 204,
@@ -229,7 +229,7 @@ return [
                 'The type keeps the place it had, so offering it again puts it back where it was rather than at the end. Its wording is untouched.',
                 'Send the state you want rather than asking for a toggle, so sending the same value twice confirms it instead of inverting it.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'is_active', 'type' => 'boolean', 'required' => true, 'description' => 'True to offer the type again, false to retire it.', 'example' => 'false'],
@@ -250,7 +250,7 @@ return [
                 'A type moves inside the category it is filed under, and only the types of that category are renumbered from 1, retired ones counted among them. A position past the end puts the type last rather than being refused.',
                 'To move a type into a different group, reword it and send the group you want instead. This address only changes the order.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where the type should sit inside its category, counting from 1.', 'example' => '1'],

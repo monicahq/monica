@@ -88,18 +88,12 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_the_archived_people_and_nobody_else_under_their_own_chip(): void
+    public function it_offers_no_archived_list(): void
     {
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user);
 
-        $this->contact($vault, 'Michael', 'Scott');
-        $this->contact($vault, 'Dwight', 'Schrute', ['is_archived' => true]);
-
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'archived']))
-            ->assertSee('Dwight Schrute')
-            ->assertDontSee('Michael Scott')
-            ->assertSee('1 of 1 shown.');
+        $this->actingAs($user)->get("/vaults/{$vault->slug}/contacts/archived")->assertNotFound();
     }
 
     #[Test]
@@ -169,7 +163,7 @@ class ContactControllerTest extends TestCase
 
         preg_match_all('/x-target(\.push)?="contacts"/', $page, $targets);
 
-        $this->assertCount(5, $targets[0]);
+        $this->assertCount(4, $targets[0]);
         $this->assertSame($targets[0], array_filter($targets[0], fn (string $target): bool => str_contains($target, '.push')));
     }
 
@@ -215,14 +209,14 @@ class ContactControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('contacts.index', [
             'vault' => $vault,
-            'filter' => 'archived',
+            'filter' => 'names-only',
             'sort' => 'added',
             'direction' => 'desc',
         ]))->assertStatus(200);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'contact_list_grouping' => 'archived',
+            'contact_list_grouping' => 'names-only',
             'contact_list_sort' => 'added',
             'contact_list_direction' => 'desc',
         ]);
@@ -235,13 +229,13 @@ class ContactControllerTest extends TestCase
         $scranton = $this->vaultReadyForContacts($user);
         $stamford = $this->vaultReadyForContacts($user, 'Another contact');
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $scranton, 'filter' => 'archived']))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $scranton, 'filter' => 'names-only']))
             ->assertStatus(200);
 
         $this->actingAs($user)->get(route('contacts.index', $stamford))
             ->assertRedirect(route('contacts.index', [
                 'vault' => $stamford,
-                'filter' => 'archived',
+                'filter' => 'names-only',
                 'sort' => 'name',
                 'direction' => 'asc',
             ]));
@@ -254,14 +248,14 @@ class ContactControllerTest extends TestCase
         $vault = $this->vaultReadyForContacts($user);
 
         $this->contact($vault, 'Michael', 'Scott', ['is_favourite' => true]);
-        $this->contact($vault, 'Dwight', 'Schrute', ['is_archived' => true]);
+        $this->contact($vault, 'Dwight', 'Schrute', ['is_partial' => true]);
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'archived']))
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'names-only']))
             ->assertStatus(200)
             ->assertSee('Dwight Schrute')
             ->assertDontSee('Michael Scott');
 
-        $this->assertEquals('archived', $user->refresh()->contact_list_grouping);
+        $this->assertEquals('names-only', $user->refresh()->contact_list_grouping);
     }
 
     #[Test]
@@ -391,7 +385,8 @@ class ContactControllerTest extends TestCase
         $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all']))
             ->assertSee('Everybody')
             ->assertSee('Favourites')
-            ->assertSee('Archived');
+            ->assertSee('Partial contacts')
+            ->assertDontSee('Archived');
     }
 
     #[Test]

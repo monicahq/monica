@@ -45,6 +45,18 @@ class McpAuthenticationTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_the_key_of_a_deactivated_person(): void
+    {
+        $user = User::factory()->create();
+        $key = $user->createToken('Dundie awards bot');
+        $user->update(['is_active' => false]);
+
+        $response = $this->withToken($key->plainTextToken)->postJson('/mcp', $this->listTools());
+
+        $response->assertUnauthorized();
+    }
+
+    #[Test]
     public function it_admits_a_live_key(): void
     {
         $user = User::factory()->create();

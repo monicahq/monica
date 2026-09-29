@@ -110,7 +110,7 @@ return [
                 'A reminder is told on its day, once on each channel you switched on, and never again. Nothing is sent ahead of the day.',
                 'Deleted reminders are left out. The answers given to their dates stay, and are read from the dates endpoint.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'queryParams' => $pageParams,
             'returns' => 'A page of reminder objects, and how many there are in all.',
@@ -133,7 +133,7 @@ return [
                 'A reminder cannot start before today. One that happens once, dated today, whose hour has already passed, is refused with 422, since there would be nothing left to tell you about.',
                 'A refusal names the field it is about: name, starts_on, interval, time or timezone.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the reminder says. Up to 255 characters, reduced to plain text.', 'example' => 'Ask how the art school application went'],
@@ -159,7 +159,7 @@ return [
             'body' => [
                 'The dates it produced, and what was answered for each, are read from the dates endpoint.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $reminderIdentifier,
             'returns' => 'A reminder object.',
             'response' => ['data' => $reminder],
@@ -177,7 +177,7 @@ return [
                 'Changing the schedule replaces the dates after today that nobody answered. Today\'s date and the overdue ones stay as they are, and no answer already given is ever changed.',
                 'Only a manual reminder has a first date of its own. Sending starts_on for one that reads a date on the contact answers 422.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $reminderIdentifier,
             'bodyParams' => [
                 ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the reminder says. Up to 255 characters.', 'example' => 'Ask how the art school application went'],
@@ -201,7 +201,7 @@ return [
             'body' => [
                 'Nothing further is delivered, and the dates still waiting for an answer are dropped. The answers already given stay, and are still read from the dates endpoint.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $reminderIdentifier,
             'returns' => 'Nothing at all.',
             'responseStatus' => 204,
@@ -224,7 +224,7 @@ return [
                 'upcoming lists the next date of each active reminder. A date too far off to have been generated yet comes back with a null id, and cannot be answered, which nothing upcoming can be anyway.',
                 'history lists the answered dates, the latest answer first, including those of reminders deleted since.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'queryParams' => [
                 ['name' => 'category', 'type' => 'string', 'required' => false, 'description' => 'One of overdue, today, upcoming or history.'],
@@ -254,7 +254,7 @@ return [
                 'An answer cannot be changed or taken back, and a second answer for the same date answers 422, whatever it says. A cancelled date answers 422 too.',
                 'Answering drops the notifications for that date not sent yet, and touches no other date: next year\'s birthday is still waiting.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [
                 ...$identifier,
                 ['name' => 'occurrence', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the date, which is the id it comes back with.'],

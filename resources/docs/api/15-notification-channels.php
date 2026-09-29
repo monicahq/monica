@@ -135,7 +135,7 @@ return [
                 'Every account has one record per channel from the moment it exists, so this list is never short and never has to be filled in first.',
                 'No channel asks the account for a credential. In app and email need none, and the provider account behind Telegram and the text message belongs to the instance, so all the account supplies is where to send.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'returns' => 'Every channel of the account, in the order the product names them.',
             'response' => ['data' => [$email, $telegram, $sms]],
         ],
@@ -151,7 +151,7 @@ return [
             'body' => [
                 'Read needs_destination and requires_proof against destination and is_proven to work out what is left to do before is_enabled can be set.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $channelPathParam,
             'returns' => 'One channel. A channel name the product does not know answers 404.',
             'response' => ['data' => $telegram],
@@ -169,7 +169,7 @@ return [
                 'Switching a channel on is refused with 422 while anything it asks for is missing, and the message says which. A channel that has to be proved is refused until it has been.',
                 'Changing destination throws away the proof, because the proof was about the old destination and says nothing about the new one.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $channelPathParam,
             'bodyParams' => [
                 [
@@ -202,7 +202,7 @@ return [
                 'Only a channel whose requires_proof is true accepts this. A text message provider takes any well formed number, so a send that appears to have worked proves nothing; a code that comes back proves somebody holding that number typed it.',
                 'The code lasts a limited time and only so many may be asked for on the same destination. Both limits are settings of this instance, and both refusals answer 422.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $channelPathParam,
             'returns' => 'The channel, still unproven. The code itself is never returned: it goes to the destination and nowhere else.',
             'response' => ['data' => $sms],
@@ -220,7 +220,7 @@ return [
                 'The three ways this can fail are said separately, because wrong, too late and too many tries ask three different things of whoever is reading. Each answers 422 with its own message.',
                 'Wrong guesses are counted, and past the limit the code is spent whether or not the next guess would have been right. Ask for another one.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $channelPathParam,
             'bodyParams' => [
                 [
@@ -251,7 +251,7 @@ return [
                 'This touches no reminder and writes no notification. Nothing here is something the account was owed, so nothing about it belongs in the record of what the account was told.',
                 'A channel that is not finished is refused with 422. A channel that is finished but whose service refuses the message answers 422 as well, carrying what came back, and the refusal is counted against the channel exactly as a real send would be.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $channelPathParam,
             'returns' => 'Whether it got through, and what came back when it did not.',
             'response' => ['data' => ['sent' => true, 'reason' => null]],
@@ -267,7 +267,7 @@ return [
             'body' => [
                 'These belong to the account rather than to a channel. Which channels are on is a separate thing, and is above.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'returns' => 'The preferences of the account. There is exactly one record, made with the account.',
             'response' => ['data' => $preference],
         ],
@@ -283,7 +283,7 @@ return [
                 'Quiet hours hold a notification back rather than dropping it: something due at three in the morning goes out when the quiet is over.',
                 'Asking for a daily summary without an hour to send it at is refused with 422, and so is a time of day that is not one, or a zone the application does not know.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 [
                     'name' => 'quiet_hours_are_enabled',

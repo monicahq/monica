@@ -68,7 +68,7 @@ return [
                 'Each entry carries both the raw name of the action, which is what a program matches on, and a sentence in the language on your account, which is what a person reads.',
                 'Nothing here can be written, changed or removed. A journal that can be rewritten is worth nothing, so there is no endpoint for it.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => [
                 [
                     'name' => 'page',
@@ -107,7 +107,7 @@ return [
             'body' => [
                 'What changed is not in here. A field somebody marked sensitive records that it changed and not what to, and until the product settles how those values may be kept, the whole column stays out of the API rather than half of it coming through.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [
                 [
                     'name' => 'log',

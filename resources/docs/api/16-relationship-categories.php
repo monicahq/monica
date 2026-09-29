@@ -77,7 +77,7 @@ return [
                 'Every account starts with five: Family, Romantic, Friendship, Professional and Other. Those five are marked with is_system, may be moved and retired, and can never be renamed or deleted. Any category you add yourself carries none of those restrictions.',
                 'Retired categories are listed with the rest, because one that is off is meant to be found again and switched back on.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => $pageParams,
             'returns' => 'A page of relationship category objects, and how many there are in all.',
             'response' => [
@@ -97,7 +97,7 @@ return [
             'body' => [
                 'The types themselves are not in here. Ask for them at the address below, or list every type of the account at once.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'A relationship category object. A category belonging to somebody else answers 404, which is also what a category that never existed answers, and what a deleted one answers.',
             'response' => ['data' => $category],
@@ -114,7 +114,7 @@ return [
                 'The category goes at the end of the list and is offered straight away. It holds nothing until you file types under it, and a group holding nothing is a perfectly ordinary state: Other is supplied that way.',
                 'A category does no work beyond grouping. Adding one called Family of my own does not make anything filed under it genealogical.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the group is called. Up to 255 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused.', 'example' => 'Neighbourhood'],
             ],
@@ -135,7 +135,7 @@ return [
                 'A category the product supplied cannot be renamed, and answers 422. Its wording belongs to the product and reads in the language of whoever is looking, which is what would be lost. Move it, retire it, or file your types under a group of your own instead.',
                 'The types under the category are untouched by a rename, and so is where the category sits.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the group is called. Up to 255 characters.', 'example' => 'Neighbourhood'],
@@ -155,7 +155,7 @@ return [
                 'Two categories cannot go. One the product supplied stays. One that still holds a type stays, and the answer says how many it holds, because removing it would take those types with it. Move them elsewhere first, or retire the category instead.',
                 'A deletion is recoverable, so an accident is not the end of anything.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'Nothing. A supplied category, and one still holding a type, each answer 422 naming that reason, and one belonging to somebody else answers 404.',
             'responseStatus' => 204,
@@ -175,7 +175,7 @@ return [
                 'Nothing already written is touched. Every relationship keeps reading with the words it was written with, and the category keeps the place it had, so offering it again puts it back where it was rather than at the end.',
                 'Send the state you want rather than asking for a toggle, so sending the same value twice confirms it instead of inverting it.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'is_active', 'type' => 'boolean', 'required' => true, 'description' => 'True to offer the category again, false to retire it.', 'example' => 'false'],
@@ -196,7 +196,7 @@ return [
                 'Every category of your account is numbered from 1 again once the move is made, retired ones counted among them. A position past the end puts the category last rather than being refused.',
                 'A category the product supplied may be moved like any other. Where a group sits has no effect beyond the order things are read in.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where the category should sit, counting from 1.', 'example' => '1'],

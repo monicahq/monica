@@ -42,6 +42,21 @@ class MeControllerTest extends TestCase
     ];
 
     #[Test]
+    public function it_refuses_the_key_of_a_deactivated_person_until_they_are_reactivated(): void
+    {
+        $user = User::factory()->create();
+        $key = $user->createToken('Dundie awards bot')->plainTextToken;
+
+        $user->update(['is_active' => false]);
+        $this->withToken($key)->json('GET', '/api/v1/me')->assertUnauthorized();
+
+        $this->app['auth']->forgetGuards();
+
+        $user->update(['is_active' => true]);
+        $this->withToken($key)->json('GET', '/api/v1/me')->assertOk();
+    }
+
+    #[Test]
     public function it_shows_the_view_the_contact_list_opens_on(): void
     {
         $user = User::factory()->create([

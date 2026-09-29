@@ -92,7 +92,7 @@ return [
             'body' => [
                 'A key acts as one person, so what comes back is yours and nobody else\'s. The key itself is not in here, in any form: it is readable once, in the response that created it, and only a hash of it is kept.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => $pageParams,
             'returns' => 'A page of key objects, and how many there are in all.',
             'response' => [
@@ -113,7 +113,7 @@ return [
             'path' => '/api-keys/{apiKey}',
             'examplePath' => '/api-keys/3',
             'description' => 'Retrieve one of your keys: what you called it, when you made it, and when it last let something in.',
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'A key object. A key belonging to somebody else answers 404, which is also what a key that never existed answers.',
             'response' => ['data' => $apiKey],
@@ -133,7 +133,7 @@ return [
                 'The readable value comes back in the token field, beside the object describing the key. This is the only time it exists in that form. Copy it now: it is not shown again, and a key you fail to copy is replaced rather than recovered.',
                 'Calling this with a key is deliberate, and it is how a key is rotated without opening the application. Every creation is written to your account journal, so a key that mints other keys is visible afterwards.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 [
                     'name' => 'name',
@@ -191,7 +191,7 @@ return [
                 'Anything still using it stops working, immediately, with nothing to wait out. Your other keys are untouched, which is the point of naming them: an integration you no longer trust can be cut off without breaking the rest.',
                 'You may revoke the key you are calling with. This call succeeds and every later call with it answers 401.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'Nothing at all. A key belonging to somebody else answers 404, and keeps working.',
             'responseStatus' => 204,

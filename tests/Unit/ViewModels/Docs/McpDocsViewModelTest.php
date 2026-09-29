@@ -35,12 +35,6 @@ class McpDocsViewModelTest extends TestCase
         foreach ($clients as $client) {
             $blocks = array_filter(array_column($client['content'], 'block'));
 
-            if (in_array($client['key'], ['claude-desktop', 'chatgpt'], true)) {
-                $this->assertSame([], $blocks);
-
-                continue;
-            }
-
             $this->assertNotSame([], $blocks);
 
             foreach ($blocks as $block) {
@@ -83,6 +77,13 @@ class McpDocsViewModelTest extends TestCase
             ['Contacts, changing', 'Reminders, changing', 'Templates, changing', 'Template drafts', 'Sections', 'Fields', 'Entity types, changing', 'Relationship vocabulary, changing', 'Life event vocabulary, changing'],
             array_values(array_column($changing, 'name')),
         );
+    }
+
+    #[Test]
+    public function it_explains_how_to_connect_and_disconnect_an_assistant_through_oauth(): void
+    {
+        $this->assertStringContainsString('OAuth', implode(' ', McpDocsViewModel::SETUP));
+        $this->assertStringContainsString('Connected assistants', implode(' ', McpDocsViewModel::ACCESS));
     }
 
     #[Test]

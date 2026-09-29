@@ -48,7 +48,7 @@ class UpdateContactListViewTest extends TestCase
     public function it_writes_nothing_when_the_three_choices_already_match(): void
     {
         $user = User::factory()->create([
-            'contact_list_grouping' => 'archived',
+            'contact_list_grouping' => 'names-only',
             'contact_list_sort' => 'added',
             'contact_list_direction' => 'asc',
         ]);
@@ -59,7 +59,7 @@ class UpdateContactListViewTest extends TestCase
 
         new UpdateContactListView(
             user: $user,
-            grouping: ContactGroupingEnum::Archived,
+            grouping: ContactGroupingEnum::NamesOnly,
             sort: ContactSortEnum::Added,
             direction: SortDirectionEnum::Ascending,
         )->execute();
@@ -71,21 +71,21 @@ class UpdateContactListViewTest extends TestCase
     public function it_writes_when_one_of_the_three_choices_differs(): void
     {
         $user = User::factory()->create([
-            'contact_list_grouping' => 'archived',
+            'contact_list_grouping' => 'names-only',
             'contact_list_sort' => 'added',
             'contact_list_direction' => 'asc',
         ]);
 
         new UpdateContactListView(
             user: $user,
-            grouping: ContactGroupingEnum::Archived,
+            grouping: ContactGroupingEnum::NamesOnly,
             sort: ContactSortEnum::Added,
             direction: SortDirectionEnum::Descending,
         )->execute();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'contact_list_grouping' => 'archived',
+            'contact_list_grouping' => 'names-only',
             'contact_list_direction' => 'desc',
         ]);
     }

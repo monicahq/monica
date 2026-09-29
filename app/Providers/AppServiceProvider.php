@@ -17,10 +17,14 @@ use App\Models\User;
 use App\ViewModels\Auth\OAuthAuthorizationViewModel;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
+use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -36,6 +40,8 @@ use Laravel\Passkeys\Contracts\PasskeyLoginResponse as PasskeyLoginResponseContr
 use Laravel\Passkeys\Passkeys;
 use Laravel\Passport\AccessToken;
 use Laravel\Passport\Passport;
+use Laravel\Sanctum\PersonalAccessToken;
+use Laravel\Sanctum\Sanctum;
 use Override;
 use SocialiteProviders\Manager\SocialiteWasCalled;
 
@@ -105,6 +111,22 @@ class AppServiceProvider extends ServiceProvider
         $this->configureBilling();
         $this->configureSingleSignOn();
         $this->configurePassport();
+        $this->refuseDeactivatedUsers();
+    }
+
+    /**
+     * A deactivated person is refused at every door, not only at the sign in screen: their API keys,
+     * the devices syncing over CardDAV and the assistants they connected all stop answering until an
+     * administrator reactivates them. Nothing is revoked, so reactivating brings every one of them back.
+     */
+    private function refuseDeactivatedUsers(): void
+    {
+        Sanctum::authenticateAccessTokensUsing(
+            fn (PersonalAccessToken $key, bool $isValid): bool => $isValid && $key->tokenable instanceof User && $key->tokenable->is_active,
+        );
+
+        Auth::provider('active-users', fn (Application $app, array $config): EloquentUserProvider => new EloquentUserProvider($app['hash'], $config['model'])
+            ->withQuery(fn (Builder $query): Builder => $query->where('is_active', true)));
     }
 
     /**

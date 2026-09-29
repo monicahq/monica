@@ -253,17 +253,15 @@ class ContactTest extends TestCase
     }
 
     #[Test]
-    public function it_groups_the_archived_apart_from_everybody_else(): void
+    public function it_leaves_the_archived_out_of_every_grouping(): void
     {
         $vault = Vault::factory()->create();
-        $scott = Contact::factory()->archived()->create(['vault_id' => $vault->id, 'last_name' => 'Scott']);
-        Contact::factory()->create(['vault_id' => $vault->id, 'last_name' => 'Beesly']);
+        Contact::factory()->archived()->favourite()->create(['vault_id' => $vault->id, 'last_name' => 'Scott']);
         Contact::factory()->archived()->partial()->create(['vault_id' => $vault->id, 'first_name' => 'Jack']);
 
-        $contacts = Contact::query()->inGrouping(ContactGroupingEnum::Archived)->get();
-
-        $this->assertCount(1, $contacts);
-        $this->assertTrue($scott->is($contacts->first()));
+        foreach (ContactGroupingEnum::cases() as $grouping) {
+            $this->assertCount(0, Contact::query()->inGrouping($grouping)->get(), $grouping->value);
+        }
     }
 
     #[Test]
@@ -535,10 +533,10 @@ class ContactTest extends TestCase
         $vault = Vault::factory()->create();
 
         $new = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'New', 'last_name' => null]);
-        $archived = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Archived', 'last_name' => null]);
+        $favourites = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Favourites', 'last_name' => null]);
 
         $this->assertSame('new-2', $new->slug);
-        $this->assertSame('archived-2', $archived->slug);
+        $this->assertSame('favourites-2', $favourites->slug);
     }
 
     #[Test]

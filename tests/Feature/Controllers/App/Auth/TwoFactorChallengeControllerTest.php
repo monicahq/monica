@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\App\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\Attributes\Test;
 use PragmaRX\Google2FA\Google2FA;
 use Tests\TestCase;
@@ -49,6 +50,48 @@ class TwoFactorChallengeControllerTest extends TestCase
         $response->assertRedirect(route('home.index'));
         $this->assertAuthenticatedAs($user);
         $this->assertNull(session('twoFactor.user.id'));
+    }
+
+    #[Test]
+    public function it_remembers_somebody_who_asked_to_be_remembered_before_the_code(): void
+    {
+        $google2fa = new Google2FA;
+        $secret = $google2fa->generateSecretKey();
+        $user = User::factory()->twoFactor($secret)->create(['email' => 'jim@dundermifflin.com']);
+
+        $this->post(route('auth.login.create'), [
+            'email' => 'jim@dundermifflin.com',
+            'password' => 'password',
+            'remember' => 'on',
+        ])->assertRedirect(route('auth.twoFactor.new'));
+
+        $response = $this->post(route('auth.twoFactor.create'), [
+            'code' => $google2fa->getCurrentOtp($secret),
+        ]);
+
+        $this->assertAuthenticatedAs($user);
+        $response->assertCookie(Auth::guard('web')->getRecallerName());
+        $this->assertNull(session('twoFactor.remember'));
+    }
+
+    #[Test]
+    public function it_forgets_somebody_who_did_not_ask_to_be_remembered(): void
+    {
+        $google2fa = new Google2FA;
+        $secret = $google2fa->generateSecretKey();
+        $user = User::factory()->twoFactor($secret)->create(['email' => 'jim@dundermifflin.com']);
+
+        $this->post(route('auth.login.create'), [
+            'email' => 'jim@dundermifflin.com',
+            'password' => 'password',
+        ])->assertRedirect(route('auth.twoFactor.new'));
+
+        $response = $this->post(route('auth.twoFactor.create'), [
+            'code' => $google2fa->getCurrentOtp($secret),
+        ]);
+
+        $this->assertAuthenticatedAs($user);
+        $response->assertCookieMissing(Auth::guard('web')->getRecallerName());
     }
 
     #[Test]

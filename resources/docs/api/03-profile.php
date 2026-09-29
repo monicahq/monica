@@ -50,7 +50,7 @@ $userAttributes = [
     ['name' => 'date_format', 'type' => 'string', 'description' => 'How a date is written for them: one of d/m/Y, m/d/Y, Y-m-d or j F Y, or null when they have not chosen and the language decides.'],
     ['name' => 'name_order', 'type' => 'string', 'description' => 'Either given_first or family_first. Which name comes first varies by culture, so it is a setting rather than an assumption.'],
     ['name' => 'number_format', 'type' => 'string', 'description' => 'How a number is grouped and pointed: one of comma_dot, dot_comma, space_comma or no_separator, or null when they have not chosen and the language decides.'],
-    ['name' => 'contact_list_grouping', 'type' => 'string', 'description' => 'Which people the contact list was last showing them: one of all, favourites, archived or names-only, or null until they have opened the list.'],
+    ['name' => 'contact_list_grouping', 'type' => 'string', 'description' => 'Which people the contact list was last showing them: one of all, favourites or names-only, or null until they have opened the list.'],
     ['name' => 'contact_list_sort', 'type' => 'string', 'description' => 'What the contact list was last ordered by: one of name, nickname, last-spoke or added, or null until they have opened the list.'],
     ['name' => 'contact_list_direction', 'type' => 'string', 'description' => 'Which way round that order ran: asc or desc, or null until they have opened the list.'],
     ['name' => 'welcomed_at', 'type' => 'timestamp', 'description' => 'When the user dismissed the welcome screen, as a count of seconds, or null if they have not.'],
@@ -70,7 +70,7 @@ return [
             'method' => 'GET',
             'path' => '/me',
             'description' => 'Retrieve the user the token belongs to. A token acts as one person, so there is nobody else to ask for here and no identifier in the URL.',
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'returns' => 'A user object. Credentials never appear in it: not the password, not the second factor, not the recovery codes.',
             'response' => ['data' => $user],
         ],
@@ -85,7 +85,7 @@ return [
             'body' => [
                 'Changing the address unconfirms it, because nobody has proved yet that the new one reaches you. Preferences such as the locale, the time zone and the clock are not changed here.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 [
                     'name' => 'first_name',
@@ -124,13 +124,13 @@ return [
                 'The three choices are one view, so all three are required. Sending a grouping alone would leave the order to whatever happened to be stored, which is a different thing to ask for.',
                 'It applies to every vault the user reaches, and it changes what the interface opens on rather than what this API answers: reading a contact list here takes its own filter, sort and direction, and neither reads nor writes this.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 [
                     'name' => 'grouping',
                     'type' => 'string',
                     'required' => true,
-                    'description' => 'Which people the list shows: all, favourites, archived or names-only.',
+                    'description' => 'Which people the list shows: all, favourites or names-only.',
                     'example' => 'favourites',
                 ],
                 [
@@ -163,7 +163,7 @@ return [
                 'A new account is sent to a welcome screen the first time it reaches the web application. An application that shows its own welcome calls this so the web one does not greet the same person twice.',
                 'Dismissing it twice keeps the first moment, because that is when it was read. The screen itself stays open to anybody who asks for it, so there is nothing to undo.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'returns' => 'The updated user object.',
             'response' => ['data' => $user],
         ],
@@ -179,7 +179,7 @@ return [
                 'The zone has to be one of the 419 canonical IANA identifiers, which is the same set the interface offers. The deprecated aliases such as US/Pacific are refused, and so are the bare offsets under Etc. Anything else comes back 422 with the stored zone untouched.',
                 'It changes rendering and nothing else. No stored value is rewritten, and no reminder already computed moves: a reminder rule freezes the zone it was created in.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 [
                     'name' => 'timezone',

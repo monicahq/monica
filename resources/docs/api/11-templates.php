@@ -393,7 +393,7 @@ return [
                 'The template itself holds no fields. What it holds is versions, and what a version holds is pages, sections and fields. That split is what keeps records stable while structures change: a record points at a precise version and follows it until somebody moves it deliberately.',
                 'Templates that may no longer be applied are listed with the rest, because one that is off is meant to be found again and switched back on. Templates the product supplied are listed too, marked with is_system. A deleted template is never listed, and an account answers with an empty list rather than an error when it holds none.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => $pageParams,
             'returns' => 'A page of template objects, and how many there are in all.',
             'response' => [
@@ -414,7 +414,7 @@ return [
                 'This answers with the container and not with the structure. To read what a record on this template actually shows, take published_version_number from here and read that version.',
                 'A template with no published version is one still being designed. It is a valid state, and it is the state every template starts in.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam],
             'returns' => 'A template object. A template belonging to somebody else answers 404, which is also what a template that never existed answers, and what a deleted one answers.',
             'response' => ['data' => $template],
@@ -432,7 +432,7 @@ return [
                 'The slug is settled here and never rebuilt afterwards, so a link that already went out keeps working through any rename. It is made from the name.',
                 'A template describing an entity has to name the type it describes, and that type has to be one of yours. A template describing a contact names none.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the template is called. Up to 255 characters. Markup and surrounding blank space are stripped.', 'example' => 'Wine bottle'],
                 ['name' => 'applies_to', 'type' => 'string', 'required' => true, 'description' => 'Either contact or entity.', 'example' => 'contact'],
@@ -457,7 +457,7 @@ return [
                 'What the template applies to cannot be changed. A template that describes contacts describes contacts for good, because records already exist on that promise. Build the other one instead.',
                 'Both fields are sent every time. Sending description as null clears it rather than leaving it alone.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam],
             'bodyParams' => [
                 ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the template is called. Up to 255 characters.', 'example' => 'Person'],
@@ -478,7 +478,7 @@ return [
                 'A template still rendering records is refused rather than deleted, and the answer says how many are on it. Move those records to another template first, or stop offering this one instead, which takes it out of the way without touching anything already using it.',
                 'The deletion is recoverable, and the slug stays taken so a link that already went out cannot later land on a different template.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam],
             'returns' => 'Nothing. A template still rendering records answers 422, and one belonging to somebody else answers 404.',
             'responseStatus' => 204,
@@ -496,7 +496,7 @@ return [
                 'Send the state you want rather than asking for a toggle, so sending the same state twice confirms it instead of inverting it, and a retried request cannot leave a template in the state you did not ask for.',
                 'Stopping a template touches nothing already using it. Every record on it stays readable and stays editable, and the template keeps the place it had, so one switched back on returns where it was rather than to the end.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam],
             'bodyParams' => [
                 ['name' => 'is_active', 'type' => 'boolean', 'required' => true, 'description' => 'True to offer the template, false to stop offering it.', 'example' => false],
@@ -517,7 +517,7 @@ return [
                 'Every template of the account is numbered from 1 again afterwards, so the positions stay a run of whole numbers with no gaps in it. A place past the end puts the template last rather than being refused.',
                 'The order is what the templates screen shows and what the list endpoint answers in. It has no other meaning: nothing about a record depends on where its template sits.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam],
             'bodyParams' => [
                 ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where to put the template, counting from 1.', 'example' => 1],
@@ -539,7 +539,7 @@ return [
                 'What is copied is the published version when there is one, and the newest version otherwise. It arrives in the copy as a draft numbered 1, so the copy has nothing published until you publish it. A template with no version at all has nothing to copy and answers 404.',
                 'The copy takes a name and a slug of your choosing, or is given ones derived from the original when you send none.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam],
             'bodyParams' => [
                 ['name' => 'name', 'type' => 'string', 'required' => false, 'description' => 'What to call the copy. Up to 255 characters. Derived from the original when absent.', 'example' => 'Contact, expanded'],
@@ -563,7 +563,7 @@ return [
                 'At most one version is a draft at a time. Publishing a later version does not change an earlier one, so several versions read as published and the template says which one is current. Each keeps its record_count for as long as anything is still on it.',
                 'This answers with the versions and not with what they contain. Read one version to get its pages, its sections and its fields.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam],
             'queryParams' => $pageParams,
             'returns' => 'A page of version objects, newest first, and how many there are in all. A template belonging to somebody else answers 404.',
@@ -586,7 +586,7 @@ return [
                 'A template has at most one draft at a time. Asking again while one is open answers with that draft and 200 rather than starting a second, so a client that retries a request it is unsure about cannot end up with two.',
                 'The draft is copied from the published version when there is one, and from the newest version otherwise. A template with no version at all has nothing to copy and answers 404.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam],
             'returns' => 'The draft, with 201 when it was started and 200 when one was already open. A template belonging to somebody else answers 404, and so does one with no version to copy.',
             'responseStatus' => 201,
@@ -607,7 +607,7 @@ return [
                 'A change note is required from the second version of a template onwards, because it is what somebody deciding whether to move their records reads. The first version of a template needs none, having replaced nothing.',
                 'A version with no page, or with a page that has nothing on it, is refused: a structure nobody can fill is not one.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam],
             'bodyParams' => [
                 ['name' => 'change_note', 'type' => 'string', 'required' => false, 'description' => 'What changed since the version before. Up to 65535 characters. Required from the second version of a template onwards.', 'example' => 'Added the medical page.'],
@@ -627,7 +627,7 @@ return [
                 'Only a draft can be thrown away. A version that has been published is refused, because records point at it and the promise that a published version goes on working is the whole of the versioning design. Stop offering the template instead if you want it out of the way.',
                 'Nothing that was published changes, and the number the draft held is not given out again.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam],
             'returns' => 'Nothing. A version that is not a draft answers 422, and a template belonging to somebody else answers 404.',
             'responseStatus' => 204,
@@ -647,7 +647,7 @@ return [
                 'The version is named by its number within its template, which is the number the version history shows, and not by a row identifier. Version 3 of one template and version 3 of another are different things reached through different templates.',
                 'A section is placed rather than owned. The same section can sit in several templates, and each placement names a precise version of it, which is what stops a change made through one template reaching another.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam],
             'returns' => 'A version object carrying its pages, their sections and their fields. A number the template does not have answers 404, and so does a template belonging to somebody else.',
             'response' => ['data' => $nestedVersion],
@@ -666,7 +666,7 @@ return [
                 'The key is settled here from the label and never rebuilt, so a browser link to the tab keeps working through any rename. Two pages of the same version cannot read the same thing.',
                 'Only a draft can be laid out. A version that has been published refuses this, and every other write below.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam],
             'bodyParams' => [
                 ['name' => 'label', 'type' => 'string', 'required' => true, 'description' => 'What the tab says. Up to 255 characters.', 'example' => 'Medical'],
@@ -688,7 +688,7 @@ return [
             'body' => [
                 'The key the page was settled is left alone, so a browser link that already went out keeps working. Only the wording moves.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $pageParam],
             'bodyParams' => [
                 ['name' => 'label', 'type' => 'string', 'required' => true, 'description' => 'What the tab says. Up to 255 characters.', 'example' => 'Health'],
@@ -708,7 +708,7 @@ return [
                 'A page that still holds sections is refused, and the answer says how many. Take the sections off first, or move them to another page, so that nothing is lost by accident.',
                 'The last page of a version is refused too. A version with no page could not be published, and a structure nobody can fill is not one.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $pageParam],
             'returns' => 'Nothing. A page that still holds sections, and the last page of a version, both answer 422.',
             'responseStatus' => 204,
@@ -725,7 +725,7 @@ return [
             'body' => [
                 'Every page of the version is numbered from 1 again afterwards, so the positions stay a run of whole numbers with no gaps. A place past the end puts the page last rather than being refused.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $pageParam],
             'bodyParams' => [
                 ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where to put the page, counting from 1.', 'example' => 1],
@@ -748,7 +748,7 @@ return [
                 'What is placed is a precise version of the section. Say which with section_version_number, or say nothing and the published version is used. That is what stops a change made through one template reaching another: a placement names a version, not a section.',
                 'Where it sits and what it is headed here belong to the placement rather than to the section, so overriding the title changes this template and nothing else. Name a page or leave it out to land on the first one.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam],
             'bodyParams' => [
                 ['name' => 'section_id', 'type' => 'uuid', 'required' => false, 'description' => 'The section to place. Required when name is absent, refused alongside it. One belonging to somebody else is refused as invalid, and so is one already on this version.', 'example' => 'd5e8c012-9a34-4b76-8f21-3e7c5a0b1d94'],
@@ -777,7 +777,7 @@ return [
                 'This touches the placement and never the section. The section keeps its name, its fields and its version, and every other template placing it is unaffected.',
                 'Sending title_override as null goes back to the name of the section. The field has to be present either way.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $sectionParam],
             'bodyParams' => [
                 ['name' => 'title_override', 'type' => 'string', 'required' => true, 'description' => 'What to head the block here, or null to use the name of the section. The field has to be present even when it is null.', 'example' => 'Where they live'],
@@ -797,7 +797,7 @@ return [
             'body' => [
                 'This removes the placement. The section itself is untouched and goes on existing for every other template that places it, which is the whole point of a section being its own thing.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $sectionParam],
             'returns' => 'Nothing. A placement on a template belonging to somebody else answers 404.',
             'responseStatus' => 204,
@@ -814,7 +814,7 @@ return [
             'body' => [
                 'Positions start again on each page, so this orders the block against the others on its own page and nothing else. Every one of them is numbered from 1 again afterwards, and a place past the end lands last.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $sectionParam],
             'bodyParams' => [
                 ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where to put the block on its page, counting from 1.', 'example' => 1],
@@ -835,7 +835,7 @@ return [
                 'The block lands last on the page it arrives at, and the page it left is numbered from 1 again. The section is untouched: only where it sits changes.',
                 'The page has to belong to the same version. One from another version, or another template, answers 404.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $sectionParam],
             'bodyParams' => [
                 ['name' => 'page_id', 'type' => 'uuid', 'required' => true, 'description' => 'The page to move it to, which has to be a page of this version.', 'example' => 'a1f7b3c8-6e42-4d09-8b57-1c9e0f2a4d36'],
@@ -857,7 +857,7 @@ return [
                 'The type is settled here and cannot be changed afterwards, and so is what a relation points at and whether the field repeats, because records get written against those promises. Everything else can be changed later.',
                 'A field offering choices has to say which value list they come from, and a relation field has to say what it points at. Three types carry no value at all and are there to lay the form out: divider, heading and help.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $sectionParam],
             'bodyParams' => [
                 ['name' => 'type', 'type' => 'string', 'required' => true, 'description' => 'What kind of thing the field holds: one of text, textarea, number, boolean, url, email, phone, select, multiselect, radio, date, recurring_date, relation, file, image, avatar, address, repeater, divider, heading or help.', 'example' => 'text'],
@@ -885,7 +885,7 @@ return [
                 'As with adding one, changing a field of a section that has been published opens a draft of the section and changes it there, leaving the published section and every other template placing it alone.',
                 'The type, whether the field repeats, and what a relation points at are settled when the field is added and are not sent here. Everything else is sent every time: a setting left out goes back to its default rather than staying as it was.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $sectionParam, $fieldParam],
             'bodyParams' => [
                 ['name' => 'label', 'type' => 'string', 'required' => true, 'description' => 'What the field is called on the form.', 'example' => 'Street name'],
@@ -918,7 +918,7 @@ return [
                 'The values already written under the field are not destroyed. They are detached and kept, so nothing a person typed disappears because somebody changed a structure, and a field put back finds them again.',
                 'As with the other two, a published section is drafted first and the published one is left alone.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $sectionParam, $fieldParam],
             'returns' => 'Nothing. A field of a template belonging to somebody else answers 404.',
             'responseStatus' => 204,
@@ -935,7 +935,7 @@ return [
             'body' => [
                 'Every field of the section is numbered from 1 again afterwards, and a place past the end lands last. A published section is drafted first, exactly as it is for the other changes to a field.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $sectionParam, $fieldParam],
             'bodyParams' => [
                 ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where to put the field in its section, counting from 1.', 'example' => 1],

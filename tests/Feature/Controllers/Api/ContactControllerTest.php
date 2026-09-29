@@ -169,7 +169,7 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_keeps_the_archived_out_of_every_grouping_but_their_own(): void
+    public function it_keeps_the_archived_out_of_every_grouping(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -179,12 +179,25 @@ class ContactControllerTest extends TestCase
         Sanctum::actingAs($user);
 
         $everyone = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts");
-        $archived = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?filter=archived");
 
         $everyone->assertJsonCount(1, 'data');
         $everyone->assertJsonPath('data.0.attributes.last_name', 'Beesly');
-        $archived->assertJsonCount(1, 'data');
-        $archived->assertJsonPath('data.0.attributes.last_name', 'Scott');
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?filter=names-only")->assertJsonCount(0, 'data');
+    }
+
+    #[Test]
+    public function it_refuses_the_archived_filter_nothing_can_fill(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?filter=archived");
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('filter');
     }
 
     #[Test]
@@ -196,7 +209,7 @@ class ContactControllerTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        foreach (['all', 'favourites', 'archived'] as $grouping) {
+        foreach (['all', 'favourites'] as $grouping) {
             $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?filter={$grouping}")->assertJsonCount(0, 'data');
         }
     }

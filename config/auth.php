@@ -47,7 +47,7 @@ return [
 
         'api' => [
             'driver' => 'passport',
-            'provider' => 'users',
+            'provider' => 'active_users',
         ],
     ],
 
@@ -71,6 +71,11 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', User::class),
+        ],
+
+        'active_users' => [
+            'driver' => 'active-users',
             'model' => env('AUTH_MODEL', User::class),
         ],
     ],

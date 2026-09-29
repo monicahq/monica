@@ -191,7 +191,7 @@ return [
                 'The list runs through the groups in the order you arranged them, and through the natures inside each group in the order you arranged those. Retired natures are listed with the rest, because one that is off is meant to be found again and switched back on.',
                 'A nature the product supplied reads in the language you ask for. Once somebody renames it, their words stand in every language.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => $pageParams,
             'returns' => 'A page of life event type objects, and how many there are in all.',
             'response' => [
@@ -211,7 +211,7 @@ return [
             'body' => [
                 'The custom fields the nature asks for are not in here. They are read at their own address, so listing a vocabulary does not make you carry every layout it holds.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'A life event type object. A nature belonging to somebody else answers 404, which is also what a nature that never existed answers, and what a deleted one answers.',
             'response' => ['data' => $otherType],
@@ -228,7 +228,7 @@ return [
                 'The nature goes at the end of the group you file it under and is offered straight away. Retire it afterwards if you are preparing a vocabulary you do not want offered yet.',
                 'It starts with no custom fields, which is a perfectly ordinary state: a life event of a brand new nature can be recorded immediately, carrying nothing beyond what every life event carries. Give it fields at their own address when you want them.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 ['name' => 'life_event_category_id', 'type' => 'uuid', 'required' => true, 'description' => 'The group to file the nature under. A group belonging to somebody else answers 404.', 'example' => '5f8b3c21-9d07-4a64-8e12-7b0a4d6c3e95'],
                 ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the nature is called. Up to 255 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused.', 'example' => 'Board game night'],
@@ -255,7 +255,7 @@ return [
                 'Nothing a life event has recorded changes, since a life event names its nature rather than copying it. Renaming a nature renames it on every life event already recorded with it, which is the point.',
                 'Once you write your own words they stand in every language. The wording the product supplied reads in the language of whoever is looking, and renaming gives that up.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'life_event_category_id', 'type' => 'uuid', 'required' => true, 'description' => 'The group to file the nature under. A group belonging to somebody else answers 404.', 'example' => '5f8b3c21-9d07-4a64-8e12-7b0a4d6c3e95'],
@@ -279,7 +279,7 @@ return [
                 'A nature the product supplied stays, because the wording it falls back to belongs to the product. Retire it instead: it leaves the choice offered when a life event is recorded, and everything already written keeps reading as it did.',
                 'A deletion is recoverable, so an accident is not the end of anything. The custom fields the nature asked for are deliberately left where they are, so a restored nature comes back asking for what it asked for.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'Nothing. A nature the product supplied answers 422 naming that reason, and one belonging to somebody else answers 404.',
             'responseStatus' => 204,
@@ -299,7 +299,7 @@ return [
                 'Nothing already written is touched. Every life event keeps its nature, its drawing and its custom fields, and the nature keeps the place it had, so offering it again puts it back where it was rather than at the end.',
                 'Send the state you want rather than asking for a toggle, so sending the same value twice confirms it instead of inverting it.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'is_active', 'type' => 'boolean', 'required' => true, 'description' => 'True to offer the nature again, false to retire it.', 'example' => 'false'],
@@ -321,7 +321,7 @@ return [
                 'Moving a nature to another group is not this: it is an ordinary change, and it puts the nature last where it arrives.',
                 'A nature the product supplied may be moved like any other. Where a nature sits changes the order it is read in and changes nothing else.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where the nature should sit inside its group, counting from 1.', 'example' => '1'],
@@ -343,7 +343,7 @@ return [
                 'A nature nobody has given fields to answers an empty list rather than 404. That is the state every nature starts in.',
                 'Each field carries the key it is known by. Send that key back when you write the layout and the field is kept rather than replaced, which is what stops the values already recorded against it being orphaned.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'The groups of the layout, each with its fields. A nature belonging to somebody else answers 404.',
             'response' => ['data' => $exampleLayout],
@@ -364,7 +364,7 @@ return [
                 'Every save publishes a new frozen version of the layout beside the old one. A life event already recorded names the version it was written on and never follows, so it keeps the fields and the values it was written with. This is the rule that makes the layout safe to change.',
                 'A kind of field the product does not offer, and a group without a name, are both refused, and the layout already there is left exactly as it was.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'groups', 'type' => 'array', 'required' => false, 'description' => 'The groups of the layout, in the order you want them drawn.'],

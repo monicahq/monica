@@ -175,7 +175,7 @@ return [
                 'There is no identifier in the URL: a token acts as one person, and one person has one account.',
                 'Nothing here is bought. Access moves only when Stripe confirms a payment, so a client that has just opened a checkout should read this again a moment later rather than assume anything.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'returns' => 'A billing object. On a self hosted instance every ceiling is null, the payment is null, the offers are empty and access_kind is null, because nothing is sold there.',
             'response' => ['data' => $billing],
         ],
@@ -191,7 +191,7 @@ return [
                 'One row per invoice, whether it was the one time purchase or a renewal. They are kept here rather than read from Stripe on every call, so this never waits on Stripe and never stops working when Stripe does.',
                 'An account we opened access on has no payment at all, and so answers an empty list.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => [
                 [
                     'name' => 'per_page',
@@ -221,7 +221,7 @@ return [
             'path' => '/billing/payments/{payment}',
             'examplePath' => '/billing/payments/in_1QdundieAwards',
             'description' => 'Retrieve one payment by the identifier Stripe gave its invoice.',
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [
                 [
                     'name' => 'payment',
@@ -246,7 +246,7 @@ return [
                 'Payment is taken at Stripe and nowhere else: this API never receives card details. Access opens when Stripe confirms the payment, which is usually seconds after the buyer finishes, so read the billing object again rather than trusting their return.',
                 'A price this account may not take up is refused before any session is opened. That covers an account that already owns the product outright, and a subscriber asking for an offer that does not sit above the one they are on.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 [
                     'name' => 'price_id',
@@ -286,7 +286,7 @@ return [
                 'Nothing is charged on the day of the change. The longer price is billed at the renewal that was already planned, and that date does not move.',
                 'There is one subscription throughout: no second one is opened, and access never gaps. Only a longer subscription is accepted, so a yearly subscriber cannot move back to monthly here, and lifetime access is bought through a checkout rather than swapped into.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 [
                     'name' => 'price_id',
@@ -311,7 +311,7 @@ return [
                 'It never takes effect at once. Full access stays to the last day that was paid for, the billing object then carries ends_at, and nothing the account holds is removed after that day: the free ceilings simply refuse additions again.',
                 'Until that day the cancellation can be taken back, at no charge, with the endpoint below.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'returns' => 'Nothing. 422 when there is no subscription to cancel, or when it is already ending.',
             'responseStatus' => 204,
         ],
@@ -326,7 +326,7 @@ return [
             'body' => [
                 'The renewal date does not move and nothing is charged for changing your mind. It works only while the paid period is still running, which is exactly while the billing object carries ends_at.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'returns' => 'The billing object, with ends_at back to null. 422 when there is no subscription, or when it is not ending.',
             'response' => ['data' => $billing],
         ],
@@ -341,7 +341,7 @@ return [
             'body' => [
                 'The portal is where invoices are read and the card on file is changed. Cancelling, resuming and moving up are turned off there on purpose, so that those decisions are made in one place, through this API or the product.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'returns' => 'A portal_session object carrying the URL. 422 when Stripe does not know the account yet, which is the case until something has been paid, and 503 when Stripe did not answer.',
             'responseStatus' => 201,
             'response' => [

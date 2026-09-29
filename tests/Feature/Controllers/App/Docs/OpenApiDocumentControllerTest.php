@@ -30,6 +30,16 @@ class OpenApiDocumentControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_builds_the_document_again_on_every_request(): void
+    {
+        config(['app.url' => 'https://dundermifflin.test']);
+        $this->get(route('docs.api.openapi'))->assertJsonPath('servers.0.url', 'https://dundermifflin.test/api/v1');
+
+        config(['app.url' => 'https://schrutefarms.test']);
+        $this->get(route('docs.api.openapi'))->assertJsonPath('servers.0.url', 'https://schrutefarms.test/api/v1');
+    }
+
+    #[Test]
     public function it_serves_the_document_at_an_address_naming_the_api_version(): void
     {
         $this->get('/docs/api/v1/openapi')->assertOk();

@@ -90,7 +90,7 @@ return [
                 'The record belongs to the account rather than to you personally, so an email we sent to an address that has no account of its own is still listed here.',
                 'Nothing here can be written, changed or removed. The record is written as the mail leaves and updated only when the provider tells us what became of it.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => [
                 [
                     'name' => 'page',
@@ -130,7 +130,7 @@ return [
                 'Everything a row in the list carries, and one field more: `body`, the text of the email as it was sent. That is what tells you what we actually said, rather than only that we said something.',
                 'The `delivery_status` is one of three words. `delivered` means it arrived, `bounced` means it came back, and `sent` means it left and nothing has come back yet. When a provider reports a delivery and a bounce for the same email, which it can do out of order, the email reads as `bounced`.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [
                 [
                     'name' => 'emailSent',

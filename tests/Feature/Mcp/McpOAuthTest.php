@@ -99,6 +99,18 @@ class McpOAuthTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_the_assistant_of_a_deactivated_person(): void
+    {
+        $user = User::factory()->create();
+        $accessToken = $this->authorizeAssistant($user);
+        $user->update(['is_active' => false]);
+
+        $response = $this->withToken($accessToken)->postJson('/mcp', $this->listTools());
+
+        $response->assertUnauthorized();
+    }
+
+    #[Test]
     public function it_records_the_changes_an_assistant_makes_under_its_own_name(): void
     {
         $user = User::factory()->create();

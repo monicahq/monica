@@ -62,7 +62,7 @@ return [
                 'These are yours rather than the account\'s: the list is scoped to whoever the token belongs to. One record is written per channel, so a reminder that went out both in the application and by email appears twice, once for each.',
                 'Notifications are removed automatically once they pass the retention period this instance is set to. That is a stated policy rather than a silent loss, and what a reminder itself records outlives it: the deadline still says somebody was told.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => [
                 [
                     'name' => 'read',
@@ -108,7 +108,7 @@ return [
             'body' => [
                 'Reading a notification through this endpoint does not mark it as read. Say so on purpose with the endpoint below, so that fetching a record and acting on it stay two separate things.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [
                 [
                     'name' => 'notification',
@@ -132,7 +132,7 @@ return [
             'body' => [
                 'Marking something read twice keeps the first moment, because that is when it was read. There is no way to mark one unread again: this records something that happened rather than setting a flag.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [
                 [
                     'name' => 'notification',
@@ -158,7 +158,7 @@ return [
             'body' => [
                 'Everything unread that belongs to you is marked at once. Nothing belonging to anybody else is touched, and nothing already read has its moment changed.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'returns' => 'How many notifications this marked. Nothing waiting answers with zero rather than an error.',
             'response' => ['data' => ['marked' => 2]],
         ],

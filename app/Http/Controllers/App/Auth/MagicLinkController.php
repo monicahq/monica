@@ -53,6 +53,7 @@ class MagicLinkController extends Controller
 
         if ($user->usesTwoFactorAuthentication()) {
             $request->session()->put('twoFactor.user.id', $user->id);
+            $request->session()->put('twoFactor.remember', false);
 
             return redirect()->route('auth.twoFactor.new');
         }

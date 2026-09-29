@@ -45,6 +45,7 @@ class LoginController extends Controller
         if ($user->usesTwoFactorAuthentication()) {
             Auth::guard('web')->logout();
             $request->session()->put('twoFactor.user.id', $user->id);
+            $request->session()->put('twoFactor.remember', $request->boolean('remember'));
 
             return redirect()->route('auth.twoFactor.new');
         }

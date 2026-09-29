@@ -48,7 +48,7 @@ class TwoFactorChallengeController extends Controller
             return back()->withErrors(['code' => __('That code is not right.')]);
         }
 
-        Auth::guard('web')->login($user);
+        Auth::guard('web')->login($user, remember: (bool) $request->session()->pull('twoFactor.remember', false));
 
         $request->session()->forget('twoFactor.user.id');
         $request->session()->regenerate();

@@ -57,3 +57,9 @@ A chronological list of every feature and improvement shipped during development
 * Example account: Gave every seeded person at least twenty life events from the show, across every life event category.
 * MCP: Let an assistant connect to the MCP server through OAuth, after the person allows it on a consent screen.
 * Settings/account/security: Listed the assistants connected through OAuth and let somebody disconnect each one.
+* Fix: Kept a deactivated person out of the API, CardDAV and MCP, and not only out of the sign in screen.
+* Fix: Remembered somebody who ticked Remember me when two factor authentication asked them for a code.
+* Contacts: Removed the Archived list, since nothing archives a contact yet.
+* Docs: Counted the API rate limit per person rather than per key, and described the paginated lists that exist.
+* Docs: Explained on /docs/mcp how an assistant connects through OAuth, and how to disconnect it.
+* Docs: Built the OpenAPI document on every request instead of keeping the first one forever.

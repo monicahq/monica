@@ -97,7 +97,7 @@ return [
                 'Every account starts with eight: Relationships and family, Work and education, Health and wellbeing, Home and daily life, Leisure and culture, Travel and experiences, Personal and Other. Other is the fallback, so a nature is never left unclassified. All eight are marked with is_system, which stops them being deleted and nothing else.',
                 'Retired categories are listed with the rest, because one that is off is meant to be found again and switched back on.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => $pageParams,
             'returns' => 'A page of life event category objects, and how many there are in all.',
             'response' => [
@@ -117,7 +117,7 @@ return [
             'body' => [
                 'The natures themselves are not in here, only how many there are. Ask for the types of the category to read them.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'A life event category object. A category belonging to somebody else answers 404, which is also what a category that never existed answers, and what a deleted one answers.',
             'response' => ['data' => $category],
@@ -146,7 +146,7 @@ return [
                 'This is the grouped reading the settings screen shows, one group at a time. Retired natures are listed with the rest, and so are the natures of a retired category, because the list says what is filed where rather than what is currently offered.',
                 'The natures are described exactly as the life event types endpoints describe them, so anything you read here can be changed there without asking for it again.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'queryParams' => $pageParams,
             'returns' => 'A page of life event type objects, and how many there are in all. A category belonging to somebody else answers 404 rather than an empty list.',
@@ -167,7 +167,7 @@ return [
                 'The category goes at the end of the list and is offered straight away. It holds nothing until natures are filed under it, and a group holding nothing is a perfectly ordinary state: Other is supplied that way.',
                 'A category does no work beyond grouping, filtering and counting. Adding one called Health changes no life event behaviour. Contact history is determined by participants, not by categories or natures.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the group is called. Up to 255 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused.', 'example' => 'Volunteering'],
             ],
@@ -189,7 +189,7 @@ return [
                 'What the product does with the category is untouched: its stable identity, its place in the order and whether it is offered all stay, and nothing filed under it moves.',
                 'Once you write your own words they stand in every language. The wording the product supplied reads in the language of whoever is looking, and renaming gives that up, which is the bargain every renameable supplied record makes here.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the group is called. Up to 255 characters.', 'example' => 'Volunteering'],
@@ -210,7 +210,7 @@ return [
                 'Both refusals bite today, since natures are filed under categories from the moment an account is created.',
                 'A deletion is recoverable, so an accident is not the end of anything.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'Nothing. A supplied category, and one still holding a nature, each answer 422 naming that reason, and one belonging to somebody else answers 404.',
             'responseStatus' => 204,
@@ -231,7 +231,7 @@ return [
                 'Retiring a group retires the choice of every nature under it, and offering it again brings them all back, each still holding whether it is offered in its own right.',
                 'Send the state you want rather than asking for a toggle, so sending the same value twice confirms it instead of inverting it.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'is_active', 'type' => 'boolean', 'required' => true, 'description' => 'True to offer the category again, false to retire it.', 'example' => 'false'],
@@ -252,7 +252,7 @@ return [
                 'Every category of your account is numbered from 1 again once the move is made, retired ones counted among them. A position past the end puts the category last rather than being refused.',
                 'A category the product supplied may be moved like any other. Where a group sits changes the order it is read in, in the settings, the pickers and the journal filters, and changes nothing else.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where the category should sit, counting from 1.', 'example' => '1'],

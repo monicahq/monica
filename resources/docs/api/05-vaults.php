@@ -101,7 +101,7 @@ return [
                 'The order is the one you gave your vaults, which is the order they appear in when you switch between them. It is not the order they were made in, so a vault you moved to the top comes back at the top.',
                 'A deleted vault is never listed. An account holding no vault answers with an empty list rather than an error, since that is the state every account starts in.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => $pageParams,
             'returns' => 'A page of vault objects, and how many there are in all.',
             'response' => [
@@ -126,7 +126,7 @@ return [
                 'A vault is a watertight compartment. Contacts, records of the kinds you invented, files and private links belong to exactly one, and nothing reaches across.',
                 'What a new contact in the vault starts from is not in here. A vault holds one of those per kind of record, so a single field would answer a narrower question than its name suggests. You can set the contact one when you create or update a vault, and reading them back is an endpoint of its own.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'A vault object. A vault belonging to somebody else answers 404, which is also what a vault that never existed answers, and what a deleted one answers.',
             'response' => ['data' => $vault],
@@ -142,7 +142,7 @@ return [
             'body' => [
                 'If your account held no vault, this one becomes the vault records land in when nothing says which. Exactly one vault is that at any time, and there was nothing else to be it.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 [
                     'name' => 'name',
@@ -196,7 +196,7 @@ return [
                 'This replaces the wording of the vault rather than patching it, so state all three. A field you leave out is refused rather than quietly reset, which is why the colour is required and the description has to be sent even when it is null. Renaming a vault can therefore never lose its colour by accident.',
                 'What the vault holds is untouched, and so are its place in your list and whether it is the vault records land in by default.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 [
@@ -250,7 +250,7 @@ return [
                 'If this was the vault records land in by default, the first vault left takes that over. If no vault is left, your account has no default and holds nothing, which is the state every account starts in. The last vault of an account may be deleted.',
                 'The deletion is soft, so nothing is destroyed, but no endpoint here brings a vault back today. Treat it as final.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'Nothing at all. A vault belonging to somebody else answers 404, and is not deleted. So does a vault you have already deleted, so calling this twice does not report a second deletion.',
             'responseStatus' => 204,

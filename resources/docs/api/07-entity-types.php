@@ -155,7 +155,7 @@ return [
                 'The order is the one you gave them, which is the order they are listed in down the side of a vault. It is not the order they were declared in. Types that may no longer be filed under are listed with the rest, because one that is off is meant to be found again and switched back on.',
                 'A deleted type is never listed. An account that invented nothing answers with an empty list rather than an error, since that is the state every account starts in.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => $pageParams,
             'returns' => 'A page of entity type objects, and how many there are in all.',
             'response' => [
@@ -179,7 +179,7 @@ return [
             'body' => [
                 'The type is only the noun. What one of its records holds is described separately, by a template, and the same type may have several of them: the family vault and a professional breeding vault can both handle Animals at completely different levels of detail. Nothing about that structure is in here.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'An entity type object. A type belonging to somebody else answers 404, which is also what a type that never existed answers, and what a deleted one answers.',
             'response' => ['data' => $entityType],
@@ -197,7 +197,7 @@ return [
                 'Both names are asked for rather than one being made from the other, because a plural derived in English is wrong in most other languages.',
                 'The slug is settled here and never rebuilt afterwards. Choose it, and what you send is cleaned the same way a derived one is, so nothing can put a space or an accent in an address. Say nothing, and it is made from the singular name. A slug already taken in your account is refused, and a type you deleted does not release the one it had, so a link that went out cannot later land on something else.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
                 [
                     'name' => 'name_singular',
@@ -266,7 +266,7 @@ return [
                 'This replaces the wording of the type rather than patching it, so state all of it. A field you leave out is refused rather than quietly reset, which is why the icon and the colour are required and the description has to be sent even when it is null. Renaming a type can therefore never lose its description by accident.',
                 'The slug is left alone. A rename is a change of wording rather than a change of thing: Animal becoming Pet is the same type, and every link that already went out keeps working. Where the type sits in your navigation, whether records may still be filed under it, and everything already filed under it are each untouched here.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 [
@@ -320,7 +320,7 @@ return [
                 'A type that still holds records refuses to go, and answers 422 saying how many it holds. Taking a hundred animals down with the word "Animal" is not something one call should be able to do. The two ways forward are to delete those records first, deliberately, or to stop the type being offered and keep everything filed under it.',
                 'The deletion is soft, so nothing is destroyed, but no endpoint here brings a type back today. The slug is not released with it either: a link that went out pointing at this type must not later land on a different one, so declaring a new type with the same slug is refused.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'Nothing at all. A type that still holds records answers 422 and stays. A type belonging to somebody else answers 404, and so does one you have already deleted, so calling this twice does not report a second deletion.',
             'responseStatus' => 204,
@@ -339,7 +339,7 @@ return [
                 'The place the type has in your navigation is kept, so offering it again puts it back where it was rather than at the end.',
                 'It has its own address because it is a decision about your account rather than a correction to the wording of the type, and it cannot therefore be made by accident while renaming one. Send the state you want rather than asking for a toggle: sending the same state twice confirms it instead of inverting it.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 [
@@ -367,7 +367,7 @@ return [
                 'Types nobody may file records under are numbered along with the rest, since one you offer again has to find the place it had.',
                 'The list endpoint answers in this order, so moving a type changes what every caller reads next.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
                 [
@@ -393,7 +393,7 @@ return [
             'body' => [
                 'Archived records are listed with the others and marked. A record of the same kind in another vault is never listed here.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $entityPathParams,
             'queryParams' => $pageParams,
             'returns' => 'A page of entity objects, and how many there are in all. A vault or a type belonging to somebody else answers 404.',
@@ -421,7 +421,7 @@ return [
                 'A type the vault does not show answers 404. A type the vault still shows because it holds records of it answers 422 with the reason on name when the type was turned off, when the vault has no published template for it, or when that template requires something that cannot be filled in here.',
                 'A relation field takes the id of the record it names: a contact, or a record of the kind the field points at. It has to be in the same vault, and anything else answers 422 on that field.',
             ],
-            'rateLimit' => 'Sixty requests per minute, per token.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $entityPathParams,
             'bodyParams' => [
                 [

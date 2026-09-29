@@ -62,7 +62,7 @@ class MeContactListViewControllerTest extends TestCase
     #[DataProvider('choicesTheProductDoesNotKnow')]
     public function it_refuses_a_choice_the_product_does_not_know(string $field, string $value): void
     {
-        $user = User::factory()->create(['contact_list_grouping' => 'archived']);
+        $user = User::factory()->create(['contact_list_grouping' => 'names-only']);
         Sanctum::actingAs($user);
 
         $response = $this->json('PUT', route('api.v1.me.contactListView.update'), [
@@ -77,7 +77,7 @@ class MeContactListViewControllerTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'contact_list_grouping' => 'archived',
+            'contact_list_grouping' => 'names-only',
         ]);
     }
 
@@ -86,6 +86,7 @@ class MeContactListViewControllerTest extends TestCase
     {
         return [
             'a grouping nobody offers' => ['grouping', 'beets'],
+            'a grouping no longer offered' => ['grouping', 'archived'],
             'a column nobody sorts on' => ['sort', 'shoe-size'],
             'a direction nothing runs in' => ['direction', 'sideways'],
         ];

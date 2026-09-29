@@ -64,7 +64,7 @@ class ContactsViewModelTest extends TestCase
 
         $this->assertEquals(2, $chips['all']);
         $this->assertEquals(1, $chips['favourites']);
-        $this->assertEquals(1, $chips['archived']);
+        $this->assertEquals(1, $chips['names-only']);
     }
 
     #[Test]
@@ -80,7 +80,7 @@ class ContactsViewModelTest extends TestCase
 
         $this->assertEquals(1, $chips['all']);
         $this->assertNull($chips['favourites']);
-        $this->assertNull($chips['archived']);
+        $this->assertNull($chips['names-only']);
     }
 
     #[Test]
@@ -131,7 +131,7 @@ class ContactsViewModelTest extends TestCase
 
         $this->assertEquals("/vaults/{$vault->slug}/contacts/all", $chips['all']);
         $this->assertEquals("/vaults/{$vault->slug}/contacts/favourites", $chips['favourites']);
-        $this->assertEquals("/vaults/{$vault->slug}/contacts/archived", $chips['archived']);
+        $this->assertArrayNotHasKey('archived', $chips);
         $this->assertEquals("/vaults/{$vault->slug}/contacts/names-only", $chips['names-only']);
 
         foreach (ContactGroupingEnum::cases() as $grouping) {
@@ -140,7 +140,7 @@ class ContactsViewModelTest extends TestCase
 
         $this->assertStringNotContainsString(
             'filter=',
-            collect(new ContactsViewModel(user: $user, vault: $vault)->filters())->firstWhere('key', 'archived')['url'],
+            collect(new ContactsViewModel(user: $user, vault: $vault)->filters())->firstWhere('key', 'names-only')['url'],
         );
     }
 
@@ -156,8 +156,8 @@ class ContactsViewModelTest extends TestCase
         );
 
         $this->assertStringEndsWith(
-            '/contacts/archived',
-            new ContactsViewModel(user: $user, vault: $vault, grouping: ContactGroupingEnum::Archived)->searchUrl(),
+            '/contacts/names-only',
+            new ContactsViewModel(user: $user, vault: $vault, grouping: ContactGroupingEnum::NamesOnly)->searchUrl(),
         );
     }
 
@@ -470,12 +470,12 @@ class ContactsViewModelTest extends TestCase
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user);
 
-        $this->contact($vault, 'Dwight', 'Schrute', ['is_archived' => true]);
+        $this->contact($vault, 'Dwight', 'Schrute');
 
-        $person = new ContactsViewModel(user: $user, vault: $vault, grouping: ContactGroupingEnum::Archived)->groups()[0]['people'][0];
+        $person = new ContactsViewModel(user: $user, vault: $vault)->groups()[0]['people'][0];
 
         $this->assertEquals('Dwight Schrute', $person['name']);
-        $this->assertTrue($person['isArchived']);
+        $this->assertFalse($person['isArchived']);
         $this->assertNull($person['avatarUrl']);
         $this->assertSame([[], [], []], array_column($person['cells'], 'values'));
         $this->assertSame(['—', '—', 'Not yet'], array_column($person['cells'], 'whenEmpty'));
