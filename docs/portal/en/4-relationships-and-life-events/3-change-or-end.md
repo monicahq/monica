@@ -3,6 +3,7 @@ id: relationships.edit
 title: Change or end a relationship
 slug: change-or-end
 section: relationships-and-life-events
+last_updated: 2026-09-29
 ---
 
 # Change or end a relationship

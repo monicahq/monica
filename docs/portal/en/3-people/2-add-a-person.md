@@ -3,6 +3,7 @@ id: contacts.add
 title: Add a person
 slug: add-a-person
 section: people
+last_updated: 2026-09-29
 ---
 
 # Add a person

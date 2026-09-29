@@ -3,6 +3,7 @@ id: security.api-keys
 title: Create an API key
 slug: api-keys
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Create an API key

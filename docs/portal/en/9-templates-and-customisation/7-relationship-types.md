@@ -3,6 +3,7 @@ id: customise.relationship-types
 title: Add your own relationship types
 slug: relationship-types
 section: templates-and-customisation
+last_updated: 2026-09-29
 ---
 
 # Add your own relationship types

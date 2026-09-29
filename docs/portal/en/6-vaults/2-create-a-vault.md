@@ -3,6 +3,7 @@ id: vaults.create
 title: Create a vault
 slug: create-a-vault
 section: vaults
+last_updated: 2026-09-29
 ---
 
 # Create a vault

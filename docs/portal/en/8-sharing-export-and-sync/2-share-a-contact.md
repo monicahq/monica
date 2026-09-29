@@ -3,6 +3,7 @@ id: sharing.create-link
 title: Share a contact with a link
 slug: share-a-contact
 section: sharing-export-and-sync
+last_updated: 2026-09-29
 ---
 
 # Share a contact with a link

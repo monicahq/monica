@@ -3,6 +3,7 @@ id: sharing.what-a-link-shows
 title: What a sharing link shows
 slug: what-a-link-shows
 section: sharing-export-and-sync
+last_updated: 2026-09-29
 ---
 
 # What a sharing link shows

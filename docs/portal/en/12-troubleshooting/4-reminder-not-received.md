@@ -3,6 +3,7 @@ id: troubleshoot.reminder-not-received
 title: A reminder did not arrive
 slug: reminder-not-received
 section: troubleshooting
+last_updated: 2026-09-29
 ---
 
 # A reminder did not arrive

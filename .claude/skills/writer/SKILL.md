@@ -139,6 +139,7 @@ id: vaults.create
 title: Create a vault
 slug: create-a-vault
 section: vaults
+last_updated: 2026-09-29
 ---
 ```
 
@@ -146,6 +147,7 @@ section: vaults
 - `title`: the page title. It MUST match the `# ` heading.
 - `slug`: the kebab-case URL segment: the page's meaningful name, without the ordering prefix described below and without `.md`. A section's index page MUST use the folder's own clean name as its slug (for example `start-here`), since it is that section's landing URL.
 - `section`: the folder the page lives in, by its clean name without the ordering prefix (`start-here`, `people`, and so on). The portal's root index page MUST use `portal`.
+- `last_updated`: the day the content of the page last changed, as `YYYY-MM-DD`. The portal shows it at the foot of the page, in the reader's language. You MUST set it to today's date whenever you change what the page says: a step, a fact, a label, a screenshot. You MUST NOT change it for a change that leaves the content as it was, such as renumbering a file, fixing the frontmatter or rewrapping a line. A test fails when a page carries no valid date.
 
 `slug` and `section` MUST NOT carry the numeric ordering prefix that the filename and folder on disk use. That prefix is a display order hint, not part of the identity of a page, so it MUST stay out of frontmatter entirely.
 

@@ -3,6 +3,7 @@ id: contacts.list
 title: Find people in a vault
 slug: find-people
 section: people
+last_updated: 2026-09-29
 ---
 
 # Find people in a vault

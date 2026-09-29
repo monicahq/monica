@@ -3,6 +3,7 @@ id: signin.magic-link
 title: Sign in with a link sent by email
 slug: sign-in-with-a-link
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Sign in with a link sent by email

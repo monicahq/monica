@@ -3,6 +3,7 @@ id: templates.build-your-own
 title: Build your own contact template
 slug: build-your-own-template
 section: templates-and-customisation
+last_updated: 2026-09-29
 ---
 
 # Build your own contact template

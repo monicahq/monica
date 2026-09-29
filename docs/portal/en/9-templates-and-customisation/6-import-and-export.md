@@ -3,6 +3,7 @@ id: templates.import-export
 title: Share a template as a file
 slug: import-and-export
 section: templates-and-customisation
+last_updated: 2026-09-29
 ---
 
 # Share a template as a file

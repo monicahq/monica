@@ -3,6 +3,7 @@ id: signin.password
 title: Sign in with your password
 slug: sign-in-with-your-password
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Sign in with your password

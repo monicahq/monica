@@ -194,6 +194,22 @@
                   @endif
                 </nav>
               @endif
+
+              <footer class="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-hairline pt-4 text-[12.5px] text-muted">
+                @if ($updated = $viewModel->lastUpdated())
+                  <span class="inline-flex items-center gap-2">
+                    <x-icon name="clock" :size="15" />
+                    <span>Last updated: <time datetime="{{ $updated->toDateString() }}" class="font-medium text-ink">{{ $viewModel->lastUpdatedLabel() }}</time></span>
+                  </span>
+
+                  <span aria-hidden="true" class="hidden text-muted-soft sm:inline">·</span>
+                @endif
+
+                <span class="inline-flex items-center gap-2">
+                  <x-icon name="activity" :size="15" />
+                  <span>Server generation: <span class="rounded-xs border border-hairline bg-card px-1.5 py-px font-mono font-medium text-ink">{!! \App\Http\Middleware\InsertServerGenerationTime::MARKER !!}</span></span>
+                </span>
+              </footer>
             </main>
 
             <aside class="sticky top-22 hidden w-60 flex-none flex-col gap-2.5 self-start xl:flex print:hidden">

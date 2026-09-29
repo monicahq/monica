@@ -19,9 +19,17 @@ class PortalCatalogueTest extends TestCase
         $contents = "---\nid: office.tour\ntitle: \"Tour: the office\"\nslug: tour\nsection: office\n---\n\n# Tour: the office\n";
 
         $this->assertSame(
-            ['id' => 'office.tour', 'title' => 'Tour: the office', 'slug' => 'tour', 'section' => 'office'],
+            ['id' => 'office.tour', 'title' => 'Tour: the office', 'slug' => 'tour', 'section' => 'office', 'last_updated' => null],
             PortalCatalogue::frontmatter($contents),
         );
+    }
+
+    #[Test]
+    public function it_reads_the_date_a_page_was_last_updated(): void
+    {
+        $contents = "---\nid: office.tour\ntitle: Tour\nslug: tour\nsection: office\nlast_updated: 2026-09-29\n---\n\n# Tour\n";
+
+        $this->assertSame('2026-09-29', PortalCatalogue::frontmatter($contents)['last_updated']);
     }
 
     #[Test]
@@ -168,6 +176,14 @@ class PortalCatalogueTest extends TestCase
             $frontmatter = PortalCatalogue::frontmatter($contents);
 
             if ($frontmatter === null || ! str_starts_with(PortalMarkdown::body($contents), "# {$frontmatter['title']}\n")) {
+                $broken[] = $path;
+
+                continue;
+            }
+
+            $date = $frontmatter['last_updated'] ?? '';
+
+            if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) !== 1 || ! checkdate((int) substr($date, 5, 2), (int) substr($date, 8, 2), (int) substr($date, 0, 4))) {
                 $broken[] = $path;
             }
         }

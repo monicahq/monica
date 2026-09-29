@@ -3,6 +3,7 @@ id: vaults.introduction
 title: Vaults
 slug: vaults
 section: vaults
+last_updated: 2026-09-29
 ---
 
 # Vaults

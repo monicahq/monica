@@ -3,6 +3,7 @@ id: duplicates.review
 title: Review possible duplicates
 slug: review-possible-duplicates
 section: keeping-records-tidy
+last_updated: 2026-09-29
 ---
 
 # Review possible duplicates

@@ -3,6 +3,7 @@ id: relationships.add
 title: Link two people
 slug: link-two-people
 section: relationships-and-life-events
+last_updated: 2026-09-29
 ---
 
 # Link two people

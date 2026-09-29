@@ -3,6 +3,7 @@ id: integrations.overview
 title: Connect Monica to other tools
 slug: connect-other-tools
 section: sharing-export-and-sync
+last_updated: 2026-09-29
 ---
 
 # Connect Monica to other tools

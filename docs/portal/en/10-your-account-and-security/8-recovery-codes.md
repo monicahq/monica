@@ -3,6 +3,7 @@ id: security.recovery-codes
 title: Keep and renew your recovery codes
 slug: recovery-codes
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Keep and renew your recovery codes

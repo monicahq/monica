@@ -3,6 +3,7 @@ id: duplicates.merge
 title: Merge two contacts
 slug: merge-two-contacts
 section: keeping-records-tidy
+last_updated: 2026-09-29
 ---
 
 # Merge two contacts

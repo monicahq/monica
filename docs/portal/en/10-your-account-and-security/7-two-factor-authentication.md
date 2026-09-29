@@ -3,6 +3,7 @@ id: security.two-factor
 title: Turn on two factor authentication
 slug: two-factor-authentication
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Turn on two factor authentication

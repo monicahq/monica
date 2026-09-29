@@ -3,6 +3,7 @@ id: reference.emails
 title: Emails Monica sends
 slug: emails
 section: reference
+last_updated: 2026-09-29
 ---
 
 # Emails Monica sends

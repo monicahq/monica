@@ -3,6 +3,7 @@ id: security.passkeys
 title: Add and remove passkeys
 slug: passkeys
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Add and remove passkeys

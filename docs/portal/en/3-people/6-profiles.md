@@ -3,6 +3,7 @@ id: profiles.add
 title: Keep a record of a pet or anything else
 slug: keep-a-record-of-a-pet
 section: people
+last_updated: 2026-09-29
 ---
 
 # Keep a record of a pet or anything else

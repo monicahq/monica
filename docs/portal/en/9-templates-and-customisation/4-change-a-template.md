@@ -3,6 +3,7 @@ id: templates.change
 title: Change a template
 slug: change-a-template
 section: templates-and-customisation
+last_updated: 2026-09-29
 ---
 
 # Change a template

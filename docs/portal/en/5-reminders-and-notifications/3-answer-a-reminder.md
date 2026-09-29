@@ -3,6 +3,7 @@ id: reminders.answer
 title: Answer a reminder
 slug: answer-a-reminder
 section: reminders-and-notifications
+last_updated: 2026-09-29
 ---
 
 # Answer a reminder

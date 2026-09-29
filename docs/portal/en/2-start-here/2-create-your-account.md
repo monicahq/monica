@@ -3,6 +3,7 @@ id: start.create-account
 title: Create your account
 slug: create-your-account
 section: start-here
+last_updated: 2026-09-29
 ---
 
 # Create your account

@@ -3,6 +3,7 @@ id: sharing.introduction
 title: Sharing, export and sync
 slug: sharing-export-and-sync
 section: sharing-export-and-sync
+last_updated: 2026-09-29
 ---
 
 # Sharing, export and sync

@@ -3,6 +3,7 @@ id: concepts.privacy
 title: What Monica keeps and who can see it
 slug: privacy
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # What Monica keeps and who can see it

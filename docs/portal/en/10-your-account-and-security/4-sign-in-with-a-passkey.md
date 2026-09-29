@@ -3,6 +3,7 @@ id: signin.passkey
 title: Sign in with a passkey
 slug: sign-in-with-a-passkey
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Sign in with a passkey

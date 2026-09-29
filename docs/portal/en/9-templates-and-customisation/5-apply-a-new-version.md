@@ -3,6 +3,7 @@ id: templates.apply-new-version
 title: Move a contact to a new template version
 slug: apply-a-new-version
 section: templates-and-customisation
+last_updated: 2026-09-29
 ---
 
 # Move a contact to a new template version

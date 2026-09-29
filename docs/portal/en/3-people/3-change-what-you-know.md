@@ -3,6 +3,7 @@ id: contacts.edit
 title: Change what you know about somebody
 slug: change-what-you-know
 section: people
+last_updated: 2026-09-29
 ---
 
 # Change what you know about somebody

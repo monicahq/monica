@@ -3,6 +3,7 @@ id: reference.glossary
 title: Words Monica uses
 slug: glossary
 section: reference
+last_updated: 2026-09-29
 ---
 
 # Words Monica uses

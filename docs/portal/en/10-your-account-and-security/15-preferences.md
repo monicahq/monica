@@ -3,6 +3,7 @@ id: account.preferences
 title: Choose your language, formats and time zone
 slug: preferences
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Choose your language, formats and time zone

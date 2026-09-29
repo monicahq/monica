@@ -3,6 +3,7 @@ id: relationships.introduction
 title: Relationships and life events
 slug: relationships-and-life-events
 section: relationships-and-life-events
+last_updated: 2026-09-29
 ---
 
 # Relationships and life events

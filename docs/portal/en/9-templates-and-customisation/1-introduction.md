@@ -3,6 +3,7 @@ id: templates.introduction
 title: Templates and customisation
 slug: templates-and-customisation
 section: templates-and-customisation
+last_updated: 2026-09-29
 ---
 
 # Templates and customisation

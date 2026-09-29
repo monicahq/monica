@@ -6,6 +6,7 @@ namespace Tests\Unit\ViewModels\Docs;
 
 use App\ViewModels\Docs\PortalCatalogue;
 use App\ViewModels\Docs\PortalDocsViewModel;
+use App\ViewModels\Docs\PortalPage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -46,10 +47,45 @@ class PortalDocsViewModelTest extends TestCase
         $this->assertStringContainsString('[Create your account]('.route('docs.portal.show', ['locale' => 'en', 'section' => 'start-here', 'slug' => 'create-your-account']).')', $markdown);
     }
 
+    #[Test]
+    public function it_writes_the_date_a_page_was_last_updated_in_the_language_of_the_guide(): void
+    {
+        $viewModel = $this->viewModelOf(lastUpdated: '2026-09-29');
+
+        $this->assertSame('2026-09-29', $viewModel->lastUpdated()?->toDateString());
+        $this->assertSame('September 29, 2026', $viewModel->lastUpdatedLabel());
+    }
+
+    #[Test]
+    public function it_gives_no_date_when_the_page_declares_none_or_an_impossible_one(): void
+    {
+        $this->assertNull($this->viewModelOf(lastUpdated: null)->lastUpdatedLabel());
+        $this->assertNull($this->viewModelOf(lastUpdated: '2026-02-30')->lastUpdated());
+        $this->assertNull($this->viewModelOf(lastUpdated: 'last week')->lastUpdated());
+    }
+
     private function viewModel(string $id): PortalDocsViewModel
     {
         $catalogue = new PortalCatalogue(locale: 'en');
 
         return new PortalDocsViewModel(catalogue: $catalogue, page: $catalogue->page($id));
+    }
+
+    private function viewModelOf(?string $lastUpdated): PortalDocsViewModel
+    {
+        $page = new PortalPage(
+            id: 'office.tour',
+            title: 'Tour',
+            slug: 'tour',
+            section: 'office',
+            locale: 'en',
+            relativePath: '2-office/2-tour.md',
+            path: '/nowhere/2-tour.md',
+            sectionOrder: 2,
+            pageOrder: 2,
+            lastUpdated: $lastUpdated,
+        );
+
+        return new PortalDocsViewModel(catalogue: new PortalCatalogue(locale: 'en'), page: $page);
     }
 }

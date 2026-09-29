@@ -3,6 +3,7 @@ id: notifications.inbox
 title: Read notifications in the app
 slug: in-app-notifications
 section: reminders-and-notifications
+last_updated: 2026-09-29
 ---
 
 # Read notifications in the app

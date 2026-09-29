@@ -3,6 +3,7 @@ id: signin.provider
 title: Sign in with GitHub, Google, Microsoft or Facebook
 slug: sign-in-with-a-provider
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Sign in with GitHub, Google, Microsoft or Facebook

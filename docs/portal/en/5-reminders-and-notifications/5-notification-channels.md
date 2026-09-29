@@ -3,6 +3,7 @@ id: notifications.channels
 title: Choose how you are notified
 slug: notification-channels
 section: reminders-and-notifications
+last_updated: 2026-09-29
 ---
 
 # Choose how you are notified

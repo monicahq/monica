@@ -3,6 +3,7 @@ id: templates.versions
 title: Why templates have versions
 slug: why-templates-have-versions
 section: templates-and-customisation
+last_updated: 2026-09-29
 ---
 
 # Why templates have versions

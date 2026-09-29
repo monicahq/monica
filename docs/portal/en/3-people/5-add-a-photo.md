@@ -3,6 +3,7 @@ id: contacts.photo
 title: Add a photo to a contact
 slug: add-a-photo
 section: people
+last_updated: 2026-09-29
 ---
 
 # Add a photo to a contact

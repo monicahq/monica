@@ -3,6 +3,7 @@ id: security.suspicious-activity
 title: An email says somebody signed in
 slug: when-something-looks-wrong
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # An email says somebody signed in

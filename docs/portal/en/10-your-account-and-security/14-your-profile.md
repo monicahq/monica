@@ -3,6 +3,7 @@ id: account.profile
 title: Change your name, email address and photo
 slug: your-profile
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Change your name, email address and photo

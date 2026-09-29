@@ -3,6 +3,7 @@ id: concepts.model
 title: How Monica is organised
 slug: how-monica-is-organised
 section: start-here
+last_updated: 2026-09-29
 ---
 
 # How Monica is organised

@@ -3,6 +3,7 @@ id: reference.limits
 title: Limits and defaults
 slug: limits
 section: reference
+last_updated: 2026-09-29
 ---
 
 # Limits and defaults

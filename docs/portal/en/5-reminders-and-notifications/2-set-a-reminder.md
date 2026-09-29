@@ -3,6 +3,7 @@ id: reminders.create
 title: Set a reminder
 slug: set-a-reminder
 section: reminders-and-notifications
+last_updated: 2026-09-29
 ---
 
 # Set a reminder

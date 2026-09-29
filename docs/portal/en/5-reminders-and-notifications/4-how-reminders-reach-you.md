@@ -3,6 +3,7 @@ id: reminders.how-they-work
 title: How reminders reach you
 slug: how-reminders-reach-you
 section: reminders-and-notifications
+last_updated: 2026-09-29
 ---
 
 # How reminders reach you

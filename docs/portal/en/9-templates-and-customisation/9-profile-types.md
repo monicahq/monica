@@ -3,6 +3,7 @@ id: customise.profile-types
 title: Create a kind of profile
 slug: profile-types
 section: templates-and-customisation
+last_updated: 2026-09-29
 ---
 
 # Create a kind of profile

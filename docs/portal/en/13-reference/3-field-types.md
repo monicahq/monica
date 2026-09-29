@@ -3,6 +3,7 @@ id: reference.field-types
 title: Field types
 slug: field-types
 section: reference
+last_updated: 2026-09-29
 ---
 
 # Field types

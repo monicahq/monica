@@ -3,6 +3,7 @@ id: troubleshoot.cannot-sign-in
 title: I cannot sign in
 slug: cannot-sign-in
 section: troubleshooting
+last_updated: 2026-09-29
 ---
 
 # I cannot sign in

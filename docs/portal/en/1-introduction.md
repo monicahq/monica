@@ -3,6 +3,7 @@ id: portal.introduction
 title: Welcome to the Monica guide
 slug: introduction
 section: portal
+last_updated: 2026-09-29
 ---
 
 # Welcome to the Monica guide

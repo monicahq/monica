@@ -3,6 +3,7 @@ id: life-events.record
 title: Record something that happened
 slug: record-a-life-event
 section: relationships-and-life-events
+last_updated: 2026-09-29
 ---
 
 # Record something that happened

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Docs;
 
+use App\Http\Middleware\InsertServerGenerationTime;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -37,6 +38,17 @@ class PortalDocsControllerTest extends TestCase
         $response->assertOk();
         $response->assertSee('Record your first person');
         $response->assertSee('href="#step-1-add-rachel"', false);
+    }
+
+    #[Test]
+    public function it_prints_how_long_the_server_took_in_place_of_the_marker(): void
+    {
+        $response = $this->get('/docs/en/start-here/record-your-first-person');
+
+        $response->assertDontSee(InsertServerGenerationTime::MARKER, false);
+        $response->assertSeeText('Server generation:');
+        $response->assertHeader('Server-Timing');
+        $this->assertMatchesRegularExpression('/\d+ ms/', (string) $response->getContent());
     }
 
     #[Test]

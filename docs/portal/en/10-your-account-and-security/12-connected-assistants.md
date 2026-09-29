@@ -3,6 +3,7 @@ id: security.assistants
 title: Disconnect an assistant
 slug: connected-assistants
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Disconnect an assistant

@@ -3,6 +3,7 @@ id: security.password
 title: Change, set or remove your password
 slug: your-password
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Change, set or remove your password

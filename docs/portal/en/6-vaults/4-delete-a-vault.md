@@ -3,6 +3,7 @@ id: vaults.delete
 title: Delete a vault
 slug: delete-a-vault
 section: vaults
+last_updated: 2026-09-29
 ---
 
 # Delete a vault

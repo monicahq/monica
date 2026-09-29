@@ -3,6 +3,7 @@ id: customise.value-lists
 title: Change the choices a list offers
 slug: value-lists
 section: templates-and-customisation
+last_updated: 2026-09-29
 ---
 
 # Change the choices a list offers

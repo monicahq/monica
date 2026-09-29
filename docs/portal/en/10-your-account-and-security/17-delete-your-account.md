@@ -3,6 +3,7 @@ id: account.delete
 title: Delete your account
 slug: delete-your-account
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Delete your account

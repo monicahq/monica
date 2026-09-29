@@ -28,7 +28,7 @@ class PortalCatalogue
         return array_map(basename(...), $directories);
     }
 
-    /** @return array{id: string, title: string, slug: string, section: string}|null */
+    /** @return array{id: string, title: string, slug: string, section: string, last_updated: ?string}|null */
     public static function frontmatter(string $contents): ?array
     {
         if (! preg_match('/^---\n(.*?)\n---\n/s', $contents, $matches)) {
@@ -57,6 +57,7 @@ class PortalCatalogue
             'title' => $values['title'],
             'slug' => $values['slug'],
             'section' => $values['section'],
+            'last_updated' => ($values['last_updated'] ?? '') === '' ? null : $values['last_updated'],
         ];
     }
 
@@ -104,6 +105,7 @@ class PortalCatalogue
                 path: $file->getPathname(),
                 sectionOrder: $folder === null ? 0 : $this->order($folder),
                 pageOrder: $this->order($file->getFilename()),
+                lastUpdated: $frontmatter['last_updated'],
             );
         }
 

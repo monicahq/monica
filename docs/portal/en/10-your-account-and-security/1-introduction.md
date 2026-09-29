@@ -3,6 +3,7 @@ id: account.introduction
 title: Your account and security
 slug: your-account-and-security
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Your account and security

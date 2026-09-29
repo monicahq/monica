@@ -3,6 +3,7 @@ id: vaults.settings
 title: Change a vault’s name, colour and default template
 slug: vault-settings
 section: vaults
+last_updated: 2026-09-29
 ---
 
 # Change a vault’s name, colour and default template

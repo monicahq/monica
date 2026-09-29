@@ -3,6 +3,7 @@ id: customise.life-event-types
 title: Add your own life event types
 slug: life-event-types
 section: templates-and-customisation
+last_updated: 2026-09-29
 ---
 
 # Add your own life event types

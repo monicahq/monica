@@ -3,6 +3,7 @@ id: troubleshoot.limit-reached
 title: I hit a limit
 slug: limit-reached
 section: troubleshooting
+last_updated: 2026-09-29
 ---
 
 # I hit a limit

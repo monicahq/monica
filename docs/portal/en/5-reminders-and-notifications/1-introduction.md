@@ -3,6 +3,7 @@ id: reminders.introduction
 title: Reminders and notifications
 slug: reminders-and-notifications
 section: reminders-and-notifications
+last_updated: 2026-09-29
 ---
 
 # Reminders and notifications

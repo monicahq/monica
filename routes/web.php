@@ -174,13 +174,15 @@ Route::get('docs/{locale}/{section}/{slug}.md', [PortalDocsMarkdownController::c
     ->where(['locale' => '[a-z]{2}(_[A-Z]{2})?', 'section' => '[a-z0-9\-]+', 'slug' => '[a-z0-9\-]+'])
     ->name('docs.portal.markdown.show');
 
-Route::get('docs/{locale}', [PortalDocsController::class, 'index'])
-    ->where('locale', '[a-z]{2}(_[A-Z]{2})?')
-    ->name('docs.portal.index');
+Route::middleware(['portal.timing'])->group(function (): void {
+    Route::get('docs/{locale}', [PortalDocsController::class, 'index'])
+        ->where('locale', '[a-z]{2}(_[A-Z]{2})?')
+        ->name('docs.portal.index');
 
-Route::get('docs/{locale}/{section}/{slug?}', [PortalDocsController::class, 'show'])
-    ->where(['locale' => '[a-z]{2}(_[A-Z]{2})?', 'section' => '[a-z0-9\-]+', 'slug' => '[a-z0-9\-]+'])
-    ->name('docs.portal.show');
+    Route::get('docs/{locale}/{section}/{slug?}', [PortalDocsController::class, 'show'])
+        ->where(['locale' => '[a-z]{2}(_[A-Z]{2})?', 'section' => '[a-z0-9\-]+', 'slug' => '[a-z0-9\-]+'])
+        ->name('docs.portal.show');
+});
 
 Route::get('marketplace', [MarketplaceController::class, 'index'])
     ->name('marketplace.index');

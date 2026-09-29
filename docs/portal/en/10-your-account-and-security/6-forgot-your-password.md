@@ -3,6 +3,7 @@ id: signin.forgot-password
 title: Choose a new password when you forgot it
 slug: forgot-your-password
 section: your-account-and-security
+last_updated: 2026-09-29
 ---
 
 # Choose a new password when you forgot it

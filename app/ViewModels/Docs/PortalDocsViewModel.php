@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Docs;
 
+use Carbon\CarbonImmutable;
+use Carbon\Exceptions\InvalidFormatException;
+
 class PortalDocsViewModel
 {
     public const string SOURCE_URL = 'https://github.com/monicahq/monica';
@@ -106,6 +109,26 @@ class PortalDocsViewModel
     public function issueUrl(): string
     {
         return self::SOURCE_URL.'/issues/new?title='.rawurlencode("Documentation: {$this->page->id}");
+    }
+
+    public function lastUpdated(): ?CarbonImmutable
+    {
+        if ($this->page->lastUpdated === null) {
+            return null;
+        }
+
+        try {
+            $date = CarbonImmutable::createFromFormat('!Y-m-d', $this->page->lastUpdated);
+        } catch (InvalidFormatException) {
+            return null;
+        }
+
+        return $date instanceof CarbonImmutable && $date->format('Y-m-d') === $this->page->lastUpdated ? $date : null;
+    }
+
+    public function lastUpdatedLabel(): ?string
+    {
+        return $this->lastUpdated()?->locale($this->locale())->isoFormat('LL');
     }
 
     /** @return array{lead: ?string, blocks: list<array{type: string, html?: string, title?: ?string, screenshot?: array{label: string, src: ?string}, steps?: list<array{title: ?string, html: string, screenshot: ?array{label: string, src: ?string}}>}>, contents: list<array{id: string, label: string}>} */

@@ -16,6 +16,7 @@ class PortalPage
         public readonly string $path,
         public readonly int $sectionOrder,
         public readonly int $pageOrder,
+        public readonly ?string $lastUpdated = null,
     ) {}
 
     public function isRoot(): bool

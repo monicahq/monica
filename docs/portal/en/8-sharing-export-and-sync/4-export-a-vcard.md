@@ -3,6 +3,7 @@ id: export.vcard
 title: Export a contact as a vCard
 slug: export-a-vcard
 section: sharing-export-and-sync
+last_updated: 2026-09-29
 ---
 
 # Export a contact as a vCard

@@ -3,6 +3,7 @@ id: start.first-contact
 title: Record your first person
 slug: record-your-first-person
 section: start-here
+last_updated: 2026-09-29
 ---
 
 # Record your first person

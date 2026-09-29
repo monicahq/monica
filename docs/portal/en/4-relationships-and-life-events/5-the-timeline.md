@@ -3,6 +3,7 @@ id: life-events.timeline
 title: How the timeline works
 slug: the-timeline
 section: relationships-and-life-events
+last_updated: 2026-09-29
 ---
 
 # How the timeline works

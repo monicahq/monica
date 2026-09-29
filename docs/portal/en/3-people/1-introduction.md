@@ -3,6 +3,7 @@ id: contacts.introduction
 title: People
 slug: people
 section: people
+last_updated: 2026-09-29
 ---
 
 # People
