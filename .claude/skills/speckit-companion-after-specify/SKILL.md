@@ -1,16 +1,11 @@
 ---
 name: speckit-companion-after-specify
-description: Capture the current spec-kit step into .spec-context.json for the Companion
-  GUI
+description: Capture the current spec-kit step into .spec-context.json for the Companion GUI
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: extension:companion
-user-invocable: true
-disable-model-invocation: false
+  source: companion:commands/speckit.companion.after-specify.md
 ---
-
-# Companion After Specify Skill
 
 # Capture Spec Context
 

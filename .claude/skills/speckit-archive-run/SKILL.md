@@ -1,18 +1,11 @@
 ---
 name: speckit-archive-run
-description: Archive a feature specification into main project memory after merge,
-  resolving gaps and conflicts
+description: Archive a feature specification into main project memory after merge, resolving gaps and conflicts
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: Stanislav Deviatov
-  source: extension:archive
-argument-hint: <feature-dir> [--spec-only|--plan-only|--changelog-only|--agent-only]
-  [guidance text]
-user-invocable: true
-disable-model-invocation: false
+  source: archive:commands/archive.md
 ---
-
-# Archive Run Skill
 
 Act as the **Chief Software Architect** and **Documentation Maintainer**.
 A feature has been merged into the `main` branch. Your goal is to **archive** the feature specification into the main project memory — ensuring completeness, resolving conflicts, closing gaps, and respecting the project constitution.

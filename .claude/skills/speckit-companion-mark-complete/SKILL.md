@@ -1,16 +1,11 @@
 ---
 name: speckit-companion-mark-complete
-description: 'Mark the active spec completed — the Companion workflow''s terminal
-  step (writes status: completed)'
+description: 'Mark the active spec completed — the Companion workflow''s terminal step (writes status: completed)'
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: extension:companion
-user-invocable: true
-disable-model-invocation: false
+  source: companion:commands/speckit.companion.mark-complete.md
 ---
-
-# Companion Mark Complete Skill
 
 # Mark Spec Complete
 

@@ -1,16 +1,11 @@
 ---
 name: speckit-companion-after-tasks
-description: Capture tasks completion (currentStep=tasks, status=ready-to-implement)
-  into .spec-context.json for the Companion GUI
+description: Capture tasks completion (currentStep=tasks, status=ready-to-implement) into .spec-context.json for the Companion GUI
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: extension:companion
-user-invocable: true
-disable-model-invocation: false
+  source: companion:commands/speckit.companion.after-tasks.md
 ---
-
-# Companion After Tasks Skill
 
 # Capture Tasks Context
 

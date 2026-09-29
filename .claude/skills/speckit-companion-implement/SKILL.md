@@ -1,16 +1,11 @@
 ---
 name: speckit-companion-implement
-description: Companion implement — execute tasks.md in dependency order, then mark
-  complete
+description: Companion implement — execute tasks.md in dependency order, then mark complete
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: extension:companion
-user-invocable: true
-disable-model-invocation: false
+  source: companion:commands/speckit.companion.implement.md
 ---
-
-# Companion Implement Skill
 
 ## User Input
 

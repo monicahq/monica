@@ -1,850 +1,1614 @@
-# Documentation Portal Roadmap
+# Documentation portal roadmap
 
-A roadmap for the Monica product documentation portal.
+This roadmap plans the product documentation for Monica: which pages to write, for whom, in what order,
+and on what evidence. It is a plan, not the documentation. It replaces the roadmap of 2026-08-06, which
+described an earlier product (an HR tool with many equal users per account, no API and no billing) and
+must not be used as a source for anything.
 
-This document describes what the portal should contain, section by section and page by page. It is an implementation plan, not the documentation itself. A writing agent should be able to build every page from this roadmap without having to rethink the structure.
-
----
-
-## How to use this roadmap
-
-Read this section first. It sets the scope, the audiences, and the conventions used everywhere below.
-
-### What the product is
-
-Monica is an open source HR application. The interface calls itself "Open source HR" on the guest screens, and the public site lives at `monicahq.com`.
-
-The mental model the whole product rests on, and the one the portal must teach first, comes straight from the schema:
-
-- An **account** is the workspace. Everything belongs to one.
-- A **user** is somebody who signs in. A user belongs to exactly one account.
-- The first person to sign up creates the account and becomes the first user in it.
-- Every user of an account can do the same things. There are no roles, no administrators, and no permission system of any kind.
-
-That flatness is deliberate and worth stating early, because readers arrive expecting the opposite. Several pages below exist only to make it land.
-
-### The state of the product, and what that means for the portal
-
-**Read this before writing a single page.** Monica is early. As of this roadmap, the user facing surfaces that exist are the guest and authentication screens, plus one screen inside the application: the profile, where somebody edits their own name, the address they sign in with, and the photo shown beside them. There is no dashboard, no directory of the people in an account, and no billing screen. There is no API either, though the screen that hands out keys for one exists, which is a distinction the writer has to keep: see `security.api-keys`. `routes/web.php` still sends `/` to a landing page, with a comment saying it stands in "until there is a dashboard to send people to."
-
-This has two consequences the writer must respect:
-
-1. **Every numbered section below is writable today.** They cover accounts, signing in, your profile, security, language and preferences, the emails the product sends, and running your own instance. Every claim in them is backed by code that exists and by tests that pass.
-2. **"Not yet documentable", at the end, is not writable.** It is an inventory of things the database or the enums anticipate but no screen or route delivers. It exists so nobody writes those pages by accident, and so they can be written the moment the feature lands.
-
-Never present a planned capability as finished. When a page has to mention something that is half built, say plainly what works and what does not.
-
-### Who the readers are
-
-Three audiences, needing different pages:
-
-1. **Users.** The people who sign in and use the product. Not developers. Most of the portal serves them, and they are all the same as one another: there is no second class of reader with extra powers.
-2. **Operators.** Whoever installs, configures, and runs an instance. Developers and sysadmins.
-
-Do not write about "roles", "administrators" or "permission levels" anywhere. No such thing exists in the code, and inventing one in the portal would be the fastest way to mislead a reader.
-
-Every page below names its audience.
-
-### Where the portal lives
-
-There is no documentation route today. `/docs` is free, and is the natural home. The portal is written as Markdown under `docs/portal/{locale}/`, mirroring the four locales the application already ships: `en`, `fr_FR`, `de_DE`, `es_ES` (see `config/monica.php`). Write `en` first and completely; the others are translations of it.
-
-### Conventions for every page entry
-
-Each proposed page lists:
-
-- **Purpose.** What the page accomplishes for the reader.
-- **Audience.** Which reader group it serves.
-- **Summary.** What it should cover, grounded in behavior that exists.
-- **Prerequisites.** What the reader should have read or done first.
-- **Complexity.** Low, medium or high, as a hint at how much work the page is.
-- **Related pages.** Where to go next or sideways.
-
-The `id` given for each page is its permanent frontmatter identifier, in `domain.action` form. Ids must not change once assigned, and `@doc(...)` links must always reference them rather than filenames. Folders and files carry an `N-` ordering prefix on disk that never appears in frontmatter. The first file of every folder is `1-introduction.md`. All of this follows the writer skill's rules, which take precedence over anything here if the two ever disagree.
-
-### Ordering
-
-Sections are ordered by how somebody actually meets the product: find out what it is, create an account, understand the vocabulary, learn to get back in, fill in your profile, secure the account, adjust the interface, understand the mail it sends, and (for operators) run it. Nobody should need a later section to finish an earlier one.
+Writers build pages from the briefs in [Page briefs](#page-briefs), following `.claude/skills/writer/SKILL.md`.
+Where this roadmap and the writer skill disagree, see [Writer skill conflicts](#writer-skill-conflicts).
 
 ---
 
-## Section 1: Introduction
+## Scope and evidence
 
-**Why this section exists.** The portal needs a front door: one page that says what Monica is, who it is for, and where to go next. It is also the only honest place to set expectations about how young the product is.
+### Audit record
 
-**Who it is for.** Everybody.
+| Item | Value |
+| --- | --- |
+| Audit date | 2026-09-29 |
+| Revision | `ba888b57` on branch `2026-09-27-doc` (main plus documentation tooling commits) |
+| Working tree | Clean. `vendor/` and a local `.env` were created for inspection only; both are ignored by git |
+| Scope | Whole portal: end users, instance operators, integration developers, contributors |
+| Release applicability | Nothing here is known to be released. `config/monica.php` reports version `3.0.0`, but there are no git tags, no changelog and no release workflow. Treat every capability as "in the current code", not "shipped" |
 
-**On disk.** `1-introduction.md` at the portal root. Section value `portal`, slug `portal`.
+**Verification performed.** Static inspection of routes, controllers, actions, view models, views,
+policies, jobs, notifications, enums, configuration, `lang/en.json`, migrations, seeders and test names.
+Four parallel audits (everyday features; access, settings and billing; connected tools; operating an
+instance) were each spot checked against the source before being used. Claims marked **confirmed in
+code** below were read in the source by the author of this roadmap.
 
-### Welcome to Monica
+**Verification not performed.** No test was run and no screen was opened. PHP became unavailable on the
+audit machine partway through, so `php artisan route:list`, the test suite and the application could not
+run. Every test file named in this roadmap is evidence of intent, not a passing check. Every UI label
+comes from `lang/en.json` or Blade source and must be checked on screen before publication.
 
-- **id.** `portal.introduction`
-- **Purpose.** Orient a first time reader in under a minute and route them to the right section.
-- **Audience.** All three.
-- **Summary.** What Monica is: open source software a group of people runs for itself. The one line model, stated early and plainly: an account holds users, and every one of them can do the same things. Who the product suits. That it is open source and can be run by you. A short map of the portal: start with Getting started; then Core concepts; operators should jump to Running your own instance. Then a candid paragraph, in plain language, that the product is in early development and this portal currently documents accounts, signing in, and security, with the rest arriving as it is built. No roadmap promises and no dates.
-- **Prerequisites.** None. This is the true entry point.
-- **Complexity.** Low.
-- **Related pages.** `getting.what-is-monica`, `getting.create-account`, `hosting.introduction`.
+### Audiences
 
----
+| Audience | Who | Enters from | Primary needs |
+| --- | --- | --- | --- |
+| New user | Just signed up on monicahq.com or on an instance somebody runs | The welcome letter, the `/docs` landing page, search engines | First success: understand vaults and contacts, record a first person, set a first reminder |
+| Returning user | Uses Monica weekly | In-app help links, search | A task done, an exact answer (a limit, a setting, what an email means) |
+| Hosted customer | Uses monicahq.com | Billing screen, limit messages | What the free offer holds, what full access changes, cancelling |
+| Instance operator | Installs and runs an instance, often also its administrator | GitHub README, `/docs` | Install, configure, schedule, back up, upgrade, administer |
+| Integration developer | Scripts, assistants, phone sync | `/docs/api`, `/docs/mcp`, `/docs/carddav` (all exist) | Exact reference, auth, limits |
+| Contributor | Wants to translate or send code | GitHub | Set up, conventions, where to start |
 
-## Section 2: Getting started
+There is one person per account. Monica has no roles, members or invitations
+(`database/migrations/0001_01_01_000000_create_users_table.php`, `users.account_id` unique; constitution,
+Product Invariants). The only elevated capacity is the **instance administrator**, who governs the
+instance (accounts, storage, moderation, configuration) and never sees vault contents
+(`specs/001-admin-space/spec.md`). No page may describe collaboration, members, teammates or shared vaults.
 
-**Why this section exists.** The shortest path from "I found this" to "I have an account and I am inside." Everything advanced is deferred.
+### Deployment assumptions
 
-**Who it is for.** Anyone creating an account, and anyone evaluating whether to.
+Hosted and self hosted run the same code. The differences, all driven by `MONICA_SELF_HOSTED`
+(`config/monica.php`), are:
 
-**On disk.** `2-getting-started/`. Section value `getting-started`.
+| Behaviour | Hosted (`self_hosted=false`) | Self hosted (`self_hosted=true`) |
+| --- | --- | --- |
+| Free offer caps | 1 vault, 30 contacts, 100 MB storage by default (`Account::isMetered`, `VaultPolicy`, `ContactPolicy`, `CreateFile`) | None |
+| Billing screen and menu entry | Shown | Menu entry hidden, screen says the instance is self hosted |
+| MCP rate limit | 60 per minute | None (`AppServiceProvider::configureRateLimiting`) |
+| API rate limit | 60 per minute per user | Same |
 
-### Getting started
+An instance administrator can change most `monica.*` values at runtime from `/admin/configuration`, and
+a stored value overrides the environment (`InstanceSettingEnum`, `AppServiceProvider::applyInstanceSettings`).
+**Consequence for every user page:** write numbers as defaults ("by default, five minutes"), and prefer
+pointing at the number the screen or email itself states. Several screens already print the configured
+value (`Remember me for :count days`, the magic link email).
 
-- **id.** `getting.introduction`
-- **Purpose.** Section index. Say what the reader will have achieved by the end of it.
-- **Audience.** New users.
-- **Summary.** Three outcomes: you understand what Monica is, you have an account, and you have confirmed your email address. List the pages in order.
-- **Prerequisites.** None.
-- **Complexity.** Low.
-- **Related pages.** Every page in this section.
+### Sources inspected
 
-### What is Monica
+- Instructions: `.claude/CLAUDE.md`, `.claude/rules/*`, `.claude/skills/writer/SKILL.md`,
+  `.claude/skills/writer-analyst/SKILL.md`, `.specify/memory/constitution.md`.
+- Product: `routes/{web,auth,api,administrator,ai,console}.php`, `app/Http/Controllers/**`, `app/Actions`,
+  `app/ViewModels`, `app/Policies`, `app/Jobs`, `app/Notifications`, `app/Enums`, `app/Mcp`, `app/Http/Dav`,
+  `app/Console/Commands`, `config/{monica,localization,services,passkeys,turnstile}.php`, `.env.example`,
+  `database/seeders`, `lang/en.json`, `resources/views/app/**`, `resources/views/shared/**`.
+- Existing documentation: `resources/docs/api/*.php`, `app/ViewModels/Docs/*`, `resources/views/app/docs/**`,
+  `docs/FEATURES.md`, `docs/STRIPE.md`, `README.md`, `specs/*` (intent only).
+- Operations: `Dockerfile`, `compose.yaml`, `docker-entrypoint.sh`, `.env.docker`, `composer.json` scripts,
+  `.github/workflows/*`.
 
-- **id.** `getting.what-is-monica`
-- **Purpose.** Tell a newcomer what the product does and whether it fits them, before they invest any time.
-- **Audience.** Anyone weighing the product up.
-- **Summary.** The problem it addresses: people information kept in spreadsheets, inboxes and memory. The model in one paragraph: an account, and the users who sign in to it, all of them equal. That it is open source, so you can read every line and run it yourself. Be explicit and unembarrassed about scope: today the product handles accounts, sign in and profiles, and more is being built. A reader who discovers that limitation on their own after signing up will not come back.
-- **Prerequisites.** None.
-- **Complexity.** Low.
-- **Related pages.** `getting.cloud-or-self-hosted`, `concepts.model`.
+### Shared product facts
 
-### Using monicahq.com or running it yourself
+Briefs reference these instead of repeating them. Defaults are from `config/monica.php` and code; an
+asterisk means an administrator can change the value from the admin space.
 
-- **id.** `getting.cloud-or-self-hosted`
-- **Purpose.** Help the reader choose how they will run Monica before they create anything.
-- **Audience.** Prospective users and operators.
-- **Summary.** Two ways to run it: use the hosted service, or install it on your own server. The application knows which it is (`accounts.is_self_hosted`) but the software is the same either way. State clearly what the portal can and cannot promise about the hosted service: the codebase has a `plan` field on every account and a thirty day `trial_ends_at` set at signup, but **no billing, payment or subscription code exists**, nothing reads either field, and no screen shows a plan. So: do not write pricing, do not describe upgrade paths, do not mention tiers. Say that self hosting is free and point at the self hosting section.
-- **Prerequisites.** `getting.what-is-monica`.
-- **Complexity.** Medium. The temptation to invent a pricing story here is the main risk.
-- **Related pages.** `hosting.introduction`, `concepts.account`.
+**The model.** An account holds one user. A user signs in; the account is created with a vault named
+**Personal** (`CreateAccount::createFirstVault`) and, on the `high` queue, seeded with value lists,
+8 life event categories, 40 life event types, relationship categories and types, and the **Basic
+contact** and **Basic animal** templates, which also create the **Animals** profile type
+(`CreateAccount::seedTheAccount`). A **vault** is a compartment, not a permission boundary. A **contact**
+lives in exactly one vault. A **profile** (code: `Entity`) is a non-person record such as a pet, of a
+**profile type** (code: `EntityType`). Every contact and profile follows a **template**, whose published
+**versions** are frozen; a record stays on its version until the user applies a newer one
+(constitution VI; `MoveRecordToStructureVersion`, which snapshots first).
 
-### Create your account
+**Vocabulary (UI label, code name).** Vault (`Vault`); contact, "Add somebody" (`Contact`); partial contact
+(`is_partial`, filter `names-only`); Favourites, Archived (`ContactGroupingEnum`); template (`Template`,
+`Structure`, `StructureVersion` Draft / Published / Retired); page (`StructureVersionPage`); section
+(`Section`); field (`Field`, `FieldValue`, `FieldValueRow` for repeater rows); "Kinds of profile", profile
+type (`EntityType`); profile (`Entity`); "Answers to questions no longer asked" (set aside values); merge
+(`MergeContacts`, `ContactMerge`); sharing link (`ShareLink`, `/s/{token}`); life event (`LifeEvent`);
+relationship (`Relationship`); reminder (`Reminder`) and its dates (`ReminderOccurrence`); "I remembered",
+"I forgot" (`ReminderAnswerEnum`); full access, free offer (`Account::hasFullAccess`, `isOnFreeOffer`).
+The **Me contact** exists in the model and the API but has no screen that creates it (discrepancy D10).
 
-- **id.** `getting.create-account`
-- **Purpose.** Walk somebody through the sign up form and explain what it creates.
-- **Audience.** The person starting an account in Monica.
-- **Summary.** A `::::steps` walkthrough of `/register`: first name, last name, email address, password, and the terms checkbox. What each field does and what it becomes. Then the part worth saying plainly: submitting this form creates two things at once, an account and the first user in it, which is you. The account has no name and nothing to configure, so do not send the reader looking for a settings screen. Cover the rules the form enforces, in the reader's words rather than the validator's: a password of at least eight characters, typed twice; an email address that no other user already signs in with; disposable or throwaway addresses are refused (the `disposable_email` rule); agreeing to the terms of use and the privacy policy is required, and links to both come from configuration so a self hosted instance can point at its own. Mention the human check that may appear (Cloudflare Turnstile), which is off by default and switched on per instance. Finish by saying what happens next: you are signed in and sent straight to the email confirmation screen.
-- **Prerequisites.** `getting.what-is-monica`.
-- **Complexity.** Medium.
-- **Related pages.** `getting.confirm-email`, `concepts.model`, `concepts.permissions`.
+**Numbers.**
 
-:::note for the writer
-The screen also carries a line telling people joining an existing account to ask somebody in it to invite them rather than signing up again. Repeat that advice on this page, but do **not** describe an invitation flow: no invitation code, route, mail or screen exists yet. Say only that a second signup creates a second, separate account, which is almost never what they want, and that they should ask whoever already has the account to add them.
-
-### Confirm your email address
-
-- **id.** `getting.confirm-email`
-- **Purpose.** Get a brand new account over its last hurdle.
-- **Audience.** Anyone who just signed up.
-- **Summary.** Why confirmation exists. What the screen shows, and where the email goes. That the link is signed and expires after an hour, and what to do when it has: use **Send the email again** from the same screen. That resending is rate limited to six attempts a minute, so hammering it does not help. The reassurance the product itself offers: it can take a minute and it sometimes lands in spam. What you see when it works. Note that confirming later, rather than now, does not currently lock you out of anything.
-- **Prerequisites.** `getting.create-account`.
-- **Complexity.** Low.
-- **Related pages.** `email.verify`, `signin.password`, `troubleshoot.no-email`.
-
-### What you can do today
-
-- **id.** `getting.what-works-today`
-- **Purpose.** Set honest expectations for somebody who just got in and is looking at a bare page.
-- **Audience.** New users.
-- **Summary.** A short, factual page. What exists: your account, your user, the profile screen where you edit your name, address and photo, the preferences screen where you choose your language and how times are written, two factor authentication, the list of emails the product has sent you, and everything in the account and security sections of this portal. What does not exist yet: any screen for browsing the other people in your account, or for adding and removing them. Where the project is going, only insofar as the code shows it, with no dates. Where to follow along or contribute, since it is open source.
-- **Prerequisites.** `getting.create-account`.
-- **Complexity.** Low, but must be revisited every time a feature ships. Flag it in the page as the portal's "what is built" page.
-- **Related pages.** `portal.introduction`, `concepts.introduction`.
-
----
-
-## Section 3: Core concepts
-
-**Why this section exists.** Monica's model is small, and its most surprising property is what it does *not* have: no roles, no administrators, no permissions. A reader who assumes otherwise will misread every later page. Concepts stay here, tasks stay elsewhere.
-
-**Who it is for.** Everybody.
-
-**On disk.** `3-core-concepts/`. Section value `core-concepts`.
-
-### Core concepts
-
-- **id.** `concepts.introduction`
-- **Purpose.** Section index and the shortest possible statement of the model.
-- **Audience.** All.
-- **Summary.** Account, user, and the flat permission model, in one paragraph each, each linking to its page. Say why the reader should care: it explains what the boundary around their data is, and why nobody in the product can do anything to them that they cannot do back.
-- **Prerequisites.** None.
-- **Complexity.** Low.
-- **Related pages.** All pages in this section.
-
-### How Monica is organised
-
-- **id.** `concepts.model`
-- **Purpose.** Give the reader the mental picture the whole product assumes.
-- **Audience.** All.
-- **Summary.** One account at the top. Users belong to it. That is the entire structure, and saying so plainly is the point of the page (mark a diagram placeholder all the same). Explain the boundary that follows from it: everything you can see is inside your account, and there is no way to reach another account's data. State the current limit plainly: a user belongs to exactly one account, so somebody who needs two needs two addresses.
-- **Prerequisites.** None.
-- **Complexity.** Low.
-- **Related pages.** `concepts.account`, `concepts.permissions`.
-
-### Your account
-
-- **id.** `concepts.account`
-- **Purpose.** Explain what an account is in Monica and what it records.
-- **Audience.** All.
-- **Summary.** The account is the workspace and the boundary. What it holds is short, and the shortness is the message: a plan, whether the instance is self hosted, a billing address, and when the trial ends. It has no name, no logo and no settings, because nothing yet needs them. Be explicit that **there is no screen to see or edit any of this**: the fields are set when you sign up and nothing reads them. Do not describe a settings page, and do not describe the plan as something the reader has chosen.
-- **Prerequisites.** `concepts.model`.
-- **Complexity.** Low. The honesty about the missing screen is the whole difficulty.
-- **Related pages.** `concepts.permissions`, `getting.cloud-or-self-hosted`.
-
-### Everybody can do the same things
-
-- **id.** `concepts.permissions`
-- **Purpose.** State the product's flat permission model, and forestall the assumption every reader arrives with.
-- **Audience.** All.
-- **Summary.** Lead with the claim, not a hedge: every user of an account can do exactly what every other user of that account can do. There is no owner, no administrator, no roles table, no groups and no per feature permission. The person who signed up holds no special position and cannot be given one. What the code actually enforces, which is one rule and no more: you can act on your own account and on the users inside it, and never on anything belonging to another account. The one guard worth naming, because a reader will find it: somebody cannot delete their own user, since that would sign them out of the screen they are standing on. Then the honest consequence, stated without alarm: an account is a group of people who trust each other, and Monica does not currently offer a way to make it anything else.
-- **Prerequisites.** `concepts.model`.
-- **Complexity.** Medium. Resist every temptation to soften this with "for now" language beyond one sentence.
-- **Related pages.** `concepts.model`, `account.delete`.
-
-### What Monica knows about you
-
-- **id.** `concepts.user-record`
-- **Purpose.** Say exactly what the product stores about a person, which is a question people ask before they ask anything else.
-- **Audience.** All.
-- **Summary.** A plain inventory. Who you are: first name, last name, and a photo. How you sign in: your email address, whether it has been confirmed, your password as a hash, whether you use an identity provider instead, and your two factor secret and recovery codes if you have enrolled. What the product has noticed: when and from which address you last signed in, and when you last saved your profile. What you chose: your language and whether times are written on a 24 or a 12 hour clock. Be clear about what is **not** stored, because in a product with this lineage people assume otherwise: no job title, no hire date, no home address, no date of birth, no emergency contact, no salary and no performance record. None of it exists. Be equally clear about what you can reach: the profile screen edits your name, your address and your photo, and nothing lets you see or edit anybody else's.
-- **Prerequisites.** `concepts.model`.
-- **Complexity.** Medium.
-- **Related pages.** `concepts.permissions`, `security.privacy`.
-
-### The activity log
-
-- **id.** `concepts.activity-log`
-- **Purpose.** Explain that the product keeps a record of what people do, and what it means for the reader.
-- **Audience.** All, and privacy conscious readers in particular.
-- **Summary.** What is recorded, listed exactly and no more: an account created, a profile updated, a photo changed or removed, account details updated, a password changed, preferences changed, a user deleted, an email address confirmed, two factor authentication turned on or off, recovery codes regenerated, a sign in, a sign in link requested, and an API key created or revoked. Each entry keeps who did it, when, and the email address they had at the time, so the record still says who acted after their user is gone. Why that design choice was made. That the log belongs to the account, while the screens that display it only ever show the reader their own entries. Then the two limits worth stating: nobody can read another person's entries anywhere in the product today, and an action this version of the product no longer recognises is shown by its raw name rather than a sentence. Send the reader to `profile.logs` for how to read their own.
-- **Prerequisites.** `concepts.model`.
-- **Complexity.** Low.
-- **Related pages.** `profile.logs`, `security.privacy`, `email.record`.
+| Fact | Default | Where |
+| --- | --- | --- |
+| Minimum password length | 8 on every form | `Password::min(8)` in controllers (the stricter production default in `AppServiceProvider` is never applied, D17) |
+| Remember me | 30 days* | `remember_duration_days` |
+| Sign in link validity, use | 5 minutes*, once | `magic_link_duration_minutes`; can be switched off* (`magic_link_enabled`) |
+| Email confirmation link | 60 minutes | `auth.verification.expire` |
+| Password reset link | 60 minutes, one request per 60 seconds | `config/auth.php` |
+| Failed sign ins before lockout | 5 per address and IP | `AttemptLogin::MAX_ATTEMPTS` |
+| Request limits on link, reset, confirmation resend, two factor challenge | 6 per minute | `routes/auth.php` |
+| Recovery codes | 8 codes of 10 characters, each once | `app/Helpers/RecoveryCodes.php` |
+| Password confirmation lasts | 3 hours | `AUTH_PASSWORD_TIMEOUT` |
+| Profile or contact photo | JPEG, PNG, WebP, up to 5 MB | profile and avatar controllers |
+| Largest file | 10 MB* | `max_file_size_in_kilobytes` |
+| Free offer (hosted) | 1 vault*, 30 contacts* (Me and partial contacts not counted), 100 MB* stamped at account creation | `free_*` keys |
+| Full access storage (hosted) | 10 GB* | `paid_storage_limit_in_bytes` |
+| Reminder dates generated ahead | 90 days* | `reminder_generation_window_in_days` |
+| Notification delivery | every 5 minutes, 3 attempts* | `routes/console.php`, `notification_maximum_attempts` |
+| Channel switched off after | 5 failures* | `notification_channel_failure_threshold` |
+| Channel proof code | 6 digits, 10 minutes, 5 tries, 3 sends | `notification_proof_code_*` |
+| In-app notifications kept | 12 months* | `notification_retention_months` |
+| Detached files kept | 30 days* | `orphaned_file_grace_period_in_days` |
+| API and CardDAV rate limit | 60 per minute per user, shared | `RateLimiter::for('api')` |
+| API page size | 25 default, 100 maximum* | `api_*_items_per_page` |
+| Sharing link expiry choices | 7 days, 30 days, 3 months, never | share link form |
+| Interface languages | 31 locales | `config/localization.php`, one `lang/*.json` each |
 
 ---
 
-## Section 4: Signing in
+## Coverage and gaps
 
-**Why this section exists.** Signing in is, today, the largest genuinely finished part of the product, and it offers more ways in than most applications. Each deserves its own page, because a reader arrives at exactly one of them with exactly one problem.
+### Coverage matrix
 
-**Who it is for.** Everybody with an account.
+Status uses the analyst scale: implemented, partial, planned, unknown. Coverage today is "none" for every
+user and operator topic, because no user guide exists. Priority: P0 first publication, P1 second wave,
+P2 later.
 
-**On disk.** `4-signing-in/`. Section value `signing-in`.
+| Reader goal or capability | Status | Evidence | Existing coverage | Proposed pages | Priority |
+| --- | --- | --- | --- | --- | --- |
+| Understand what Monica is and how it is organised | implemented | constitution, `CreateAccount` | `/docs` card text only (inaccurate, D1) | `portal.introduction`, `concepts.model` | P0 |
+| First success: record a first person | implemented | `CreateContact`, `ContactController` | none | `start.first-contact` | P0 |
+| Create account, confirm address | implemented | `RegistrationController`, `EmailVerificationController` | none | `start.create-account` | P0 |
+| Sign in: password, link, passkey, outside provider | implemented | `routes/auth.php` | none | `signin.*` | P0 |
+| Reset a forgotten password | implemented, **suspected broken** | `PasswordResetLinkController` (D2) | none | `signin.forgot-password` | P0, blocked |
+| Vaults: create, default, default template, delete | implemented | `VaultController`, `DestroyVault` | none | `vaults.*` | P0 |
+| Contacts: add, edit sections, name, photo, favourite, delete | implemented | `app/Http/Controllers/App/Vaults/Contact*` | none | `contacts.*` | P0 |
+| Contact list: filter, sort, search, columns | implemented | `ContactListColumnController`, `Contact::scopeMatchingSearch` | none | `contacts.list` | P1 |
+| Archive and restore contacts | not offered (the Archived filter was removed in #293) | `ArchiveContact` unused (D6), no restore (D5) | none | gap noted in `contacts.delete` | none |
+| Relationships | implemented | `ContactRelationshipController` | none | `relationships.*` | P0 |
+| Life events and timeline | implemented | `ContactLifeEventController`, `RestoreLifeEvent` | none | `life-events.*` | P1 |
+| Reminders: create, answer, overview | implemented | `ContactReminderController`, `VaultReminderController` | none | `reminders.*` | P0 |
+| Notification channels: email, in app, Telegram, text message | implemented (Telegram, SMS depend on instance) | `NotificationChannelController` | none | `notifications.*` | P1 |
+| Notification preferences (quiet hours, digest) | partial (API only) | `api/v1/notification-preferences` | API reference | mention in `notifications.channels`; no web page | P2 |
+| Duplicates, merge, undo | implemented | `DetectDuplicateContacts`, `MergeContacts`, `UndoContactMerge` | none | `duplicates.*` | P1 |
+| Sharing links | implemented (contacts only) | `ContactShareLinkController` | none | `sharing.*` | P1 |
+| vCard export of one contact | implemented | `ExportContactVCard` | none | `export.vcard` | P1 |
+| Export everything | planned (`SettingsViewModel` url null) | D11 | none | gap noted in `export.vcard` | none |
+| Import contacts from a file | planned on web, implemented only via CardDAV | `ImportVCard` via `AddressBookBackend` (D4) | none | gap noted; CardDAV guide owns device sync | none |
+| Phone and computer sync (CardDAV, CalDAV) | implemented | `app/Http/Dav`, `DavServiceProvider` | `/docs/carddav` (good) | link only; `integrations.overview` | P1 |
+| Templates: copy, build, publish, apply to contacts | implemented | `settings.templates.*`, `PublishStructureVersion` | `/docs/mcp` explains drafts for assistants only | `templates.*` | P1 |
+| Field types | implemented (21), picker lists ~10 unavailable | `FieldTypeEnum`, `FieldCatalogueViewModel` (D9) | none | `reference.field-types` | P1 |
+| Profile types and profiles | partial (add and list only in web) | `EntityController` | none | `profiles.*` | P2 |
+| Relationship types, life event types, value lists | implemented | settings controllers | MCP docs only | `customise.*` | P2 |
+| Marketplace | partial (browse only; no install; publishing closed) | `MarketplaceController`, template share page copy | none | `marketplace.overview` | P2 |
+| Welcome letter, getting started screen | implemented; getting started unreachable for new accounts | `HomeController` (D3) | none | covered by `start.first-contact` | none |
+| In-app notifications (bell) | implemented | `NotificationController` | none | `notifications.inbox` | P1 |
+| Preferences: language, formats, time zone | implemented | `PreferenceController`, `TimezoneController` | none | `account.preferences` | P1 |
+| Profile: name, email, photo | implemented; email change sends no confirmation automatically (D12) | `Profile/*` | none | `account.profile` | P1 |
+| Two factor, recovery codes, passkeys, password, outside providers | implemented | `SecurityController` and friends | none | `security.*` | P0 |
+| API keys, connected assistants | implemented | `ApiKeyController`, `ConnectedAssistantController` | API reference covers keys; `/docs/mcp` covers assistant revocation after #293 | `security.api-keys`, `security.assistants` | P1 |
+| Logs and emails sent | implemented | `Logs/*`, `UserActionEnum` | none | `account.logs` | P1 |
+| Security emails (what each means) | implemented | `app/Notifications/*` | none | `reference.emails`, `security.suspicious-activity` | P0 |
+| Delete the account | implemented | `DestroyAccount` | none | `account.delete` | P1 |
+| Free offer, full access, subscribe, cancel, invoices | implemented (hosted) | `Billing/*`, `OfferKindEnum` | `docs/STRIPE.md` (operator) | `billing.*` | P1, needs sources |
+| API | implemented, v1 | `routes/api.php` | `/docs/api` complete by route; D13, D15, D16 fixed in #293 | revise existing | P0 corrections |
+| MCP | implemented, OAuth and keys | `routes/ai.php`, `app/Mcp` | `/docs/mcp`, OAuth documented in #293 | revise existing | P0 corrections |
+| Install an instance | implemented (Docker development setup, `composer setup`) | `Dockerfile`, `compose.yaml` | README partial and inaccurate (D18, D19) | `hosting.*` | P1, partly blocked |
+| Configure an instance, admin configuration screen | implemented | `config/monica.php`, `InstanceSettingController` | none | `hosting.configuration`, `admin.configuration` | P1 |
+| Workers, scheduler | implemented | `routes/console.php`, queue names | Dockerfile only | `hosting.background-work` | P1 |
+| First administrator, admin space | implemented | `MakeAdministratorCommand`, `routes/administrator.php` | none | `admin.*` | P1 |
+| Backups, restore | no tooling | none | none | `hosting.backups` (guidance) | P1 |
+| Upgrades | no release process | none | none | `hosting.upgrade` | P2, blocked |
+| Monitoring | implemented (`/up`, `/api/status`, Sentry) | `CheckDatabaseIsReady`, `StatusController` | API reference covers status | `hosting.monitoring` | P2 |
+| Contributing, licence | AGPL-3.0-or-later; no CONTRIBUTING | `LICENSE.md`; README boilerplate (D19) | none | `contributing.overview` | P2, blocked |
 
-### Signing in
+### Exclusions
 
-- **id.** `signin.introduction`
-- **Purpose.** Section index, and a decision aid.
-- **Audience.** All.
-- **Summary.** The three ways in, and when each is right: your password, a link emailed to you, or a new password when you have forgotten the old one. A sentence on the two factor code, for those who have set it up. Link each.
-- **Prerequisites.** An account.
-- **Complexity.** Low.
-- **Related pages.** All pages in this section.
+| Topic | Why it gets no page |
+| --- | --- |
+| Members, invitations, roles, shared vaults, collaboration | Do not exist and are forbidden by the constitution. `concepts.model` states the one person rule once |
+| Journals, groups, tasks | No model exists. The vault dashboard shows empty Tasks, Reminders and Files cards (D7); do not document them |
+| Global search, search in field values | Does not exist. `contacts.list` says search covers names and nicknames |
+| Archiving, restoring a deleted contact, importing a file on the web, export everything, installing from the marketplace, publishing to the marketplace, a profile's own page | Not built. Each is stated as a limit on the page a reader would look for it |
+| The 190 activity log actions | No reader need for an inventory; the log prints a sentence for each. `account.logs` explains how to read it |
+| Screenshot link, local sign in shortcut | Development only |
+| A standalone FAQ | Questions have natural homes in how-to, reference or troubleshooting |
 
-### Sign in with your password
+### Discrepancies to resolve
 
-- **id.** `signin.password`
-- **Purpose.** Get somebody in, and explain the choices the screen offers.
-- **Audience.** All.
-- **Summary.** The form, and the two things on it worth explaining. **Remember me**, which keeps you signed in for thirty days by default on that browser (the screen names the number, and a self hosted instance can change it), and what that means on a shared machine. What happens after a correct password when two factor authentication is on: you are not in yet, you get the code screen. Then the two behaviours that generate support requests, explained rather than apologised for. First, every refusal says the same thing, "these credentials do not match our records", whether the password was wrong, the user is suspended, or no user exists, because saying which would let a stranger find out who signs in here. Second, after five failed attempts from the same address and place you are locked out for a few minutes and told how many seconds remain. Add that a failed attempt sends an email to the address's owner, and link to it.
-- **Prerequisites.** An account.
-- **Complexity.** Medium.
-- **Related pages.** `signin.magic-link`, `signin.forgot-password`, `security.two-factor`, `email.login-failed`.
+These are contradictions between shipped copy, existing documentation and code. They are not
+documentation work, but several block a page. The status column links the pull request that fixes
+one or the issue that tracks it. Pull request #293 was open, not merged, when this was written.
 
-### Sign in with a link instead of a password
+| ID | Finding | Evidence | Blocks or affects | Status |
+| --- | --- | --- | --- | --- |
+| D1 | `/docs` "Using Monica" card promises "journals and sharing a vault with someone"; neither exists, and its link is null | `DocsViewModel::areas()` | Portal launch | #274 |
+| D2 | Password reset email probably cannot be built: Laravel's default notification needs a `password.reset` route, the app names it `auth.password.edit` and sets no `createUrlUsing`. Tests fake notifications. Confirmed in code, not run | `routes/auth.php:65`, `PasswordResetLinkController` | `signin.forgot-password` | #275 |
+| D3 | New accounts never see Getting started (a vault is created at sign up, and the screen shows only when there is none); its first step is "Create your first vault" | `HomeController`, `CreateAccount::createFirstVault` | `start.first-contact` routes readers to the vault instead | #276 |
+| D4 | Getting started promises "Import a CSV or a vCard file"; no web import exists | `lang/en.json` line 610 | `start.first-contact` must not repeat it | #277 |
+| D5 | Contact delete dialog says "they can be restored"; nothing restores a contact. Confirmed in code | `lang/en.json` line 1691, no route or action | `contacts.delete` | #278 |
+| D6 | "Archived" filter exists, but `ArchiveContact` is called from nowhere. Confirmed in code | `app/Actions/ArchiveContact.php` | `contacts.list` | fixed in #293 (filter removed) |
+| D7 | Vault dashboard Tasks, Reminders, Files cards are hard-coded placeholders, though reminders and files exist; only tasks are unbuilt; "Open tasks" always 0 | `VaultDashboardViewModel::unbuiltSections()` | `vaults.overview` screenshots | #279 |
+| D8 | `CreateShareLink` docblock says a link can cover a whole vault; only contact links exist | `app/Actions/CreateShareLink.php` | `sharing.*` | #280 |
+| D9 | Field type picker lists about 10 types as "Not available yet" | `FieldCatalogueViewModel` | `reference.field-types` lists only available types | #281 |
+| D10 | The Me contact has no screen that creates it; API and MCP only read it | `CreateContact(isMe: true)` only in seeder | `concepts.model` | #282 |
+| D11 | Settings home offers "Export everything" and a "Notifications" row with null links; the Notifications row describes reminder lead times that do not exist | `SettingsViewModel` | `export.vcard`, `notifications.channels` | #283 |
+| D12 | Changing the sign in email unconfirms it but sends no confirmation email; the screen promises one | `UpdateUserProfile` | `account.profile` | #284 |
+| D13 | API docs say "Sixty requests per minute, per token" in 134 places; the limiter counts per user. Confirmed in code | `resources/docs/api/*.php`, `AppServiceProvider` | `/docs/api` | fixed in #293 |
+| D14 | MCP docs say OAuth is not offered and ChatGPT cannot connect; OAuth is implemented and tested (`McpOAuthTest`). Connected assistants revocation undocumented. Confirmed in code | `McpDocsViewModel` line 198 | `/docs/mcp`, `security.assistants` | fixed in #293 |
+| D15 | API pagination guide says no endpoint returns a list; about 25 do. Confirmed in code | `resources/docs/api/01-getting-started.php:86` | `/docs/api` | fixed in #293 |
+| D16 | OpenAPI document is cached forever although the docs say it is built on request | `OpenApiDocumentController`, `BuildOpenApiDocument` | `/docs/api` | fixed in #293 (cache removed) |
+| D17 | Production password rule (12 characters, mixed case) is defined but no form uses it | `AppServiceProvider` | `reference.limits` states 8 | #285 |
+| D18 | Docker setup defects: healthcheck polls port 8000 inside a container Apache serves on 80, Apache runs as a non-root user, cron written for `www-data`, redirections passed as literal arguments in the queue service, README says three services where compose has four. Confirmed in part in code | `compose.yaml`, `Dockerfile` | `hosting.install-docker` | #286 |
+| D19 | README ends in Laravel boilerplate (MIT licence, Laravel security contact); the project is AGPL-3.0-or-later; no CONTRIBUTING or SECURITY file | `README.md:171-175`, `LICENSE.md` | `contributing.overview` | #287 |
+| D20 | Remember me is dropped when two factor is on (challenge logs in without it). Confirmed in code | `TwoFactorChallengeController:51` | `signin.password` | fixed in #293 |
+| D21 | A deactivated user's API keys, CardDAV and OAuth tokens are not checked for `is_active`. Confirmed in code (no check found) | `routes/api.php`, `routes/ai.php` | `admin.accounts` | fixed in #293 |
+| D22 | Two factor screen says a code is asked "every time you sign in"; passkey sign in skips it | `SecurityController` view copy | `security.two-factor` | #288 |
+| D23 | "You signed in without a password" email says "using a link sent by email" but is also sent for passkey and outside provider sign ins | `NewLoginDetected` | `reference.emails` | #289 |
+| D24 | "Emails sent" empty state promises password change emails; a password change sends none, and the verification and reset emails are not recorded | `Logs/*` views, `VerifyEmail` lacks `HasEmailType` | `account.logs` | #290 |
+| D25 | `composer dev` runs `queue:listen` without `--queue`, so `high` and `low` work is never processed with a non sync queue | `composer.json` | `hosting.background-work`, `contributing.overview` | #291 |
+| D26 | Telegram, text message (Vonage) and Microsoft sign in packages are dev dependencies, so the production image cannot offer them | `composer.json` require-dev | `hosting.notification-channels`, `hosting.sign-in-options` | #292 |
 
-- **id.** `signin.magic-link`
-- **Purpose.** Explain passwordless sign in, which most readers will not have met before.
-- **Audience.** All.
-- **Summary.** What it is: you give your address, the product emails you a link, you click it, you are in. Why you would: you cannot remember your password, or you would rather not type one. The three rules that matter, all stated up front because each one catches people out: the link works **once**, it expires after **five minutes** by default, and it works from any browser on any device, so you can request it on your laptop and open it on your phone. What to do when it expires: ask for another. Why the confirmation screen says "if that address has an account", rather than confirming it does. That requesting links is rate limited to six a minute. That, unlike a password sign in, getting in this way sends you an email saying so, and why that is deliberate.
-- **Prerequisites.** An account.
-- **Complexity.** Medium.
-- **Related pages.** `email.magic-link`, `email.new-login`, `signin.password`.
+### Hosted commitments that need an authoritative source
 
-### Forgotten your password
+No page may state these from code or configuration. Each needs a written statement from whoever runs
+monicahq.com. Until then the page links to the screen that shows the live value, or omits the claim.
 
-- **id.** `signin.forgot-password`
-- **Purpose.** Get somebody who is locked out back in.
-- **Audience.** All.
-- **Summary.** A `::::steps` walkthrough: request the link, open the email, choose a new password, sign in with it. The rules: the reset link works once and is thrown away as soon as it is used, and the new password must be at least eight characters and typed twice. The message you get either way, "if that address has an account, a link is on its way", and why it is worded like that. What "that link no longer works, ask for another one" means and what to do about it. That requests are rate limited. Offer the alternative for somebody who only needs to get in this once: a sign in link is faster and changes nothing.
-- **Prerequisites.** An account.
-- **Complexity.** Low.
-- **Related pages.** `signin.magic-link`, `security.password`, `troubleshoot.no-email`.
-
-### Signing out
-
-- **id.** `signin.sign-out`
-- **Purpose.** Cover the small thing nobody documents and everybody eventually needs.
-- **Audience.** All.
-- **Summary.** How to sign out, and what it does: your session ends on that browser, and remember me is forgotten with it. That signing out on one device does not sign you out on the others, and that there is currently no screen to end your other sessions. What to do if you think somebody else is signed in as you: change your password, and link there.
-- **Prerequisites.** Being signed in.
-- **Complexity.** Low.
-- **Related pages.** `security.password`, `security.suspicious-activity`.
-
----
-
-## Section 5: Your profile and your logs
-
-**Why this section exists.** The profile screen is the first and, so far, the only place in the signed in application where somebody changes something about themselves. It is what a new user reaches for once they are in. Beside it in the sidebar sits **Logs**, the second screen of the signed in application, where somebody reads what they have done and what the product sent them. The two belong together in the portal because they are the two things the sidebar offers, and because a reader who has just changed something goes looking for the record of it.
-
-**Who it is for.** Everybody who signs in.
-
-**On disk.** `5-your-profile/`. Section value `your-profile`.
-
-### Your profile
-
-- **id.** `profile.introduction`
-- **Purpose.** Section index, and the reader's first tour of a screen inside the application.
-- **Audience.** All.
-- **Summary.** Where the screen is and how to reach it: **Settings**, then **Profile**, at `/settings/account/profile`. What it is made of, in the order it appears: your avatar, then your details, which are your name and the address you sign in with. Note what the sidebar shows and what it does not: under **Profile** sit **Logs**, which holds the record of what you have done and the emails the product sent you, **Security and access**, where you change your password and look after your API keys, and **Preferences**, where you choose the language of the interface and the clock times are written on. Because this is the first page in the portal to send somebody to the sidebar, add one sentence for readers who cannot see one: on a phone that sidebar is behind the menu button at the top left of the screen, and `appearance.mobile` explains it.
-- **Prerequisites.** `concepts.model`.
-- **Complexity.** Low.
-- **Related pages.** The two pages below, `concepts.user-record`, `security.introduction`, `appearance.mobile`.
-
-### Edit your details
-
-- **id.** `profile.details`
-- **Purpose.** Walk somebody through the only editing form the product has, and explain the one field whose behavior is not obvious.
-- **Audience.** All.
-- **Summary.** The three fields, all required: **first name**, **last name**, and **email address**. The first two are what the product calls you, everywhere, including the sidebar and the initials it draws when you have no photo. The third is the one that needs care, because it does two jobs at once: it is the address you sign in with, and changing it unconfirms it, so the product will ask you to confirm the new one before it trusts it. Say what that means in practice and send the reader to `getting.confirm-email`. Note the rule the form enforces: no two users can sign in with the same address. Say plainly who sees all of this: everyone in your account. Describe what saving looks like, because it is not what a reader expects from a web form: the page does not reload, a short confirmation slides into the bottom right corner and leaves on its own after a few seconds (it can be dismissed sooner with its close button), and the **Last saved** line under the fields updates in place. Note that saving is recorded in the account's activity log. Point at `profile.photo` for the avatar box rather than covering it here.
-- **Prerequisites.** `profile.introduction`.
-- **Complexity.** Medium, because the address does two jobs and the page has to keep them apart.
-- **Related pages.** `concepts.user-record`, `concepts.activity-log`, `profile.photo`, `profile.logs`, `getting.confirm-email`.
-
-### Add a profile photo
-
-- **id.** `profile.photo`
-- **Purpose.** Walk somebody through putting a face to their name, and answer the two questions they will have about it: who can see it, and how to get rid of it.
-- **Audience.** All.
-- **Summary.** What the avatar is and where it turns up: beside your name across the product, in the sidebar and on your profile. What the product accepts, in the screen's own words: a JPEG, PNG or WebP up to 5 MB, square for the best result, because the avatar is shown in a circle and anything else is cropped to the middle rather than squashed. What happens after you choose a file and press **Upload**: the picture is converted to WebP and kept at two sizes, one for an ordinary screen and one for a sharp one, so it stays crisp on a laptop without costing a phone extra data. Say that the file you picked is not the file that is stored: it is resized, renamed, and the name you gave it is discarded. Be exact about who can see it, because this is where a reader looks for that: the photo is not on a public address, it is served through the application, and only to people in the same account. Then removal: **Remove the photo** asks once more before it goes, and taking it away brings back the initials the product drew before. Note that both uploading and removing are recorded in the account's activity log, and that neither is something anybody else can do on your behalf today.
-- **Prerequisites.** `profile.introduction`.
-- **Complexity.** Low.
-- **Related pages.** `profile.details`, `concepts.user-record`, `concepts.activity-log`, `security.privacy`.
-
-### Read what you have done
-
-- **id.** `profile.logs`
-- **Purpose.** Show somebody where their own record of activity is, and teach them to read a line of it.
-- **Audience.** All, and particularly anybody who has had an email about a sign in they do not recognise.
-- **Summary.** Where it is: **Logs** in the settings sidebar, under **Profile**, at `/settings/account/logs`, where the **Logs** box is the first thing on the screen. Say plainly whose actions these are: your own, and only your own. Read one line apart, because each part answers a different question: the name of whoever acted, the short technical name of the action in a monospaced face, which is the thing to quote when asking for help, the sentence describing what happened, and how long ago it was, with the exact date and time available by resting the pointer on it. That the newest is first. How the screen loads more: five at a time, with a **Load more** link that adds the next five under the ones already there without leaving the page, and which disappears when there is nothing left. What a new account sees instead of rows, since that is what most readers will meet first: a blank panel saying **No activity yet**, explaining that nothing has happened on the account and that changes will show up here as they are made. Say that this is the normal state of a fresh account and not a fault. Two honest notes: an action the product no longer recognises shows its raw name in place of a sentence, and there is no way to filter, search or export the log today.
-- **Prerequisites.** `profile.introduction`, `concepts.activity-log`.
-- **Complexity.** Low.
-- **Related pages.** `concepts.activity-log`, `security.suspicious-activity`, `email.record`.
-
-### Read the emails we sent you
-
-- **id.** `profile.emails`
-- **Purpose.** Show somebody where to check what the product sent them, and teach them to read the delivery state, which is the reason most people open this box in the first place.
-- **Audience.** All, and in practice anybody who was expecting an email that never arrived.
-- **Summary.** Where it is: the **Emails sent** box under the logs, on the same **Logs** screen, the five most recent first, with **Browse all emails** leading to the whole list at `/settings/account/logs/emails`, ten at a time behind a **Load more** link. What a row shows: who it went to, the subject, and how long ago it left. What the coloured dot means, and this is the part worth being exact about: amber means the email left but the mail service has not confirmed it arrived, green means it was delivered, red means it bounced. Say plainly that on most instances the dot stays amber for good, because delivery and bounce reporting only arrives from a provider that reports it back, and that amber therefore is not a sign of a problem. What happens when a row is opened: the copy of the email as it was sent, minus its links. Explain that omission honestly rather than as a footnote, since a reader who wanted to click the link will be looking for it: sign in links are stored nowhere, because a stored link is a stored way into the account, and any link in an old email has almost certainly expired anyway. What an account that has received nothing sees: a blank panel saying **No emails yet**, naming the kinds of email that will land there, such as sign in links and password changes. Close with the diagnostic use: no entry at all means the email was never sent, which is a different problem from one that was sent and never arrived, and point at the troubleshooting page for both.
-- **Prerequisites.** `profile.introduction`.
-- **Complexity.** Medium, because the delivery states have to be explained without alarming anybody.
-- **Related pages.** `email.record`, `email.introduction`, `troubleshoot.no-email`, `security.privacy`.
-
----
-
-## Section 6: Your account and its security
-
-**Why this section exists.** Account and security questions are the ones users ask under pressure, when something looks wrong. They need direct, calm answers in one place. This section also has to be scrupulous about which protections are on by default, which are optional, and which are half built.
-
-**Who it is for.** Everybody who signs in.
-
-**On disk.** `6-account-and-security/`. Section value `account-and-security`.
-
-### Your account and its security
-
-- **id.** `security.introduction`
-- **Purpose.** Section index, and a short account of how Monica protects you without being asked.
-- **Audience.** All.
-- **Summary.** What is on by default for everyone: passwords are stored hashed and never recoverable, sign in attempts are rate limited, failed attempts and sign ins from a new place email you, sign in links are single use and short lived, and only the fingerprint of a sign in link is ever stored so the link in your inbox cannot be rebuilt from the database. Then what you can add: a stronger password, and a code from your phone. Link onwards.
-- **Prerequisites.** An account.
-- **Complexity.** Medium.
-- **Related pages.** All pages in this section.
-
-### Change your password
-
-- **id.** `security.password`
-- **Purpose.** Explain what the product requires of a password and what changing one does.
-- **Audience.** All.
-- **Summary.** Where the screen is: **Security and access** in the settings sidebar, at `/settings/account/security`, whose first box changes the password. What it asks for and why all three fields are there: the current password, because we hold only a hash and cannot show you the old one, then the new one twice. The rule, which is short: at least eight characters. Advice on choosing one, in the screen's own framing, that long beats complicated. What saving looks like, since it is not what a reader expects from a web form: the page does not reload, a confirmation slides into the bottom right corner, and the fields come back empty. What a wrong current password looks like: a message under that field, and nothing changed. The line to the left of the Save button, which answers the question the box invites: **Last changed**, followed by how long ago it was, in words rather than a date. Explain what it counts, because it is not only what the reader did on this screen: the clock starts when the password was first set, at registration, and is reset by a change made here or through a reset link, so a brand new account already shows the day it signed up. Say what it means when the line is absent, since a reader will meet that case: the account has never had a password set, which today means it signs in through an identity provider. That the change is recorded in the account's activity log, so it can be read back on the Logs screen. That you stay signed in on this browser, and that the product cannot end your other sessions today, so a password nobody else should know is worth changing from every device you use. That an account which signs in through an identity provider sees a line of explanation in place of the form, because there is no password to change. Close with the other way in, for somebody who cannot remember the current one: the forgotten password flow, in one line, with a link.
-- **Prerequisites.** An account.
-- **Complexity.** Medium.
-- **Related pages.** `signin.forgot-password`, `concepts.activity-log`, `security.suspicious-activity`.
-
-### Two factor authentication
-
-- **id.** `security.two-factor`
-- **Purpose.** Explain what two factor authentication is, why it is worth the trouble, and what changes about signing in once it is on.
-- **Audience.** All, and operators.
-- **Summary.** What two factor authentication is and why it helps: a password can be guessed, reused or stolen from a distance, and a code that changes every thirty seconds on a phone in a pocket cannot. Where the switch is: **Settings**, then **Security and access**, the box under the password. What it looks like when it is off, and what turning it on gives you. Then how the challenge works from then on: after your password is accepted you are not signed in, you are asked for the six digits your authenticator app is showing, and only then are you in. That the same happens after a sign in link, since a link that skipped the password must not also skip the code. That a recovery code works in place of the app's code, that each one works once and is spent the moment it is used, and that this is what you use when you have lost your phone. What "that code is not right" and "that took too long, please sign in again" mean, the second being a session that expired between the two screens. That attempts at the challenge are rate limited.
-- **Prerequisites.** `signin.password`.
-- **Complexity.** Medium.
-- **Related pages.** `security.two-factor-set-up`, `security.recovery-codes`, `signin.password`, `signin.magic-link`, `security.suspicious-activity`.
-
-### Turn on two factor authentication
-
-- **id.** `security.two-factor-set-up`
-- **Purpose.** Walk somebody through enrolling, with their phone in one hand, without them fearing they will lock themselves out.
-- **Audience.** All.
-- **Summary.** A tutorial, in the order the screens come. What you need first: an authenticator app on your phone, any of them. **Settings**, then **Security and access**, then **Turn it on**, which lands on a screen with two numbered steps. Step one: point the app's camera at the square, or, when the app is on the same machine you are reading this on and there is no camera to point, type in the secret printed beside it, which is the same thing in letters. That the app files the account under your email address, which is how you will recognise it in a list. Step two: type back the six digits the app is showing, and press the button. Say plainly what the screen says, because it is the sentence that stops people hesitating: nothing about your account changes until that code is accepted, so leaving halfway through leaves you exactly as you were. What happens next: you land back on Security and access, the box now says the feature is on, and your recovery codes are printed underneath. Send the reader to `security.recovery-codes` before they close the tab. Then how to turn it off, and what turning it off costs: the secret and the codes are both forgotten, so turning it on again means pairing the app afresh, and until then your password is all it takes to sign in. Note that the screen asks you to confirm before it does either of those things.
-- **Prerequisites.** `security.two-factor`.
-- **Complexity.** Medium.
-- **Related pages.** `security.recovery-codes`, `security.two-factor`, `profile.logs`.
-
-### Your recovery codes
-
-- **id.** `security.recovery-codes`
-- **Purpose.** Make sure somebody actually saves the codes, and knows what to do when they run low.
-- **Audience.** Anybody who has turned two factor authentication on.
-- **Summary.** What they are: eight codes, each of which signs you in once in place of the code your app would show, for the day the phone is lost, broken or wiped. Where they are: on the Security and access screen, under the two factor box, for as long as the feature is on. Where to keep them, which is anywhere that is not the phone the app is on. That a code disappears from the list the moment it is used, so the list doubles as a count of how many you have left. How to get a fresh set, with the warning the screen gives: asking for new ones stops every old one working, immediately, so do it when you have somewhere to put them. When to do it: when you are running low, or when you think somebody else has seen the list. What the screen says when you have spent them all, and why you should not wait for that. That both handing out a new set and turning the feature on or off are written to your logs.
-- **Prerequisites.** `security.two-factor-set-up`.
-- **Complexity.** Low.
-- **Related pages.** `security.two-factor-set-up`, `profile.logs`.
-
-:::note for the writer
-Recovery codes are stored encrypted but they are recoverable, which is why the screen can keep showing them rather than printing them once and forgetting. Do not write "save these now, you will never see them again", because that is not how this product behaves and a reader who believed it would panic. Say instead that they stay on the Security and access screen for as long as the feature is on.
-:::
-
-### Your API keys
-
-- **id.** `security.api-keys`
-- **Purpose.** Explain what an API key is, how to make one and revoke one, and be straight about the fact that nothing accepts one yet.
-- **Audience.** Anybody who writes scripts, and anybody who finds the box and wonders what it is for.
-- **Summary.** What a key is, in the screen's own framing: a password for machines, which lets a script or another system act as you with exactly the access you have. Where the box is: **Settings**, then **Security and access**, the third box, under two factor authentication. Say the limitation first rather than burying it, because the screen does: there is nothing to point a key at today, since the API that would accept one is not built, and a key made now starts working the moment it lands. How to make one: **Create key**, which opens a field for a name in place of the button, a name of at least three characters, and what the name is for, which is telling one key from another in a year's time. What happens next, and the one sentence that matters most on the page: the key is printed once, in a block at the top of the box, and only a hash of it is kept, so a key you fail to copy is replaced rather than looked up. That it is gone from the screen as soon as you reload. What a row shows: the name, how long ago it was made, and when it was last used, which reads "never used" until something uses it, and will keep reading that until there is an API. How to revoke one: **Revoke**, which asks first, and takes effect immediately. That keys are personal, so a colleague cannot see or revoke yours and you cannot see theirs. That making and revoking a key are both written to your logs, with the name of the key in the entry.
-- **Prerequisites.** An account.
-- **Complexity.** Low.
-- **Related pages.** `concepts.activity-log`, `security.introduction`, `getting.what-works-today`.
-
-:::note for the writer
-Do not write this page as an API tutorial, and do not show a request carrying the key: there is no endpoint to send it to. The page documents the key management screen and nothing more. Keys are Sanctum personal access tokens with no abilities and no expiry, so do not promise scopes, read only keys, or keys that lapse on their own. Revisit this page the moment the API ships; the limitation paragraph comes out and the page grows a link to the API reference.
-:::
-
-### When something looks wrong
-
-- **id.** `security.suspicious-activity`
-- **Purpose.** Give a worried reader one page that tells them what happened and what to do.
-- **Audience.** All.
-- **Summary.** Organised by what landed in their inbox. "A failed sign in attempt": somebody typed your address and the wrong password; if it was not you, change your password, because somebody knows your address and is guessing. "A sign in from a new place": you signed in from an address the product has not seen before; travelling, a VPN, a new phone or a browser update all cause this, so it is often nothing, but if you do not recognise it, change your password. "You signed in without a password": somebody used a sign in link for your account; the link only works once and is already spent, but whoever used it can read your email, so change your password. For each, the concrete steps, in order: change your password, sign out, tell whoever else uses your account. Point out the one fact the Security and access screen gives a worried reader for free: the **Last changed** line next to the Save button says how long ago the password was last set, so somebody who suspects a change they did not make can check it in a glance. Explain what the product does and does not check, so nobody over trusts it: it compares your sign in address with the previous one and only notices a change, it does not geolocate, score risk, or block anything.
-- **Prerequisites.** `security.introduction`.
-- **Complexity.** Medium.
-- **Related pages.** `email.login-failed`, `email.new-login`, `email.ip-changed`, `security.password`.
-
-### Suspended and deleted accounts
-
-- **id.** `account.delete`
-- **Purpose.** Explain what happens to a user and their data when somebody leaves.
-- **Audience.** All.
-- **Summary.** Two different things, kept apart. **Suspending**: a user can be marked inactive, which stops them signing in entirely, including by sign in link, without deleting anything. Note that this is a state the product supports but no screen sets today. **Deleting**: anybody in an account can delete anybody else in it, and nobody can delete themselves. What deletion leaves behind, which is the part people need to understand: the user is soft deleted rather than erased, and the activity log keeps the email address of anybody who acted, so the history still says who did what. Deleting the whole account removes its users, its logs and its record of emails with it. Note that neither deletion has a screen yet.
-- **Prerequisites.** `concepts.permissions`.
-- **Complexity.** High. Get the consequences exactly right and put them in a `:::warning`.
-- **Related pages.** `concepts.permissions`, `concepts.activity-log`, `security.privacy`.
-
-### What Monica knows about you
-
-- **id.** `security.privacy`
-- **Purpose.** Answer the privacy question directly, for a product that by its nature holds personal data.
-- **Audience.** All.
-- **Summary.** What is stored about you, pointing at `concepts.user-record` for the full list rather than repeating it. What is stored about your activity, pointing at the log page. What is stored about the emails sent to you: every one, with its subject and body, with the links stripped out. What is protected: passwords are hashed, two factor secrets and recovery codes are encrypted, and only the fingerprint of a sign in link is stored. Who can see what, as the code actually allows: everything is scoped to your account, and inside it everybody is equal, so there is nobody with a wider view than yours. Where the privacy policy and terms live, and that a self hosted instance points at its own.
-- **Prerequisites.** `concepts.user-record`.
-- **Complexity.** Medium.
-- **Related pages.** `concepts.activity-log`, `email.record`, `account.delete`.
+| Claim | Where it appears | Needed for |
+| --- | --- | --- |
+| Prices, currencies, tax included | Stripe catalogue; billing screen says "every price includes tax" | `billing.full-access` |
+| No refund on cancellation or deletion | Account deletion copy | `billing.cancel`, `account.delete` |
+| "We keep no copy" after deletion (backups) | Account deletion copy | `account.delete` |
+| Retention of logs and email copies (currently indefinite) | `app/Models/Log.php` | `account.logs`, `concepts.privacy` |
+| "We never send marketing emails" | Registration screen | `reference.emails` |
+| Free offer numbers on monicahq.com | Admin configurable | `billing.free-offer` |
+| Terms and privacy policy | `MONICA_TERMS_URL`, `MONICA_PRIVACY_URL` | `concepts.privacy` |
 
 ---
 
-## Section 7: Language and appearance
+## Information architecture
 
-**Why this section exists.** The things every reader can change immediately, on any screen, signed in or not, plus the one thing that changes on its own: the interface rearranges itself on a small screen, and a reader who meets it on a phone needs to be told where the navigation went. Small, satisfying, and genuinely finished.
+### Entry points
 
-**Who it is for.** Everybody.
+`/docs` already exists (`DocsController`, `DocsViewModel::areas()`) with four cards. Keep it as the front
+door and change it as follows:
 
-**On disk.** `7-language-and-appearance/`. Section value `language-and-appearance`.
+| Card | Today | Proposed |
+| --- | --- | --- |
+| Using Monica | No link; inaccurate description (D1) | Links to `portal.introduction`. Description: contacts, relationships, life events, reminders and templates |
+| API | `/docs/api` | Unchanged (D13, D15, D16 corrected in #293) |
+| MCP | `/docs/mcp` | Unchanged (D14 corrected in #293) |
+| CardDAV and CalDAV | `/docs/carddav` | Unchanged |
+| Run your own instance | Does not exist | New card to `hosting.introduction` |
 
-### Language and appearance
+Each audience enters differently:
 
-- **id.** `language.introduction`
-- **Purpose.** Section index.
-- **Audience.** All.
-- **Summary.** Four short pages: pick your language and understand which setting wins, keep that choice on your account along with the clock times are written on, pick light or dark, and find your way around on a phone.
-- **Prerequisites.** None.
-- **Complexity.** Low.
-- **Related pages.** Every page below.
+- **New users** arrive from the welcome letter or the landing card and follow **Start here** in order.
+- **Returning users** arrive from search, from in-app help links (portal work item F6) or from an email,
+  and land directly on a how-to, a reference page or a troubleshooting page. No page requires them to
+  have read Start here.
+- **Hosted customers** arrive from a limit message or the billing screen at **Plans and billing**.
+- **Operators** arrive at **Run your own instance** from the README.
+- **Developers** keep the existing references; `integrations.overview` helps them choose.
 
-### Change the language of the interface
+### Navigation tree
 
-- **id.** `language.change`
-- **Purpose.** Show the picker and explain which setting wins.
-- **Audience.** All.
-- **Summary.** Where the picker is and how to use it, including that it works before you sign in. The four languages currently shipped: English, French, German and Spanish. Then the precedence rule, in the reader's terms and in order: what you picked in this session wins, because it is the most recent thing you asked for; failing that, the language saved on your account; failing that, the application's own default. The practical consequence: a choice made from the picker on a guest screen lasts as long as your session, which is why the interface can revert when you next visit, and why the way to make a language stick is to choose it on the Preferences screen once you are signed in. Point at `preferences.screen` for that rather than explaining it twice. That translations are community maintained and how to help.
-- **Prerequisites.** None.
-- **Complexity.** Medium. The precedence chain is the whole page.
-- **Related pages.** `preferences.screen`, `hosting.locales`.
+Sections are grouped by what the reader is doing, not by Diátaxis type. The type of each page is in its
+brief. Folder numbers follow the writer skill.
 
-### Your preferences
+```
+Using Monica (portal root)
+1  portal.introduction                     Navigation
+2  Start here
+   1 start.introduction                    Navigation
+   2 start.create-account                  How-to
+   3 start.first-contact                   Tutorial
+   4 concepts.model                        Explanation
+3  People
+   1 contacts.introduction                 Navigation
+   2 contacts.add                          How-to
+   3 contacts.edit                         How-to
+   4 contacts.list                         How-to
+   5 contacts.photo                        How-to
+   6 contacts.delete                       How-to
+   7 profiles.add                          How-to
+4  Relationships and life events
+   1 relationships.introduction            Navigation
+   2 relationships.add                     How-to
+   3 relationships.edit                    How-to
+   4 life-events.record                    How-to
+   5 life-events.timeline                  Explanation
+5  Reminders and notifications
+   1 reminders.introduction                Navigation
+   2 reminders.create                      How-to
+   3 reminders.answer                      How-to
+   4 reminders.how-they-work               Explanation
+   5 notifications.channels                How-to
+   6 notifications.inbox                   How-to
+6  Vaults
+   1 vaults.introduction                   Navigation
+   2 vaults.create                         How-to
+   3 vaults.settings                       How-to
+   4 vaults.delete                         How-to
+7  Keeping records tidy
+   1 duplicates.introduction               Navigation
+   2 duplicates.review                     How-to
+   3 duplicates.merge                      How-to
+8  Sharing, export and sync
+   1 sharing.introduction                  Navigation
+   2 sharing.create-link                   How-to
+   3 sharing.what-a-link-shows             Reference
+   4 export.vcard                          How-to
+   5 integrations.overview                 Explanation
+9  Templates and customisation
+   1 templates.introduction                Navigation
+   2 templates.versions                    Explanation
+   3 templates.build-your-own              Tutorial
+   4 templates.change                      How-to
+   5 templates.apply-new-version           How-to
+   6 templates.import-export               How-to
+   7 customise.relationship-types          How-to
+   8 customise.life-event-types            How-to
+   9 customise.profile-types               How-to
+   10 customise.value-lists                How-to
+   11 marketplace.overview                 Explanation
+10 Your account and security
+   1 account.introduction                  Navigation
+   2 signin.password                       How-to
+   3 signin.magic-link                     How-to
+   4 signin.passkey                        How-to
+   5 signin.provider                       How-to
+   6 signin.forgot-password                How-to
+   7 security.two-factor                   How-to
+   8 security.recovery-codes               How-to
+   9 security.passkeys                     How-to
+   10 security.password                    How-to
+   11 security.api-keys                    How-to
+   12 security.assistants                  How-to
+   13 security.suspicious-activity         How-to
+   14 account.profile                      How-to
+   15 account.preferences                  How-to
+   16 account.logs                         How-to
+   17 account.delete                       How-to
+   18 concepts.privacy                     Explanation
+11 Plans and billing (hosted)
+   1 billing.introduction                  Navigation
+   2 billing.free-offer                    Reference
+   3 billing.full-access                   How-to
+   4 billing.cancel                        How-to
+12 Troubleshooting
+   1 troubleshoot.introduction             Navigation
+   2 troubleshoot.cannot-sign-in           How-to
+   3 troubleshoot.no-email                 How-to
+   4 troubleshoot.reminder-not-received    How-to
+   5 troubleshoot.limit-reached            How-to
+13 Reference
+   1 reference.introduction                Navigation
+   2 reference.glossary                    Reference
+   3 reference.field-types                 Reference
+   4 reference.emails                      Reference
+   5 reference.limits                      Reference
+14 Run your own instance
+   1 hosting.introduction                  Navigation
+   2 hosting.requirements                  Reference
+   3 hosting.install-docker                How-to
+   4 hosting.install-server                How-to
+   5 hosting.background-work               How-to
+   6 hosting.configuration                 Reference
+   7 hosting.email                         How-to
+   8 hosting.storage                       How-to
+   9 hosting.sign-in-options               How-to
+   10 hosting.notification-channels        How-to
+   11 admin.first-administrator            How-to
+   12 admin.overview                       Explanation
+   13 admin.configuration                  How-to
+   14 admin.accounts                       How-to
+   15 admin.moderation                     How-to
+   16 hosting.backups                      How-to
+   17 hosting.upgrade                      How-to
+   18 hosting.monitoring                   How-to
+   19 contributing.overview                How-to
+```
 
-- **id.** `preferences.screen`
-- **Purpose.** Cover the Preferences screen: the two choices it holds, and the fact that they belong to the account rather than to the browser.
-- **Audience.** All.
-- **Summary.** Where the screen is and how to reach it: **Settings**, then **Preferences**, at `/settings/account/preferences`. The sentence at the top of it is the point of the page, so make it early and plainly: these settings apply to your account only, and they follow you to every device you sign in from, which is what separates them from the theme toggle, covered by `appearance.theme`, which stays in the browser you set it in. Then the two rows, in the order they appear. **Language**, the same four languages as the picker on the guest screens, saved to your account this time, so it survives signing out; link to `language.change` for the precedence rule rather than restating it. **Time format**, either a 24 hour or a 12 hour clock, with the same afternoon hour written both ways beside each choice so the difference is visible rather than described. Then the mechanics of the screen, which are unusual enough to be worth one sentence each: there is no save button, because picking a value from a menu saves it immediately and a confirmation slides in at the corner; and choosing a new language redraws the screen in it there and then, confirmation included, so the change is visible without reloading. Close with what changing either one is recorded as: a line in your logs saying you changed your preferences, which `profile.logs` explains how to read.
-- **Prerequisites.** Being signed in. `language.change` for the precedence rule.
-- **Complexity.** Low.
-- **Related pages.** `language.change`, `appearance.theme`, `profile.logs`.
+### Learning order and canonical ownership
 
-:::note for the writer
-Do not promise that the time format changes how times look everywhere. The choice is stored on the account and the screen shows it back to the reader, but the screens that display times, the logs and the emails sent, still write them their own way; the setting is not yet threaded through them. Say what is true: you choose it here, and it is what the rest of the product will use as it is built. Do not list screens it affects, because today there are none.
-:::
+Learning dependencies are acyclic: `start.create-account`, then `start.first-contact`, then
+`concepts.model` as optional reading. Every other page lists at most one or two true prerequisites and
+treats the rest as optional links.
 
-### Light and dark
+| Subject | Canonical page | Others link, never repeat |
+| --- | --- | --- |
+| Account, vault, contact, profile, Me, one person rule | `concepts.model` | everything |
+| Frozen template versions | `templates.versions` | `contacts.edit`, `templates.*`, `vaults.settings` |
+| Every default number | `reference.limits` | every page that states a number states it once and links |
+| What each email means | `reference.emails` | `security.suspicious-activity`, `troubleshoot.no-email` |
+| Reminder timing, channels, digests | `reminders.how-they-work` | `reminders.*`, `notifications.*`, troubleshooting |
+| Phone sync | `/docs/carddav` (existing) | `integrations.overview`, `security.api-keys` |
+| API and MCP details | `/docs/api`, `/docs/mcp` (existing) | `security.api-keys`, `security.assistants` |
+| Environment and admin setting precedence | `hosting.configuration` | `admin.configuration`, all hosting pages |
 
-- **id.** `appearance.theme`
-- **Purpose.** Cover the theme toggle.
-- **Audience.** All.
-- **Summary.** Where the toggle is, what it does, that it applies to your browser, and that it works before you sign in. Note where it sits on a narrow screen, since the answer is not the same: on a phone the toggle rides inside the menu rather than in the sidebar, so it is reached through the menu button. Link to `appearance.mobile` rather than explaining the menu here.
-- **Prerequisites.** None.
-- **Complexity.** Low.
-- **Related pages.** `language.change`, `appearance.mobile`.
+### Changes from the previous roadmap
 
-### Using Monica on a phone
+No page from the previous roadmap was ever written, so there are no public URLs to redirect. Its ids were
+proposals only. This roadmap reuses those whose meaning still holds so earlier drafts stay recognisable:
+`portal.introduction`, `signin.password`, `signin.magic-link`, `signin.forgot-password`,
+`security.two-factor`, `security.recovery-codes`, `security.password`, `security.api-keys`,
+`security.suspicious-activity`, `account.delete`, `troubleshoot.*`, `reference.glossary`,
+`reference.limits`, `hosting.introduction`, `hosting.configuration`, `hosting.email`, `hosting.backups`,
+`hosting.upgrade`. Every other previous id is retired, including `concepts.permissions` (the flat
+permission model it described never matched the current product) and `getting.what-works-today`.
 
-- **id.** `appearance.mobile`
-- **Purpose.** Tell somebody on a small screen where the navigation went, so they do not conclude the product has fewer screens on a phone than on a laptop.
-- **Audience.** All.
-- **Summary.** The one thing worth saying first: nothing is missing on a phone, it is only folded away. On a wide screen the settings sidebar is a column down the left; below roughly a laptop width it becomes a menu that slides in over the page, and the button that opens it is the three lines at the left of the bar at the top of every signed in screen. What the menu holds, which is exactly what the column held: the product's name, the light and dark toggle, **Profile**, **Logs**, **Security and access**, **Preferences**, and your own name at the foot. The three ways to close it: the cross beside the toggle, a tap on the dimmed page behind it, or the escape key on a device with a keyboard. That picking a destination closes it and takes you there. Then the smaller adjustments a reader may notice and wonder about, each in a sentence: the email address in the top bar is hidden on the narrowest screens because the menu already says who you are signed in as, the "?" help bubbles open along the bottom edge of the screen instead of beside the thing they explain, and the rows on the Logs screen let the time drop onto its own line rather than squeezing the sentence. Close by saying the product is the same product either way, with no separate mobile version and nothing to install.
-- **Prerequisites.** Being signed in.
-- **Complexity.** Low.
-- **Related pages.** `profile.introduction`, `appearance.theme`, `profile.logs`.
+### Paths, URLs and locales
 
-:::note for the writer
-Do not describe this as an app. There is no native application and no app store listing; this is the same web interface responding to the width of the window, which is also why the same rearrangement happens on a laptop with a narrow browser window. Do not name pixel widths in the page: say "on a phone" and "on a wide screen", because the exact breakpoints are an implementation detail that will move.
-:::
-
----
-
-## Section 8: Emails from Monica
-
-**Why this section exists.** Five emails exist, three of them are security warnings, and a reader who receives one arrives at the portal with that exact subject line in their hand. A page per email, findable by its subject, is the fastest possible answer. This section is also where the "we keep a copy of what we sent you" fact belongs.
-
-**Who it is for.** Anybody who received something, and anybody who wants to know what the product sends.
-
-**On disk.** `8-emails/`. Section value `emails`.
-
-### Emails from Monica
-
-- **id.** `email.introduction`
-- **Purpose.** Section index and a complete inventory.
-- **Audience.** All.
-- **Summary.** The five emails the product sends, each with its subject line and a link to its page: confirm your email address, your sign in link, a failed sign in attempt, you signed in without a password, and a sign in from a new place. State the promise the product makes on its own screens and repeat here: it never sends marketing email. Explain that every one of them is triggered by something happening on your account, so an unexpected one is worth reading.
-- **Prerequisites.** None.
-- **Complexity.** Low.
-- **Related pages.** Every page in this section.
-
-### Confirm your email address
-
-- **id.** `email.verify`
-- **Purpose.** Explain the email a new account receives.
-- **Audience.** New users.
-- **Summary.** When it is sent, what the button does, that the link expires after an hour, and how to get another. That you can safely ignore it if you did not create an account.
-- **Prerequisites.** None.
-- **Complexity.** Low.
-- **Related pages.** `getting.confirm-email`.
-
-### Your sign in link
-
-- **id.** `email.magic-link`
-- **Purpose.** Explain the passwordless sign in email.
-- **Audience.** All.
-- **Summary.** When it is sent, that the link works once and only for the next few minutes, and that the number of minutes is named in the email itself because an instance can change it. What to do when you did not ask for it: ignore it, because somebody typed your address by mistake or is checking whether you have an account, and nothing has happened to your account.
-- **Prerequisites.** None.
-- **Complexity.** Low.
-- **Related pages.** `signin.magic-link`.
-
-### A failed sign in attempt
-
-- **id.** `email.login-failed`
-- **Purpose.** Explain a warning email that alarms people.
-- **Audience.** All.
-- **Summary.** What it means: somebody tried to sign in to your account and gave the wrong password. That it is sent on every failed attempt against a known address. If it was you, nothing is wrong: try again, or use a sign in link. If it was not, change your password now, because somebody knows your address and is guessing.
-- **Prerequisites.** None.
-- **Complexity.** Low.
-- **Related pages.** `security.suspicious-activity`, `security.password`.
-
-### You signed in without a password
-
-- **id.** `email.new-login`
-- **Purpose.** Explain the confirmation sent after a sign in link is used.
-- **Audience.** All.
-- **Summary.** What it means, and the address it was used from. Why it is sent for link sign ins but not password sign ins: getting in without a password is worth telling you about every time. If it was not you, change your password now, and note the specific reasoning the email gives: the link is already spent and cannot be used again, but whoever used it can read your email, which is the real problem.
-- **Prerequisites.** None.
-- **Complexity.** Low.
-- **Related pages.** `signin.magic-link`, `security.suspicious-activity`.
-
-### A sign in from a new place
-
-- **id.** `email.ip-changed`
-- **Purpose.** Explain the most frequently misread of the five.
-- **Audience.** All.
-- **Summary.** What triggers it: you signed in from an address the product had not seen since your last sign in. Why it is usually nothing: travelling, a VPN, a new phone, a browser update. That your very first sign in never triggers it, because there was nothing to compare against. What to do if you do not recognise it. Be precise about what the check is and is not, so nobody reads more into it than it says: it compares one address with the previous one, nothing more.
-- **Prerequisites.** None.
-- **Complexity.** Medium.
-- **Related pages.** `security.suspicious-activity`.
-
-### The record of what was sent
-
-- **id.** `email.record`
-- **Purpose.** Explain that the product keeps a copy of every email it sends.
-- **Audience.** All, and privacy conscious readers in particular.
-- **Summary.** What is kept: the type of email, the address it went to, the subject, the body, and when it was sent, delivered, or bounced. Why: so an account can see exactly what was sent on its behalf, and to whom. The one deliberate omission: links are stripped out of the stored copy, because a stored sign in link would be a stored way into somebody's account. That delivery and bounce information is only filled in on instances using a mail provider that reports it back. Where to read it, in one line, with the walkthrough left to the profile section: the **Emails sent** box on your profile.
-- **Prerequisites.** `security.privacy`.
-- **Complexity.** Medium.
-- **Related pages.** `profile.emails`, `security.privacy`, `hosting.email`.
-
----
-
-## Section 9: Running your own instance
-
-**Why this section exists.** Monica is open source, and self hosting is a first class way to use it. This audience is entirely different from every other section: they read commands, not walkthroughs. Everything here is grounded in the composer scripts, the environment file, and the configuration.
-
-**Who it is for.** Operators and developers only. Say so at the top of every page.
-
-**On disk.** `9-self-hosting/`. Section value `self-hosting`.
-
-### Running your own instance
-
-- **id.** `hosting.introduction`
-- **Purpose.** Section index, and an honest statement of what self hosting involves today.
-- **Audience.** Operators.
-- **Summary.** What you need: PHP 8.4 or later, Composer, Bun, and a database. That SQLite, MySQL and PostgreSQL are all exercised by the project's own test suite, so all three work. That there is no Docker image or compose file in the repository today, so installation is a manual PHP deployment. What the section covers, in order.
-- **Prerequisites.** Comfort with a command line.
-- **Complexity.** Medium.
-- **Related pages.** Every page in this section.
-
-### Install Monica
-
-- **id.** `hosting.install`
-- **Purpose.** Take an operator from a clone to a running instance.
-- **Audience.** Operators.
-- **Summary.** A `::::steps` walkthrough built on the `composer setup` script the repository already defines, which installs dependencies, creates the environment file, generates the application key, runs the migrations, and builds the front end assets. Then what setup does not do and you must: choose and configure a database, configure mail, serve the application, and run a queue worker. Cover the local development path separately and briefly, since `composer dev` runs the server, the queue worker, the log tail and the asset watcher together. Point out that Laravel Herd serves the site automatically for anyone developing on macOS.
-- **Prerequisites.** `hosting.introduction`.
-- **Complexity.** Medium.
-- **Related pages.** `hosting.configuration`, `hosting.queue`, `hosting.email`.
-
-### Configure your instance
-
-- **id.** `hosting.configuration`
-- **Purpose.** A reference for every setting an operator can change, in one scannable place.
-- **Audience.** Operators.
-- **Summary.** A reference page, tables rather than prose. Application basics: name, environment, key, URL, debug, default and fallback locale. Database. Session driver and lifetime. Queue connection. Cache. Then the settings specific to Monica, each with its default and, crucially, what the user sees change: how many days "remember me" lasts (thirty, and the sign in screen names this number, so changing it changes what you promise your users), how many minutes a sign in link stays valid (five, deliberately short, and the email names it), and the URLs of the terms of use and the privacy policy, which point at monicahq.com by default and which any instance running its own documents must repoint. Mail settings and the Cloudflare Turnstile keys get their own pages below.
-- **Prerequisites.** `hosting.install`.
-- **Complexity.** High. Completeness and accuracy matter more than prose here.
-- **Related pages.** `hosting.email`, `hosting.turnstile`, `hosting.locales`.
-
-### Send email from your instance
-
-- **id.** `hosting.email`
-- **Purpose.** Get outbound mail working, without which nobody can confirm an address or reset a password.
-- **Audience.** Operators.
-- **Summary.** Why this matters first: five of the product's flows depend on email. The two paths. Ordinary Laravel mail, configured with the standard mail settings and working with any SMTP service, which is the default. Or Resend, switched on with a single flag and an API key, which additionally captures the provider's own identifier for each message so delivery and bounce information can be recorded. State plainly that the delivery and bounce columns stay empty on the ordinary path. The from address and name, which appear on every email your people receive. How to check it works in development, where mail is written to the log by default.
-- **Prerequisites.** `hosting.install`.
-- **Complexity.** Medium.
-- **Related pages.** `email.record`, `hosting.queue`.
-
-### Run the queue
-
-- **id.** `hosting.queue`
-- **Purpose.** Explain the piece of the deployment that silently breaks the product when it is missing.
-- **Audience.** Operators.
-- **Summary.** What runs in the background and therefore does not happen without a worker: every email the product sends, every entry in the activity log, and the check that notices a sign in from a new address. The symptom an operator will actually see if they skip this, which is that nobody ever receives a confirmation email and the product looks broken. That the default connection is the database, so no extra service is needed to start. That work is dispatched to a `high` queue for anything a person is waiting on, and a `low` queue for record keeping, so a worker should be told to drain `high` first. How to run one, and what to use in production to keep it running.
-- **Prerequisites.** `hosting.install`.
-- **Complexity.** Medium.
-- **Related pages.** `hosting.email`, `concepts.activity-log`.
-
-### Protect your sign up and sign in screens
-
-- **id.** `hosting.turnstile`
-- **Purpose.** Explain the optional human check.
-- **Audience.** Operators.
-- **Summary.** What Cloudflare Turnstile is and what it protects: the registration and sign in forms. That it is off by default and needs a site key and a secret key from Cloudflare. What your users see when it is on, and what they see when it fails. The deliberate strictness worth knowing before you enable it: if the check cannot be verified for any reason, including Cloudflare being unreachable from your server, the form is refused rather than let through. What else already protects those forms without it: rate limiting on sign in, on link requests and on password resets, and the rejection of disposable email addresses at sign up.
-- **Prerequisites.** `hosting.configuration`.
-- **Complexity.** Medium.
-- **Related pages.** `getting.create-account`, `signin.password`.
-
-### Languages on your instance
-
-- **id.** `hosting.locales`
-- **Purpose.** Explain how languages are configured and how to add one.
-- **Audience.** Operators and translators.
-- **Summary.** Where the shipped languages are declared, and that each is a locale key, a label, a region and a flag drawn in CSS rather than shipped as an image. Where the translated strings live: one JSON file per locale, keyed by the English sentence. How the application default relates to the per user setting, linking to the precedence page rather than repeating it. How to add a language: register the locale, add its file, translate it, contribute it back. That translations are community maintained.
-- **Prerequisites.** `hosting.configuration`.
-- **Complexity.** Medium.
-- **Related pages.** `language.change`, `hosting.contributing`.
-
-### Upgrade your instance
-
-- **id.** `hosting.upgrade`
-- **Purpose.** Tell an operator how to move to a new version safely.
-- **Audience.** Operators.
-- **Summary.** The order that matters: back up the database first, pull, install dependencies, run migrations, rebuild assets, restart the queue worker so it picks up the new code. Why the last step is the one people forget. Keep it short and mechanical, and state clearly that the project publishes no formal release process yet, so this is the general procedure rather than a versioned upgrade guide.
-- **Prerequisites.** `hosting.install`.
-- **Complexity.** Medium.
-- **Related pages.** `hosting.backups`, `hosting.queue`.
-
-### Back up your data
-
-- **id.** `hosting.backups`
-- **Purpose.** Cover the thing an HR system's operator cannot get wrong.
-- **Audience.** Operators.
-- **Summary.** What matters and why: the database holds everything the product knows, including personal details, emergency contacts, and the record of every email sent. That the encrypted columns, two factor secrets and recovery codes, are readable only with the application key, so a database backup without that key is not a complete backup and will not restore. How to back up each supported database. What else to keep: the environment file and the application key. Testing that a restore actually works. No backup tooling ships with the product, so this is guidance rather than a feature.
-- **Prerequisites.** `hosting.install`.
-- **Complexity.** Medium.
-- **Related pages.** `hosting.upgrade`, `security.privacy`.
-
-### Contribute to Monica
-
-- **id.** `hosting.contributing`
-- **Purpose.** Turn interested readers into contributors, which for an open source product is a documentation job.
-- **Audience.** Developers and translators.
-- **Summary.** Where the code is, how to get a development environment running, and how to run the test suite. The conventions a contributor meets immediately, described rather than reproduced: business logic lives in one class per user action, controllers stay thin, code style is enforced by a formatter, and static analysis runs in continuous integration. That translations are the easiest first contribution. Link to the repository's own contributing guidance rather than duplicating it, and keep this page thin so it does not drift.
-- **Prerequisites.** `hosting.install`.
-- **Complexity.** Low.
-- **Related pages.** `hosting.locales`.
+- **Filesystem.** `docs/portal/en/` holds the English pages, using the writer skill's `N-` folder and file
+  ordering beneath it. A locale folder is not in the writer skill today; see conflict W6. Paths in the
+  briefs are provisional until the renderer (F1) exists, and nothing here assumes a frontmatter field
+  beyond `id`, `title`, `slug` and `section`.
+- **Public URLs.** `/docs/{locale}/{section}/{slug}`, matching the writer skill's `@doc` example. Locale
+  codes never collide with the existing `/docs/api`, `/docs/mcp` and `/docs/carddav`.
+- **Locales.** The interface ships 31 locales; the developer references are English only by design.
+  Write English first. Do not translate until a section has been stable through one release. A page
+  missing in the reader's locale falls back to English with a one line notice (F5).
 
 ---
 
-## Section 10: Troubleshooting
+## Portal functionality
 
-**Why this section exists.** A reader with a problem does not know which section their problem lives in. This one is organised by symptom, in their words, and does nothing but route them or answer them.
+Content work cannot publish without F1. The rest are ordered by reader impact.
 
-**Who it is for.** Everybody.
+| ID | Capability | Current support | Gap | Priority | Acceptance criterion |
+| --- | --- | --- | --- | --- | --- |
+| F1 | Render `docs/portal/{locale}` Markdown with frontmatter, `@doc(id)`, `:::note`, `:::warning`, `::::steps`, `:::step`, `::screenshot` | None. The directives exist only in the writer skill; `resources/views/components/docs/{step,steps,notice}` exist as Blade components for the MCP and CardDAV pages | Parser, routes, layout | P0 | Every directive in the writer skill renders; an unknown `@doc` id fails a test; duplicate ids fail a test |
+| F2 | Navigation from folder order, section index pages, previous and next | None | Sidebar and index | P0 | Sidebar order matches `N-` prefixes; keyboard and screen reader operable (constitution IX) |
+| F3 | Stable heading anchors | MCP and CardDAV pages have them | Portal pages | P0 | Every `##` heading has a stable id that survives retitling of other headings |
+| F4 | Search with excerpts | API sidebar filter only (label and method) | Full text over portal pages | P1 | Searching "recovery code" returns `security.recovery-codes` first with an excerpt |
+| F5 | Locale fallback notice | None | Fallback logic | P1 | A `fr_FR` reader of an untranslated page sees the English page and a notice |
+| F6 | Help links from screens | None | A small component linking a screen to a page id | P1 | At least the reminders, templates, sharing and security screens link to their page |
+| F7 | Applicability markers (hosted only, self hosted only, administrator only) | None | A convention inside the page body, not new frontmatter, unless the renderer adds a field deliberately | P1 | Every billing and admin page carries one |
+| F8 | Report a problem with this page | None | Link to an issue form or a feedback endpoint | P2 | Each page footer links to it with the page id prefilled |
+| F9 | `llms.txt` and Markdown views for portal pages | Exists for the developer references | Add portal pages | P2 | `llms.txt` lists every portal page |
+| F10 | Last reviewed date | None | Must be written by a person at review, never generated from git | P2 | Date appears only when set in source |
 
-**On disk.** `10-troubleshooting/`. Section value `troubleshooting`.
-
-### Troubleshooting
-
-- **id.** `troubleshoot.introduction`
-- **Purpose.** Section index, organised by symptom.
-- **Audience.** All.
-- **Summary.** A short list of "if this is happening to you" links covering the pages below plus the frequent ones that live elsewhere: I got a warning email, I forgot my password, my language keeps resetting.
-- **Prerequisites.** None.
-- **Complexity.** Low.
-- **Related pages.** All pages in this section.
-
-### I cannot sign in
-
-- **id.** `troubleshoot.cannot-sign-in`
-- **Purpose.** Work through every reason a sign in fails, in the order they are likely.
-- **Audience.** All.
-- **Summary.** Symptom by symptom. "These credentials do not match our records": your password is wrong, or your account has been suspended, or that address has no account here; the message is the same for all three on purpose, and here is how to tell them apart in practice, by asking for a sign in link and seeing whether one arrives, or by asking whoever else uses your account. "Too many sign in attempts": wait the number of seconds you were told. "That link no longer works": the link was used already or has expired, ask for another. "That code is not right" and "that took too long": the two factor cases. Somebody who has genuinely been suspended cannot get in by any route, including a link, and no screen can undo it today.
-- **Prerequisites.** `signin.introduction`.
-- **Complexity.** Medium.
-- **Related pages.** `signin.password`, `signin.magic-link`, `security.two-factor`.
-
-### I am not receiving emails from Monica
-
-- **id.** `troubleshoot.no-email`
-- **Purpose.** Solve the single most common support request for any product that emails links.
-- **Audience.** All, with a clearly separated part for operators.
-- **Summary.** For the reader: it can take a minute, check spam, check you typed the address you actually signed up with, and remember that the confirmation screen says the same thing whether or not that address has an account. Then, plainly, if none of that helps, the problem is on the instance rather than with you, and here is what to tell whoever runs it. For the operator, a short checklist under its own heading: is a queue worker running, is mail configured, are messages going to the log instead of out, and is the from address one your provider accepts.
-- **Prerequisites.** None.
-- **Complexity.** Medium.
-- **Related pages.** `hosting.queue`, `hosting.email`, `getting.confirm-email`.
-
-### The interface is in the wrong language
-
-- **id.** `troubleshoot.wrong-language`
-- **Purpose.** Answer a small, common and genuinely confusing problem.
-- **Audience.** All.
-- **Summary.** Why the interface may not be in the language you expect, and why a choice you made earlier may have reverted: the picker's choice lasts for your session, and there is no per account language setting reachable from any screen yet. What to do about it. Link to the precedence rule rather than restating it.
-- **Prerequisites.** `language.change`.
-- **Complexity.** Low.
-- **Related pages.** `language.change`, `preferences.screen`.
+Not recommended now: an assistant inside the portal, interactive sandboxes, a new publishing platform.
+Nothing in the audit shows a need that F1 to F6 do not meet.
 
 ---
 
-## Section 11: Reference
+## Page briefs
 
-**Why this section exists.** A few facts get asked repeatedly and belong somewhere scannable, not buried in prose. Reference pages are factual and short.
+Each brief carries the fields the analyst skill requires, compressed. **Identity** gives the id, working
+title, provisional path under `docs/portal/en/`, and disposition (all are new). **Evidence** names the
+source to recheck; a writer must recheck it, because the code moves. Shared facts are in
+[Shared product facts](#shared-product-facts) and are not repeated.
 
-**Who it is for.** All, depending on the page.
+Readiness: **ready** (static evidence and tests exist, behaviour not contested), **needs verification**
+(a runtime check or a decision is required first), **blocked** (a named discrepancy or missing source
+must be resolved).
 
-**On disk.** `11-reference/`. Section value `reference`.
+Examples: use the seeded example account (`database/seeders/ExampleAccountSeeder.php`: the Friends cast,
+`.example` addresses) for scenarios and screenshots, so no page shows real data. The reader in examples
+is "you", recording the people around them.
 
-### Reference
+### 1. Portal root
 
-- **id.** `reference.introduction`
-- **Purpose.** Section index.
-- **Audience.** All.
-- **Summary.** What is here and what is not.
-- **Prerequisites.** None.
-- **Complexity.** Low.
-- **Related pages.** All pages in this section.
+#### `portal.introduction` Welcome to the Monica guide
+- **Identity:** `1-introduction.md`, section `portal`. Navigation page. All audiences.
+- **Need and success:** a first visitor knows in under a minute what Monica does and which section to open.
+- **Applicability:** all deployments.
+- **Scope:** Monica as a personal relationship manager for one person; the five things it holds (people,
+  relationships, life events, reminders, and the templates that shape them); links by audience: Start here,
+  Troubleshooting, Run your own instance, developer references. Excludes the model in depth (`concepts.model`).
+- **Links:** out to every section index.
+- **Evidence:** `DocsViewModel::llmsText()` wording ("open source personal relationship manager"), constitution VII.
+- **Examples and assets:** none.
+- **Acceptance:** no claim of collaboration, journals or tasks; every section reachable in one click.
+- **Delivery:** P0, ready, needs F1 and F2.
 
-### Words Monica uses
+### 2. Start here
 
-- **id.** `reference.glossary`
-- **Purpose.** A glossary, so no page has to stop and define its terms twice.
-- **Audience.** All.
-- **Summary.** Account, user, plan, trial, self hosted, sign in link, recovery code, activity log. One or two sentences each, each linking to the page that explains it properly. Include the terms that mean something specific here and something looser elsewhere, above all account, which is the workspace rather than the login.
-- **Prerequisites.** None.
-- **Complexity.** Medium.
-- **Related pages.** `concepts.introduction`.
+#### `start.introduction` Start here
+- **Identity:** `2-start-here/1-introduction.md`. Navigation. New users.
+- **Need and success:** the reader sees the three steps and what they will have at the end: an account,
+  a first contact with a reminder, and the model in their head.
+- **Applicability:** all.
+- **Scope:** list the pages in order with one line each. Excludes content of those pages.
+- **Links:** the three pages below.
+- **Evidence:** none beyond the pages.
+- **Examples and assets:** none.
+- **Acceptance:** under 150 words.
+- **Delivery:** P0, ready.
 
-### Limits and defaults
+#### `start.create-account` Create your account
+- **Identity:** `2-start-here/2-create-your-account.md`. How-to. Somebody signing up.
+- **Need and success:** the reader has an account, has confirmed their address, has read the welcome
+  letter and is looking at the **Personal** vault.
+- **Applicability:** all. Turnstile check appears only if the instance enabled it. Passkey sign up needs
+  HTTPS. Outside provider sign up appears only if the instance configured one.
+- **Scope:** fields and rules (disposable addresses refused, terms required); the passkey alternative and
+  what happens if the passkey prompt is skipped; confirming the address and resending (link lasts an hour);
+  the welcome letter and **Let me in**; landing in the Personal vault. A note that templates and types are
+  prepared in the background right after sign up, so the first minute may show "This vault has no template
+  for new contacts to start from", which resolves itself. Excludes signing in later (`signin.*`).
+- **Links:** prerequisite none; next `start.first-contact`; optional `concepts.model`.
+- **Evidence:** `RegistrationController`, `RegistrationPasskeyController`, `CreateAccount`, `WelcomeController`,
+  `EmailVerificationController`; tests `RegistrationControllerTest`, `RegistrationPasskeyControllerTest`.
+- **Examples and assets:** screenshots of the form and the welcome letter from a fresh account.
+- **Acceptance:** states that one account holds one person, so nobody else joins it; does not mention
+  invitations; the delay note is verified on a real instance with a database queue.
+- **Delivery:** P0, needs verification (the seeding delay message at runtime).
 
-- **id.** `reference.limits`
-- **Purpose.** Put every number the product enforces in one table.
-- **Audience.** All, and operators in particular.
-- **Summary.** A single table: minimum password length, how long "remember me" lasts, how long a sign in link lasts, how long an email confirmation link lasts, how many sign in attempts before a lockout, the rate limits on link requests, password resets, resent confirmations and two factor attempts, how many recovery codes a set holds and how long each one is, and the session lifetime. Mark which are configurable per instance and which are fixed in code, and link to the configuration page for the former. Give defaults, not the values from any one instance.
-- **Prerequisites.** None.
-- **Complexity.** Medium. Verify every number against the code before publishing, and re-verify whenever it changes.
-- **Related pages.** `hosting.configuration`, `signin.introduction`.
+#### `start.first-contact` Record your first person
+- **Identity:** `2-start-here/3-record-your-first-person.md`. Tutorial. New users.
+- **Skill learned:** how a contact is organised in pages and sections, and how dates become reminders.
+- **Need and success:** by the end the reader has added Rachel Green to the Personal vault, filled her
+  birthday and an email, linked her to one other person, and seen a yearly birthday reminder appear.
+- **Applicability:** all. Hosted free offer counts this contact toward 30.
+- **Scope:** fixed sequence: open the vault, **Add somebody**, fill the name, save, open the Overview,
+  edit **Personal details** to add a birthday, edit **Contact information** to add an email, add a
+  relationship, see the reminder in the Overview and in the vault's **Reminders**. Checkpoints after each
+  save (the toast, the Overview block). Excludes alternatives (partial contacts, templates, columns).
+- **Links:** prerequisite `start.create-account`; after: `concepts.model`, `reminders.create`,
+  `contacts.introduction`.
+- **Evidence:** `CreateContact`, `ContactSectionController`, `SetFieldValues::makeTheRule` (a Date or Recurring
+  date field creates the reminder rule), `CreateRelationship`; tests `ContactControllerTest`,
+  `ContactSectionControllerTest`. Verify on a real account that a birthday creates a reminder by default
+  in the Basic contact template.
+- **Examples and assets:** Rachel Green and Ross Geller from the example cast; four screenshots at the checkpoints.
+- **Acceptance:** every checkpoint is visible on a fresh account; does not send the reader to the Getting
+  started screen (D3) or promise import (D4).
+- **Delivery:** P0, needs verification (birthday to reminder behaviour on Basic contact).
+
+#### `concepts.model` How Monica is organised
+- **Identity:** `2-start-here/4-how-monica-is-organised.md`. Explanation. All users.
+- **Conceptual question:** where does everything live, and what belongs to what?
+- **Need and success:** the reader can say what an account, a vault, a contact, a profile, a template and
+  the Me contact are, and why a vault is a compartment rather than a door you lock others out with.
+- **Applicability:** all.
+- **Scope:** one person per account and no members; vaults as compartments (one default, moving data is
+  explicit); contacts and profiles (people versus pets and other records); templates give every record its
+  pages, sections and fields; the core concepts that do not change versus what you can personalise
+  (constitution VII); the Me contact exists in the model, but no screen creates it yet (D10); the
+  instance administrator never sees your vaults. Diagram of account → vaults → contacts and profiles,
+  each pointing at a template version. Distinguish documented rationale (constitution) from analysis.
+- **Links:** optional background for every page; related `templates.versions`, `concepts.privacy`.
+- **Evidence:** constitution Product Invariants and VII; `Account`, `Vault`, `Contact`, `Entity` models.
+- **Examples and assets:** one diagram (accessible SVG with text alternative).
+- **Acceptance:** no procedure steps; every term links to its how-to.
+- **Delivery:** P0, ready.
+
+### 3. People
+
+Shared: every page here happens inside a vault at `/vaults/{vault}/contacts`. The free offer (hosted)
+counts contacts across all vaults; partial contacts and Me are not counted.
+
+#### `contacts.introduction` People
+- **Identity:** `3-people/1-introduction.md`. Navigation. Users.
+- **Need and success:** reader finds the task among adding, editing, listing, photos, deleting and profiles.
+- **Scope, links, evidence:** index of this section; link `concepts.model`. **Acceptance:** one line per page.
+- **Applicability:** all. **Examples:** none. **Delivery:** P0, ready.
+
+#### `contacts.add` Add a person
+- **Identity:** `3-people/2-add-a-person.md`. How-to. Users who know what a contact is.
+- **Need and success:** a person exists in the right vault, with the right template, as a full or partial contact.
+- **Applicability:** hosted free offer limit; the vault's default template.
+- **Scope:** the form fields (prefix to nickname, **Written as** name order, template choice, partial,
+  favourite, **Create another one after this**); what a partial contact is and when to use one (somebody you
+  know only by name, often created from a relationship); the contact limit message and where to go
+  (`troubleshoot.limit-reached`); duplicates are checked in the background after saving. Excludes editing
+  sections (`contacts.edit`).
+- **Links:** prerequisite none; related `contacts.edit`, `duplicates.review`, `templates.introduction`.
+- **Evidence:** `CreateContact`, `ContactPolicy::create`, `ContactController`; `ContactControllerTest`.
+- **Examples and assets:** Monica Geller added as a favourite; screenshot of the form.
+- **Acceptance:** limit behaviour stated with a link to `reference.limits`, not a hard-coded number.
+- **Delivery:** P0, ready.
+
+#### `contacts.edit` Change what you know about somebody
+- **Identity:** `3-people/3-change-what-you-know.md`. How-to. Users.
+- **Need and success:** the reader edits one section, a name or a repeated item, and knows why the page
+  shows the fields it shows.
+- **Applicability:** all.
+- **Scope:** pages as tabs (Overview, template pages, Relationships); editing a section saves only that
+  section; repeaters (several emails or phones, each with a label; newest last); required and unique field
+  errors; changing the name, and that old addresses of the page stop working while the permanent one
+  keeps working; "Answers to questions no longer asked" and how answers come back when a field returns; the
+  "Version :number is ready" banner, linking to `templates.apply-new-version`. Excludes template editing.
+- **Links:** prerequisite `contacts.add`; optional `templates.versions`.
+- **Evidence:** `ContactSectionController`, `SetFieldValues`, `UpdateContactName`, `SetAsideValueController`,
+  `ContactStructureVersionController`; tests of each.
+- **Examples and assets:** Chandler Bing gets a second phone; screenshot of a section in edit mode.
+- **Acceptance:** says nothing is lost when a field disappears from a template (constitution VIII),
+  verified by `SetAsideValueControllerTest`.
+- **Delivery:** P0, ready.
+
+#### `contacts.list` Find people in a vault
+- **Identity:** `3-people/4-find-people.md`. How-to. Returning users.
+- **Need and success:** the reader finds somebody fast and sets the list up the way they like it.
+- **Applicability:** all.
+- **Scope:** filters (Everybody, Favourites, Archived, Partial contacts); sort options and that the choice
+  is remembered for you; search covers names and nicknames only, across one vault; **Customise view**
+  columns, stored for the vault, **Reset to defaults**. There is no Archived list: it was removed in
+  #293 because nothing archives a contact yet (D6).
+- **Links:** related `contacts.add`, `duplicates.review`.
+- **Evidence:** `ContactController::index`, `UpdateContactListView`, `UpdateContactListColumns`,
+  `Contact::scopeMatchingSearch`; `ContactListColumnControllerTest`.
+- **Examples and assets:** screenshot of the column editor.
+- **Acceptance:** no promise of global search or field search.
+- **Delivery:** P1, ready once #293 is merged.
+
+#### `contacts.photo` Add a photo to a contact
+- **Identity:** `3-people/5-add-a-photo.md`. How-to. Users.
+- **Need and success:** a contact shows a photo; the reader knows it counts toward storage.
+- **Applicability:** hosted storage limit.
+- **Scope:** accepted formats and size; removal asks first; storage counting. Excludes your own profile
+  photo (`account.profile`).
+- **Links:** related `reference.limits`.
+- **Evidence:** `ContactAvatarController`, `UpdateContactAvatar`, `CreateFile`; `ContactAvatarControllerTest`.
+- **Examples and assets:** none needed.
+- **Acceptance:** storage error message quoted from `lang/en.json`.
+- **Delivery:** P1, ready.
+
+#### `contacts.delete` Delete a contact
+- **Identity:** `3-people/6-delete-a-contact.md`. How-to. Users.
+- **Need and success:** the reader deletes a contact knowing exactly what goes and what stays.
+- **Applicability:** the Me contact cannot be deleted.
+- **Scope:** `:::warning` before the action; what goes (the contact, its sharing links revoked, its
+  reminders stopped); what stays (life events and relationships with other people); there is no way to
+  restore a deleted contact from the product today, despite the dialog (D5). Excludes merging (`duplicates.merge`).
+- **Links:** related `duplicates.merge`, `sharing.create-link`.
+- **Evidence:** `DestroyContact`, `ContactPolicy::delete`; `ContactControllerTest`.
+- **Examples and assets:** none.
+- **Acceptance:** recovery claim matches the code at the time of writing.
+- **Delivery:** P0, blocked on D5 (either the copy changes or a restore exists; the page must state the truth).
+
+#### `profiles.add` Keep a record of a pet or anything else
+- **Identity:** `3-people/7-profiles.md`. How-to. Users.
+- **Need and success:** the reader adds an animal profile and links it to its caregivers.
+- **Applicability:** all; the Animals profile type is seeded.
+- **Scope:** the vault sidebar entry per active profile type; **Add :name**; the Basic animal template
+  (Animal details, Caregivers, Care, Notes); that a profile has no page of its own yet, so it cannot be
+  opened, edited or deleted from the web (partial). Excludes creating profile types (`customise.profile-types`).
+- **Links:** optional `concepts.model`.
+- **Evidence:** `EntityController`, `CreateEntity`, `SeedAnimalTemplate`; `EntityControllerTest`.
+- **Examples and assets:** Marcel the monkey, cared for by Ross Geller.
+- **Acceptance:** limitation stated plainly.
+- **Delivery:** P2, needs verification (what a user can do with a profile after creation).
+
+### 4. Relationships and life events
+
+#### `relationships.introduction` Relationships and life events
+- **Identity:** `4-relationships-and-life-events/1-introduction.md`. Navigation. Users.
+- **Need, scope, links:** index; one sentence on the difference (a relationship links two people, a life
+  event records something that happened, possibly to several people). **Applicability:** all.
+- **Evidence, examples, acceptance:** none beyond the pages. **Delivery:** P0, ready.
+
+#### `relationships.add` Link two people
+- **Identity:** `4-relationships-and-life-events/2-link-two-people.md`. How-to. Users.
+- **Need and success:** two contacts are linked by a named relationship, visible on both records.
+- **Applicability:** all.
+- **Scope:** **Add relationship**; choosing the type and **Swap the two roles**; choosing an existing
+  person or creating a partial contact, including **I do not know their name**; family relationships feed
+  the family tree on the Overview. Excludes editing and types.
+- **Links:** prerequisite `contacts.add`; related `customise.relationship-types`.
+- **Evidence:** `ContactRelationshipController`, `CreateRelationship`, seeded types; `ContactRelationshipControllerTest`.
+- **Examples and assets:** Ross is Emma's parent; screenshot of the form.
+- **Acceptance:** says one relationship appears on both records.
+- **Delivery:** P0, ready.
+
+#### `relationships.edit` Change or end a relationship
+- **Identity:** `4-relationships-and-life-events/3-change-or-end.md`. How-to. Users.
+- **Need and success:** the reader records a start or end date, marks it ended, or removes it knowing
+  neither person is deleted.
+- **Applicability:** all.
+- **Scope:** **Started on**, **Ended on**, **This relationship has ended**; removing takes the link off both
+  records. `:::warning` not needed (no data loss beyond the link), a plain sentence suffices.
+- **Links:** prerequisite `relationships.add`.
+- **Evidence:** `UpdateRelationship`, `DestroyRelationship`.
+- **Examples and assets:** Ross and Rachel, ended.
+- **Acceptance:** wording of the removal confirmation quoted.
+- **Delivery:** P1, ready.
+
+#### `life-events.record` Record something that happened
+- **Identity:** `4-relationships-and-life-events/4-record-a-life-event.md`. How-to. Users.
+- **Need and success:** a life event with a type, a date and the people involved appears on each of their timelines.
+- **Applicability:** all; types can be switched off by the user.
+- **Scope:** the two step panel; summary, date, people, place, duration, description, and the type's own
+  fields; changing the type drops answers the new type does not ask for (quote the warning); deleting
+  removes it from every timeline and offers **Undo**. Excludes types (`customise.life-event-types`).
+- **Links:** related `life-events.timeline`.
+- **Evidence:** `ContactLifeEventController`, `ContactLifeEventRestorationController`; `ContactLifeEvent*ControllerTest`.
+- **Examples and assets:** Chandler and Monica's wedding with both of them listed.
+- **Acceptance:** the undo window verified at runtime (toast lifetime).
+- **Delivery:** P1, needs verification (undo behaviour).
+
+#### `life-events.timeline` How the timeline works
+- **Identity:** `4-relationships-and-life-events/5-the-timeline.md`. Explanation. Users.
+- **Conceptual question:** why does one event appear on several people, and what is shown in what order?
+- **Scope:** one event recorded once and seen from every person in it (constitution: the journal and the
+  directory are one gesture); newest first; categories. Distinguish the constitution's stated intent from
+  what the timeline currently shows.
+- **Applicability, links:** all; related `life-events.record`, `relationships.add`.
+- **Evidence:** constitution Product Invariants; `ContactViewModel` timeline methods.
+- **Examples and assets:** none. **Acceptance:** no steps. **Delivery:** P2, ready.
+
+### 5. Reminders and notifications
+
+Shared: occurrences are generated daily for the next 90 days; due notifications are sent every five
+minutes; digests hourly at the account's digest hour; each reminder keeps its own time zone
+(`routes/console.php`, constitution VI). Channels are In the app, Email, Telegram and Text message; the
+last two exist only when the instance configured them.
+
+#### `reminders.introduction` Reminders and notifications
+- **Identity:** `5-reminders-and-notifications/1-introduction.md`. Navigation. Users.
+- **Scope, links:** index. **Applicability:** all. **Evidence:** none. **Examples:** none.
+- **Need and acceptance:** reader distinguishes a reminder (what) from a channel (how it reaches you). **Delivery:** P0, ready.
+
+#### `reminders.create` Set a reminder
+- **Identity:** `5-reminders-and-notifications/2-set-a-reminder.md`. How-to. Users.
+- **Need and success:** a reminder exists on a contact with the right date, repetition, time and zone.
+- **Applicability:** all.
+- **Scope:** from the contact's Overview or **Reminders** tab; **What it should say**, **Date**,
+  **How often** (Once, Weekly, Monthly, Yearly, Every so many), **Local time**, **Time zone**; nothing is
+  sent ahead of the day; reminders created automatically from a date field (birthday); sending a test by
+  email. Excludes channels.
+- **Links:** related `reminders.how-they-work`, `notifications.channels`.
+- **Evidence:** `ContactReminderController`, `CreateContactReminder`, `ReminderOccurrenceTestNotificationController`;
+  `ContactReminderControllerTest`.
+- **Examples and assets:** a yearly reminder for Phoebe's birthday.
+- **Acceptance:** states the time zone is fixed when the reminder is created.
+- **Delivery:** P0, ready.
+
+#### `reminders.answer` Answer a reminder
+- **Identity:** `5-reminders-and-notifications/3-answer-a-reminder.md`. How-to. Users.
+- **Need and success:** the reader marks a date **I remembered** or **I forgot** and understands what stops being sent.
+- **Applicability:** all.
+- **Scope:** where dates wait (Overdue, Today, Upcoming; the vault's **Coming up**, **Sent**, **History**);
+  the answer is final and cancels unsent notifications for that date; deleting a reminder drops unanswered
+  dates and keeps answered ones (`:::warning`).
+- **Links:** prerequisite `reminders.create`.
+- **Evidence:** `AnswerReminderOccurrence`, `VaultReminderController`, `ReminderController`; tests.
+- **Examples and assets:** screenshot of the vault's Coming up list.
+- **Acceptance:** "answer is final" verified in `ReminderOccurrenceAnswerControllerTest`.
+- **Delivery:** P0, ready.
+
+#### `reminders.how-they-work` How reminders reach you
+- **Identity:** `5-reminders-and-notifications/4-how-reminders-reach-you.md`. Explanation. Users.
+- **Conceptual question:** when exactly will I be told, on which channel, and what can delay it?
+- **Scope:** a reminder rule versus its dates; generation ahead of time; delivery every few minutes and
+  retries; quiet hours and digests (set through the API only today); time zones frozen at creation; a
+  channel switched off after repeated failures with an email saying so; deleted contacts stop their reminders.
+- **Applicability:** operators may change the numbers; link `reference.limits`.
+- **Links:** related `troubleshoot.reminder-not-received`, `notifications.channels`.
+- **Evidence:** `GenerateDueReminderOccurrences`, `DeliverDueNotifications`, `SendNotificationDigests`,
+  `NotificationPreference`; `tests/Unit/Jobs`.
+- **Examples and assets:** a timeline diagram of one reminder from rule to delivery.
+- **Acceptance:** no procedure steps; every number links to `reference.limits`.
+- **Delivery:** P1, ready.
+
+#### `notifications.channels` Choose how you are notified
+- **Identity:** `5-reminders-and-notifications/5-notification-channels.md`. How-to. Users.
+- **Need and success:** a channel is connected, proven and tested.
+- **Applicability:** Telegram and Text message only on instances that configured them (D26); text
+  messages may cost the operator.
+- **Scope:** `/settings/account/notifications`; connecting Telegram (**Connect Telegram** opens the bot);
+  text message with the country code and the six digit proof code; **Send a test**; **Cancel this
+  connection**; automatic switch off. Excludes digests and quiet hours (API only, mention in one line with a
+  link to the API reference).
+- **Links:** related `reminders.how-they-work`.
+- **Evidence:** `NotificationChannelController`, `ChannelProofController`, `ChannelTestController`; `Notifications/*Test`.
+- **Examples and assets:** screenshot of the channels screen.
+- **Acceptance:** channel error messages checked in a non English locale (they are not translated today).
+- **Delivery:** P1, needs verification (Telegram flow on a configured instance).
+
+#### `notifications.inbox` Read notifications in the app
+- **Identity:** `5-reminders-and-notifications/6-in-app-notifications.md`. How-to. Users.
+- **Need and success:** the reader finds and clears in-app notifications.
+- **Scope:** the bell, **Mark every one as read**, retention. **Applicability:** all.
+- **Links:** related `notifications.channels`. **Evidence:** `NotificationController`, `NotificationReadController`.
+- **Examples:** none. **Acceptance:** retention links to `reference.limits`. **Delivery:** P1, ready.
+
+### 6. Vaults
+
+#### `vaults.introduction` Vaults
+- **Identity:** `6-vaults/1-introduction.md`. Navigation. Users.
+- **Need and success:** reader understands when a second vault helps (for example family versus work) and
+  finds the task. **Scope:** index. **Applicability:** hosted free offer holds one vault.
+- **Links:** `concepts.model`. **Evidence:** none. **Examples:** none. **Acceptance:** does not describe
+  dashboard Tasks or Files cards (D7). **Delivery:** P0, ready.
+
+#### `vaults.create` Create a vault
+- **Identity:** `6-vaults/2-create-a-vault.md`. How-to. Users.
+- **Need and success:** a new vault exists with a name, colour and default template.
+- **Applicability:** hosted free offer: the Personal vault uses the only free slot.
+- **Scope:** **New vault**, fields, **Make this the default vault**, **Default template**; the limit message.
+- **Links:** related `billing.free-offer`, `vaults.settings`.
+- **Evidence:** `VaultController`, `CreateVault`, `VaultPolicy::create`; `VaultControllerTest`.
+- **Examples and assets:** a "Work" vault. **Acceptance:** limit stated as a default. **Delivery:** P0, ready.
+
+#### `vaults.settings` Change a vault's name, colour and default template
+- **Identity:** `6-vaults/3-vault-settings.md`. How-to. Users.
+- **Need and success:** vault details and the default template for each kind of record are set.
+- **Scope:** vault settings; one default template per kind of record, published versions only; deleting a
+  template clears defaults that point at it. **Applicability:** all.
+- **Links:** optional `templates.versions`. **Evidence:** `VaultSettingsController`, `SetVaultDefaultTemplate`.
+- **Examples:** none. **Acceptance:** default template behaviour matches `VaultDefaultTemplateControllerTest`.
+- **Delivery:** P1, ready.
+
+#### `vaults.delete` Delete a vault
+- **Identity:** `6-vaults/4-delete-a-vault.md`. How-to. Users.
+- **Need and success:** the reader deletes a vault knowing it cannot be undone.
+- **Applicability:** all.
+- **Scope:** `:::warning` first: nothing restores a vault; every contact and profile in it goes, every
+  sharing link in it stops working; the default passes to another vault; deleting the last vault leads to
+  the Getting started screen.
+- **Links:** related `export.vcard` (export first).
+- **Evidence:** `DestroyVault`; `VaultControllerTest`.
+- **Examples:** none. **Acceptance:** quotes the dialog. **Delivery:** P0, ready.
+
+### 7. Keeping records tidy
+
+#### `duplicates.introduction` Keeping records tidy
+- **Identity:** `7-keeping-records-tidy/1-introduction.md`. Navigation. Users.
+- **Scope:** index; when duplicates arise (phone sync, typing a person twice). **Applicability:** all.
+- **Links, evidence, examples, acceptance:** minimal. **Need:** routing. **Delivery:** P1, ready.
+
+#### `duplicates.review` Review possible duplicates
+- **Identity:** `7-keeping-records-tidy/2-review-possible-duplicates.md`. How-to. Users.
+- **Need and success:** the reader reviews suggestions and dismisses pairs that are two different people.
+- **Applicability:** all.
+- **Scope:** **Possible duplicates**; **Look for duplicates** runs in the background; detection also runs
+  nightly and after each new contact; matching on name likeness and identifying fields; **Two different
+  people** is permanent; Me is never suggested.
+- **Links:** next `duplicates.merge`.
+- **Evidence:** `ContactDuplicateController`, `DetectDuplicateContacts`, `DismissDuplicateCandidate`; tests.
+- **Examples and assets:** two Phoebe Buffay records (Phoebe and Ursula as a true non duplicate).
+- **Acceptance:** background timing described without a promised delay.
+- **Delivery:** P1, ready.
+
+#### `duplicates.merge` Merge two contacts
+- **Identity:** `7-keeping-records-tidy/3-merge-two-contacts.md`. How-to. Users.
+- **Need and success:** two records become one, with the reader choosing where they disagree, and the
+  reader knows how to undo it.
+- **Applicability:** Me cannot be absorbed.
+- **Scope:** from **Merge** in the contact menu or a duplicate pair; choosing values, **Keep it once**,
+  **Keep both entries**; answers with no matching field are set aside; the absorbed record's old address
+  points to the kept one; **Undo the merge**.
+- **Links:** prerequisite `duplicates.review` optional.
+- **Evidence:** `PreviewContactMerge`, `MergeContacts`, `UndoContactMerge`, `AbsorbedContactController`; `ContactMergeControllerTest`.
+- **Examples and assets:** screenshot of a disagreement choice.
+- **Acceptance:** undo limits verified at runtime (after later edits to the kept record).
+- **Delivery:** P1, needs verification (undo after subsequent edits).
+
+### 8. Sharing, export and sync
+
+#### `sharing.introduction` Sharing, export and sync
+- **Identity:** `8-sharing-export-and-sync/1-introduction.md`. Navigation. Users.
+- **Need and success:** reader picks the right tool: a read only link for a person, a vCard file, or
+  continuous sync with a phone. **Applicability:** all.
+- **Scope, links:** index; link `/docs/carddav`. **Evidence, examples:** none.
+- **Acceptance:** says sharing is never collaboration. **Delivery:** P1, ready.
+
+#### `sharing.create-link` Share a contact with a link
+- **Identity:** `8-sharing-export-and-sync/2-share-a-contact.md`. How-to. Users.
+- **Need and success:** a link exists with a name, an optional password, an expiry and chosen sections;
+  the reader copied it; the reader can revoke it.
+- **Applicability:** contacts only (D8).
+- **Scope:** **Share** in the contact menu; fields; the address is shown once (`:::warning`: copy it now);
+  sensitive fields off by default; every opening is logged, including wrong passwords; revoking is
+  immediate and final; deleting the contact or the vault revokes its links.
+- **Links:** related `sharing.what-a-link-shows`.
+- **Evidence:** `ContactShareLinkController`, `CreateShareLink`, `SharedContactController`; tests.
+- **Examples and assets:** a link to Joey's page for a birthday organiser, 7 days, with a password.
+- **Acceptance:** states the link is read only.
+- **Delivery:** P1, ready.
+
+#### `sharing.what-a-link-shows` What a sharing link shows
+- **Identity:** `8-sharing-export-and-sync/3-what-a-link-shows.md`. Reference. Users.
+- **Inventory:** every kind of content, marked shown, optional or never: sections chosen, sensitive fields
+  (optional), reminders, history, files, repeated blocks (never, per the form), relationships and life
+  events (verify). Plus what the recipient sees when the link has expired or been revoked.
+- **Applicability:** all. **Links:** from `sharing.create-link`.
+- **Evidence:** share link form view, `resources/views/shared/*`, `SharedContactViewModel`.
+- **Examples and assets:** screenshot of the public page. **Acceptance:** every row verified by opening a link.
+- **Need:** a person about to share needs certainty on exposure. **Delivery:** P1, needs verification.
+
+#### `export.vcard` Export a contact as a vCard
+- **Identity:** `8-sharing-export-and-sync/4-export-a-vcard.md`. How-to. Users.
+- **Need and success:** a `.vcf` file is downloaded and opens in another address book.
+- **Applicability:** all.
+- **Scope:** **Export as vCard**; sensitive fields included; one contact at a time; exporting everything
+  and importing a file are not available on the web yet (D4, D11); continuous sync lives in the CardDAV guide.
+- **Links:** related `integrations.overview`.
+- **Evidence:** `ExportContactVCard`; `ContactVCardControllerTest`.
+- **Examples:** none. **Acceptance:** the "sensitive fields included" warning is present. **Delivery:** P1, ready.
+
+#### `integrations.overview` Connect Monica to other tools
+- **Identity:** `8-sharing-export-and-sync/5-connect-other-tools.md`. Explanation. Users and developers.
+- **Conceptual question:** which of CardDAV, the API or MCP fits my goal, and what access does each give?
+- **Scope:** phone and computer sync (CardDAV and CalDAV, two way address book per vault, read only
+  calendars); scripts (API keys, optional sensitive fields scope); assistants (MCP with a key or OAuth);
+  one shared rate limit per user; everything acts as you. Links to the three references, which own the detail.
+- **Applicability:** hosted MCP is rate limited, self hosted is not.
+- **Links:** related `security.api-keys`, `security.assistants`.
+- **Evidence:** `DavServiceProvider`, `routes/api.php`, `routes/ai.php`, `ApiKeyScopeEnum`.
+- **Examples:** none. **Acceptance:** repeats no reference detail. **Delivery:** P1, ready once #293 is merged.
+
+### 9. Templates and customisation
+
+Shared: templates live under **Settings**, **Templates**. System templates ("Supplied with Monica") are
+copied, never edited. A template has at most one draft; publishing needs a change note and freezes the
+version; records move only when the user applies the new version.
+
+#### `templates.introduction` Templates and customisation
+- **Identity:** `9-templates-and-customisation/1-introduction.md`. Navigation. Users who want to shape their records.
+- **Need and success:** reader knows what can be customised (templates, relationship types, life event
+  types, profile types, value lists) and where to start. **Applicability:** all.
+- **Scope, links:** index; `templates.versions` as recommended reading. **Evidence, examples:** none.
+- **Acceptance:** under 200 words. **Delivery:** P1, ready.
+
+#### `templates.versions` Why templates have versions
+- **Identity:** `9-templates-and-customisation/2-why-templates-have-versions.md`. Explanation. Users.
+- **Conceptual question:** why does changing a template not change my contacts, and how do they catch up?
+- **Scope:** draft, published, retired; records stay on their version; applying a version takes a snapshot
+  first and keeps set aside answers; the constitution's rationale (nothing changes under anybody's feet),
+  cited as documented intent.
+- **Applicability:** all. **Links:** related `templates.apply-new-version`, `contacts.edit`.
+- **Evidence:** constitution VI; `PublishStructureVersion`, `MoveRecordToStructureVersion`, `CreateRecordSnapshot`.
+- **Examples and assets:** diagram of two contacts on versions 1 and 2. **Acceptance:** no steps.
+- **Delivery:** P1, ready.
+
+#### `templates.build-your-own` Build your own contact template
+- **Identity:** `9-templates-and-customisation/3-build-your-own-template.md`. Tutorial. Users new to templates.
+- **Skill learned:** copy, edit a draft, publish, and apply to a contact.
+- **Need and success:** the reader copies Basic contact, adds a "How we met" section with a text field and
+  a date field, publishes version 2 with a change note, and applies it to one contact.
+- **Checkpoints:** the copy appears under **Your templates**; the draft shows the new section; the
+  published version appears in **Version history**; the contact shows the banner and then the section.
+- **Applicability:** all.
+- **Scope:** fixed sequence; no alternatives; keyboard route through the builder mentioned (constitution IX).
+- **Links:** prerequisite `templates.versions` optional; next `templates.change`.
+- **Evidence:** `settings.templates.*` routes, `DuplicateTemplate`, `PublishStructureVersion`; `Settings/Account/Templates/*` tests.
+- **Examples and assets:** Rachel meets the new section; five screenshots at the checkpoints.
+- **Acceptance:** walked end to end on a fresh account before publication.
+- **Delivery:** P1, needs verification (runtime walk through).
+
+#### `templates.change` Change a template
+- **Identity:** `9-templates-and-customisation/4-change-a-template.md`. How-to. Users.
+- **Need and success:** a page, section or field is added, moved, changed or removed in a draft and published.
+- **Scope:** open or create the draft; pages, sections, fields, child fields in a repeater (no repeater
+  inside a repeater); identifying fields for duplicate detection; publishing refuses empty pages; turning a
+  template off versus deleting (refused while any record uses it). Links to `reference.field-types`.
+- **Applicability:** system templates cannot be changed, only copied.
+- **Links:** prerequisite `templates.build-your-own` optional.
+- **Evidence:** template builder controllers, `CreateStructureVersionDraft`, `DeactivateTemplate`.
+- **Examples:** none. **Acceptance:** deletion refusal message quoted. **Delivery:** P1, ready.
+
+#### `templates.apply-new-version` Move a contact to a new template version
+- **Identity:** `9-templates-and-customisation/5-apply-a-new-version.md`. How-to. Users.
+- **Need and success:** a contact is on the new version, or deliberately stays.
+- **Scope:** the banner, **Apply version**, **Stay on version**; snapshot and **Revert** from **Version
+  history**; answers set aside. **Applicability:** all.
+- **Links:** optional `templates.versions`. **Evidence:** `ContactStructureVersionController`; test of the same name.
+- **Examples:** none. **Acceptance:** revert path verified at runtime. **Delivery:** P1, needs verification.
+
+#### `templates.import-export` Share a template as a file
+- **Identity:** `9-templates-and-customisation/6-import-and-export.md`. How-to. Users.
+- **Need and success:** a template or section is exported to a file and imported into another account.
+- **Scope:** what the file holds and never holds ("No contacts, no notes…"); import check step.
+- **Applicability:** all. **Links:** related `marketplace.overview`.
+- **Evidence:** template and section export and import routes and controllers.
+- **Examples:** none. **Acceptance:** file format not documented beyond what the screen says.
+- **Delivery:** P2, needs verification (import conflict behaviour).
+
+#### `customise.relationship-types` Add your own relationship types
+- **Identity:** `9-templates-and-customisation/7-relationship-types.md`. How-to. Users.
+- **Need and success:** a new type or category exists, ordered, or an unused one is switched off or deleted.
+- **Scope:** seeded categories and types; family types feed the family tree; switching off versus deleting.
+- **Applicability:** all. **Links:** related `relationships.add`.
+- **Evidence:** `Settings/Account/RelationshipTypes` controllers and tests. **Examples:** "Roommate".
+- **Acceptance:** deletion constraints quoted. **Delivery:** P2, ready.
+
+#### `customise.life-event-types` Add your own life event types
+- **Identity:** `9-templates-and-customisation/8-life-event-types.md`. How-to. Users.
+- **Need and success:** a type exists in a category with the fields it asks for.
+- **Scope:** categories and types; switching on and off; a type's fields are a small template.
+- **Applicability:** all. **Links:** related `life-events.record`.
+- **Evidence:** `Settings/Account/LifeEventTypes`. **Examples:** "Thanksgiving dinner".
+- **Acceptance:** field editor steps verified. **Delivery:** P2, needs verification.
+
+#### `customise.profile-types` Create a kind of profile
+- **Identity:** `9-templates-and-customisation/9-profile-types.md`. How-to. Users.
+- **Need and success:** a new profile type appears in each vault's sidebar.
+- **Scope:** **Create a profile type**; built in types cannot be deleted; switching off hides adding.
+- **Applicability:** all. **Links:** related `profiles.add`. **Evidence:** `Settings/Account/EntityTypes`.
+- **Examples:** "Plants". **Acceptance:** states profiles have no own page yet. **Delivery:** P2, ready.
+
+#### `customise.value-lists` Change the choices a list offers
+- **Identity:** `9-templates-and-customisation/10-value-lists.md`. How-to. Users.
+- **Need and success:** a list gains, reorders or retires a value without breaking records that use it.
+- **Scope:** values are switched off, never deleted from under records (constitution VIII).
+- **Applicability:** all. **Links:** related `templates.change`. **Evidence:** value list controllers.
+- **Examples:** a "Category" value. **Acceptance:** retirement behaviour verified. **Delivery:** P2, needs verification.
+
+#### `marketplace.overview` The template marketplace
+- **Identity:** `9-templates-and-customisation/11-marketplace.md`. Explanation. Users.
+- **Conceptual question:** what is the marketplace and what can I do with it today?
+- **Scope:** a public catalogue of templates and sections; browsing and filters; installing and publishing
+  are not open yet (quote the share page); an installed item would be a copy that never updates itself
+  (constitution VI, stated as intent).
+- **Applicability:** listings are moderated by the instance's administrators.
+- **Links:** related `templates.import-export`, `admin.moderation`.
+- **Evidence:** `MarketplaceController`, template share page copy.
+- **Examples:** none. **Acceptance:** nothing promised as available that has no route.
+- **Delivery:** P2, ready.
+
+### 10. Your account and security
+
+Shared: sensitive changes ask you to confirm your password or passkey, which then lasts three hours by
+default.
+
+#### `account.introduction` Your account and security
+- **Identity:** `10-your-account-and-security/1-introduction.md`. Navigation. Users.
+- **Need and success:** the reader finds sign in, security, profile, preferences, logs and deletion.
+- **Scope:** index; what is protected by default (hashed passwords, rate limits, warning emails, single use
+  links). **Applicability:** all. **Links:** all pages. **Evidence:** none. **Examples:** none.
+- **Acceptance:** no page duplicated here. **Delivery:** P0, ready.
+
+#### `signin.password` Sign in with your password
+- **Identity:** `…/2-sign-in-with-your-password.md`. How-to. Users.
+- **Need and success:** the reader is signed in and understands **Remember me**, lockout and the generic refusal.
+- **Applicability:** remember me length set by the instance.
+- **Scope:** the form; remember me; the same refusal for a wrong password, a deactivated user or an unknown
+  address, and why; lockout after repeated failures; every failure emails the owner; the two factor step.
+- **Links:** related `signin.magic-link`, `security.two-factor`, `reference.emails`.
+- **Evidence:** `LoginController`, `AttemptLogin`; `LoginControllerTest`.
+- **Examples:** none. **Acceptance:** remember me with two factor verified on a running instance (D20, fixed in #293).
+- **Delivery:** P0, ready once #293 is merged.
+
+#### `signin.magic-link` Sign in with a link sent by email
+- **Identity:** `…/3-sign-in-with-a-link.md`. How-to. Users.
+- **Need and success:** the reader signs in without a password.
+- **Applicability:** can be switched off by the instance (then the option is absent).
+- **Scope:** request, open, done; once only; short lifetime named in the email; any device; the neutral
+  confirmation; an email after signing in this way; two factor still applies.
+- **Links:** related `reference.emails`. **Evidence:** `MagicLinkController`; `MagicLinkControllerTest`.
+- **Examples:** none. **Acceptance:** numbers as defaults. **Delivery:** P0, ready.
+
+#### `signin.passkey` Sign in with a passkey
+- **Identity:** `…/4-sign-in-with-a-passkey.md`. How-to. Users.
+- **Need and success:** the reader signs in with a passkey from their device.
+- **Applicability:** needs HTTPS; the device and browser must support passkeys.
+- **Scope:** **Sign in with a passkey**; no two factor code is asked after a passkey (and why a passkey
+  already proves two things); a warning email arrives. Excludes adding passkeys (`security.passkeys`).
+- **Links:** related `security.passkeys`. **Evidence:** `laravel/passkeys` routes, `HandlePasskeyLogin`; `tests/Feature/Auth/Passkey*`.
+- **Examples:** none. **Acceptance:** the two factor statement matches D22 resolution. **Delivery:** P0, ready.
+
+#### `signin.provider` Sign in with GitHub, Google, Microsoft or Facebook
+- **Identity:** `…/5-sign-in-with-a-provider.md`. How-to. Users.
+- **Need and success:** the reader signs in through a provider, or connects one to an existing account.
+- **Applicability:** only providers the instance configured appear.
+- **Scope:** first sign in creates an account without a password; refusal when the address already has an
+  account (connect from settings instead); one provider per user; disconnecting needs a password or passkey.
+- **Links:** related `security.password`. **Evidence:** `SsoController` (both), `SignInWithProvider`; tests.
+- **Examples:** none. **Acceptance:** refusal messages quoted. **Delivery:** P1, ready.
+
+#### `signin.forgot-password` Choose a new password when you forgot it
+- **Identity:** `…/6-forgot-your-password.md`. How-to. Users.
+- **Need and success:** the reader sets a new password from an emailed link.
+- **Applicability:** accounts with a password.
+- **Scope:** request, email, new password, sign in; neutral message; link lasts an hour; the sign in link as
+  the faster alternative.
+- **Links:** related `signin.magic-link`, `troubleshoot.no-email`.
+- **Evidence:** `PasswordResetLinkController`, `NewPasswordController`, `ResetPassword` action.
+- **Examples:** none. **Acceptance:** the whole flow completed on a real instance with mail.
+- **Delivery:** P0, **blocked on D2** (resolved when a reset email is received and its link works).
+
+#### `security.two-factor` Turn on two factor authentication
+- **Identity:** `…/7-two-factor-authentication.md`. How-to. Users.
+- **Need and success:** two factor is on, the app is paired, recovery codes are saved; the reader knows how
+  to turn it off and what that costs.
+- **Applicability:** all.
+- **Scope:** why it helps (brief, one paragraph); **Turn on two-factor authentication**, pair, prove it
+  worked; nothing changes until the code is accepted; the challenge after password or link; not after a
+  passkey; recovery codes shown next; turning it off forgets the secret and codes (`:::warning`). No email
+  is sent for these changes.
+- **Links:** next `security.recovery-codes`.
+- **Evidence:** `TwoFactorController`, `TwoFactorChallengeController`; tests.
+- **Examples and assets:** screenshot of the pairing screen with a fake QR code.
+- **Acceptance:** passkey statement consistent with D22. **Delivery:** P0, ready.
+
+#### `security.recovery-codes` Keep and renew your recovery codes
+- **Identity:** `…/8-recovery-codes.md`. How-to. Users with two factor on.
+- **Need and success:** codes saved away from the phone; the reader knows how to renew them.
+- **Scope:** eight codes, once each; **I have saved them**; **Get new codes** invalidates the old set
+  immediately (`:::warning`); whether the codes stay visible later must be checked (the recovery codes
+  page shows flashed codes once).
+- **Applicability:** two factor on. **Links:** prerequisite `security.two-factor`.
+- **Evidence:** `RecoveryCodeController`, `RecoveryCodes` helper; `RecoveryCodeControllerTest`.
+- **Examples:** none. **Acceptance:** visibility after leaving the page verified at runtime.
+- **Delivery:** P0, needs verification.
+
+#### `security.passkeys` Add and remove passkeys
+- **Identity:** `…/9-passkeys.md`. How-to. Users.
+- **Need and success:** a passkey is added, renamed or removed; the reader is not locked out.
+- **Applicability:** HTTPS.
+- **Scope:** add, rename, remove; emails on add and remove; removing the last passkey on an account with no
+  password warns (`:::warning`); removing the password entirely (needs a passkey).
+- **Links:** related `signin.passkey`, `security.password`.
+- **Evidence:** passkey routes, `EnsurePasswordIsConfirmedWhenThereIsOne`; passkey tests.
+- **Examples:** none. **Acceptance:** lock out warnings quoted. **Delivery:** P1, ready.
+
+#### `security.password` Change, set or remove your password
+- **Identity:** `…/10-your-password.md`. How-to. Users.
+- **Need and success:** password changed, set for the first time (provider accounts) or removed (passkey accounts).
+- **Scope:** the three operations and their preconditions; **Last changed**; emails sent on set and remove,
+  none on change; other sessions are not signed out.
+- **Applicability:** all. **Links:** related `security.suspicious-activity`.
+- **Evidence:** `SecurityController`, password controllers; tests. **Examples:** none.
+- **Acceptance:** "other sessions" behaviour verified. **Delivery:** P0, needs verification.
+
+#### `security.api-keys` Create an API key
+- **Identity:** `…/11-api-keys.md`. How-to. Users and developers.
+- **Need and success:** a key exists, copied once, for a script, an assistant or a phone.
+- **Applicability:** all.
+- **Scope:** name, **Personal script** or **AI Assistant** (a label only), the sensitive fields scope; shown
+  once (`:::warning`); no expiry; revoking is immediate; the same key is the password for CardDAV. API detail
+  lives in `/docs/api`.
+- **Links:** related `integrations.overview`, `/docs/api`, `/docs/carddav`.
+- **Evidence:** `ApiKeyController` (web), `ApiKeyScopeEnum`; tests.
+- **Examples:** none. **Acceptance:** no request examples on this page. **Delivery:** P1, ready.
+
+#### `security.assistants` Disconnect an assistant
+- **Identity:** `…/12-connected-assistants.md`. How-to. Users.
+- **Need and success:** the reader sees assistants connected through OAuth and disconnects one.
+- **Scope:** what a connected assistant is; consent screen when connecting; disconnect takes effect at once.
+- **Applicability:** all. **Links:** related `/docs/mcp`.
+- **Evidence:** `ConnectedAssistantController`, `McpOAuthTest`. **Examples:** none.
+- **Acceptance:** consistent with the corrected `/docs/mcp` (D14). **Delivery:** P1, ready once #293 is merged.
+
+#### `security.suspicious-activity` An email says somebody signed in
+- **Identity:** `…/13-when-something-looks-wrong.md`. How-to. Worried users.
+- **Need and success:** the reader identifies the email, decides whether it was them, and secures the account.
+- **Scope:** organised by email subject (failed attempt, signed in without a password, new place, passkey
+  added or removed, password removed, provider disconnected); for each: what it means, what to do; the
+  new place check compares one address with the previous one, nothing more.
+- **Applicability:** all. **Links:** related `reference.emails`, `security.password`, `security.two-factor`.
+- **Evidence:** `app/Notifications/*`, `CheckLastLogin`. **Examples:** none.
+- **Acceptance:** subjects match `lang/en.json`. **Delivery:** P0, ready (wording of D23 noted).
+
+#### `account.profile` Change your name, email address and photo
+- **Identity:** `…/14-your-profile.md`. How-to. Users.
+- **Need and success:** details changed; a new email address confirmed.
+- **Scope:** name; email change asks for password confirmation and unconfirms the address, and today the
+  reader must press **Send the email again** themselves (D12); photo formats and removal.
+- **Applicability:** all. **Links:** related `start.create-account`.
+- **Evidence:** `Profile/*` controllers, `UpdateUserProfile`; tests. **Examples:** none.
+- **Acceptance:** email step matches the code at writing time. **Delivery:** P1, blocked on a D12 decision.
+
+#### `account.preferences` Choose your language, formats and time zone
+- **Identity:** `…/15-preferences.md`. How-to. Users.
+- **Need and success:** interface language, time, date and number formats, link style and time zone set.
+- **Scope:** each option and its choices; saves on selection; **Use my device** for the time zone; the
+  locale chosen on the sign in screen lasts only for the session; changing the time zone does not move
+  existing reminders.
+- **Applicability:** all. **Links:** related `reminders.how-they-work`.
+- **Evidence:** `PreferenceController`, `TimezoneController`, `config/localization.php`. **Examples:** none.
+- **Acceptance:** which screens honour each format verified at runtime. **Delivery:** P1, needs verification.
+
+#### `account.logs` Read your activity and the emails sent to you
+- **Identity:** `…/16-logs.md`. How-to. Users.
+- **Need and success:** the reader reads the activity log and checks whether an email was sent and delivered.
+- **Scope:** activity with its source (web, API, CardDAV, MCP) and address; **Load more**; emails sent with
+  their state (Delivered, Bounced, Marked as spam, On its way) and that the state is filled only when the
+  instance reports delivery; stored copies carry no links; not every email is recorded (D24).
+- **Applicability:** delivery states depend on the instance's mail provider.
+- **Links:** related `troubleshoot.no-email`, `concepts.privacy`.
+- **Evidence:** `Logs/*` controllers, `UserActionEnum`, `EmailSent`; tests. **Examples:** none.
+- **Acceptance:** retention not stated until a source exists. **Delivery:** P1, ready.
+
+#### `account.delete` Delete your account
+- **Identity:** `…/17-delete-your-account.md`. How-to. Users.
+- **Need and success:** the account is deleted with full knowledge of the consequences.
+- **Applicability:** hosted subscriptions are cancelled immediately.
+- **Scope:** `:::warning` first; typing your address to confirm; everything goes, including logs and email
+  copies; a running subscription ends at once without a refund (hosted, pending source); what happens if
+  the payment provider does not answer (nothing is deleted); export first.
+- **Links:** related `export.vcard`, `billing.cancel`.
+- **Evidence:** `AccountController`, `DestroyAccount`; `AccountControllerTest`.
+- **Examples:** none. **Acceptance:** refund and backup claims only with authoritative sources.
+- **Delivery:** P1, blocked on hosted sources (refund, backups).
+
+#### `concepts.privacy` What Monica keeps and who can see it
+- **Identity:** `…/18-privacy.md`. Explanation. Privacy conscious users.
+- **Conceptual question:** what is stored about me and the people I record, and who can reach it?
+- **Scope:** one person per account; administrators govern the instance, not vault contents; sensitive
+  fields and what excludes them (sharing links, API keys without the scope); hashed passwords, encrypted
+  secrets, hashed link tokens; activity log and email copies; sharing links as the only way out; hosted
+  versus self hosted responsibility. Retention only with sources.
+- **Applicability:** all. **Links:** related `account.logs`, `sharing.what-a-link-shows`.
+- **Evidence:** constitution invariants, `specs/001-admin-space`, models. **Examples:** none.
+- **Acceptance:** each claim traceable. **Delivery:** P1, blocked on hosted sources for retention.
+
+### 11. Plans and billing (hosted)
+
+Shared: billing applies to metered instances only. Prices and currencies come from the live catalogue;
+pages never print a price.
+
+#### `billing.introduction` Plans and billing
+- **Identity:** `11-plans-and-billing/1-introduction.md`. Navigation. Hosted customers.
+- **Need and success:** the reader knows there is a free offer and one thing above it, full access.
+- **Scope:** index; self hosted instances meter nobody. **Applicability:** hosted.
+- **Links, evidence:** constitution Product Invariants. **Examples:** none. **Acceptance:** no tiers or trial mentioned.
+- **Delivery:** P1, ready.
+
+#### `billing.free-offer` What the free offer holds
+- **Identity:** `11-plans-and-billing/2-free-offer.md`. Reference. Hosted customers.
+- **Inventory:** vaults, contacts (what counts), storage, largest file; where usage is shown (Billing
+  screen); what happens at the limit for each.
+- **Applicability:** hosted. **Links:** related `troubleshoot.limit-reached`.
+- **Evidence:** `VaultPolicy`, `ContactPolicy`, `CreateFile`, billing view model. **Examples:** none.
+- **Need:** a customer at a limit wants the exact rule. **Acceptance:** numbers match monicahq.com's statement.
+- **Delivery:** P1, blocked on the authoritative free offer statement.
+
+#### `billing.full-access` Get full access
+- **Identity:** `11-plans-and-billing/3-full-access.md`. How-to. Hosted customers.
+- **Need and success:** the reader subscribes monthly or yearly, or buys lifetime access, and sees the caps lifted.
+- **Scope:** the three offers; checkout; currency choice; upgrading from monthly to yearly (no charge that
+  day, renewal date kept); invoices and card through the payment portal; access withdrawn after a refund or dispute.
+- **Applicability:** hosted. **Links:** related `billing.cancel`.
+- **Evidence:** `Billing/*` controllers, `OfferKindEnum`, `docs/STRIPE.md`; billing tests.
+- **Examples:** none. **Acceptance:** no price printed; tax statement only with a source.
+- **Delivery:** P1, blocked on hosted sources (tax, refunds).
+
+#### `billing.cancel` Stop your subscription
+- **Identity:** `11-plans-and-billing/4-stop-your-subscription.md`. How-to. Hosted customers.
+- **Need and success:** renewal stopped; the reader knows access lasts until the paid period ends and how to resume.
+- **Scope:** **Stop the subscription renewing?**, **Keep the subscription**; what happens when access ends
+  (back to the free offer, nothing deleted: verify what happens to data above the caps).
+- **Applicability:** hosted. **Links:** related `billing.free-offer`.
+- **Evidence:** `SubscriptionController`, `SubscriptionCancellationController`, `EndAccess`. **Examples:** none.
+- **Acceptance:** behaviour above caps verified. **Delivery:** P1, needs verification.
+
+### 12. Troubleshooting
+
+#### `troubleshoot.introduction` Troubleshooting
+- **Identity:** `12-troubleshooting/1-introduction.md`. Navigation. Anyone with a problem.
+- **Scope:** symptoms in the reader's words, each linking to a page here or elsewhere. **Applicability:** all.
+- **Need, links, evidence, examples, acceptance:** routing only. **Delivery:** P0, ready.
+
+#### `troubleshoot.cannot-sign-in` I cannot sign in
+- **Identity:** `12-troubleshooting/2-cannot-sign-in.md`. How-to. Users.
+- **Branches:** credentials refused; too many attempts; link no longer works; code not right or took too
+  long; passkey not offered (no HTTPS); provider button missing; account deactivated by an administrator
+  (same message; contact whoever runs the instance).
+- **Completion check:** the reader is signed in or knows whom to contact.
+- **Applicability:** all. **Links:** `signin.*`, `security.recovery-codes`.
+- **Evidence:** auth controllers, `EnsureUserIsActive`. **Examples:** none.
+- **Acceptance:** every message quoted from `lang/en.json`. **Delivery:** P0, ready.
+
+#### `troubleshoot.no-email` I am not receiving emails
+- **Identity:** `12-troubleshooting/3-no-email.md`. How-to. Users, with an operator part.
+- **Branches:** spam and delay; wrong address; check **Emails sent** (no entry means never sent);
+  operator checklist: worker serving `high`, mail configured, not writing to the log.
+- **Completion check:** the email arrives, or the reader has a concrete message for the operator.
+- **Applicability:** all. **Links:** `account.logs`, `hosting.background-work`, `hosting.email`.
+- **Evidence:** notification queues, `EmailSent`. **Examples:** none. **Acceptance:** D24 exceptions stated.
+- **Delivery:** P0, ready.
+
+#### `troubleshoot.reminder-not-received` A reminder did not arrive
+- **Identity:** `12-troubleshooting/4-reminder-not-received.md`. How-to. Users.
+- **Branches:** date not yet generated or already answered; channel switched off after failures; quiet
+  hours or digest; time zone; reminder deactivated because its contact was deleted or its field removed;
+  instance scheduler not running (operator).
+- **Completion check:** a test notification arrives.
+- **Applicability:** all. **Links:** `reminders.how-they-work`, `notifications.channels`.
+- **Evidence:** reminder jobs, `ChannelDisabled`. **Examples:** none. **Acceptance:** each branch has a check.
+- **Delivery:** P1, ready.
+
+#### `troubleshoot.limit-reached` I hit a limit
+- **Identity:** `12-troubleshooting/5-limit-reached.md`. How-to. Hosted customers and users of metered instances.
+- **Branches:** vault, contact, storage, file size, rate limit for scripts.
+- **Completion check:** the reader freed space, got full access, or asked the operator.
+- **Applicability:** metered instances. **Links:** `billing.free-offer`, `reference.limits`.
+- **Evidence:** policy denial messages. **Examples:** none. **Acceptance:** messages quoted.
+- **Delivery:** P1, blocked with `billing.free-offer`.
+
+### 13. Reference
+
+#### `reference.introduction` Reference
+- **Identity:** `13-reference/1-introduction.md`. Navigation. All.
+- **Scope, links:** index; the developer references linked. **Applicability, evidence, examples:** none.
+- **Need and acceptance:** routing. **Delivery:** P1, ready.
+
+#### `reference.glossary` Words Monica uses
+- **Identity:** `13-reference/2-glossary.md`. Reference. All.
+- **Inventory:** every term in the vocabulary table of [Shared product facts](#shared-product-facts),
+  plus full access, free offer, administrator, sensitive field, identifying field, set aside answers,
+  sharing link. Alternate words readers search for: "custom field" (field), "group" (vault is not a group),
+  "pet" (profile).
+- **Applicability:** all. **Links:** each term to its canonical page. **Evidence:** `lang/en.json` labels.
+- **Examples:** none. **Need:** vocabulary lookup. **Acceptance:** one definition per term. **Delivery:** P1, ready.
+
+#### `reference.field-types` Field types
+- **Identity:** `13-reference/3-field-types.md`. Reference. Template builders.
+- **Inventory:** the 21 `FieldTypeEnum` cases, by picker label, with what each stores, whether it can repeat,
+  whether it can drive a reminder (Date, Recurring date), whether it counts toward storage (File, Image,
+  Profile photo), and options. Exclude "Not available yet" types (D9).
+- **Applicability:** all. **Links:** from `templates.change`.
+- **Evidence:** `FieldTypeEnum`, `FieldCatalogueViewModel`, field type tests. **Examples:** none.
+- **Need:** a builder choosing a type. **Acceptance:** count equals available enum cases at writing time.
+- **Delivery:** P1, ready.
+
+#### `reference.emails` Emails Monica sends
+- **Identity:** `13-reference/4-emails.md`. Reference. Users with an email in hand.
+- **Inventory:** every notification in `app/Notifications` with its subject, trigger and page to read next:
+  confirm your address, sign in link, failed sign in, signed in without a password, new place, passkey added
+  or removed, password set or removed, provider disconnected, full access unlocked or ended, channel proof
+  code, channel test, channel switched off, reminder due, digest, marketplace listing approved or rejected,
+  password reset.
+- **Applicability:** some only on hosted or with channels configured. **Links:** `security.suspicious-activity`.
+- **Evidence:** `app/Notifications/*`, `lang/en.json`. **Examples:** none.
+- **Need:** a reader holding a subject line. **Acceptance:** list equals the notifications directory.
+- **Delivery:** P0, ready (reset email row blocked on D2).
+
+#### `reference.limits` Limits and defaults
+- **Identity:** `13-reference/5-limits.md`. Reference. All.
+- **Inventory:** the Numbers table in [Shared product facts](#shared-product-facts), each row marked
+  "an administrator can change this" or "fixed".
+- **Applicability:** hosted values need the authoritative statement. **Links:** `hosting.configuration`.
+- **Evidence:** as cited in the table. **Examples:** none. **Need:** exact numbers.
+- **Acceptance:** every number rechecked against code on the day of publication. **Delivery:** P0, ready.
+
+### 14. Run your own instance
+
+Shared: audience is operators comfortable with a shell. Every page states "operators" at the top (F7).
+The same person is usually the instance administrator.
+
+#### `hosting.introduction` Run your own instance
+- **Identity:** `14-run-your-own-instance/1-introduction.md`. Navigation. Operators.
+- **Need and success:** the operator knows the pieces (web, database, queue worker, scheduler, mail,
+  storage) and the order of the pages.
+- **Scope:** self hosting runs the same product without caps; the licence (AGPL-3.0-or-later).
+- **Applicability:** self hosted. **Links:** all hosting pages. **Evidence:** `LICENSE.md`, `config/monica.php`.
+- **Examples:** none. **Acceptance:** no claim of a published image. **Delivery:** P1, ready.
+
+#### `hosting.requirements` Requirements
+- **Identity:** `…/2-requirements.md`. Reference. Operators.
+- **Inventory:** PHP 8.4 or later; extensions intl, sodium, openssl, mbstring, gd, the database driver;
+  databases (SQLite, MySQL, MariaDB, PostgreSQL, with CI running MySQL only); Bun and Node for building
+  assets; HTTPS for passkeys; a public HTTPS address for Telegram.
+- **Applicability:** self hosted. **Evidence:** `composer.json`, `composer.lock`, `.github/workflows/tests.yml`.
+- **Links, examples:** none. **Need:** can my server run it? **Acceptance:** database support statement agreed with maintainers.
+- **Delivery:** P1, needs verification (supported database list).
+
+#### `hosting.install-docker` Install with Docker
+- **Identity:** `…/3-install-with-docker.md`. How-to. Operators.
+- **Need and success:** a running instance from `compose.yaml`, with worker and scheduler.
+- **Scope:** services, environment, first start (`monica:setup --deploy` and `--build` run by the entrypoint),
+  volumes to persist (`storage`, the database), creating the first administrator.
+- **Applicability:** the compose file is described as development only; no published image.
+- **Links:** next `admin.first-administrator`. **Evidence:** `Dockerfile`, `compose.yaml`, `docker-entrypoint.sh`.
+- **Examples:** none. **Acceptance:** followed on a clean machine, healthcheck green.
+- **Delivery:** P1, **blocked on D18** and on a decision whether a production image will exist.
+
+#### `hosting.install-server` Install on a server
+- **Identity:** `…/4-install-on-a-server.md`. How-to. Operators.
+- **Need and success:** Monica served by a web server with PHP, database migrated, assets built.
+- **Scope:** clone, `composer install --no-dev`, environment, `php artisan monica:setup --deploy` then
+  `--build`, web server document root, HTTPS, trusted proxies; optional packages for Telegram, text messages
+  and Microsoft sign in.
+- **Applicability:** self hosted. **Links:** next `hosting.background-work`.
+- **Evidence:** `composer.json` scripts, `SetupApplicationCommand`. **Examples:** none.
+- **Acceptance:** followed on a clean server. **Delivery:** P1, needs verification.
+
+#### `hosting.background-work` Run the queue worker and scheduler
+- **Identity:** `…/5-queue-and-scheduler.md`. How-to. Operators.
+- **Need and success:** a worker drains `high,default,low` in that order and the scheduler runs every minute.
+- **Scope:** what depends on it (every email, logs, account seeding, reminders, duplicate detection, file
+  purging); the scheduled jobs and their times; a process supervisor; symptoms when missing.
+- **Applicability:** any non sync queue. **Links:** related `troubleshoot.no-email`.
+- **Evidence:** `routes/console.php`, `onQueue` usages, `Dockerfile` `queue.sh` and crontab. **Examples:** a supervisor config.
+- **Acceptance:** notes that `composer dev` does not serve `high` and `low` (D25). **Delivery:** P1, ready.
+
+#### `hosting.configuration` Configuration reference
+- **Identity:** `…/6-configuration.md`. Reference. Operators.
+- **Inventory:** every key of `config/monica.php` with its environment variable, default, effect for users,
+  and whether the admin screen overrides it; the non Monica variables an operator must set (app, database,
+  mail, queue, session, storage, Stripe, Sentry, Turnstile, SSO, Telegram, Vonage, trusted proxies,
+  Passport keys); precedence (stored admin value beats environment; revert restores the environment);
+  instance settings are encrypted with `APP_KEY`, so changing the key makes them unreadable.
+- **Applicability:** self hosted. **Links:** related `admin.configuration`.
+- **Evidence:** `config/*.php`, `.env.example`, `InstanceSettingEnum`, `AppServiceProvider::applyInstanceSettings`.
+- **Examples:** none. **Need:** exact settings. **Acceptance:** list equals config keys at writing time; no secret values.
+- **Delivery:** P1, ready.
+
+#### `hosting.email` Send email from your instance
+- **Identity:** `…/7-email.md`. How-to. Operators.
+- **Need and success:** mail leaves the instance; optionally delivery states come back.
+- **Scope:** SMTP or any Laravel mailer; Resend with its webhook at `/resend/webhook` and its secret for
+  delivery states; from address; the log mailer in development.
+- **Applicability:** self hosted. **Links:** related `account.logs`.
+- **Evidence:** `config/mail.php`, Resend listeners, `ResendWebhookTest`. **Examples:** none.
+- **Acceptance:** a delivered state seen on the Emails sent screen. **Delivery:** P1, needs verification.
+
+#### `hosting.storage` Store files locally or on S3
+- **Identity:** `…/8-storage.md`. How-to. Operators.
+- **Need and success:** uploads persist on local disk or an S3 compatible bucket.
+- **Scope:** `FILESYSTEM_DISK`, S3 variables, the orphan sweep and its grace period, upload size versus PHP limits.
+- **Applicability:** self hosted. **Links:** related `hosting.backups`.
+- **Evidence:** `config/filesystems.php`, `PurgeOrphanedFiles`. **Examples:** none.
+- **Acceptance:** tested against one S3 compatible service. **Delivery:** P2, needs verification.
+
+#### `hosting.sign-in-options` Configure sign in options
+- **Identity:** `…/9-sign-in-options.md`. How-to. Operators.
+- **Need and success:** providers, passkeys, sign in links and the human check are set as the operator wants.
+- **Scope:** provider credentials and callback URLs; Microsoft needs an extra package (D26); passkeys need
+  HTTPS and use the host of the app URL; sign in links on or off and their lifetime; Turnstile and its
+  strictness; registration cannot be closed (no switch exists).
+- **Applicability:** self hosted. **Links:** related `signin.*`.
+- **Evidence:** `config/services.php`, `config/passkeys.php`, `config/turnstile.php`, `InstanceSettingEnum`.
+- **Examples:** none. **Acceptance:** "registration cannot be closed" stated plainly.
+- **Delivery:** P1, ready.
+
+#### `hosting.notification-channels` Offer Telegram and text messages
+- **Identity:** `…/10-notification-channels.md`. How-to. Operators.
+- **Need and success:** users can connect Telegram or text message on this instance.
+- **Scope:** installing the optional packages (D26); Telegram bot token, bot URL, webhook secret, public
+  HTTPS address, registering the webhook from the admin screen or `monica:setup-telegram`; Vonage
+  credentials and cost.
+- **Applicability:** self hosted. **Links:** related `admin.configuration`.
+- **Evidence:** `TelegramWebhook::missingPrerequisite`, `SetupTelegramCommand`, `config/vonage.php`.
+- **Examples:** none. **Acceptance:** followed once end to end. **Delivery:** P2, blocked on D26.
+
+#### `admin.first-administrator` Make yourself the administrator
+- **Identity:** `…/11-first-administrator.md`. How-to. Operators.
+- **Need and success:** the operator's user is an administrator and sees **Admin space**.
+- **Scope:** sign up normally, then `php artisan monica:make-administrator --email=`; nobody becomes
+  administrator automatically; granting others from the admin space; the last administrator cannot be removed.
+- **Applicability:** any instance. **Links:** next `admin.overview`.
+- **Evidence:** `MakeAdministratorCommand`, `GrantAdministratorAccess`, `InstanceMustKeepAnAdministrator`.
+- **Examples:** none. **Acceptance:** command output quoted. **Delivery:** P1, ready.
+
+#### `admin.overview` What the admin space is for
+- **Identity:** `…/12-admin-space.md`. Explanation. Administrators.
+- **Conceptual question:** what can an administrator do, and what can they never do?
+- **Scope:** overview figures, accounts, moderation, administrators, the administrator log, configuration;
+  administrators never read vault contents and cannot impersonate (spec 001, documented intent); the space
+  answers "not found" to everybody else.
+- **Applicability:** administrators. **Links:** the admin how-tos.
+- **Evidence:** `routes/administrator.php`, `specs/001-admin-space/spec.md`. **Examples:** none.
+- **Acceptance:** no steps. **Delivery:** P1, ready.
+
+#### `admin.configuration` Change instance settings from the admin space
+- **Identity:** `…/13-admin-configuration.md`. How-to. Administrators.
+- **Need and success:** a setting changed, reverted to the environment value, or an orphan removed.
+- **Scope:** groups; password confirmation; secrets never shown back; settings whose package is missing are
+  read only; warnings on risky changes; the Telegram panel.
+- **Applicability:** administrators. **Links:** prerequisite `hosting.configuration` for precedence.
+- **Evidence:** `InstanceSettingController`, `ConfigurationViewModel`. **Examples:** changing sign in link lifetime.
+- **Acceptance:** revert behaviour verified. **Delivery:** P1, needs verification.
+
+#### `admin.accounts` Manage accounts
+- **Identity:** `…/14-manage-accounts.md`. How-to. Administrators.
+- **Need and success:** storage limit set, lifetime access granted or withdrawn, a user deactivated or reactivated.
+- **Scope:** each operation and its effect; deactivation ends web sessions and blocks sign in, and since #293 (D21) also refuses the person's
+  API keys, CardDAV devices and connected assistants until reactivation, without revoking them; no
+  account deletion from the admin space.
+- **Applicability:** administrators. **Links:** related `admin.overview`.
+- **Evidence:** `Admin/AccountController` and siblings, `DeactivateUser`, `AppServiceProvider::refuseDeactivatedUsers`. **Examples:** none.
+- **Acceptance:** deactivation effects verified. **Delivery:** P1, ready once #293 is merged.
+
+#### `admin.moderation` Moderate marketplace submissions
+- **Identity:** `…/15-moderation.md`. How-to. Administrators.
+- **Need and success:** a submission approved or rejected, and the author notified.
+- **Scope:** the queue, approve, reject, the emails sent. **Applicability:** administrators; publishing is
+  not yet open to users, so the queue is normally empty.
+- **Links:** related `marketplace.overview`. **Evidence:** `ModerationController`, approval and rejection controllers.
+- **Examples:** none. **Acceptance:** states the queue is empty until publishing opens. **Delivery:** P2, ready.
+
+#### `hosting.backups` Back up and restore
+- **Identity:** `…/16-backups.md`. How-to. Operators.
+- **Need and success:** a backup that restores: the database, `storage/` (uploads and OAuth keys) and
+  `APP_KEY` (encrypts instance settings and secrets); a tested restore.
+- **Scope:** per database dump commands; files; keys; restore order; no built in tooling.
+- **Applicability:** self hosted. **Links:** related `hosting.upgrade`.
+- **Evidence:** `storage/oauth-*.key`, `InstanceSetting` encryption, models with encrypted casts.
+- **Examples:** none. **Acceptance:** a restore walked on a disposable instance.
+- **Delivery:** P1, needs verification.
+
+#### `hosting.upgrade` Upgrade your instance
+- **Identity:** `…/17-upgrade.md`. How-to. Operators.
+- **Need and success:** a newer version running without data loss.
+- **Scope:** back up, update code, dependencies, `monica:setup --deploy` and `--build`, restart workers.
+- **Applicability:** self hosted. **Links:** prerequisite `hosting.backups`.
+- **Evidence:** `SetupApplicationCommand`. **Examples:** none.
+- **Acceptance:** a versioned release exists to upgrade between.
+- **Delivery:** P2, blocked until releases and a changelog exist.
+
+#### `hosting.monitoring` Monitor your instance
+- **Identity:** `…/18-monitoring.md`. How-to. Operators.
+- **Need and success:** health checks and error reporting in place.
+- **Scope:** `/up` (fails when the database is down), `/api/status`, Sentry via `SENTRY_LARAVEL_DSN`,
+  scheduled job monitoring, logs.
+- **Applicability:** self hosted. **Links:** related `hosting.background-work`.
+- **Evidence:** `CheckDatabaseIsReady`, `StatusController`, `bootstrap/app.php`. **Examples:** none.
+- **Acceptance:** both endpoints checked. **Delivery:** P2, ready.
+
+#### `contributing.overview` Contribute to Monica
+- **Identity:** `…/19-contribute.md`. How-to. Contributors.
+- **Need and success:** a working development setup and a first contribution path (translations first).
+- **Scope:** `composer setup`, `composer dev` (with D25), tests, checks CI runs, `monica:localize`; link to
+  repository files for conventions rather than copying them.
+- **Applicability:** anyone. **Links:** related `hosting.install-server`.
+- **Evidence:** `composer.json`, `.github/workflows/*`. **Examples:** none.
+- **Acceptance:** repository has a correct README, CONTRIBUTING and SECURITY file to link to.
+- **Delivery:** P2, blocked on D19.
 
 ---
 
-## Not yet documentable
+## Delivery and maintenance
 
-Everything below is anticipated by the database, an enum, or a model method, but has **no screen, route, command or working implementation**. None of it may be written about as a feature. It is listed here so the gaps are known, so nobody invents a page for them, and so the page can be written the day the feature ships.
+### Order of work
 
-Each entry names the evidence, what is missing, and the page it should become.
+Urgency and readiness are separate: a P0 page that is blocked stays in the first wave's list, visible,
+and is not published until its blocker clears.
 
-- **Plans, trials and billing.** Every account carries a plan (free, starter, business, enterprise), a billing email address, and a trial end date set to thirty days at signup, and the model can answer whether it is still on trial. Nothing reads any of it. There is no billing code, no payment provider, no subscription library, and no screen. **Do not write pricing, plans, trials, invoices, or upgrade documentation.** When billing exists it becomes a section of its own, and `getting.cloud-or-self-hosted` will need rewriting.
+| Wave | Content | Portal work | Condition to publish |
+| --- | --- | --- | --- |
+| 0, corrections to live docs | D13, D14, D15, D16 done in #293; the `/docs` card text (D1, #274) remains | none | Merge #293; fix #274 |
+| 1, first publication | Portal root; Start here; People (without `contacts.list`); Relationships; Reminders (create, answer); Vaults; Account and security P0 pages; Troubleshooting P0 pages; `reference.emails`, `reference.limits` | F1, F2, F3; card links | Every included page ready or its blocker resolved; D2, D5, D20 decided |
+| 2 | Life events, notifications, duplicates, sharing, export, templates P1, remaining account pages, billing (with sources), `reference.glossary`, `reference.field-types`, operators P1 | F4, F5, F6, F7 | Hosted sources for billing; D18 or the Docker page held back |
+| 3 | Customisation P2, marketplace, profiles, remaining operator pages, contributing | F8, F9, F10 | Releases exist for `hosting.upgrade`; D19 fixed |
+| Translation | Begin with the locales whose glossary is complete in `.claude/rules/translations.md` | F5 | A section unchanged for one release |
 
-- **Single sign on.** Accounts carry an identity provider field, the model can answer whether an account uses one, sign in refuses such accounts a password path, and password changes are refused for them with a specific message. No provider integration, configuration or route exists, so no account can be created this way. `security.password` may mention the message a user could see; nothing may describe setting SSO up.
+Effort is not estimated; nothing requested it.
 
-- **Suspending a user.** Users have an active flag that is honoured everywhere, including by sign in links. Nothing sets it to false. `account.delete` explains the state; no page may describe how to suspend somebody.
+### Review process
 
-- **Inviting people, and adding users.** The registration screen tells people joining an existing account to ask somebody in it to invite them, but no invitation exists: no route, no mail, no token, no screen. Creating a user works as business logic and is exercised by tests, but the only user ever created is the founder's own, during signup. **No page may describe inviting a colleague or adding a user.** When it ships it is the most important tutorial in the portal.
+- **With every behaviour change.** A pull request that touches a route, action, notification or
+  translatable string in a documented area names the affected page ids. The page's **Evidence** line in
+  this roadmap is the lookup table until the renderer can hold source references.
+- **Examples and links.** F1's tests fail on an unknown `@doc` id. Screenshots are regenerated from the
+  example account.
+- **At each release.** Walk the reader journeys below against the live product and update
+  `reference.limits` and `reference.emails` first, since they carry the most facts.
+- **Review dates.** Written by the reviewer when a page has been checked against the product, never
+  generated (F10).
 
-- **Editing or deleting somebody else, and deleting an account.** The business logic for all three exists and is tested. Only your own profile has a screen, covered by Section 5; nothing reaches the others. Several pages above are shaped around this absence and say so; when the screens land, those caveats come out and the pages become how-tos.
+### Measures
 
-- **Reading somebody else's activity, or the emails sent to them.** The log and the record of sent emails both belong to the account and both name the person they concern, but every screen filters to the signed in person's own entries, and no screen shows an account wide view. **No page may describe reading a colleague's activity or their emails.**
-
-- **Filtering, searching or exporting the activity log or the emails sent.** Both screens read newest first, a page at a time, and offer nothing else. No page may promise a date range, a filter by action, or an export.
-
-- **Ending your other sessions.** Sessions are stored per device, but nothing lists or revokes them. Mentioned as a limitation in `signin.sign-out` only.
-
-- **Delivery and bounce reporting.** The record of sent emails has columns for delivery and bounce times, and the identifier a provider returns is captured when Resend is enabled, but no webhook endpoint exists to fill them in. `hosting.email` must say the columns stay empty, and `profile.emails` must say what that looks like on the screen: every email keeps the amber "on its way" dot, and neither the green nor the red one appears on an instance nothing reports back to.
-
-- **Any API, though the keys for one exist.** Somebody can now mint and revoke personal API keys on the Security and access screen, and `security.api-keys` documents that screen. Nothing else is built: there is no API route file, no API controller, no resource, and no guard that accepts a key, so a key authenticates nothing and its "last used" column can never fill in. **The portal must not contain an API section, and no page may show a request carrying a key.** `security.api-keys` is the only page that may mention keys at all, and it must say plainly that there is nothing to point one at yet.
-
-- **The application itself, past the profile screen.** There is no dashboard, no directory of the people in an account, no home screen, and the only navigation is the settings sidebar. `/` renders a landing page rather than anything signed in. `getting.what-works-today` is the page that tells readers this, and it is the page to revisit first as the product grows. Note for `appearance.mobile`: the signed in screens respond to the width of the window, but `/` is still the untouched framework landing page and is not part of the product's design, so no page may present it as a screen of Monica on any size of device.
+Measure task success and answer discovery, not page views: searches with no result (F4), "this page did
+not help" reports per page (F8), support questions that a page should have answered, and the share of
+new accounts that record a first contact within a day.
 
 ---
 
-## Writing order
+## Handoff
 
-Build the portal in this order. Each block is independently publishable, so the portal is useful before it is complete.
+### Writer skill conflicts
 
-1. **First pass, the essentials.** `portal.introduction`, `getting.introduction`, `getting.what-is-monica`, `getting.create-account`, `getting.confirm-email`, `signin.introduction`, `signin.password`, `signin.magic-link`, `signin.forgot-password`. This alone answers most of what a real user will ask today.
-2. **Second pass, the model.** All of Section 3, plus `getting.what-works-today`. It is four short pages, but `concepts.permissions` is the one that stops readers assuming a hierarchy that is not there.
-3. **Third pass, the screens there are.** All of Section 5, ending with `profile.logs` and `profile.emails`, which need `concepts.activity-log` and `email.record` written first. Then `preferences.screen`, pulled forward out of Section 7 because it documents a screen rather than a behaviour, and because `profile.introduction` sends readers to it. It is short, it is the only part of the portal a reader can follow with the product open in front of them, and it makes Section 3 concrete.
-4. **Fourth pass, security and email.** Sections 6 and 8. These are the pages people arrive at from an inbox, under stress, so they benefit from being written together and in one voice.
-5. **Fifth pass, operators.** Section 9. A different audience and a different register; writing it in one block keeps it consistent.
-6. **Sixth pass, the connective tissue.** The rest of Sections 7, 10 and 11. Language, troubleshooting and reference are best written last, because they mostly link to pages that must already exist. `appearance.mobile` is the one page left in this block worth pulling forward if the portal ships before the rest of Section 7, since a reader on a phone hits the question it answers on their first screen.
-7. **Then translate.** `fr_FR`, `de_DE`, `es_ES`. Only the `id` stays identical across locales; titles, slugs and sections are translated with the rest.
+Read against `.claude/skills/writer/SKILL.md`. Each has the smallest correction proposed; none has been
+applied, because changing another skill is outside this task.
+
+| ID | Conflict | Effect on these briefs | Smallest correction |
+| --- | --- | --- | --- |
+| W1 | "You MUST assume the reader has never used the application before" | Contradicts reference pages, returning user how-tos and operator pages | Apply it to tutorials and Start here; other pages assume what their brief's audience line says |
+| W2 | Every feature introduction MUST explain what, why, when, when not | Pushes explanation into how-to and reference pages | Require it on explanation pages; how-to pages give one sentence of context and link the explanation |
+| W3 | "Tutorials teach someone how to achieve a goal" and there is no how-to type | Merges tutorials and how-to guides | Add a how-to section; define a tutorial as a guided lesson with a fixed scenario |
+| W4 | Examples and link targets from another product (collections, items, copies, roles, "Invite teammates") | "Invite teammates" and "roles" contradict the one person invariant | Replace with Monica examples (contact, vault, reminder) |
+| W5 | Concept page template asks "Why does it exist?" | Invites guessed rationale | Add: cite documented rationale (constitution, specs); label anything else as analysis |
+| W6 | No locale folder, while `@doc` URLs contain a locale | Paths in this roadmap add `docs/portal/en/` | Add one line defining `docs/portal/{locale}/` as the root for numbering |
+| W7 | Fictional example guidance is generic (Emma and vinyl records) | Screenshots need data | Point to the example account seeder |
+
+### Reader journeys (planning review)
+
+Walked against this plan, not against real readers or the running product.
+
+| Journey | Path | Result |
+| --- | --- | --- |
+| First use | `/docs` card → `portal.introduction` → `start.create-account` → `start.first-contact` | Complete, pending verification of the birthday reminder |
+| Everyday task | Search "remind me of a birthday" → `reminders.create` | Complete once F4 exists; before that, via the Reminders section |
+| Precise lookup | "How long does a sign in link last?" → `reference.limits` | Complete |
+| Understanding | "Why did my contact not change after I edited the template?" → `templates.versions` | Complete |
+| Recovery | Lost phone with two factor on → `troubleshoot.cannot-sign-in` → `security.recovery-codes` | Complete; forgotten password path blocked on D2 |
+| Operator | README → `hosting.introduction` → install → background work → first administrator | Complete for a server install; Docker blocked on D18 |
+
+### State at handoff
+
+- **Ready to write now:** every brief marked ready, plus wave 0 corrections to the live developer docs.
+- **Evidence still needed:** briefs marked needs verification (a running instance with a real queue and
+  mail), and the hosted statements listed under
+  [Hosted commitments](#hosted-commitments-that-need-an-authoritative-source).
+- **Decisions needed:** D2, D5, D12, D18, D26 (fix the behaviour, or document the
+  limitation). D3 and D4 affect copy the tutorial avoids but should still be fixed.
+- **Portal functionality still to build:** F1 to F3 before anything publishes. Nothing in this roadmap
+  has been built, and no usability testing has taken place.

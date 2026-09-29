@@ -1,16 +1,11 @@
 ---
 name: speckit-companion-living-adopt
-description: Brownfield adoption wizard — draft living specs for the code areas you
-  name, central or colocated, and register them (opt-in, surface-first, [DRAFT])
+description: Brownfield adoption wizard — draft living specs for the code areas you name, central or colocated, and register them (opt-in, surface-first, [DRAFT])
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: extension:companion
-user-invocable: true
-disable-model-invocation: false
+  source: companion:commands/speckit.companion.living-adopt.md
 ---
-
-# Companion Living Adopt Skill
 
 # Adopt a Code Area into a Living Spec
 

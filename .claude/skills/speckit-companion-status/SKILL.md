@@ -1,16 +1,11 @@
 ---
 name: speckit-companion-status
-description: Report where the active spec stands — current step, status, recorded
-  decisions, and the next action — from .spec-context.json
+description: Report where the active spec stands — current step, status, recorded decisions, and the next action — from .spec-context.json
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: extension:companion
-user-invocable: true
-disable-model-invocation: false
+  source: companion:commands/speckit.companion.status.md
 ---
-
-# Companion Status Skill
 
 # Spec Status
 

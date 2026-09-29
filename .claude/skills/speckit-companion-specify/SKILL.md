@@ -4,12 +4,8 @@ description: Companion specify — a feature spec with prioritized user stories
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: extension:companion
-user-invocable: true
-disable-model-invocation: false
+  source: companion:commands/speckit.companion.specify.md
 ---
-
-# Companion Specify Skill
 
 ## User Input
 

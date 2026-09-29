@@ -1,17 +1,11 @@
 ---
 name: speckit-companion-living-show
-description: Print one slice of a living spec — a capability's requirement headings,
-  one requirement in full, or the requirements that describe one file (opt-in, read-only,
-  never halts)
+description: Print one slice of a living spec — a capability's requirement headings, one requirement in full, or the requirements that describe one file (opt-in, read-only, never halts)
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: extension:companion
-user-invocable: true
-disable-model-invocation: false
+  source: companion:commands/speckit.companion.living-show.md
 ---
-
-# Companion Living Show Skill
 
 # Show
 

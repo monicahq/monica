@@ -1,16 +1,11 @@
 ---
 name: speckit-companion-after-plan
-description: Capture plan completion (currentStep=plan, status=planned) into .spec-context.json
-  for the Companion GUI
+description: Capture plan completion (currentStep=plan, status=planned) into .spec-context.json for the Companion GUI
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: extension:companion
-user-invocable: true
-disable-model-invocation: false
+  source: companion:commands/speckit.companion.after-plan.md
 ---
-
-# Companion After Plan Skill
 
 # Capture Plan Context
 

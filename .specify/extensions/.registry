@@ -1,6 +1,20 @@
 {
   "schema_version": "1.0",
   "extensions": {
+    "archive": {
+      "version": "1.3.0",
+      "source": "local",
+      "manifest_hash": "sha256:f7e3b0f009cdf13919317786e3fc4fde5285df60506d61e0093e2720ece51974",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "claude": [
+          "speckit.archive.run"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-09-29T02:06:59.887185+00:00"
+    },
     "companion": {
       "version": "0.22.0",
       "source": "local",
@@ -32,46 +46,8 @@
           "speckit.companion.living-sync"
         ]
       },
-      "registered_skills": [
-        "speckit-companion-after-specify",
-        "speckit-companion-after-plan",
-        "speckit-companion-after-tasks",
-        "speckit-companion-after-implement",
-        "speckit-companion-status",
-        "speckit-companion-resume",
-        "speckit-companion-specify",
-        "speckit-companion-plan",
-        "speckit-companion-tasks",
-        "speckit-companion-implement",
-        "speckit-companion-classify",
-        "speckit-companion-mark-complete",
-        "speckit-companion-auto",
-        "speckit-companion-doctor",
-        "speckit-companion-living-adopt",
-        "speckit-companion-living-move",
-        "speckit-companion-living-drift",
-        "speckit-companion-living-show",
-        "speckit-companion-living-validate",
-        "speckit-companion-living-coverage",
-        "speckit-companion-living-sync"
-      ],
-      "installed_at": "2026-09-18T13:42:52.384194+00:00"
-    },
-    "archive": {
-      "version": "1.3.0",
-      "source": "local",
-      "manifest_hash": "sha256:f7e3b0f009cdf13919317786e3fc4fde5285df60506d61e0093e2720ece51974",
-      "enabled": true,
-      "priority": 10,
-      "registered_commands": {
-        "claude": [
-          "speckit.archive.run"
-        ]
-      },
-      "registered_skills": [
-        "speckit-archive-run"
-      ],
-      "installed_at": "2026-09-18T13:43:42.497706+00:00"
+      "registered_skills": [],
+      "installed_at": "2026-09-29T02:07:02.026040+00:00"
     }
   }
 }
