@@ -27,8 +27,7 @@
     <x-form method="put" :action="$viewModel->updateAction()">
       <x-panel
         :title="__('What this vault is called')"
-        :subtitle="__('The name is what you see in the switcher and on the vault list. The description says what the vault holds.')"
-        icon="vault"
+          icon="vault"
       >
         <div class="flex flex-col gap-4.5">
           <x-input
@@ -103,15 +102,13 @@
 
   <x-panel
     :title="__('What a new contact starts from')"
-    :subtitle="__('Every contact added to this vault begins with this template. The ones already here keep the version they were written on.')"
     icon="people"
   >
     @if ($viewModel->templates() !== [])
-      <x-form method="put" :action="$viewModel->defaultTemplateAction()" class="flex flex-col gap-4">
+      <x-form id="default-template-form" method="put" :action="$viewModel->defaultTemplateAction()">
         <x-select
           id="structure_version_id"
           :label="__('Default template')"
-          :help="__('An older version is offered too, so this vault can start its contacts on the version you want rather than the newest one.')"
           :error="$errors->get('structure_version_id')"
           class="max-w-105"
         >
@@ -123,8 +120,6 @@
             </optgroup>
           @endforeach
         </x-select>
-
-        <x-button class="self-start">{{ __('Save') }}</x-button>
       </x-form>
     @else
       <div class="flex flex-col gap-3">
@@ -143,6 +138,14 @@
           <x-link :href="$viewModel->templatesUrl()" turbo>{{ __('Your templates') }}</x-link>
         </p>
       </div>
+    @endif
+
+    @if ($viewModel->templates() !== [])
+      <x-slot:footer>
+        <div class="flex justify-end">
+          <x-button size="small" form="default-template-form">{{ __('Save changes') }}</x-button>
+        </div>
+      </x-slot:footer>
     @endif
   </x-panel>
 
