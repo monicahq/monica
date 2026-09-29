@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\App\Auth;
 
 use App\Actions\VerifyTwoFactorCode;
+use App\Enums\SignInMethodEnum;
+use App\Enums\SsoProviderEnum;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\NewLoginDetected;
 use App\ViewModels\Auth\TwoFactorViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -52,6 +55,17 @@ class TwoFactorChallengeController extends Controller
 
         $request->session()->forget('twoFactor.user.id');
         $request->session()->regenerate();
+
+        $method = SignInMethodEnum::tryFrom((string) $request->session()->pull('twoFactor.signInMethod'));
+        $provider = SsoProviderEnum::tryFrom((string) $request->session()->pull('twoFactor.provider'));
+
+        if ($method !== null) {
+            $user->notify(new NewLoginDetected(
+                ip: $request->ip() ?? '',
+                method: $method,
+                provider: $provider,
+            ));
+        }
 
         return redirect()->intended(route('home.index'));
     }

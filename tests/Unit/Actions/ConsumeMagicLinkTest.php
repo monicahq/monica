@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\ConsumeMagicLink;
+use App\Enums\SignInMethodEnum;
 use App\Jobs\CheckLastLogin;
 use App\Models\MagicLink;
 use App\Models\User;
@@ -72,8 +73,26 @@ class ConsumeMagicLinkTest extends TestCase
             $user,
             NewLoginDetected::class,
             fn (NewLoginDetected $notification): bool => $notification->ip === '10.0.0.1'
+                && $notification->method === SignInMethodEnum::EmailLink
                 && $notification->queue === 'high',
         );
+    }
+
+    #[Test]
+    public function it_waits_for_the_second_factor_before_warning_the_user(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        $user = User::factory()->twoFactor()->create();
+        $this->linkFor($user);
+
+        new ConsumeMagicLink(
+            token: self::TOKEN,
+            ip: '10.0.0.1',
+        )->execute();
+
+        Notification::assertNothingSent();
     }
 
     #[Test]

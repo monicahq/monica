@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\SignInMethodEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
@@ -13,7 +14,8 @@ use App\Notifications\NewLoginDetected;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Spend a magic link and sign its owner in.
+ * Spend a magic link and sign its owner in. The email announcing the sign in waits for the two
+ * factor challenge when the owner has one.
  */
 class ConsumeMagicLink
 {
@@ -73,7 +75,14 @@ class ConsumeMagicLink
 
     private function notify(): void
     {
-        $this->user->notify(new NewLoginDetected(ip: $this->ip ?? ''));
+        if ($this->user->usesTwoFactorAuthentication()) {
+            return;
+        }
+
+        $this->user->notify(new NewLoginDetected(
+            ip: $this->ip ?? '',
+            method: SignInMethodEnum::EmailLink,
+        ));
     }
 
     private function log(): void

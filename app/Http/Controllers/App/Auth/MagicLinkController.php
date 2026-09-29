@@ -6,6 +6,7 @@ namespace App\Http\Controllers\App\Auth;
 
 use App\Actions\ConsumeMagicLink;
 use App\Actions\CreateMagicLink;
+use App\Enums\SignInMethodEnum;
 use App\Http\Controllers\Controller;
 use App\ViewModels\Auth\MagicLinkViewModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -54,6 +55,7 @@ class MagicLinkController extends Controller
         if ($user->usesTwoFactorAuthentication()) {
             $request->session()->put('twoFactor.user.id', $user->id);
             $request->session()->put('twoFactor.remember', false);
+            $request->session()->put('twoFactor.signInMethod', SignInMethodEnum::EmailLink->value);
 
             return redirect()->route('auth.twoFactor.new');
         }

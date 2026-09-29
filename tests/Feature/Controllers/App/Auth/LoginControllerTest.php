@@ -75,6 +75,22 @@ class LoginControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_forgets_a_passwordless_sign_in_left_unfinished_before_the_password(): void
+    {
+        Queue::fake();
+
+        User::factory()->twoFactor()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $response = $this->withSession(['twoFactor.signInMethod' => 'email_link'])
+            ->post(route('auth.login.create'), [
+                'email' => 'michael.scott@dundermifflin.com',
+                'password' => 'password',
+            ]);
+
+        $response->assertSessionMissing('twoFactor.signInMethod');
+    }
+
+    #[Test]
     public function it_does_not_show_the_human_check_when_it_is_turned_off(): void
     {
         $this->get(route('auth.login.new'))

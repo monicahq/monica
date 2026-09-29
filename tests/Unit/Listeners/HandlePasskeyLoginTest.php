@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Listeners;
 
+use App\Enums\SignInMethodEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
@@ -76,7 +77,8 @@ class HandlePasskeyLoginTest extends TestCase
         Notification::assertSentTo(
             $user,
             NewLoginDetected::class,
-            fn (NewLoginDetected $notification): bool => $notification->queue === 'high',
+            fn (NewLoginDetected $notification): bool => $notification->method === SignInMethodEnum::Passkey
+                && $notification->queue === 'high',
         );
     }
 

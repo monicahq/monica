@@ -114,6 +114,7 @@ class MagicLinkControllerTest extends TestCase
 
         $response->assertRedirect(route('auth.twoFactor.new'));
         $response->assertSessionHas('twoFactor.user.id', $user->id);
+        $response->assertSessionHas('twoFactor.signInMethod', 'email_link');
         $this->assertGuest();
     }
 

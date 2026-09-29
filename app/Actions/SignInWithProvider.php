@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\SignInMethodEnum;
 use App\Enums\SsoProviderEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
@@ -145,7 +146,15 @@ class SignInWithProvider
 
     private function notify(): void
     {
-        $this->user->notify(new NewLoginDetected(ip: $this->ip ?? ''));
+        if ($this->user->usesTwoFactorAuthentication()) {
+            return;
+        }
+
+        $this->user->notify(new NewLoginDetected(
+            ip: $this->ip ?? '',
+            method: SignInMethodEnum::Provider,
+            provider: $this->provider,
+        ));
     }
 
     private function log(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
+use App\Enums\SignInMethodEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
@@ -49,7 +50,10 @@ class HandlePasskeyLogin
             loggable: $event->passkey,
         )->onQueue('low');
 
-        $user->notify(new NewLoginDetected(ip: request()->ip() ?? ''));
+        $user->notify(new NewLoginDetected(
+            ip: request()->ip() ?? '',
+            method: SignInMethodEnum::Passkey,
+        ));
     }
 
     private function recordConfirmation(User $user, PasskeyVerified $event): void

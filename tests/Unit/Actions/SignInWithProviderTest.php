@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\SignInWithProvider;
+use App\Enums\SignInMethodEnum;
 use App\Enums\SsoProviderEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
@@ -45,7 +46,31 @@ class SignInWithProviderTest extends TestCase
         $this->assertEquals(1, User::query()->count());
         Queue::assertPushedOn('low', LogUserAction::class);
         Queue::assertPushedOn('low', CheckLastLogin::class);
-        Notification::assertSentTo($user, NewLoginDetected::class);
+        Notification::assertSentTo(
+            $user,
+            NewLoginDetected::class,
+            fn (NewLoginDetected $notification): bool => $notification->method === SignInMethodEnum::Provider
+                && $notification->provider === SsoProviderEnum::GitHub,
+        );
+    }
+
+    #[Test]
+    public function it_waits_for_the_second_factor_before_warning_the_user(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        User::factory()->twoFactor()->create([
+            'sso_provider' => SsoProviderEnum::GitHub,
+            'sso_id' => '108120124',
+        ]);
+
+        new SignInWithProvider(
+            provider: SsoProviderEnum::GitHub,
+            providerUser: $this->providerUser(),
+        )->execute();
+
+        Notification::assertNothingSent();
     }
 
     #[Test]

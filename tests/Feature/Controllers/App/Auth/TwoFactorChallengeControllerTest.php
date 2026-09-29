@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Auth;
 
+use App\Enums\SignInMethodEnum;
+use App\Enums\SsoProviderEnum;
 use App\Models\User;
+use App\Notifications\NewLoginDetected;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\Test;
 use PragmaRX\Google2FA\Google2FA;
 use Tests\TestCase;
@@ -50,6 +54,65 @@ class TwoFactorChallengeControllerTest extends TestCase
         $response->assertRedirect(route('home.index'));
         $this->assertAuthenticatedAs($user);
         $this->assertNull(session('twoFactor.user.id'));
+    }
+
+    #[Test]
+    public function it_warns_about_a_sign_in_without_a_password_once_the_code_is_right(): void
+    {
+        Notification::fake();
+
+        $google2fa = new Google2FA;
+        $secret = $google2fa->generateSecretKey();
+        $user = User::factory()->twoFactor($secret)->create();
+
+        $this->withSession([
+            'twoFactor.user.id' => $user->id,
+            'twoFactor.signInMethod' => 'provider',
+            'twoFactor.provider' => 'github',
+        ])->post(route('auth.twoFactor.create'), [
+            'code' => $google2fa->getCurrentOtp($secret),
+        ]);
+
+        Notification::assertSentTo(
+            $user,
+            NewLoginDetected::class,
+            fn (NewLoginDetected $notification): bool => $notification->method === SignInMethodEnum::Provider
+                && $notification->provider === SsoProviderEnum::GitHub,
+        );
+    }
+
+    #[Test]
+    public function it_sends_no_warning_after_a_password_and_a_code(): void
+    {
+        Notification::fake();
+
+        $google2fa = new Google2FA;
+        $secret = $google2fa->generateSecretKey();
+        $user = User::factory()->twoFactor($secret)->create();
+
+        $this->withSession(['twoFactor.user.id' => $user->id])
+            ->post(route('auth.twoFactor.create'), [
+                'code' => $google2fa->getCurrentOtp($secret),
+            ]);
+
+        Notification::assertNothingSent();
+    }
+
+    #[Test]
+    public function it_sends_no_warning_when_the_code_is_wrong(): void
+    {
+        Notification::fake();
+
+        $user = User::factory()->twoFactor()->create();
+
+        $this->withSession([
+            'twoFactor.user.id' => $user->id,
+            'twoFactor.signInMethod' => 'email_link',
+        ])->post(route('auth.twoFactor.create'), [
+            'code' => '000000',
+        ]);
+
+        Notification::assertNothingSent();
     }
 
     #[Test]

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\App\Auth;
 
 use App\Actions\ConnectProviderToUser;
 use App\Actions\SignInWithProvider;
+use App\Enums\SignInMethodEnum;
 use App\Enums\SsoProviderEnum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -81,6 +82,8 @@ class SsoController extends Controller
         if ($user->usesTwoFactorAuthentication()) {
             $request->session()->put('twoFactor.user.id', $user->id);
             $request->session()->put('twoFactor.remember', false);
+            $request->session()->put('twoFactor.signInMethod', SignInMethodEnum::Provider->value);
+            $request->session()->put('twoFactor.provider', $provider->value);
 
             return redirect()->route('auth.twoFactor.new');
         }

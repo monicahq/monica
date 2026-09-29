@@ -83,9 +83,12 @@ class SsoControllerTest extends TestCase
         $this->mockUser('github');
 
         $this->get(route('auth.sso.callback', ['provider' => 'github']))
-            ->assertRedirect(route('auth.twoFactor.new'));
+            ->assertRedirect(route('auth.twoFactor.new'))
+            ->assertSessionHas('twoFactor.signInMethod', 'provider')
+            ->assertSessionHas('twoFactor.provider', 'github');
 
         $this->assertGuest();
+        Notification::assertNothingSent();
     }
 
     #[Test]
