@@ -33,11 +33,6 @@ class ContactDuplicatesViewModel
         return __('People who might be the same person');
     }
 
-    public function intro(): string
-    {
-        return __('Two records for one person happen easily. Nothing here is merged until you say so.');
-    }
-
     public function emptyLine(): string
     {
         return __('Nobody in this vault looks like a duplicate of anybody else.');

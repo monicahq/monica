@@ -10,12 +10,12 @@
   </x-slot:breadcrumb>
 
   <x-slot:sidebar>
-    <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" current="duplicates" />
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" current="contacts" />
   </x-slot:sidebar>
 
   <div class="flex flex-wrap items-end gap-4">
     <div class="min-w-60 flex-1">
-      <x-page-header :title="$viewModel->title()" :description="$viewModel->intro()" />
+      <x-page-header :title="$viewModel->title()" />
     </div>
 
     <x-form method="post" :action="$viewModel->searchUrl()" class="shrink-0">

@@ -16,20 +16,28 @@
   <header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
     <h1 class="min-w-0 text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
-    <x-button
-      :href="$ceiling === null ? $viewModel->newContactUrl() : null"
-      type="button"
-      :aria-disabled="$ceiling !== null ? 'true' : null"
-      :aria-describedby="$ceiling !== null ? 'contact-ceiling' : null"
-      data-turbo="true"
-      size="small"
-    >
-      <x-slot:icon>
-        <x-icon name="plus" :size="16" :stroke-width="1.6" />
-      </x-slot:icon>
+    <div class="flex items-center gap-2">
+      <x-button
+        :href="$ceiling === null ? $viewModel->newContactUrl() : null"
+        type="button"
+        :aria-disabled="$ceiling !== null ? 'true' : null"
+        :aria-describedby="$ceiling !== null ? 'contact-ceiling' : null"
+        data-turbo="true"
+        size="small"
+      >
+        <x-slot:icon>
+          <x-icon name="plus" :size="16" :stroke-width="1.6" />
+        </x-slot:icon>
 
-      {{ __('Add somebody') }}
-    </x-button>
+        {{ __('Add somebody') }}
+      </x-button>
+
+      <x-actions-menu :label="__('More actions for people')">
+        <x-actions-menu.item :href="route('vaults.duplicates.index', $vault)" data-turbo="true">
+          {{ __('Manage duplicates') }}
+        </x-actions-menu.item>
+      </x-actions-menu>
+    </div>
   </header>
 
   @if ($ceiling !== null)

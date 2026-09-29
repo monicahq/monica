@@ -51,7 +51,9 @@ class ContactControllerTest extends TestCase
             ->assertSee('Dwight Schrute')
             ->assertSeeInOrder(['Name', 'Email', 'Phone number', 'Last spoke'])
             ->assertSee(route('contactListColumns.edit', $vault))
-            ->assertSee('aria-label="Customise view"', escape: false);
+            ->assertSee('aria-label="Customise view"', escape: false)
+            ->assertSee('Manage duplicates')
+            ->assertSee(route('vaults.duplicates.index', $vault));
     }
 
     #[Test]
