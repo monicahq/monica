@@ -8,7 +8,9 @@ use App\Actions\UpdateUserProfile;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\User;
+use App\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -95,9 +97,31 @@ class UpdateUserProfileTest extends TestCase
     }
 
     #[Test]
+    public function it_asks_to_confirm_the_new_address_when_it_changes(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        $user = User::factory()->create([
+            'email' => 'pam.beesly@dundermifflin.com',
+            'email_verified_at' => now(),
+        ]);
+
+        new UpdateUserProfile(
+            user: $user,
+            firstName: 'Pam',
+            lastName: 'Halpert',
+            email: 'pam.halpert@dundermifflin.com',
+        )->execute();
+
+        Notification::assertSentTo($user, VerifyEmail::class);
+    }
+
+    #[Test]
     public function it_keeps_the_address_confirmed_when_it_does_not_change(): void
     {
         Queue::fake();
+        Notification::fake();
 
         $user = User::factory()->create([
             'email' => 'pam.beesly@dundermifflin.com',
@@ -112,5 +136,6 @@ class UpdateUserProfileTest extends TestCase
         )->execute();
 
         $this->assertNotNull($user->refresh()->email_verified_at);
+        Notification::assertNothingSent();
     }
 }

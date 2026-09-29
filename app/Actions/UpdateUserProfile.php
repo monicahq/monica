@@ -10,7 +10,7 @@ use App\Jobs\LogUserAction;
 use App\Models\User;
 
 /**
- * Update the name a user goes by and the address they sign in with.
+ * Update the name a user goes by and the address they sign in with, and ask them to confirm a new address.
  */
 class UpdateUserProfile
 {
@@ -25,6 +25,7 @@ class UpdateUserProfile
     {
         $this->sanitize();
         $this->update();
+        $this->sendVerification();
         $this->log();
 
         return $this->user;
@@ -51,6 +52,15 @@ class UpdateUserProfile
         }
 
         $this->user->save();
+    }
+
+    private function sendVerification(): void
+    {
+        if (! $this->user->wasChanged('email')) {
+            return;
+        }
+
+        new SendEmailVerification(user: $this->user)->execute();
     }
 
     private function log(): void
