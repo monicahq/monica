@@ -17,7 +17,7 @@ class DocsViewModel
                 'kind' => __('Guide'),
                 'title' => __('Using Monica'),
                 'description' => __('What each part of the product is for, from your first contact to reminders, journals and sharing a vault with someone.'),
-                'url' => null,
+                'url' => route('docs.portal.index', ['locale' => 'en']),
                 'hue' => 255,
             ],
             [

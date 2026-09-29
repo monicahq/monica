@@ -30,11 +30,11 @@ You MUST use natural language.
 
 Prefer:
 
-> Add a location before creating your first item.
+> Every contact lives in a vault.
 
 Instead of:
 
-> A Location entity must exist prior to Item creation.
+> A Contact entity is scoped to exactly one Vault.
 
 You MUST avoid jargon whenever a simpler word exists.
 
@@ -66,11 +66,11 @@ Examples are often better than definitions, so you SHOULD prefer them.
 
 Instead of:
 
-> Conditions represent the state of an item.
+> A relationship type describes how two contacts are connected.
 
 Write:
 
-> A comic might be **Mint**, **Very Good**, or **Poor**. Those values are Conditions.
+> Ross is Emma’s **parent** and Chandler’s **friend**. **Parent** and **friend** are relationship types.
 
 Concrete examples make abstract ideas understandable.
 
@@ -80,9 +80,11 @@ Whenever possible, you SHOULD illustrate features using believable situations.
 
 Example:
 
-> Emma collects vinyl records. She keeps them in three shelves and wants to know which albums are currently loaned to friends.
+> You keep your friends and family in your Personal vault. You want Monica to remind you of Rachel Green’s birthday every year.
 
 Readers understand stories faster than descriptions.
+
+You MUST take the people in a scenario or a screenshot from the example account in `database/seeders/ExampleAccountSeeder.php`: the Friends cast, with `.example` addresses. No page may show real data. The reader is always "you", recording the people around them.
 
 ### Explain consequences
 
@@ -90,7 +92,7 @@ If an action affects data, permissions, collaboration, or other users, you MUST 
 
 For example:
 
-> Deleting a collection permanently removes every item inside it.
+> Deleting a vault permanently removes every contact inside it, and every sharing link to those contacts stops working.
 
 You MUST NOT hide important consequences.
 
@@ -110,11 +112,11 @@ You MUST use active voice.
 
 Prefer:
 
-> Click **New Collection**.
+> Click **New vault**.
 
 Instead of:
 
-> The **New Collection** button should be clicked.
+> The **New vault** button should be clicked.
 
 You MUST address the reader directly using "you".
 
@@ -133,23 +135,23 @@ Every page in `docs/portal` MUST start with a YAML frontmatter block, before the
 
 ```
 ---
-id: collections.create
-title: Create your first collection
-slug: create-your-first-collection
-section: getting-started
+id: vaults.create
+title: Create a vault
+slug: create-a-vault
+section: vaults
 ---
 ```
 
-- `id`: a dot namespaced identifier (`domain.action`), for example `collections.create` or `copies.move`. The domain MUST name the concept the page is about, not the folder it lives in, so the id survives the page being moved or retitled. It MUST be unique across the whole portal, and once assigned it MUST never change.
+- `id`: a dot namespaced identifier (`domain.action`), for example `vaults.create` or `contacts.merge`. The domain MUST name the concept the page is about, not the folder it lives in, so the id survives the page being moved or retitled. It MUST be unique across the whole portal, and once assigned it MUST never change.
 - `title`: the page title. It MUST match the `# ` heading.
-- `slug`: the kebab-case URL segment: the page's meaningful name, without the ordering prefix described below and without `.md`. A section's index page MUST use the folder's own clean name as its slug (for example `getting-started`), since it is that section's landing URL.
-- `section`: the folder the page lives in, by its clean name without the ordering prefix (`getting-started`, `core-concepts`, and so on). The portal's root index page MUST use `portal`.
+- `slug`: the kebab-case URL segment: the page's meaningful name, without the ordering prefix described below and without `.md`. A section's index page MUST use the folder's own clean name as its slug (for example `start-here`), since it is that section's landing URL.
+- `section`: the folder the page lives in, by its clean name without the ordering prefix (`start-here`, `people`, and so on). The portal's root index page MUST use `portal`.
 
 `slug` and `section` MUST NOT carry the numeric ordering prefix that the filename and folder on disk use. That prefix is a display order hint, not part of the identity of a page, so it MUST stay out of frontmatter entirely.
 
 When a page is translated, only `id` MUST stay identical across every locale. `title`, `slug`, and `section` MUST be translated along with the rest of the page, since they are locale specific text, not identifiers.
 
-You MUST quote a frontmatter value in the rare case it contains a colon (`title: "Tutorial: Catalogue your first collection end to end"`). Plain values need no quoting.
+You MUST quote a frontmatter value in the rare case it contains a colon (`title: "Tutorial: Record your first person from start to finish"`). Plain values need no quoting.
 
 When adding a new page, you MUST pick an `id` that does not collide with an existing one and that follows the same domain grouping as related pages. You MUST check the other pages about the same concept before inventing a new domain name.
 
@@ -157,7 +159,7 @@ When adding a new page, you MUST pick an `id` that does not collide with an exis
 
 Folders and files under `docs/portal` MUST be prefixed with `N-` to say in what order they should be shown: number, dash, then the name. This is a filesystem convention only, and it MUST never appear in `id`, `title`, `slug`, or `section`.
 
-- Folders MUST be numbered in reading order: `2-getting-started`, `3-core-concepts`, `4-core-features`, and so on. The portal's root index page, `1-introduction.md`, takes the first slot, so the first section folder MUST start at `2`.
+- Folders MUST be numbered in reading order: `2-start-here`, `3-people`, `4-relationships-and-life-events`, and so on. The portal's root index page, `1-introduction.md`, takes the first slot, so the first section folder MUST start at `2`.
 - Files inside a folder MUST be numbered the same way, in the order a reader should go through them.
 - Every folder's first file MUST be its section index or overview page, named `1-introduction.md` regardless of what the page is actually about (its `title` still says what it is, for example "Security overview"). This replaces the old convention of using `README.md` to mark the first page, since the number now states the order explicitly.
 - When inserting a new page in the middle of a section, you MUST renumber the files after it so the sequence stays contiguous, and you MUST update the relative links that point at any renamed file.
@@ -179,14 +181,14 @@ Magic links are valid for five minutes. If yours expires, request another.
 :::
 
 :::warning
-Deleting a collection also deletes every item inside it. This cannot be undone.
+Deleting a vault also deletes every contact inside it. This cannot be undone.
 :::
 ```
 
 - You MUST use them sparingly. A page full of callouts trains the reader to ignore them.
 - You MUST reserve `:::warning` for genuine danger, above all destructive actions, and you SHOULD prefer a plain sentence for ordinary emphasis.
 - You MUST keep the text inside a callout to a sentence or two, and leave the fuller explanation in the surrounding prose.
-- You MUST always warn before a destructive action. When a step deletes data, removes a member, or makes something public, you MUST state the consequence in a `:::warning` right where the reader is about to act.
+- You MUST always warn before a destructive action. When a step deletes data, revokes access, or makes something public, you MUST state the consequence in a `:::warning` right where the reader is about to act.
 
 ## Step components
 
@@ -196,14 +198,14 @@ Because `steps` contains `step` blocks, the outer fence MUST use **four** colons
 
 ```
 ::::steps
-:::step title="Open the collection"
-Select the collection from the sidebar, then choose **New item**. The form opens with the correct item type already applied.
+:::step title="Open the vault"
+Open the vault, then choose **Add somebody**.
 
-::screenshot{label="Collection view, New item button"}
+::screenshot{label="Vault view, Add somebody button"}
 :::
 
-:::step title="Enter the core details"
-Fill in the **name** field and any type-specific fields.
+:::step title="Enter the name"
+Fill in the first and last name, then save. The contact opens on its **Overview** page.
 :::
 ::::
 ```
@@ -213,14 +215,70 @@ Guidelines:
 - You MUST use `::::steps` for genuine ordered walkthroughs of three or more actions. A single action, an option list, or a conceptual explanation MUST stay plain prose, not steps.
 - You MUST give each step a short, verb first title, then one or two sentences of instruction. You MUST explain the why in the prose around the block, not inside every step.
 - The `::screenshot` placeholder is optional per step. You SHOULD add it where a picture of the UI genuinely helps, with a short label describing what the screenshot should show.
+- Once the picture exists, you MUST add a `src`, following "Screenshots" below.
 - You MUST NOT nest `:::note` or `:::warning` inside a step, because the three colon fences collide. You MUST place the callout before or after the `::::steps` block, or fold the point into the step's prose.
 - Long tutorials MAY keep `## Step N` headings for their narrative phases and use a `::::steps` block inside a phase for the concrete UI actions.
+
+## Screenshots
+
+A screenshot shows a screen of the product, and the product keeps changing. Every picture MUST therefore say two things by where it lives and what it is called: which page shows it, and which screen it captures. That is what lets somebody find every picture to retake when a screen changes, and every picture to check when a page changes.
+
+### Where a screenshot lives
+
+A screenshot MUST live in `public/images/docs/{locale}/{page id}/`, in a folder named after the `id` in the frontmatter of the page that shows it. Take the `id`, not the filename, the slug or the title: those change when a page is renumbered, moved or retitled, and the `id` never does.
+
+```
+public/images/docs/en/start.create-account/1-auth.register.new.webp
+```
+
+A picture shown by two pages MUST be stored twice, once in each page's folder. A shared picture is one nobody dares change.
+
+### What a screenshot is called
+
+A screenshot MUST be named with its position on the page, a hyphen, then the route name of the screen it captures, as `php artisan route:list` prints it, followed by `.webp`.
+
+```
+1-auth.register.new.webp            the first picture on the page: the sign up form
+2-vaults.contacts.show.webp         the second one: a contact's page
+```
+
+The position counts the page's screenshots from the top, starting at 1, whether they sit in a step or not. It tells you which picture on the page a file is, without opening it. When you add or remove a picture, you MUST renumber the ones after it so the sequence stays contiguous, the same way the files of a section are renumbered.
+
+When one page shows the same screen more than once, in different states, you MUST add the state after two hyphens, in kebab-case words that say what differs:
+
+```
+3-vaults.contacts.show--reminders.webp
+4-vaults.contacts.show--personal-details-editing.webp
+```
+
+When a screen changes, search for its route name under `public/images/docs` to find every picture to retake, in every language.
+
+### Referring to a screenshot
+
+The `src` of a `::screenshot` MUST be the file name alone. The portal looks for it in the folder of the page it is written in.
+
+```
+::screenshot{label="The Create your account form, ready for a passkey" src="1-auth.register.new.webp"}
+```
+
+The `label` is the image's alternative text, so it MUST describe what the picture shows, not what the reader should do with it. Leave `src` out while the picture does not exist yet, and the page shows a placeholder with the label. A placeholder takes no number, so the numbers count only the pictures that exist.
+
+### Taking a screenshot
+
+- You MUST take it with the `take-screenshot` skill, save it as WebP, at a scale of 2.
+- You MUST show only people and data from the example account, as "Show realistic scenarios" requires.
+- You SHOULD capture the part of the screen the step is about, with `--selector`, rather than the whole window. A smaller picture goes out of date less often, and never carries the debug bar.
+- When you retake a picture, you MUST keep its name, so the page needs no change.
+
+### What the tests check
+
+`tests/Unit/ViewModels/Docs/PortalCatalogueTest.php` fails when a `src` is out of sequence, when it names no existing route, when the file is missing from the page's folder, or when a file in `public/images/docs` is shown by no page. Delete a picture in the same change that stops showing it.
 
 ## Linking
 
 Documentation is a web of pages, not a stack of isolated ones. You MUST link generously so a reader can always reach the explanation they need.
 
-- When you mention a product concept (a collection, an item, a copy, a tag, a location, a condition, a role), you MUST link it to the page that explains it. A reader who does not yet know what a collection is MUST be one click away from finding out.
+- When you mention a product concept (a vault, a contact, a profile, a template, a relationship, a life event, a reminder), you MUST link it to the page that explains it. A reader who does not yet know what a vault is MUST be one click away from finding out.
 - You MUST link the first meaningful mention on a page, not every occurrence. Repeated links to the same place become noise.
 - You MUST link to other sections when that is the reader's natural next step: from a concept to the how to that uses it, from a task to the concept behind it, from a page to the tutorial that ties things together.
 - You MUST use the concept or task name as the link text, and you MUST NOT write "click here".
@@ -234,27 +292,27 @@ You MUST NOT create a link by referencing another page's filename or relative pa
 Do not write:
 
 ```md
-[Create your first collection](../getting-started/create-your-first-collection.md)
+[Create a vault](../6-vaults/2-create-a-vault.md)
 ```
 
 You MUST use the `@doc(...)` directive instead, referencing the target page's stable `id` from its frontmatter. The parser resolves that id to the correct, localized URL at render time.
 
 ```md
-@doc(collections.create)
+@doc(vaults.create)
 ```
 
-With no second argument, the rendered link text is the target page's `title`. If `collections.create` titles "Create your first collection", this renders as:
+With no second argument, the rendered link text is the target page's `title`. If `vaults.create` titles "Create a vault", this renders as:
 
 ```md
-[Create your first collection](/docs/en/getting-started/create-your-first-collection)
+[Create a vault](/docs/en/vaults/create-a-vault)
 ```
 
 You MUST pass a quoted second argument to control the link text, whenever that reads better in the sentence:
 
 ```md
-Every item belongs to @doc(collections.create, "a collection").
+Every contact belongs to @doc(concepts.model, "a vault").
 
-To learn more, see @doc(collections.create).
+To add another one, see @doc(vaults.create).
 ```
 
 Rules:
@@ -304,10 +362,10 @@ Whenever appropriate, you SHOULD finish a page with natural next steps.
 
 For example:
 
-- Create your first collection.
-- Learn about custom fields.
-- Invite teammates.
-- Organize items with locations.
+- Record your first person.
+- Set a reminder for a birthday.
+- Link two people with a relationship.
+- Build your own template.
 
 Documentation should feel like a guided journey, not isolated pages.
 

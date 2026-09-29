@@ -46,14 +46,11 @@
               <p class="text-[18px] leading-normal text-pretty text-ink-soft">{{ CarddavDocsViewModel::LEAD }}</p>
             </div>
 
-            <div class="-ml-2 flex flex-wrap items-center gap-1 border-b border-hairline pb-2 print:hidden">
-              <button type="button" @click="copy('page', {{ Js::from($viewModel->markdown()) }})" class="{{ $action }} cursor-pointer">
-                <x-icon name="file" :size="15" />
-                <span aria-live="polite" x-text="label('page', 'Copy for LLM')">Copy for LLM</span>
-              </button>
-              <span aria-hidden="true" class="h-3.5 w-px bg-hairline"></span>
-              <a href="{{ route('docs.carddav.markdown.index') }}" class="{{ $action }}">View as Markdown</a>
-            </div>
+            <x-docs.page-actions
+              :markdown="$viewModel->markdown()"
+              :markdown-url="route('docs.carddav.markdown.index')"
+              transform="swap"
+            />
 
             <p class="{{ $prose }}">{{ CarddavDocsViewModel::OVERVIEW }}</p>
 

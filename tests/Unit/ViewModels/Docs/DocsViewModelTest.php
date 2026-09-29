@@ -12,12 +12,12 @@ use Tests\TestCase;
 class DocsViewModelTest extends TestCase
 {
     #[Test]
-    public function it_links_only_the_areas_that_have_pages(): void
+    public function it_links_every_area_to_its_pages(): void
     {
         $urls = array_column(new DocsViewModel()->areas(), 'url', 'title');
 
         $this->assertSame([
-            'Using Monica' => null,
+            'Using Monica' => route('docs.portal.index', ['locale' => 'en']),
             'API' => route('docs.api.index'),
             'MCP' => route('docs.mcp.index'),
             'CardDAV and CalDAV' => route('docs.carddav.index'),

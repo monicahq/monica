@@ -13,6 +13,8 @@ use App\Http\Controllers\App\Docs\LlmsTextController;
 use App\Http\Controllers\App\Docs\McpDocsController;
 use App\Http\Controllers\App\Docs\McpDocsMarkdownController;
 use App\Http\Controllers\App\Docs\OpenApiDocumentController;
+use App\Http\Controllers\App\Docs\PortalDocsController;
+use App\Http\Controllers\App\Docs\PortalDocsMarkdownController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\Marketplace\MarketplaceController;
 use App\Http\Controllers\App\NotificationController;
@@ -159,6 +161,26 @@ Route::get('docs/api/{section}.md', [ApiDocsMarkdownController::class, 'show'])
 Route::get('docs/api/{section}', [ApiDocsController::class, 'show'])
     ->where('section', '[a-z0-9\-]+')
     ->name('docs.api.show');
+
+Route::get('docs/{locale}.md', [PortalDocsMarkdownController::class, 'index'])
+    ->where('locale', '[a-z]{2}(_[A-Z]{2})?')
+    ->name('docs.portal.markdown.index');
+
+Route::get('docs/{locale}/{section}.md', [PortalDocsMarkdownController::class, 'show'])
+    ->where(['locale' => '[a-z]{2}(_[A-Z]{2})?', 'section' => '[a-z0-9\-]+'])
+    ->name('docs.portal.markdown.section');
+
+Route::get('docs/{locale}/{section}/{slug}.md', [PortalDocsMarkdownController::class, 'show'])
+    ->where(['locale' => '[a-z]{2}(_[A-Z]{2})?', 'section' => '[a-z0-9\-]+', 'slug' => '[a-z0-9\-]+'])
+    ->name('docs.portal.markdown.show');
+
+Route::get('docs/{locale}', [PortalDocsController::class, 'index'])
+    ->where('locale', '[a-z]{2}(_[A-Z]{2})?')
+    ->name('docs.portal.index');
+
+Route::get('docs/{locale}/{section}/{slug?}', [PortalDocsController::class, 'show'])
+    ->where(['locale' => '[a-z]{2}(_[A-Z]{2})?', 'section' => '[a-z0-9\-]+', 'slug' => '[a-z0-9\-]+'])
+    ->name('docs.portal.show');
 
 Route::get('marketplace', [MarketplaceController::class, 'index'])
     ->name('marketplace.index');
