@@ -73,6 +73,26 @@ class ApiDocsMarkdownTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_the_status_codes_as_a_table_after_returns(): void
+    {
+        $written = $this->render(['statusCodes' => [
+            ['status' => 409, 'name' => 'Conflict', 'when' => 'Dwight moved the stapler again.', 'body' => 'A message.'],
+        ]]);
+
+        $this->assertStringContainsString(
+            "## Status codes\n\n| Code | When | Body |\n| --- | --- | --- |\n| `409` Conflict | Dwight moved the stapler again. | A message. |",
+            $written,
+        );
+        $this->assertStringContainsString("- `id` (integer): Its identifier.\n\n## Status codes", $written);
+    }
+
+    #[Test]
+    public function it_leaves_the_status_codes_out_when_an_endpoint_lists_none(): void
+    {
+        $this->assertStringNotContainsString('## Status codes', $this->render());
+    }
+
+    #[Test]
     public function it_says_the_budget_every_endpoint_answers_within(): void
     {
         $written = $this->render();

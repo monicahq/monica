@@ -46,7 +46,7 @@ class ApiDocsMarkdown
             $blocks[] = $paragraph;
         }
 
-        foreach ([$this->params($section), $this->returns($section)] as $part) {
+        foreach ([$this->params($section), $this->returns($section), $this->statusCodes($section)] as $part) {
             if ($part !== []) {
                 $blocks = array_merge($blocks, $part);
             }
@@ -100,6 +100,21 @@ class ApiDocsMarkdown
         }
 
         return $blocks;
+    }
+
+    /** @return list<string> */
+    private function statusCodes(ApiDocsSection $section): array
+    {
+        if (! $section->hasStatusCodes()) {
+            return [];
+        }
+
+        $rows = array_map(
+            fn (array $code): string => '| `'.$code['status'].'` '.$code['name'].' | '.$code['when'].' | '.$code['body'].' |',
+            $section->statusCodes,
+        );
+
+        return ['## Status codes', implode("\n", ['| Code | When | Body |', '| --- | --- | --- |', ...$rows])];
     }
 
     /** @return list<string> */

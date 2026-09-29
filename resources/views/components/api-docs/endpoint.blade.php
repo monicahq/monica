@@ -48,6 +48,8 @@
 
     <x-api-docs.returns :section="$section" />
 
+    <x-api-docs.status-codes :section="$section" />
+
     <x-api-docs.rate-limit :section="$section" />
   </div>
 

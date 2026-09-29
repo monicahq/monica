@@ -33,6 +33,9 @@ class ApiDocsSection
     /** @var list<array{name: string, type: string, description: string, opaque?: bool}> */
     public readonly array $returnFields;
 
+    /** @var list<array{status: int, name: string, when: string, body: string}> */
+    public readonly array $statusCodes;
+
     public readonly string $rateLimit;
 
     public readonly ?string $returns;
@@ -66,6 +69,7 @@ class ApiDocsSection
         $this->response = $section['response'] ?? null;
         $this->overriddenBody = $section['exampleBody'] ?? null;
         $this->returnFields = $section['returnFields'] ?? [];
+        $this->statusCodes = $section['statusCodes'] ?? [];
 
         $this->params = $this->mergeParams($section);
         $this->paramsTitle = $section['paramsTitle'] ?? $this->titleForParams($section);
@@ -79,6 +83,11 @@ class ApiDocsSection
     public function hasReturnFields(): bool
     {
         return $this->returnFields !== [];
+    }
+
+    public function hasStatusCodes(): bool
+    {
+        return $this->statusCodes !== [];
     }
 
     /**
