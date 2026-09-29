@@ -17,10 +17,10 @@
   };
 
   $tint = match ($method) {
-    'POST' => 'bg-success/10',
-    'PUT', 'PATCH' => 'bg-warning/10',
-    'DELETE' => 'bg-error/10',
-    default => 'bg-hover',
+    'POST' => 'border-success-edge bg-success-tint',
+    'PUT', 'PATCH' => 'border-warning-edge bg-warning-tint',
+    'DELETE' => 'border-error-edge bg-error-tint',
+    default => 'border-hairline bg-card',
   };
 @endphp
 
@@ -29,7 +29,7 @@
     $attributes->class([
       'font-mono text-2xs font-medium tracking-wide',
       $colour,
-      'rounded-xs px-1.75 py-0.5 '.$tint => $tinted,
+      'rounded-sm border px-2 py-px '.$tint => $tinted,
     ])
   }}
 >{{ $method }}</span>

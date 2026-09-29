@@ -7,7 +7,7 @@ namespace App\ViewModels\Docs;
 class DocsViewModel
 {
     /**
-     * @return list<array{icon: string, kind: string, title: string, description: string, url: ?string}>
+     * @return list<array{icon: string, kind: string, title: string, description: string, url: ?string, hue: int}>
      */
     public function areas(): array
     {
@@ -18,6 +18,7 @@ class DocsViewModel
                 'title' => __('Using Monica'),
                 'description' => __('What each part of the product is for, from your first contact to reminders, journals and sharing a vault with someone.'),
                 'url' => null,
+                'hue' => 255,
             ],
             [
                 'icon' => 'key',
@@ -25,6 +26,7 @@ class DocsViewModel
                 'title' => __('API'),
                 'description' => __('Read and write your contacts from your own scripts. Every endpoint, with examples in cURL, JavaScript and PHP.'),
                 'url' => route('docs.api.index'),
+                'hue' => 295,
             ],
             [
                 'icon' => 'layers',
@@ -32,6 +34,7 @@ class DocsViewModel
                 'title' => __('MCP'),
                 'description' => __('Point an assistant at your instance so it can read your directory and record people in it, with the access you have.'),
                 'url' => route('docs.mcp.index'),
+                'hue' => 190,
             ],
             [
                 'icon' => 'device',
@@ -39,6 +42,7 @@ class DocsViewModel
                 'title' => __('CardDAV and CalDAV'),
                 'description' => __('Keep the contacts and calendar apps on your phone and computer in step with Monica.'),
                 'url' => null,
+                'hue' => 20,
             ],
         ];
     }

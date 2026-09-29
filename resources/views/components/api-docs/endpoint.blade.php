@@ -31,7 +31,7 @@
     <h1 class="mb-2.5 text-page-title text-ink">{{ $section->title }}</h1>
 
     <div class="mb-4 flex items-center gap-2 rounded-md border border-hairline bg-sunken px-3 py-2.25 font-mono text-sm">
-      <x-api-docs.method-badge :method="$section->method" />
+      <x-api-docs.method-badge :method="$section->method" tinted />
       <span class="break-all text-ink">/api/v1{{ $section->path }}</span>
       @unless ($section->auth)
         <span class="ml-auto shrink-0 text-2xs text-muted">no token</span>

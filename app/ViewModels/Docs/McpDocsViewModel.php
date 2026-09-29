@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Docs;
 
+use Carbon\CarbonImmutable;
+
 class McpDocsViewModel
 {
     public const string TITLE = 'Model Context Protocol (MCP)';
@@ -20,10 +22,6 @@ class McpDocsViewModel
         ['id' => 'access', 'label' => 'Manage access'],
         ['id' => 'tools', 'label' => 'Available tools'],
         ['id' => 'templates', 'label' => 'Edit a template'],
-        ['id' => 'entity-types', 'label' => 'Manage entity types'],
-        ['id' => 'relationship-types', 'label' => 'Manage relationship types'],
-        ['id' => 'life-event-types', 'label' => 'Manage life event types'],
-        ['id' => 'logs', 'label' => 'Read the logs'],
         ['id' => 'troubleshooting', 'label' => 'Troubleshooting'],
         ['id' => 'see-also', 'label' => 'See also'],
     ];
@@ -52,30 +50,6 @@ class McpDocsViewModel
         'The tools that change a template, a section or a field keep what you leave out, so asking for one change never clears the others. A field can come back with a new id when its section had to be drafted first. Use the id the tool returns.',
     ];
 
-    /** @var list<string> */
-    public const array ENTITY_TYPES = [
-        'An entity type is a kind of record your account keeps besides contacts, such as Animal or Wine bottle. Its records follow a template, created with `create-template` and `applies_to` set to `entity`.',
-        'A type still holding records cannot be deleted. Switch it off with `set-entity-type-activation` instead: its records stay, and no new one can be added.',
-    ];
-
-    /** @var list<string> */
-    public const array RELATIONSHIP_TYPES = [
-        'A relationship type names how two contacts are linked. It gives each side a role, such as parent and child, or the same role to both, such as siblings, and it is filed under a category such as Family or Work.',
-        'Types and categories that came with your account, and any that are in use, cannot be deleted. Stop offering them with `set-relationship-type-activation` or `set-relationship-category-activation` instead: what is already written with them stays.',
-    ];
-
-    /** @var list<string> */
-    public const array LIFE_EVENT_TYPES = [
-        'A life event type is a kind of thing that happens to a contact, such as Moved house, filed under a category such as Work or Home. It can ask for fields of its own, set with `replace-life-event-type-fields`, which replaces the whole set and never changes a life event already recorded.',
-        'Types and categories that came with your account, and any that are in use, cannot be deleted. Stop offering them with `set-life-event-type-activation` or `set-life-event-category-activation` instead: the life events already recorded stay.',
-    ];
-
-    /** @var list<string> */
-    public const array LOGS = [
-        'The activity lists every change made in your account, newest first: who made it, what it was, where it came from, such as the web, the API or an assistant, and the address it came from. A change made through MCP is marked as coming from an assistant, so you can ask your assistant what it did and check the answer against **Settings → Logs**.',
-        'The emails sent list what Monica sent your account and whether it arrived. Reading one returns what it said, with every link and web address removed before it was kept, so a sign-in link can never be read back from the logs.',
-    ];
-
     public const string TEMPLATE_EXAMPLE = 'Asked to add a Hobbies section with a text field and a date field, an assistant calls:';
 
     /** @var list<string> */
@@ -90,9 +64,28 @@ class McpDocsViewModel
 
     /** @var array{title: string, text: string} */
     public const array ACCESS_NOTICE = [
-        'title' => 'Assistant is a label, not a limit',
-        'text' => 'Choosing AI Assistant identifies the key in your list. It does not reduce what the key can do: an assistant can use every tool below on every vault in your account.',
+        'title' => 'Your assistant can access all your vaults',
+        'text' => 'Your assistant can use every tool listed below in every vault in your account. Choosing “AI Assistant” when creating an API key only labels the key—it does not limit what your assistant can access or change.',
     ];
+
+    public const string LAST_UPDATED = '2026-09-28';
+
+    public const string SOURCE_URL = 'https://github.com/monicahq/monica';
+
+    public function lastUpdated(): CarbonImmutable
+    {
+        return CarbonImmutable::parse(self::LAST_UPDATED);
+    }
+
+    public function editUrl(): string
+    {
+        return self::SOURCE_URL.'/edit/main/resources/views/app/docs/mcp.blade.php';
+    }
+
+    public function issueUrl(): string
+    {
+        return self::SOURCE_URL.'/issues/new';
+    }
 
     public function instanceAddress(): string
     {
@@ -461,18 +454,6 @@ class McpDocsViewModel
         }
 
         $lines[] = '';
-        $lines[] = '## Manage entity types';
-        $lines[] = '';
-        array_push($lines, ...$this->paragraphs(self::ENTITY_TYPES));
-        $lines[] = '## Manage relationship types';
-        $lines[] = '';
-        array_push($lines, ...$this->paragraphs(self::RELATIONSHIP_TYPES));
-        $lines[] = '## Manage life event types';
-        $lines[] = '';
-        array_push($lines, ...$this->paragraphs(self::LIFE_EVENT_TYPES));
-        $lines[] = '## Read the logs';
-        $lines[] = '';
-        array_push($lines, ...$this->paragraphs(self::LOGS));
         $lines[] = '## Troubleshooting';
         $lines[] = '';
 

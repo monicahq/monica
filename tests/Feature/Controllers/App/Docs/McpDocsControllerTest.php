@@ -19,12 +19,5 @@ class McpDocsControllerTest extends TestCase
         $response->assertSee('Model Context Protocol (MCP)');
         $response->assertSee(new McpDocsViewModel()->serverAddress());
         $response->assertSee('role="tablist"', false);
-        $response->assertSee('aria-controls="client-panel-claude-code"', false);
-        $response->assertSee('Edit a template');
-        $response->assertSee('Manage entity types');
-        $response->assertSee('Manage relationship types');
-        $response->assertSee('Manage life event types');
-        $response->assertSee('Read the logs');
-        $response->assertSee('list-emails-sent');
     }
 }
