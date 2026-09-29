@@ -29,6 +29,8 @@
 
     <p class="text-sm text-pretty text-muted">{{ __('Add this address to the contacts or calendar application of a phone or a computer, with your email address and one of the keys below as the password. Your account password will not work.') }}</p>
 
+    <a href="{{ route('docs.carddav.index') }}" class="w-fit rounded-xs text-sm text-ink underline decoration-hairline-strong underline-offset-3 hover:decoration-ink focus-ring">{{ __('How to connect your contacts and calendar apps') }}</a>
+
     <x-code-value surface="canvas">{{ $viewModel->davAddress() }}</x-code-value>
 
     <div class="flex flex-wrap items-center gap-2.5">

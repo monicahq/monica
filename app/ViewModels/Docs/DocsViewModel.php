@@ -38,10 +38,10 @@ class DocsViewModel
             ],
             [
                 'icon' => 'device',
-                'kind' => __('Reference'),
+                'kind' => __('Guide'),
                 'title' => __('CardDAV and CalDAV'),
                 'description' => __('Keep the contacts and calendar apps on your phone and computer in step with Monica.'),
-                'url' => null,
+                'url' => route('docs.carddav.index'),
                 'hue' => 20,
             ],
         ];
@@ -67,6 +67,10 @@ class DocsViewModel
         $lines[] = '## MCP';
         $lines[] = '';
         $lines[] = '- [MCP]('.route('docs.mcp.markdown.index').'): connect an assistant to Monica';
+        $lines[] = '';
+        $lines[] = '## CardDAV and CalDAV';
+        $lines[] = '';
+        $lines[] = '- [Sync your contacts and calendars]('.route('docs.carddav.markdown.index').'): connect a device, understand what syncs, and manage access';
 
         return implode("\n", $lines)."\n";
     }

@@ -20,7 +20,7 @@ class DocsViewModelTest extends TestCase
             'Using Monica' => null,
             'API' => route('docs.api.index'),
             'MCP' => route('docs.mcp.index'),
-            'CardDAV and CalDAV' => null,
+            'CardDAV and CalDAV' => route('docs.carddav.index'),
         ], $urls);
     }
 
@@ -31,6 +31,7 @@ class DocsViewModelTest extends TestCase
 
         $this->assertStringContainsString('('.route('docs.api.markdown.index').')', $text);
         $this->assertStringContainsString('- [MCP]('.route('docs.mcp.markdown.index').')', $text);
+        $this->assertStringContainsString('[Sync your contacts and calendars]('.route('docs.carddav.markdown.index').')', $text);
 
         foreach (new ApiDocsViewModel()->sections() as $section) {
             $this->assertStringContainsString(

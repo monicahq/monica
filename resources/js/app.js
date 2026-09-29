@@ -27,6 +27,7 @@ Turbo.session.drive = false;
 Alpine.data('lifeEventTypeFields', lifeEventTypeFields);
 Alpine.data('lifeEventPanel', lifeEventPanel);
 Alpine.data('mcpDocs', mcpDocs);
+Alpine.data('carddavDocs', (options) => mcpDocs({ ...options, endpoint: '/dav' }));
 Alpine.data('apiDocsSidebarScroll', apiDocsSidebarScroll);
 Alpine.data('confirmPassword', confirmPassword);
 Alpine.data('contactListColumns', contactListColumns);

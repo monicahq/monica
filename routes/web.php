@@ -6,6 +6,8 @@ use App\Enums\ContactGroupingEnum;
 use App\Enums\SsoProviderEnum;
 use App\Http\Controllers\App\Docs\ApiDocsController;
 use App\Http\Controllers\App\Docs\ApiDocsMarkdownController;
+use App\Http\Controllers\App\Docs\CarddavDocsController;
+use App\Http\Controllers\App\Docs\CarddavDocsMarkdownController;
 use App\Http\Controllers\App\Docs\DocsController;
 use App\Http\Controllers\App\Docs\LlmsTextController;
 use App\Http\Controllers\App\Docs\McpDocsController;
@@ -135,6 +137,12 @@ Route::get('docs/mcp', [McpDocsController::class, 'index'])
 
 Route::get('docs/mcp.md', [McpDocsMarkdownController::class, 'index'])
     ->name('docs.mcp.markdown.index');
+
+Route::get('docs/carddav', [CarddavDocsController::class, 'index'])
+    ->name('docs.carddav.index');
+
+Route::get('docs/carddav.md', [CarddavDocsMarkdownController::class, 'index'])
+    ->name('docs.carddav.markdown.index');
 
 Route::get('docs/api', [ApiDocsController::class, 'index'])
     ->name('docs.api.index');

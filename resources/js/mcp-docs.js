@@ -1,12 +1,12 @@
 /**
- * The MCP documentation page: the address the reader types, the client tab
+ * The connection guides: the address the reader types, the client tab
  * they chose, the section they are reading, and what the last copy did.
  *
  * Every address on the page is rendered with the instance's own, so the page
  * reads right without JavaScript. Typing another one swaps it in the shown
  * text and in what the copy buttons put on the clipboard.
  */
-export default ({ instance, server, tabs, sections }) => ({
+export default ({ instance, server, tabs, sections, endpoint = '/mcp' }) => ({
     address: instance,
     tab: tabs[0],
     current: sections[0],
@@ -32,7 +32,7 @@ export default ({ instance, server, tabs, sections }) => ({
     get serverAddress() {
         const typed = this.address.trim().replace(/\/+$/, '');
 
-        return `${typed === '' ? instance : typed}/mcp`;
+        return `${typed === '' ? instance : typed}${endpoint}`;
     },
 
     swap(text) {
