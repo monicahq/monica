@@ -11,6 +11,7 @@ use App\Enums\NameOrderEnum;
 use App\Enums\NumberFormatEnum;
 use App\Enums\SsoProviderEnum;
 use App\Enums\TimeFormatEnum;
+use App\Notifications\PasswordResetRequested;
 use Carbon\CarbonImmutable;
 use Database\Factories\UserFactory;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -382,6 +383,18 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     public function sendEmailVerificationNotification()
     {
         new SendEmailVerification(user: $this)->execute();
+    }
+
+    /**
+     * Send the email carrying the link to choose a new password.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    #[Override]
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new PasswordResetRequested(token: $token));
     }
 
     /**
