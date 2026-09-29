@@ -61,7 +61,7 @@
         <section
           @class([
             'relative flex flex-col gap-3.5 rounded-xl',
-            'border border-warning-edge bg-warning-tint' => $group['isOverdue'],
+            'border border-warning-edge bg-warning-tint p-3.5' => $group['isOverdue'],
           ])
         >
           <h2 class="flex items-baseline gap-2.5">
