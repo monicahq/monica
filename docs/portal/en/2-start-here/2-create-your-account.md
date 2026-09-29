@@ -84,7 +84,7 @@ Until you confirm the address, Monica shows the confirmation screen instead of y
 
 ## Read the welcome letter
 
-The first time you come in, Monica shows a short letter from the people who make it. Read it, then choose **Let me in**. It appears only once.
+The first time you come in, Monica shows a short letter from us. Read it, then choose **Let me in**. It appears only once.
 
 ## Open your Personal vault
 

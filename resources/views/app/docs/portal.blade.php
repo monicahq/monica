@@ -48,7 +48,7 @@
             >
           </label>
 
-          <div class="mt-6 flex flex-col gap-5">
+          <div class="mt-6 flex flex-col gap-1.5">
             @if ($root !== null)
               <a
                 href="{{ $root->url() }}"
@@ -61,27 +61,48 @@
             @foreach ($viewModel->sections() as $section)
               @php
                 $titles = array_map(fn ($item): string => mb_strtolower($item->title), [$section['index'], ...$section['pages']]);
+                $holdsThePage = $section['index'] === $page || in_array($page, $section['pages'], true);
+                $listId = 'portal-section-'.$section['index']->section;
               @endphp
-              <div x-show="{{ Js::from($titles) }}.some((title) => matches(title))">
-                <a
-                  href="{{ $section['index']->url() }}"
-                  @if ($section['index'] === $page) aria-current="page" @endif
-                  class="mb-2 flex rounded-md px-3 py-1 text-[13.5px] font-bold text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring {{ $section['index'] === $page ? 'bg-canvas shadow-nav-active' : '' }}"
-                >{{ $section['index']->title }}</a>
+              <div
+                x-data="{ expanded: {{ Js::from($holdsThePage) }} }"
+                x-show="{{ Js::from($titles) }}.some((title) => matches(title))"
+              >
+                <button
+                  type="button"
+                  @click="expanded = ! expanded"
+                  :aria-expanded="expanded || query.trim() !== '' ? 'true' : 'false'"
+                  aria-controls="{{ $listId }}"
+                  class="flex min-h-8 w-full cursor-pointer items-center justify-between gap-2 rounded-md px-3 py-1.5 text-left text-[13.5px] font-semibold text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
+                >
+                  <span>{{ $section['index']->title }}</span>
+                  <span
+                    class="flex text-muted transition-transform duration-(--duration-slow) ease-(--ease-out)"
+                    :class="expanded || query.trim() !== '' ? 'rotate-0' : '-rotate-90'"
+                  >
+                    <x-icon name="chevron-down" :size="14" />
+                  </span>
+                </button>
 
-                @if ($section['pages'] !== [])
-                  <ul role="list" class="ml-3 flex flex-col gap-px border-l border-hairline-strong pl-2">
-                    @foreach ($section['pages'] as $item)
-                      <li x-show="matches({{ Js::from(mb_strtolower($item->title)) }})">
-                        <a
-                          href="{{ $item->url() }}"
-                          @if ($item === $page) aria-current="page" @endif
-                          class="{{ $entry }} {{ $item === $page ? $entryCurrent : $entryIdle }}"
-                        >{{ $item->title }}</a>
-                      </li>
-                    @endforeach
-                  </ul>
-                @endif
+                <div
+                  id="{{ $listId }}"
+                  class="grid transition-[grid-template-rows,visibility] duration-(--duration-slow) ease-(--ease-out)"
+                  :class="expanded || query.trim() !== '' ? 'visible grid-rows-[1fr]' : 'invisible grid-rows-[0fr]'"
+                >
+                  <div class="min-h-0 overflow-hidden">
+                    <ul role="list" class="mt-1 ml-3 flex flex-col gap-px border-l border-hairline-strong pl-2">
+                      @foreach ([$section['index'], ...$section['pages']] as $item)
+                        <li x-show="matches({{ Js::from(mb_strtolower($item->title)) }})">
+                          <a
+                            href="{{ $item->url() }}"
+                            @if ($item === $page) aria-current="page" @endif
+                            class="{{ $entry }} {{ $item === $page ? $entryCurrent : $entryIdle }}"
+                          >{{ $item === $section['index'] ? 'Introduction' : $item->title }}</a>
+                        </li>
+                      @endforeach
+                    </ul>
+                  </div>
+                </div>
               </div>
             @endforeach
           </div>

@@ -144,4 +144,4 @@ If a step did not match what you see:
 ## Next steps
 
 - Read @doc(concepts.model) to see where Rachel, Ross and your vault fit in the whole.
-- Add the rest of your friends and family the same way.
+- Add the rest of your friends and family the same way. @doc(contacts.introduction) covers everything else you can do with the people you record.

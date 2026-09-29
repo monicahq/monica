@@ -1,0 +1,37 @@
+---
+id: account.delete
+title: Delete your account
+slug: delete-your-account
+section: your-account-and-security
+---
+
+# Delete your account
+
+:::warning
+Deleting your account deletes everything in it: every vault, every person in them, every note and every photo, your logs and the copies of your emails. Nothing can be recovered afterwards.
+:::
+
+## Before you delete it
+
+- **Keep what you want.** Monica cannot export a whole account yet. You can save contacts one at a time, as @doc(export.vcard) shows, or keep them in step with your phone first, with [CardDAV](/docs/carddav).
+- **A subscription stops.** On monicahq.com, a running subscription stops the moment the account is gone. The screen says what happens to the days already paid for.
+
+## Delete it
+
+::::steps
+:::step title="Open the deletion"
+Open your settings and choose **Profile**. At the bottom, under **Delete your account**, choose **Delete your account**. The settings home also has a **Delete this account** link that leads here.
+:::
+
+:::step title="Type your address"
+Monica asks you to type your email address to confirm. Type it exactly as shown.
+:::
+
+:::step title="Confirm"
+Choose **Delete it for good**. Monica asks you to confirm it is you first. To stop, choose **Keep my account**.
+:::
+::::
+
+Monica signs you out and says **Your account is deleted. Everything in it is gone.**
+
+If Monica cannot reach the payment service to stop your subscription, it deletes nothing and says so. Try again in a moment.
