@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="2;url=http://127.0.0.1:8000">
+    <title>Monica Portable - Start</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .status {
+            background: #f0f4ff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .manual-link {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .info {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .ports {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .port-link {
+            background: #e9ecef;
+            padding: 8px 16px;
+            border-radius: 6px;
+            color: #495057;
+            text-decoration: none;
+            font-family: 'Courier New', monospace;
+            transition: all 0.2s ease;
+        }
+
+        .port-link:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">❤️</div>
+        <h1>Monica Portable</h1>
+        <p class="subtitle">Ihr persönliches CRM</p>
+
+        <div class="status">
+            <div class="loader"></div>
+            <p><strong>Monica wird gestartet...</strong></p>
+            <p class="info">Sie werden automatisch weitergeleitet</p>
+        </div>
+
+        <div class="manual-link">
+            <p><strong>Automatische Weiterleitung funktioniert nicht?</strong></p>
+            <p class="info">Versuchen Sie einen dieser Links:</p>
+
+            <div class="ports">
+                <a href="http://127.0.0.1:8000" class="port-link">127.0.0.1:8000</a>
+                <a href="http://127.0.0.1:8001" class="port-link">127.0.0.1:8001</a>
+                <a href="http://localhost:8000" class="port-link">localhost:8000</a>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <a href="#" onclick="location.reload(); return false;" class="btn btn-secondary">
+                Seite neu laden
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Versuche verschiedene Ports
+        const ports = [8000, 8001];
+        let currentPort = 0;
+
+        function checkServer(port) {
+            return fetch(`http://127.0.0.1:${port}`, {
+                method: 'HEAD',
+                cache: 'no-cache'
+            })
+            .then(response => {
+                if (response.ok || response.status === 302 || response.status === 301) {
+                    return true;
+                }
+                return false;
+            })
+            .catch(() => false);
+        }
+
+        async function findAndRedirect() {
+            for (let port of ports) {
+                const available = await checkServer(port);
+                if (available) {
+                    window.location.href = `http://127.0.0.1:${port}`;
+                    return;
+                }
+            }
+
+            // Wenn kein Server gefunden, versuche in 2 Sekunden erneut
+            setTimeout(findAndRedirect, 2000);
+        }
+
+        // Warte 3 Sekunden, dann prüfe Server
+        setTimeout(findAndRedirect, 3000);
+    </script>
+</body>
+</html>

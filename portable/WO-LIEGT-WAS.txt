@@ -1,0 +1,189 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║                                                                   ║
+║              📁 MONICA PORTABLE - DATEISTRUKTUR 📁               ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+
+🎯 WICHTIG: RELATIVE PFADE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Alle Scripts arbeiten mit RELATIVEN Pfaden!
+
+Das bedeutet:
+✅ Es ist egal, wo der Monica-Ordner liegt
+✅ Sie können ihn überall hin verschieben
+✅ Funktioniert auf USB-Stick
+✅ Funktioniert in verschiedenen Verzeichnissen
+
+
+📂 ERWARTETE VERZEICHNIS-STRUKTUR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<irgendwo>/monica-projekt/              <- Kann überall liegen!
+│
+├── portable/                           <- Hier sind die Scripts
+│   │
+│   ├── 🟢 START HIER:
+│   ├── setup-php.bat                   <- Schritt 1
+│   ├── setup-composer.bat              <- Schritt 2
+│   ├── setup-composer-manual.bat       <- Alternative zu Schritt 2
+│   ├── start-monica.bat                <- Schritt 3: Monica starten
+│   │
+│   ├── 📥 HIER MÜSSEN DIESE DATEIEN LIEGEN:
+│   ├── composer.phar                   <- Composer (wird heruntergeladen)
+│   │
+│   ├── php/                            <- PHP Installation
+│   │   ├── php.exe
+│   │   ├── php.ini
+│   │   └── ext/                        <- Extensions
+│   │
+│   └── .composer/                      <- Composer Cache (wird erstellt)
+│
+├── 📄 DIESE DATEIEN MÜSSEN IM ELTERNVERZEICHNIS SEIN:
+├── composer.json                       <- Laravel Abhängigkeiten
+├── package.json                        <- NPM Abhängigkeiten
+├── artisan                             <- Laravel Kommandozeilen-Tool
+│
+├── app/                                <- Monica Anwendung
+├── database/
+│   └── database.sqlite                 <- Ihre Daten (wird erstellt)
+├── storage/                            <- Logs, Cache, Sessions
+├── vendor/                             <- PHP Dependencies (wird erstellt)
+└── .env                                <- Konfiguration (wird erstellt)
+
+
+🔍 ÜBERPRÜFUNG DER STRUKTUR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Wenn Sie setup-composer-manual.bat ausführen, zeigt es:
+
+✅ [OK] composer.json gefunden: ..\composer.json
+✅ [OK] PHP gefunden: .\php\php.exe
+✅ [OK] composer.phar gefunden: .\composer.phar
+
+Wenn etwas fehlt:
+❌ [FEHLER] composer.json nicht gefunden!
+❌ [FEHLER] PHP nicht gefunden!
+❌ [FEHLER] composer.phar nicht gefunden!
+
+
+📥 WO MUSS composer.phar GESPEICHERT WERDEN?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Im GLEICHEN Ordner wie die Scripts!
+
+Richtige Struktur:
+  portable/
+  ├── setup-composer-manual.bat    <- Dieses Script
+  └── composer.phar                <- Composer HIER speichern!
+
+NICHT hier:
+  ❌ CRM/composer.phar
+  ❌ Downloads/composer.phar
+  ❌ monica-projekt/composer.phar   (zu hoch!)
+  ❌ portable/php/composer.phar     (zu tief!)
+
+
+🎯 BEISPIELE FÜR GÜLTIGE PFADE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Alle diese Strukturen funktionieren:
+
+Beispiel 1:
+  C:\monica\
+  ├── portable\composer.phar
+  └── composer.json
+
+Beispiel 2:
+  D:\Downloads\CRM\monica-123abc\
+  ├── portable\composer.phar
+  └── composer.json
+
+Beispiel 3:
+  E:\USB-Stick\Meine Apps\Monica\
+  ├── portable\composer.phar
+  └── composer.json
+
+Beispiel 4:
+  \\netzwerk\share\monica\
+  ├── portable\composer.phar
+  └── composer.json
+
+
+💡 WIE SIE PRÜFEN, OB SIE IM RICHTIGEN ORDNER SIND
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Öffnen Sie den Ordner "portable" im Explorer.
+
+Sie sollten DIESE Dateien sehen:
+✅ setup-php.bat
+✅ setup-composer.bat
+✅ setup-composer-manual.bat
+✅ start-monica.bat
+✅ php (Ordner)
+
+Wenn Sie EINEN ORDNER HÖHER gehen, sollten Sie sehen:
+✅ composer.json
+✅ artisan
+✅ app (Ordner)
+✅ database (Ordner)
+
+
+🚀 SCHNELLANLEITUNG FÜR COMPOSER.PHAR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Öffnen Sie portable\ im Explorer
+   (Dort wo setup-composer-manual.bat liegt)
+
+2. Laden Sie composer.phar herunter:
+   https://getcomposer.org/composer.phar
+
+3. Speichern Sie es in diesem portable\ Ordner
+
+4. Führen Sie aus:
+   setup-composer-manual.bat
+
+5. Das Script prüft automatisch:
+   - Ist composer.phar im richtigen Ordner? ✓
+   - Ist composer.json im Elternverzeichnis? ✓
+   - Ist PHP installiert? ✓
+
+
+❓ HÄUFIGE FEHLER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Problem: "composer.json nicht gefunden"
+→ Sie haben composer.phar im FALSCHEN Ordner gespeichert
+→ Es muss in portable\ liegen, nicht irgendwo anders!
+
+Problem: "Sind Sie im richtigen Verzeichnis?"
+→ Sie führen das Script aus dem falschen Ordner aus
+→ Es muss aus portable\ ausgeführt werden!
+
+Problem: "PHP nicht gefunden"
+→ Führen Sie zuerst setup-php.bat aus
+
+
+✅ ZUSAMMENFASSUNG
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Die Struktur ist IMMER:
+
+  <beliebiger-pfad>\monica-projekt\
+      ↓
+      portable\
+          ↓
+          composer.phar    <- HIER!
+          setup-*.bat      <- Scripts
+          php\             <- PHP
+
+
+Solange diese RELATIVE Struktur stimmt, funktioniert alles!
+Der Monica-Ordner kann auf C:\, D:\, USB-Stick, Netzwerk,
+überall liegen - die Scripts finden alles automatisch!
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Version: Portable Edition v2.0
