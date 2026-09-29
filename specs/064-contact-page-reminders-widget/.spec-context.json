@@ -3,7 +3,7 @@
   "specName": "Reminders widget on the contact page",
   "branch": "2026-09-26-reminder-answers",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -192,7 +192,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-27T20:27:15.940Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-09-28T20:41:10.745Z"
     }
   ],
-  "currentTask": "T020"
+  "currentTask": "T020",
+  "telemetryInstanceId": "faa08e81-9bd4-4515-9502-f20ac46fc1e3"
 }

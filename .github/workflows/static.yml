@@ -7,10 +7,18 @@ permissions:
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - .github/workflows/static.yml
+      - '**/*.php'
+      - phpstan.neon
+      - composer.json
+      - composer.lock
+
   # Also on pushes to main, so anything that lands without going through a pull
   # request is still checked.
   # push:
   #   branches: [main]
+
   workflow_dispatch:
 
 concurrency:
