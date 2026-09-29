@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Contracts\HasEmailType;
+use App\Enums\EmailType;
 use App\Models\User;
+use App\Notifications\Messages\MailMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
+use Override;
 
-class VerifyEmail extends Notification implements ShouldQueue
+class VerifyEmail extends Notification implements HasEmailType, ShouldQueue
 {
     use Queueable;
 
@@ -34,6 +37,12 @@ class VerifyEmail extends Notification implements ShouldQueue
             ->line(__('Welcome to Monica. Click the button below to confirm this address, and your account is ready.'))
             ->action(__('Confirm my email address'), $this->verificationUrl($notifiable))
             ->line(__('If you did not create an account, you can safely ignore this email.'));
+    }
+
+    #[Override]
+    public function emailType(): EmailType
+    {
+        return EmailType::EmailVerification;
     }
 
     private function verificationUrl(User $notifiable): string

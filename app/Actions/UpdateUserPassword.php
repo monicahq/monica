@@ -7,6 +7,7 @@ namespace App\Actions;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\User;
+use App\Notifications\PasswordChanged;
 use App\Notifications\PasswordSet;
 use Illuminate\Support\Facades\Hash;
 
@@ -50,11 +51,7 @@ class UpdateUserPassword
 
     private function notify(): void
     {
-        if (! $this->wasSetForTheFirstTime) {
-            return;
-        }
-
-        $this->user->notify(new PasswordSet);
+        $this->user->notify($this->wasSetForTheFirstTime ? new PasswordSet : new PasswordChanged);
     }
 
     private function update(): void

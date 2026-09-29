@@ -15,6 +15,7 @@ enum EmailType: string
     case PasskeyRemoved = 'passkey_removed';
     case PasswordRemoved = 'password_removed';
     case PasswordSet = 'password_set';
+    case PasswordChanged = 'password_changed';
     case SignInProviderDisconnected = 'sign_in_provider_disconnected';
     case EmailVerification = 'email_verification';
     case MarketplaceListingApproved = 'marketplace_listing_approved';

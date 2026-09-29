@@ -10,7 +10,6 @@ use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\User;
 use App\Notifications\LoginFailed;
-use App\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Mail\SentMessage;
 use Illuminate\Notifications\Events\NotificationSent;
@@ -19,6 +18,7 @@ use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\SentMessage as SymfonySentMessage;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Tests\Fixtures\Notifications\UnrecordedEmail;
 use Tests\TestCase;
 
 class RecordEmailSentTest extends TestCase
@@ -81,7 +81,7 @@ class RecordEmailSentTest extends TestCase
     {
         $michael = User::factory()->unverified()->create();
 
-        $michael->notify(new VerifyEmail);
+        $michael->notify(new UnrecordedEmail);
 
         $this->assertDatabaseCount('emails_sent', 0);
     }

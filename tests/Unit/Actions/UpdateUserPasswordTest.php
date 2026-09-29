@@ -8,6 +8,7 @@ use App\Actions\UpdateUserPassword;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\User;
+use App\Notifications\PasswordChanged;
 use App\Notifications\PasswordSet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -103,7 +104,7 @@ class UpdateUserPasswordTest extends TestCase
     }
 
     #[Test]
-    public function it_says_nothing_when_an_existing_password_is_merely_changed(): void
+    public function it_tells_the_owner_when_an_existing_password_is_changed(): void
     {
         Queue::fake();
         Notification::fake();
@@ -117,6 +118,11 @@ class UpdateUserPasswordTest extends TestCase
             job: LogUserAction::class,
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserPasswordUpdate,
         );
-        Notification::assertNothingSent();
+        Notification::assertSentTo(
+            $user,
+            PasswordChanged::class,
+            fn (PasswordChanged $notification): bool => $notification->queue === 'high',
+        );
+        Notification::assertNotSentTo($user, PasswordSet::class);
     }
 }

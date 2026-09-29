@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Notifications;
 
+use App\Enums\EmailType;
 use App\Models\User;
 use App\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -73,5 +74,11 @@ class VerifyEmailTest extends TestCase
         $this->assertStringContainsString('Confirmez votre adresse e-mail', $body);
         $this->assertStringContainsString('Merci,', $body);
         $this->assertStringContainsString('Tous droits réservés.', $body);
+    }
+
+    #[Test]
+    public function it_belongs_in_the_journal_as_an_address_confirmation(): void
+    {
+        $this->assertEquals(EmailType::EmailVerification, new VerifyEmail()->emailType());
     }
 }
