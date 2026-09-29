@@ -18,7 +18,6 @@ class UnconfirmedEmailAccessTest extends TestCase
     public static function everyGatedScreen(): array
     {
         return [
-            'the first steps' => ['gettingStarted.index'],
             'the vaults' => ['vaults.index'],
             'the settings' => ['settings.index'],
         ];

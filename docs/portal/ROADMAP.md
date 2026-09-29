@@ -171,7 +171,7 @@ P2 later.
 | Profile types and profiles | partial (add and list only in web) | `EntityController` | none | `profiles.*` | P2 |
 | Relationship types, life event types, value lists | implemented | settings controllers | MCP docs only | `customise.*` | P2 |
 | Marketplace | partial (browse only; no install; publishing closed) | `MarketplaceController`, template share page copy | none | `marketplace.overview` | P2 |
-| Welcome letter, getting started screen | implemented; getting started unreachable for new accounts | `HomeController` (D3) | none | covered by `start.first-contact` | none |
+| Welcome letter | implemented; the getting started screen was removed (#276) | `HomeController` (D3) | none | covered by `start.first-contact` | none |
 | In-app notifications (bell) | implemented | `NotificationController` | none | `notifications.inbox` | P1 |
 | Preferences: language, formats, time zone | implemented | `PreferenceController`, `TimezoneController` | none | `account.preferences` | P1 |
 | Profile: name, email, photo | implemented; email change sends no confirmation automatically (D12) | `Profile/*` | none | `account.profile` | P1 |

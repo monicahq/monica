@@ -8,7 +8,7 @@ description: Conventions for defining views. Use when the user wants to create o
 ## General
 
 - View names MUST be kebab-case, and views MUST be stored in the `resources/views` folder.
-- Views MUST be grouped by major domains of the application (`admin`, `auth`, `getting-started`, `marketplace`, `settings`, `vaults`), and they MUST match the controller folder structure.
+- Views MUST be grouped by major domains of the application (`admin`, `auth`, `marketplace`, `settings`, `vaults`), and they MUST match the controller folder structure.
 - View partials MUST be prefixed with an underscore, and MUST be stored in the same folder as the view that uses them.
 - You MUST NOT put domain logic in a view.
 - You MUST NOT compute data in a view. The controller builds a view model and hands it to the view,

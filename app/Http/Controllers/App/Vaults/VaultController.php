@@ -114,7 +114,7 @@ class VaultController extends Controller
             ->exists();
 
         if (! $anyLeft) {
-            return redirect()->route('gettingStarted.index')
+            return redirect()->route('vaults.index')
                 ->with('status', __('The vault is deleted.'))
                 ->with('status_description', __('Your account holds nothing now. New records go to the next vault you make.'));
         }

@@ -31,31 +31,12 @@ class HomeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_sends_an_account_that_holds_nothing_to_the_screen_that_says_what_to_do_first(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->get(route('home.index'))
-            ->assertRedirect(route('gettingStarted.index'));
-    }
-
-    #[Test]
-    public function it_sends_an_account_that_holds_a_vault_to_its_vaults(): void
+    public function it_sends_somebody_who_has_been_welcomed_to_their_vaults(): void
     {
         $user = User::factory()->create();
         Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user)->get(route('home.index'))
             ->assertRedirect(route('vaults.index'));
-    }
-
-    #[Test]
-    public function it_counts_only_the_vaults_of_the_account_it_is_asked_about(): void
-    {
-        $user = User::factory()->create();
-        Vault::factory()->create();
-
-        $this->actingAs($user)->get(route('home.index'))
-            ->assertRedirect(route('gettingStarted.index'));
     }
 }

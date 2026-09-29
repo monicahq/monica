@@ -13,7 +13,6 @@ use App\Http\Controllers\App\Docs\LlmsTextController;
 use App\Http\Controllers\App\Docs\McpDocsController;
 use App\Http\Controllers\App\Docs\McpDocsMarkdownController;
 use App\Http\Controllers\App\Docs\OpenApiDocumentController;
-use App\Http\Controllers\App\GettingStartedController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\Marketplace\MarketplaceController;
 use App\Http\Controllers\App\NotificationController;
@@ -177,8 +176,6 @@ Route::post('s/{token}', [SharedContactPasswordController::class, 'create'])
 Route::post('telegram/webhook', [TelegramWebhookController::class, 'handleWebhook'])->name('telegram.webhook');
 
 Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->group(function (): void {
-    Route::get('getting-started', [GettingStartedController::class, 'index'])->name('gettingStarted.index');
-
     Route::get('welcome', [WelcomeController::class, 'index'])->name('welcome.index');
     Route::put('welcome', [WelcomeController::class, 'update'])->name('welcome.update');
 

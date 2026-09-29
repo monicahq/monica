@@ -435,7 +435,7 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_sends_somebody_who_deleted_their_last_vault_back_to_the_start(): void
+    public function it_sends_somebody_who_deleted_their_last_vault_to_the_empty_vault_list(): void
     {
         Queue::fake();
 
@@ -444,7 +444,7 @@ class VaultControllerTest extends TestCase
 
         $response = $this->actingAs($user)->delete(route('vaults.destroy', $vault));
 
-        $response->assertRedirect(route('gettingStarted.index'));
+        $response->assertRedirect(route('vaults.index'));
         $response->assertSessionHas('status');
         $this->assertSoftDeleted('vaults', ['id' => $vault->id]);
     }
