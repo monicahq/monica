@@ -2,11 +2,7 @@
 {{-- @var \App\ViewModels\Docs\ApiDocsSection $section --}}
 @props(['section'])
 
-<div class="mt-9 rounded-lg border border-hairline bg-card p-4">
-  <h3 class="mb-1.5 text-card-title text-ink">Rate limit</h3>
-
-  <p class="text-[14px] leading-relaxed text-body">
-    {{ $section->rateLimit }}
-    Every answer carries the budget left in <span class="font-mono text-sm text-ink">X-RateLimit-Remaining</span>.
-  </p>
-</div>
+<x-docs.notice title="Rate limit" class="mt-9">
+  {{ $section->rateLimit }}
+  Every answer carries the budget left in <span class="font-mono text-ink">X-RateLimit-Remaining</span>.
+</x-docs.notice>
