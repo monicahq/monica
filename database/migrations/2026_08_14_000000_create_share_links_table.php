@@ -14,8 +14,8 @@ return new class extends Migration
             $table->id()->comment('primary key');
             $table->uuid()->unique()->comment('unguessable identifier of the link itself, never the secret token in the URL');
             $table->unsignedBigInteger('account_id')->comment('account that created the link');
-            $table->unsignedBigInteger('vault_id')->comment('vault being shared, or the vault of the contact being shared');
-            $table->string('shareable_type')->comment('class of what is shared, a contact or a vault');
+            $table->unsignedBigInteger('vault_id')->comment('vault of the contact being shared');
+            $table->string('shareable_type')->comment('class of what is shared, a contact');
             $table->unsignedBigInteger('shareable_id')->comment('id of that object');
             $table->string('token', 64)->unique()->comment('hash of the unguessable token in the URL, the token itself never stored');
             $table->string('label')->comment('name the owner gave the link, so several links are tellable apart');

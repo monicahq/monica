@@ -181,8 +181,6 @@
           </x-slot:trigger>
 
           <p>{{ __('Everything written on the record is deleted with them.') }}</p>
-
-          <p>{{ __('Nothing they took part in is deleted, and they can be restored.') }}</p>
         </x-modal.warning>
       @else
         <x-button.secondary

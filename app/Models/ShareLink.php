@@ -20,12 +20,12 @@ use Override;
 /**
  * Class ShareLink
  *
- * A private link giving read access to one contact page or one vault, the way a
- * document is shared.
+ * A private link giving read access to one contact page, the way a document is
+ * shared.
  *
  * It is not collaborative access to the application. Whoever opens it needs no
  * account and never becomes a user of the account they are looking into, and
- * sharing a vault brings back none of what the product refused: no fine grained
+ * sharing brings back none of what the product refused: no fine grained
  * permissions, no editing by several people, no collective ownership. Nothing
  * built on this may ever lead to a write.
  *
@@ -161,7 +161,7 @@ class ShareLink extends Model
     }
 
     /**
-     * Get what is shared, which is a contact or a vault.
+     * Get what is shared, which is a contact.
      *
      * @return MorphTo<Model, $this>
      */

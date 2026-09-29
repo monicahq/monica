@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * Open a private link onto one contact page or one whole vault, the way a document is shared.
+ * Open a private link onto one contact page, the way a document is shared.
  */
 class CreateShareLink
 {
