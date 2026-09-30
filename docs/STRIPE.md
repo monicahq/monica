@@ -178,7 +178,7 @@ Every one of those events is handled on a queue, so that a slow Stripe never hol
 so that a confirmation is retried before it is abandoned. A worker has to be running:
 
 ```bash
-php artisan queue:work
+php artisan queue:work --queue=high,default,low
 ```
 
 Without one, payments are recorded nowhere and no access is opened.

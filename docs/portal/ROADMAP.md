@@ -236,7 +236,7 @@ one or the issue that tracks it. Pull request #293 was open, not merged, when th
 | D22 | Two factor screen says a code is asked "every time you sign in"; passkey sign in skips it | `SecurityController` view copy | `security.two-factor` | #288 |
 | D23 | "You signed in without a password" email says "using a link sent by email" but is also sent for passkey and outside provider sign ins | `NewLoginDetected` | `reference.emails` | #289 |
 | D24 | "Emails sent" empty state promises password change emails; a password change sends none, and the verification and reset emails are not recorded | `Logs/*` views, `VerifyEmail` lacks `HasEmailType` | `account.logs` | #290 |
-| D25 | `composer dev` runs `queue:listen` without `--queue`, so `high` and `low` work is never processed with a non sync queue | `composer.json` | `hosting.background-work`, `contributing.overview` | #291 |
+| D25 | `composer dev` runs `queue:listen` without `--queue`, so `high` and `low` work is never processed with a non sync queue | `composer.json` | `hosting.background-work`, `contributing.overview` | fixed in #307 |
 | D26 | Telegram, text message (Vonage) and Microsoft sign in packages are dev dependencies, so the production image cannot offer them | `composer.json` require-dev | `hosting.notification-channels`, `hosting.sign-in-options` | #292 |
 
 ### Hosted commitments that need an authoritative source
