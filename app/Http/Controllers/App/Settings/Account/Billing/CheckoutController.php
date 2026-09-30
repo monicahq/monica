@@ -22,7 +22,7 @@ class CheckoutController extends Controller
                 currency: $request->session()->get('billing.currency'),
             )->execute();
         } catch (AccountAlreadyOwnsTheProduct) {
-            return back()->withErrors(['offer' => __('That offer is not one this account can take up.')]);
+            return back()->withErrors(['offer' => __('That plan is not one this account can take up.')]);
         } catch (ProviderUnreachable) {
             return back()->withErrors(['offer' => __('We could not reach Stripe just now. Nothing was charged. Please try again in a moment.')]);
         }

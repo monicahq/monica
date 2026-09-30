@@ -21,6 +21,6 @@ class VaultPolicy
             return Response::allow();
         }
 
-        return Response::deny(trans_choice('The free offer holds :count vault, and this account already has it. Full access lifts the ceiling.|The free offer holds :count vaults, and this account already has them. Full access lifts the ceiling.', $limit));
+        return Response::deny(trans_choice('The free plan holds :count vault, and this account already has it. Full access lifts the ceiling.|The free plan holds :count vaults, and this account already has them. Full access lifts the ceiling.', $limit));
     }
 }

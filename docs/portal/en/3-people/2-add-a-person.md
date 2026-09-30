@@ -56,7 +56,7 @@ A partial contact:
 
 - has a page, and you can fill it in like any other;
 - stays off the **Everybody** and **Favourites** lists, and appears only under **Partial contacts**;
-- does not count toward the free offer on monicahq.com.
+- does not count toward the free plan on monicahq.com.
 
 Most partial contacts are created for you when you link somebody to a person who is not in Monica yet, and leave **Create a contact record for this person** off. To turn a partial contact into a full one later, open the **Relationships** tab of the person they are linked to, choose **Manage**, then **Edit** on their row, and tick **Create a contact record for this person**.
 
@@ -71,7 +71,7 @@ A template decides which tabs and sections a contact’s page holds. Every vault
 ## If the form refuses
 
 - **The vault has no template.** The form says **This vault has no template for new contacts to start from**. Right after you sign up, Monica is still preparing your templates: wait a moment and open the form again. Otherwise, give the vault a default template in its settings.
-- **You reached the free offer.** On monicahq.com, the free offer holds a set number of contacts across all your vaults. When you reach it, the form says so and **Create the contact** stays unavailable. Full access lifts the limit. Partial contacts do not count toward it.
+- **You reached the free plan.** On monicahq.com, the free plan holds a set number of contacts across all your vaults. When you reach it, the form says so and **Create the contact** stays unavailable. Full access lifts the limit. Partial contacts do not count toward it.
 
 ## After you save
 

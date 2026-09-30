@@ -16,8 +16,8 @@ last_updated: 2026-09-29
 | **Contact** | A person you record. Each has a page of their own. |
 | **Favourite** | A contact kept at the top of the list of people. See @doc(contacts.add). |
 | **Field** | One question on a contact’s page, such as **Birthday** or **Email**. Sometimes called a custom field elsewhere. See @doc(reference.field-types). |
-| **Free offer** | What monicahq.com holds without payment: one vault, 30 contacts and 100 MB of storage by default. |
-| **Full access** | monicahq.com without the limits of the free offer. |
+| **Free plan** | What monicahq.com holds without payment: one vault, 30 contacts and 100 MB of storage by default. |
+| **Full access** | monicahq.com without the limits of the free plan. |
 | **Identifying field** | A field Monica uses to spot duplicates, such as an email address or a phone number. See @doc(duplicates.review). |
 | **Instance** | A copy of Monica somebody runs on their own server. monicahq.com is one instance among others. |
 | **Life event** | Something that happened on a date, often with other people, such as a wedding or a move. See @doc(life-events.record). |

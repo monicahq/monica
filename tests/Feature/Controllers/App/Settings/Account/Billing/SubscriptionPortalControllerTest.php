@@ -113,7 +113,7 @@ class SubscriptionPortalControllerTest extends TestCase
         $michael->account->update(['access_granted_at' => now()]);
 
         $this->actingAs($michael)->get(route('settings.billing.index'))
-            ->assertSee('Lifetime access', escape: false)
+            ->assertSee('Full access was granted by us', escape: false)
             ->assertDontSee(route('settings.subscriptionPortal.show'), escape: false);
     }
 }

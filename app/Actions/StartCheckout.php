@@ -57,7 +57,7 @@ class StartCheckout
             }
         }
 
-        throw new AccountAlreadyOwnsTheProduct('This account cannot take up that offer.');
+        throw new AccountAlreadyOwnsTheProduct(__('This account cannot take up that plan.'));
     }
 
     /**

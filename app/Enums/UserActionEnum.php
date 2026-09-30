@@ -209,7 +209,7 @@ enum UserActionEnum: string implements Translatable
             self::SubscriptionCancelled => 'Stopped the subscription renewing',
             self::SubscriptionUpgraded => 'Moved the subscription up to a longer one',
             self::SubscriptionResumed => 'Kept the subscription running',
-            self::FullAccessEnded => 'Went back to the free offer',
+            self::FullAccessEnded => 'Went back to the free plan',
             self::FullAccessRestored => 'Got full access back once the money came back to us',
             self::UserProfileUpdate => 'Updated the profile of :name',
             self::UserPhotoUpdate => 'Changed the photo of :name',

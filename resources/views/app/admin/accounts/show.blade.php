@@ -150,7 +150,7 @@
               <x-button.danger type="button" size="small" @click="open = true">{{ __('Withdraw lifetime access') }}</x-button.danger>
             </x-slot:trigger>
 
-            {{ __('The account goes back to the free offer. An order that was paid stays on the record, marked as refunded, and nothing is deleted.') }}
+            {{ __('The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.') }}
           </x-modal.warning>
         @else
           <x-modal.warning

@@ -65,6 +65,6 @@ class BillingCurrencyControllerTest extends TestCase
             ->withSession(['billing.currency' => 'usd'])
             ->get(route('settings.billing.index'));
 
-        $response->assertSee('$10.00/month', escape: false);
+        $response->assertSee('$10.00', escape: false);
     }
 }

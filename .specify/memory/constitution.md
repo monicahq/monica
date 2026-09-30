@@ -264,9 +264,9 @@ an amendment.
   ordinary relation field.
 - Self hosted and hosted run the same product. Hosted differences are limited to quotas, rate
   limits, marketplace moderation and which modules are approved. The hosted version has a limited
-  free offer and one thing above it, full access, held either by a purchase made once or by a
+  free plan and one thing above it, full access, held either by a purchase made once or by a
   subscription, billed monthly or yearly, that renews until it is cancelled. The two unlock exactly the same product:
-  there are no tiers, no per offer features and no trial, and lifting the caps is all a payment
+  there are no tiers, no per plan features and no trial, and lifting the caps is all a payment
   does. Whether an instance meters its accounts at all is a setting of the instance, never a fact
   stamped on an account, and a self hosted instance meters nobody. A feature MUST NOT exist on one
   deployment only.
@@ -415,4 +415,4 @@ test and the translations for the change under review, and to say which of the e
 change had to satisfy. Complexity that steps outside these principles MUST be justified in the pull
 request or removed.
 
-**Version**: 2.4.1 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-23
+**Version**: 2.4.2 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-29

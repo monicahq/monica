@@ -263,7 +263,7 @@ class AccountViewModel
      */
     public function accessKindLabel(): string
     {
-        return $this->account->accessKind()?->label() ?? __('Free offer');
+        return $this->account->accessKind()?->label() ?? __('Free plan');
     }
 
     /**
@@ -342,7 +342,7 @@ class AccountViewModel
 
     /**
      * The customer as Stripe's own dashboard shows them, null for an account
-     * Stripe has never heard of, which is what a grant and the free offer look
+     * Stripe has never heard of, which is what a grant and the free plan look
      * like. Test keys point at the test dashboard, so an operator never lands on
      * the live customer while working against test data.
      */

@@ -25,7 +25,7 @@ class InstanceSettingControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Configuration');
-        $response->assertSee('How many contacts an account gets on the free offer.');
+        $response->assertSee('How many contacts an account gets on the free plan.');
     }
 
     #[Test]

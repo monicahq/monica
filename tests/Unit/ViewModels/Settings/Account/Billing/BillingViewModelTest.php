@@ -7,9 +7,11 @@ namespace Tests\Unit\ViewModels\Settings\Account\Billing;
 use App\Enums\AccessKindEnum;
 use App\Enums\OfferKindEnum;
 use App\Helpers\StripeCatalogue;
+use App\Models\Payment;
 use App\Models\StripeOrder;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Billing\BillingViewModel;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -287,29 +289,179 @@ class BillingViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_what_the_account_holds_against_its_ceilings(): void
+    public function it_measures_what_the_account_holds_against_the_ceilings_of_the_free_plan(): void
     {
         config(['monica.free_vault_limit' => 1, 'monica.free_contact_limit' => 30]);
 
         $michael = User::factory()->create();
-        $michael->account->update(['storage_used_in_bytes' => 5 * 1024 * 1024, 'storage_limit_in_bytes' => 1024 * 1024 * 1024]);
+        $michael->account->update(['storage_used_in_bytes' => 512 * 1024 * 1024, 'storage_limit_in_bytes' => 1024 * 1024 * 1024]);
 
-        $viewModel = new BillingViewModel(user: $michael->fresh());
+        $usage = new BillingViewModel(user: $michael->fresh())->usage();
 
-        $this->assertSame('0 of 1', $viewModel->vaultsHeld());
-        $this->assertSame('0 of 30', $viewModel->contactsHeld());
-        $this->assertSame('5 MB of 1 GB', $viewModel->storageHeld());
+        $this->assertSame(['Contacts', 'Vaults', 'Storage'], array_column($usage, 'label'));
+        $this->assertSame('0 of 30', $usage[0]['value']);
+        $this->assertSame('Free plan limit: 30', $usage[0]['note']);
+        $this->assertSame(0, $usage[0]['percent']);
+        $this->assertSame('512 MB of 1 GB', $usage[2]['value']);
+        $this->assertSame('Free plan limit: 1 GB', $usage[2]['note']);
+        $this->assertSame(50, $usage[2]['percent']);
     }
 
     #[Test]
-    public function it_says_there_is_no_ceiling_when_there_is_none(): void
+    public function it_draws_no_bar_where_there_is_no_ceiling(): void
     {
         $michael = User::factory()->create();
-        $michael->account->update(['access_granted_at' => now(), 'storage_limit_in_bytes' => null]);
+        $michael->account->update(['access_granted_at' => now()]);
 
-        $viewModel = new BillingViewModel(user: $michael->fresh());
+        $usage = new BillingViewModel(user: $michael->fresh())->usage();
 
-        $this->assertSame('0, no ceiling', $viewModel->vaultsHeld());
-        $this->assertSame('0 B, no ceiling', $viewModel->storageHeld());
+        $this->assertSame('0', $usage[1]['value']);
+        $this->assertSame('Unlimited', $usage[1]['note']);
+        $this->assertNull($usage[1]['percent']);
+        $this->assertSame('Files and photos', $usage[2]['note']);
+    }
+
+    #[Test]
+    public function it_prices_the_amount_alone_beside_the_whole_price(): void
+    {
+        $michael = User::factory()->create();
+        $this->app->setLocale('en');
+
+        $offers = new BillingViewModel(user: $michael, currency: 'usd')->offers();
+
+        $this->assertSame('$10.00', $offers[0]['amount']);
+        $this->assertSame('$219.00', $offers[2]['amount']);
+    }
+
+    #[Test]
+    public function it_says_what_twelve_months_cost_against_one_year(): void
+    {
+        $michael = User::factory()->create();
+        $this->app->setLocale('en');
+
+        $this->assertSame('$20.00', new BillingViewModel(user: $michael, currency: 'usd')->yearlySaving());
+    }
+
+    #[Test]
+    public function it_names_no_saving_when_yearly_saves_nothing(): void
+    {
+        $prices = $this->stripePrices();
+        $prices['data'][1]['currency_options']['usd'] = ['unit_amount' => 12000];
+        $this->fakeStripe(['GET prices' => $prices]);
+        StripeCatalogue::forget();
+
+        $michael = User::factory()->create();
+
+        $this->assertNull(new BillingViewModel(user: $michael, currency: 'usd')->yearlySaving());
+    }
+
+    #[Test]
+    public function it_names_no_saving_when_there_is_no_monthly_price(): void
+    {
+        $this->fakeStripe(kinds: ['yearly', 'lifetime']);
+        StripeCatalogue::forget();
+
+        $michael = User::factory()->create();
+
+        $this->assertNull(new BillingViewModel(user: $michael, currency: 'usd')->yearlySaving());
+    }
+
+    #[Test]
+    public function it_lists_the_three_newest_payments_with_what_each_bought(): void
+    {
+        $michael = User::factory()->create();
+        $this->app->setLocale('en');
+
+        foreach ([4, 3, 2, 1] as $monthsAgo) {
+            Payment::factory()->create([
+                'account_id' => $michael->account_id,
+                'kind' => OfferKindEnum::Monthly,
+                'total' => 1000,
+                'billed_at' => now()->subMonths($monthsAgo),
+            ]);
+        }
+
+        $payments = new BillingViewModel(user: $michael)->recentPayments();
+
+        $this->assertCount(3, $payments);
+        $this->assertEqualsWithDelta(now()->subMonth()->timestamp, $payments[0]['billed_at']->timestamp, 5);
+        $this->assertSame('Monthly subscription', $payments[0]['label']);
+        $this->assertSame('€10.00', $payments[0]['total']);
+    }
+
+    #[Test]
+    public function it_says_nothing_at_the_top_to_a_free_account_that_never_paid(): void
+    {
+        $michael = User::factory()->create();
+
+        $this->assertNull(new BillingViewModel(user: $michael)->summary());
+    }
+
+    #[Test]
+    public function it_sums_up_a_running_subscription(): void
+    {
+        $michael = User::factory()->create();
+        $this->subscribeAccount($michael->account, priceId: 'price_yearly');
+        $this->app->setLocale('en');
+
+        $summary = new BillingViewModel(user: $michael->fresh())->summary();
+
+        $this->assertSame('Active', $summary['badge']);
+        $this->assertSame('Yearly subscription', $summary['title']);
+    }
+
+    #[Test]
+    public function it_sums_up_a_subscription_that_is_ending_with_its_last_day(): void
+    {
+        $michael = User::factory()->create();
+        $endsAt = CarbonImmutable::parse('2027-03-12');
+        $this->travelTo($endsAt->subMonth());
+        $this->subscribeAccount($michael->account, priceId: 'price_yearly', endsAt: $endsAt);
+        $this->app->setLocale('en');
+
+        $summary = new BillingViewModel(user: $michael->fresh())->summary();
+
+        $this->assertSame('Ending', $summary['badge']);
+        $this->assertStringContainsString('March 12, 2027', $summary['line']);
+    }
+
+    #[Test]
+    public function it_sums_up_lifetime_access_with_the_day_it_was_paid(): void
+    {
+        $michael = User::factory()->create();
+        StripeOrder::factory()->settled()->create(['account_id' => $michael->account_id, 'created_at' => '2026-05-03 10:00:00']);
+        $this->app->setLocale('en');
+
+        $summary = new BillingViewModel(user: $michael->fresh())->summary();
+
+        $this->assertSame('Lifetime', $summary['badge']);
+        $this->assertSame('Paid once on May 3, 2026. Full access for the lifetime of the service, with no renewals.', $summary['line']);
+    }
+
+    #[Test]
+    public function it_sums_up_a_subscription_that_ended_as_the_free_plan(): void
+    {
+        $michael = User::factory()->create();
+        $this->subscribeAccount($michael->account, priceId: 'price_yearly', status: 'canceled', endsAt: CarbonImmutable::parse('2026-03-12'));
+        Payment::factory()->create(['account_id' => $michael->account_id, 'kind' => OfferKindEnum::Yearly]);
+        $this->app->setLocale('en');
+
+        $summary = new BillingViewModel(user: $michael->fresh())->summary();
+
+        $this->assertSame('Ended', $summary['badge']);
+        $this->assertSame('Free plan', $summary['title']);
+        $this->assertStringContainsString('March 12, 2026', $summary['line']);
+    }
+
+    #[Test]
+    public function it_sums_up_access_that_was_granted_without_a_payment(): void
+    {
+        $michael = User::factory()->create();
+        $michael->account->update(['access_granted_at' => now()]);
+
+        $summary = new BillingViewModel(user: $michael->fresh())->summary();
+
+        $this->assertSame('Granted', $summary['badge']);
+        $this->assertSame('Full access', $summary['title']);
     }
 }

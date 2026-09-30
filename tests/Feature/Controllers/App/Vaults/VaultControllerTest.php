@@ -493,7 +493,7 @@ class VaultControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('vaults.new'));
 
         $response->assertStatus(200);
-        $response->assertSee('You are at the ceiling of the free offer', escape: false);
+        $response->assertSee('You are at the ceiling of the free plan', escape: false);
         $response->assertSee(route('settings.billing.index'), escape: false);
     }
 
@@ -579,7 +579,7 @@ class VaultControllerTest extends TestCase
             ->assertSee('Full access lifts the ceiling.', false)
             ->assertSee('Upgrade')
             ->assertSee(route('settings.billing.index'), false)
-            ->assertDontSee('You are at the ceiling of the free offer');
+            ->assertDontSee('You are at the ceiling of the free plan');
     }
 
     #[Test]

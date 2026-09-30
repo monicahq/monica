@@ -590,7 +590,7 @@ class ContactControllerTest extends TestCase
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors('first_name');
-        $response->assertJsonPath('errors.first_name.0', 'The free offer holds 1 contact across every vault, and this account already has it. Full access lifts the ceiling.');
+        $response->assertJsonPath('errors.first_name.0', 'The free plan holds 1 contact across every vault, and this account already has it. Full access lifts the ceiling.');
         $this->assertSame(1, $user->account->contactCount());
     }
 

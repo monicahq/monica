@@ -15,9 +15,9 @@ class PaywallPromptTest extends TestCase
     #[Test]
     public function it_names_the_ceiling_that_was_hit(): void
     {
-        $this->blade('<x-paywall-prompt :message="$message" />', ['message' => 'The free offer holds 1 vault, and this account already has it.'])
-            ->assertSee('The free offer holds 1 vault, and this account already has it.', escape: false)
-            ->assertSee('You are at the ceiling of the free offer', escape: false);
+        $this->blade('<x-paywall-prompt :message="$message" />', ['message' => 'The free plan holds 1 vault, and this account already has it.'])
+            ->assertSee('The free plan holds 1 vault, and this account already has it.', escape: false)
+            ->assertSee('You are at the ceiling of the free plan', escape: false);
     }
 
     #[Test]
@@ -25,6 +25,6 @@ class PaywallPromptTest extends TestCase
     {
         $this->blade('<x-paywall-prompt :message="$message" />', ['message' => 'At the ceiling.'])
             ->assertSee(route('settings.billing.index'), escape: false)
-            ->assertSee('See the offers', escape: false);
+            ->assertSee('See the plans', escape: false);
     }
 }

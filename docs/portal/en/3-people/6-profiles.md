@@ -17,7 +17,7 @@ A profile is a record of something that is not a person. Each profile belongs to
 A profile differs from a contact in two ways:
 
 - Relationships connect contacts only, so a profile never appears on a contact’s **Relationships** tab. A pet is linked to its people through its own fields instead, such as **Caregivers**.
-- Profiles do not count toward the free offer on monicahq.com, which counts contacts.
+- Profiles do not count toward the free plan on monicahq.com, which counts contacts.
 
 @doc(concepts.model) explains how profiles fit with vaults and contacts.
 

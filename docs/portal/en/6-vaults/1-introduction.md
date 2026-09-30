@@ -18,4 +18,4 @@ Choose the vault before you add somebody, because Monica cannot move a contact f
 2. @doc(vaults.settings). Rename a vault, change its colour, and choose the template new contacts start from.
 3. @doc(vaults.delete). Remove a vault and everything in it.
 
-On monicahq.com, the free offer holds one vault, so a second one needs full access.
+On monicahq.com, the free plan holds one vault, so a second one needs full access.

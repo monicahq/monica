@@ -98,7 +98,7 @@ class SubscriptionControllerTest extends TestCase
 
         $response = $this->actingAs($michael)->get(route('settings.billing.index'));
 
-        $response->assertSee('Cancel the subscription', escape: false);
+        $response->assertSee('Cancel renewal', escape: false);
         $response->assertSee('Full access stays until the end of the period already paid for', escape: false);
         $response->assertSee(route('settings.subscription.destroy'), escape: false);
     }
@@ -111,7 +111,7 @@ class SubscriptionControllerTest extends TestCase
 
         $response = $this->actingAs($michael)->get(route('settings.billing.index'));
 
-        $response->assertSee('Switch to this offer', escape: false);
+        $response->assertSee('Switch to this plan', escape: false);
         $response->assertSee('Nothing is charged today.', escape: false);
         $response->assertSee(route('settings.subscription.update', ['price' => 'price_yearly']), escape: false);
         $response->assertSee(route('settings.checkout.store', ['price' => 'price_lifetime']), escape: false);

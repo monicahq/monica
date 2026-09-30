@@ -3,7 +3,7 @@
 Everything an operator has to set up at Stripe, and in `.env`, before the paywall works on a hosted
 instance.
 
-A self hosted instance needs none of it. With `MONICA_SELF_HOSTED=true` nothing is capped, no offer,
+A self hosted instance needs none of it. With `MONICA_SELF_HOSTED=true` nothing is capped, no plan,
 price or upgrade prompt appears on any screen, and no key is ever read. The rest of this page is for
 the cloud instance only.
 
@@ -13,8 +13,8 @@ Stripe owns the catalogue, the checkout page, the invoices, the customer portal,
 and the retrying of failed payments. The product owns the free caps, the order behind a purchase
 bought outright, and a copy of every payment so that no screen waits on Stripe.
 
-Nothing about pricing lives here. There is no price, no currency, no offer name and no plan in the
-code or in the configuration. Adding or removing an offer is done at Stripe alone, by tagging a
+Nothing about pricing lives here. There is no price, no currency and no plan name in the code
+or in the configuration. Adding or removing a plan is done at Stripe alone, by tagging a
 price, and takes no deploy.
 
 ## 1. Keys
@@ -31,7 +31,7 @@ Work in **test mode** first. Never point a development instance at live keys.
 Without `STRIPE_WEBHOOK_SECRET` no confirmation can be proven to have come from Stripe, so nothing
 is acted on and no payment ever unlocks anything.
 
-The caps of the free offer sit beside them:
+The caps of the free plan sit beside them:
 
 | Variable | Default | What it caps |
 | --- | --- | --- |
@@ -42,10 +42,10 @@ The caps of the free offer sit beside them:
 | `MONICA_PRODUCT_TAG_KEY` | `version` | the metadata key a product carries for its prices to be on sale, empty to sell every product |
 | `MONICA_PRODUCT_TAG_VALUE` | none | the value that key has to hold, unset to ask only that the key is there |
 
-## 2. The offers
+## 2. The plans
 
 Create at least three prices on one product, and tag each one in its **metadata**. The key is
-`MONICA_OFFER_TAG`, which is `offer` unless you changed it. The value says which offer it is.
+`MONICA_OFFER_TAG`, which is `offer` unless you changed it. The value says which plan it is.
 
 | Value | The price has to bill |
 | --- | --- |
@@ -53,7 +53,7 @@ Create at least three prices on one product, and tag each one in its **metadata*
 | `yearly` | recurring, every 1 year |
 | `lifetime` | one time |
 
-Three rules follow from that, and each is worth knowing before you wonder why an offer is missing:
+Three rules follow from that, and each is worth knowing before you wonder why a plan is missing:
 
 * A price carrying no tag is not for sale here, silently. That is how you keep other prices on the
   same account out of the product.
@@ -63,7 +63,7 @@ Three rules follow from that, and each is worth knowing before you wonder why an
 
 ### Selling only some of the products on the account
 
-The tag above says which offer a price is. It says nothing about which product the price hangs off,
+The tag above says which plan a price is. It says nothing about which product the price hangs off,
 so an account that also sells something else needs a second filter, and that one reads the
 **metadata of the product** rather than of its prices. Marking a product once covers every price it
 has.
@@ -87,15 +87,15 @@ Nothing reaches the log. If the billing screen says there is nothing for sale at
 filter and the tags on the prices: those two are the only reasons a catalogue comes back empty with
 nothing written anywhere.
 
-Give every offer an amount in each currency you want to sell in, through Stripe's multi currency
+Give every plan an amount in each currency you want to sell in, through Stripe's multi currency
 prices. The currency picker on the billing screen offers exactly the currencies the catalogue quotes,
 and suggests the one the reader's language points at.
 
 The catalogue is read once an hour and cached, so a change at Stripe takes up to an hour to show. To
-see it at once, clear the cache. A read that fails is not cached: the screen says the offers cannot
+see it at once, clear the cache. A read that fails is not cached: the screen says the plans cannot
 be shown and tries again on the next visit.
 
-### How the lifetime offer is confirmed
+### How the lifetime plan is confirmed
 
 A subscription raises an invoice on its own. A one time payment does not, and the product no longer
 asks Stripe for one, so nothing about the purchase depends on your business profile being complete
@@ -108,7 +108,7 @@ over: the buyer comes back to the product carrying the session identifier, and S
 still gets what they paid for.
 
 That second path is why `checkout.session.completed` is not an optional event, and why the queue
-worker matters. Without it, a buyer who pays and never comes back stays on the free offer.
+worker matters. Without it, a buyer who pays and never comes back stays on the free plan.
 
 An abandoned checkout leaves an order behind that nobody paid. It is shown nowhere and it holds
 nothing, and no event of Stripe's is listened for to tidy it. Opening another checkout is what
@@ -228,14 +228,14 @@ php artisan test --compact --filter='Purchase|Subscription|Access|Payment|Catalo
 ```
 
 Then, with a queue worker running, walk the scenarios in `specs/024-stripe-paywall/quickstart.md` and
-`specs/025-stripe-products/quickstart.md`. Together they go through buying each offer, closing the tab
+`specs/025-stripe-products/quickstart.md`. Together they go through buying each plan, closing the tab
 instead of coming back, an abandoned checkout, moving up, cancelling and changing your mind, a card
 that keeps failing, a full and a partial refund, and deleting an account that holds a subscription.
 
 ## What the product never does
 
 * It never receives, stores or sends card details. Payment is taken on Stripe's page.
-* It never holds a price, a currency or an offer name.
+* It never holds a price, a currency or a plan name.
 * It never decides what a payment unlocked from the tag on a price alone. A price whose billing cycle
   disagrees with its tag is not on sale at all, so a monthly price tagged `lifetime` never opens
   anything, and a renewal is told from a purchase by the invoice behind it.

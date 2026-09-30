@@ -55,7 +55,6 @@ class SubscriptionCancellationControllerTest extends TestCase
         $response = $this->actingAs($michael)->get(route('settings.billing.index'));
 
         $response->assertSee('Keep the subscription', escape: false);
-        $response->assertSee('You can change your mind until then.', escape: false);
         $response->assertSee(route('settings.subscriptionCancellation.destroy'), escape: false);
     }
 }

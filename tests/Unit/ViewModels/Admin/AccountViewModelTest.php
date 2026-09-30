@@ -344,7 +344,7 @@ class AccountViewModelTest extends TestCase
         $viewModel = new AccountViewModel(account: $account->fresh());
 
         $this->assertNull($viewModel->order());
-        $this->assertSame(__('Free offer'), $viewModel->accessKindLabel());
+        $this->assertSame(__('Free plan'), $viewModel->accessKindLabel());
     }
 
     #[Test]

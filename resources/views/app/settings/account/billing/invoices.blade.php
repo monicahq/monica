@@ -4,10 +4,10 @@
   :title="__('Invoices')"
   :user="$viewModel->user()"
   current="billing"
+  :back-href="route('settings.billing.index')"
+  :back-label="__('Back to billing')"
 >
   <x-page-header :title="__('Invoices')" :description="__('Every payment Stripe confirmed, newest first, with the invoice it issued.')" />
-
-  @include('app.settings.account.billing._tabs', ['current' => 'invoices', 'paymentCount' => $viewModel->payments()->count()])
 
   <x-panel :flush="true">
     @if ($viewModel->payments()->isEmpty())

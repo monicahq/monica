@@ -22,7 +22,7 @@ class ContactPolicy
             return Response::allow();
         }
 
-        return Response::deny(trans_choice('The free offer holds :count contact across every vault, and this account already has it. Full access lifts the ceiling.|The free offer holds :count contacts across every vault, and this account already has them. Full access lifts the ceiling.', $limit));
+        return Response::deny(trans_choice('The free plan holds :count contact across every vault, and this account already has it. Full access lifts the ceiling.|The free plan holds :count contacts across every vault, and this account already has them. Full access lifts the ceiling.', $limit));
     }
 
     public function delete(User $user, Contact $contact): Response

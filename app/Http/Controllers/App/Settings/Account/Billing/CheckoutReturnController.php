@@ -27,7 +27,7 @@ class CheckoutReturnController extends Controller
             )->execute();
         } catch (AccountAlreadyOwnsTheProduct) {
             return redirect()->route('settings.billing.index')
-                ->withErrors(['offer' => __('That offer is not one this account can take up.')]);
+                ->withErrors(['offer' => __('That plan is not one this account can take up.')]);
         }
 
         return redirect()->route('settings.billing.index', [

@@ -20,7 +20,7 @@ Every person in Monica has a page, divided into tabs, and each tab holds section
 
 You need an account, and your **Personal** vault open. If you have neither yet, follow @doc(start.create-account) first.
 
-On monicahq.com’s free offer, each person in your list of people counts toward the number of people you can keep.
+On monicahq.com’s free plan, each person in your list of people counts toward the number of people you can keep.
 
 ## Step 1: Add Rachel
 
@@ -108,7 +108,7 @@ Choose **I know their name**, then type `Ross` in **First name** and `Geller` in
 :::
 
 :::step title="Give Ross a page of his own"
-Tick **Create a contact record for this person**, so that Ross appears in your list of people like Rachel. Left off, Ross still gets a page, but stays out of that list and out of the count of the free offer.
+Tick **Create a contact record for this person**, so that Ross appears in your list of people like Rachel. Left off, Ross still gets a page, but stays out of that list and out of the count of the free plan.
 :::
 
 :::step title="Add the relationship"

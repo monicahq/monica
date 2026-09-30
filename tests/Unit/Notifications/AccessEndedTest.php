@@ -24,7 +24,7 @@ class AccessEndedTest extends TestCase
         $message = new AccessEnded(reason: AccessEndReasonEnum::Cancelled)->toMail($michael);
 
         $this->assertEquals(
-            'Your '.config('app.name').' account is back on the free offer',
+            'Your '.config('app.name').' account is back on the free plan',
             $message->subject,
         );
     }
@@ -39,7 +39,7 @@ class AccessEndedTest extends TestCase
         foreach (AccessEndReasonEnum::cases() as $reason) {
             $rendered = (string) new AccessEnded(reason: $reason)->toMail($michael)->render();
 
-            $this->assertStringContainsString('back on the free offer', $rendered);
+            $this->assertStringContainsString('back on the free plan', $rendered);
 
             $wordings[] = $rendered;
         }

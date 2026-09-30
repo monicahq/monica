@@ -25,18 +25,30 @@ enum OfferKindEnum: string implements Translatable
     public function description(): string
     {
         return match ($this) {
-            self::Monthly => 'Renews every month until you cancel it.',
-            self::Yearly => 'Renews every year until you cancel it.',
-            self::Lifetime => 'Pay once and keep full access for good.',
+            self::Monthly => 'Billed monthly. Cancel renewal anytime.',
+            self::Yearly => 'Billed yearly. Cancel renewal anytime.',
+            self::Lifetime => 'Full access for the lifetime of the service. No recurring payments.',
+        };
+    }
+
+    /**
+     * The one line that says who the plan suits, above its description.
+     */
+    public function tagline(): string
+    {
+        return match ($this) {
+            self::Monthly => 'Take it one month at a time.',
+            self::Yearly => 'A year of room to grow.',
+            self::Lifetime => 'Pay once. No subscription to manage.',
         };
     }
 
     public function callToAction(): string
     {
         return match ($this) {
-            self::Monthly => 'Subscribe monthly',
-            self::Yearly => 'Subscribe yearly',
-            self::Lifetime => 'Buy lifetime access',
+            self::Monthly => 'Choose monthly',
+            self::Yearly => 'Choose yearly',
+            self::Lifetime => 'Get lifetime access',
         };
     }
 
@@ -82,6 +94,6 @@ enum OfferKindEnum: string implements Translatable
     #[Override]
     public function translationKeys(): array
     {
-        return [$this->label(), $this->description(), $this->callToAction(), $this->priceFormat()];
+        return [$this->label(), $this->description(), $this->tagline(), $this->callToAction(), $this->priceFormat()];
     }
 }

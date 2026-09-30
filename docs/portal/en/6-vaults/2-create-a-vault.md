@@ -14,7 +14,7 @@ Say you want Monica to keep your colleagues apart from your friends and family. 
 
 ## Before you start
 
-On monicahq.com, the free offer holds one vault, and your **Personal** vault already uses it. The form then says **You are at the ceiling of the free offer**, and **Create vault** stays unavailable until you have full access. On an instance somebody runs on their own server, there is no limit on vaults.
+On monicahq.com, the free plan holds one vault, and your **Personal** vault already uses it. The form then says **You are at the ceiling of the free plan**, and **Create vault** stays unavailable until you have full access. On an instance somebody runs on their own server, there is no limit on vaults.
 
 ## Create the vault
 

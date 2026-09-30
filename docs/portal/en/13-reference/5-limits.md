@@ -24,7 +24,7 @@ Every number Monica works with. **Who can change it** says whether it is the sam
 | Recovery codes | 8 codes of 10 characters, each once | Fixed |
 | Confirming it is you, before a sensitive change | Lasts 3 hours | Instance configuration |
 
-## The free offer on monicahq.com
+## The free plan on monicahq.com
 
 | What | Default | Who can change it |
 | --- | --- | --- |

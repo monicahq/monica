@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Settings\Account\Billing;
 
 use App\Helpers\StripeCatalogue;
+use App\Models\Payment;
+use App\Models\StripeOrder;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -23,23 +26,55 @@ class BillingControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_the_three_offers_with_their_prices(): void
+    public function it_shows_a_free_account_the_three_plans_with_their_prices(): void
     {
         $michael = User::factory()->create(['locale' => 'en']);
 
         $response = $this->actingAs($michael)->get(route('settings.billing.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Monthly subscription', escape: false);
-        $response->assertSee('Yearly subscription', escape: false);
-        $response->assertSee('Lifetime access', escape: false);
-        $response->assertSee('Subscribe monthly', escape: false);
+        $response->assertSee('If you like Monica and want to keep using it', escape: false);
+        $response->assertSee('Choose monthly', escape: false);
+        $response->assertSee('Choose yearly', escape: false);
+        $response->assertSee('Get lifetime access', escape: false);
         $response->assertSee(route('settings.checkout.store', ['price' => 'price_lifetime']), escape: false);
-        $response->assertSee('Free offer', escape: false);
+        $response->assertSee('What changes', escape: false);
+        $response->assertSee('A few things you might be wondering.', escape: false);
+        $response->assertDontSee('On record', escape: false);
     }
 
     #[Test]
-    public function it_offers_nothing_further_to_a_lifetime_holder(): void
+    public function it_tells_a_subscriber_where_they_stand_and_how_to_stop_the_renewal(): void
+    {
+        $michael = User::factory()->create(['locale' => 'en']);
+        $this->subscribeAccount($michael->account, priceId: 'price_yearly');
+
+        $response = $this->actingAs($michael)->get(route('settings.billing.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Yearly subscription', escape: false);
+        $response->assertSee('Cancel renewal', escape: false);
+        $response->assertSee(route('settings.subscription.destroy'), escape: false);
+        $response->assertSee('What you have', escape: false);
+        $response->assertSee('Get lifetime access', escape: false);
+        $response->assertDontSee('Choose monthly', escape: false);
+    }
+
+    #[Test]
+    public function it_offers_a_subscription_that_is_ending_to_be_kept(): void
+    {
+        $michael = User::factory()->create(['locale' => 'en']);
+        $this->subscribeAccount($michael->account, priceId: 'price_yearly', endsAt: CarbonImmutable::now()->addMonth());
+
+        $response = $this->actingAs($michael)->get(route('settings.billing.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Keep the subscription', escape: false);
+        $response->assertSee(route('settings.subscriptionCancellation.destroy'), escape: false);
+    }
+
+    #[Test]
+    public function it_offers_nothing_further_to_an_account_granted_full_access(): void
     {
         $michael = User::factory()->create();
         $michael->account->update(['access_granted_at' => now()]);
@@ -47,8 +82,41 @@ class BillingControllerTest extends TestCase
         $response = $this->actingAs($michael)->get(route('settings.billing.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Full access, for good', escape: false);
-        $response->assertDontSee('Subscribe monthly', escape: false);
+        $response->assertSee('Full access was granted by us', escape: false);
+        $response->assertDontSee('Choose monthly', escape: false);
+        $response->assertDontSee('What changes', escape: false);
+        $response->assertDontSee('See it on Stripe', escape: false);
+    }
+
+    #[Test]
+    public function it_shows_what_a_lifetime_holder_paid_and_leads_to_the_invoices(): void
+    {
+        $michael = User::factory()->create(['locale' => 'en']);
+        StripeOrder::factory()->settled()->create(['account_id' => $michael->account_id]);
+        Payment::factory()->create(['account_id' => $michael->account_id]);
+
+        $response = $this->actingAs($michael)->get(route('settings.billing.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Paid once on', escape: false);
+        $response->assertSee('On record', escape: false);
+        $response->assertSee('€199.00', escape: false);
+        $response->assertSee(route('settings.invoices.index'), escape: false);
+        $response->assertDontSee('Get lifetime access', escape: false);
+    }
+
+    #[Test]
+    public function it_says_there_is_nothing_to_pay_for_on_a_self_hosted_instance(): void
+    {
+        config(['monica.self_hosted' => true]);
+
+        $michael = User::factory()->create();
+
+        $response = $this->actingAs($michael)->get(route('settings.billing.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Nothing to pay for here', escape: false);
+        $response->assertDontSee('A few things you might be wondering.', escape: false);
     }
 
     #[Test]
@@ -86,6 +154,6 @@ class BillingControllerTest extends TestCase
         $response = $this->actingAs($michael)->get(route('settings.billing.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('The offers cannot be shown right now', escape: false);
+        $response->assertSee('The plans cannot be shown right now', escape: false);
     }
 }

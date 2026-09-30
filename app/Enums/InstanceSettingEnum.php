@@ -263,8 +263,8 @@ enum InstanceSettingEnum: string implements Translatable
     {
         return match ($this) {
             self::FreeStorageLimitInBytes => 'How many bytes of files an account gets before the one time purchase.',
-            self::FreeVaultLimit => 'How many vaults an account gets on the free offer.',
-            self::FreeContactLimit => 'How many contacts an account gets on the free offer.',
+            self::FreeVaultLimit => 'How many vaults an account gets on the free plan.',
+            self::FreeContactLimit => 'How many contacts an account gets on the free plan.',
             self::PaidStorageLimitInBytes => 'How many bytes of files an account gets once it has paid.',
             self::MaxFileSizeInKilobytes => 'How many kilobytes one upload may weigh.',
             self::RememberDurationDays => 'How long a session survives when somebody asks to be remembered.',

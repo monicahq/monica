@@ -53,7 +53,7 @@ Monica says **The relationship is recorded** and shows it on the **Relationships
 With the last two options, the form also offers **Create a contact record for this person**:
 
 - Ticked, the new person joins your list of people like anybody else.
-- Left off, the new person becomes a partial contact. They have a page of their own, but stay out of your list of people, and out of the count of the free offer on monicahq.com. @doc(contacts.add) explains partial contacts.
+- Left off, the new person becomes a partial contact. They have a page of their own, but stay out of your list of people, and out of the count of the free plan on monicahq.com. @doc(contacts.add) explains partial contacts.
 
 ## Family relationships and the family tree
 

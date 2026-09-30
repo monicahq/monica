@@ -149,7 +149,7 @@ class VaultFormViewModelTest extends TestCase
         Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->assertSame(
-            'The free offer holds 1 vault, and this account already has it. Full access lifts the ceiling.',
+            'The free plan holds 1 vault, and this account already has it. Full access lifts the ceiling.',
             new VaultFormViewModel(user: $user)->ceilingMessage(),
         );
     }

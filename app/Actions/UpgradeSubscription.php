@@ -58,7 +58,7 @@ class UpgradeSubscription
         $kind = StripeCatalogue::kindOf($this->priceId);
 
         if ($kind === null || ! $kind->renews()) {
-            throw new SubscriptionCannotBeChanged(__('This offer is not a subscription this account can move to.'));
+            throw new SubscriptionCannotBeChanged(__('This plan is not a subscription this account can move to.'));
         }
 
         $current = StripeCatalogue::kindOfSubscription($subscription);

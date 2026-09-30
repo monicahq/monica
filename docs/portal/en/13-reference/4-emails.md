@@ -47,7 +47,7 @@ The test of another channel, and the code that proves a phone number, arrive on 
 | Subject | Sent when |
 | --- | --- |
 | Your Monica account now has full access | A subscription starts, a purchase goes through, or full access is granted to you |
-| Your Monica account is back on the free offer | A subscription ends, a payment fails several times, or a payment is refunded or disputed. Nothing is deleted |
+| Your Monica account is back on the free plan | A subscription ends, a payment fails several times, or a payment is refunded or disputed. Nothing is deleted |
 
 ## The marketplace
 

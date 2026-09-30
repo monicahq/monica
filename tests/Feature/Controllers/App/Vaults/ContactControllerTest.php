@@ -1394,7 +1394,7 @@ class ContactControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('contacts.new', ['vault' => $vault]));
 
         $response->assertStatus(200);
-        $response->assertSee('You are at the ceiling of the free offer', escape: false);
+        $response->assertSee('You are at the ceiling of the free plan', escape: false);
         $response->assertSee(route('settings.billing.index'), escape: false);
     }
 

@@ -33,11 +33,11 @@ class AccessEnded extends Notification implements HasEmailType, ShouldQueue
     public function toMail(User $notifiable): MailMessage
     {
         return new MailMessage()
-            ->subject(__('Your :app account is back on the free offer', ['app' => config('app.name')]))
+            ->subject(__('Your :app account is back on the free plan', ['app' => config('app.name')]))
             ->greeting(__('Full access has ended'))
             ->line($this->why())
-            ->line(__('Nothing was deleted. Everything you wrote is still there, still yours to read and to edit. The free offer only refuses additions once you are at one of its ceilings.'))
-            ->action(__('See the offers'), route('settings.billing.index'))
+            ->line(__('Nothing was deleted. Everything you wrote is still there, still yours to read and to edit. The free plan only refuses additions once you are at one of its ceilings.'))
+            ->action(__('See the plans'), route('settings.billing.index'))
             ->outroLine(__('Full access can be taken up again at any time, by buying it once or by subscribing.'))
             ->panel(__('If this comes as a surprise, reply to this email and we will look at what happened.'));
     }
@@ -45,10 +45,10 @@ class AccessEnded extends Notification implements HasEmailType, ShouldQueue
     private function why(): string
     {
         return match ($this->reason) {
-            AccessEndReasonEnum::Refunded => __('The payment for your one time purchase was refunded, so the account is back on the free offer.'),
-            AccessEndReasonEnum::Disputed => __('The payment was disputed with your bank, so the account is back on the free offer while that is settled.'),
-            AccessEndReasonEnum::Cancelled => __('Your subscription ended today, as you asked, so the account is back on the free offer.'),
-            AccessEndReasonEnum::PaymentFailed => __('The payment could not be taken after several attempts, so the subscription ended and the account is back on the free offer.'),
+            AccessEndReasonEnum::Refunded => __('The payment for your one time purchase was refunded, so the account is back on the free plan.'),
+            AccessEndReasonEnum::Disputed => __('The payment was disputed with your bank, so the account is back on the free plan while that is settled.'),
+            AccessEndReasonEnum::Cancelled => __('Your subscription ended today, as you asked, so the account is back on the free plan.'),
+            AccessEndReasonEnum::PaymentFailed => __('The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.'),
         };
     }
 

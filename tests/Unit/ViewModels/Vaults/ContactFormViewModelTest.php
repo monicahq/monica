@@ -194,7 +194,7 @@ class ContactFormViewModelTest extends TestCase
         Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
 
         $this->assertSame(
-            'The free offer holds 1 contact across every vault, and this account already has it. Full access lifts the ceiling.',
+            'The free plan holds 1 contact across every vault, and this account already has it. Full access lifts the ceiling.',
             new ContactFormViewModel(user: $user, vault: $vault)->ceilingMessage(),
         );
     }
