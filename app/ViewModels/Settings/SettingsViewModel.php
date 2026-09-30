@@ -41,7 +41,7 @@ class SettingsViewModel
     }
 
     /**
-     * @return array<int, array{title: string|null, description: string|null, rows: array<int, array{title: string, description: string, icon: string, meta: string|null, url: string|null, method?: string}>}>
+     * @return array<int, array{title: string|null, description: string|null, rows: array<int, array{title: string, description: string, icon: string, meta: string|null, url: string, method?: string}>}>
      */
     public function sections(): array
     {
@@ -65,7 +65,7 @@ class SettingsViewModel
     }
 
     /**
-     * @return array<int, array{title: string, description: string, icon: string, meta: string|null, url: string|null}>
+     * @return array<int, array{title: string, description: string, icon: string, meta: string|null, url: string}>
      */
     private function youRows(): array
     {
@@ -93,16 +93,16 @@ class SettingsViewModel
             ],
             [
                 'title' => __('Notifications'),
-                'description' => __('Which reminders reach you by email, and how long before the date they arrive.'),
+                'description' => __('Where your reminders reach you, and which ways are switched on.'),
                 'icon' => 'mail',
                 'meta' => null,
-                'url' => null,
+                'url' => route('settings.notifications.index'),
             ],
         ];
     }
 
     /**
-     * @return array<int, array{title: string, description: string, icon: string, meta: string|null, url: string|null}>
+     * @return array<int, array{title: string, description: string, icon: string, meta: string|null, url: string}>
      */
     private function accountRows(): array
     {
@@ -153,18 +153,11 @@ class SettingsViewModel
     }
 
     /**
-     * @return array<int, array{title: string, description: string, icon: string, meta: string|null, url: string|null, method?: string}>
+     * @return array<int, array{title: string, description: string, icon: string, meta: string|null, url: string, method?: string}>
      */
     private function leavingRows(): array
     {
         return [
-            [
-                'title' => __('Export everything'),
-                'description' => __('A single file with every vault, person, note and photograph. It is yours to keep.'),
-                'icon' => 'vault',
-                'meta' => null,
-                'url' => null,
-            ],
             [
                 'title' => __('Sign out'),
                 'description' => __('You will have to sign in again on this browser.'),

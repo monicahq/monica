@@ -40,27 +40,12 @@ class SettingsControllerTest extends TestCase
         $response->assertSee(route('settings.profile.index'), escape: false);
         $response->assertSee(route('settings.security.index'), escape: false);
         $response->assertSee(route('settings.preferences.index'), escape: false);
+        $response->assertSee(route('settings.notifications.index'), escape: false);
         $response->assertSee(route('settings.templates.index'), escape: false);
         $response->assertSee(route('settings.entityTypes.index'), escape: false);
         $response->assertSee(route('settings.valueLists.index'), escape: false);
         $response->assertSee(route('settings.logs.index'), escape: false);
         $response->assertSee(route('auth.login.destroy'), escape: false);
-    }
-
-    #[Test]
-    public function it_draws_what_has_not_been_built_without_offering_it(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('settings.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('Notifications', escape: false);
-        $response->assertSee('Export everything', escape: false);
-
-        $content = str($response->getContent())->after('</header>')->before('</main>')->toString();
-
-        $this->assertStringNotContainsString('href="#"', $content);
     }
 
     #[Test]

@@ -56,30 +56,22 @@ class SettingsViewModelTest extends TestCase
         );
 
         $this->assertSame(
-            ['Export everything', 'Sign out'],
+            ['Sign out'],
             array_column($sections[2]['rows'], 'title'),
         );
     }
 
     #[Test]
-    public function it_leaves_the_url_of_a_screen_that_does_not_exist_yet_empty(): void
+    public function it_links_notifications_to_the_notification_channels(): void
     {
         $user = User::factory()->create();
 
         $sections = new SettingsViewModel(user: $user)->sections();
 
-        $urls = [];
+        $notifications = $sections[0]['rows'][3];
 
-        foreach ($sections as $section) {
-            foreach ($section['rows'] as $row) {
-                $urls[$row['title']] = $row['url'];
-            }
-        }
-
-        $this->assertNull($urls['Notifications']);
-        $this->assertNull($urls['Export everything']);
-        $this->assertSame(route('settings.profile.index'), $urls['Profile']);
-        $this->assertSame(route('settings.logs.index'), $urls['Logs']);
+        $this->assertSame('Notifications', $notifications['title']);
+        $this->assertSame(route('settings.notifications.index'), $notifications['url']);
     }
 
     #[Test]
@@ -89,7 +81,7 @@ class SettingsViewModelTest extends TestCase
 
         $sections = new SettingsViewModel(user: $user)->sections();
 
-        $signOut = $sections[2]['rows'][1];
+        $signOut = $sections[2]['rows'][0];
 
         $this->assertSame('Sign out', $signOut['title']);
         $this->assertSame('post', $signOut['method']);

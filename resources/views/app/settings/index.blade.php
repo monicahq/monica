@@ -36,7 +36,7 @@
                     {{ $row['title'] }}
                   </x-button.secondary>
                 </x-form>
-              @elseif ($row['url'])
+              @else
                 <x-icon name="chevron-right" :size="16" :stroke-width="1.6" class="text-muted" />
               @endif
             </x-slot:end>
