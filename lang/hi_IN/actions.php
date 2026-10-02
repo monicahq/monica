@@ -62,7 +62,7 @@ return [
         'delete' => ':name हटाएं',
         'duplicate' => 'डुप्लिकेट: नाम',
         'edit' => 'संपादित करें :name',
-        'export' => 'Export :name',
+        'export' => ':name निर्यात करें',
         'hide' => ':name छुपाएं',
         'import' => 'आयात :name',
         'new' => 'नया :name',

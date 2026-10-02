@@ -85,13 +85,15 @@ class FieldValueFormatter
             return null;
         }
 
+        // SQLite hands a decimal column back as a float, MySQL and PostgreSQL as a string.
+        $number = (string) $value->value_number;
         $decimals = 0;
 
-        if (str_contains($value->value_number, '.')) {
-            $decimals = mb_strlen(rtrim(explode('.', $value->value_number)[1], '0'));
+        if (str_contains($number, '.')) {
+            $decimals = mb_strlen(rtrim(explode('.', $number)[1], '0'));
         }
 
-        return $this->numberFormat()->format((float) $value->value_number, $decimals);
+        return $this->numberFormat()->format((float) $number, $decimals);
     }
 
     private function boolean(FieldValue $value): ?string

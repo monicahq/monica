@@ -9,6 +9,7 @@ use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
+use App\Models\LifeEvent;
 use App\Models\ShareLink;
 use App\Models\StructureVersion;
 use App\Models\User;
@@ -61,6 +62,10 @@ class DestroyVault
                 $this->promoteTheFirstVaultLeft();
             }
         });
+
+        Contact::withdrawFromSearch(Contact::withTrashed()->where('vault_id', $this->vault->id));
+        Entity::withdrawFromSearch(Entity::withTrashed()->where('vault_id', $this->vault->id));
+        LifeEvent::withdrawFromSearch(LifeEvent::withTrashed()->where('vault_id', $this->vault->id));
     }
 
     private function takeTheContactsWithIt(): void

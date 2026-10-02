@@ -20,6 +20,7 @@ import passkey from './passkey';
 import recordPicker from './record-picker';
 import relationshipForm from './relationship-form';
 import reminderInterval from './reminder-interval';
+import searchShortcut from './search-shortcut';
 import timezonePicker from './timezone-picker';
 
 window.Turbo = Turbo;
@@ -40,6 +41,7 @@ Alpine.data('passkey', passkey);
 Alpine.data('recordPicker', recordPicker);
 Alpine.data('relationshipForm', relationshipForm);
 Alpine.data('reminderInterval', reminderInterval);
+Alpine.data('searchShortcut', searchShortcut);
 Alpine.data('timezonePicker', timezonePicker);
 
 window.Alpine = Alpine;

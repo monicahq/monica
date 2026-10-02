@@ -51,6 +51,8 @@ class UndoContactMerge
             $this->merge->save();
         });
 
+        $this->absorbed->searchable();
+        $this->merge->keptContact?->searchable();
         $this->log();
 
         return $this->merge;

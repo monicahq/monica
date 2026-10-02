@@ -15,9 +15,11 @@ use App\Helpers\ReservedAddressWords;
 use App\Helpers\SlugBuilder;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInVault;
+use App\Models\Concerns\SearchesRecords;
 use Carbon\CarbonImmutable;
 use Database\Factories\ContactFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -127,6 +129,12 @@ use Override;
     'dav_uri',
     'vcard',
 ])]
+#[Hidden([
+    'search_name',
+    'search_body',
+    'search_sensitive_body',
+    'search_linked_names',
+])]
 class Contact extends Model
 {
     /** @use HasFactory<ContactFactory> */
@@ -134,6 +142,7 @@ class Contact extends Model
 
     use HasUuids;
     use ResolvesModelInVault;
+    use SearchesRecords;
     use SoftDeletes;
 
     /**
@@ -220,6 +229,10 @@ class Contact extends Model
             ], [
                 'contact_id' => $contact->id,
             ]);
+
+            if ($contact->wasChanged('search_key')) {
+                $contact->resendTheRecordsNamingIt();
+            }
         });
     }
 
@@ -475,6 +488,79 @@ class Contact extends Model
     public function slugReservations(): HasMany
     {
         return $this->hasMany(ContactSlugReservation::class);
+    }
+
+    /**
+     * Send the search engine again every record whose document holds the contact's name: the life
+     * events the contact took part in, the people related to the contact, and the records whose
+     * relation field points at the contact.
+     */
+    public function resendTheRecordsNamingIt(): void
+    {
+        LifeEvent::sendToSearch(LifeEvent::query()->whereKey($this->lifeEvents()->pluck('life_events.id')));
+
+        $relatedIds = Relationship::query()
+            ->forContact($this)
+            ->get(['contact_a_id', 'contact_b_id'])
+            ->map(fn (Relationship $relationship): int => $relationship->contact_a_id === $this->id ? $relationship->contact_b_id : $relationship->contact_a_id)
+            ->all();
+
+        $pointing = FieldValue::query()
+            ->where('related_contact_id', $this->id)
+            ->get(['valuable_type', 'valuable_id']);
+
+        foreach ([self::class, Entity::class, LifeEvent::class] as $type) {
+            $ids = $pointing->where('valuable_type', $type)->pluck('valuable_id')->all();
+
+            if ($type === self::class) {
+                $ids = [...$ids, ...$relatedIds];
+            }
+
+            if ($ids !== []) {
+                $type::sendToSearch($type::query()->whereKey(array_unique($ids)));
+            }
+        }
+    }
+
+    /**
+     * The name the contact is found and listed under.
+     */
+    #[Override]
+    public function searchableName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * The people the contact has a relationship with, each with how the contact relates to them,
+     * read from the contact's side: Michael is the partner of Jan.
+     *
+     * @return list<array{name: string, label: string}>
+     */
+    #[Override]
+    public function searchableLinkedNames(): array
+    {
+        $linked = [];
+
+        $relationships = Relationship::query()
+            ->forContact($this)
+            ->with(['relationshipType', 'contactA', 'contactB'])
+            ->get();
+
+        foreach ($relationships as $relationship) {
+            $isA = $relationship->contact_a_id === $this->id;
+            $other = $isA ? $relationship->contactB : $relationship->contactA;
+
+            if ($other === null) {
+                continue;
+            }
+
+            $role = $isA ? $relationship->relationshipType->role_a : $relationship->relationshipType->role_b;
+
+            $linked[] = ['name' => $other->name, 'label' => __(':role of :name', ['role' => $role, 'name' => $other->name])];
+        }
+
+        return $linked;
     }
 
     /**

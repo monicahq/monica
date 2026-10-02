@@ -51,6 +51,8 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
 use Laravel\Sanctum\Sanctum;
+use Laravel\Scout\EngineManager;
+use Laravel\Scout\Engines\CollectionEngine;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -458,6 +460,18 @@ class ApiDocsReturnFieldsTest extends TestCase
 
         return match ($id) {
             'status-show' => $this->json('GET', '/api/v1/status'),
+
+            'search-index' => $this->asSomebody(function (User $user): TestResponse {
+                resolve(EngineManager::class)->extend('meilisearch', fn (): CollectionEngine => new CollectionEngine);
+                config(['scout.driver' => 'meilisearch']);
+
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Dwight', 'last_name' => 'Schrute']);
+                $employer = Field::factory()->create(['account_id' => $user->account_id, 'type' => FieldTypeEnum::Text, 'label' => 'Employer']);
+                FieldValue::factory()->create(['valuable_type' => Contact::class, 'valuable_id' => $dwight->id, 'field_id' => $employer->id, 'value_string' => 'Schrute Farms']);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/search", ['query' => 'Farms']);
+            }),
 
             'register-store' => $this->json('POST', '/api/v1/register', [
                 'first_name' => 'Michael',

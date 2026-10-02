@@ -6,17 +6,23 @@ namespace Tests\Unit\Models;
 
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
+use App\Enums\FieldTypeEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\RelationshipTypeEnum;
 use App\Enums\SortDirectionEnum;
 use App\Helpers\LocaleCollation;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\Field;
+use App\Models\FieldValue;
+use App\Models\LifeEvent;
+use App\Models\LifeEventParticipant;
 use App\Models\Relationship;
 use App\Models\RelationshipType;
 use App\Models\Reminder;
 use App\Models\ShareLink;
 use App\Models\User;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -1072,5 +1078,135 @@ class ContactTest extends TestCase
         ]);
 
         $this->assertSame([], Contact::query()->parentsOf($child)->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_sends_the_search_engine_what_is_written_on_it(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Dwight', 'last_name' => 'Schrute']);
+        $mose = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Mose', 'last_name' => 'Schrute']);
+        $vegetarian = ValueListItem::factory()->create(['account_id' => $user->account_id, 'label' => 'Vegetarian']);
+
+        $this->writeOn($dwight, FieldTypeEnum::Text, 'Employer', ['value_string' => 'Schrute Farms']);
+        $this->writeOn($dwight, FieldTypeEnum::Select, 'Diet', ['value_list_item_id' => $vegetarian->id]);
+        $this->writeOn($dwight, FieldTypeEnum::Relation, 'Cousin', ['related_contact_id' => $mose->id]);
+        $this->writeOn($dwight, FieldTypeEnum::Boolean, 'Owns a farm', ['value_boolean' => true]);
+        $this->writeOn($dwight, FieldTypeEnum::Text, 'Former employer', ['value_string' => 'Staples', 'is_detached' => true]);
+        $this->writeOn($dwight, FieldTypeEnum::Text, 'Beet recipe', ['value_string' => 'Secret Schrute brine'], sensitive: true);
+
+        $document = $dwight->refresh()->toSearchableArray();
+
+        $this->assertSame($user->account_id, $document['account_id']);
+        $this->assertSame($vault->id, $document['vault_id']);
+        $this->assertNull($document['entity_type_id']);
+        $this->assertSame('Dwight Schrute', $document['name']);
+        $this->assertStringContainsString('Schrute Farms', (string) $document['body']);
+        $this->assertStringContainsString('Vegetarian', (string) $document['body']);
+        $this->assertStringContainsString('Mose Schrute', (string) $document['body']);
+        $this->assertStringNotContainsString('Staples', (string) $document['body']);
+        $this->assertStringNotContainsString('Yes', (string) $document['body']);
+        $this->assertStringNotContainsString('brine', (string) $document['body']);
+        $this->assertSame('Secret Schrute brine', $document['sensitive_body']);
+    }
+
+    #[Test]
+    public function it_writes_what_is_sent_to_the_search_engine_in_the_language_of_its_account(): void
+    {
+        $user = User::factory()->create(['locale' => 'fr_FR']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $this->writeOn($dwight, FieldTypeEnum::Number, 'Beets sold', ['value_number' => '1234.5']);
+
+        $this->assertStringContainsString('234,5', (string) $dwight->refresh()->toSearchableArray()['body']);
+        $this->assertSame('en', app()->getLocale());
+    }
+
+    #[Test]
+    public function it_names_where_the_words_searched_were_found(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Dwight', 'last_name' => 'Schrute']);
+
+        $this->writeOn($dwight, FieldTypeEnum::Text, 'Employer', ['value_string' => 'Schrute Farms']);
+        $this->writeOn($dwight, FieldTypeEnum::Text, 'Beet recipe', ['value_string' => 'Secret brine'], sensitive: true);
+
+        $dwight->refresh();
+
+        $this->assertNull($dwight->matchedField(['Dwigth'], withSensitive: true));
+        $this->assertSame(['label' => 'Employer', 'excerpt' => 'Schrute Farms'], $dwight->matchedField(['frams'], withSensitive: true));
+        $this->assertSame(['label' => 'Beet recipe', 'excerpt' => null], $dwight->matchedField(['brine'], withSensitive: true));
+        $this->assertNull($dwight->matchedField(['brine'], withSensitive: false));
+    }
+
+    #[Test]
+    public function it_sends_itself_to_search_again_when_a_value_is_written_on_it(): void
+    {
+        $engine = $this->useRecordingSearchEngine();
+        $dwight = Contact::factory()->create();
+        $engine->forget();
+
+        $this->writeOn($dwight, FieldTypeEnum::Text, 'Employer', ['value_string' => 'Schrute Farms']);
+
+        $this->assertTrue($engine->wasSent($dwight));
+    }
+
+    #[Test]
+    public function it_sends_the_records_naming_it_to_search_again_when_renamed(): void
+    {
+        $engine = $this->useRecordingSearchEngine();
+        $vault = Vault::factory()->create();
+        $jan = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'first_name' => 'Jan', 'last_name' => 'Levinson']);
+        $michael = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'first_name' => 'Michael']);
+        $dwight = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'first_name' => 'Dwight']);
+        $pam = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'first_name' => 'Pam']);
+        Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id, 'contact_a_id' => $michael->id, 'contact_b_id' => $jan->id]);
+        $dinner = LifeEvent::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id]);
+        LifeEventParticipant::factory()->create(['account_id' => $vault->account_id, 'life_event_id' => $dinner->id, 'participant_type' => Contact::class, 'participant_id' => $jan->id]);
+        $this->writeOn($dwight, FieldTypeEnum::Relation, 'Former boss', ['related_contact_id' => $jan->id]);
+        $engine->forget();
+
+        $jan->last_name = 'Gould';
+        $jan->save();
+
+        $this->assertTrue($engine->wasSent($michael));
+        $this->assertTrue($engine->wasSent($dinner));
+        $this->assertTrue($engine->wasSent($dwight));
+        $this->assertFalse($engine->wasSent($pam));
+    }
+
+    #[Test]
+    public function it_sends_the_search_engine_the_names_of_the_people_it_is_related_to(): void
+    {
+        $vault = Vault::factory()->create();
+        $michael = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
+        $jan = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'first_name' => 'Jan', 'last_name' => 'Levinson']);
+        $holly = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'first_name' => 'Holly', 'last_name' => 'Flax']);
+        $partner = RelationshipType::factory()->create(['account_id' => $vault->account_id, 'role_a' => 'Partner', 'role_b' => 'Partner']);
+        Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id, 'relationship_type_id' => $partner->id, 'contact_a_id' => $michael->id, 'contact_b_id' => $jan->id]);
+        Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id, 'relationship_type_id' => $partner->id, 'contact_a_id' => $holly->id, 'contact_b_id' => $michael->id])->delete();
+
+        $this->assertSame([['name' => 'Jan Levinson', 'label' => 'Partner of Jan Levinson']], $michael->searchableLinkedNames());
+        $this->assertSame([['name' => 'Michael Scott', 'label' => 'Partner of Michael Scott']], $jan->searchableLinkedNames());
+    }
+
+    /** @param  array<string, mixed>  $attributes */
+    private function writeOn(Contact $contact, FieldTypeEnum $type, string $label, array $attributes, bool $sensitive = false): FieldValue
+    {
+        $field = Field::factory()
+            ->state(['is_sensitive' => $sensitive])
+            ->create(['account_id' => $contact->account_id, 'type' => $type, 'label' => $label]);
+
+        return FieldValue::factory()->create(array_merge([
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+            'field_id' => $field->id,
+            'value_string' => null,
+        ], $attributes));
     }
 }

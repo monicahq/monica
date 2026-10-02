@@ -31,6 +31,19 @@ set_conf() {
     setenv "MAIL_MAILER" "log"
 }
 
+# The reference search engine, the one the suite proves search against.
+install_meilisearch() {
+    case "$(uname -m)" in
+        aarch64|arm64) ARCH=aarch64 ;;
+        *) ARCH=amd64 ;;
+    esac
+    sudo curl -fsSL -o /usr/local/bin/meilisearch "https://github.com/meilisearch/meilisearch/releases/download/v1.54.2/meilisearch-linux-$ARCH"
+    sudo chmod +x /usr/local/bin/meilisearch
+    setenv "SCOUT_DRIVER" "meilisearch"
+    setenv "MEILISEARCH_HOST" "http://127.0.0.1:7700"
+    setenv "MEILISEARCH_KEY" "master-key"
+}
+
 composer_install() {
     composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --working-dir=$ROOT
 }
@@ -49,6 +62,7 @@ setup() {
 set_apache
 set_database
 set_conf
+install_meilisearch
 composer_install
 setup
 bun_install

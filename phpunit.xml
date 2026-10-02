@@ -37,6 +37,8 @@
         <env name="TELEGRAM_BOT_URL" value="https://t.me/DunderMifflinBot"/>
         <env name="TELEGRAM_BOT_WEBHOOK_SECRET" value="testing-webhook-secret"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SCOUT_DRIVER" value="null"/>
+        <env name="SCOUT_QUEUE" value="false"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="DEBUGBAR_ENABLED" value="false"/>
         <env name="PULSE_ENABLED" value="false"/>

@@ -7,8 +7,13 @@ namespace App\Actions;
 use App\Enums\UserActionEnum;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
+use App\Models\Contact;
+use App\Models\Entity;
+use App\Models\FieldValue;
+use App\Models\LifeEvent;
 use App\Models\User;
 use App\Models\ValueListItem;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
@@ -33,6 +38,7 @@ class UpdateValueListItem
         $this->sanitize();
         $this->validate();
         $this->update();
+        $this->resendTheRecordsHoldingIt();
         $this->log();
 
         return $this->item;
@@ -50,6 +56,32 @@ class UpdateValueListItem
     {
         if ($this->item->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This value is in another account.');
+        }
+    }
+
+    /**
+     * A record shows the label of the item it holds, so a new label is a new text to be found by.
+     */
+    private function resendTheRecordsHoldingIt(): void
+    {
+        if (! array_key_exists('label', $this->changes)) {
+            return;
+        }
+
+        $holders = FieldValue::query()
+            ->where('account_id', $this->item->account_id)
+            ->where(function (Builder $query): void {
+                $query->where('value_list_item_id', $this->item->id)
+                    ->orWhereJsonContains('value_list_item_ids', $this->item->id);
+            })
+            ->get(['valuable_type', 'valuable_id']);
+
+        foreach ([Contact::class, Entity::class, LifeEvent::class] as $type) {
+            $ids = $holders->where('valuable_type', $type)->pluck('valuable_id')->unique()->all();
+
+            if ($ids !== []) {
+                $type::sendToSearch($type::query()->whereKey($ids));
+            }
         }
     }
 

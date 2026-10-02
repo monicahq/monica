@@ -8,6 +8,7 @@ use App\Actions\VerifyPasskey;
 use App\Enums\SsoProviderEnum;
 use App\Helpers\InstanceSettings;
 use App\Helpers\LocaleCollation;
+use App\Helpers\MaterializedDatabaseEngine;
 use App\Http\Responses\PasskeyConfirmationResponse;
 use App\Http\Responses\PasskeyDeletedResponse;
 use App\Http\Responses\PasskeyLoginResponse;
@@ -42,6 +43,10 @@ use Laravel\Passport\AccessToken;
 use Laravel\Passport\Passport;
 use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
+use Laravel\Scout\EngineManager;
+use Laravel\Scout\Jobs\MakeSearchableUniquely;
+use Laravel\Scout\Jobs\RemoveFromSearchUniquely;
+use Laravel\Scout\Scout;
 use Override;
 use SocialiteProviders\Manager\SocialiteWasCalled;
 
@@ -111,7 +116,21 @@ class AppServiceProvider extends ServiceProvider
         $this->configureBilling();
         $this->configureSingleSignOn();
         $this->configurePassport();
+        $this->configureSearch();
         $this->refuseDeactivatedUsers();
+    }
+
+    /**
+     * A contact saved five times in a minute is sent to the search engine once: a sync already
+     * waiting on the queue for the same records absorbs the next. The database engine searches
+     * what a record says, written to its own columns, rather than its raw columns.
+     */
+    private function configureSearch(): void
+    {
+        Scout::makeSearchableUsing(MakeSearchableUniquely::class);
+        Scout::removeFromSearchUsing(RemoveFromSearchUniquely::class);
+
+        $this->app->make(EngineManager::class)->extend('database', fn (): MaterializedDatabaseEngine => new MaterializedDatabaseEngine);
     }
 
     /**

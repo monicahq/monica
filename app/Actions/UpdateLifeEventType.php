@@ -7,6 +7,7 @@ namespace App\Actions;
 use App\Enums\UserActionEnum;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
+use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
 use App\Models\User;
@@ -38,6 +39,7 @@ class UpdateLifeEventType
         $this->sanitize();
         $this->validate();
         $this->update();
+        $this->resendItsUntitledLifeEvents();
         $this->log();
 
         return $this->lifeEventType;
@@ -58,6 +60,20 @@ class UpdateLifeEventType
         if ($this->lifeEventCategory->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This life event category is in another account.');
         }
+    }
+
+    /**
+     * A life event with no title of its own is found by the name of its type.
+     */
+    private function resendItsUntitledLifeEvents(): void
+    {
+        if (! $this->lifeEventType->wasChanged('name')) {
+            return;
+        }
+
+        LifeEvent::sendToSearch(LifeEvent::query()
+            ->where('life_event_type_id', $this->lifeEventType->id)
+            ->whereNull('title'));
     }
 
     private function update(): void

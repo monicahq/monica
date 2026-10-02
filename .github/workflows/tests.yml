@@ -54,6 +54,20 @@ jobs:
     # env is what actually drives the connection at runtime).
     env:
       DB_CONNECTION: ${{ matrix.connection }}
+      MEILISEARCH_HOST: http://127.0.0.1:7700
+      MEILISEARCH_KEY: testing-master-key
+
+    # The reference search engine. Matching, tolerance of typing mistakes and
+    # ranking are decided by the engine, so the tests that prove them run
+    # against a real one; every other test runs on Scout's null engine.
+    services:
+      meilisearch:
+        image: getmeili/meilisearch:v1.54.2
+        env:
+          MEILI_MASTER_KEY: testing-master-key
+          MEILI_NO_ANALYTICS: true
+        ports:
+          - 7700:7700
 
     steps:
       - name: Checkout sources

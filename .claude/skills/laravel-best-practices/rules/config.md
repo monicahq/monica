@@ -30,8 +30,8 @@ Incorrect:
 
 ```bash
 # A plaintext .env file committed to the repository
-STRIPE_SECRET=sk_live_abc123
-AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI
+STRIPE_SECRET=<your-stripe-secret>
+AWS_SECRET_ACCESS_KEY=<your-aws-secret>
 ```
 
 Encrypted environment file:

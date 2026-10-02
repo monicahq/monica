@@ -62,7 +62,7 @@ return [
         'delete' => ':name මකන්න',
         'duplicate' => 'අනුපිටපත: නම',
         'edit' => 'සංස්කරණය :name',
-        'export' => 'Export :name',
+        'export' => ':name අපනයනය කරන්න',
         'hide' => ':name සඟවන්න',
         'import' => 'ආනයනය :name',
         'new' => 'නව :name',

@@ -368,4 +368,21 @@ class UndoContactMergeTest extends TestCase
             'value_string' => $value,
         ]);
     }
+
+    #[Test]
+    public function it_sends_both_contacts_to_search_again(): void
+    {
+        Queue::fake();
+        $engine = $this->useRecordingSearchEngine();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+        $engine->forget();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertTrue($engine->wasSent($jim));
+        $this->assertTrue($engine->wasSent($james));
+    }
 }

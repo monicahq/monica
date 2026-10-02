@@ -20,6 +20,7 @@
 /public/hot
 /public/storage
 /storage/*.key
+/storage/meilisearch
 /storage/pail
 /vendor
 __pycache__/

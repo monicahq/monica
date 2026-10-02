@@ -234,4 +234,22 @@ class DestroyVaultTest extends TestCase
         $this->assertNotNull($ontoTheContact->refresh()->revoked_at);
         $this->assertNull($elsewhere->refresh()->revoked_at);
     }
+
+    #[Test]
+    public function it_takes_the_records_of_the_vault_out_of_search(): void
+    {
+        Queue::fake();
+        $engine = $this->useRecordingSearchEngine();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Vault::factory()->default()->create(['account_id' => $user->account_id]);
+        $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+        $farm = Entity::factory()->create(['vault_id' => $vault->id]);
+
+        new DestroyVault(user: $user, vault: $vault)->execute();
+
+        $this->assertTrue($engine->wasRemoved($dwight));
+        $this->assertTrue($engine->wasRemoved($farm));
+    }
 }

@@ -40,6 +40,37 @@ class SidebarTest extends TestCase
     }
 
     #[Test]
+    public function the_vault_column_offers_search_with_the_command_key_on_an_apple_device(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $response = $this->actingAs($user)
+            ->withHeader('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15')
+            ->get(route('vaults.show', $vault));
+
+        $response->assertSee(route('search.index', $vault), escape: false);
+        $response->assertSee('x-data="searchShortcut(', escape: false);
+        $response->assertSee('aria-keyshortcuts="Meta+K"', escape: false);
+        $response->assertSee('⌘K');
+    }
+
+    #[Test]
+    public function the_vault_column_offers_search_with_the_control_key_elsewhere(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $response = $this->actingAs($user)
+            ->withHeader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36')
+            ->get(route('vaults.show', $vault));
+
+        $response->assertSee('aria-keyshortcuts="Control+K"', escape: false);
+        $response->assertSee('Ctrl K');
+        $response->assertDontSee('⌘K');
+    }
+
+    #[Test]
     public function the_vault_column_lists_the_types_of_the_vault_under_people_in_their_order(): void
     {
         $user = User::factory()->create();

@@ -57,6 +57,7 @@ use App\Mcp\Tools\ListVaults;
 use App\Mcp\Tools\PublishTemplateVersion;
 use App\Mcp\Tools\RemoveTemplateSection;
 use App\Mcp\Tools\ReplaceLifeEventTypeFields;
+use App\Mcp\Tools\SearchRecords;
 use App\Mcp\Tools\SetContactFavourite;
 use App\Mcp\Tools\SetEntityTypeActivation;
 use App\Mcp\Tools\SetEntityTypePosition;
@@ -157,6 +158,7 @@ class EricaServer extends Server
         ListEmailsSent::class,
         GetEmailSent::class,
         ListContacts::class,
+        SearchRecords::class,
         ListEntityTypes::class,
         GetEntityType::class,
         CreateEntityType::class,

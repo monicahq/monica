@@ -5,6 +5,7 @@
   @var string $current
   @var int $reminderCount
   @var list<array{key: string, name: string, icon: string, colour: string, url: string}> $entityTypes
+  @var array{url: string, usesCommandKey: bool, keys: string, label: string} $searchShortcut
 --}}
 
 @php
@@ -44,6 +45,22 @@
     >
       <x-icon name="close" :size="15" :stroke-width="1.5" />
     </button>
+  </div>
+
+  <div class="mx-2 mb-1.5">
+    <a
+      href="{{ $searchShortcut['url'] }}"
+      data-turbo="true"
+      x-data="searchShortcut({ usesCommandKey: @js($searchShortcut['usesCommandKey']), fieldId: 'query', url: @js($searchShortcut['url']) })"
+      @keydown.window="open($event)"
+      aria-keyshortcuts="{{ $searchShortcut['keys'] }}"
+      @if ($current === 'search') aria-current="page" @endif
+      class="flex h-8.5 items-center gap-2 rounded-md border border-hairline-strong bg-canvas pr-2 pl-2.5 text-sm text-muted no-underline shadow-panel transition-colors duration-(--duration-fast) ease-out hover:text-ink focus-ring aria-[current=page]:text-ink"
+    >
+      <x-icon name="search" :size="15" :stroke-width="1.5" />
+      <span class="flex-1">{{ __('Search') }}</span>
+      <kbd aria-hidden="true" class="rounded-sm border border-hairline bg-card px-1.25 py-px font-sans text-2xs font-medium text-muted">{{ $searchShortcut['label'] }}</kbd>
+    </a>
   </div>
 
   <nav aria-label="{{ __('This vault') }}" class="min-h-0 flex-1 space-y-px overflow-y-auto px-2 pt-1.5 pb-3">

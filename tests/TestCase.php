@@ -33,8 +33,12 @@ use Laravel\Cashier\Subscription;
 use Laravel\Passport\Client;
 use Laravel\Passport\RefreshToken;
 use Laravel\Passport\Token;
+use Laravel\Scout\EngineManager;
+use Laravel\Scout\Engines\MeilisearchEngine;
+use Meilisearch\Contracts\TasksQuery;
 use Override;
 use Stripe\ApiRequestor;
+use Tests\Fixtures\Scout\RecordingEngine;
 use Tests\Fixtures\Stripe\FakeStripeClient;
 
 abstract class TestCase extends BaseTestCase
@@ -308,6 +312,84 @@ abstract class TestCase extends BaseTestCase
     protected function withConfirmedPassword(): static
     {
         return $this->withSession(['auth.password_confirmed_at' => time()]);
+    }
+
+    /**
+     * Send every record saved from here on to an engine that only remembers what it was given, so a
+     * test can say which records a change reached. Syncing runs inline, as phpunit.xml turns the
+     * queue off for search.
+     */
+    protected function useRecordingSearchEngine(): RecordingEngine
+    {
+        $engine = new RecordingEngine;
+
+        resolve(EngineManager::class)->extend('recording', fn (): RecordingEngine => $engine);
+        config(['scout.driver' => 'recording']);
+
+        return $engine;
+    }
+
+    /**
+     * Search against the reference engine, in indexes only this test uses, removed afterwards.
+     * Matching, tolerance of typing mistakes and ranking are the engine's, so only a real one can
+     * prove them. On a workstation where MEILISEARCH_HOST is not set, or names an engine that does
+     * not answer, the test is skipped. On CI it never is: an engine that does not answer there fails.
+     */
+    protected function useSearchEngine(): void
+    {
+        $host = (string) getenv('MEILISEARCH_HOST');
+        $runsOnContinuousIntegration = getenv('CI') !== false;
+
+        if ($host === '' && ! $runsOnContinuousIntegration) {
+            $this->markTestSkipped('Needs the reference search engine: set MEILISEARCH_HOST and MEILISEARCH_KEY.');
+        }
+
+        config([
+            'scout.driver' => 'meilisearch',
+            'scout.prefix' => 'test_'.Str::lower(Str::random(10)).'_',
+            'scout.meilisearch.host' => $host,
+            'scout.meilisearch.key' => getenv('MEILISEARCH_KEY') ?: null,
+        ]);
+
+        /** @var MeilisearchEngine $engine */
+        $engine = resolve(EngineManager::class)->engine('meilisearch');
+
+        if (! $engine->isHealthy() && ! $runsOnContinuousIntegration) {
+            $this->markTestSkipped("Needs the reference search engine, and none answers at {$host}.");
+        }
+
+        $this->artisan('scout:sync-index-settings')->assertSuccessful();
+        $this->waitForSearchEngine();
+
+        $this->beforeApplicationDestroyed(function (): void {
+            $engine = resolve(EngineManager::class)->engine('meilisearch');
+
+            foreach ($engine->getIndexes()->getResults() as $index) {
+                if (str_starts_with($index->getUid(), (string) config('scout.prefix'))) {
+                    $engine->deleteIndex($index->getUid());
+                }
+            }
+        });
+    }
+
+    /** Wait until the reference engine has applied everything it was sent. */
+    protected function waitForSearchEngine(): void
+    {
+        /** @var MeilisearchEngine $engine */
+        $engine = resolve(EngineManager::class)->engine('meilisearch');
+        $deadline = microtime(true) + 10;
+
+        while (microtime(true) < $deadline) {
+            $pending = $engine->getTasks((new TasksQuery)->setStatuses(['enqueued', 'processing']));
+
+            if ($pending->getTotal() === 0) {
+                return;
+            }
+
+            usleep(50_000);
+        }
+
+        $this->fail('The search engine did not finish indexing within ten seconds.');
     }
 
     protected function assignUserToAccount(User $user, Account $account): User

@@ -62,7 +62,7 @@ return [
         'delete' => 'মুছুন :name',
         'duplicate' => 'সদৃশ: নাম',
         'edit' => ':name সম্পাদনা করুন',
-        'export' => 'Export :name',
+        'export' => ':name রপ্তানি করুন',
         'hide' => ':name লুকান',
         'import' => 'আমদানি :name',
         'new' => 'নতুন :name',

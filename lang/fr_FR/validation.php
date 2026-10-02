@@ -13,9 +13,9 @@ return [
     'alpha_num' => 'Le champ :attribute doit contenir uniquement des chiffres et des lettres.',
     'any_of' => 'Le champ :attribute est invalide.',
     'array' => 'Le champ :attribute doit être un tableau.',
-    'array_keys' => 'The :attribute field must only contain the following keys: :values.',
+    'array_keys' => 'Le champ :attribute ne doit contenir que les clés suivantes : :values.',
     'ascii' => 'Le champ :attribute ne doit contenir que des caractères alphanumériques et des symboles codés sur un octet.',
-    'base64' => 'The :attribute field must be a valid Base64 string.',
+    'base64' => 'Le champ :attribute doit être une chaîne Base64 valide.',
     'before' => 'Le champ :attribute doit être une date antérieure au :date.',
     'before_or_equal' => 'Le champ :attribute doit être une date antérieure ou égale au :date.',
     'between' => [

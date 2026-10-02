@@ -18,7 +18,7 @@
       <div class="border-b border-hairline bg-canvas print:hidden">
         <div class="mx-auto flex h-14 max-w-390 items-center gap-5 px-4 sm:px-7">
           <x-breadcrumb :items="[
-            ['label' => __('Home'), 'url' => route('home.index')],
+            ['label' => __('Home page'), 'url' => route('home.index')],
             ['label' => __('Documentation'), 'url' => route('docs.index')],
             ['label' => 'API', 'url' => route('docs.api.index')],
             ['label' => $section->title],

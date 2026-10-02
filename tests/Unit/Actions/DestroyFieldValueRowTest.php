@@ -160,4 +160,20 @@ class DestroyFieldValueRowTest extends TestCase
             'position' => $position,
         ]);
     }
+
+    #[Test]
+    public function it_sends_the_record_to_search_again(): void
+    {
+        Queue::fake();
+        $engine = $this->useRecordingSearchEngine();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $row = $this->rowOn($user, $contact);
+        $engine->forget();
+
+        new DestroyFieldValueRow(user: $user, row: $row)->execute();
+
+        $this->assertTrue($engine->wasSent($contact));
+    }
 }

@@ -174,4 +174,19 @@ class UpdatePreferencesTest extends TestCase
 
         $this->assertDatabaseHas('users', ['id' => $user->id, 'uses_readable_addresses' => true]);
     }
+
+    #[Test]
+    public function it_sends_every_record_of_the_account_to_search_again_in_another_language(): void
+    {
+        Queue::fake();
+        $engine = $this->useRecordingSearchEngine();
+
+        $user = User::factory()->create(['locale' => 'en']);
+        $dwight = Contact::factory()->create(['account_id' => $user->account_id]);
+        $engine->forget();
+
+        new UpdatePreferences(user: $user, locale: 'fr_FR', timeFormat: TimeFormatEnum::TwentyFourHour)->execute();
+
+        $this->assertTrue($engine->wasSent($dwight));
+    }
 }

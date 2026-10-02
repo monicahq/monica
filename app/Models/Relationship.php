@@ -73,6 +73,22 @@ class Relationship extends Model
     use SoftDeletes;
 
     /**
+     * Each side of a relationship is found by the name of the other, so both are sent to the
+     * search engine again whenever the relationship appears, changes or goes.
+     */
+    protected static function booted(): void
+    {
+        $resendBothSides = function (Relationship $relationship): void {
+            $relationship->contactA?->searchable();
+            $relationship->contactB?->searchable();
+        };
+
+        static::saved($resendBothSides);
+        static::deleted($resendBothSides);
+        static::restored($resendBothSides);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

@@ -62,7 +62,7 @@ return [
     '501' => 'Ej implementerad',
     '502' => 'Dålig gateway',
     '503' => 'underhållsläge',
-    '504' => 'Gateway Timeout',
+    '504' => 'Tidsgräns för gateway',
     '505' => 'HTTP-versionen stöds inte',
     '506' => 'Variant förhandlar också',
     '507' => 'Otillräckligt förvaringsutrymme',

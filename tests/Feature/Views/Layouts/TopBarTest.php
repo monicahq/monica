@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Views\Layouts;
 
 use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -119,5 +120,27 @@ class TopBarTest extends TestCase
         $this->actingAs($user)
             ->blade('<x-account-layout>Anything</x-account-layout>')
             ->assertSee('Account settings');
+    }
+
+    #[Test]
+    public function it_offers_to_search_the_vault_the_screen_is_in(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)
+            ->get(route('reminders.index', $vault))
+            ->assertSee('Search this vault')
+            ->assertSee('action="'.route('search.index', $vault).'"', escape: false);
+    }
+
+    #[Test]
+    public function it_offers_no_search_outside_a_vault(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->blade('<x-shell>Anything</x-shell>')
+            ->assertDontSee('Search this vault');
     }
 }

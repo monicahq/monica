@@ -40,6 +40,10 @@ return new class extends Migration
             $table->timestamp('last_consulted_at')->nullable()->comment('when the user last opened the page, used to order recently viewed');
             $table->string('dav_uri')->nullable()->comment('the .vcf name a device chose when it created the card, null for a contact made here, whose card is its uuid');
             $table->longText('vcard')->nullable()->comment('the card as a device last sent it, kept whole so nothing it wrote is lost, read by nothing but the merge');
+            $table->text('search_name')->nullable()->comment('the name the contact is listed under, as the database search engine reads it');
+            $table->mediumText('search_body')->nullable()->comment('every value that is not sensitive, as the owner reads it, for the database search engine');
+            $table->mediumText('search_sensitive_body')->nullable()->comment('every sensitive value, for the database search engine, searched only for a caller who may read them');
+            $table->text('search_linked_names')->nullable()->comment('the names of the people related to the contact, for the database search engine');
             $table->timestamps();
             $table->softDeletes();
 
@@ -53,6 +57,11 @@ return new class extends Migration
             $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();
             $table->foreign('structure_version_id')->references('id')->on('structure_versions');
             $table->foreign('avatar_file_id')->references('id')->on('files')->nullOnDelete();
+
+            if (config('scout.full_text_index') && in_array(Schema::getConnection()->getDriverName(), ['mysql', 'mariadb', 'pgsql'], true)) {
+                $table->fullText(['search_name', 'search_body', 'search_sensitive_body', 'search_linked_names'], 'contacts_search_fulltext')->language('simple');
+                $table->fullText(['search_name', 'search_body', 'search_linked_names'], 'contacts_search_without_sensitive_fulltext')->language('simple');
+            }
         });
     }
 };

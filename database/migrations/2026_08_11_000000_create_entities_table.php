@@ -25,6 +25,10 @@ return new class extends Migration
             $table->string('avatar_colour', 7)->comment('background colour of the generated avatar');
             $table->boolean('is_archived')->default(false)->comment('whether it is hidden from the main lists without being deleted');
             $table->timestamp('last_consulted_at')->nullable()->comment('when the user last opened the page, used to order recently viewed');
+            $table->text('search_name')->nullable()->comment('the name the entity is listed under, as the database search engine reads it');
+            $table->mediumText('search_body')->nullable()->comment('every value that is not sensitive, as the owner reads it, for the database search engine');
+            $table->mediumText('search_sensitive_body')->nullable()->comment('every sensitive value, for the database search engine, searched only for a caller who may read them');
+            $table->text('search_linked_names')->nullable()->comment('the names the entity points at, for the database search engine');
             $table->timestamps();
             $table->softDeletes();
             $table->boolean('deleted_with_vault')->default(false)->comment('whether the entity was taken out by the deletion of its vault, so restoring the vault knows what to bring back');
@@ -38,6 +42,11 @@ return new class extends Migration
             $table->foreign('entity_type_id')->references('id')->on('entity_types');
             $table->foreign('structure_version_id')->references('id')->on('structure_versions');
             $table->foreign('avatar_file_id')->references('id')->on('files')->nullOnDelete();
+
+            if (config('scout.full_text_index') && in_array(Schema::getConnection()->getDriverName(), ['mysql', 'mariadb', 'pgsql'], true)) {
+                $table->fullText(['search_name', 'search_body', 'search_sensitive_body', 'search_linked_names'], 'entities_search_fulltext')->language('simple');
+                $table->fullText(['search_name', 'search_body', 'search_linked_names'], 'entities_search_without_sensitive_fulltext')->language('simple');
+            }
         });
     }
 };

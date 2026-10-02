@@ -27,7 +27,26 @@ class Sidebar extends Component
         return view('components.vault.sidebar', [
             'reminderCount' => $this->reminderCount(),
             'entityTypes' => $this->entityTypes(),
+            'searchShortcut' => $this->searchShortcut(),
         ]);
+    }
+
+    /**
+     * The shortcut to search: Command K on an Apple device and Control K elsewhere, told apart by
+     * the browser asking, so the key the column shows is the one the page listens for.
+     *
+     * @return array{url: string, usesCommandKey: bool, keys: string, label: string}
+     */
+    private function searchShortcut(): array
+    {
+        $usesCommandKey = preg_match('/Macintosh|Mac OS X|iPhone|iPad/', (string) request()->userAgent()) === 1;
+
+        return [
+            'url' => route('search.index', $this->vault),
+            'usesCommandKey' => $usesCommandKey,
+            'keys' => $usesCommandKey ? 'Meta+K' : 'Control+K',
+            'label' => $usesCommandKey ? '⌘K' : __('Ctrl K'),
+        ];
     }
 
     /** @return list<array{key: string, name: string, icon: string, colour: string, url: string}> */

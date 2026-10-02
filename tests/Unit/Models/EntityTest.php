@@ -157,4 +157,17 @@ class EntityTest extends TestCase
         $this->assertNotContains('sort_key', $entity->getFillable());
         $this->assertNotContains('search_key', $entity->getFillable());
     }
+
+    #[Test]
+    public function it_sends_the_search_engine_its_name_and_its_entity_type(): void
+    {
+        $entity = Entity::factory()->create(['name' => 'Schrute Farms']);
+
+        $document = $entity->toSearchableArray();
+
+        $this->assertSame('Schrute Farms', $document['name']);
+        $this->assertSame($entity->entity_type_id, $document['entity_type_id']);
+        $this->assertSame($entity->vault_id, $document['vault_id']);
+        $this->assertSame('', $document['linked_names']);
+    }
 }

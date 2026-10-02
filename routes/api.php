@@ -56,6 +56,7 @@ use App\Http\Controllers\Api\RelationshipTypeActivationController;
 use App\Http\Controllers\Api\RelationshipTypeController;
 use App\Http\Controllers\Api\RelationshipTypePositionController;
 use App\Http\Controllers\Api\ReminderOccurrenceAnswerController;
+use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\StructureVersionController;
 use App\Http\Controllers\Api\StructureVersionPageController;
@@ -221,6 +222,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/contact-list-columns', [ContactListColumnController::class, 'update'])->name('contactListColumns.update');
 
         Route::get('vaults/{vault}/contacts', [ContactController::class, 'index'])->name('contacts');
+        Route::get('vaults/{vault}/search', [SearchController::class, 'index'])->name('search');
         Route::get('vaults/{vault}/contacts/me', [ContactMeController::class, 'show'])->name('contacts.me');
         Route::get('vaults/{vault}/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
         Route::get('vaults/{vault}/contacts/{contact}/vcard', [ContactVCardController::class, 'show'])->name('contacts.vcard.show');

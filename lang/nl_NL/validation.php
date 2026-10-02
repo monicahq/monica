@@ -13,7 +13,7 @@ return [
     'alpha_num' => ':Attribute mag alleen letters en nummers bevatten.',
     'any_of' => 'Het veld :attribute is ongeldig.',
     'array' => ':Attribute moet geselecteerde elementen bevatten.',
-    'array_keys' => 'The :attribute field must only contain the following keys: :values.',
+    'array_keys' => 'Het veld :attribute mag alleen de volgende sleutels bevatten: :values.',
     'ascii' => 'De :attribute mag alleen alfanumerieke tekens en symbolen van één byte bevatten.',
     'base64' => ':Attribute moet een geldige Base64-string zijn.',
     'before' => ':Attribute moet een datum vóór :date zijn.',

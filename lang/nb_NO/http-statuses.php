@@ -62,7 +62,7 @@ return [
     '501' => 'Ikke implementert',
     '502' => 'Dårlig gateway',
     '503' => 'vedlikeholdsmodus',
-    '504' => 'Gateway Timeout',
+    '504' => 'Tidsavbrudd for gateway',
     '505' => 'HTTP-versjon støttes ikke',
     '506' => 'Variant forhandler også',
     '507' => 'Manglende lagringsplass',

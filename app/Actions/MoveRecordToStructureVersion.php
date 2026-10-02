@@ -44,6 +44,7 @@ class MoveRecordToStructureVersion
         )->execute();
 
         $this->move();
+        $this->record->searchable();
         $this->log();
 
         return $this->record;

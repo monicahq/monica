@@ -62,7 +62,7 @@ return [
         'delete' => ':nameஐ நீக்கு',
         'duplicate' => 'நகல்: பெயர்',
         'edit' => 'திருத்து :name',
-        'export' => 'Export :name',
+        'export' => ':nameஐ ஏற்றுமதி செய்',
         'hide' => 'மறை :name',
         'import' => 'இறக்குமதி :name',
         'new' => 'புதிய :name',

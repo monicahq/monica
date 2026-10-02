@@ -382,4 +382,20 @@ class MoveRecordToStructureVersionTest extends TestCase
 
         return $field;
     }
+
+    #[Test]
+    public function it_sends_the_moved_record_to_search_again(): void
+    {
+        Queue::fake();
+        $engine = $this->useRecordingSearchEngine();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $to = $this->publishedContactVersion($user);
+        $engine->forget();
+
+        new MoveRecordToStructureVersion(user: $user, record: $contact, structureVersion: $to)->execute();
+
+        $this->assertTrue($engine->wasSent($contact));
+    }
 }

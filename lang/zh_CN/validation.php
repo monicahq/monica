@@ -13,9 +13,9 @@ return [
     'alpha_num' => ':attribute 只能由字母和数字组成。',
     'any_of' => ':attribute 字段无效。',
     'array' => ':attribute 必须是一个数组。',
-    'array_keys' => 'The :attribute field must only contain the following keys: :values.',
+    'array_keys' => ':attribute 只能包含以下键：:values。',
     'ascii' => ':attribute 必须仅包含单字节字母数字字符和符号。',
-    'base64' => 'The :attribute field must be a valid Base64 string.',
+    'base64' => ':attribute 必须是有效的 Base64 字符串。',
     'before' => ':attribute 必须要早于 :date。',
     'before_or_equal' => ':attribute 必须要等于 :date 或更早。',
     'between' => [

@@ -30,6 +30,7 @@ class DestroyFieldValueRow
     {
         $this->validate();
         $this->destroy();
+        $this->row->valuable?->searchable();
         $this->log();
     }
 

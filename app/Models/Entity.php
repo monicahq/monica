@@ -8,9 +8,11 @@ use App\Exceptions\EntityNeedsAName;
 use App\Helpers\LocaleCollation;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInVault;
+use App\Models\Concerns\SearchesRecords;
 use Carbon\CarbonImmutable;
 use Database\Factories\EntityFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -74,6 +76,12 @@ use Override;
     'is_archived',
     'last_consulted_at',
 ])]
+#[Hidden([
+    'search_name',
+    'search_body',
+    'search_sensitive_body',
+    'search_linked_names',
+])]
 class Entity extends Model
 {
     /** @use HasFactory<EntityFactory> */
@@ -81,6 +89,7 @@ class Entity extends Model
 
     use HasUuids;
     use ResolvesModelInVault;
+    use SearchesRecords;
     use SoftDeletes;
 
     /**
@@ -228,6 +237,34 @@ class Entity extends Model
     public function snapshots(): MorphMany
     {
         return $this->morphMany(RecordSnapshot::class, 'snapshotable')->latest();
+    }
+
+    /**
+     * The name the record is found and listed under.
+     */
+    #[Override]
+    public function searchableName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Nothing is linked to a record by name: relationships belong to contacts alone.
+     *
+     * @return list<array{name: string, label: string}>
+     */
+    #[Override]
+    public function searchableLinkedNames(): array
+    {
+        return [];
+    }
+
+    /**
+     * The entity type the record is grouped under in search results.
+     */
+    public function searchableEntityTypeId(): ?int
+    {
+        return $this->entity_type_id;
     }
 
     /**

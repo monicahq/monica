@@ -2,6 +2,7 @@
 {{--
   @var string|null $title
   @var bool $wide
+  @var \App\Models\Vault|null $searchVault
   @var \Illuminate\View\ComponentSlot $sidebar
   @var \Illuminate\View\ComponentSlot|null $breadcrumb
   @var \Illuminate\View\ComponentSlot|null $actions
@@ -55,6 +56,27 @@
           @endisset
 
           <div class="ml-auto flex min-w-0 items-center gap-2.5">
+            @if ($searchVault !== null)
+              <form method="get" action="{{ route('search.index', $searchVault) }}" role="search" class="hidden md:block">
+                <label for="shell-search" class="sr-only">{{ __('Search this vault') }}</label>
+                <input
+                  id="shell-search"
+                  type="search"
+                  name="query"
+                  placeholder="{{ __('Search') }}"
+                  class="h-8 w-56 rounded-md border border-hairline-strong bg-input px-3 text-sm text-ink placeholder:text-placeholder focus-ring-field"
+                />
+              </form>
+
+              <a
+                href="{{ route('search.index', $searchVault) }}"
+                aria-label="{{ __('Search this vault') }}"
+                class="flex size-9 items-center justify-center rounded-md text-muted hover:bg-hover hover:text-ink focus-ring md:hidden"
+              >
+                <x-icon name="search" :size="17" />
+              </a>
+            @endif
+
             @isset($actions)
               {{ $actions }}
             @endisset

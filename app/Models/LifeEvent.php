@@ -8,9 +8,11 @@ use App\Enums\DatePrecisionEnum;
 use App\Enums\LifeEventSourceEnum;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInVault;
+use App\Models\Concerns\SearchesRecords;
 use Carbon\CarbonImmutable;
 use Database\Factories\LifeEventFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
@@ -97,6 +99,12 @@ use Override;
     'created_by_user_id',
     'participant_count',
 ])]
+#[Hidden([
+    'search_name',
+    'search_body',
+    'search_sensitive_body',
+    'search_linked_names',
+])]
 class LifeEvent extends Model
 {
     /** @use HasFactory<LifeEventFactory> */
@@ -104,6 +112,7 @@ class LifeEvent extends Model
 
     use HasUuids;
     use ResolvesModelInVault;
+    use SearchesRecords;
     use SoftDeletes;
 
     /**
@@ -202,6 +211,57 @@ class LifeEvent extends Model
     public function fieldValueRows(): MorphMany
     {
         return $this->morphMany(FieldValueRow::class, 'valuable');
+    }
+
+    /**
+     * The name the life event is found and listed under.
+     */
+    #[Override]
+    public function searchableName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Who was there, each read as the line a result shows: with Jan Levinson.
+     *
+     * @return list<array{name: string, label: string}>
+     */
+    #[Override]
+    public function searchableLinkedNames(): array
+    {
+        $linked = [];
+
+        foreach ($this->participants as $participation) {
+            if ($participation->participant === null) {
+                continue;
+            }
+
+            $name = $participation->participant->name;
+            $linked[] = ['name' => $name, 'label' => __('With :name', ['name' => $name])];
+        }
+
+        return $linked;
+    }
+
+    /**
+     * What happened and where, written on the life event itself rather than in a field.
+     *
+     * @return list<string>
+     */
+    public function searchableOwnText(): array
+    {
+        return array_values(array_filter([$this->narrative, $this->location], fn (?string $text): bool => $text !== null && mb_trim($text) !== ''));
+    }
+
+    /**
+     * The type that names an untitled life event, and who took part.
+     *
+     * @return list<string>
+     */
+    public function searchableRelations(): array
+    {
+        return ['lifeEventType', 'participants.participant'];
     }
 
     /**

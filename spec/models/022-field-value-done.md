@@ -63,11 +63,11 @@ updated_at                  datetime
 - A value pointing at a file increments that file's `reference_count`. Detaching decrements it and starts the grace period ([File](008-file-in-progress.md)).
 - A value pointing at a deleted contact or entity is kept and rendered as unavailable. It is not nulled.
 - Layout fields (`divider`, `heading`, `help`) never produce a row.
-- Writing a value queues a reindex for the record ([SearchIndexEntry](054-search-index-entry-not-yet.md)). Saving stays instantaneous and the index catches up behind it (13).
+- Writing a value sends its record to the search engine again, on a queue, through the record it touches (specs/067-full-text-search). Saving stays instantaneous and the index catches up behind it (13).
 
 ## Not done yet
 
-- **Writing a value queues no reindex.** [SearchIndexEntry](054-search-index-entry-not-yet.md) is ahead, so the promise that saving stays instantaneous while the index catches up behind it has nothing to catch up. The typed columns and their indexes are there, which is the half of section 13 that had to be decided now.
+- **Free search reads the values, filtering does not yet.** A value reaches the search engine as the text the product writes for it. The typed columns and their indexes are there for structured filtering, the half of section 13 still ahead.
 - **`value_datetime` is written by nothing.** No type in the first version carries a time as well as a date. The column is there because the file lists it, and the first type that needs one will be what fills it.
 - **Nothing removes a field from a structure on its own.** `MoveRecordToStructureVersion` is the only thing that sets `is_detached`, and it does so inline for the one record it moves. The two actions that set aside every value of a field and put them back had no caller and have been removed. A section version that drops a field and is then republished still does not walk its values, because deciding what a field of the same key on a new section version is to a value of the old one is the builder's question, not this model's.
 - **Two types have no control yet.** `relation` and `avatar` are stored and read perfectly well and cannot be typed in: a relation is a search across the vault, and an avatar is the one file type nothing asks for, since a contact carries its own. `FieldTypeEnum::hasAnInput()` is what says so, and the page draws such a field as what it holds with a line saying it cannot be edited there.

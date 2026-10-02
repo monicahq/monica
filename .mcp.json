@@ -6,6 +6,10 @@
                 "artisan",
                 "boost:mcp"
             ]
+        },
+        "playwright": {
+            "command": "npx",
+            "args": ["@playwright/mcp@latest"]
         }
     }
 }

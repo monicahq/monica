@@ -50,6 +50,20 @@ class LifeEventParticipant extends Model
     use HasFactory;
 
     /**
+     * A life event is found by the names of who was there, so it is sent to the search engine
+     * again whenever somebody joins it or leaves it.
+     */
+    protected static function booted(): void
+    {
+        $resendTheLifeEvent = function (LifeEventParticipant $participation): void {
+            $participation->lifeEvent?->searchable();
+        };
+
+        static::saved($resendTheLifeEvent);
+        static::deleted($resendTheLifeEvent);
+    }
+
+    /**
      * Get the account the participation belongs to.
      *
      * @return BelongsTo<Account, $this>

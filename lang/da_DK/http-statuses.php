@@ -60,7 +60,7 @@ return [
     '499' => 'Klient lukket anmodning',
     '500' => 'Intern serverfejl',
     '501' => 'Ikke implementeret',
-    '502' => 'Bad Gateway',
+    '502' => 'Ugyldig gateway',
     '503' => 'Vedligeholdelsestilstand',
     '504' => 'Gateway Time-out',
     '505' => 'HTTP-version understøttes ikke',

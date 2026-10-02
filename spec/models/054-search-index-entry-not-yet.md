@@ -1,9 +1,11 @@
 # 054. SearchIndexEntry
 
-**Status:** to create
+**Status:** not built, superseded
 **Spec:** 13, 3.7, 9.5
 
 ## What it is
+
+**Superseded (2026-09-29, specs/067-full-text-search).** No table is created. Every instance runs a Laravel Scout engine chosen by its operator, and Scout sends it one document per contact, entity and life event, built from the record's values, its linked names and its scope when the record is saved. Algolia, Meilisearch and Typesense tolerate typing mistakes. The database engine (since 2026-10-02) does not: it writes the document to four `search_*` columns of the record's own table and searches them, through a full text index on MySQL, MariaDB and PostgreSQL and with LIKE on SQLite. What follows is the design that was set aside, kept for its reasoning.
 
 The flattened, searchable form of one record. It is what free text search reads, so that searching does not mean scanning [FieldValue](022-field-value-done.md) across every field of every record.
 
@@ -47,5 +49,5 @@ updated_at                  datetime
 
 ## Open questions
 
-- Which engine backs it. A database full text index is enough at first and typo tolerance is where it gets weak, which is exactly what section 13 asks for. The columns above suit either a database index or an external engine, and the choice should be made on measurement.
+- Which engine backs it. Answered 2026-09-29: Laravel Scout, with the typo tolerant engine each operator chooses.
 - Whether marketplace search shares this table. Section 13 says it is a separate need at a smaller scale and will be handled separately, so it should not.

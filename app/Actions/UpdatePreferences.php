@@ -9,6 +9,9 @@ use App\Enums\NumberFormatEnum;
 use App\Enums\TimeFormatEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\Contact;
+use App\Models\Entity;
+use App\Models\LifeEvent;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -19,6 +22,8 @@ use Illuminate\Support\Facades\DB;
  */
 class UpdatePreferences
 {
+    private bool $rewritesTheRecords = false;
+
     public function __construct(
         private readonly User $user,
         private readonly string $locale,
@@ -35,6 +40,7 @@ class UpdatePreferences
             $this->reorder();
         });
 
+        $this->resendTheAccountsRecords();
         $this->log();
 
         return $this->user;
@@ -56,6 +62,23 @@ class UpdatePreferences
         $this->user->number_format = $this->numberFormat;
         $this->user->uses_readable_addresses = $this->usesReadableAddresses;
         $this->user->save();
+
+        $this->rewritesTheRecords = $this->user->wasChanged(['locale', 'date_format', 'number_format']);
+    }
+
+    /**
+     * Search holds every value as the owner reads it: another language or another way of writing a
+     * date or a number is another text to be found by.
+     */
+    private function resendTheAccountsRecords(): void
+    {
+        if (! $this->rewritesTheRecords) {
+            return;
+        }
+
+        Contact::sendToSearch(Contact::query()->where('account_id', $this->user->account_id));
+        Entity::sendToSearch(Entity::query()->where('account_id', $this->user->account_id));
+        LifeEvent::sendToSearch(LifeEvent::query()->where('account_id', $this->user->account_id));
     }
 
     private function log(): void

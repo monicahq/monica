@@ -32,6 +32,7 @@
         "laravel/passkeys": "^0",
         "laravel/passport": "^13.8",
         "laravel/sanctum": "^4.3",
+        "laravel/scout": "^11.8",
         "laravel/socialite": "^5.31",
         "laravel/tinker": "^3.0",
         "monicahq/laravel-sabre": "^2.0",
@@ -46,6 +47,7 @@
         "barryvdh/laravel-debugbar": "^4.4",
         "brianium/paratest": "^7.20",
         "fakerphp/faker": "^1.23",
+        "http-interop/http-factory-guzzle": "^1.2",
         "larastan/larastan": "^3.9.2",
         "laravel-lang/common": "^6.8",
         "laravel-notification-channels/telegram": "^8.0",
@@ -53,17 +55,23 @@
         "laravel/pail": "^1.2.5",
         "laravel/pao": "^1.0.6",
         "laravel/pint": "^1.27",
+        "laravel/sail": "^1.68",
         "laravel/vonage-notification-channel": "^3.3",
+        "meilisearch/meilisearch-php": "^1.17",
         "mockery/mockery": "^1.6",
         "monicahq/laradb": "^1.1",
         "nunomaduro/collision": "^8.6",
         "phpunit/phpunit": "^12.5.12",
-        "socialiteproviders/microsoft": "^4.10"
+        "socialiteproviders/microsoft": "^4.10",
+        "typesense/typesense-php": "^6.0"
     },
     "suggest": {
         "laravel-notification-channels/telegram": "Required to send notifications over Telegram. Without it the channel is listed and reports itself unavailable.",
+        "algolia/algoliasearch-client-php": "Required to search with Algolia. Search needs one typo tolerant engine: Algolia, Meilisearch or Typesense.",
         "laravel/vonage-notification-channel": "Required to send notifications by text message. Without it the channel is listed and reports itself unavailable.",
-        "socialiteproviders/microsoft": "Required to offer Microsoft as a way to sign in. GitHub, Google and Facebook need nothing beyond laravel/socialite."
+        "meilisearch/meilisearch-php": "Required to search with Meilisearch, together with http-interop/http-factory-guzzle. Search needs one typo tolerant engine: Algolia, Meilisearch or Typesense.",
+        "socialiteproviders/microsoft": "Required to offer Microsoft as a way to sign in. GitHub, Google and Facebook need nothing beyond laravel/socialite.",
+        "typesense/typesense-php": "Required to search with Typesense. Search needs one typo tolerant engine: Algolia, Meilisearch or Typesense."
     },
     "autoload": {
         "psr-4": {

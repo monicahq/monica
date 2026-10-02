@@ -115,6 +115,7 @@ use App\Http\Controllers\App\Vaults\FileController;
 use App\Http\Controllers\App\Vaults\ReminderController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceAnswerController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceTestNotificationController;
+use App\Http\Controllers\App\Vaults\SearchController;
 use App\Http\Controllers\App\Vaults\SetAsideValueController;
 use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
@@ -365,6 +366,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->whereNumber('candidate')
         ->name('vaults.duplicates.dismissal.update');
 
+    Route::get('vaults/{vault}/search', [SearchController::class, 'index'])->name('search.index');
     Route::get('vaults/{vault}/reminders', [VaultReminderController::class, 'index'])->name('reminders.index');
     Route::get('vaults/{vault}/reminders/by-contact', [VaultReminderController::class, 'byContact'])->name('reminders.byContact');
     Route::get('vaults/{vault}/reminders/sent', [VaultReminderController::class, 'sent'])->name('reminders.sent');

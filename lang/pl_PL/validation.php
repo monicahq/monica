@@ -171,7 +171,7 @@ return [
         'birthday' => 'urodziny',
         'body' => 'treść',
         'city' => 'miasto',
-        'color' => 'color',
+        'color' => 'kolor',
         'company' => 'firma',
         'compilation' => 'kompilacja',
         'concept' => 'pojęcie',

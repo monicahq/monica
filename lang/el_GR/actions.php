@@ -62,7 +62,7 @@ return [
         'delete' => 'Διαγράψτε :name',
         'duplicate' => 'Αντιγραφή :name',
         'edit' => 'Επεξεργασία :name',
-        'export' => 'Export :name',
+        'export' => 'Εξαγωγή :name',
         'hide' => 'Απόκρυψη :name',
         'import' => 'Εισαγωγή :name',
         'new' => 'Νέο :name',

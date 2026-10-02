@@ -7,9 +7,11 @@ namespace Tests\Unit\Actions;
 use App\Actions\UpdateLifeEventType;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
 use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -211,5 +213,25 @@ class UpdateLifeEventTypeTest extends TestCase
             lifeEventCategory: $category,
             name: 'Anything',
         )->execute();
+    }
+
+    #[Test]
+    public function it_sends_its_untitled_life_events_to_search_again_when_renamed(): void
+    {
+        Queue::fake();
+        $engine = $this->useRecordingSearchEngine();
+
+        $user = User::factory()->create();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id, 'name' => 'Coffee']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $untitled = LifeEvent::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'life_event_type_id' => $type->id, 'title' => null]);
+        $titled = LifeEvent::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'life_event_type_id' => $type->id, 'title' => 'Coffee with Jan']);
+        $engine->forget();
+
+        new UpdateLifeEventType(user: $user, lifeEventType: $type, lifeEventCategory: $category, name: 'Dundie awards')->execute();
+
+        $this->assertTrue($engine->wasSent($untitled));
+        $this->assertFalse($engine->wasSent($titled));
     }
 }

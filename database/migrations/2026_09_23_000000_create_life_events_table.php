@@ -33,6 +33,10 @@ return new class extends Migration
             $table->string('created_from', 16)->default('contact')->comment('which entry path produced it, a LifeEventSourceEnum value');
             $table->unsignedBigInteger('created_by_user_id')->nullable()->comment('user who entered it, null when an import did');
             $table->unsignedInteger('participant_count')->default(0)->comment('running count of participants');
+            $table->text('search_name')->nullable()->comment('the title the life event is listed under, as the database search engine reads it');
+            $table->mediumText('search_body')->nullable()->comment('the narrative, the location and every value that is not sensitive, for the database search engine');
+            $table->mediumText('search_sensitive_body')->nullable()->comment('every sensitive value, for the database search engine, searched only for a caller who may read them');
+            $table->text('search_linked_names')->nullable()->comment('the names of the participants, for the database search engine');
             $table->timestamps();
             $table->softDeletes();
 
@@ -43,6 +47,11 @@ return new class extends Migration
             $table->foreign('life_event_type_id')->references('id')->on('life_event_types')->cascadeOnDelete();
             $table->foreign('structure_version_id')->references('id')->on('structure_versions')->cascadeOnDelete();
             $table->foreign('created_by_user_id')->references('id')->on('users')->nullOnDelete();
+
+            if (config('scout.full_text_index') && in_array(Schema::getConnection()->getDriverName(), ['mysql', 'mariadb', 'pgsql'], true)) {
+                $table->fullText(['search_name', 'search_body', 'search_sensitive_body', 'search_linked_names'], 'life_events_search_fulltext')->language('simple');
+                $table->fullText(['search_name', 'search_body', 'search_linked_names'], 'life_events_search_without_sensitive_fulltext')->language('simple');
+            }
         });
     }
 };

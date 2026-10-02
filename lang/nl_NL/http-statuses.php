@@ -60,7 +60,7 @@ return [
     '499' => 'Klant Gesloten Verzoek',
     '500' => 'Interne serverfout',
     '501' => 'Niet geïmplementeerd',
-    '502' => 'Slechte poort',
+    '502' => 'Ongeldige gateway',
     '503' => 'Dienst niet beschikbaar',
     '504' => 'Gateway-time-out',
     '505' => 'HTTP-versie wordt niet ondersteund',
