@@ -16,6 +16,7 @@
         "passport-development",
         "scout-development",
         "socialite-development",
+        "telescope-debugging",
         "tailwindcss-development"
     ]
 }

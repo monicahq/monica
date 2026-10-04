@@ -34,6 +34,7 @@
         "laravel/sanctum": "^4.3",
         "laravel/scout": "^11.8",
         "laravel/socialite": "^5.31",
+        "laravel/telescope": "^5.25",
         "laravel/tinker": "^3.0",
         "monicahq/laravel-sabre": "^2.0",
         "php-http/discovery": "^1.20",
