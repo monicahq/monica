@@ -26,8 +26,9 @@ Stdlib only. Safe to run anywhere `python3` is available.
 from __future__ import annotations
 
 import argparse
+import os
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 import sys
 from pathlib import Path
 
@@ -124,6 +125,37 @@ from living_spec_fold import (  # noqa: E402,F401
     apply_deltas,
     fold_living_spec,
 )
+
+
+def _pointer_resolved(args) -> bool:
+    """True when the spec dir came from `.specify/feature.json` or the git branch:
+    no `--feature-dir`, no `--tasks-file`, and neither SPECIFY_* env pointer set."""
+    return (
+        not args.feature_dir and not args.tasks_file
+        and not os.environ.get("SPECIFY_FEATURE_DIRECTORY")
+        and not os.environ.get("SPECIFY_FEATURE")
+    )
+
+
+def _plain_step_write(args, capture_mode: bool) -> bool:
+    """True for the bare `--step <s> [--status] [--kind]` write, the branch nothing
+    else in the invocation claims."""
+    return not (
+        capture_mode or args.set_pairs or args.living_specs or args.living_spec_skips
+        or args.fold_living_spec or args.tasks_file or args.task or args.close_task
+        or args.mark_complete or args.finish or args.advance or args.materialize
+    )
+
+
+def _unscoped_specify_on_finished_spec(args, feature_dir: Path, capture_mode: bool) -> bool:
+    """A pointer-resolved specify start / status write / `--advance` against a spec
+    whose history already holds the step-level specify complete."""
+    if args.step != "specify" or not _pointer_resolved(args):
+        return False
+    if not (args.advance or _plain_step_write(args, capture_mode)):
+        return False
+    log = canonical_log(read_ctx(feature_dir / ".spec-context.json"))
+    return _has_complete(log, "specify")
 
 
 def update_context(
@@ -543,6 +575,19 @@ def _main() -> int:
         _record_outcome(False, msg)
         return 0  # best-effort: never fail the host command
 
+    # A bare specify start or advance that the pointer (feature.json / branch)
+    # resolved to a spec whose specify is already closed is aimed at the PREVIOUS
+    # spec: the create command has not rewritten the pointer yet, or never will.
+    # Silently absorbing it is what left a new spec stuck on `specifying` with its
+    # close recorded nowhere. Name the flag that fixes it and fail loudly; an
+    # explicit --feature-dir keeps every idempotent path exactly as it was.
+    if _unscoped_specify_on_finished_spec(args, feature_dir, capture_mode):
+        msg = (f"refusing: {feature_dir} already finished specify; this is the previous "
+               f"spec. Pass --feature-dir <the new spec folder>.")
+        print(f"[companion] {msg}", file=sys.stderr)
+        _record_outcome(False, msg)
+        return 2
+
     # Caller-error validation for --classification (exit 2, per the capture contract):
     # a malformed classification is a bug in the emitting body, not a runtime miss.
     # Validated before anything is written so a bad value records nothing at all.
@@ -577,6 +622,8 @@ def _main() -> int:
             print(f"[companion] {msg}", file=sys.stderr)
             _record_outcome(False, msg)
             return 2
+        utc = _parsed_at.astimezone(timezone.utc)
+        args.at = utc.strftime("%Y-%m-%dT%H:%M:%S.") + f"{utc.microsecond // 1000:03d}Z"
 
     if args.batch:
         try:

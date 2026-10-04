@@ -31,6 +31,8 @@ Add `--json` when a caller needs the machine-readable object rather than the lis
 | Code | Severity | Raised when |
 |---|---|---|
 | `requirement-without-scenario` | warning | A requirement states a rule and never says how anyone would know it held. |
+| `requirement-bundles-rules` | warning | A requirement states more than 4 SHALL, MUST or SHOULD sentences under one heading. Split it: one requirement per rule, each with its own heading and scenario. |
+| `requirement-too-wordy` | warning | A requirement takes more than 120 words to state its rule. Cut it to the rule and the one reason that stops someone breaking it. |
 | `scenario-missing-half` | error | A scenario has a condition and no outcome, or an outcome and no condition. The keywords are recognised with or without emphasis, so `- WHEN …` counts exactly as `- **WHEN** …` does. |
 | `duplicate-requirement` | error | Two requirements in one capability share a heading, which is the join key fold-back and coverage use. |
 | `unknown-capability` | error | A delta block is marked for a capability the registry does not list. |

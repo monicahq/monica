@@ -20,8 +20,8 @@ from pathlib import Path
 
 # Canonical vocab (mirrors src/core/types/specContext.ts). Kept here only to
 # reject the legacy terminal step and to avoid regressing an advanced spec.
-CANONICAL_STEPS = {"specify", "clarify", "plan", "tasks", "analyze", "implement"}
-STEP_ORDER = {"specify": 0, "clarify": 1, "plan": 2, "tasks": 3, "analyze": 4, "implement": 5}
+CANONICAL_STEPS = {"specify", "clarify", "plan", "tasks", "analyze", "implement", "converge"}
+STEP_ORDER = {"specify": 0, "clarify": 1, "plan": 2, "tasks": 3, "analyze": 4, "implement": 5, "converge": 6}
 # The single home for the step -> canonical completed-status map. `--advance`
 # flips status to this when finishing a step; clarify/analyze are absent (no
 # status advance) so the verb records only the finish for them.
@@ -342,13 +342,13 @@ def _is_more_advanced(ctx: dict, step: str) -> bool:
     canonical order says nothing about where it belongs. Ranking it against
     `implement` would refuse exactly the case people add one for — a review or
     a verification that runs after the work — so ordering is not applied to it.
-    A genuinely shipped spec is still closed to everything.
+    A genuinely shipped spec is still closed to everything, and so is converge.
     """
-    if step not in STEP_ORDER:
+    if step not in STEP_ORDER or step == "converge":
         return ctx.get("status") in _SHIPPED_STATUSES
     if ctx.get("status") in TERMINAL_STATUSES:
         return True
-    cur = ctx.get("currentStep")
+    cur = "implement" if ctx.get("currentStep") == "converge" else ctx.get("currentStep")
     return cur in STEP_ORDER and STEP_ORDER[cur] > STEP_ORDER[step]
 
 

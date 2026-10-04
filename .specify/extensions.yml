@@ -43,3 +43,23 @@ hooks:
     description: Per-task journaling on implement (currentStep=implement; status=implemented
       when all tasks checked)
     condition: null
+  before_converge:
+  - extension: companion
+    command: speckit.companion.before-converge
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.companion.before-converge?
+    description: Record converge start (currentStep=converge, status unchanged) into
+      .spec-context.json
+    condition: null
+  after_converge:
+  - extension: companion
+    command: speckit.companion.after-converge
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.companion.after-converge?
+    description: Record converge finish (currentStep=converge, status unchanged) into
+      .spec-context.json
+    condition: null

@@ -26,7 +26,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 wc = importlib.import_module("write-context")
 dff = importlib.import_module("derive-from-files")
-from spec_context import STEP_COMPLETED_STATUS, TERMINAL_STATUSES, feature_spec_path  # noqa: E402
+from spec_context import CROSS_STEP_TERMINAL, STEP_COMPLETED_STATUS, TERMINAL_STATUSES, feature_spec_path  # noqa: E402
 
 # Canonical forward pipeline (clarify/analyze are optional and not part of the
 # default next-action path). Mirrors src/core/types/specContext.ts STEP_NAMES.
@@ -76,10 +76,11 @@ NEXT_LABEL = {
 
 # Pipeline ordering + the artifact each step requires on disk. Used to reconcile
 # recorded state against on-disk evidence (FR-011).
-PIPELINE_ORDER = {"specify": 0, "clarify": 0, "plan": 1, "tasks": 2, "analyze": 2, "implement": 3}
+PIPELINE_ORDER = {"specify": 0, "clarify": 0, "plan": 1, "tasks": 2, "analyze": 2, "implement": 3, "converge": 3}
 REQUIRED_FILE = {
     "specify": "spec.md", "clarify": "spec.md", "plan": "plan.md",
     "tasks": "tasks.md", "analyze": "tasks.md", "implement": "tasks.md",
+    "converge": "tasks.md",
 }
 
 
@@ -195,13 +196,18 @@ def resolve(feature_dir: Path) -> dict:
         "complete": False,
     }
 
+    # Converge appends tasks after implement settled, so once it has run its open tasks outrank `implemented`.
+    converge_ran = any(isinstance(e, dict) and e.get("step") == "converge" for e in ctx.get("history") or [])
+    in_implement = current_step == "converge" or (current_step == "implement" and converge_ran)
+    converge_open = in_implement and status not in CROSS_STEP_TERMINAL
+
     # Terminal: implemented / completed / archived.
-    if status in TERMINAL_STATUSES:
+    if status in TERMINAL_STATUSES and not converge_open:
         resolution["complete"] = True
         resolution["nextActionLabel"] = "Pipeline complete"
         return resolution
 
-    if current_step == "implement":
+    if current_step in ("implement", "converge"):
         next_task = _next_unchecked_task(feature_dir)
         if next_task is None:
             resolution["complete"] = True

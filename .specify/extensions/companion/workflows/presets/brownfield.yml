@@ -28,10 +28,10 @@ commands:
         nodes: [handoff]
 
   implement:
-    nodes: [implement-exec, verify-manually, complete, handoff]
+    nodes: [implement-exec, record-verified, verify-manually, complete, handoff]
     phases:
       - name: execute
-        nodes: [implement-exec]
+        nodes: [implement-exec, record-verified]
       - name: verify
         nodes: [verify-manually]
       - name: wrap-up

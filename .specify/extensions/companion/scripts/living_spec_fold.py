@@ -220,6 +220,20 @@ def _retitle(section: str, heading: str) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _add_requirement(text: str, block: str) -> str:
+    """Put a requirement at the end of `## Requirements`, ahead of any section after it."""
+    lines = text.rstrip().splitlines()
+    fenced = _fence_flags(lines)
+    start = next((i for i, line in enumerate(lines)
+                  if not fenced[i] and re.match(r"^##\s+Requirements\s*$", line)), None)
+    end = next((i for i in range(start + 1, len(lines)) if not fenced[i] and re.match(r"^##\s", lines[i])),
+               None) if start is not None else None
+    if end is None:
+        return "\n".join(lines) + "\n\n" + block.rstrip() + "\n"
+    head = "\n".join(lines[:end]).rstrip()
+    return head + "\n\n" + block.rstrip() + "\n\n" + "\n".join(lines[end:]) + "\n"
+
+
 def apply_deltas(living_text: str, deltas: dict) -> tuple[str, dict]:
     """Apply ADDED/MODIFIED/REMOVED/RENAMED deltas to a living-spec text.
 
@@ -297,7 +311,7 @@ def apply_deltas(living_text: str, deltas: dict) -> tuple[str, dict]:
         body = modified_bodies.get(target) or modified_bodies.get(head) or section
         if _living_requirement_span(appended.splitlines(), target) is not None:
             continue  # already present under its final heading
-        appended = appended.rstrip() + "\n\n" + _retitle(body, target).rstrip() + "\n"
+        appended = _add_requirement(appended, _retitle(body, target))
         applied["added"] += 1
 
     for head, section in promoted_modified:
@@ -305,7 +319,7 @@ def apply_deltas(living_text: str, deltas: dict) -> tuple[str, dict]:
         if _living_requirement_span(appended.splitlines(), target) is not None:
             applied["promoted_present"] += 1  # redundant: the requirement is already there
             continue
-        appended = appended.rstrip() + "\n\n" + _retitle(section, target).rstrip() + "\n"
+        appended = _add_requirement(appended, _retitle(section, target))
         applied["promoted"] += 1
     return appended, applied
 

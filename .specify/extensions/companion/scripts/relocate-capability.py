@@ -2,7 +2,7 @@
 """Migrate a Living-Specs capability between centralized and colocated storage (#460).
 
 Until now the only way to move a capability was by hand: `git mv` the spec, remember
-its `.arch.md` / `.coverage.md` siblings, then hand-edit the capability registry.
+its `.rules.md` / `.coverage.md` siblings, then hand-edit the capability registry.
 Miss either half and the shipped resolver raises
 `capability "x" is colocated but has no resolvable spec path` — which fails the WHOLE
 living-specs config, not just that capability. This helper does both halves as one

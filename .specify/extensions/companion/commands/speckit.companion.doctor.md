@@ -53,7 +53,7 @@ Every capture and drift call records itself to `specs/<NNN>/.trace.jsonl` — on
 
 ## Debug mode
 
-Setting `debug: true` in `.specify/companion.yml` is read by the body renderers, but **the renderers are build-time tools and are not part of a release** — so on an installed project this switch currently does nothing. Treat it as a maintainer tool: from a source checkout, `python3 speckit-extension/scripts/assemble-nodes.py --debug` and `build-commands.py --debug` render the bodies with per-section timing instrumentation, and a plain rebuild removes it again. Never commit an instrumented body.
+Setting `debug: true` in `.specify/companion.yml` is read by the body renderers, but **the renderers are build-time tools and are not part of a release** — so on an installed project this switch currently does nothing. Treat it as a maintainer tool: from a source checkout, `python3 speckit-extension/scripts/build.py --debug` renders the bodies with per-section timing instrumentation, and a plain rebuild removes it again. Never commit an instrumented body.
 
 To instrument a run on an installed project today, attach the instruction as a node hook in your own `.specify/companion.yml` — that mechanism ships and takes effect on the next dispatched command. See the `debug-timing` hook in this repository's own config for the wording.
 

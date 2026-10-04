@@ -39,7 +39,7 @@ from task_sync import parse_task_markers  # noqa: E402
 
 #: Steps whose boundaries the extension stamps; an `ai` complete there is an
 #: anomaly, because it lands first and permanently blocks the hook's close.
-EXTENSION_STEPS = {"specify", "plan", "tasks", "implement"}
+EXTENSION_STEPS = {"specify", "plan", "tasks", "implement", "converge"}
 #: Steps the AI self-closes. An `extension` complete here is the mirror anomaly.
 AI_STEPS = {"clarify", "analyze"}
 
@@ -144,7 +144,7 @@ def _dangling_steps(ctx: dict, now: datetime | None = None) -> list:
     """
     log = log_entries(ctx)
     current = ctx.get("currentStep")
-    terminal = ctx.get("status") in ("completed", "archived", "implemented")
+    status = ctx.get("status")
     now = now or datetime.now(timezone.utc)
     started, completed = {}, set()
     for e in log:
@@ -159,7 +159,9 @@ def _dangling_steps(ctx: dict, now: datetime | None = None) -> list:
     for step, at in started.items():
         if step in completed:
             continue
-        if step == current and not terminal:
+        # Converge runs after implement settled, so only a closed spec ends its grace.
+        settled = status in ("completed", "archived") or (status == "implemented" and step != "converge")
+        if step == current and not settled:
             grace, last = _cadence_grace(log, step)
             ts = last or parse_time(at)
             if ts is None or (now - ts).total_seconds() < grace:
@@ -185,13 +187,17 @@ def _task_finish_times(ctx: dict) -> list:
     return sorted(out, key=lambda p: p[1])
 
 
-def _attribution_anomalies(ctx: dict) -> list:
+def _attribution_anomalies(ctx: dict, tasks_done: bool = False) -> list:
     out = []
+    # A Companion run closes these itself: plan and tasks with --advance, implement at completion.
+    companion = ctx.get("workflow") == "companion" or ctx.get("profile") == "turbo"
+    # Implement only counts as self-closed once every task is checked; an earlier close is still wrong.
+    self_closed = ({"plan", "tasks"} | ({"implement"} if tasks_done else set())) if companion else set()
     for e in log_entries(ctx):
         step, by = e.get("step"), e.get("by")
         if not isinstance(step, str) or _entry_kind(e) != "complete" or not _is_step_level(e):
             continue
-        if step in EXTENSION_STEPS and by == "ai":
+        if step in EXTENSION_STEPS and by == "ai" and step not in self_closed:
             out.append((step, by, e.get("at"),
                         "the extension stamps this step's boundaries; an ai complete lands "
                         "first and permanently blocks the hook's close"))
@@ -277,7 +283,7 @@ def check_record(feature_dir: Path, ctx: dict, now: datetime | None = None) -> t
              "batches": len(bursts), "largest_batch": len(worst), "span_seconds": span},
         ))
 
-    for step, by, at, why in _attribution_anomalies(ctx):
+    for step, by, at, why in _attribution_anomalies(ctx, _tasks_all_checked(feature_dir)):
         findings.append(Finding(
             "record", "warning",
             f"Step `{step}` was closed by `{by}`",
@@ -502,6 +508,132 @@ def check_verification(feature_dir: Path, ctx: dict) -> tuple:
     )]
 
 
+def check_briefed(feature_dir: Path, ctx: dict) -> tuple:
+    """Did a run with living specs turned on actually read any?
+
+    Loading them is best-effort and never fails, so a run that skipped the load
+    looks exactly like one with nothing to load: `livingSpecs.loaded` is empty
+    either way, no step reports a miss, and the run proceeds unbriefed. The two
+    cases are told apart by the registry — a project with capabilities and the
+    feature on had something to load, and an empty `loaded` there means the
+    briefing did not happen rather than that it was not wanted.
+    """
+    skip = _no_record("briefed", feature_dir, ctx)
+    if skip is not None:
+        return skip, []
+
+    living = ctx.get("livingSpecs") or {}
+    loaded = living.get("loaded") or []
+    if loaded:
+        return CheckStatus("briefed", "ran"), []
+
+    registry = None
+    for name in ("living-specs.yml", "living-specs.yaml"):
+        candidate = feature_dir.parent.parent / name
+        if candidate.exists():
+            registry = candidate
+            break
+    if registry is None:
+        return CheckStatus("briefed", "skipped", "no living-spec registry — nothing to load"), []
+
+    text = registry.read_text(encoding="utf-8", errors="replace")
+    if "enabled: true" not in text:
+        return CheckStatus("briefed", "skipped", "living specs are off for this project"), []
+    if "- name:" not in text:
+        return CheckStatus("briefed", "skipped", "registry holds no capabilities"), []
+
+    return CheckStatus("briefed", "ran"), [Finding(
+        "briefed", "problem",
+        "The run was never briefed",
+        "living specs are enabled and the registry holds capabilities, but `livingSpecs.loaded` "
+        "is empty: the load step was skipped, so this run drafted and implemented without the "
+        "context every other run in this project gets. Nothing failed, which is why it went "
+        "unnoticed — the load never fails by design.",
+        {"registry": registry.name, "loaded": 0},
+    )]
+
+
+def check_dispatch(feature_dir: Path, ctx: dict) -> tuple:
+    """Did plan and implement hand out the workers `dispatch-briefs.py` told them to?
+
+    Each dispatched worker checks in to the trace before it starts, and a step is
+    only judged when the script recorded that it offered workers, so a spec built
+    before these briefs existed is never faulted. A closed plan
+    with two or more recorded areas and no reader check-ins read the code inline,
+    and the same holds for the design docs when the size budget kept both. A
+    `simple` run folds plan, so plan is not judged there. A closed implement whose
+    Foundational phase had waves of four or more tasks and no wave check-ins built
+    them inline, and one offered a living-spec reviewer that never checked in folded
+    its deltas unreviewed.
+    """
+    skip = _no_record("dispatch", feature_dir, ctx)
+    if skip is not None:
+        return skip, []
+    closed = {step for step in ("plan", "implement")
+              if any(e.get("step") == step and _is_step_level(e) and _entry_kind(e) == "complete"
+                     for e in log_entries(ctx))}
+    folded = (ctx.get("size") or "normal") == "simple"
+    if not (closed - ({"plan"} if folded else set())):
+        return CheckStatus("dispatch", "skipped", "no step that dispatches has closed yet"), []
+
+    import run_trace
+
+    read = run_trace.read(feature_dir)
+    events = read.events if read else []
+
+    def since_start(step: str) -> tuple:
+        starts = [e.get("at") or "" for e in log_entries(ctx)
+                  if e.get("step") == step and _is_step_level(e) and _entry_kind(e) == "start"]
+        run = [e for e in events if (e.get("at") or "") >= max(starts, default="")]
+        return ([f for e in run if e.get("op") == "dispatch-checkin" for f in e.get("files") or []],
+                {f for e in run if e.get("op") == "dispatch-offer" for f in e.get("files") or []})
+
+    findings = []
+    if "plan" in closed and not folded:
+        labels, offered = since_start("plan")
+        areas = [c for c in ctx.get("context") or [] if isinstance(c, str) and c.startswith("area:")]
+        expected = {
+            "readers": (min(len(areas), 4) if len(areas) >= 2 else 0, "reader:", "read the code", "readers"),
+            "design-doc writers": (2, "doc:", "wrote the design docs", "docs"),
+        }
+        for what, (want, prefix, did, kind) in expected.items():
+            if want and kind in offered and not any(label.startswith(prefix) for label in labels):
+                findings.append(Finding(
+                    "dispatch", "warning",
+                    f"plan {did} inline instead of dispatching {want} {what}",
+                    "`dispatch-briefs.py` printed briefs for this run and no worker checked in, so the "
+                    "step did the work in its own context — dispatch the printed briefs as written",
+                    {"expected": want, "checked_in": 0},
+                ))
+    labels, offered = since_start("implement")
+    waves = {}
+    for f in offered:
+        parts = f.split(":")
+        if parts[0] == "waves" and len(parts) == 3 and parts[1].isdigit() and parts[2].isdigit():
+            waves[int(parts[1])] = int(parts[2])
+    if "implement" in closed and waves:
+        skipped = [w for w, sent in sorted(waves.items())
+                   if len({label for label in labels if label.startswith(f"wave: {w}.")}) < sent]
+        if skipped:
+            findings.append(Finding(
+                "dispatch", "warning",
+                f"implement built {len(skipped)} Foundational wave{'s' if len(skipped) != 1 else ''} inline "
+                "instead of dispatching their workers",
+                "`dispatch-briefs.py --waves` offered workers for these Foundational waves and not every "
+                "one checked in — dispatch the printed briefs as written",
+                {"waves": skipped},
+            ))
+    if "implement" in closed and "living" in offered and not any(l.startswith("living:") for l in labels):
+        findings.append(Finding(
+            "dispatch", "warning",
+            "implement folded its living-spec deltas without dispatching their reviewer",
+            "`dispatch-briefs.py --living` printed a reviewer brief for this run and no reviewer checked in "
+            "— dispatch the printed brief before the fold",
+            {"expected": 1, "checked_in": 0},
+        ))
+    return CheckStatus("dispatch", "ran"), findings
+
+
 #: What the build declared this pipeline must produce, written beside the command
 #: bodies by the same build that assembled them. The doctor reads the JSON rather
 #: than importing `manifest.py`, which is a build-time script and is not packaged.
@@ -528,6 +660,13 @@ def _closed_steps(ctx: dict) -> set:
             if isinstance(e.get("step"), str) and _is_step_level(e)
             and _entry_kind(e) == "complete"}
 
+
+
+def _artifact_exists(feature_dir, name: str) -> bool:
+    """True when the declared file is on disk; a `<short-name>` placeholder matches whatever name the run chose."""
+    if "<" in name:
+        return any(Path(feature_dir).glob(re.sub(r"<[^>]+>", "*", name)))
+    return (Path(feature_dir) / name).exists()
 
 def check_artifact(feature_dir: Path, ctx: dict, manifest_path=None) -> tuple:
     """Did each closed step leave behind the file it declared it would write?
@@ -571,7 +710,7 @@ def check_artifact(feature_dir: Path, ctx: dict, manifest_path=None) -> tuple:
         names = [n for n in names if n]
         if not names:
             continue
-        missing = [n for n in names if not (Path(feature_dir) / n).exists()]
+        missing = [n for n in names if not _artifact_exists(feature_dir, n)]
         if len(missing) == len(names):
             # None of it landed. That is a step that ran some other pipeline, not
             # one that dropped an artifact — the manifest has no claim on it.
@@ -843,9 +982,14 @@ def _unattributed_failures(feature_dir: Path, ctx: dict) -> list:
 
 def _unattributed_finding(events: list) -> Finding:
     reasons = sorted({e.get("reason") or "no reason recorded" for e in events})
+    ours = [e for e in events if e.get("op") != "outside-window"]
+    if not ours:
+        # Only older failures were set aside: worth saying, but not this run's problem.
+        return Finding("trace", "note", "Failed capture calls from other runs sit in the repo-level log",
+                       reasons[0], {"count": 0, "reasons": reasons})
     return Finding(
         "trace", "problem",
-        f"{plural(len(events), 'capture call')} could not resolve a spec and wrote nothing",
+        f"{plural(len(ours), 'capture call')} could not resolve a spec and wrote nothing",
         reasons[0] + (f" (+{len(reasons) - 1} other reason(s))" if len(reasons) > 1 else ""),
-        {"count": len(events), "reasons": reasons},
+        {"count": len(ours), "reasons": reasons},
     )

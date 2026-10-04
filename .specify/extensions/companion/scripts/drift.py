@@ -247,10 +247,10 @@ def _is_any_spec_doc(fp: str, spec_dirs: set) -> bool:
 
 def _is_own_spec_doc(fp: str, spec_posix: str) -> bool:
     """True for the capability's own living-spec documents — the spec itself or a
-    reserved-tier sibling (`.arch.md` / `.coverage.md`) in the spec's directory.
+    reserved-tier sibling (`.rules.md` / `.coverage.md`, or a legacy `.arch.md`) in the spec's directory.
 
     A colocated capability's `match` globs claim its own area, so without this a
-    `src/billing/billing.arch.md` edit would be reported as drifted *code*. The
+    `src/billing/billing.rules.md` edit would be reported as drifted *code*. The
     spec documents ARE the spec, not drift — mirror the resolver's tier hygiene.
     """
     if fp == spec_posix:

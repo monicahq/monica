@@ -640,7 +640,7 @@ LEGACY_CENTRAL_SPEC = "spec.md"
 def _settle_default_specs(living: dict, root: str) -> dict:
     """Point a capability with no declared `spec` at whichever central file exists.
 
-    The central path used to be `capabilities/<name>/<name>.spec.md` and is now
+    The central path used to be `capabilities/<name>/spec.md` and is now
     `capabilities/<name>/<name>.spec.md`. A registry written before the rename
     declares no path at all, so the only way to keep it reading is to look.
     Neither present means nothing to read either way, and the new name stands so

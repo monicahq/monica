@@ -37,8 +37,9 @@ _TOUCHES_RE = re.compile(r"^\s*<!--\s*touches:\s*(.+?)\s*-->\s*$")
 _ADOPTED_RE = re.compile(r"^\s*<!--\s*adopted:\s*(.+?)\s*-->\s*$")
 _ALIGNS_RE = re.compile(r"^\s*<!--\s*aligns:\s*(.+?)\s*-->\s*$")
 _CAP_MARKER_RE = re.compile(r"^\s*<!--\s*capability:\s*([^\s>]+)\s*-->\s*$", re.IGNORECASE)
-#: Past these a spec is a folder's worth of concerns in one file; under the floor
-#: it is a paragraph with its own tab. Warnings, not gates.
+#: Past the line cap a spec is a folder's worth of concerns in one file; under the floor
+#: it is a paragraph with its own tab. Lines, not requirements: one rule per requirement
+#: makes the count a measure of care, not of size. Warnings, not gates.
 #: `<!-- adopted: CLAUDE.md:18 -->` — this requirement was transcribed by adoption
 #: and no run has confirmed it yet. It sits under the heading, after the `touches`
 #: marker so the resolver still finds that one on the first non-blank line.
@@ -58,9 +59,14 @@ def adopted_sources(section: list[str]) -> str | None:
     return None
 
 
-MAX_REQUIREMENTS = 8
 MAX_LINES = 160
 MIN_REQUIREMENTS = 3
+#: Past these one requirement is several rules under one heading, or one rule buried in
+#: explanation. Measured on this repo's 320 requirements, each flags about the worst 5%.
+MAX_RULES = 4
+MAX_REQUIREMENT_WORDS = 120
+_NORMATIVE_RE = re.compile(r"\b(SHALL|MUST|SHOULD)\b")
+_SENTENCE_RE = re.compile(r"(?<=[.!?])\s+")
 
 _DELTA_HEADER_RE = re.compile(r"^##\s+(ADDED|MODIFIED|REMOVED|RENAMED)\s+Requirements\s*$",
                               re.IGNORECASE)
@@ -81,6 +87,18 @@ _THEN_RE = re.compile(_BULLET + r"\*{0,2}THEN\*{0,2}\b", re.IGNORECASE)
 #: Severity decides one thing: whether a fold stops. Nothing else reads it.
 ERROR = "error"
 WARNING = "warning"
+
+
+#: The viewer's DRAFT badge rule (`livingDocs.ts`): a `[DRAFT]` banner in the first ten body lines.
+_DRAFT_LINE_RE = re.compile(r"^\s*(?:>\s*)*(?:#{1,6}\s+)?(?:[*_]{1,3})?\s*\[draft\]", re.IGNORECASE)
+
+
+def _is_draft(lines: list) -> bool:
+    body = lines
+    if lines and lines[0].strip() == "---":
+        end = next((k for k in range(1, len(lines)) if lines[k].strip() == "---"), None)
+        body = lines[end + 1:] if end is not None else lines
+    return any(_DRAFT_LINE_RE.match(l) for l in body[:10])
 
 
 def _fence_flags(lines: list) -> list:
@@ -395,6 +413,24 @@ def check_living_spec(text: str, path: str, root: str | None = ".",
                 "Add a `#### Scenario:` with a WHEN and a THEN under this requirement.",
                 capability))
 
+        prose = [lines[k] for k in range(i + 1, scenarios[0] if scenarios else j)
+                 if not fenced[k] and not lines[k].lstrip().startswith("<!--")]
+        # Per line, so a bulleted list of rules counts each bullet.
+        rules = sum(1 for line in prose for s in _SENTENCE_RE.split(line) if _NORMATIVE_RE.search(s))
+        words = sum(len(line.split()) for line in prose)
+        if rules > MAX_RULES:
+            findings.append(_finding(
+                WARNING, "requirement-bundles-rules", path, i + 1,
+                f'"{heading}" states {rules} rules under one heading, so a reader cannot tell which one a change broke.',
+                "Split it: one requirement per rule, each with its own heading and scenario.",
+                capability))
+        elif words > MAX_REQUIREMENT_WORDS:
+            findings.append(_finding(
+                WARNING, "requirement-too-wordy", path, i + 1,
+                f'"{heading}" takes {words} words to state its rule.',
+                "Cut it to the rule and the one reason that stops someone breaking it; how it is built belongs in the code.",
+                capability))
+
         for n, start in enumerate(scenarios):
             end = scenarios[n + 1] if n + 1 < len(scenarios) else j
             body = [lines[k] for k in range(start + 1, end) if not fenced[k]]
@@ -530,6 +566,14 @@ def check_living_spec(text: str, path: str, root: str | None = ".",
             "Every adopted requirement in this spec has been confirmed by a run, "
             "but the draft banner still says the whole spec is unreviewed.",
             "Remove the `> [DRAFT]` line.", capability))
+    reviewed = any(re.match(r"^<!--\s*reviewed:", l) for l in lines)
+    if (root is not None and reqs > 0 and not _draft_banner and not reviewed
+            and _is_draft(lines)):
+        findings.append(_finding(
+            WARNING, "draft-unreviewed", path, 1,
+            "This spec was drafted from the code and nobody has reviewed it since.",
+            "Review it for one rule per requirement and no restated implementation, then remove the `> [DRAFT]` line.",
+            capability))
     if (root is not None and capability and _draft_banner and reqs > 0
             and str(path).endswith((".rules.md", ".arch.md"))):
         # Adoption transcribes the rules that hold between files, and a rule about
@@ -548,15 +592,14 @@ def check_living_spec(text: str, path: str, root: str | None = ".",
                 "glob, so the rules that hold between its files were not transcribed.",
                 "Read the project's conventions and enforcement configs, and add each rule "
                 "as a requirement whose marker is the layer glob.", capability))
-    if root is not None and (reqs > MAX_REQUIREMENTS or len(lines) > MAX_LINES):
+    if root is not None and len(lines) > MAX_LINES:
         # A capability with a wide surface is one folder, not one file. Warning
         # only: splitting is a judgement about where the seams are, and a gate
         # that blocks on it would just teach people to write fewer scenarios.
         findings.append(_finding(
             WARNING, "spec-too-large", path, 1,
-            f"{reqs} requirements over {len(lines)} lines — past "
-            f"{MAX_REQUIREMENTS} requirements or {MAX_LINES} lines a spec stops "
-            f"being something a reader holds in their head.",
+            f"{len(lines)} lines: past {MAX_LINES} a spec stops being something a "
+            f"reader holds in their head.",
             _split_advice(path), capability))
 
     if not fences_are_balanced(text):
@@ -615,7 +658,7 @@ def _delta_blocks(text: str) -> list:
 
 
 def check_feature_deltas(text: str, path: str, known_capabilities: list,
-                         target_texts: dict, default_capability=None) -> list:
+                         target_texts: dict, default_capability=None, removed=None) -> list:
     """Every shape finding in one feature spec's delta sections, ordered by line.
 
     `target_texts` maps a capability name to the current text of its living
@@ -626,6 +669,9 @@ def check_feature_deltas(text: str, path: str, known_capabilities: list,
     An unmarked block belongs to `default_capability`, exactly as the fold
     routes it. Leaving it unresolved is how an unmarked delta escaped the check
     that exists to catch it.
+
+    `removed` maps a capability name to the headings recorded as removed on
+    purpose; a delta naming one of those is not pointing at nothing.
     """
     known = set(known_capabilities or [])
     findings: list = []
@@ -671,7 +717,8 @@ def check_feature_deltas(text: str, path: str, known_capabilities: list,
         if block["verb"] not in ("MODIFIED", "REMOVED"):
             continue
         for heading, line in block["headings"]:
-            if heading in present:
+            recorded = {_requirement_key(h) for h in (removed or {}).get(cap, ())}
+            if heading in present or _requirement_key(heading) in recorded:
                 continue
             # A warning, not an error: the fold promotes a MODIFIED with no
             # match into an addition and a REMOVED with no match removes
@@ -719,6 +766,17 @@ def _nearest_heading(heading: str, present: set):
                               and (mine <= theirs or theirs <= mine)):
             return other
     return None
+
+
+_INFERRED_TAG = re.compile(r"\s*\[inferred\]\s*", re.IGNORECASE)
+
+
+def _requirement_key(heading: str) -> str:
+    """The heading as the viewer keys it: `[inferred]` stripped, trimmed.
+
+    A removal record is written from the card, so it never carries the tag; a
+    delta copied out of the spec file does."""
+    return _INFERRED_TAG.sub(" ", heading).strip()
 
 
 def _requirement_headings(text: str) -> list:
@@ -805,6 +863,7 @@ def build_report(root: str = ".", capability: str = "") -> dict:
     skipped: list = []
     checked = 0
     target_texts: dict = {}
+    removed: dict = {}
     known: list = []
 
     for cap in living.get("capabilities") or []:
@@ -824,6 +883,7 @@ def build_report(root: str = ".", capability: str = "") -> dict:
             continue
         checked += 1
         target_texts[name] = text
+        removed[name] = rsp.removed_requirements(full, name)
         findings.extend(check_living_spec(text, rel, root=root, capability=name))
         # The rules tier is plain bullets, one per rule, and the only thing that
         # can go wrong with it is having none. A file with a banner and no rule
@@ -852,7 +912,7 @@ def build_report(root: str = ".", capability: str = "") -> dict:
             skipped.append({"path": rel, "reason": f"could not be read ({err.__class__.__name__})"})
             continue
         checked += 1
-        findings.extend(check_feature_deltas(text, rel, known, target_texts))
+        findings.extend(check_feature_deltas(text, rel, known, target_texts, removed=removed))
 
     findings.sort(key=lambda f: (f["path"], f["line"], f["code"]))
     return {"enabled": True, "checked": checked, "findings": findings, "skipped": skipped}

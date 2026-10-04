@@ -3,11 +3,11 @@ schema_version: "1.0"
 extension:
   id: companion
   name: "SpecKit Companion"
-  version: "0.22.0"
+  version: "0.24.0"
   description: "Records your spec-kit runs live: status, resume, and a health check for what actually happened."
   author: alfredoperez
   repository: https://github.com/alfredoperez/speckit-companion
-  homepage: https://github.com/alfredoperez/speckit-companion/tree/main/speckit-extension
+  homepage: https://github.com/alfredoperez/speckit-companion/tree/main/apps/speckit-extension
   license: MIT
 
 requires:
@@ -41,6 +41,12 @@ provides:
     - name: speckit.companion.after-implement
       file: commands/speckit.companion.after-implement.md
       description: "Capture per-task implement progress (currentStep=implement) into .spec-context.json for the Companion GUI"
+    - name: speckit.companion.before-converge
+      file: commands/speckit.companion.before-converge.md
+      description: "Capture converge start (currentStep=converge, status unchanged) into .spec-context.json for the Companion GUI"
+    - name: speckit.companion.after-converge
+      file: commands/speckit.companion.after-converge.md
+      description: "Capture converge finish (currentStep=converge, status unchanged) into .spec-context.json for the Companion GUI"
     - name: speckit.companion.status
       file: commands/speckit.companion.status.md
       description: "Report where the active spec stands — current step, status, recorded decisions, and the next action — from .spec-context.json"
@@ -110,6 +116,14 @@ hooks:
     command: speckit.companion.after-implement
     optional: false
     description: "Per-task journaling on implement (currentStep=implement; status=implemented when all tasks checked)"
+  before_converge:
+    command: speckit.companion.before-converge
+    optional: false
+    description: "Record converge start (currentStep=converge, status unchanged) into .spec-context.json"
+  after_converge:
+    command: speckit.companion.after-converge
+    optional: false
+    description: "Record converge finish (currentStep=converge, status unchanged) into .spec-context.json"
 
 # Catalog `category` (process) and `effect` (read-write) live only in the
 # community catalog entry — there is no field for them here.

@@ -16,9 +16,9 @@
       "installed_at": "2026-09-29T02:06:59.887185+00:00"
     },
     "companion": {
-      "version": "0.22.0",
+      "version": "0.24.0",
       "source": "local",
-      "manifest_hash": "sha256:d11f6d93175c5ad9bc7eb5816af99e63cedbc2fdb4ea5da4c63a0435e3bb7100",
+      "manifest_hash": "sha256:7c54bfa901137d782f650fe08e1f658229bb92406f21731527734cca0c5c6a63",
       "enabled": true,
       "priority": 10,
       "registered_commands": {
@@ -27,6 +27,8 @@
           "speckit.companion.after-plan",
           "speckit.companion.after-tasks",
           "speckit.companion.after-implement",
+          "speckit.companion.before-converge",
+          "speckit.companion.after-converge",
           "speckit.companion.status",
           "speckit.companion.resume",
           "speckit.companion.specify",
@@ -47,7 +49,7 @@
         ]
       },
       "registered_skills": [],
-      "installed_at": "2026-09-29T02:07:02.026040+00:00"
+      "installed_at": "2026-10-03T16:46:49.609508+00:00"
     }
   }
 }

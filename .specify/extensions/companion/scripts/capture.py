@@ -388,6 +388,16 @@ def append_string_list(feature_dir: Path, field: str, values: list[str]) -> Path
     return target
 
 
+def _as_name_list(value) -> list | None:
+    """A list as given, a comma-separated string split, anything else dropped."""
+    if isinstance(value, str):
+        value = value.split(",")
+    if not isinstance(value, list):
+        return None
+    names = [str(v).strip() for v in value if str(v).strip()]
+    return names or None
+
+
 def upsert_coverage(
     feature_dir: Path, req: str, tasks: list[str] | None, tests: list[str] | None,
     title: str | None = None,
@@ -398,6 +408,11 @@ def upsert_coverage(
     req = req.strip()
     if not req:
         return None
+    # `--batch` hands these through verbatim, so a comma string arrives where the
+    # flag path already split one. Stored as text, every reader of the field sees
+    # no tests at all.
+    tasks = _as_name_list(tasks)
+    tests = _as_name_list(tests)
     title = title.strip() if title else None
     if not tasks and not tests and not title:
         # Nothing to record — writing {} would fake a coverage entry.

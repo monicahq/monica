@@ -41,13 +41,11 @@ Commands are named in dot form throughout this body, `speckit.companion.plan`, b
 <!-- speckit-companion:part speckit-hooks -->
 ## Pre-Execution Checks: stock spec-kit extension hooks
 
-Companion runs **on top of** stock spec-kit, so a project's installed spec-kit **extensions** (git, and any others registered in `.specify/extensions.yml`) must still fire on a Companion run exactly as they do on a stock `/speckit.*` run. That is separate from Companion's own node-hooks in `.specify/companion.yml`; both fire. Like the rest of the pipeline this must **never fail the host command**: anything missing or malformed is skipped silently.
+Companion runs **on top of** stock spec-kit, so a project's installed spec-kit **extensions** (git, and any others in `.specify/extensions.yml`) must fire on a Companion run exactly as on a stock `/speckit.*` run. That is separate from Companion's own node-hooks in `.specify/companion.yml`; both fire. Like the rest of the pipeline this must **never fail the host command**: anything missing or malformed is skipped silently.
 
 Let `<step>` be this command's phase: `specify`, `plan`, `tasks`, or `implement`. Run the pass twice: `hooks.before_<step>` **now, before any of the work below**, and `hooks.after_<step>` once this command's work is fully reported, before handing off.
 
-- **Read `.specify/extensions.yml`.** Absent, unparseable, or carrying no entries for that anchor: skip silently, there is nothing to run.
-- **Skip a hook that is `enabled: false`** (no `enabled` field means enabled), **and any hook whose `extension` is `companion`**. Those exist so a stock run records its lifecycle, and this command records its own in its own body, so dispatching them would rewrite what this step just wrote. Every other extension's hooks fire as normal.
-- **Leave `condition` to the HookExecutor.** A hook with no condition, or a null or empty one, is executable; one with a non-empty condition is skipped here and never evaluated by you.
+- **Read `.specify/extensions.yml`.** Absent, unparseable, or carrying no entries for that anchor: skip silently. Skip a hook that is `enabled: false` (no `enabled` field means enabled), and any hook whose `extension` is `companion`: those record a stock run's lifecycle, which this command records in its own body, so dispatching them would rewrite what this step just wrote. A hook with a non-empty `condition` is left to the HookExecutor and never evaluated by you; no condition, or a null or empty one, is executable.
 - **Emit one block per executable hook.** An optional hook (`optional: true`):
 
   ```
@@ -73,22 +71,22 @@ Let `<step>` be this command's phase: `specify`, `plan`, `tasks`, or `implement`
   Wait for the result of the hook command before proceeding to the Outline.
   ```
 
-  Those labels are the **before** pass's. In the **after** pass drop `Pre-` from the label and drop the closing wait line; there is nothing left to wait for.
+  Those labels are the **before** pass's. In the **after** pass drop `Pre-` from the label and drop the closing wait line.
 
 For `specify`, branch creation is normally one of these `before_specify` hooks (the git extension); the spec directory and its files are always created by the command body itself.
 <!-- /speckit-companion:part speckit-hooks -->
 
-<!-- speckit-companion:part smallest-thing -->
+<!-- speckit-companion:part concise -->
 ## The smallest thing that works
 
-**Before building anything, stop at the first rung that holds:** does it need to exist at all; does this codebase already have it; does the standard library, the platform, or an installed dependency do it; can it be one line; only then, the minimum code that works. Fix the cause where every caller passes through, not the symptom one caller reported. Delete rather than add, boring rather than clever: no interface with one implementation, no factory for one product, no scaffolding for later.
-
-**The same test governs what you write.** A section nobody acts on is removed, not filled in. No requirement for what a type or a test already enforces. A third scenario has to cover a failure the first two miss.
+**Before building anything, stop at the first rung that holds:** does it need to exist at all; does this codebase already have it; does the standard library, the platform, or an installed dependency do it; can it be one line; only then, the minimum code that works. Fix the cause where every caller passes through, not the symptom one caller reported. Delete rather than add, boring rather than clever: no interface with one implementation, no factory for one product, no scaffolding for later. Lean governs what you build and write, not how the work is split: sending work to a worker where a step says to is not extra.
 
 **Write it the way you would say it.** One idea per sentence. No em-dashes: a full stop, a comma or a colon says it. Say what happens, not what the system "shall be capable of". Never a section that exists to say "N/A": remove it instead.
 
+**The same test governs what you write, and again once it is written.** A section nobody acts on is removed, not filled in. No requirement for what a type or a test already enforces. A third scenario has to cover a failure the first two miss. Then reread and cut: the sentence restating the one before it, the example longer than its rule, the clause defending a choice nobody challenged, the prose repeating a table. Each reads as thoroughness and is what makes a body too long to follow.
+
 **Never simplify away** validation at a trust boundary, error handling that prevents data loss, security, accessibility, or anything the spec asks for. **A corner cut on purpose** carries `// simplified: <ceiling>, <what to do when it binds>` in the code and one `concerns` entry in this step's capture.
-<!-- /speckit-companion:part smallest-thing -->
+<!-- /speckit-companion:part concise -->
 
 ## Outline
 
@@ -306,7 +304,7 @@ Record every boundary by **running the writer script**. Never edit `.spec-contex
 
   `--advance` appends the step's complete and flips `status` in one atomic write. It is idempotent and first-writer-wins, so it changes nothing when the after-hook already closed the step, and it is the only thing that closes the step when that hook was printed rather than dispatched. Run it every time, with two exceptions: **clarify** and **analyze** use `--finish`, which records a boundary without owning a status; **implement** runs neither, because its own final node writes `completed` and closes the step in the same write.
 
-- **One finish per substep, the moment it ends.** Plan records `research` and `design`, tasks records `generate`. Never two in one batch, never a separate start.
+- **One finish per substep, the moment it ends.** Plan records `research` and `design`, tasks records `generate`, implement records `living-review` and `living-fold` when living specs are on. Never two in one batch, never a separate start: a finish measures the gap back to the previous boundary, so several stamped together at the close of a step read as `0s` each and record nothing.
 
   ```bash
   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --step <step> --substep <name> --finish --by ai
@@ -349,24 +347,17 @@ This is one step in the Companion pipeline. How the run continues depends on the
 <!-- speckit-companion:part orchestrator -->
 ## Node hooks: run the project's `before`/`after` inserts
 
-This command is assembled from ordered **nodes**. A project can attach its own work before or after any node by declaring it in `.specify/companion.yml`. You are the runtime: read that file if it is there and run those hooks at the right moments. Like the rest of the pipeline, this must **never fail the host command**. Degrade and continue.
+This command is assembled from ordered **nodes**. A project attaches its own work around any node in `.specify/companion.yml`, and you are the runtime. Like the rest of the pipeline it must **never fail the host command**: degrade and continue.
 
-**Find the hooks for this command.** An absent or empty `.specify/companion.yml` means no hooks: skip silently, and never warn. Look up `commands.<this-command>.hooks`. It has two anchors, `before` and `after`, each keyed by a node id from this command's order. Run a node's `before` hooks immediately before that node's work, and its `after` hooks immediately after. When several hooks sit at one anchor, run them **top to bottom, in declared order**.
+**Find the hooks.** Look up `commands.<this-command>.hooks`, whose `before` and `after` anchors are keyed by a node id from this command's order. Run a node's `before` hooks immediately before its work and its `after` hooks immediately after, several at one anchor in declared order. An absent, empty, malformed or unparseable file means no hooks: run the shipped command unchanged, silently when it is absent and with one short warning when it is broken.
 
 **Hook types:**
 
-- `{ type: command, run: "<shell>" }`: run the shell command with your terminal/Bash tool, then continue. *If you have no terminal tool* (some chat-only providers), don't pretend to: report the command you would have run and continue.
-- `{ type: prompt, text: "<instruction>" }`: treat the text as an inline instruction and act on it before moving on.
-- `{ type: node, ref: <id> }`: read `.specify/companion/nodes/<id>.md` and carry out its body as if it were part of this command.
+- `{ type: command, run: "<shell>" }`: run it with your terminal tool, then continue. Without a terminal tool, report the command you would have run rather than pretending.
+- `{ type: prompt, text: "<instruction>" }`: act on the text before moving on.
+- `{ type: node, ref: <id> }`: carry out `.specify/companion/nodes/<id>.md` as part of this command. A missing `ref` file is a real misconfiguration: report it and stop rather than silently skipping.
 
-**Background hooks.** Any hook may add `background: true`. Kick it off and continue immediately, without waiting for it to finish. Use it for slow, independent side-effects such as a test run, a build or a notification: for a `command`, launch it detached (e.g. append `&` or use `nohup … &`); for a `node`/`prompt`, do its work without blocking the next step. Report its result whenever it lands, but never block on it. **Do not** mark `background` on anything that writes `.spec-context.json`, meaning the timing and capture calls: those run a read-modify-write on a shared file, so two racing in the background can lose an update. Background is for side-effects, not bookkeeping.
+**Background hooks.** Any hook may add `background: true`: start it and continue without waiting, detaching a `command` (`&`, `nohup … &`) and not blocking on a `node` or `prompt`. Report its result whenever it lands. Never background anything that writes `.spec-context.json`, meaning the timing and capture calls: they read-modify-write a shared file, so two at once lose an update. Background is for slow side-effects like a test run or a build, not for bookkeeping.
 
-**Failure handling (never abort the host command):**
-
-- **No `.specify/companion.yml`** → there are no hooks; run the command exactly as written. Do not warn.
-- **The file is malformed or unparseable** → ignore it, note one short warning, and run the shipped command unchanged.
-- **A hook is anchored to a node that isn't in this run's order** (e.g. a recipe dropped it) → warn once and skip that anchor's hooks.
-- **A `type: node` hook's `ref` file is missing** → a real misconfiguration: report it clearly and stop before doing damage, rather than silently skipping.
-
-If a hook's own work fails (a `command` exits non-zero, a `node` can't complete), report it and continue the pipeline, unless the failure clearly makes the rest unsafe. A hook never blocks the host command's own output.
+A hook anchored to a node this run does not include, because a recipe dropped it, warns once and is skipped. A hook whose own work fails is reported and the pipeline continues, unless the failure clearly makes the rest unsafe.
 <!-- /speckit-companion:part orchestrator -->
