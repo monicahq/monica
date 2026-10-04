@@ -117,7 +117,8 @@ the rule.
 
 ## Guidelines for writing a commit message
 
-- You MUST provide a simple sentence when submitting a PR. Do NOT write `feat: allow deleting the last vault of an account` - instead, write `feat: delete last vault in account`.
+- You MUST add a scope to every commit message and every PR title: `type(scope): sentence`. The list of scopes is in the `pull-requests` skill, section Scope. Read it before you write a commit message.
+- You MUST provide a simple sentence when submitting a PR. Do NOT write `feat(vaults): allow deleting the last vault of an account` - instead, write `feat(vaults): delete last vault in account`.
 
 DO NOT
 ```
@@ -126,7 +127,7 @@ feat: draw the top bar controls so they read against the bar
 
 DO
 ```
-feat: better header buttons
+feat(ui): better header buttons
 ```
 
 ## Writing something

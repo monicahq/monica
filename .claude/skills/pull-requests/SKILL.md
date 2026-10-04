@@ -5,7 +5,7 @@ description: Conventions for writing pull requests, including Conventional Commi
 
 # Create a pull request
 
-- The pull request title MUST follow the Conventional Commits naming convention, e.g. `feat: add new locale fr_FR`.
+- The pull request title MUST follow the Conventional Commits naming convention, e.g. `feat(scope): add new locale fr_FR`.
 - You SHOULD avoid uppercase in the title, except for proper nouns and acronyms.
 - You MUST indicate the issue the PR closes, if that's the case, and reference the issue number. Do not mention anything otherwise.
 - You MUST NOT mention Claude Code anywhere.
@@ -18,6 +18,31 @@ description: Conventions for writing pull requests, including Conventional Commi
     - do not restate the title, and do not list what the diff already shows
     - keep it understandable by non technical people
     - when a new concept is introduced in the codebase, add a few details to let readers understand what it's about, still as a bullet
+
+## Scope
+
+- You MUST add one scope to every commit message and every PR title, chosen from the list below: `type(scope): sentence`.
+- Choose the scope that names the area of the application the change is about. When a change touches several areas, choose the one the reader of the commit would look for.
+- Do NOT invent a scope. When none of the scopes fits, ask before you add one to this list.
+- Write the scope in lowercase, exactly as listed.
+
+| Scope | Area |
+| --- | --- |
+| `reminders` | Reminders, dates, occurrences, the reminder detail page |
+| `contacts` | Contact record, contact list, timeline, duplicates, relationships, favourites |
+| `templates` | Templates, pages, sections, fields, entity types, value lists |
+| `vaults` | Vaults, vault dashboard, vault settings, vault navigation |
+| `i18n` | Locales, translations, pluralization, number and date formats, time zone |
+| `api` | The JSON API, the OpenAPI document, API keys, CardDAV and CalDAV |
+| `mcp` | The MCP server, its OAuth flow and its tools |
+| `auth` | Sign in, passkeys, passwords, two factor authentication, magic link, security emails |
+| `ui` | Design system, layout, header, buttons, Tailwind, empty states, print stylesheet |
+| `docs` | Documentation portal, product guide, constitution, specifications, project rules |
+| `billing` | Stripe, paywall, subscription and purchase, storage quota |
+| `admin` | The administrator space and the configuration of the instance |
+| `marketplace` | The marketplace, and the sharing of a template or a section |
+
+A change with no area of the application, such as a dependency update or a build or CI change, takes the scope `deps`, `build` or `ci`.
 
 ## Screenshots for a user interface change
 
@@ -37,7 +62,7 @@ description: Conventions for writing pull requests, including Conventional Commi
 
 ```bash
 gh pr create \
-  --title "feat: improve the field type picker" \
+  --title "feat(templates): improve the field type picker" \
   --body-file /tmp/pr-body.md \
   --attach '/tmp/field-type-picker.png#The field type picker showing a preview of the chosen type'
 ```
