@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
+use App\Models\LifeEventCategory;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,8 +15,8 @@ return new class extends Migration
         Schema::create('life_event_types', function (Blueprint $table): void {
             $table->id()->comment('primary key');
             $table->uuid()->unique()->comment('unguessable identifier used in URLs and by the API');
-            $table->unsignedBigInteger('account_id')->comment('account the type belongs to');
-            $table->unsignedBigInteger('life_event_category_id')->comment('category the type is filed under');
+            $table->foreignIdFor(Account::class)->comment('account the type belongs to')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(LifeEventCategory::class)->comment('category the type is filed under')->constrained()->cascadeOnDelete();
             $table->string('key', 64)->nullable()->comment('stable identifier of a supplied type, null for a user-created one');
             $table->string('name')->nullable()->comment('what the user called it, null while the supplied wording stands');
             $table->string('name_translation_key')->nullable()->comment('the supplied wording, read through the translator');
@@ -28,9 +30,6 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->unique(['account_id', 'key']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
-            $table->foreign('life_event_category_id')->references('id')->on('life_event_categories')->cascadeOnDelete();
         });
     }
 };

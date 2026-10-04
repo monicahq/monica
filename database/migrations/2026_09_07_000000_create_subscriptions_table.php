@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table): void {
             $table->id()->comment('primary key');
-            $table->unsignedBigInteger('account_id')->comment('account the subscription belongs to, the billable model Cashier is told to use');
+            $table->foreignIdFor(Account::class)->comment('account the subscription belongs to, the billable model Cashier is told to use')->constrained()->cascadeOnDelete();
             $table->string('type')->comment('name Cashier addresses the subscription by, always default here since an account holds at most one');
             $table->string('stripe_id')->unique()->comment('subscription identifier at Stripe');
             $table->string('stripe_status')->comment('state as Stripe names it, active, past_due or canceled among others');
@@ -23,8 +24,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['account_id', 'stripe_status']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
         });
     }
 };

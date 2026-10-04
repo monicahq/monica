@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
+use App\Models\LifeEventType;
+use App\Models\StructureVersion;
+use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,10 +18,10 @@ return new class extends Migration
         Schema::create('life_events', function (Blueprint $table): void {
             $table->id()->comment('primary key');
             $table->uuid()->unique()->comment('unguessable identifier used in URLs and by the API');
-            $table->unsignedBigInteger('account_id')->comment('account the life event belongs to');
-            $table->unsignedBigInteger('vault_id')->comment('vault it lives in');
-            $table->unsignedBigInteger('life_event_type_id')->comment('nature of the life event');
-            $table->unsignedBigInteger('structure_version_id')->comment('exact field structure used when it was created');
+            $table->foreignIdFor(Account::class)->comment('account the life event belongs to')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Vault::class)->comment('vault it lives in')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(LifeEventType::class)->comment('nature of the life event')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(StructureVersion::class)->comment('exact field structure used when it was created')->constrained()->cascadeOnDelete();
             $table->date('happened_on')->comment('the day it happened, or the first day when it spans several');
             $table->date('ended_on')->nullable()->comment('the last day, null when it happened on a single day');
             $table->string('date_precision', 16)->default('day')->comment('how precisely the date is known, a DatePrecisionEnum value');
@@ -31,7 +36,7 @@ return new class extends Migration
             $table->boolean('is_shareable')->default(false)->comment('whether a share link may include it at all');
             $table->boolean('narrative_is_shareable')->default(false)->comment('whether the free account may be included');
             $table->string('created_from', 16)->default('contact')->comment('which entry path produced it, a LifeEventSourceEnum value');
-            $table->unsignedBigInteger('created_by_user_id')->nullable()->comment('user who entered it, null when an import did');
+            $table->foreignIdFor(User::class, 'created_by_user_id')->nullable()->comment('user who entered it, null when an import did')->constrained()->nullOnDelete();
             $table->unsignedInteger('participant_count')->default(0)->comment('running count of participants');
             $table->text('search_name')->nullable()->comment('the title the life event is listed under, as the database search engine reads it');
             $table->mediumText('search_body')->nullable()->comment('the narrative, the location and every value that is not sensitive, for the database search engine');
@@ -41,12 +46,6 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->index(['vault_id', 'happened_on']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
-            $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();
-            $table->foreign('life_event_type_id')->references('id')->on('life_event_types')->cascadeOnDelete();
-            $table->foreign('structure_version_id')->references('id')->on('structure_versions')->cascadeOnDelete();
-            $table->foreign('created_by_user_id')->references('id')->on('users')->nullOnDelete();
 
             if (config('scout.full_text_index') && in_array(Schema::getConnection()->getDriverName(), ['mysql', 'mariadb', 'pgsql'], true)) {
                 $table->fullText(['search_name', 'search_body', 'search_sensitive_body', 'search_linked_names'], 'life_events_search_fulltext')->language('simple');

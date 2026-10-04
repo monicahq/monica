@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,7 @@ return new class extends Migration
             $table->id()->comment('primary key');
             $table->uuid()->unique()->comment('unguessable identifier used in URLs and by the API, and the one that never changes');
             $table->string('slug', 128)->comment('readable identifier used in URLs and by the API, built from the name, unique within the account');
-            $table->unsignedBigInteger('account_id')->comment('account the vault belongs to');
+            $table->foreignIdFor(Account::class)->comment('account the vault belongs to')->constrained()->cascadeOnDelete();
             $table->string('name')->comment('name the user gave the vault');
             $table->text('description')->nullable()->comment('what the vault is for, shown on the vault list');
             $table->string('colour', 7)->comment('hex colour used to tell vaults apart at a glance');
@@ -27,8 +28,6 @@ return new class extends Migration
 
             $table->index(['account_id', 'position']);
             $table->unique(['account_id', 'slug']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
         });
     }
 };

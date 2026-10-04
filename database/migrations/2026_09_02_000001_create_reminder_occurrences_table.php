@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
+use App\Models\Reminder;
+use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,9 +16,9 @@ return new class extends Migration
         Schema::create('reminder_occurrences', function (Blueprint $table): void {
             $table->id()->comment('primary key');
             $table->uuid()->unique()->comment('unguessable identifier of the deadline, used wherever it is addressed from outside');
-            $table->unsignedBigInteger('account_id')->comment('account the deadline belongs to');
-            $table->unsignedBigInteger('vault_id')->comment('vault it belongs to, copied from the rule');
-            $table->unsignedBigInteger('reminder_id')->comment('rule that produced it');
+            $table->foreignIdFor(Account::class)->comment('account the deadline belongs to')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Vault::class)->comment('vault it belongs to, copied from the rule')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Reminder::class)->comment('rule that produced it')->constrained()->cascadeOnDelete();
             $table->date('local_date')->comment('day the deadline falls on, in the zone frozen on the rule');
             $table->string('generation_key', 64)->comment('stable identity of this deadline under the rule: the schedule revision and the local date');
             $table->timestamp('scheduled_for')->comment('instant it is notified at, in UTC: the local date at the rule\'s time, never moved');
@@ -32,10 +35,6 @@ return new class extends Migration
             $table->index(['vault_id', 'local_date']);
             $table->index(['scheduled_for', 'notifications_created_at'], 'reminder_occurrences_delivery_index');
             $table->index(['vault_id', 'notified_at']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
-            $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();
-            $table->foreign('reminder_id')->references('id')->on('reminders')->cascadeOnDelete();
         });
     }
 };

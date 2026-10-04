@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
+use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,8 +16,8 @@ return new class extends Migration
         Schema::create('notifications', function (Blueprint $table): void {
             $table->id()->comment('primary key');
             $table->uuid()->unique()->comment('unguessable identifier of the notification, used wherever it is addressed from outside');
-            $table->unsignedBigInteger('account_id')->comment('account the notification belongs to');
-            $table->unsignedBigInteger('user_id')->comment('user it is for');
+            $table->foreignIdFor(Account::class)->comment('account the notification belongs to')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->comment('user it is for')->constrained()->cascadeOnDelete();
             $table->string('type', 64)->comment('what it is about, a NotificationTypeEnum value');
             $table->string('channel', 32)->comment('how it was delivered, a NotificationChannelEnum value');
             $table->string('notifiable_type')->nullable()->comment('class of what it is about, null on a digest, which summarises rather than being about one thing');
@@ -31,7 +34,7 @@ return new class extends Migration
             $table->string('failure_reason')->nullable()->comment('why nothing was sent');
             $table->unsignedInteger('attempts')->default(0)->comment('how many times the channel was tried, so a bounded retry is visible on the row');
             $table->timestamp('read_at')->nullable()->comment('when the user read it, for the in-app channel');
-            $table->unsignedBigInteger('digest_id')->nullable()->comment('summary it was folded into, null when it went out on its own');
+            $table->foreignIdFor(Notification::class, 'digest_id')->nullable()->comment('summary it was folded into, null when it went out on its own')->constrained()->nullOnDelete();
             $table->timestamps();
 
             // A deadline is told once per channel, and never again.
@@ -40,10 +43,6 @@ return new class extends Migration
             $table->index(['held_until', 'sent_at']);
             $table->index(['user_id', 'read_at']);
             $table->index('digest_id');
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreign('digest_id')->references('id')->on('notifications')->nullOnDelete();
         });
     }
 };

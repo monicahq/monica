@@ -323,7 +323,7 @@ Read `.claude/rules/code-style.md`, `.claude/rules/testing.md` and the project s
 | `Route::resource()` and `apiResource()` | One named route per line. Zero `Route::resource` |
 | Route names in `snake_case` with dots | camelCase segments: `contacts.shareLinks.create` |
 | Form Request classes for validation | Inline `$request->validate()`. One Form Request in the application |
-| `constrained()`, reversible `down()`, never touch a shipped migration | No `constrained()`, `up()` only, existing migrations edited until production |
+| `foreignId()->constrained()`, reversible `down()`, never touch a shipped migration | `foreignIdFor(Model::class)->constrained()` and never `$table->foreign()`, `up()` only, existing migrations edited until production |
 | `LazilyRefreshDatabase`, `assertModelExists()` | `RefreshDatabase` (297 files), `assertDatabaseHas()` for values |
 | Blade components over `@include`, view composers, `compact()` | `@include` with every variable named, view models, zero `compact()` |
 | `Str`, `Arr` and shorter syntax such as `$request->name` | Fine, except `Model::query()` is always spelled out, and request input is read with `$request->string(...)` |

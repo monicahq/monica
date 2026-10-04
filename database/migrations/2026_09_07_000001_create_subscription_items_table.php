@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Laravel\Cashier\Subscription;
 
 return new class extends Migration
 {
@@ -12,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('subscription_items', function (Blueprint $table): void {
             $table->id()->comment('primary key');
-            $table->unsignedBigInteger('subscription_id')->comment('subscription the line belongs to');
+            $table->foreignIdFor(Subscription::class)->comment('subscription the line belongs to')->constrained()->cascadeOnDelete();
             $table->string('stripe_id')->unique()->comment('subscription item identifier at Stripe');
             $table->string('stripe_product')->comment('product the price belongs to');
             $table->string('stripe_price')->comment('price the line bills');
@@ -22,8 +23,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['subscription_id', 'stripe_price']);
-
-            $table->foreign('subscription_id')->references('id')->on('subscriptions')->cascadeOnDelete();
         });
     }
 };

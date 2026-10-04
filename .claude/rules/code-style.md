@@ -176,9 +176,10 @@ nothing to say about itself is still missing its first line.
 ## Migrations
 
 - Write only the `up()` method; you SHALL never write a `down()` method.
-- Never use `constrained()`. Declare the column, then declare the foreign key at the bottom of the
-  migration. The [migrations skill](../skills/migrations/SKILL.md) has the rest, including the file
-  naming that orders them and the rule about editing an existing migration.
+- Declare a foreign key with `foreignIdFor(Model::class)->...->constrained()`, column and constraint
+  on one line. Never write `$table->foreign()`. The [migrations skill](../skills/migrations/SKILL.md)
+  has the rest, including the order of the modifiers, the file naming that orders migrations and the
+  rule about editing an existing migration.
 
 ## Validation
 

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table): void {
             $table->id()->comment('primary key');
-            $table->unsignedBigInteger('account_id')->unique()->comment('account the user belongs to, unique because an account holds exactly one person');
+            $table->foreignIdFor(Account::class)->unique()->comment('account the user belongs to, unique because an account holds exactly one person')->constrained()->cascadeOnDelete();
             $table->string('first_name')->comment('first name of the user');
             $table->string('last_name')->comment('last name of the user');
             $table->string('photo_path')->nullable()->comment('path of the photo file');
@@ -45,8 +46,6 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->unique(['sso_provider', 'sso_id']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table): void {

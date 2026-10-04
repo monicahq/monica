@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
+use App\Models\EntityType;
+use App\Models\File;
+use App\Models\StructureVersion;
+use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,15 +18,15 @@ return new class extends Migration
         Schema::create('entities', function (Blueprint $table): void {
             $table->id()->comment('primary key');
             $table->uuid()->unique()->comment('unguessable identifier used in URLs and by the API');
-            $table->unsignedBigInteger('account_id')->comment('account the entity belongs to');
-            $table->unsignedBigInteger('vault_id')->comment('vault the entity lives in');
-            $table->unsignedBigInteger('entity_type_id')->comment('type of object it is, which never changes');
-            $table->unsignedBigInteger('structure_version_id')->comment('exact structure version the page renders from');
+            $table->foreignIdFor(Account::class)->comment('account the entity belongs to')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Vault::class)->comment('vault the entity lives in')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(EntityType::class)->comment('type of object it is, which never changes')->constrained();
+            $table->foreignIdFor(StructureVersion::class)->comment('exact structure version the page renders from')->constrained();
             $table->string('name')->comment('what the record is called, used in lists, headers and search');
             $table->string('sort_name', 511)->comment('precomputed string the list sorts on, so sorting never depends on rendering');
             $table->binary('sort_key', 2048)->comment('collation key the list orders and pages on, built for the language of the account, compared byte by byte so the order reads the same on every database');
             $table->string('search_key', 511)->comment('sort_name folded for the language of the account, so a search folds what that language calls a minor difference and nothing else');
-            $table->unsignedBigInteger('avatar_file_id')->nullable()->comment('image standing in for it, null when a generated one is used');
+            $table->foreignIdFor(File::class, 'avatar_file_id')->nullable()->comment('image standing in for it, null when a generated one is used')->constrained()->nullOnDelete();
             $table->string('avatar_colour', 7)->comment('background colour of the generated avatar');
             $table->boolean('is_archived')->default(false)->comment('whether it is hidden from the main lists without being deleted');
             $table->timestamp('last_consulted_at')->nullable()->comment('when the user last opened the page, used to order recently viewed');
@@ -36,12 +41,6 @@ return new class extends Migration
             $table->index(['vault_id', 'sort_name']);
             $table->index(['vault_id', 'sort_key']);
             $table->index(['vault_id', 'entity_type_id']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
-            $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();
-            $table->foreign('entity_type_id')->references('id')->on('entity_types');
-            $table->foreign('structure_version_id')->references('id')->on('structure_versions');
-            $table->foreign('avatar_file_id')->references('id')->on('files')->nullOnDelete();
 
             if (config('scout.full_text_index') && in_array(Schema::getConnection()->getDriverName(), ['mysql', 'mariadb', 'pgsql'], true)) {
                 $table->fullText(['search_name', 'search_body', 'search_sensitive_body', 'search_linked_names'], 'entities_search_fulltext')->language('simple');

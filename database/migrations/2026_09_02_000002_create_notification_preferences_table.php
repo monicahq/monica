@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('notification_preferences', function (Blueprint $table): void {
             $table->id()->comment('primary key');
-            $table->unsignedBigInteger('account_id')->comment('account the preferences belong to');
+            $table->foreignIdFor(Account::class)->comment('account the preferences belong to')->constrained()->cascadeOnDelete();
             $table->boolean('quiet_hours_are_enabled')->default(false)->comment('whether quiet hours apply at all');
             $table->time('quiet_hours_start')->nullable()->comment('local time from which nothing may be delivered');
             $table->time('quiet_hours_end')->nullable()->comment('local time from which delivery may resume');
@@ -24,8 +25,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique('account_id');
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
         });
     }
 };

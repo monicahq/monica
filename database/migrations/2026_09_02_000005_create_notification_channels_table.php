@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('notification_channels', function (Blueprint $table): void {
             $table->id()->comment('primary key');
-            $table->unsignedBigInteger('account_id')->comment('account the channel belongs to');
+            $table->foreignIdFor(Account::class)->comment('account the channel belongs to')->constrained()->cascadeOnDelete();
             $table->string('channel', 32)->comment('which channel this row is about, a NotificationChannelEnum value');
             $table->boolean('is_enabled')->default(false)->comment('whether the account wants anything to go out on it');
             $table->string('destination')->nullable()->comment('the room, the conversation or the number things are sent to');
@@ -28,8 +29,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique(['account_id', 'channel']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
         });
     }
 };

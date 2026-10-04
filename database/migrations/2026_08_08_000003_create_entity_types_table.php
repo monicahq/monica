@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +14,7 @@ return new class extends Migration
         Schema::create('entity_types', function (Blueprint $table): void {
             $table->id()->comment('primary key');
             $table->uuid()->unique()->comment('unguessable identifier used by the API, alongside the readable slug');
-            $table->unsignedBigInteger('account_id')->comment('account the type belongs to');
+            $table->foreignIdFor(Account::class)->comment('account the type belongs to')->constrained()->cascadeOnDelete();
             $table->string('name_singular')->comment('what one of them is called, used in headers and buttons');
             $table->string('name_plural')->comment('what several of them are called, used in list titles');
             $table->string('slug', 64)->comment('stable identifier used in URLs and by the API, unique within the account');
@@ -27,8 +28,6 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->unique(['account_id', 'slug']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
         });
     }
 };

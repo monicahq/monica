@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
+use App\Models\File;
+use App\Models\StructureVersion;
+use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,9 +18,9 @@ return new class extends Migration
             $table->id()->comment('primary key');
             $table->uuid()->unique()->comment('unguessable identifier used in URLs, share links and by the API, and the one that never changes');
             $table->string('slug', 128)->comment('readable identifier used in URLs and by the API, built from the displayed name, unique within the vault');
-            $table->unsignedBigInteger('account_id')->comment('account the contact belongs to');
-            $table->unsignedBigInteger('vault_id')->comment('vault the contact lives in');
-            $table->unsignedBigInteger('structure_version_id')->comment('exact structure version the page renders from');
+            $table->foreignIdFor(Account::class)->comment('account the contact belongs to')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Vault::class)->comment('vault the contact lives in')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(StructureVersion::class)->comment('exact structure version the page renders from')->constrained();
             $table->string('prefix', 50)->nullable()->comment('civility, such as Dr or Mrs');
             $table->string('first_name')->nullable()->comment('first name');
             $table->string('middle_name')->nullable()->comment('middle name');
@@ -32,7 +36,7 @@ return new class extends Migration
             $table->boolean('is_partial')->default(false)->comment('whether the contact came from a mention and is not filled in yet');
             $table->boolean('is_archived')->default(false)->comment('whether the contact is hidden from the main lists without being deleted');
             $table->boolean('is_favourite')->default(false)->comment('whether the contact is pinned to the top of the list');
-            $table->unsignedBigInteger('avatar_file_id')->nullable()->comment('uploaded avatar, null when initials are used instead');
+            $table->foreignIdFor(File::class, 'avatar_file_id')->nullable()->comment('uploaded avatar, null when initials are used instead')->constrained()->nullOnDelete();
             $table->string('avatar_colour', 7)->comment('background colour of the generated initials avatar');
             $table->dateTime('last_life_event_at')->nullable()->comment('date of the latest life event the contact participated in, null when none exists');
             $table->dateTime('last_interaction_at')->nullable()->comment('date of the latest life event the contact and the Me contact both took part in, null when none exists');
@@ -52,11 +56,6 @@ return new class extends Migration
             $table->index(['vault_id', 'created_at']);
             $table->unique(['vault_id', 'dav_uri']);
             $table->unique(['vault_id', 'slug']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
-            $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();
-            $table->foreign('structure_version_id')->references('id')->on('structure_versions');
-            $table->foreign('avatar_file_id')->references('id')->on('files')->nullOnDelete();
 
             if (config('scout.full_text_index') && in_array(Schema::getConnection()->getDriverName(), ['mysql', 'mariadb', 'pgsql'], true)) {
                 $table->fullText(['search_name', 'search_body', 'search_sensitive_body', 'search_linked_names'], 'contacts_search_fulltext')->language('simple');

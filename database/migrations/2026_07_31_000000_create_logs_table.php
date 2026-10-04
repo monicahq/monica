@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,9 +14,9 @@ return new class extends Migration
     {
         Schema::create('logs', function (Blueprint $table): void {
             $table->id()->comment('primary key');
-            $table->unsignedBigInteger('account_id')->comment('account the action was performed in');
+            $table->foreignIdFor(Account::class)->comment('account the action was performed in')->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('vault_id')->nullable()->comment('vault the action touched, null for account level actions');
-            $table->unsignedBigInteger('user_id')->nullable()->comment('user who performed the action, null once that user is deleted and null when the system acted on its own');
+            $table->foreignIdFor(User::class)->nullable()->comment('user who performed the action, null once that user is deleted and null when the system acted on its own')->constrained()->nullOnDelete();
             $table->string('user_email')->comment('email address of the user at the time of the action, kept so the log still says who acted once the user is gone, or a marker when the system acted');
             $table->string('action')->comment('action that was performed, also used as translation key');
             $table->json('parameters')->nullable()->comment('parameters for the translation');
@@ -28,9 +30,6 @@ return new class extends Migration
 
             $table->index(['account_id', 'created_at']);
             $table->index(['loggable_type', 'loggable_id']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
-            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
         });
     }
 };

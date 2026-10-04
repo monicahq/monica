@@ -2,6 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
+use App\Models\Contact;
+use App\Models\Entity;
+use App\Models\Field;
+use App\Models\FieldValueRow;
+use App\Models\File;
+use App\Models\ValueListItem;
+use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,13 +25,13 @@ return new class extends Migration
 
         Schema::create('field_values', function (Blueprint $table) use ($filterableString): void {
             $table->id()->comment('primary key');
-            $table->unsignedBigInteger('account_id')->comment('account the value belongs to');
-            $table->unsignedBigInteger('vault_id')->comment('vault the value belongs to, so filtering never needs a join');
+            $table->foreignIdFor(Account::class)->comment('account the value belongs to')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Vault::class)->comment('vault the value belongs to, so filtering never needs a join')->constrained()->cascadeOnDelete();
             $table->string('valuable_type')->comment('class of the record, a contact, an entity or a life event');
             $table->unsignedBigInteger('valuable_id')->comment('id of that record');
-            $table->unsignedBigInteger('field_id')->comment('field the value was entered for');
+            $table->foreignIdFor(Field::class)->comment('field the value was entered for')->constrained()->cascadeOnDelete();
             $table->string('field_key', 64)->comment('key of that field copied at write time, so the value survives the field');
-            $table->unsignedBigInteger('field_value_row_id')->nullable()->comment('repeater row it belongs to, null when it is not inside a repeater');
+            $table->foreignIdFor(FieldValueRow::class)->nullable()->comment('repeater row it belongs to, null when it is not inside a repeater')->constrained()->cascadeOnDelete();
             $table->string('value_string', 1024)->nullable()->comment('value for the text, url, email, phone and colour types');
             $table->text('value_text')->nullable()->comment('value for the long text and rich text types');
             $table->decimal('value_number', 20, 6)->nullable()->comment('value for the number, rating and duration types');
@@ -31,12 +39,12 @@ return new class extends Migration
             $table->date('value_date')->nullable()->comment('value for the date and recurring date types');
             $table->timestamp('value_datetime')->nullable()->comment('value for a type that carries a time as well');
             $table->json('value_json')->nullable()->comment('value for the composite types, such as an address or a location');
-            $table->unsignedBigInteger('value_list_item_id')->nullable()->comment('chosen item for the single choice types, and the label of an email or a phone');
+            $table->foreignIdFor(ValueListItem::class)->nullable()->comment('chosen item for the single choice types, and the label of an email or a phone')->constrained()->nullOnDelete();
             $table->string('label_wording')->nullable()->comment('wording somebody typed for a label the list does not name, kept only when the chosen item is the open one');
             $table->json('value_list_item_ids')->nullable()->comment('chosen items for the multiple choice types');
-            $table->unsignedBigInteger('value_file_id')->nullable()->comment('attached file for the file, image and avatar types');
-            $table->unsignedBigInteger('related_contact_id')->nullable()->comment('target of a relation field pointing at a contact');
-            $table->unsignedBigInteger('related_entity_id')->nullable()->comment('target of a relation field pointing at an entity');
+            $table->foreignIdFor(File::class, 'value_file_id')->nullable()->comment('attached file for the file, image and avatar types')->constrained()->nullOnDelete();
+            $table->foreignIdFor(Contact::class, 'related_contact_id')->nullable()->comment('target of a relation field pointing at a contact')->constrained();
+            $table->foreignIdFor(Entity::class, 'related_entity_id')->nullable()->comment('target of a relation field pointing at an entity')->constrained();
             $table->boolean('year_is_unknown')->default(false)->comment('whether the year of a recurring date is not known, so it is never rendered');
             $table->boolean('month_is_unknown')->default(false)->comment('whether the month is not known either, for a date reduced to a year');
             $table->boolean('is_detached')->default(false)->comment('whether the field left the structure, hiding the value without destroying it');
@@ -50,15 +58,6 @@ return new class extends Migration
             $table->index(['vault_id', 'field_id', 'value_boolean'], 'field_values_filter_boolean_index');
             $table->index(['vault_id', 'field_id', 'value_date'], 'field_values_filter_date_index');
             $table->index(['vault_id', 'field_id', 'value_list_item_id'], 'field_values_filter_list_item_index');
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
-            $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();
-            $table->foreign('field_id')->references('id')->on('fields')->cascadeOnDelete();
-            $table->foreign('field_value_row_id')->references('id')->on('field_value_rows')->cascadeOnDelete();
-            $table->foreign('value_list_item_id')->references('id')->on('value_list_items')->nullOnDelete();
-            $table->foreign('value_file_id')->references('id')->on('files')->nullOnDelete();
-            $table->foreign('related_contact_id')->references('id')->on('contacts');
-            $table->foreign('related_entity_id')->references('id')->on('entities');
         });
     }
 };

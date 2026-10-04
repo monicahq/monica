@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('emails_sent', function (Blueprint $table): void {
             $table->id()->comment('primary key');
-            $table->unsignedBigInteger('account_id')->comment('account the email was sent on behalf of');
-            $table->unsignedBigInteger('user_id')->nullable()->comment('user who received the email, null when the system sent it to someone who has no account');
+            $table->foreignIdFor(Account::class)->comment('account the email was sent on behalf of')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->nullable()->comment('user who received the email, null when the system sent it to someone who has no account')->constrained()->nullOnDelete();
             $table->string('uuid')->nullable()->comment('identifier given to the email by Resend');
             $table->string('email_type')->comment('type of email sent');
             $table->string('email_address')->comment('address the email was sent to');
@@ -28,9 +30,6 @@ return new class extends Migration
             $table->index('uuid');
             $table->index(['account_id', 'sent_at']);
             $table->index(['user_id', 'sent_at']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
-            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
         });
     }
 };

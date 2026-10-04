@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
+use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,8 +16,8 @@ return new class extends Migration
         Schema::create('share_links', function (Blueprint $table): void {
             $table->id()->comment('primary key');
             $table->uuid()->unique()->comment('unguessable identifier of the link itself, never the secret token in the URL');
-            $table->unsignedBigInteger('account_id')->comment('account that created the link');
-            $table->unsignedBigInteger('vault_id')->comment('vault of the contact being shared');
+            $table->foreignIdFor(Account::class)->comment('account that created the link')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Vault::class)->comment('vault of the contact being shared')->constrained()->cascadeOnDelete();
             $table->string('shareable_type')->comment('class of what is shared, a contact');
             $table->unsignedBigInteger('shareable_id')->comment('id of that object');
             $table->string('token', 64)->unique()->comment('hash of the unguessable token in the URL, the token itself never stored');
@@ -34,15 +37,11 @@ return new class extends Migration
             $table->json('excluded_life_event_ids')->comment('life events held back individually, tightening the general setting');
             $table->unsignedInteger('view_count')->default(0)->comment('how many times it was opened');
             $table->timestamp('last_viewed_at')->nullable()->comment('when it was last opened');
-            $table->unsignedBigInteger('created_by_user_id')->nullable()->comment('user who created it');
+            $table->foreignIdFor(User::class, 'created_by_user_id')->nullable()->comment('user who created it')->constrained()->nullOnDelete();
             $table->timestamps();
 
             $table->index(['shareable_type', 'shareable_id'], 'share_links_shareable_index');
             $table->index(['vault_id', 'revoked_at']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
-            $table->foreign('vault_id')->references('id')->on('vaults')->cascadeOnDelete();
-            $table->foreign('created_by_user_id')->references('id')->on('users')->nullOnDelete();
         });
     }
 };

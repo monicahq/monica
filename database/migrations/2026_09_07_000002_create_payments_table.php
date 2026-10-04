@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Account;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table): void {
             $table->id()->comment('primary key');
-            $table->unsignedBigInteger('account_id')->comment('account that paid');
+            $table->foreignIdFor(Account::class)->comment('account that paid')->constrained()->cascadeOnDelete();
             $table->string('stripe_id')->unique()->comment('invoice identifier at Stripe, which is what makes a repeated confirmation recognisable');
             $table->string('stripe_subscription_id')->nullable()->index()->comment('subscription the invoice was raised for, null for the one time purchase, which is how the kind is derived');
             $table->string('kind', 32)->nullable()->comment('offer paid for, an OfferKindEnum value, stored so the history survives a retagged price, null when the catalogue no longer knew the price it charged');
@@ -27,8 +28,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['account_id', 'billed_at']);
-
-            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
         });
     }
 };
