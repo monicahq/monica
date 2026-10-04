@@ -1,51 +1,24 @@
 <!--
 Sync Impact Report
-Version change: 2.4.0 -> 2.4.1
-Rationale: the product renamed activity to life event (commit a681d13e and spec/models/036), and five
-passages here still said activity. Wording only, no obligation changes, so PATCH.
-
-Modified: principle VI (the frozen version a life event type owns), principle VII (the fixed concepts),
-and two Product Invariants (what a vault holds, what the Me contact carries).
-Added: none.
-Removed: none.
-
-Follow-up owed by the pull request that adopts this: none.
--->
-<!--
-Sync Impact Report
-<!--
-Sync Impact Report
-Version change: 2.3.1 -> 2.4.0
-Rationale: the official MCP server is a capability principle X already requires, and the package that
-serves it generates its server and tool classes into a namespace no listed folder holds. A tool is not
-a controller, a model or an action: it is a transport the product exposes, and the layout of the
-repository is fixed here, so admitting the folder is an amendment. Guidance expands and no principle
-is removed or redefined, so MINOR.
+Version change: 2.4.2 -> 2.5.0
+Rationale: Laravel Pennant generates its class based feature flags into `app/Features`, a namespace no
+listed folder holds (specs/068). A flag is not an action, a model or a policy: it decides whether a
+capability is reachable for an account. The layout of the repository is fixed here, so admitting the
+folder is an amendment. Guidance expands and nothing is removed or redefined, so MINOR.
 
 Added: Technology and Architecture Constraints, one entry in the `app/` list.
-- `Mcp`, holding `Servers` and `Tools`, the MCP surface principle X calls for. The folder is named
-rather than the classes being folded into an existing one because `laravel/mcp` generates into it, and
-because a tool is a transport rather than a controller, a model or an action.
+- `Features`, one class per feature flag.
 Modified: none.
 Removed: none.
 
-Considered and left standing: nothing is said here about where the MCP route is declared. `routes/` is
-already enumerated, the package loads its own `routes/ai.php` only when that file exists, and the
-endpoint is declared in `routes/api.php` like any other. Naming the exception would describe a file
-this project does not create.
+Considered and left standing: what a flag may not distinguish (plan, payment, deployment) is already
+the Product Invariant that hosted and self hosted run the same product with no per plan features.
+Restating it beside the folder would be the same fact in two places.
 
-Also left standing: nothing is said about a tool holding no authorisation rule of its own. Principle X
-already says the MCP server exposes the API and must not bypass it or hold rules of its own, and
-restating it beside the folder would be the same fact in two places.
-
-Discharged since 2.3.1: none owed. 2.3.1 renamed the frozen thing in principle VI to a structure
-version, which this amendment leaves exactly as it found it.
+Also replaced: the earlier reports stacked at the top of this file. Their nested comment openers left
+the last lines of one rendered as visible text.
 
 Follow-up owed by the pull request that adopts this: none.
--->
-
-Follow-up owed by the pull request that adopts this: none. The rename it describes ships in the same
-pull request.
 -->
 # Monica Constitution
 
@@ -280,8 +253,9 @@ an amendment.
 - The layout of the repository is fixed. New code goes into an existing folder. A new top-level
   folder, under `app/` or anywhere else described here, requires an amendment.
   - `app/`: `Actions` (one class per user operation, and where most of the application lives),
-    `Console/Commands`, `Contracts`, `Enums`, `Exceptions`, `Helpers`, `Http` (holding
-    `Controllers`, `Middleware`, `Requests`, `Resources` and `Responses`), `Jobs`, `Listeners`,
+    `Console/Commands`, `Contracts`, `Enums`, `Exceptions`, `Features` (one class per feature
+    flag), `Helpers`, `Http` (holding `Controllers`, `Middleware`, `Requests`, `Resources` and
+    `Responses`), `Jobs`, `Listeners`,
     `Mcp` (holding `Servers` and `Tools`, the MCP surface principle X calls for),
     `Models`, `Notifications` (one class per email the product sends, since there is no mailable),
     `Policies` (one class per model whose abilities are asked by name), `Providers`, `Rules`,
@@ -415,4 +389,4 @@ test and the translations for the change under review, and to say which of the e
 change had to satisfy. Complexity that steps outside these principles MUST be justified in the pull
 request or removed.
 
-**Version**: 2.4.2 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-09-29
+**Version**: 2.5.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-10-04
