@@ -8,6 +8,8 @@ use App\Enums\EmailType;
 use App\Models\User;
 use App\Notifications\PasswordResetRequested;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -36,10 +38,25 @@ class PasswordResetRequestedTest extends TestCase
 
         $message = new PasswordResetRequested(token: self::TOKEN)->toMail($michael);
 
-        $this->assertEquals(
+        $this->assertStringStartsWith(
             route('auth.password.edit', ['token' => self::TOKEN, 'email' => 'michael.scott@dundermifflin.com']),
             $message->actionUrl,
         );
+        $this->assertTrue(URL::hasValidSignature(Request::create($message->actionUrl)));
+    }
+
+    #[Test]
+    public function it_carries_a_link_that_stops_working_when_the_token_expires(): void
+    {
+        config(['auth.passwords.users.expire' => 60]);
+
+        $michael = User::factory()->create();
+
+        $message = new PasswordResetRequested(token: self::TOKEN)->toMail($michael);
+
+        $this->travel(61)->minutes();
+
+        $this->assertFalse(URL::hasValidSignature(Request::create($message->actionUrl)));
     }
 
     #[Test]

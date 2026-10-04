@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Auth;
 
 use App\Helpers\PasskeyAvailability;
+use App\Helpers\PasswordRequirements;
 
 class RegisterViewModel extends GuestViewModel
 {
@@ -16,6 +17,16 @@ class RegisterViewModel extends GuestViewModel
     public function passkeysUnavailableReason(): ?string
     {
         return PasskeyAvailability::reason();
+    }
+
+    public function passwordRules(): string
+    {
+        return PasswordRequirements::passwordRules();
+    }
+
+    public function passwordRequirements(): string
+    {
+        return PasswordRequirements::description();
     }
 
     public function termsUrl(): string

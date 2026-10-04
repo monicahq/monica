@@ -21,7 +21,7 @@ class RegistrationController extends Controller
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class, 'disposable_email'],
-            'password' => ['required', 'string', 'max:255', 'confirmed', Password::min(8)],
+            'password' => ['required', 'string', 'max:255', 'confirmed', Password::default()],
             'timezone' => ['nullable', 'string', 'timezone:all'],
             'device_name' => ['nullable', 'string', 'max:255'],
             'terms' => ['accepted'],

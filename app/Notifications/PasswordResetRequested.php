@@ -11,6 +11,7 @@ use App\Notifications\Messages\MailMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\URL;
 use Override;
 
 class PasswordResetRequested extends Notification implements HasEmailType, ShouldQueue
@@ -18,7 +19,7 @@ class PasswordResetRequested extends Notification implements HasEmailType, Shoul
     use Queueable;
 
     public function __construct(
-        public readonly string $token,
+        private readonly string $token,
     ) {
         $this->onQueue('high');
     }
@@ -53,9 +54,13 @@ class PasswordResetRequested extends Notification implements HasEmailType, Shoul
 
     private function url(User $notifiable): string
     {
-        return route('auth.password.edit', [
-            'token' => $this->token,
-            'email' => $notifiable->getEmailForPasswordReset(),
-        ]);
+        return URL::temporarySignedRoute(
+            'auth.password.edit',
+            now()->addMinutes($this->minutes()),
+            [
+                'token' => $this->token,
+                'email' => $notifiable->getEmailForPasswordReset(),
+            ]
+        );
     }
 }

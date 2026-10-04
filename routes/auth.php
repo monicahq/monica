@@ -61,6 +61,7 @@ Route::middleware(['guest'])->group(function (): void {
         ->middleware('throttle:6,1')
         ->name('auth.password.create');
     Route::get('reset-password/{token}', [NewPasswordController::class, 'edit'])
+        ->middleware(['signed', 'throttle:6,1'])
         ->where('token', '[A-Za-z0-9]+')
         ->name('auth.password.edit');
     Route::post('reset-password', [NewPasswordController::class, 'update'])->name('auth.password.update');

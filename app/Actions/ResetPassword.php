@@ -24,9 +24,7 @@ class ResetPassword
     public function execute(): User
     {
         $this->sanitize();
-        $this->validate();
-        $this->update();
-        $this->burnToken();
+        $this->reset();
 
         return $this->user;
     }
@@ -36,17 +34,23 @@ class ResetPassword
         $this->email = mb_strtolower($this->email);
     }
 
-    private function validate(): void
+    private function reset(): void
     {
-        $user = User::query()->where('email', $this->email)->first();
+        $status = Password::reset([
+            'email' => $this->email,
+            'token' => $this->token,
+            'password' => $this->password,
+        ], function (User $user): void {
+            $this->user = $user;
 
-        if ($user === null || ! Password::getRepository()->exists($user, $this->token)) {
+            $this->update();
+        });
+
+        if ($status !== Password::PasswordReset) {
             throw ValidationException::withMessages([
-                'email' => __('That link no longer works. Ask for another one.'),
+                'email' => __(Password::InvalidToken),
             ]);
         }
-
-        $this->user = $user;
     }
 
     private function update(): void
@@ -55,10 +59,5 @@ class ResetPassword
             user: $this->user,
             password: $this->password,
         )->execute();
-    }
-
-    private function burnToken(): void
-    {
-        Password::getRepository()->delete($this->user);
     }
 }

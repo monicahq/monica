@@ -26,8 +26,10 @@ class PasswordResetLinkController extends Controller
             'email' => ['required', 'string', 'email', 'max:255'],
         ]);
 
-        Password::sendResetLink(['email' => mb_strtolower($validated['email'])]);
+        $status = Password::sendResetLink(['email' => mb_strtolower($validated['email'])]);
 
-        return back()->with('status', __('If that address has an account, a link to choose a new password is on its way.'));
+        return $status === Password::ResetLinkSent || $status === Password::InvalidUser
+            ? back()->with('status', __('If that address has an account, a link to choose a new password is on its way.'))
+            : back()->withInput()->withErrors(['email' => __($status)]);
     }
 }

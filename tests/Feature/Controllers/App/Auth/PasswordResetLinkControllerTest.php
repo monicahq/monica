@@ -46,6 +46,37 @@ class PasswordResetLinkControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_sends_a_reset_link_to_an_address_typed_with_capitals(): void
+    {
+        Notification::fake();
+
+        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $this->from(route('auth.password.new'))
+            ->post(route('auth.password.create'), ['email' => 'Michael.Scott@DunderMifflin.com']);
+
+        Notification::assertSentTo($user, PasswordResetRequested::class);
+    }
+
+    #[Test]
+    public function it_asks_to_wait_when_a_link_was_just_sent(): void
+    {
+        Notification::fake();
+
+        User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $this->from(route('auth.password.new'))
+            ->post(route('auth.password.create'), ['email' => 'michael.scott@dundermifflin.com']);
+
+        $response = $this->from(route('auth.password.new'))
+            ->post(route('auth.password.create'), ['email' => 'michael.scott@dundermifflin.com']);
+
+        $response->assertRedirect(route('auth.password.new'));
+        $response->assertSessionHasErrors(['email' => __('passwords.throttled')]);
+        $response->assertSessionHasInput('email', 'michael.scott@dundermifflin.com');
+    }
+
+    #[Test]
     public function it_records_the_email_it_sends(): void
     {
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);

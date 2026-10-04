@@ -23,8 +23,7 @@ The strings themselves are the keys, in one JSON file per locale under `lang/`. 
 2. Run `php artisan monica:localize`. Read what it says it added and removed.
 3. Translate every string it reports as missing, in every locale of `App\Helpers\AvailableLocales`,
    which is every `lang/*.json` file.
-4. Run `php artisan lang:update` to apply the translations to the language files.
-5. Run `php artisan monica:localize --check` and confirm it passes.
+4. Run `php artisan monica:localize --check` and confirm it passes.
 
 ## Writing a translation
 

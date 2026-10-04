@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -21,7 +22,7 @@ class NewPasswordControllerTest extends TestCase
     {
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
 
-        $response = $this->get(route('auth.password.edit', [
+        $response = $this->get(URL::temporarySignedRoute('auth.password.edit', now()->addHour(), [
             'token' => Password::createToken($user),
             'email' => 'michael.scott@dundermifflin.com',
         ]));
@@ -29,6 +30,51 @@ class NewPasswordControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Choose a new password');
         $response->assertSee('michael.scott@dundermifflin.com');
+    }
+
+    #[Test]
+    public function it_refuses_a_link_that_is_not_signed(): void
+    {
+        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $response = $this->get(route('auth.password.edit', [
+            'token' => Password::createToken($user),
+            'email' => 'michael.scott@dundermifflin.com',
+        ]));
+
+        $response->assertStatus(403);
+    }
+
+    #[Test]
+    public function it_refuses_a_link_whose_email_was_changed(): void
+    {
+        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $url = URL::temporarySignedRoute('auth.password.edit', now()->addHour(), [
+            'token' => Password::createToken($user),
+            'email' => 'michael.scott@dundermifflin.com',
+        ]);
+
+        $response = $this->get(str_replace('michael.scott', 'dwight.schrute', $url));
+
+        $response->assertStatus(403);
+    }
+
+    #[Test]
+    public function it_refuses_a_link_that_has_expired(): void
+    {
+        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $url = URL::temporarySignedRoute('auth.password.edit', now()->addHour(), [
+            'token' => Password::createToken($user),
+            'email' => 'michael.scott@dundermifflin.com',
+        ]);
+
+        $this->travel(61)->minutes();
+
+        $response = $this->get($url);
+
+        $response->assertStatus(403);
     }
 
     #[Test]

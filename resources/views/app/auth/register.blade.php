@@ -78,7 +78,7 @@
               id="password"
               :label="__('Password')"
               autocomplete="new-password"
-              passwordrules="minlength: 8"
+              :passwordrules="$viewModel->passwordRules()"
               :error="$errors->get('password')"
               allowPasswordManager
               x-bind:required="mode === 'password'"
@@ -89,14 +89,14 @@
               id="password_confirmation"
               :label="__('Confirm password')"
               autocomplete="new-password"
-              passwordrules="minlength: 8"
+              :passwordrules="$viewModel->passwordRules()"
               :error="$errors->get('password_confirmation')"
               allowPasswordManager
               x-bind:required="mode === 'password'"
             />
           </div>
 
-          <p class="text-xs text-muted">{{ __('Minimum 8 characters.') }}</p>
+          <p class="text-xs text-muted">{{ $viewModel->passwordRequirements() }}</p>
         </div>
 
         <input type="hidden" name="timezone" x-data x-init="$el.value = Intl.DateTimeFormat().resolvedOptions().timeZone ?? ''">

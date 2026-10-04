@@ -18,7 +18,7 @@ class PasswordController extends Controller
     {
         $validated = $request->validate([
             'current_password' => ['required', 'string', 'current_password'],
-            'new_password' => ['required', 'string', 'max:255', 'confirmed', Password::min(8)],
+            'new_password' => ['required', 'string', 'max:255', 'confirmed', Password::default()],
         ]);
 
         new UpdateUserPassword(
@@ -42,7 +42,7 @@ class PasswordController extends Controller
         }
 
         $validated = $request->validate([
-            'new_password' => ['required', 'string', 'max:255', 'confirmed', Password::min(8)],
+            'new_password' => ['required', 'string', 'max:255', 'confirmed', Password::default()],
         ]);
 
         new UpdateUserPassword(

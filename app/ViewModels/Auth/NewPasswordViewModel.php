@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Auth;
 
+use App\Helpers\PasswordRequirements;
+
 class NewPasswordViewModel extends GuestViewModel
 {
     public function __construct(
@@ -19,5 +21,15 @@ class NewPasswordViewModel extends GuestViewModel
     public function email(): string
     {
         return $this->email;
+    }
+
+    public function passwordRules(): string
+    {
+        return PasswordRequirements::passwordRules();
+    }
+
+    public function passwordRequirements(): string
+    {
+        return PasswordRequirements::description();
     }
 }

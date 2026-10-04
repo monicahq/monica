@@ -55,6 +55,21 @@ class UpdateUserPasswordTest extends TestCase
     }
 
     #[Test]
+    public function it_signs_out_the_devices_that_were_remembered(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['remember_token' => 'dundermifflin']);
+
+        new UpdateUserPassword(
+            user: $user,
+            password: 'bearsbeatsbattlestar',
+        )->execute();
+
+        $this->assertNotEquals('dundermifflin', $user->refresh()->remember_token);
+    }
+
+    #[Test]
     public function it_lets_a_user_who_signs_in_through_a_provider_set_a_password(): void
     {
         Queue::fake();

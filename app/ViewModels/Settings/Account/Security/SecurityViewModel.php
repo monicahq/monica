@@ -8,6 +8,7 @@ use App\Enums\ApiKeyClientEnum;
 use App\Enums\ApiKeyScopeEnum;
 use App\Enums\SsoProviderEnum;
 use App\Helpers\PasskeyAvailability;
+use App\Helpers\PasswordRequirements;
 use App\Helpers\SsoProviderAvailability;
 use App\Models\User;
 use App\ViewModels\Auth\ConfirmPasswordViewModel;
@@ -115,6 +116,16 @@ class SecurityViewModel
     public function passkeysUnavailableReason(): ?string
     {
         return PasskeyAvailability::reason();
+    }
+
+    public function passwordRules(): string
+    {
+        return PasswordRequirements::passwordRules();
+    }
+
+    public function passwordRequirements(): string
+    {
+        return PasswordRequirements::description();
     }
 
     public function usesPasswordlessSignIn(): bool

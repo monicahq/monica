@@ -58,6 +58,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Trusted Hosts
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the trusted hosts for your application. This is
+    | used by the middleware to ensure that requests are coming from
+    | trusted sources only.
+    | Value is a comma separated list of regex patterns matching trusted
+    | hostnames, for example '^example\.com$'. The host of the application
+    | URL and its subdomains are added to it. Left empty, every host is
+    | accepted.
+    |
+    */
+
+    'trusted_hosts' => array_values(array_filter(array_map('trim', explode(',', (string) env('APP_TRUSTED_HOSTS', ''))))),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

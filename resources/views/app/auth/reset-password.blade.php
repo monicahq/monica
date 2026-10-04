@@ -9,14 +9,12 @@
       <input type="hidden" name="token" value="{{ $viewModel->token() }}" />
 
       <x-input
-        type="email"
+        type="hidden"
         id="email"
-        :label="__('Email address')"
-        :value="old('email', $viewModel->email())"
-        autocomplete="username"
+        :value="$viewModel->email()"
         :error="$errors->get('email')"
+        autocomplete="username"
         allowPasswordManager
-        required
       />
 
       <div class="space-y-1.5">
@@ -26,7 +24,7 @@
             id="password"
             :label="__('New password')"
             autocomplete="new-password"
-            passwordrules="minlength: 8"
+            :passwordrules="$viewModel->passwordRules()"
             :error="$errors->get('password')"
             allowPasswordManager
             required
@@ -38,14 +36,14 @@
             id="password_confirmation"
             :label="__('Confirm password')"
             autocomplete="new-password"
-            passwordrules="minlength: 8"
+            :passwordrules="$viewModel->passwordRules()"
             :error="$errors->get('password_confirmation')"
             allowPasswordManager
             required
           />
         </div>
 
-        <p class="text-xs text-muted">{{ __('Minimum 8 characters.') }}</p>
+        <p class="text-xs text-muted">{{ $viewModel->passwordRequirements() }}</p>
       </div>
 
       <x-button class="w-full">{{ __('Change my password') }}</x-button>

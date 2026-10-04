@@ -29,8 +29,8 @@
             id="new_password"
             :label="__('New password')"
             autocomplete="new-password"
-            passwordrules="minlength: 8"
-            :help="__('Minimum 8 characters.')"
+            :passwordrules="$viewModel->passwordRules()"
+            :help="$viewModel->passwordRequirements()"
             :error="$errors->get('new_password')"
             allowPasswordManager
             required
@@ -41,7 +41,7 @@
             id="new_password_confirmation"
             :label="__('Confirm new password')"
             autocomplete="new-password"
-            passwordrules="minlength: 8"
+            :passwordrules="$viewModel->passwordRules()"
             :error="$errors->get('new_password_confirmation')"
             allowPasswordManager
             required

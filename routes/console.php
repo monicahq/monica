@@ -14,6 +14,7 @@ Schedule::command('model:prune')->dailyAt('01:05');
 Schedule::command('queue:prune-batches')->dailyAt('01:10');
 Schedule::command('queue:prune-failed')->dailyAt('01:15');
 Schedule::command('passport:purge')->dailyAt('01:20');
+Schedule::command('auth:clear-resets')->everyFifteenMinutes();
 
 Schedule::job(new PurgeOrphanedFiles, 'low')->dailyAt('03:20')->sentryMonitor();
 

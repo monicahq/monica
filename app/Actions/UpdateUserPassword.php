@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Notifications\PasswordChanged;
 use App\Notifications\PasswordSet;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 /**
  * Set or change the password of a user.
@@ -58,6 +59,7 @@ class UpdateUserPassword
     {
         $this->user->password = Hash::make($this->password);
         $this->user->password_changed_at = now();
+        $this->user->setRememberToken(Str::random(60));
         $this->user->save();
     }
 }
