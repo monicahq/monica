@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use LaravelLang\LocaleList\Locale;
-
 return [
 
     /*
@@ -365,36 +363,34 @@ return [
      */
 
     'aliases' => [
-        Locale::Bengali->value => 'bn_BD',
-        Locale::French->value => 'fr_FR',
-        Locale::Catalan->value => 'ca_ES',
-        Locale::Danish->value => 'da_DK',
-        Locale::German->value => 'de_DE',
-        Locale::Greek->value => 'el_GR',
-        Locale::Spanish->value => 'es_ES',
-        Locale::Finnish->value => 'fi_FI',
-        Locale::Pilipino->value => 'fil_PH',
-        Locale::Irish->value => 'ga_IE',
-        Locale::Hindi->value => 'hi_IN',
-        Locale::Hungarian->value => 'hu_HU',
-        Locale::Icelandic->value => 'is_IS',
-        Locale::Italian->value => 'it_IT',
-        Locale::Japanese->value => 'ja_JP',
-        Locale::Korean->value => 'ko_KR',
-        Locale::Lithuanian->value => 'lt_LT',
-        Locale::NorwegianBokmal->value => 'nb_NO',
-        Locale::Dutch->value => 'nl_NL',
-        Locale::Polish->value => 'pl_PL',
-        Locale::PortugueseBrazil->value => 'pt_BR',
-        Locale::Portuguese->value => 'pt_PT',
-        Locale::Sinhala->value => 'si_LK',
-        Locale::Swedish->value => 'sv_SE',
-        Locale::Tamil->value => 'ta_IN',
-        Locale::Thai->value => 'th_TH',
-        Locale::Turkish->value => 'tr_TR',
-        Locale::UzbekLatin->value => 'uz_UZ',
-        Locale::Vietnamese->value => 'vi_VN',
-        Locale::Chinese->value => 'zh_CN',
+        'bn' => 'bn_BD',
+        'fr' => 'fr_FR',
+        'ca' => 'ca_ES',
+        'da' => 'da_DK',
+        'de' => 'de_DE',
+        'el' => 'el_GR',
+        'es' => 'es_ES',
+        'fi' => 'fi_FI',
+        'fil' => 'fil_PH',
+        'ga' => 'ga_IE',
+        'hi' => 'hi_IN',
+        'hu' => 'hu_HU',
+        'is' => 'is_IS',
+        'it' => 'it_IT',
+        'ja' => 'ja_JP',
+        'ko' => 'ko_KR',
+        'lt' => 'lt_LT',
+        'nb' => 'nb_NO',
+        'nl' => 'nl_NL',
+        'pl' => 'pl_PL',
+        'pt' => 'pt_PT',
+        'si' => 'si_LK',
+        'sv' => 'sv_SE',
+        'ta' => 'ta_IN',
+        'th' => 'th_TH',
+        'tr' => 'tr_TR',
+        'uz_Latn' => 'uz_UZ',
+        'vi' => 'vi_VN',
     ],
 
     /*

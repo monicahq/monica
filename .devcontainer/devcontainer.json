@@ -13,7 +13,8 @@
         "mikestead.dotenv",
         "editorconfig.editorconfig",
         "bradlc.vscode-tailwindcss",
-        "qwtel.sqlite-viewer"
+        "qwtel.sqlite-viewer",
+        "alfredoperez.speckit-companion"
       ]
     }
   },
