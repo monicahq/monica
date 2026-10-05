@@ -138,6 +138,7 @@ class VaultReminderControllerTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->deadline($this->ruleAbout($user, $vault), 2);
+        $user->account->features()->active('marketplace');
 
         DB::enableQueryLog();
         $this->actingAs($user)->get(route('reminders.index', $vault));
@@ -163,6 +164,7 @@ class VaultReminderControllerTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->sent($this->ruleAbout($user, $vault), -2);
+        $user->account->features()->active('marketplace');
 
         DB::enableQueryLog();
         $this->actingAs($user)->get(route('reminders.sent', $vault));

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Middleware\EnsureFlagIsOn;
 use App\Http\Middleware\EnsureMagicLinkIsEnabled;
 use App\Http\Middleware\EnsureSsoProviderIsAvailable;
 use App\Http\Middleware\EnsureUserIsActive;
@@ -45,6 +46,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'active' => EnsureUserIsActive::class,
             'administrator' => EnsureUserIsAdministrator::class,
+            'flag' => EnsureFlagIsOn::class,
             'magic.link' => EnsureMagicLinkIsEnabled::class,
             'portal.timing' => InsertServerGenerationTime::class,
             'sso' => EnsureSsoProviderIsAvailable::class,

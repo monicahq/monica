@@ -41,6 +41,7 @@ use Laravel\Passkeys\Contracts\PasskeyLoginResponse as PasskeyLoginResponseContr
 use Laravel\Passkeys\Passkeys;
 use Laravel\Passport\AccessToken;
 use Laravel\Passport\Passport;
+use Laravel\Pennant\Feature;
 use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
 use Laravel\Scout\EngineManager;
@@ -117,6 +118,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureSingleSignOn();
         $this->configurePassport();
         $this->configureSearch();
+        $this->configureFlags();
         $this->refuseDeactivatedUsers();
     }
 
@@ -131,6 +133,15 @@ class AppServiceProvider extends ServiceProvider
         Scout::removeFromSearchUsing(RemoveFromSearchUniquely::class);
 
         $this->app->make(EngineManager::class)->extend('database', fn (): MaterializedDatabaseEngine => new MaterializedDatabaseEngine);
+    }
+
+    /**
+     * A flag is declared by its class in `app/Features`. Registering every class here lets the admin
+     * screen and `monica:list-flags` name a flag before anybody has been asked about it.
+     */
+    private function configureFlags(): void
+    {
+        Feature::discover();
     }
 
     /**

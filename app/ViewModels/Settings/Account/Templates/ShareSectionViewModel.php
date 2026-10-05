@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Settings\Account\Templates;
 
 use App\Enums\FieldTypeEnum;
+use App\Helpers\FlagState;
 use App\Helpers\StructureFile;
 use App\Models\StructureVersionSection;
 use App\Models\Template;
@@ -22,6 +23,11 @@ class ShareSectionViewModel
     public function user(): User
     {
         return $this->user;
+    }
+
+    public function marketplaceIsOn(): bool
+    {
+        return FlagState::isOn('marketplace', $this->user->account);
     }
 
     public function template(): Template

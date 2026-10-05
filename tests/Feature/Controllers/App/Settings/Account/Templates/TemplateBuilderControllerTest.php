@@ -19,6 +19,7 @@ use App\Models\User;
 use DOMDocument;
 use DOMXPath;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -207,8 +208,27 @@ class TemplateBuilderControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_names_the_way_out_after_the_export_while_the_marketplace_is_switched_off(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = StructureVersion::factory()->create([
+            'structure_id' => $template->structure->id,
+            'status' => VersionStatusEnum::Published,
+            'published_at' => now(),
+        ]);
+        $template->structure->update(['published_version_id' => $version->id]);
+
+        $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
+            ->assertSee(__('Export the template'))
+            ->assertSee(route('settings.templateShare.index', $template), escape: false)
+            ->assertDontSee(__('Share on marketplace'));
+    }
+
+    #[Test]
     public function it_offers_sharing_the_template_and_its_sections_once_they_are_published(): void
     {
+        Feature::for(null)->activate('marketplace');
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
         $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);

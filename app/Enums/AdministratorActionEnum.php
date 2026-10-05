@@ -21,6 +21,10 @@ enum AdministratorActionEnum: string implements Translatable
     case InstanceSettingUpdated = 'instance_setting_updated';
     case InstanceSettingReverted = 'instance_setting_reverted';
     case TelegramWebhookRegistered = 'telegram_webhook_registered';
+    case FlagActivated = 'flag_activated';
+    case FlagDeactivated = 'flag_deactivated';
+    case FlagActivatedForEveryAccount = 'flag_activated_for_every_account';
+    case FlagDeactivatedForEveryAccount = 'flag_deactivated_for_every_account';
 
     public function description(): string
     {
@@ -37,6 +41,10 @@ enum AdministratorActionEnum: string implements Translatable
             self::InstanceSettingUpdated => 'Changed the instance setting :name',
             self::InstanceSettingReverted => 'Put the instance setting :name back to what the deployment supplies',
             self::TelegramWebhookRegistered => 'Registered the Telegram bot at :url',
+            self::FlagActivated => 'Activated the flag :flag for :name',
+            self::FlagDeactivated => 'Deactivated the flag :flag for :name',
+            self::FlagActivatedForEveryAccount => 'Activated the flag :flag for every account',
+            self::FlagDeactivatedForEveryAccount => 'Deactivated the flag :flag for every account',
         };
     }
 

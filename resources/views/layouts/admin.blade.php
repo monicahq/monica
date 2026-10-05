@@ -39,6 +39,7 @@
           ['label' => __('Moderation'), 'route' => 'admin.moderation.index'],
           ['label' => __('Accounts'), 'route' => 'admin.accounts.index'],
           ['label' => __('Configuration'), 'route' => 'admin.configuration.index'],
+          ['label' => __('Flags'), 'route' => 'admin.flags.index'],
           ['label' => __('Administrators'), 'route' => 'admin.administrators.index'],
           ['label' => __('Record'), 'route' => 'admin.logs.index'],
         ] as $item)

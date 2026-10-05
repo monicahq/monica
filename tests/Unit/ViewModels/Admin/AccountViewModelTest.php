@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Admin\AccountViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -423,5 +424,34 @@ class AccountViewModelTest extends TestCase
 
         $this->assertFalse($viewModel->holdsAccessForGood());
         $this->assertSame(__('No'), $viewModel->accessForGoodLabel());
+    }
+
+    #[Test]
+    public function it_lists_each_declared_flag_with_its_state_for_this_account(): void
+    {
+        Feature::forgetDrivers();
+        Feature::discover('Tests\Fixtures\Features', base_path('tests/Fixtures/Features'));
+
+        $pam = User::factory()->create();
+        $pam->account->features()->activate('example-capability');
+
+        $viewModel = new AccountViewModel(account: $pam->account);
+
+        $this->assertSame([[
+            'name' => 'example-capability',
+            'isOn' => true,
+            'activateUrl' => route('admin.accounts.flags.activation.create', ['account' => $pam->account_id, 'flag' => 'example-capability']),
+            'deactivateUrl' => route('admin.accounts.flags.activation.destroy', ['account' => $pam->account_id, 'flag' => 'example-capability']),
+        ]], $viewModel->flags());
+    }
+
+    #[Test]
+    public function it_lists_no_flag_when_none_is_declared(): void
+    {
+        Feature::forgetDrivers();
+
+        $viewModel = new AccountViewModel(account: Account::factory()->create());
+
+        $this->assertSame([], $viewModel->flags());
     }
 }

@@ -13,6 +13,7 @@ use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -23,6 +24,7 @@ class TemplateShareControllerTest extends TestCase
     #[Test]
     public function it_shows_the_two_ways_a_template_leaves(): void
     {
+        Feature::for(null)->activate('marketplace');
         $user = User::factory()->create();
         $template = $this->publishedTemplate($user);
 
@@ -31,6 +33,19 @@ class TemplateShareControllerTest extends TestCase
             ->assertSee(__('Export a file'))
             ->assertSee(__('Publish to the marketplace'))
             ->assertSee('dunder-mifflin-contact-v1.json');
+    }
+
+    #[Test]
+    public function it_offers_only_the_file_while_the_marketplace_is_switched_off(): void
+    {
+        $user = User::factory()->create();
+        $template = $this->publishedTemplate($user);
+
+        $this->actingAs($user)->get(route('settings.templateShare.index', $template))
+            ->assertStatus(200)
+            ->assertSee(__('Export a file'))
+            ->assertDontSee(__('Publish to the marketplace'))
+            ->assertDontSee(route('marketplace.index'), escape: false);
     }
 
     #[Test]

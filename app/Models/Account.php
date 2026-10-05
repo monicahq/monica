@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Cashier\Billable;
+use Laravel\Pennant\Concerns\HasFeatures;
 use Override;
 
 /**
@@ -59,6 +60,8 @@ class Account extends Model
 
     /** @use HasFactory<AccountFactory> */
     use HasFactory;
+
+    use HasFeatures;
 
     /**
      * Get the attributes that should be cast.

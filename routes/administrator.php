@@ -3,10 +3,13 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\App\Admin\AccountController;
+use App\Http\Controllers\App\Admin\AccountFlagActivationController;
 use App\Http\Controllers\App\Admin\AccountLifetimeAccessController;
 use App\Http\Controllers\App\Admin\AccountStorageLimitController;
 use App\Http\Controllers\App\Admin\AdministratorController;
 use App\Http\Controllers\App\Admin\AdministratorLogController;
+use App\Http\Controllers\App\Admin\FlagActivationController;
+use App\Http\Controllers\App\Admin\FlagController;
 use App\Http\Controllers\App\Admin\InstanceSettingController;
 use App\Http\Controllers\App\Admin\ModerationApprovalController;
 use App\Http\Controllers\App\Admin\ModerationController;
@@ -36,6 +39,10 @@ Route::middleware(['administrator'])->group(function (): void {
     Route::delete('admin/accounts/{account}/lifetime-access', [AccountLifetimeAccessController::class, 'destroy'])->whereNumber('account')->name('admin.accounts.lifetimeAccess.destroy');
     Route::post('admin/accounts/{account}/activation', [UserActivationController::class, 'create'])->whereNumber('account')->name('admin.accounts.activation.create');
     Route::delete('admin/accounts/{account}/activation', [UserActivationController::class, 'destroy'])->whereNumber('account')->name('admin.accounts.activation.destroy');
+    Route::post('admin/accounts/{account}/flags/{flag}/activation', [AccountFlagActivationController::class, 'create'])->whereNumber('account')->where('flag', '[a-z0-9-]+')->name('admin.accounts.flags.activation.create');
+    Route::delete('admin/accounts/{account}/flags/{flag}/activation', [AccountFlagActivationController::class, 'destroy'])->whereNumber('account')->where('flag', '[a-z0-9-]+')->name('admin.accounts.flags.activation.destroy');
+
+    Route::get('admin/flags', [FlagController::class, 'index'])->name('admin.flags.index');
 
     Route::get('admin/configuration', [InstanceSettingController::class, 'index'])->name('admin.configuration.index');
     Route::post('admin/configuration/telegram/check', [TelegramRegistrationCheckController::class, 'create'])->name('admin.configuration.telegram.check.create');
@@ -51,6 +58,8 @@ Route::middleware(['administrator'])->group(function (): void {
         Route::delete('admin/configuration/orphans/{name}', [InstanceSettingController::class, 'destroyOrphan'])->name('admin.configuration.orphans.destroy');
         Route::post('admin/configuration/telegram/registration', [TelegramRegistrationController::class, 'create'])->name('admin.configuration.telegram.registration.create');
         Route::post('admin/configuration/telegram/secret', [TelegramWebhookSecretController::class, 'create'])->name('admin.configuration.telegram.secret.create');
+        Route::post('admin/flags/{flag}/activation', [FlagActivationController::class, 'create'])->where('flag', '[a-z0-9-]+')->name('admin.flags.activation.create');
+        Route::delete('admin/flags/{flag}/activation', [FlagActivationController::class, 'destroy'])->where('flag', '[a-z0-9-]+')->name('admin.flags.activation.destroy');
     });
 
     Route::get('admin/administrators', [AdministratorController::class, 'index'])->name('admin.administrators.index');

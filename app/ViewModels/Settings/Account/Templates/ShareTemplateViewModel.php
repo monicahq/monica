@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Settings\Account\Templates;
 
+use App\Helpers\FlagState;
 use App\Helpers\StructureFile;
 use App\Models\Template;
 use App\Models\User;
@@ -19,6 +20,11 @@ class ShareTemplateViewModel
     public function user(): User
     {
         return $this->user;
+    }
+
+    public function marketplaceIsOn(): bool
+    {
+        return FlagState::isOn('marketplace', $this->user->account);
     }
 
     public function template(): Template

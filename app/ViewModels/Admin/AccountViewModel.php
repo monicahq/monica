@@ -10,6 +10,7 @@ use App\Models\StripeOrder;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Laravel\Cashier\Subscription;
+use Laravel\Pennant\Feature;
 
 class AccountViewModel
 {
@@ -190,6 +191,17 @@ class AccountViewModel
     public function grantLifetimeAccessUrl(): string
     {
         return route('admin.accounts.lifetimeAccess.create', ['account' => $this->account->id]);
+    }
+
+    /** @return list<array{name: string, isOn: bool, activateUrl: string, deactivateUrl: string}> */
+    public function flags(): array
+    {
+        return array_map(fn (string $flag): array => [
+            'name' => $flag,
+            'isOn' => $this->account->features()->active($flag),
+            'activateUrl' => route('admin.accounts.flags.activation.create', ['account' => $this->account->id, 'flag' => $flag]),
+            'deactivateUrl' => route('admin.accounts.flags.activation.destroy', ['account' => $this->account->id, 'flag' => $flag]),
+        ], array_values(Feature::defined()));
     }
 
     public function recordUrl(): string

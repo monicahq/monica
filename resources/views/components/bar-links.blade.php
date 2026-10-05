@@ -7,7 +7,9 @@
 <div class="flex items-center gap-1">
   @foreach (array_filter([
     ['label' => __('Docs'), 'icon' => 'journal', 'href' => route('docs.index')],
-    ['label' => __('Marketplace'), 'icon' => 'gift', 'href' => route('marketplace.index')],
+    \App\Helpers\FlagState::isOn('marketplace', auth()->user()?->account)
+      ? ['label' => __('Marketplace'), 'icon' => 'gift', 'href' => route('marketplace.index')]
+      : null,
     $settings
       ? ['label' => __('Account settings'), 'icon' => 'settings', 'href' => route('settings.index')]
       : null,

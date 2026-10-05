@@ -13,6 +13,7 @@ use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -23,6 +24,7 @@ class SectionShareControllerTest extends TestCase
     #[Test]
     public function it_shows_the_two_ways_a_section_leaves(): void
     {
+        Feature::for(null)->activate('marketplace');
         $user = User::factory()->create();
         $row = $this->publishedRow($user);
 
@@ -31,6 +33,18 @@ class SectionShareControllerTest extends TestCase
             ->assertSee(__('Export the section as a file'))
             ->assertSee(__('Publish the section'))
             ->assertSee('personal-details.json');
+    }
+
+    #[Test]
+    public function it_offers_only_the_file_while_the_marketplace_is_switched_off(): void
+    {
+        $user = User::factory()->create();
+        $row = $this->publishedRow($user);
+
+        $this->actingAs($user)->get(route('settings.sectionShare.index', [$row->structureVersion->structure->owner, $row->id]))
+            ->assertStatus(200)
+            ->assertSee(__('Export the section as a file'))
+            ->assertDontSee(__('Publish the section'));
     }
 
     #[Test]

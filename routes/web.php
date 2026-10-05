@@ -185,8 +185,14 @@ Route::middleware(['portal.timing'])->group(function (): void {
         ->name('docs.portal.show');
 });
 
-Route::get('marketplace', [MarketplaceController::class, 'index'])
-    ->name('marketplace.index');
+/*
+ * The marketplace is still being built, so a flag holds it back. A visitor sees it exactly when it is
+ * on for every account.
+ */
+Route::middleware(['flag:marketplace'])->group(function (): void {
+    Route::get('marketplace', [MarketplaceController::class, 'index'])
+        ->name('marketplace.index');
+});
 
 Route::get('s/{token}/{page?}', [SharedContactController::class, 'show'])
     ->middleware(['throttle:60,1'])

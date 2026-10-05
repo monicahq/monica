@@ -7,6 +7,7 @@ namespace App\ViewModels\Settings\Account\Templates;
 use App\Enums\RepetitionOrderEnum;
 use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
+use App\Helpers\FlagState;
 use App\Models\Field;
 use App\Models\Section;
 use App\Models\StructureVersion;
@@ -52,6 +53,11 @@ class TemplateBuilderViewModel
     public function hasHistory(): bool
     {
         return $this->template->versions->count() > 1;
+    }
+
+    public function marketplaceIsOn(): bool
+    {
+        return FlagState::isOn('marketplace', $this->user->account);
     }
 
     public function isShareable(): bool

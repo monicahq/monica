@@ -15,7 +15,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\Fixtures\Features\ExampleCapability;
 use Tests\TestCase;
 
 class DestroyAccountTest extends TestCase
@@ -57,6 +59,26 @@ class DestroyAccountTest extends TestCase
         $this->assertModelMissing($emailSent);
         $this->assertModelMissing($magicLink);
         $this->assertModelMissing($apiKey);
+    }
+
+    #[Test]
+    public function it_forgets_the_flags_switched_for_the_account(): void
+    {
+        Feature::discover('Tests\Fixtures\Features', base_path('tests/Fixtures/Features'));
+
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+        $neighbour = Account::factory()->create();
+        $account->features()->activate(ExampleCapability::class);
+        $neighbour->features()->activate(ExampleCapability::class);
+
+        new DestroyAccount(
+            user: $user,
+            account: $account,
+        )->execute();
+
+        $this->assertDatabaseMissing('features', ['scope' => Feature::serializeScope($account)]);
+        $this->assertDatabaseHas('features', ['scope' => Feature::serializeScope($neighbour)]);
     }
 
     #[Test]

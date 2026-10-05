@@ -18,7 +18,11 @@
     <h1 class="text-page-title text-ink">{{ __('Share :name', ['name' => $template->name]) }}</h1>
 
     <p class="text-base text-pretty text-body">
-      {{ __('Two ways to share, for two different reasons. A file is for you and for the people you give it to. A listing is for everybody else. Either way only the structure leaves this vault, and the :records using this template stay here.', ['records' => $viewModel->recordCountLabel()]) }}
+      @if ($viewModel->marketplaceIsOn())
+        {{ __('Two ways to share, for two different reasons. A file is for you and for the people you give it to. A listing is for everybody else. Either way only the structure leaves this vault, and the :records using this template stay here.', ['records' => $viewModel->recordCountLabel()]) }}
+      @else
+        {{ __('A file is for you and for the people you give it to. Only the structure leaves this vault, and the :records using this template stay here.', ['records' => $viewModel->recordCountLabel()]) }}
+      @endif
     </p>
   </header>
 
@@ -61,37 +65,39 @@
       </div>
     </x-panel>
 
-    <x-panel :title="__('Publish to the marketplace')" :subtitle="__('A listing anybody can install.')" icon="gift">
-      <div class="flex flex-col gap-4">
-        <p class="text-base text-pretty text-body">
-          {{ __('The marketplace is where people share the templates they built for themselves: a dog profile, a template for a therapist’s clients, one for a band’s contacts. Somebody has usually already built the thing you need.') }}
-        </p>
+    @if ($viewModel->marketplaceIsOn())
+      <x-panel :title="__('Publish to the marketplace')" :subtitle="__('A listing anybody can install.')" icon="gift">
+        <div class="flex flex-col gap-4">
+          <p class="text-base text-pretty text-body">
+            {{ __('The marketplace is where people share the templates they built for themselves: a dog profile, a template for a therapist’s clients, one for a band’s contacts. Somebody has usually already built the thing you need.') }}
+          </p>
 
-        <ul class="flex flex-col gap-2.5">
-          @foreach ([
-            __('People find it by searching for the thing they are trying to track.'),
-            __('Installing makes a private copy in their vault, which you never see again.'),
-            __('You can post a new version later, and nobody moves onto it unless they choose to.'),
-          ] as $reason)
-            <li class="flex items-start gap-2.5">
-              <span class="mt-px flex size-5 shrink-0 items-center justify-center rounded-sm bg-forest-tint text-forest-deep">
-                <x-icon name="check" :size="13" :stroke-width="2" />
-              </span>
+          <ul class="flex flex-col gap-2.5">
+            @foreach ([
+              __('People find it by searching for the thing they are trying to track.'),
+              __('Installing makes a private copy in their vault, which you never see again.'),
+              __('You can post a new version later, and nobody moves onto it unless they choose to.'),
+            ] as $reason)
+              <li class="flex items-start gap-2.5">
+                <span class="mt-px flex size-5 shrink-0 items-center justify-center rounded-sm bg-forest-tint text-forest-deep">
+                  <x-icon name="check" :size="13" :stroke-width="2" />
+                </span>
 
-              <span class="text-sm text-pretty text-ink-soft">{{ $reason }}</span>
-            </li>
-          @endforeach
-        </ul>
+                <span class="text-sm text-pretty text-ink-soft">{{ $reason }}</span>
+              </li>
+            @endforeach
+          </ul>
 
-        <x-notice tone="warning" :title="__('Writing a listing is not open yet')">
-          {{ __('You can read the catalogue today. Publishing your own work into it is the next thing being built. Exporting a file works either way.') }}
-        </x-notice>
+          <x-notice tone="warning" :title="__('Writing a listing is not open yet')">
+            {{ __('You can read the catalogue today. Publishing your own work into it is the next thing being built. Exporting a file works either way.') }}
+          </x-notice>
 
-        <div>
-          <x-button.secondary :href="route('marketplace.index')">{{ __('Browse the marketplace') }}</x-button.secondary>
+          <div>
+            <x-button.secondary :href="route('marketplace.index')">{{ __('Browse the marketplace') }}</x-button.secondary>
+          </div>
         </div>
-      </div>
-    </x-panel>
+      </x-panel>
+    @endif
   </div>
 
   <x-notice tone="quiet" icon="lock" :title="__('What never leaves, either way')">

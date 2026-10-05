@@ -7,12 +7,33 @@ namespace Tests\Feature\Views\Components;
 use App\Models\Administrator;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class BarLinksTest extends TestCase
 {
     use RefreshDatabase;
+
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Feature::for(null)->activate('marketplace');
+    }
+
+    #[Test]
+    public function it_leaves_the_marketplace_out_while_it_is_switched_off(): void
+    {
+        Feature::for(null)->deactivate('marketplace');
+        Feature::flushCache();
+
+        $this->blade('<x-bar-links />')
+            ->assertSee('Docs')
+            ->assertDontSee('href="'.route('marketplace.index').'"', escape: false);
+    }
 
     #[Test]
     public function it_offers_the_docs_the_marketplace_and_the_account_settings(): void

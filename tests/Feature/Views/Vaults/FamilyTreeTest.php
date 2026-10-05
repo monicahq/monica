@@ -155,6 +155,7 @@ class FamilyTreeTest extends TestCase
     #[Test]
     public function it_asks_the_records_no_more_often_for_a_large_family_than_for_a_small_one(): void
     {
+        $this->user->account->features()->active('marketplace');
         $this->parentage($this->judy, $this->personIn('Ross', 'Geller'));
 
         $small = $this->countQueries();

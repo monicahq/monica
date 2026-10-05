@@ -8,12 +8,28 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AppServiceProviderTest extends TestCase
 {
     use RefreshDatabase;
+
+    #[Test]
+    public function it_purges_a_flag_no_longer_declared_and_keeps_the_declared_ones(): void
+    {
+        Feature::discover('Tests\Fixtures\Features', base_path('tests/Fixtures/Features'));
+
+        $pam = User::factory()->create();
+        $pam->account->features()->activate('example-capability');
+        $pam->account->features()->activate('retired-capability');
+
+        $this->artisan('pennant:purge', ['--except-registered' => true])->assertExitCode(0);
+
+        $this->assertDatabaseMissing('features', ['name' => 'retired-capability']);
+        $this->assertDatabaseHas('features', ['name' => 'example-capability']);
+    }
 
     #[Test]
     public function it_registers_the_collation_macro_on_collections(): void

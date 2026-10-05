@@ -176,6 +176,30 @@
     </x-panel>
   @endif
 
+  @if ($viewModel->isActionable() && $viewModel->flags() !== [])
+    <x-panel :title="__('Flags')" :subtitle="__('A flag switched here applies to this account alone, until somebody switches it for every account.')" :flush="true">
+      @foreach ($viewModel->flags() as $flag)
+        <div class="flex flex-col gap-2 border-b border-hairline px-4 py-3.5 last:border-b-0 sm:flex-row sm:items-center sm:gap-4">
+          <p class="grow font-mono text-sm break-all text-ink">{{ $flag['name'] }}</p>
+
+          @if ($flag['isOn'])
+            <x-badge tone="success">{{ __('On') }}</x-badge>
+
+            <x-form method="delete" :action="$flag['deactivateUrl']">
+              <x-button.secondary type="submit" size="small">{{ __('Deactivate') }}<span class="sr-only"> {{ $flag['name'] }}</span></x-button.secondary>
+            </x-form>
+          @else
+            <x-badge>{{ __('Off') }}</x-badge>
+
+            <x-form method="post" :action="$flag['activateUrl']">
+              <x-button.secondary type="submit" size="small">{{ __('Activate') }}<span class="sr-only"> {{ $flag['name'] }}</span></x-button.secondary>
+            </x-form>
+          @endif
+        </div>
+      @endforeach
+    </x-panel>
+  @endif
+
   <x-panel :title="__('What has been done to this account')">
     <p class="text-sm text-body">{{ __('Every action an administrator has taken on this account is in the record.') }}</p>
 

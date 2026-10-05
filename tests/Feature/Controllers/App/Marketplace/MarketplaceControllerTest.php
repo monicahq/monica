@@ -12,12 +12,33 @@ use App\Models\MarketplaceListingVersion;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class MarketplaceControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Feature::for(null)->activate('marketplace');
+    }
+
+    #[Test]
+    public function it_answers_not_found_while_the_marketplace_is_switched_off(): void
+    {
+        Feature::for(null)->deactivate('marketplace');
+        Feature::flushCache();
+        $pam = User::factory()->create();
+
+        $this->get(route('marketplace.index'))->assertNotFound();
+        $this->actingAs($pam)->get(route('marketplace.index'))->assertNotFound();
+    }
 
     #[Test]
     public function it_shows_the_catalogue_to_somebody_who_is_not_signed_in(): void

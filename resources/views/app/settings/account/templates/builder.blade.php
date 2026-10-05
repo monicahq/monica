@@ -69,7 +69,7 @@
                     icon="relationship"
                     data-turbo="true"
                   >
-                    {{ __('Share on marketplace') }}
+                    {{ $viewModel->marketplaceIsOn() ? __('Share on marketplace') : __('Export the template') }}
                   </x-button.split-item>
                 @endif
               </x-slot:menu>

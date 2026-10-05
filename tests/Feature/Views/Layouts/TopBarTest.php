@@ -7,6 +7,7 @@ namespace Tests\Feature\Views\Layouts;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -95,6 +96,7 @@ class TopBarTest extends TestCase
     #[Test]
     public function every_bar_reaches_the_docs_and_the_marketplace(): void
     {
+        Feature::for(null)->activate('marketplace');
         $user = User::factory()->create();
 
         $this->actingAs($user)

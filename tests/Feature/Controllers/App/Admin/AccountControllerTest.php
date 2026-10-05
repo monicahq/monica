@@ -7,6 +7,7 @@ namespace Tests\Feature\Controllers\App\Admin;
 use App\Models\Administrator;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -82,6 +83,24 @@ class AccountControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Person deleted', escape: false);
         $response->assertSee('The person on this account was deleted', escape: false);
+    }
+
+    #[Test]
+    public function it_draws_the_flags_only_once_a_flag_is_declared(): void
+    {
+        $pam = User::factory()->create();
+        $michael = $this->administrator();
+
+        $this->actingAs($michael)
+            ->get(route('admin.accounts.show', ['account' => $pam->account_id]))
+            ->assertDontSee('example-capability');
+
+        Feature::discover('Tests\Fixtures\Features', base_path('tests/Fixtures/Features'));
+
+        $this->actingAs($michael)
+            ->get(route('admin.accounts.show', ['account' => $pam->account_id]))
+            ->assertSee('example-capability')
+            ->assertSee(route('admin.accounts.flags.activation.create', ['account' => $pam->account_id, 'flag' => 'example-capability']), escape: false);
     }
 
     private function administrator(): User

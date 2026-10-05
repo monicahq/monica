@@ -62,21 +62,23 @@
       </div>
     </x-panel>
 
-    <x-panel :title="__('Publish the section')" icon="gift">
-      <div class="flex flex-col gap-4">
-        <p class="text-base text-pretty text-body">
-          {{ __('Sections are their own kind of listing in the marketplace, next to templates. They are installed most often, because they fit into a template somebody already built.') }}
-        </p>
+    @if ($viewModel->marketplaceIsOn())
+      <x-panel :title="__('Publish the section')" icon="gift">
+        <div class="flex flex-col gap-4">
+          <p class="text-base text-pretty text-body">
+            {{ __('Sections are their own kind of listing in the marketplace, next to templates. They are installed most often, because they fit into a template somebody already built.') }}
+          </p>
 
-        <x-notice tone="warning" :title="__('Writing a listing is not open yet')">
-          {{ __('You can read the catalogue today. Publishing your own work into it is the next thing being built. Exporting a file works either way.') }}
-        </x-notice>
+          <x-notice tone="warning" :title="__('Writing a listing is not open yet')">
+            {{ __('You can read the catalogue today. Publishing your own work into it is the next thing being built. Exporting a file works either way.') }}
+          </x-notice>
 
-        <div>
-          <x-button.secondary :href="route('marketplace.index')">{{ __('Browse the marketplace') }}</x-button.secondary>
+          <div>
+            <x-button.secondary :href="route('marketplace.index')">{{ __('Browse the marketplace') }}</x-button.secondary>
+          </div>
         </div>
-      </div>
-    </x-panel>
+      </x-panel>
+    @endif
   </div>
 
   <x-notice tone="quiet" icon="lock" :title="__('What never leaves, either way')">

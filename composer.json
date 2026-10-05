@@ -32,6 +32,7 @@
         "laravel/mcp": "^1.0",
         "laravel/passkeys": "^0",
         "laravel/passport": "^13.8",
+        "laravel/pennant": "^1.26",
         "laravel/sanctum": "^4.3",
         "laravel/scout": "^11.8",
         "laravel/socialite": "^5.31",

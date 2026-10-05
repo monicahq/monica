@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Pennant\Feature;
 
 /**
  * Delete an account and everything under it.
@@ -32,6 +33,7 @@ class DestroyAccount
         $this->stopTheSubscription();
         $this->destroyPhoto();
         $this->destroyApiKeys();
+        $this->forgetFlags();
         $this->destroy();
     }
 
@@ -71,6 +73,11 @@ class DestroyAccount
     private function destroyApiKeys(): void
     {
         $this->user->tokens()->delete();
+    }
+
+    private function forgetFlags(): void
+    {
+        Feature::for($this->account)->forget(Feature::stored());
     }
 
     private function destroy(): void
