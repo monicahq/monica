@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Enums\ReminderOccurrenceCategoryEnum;
-use App\Helpers\NextReminderDeadlines;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -195,29 +194,7 @@ class VaultRemindersViewModel
     /** @return Collection<int, ReminderRow> */
     private function rows(): Collection
     {
-        if ($this->rows instanceof Collection) {
-            return $this->rows;
-        }
-
-        $waiting = ReminderOccurrence::query()
-            ->awaitingAnswerInVault(vault: $this->vault, untilDay: $this->today())
-            ->with(['vault', 'reminder.remindable.avatar', 'reminder.field'])
-            ->get();
-
-        $rules = Reminder::query()
-            ->where('vault_id', $this->vault->id)
-            ->where('account_id', $this->vault->account_id)
-            ->active()
-            ->with(['vault', 'remindable.avatar', 'field', 'fieldValue'])
-            ->get();
-
-        return $this->rows = $waiting
-            ->concat(NextReminderDeadlines::for($rules, $this->today()))
-            ->map(fn (ReminderOccurrence $occurrence): ReminderRow => new ReminderRow(
-                user: $this->user,
-                occurrence: $occurrence,
-            ))
-            ->values();
+        return $this->rows ??= new VaultDeadlines(user: $this->user, vault: $this->vault)->rows();
     }
 
     private function today(): CarbonImmutable

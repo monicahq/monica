@@ -41,6 +41,7 @@ class ContactResource extends JsonResource
                 'template_name' => $this->structureVersion->structure->owner->name,
                 'last_life_event_at' => $this->last_life_event_at?->timestamp,
                 'last_interaction_at' => $this->last_interaction_at?->timestamp,
+                'last_consulted_at' => $this->last_consulted_at?->timestamp,
                 'created_at' => $this->created_at->timestamp,
                 'updated_at' => $this->updated_at?->timestamp,
             ],

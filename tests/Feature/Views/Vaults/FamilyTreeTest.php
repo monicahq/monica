@@ -13,6 +13,7 @@ use App\Models\Vault;
 use App\ViewModels\Vaults\ContactViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -155,7 +156,9 @@ class FamilyTreeTest extends TestCase
     #[Test]
     public function it_asks_the_records_no_more_often_for_a_large_family_than_for_a_small_one(): void
     {
+        Queue::fake();
         $this->user->account->features()->active('marketplace');
+
         $this->parentage($this->judy, $this->personIn('Ross', 'Geller'));
 
         $small = $this->countQueries();

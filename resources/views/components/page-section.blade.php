@@ -2,18 +2,26 @@
 {{--
   @var string|null $title
   @var string|null $description
+  @var string|null $icon
   @var \Illuminate\View\ComponentSlot|null $aside
   @var \Illuminate\View\ComponentSlot|null $actions
 --}}
 @props([
   'title' => null,
   'description' => null,
+  'icon' => null,
 ])
 
 <section {{ $attributes->class(['flex flex-col gap-3']) }}>
   @if ($title)
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 class="shrink-0 text-section-title text-ink">{{ $title }}</h2>
+      <h2 @class(['shrink-0 text-section-title text-ink', 'flex items-center gap-2' => $icon])>
+        @if ($icon)
+          <x-icon :name="$icon" :size="17" :stroke-width="1.6" class="text-muted" />
+        @endif
+
+        {{ $title }}
+      </h2>
 
       @isset($description)
         <p class="text-sm text-pretty text-muted">{{ $description }}</p>

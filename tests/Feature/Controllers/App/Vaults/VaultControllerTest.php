@@ -7,11 +7,15 @@ namespace Tests\Feature\Controllers\App\Vaults;
 use App\Enums\StructureAppliesToEnum;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\RecordVaultVisit;
+use App\Models\Contact;
+use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
@@ -90,20 +94,32 @@ class VaultControllerTest extends TestCase
             ->assertSee('Dunder Mifflin')
             ->assertSee('Everybody at the Scranton branch')
             ->assertSee('148 people')
-            ->assertSee('Contacts')
-            ->assertSee('Vault settings');
+            ->assertSee('Needs your attention')
+            ->assertSee('Favourite people')
+            ->assertSee('Recently viewed')
+            ->assertSee('Recent life events');
     }
 
     #[Test]
-    public function it_asks_for_the_first_person_rather_than_leading_to_an_empty_list(): void
+    public function it_offers_to_answer_an_overdue_date_from_the_dashboard(): void
     {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 1]);
+        $stanley = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Stanley', 'last_name' => 'Hudson']);
+        $rule = Reminder::factory()->manual($stanley, '2026-09-01')->once()->create(['timezone' => 'UTC']);
+        $occurrence = ReminderOccurrence::factory()->for($rule)->create([
+            'generation_key' => '1:2026-09-01',
+            'scheduled_for' => CarbonImmutable::parse('2026-09-01 09:00:00', 'UTC'),
+            'local_date' => '2026-09-01',
+        ]);
 
         $this->actingAs($user)->get(route('vaults.show', $vault))
             ->assertStatus(200)
-            ->assertSee('Nobody here yet')
-            ->assertSee('Add the first person');
+            ->assertSee('Overdue')
+            ->assertSee('Stanley Hudson')
+            ->assertSee(route('reminders.occurrences.answer.update', ['vault' => $vault, 'reminderOccurrence' => $occurrence]))
+            ->assertSee('I remembered');
     }
 
     #[Test]
@@ -114,7 +130,6 @@ class VaultControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('vaults.show', $vault))
             ->assertStatus(200)
-            ->assertSee('All vault settings')
             ->assertSee(route('vaults.settings.index', $vault));
     }
 

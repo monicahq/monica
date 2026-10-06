@@ -7,6 +7,7 @@ namespace Tests\Feature\Controllers\App\Vaults;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\VersionStatusEnum;
+use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\File;
@@ -836,6 +837,20 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_down_that_the_contact_was_opened(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))->assertStatus(200);
+
+        Queue::assertPushedOn('low', RecordContactVisit::class);
+    }
+
+    #[Test]
     public function it_offers_one_way_in_to_the_things_the_template_has_no_say_over(): void
     {
         $user = User::factory()->create();
@@ -1198,6 +1213,8 @@ class ContactControllerTest extends TestCase
     #[Test]
     public function it_reads_a_record_in_the_same_number_of_queries_whatever_its_structure_holds(): void
     {
+        Queue::fake();
+
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $user->account->features()->active('marketplace');

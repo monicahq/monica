@@ -41,6 +41,7 @@ $contact = [
         'last_life_event_at' => null,
         'created_at' => 1756252800,
         'last_interaction_at' => null,
+        'last_consulted_at' => 1756339200,
         'updated_at' => 1756339200,
     ],
     'links' => [
@@ -74,6 +75,7 @@ $otherContact = [
         'last_life_event_at' => 1756166400,
         'created_at' => 1756080000,
         'last_interaction_at' => 1756166400,
+        'last_consulted_at' => null,
         'updated_at' => null,
     ],
     'links' => [
@@ -165,6 +167,7 @@ $contactAttributes = [
     ['name' => 'template_name', 'type' => 'string', 'description' => 'What that template is called, which is what the lists show beside a contact.'],
     ['name' => 'last_life_event_at', 'type' => 'timestamp', 'description' => 'When the contact last took part in a life event, as a count of seconds since 1970, or null when they never have. It says nothing about whether you were there.'],
     ['name' => 'last_interaction_at', 'type' => 'timestamp', 'description' => 'When you and the contact last took part in the same life event, as a count of seconds since 1970, or null when you never have. This is what "last spoke" reads, and what an inactivity reminder counts from.'],
+    ['name' => 'last_consulted_at', 'type' => 'timestamp', 'description' => 'When the contact was last consulted on their own, as a count of seconds since 1970, or null when they never have been: their page opened in Monica, the contact read through this endpoint, or read by an assistant connected over MCP. Listing contacts does not change it.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the contact was written down, as a count of seconds since 1970 rather than a written date.'],
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When the contact last changed, as a count of seconds, or null if it has not changed since it was written down.'],
 ];

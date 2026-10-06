@@ -12,6 +12,7 @@ use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\SortDirectionEnum;
 use App\Http\Controllers\Controller;
+use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
 use App\Models\StructureVersion;
 use App\Models\Vault;
@@ -68,6 +69,8 @@ class ContactController extends Controller
     public function show(Request $request, Vault $vault, Contact $contact, ?string $page = null): View
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
+
+        RecordContactVisit::dispatch(contact: $contact)->onQueue('low');
 
         return view('app.vaults.contacts.show', [
             'viewModel' => new ContactViewModel(

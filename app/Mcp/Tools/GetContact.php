@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Http\Resources\ContactResource;
+use App\Jobs\RecordContactVisit;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -30,6 +31,8 @@ class GetContact extends Tool
 
         $vault = $this->vault($request, $validated['vault']);
         $contact = $this->contact($vault, $validated['contact']);
+
+        RecordContactVisit::dispatch(contact: $contact)->onQueue('low');
 
         return Response::json(new ContactResource($contact)->resolve());
     }

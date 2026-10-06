@@ -14,6 +14,7 @@ use App\Helpers\ContactListCatalogue;
 use App\Helpers\ContactListCells;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ContactResource;
+use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
 use App\Models\ContactListColumn;
 use App\Models\StructureVersion;
@@ -84,8 +85,11 @@ class ContactController extends Controller
     public function show(Request $request, string $vault, string $contact): JsonResponse
     {
         $vault = $this->vault($request, $vault);
+        $contact = $this->contact($vault, $contact);
 
-        return new ContactResource($this->contact($vault, $contact))->response()->setStatusCode(200);
+        RecordContactVisit::dispatch(contact: $contact)->onQueue('low');
+
+        return new ContactResource($contact)->response()->setStatusCode(200);
     }
 
     public function create(Request $request, string $vault): JsonResponse

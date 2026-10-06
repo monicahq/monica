@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\Api;
 
 use App\Enums\ContactListColumnSourceEnum;
 use App\Enums\NameOrderEnum;
+use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
 use App\Models\ContactListColumn;
 use App\Models\File;
@@ -50,6 +51,7 @@ class ContactControllerTest extends TestCase
                 'structure_version_id',
                 'template_name',
                 'last_life_event_at',
+                'last_consulted_at',
                 'created_at',
                 'updated_at',
             ],
@@ -632,6 +634,22 @@ class ContactControllerTest extends TestCase
             ->assertOk()->assertJsonPath('data.id', $contact->uuid);
         $this->json('GET', "/api/v1/vaults/{$vault->slug}/contacts/{$contact->uuid}")
             ->assertOk()->assertJsonPath('data.id', $contact->uuid);
+    }
+
+    #[Test]
+    public function it_writes_down_that_the_contact_was_read(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Jim']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")->assertOk();
+
+        Queue::assertPushedOn('low', RecordContactVisit::class);
     }
 
     #[Test]

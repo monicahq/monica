@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Http\Resources\ContactResource;
+use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
@@ -39,6 +40,8 @@ class GetMeContact extends Tool
         if ($contact === null) {
             throw $this->doesNotExist(__('That vault holds no contact standing for you.'));
         }
+
+        RecordContactVisit::dispatch(contact: $contact)->onQueue('low');
 
         return Response::json(new ContactResource($contact)->resolve());
     }
