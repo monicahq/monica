@@ -538,6 +538,26 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_to_delete_the_contact_that_represents_you(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $user->account_id,
+            'is_me' => true,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('contact');
+
+        $this->assertNotSoftDeleted($contact);
+    }
+
+    #[Test]
     public function it_does_not_delete_a_contact_of_another_account(): void
     {
         $user = User::factory()->create();

@@ -14,9 +14,11 @@ use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 /**
- * Open a new compartment in the account.
+ * Open a new compartment in the account, holding from the start the contact that stands for its
+ * owner. The vault and that contact are written together, so neither exists without the other.
  */
 class CreateVault
 {
@@ -33,10 +35,14 @@ class CreateVault
     {
         $this->sanitize();
         $this->refuseAboveTheCeiling();
-        $this->create();
-        $this->seedTheContactDefault();
-        $this->seedTheAnimalDefault();
-        $this->log();
+
+        DB::transaction(function (): void {
+            $this->create();
+            $this->seedTheContactDefault();
+            $this->seedTheAnimalDefault();
+            $this->createTheMeContact();
+            $this->log();
+        });
 
         return $this->vault;
     }
@@ -118,6 +124,17 @@ class CreateVault
         ]);
     }
 
+    private function createTheMeContact(): void
+    {
+        new CreateContact(
+            user: $this->user,
+            vault: $this->vault,
+            firstName: $this->user->first_name,
+            lastName: $this->user->last_name,
+            isMe: true,
+        )->execute();
+    }
+
     private function log(): void
     {
         LogUserAction::dispatch(
@@ -127,6 +144,6 @@ class CreateVault
             action: UserActionEnum::VaultCreation,
             parameters: ['name' => $this->vault->name],
             loggable: $this->vault,
-        )->onQueue('low');
+        )->onQueue('low')->afterCommit();
     }
 }

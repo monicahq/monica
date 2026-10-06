@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "මෙම ගිණුමට එම සැලැස්ම ගත නොහැක.",
     "This account has no password to remove.": "මෙම ගිණුමේ ඉවත් කිරීමට මුරපදයක් නැත.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "මෙම ගිණුමට මුරපදයක් නැත. ඔබ දැනටමත් භාවිතා කරන දේ, මුරයතුරක්, බාහිර සපයන්නෙකු හෝ ඔබගේ විද්‍යුත් තැපැල් ලිපිනයට එවන ලද සබැඳියක්, එයයි ඔබව පිවිසෙන්නේ.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "මෙම ගිණුමේ සම්බන්ධතා ආරම්භ වන අච්චුවක් නැත, එබැවින් සුරක්ෂිතාගාරය සෑදිය නොහැක.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "මෙම ගිණුමේ එහි සීමාව ඉඩ දෙන ප්‍රමාණයට වඩා ඇත. කිසිවක් මකා නැත, සීමාව ඉහළ දමන තුරු හෝ ගොනු ඉවත් කරන තුරු නව ගොනුවක් පිළිගනු නොලැබේ.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "මෙම ගිණුමට මුරපදයක්වත් මුරයතුරක්වත් නැත, එබැවින් තහවුරු කිරීමට කිසිවක් නැත.",
     "This action is unauthorized.": "මෙම ක්‍රියාව අනවසරයි.",

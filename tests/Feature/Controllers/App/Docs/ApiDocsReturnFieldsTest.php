@@ -11,6 +11,7 @@ use App\Enums\NotificationChannelEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\StripeCatalogue;
+use App\Jobs\CreateDefaultTemplate;
 use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\ContactListColumn;
@@ -711,9 +712,13 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('GET', "/api/v1/vaults/{$vault->uuid}");
             }),
 
-            'vaults-create' => $this->asSomebody(fn (): TestResponse => $this->json('POST', '/api/v1/vaults', [
-                'name' => 'Dunder Mifflin',
-            ])),
+            'vaults-create' => $this->asSomebody(function (User $user): TestResponse {
+                new CreateDefaultTemplate(user: $user)->handle();
+
+                return $this->json('POST', '/api/v1/vaults', [
+                    'name' => 'Dunder Mifflin',
+                ]);
+            }),
 
             'vaults-update' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);

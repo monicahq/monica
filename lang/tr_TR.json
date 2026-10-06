@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Bu hesap o planı alamaz.",
     "This account has no password to remove.": "Bu hesabın kaldırılacak bir parolası yok.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Bu hesabın parolası yok. Zaten kullandığınız şey, bir geçiş anahtarı, bir dış sağlayıcı veya e-posta adresinize gönderilen bir bağlantı, oturumunuzu açan şeydir.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Bu hesapta kişilerin başlayacağı bir şablon yok, bu yüzden kasa oluşturulamıyor.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "Bu hesap sınırının izin verdiğinden fazlasını tutuyor. Hiçbir şey silinmedi ve sınır yükseltilene veya dosyalar kaldırılana kadar yeni dosya kabul edilmeyecek.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Bu hesabın ne parolası ne de geçiş anahtarı var, dolayısıyla doğrulanacak bir şey yok.",
     "This action is unauthorized.": "Bu işlem izinsizdir.",

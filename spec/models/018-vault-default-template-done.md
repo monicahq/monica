@@ -51,7 +51,7 @@ updated_at                  datetime
 - **Setting is one action, not a create and an update.** There is one row per vault and per kind of record, so `SetVaultDefaultTemplate` writes it or replaces what is there. What it points at is always a published version, for the same reason a record can only be put on one.
 - **The contact default cannot be removed**, only replaced, since a vault where writing somebody down asks which template to use first has forgotten what it is for. The action that removed a default enforced exactly that and refused the contact one, and it had no caller, so it has been removed. Nothing now deletes one of these rows at all: a default is replaced through `SetVaultDefaultTemplate`, or it goes with the vault.
 - **The uniqueness of the contact default is enforced by the action, not by the index.** The unique index covers vault, kind and entity type, and every database treats two null entity types as distinct rows, so it catches the entity case only. The action writes through `updateOrCreate`, which is what makes the contact case true.
-- **The first vault of an account is given its default by the job that seeds the template.** The vault is created inside the sign-up transaction and the supplied template arrives a moment later on a queue, so the seeding cannot happen when the vault is made. Every vault opened afterwards gets its default from `CreateVault`.
+- **Every vault gets its contact default from `CreateVault`, the first one included.** Sign up writes the contact template before the first vault, since the `Moi` contact is written on it. The animal default of the first vault still arrives with the queued animal template, which seeds every vault the account already holds.
 
 ## Open questions
 

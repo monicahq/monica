@@ -116,16 +116,21 @@ class ExampleAccountSeeder extends Seeder
 
     private function createContacts(): void
     {
+        $me = $this->vault->contacts()->where('is_me', true)->firstOrFail();
+
         foreach ($this->cast() as $person) {
-            $contact = new CreateContact(
-                user: $this->user,
-                vault: $this->vault,
-                firstName: $person['first_name'],
-                lastName: $person['last_name'],
-                nickname: $person['nickname'],
-                isMe: $person['is_me'],
-                isFavourite: $person['is_favourite'],
-            )->execute();
+            $contact = $me;
+
+            if (! $person['is_me']) {
+                $contact = new CreateContact(
+                    user: $this->user,
+                    vault: $this->vault,
+                    firstName: $person['first_name'],
+                    lastName: $person['last_name'],
+                    nickname: $person['nickname'],
+                    isFavourite: $person['is_favourite'],
+                )->execute();
+            }
 
             $this->contacts[trim("{$person['first_name']} {$person['last_name']}")] = $contact;
 

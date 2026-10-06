@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "இந்தக் கணக்கு அந்தத் திட்டத்தை எடுக்க முடியாது.",
     "This account has no password to remove.": "இந்தக் கணக்கில் அகற்றுவதற்குக் கடவுச்சொல் இல்லை.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "இந்தக் கணக்குக்கு கடவுச்சொல் இல்லை. நீங்கள் ஏற்கனவே பயன்படுத்துவது, ஒரு கடவுச்சாவி, ஒரு வெளிப்புற வழங்குநர் அல்லது உங்கள் மின்னஞ்சல் முகவரிக்கு அனுப்பப்படும் இணைப்பு, அதுவே உங்களை உள்நுழைய வைக்கிறது.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "இந்தக் கணக்கில் தொடர்புகள் தொடங்கும் வார்ப்புரு இல்லை, எனவே பெட்டகத்தை உருவாக்க முடியாது.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "இந்தக் கணக்கு அதன் வரம்பு அனுமதிப்பதைவிட அதிகம் கொண்டுள்ளது. எதுவும் நீக்கப்படவில்லை, வரம்பு உயர்த்தப்படும்வரை அல்லது கோப்புகள் அகற்றப்படும்வரை புதிய கோப்பு ஏற்கப்படாது.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "இந்தக் கணக்கில் கடவுச்சொல்லும் இல்லை கடவுச்சாவியும் இல்லை, எனவே உறுதிப்படுத்த எதுவும் இல்லை.",
     "This action is unauthorized.": "இந்த நடவடிக்கை அங்கீகரிக்கப்படாதது.",

@@ -9,17 +9,22 @@ use App\Actions\UpdateVault;
 use App\Enums\DefaultTemplateEnum;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
+use App\Exceptions\VaultHasNoContactDefault;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
+use App\Models\Contact;
 use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\VaultDefaultTemplate;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
+use RuntimeException;
 use Tests\TestCase;
 
 class CreateVaultTest extends TestCase
@@ -32,6 +37,7 @@ class CreateVaultTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
 
         $vault = new CreateVault(
             user: $user,
@@ -48,7 +54,7 @@ class CreateVaultTest extends TestCase
             'description' => 'Everybody at the Scranton branch',
             'colour' => '#aa151b',
             'position' => 1,
-            'contact_count' => 0,
+            'contact_count' => 1,
         ]);
 
         Queue::assertPushedOn(
@@ -70,6 +76,7 @@ class CreateVaultTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
 
         $first = new CreateVault(user: $user, name: 'Dunder Mifflin')->execute();
         $second = new CreateVault(user: $user, name: 'Schrute Farms')->execute();
@@ -85,6 +92,7 @@ class CreateVaultTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
         Vault::factory()->create(['account_id' => $user->account_id, 'position' => 4]);
 
         $vault = new CreateVault(user: $user, name: 'Schrute Farms')->execute();
@@ -98,6 +106,7 @@ class CreateVaultTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
         Vault::factory()->create(['position' => 9]);
 
         $vault = new CreateVault(user: $user, name: 'Dunder Mifflin')->execute();
@@ -112,6 +121,7 @@ class CreateVaultTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
 
         $vault = new CreateVault(user: $user, name: 'Dunder Mifflin')->execute();
 
@@ -124,6 +134,7 @@ class CreateVaultTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
 
         $vault = new CreateVault(
             user: $user,
@@ -141,6 +152,7 @@ class CreateVaultTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
 
         $vault = new CreateVault(user: $user, name: 'Dunder Mifflin', description: '  ')->execute();
 
@@ -193,15 +205,86 @@ class CreateVaultTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_vault_without_a_default_while_the_account_has_no_supplied_template(): void
+    public function it_writes_down_the_contact_standing_for_the_owner_of_the_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
+        new CreateDefaultTemplate(user: $user)->handle();
+        $template = Template::query()->where('account_id', $user->account_id)->where('slug', DefaultTemplateEnum::BasicContact->value)->sole();
+
+        $vault = new CreateVault(user: $user, name: 'Dunder Mifflin')->execute();
+
+        $contact = $vault->contacts()->sole();
+        $this->assertTrue($contact->is_me);
+        $this->assertSame('Michael', $contact->first_name);
+        $this->assertSame('Scott', $contact->last_name);
+        $this->assertSame($template->structure->published_version_id, $contact->structure_version_id);
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactCreation
+                && $job->vault->id === $vault->id
+                && $job->isAbout($contact),
+        );
+    }
+
+    #[Test]
+    public function it_creates_a_vault_for_an_account_at_the_contact_ceiling(): void
+    {
+        Queue::fake();
+        config(['monica.free_contact_limit' => 1, 'monica.free_vault_limit' => 5]);
+
+        $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
+        Contact::factory()->create(['account_id' => $user->account_id]);
+
+        $vault = new CreateVault(user: $user, name: 'Schrute Farms')->execute();
+
+        $this->assertTrue($vault->contacts()->sole()->is_me);
+        $this->assertSame(1, $user->account->contactCount());
+    }
+
+    #[Test]
+    public function it_creates_nothing_when_the_account_has_no_contact_template(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
 
-        $vault = new CreateVault(user: $user, name: 'Dunder Mifflin')->execute();
+        try {
+            new CreateVault(user: $user, name: 'Dunder Mifflin')->execute();
+            $this->fail('The vault was created without the contact standing for its owner.');
+        } catch (VaultHasNoContactDefault) {
+        }
 
-        $this->assertEquals(0, VaultDefaultTemplate::query()->where('vault_id', $vault->id)->count());
+        $this->assertDatabaseMissing('vaults', ['account_id' => $user->account_id]);
+        $this->assertDatabaseMissing('vault_default_templates', ['account_id' => $user->account_id]);
+        $this->assertDatabaseMissing('contacts', ['account_id' => $user->account_id]);
+    }
+
+    #[Test]
+    public function it_runs_no_queued_work_when_the_creation_is_rolled_back(): void
+    {
+        $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
+        $processed = [];
+        Event::listen(JobProcessing::class, function (JobProcessing $event) use (&$processed): void {
+            $processed[] = $event->job->resolveName();
+        });
+
+        try {
+            DB::transaction(function () use ($user): void {
+                new CreateVault(user: $user, name: 'Dunder Mifflin')->execute();
+
+                throw new RuntimeException('The branch was closed before anybody moved in.');
+            });
+        } catch (RuntimeException) {
+        }
+
+        $this->assertSame([], $processed);
+        $this->assertDatabaseMissing('vaults', ['account_id' => $user->account_id]);
     }
 
     #[Test]
@@ -226,6 +309,7 @@ class CreateVaultTest extends TestCase
         config(['monica.free_vault_limit' => 1]);
 
         $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
         $vaults = Vault::factory()->count(3)->create(['account_id' => $user->account_id]);
 
         try {
@@ -246,6 +330,7 @@ class CreateVaultTest extends TestCase
         config(['monica.free_vault_limit' => 1]);
 
         $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
         $user->account->update(['access_granted_at' => now()]);
         Vault::factory()->count(2)->create(['account_id' => $user->account_id]);
 
@@ -261,6 +346,7 @@ class CreateVaultTest extends TestCase
         config(['monica.free_vault_limit' => 1, 'monica.self_hosted' => true]);
 
         $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
         Vault::factory()->count(2)->create(['account_id' => $user->account_id]);
 
         $vault = new CreateVault(user: $user, name: 'Sabre')->execute();

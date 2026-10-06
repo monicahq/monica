@@ -10,6 +10,7 @@ use App\Actions\SetDefaultVault;
 use App\Actions\SetVaultDefaultTemplate;
 use App\Actions\UpdateVault;
 use App\Enums\VaultColourEnum;
+use App\Exceptions\VaultHasNoContactDefault;
 use App\Http\Controllers\Controller;
 use App\Jobs\RecordVaultVisit;
 use App\Models\StructureVersion;
@@ -69,6 +70,8 @@ class VaultController extends Controller
             )->execute();
         } catch (AuthorizationException $e) {
             return back()->withErrors(['name' => $e->getMessage()])->withInput();
+        } catch (VaultHasNoContactDefault) {
+            return back()->withErrors(['name' => __('This account has no template for contacts to start from, so the vault cannot be created.')])->withInput();
         }
 
         $this->settleWhatContactsStartFrom($request, $vault);

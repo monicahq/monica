@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "บัญชีนี้รับแพ็กเกจนั้นไม่ได้",
     "This account has no password to remove.": "บัญชีนี้ไม่มีรหัสผ่านให้เอาออก",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "บัญชีนี้ไม่มีรหัสผ่าน สิ่งที่คุณใช้อยู่แล้ว ไม่ว่าจะเป็นพาสคีย์ ผู้ให้บริการภายนอก หรือลิงก์ที่ส่งไปยังที่อยู่อีเมลของคุณ คือสิ่งที่ลงชื่อเข้าใช้ให้คุณ",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "บัญชีนี้ไม่มีเทมเพลตที่ผู้ติดต่อเริ่มจาก จึงสร้างห้องนิรภัยไม่ได้",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "บัญชีนี้เก็บข้อมูลมากกว่าที่ขีดจำกัดอนุญาต ไม่มีอะไรถูกลบ และจะไม่รับไฟล์ใหม่จนกว่าจะเพิ่มขีดจำกัดหรือลบไฟล์ออก",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "บัญชีนี้ไม่มีทั้งรหัสผ่านและพาสคีย์ จึงไม่มีอะไรให้ยืนยัน",
     "This action is unauthorized.": "การกระทำนี้ไม่ได้รับอนุญาต",

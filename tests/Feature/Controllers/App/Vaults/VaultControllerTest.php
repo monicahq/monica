@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\StructureAppliesToEnum;
+use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\RecordVaultVisit;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -216,6 +217,8 @@ class VaultControllerTest extends TestCase
 
         $user = User::factory()->create();
 
+        new CreateDefaultTemplate(user: $user)->handle();
+
         $response = $this->actingAs($user)->post(route('vaults.create'), [
             'name' => 'Dunder Mifflin',
             'description' => 'Everybody at the Scranton branch',
@@ -239,6 +242,8 @@ class VaultControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
         $existing = Vault::factory()->default()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user)->post(route('vaults.create'), [
@@ -260,6 +265,8 @@ class VaultControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
         $existing = Vault::factory()->default()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user)->post(route('vaults.create'), [
@@ -277,6 +284,8 @@ class VaultControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
         $chosen = $this->publishedContactTemplate($user, 'Work contact');
 
         $this->actingAs($user)->post(route('vaults.create'), [
@@ -480,6 +489,22 @@ class VaultControllerTest extends TestCase
         $response->assertRedirect(route('vaults.new'));
         $response->assertSessionHasErrors('name');
         $this->assertSame(1, $user->account->vaults()->count());
+    }
+
+    #[Test]
+    public function it_refuses_a_vault_when_the_account_has_no_contact_template(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->from(route('vaults.new'))
+            ->post(route('vaults.create'), ['name' => 'Sabre', 'colour' => '#4f8a49']);
+
+        $response->assertRedirect(route('vaults.new'));
+        $response->assertSessionHasErrors(['name' => 'This account has no template for contacts to start from, so the vault cannot be created.']);
+        $this->assertSame(0, $user->account->vaults()->count());
     }
 
     #[Test]

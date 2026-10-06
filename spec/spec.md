@@ -155,14 +155,14 @@ A contact or a life event belongs to a specific vault. Searches, exports, webhoo
 
 ### 4.3. The notion of Me
 
-Every account has a special contact called **Me**, representing the person using Erica.
+Every vault holds a special contact called **Me**, representing the person using Erica. Each vault is created holding it, named after the account at that moment, and every Me of an account stands for the same person.
 
 Me is a real contact: it can carry a template, custom fields, life events and relationships, and it can belong to groups. This identity makes it possible to model sentences like "Alice is my sister", "I had lunch with Marc" or "we lived in Montreal" correctly, without creating an invisible parallel logic.
 
 Me does, however, have invariants:
 
-- it is unique within the account;
-- it cannot be deleted or merged into another contact;
+- it is unique within its vault;
+- it cannot be deleted on its own, merged into another contact or moved out of its vault, and it goes only when its vault does;
 - it is stably identifiable by the API, MCP, imports and modules;
 - its name and its record stay editable like those of a normal contact;
 - relationships displayed from Me read naturally from the user's point of view.

@@ -40,6 +40,7 @@ deleted_at                  datetime
 
 - An account may hold no vault at all. The last one goes like any other, and the account is taken back to the state it started in, which is the screen that explains what to do first.
 - Exactly one vault per account is the default, whenever the account holds a vault. The first vault created is the default, and so is the next one created by an account left with none.
+- Every vault is created holding its `Moi` contact (4.3), named after the account's user at that moment and written in the same transaction as the vault, on the system contact template. A vault that cannot hold it is not created. Deleting the vault takes it along; nothing else can.
 - Every query touching contacts, entities, life events, groups, files or journal days filters on `vault_id`. This is not a convenience, it is the compartment. It applies equally to search (13), exports, webhooks (14.3), modules and share links (4.4).
 - Moving a record from one vault to another is an explicit action, logged, and it must carry its dependants with it or refuse. Moving a contact that participates in a life event in the old vault is the interesting case, and the resolution belongs in the action, not here.
 - Deleting a vault is soft, and it is the most destructive thing a user can do short of deleting the account. It must warn, state what it contains, and be reversible for a grace period.
@@ -53,11 +54,10 @@ deleted_at                  datetime
 - The settings screen renames the vault, changes what it is for and its colour, says what a new contact starts from, and deletes the vault; the deletion asks first and says how many contacts go with it. `DestroyVault` takes the contacts with it and hands the default over to the first vault left, or to nobody when there is none. Nothing brings a vault back: the action that restored one with the contacts that left with it, and took the title back when nobody held it, was reached from nowhere in the interface and has been removed. The grace period is not enforced either, so a deleted vault stays deleted and nothing purges it, which is the safe half of the rule to leave unfinished.
 - The API reaches a vault and stops at the edge of it. `api/v1/vaults` lists, shows, creates, updates and deletes one, addressed by `uuid` and never by the key, and `api/v1/vaults/{vault}/contacts` reads the people inside. Nothing else a vault holds is exposed: no templates, no sections, no files, no reminders, no share links.
 - Moving a contact from one vault to another. The action does not exist, and neither does the resolution of what happens to what the contact took part in.
-- Nothing seeds the `Moi` contact of a vault (4.3). [Contact](019-contact-done.md) knows how to create one and refuses a second in the same vault, and the vault now carries the template a new contact starts from ([VaultDefaultTemplate](018-vault-default-template-done.md)), so nothing stands in the way of it any more.
 
 ## Decisions taken while building it
 
-- **`Moi` lives once per vault.** Section 4.3 says the contact is unique in the account and section 4.2 says a contact belongs to one vault, and those cannot both be literally true. Each vault holds its own contact flagged `is_me`, all representing the same person, because vault isolation is the stronger guarantee: breaking it for one row would leak across compartments in search, life events and share links.
+- **`Moi` lives once per vault.** Each vault holds its own contact flagged `is_me`, all representing the same person, because vault isolation is the stronger guarantee: breaking it for one row would leak across compartments in search, life events and share links.
 
 ## Open questions
 

@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Bu hisob u tarifni ola olmaydi.",
     "This account has no password to remove.": "Bu hisobda olib tashlanadigan parol yoʻq.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Bu hisobda parol yo’q. Siz allaqachon foydalanayotgan narsa, kirish kaliti, tashqi provayder yoki e-pochta manzilingizga yuborilgan havola sizni tizimga kiritadi.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Bu hisobda kontaktlar boshlanadigan shablon yoʻq, shuning uchun seyfni yaratib boʻlmaydi.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "Bu hisobda cheklov ruxsat berganidan koʻproq narsa bor. Hech narsa oʻchirilmadi va cheklov oshirilmaguncha yoki fayllar olib tashlanmaguncha yangi fayl qabul qilinmaydi.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Bu hisobda na parol, na kirish kaliti bor, shuning uchun tasdiqlash uchun hech narsa yoʻq.",
     "This action is unauthorized.": "Bu harakat ruxsat etilmagan.",

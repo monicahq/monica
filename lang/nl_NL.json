@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Dit account kan dat pakket niet kiezen.",
     "This account has no password to remove.": "Dit account heeft geen wachtwoord om te verwijderen.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Dit account heeft geen wachtwoord. Wat je al gebruikt, een passkey, een externe provider of een link naar je e-mailadres, is wat je aanmeldt.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Dit account heeft geen sjabloon waarmee contacten beginnen, dus de kluis kan niet worden gemaakt.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "Dit account bevat meer dan de limiet toestaat. Er is niets verwijderd, en er wordt geen nieuw bestand aangenomen tot de limiet wordt verhoogd of bestanden worden verwijderd.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Dit account heeft geen wachtwoord en geen passkey, dus er valt niets te bevestigen.",
     "This action is unauthorized.": "Deze actie is niet toegestaan.",

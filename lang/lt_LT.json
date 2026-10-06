@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Ši paskyra negali pasiimti šio plano.",
     "This account has no password to remove.": "Ši paskyra neturi slaptažodžio, kurį būtų galima pašalinti.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Ši paskyra neturi slaptažodžio. Tai, ką jau naudojate, prieigos raktas, išorinis tiekėjas arba nuoroda, atsiųsta į jūsų el. pašto adresą, yra tai, kas jus prijungia.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Ši paskyra neturi šablono, nuo kurio pradedami kontaktai, todėl seifo sukurti negalima.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "Šioje paskyroje yra daugiau, nei leidžia jos riba. Nieko neištrinta, ir naujas failas nebus priimtas, kol riba nebus padidinta arba failai pašalinti.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Ši paskyra neturi nei slaptažodžio, nei prieigos rakto, todėl nėra kuo patvirtinti.",
     "This action is unauthorized.": "Šis veiksmas yra neteisėtas.",

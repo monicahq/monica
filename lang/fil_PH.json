@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Hindi maaaring kunin ng account na ito ang planong iyon.",
     "This account has no password to remove.": "Walang password na maaalis ang account na ito.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Walang password ang account na ito. Ang ginagamit mo na, isang passkey, isang panlabas na provider o isang link na ipinadala sa iyong email address, ang siyang nagsa-sign in sa iyo.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Walang template ang account na ito na pinagsisimulan ng mga contact, kaya hindi magagawa ang kaban.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "May taglay ang account na ito na higit sa pinapayagan ng limitasyon nito. Walang nabura, at walang bagong file na tatanggapin hanggang itaas ang limitasyon o alisin ang mga file.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Walang password at walang passkey ang account na ito, kaya walang maipangkukumpirma.",
     "This action is unauthorized.": "Ang pagkilos na ito ay hindi awtorisado.",

@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Tài khoản này không thể lấy gói đó.",
     "This account has no password to remove.": "Tài khoản này không có mật khẩu nào để bỏ.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Tài khoản này không có mật khẩu. Thứ bạn đang dùng, một khóa truy cập, một nhà cung cấp bên ngoài hoặc một liên kết gửi tới địa chỉ email của bạn, mới là thứ đăng nhập cho bạn.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Tài khoản này không có mẫu nào để liên hệ bắt đầu từ, nên không thể tạo kho.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "Tài khoản này đang chứa nhiều hơn mức giới hạn cho phép. Không có gì bị xóa, và sẽ không nhận tệp mới cho đến khi giới hạn được nâng lên hoặc tệp được bỏ đi.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Tài khoản này không có mật khẩu lẫn khóa truy cập, nên không có gì để xác nhận.",
     "This action is unauthorized.": "Hành động này là trái phép.",

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
+use App\Actions\CreateVault;
 use App\Actions\UpdateUserProfile;
 use App\Enums\UserActionEnum;
+use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
 use App\Models\User;
 use App\Notifications\VerifyEmail;
@@ -53,6 +55,27 @@ class UpdateUserProfileTest extends TestCase
                 && $job->account->id === $user->account_id
                 && $job->user->id === $user->id,
         );
+    }
+
+    #[Test]
+    public function it_leaves_the_contact_standing_for_the_owner_alone_when_the_user_is_renamed(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['first_name' => 'Dwight', 'last_name' => 'Schrute']);
+        new CreateDefaultTemplate(user: $user)->handle();
+        $vault = new CreateVault(user: $user, name: 'Schrute Farms')->execute();
+
+        new UpdateUserProfile(
+            user: $user,
+            firstName: 'Dwight',
+            lastName: 'Schrute-Bratton',
+            email: $user->email,
+        )->execute();
+
+        $contact = $vault->contacts()->sole();
+        $this->assertSame('Dwight', $contact->first_name);
+        $this->assertSame('Schrute', $contact->last_name);
     }
 
     #[Test]

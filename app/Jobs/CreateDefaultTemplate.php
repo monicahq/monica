@@ -30,9 +30,10 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Give a fresh account one of the templates it starts with, so the first contact or animal somebody
- * writes down has somewhere to go. It is a job rather than part of creating the account, because it
- * writes a couple of dozen rows nobody is looking at yet. It does nothing when the account already
- * has that template, so running it again is safe.
+ * writes down has somewhere to go. The animal template is queued, since it writes a couple of dozen
+ * rows nobody is looking at yet. The contact template runs inline while the account is created,
+ * because the contact standing for the user is written on it. It does nothing when the account
+ * already has that template, so running it again is safe.
  */
 class CreateDefaultTemplate implements ShouldQueue
 {

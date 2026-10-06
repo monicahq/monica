@@ -1,24 +1,17 @@
 <!--
 Sync Impact Report
-Version change: 2.4.2 -> 2.5.0
-Rationale: Laravel Pennant generates its class based feature flags into `app/Features`, a namespace no
-listed folder holds (specs/068). A flag is not an action, a model or a policy: it decides whether a
-capability is reachable for an account. The layout of the repository is fixed here, so admitting the
-folder is an amendment. Guidance expands and nothing is removed or redefined, so MINOR.
+Version change: 2.5.0 -> 2.5.1
+Rationale: the invariant said one Me contact per account, while spec/models/007 and 019 had already
+decided one per vault, and the API, the MCP server and CreateContact work that way. The invariant now
+says what the product does, and adds that the contact is created with its vault and cannot leave it.
+No practice is invalidated, so PATCH.
 
-Added: Technology and Architecture Constraints, one entry in the `app/` list.
-- `Features`, one class per feature flag.
-Modified: none.
+Modified: Product Invariants, the Me contact.
+Added: none.
 Removed: none.
 
-Considered and left standing: what a flag may not distinguish (plan, payment, deployment) is already
-the Product Invariant that hosted and self hosted run the same product with no per plan features.
-Restating it beside the folder would be the same fact in two places.
-
-Also replaced: the earlier reports stacked at the top of this file. Their nested comment openers left
-the last lines of one rendered as visible text.
-
-Follow-up owed by the pull request that adopts this: none.
+Follow-up owed by the pull request that adopts this: none. spec/spec.md 4.3 changes in the same pull
+request.
 -->
 # Monica Constitution
 
@@ -217,8 +210,9 @@ an amendment.
   else's vaults.
 - A vault is a compartment, not a permission boundary. A contact, entity or life event belongs to
   exactly one vault, and moving data between vaults is an explicit, recorded action.
-- Every account has exactly one Me contact. It is a real contact, carrying a template, fields,
-  life events and relationships, but it MUST NOT be deleted or merged into another contact, and it
+- Every vault holds exactly one Me contact, created with the vault, and each of them stands for the
+  same person. It is a real contact, carrying a template, fields, life events and relationships, but
+  it MUST NOT be deleted on its own, merged into another contact or moved out of its vault, and it
   MUST stay stably identifiable by the API, MCP, imports and modules.
 - Sharing is a revocable read only link, never collaboration. A share is scoped to one record or one
   vault, protected by an unguessable token, optionally given an expiry and a password, and
@@ -389,4 +383,4 @@ test and the translations for the change under review, and to say which of the e
 change had to satisfy. Complexity that steps outside these principles MUST be justified in the pull
 request or removed.
 
-**Version**: 2.5.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-10-04
+**Version**: 2.5.1 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-10-06

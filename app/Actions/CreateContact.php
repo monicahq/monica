@@ -168,7 +168,7 @@ class CreateContact
 
     private function lookForDuplicates(): void
     {
-        DetectDuplicateContacts::dispatch($this->contact)->onQueue('low');
+        DetectDuplicateContacts::dispatch($this->contact)->onQueue('low')->afterCommit();
     }
 
     private function log(): void
@@ -180,6 +180,6 @@ class CreateContact
             vault: $this->vault,
             parameters: ['name' => $this->contact->name],
             loggable: $this->contact,
-        )->onQueue('low');
+        )->onQueue('low')->afterCommit();
     }
 }

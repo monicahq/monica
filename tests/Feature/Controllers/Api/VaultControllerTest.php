@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\Api;
 
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
+use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\ShareLink;
@@ -224,6 +225,8 @@ class VaultControllerTest extends TestCase
 
         $user = User::factory()->create();
 
+        new CreateDefaultTemplate(user: $user)->handle();
+
         Sanctum::actingAs($user);
 
         $response = $this->json('POST', '/api/v1/vaults', [
@@ -238,7 +241,7 @@ class VaultControllerTest extends TestCase
         $response->assertJsonPath('data.attributes.name', 'Dunder Mifflin');
         $response->assertJsonPath('data.attributes.description', 'Everybody at the Scranton branch.');
         $response->assertJsonPath('data.attributes.colour', '#4f8a49');
-        $response->assertJsonPath('data.attributes.contact_count', 0);
+        $response->assertJsonPath('data.attributes.contact_count', 1);
 
         $vault = Vault::query()->where('account_id', $user->account_id)->firstOrFail();
 
@@ -259,6 +262,8 @@ class VaultControllerTest extends TestCase
 
         $user = User::factory()->create();
 
+        new CreateDefaultTemplate(user: $user)->handle();
+
         Sanctum::actingAs($user);
 
         $response = $this->json('POST', '/api/v1/vaults', [
@@ -277,6 +282,8 @@ class VaultControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
         Vault::factory()->create(['account_id' => $user->account_id, 'position' => 4]);
 
         Sanctum::actingAs($user);
@@ -294,6 +301,8 @@ class VaultControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
 
         Sanctum::actingAs($user);
 
@@ -359,6 +368,8 @@ class VaultControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
 
         Sanctum::actingAs($user);
 
@@ -719,6 +730,8 @@ class VaultControllerTest extends TestCase
 
         $user = User::factory()->create();
 
+        new CreateDefaultTemplate(user: $user)->handle();
+
         Sanctum::actingAs($user);
 
         $response = $this->json('POST', '/api/v1/vaults', [
@@ -738,6 +751,8 @@ class VaultControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
         $held = Vault::factory()->default()->create(['account_id' => $user->account_id]);
 
         Sanctum::actingAs($user);
@@ -760,6 +775,8 @@ class VaultControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
         $held = Vault::factory()->default()->create(['account_id' => $user->account_id]);
 
         Sanctum::actingAs($user);
@@ -782,6 +799,8 @@ class VaultControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
         $held = Vault::factory()->default()->create(['account_id' => $user->account_id]);
 
         Sanctum::actingAs($user);
@@ -822,6 +841,8 @@ class VaultControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
         $chosen = $this->publishedContactTemplate($user, 'Work contact');
 
         Sanctum::actingAs($user);
@@ -894,6 +915,8 @@ class VaultControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
         Vault::factory()->default()->create(['account_id' => $user->account_id]);
         $chosen = $this->publishedContactTemplate($user, 'Work contact');
 
@@ -963,6 +986,23 @@ class VaultControllerTest extends TestCase
         $response->assertJsonValidationErrors('name');
         $response->assertJsonPath('errors.name.0', 'The free plan holds 1 vault, and this account already has it. Full access lifts the ceiling.');
         $this->assertSame(1, $user->account->vaults()->count());
+    }
+
+    #[Test]
+    public function it_refuses_a_vault_when_the_account_has_no_contact_template(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', '/api/v1/vaults', ['name' => 'Sabre']);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('name');
+        $response->assertJsonPath('errors.name.0', 'This account has no template for contacts to start from, so the vault cannot be created.');
+        $this->assertSame(0, $user->account->vaults()->count());
     }
 
     #[Test]

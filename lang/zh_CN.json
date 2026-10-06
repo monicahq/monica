@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "这个账户无法选用该方案。",
     "This account has no password to remove.": "此账户没有可删除的密码。",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "此账户没有密码。你已在使用的方式，通行密钥、外部提供方或发送到你电子邮件地址的链接，才是为你登录的方式。",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "此账户没有联系人的起始模板，因此无法创建保险库。",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "此账户已超出上限。没有删除任何内容，在提高上限或删除文件之前，不会接受新文件。",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "此账户既没有密码也没有通行密钥，因此无从确认。",
     "This action is unauthorized.": "此操作未经授权。",

@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Denne konto kan ikke tage den plan.",
     "This account has no password to remove.": "Denne konto har ingen adgangskode at fjerne.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Denne konto har ingen adgangskode. Det, du allerede bruger, en adgangsnøgle, en ekstern udbyder eller et link sendt til din e-mailadresse, er det, der logger dig ind.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Denne konto har ingen skabelon, som kontakter tager udgangspunkt i, så boksen kan ikke oprettes.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "Denne konto rummer mere, end grænsen tillader. Der er ikke slettet noget, og der modtages ingen nye filer, før grænsen hæves, eller filer fjernes.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Denne konto har hverken en adgangskode eller en adgangsnøgle, så der er intet at bekræfte med.",
     "This action is unauthorized.": "Denne handling er uautoriseret.",

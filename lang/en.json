@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "This account cannot take up that plan.",
     "This account has no password to remove.": "This account has no password to remove.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "This account has no template for contacts to start from, so the vault cannot be created.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "This account holds neither a password nor a passkey, so there is nothing to confirm with.",
     "This action is unauthorized.": "This action is unauthorized.",

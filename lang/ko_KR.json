@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "이 계정은 그 요금제를 가질 수 없습니다.",
     "This account has no password to remove.": "이 계정에는 없앨 비밀번호가 없습니다.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "이 계정에는 비밀번호가 없습니다. 이미 사용 중인 것, 패스키나 외부 제공자, 또는 이메일로 받는 링크가 로그인 수단입니다.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "이 계정에는 연락처가 시작할 템플릿이 없어 보관함을 만들 수 없습니다.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "이 계정이 한도를 넘겨 쓰고 있습니다. 삭제된 것은 없으며, 한도를 올리거나 파일을 지우기 전까지는 새 파일을 받지 않습니다.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "이 계정에는 비밀번호도 패스키도 없어서 확인할 수단이 없습니다.",
     "This action is unauthorized.": "이 작업은 승인되지 않았습니다.",

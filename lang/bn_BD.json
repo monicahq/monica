@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "এই অ্যাকাউন্ট সেই প্ল্যানটি নিতে পারে না।",
     "This account has no password to remove.": "এই অ্যাকাউন্টে সরানোর মতো কোনো পাসওয়ার্ড নেই।",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "এই অ্যাকাউন্টের কোনো পাসওয়ার্ড নেই। আপনি যা ইতিমধ্যে ব্যবহার করেন, একটি পাসকি, একটি বাইরের সরবরাহকারী বা আপনার ইমেল ঠিকানায় পাঠানো একটি লিঙ্ক, সেটিই আপনাকে সাইন ইন করায়।",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "এই অ্যাকাউন্টে এমন কোনো টেমপ্লেট নেই যা থেকে পরিচিতি শুরু হয়, তাই সিন্দুক তৈরি করা যাবে না।",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "এই অ্যাকাউন্টে তার সীমা যা দেয় তার চেয়ে বেশি আছে। কিছুই মোছা হয়নি, আর সীমা না বাড়ানো বা ফাইল না সরানো পর্যন্ত কোনো নতুন ফাইল নেওয়া হবে না।",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "এই অ্যাকাউন্টে পাসওয়ার্ডও নেই, পাসকিও নেই, তাই নিশ্চিত করার মতো কিছু নেই।",
     "This action is unauthorized.": "এই কর্ম অননুমোদিত.",

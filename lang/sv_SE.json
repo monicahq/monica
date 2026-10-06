@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Det här kontot kan inte ta den planen.",
     "This account has no password to remove.": "Det här kontot har inget lösenord att ta bort.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Det här kontot har inget lösenord. Det du redan använder, en passnyckel, en extern leverantör eller en länk till din e-postadress, är det som loggar in dig.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Det här kontot har ingen mall som kontakter utgår från, så valvet kan inte skapas.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "Det här kontot rymmer mer än gränsen tillåter. Ingenting har raderats, och ingen ny fil tas emot förrän gränsen höjs eller filer tas bort.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Det här kontot har varken lösenord eller passnyckel, så det finns ingenting att bekräfta med.",
     "This action is unauthorized.": "Denna åtgärd är obehörig.",

@@ -984,6 +984,25 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_to_delete_the_contact_that_represents_you(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'is_me' => true,
+        ]);
+
+        $this->actingAs($user)
+            ->delete(route('contacts.destroy', ['vault' => $vault, 'contact' => $michael]))
+            ->assertRedirect(route('contacts.edit', ['vault' => $vault, 'contact' => $michael]))
+            ->assertSessionHasErrors('contact');
+
+        $this->assertNotSoftDeleted($michael);
+    }
+
+    #[Test]
     public function it_does_not_edit_or_delete_somebody_reached_through_the_wrong_vault(): void
     {
         Queue::fake();

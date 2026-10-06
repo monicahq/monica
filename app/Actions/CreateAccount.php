@@ -13,7 +13,6 @@ use App\Jobs\LogUserAction;
 use App\Jobs\SeedLifeEventCategories;
 use App\Jobs\SeedNotificationPreference;
 use App\Jobs\SeedRelationshipTypes;
-use App\Jobs\SeedValueLists;
 use App\Models\Account;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -21,8 +20,9 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Create an account, the one user in it and the vault their contacts go in, then ask an ordered
- * chain of jobs for the rest of what the account starts with.
+ * Create an account, the one user in it, the template a contact starts from and the first vault,
+ * which holds the contact standing for that user, then ask an ordered chain of jobs for the rest of
+ * what the account starts with.
  */
 class CreateAccount
 {
@@ -46,6 +46,7 @@ class CreateAccount
         DB::transaction(function (): void {
             $this->createAccount();
             $this->createUser();
+            $this->createTheContactTemplate();
             $this->createFirstVault();
         });
 
@@ -80,6 +81,13 @@ class CreateAccount
         )->execute();
     }
 
+    private function createTheContactTemplate(): void
+    {
+        new CreateDefaultValueLists(user: $this->user)->execute();
+
+        new CreateDefaultTemplate(user: $this->user)->handle();
+    }
+
     private function createFirstVault(): void
     {
         new CreateVault(
@@ -92,9 +100,7 @@ class CreateAccount
     {
         Bus::chain([
             new SeedNotificationPreference(user: $this->user),
-            new SeedValueLists(user: $this->user),
             new SeedLifeEventCategories(user: $this->user),
-            new CreateDefaultTemplate(user: $this->user),
             new CreateDefaultTemplate(user: $this->user, supplied: DefaultTemplateEnum::BasicAnimal),
             new CreateDefaultLifeEventTypes(user: $this->user),
             new SeedRelationshipTypes(user: $this->user),

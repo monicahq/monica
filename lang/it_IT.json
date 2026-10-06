@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Questo account non può scegliere quel piano.",
     "This account has no password to remove.": "Questo account non ha una password da rimuovere.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Questo account non ha una password. Quello che usi già, una passkey, un provider esterno o un link inviato al tuo indirizzo e-mail, è ciò che ti autentica.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Questo account non ha un modello da cui partono i contatti, quindi la cassaforte non può essere creata.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "Questo conto contiene più di quanto il suo limite consenta. Nulla è stato eliminato, e nessun nuovo file sarà accettato finché il limite non verrà alzato o dei file rimossi.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Questo account non ha né una password né una passkey, quindi non c’è nulla con cui confermare.",
     "This action is unauthorized.": "Questa azione non è autorizzata.",

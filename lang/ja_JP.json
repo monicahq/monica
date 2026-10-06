@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "このアカウントではそのプランを選べません。",
     "This account has no password to remove.": "このアカウントに削除できるパスワードはありません。",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "このアカウントにはパスワードがありません。既にお使いのもの、パスキー、外部プロバイダー、またはメールで届くリンクがサインインの手段です。",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "このアカウントには連絡先の起点となるテンプレートがないため、保管庫を作成できません。",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "このアカウントは上限を超えています。何も削除されていませんが、上限を上げるかファイルを削除するまで、新しいファイルは受け付けられません。",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "このアカウントにはパスワードもパスキーもないため、確認する手段がありません。",
     "This action is unauthorized.": "この行為は許可されていません。",

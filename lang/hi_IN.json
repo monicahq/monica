@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "यह खाता वह प्लान नहीं ले सकता।",
     "This account has no password to remove.": "इस खाते का हटाने के लिए कोई पासवर्ड नहीं है।",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "इस खाते का कोई पासवर्ड नहीं है। आप जो पहले से उपयोग करते हैं, पासकी, बाहरी प्रदाता या आपके ईमेल पते पर भेजा गया लिंक, वही आपको साइन इन करता है।",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "इस खाते में कोई टेम्पलेट नहीं है जिससे संपर्क शुरू हों, इसलिए तिजोरी नहीं बनाई जा सकती।",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "इस खाते में उससे ज़्यादा है जितनी इसकी सीमा देती है। कुछ हटाया नहीं गया, और जब तक सीमा बढ़ाई या फ़ाइलें हटाई न जाएँ, कोई नई फ़ाइल स्वीकार नहीं होगी।",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "इस खाते में न पासवर्ड है न पासकी, इसलिए पुष्टि करने के लिए कुछ नहीं है।",
     "This action is unauthorized.": "यह कार्रवाई अनधिकृत है.",

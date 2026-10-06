@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Tämä tili ei voi ottaa käyttöön tuota pakettia.",
     "This account has no password to remove.": "Tällä tilillä ei ole salasanaa poistettavaksi.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Tällä tilillä ei ole salasanaa. Se mitä jo käytät, avainkoodi, ulkoinen palveluntarjoaja tai sähköpostiosoitteeseesi lähetetty linkki, kirjaa sinut sisään.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Tällä tilillä ei ole mallia, josta yhteystiedot alkavat, joten holvia ei voi luoda.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "Tämä tili sisältää enemmän kuin sen raja sallii. Mitään ei ole poistettu, eikä uusia tiedostoja hyväksytä ennen kuin rajaa nostetaan tai tiedostoja poistetaan.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Tällä tilillä ei ole salasanaa eikä avainkoodia, joten vahvistettavaa ei ole.",
     "This action is unauthorized.": "Tämä toiminto on luvaton.",

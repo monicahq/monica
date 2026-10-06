@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Ez a fiók nem veheti fel ezt a csomagot.",
     "This account has no password to remove.": "Ennek a fióknak nincs eltávolítandó jelszava.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Ennek a fióknak nincs jelszava. Amit már használ, egy azonosítókulcs, egy külső szolgáltató vagy az e-mail-címére küldött hivatkozás, az jelentkezteti be.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Ebben a fiókban nincs sablon, amelyből a névjegyek indulnak, így a széf nem hozható létre.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "Ez a fiók többet tartalmaz, mint amennyit a korlátja enged. Semmi nem törlődött, és új fájlt nem fogadunk el, amíg a korlátot meg nem emeled vagy fájlokat nem törölsz.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Ennek a fióknak nincs sem jelszava, sem azonosítókulcsa, így nincs mivel megerősíteni.",
     "This action is unauthorized.": "Nincs elég jogosultsága végrehajtani ezt a műveletet.",

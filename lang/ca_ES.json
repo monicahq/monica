@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Aquest compte no pot prendre aquest pla.",
     "This account has no password to remove.": "Aquest compte no té cap contrasenya per treure.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Aquest compte no té contrasenya. El que ja feu servir, una clau d’accés, un proveïdor extern o un enllaç enviat a la vostra adreça de correu electrònic, és el que inicia la vostra sessió.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Aquest compte no té cap plantilla de la qual parteixin els contactes, així que no es pot crear la caixa forta.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "Aquest compte conté més del que permet el seu límit. No s’ha esborrat res, i no s’acceptarà cap fitxer nou fins que s’apugi el límit o es treguin fitxers.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Aquest compte no té ni contrasenya ni clau d’accés, així que no hi ha res amb què confirmar.",
     "This action is unauthorized.": "Aquesta acció no està autoritzada.",

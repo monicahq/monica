@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Þessi reikningur getur ekki tekið þessa leið.",
     "This account has no password to remove.": "Þessi aðgangur hefur ekkert lykilorð til að fjarlægja.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Þessi aðgangur hefur ekkert lykilorð. Það sem þú notar þegar, aðgangslykill, utanaðkomandi þjónusta eða hlekkur sendur á netfangið þitt, er það sem skráir þig inn.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Þessi aðgangur hefur ekkert sniðmát sem tengiliðir byggja á, svo ekki er hægt að búa til hvelfinguna.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "Þessi aðgangur geymir meira en mörkin leyfa. Engu hefur verið eytt, og engin ný skrá verður tekin við fyrr en mörkin eru hækkuð eða skrár fjarlægðar.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Þessi aðgangur hefur hvorki lykilorð né aðgangslykil, svo það er ekkert til að staðfesta með.",
     "This action is unauthorized.": "Þessi aðgerð er óheimil.",

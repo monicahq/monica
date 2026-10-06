@@ -2808,6 +2808,7 @@
     "This account cannot take up that plan.": "Ní féidir leis an gcuntas seo an plean sin a ghlacadh.",
     "This account has no password to remove.": "Níl aon phasfhocal ag an gcuntas seo le baint.",
     "This account has no password. Whatever you already use, a passkey, an outside provider or a link sent to your email address, is what signs you in.": "Níl pasfhocal ag an gcuntas seo. Is é an rud a úsáideann tú cheana, paseochair, soláthraí seachtrach nó nasc a sheoltar chuig do sheoladh ríomhphoist, a shíníonn isteach tú.",
+    "This account has no template for contacts to start from, so the vault cannot be created.": "Níl aon teimpléad sa chuntas seo as a dtosaíonn teagmhálaithe, mar sin ní féidir an taisceadán a chruthú.",
     "This account holds more than its limit allows. Nothing has been deleted, and no new file will be accepted until the limit is raised or files are removed.": "Tá níos mó sa chuntas seo ná mar a cheadaíonn a theorainn. Níor scriosadh aon rud, agus ní ghlacfar le comhad nua go dtí go n-ardaítear an teorainn nó go mbaintear comhaid.",
     "This account holds neither a password nor a passkey, so there is nothing to confirm with.": "Níl pasfhocal ná paseochair ag an gcuntas seo, mar sin níl aon rud ann le deimhniú.",
     "This action is unauthorized.": "Tá an gníomh seo neamhúdaraithe.",

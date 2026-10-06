@@ -7,6 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\CreateVault;
 use App\Actions\DestroyVault;
 use App\Enums\UserActionEnum;
+use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
@@ -52,6 +53,24 @@ class DestroyVaultTest extends TestCase
     }
 
     #[Test]
+    public function it_takes_the_contact_standing_for_the_owner_with_the_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        new CreateDefaultTemplate(user: $user)->handle();
+        $vault = new CreateVault(user: $user, name: 'Schrute Farms')->execute();
+        $me = $vault->contacts()->where('is_me', true)->sole();
+
+        new DestroyVault(user: $user, vault: $vault)->execute();
+
+        $this->assertSoftDeleted('contacts', [
+            'id' => $me->id,
+            'deleted_with_vault' => true,
+        ]);
+    }
+
+    #[Test]
     public function it_deletes_the_last_vault_of_an_account_and_leaves_it_holding_nothing(): void
     {
         Queue::fake();
@@ -73,6 +92,8 @@ class DestroyVaultTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
         $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
 
         new DestroyVault(user: $user, vault: $vault)->execute();

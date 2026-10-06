@@ -13,7 +13,6 @@ use App\Jobs\LogUserAction;
 use App\Jobs\SeedLifeEventCategories;
 use App\Jobs\SeedNotificationPreference;
 use App\Jobs\SeedRelationshipTypes;
-use App\Jobs\SeedValueLists;
 use App\Models\Field;
 use App\Models\LifeEventType;
 use App\Models\Template;
@@ -112,6 +111,27 @@ class CreateAccountTest extends TestCase
     }
 
     #[Test]
+    public function it_gives_the_first_vault_the_contact_standing_for_the_new_user(): void
+    {
+        Queue::fake();
+
+        $user = new CreateAccount(
+            firstName: 'Pam',
+            lastName: 'Beesly',
+            email: 'pam.beesly@dundermifflin.com',
+            password: 'thatswhatshesaid',
+        )->execute();
+
+        $template = Template::query()->where('account_id', $user->account_id)->where('slug', DefaultTemplateEnum::BasicContact->value)->sole();
+        $contact = $user->account->vaults()->sole()->contacts()->sole();
+
+        $this->assertTrue($contact->is_me);
+        $this->assertSame('Pam', $contact->first_name);
+        $this->assertSame('Beesly', $contact->last_name);
+        $this->assertSame($template->structure->published_version_id, $contact->structure_version_id);
+    }
+
+    #[Test]
     public function it_gives_the_account_the_value_lists_it_starts_with(): void
     {
         Queue::fake(LogUserAction::class);
@@ -163,9 +183,7 @@ class CreateAccountTest extends TestCase
         )->execute();
 
         Queue::assertPushedWithChain(SeedNotificationPreference::class, [
-            new SeedValueLists(user: $user),
             new SeedLifeEventCategories(user: $user),
-            new CreateDefaultTemplate(user: $user),
             new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal),
             new CreateDefaultLifeEventTypes(user: $user),
             new SeedRelationshipTypes(user: $user),
