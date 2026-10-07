@@ -68,6 +68,22 @@ class VaultDashboardViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_counts_a_life_event_from_today_but_not_one_from_tomorrow(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-10-02 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        LifeEvent::factory()->create(['vault_id' => $vault->id, 'happened_on' => CarbonImmutable::parse('2026-10-02 09:00:00')]);
+        LifeEvent::factory()->create(['vault_id' => $vault->id, 'happened_on' => CarbonImmutable::parse('2026-10-03 09:00:00')]);
+
+        $this->assertSame(
+            '1 life event in the last three months',
+            new VaultDashboardViewModel(user: $user, vault: $vault)->figures()[3],
+        );
+    }
+
+    #[Test]
     public function it_lists_the_favourites_in_name_order_and_points_at_the_rest_beyond_ten(): void
     {
         $user = User::factory()->create();

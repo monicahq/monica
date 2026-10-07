@@ -86,8 +86,8 @@ class ReminderAnswerSummary
         $occurrences = ReminderOccurrence::query()
             ->whereIn('reminder_id', $rules)
             ->whereNull('cancelled_at')
-            ->whereDate('local_date', '>', $today->subYear()->toDateString())
-            ->whereDate('local_date', '<=', $today->toDateString())
+            ->where('local_date', '>=', $today->subYear()->addDay()->toDateString())
+            ->where('local_date', '<', $today->addDay()->toDateString())
             ->get(['answer']);
 
         return $this->counts = [

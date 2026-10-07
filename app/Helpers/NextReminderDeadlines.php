@@ -29,14 +29,14 @@ class NextReminderDeadlines
         $generated = ReminderOccurrence::query()
             ->whereIn('reminder_id', $rules->modelKeys())
             ->active()
-            ->whereDate('local_date', '>', $today->toDateString())
+            ->where('local_date', '>=', $today->addDay()->toDateString())
             ->where('local_date', function (Builder $next) use ($today): void {
                 $next->selectRaw('min(local_date)')
                     ->from('reminder_occurrences', 'next')
                     ->whereColumn('next.reminder_id', 'reminder_occurrences.reminder_id')
                     ->whereNull('next.answer')
                     ->whereNull('next.cancelled_at')
-                    ->whereDate('next.local_date', '>', $today->toDateString());
+                    ->where('next.local_date', '>=', $today->addDay()->toDateString());
             })
             ->orderBy('local_date')
             ->get()

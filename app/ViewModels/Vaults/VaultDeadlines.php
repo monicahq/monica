@@ -69,8 +69,8 @@ class VaultDeadlines
             ->where('vault_id', $this->vault->id)
             ->where('account_id', $this->vault->account_id)
             ->active()
-            ->whereDate('local_date', '>', $today->toDateString())
-            ->whereDate('local_date', '<=', $lastDay->toDateString())
+            ->where('local_date', '>=', $today->addDay()->toDateString())
+            ->where('local_date', '<', $lastDay->addDay()->toDateString())
             ->whereHas('reminder', function (Builder $rule): void {
                 $rule->where('is_active', true);
             })

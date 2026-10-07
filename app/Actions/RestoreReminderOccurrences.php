@@ -27,7 +27,7 @@ class RestoreReminderOccurrences
 
         return ReminderOccurrence::query()
             ->where('reminder_id', $this->reminder->id)
-            ->whereDate('local_date', '>', CarbonImmutable::now($this->reminder->timezone)->toDateString())
+            ->where('local_date', '>=', CarbonImmutable::now($this->reminder->timezone)->addDay()->toDateString())
             ->whereNull('answer')
             ->where('cancelled_reason', $this->reason)
             ->update([

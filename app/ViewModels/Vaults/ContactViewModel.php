@@ -729,7 +729,7 @@ class ContactViewModel
         return ReminderOccurrence::query()
             ->whereIn('reminder_id', $this->contact->reminders()->active()->select('id'))
             ->active()
-            ->whereDate('local_date', '<=', CarbonImmutable::now($this->user->timezone)->toDateString())
+            ->where('local_date', '<', CarbonImmutable::now($this->user->timezone)->addDay()->toDateString())
             ->count();
     }
 

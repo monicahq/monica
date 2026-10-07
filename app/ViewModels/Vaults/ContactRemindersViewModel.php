@@ -168,7 +168,7 @@ class ContactRemindersViewModel
         $waiting = ReminderOccurrence::query()
             ->whereIn('reminder_id', $this->activeRules()->modelKeys())
             ->active()
-            ->whereDate('local_date', '<=', $today->toDateString())
+            ->where('local_date', '<', $today->addDay()->toDateString())
             ->orderBy('local_date')
             ->get()
             ->each($this->attachVault(...));

@@ -15,6 +15,7 @@ use App\Models\LifeEventParticipant;
 use App\Models\Section;
 use App\Models\User;
 use App\Models\Vault;
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\Paginator;
@@ -119,7 +120,8 @@ class ContactTimelineBlock
     private function countIn(int $year): int
     {
         return $this->query()
-            ->whereYear('happened_on', $year)
+            ->where('happened_on', '>=', CarbonImmutable::create($year)->toDateString())
+            ->where('happened_on', '<', CarbonImmutable::create($year + 1)->toDateString())
             ->count();
     }
 

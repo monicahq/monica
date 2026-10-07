@@ -240,14 +240,14 @@ class ReminderViewModel
     /** @return Paginator<int, ReminderOccurrence> */
     public function history(): Paginator
     {
-        $today = CarbonImmutable::now($this->user->timezone)->toDateString();
+        $tomorrow = CarbonImmutable::now($this->user->timezone)->addDay()->toDateString();
 
         return once(fn (): Paginator => $this->reminder->occurrences()
-            ->where(function (Builder $query) use ($today): void {
+            ->where(function (Builder $query) use ($tomorrow): void {
                 $query
                     ->whereNotNull('answer')
-                    ->orWhere(function (Builder $cancelled) use ($today): void {
-                        $cancelled->whereNotNull('cancelled_at')->whereDate('local_date', '<=', $today);
+                    ->orWhere(function (Builder $cancelled) use ($tomorrow): void {
+                        $cancelled->whereNotNull('cancelled_at')->where('local_date', '<', $tomorrow);
                     });
             })
             ->orderByDesc('local_date')

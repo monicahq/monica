@@ -29,7 +29,7 @@ class CancelReminderOccurrences
             ->active();
 
         if (! $this->includePast) {
-            $query->whereDate('local_date', '>', CarbonImmutable::now($this->reminder->timezone)->toDateString());
+            $query->where('local_date', '>=', CarbonImmutable::now($this->reminder->timezone)->addDay()->toDateString());
         }
 
         $cancelled = $query->pluck('id');

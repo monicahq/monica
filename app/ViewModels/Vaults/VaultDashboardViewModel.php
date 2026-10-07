@@ -211,8 +211,8 @@ class VaultDashboardViewModel
         return LifeEvent::query()
             ->where('account_id', $this->vault->account_id)
             ->where('vault_id', $this->vault->id)
-            ->whereDate('happened_on', '>=', $day->toDateString())
-            ->whereDate('happened_on', '<=', $this->today()->toDateString())
+            ->where('happened_on', '>=', $day->toDateString())
+            ->where('happened_on', '<', $this->today()->addDay()->toDateString())
             ->count();
     }
 

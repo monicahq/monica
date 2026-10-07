@@ -65,7 +65,7 @@ class GenerateReminderOccurrences
         $taken = ReminderOccurrence::query()
             ->where('reminder_id', $this->reminder->id)
             ->whereNull('cancelled_at')
-            ->whereDate('local_date', '>=', $now->setTimezone($this->reminder->timezone)->toDateString())
+            ->where('local_date', '>=', $now->setTimezone($this->reminder->timezone)->toDateString())
             ->get(['local_date'])
             ->map(fn (ReminderOccurrence $taken): string => $taken->local_date->format('Y-m-d'))
             ->all();
