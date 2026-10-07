@@ -171,15 +171,6 @@ class TimezonePanelTest extends TestCase
         $this->assertSame('+09:00', $tokyo['offset']);
         $this->assertSame('21:00', $tokyo['clock']);
         $this->assertSame('tokyo japan asia/tokyo', $tokyo['search']);
-        $this->assertFalse($tokyo['selected']);
-    }
-
-    #[Test]
-    public function it_marks_the_zone_already_in_force(): void
-    {
-        $zones = new TimezonePanel(user: User::factory()->create(['timezone' => 'Europe/Paris']))->zones();
-
-        $this->assertTrue(collect($zones)->firstWhere('timezone', 'Europe/Paris')['selected']);
     }
 
     #[Test]

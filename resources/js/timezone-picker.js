@@ -4,11 +4,14 @@
  *
  * `bounds` carries the two latitudes the map is cut off at, handed over by
  * `TimezoneCatalogue` so that the click below reads the same projection the
- * marker was drawn with. Everything else the form needs is in the markup.
+ * marker was drawn with. `zones` is every zone the machine knows, drawn as
+ * rows only once a search reaches them: written out in the markup, the list
+ * outweighed the rest of the screen several times over.
  */
-export default (bounds) => ({
+export default (bounds, zones) => ({
     query: '',
-    shown: 0,
+    results: [],
+    current: '',
     deviceSilent: false,
 
     get needle() {
@@ -22,24 +25,16 @@ export default (bounds) => ({
      */
     filter() {
         const limit = 8;
-        let shown = 0;
 
-        this.$refs.results.querySelectorAll('[data-search]').forEach((row) => {
-            const hit = this.needle !== '' && row.dataset.search.includes(this.needle) && shown < limit;
-
-            row.hidden = ! hit;
-
-            if (hit) {
-                shown++;
-            }
-        });
-
-        this.shown = shown;
+        this.current = this.$refs.current.textContent.trim();
+        this.results = this.needle === ''
+            ? []
+            : zones.filter((zone) => zone.search.includes(this.needle)).slice(0, limit);
     },
 
     /** Walk the results with the arrow keys, stopping at either end. */
     step(from, by) {
-        const rows = [...this.$refs.results.querySelectorAll('[data-search]:not([hidden]) button')];
+        const rows = [...this.$refs.results.querySelectorAll('button[name="timezone"]')];
 
         if (rows.length === 0) {
             return;

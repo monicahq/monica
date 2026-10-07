@@ -107,16 +107,15 @@ class TimezonePanel
     }
 
     /**
-     * @return array<int, array{timezone: string, name: string, offset: string, clock: string, search: string, selected: bool}>
+     * @return array<int, array{timezone: string, name: string, offset: string, clock: string, search: string}>
      */
     public function zones(): array
     {
-        $current = $this->timezone();
         $format = $this->timeFormat();
         $now = CarbonImmutable::now();
         $index = TimezoneCatalogue::searchIndex();
 
-        return array_map(function (array $zone) use ($current, $format, $now, $index): array {
+        return array_map(function (array $zone) use ($format, $now, $index): array {
             $there = $now->setTimezone($zone['timezone']);
 
             return [
@@ -127,7 +126,6 @@ class TimezonePanel
                 'offset' => $there->format('P'),
                 'clock' => $format->format($there),
                 'search' => $index[$zone['timezone']],
-                'selected' => $zone['timezone'] === $current,
             ];
         }, TimezoneCatalogue::all());
     }

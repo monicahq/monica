@@ -6,7 +6,7 @@
       method="put"
       :action="route('settings.timezone.update')"
       x-target="timezone-panel preview"
-      x-data="timezonePicker({{ Js::from($timezone->projection()) }})"
+      x-data="timezonePicker({{ Js::from($timezone->projection()) }}, {{ Js::from($timezone->zones()) }})"
       x-init="filter()"
       @ajax:before.window="reset()"
       class="contents"
@@ -51,44 +51,42 @@
             x-show="needle !== ''"
             class="absolute inset-x-0 top-full z-10 mt-1.5 flex max-h-72 flex-col overflow-y-auto rounded-md border border-hairline bg-canvas shadow-pop"
           >
-            @foreach ($timezone->zones() as $zone)
-              <div data-search="{{ $zone['search'] }}" class="border-t border-hairline-soft first:border-t-0">
+            <div class="divide-y divide-hairline-soft">
+              <template x-for="zone in results" :key="zone.timezone">
                 <button
                   type="submit"
                   name="timezone"
-                  value="{{ $zone['timezone'] }}"
+                  :value="zone.timezone"
                   @keydown.arrow-down.prevent="step($event.target, 1)"
                   @keydown.arrow-up.prevent="step($event.target, -1)"
                   @keydown.escape.prevent="clear()"
                   class="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-hover focus-visible:bg-hover focus-ring"
                 >
                   <span class="min-w-0 flex-1">
-                    <span class="block truncate text-sm {{ $zone['selected'] ? 'font-semibold' : '' }} text-ink">{{ $zone['name'] }}</span>
+                    <span class="block truncate text-sm text-ink" :class="zone.timezone === current && 'font-semibold'" x-text="zone.name"></span>
 
-                    <span class="block truncate text-xs text-muted">{{ $zone['timezone'] }}</span>
+                    <span class="block truncate text-xs text-muted" x-text="zone.timezone"></span>
                   </span>
 
-                  <span class="shrink-0 font-mono text-xs text-muted-soft">{{ $zone['offset'] }}</span>
+                  <span class="shrink-0 font-mono text-xs text-muted-soft" x-text="zone.offset"></span>
 
-                  <span class="w-12 shrink-0 text-right font-mono text-xs text-body">{{ $zone['clock'] }}</span>
+                  <span class="w-12 shrink-0 text-right font-mono text-xs text-body" x-text="zone.clock"></span>
 
-                  @if ($zone['selected'])
-                    <x-icon name="check" :size="14" :stroke-width="1.8" class="shrink-0 text-ink" />
-                  @else
-                    <span class="size-3.5 shrink-0" aria-hidden="true"></span>
-                  @endif
+                  <span class="flex size-3.5 shrink-0 text-ink" aria-hidden="true">
+                    <x-icon x-show="zone.timezone === current" name="check" :size="14" :stroke-width="1.8" />
+                  </span>
                 </button>
-              </div>
-            @endforeach
+              </template>
+            </div>
 
-            <p x-cloak x-show="shown === 0" class="px-3 py-2 text-sm text-muted">{{ __('No city by that name. Try the country instead.') }}</p>
+            <p x-cloak x-show="results.length === 0" class="px-3 py-2 text-sm text-muted">{{ __('No city by that name. Try the country instead.') }}</p>
           </div>
         </div>
 
         <div class="ml-auto flex flex-col items-end gap-0.5 text-right">
           <x-caption>{{ __('Your time zone') }}</x-caption>
 
-          <span class="font-mono text-sm text-ink">{{ $timezone->timezone() }}</span>
+          <span x-ref="current" class="font-mono text-sm text-ink">{{ $timezone->timezone() }}</span>
 
           <span class="text-xs text-muted">{{ __(':offset · :clock now', ['offset' => 'UTC' . $timezone->offset(), 'clock' => $timezone->clock()]) }}</span>
         </div>

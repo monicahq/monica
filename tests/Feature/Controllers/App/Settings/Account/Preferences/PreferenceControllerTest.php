@@ -78,6 +78,18 @@ class PreferenceControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_hands_the_zones_to_the_picker_rather_than_writing_a_row_for_each(): void
+    {
+        $user = User::factory()->create(['timezone' => 'UTC']);
+
+        $response = $this->actingAs($user)->get(route('settings.preferences.index'));
+
+        $response->assertSee('tokyo japan asia', escape: false);
+        $response->assertSee(':value="zone.timezone"', escape: false);
+        $response->assertDontSee('value="Asia/Tokyo"', escape: false);
+    }
+
+    #[Test]
     public function it_says_the_zone_was_the_nearest_one_when_it_came_from_the_map(): void
     {
         $user = User::factory()->create(['timezone' => 'Asia/Tokyo']);
