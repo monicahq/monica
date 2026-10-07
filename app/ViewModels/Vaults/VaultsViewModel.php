@@ -93,7 +93,7 @@ class VaultsViewModel
                 'name' => $contact->name,
                 'avatarUrl' => $contact->avatar === null
                     ? null
-                    : route('files.show', ['vault' => $vault, 'file' => $contact->avatar]),
+                    : route('files.variants.show', ['vault' => $vault, 'file' => $contact->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]),
             ])
             ->all();
     }

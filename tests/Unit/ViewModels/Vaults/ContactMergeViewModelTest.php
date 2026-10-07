@@ -129,7 +129,7 @@ class ContactMergeViewModelTest extends TestCase
         $records = new ContactMergeViewModel(user: $user, vault: $vault, contact: $jim, other: $james->refresh())->records();
 
         $this->assertNull($records[0]['avatarUrl']);
-        $this->assertEquals(route('files.show', ['vault' => $vault, 'file' => $file]), $records[1]['avatarUrl']);
+        $this->assertEquals(route('files.variants.show', ['vault' => $vault, 'file' => $file, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]), $records[1]['avatarUrl']);
     }
 
     #[Test]

@@ -113,6 +113,7 @@ use App\Http\Controllers\App\Vaults\ContactVCardController;
 use App\Http\Controllers\App\Vaults\EntityController;
 use App\Http\Controllers\App\Vaults\FieldChoiceController;
 use App\Http\Controllers\App\Vaults\FileController;
+use App\Http\Controllers\App\Vaults\FileVariantController;
 use App\Http\Controllers\App\Vaults\ReminderController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceAnswerController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceTestNotificationController;
@@ -221,6 +222,10 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('vaults/{vault}/files/{file}', [FileController::class, 'show'])
         ->whereUuid('file')
         ->name('files.show');
+    Route::get('vaults/{vault}/files/{file}/{size}', [FileVariantController::class, 'show'])
+        ->whereUuid('file')
+        ->whereNumber('size')
+        ->name('files.variants.show');
 
     Route::get('vaults/{vault}/contact-list-columns/edit', [ContactListColumnController::class, 'edit'])->name('contactListColumns.edit');
     Route::put('vaults/{vault}/contact-list-columns', [ContactListColumnController::class, 'update'])->name('contactListColumns.update');

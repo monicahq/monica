@@ -157,6 +157,13 @@ class Contact extends Model
     public const int AVATAR_PIXELS = 512;
 
     /**
+     * The side of the small copy written beside every uploaded avatar. Lists
+     * draw an avatar at 48 pixels at most, and this is twice that, so a dense
+     * screen stays sharp without fetching the 512 pixel original forty times.
+     */
+    public const int AVATAR_THUMBNAIL_PIXELS = 96;
+
+    /**
      * How much room the readable address has, and what it falls back on when a name leaves
      * nothing an address can carry.
      */

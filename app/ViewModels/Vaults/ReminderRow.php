@@ -291,7 +291,7 @@ class ReminderRow
             return null;
         }
 
-        return route('files.show', ['vault' => $this->occurrence->vault, 'file' => $contact->avatar]);
+        return route('files.variants.show', ['vault' => $this->occurrence->vault, 'file' => $contact->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]);
     }
 
     public function text(): string

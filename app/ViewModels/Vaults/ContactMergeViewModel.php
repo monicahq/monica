@@ -149,7 +149,7 @@ class ContactMergeViewModel
             'name' => $contact->name,
             'avatarUrl' => $contact->avatar === null
                 ? null
-                : route('files.show', ['vault' => $this->vault, 'file' => $contact->avatar]),
+                : route('files.variants.show', ['vault' => $this->vault, 'file' => $contact->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]),
             'url' => route('contacts.show', ['vault' => $this->vault, 'contact' => $contact]),
         ];
     }

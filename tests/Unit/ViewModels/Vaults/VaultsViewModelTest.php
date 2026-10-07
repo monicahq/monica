@@ -157,7 +157,7 @@ class VaultsViewModelTest extends TestCase
         $face = new VaultsViewModel(user: $user)->vaults()[0]['faces'][0];
 
         $this->assertSame('Michael Scott', $face['name']);
-        $this->assertSame(route('files.show', ['vault' => $vault, 'file' => $file]), $face['avatarUrl']);
+        $this->assertSame(route('files.variants.show', ['vault' => $vault, 'file' => $file, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]), $face['avatarUrl']);
     }
 
     #[Test]

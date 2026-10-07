@@ -44,6 +44,23 @@ class DestroyFileTest extends TestCase
     }
 
     #[Test]
+    public function it_takes_the_smaller_copies_off_the_disk_too(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $file = $this->fileOnDisk($user);
+        $file->update(['variants' => [['suffix' => '_96', 'pixels' => 96]]]);
+
+        Storage::disk('local')->put("{$file->path}_96", 'the small bytes');
+
+        new DestroyFile(account: $user->account, file: $file, user: $user)->execute();
+
+        Storage::disk('local')->assertMissing("{$file->path}_96");
+    }
+
+    #[Test]
     public function it_keeps_the_row_that_says_the_file_was_there(): void
     {
         Queue::fake();

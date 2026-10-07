@@ -115,6 +115,6 @@ class FamilyTreeBlock
             return null;
         }
 
-        return route('files.show', ['vault' => $this->vault, 'file' => $person->avatar]);
+        return route('files.variants.show', ['vault' => $this->vault, 'file' => $person->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]);
     }
 }

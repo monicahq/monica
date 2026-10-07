@@ -149,7 +149,7 @@ class SearchViewModel
             'url' => $this->url($record),
             'avatarUrl' => $record instanceof LifeEvent || $record->avatar === null
                 ? null
-                : route('files.show', ['vault' => $record->vault, 'file' => $record->avatar]),
+                : route('files.variants.show', ['vault' => $record->vault, 'file' => $record->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]),
             'isLifeEvent' => $record instanceof LifeEvent,
             'vault' => $this->acrossAccount ? $record->vault->name : null,
             'isArchived' => ! $record instanceof LifeEvent && $record->is_archived,

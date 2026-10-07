@@ -29,6 +29,7 @@ class FileControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertHeader('content-type', 'application/pdf');
+        $this->assertStringContainsString('max-age=31536000', (string) $response->headers->get('cache-control'));
         $this->assertStringContainsString('lease.pdf', (string) $response->headers->get('content-disposition'));
     }
 

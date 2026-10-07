@@ -72,6 +72,35 @@ class UpdateContactAvatarTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_a_thumbnail_beside_the_picture(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+
+        $contact = new UpdateContactAvatar(
+            user: $user,
+            vault: $vault,
+            contact: $contact,
+            upload: UploadedFile::fake()->image('creed.jpg', 900, 400),
+        )->execute();
+
+        $file = $contact->avatar;
+
+        $this->assertNotNull($file);
+        $this->assertEquals([['suffix' => '_96', 'pixels' => 96]], $file->refresh()->variants);
+
+        $thumbnail = $file->variantPath(Contact::AVATAR_THUMBNAIL_PIXELS);
+
+        $this->assertNotNull($thumbnail);
+        Storage::disk('local')->assertExists($thumbnail);
+        $this->assertEquals([96, 96], array_slice((array) getimagesize(Storage::disk('local')->path($thumbnail)), 0, 2));
+    }
+
+    #[Test]
     public function it_charges_the_account_for_what_is_kept_and_leaves_no_scratch_file(): void
     {
         Queue::fake();

@@ -46,7 +46,7 @@ use Override;
  * @property string $checksum
  * @property int|null $width
  * @property int|null $height
- * @property array<array-key, mixed>|null $variants
+ * @property list<array{suffix: string, pixels: int}>|null $variants
  * @property int $reference_count
  * @property CarbonImmutable|null $orphaned_at
  * @property int|null $uploaded_by_user_id
@@ -123,6 +123,22 @@ class File extends Model
     public function isOrphan(): bool
     {
         return $this->reference_count === 0;
+    }
+
+    /**
+     * The path of the smaller copy written beside the file at this size, or
+     * null when no copy of that size was written, which is the case for every
+     * file uploaded before copies existed.
+     */
+    public function variantPath(int $pixels): ?string
+    {
+        foreach ($this->variants ?? [] as $variant) {
+            if ($variant['pixels'] === $pixels) {
+                return $this->path.$variant['suffix'];
+            }
+        }
+
+        return null;
     }
 
     /**

@@ -55,6 +55,10 @@ class DestroyFile
 
         $this->file->disk()->delete($this->file->path);
 
+        foreach ($this->file->variants ?? [] as $variant) {
+            $this->file->disk()->delete($this->file->path.$variant['suffix']);
+        }
+
         DB::transaction(function () use ($size): void {
             $this->file->delete();
 

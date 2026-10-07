@@ -94,7 +94,27 @@ class UpdateContactAvatar
 
         Storage::disk('local')->delete($scratch);
 
+        $this->storeThumbnail();
+
         new AttachFile(user: $this->user, file: $this->file)->execute();
+    }
+
+    private function storeThumbnail(): void
+    {
+        $pixels = Contact::AVATAR_THUMBNAIL_PIXELS;
+        $suffix = "_{$pixels}";
+
+        new ResizeImage(
+            file: $this->upload,
+            width: $pixels,
+            height: $pixels,
+            path: dirname($this->file->path),
+            name: basename($this->file->path).$suffix,
+            disk: $this->file->disk,
+        )->execute();
+
+        $this->file->variants = [['suffix' => $suffix, 'pixels' => $pixels]];
+        $this->file->save();
     }
 
     private function save(): void

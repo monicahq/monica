@@ -88,7 +88,7 @@ class ShareLinkFormViewModel
             return null;
         }
 
-        return route('files.show', ['vault' => $this->vault, 'file' => $this->contact->avatar]);
+        return route('files.variants.show', ['vault' => $this->vault, 'file' => $this->contact->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]);
     }
 
     public function contactUrl(): string

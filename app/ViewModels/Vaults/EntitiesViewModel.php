@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\User;
@@ -82,7 +83,7 @@ class EntitiesViewModel
                 'name' => $entity->name,
                 'avatarUrl' => $entity->avatar === null
                     ? null
-                    : route('files.show', ['vault' => $this->vault, 'file' => $entity->avatar]),
+                    : route('files.variants.show', ['vault' => $this->vault, 'file' => $entity->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]),
                 'isArchived' => $entity->is_archived,
             ])
             ->values()

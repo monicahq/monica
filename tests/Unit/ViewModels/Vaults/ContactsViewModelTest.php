@@ -45,7 +45,7 @@ class ContactsViewModelTest extends TestCase
         $person = new ContactsViewModel(user: $user, vault: $vault)->groups()[0]['people'][0];
 
         $this->assertEquals(
-            route('files.show', ['vault' => $vault, 'file' => $file]),
+            route('files.variants.show', ['vault' => $vault, 'file' => $file, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]),
             $person['avatarUrl'],
         );
     }

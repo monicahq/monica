@@ -161,7 +161,7 @@ class RelationshipsBlock
                 : route('contacts.show', ['vault' => $this->vault, 'contact' => $person]),
             'avatarUrl' => $person->avatar === null
                 ? null
-                : route('files.show', ['vault' => $this->vault, 'file' => $person->avatar]),
+                : route('files.variants.show', ['vault' => $this->vault, 'file' => $person->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]),
             'age' => $person->is_partial ? null : ($ages[$person->id] ?? null),
             'note' => $person->is_partial ? __('Name only, no profile yet') : null,
             'hasEnded' => $relationship->status === RelationshipStatusEnum::Ended,
