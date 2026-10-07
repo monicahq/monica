@@ -27,6 +27,15 @@ class PreviewContactMerge
 
     public const string DISPLAY_NAME_KEY = '@display_name';
 
+    /** @var Collection<int, FieldValue>|null */
+    private ?Collection $values = null;
+
+    /** @var Collection<int, FieldValueRow>|null */
+    private ?Collection $rows = null;
+
+    /** @var array<int, Collection<int, ContactNameRepresentation>> */
+    private array $nameRepresentations = [];
+
     public function __construct(
         private readonly User $user,
         private readonly Contact $kept,
@@ -146,8 +155,8 @@ class PreviewContactMerge
             ->reject(fn (FieldValue $value): bool => $value->field_value_row_id === null && isset($mine[$value->field_id]))
             ->count();
 
-        $kept = $this->kept->nameRepresentations()->get()->map->toComparable()->all();
-        $names = $this->absorbed->nameRepresentations()->get()
+        $kept = $this->nameRepresentations($this->kept)->map->toComparable()->all();
+        $names = $this->nameRepresentations($this->absorbed)
             ->reject(fn (ContactNameRepresentation $representation): bool => in_array($representation->toComparable(), $kept, true))
             ->count();
 
@@ -207,7 +216,7 @@ class PreviewContactMerge
         foreach ([$this->kept, $this->absorbed] as $contact) {
             $parts[] = "{$contact->id}:{$contact->sort_name}:{$contact->avatar_file_id}:{$contact->structure_version_id}:{$contact->display_name_representation_id}";
 
-            foreach ($contact->nameRepresentations()->get() as $representation) {
+            foreach ($this->nameRepresentations($contact) as $representation) {
                 $parts[] = "{$representation->uuid}=".json_encode($representation->toComparable());
             }
 
@@ -230,7 +239,10 @@ class PreviewContactMerge
     /** @return Collection<int, FieldValue> */
     private function attachedValues(Contact $contact): Collection
     {
-        return $contact->fieldValues()->attached()->with('field')->get();
+        return $this->values()
+            ->where('valuable_id', $contact->id)
+            ->where('is_detached', false)
+            ->values();
     }
 
     /** @return array<int, FieldValue> */
@@ -245,7 +257,29 @@ class PreviewContactMerge
     /** @return Collection<int, FieldValueRow> */
     private function rows(Contact $contact): Collection
     {
-        return $contact->fieldValueRows()->with(['field', 'values'])->get();
+        $this->rows ??= FieldValueRow::query()
+            ->where('valuable_type', $contact->getMorphClass())
+            ->whereIn('valuable_id', [$this->kept->id, $this->absorbed->id])
+            ->with('field')
+            ->get();
+
+        return $this->rows->where('valuable_id', $contact->id)->values();
+    }
+
+    /** @return Collection<int, FieldValue> */
+    private function values(): Collection
+    {
+        return $this->values ??= FieldValue::query()
+            ->where('valuable_type', $this->kept->getMorphClass())
+            ->whereIn('valuable_id', [$this->kept->id, $this->absorbed->id])
+            ->with('field')
+            ->get();
+    }
+
+    /** @return Collection<int, ContactNameRepresentation> */
+    private function nameRepresentations(Contact $contact): Collection
+    {
+        return $this->nameRepresentations[$contact->id] ??= $contact->nameRepresentations()->get();
     }
 
     private function reads(FieldValue $value): string
@@ -257,7 +291,8 @@ class PreviewContactMerge
 
     private function rowReads(FieldValueRow $row): string
     {
-        return $row->field_id.':'.$row->values
+        return $row->field_id.':'.$this->values()
+            ->where('field_value_row_id', $row->id)
             ->sortBy('field_id')
             ->map(fn (FieldValue $value): string => $value->field_id.'='.$this->reads($value))
             ->implode(',');

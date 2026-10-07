@@ -11,6 +11,7 @@ use App\Exceptions\CannotMergeAContactWithItself;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\FieldValueRow;
 use App\Models\File;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
@@ -20,6 +21,7 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -199,6 +201,57 @@ class PreviewContactMergeTest extends TestCase
     }
 
     #[Test]
+    public function it_reports_a_row_both_contacts_hold_as_a_collision(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        $repeater = Field::factory()->repeater()->create(['account_id' => $user->account_id]);
+        $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'Jim', 'Halpert');
+
+        $this->rowWithValueFor($jim, $repeater, $field, 'Scranton');
+        $this->rowWithValueFor($jim, $repeater, $field, 'Stamford');
+        $scranton = $this->rowWithValueFor($james, $repeater, $field, 'Scranton');
+        $this->rowWithValueFor($james, $repeater, $field, 'Nashua');
+
+        $preview = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertEquals([
+            ['kind' => 'field_value_row', 'field_key' => $repeater->key, 'row' => $scranton->id],
+        ], $preview['collisions']);
+    }
+
+    #[Test]
+    public function it_reads_each_contact_from_the_database_once(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'Jim', 'Halpert');
+
+        $this->valueFor($jim, $field, 'jim@dundermifflin.com');
+        $this->valueFor($james, $field, 'james@dundermifflin.com');
+        $repeater = Field::factory()->repeater()->create(['account_id' => $user->account_id]);
+        $this->rowWithValueFor($jim, $repeater, $field, 'Scranton');
+        $this->rowWithValueFor($james, $repeater, $field, 'Scranton');
+
+        DB::flushQueryLog();
+        DB::enableQueryLog();
+
+        new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $queries = array_column(DB::getRawQueryLog(), 'raw_query');
+
+        DB::disableQueryLog();
+
+        $this->assertSame(array_values(array_unique($queries)), $queries);
+    }
+
+    #[Test]
     public function it_refuses_a_contact_of_another_account(): void
     {
         $user = User::factory()->create();
@@ -316,6 +369,27 @@ class PreviewContactMergeTest extends TestCase
             'field_key' => $field->key,
             'value_string' => $value,
         ]);
+    }
+
+    private function rowWithValueFor(Contact $contact, Field $repeater, Field $field, string $value): FieldValueRow
+    {
+        $row = FieldValueRow::factory()->create([
+            'account_id' => $contact->account_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $repeater->id,
+        ]);
+
+        FieldValue::factory()->create([
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_value_row_id' => $row->id,
+            'field_id' => $field->id,
+            'field_key' => $field->key,
+            'value_string' => $value,
+        ]);
+
+        return $row;
     }
 
     #[Test]
