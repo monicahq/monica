@@ -1101,6 +1101,40 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_answers_an_alpine_request_with_only_the_panels_it_targets(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user, 'Someone in the family');
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        $lifeEvent = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Dinner party at the condo']);
+        LifeEventParticipant::factory()->create(['life_event_id' => $lifeEvent->id, 'participant_id' => $michael->id]);
+
+        $this->actingAs($user)
+            ->withHeaders(['X-Alpine-Request' => 'true', 'X-Alpine-Target' => 'contact-timeline notifications'])
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee('Dinner party at the condo')
+            ->assertSee('id="notifications"', escape: false)
+            ->assertDontSee('Overview')
+            ->assertDontSee('Edit contact');
+    }
+
+    #[Test]
+    public function it_answers_an_alpine_request_with_the_whole_page_when_a_target_is_not_a_panel(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user, 'Someone in the family');
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)
+            ->withHeaders(['X-Alpine-Request' => 'true', 'X-Alpine-Target' => 'contacts notifications'])
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee('Overview')
+            ->assertSee('Edit contact');
+    }
+
+    #[Test]
     public function it_asks_before_deleting_a_life_event_through_one_shared_card(): void
     {
         $user = User::factory()->create();

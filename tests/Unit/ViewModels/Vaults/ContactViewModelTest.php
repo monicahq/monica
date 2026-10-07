@@ -1173,6 +1173,36 @@ class ContactViewModelTest extends TestCase
     }
 
     /** @return array<int, array<string, mixed>> */
+    #[Test]
+    public function it_draws_the_overview_panels_alone_and_nothing_it_does_not_know(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['General' => ['Notes' => ['Notes']]]);
+        $contact = $this->contact($user, $version);
+
+        $viewModel = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact);
+
+        $this->assertTrue($viewModel->drawsTargetsAlone(['contact-timeline', 'notifications']));
+        $this->assertTrue($viewModel->drawsTargetsAlone(['contact-timeline-rows', 'contact-timeline-pagination', 'notifications']));
+        $this->assertTrue($viewModel->drawsTargetsAlone(['contact-reminder-panel', 'notifications']));
+        $this->assertFalse($viewModel->drawsTargetsAlone(['contacts', 'notifications']));
+        $this->assertFalse($viewModel->drawsTargetsAlone([]));
+    }
+
+    #[Test]
+    public function it_draws_the_sections_of_a_page_alone_but_not_the_timeline(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['General' => ['Notes' => ['Notes']]]);
+        $contact = $this->contact($user, $version);
+
+        $viewModel = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'general');
+        $regionId = $viewModel->sections()[0]['regionId'];
+
+        $this->assertTrue($viewModel->drawsTargetsAlone([$regionId, 'contact-facts', 'notifications']));
+        $this->assertFalse($viewModel->drawsTargetsAlone(['contact-timeline', 'notifications']));
+    }
+
     private function sectionsOn(User $user, Contact $contact, string $pageKey): array
     {
         return (new ContactViewModel(

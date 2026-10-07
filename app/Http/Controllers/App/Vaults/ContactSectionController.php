@@ -13,6 +13,7 @@ use App\Exceptions\ReminderIsNotValid;
 use App\Exceptions\ReminderNeedsADate;
 use App\Exceptions\TooManyRepetitions;
 use App\Exceptions\ValueAlreadyHasAReminder;
+use App\Helpers\AlpineAjaxTargets;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveFieldValuesRequest;
 use App\Models\Contact;
@@ -29,14 +30,19 @@ class ContactSectionController extends Controller
     {
         $this->refuseWhatIsNotReachable($request, $vault, $contact, $structureVersionSection);
 
-        return view('app.vaults.contacts.show', [
-            'viewModel' => new ContactViewModel(
-                user: $request->user(),
-                vault: $vault,
-                contact: $contact,
-                selectedPageKey: $structureVersionSection->structureVersionPage->key,
-                editingSection: $structureVersionSection,
-            ),
+        $viewModel = new ContactViewModel(
+            user: $request->user(),
+            vault: $vault,
+            contact: $contact,
+            selectedPageKey: $structureVersionSection->structureVersionPage->key,
+            editingSection: $structureVersionSection,
+        );
+
+        $targets = AlpineAjaxTargets::from($request);
+
+        return view($viewModel->drawsTargetsAlone($targets) ? 'app.vaults.contacts.panels' : 'app.vaults.contacts.show', [
+            'viewModel' => $viewModel,
+            'targets' => $targets,
         ]);
     }
 

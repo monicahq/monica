@@ -11,6 +11,7 @@ use App\Actions\UpdateContactNameRepresentations;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\SortDirectionEnum;
+use App\Helpers\AlpineAjaxTargets;
 use App\Http\Controllers\Controller;
 use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
@@ -72,18 +73,23 @@ class ContactController extends Controller
 
         RecordContactVisit::dispatch(contact: $contact)->onQueue('low');
 
-        return view('app.vaults.contacts.show', [
-            'viewModel' => new ContactViewModel(
-                user: $request->user(),
-                vault: $vault,
-                contact: $contact,
-                selectedPageKey: $page,
-                timelinePage: $request->integer('timelinePage', 1),
-                lifeEventJustAddedId: $request->session()->get('lifeEventJustAdded'),
-                lifeEventEditedId: $request->session()->get('lifeEventEdited'),
-                deletedLifeEventUuid: $request->session()->get('lifeEventDeleted'),
-                deletedLifeEventLine: $request->session()->get('lifeEventDeletedLine'),
-            ),
+        $viewModel = new ContactViewModel(
+            user: $request->user(),
+            vault: $vault,
+            contact: $contact,
+            selectedPageKey: $page,
+            timelinePage: $request->integer('timelinePage', 1),
+            lifeEventJustAddedId: $request->session()->get('lifeEventJustAdded'),
+            lifeEventEditedId: $request->session()->get('lifeEventEdited'),
+            deletedLifeEventUuid: $request->session()->get('lifeEventDeleted'),
+            deletedLifeEventLine: $request->session()->get('lifeEventDeletedLine'),
+        );
+
+        $targets = AlpineAjaxTargets::from($request);
+
+        return view($viewModel->drawsTargetsAlone($targets) ? 'app.vaults.contacts.panels' : 'app.vaults.contacts.show', [
+            'viewModel' => $viewModel,
+            'targets' => $targets,
         ]);
     }
 

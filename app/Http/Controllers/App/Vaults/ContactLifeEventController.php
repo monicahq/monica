@@ -14,6 +14,7 @@ use App\Exceptions\LifeEventTypeIsNotAvailable;
 use App\Exceptions\NotEnoughRepetitions;
 use App\Exceptions\NotEnoughStorageLeft;
 use App\Exceptions\TooManyRepetitions;
+use App\Helpers\AlpineAjaxTargets;
 use App\Helpers\AvailableLocales;
 use App\Helpers\FieldValueRules;
 use App\Http\Controllers\Controller;
@@ -38,13 +39,18 @@ class ContactLifeEventController extends Controller
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
 
-        return view('app.vaults.contacts.show', [
-            'viewModel' => new ContactViewModel(
-                user: $request->user(),
-                vault: $vault,
-                contact: $contact,
-                opensLifeEventPanel: true,
-            ),
+        $viewModel = new ContactViewModel(
+            user: $request->user(),
+            vault: $vault,
+            contact: $contact,
+            opensLifeEventPanel: true,
+        );
+
+        $targets = AlpineAjaxTargets::from($request);
+
+        return view($viewModel->drawsTargetsAlone($targets) ? 'app.vaults.contacts.panels' : 'app.vaults.contacts.show', [
+            'viewModel' => $viewModel,
+            'targets' => $targets,
         ]);
     }
 
@@ -90,13 +96,18 @@ class ContactLifeEventController extends Controller
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
         abort_unless($this->takesPart($contact, $lifeEvent), 404);
 
-        return view('app.vaults.contacts.show', [
-            'viewModel' => new ContactViewModel(
-                user: $request->user(),
-                vault: $vault,
-                contact: $contact,
-                editingLifeEvent: $lifeEvent,
-            ),
+        $viewModel = new ContactViewModel(
+            user: $request->user(),
+            vault: $vault,
+            contact: $contact,
+            editingLifeEvent: $lifeEvent,
+        );
+
+        $targets = AlpineAjaxTargets::from($request);
+
+        return view($viewModel->drawsTargetsAlone($targets) ? 'app.vaults.contacts.panels' : 'app.vaults.contacts.show', [
+            'viewModel' => $viewModel,
+            'targets' => $targets,
         ]);
     }
 

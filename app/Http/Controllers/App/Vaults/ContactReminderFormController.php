@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Vaults;
 
+use App\Helpers\AlpineAjaxTargets;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\Vault;
@@ -17,13 +18,18 @@ class ContactReminderFormController extends Controller
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
 
-        return view('app.vaults.contacts.show', [
-            'viewModel' => new ContactViewModel(
-                user: $request->user(),
-                vault: $vault,
-                contact: $contact,
-                opensReminderForm: true,
-            ),
+        $viewModel = new ContactViewModel(
+            user: $request->user(),
+            vault: $vault,
+            contact: $contact,
+            opensReminderForm: true,
+        );
+
+        $targets = AlpineAjaxTargets::from($request);
+
+        return view($viewModel->drawsTargetsAlone($targets) ? 'app.vaults.contacts.panels' : 'app.vaults.contacts.show', [
+            'viewModel' => $viewModel,
+            'targets' => $targets,
         ]);
     }
 }

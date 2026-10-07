@@ -456,17 +456,43 @@ class ContactViewModel
     /** @return array<int, array<string, mixed>> */
     public function sections(): array
     {
-        $page = $this->selectedPage();
+        return once(function (): array {
+            $page = $this->selectedPage();
 
-        if ($page === null) {
-            return [];
+            if ($page === null) {
+                return [];
+            }
+
+            return $this->contact->structureVersion->assembly
+                ->where('structure_version_page_id', $page->id)
+                ->values()
+                ->map(fn (StructureVersionSection $row): array => $this->blockFor($row))
+                ->all();
+        });
+    }
+
+    /**
+     * Whether the panels an Alpine Ajax request targets can be drawn without the rest of the
+     * page. A target the panels view does not know falls back to the whole page, because Alpine
+     * Ajax removes a target the response does not carry.
+     *
+     * @param  list<string>  $targets
+     */
+    public function drawsTargetsAlone(array $targets): bool
+    {
+        if ($targets === []) {
+            return false;
         }
 
-        return $this->contact->structureVersion->assembly
-            ->where('structure_version_page_id', $page->id)
-            ->values()
-            ->map(fn (StructureVersionSection $row): array => $this->blockFor($row))
-            ->all();
+        $drawable = ['notifications', 'contact-favourite', 'contact-facts'];
+
+        if ($this->onOverview()) {
+            $drawable = [...$drawable, 'contact-timeline', 'contact-timeline-rows', 'contact-timeline-pagination', 'contact-reminder-panel'];
+        }
+
+        $drawable = [...$drawable, ...array_column($this->sections(), 'regionId')];
+
+        return array_diff($targets, $drawable) === [];
     }
 
     /** @return array<string, mixed> */
