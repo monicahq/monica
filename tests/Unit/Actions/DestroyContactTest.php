@@ -9,6 +9,9 @@ use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\LifeEvent;
+use App\Models\LifeEventParticipant;
+use App\Models\Relationship;
 use App\Models\ShareLink;
 use App\Models\StructureVersion;
 use App\Models\User;
@@ -16,6 +19,7 @@ use App\Models\Vault;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -52,6 +56,28 @@ class DestroyContactTest extends TestCase
                 && $job->isAbout($contact)
                 && $job->parameters === ['name' => 'Todd Packer'],
         );
+    }
+
+    #[Test]
+    public function it_takes_the_name_of_the_contact_out_of_the_records_that_named_them(): void
+    {
+        config(['scout.driver' => 'database']);
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
+        $jan = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Jan', 'last_name' => 'Levinson']);
+        Relationship::factory()->create(['vault_id' => $vault->id, 'contact_a_id' => $michael->id, 'contact_b_id' => $jan->id]);
+        $dinner = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Dinner party']);
+        LifeEventParticipant::factory()->create(['life_event_id' => $dinner->id, 'participant_id' => $jan->id]);
+
+        $this->assertStringContainsStringIgnoringCase('Levinson', (string) DB::table('contacts')->where('id', $michael->id)->value('search_linked_names'));
+        $this->assertStringContainsStringIgnoringCase('Levinson', (string) DB::table('life_events')->where('id', $dinner->id)->value('search_linked_names'));
+
+        new DestroyContact(user: $user, contact: $jan)->execute();
+
+        $this->assertStringNotContainsStringIgnoringCase('Levinson', (string) DB::table('contacts')->where('id', $michael->id)->value('search_linked_names'));
+        $this->assertStringNotContainsStringIgnoringCase('Levinson', (string) DB::table('life_events')->where('id', $dinner->id)->value('search_linked_names'));
     }
 
     #[Test]

@@ -68,6 +68,8 @@ class DestroyContact
                 ->where('record_count', '>', 0)
                 ->decrement('record_count');
         });
+
+        $this->contact->resendTheRecordsNamingIt();
     }
 
     private function revokeTheLinksOntoThem(): void
