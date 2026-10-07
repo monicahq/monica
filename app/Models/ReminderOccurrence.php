@@ -208,7 +208,9 @@ class ReminderOccurrence extends Model
      * There is no lower bound: a deadline whose day has passed without an answer
      * is the first thing somebody opening the screen needs to see. The upper
      * bound is the caller's, because it is a day the model has no business
-     * choosing.
+     * choosing. It is written as before the next day rather than with
+     * whereDate, so the vault and day index answers it, and a day stored with a
+     * midnight time on SQLite still falls inside it.
      *
      * A rule that has gone quiet or been taken away cancels its deadlines anyway.
      * Asking after the rule as well is what keeps the screen right in the moment
@@ -222,7 +224,7 @@ class ReminderOccurrence extends Model
             ->where('vault_id', $vault->id)
             ->where('account_id', $vault->account_id)
             ->active()
-            ->whereDate('local_date', '<=', $untilDay->toDateString())
+            ->where('local_date', '<', $untilDay->addDay()->toDateString())
             ->whereHas('reminder', function (Builder $rule): void {
                 $rule->where('is_active', true);
             })

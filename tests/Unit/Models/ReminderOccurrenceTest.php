@@ -97,6 +97,7 @@ class ReminderOccurrenceTest extends TestCase
 
         $late = $this->deadline($rule, '-3 days');
         $today = $this->deadline($rule, 'now');
+        $tomorrow = $this->deadline($rule, '+1 day');
         $ahead = $this->deadline($rule, '+2 days');
 
         $found = ReminderOccurrence::query()
@@ -105,6 +106,7 @@ class ReminderOccurrenceTest extends TestCase
             ->all();
 
         $this->assertSame([$late->id, $today->id], $found);
+        $this->assertNotContains($tomorrow->id, $found);
         $this->assertNotContains($ahead->id, $found);
     }
 
