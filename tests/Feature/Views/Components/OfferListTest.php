@@ -53,7 +53,7 @@ class OfferListTest extends TestCase
         $rendered = $this->blade('<x-offer-list :offers="$offers" />', ['offers' => $this->offers()]);
 
         foreach (['price_monthly', 'price_yearly', 'price_lifetime'] as $priceId) {
-            $rendered->assertSee(route('settings.checkout.store', ['price' => $priceId]), escape: false);
+            $rendered->assertSee('action="'.route('settings.checkout.store', ['price' => $priceId]).'" data-turbo="false"', escape: false);
         }
 
         $rendered->assertSee('Choose monthly', escape: false);

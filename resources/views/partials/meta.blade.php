@@ -1,4 +1,4 @@
-{{-- The charset, the viewport and the csrf token every layout opens its <head> with. --}}
+{{-- The charset, the viewport, the csrf token and the Turbo settings every layout opens its <head> with. --}}
 {{--
   @var string|null $title
   @var string|null $description
@@ -10,6 +10,9 @@
 @if (request()->hasSession())
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endif
+
+<meta name="turbo-cache-control" content="no-cache" />
+<meta name="turbo-prefetch" content="false" />
 
 <title>{{ $title ?? config('app.name') }}</title>
 

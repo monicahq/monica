@@ -1,5 +1,3 @@
-import 'instant.page';
-
 import * as Turbo from '@hotwired/turbo';
 import Alpine from 'alpinejs';
 import morph from '@alpinejs/morph';
@@ -25,8 +23,6 @@ import searchShortcut from './search-shortcut';
 import timezonePicker from './timezone-picker';
 
 window.Turbo = Turbo;
-
-Turbo.session.drive = false;
 
 Alpine.data('lifeEventTypeFields', lifeEventTypeFields);
 Alpine.data('lifeEventPanel', lifeEventPanel);
@@ -166,11 +162,4 @@ Alpine.store('theme', {
     },
 });
 
-document.addEventListener('turbo:load', () => {
-    if (! document.documentElement.dataset.alpine) {
-        document.documentElement.dataset.alpine = 'started';
-        Alpine.start();
-    }
-
-    Alpine.initTree(document.body);
-});
+Alpine.start();

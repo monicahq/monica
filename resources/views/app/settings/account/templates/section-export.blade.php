@@ -33,7 +33,7 @@
       </x-panel>
 
       <div class="flex flex-wrap items-center gap-2.5">
-        <x-button :href="$viewModel->downloadUrl()">{{ __('Download the file') }}</x-button>
+        <x-button :href="$viewModel->downloadUrl()" download>{{ __('Download the file') }}</x-button>
 
         <x-copy-button
           variant="secondary"

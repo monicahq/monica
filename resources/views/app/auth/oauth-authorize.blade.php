@@ -29,14 +29,14 @@
     </p>
 
     <div class="flex gap-3">
-      <x-form method="delete" :action="route('passport.authorizations.deny')" class="flex-1">
+      <x-form method="delete" :action="route('passport.authorizations.deny')" data-turbo="false" class="flex-1">
         <input type="hidden" name="state" value="" />
         <input type="hidden" name="client_id" value="{{ $viewModel->clientId() }}" />
         <input type="hidden" name="auth_token" value="{{ $viewModel->authToken() }}" />
         <x-button variant="secondary" class="w-full">{{ __('Deny') }}</x-button>
       </x-form>
 
-      <x-form method="post" :action="route('passport.authorizations.approve')" class="flex-1">
+      <x-form method="post" :action="route('passport.authorizations.approve')" data-turbo="false" class="flex-1">
         <input type="hidden" name="state" value="" />
         <input type="hidden" name="client_id" value="{{ $viewModel->clientId() }}" />
         <input type="hidden" name="auth_token" value="{{ $viewModel->authToken() }}" />

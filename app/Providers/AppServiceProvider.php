@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Cashier\Cashier;
@@ -119,7 +120,18 @@ class AppServiceProvider extends ServiceProvider
         $this->configurePassport();
         $this->configureSearch();
         $this->configureFlags();
+        $this->configureAssets();
         $this->refuseDeactivatedUsers();
+    }
+
+    /**
+     * Turbo keeps the page loaded between visits, so a deployment that changes the bundle has to
+     * be told apart from an ordinary visit: a page naming other assets is loaded in full.
+     */
+    private function configureAssets(): void
+    {
+        Vite::useScriptTagAttributes(['data-turbo-track' => 'reload']);
+        Vite::useStyleTagAttributes(['data-turbo-track' => 'reload']);
     }
 
     /**

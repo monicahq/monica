@@ -11,7 +11,6 @@
         "@imacrayon/alpine-ajax": "^0.12.7",
         "@laravel/passkeys": "^0.4.0",
         "alpinejs": "^3.15.12",
-        "instant.page": "^5.2.0",
       },
       "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
@@ -166,8 +165,6 @@
     "graceful-fs": ["graceful-fs@4.2.11", "", {}, "sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ=="],
 
     "has-flag": ["has-flag@4.0.0", "", {}, "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ=="],
-
-    "instant.page": ["instant.page@5.2.0", "", {}, "sha512-DUSwWyoHFOQnmEwJtg9vzDx8Ef8uNNvTxTmHjd0vN9/XEIb5EQkm/itpZMypoH3dJLJvtkrD97WOCKuMqDdMHQ=="],
 
     "is-fullwidth-code-point": ["is-fullwidth-code-point@3.0.0", "", {}, "sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg=="],
 

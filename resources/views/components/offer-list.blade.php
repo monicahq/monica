@@ -60,7 +60,7 @@
                     </x-slot:trigger>
                   </x-modal.form>
                 @else
-                  <x-form method="post" :action="route('settings.checkout.store', ['price' => $offer['price_id']])">
+                  <x-form method="post" :action="route('settings.checkout.store', ['price' => $offer['price_id']])" data-turbo="false">
                     <x-button :variant="$offer['kind'] === \App\Enums\OfferKindEnum::Yearly ? 'primary' : 'secondary'">{{ __($offer['kind']->callToAction()) }}</x-button>
                   </x-form>
                 @endif
@@ -86,7 +86,7 @@
         <p class="text-base text-pretty opacity-85">{{ __($offer['kind']->description()) }}</p>
 
         <div class="mt-auto pt-5">
-          <x-form method="post" :action="route('settings.checkout.store', ['price' => $offer['price_id']])">
+          <x-form method="post" :action="route('settings.checkout.store', ['price' => $offer['price_id']])" data-turbo="false">
             <button type="submit" class="focus-ring inline-flex h-10 cursor-pointer items-center rounded-md bg-on-primary px-5 text-base font-semibold text-primary transition duration-(--duration-fast) ease-out hover:opacity-90">{{ __($offer['kind']->callToAction()) }}</button>
           </x-form>
         </div>

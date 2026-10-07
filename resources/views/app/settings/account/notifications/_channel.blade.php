@@ -79,7 +79,7 @@
             </x-form>
 
             @if ($channel['discovers_destination'])
-              <x-form method="post" :action="$channel['connection_url']">
+              <x-form method="post" :action="$channel['connection_url']" data-turbo="false">
                 <x-button type="submit" variant="secondary" size="small">{{ __('Connect a different conversation') }}</x-button>
               </x-form>
             @endif

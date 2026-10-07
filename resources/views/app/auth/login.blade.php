@@ -48,7 +48,7 @@
   </x-box>
 
   @foreach ($viewModel->providersToOffer() as $provider)
-    <x-button.secondary :href="$provider['url']" class="w-full">
+    <x-button.secondary :href="$provider['url']" data-turbo="false" class="w-full">
       {{ __('Continue with :provider', ['provider' => $provider['name']]) }}
     </x-button.secondary>
   @endforeach

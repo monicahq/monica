@@ -18,10 +18,16 @@ export default (columns, defaults, wordings) => ({
     announcement: '',
 
     init() {
-        window.addEventListener('contact-list-columns-reset', () => {
+        this.reset = () => {
             this.columns = defaults.map((column) => ({ ...column }));
             this.changed();
-        });
+        };
+
+        window.addEventListener('contact-list-columns-reset', this.reset);
+    },
+
+    destroy() {
+        window.removeEventListener('contact-list-columns-reset', this.reset);
     },
 
     changed() {

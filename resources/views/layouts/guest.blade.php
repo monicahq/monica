@@ -5,6 +5,10 @@
   <head>
     @include('partials.meta', ['title' => $title ?? null])
 
+    @if (config('turnstile.enabled'))
+      <meta name="turbo-visit-control" content="reload" />
+    @endif
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
 

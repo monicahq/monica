@@ -1,7 +1,7 @@
 {{-- What a channel still asks for before it may be switched on: a conversation, a number, or a code typed back. --}}
 {{-- @var array $channel --}}
 @if ($channel['discovers_destination'] && ! $channel['is_connected'])
-  <x-form method="post" :action="$channel['connection_url']">
+  <x-form method="post" :action="$channel['connection_url']" data-turbo="false">
     <x-button type="submit" variant="secondary" size="small">{{ __('Connect Telegram') }}</x-button>
   </x-form>
 @endif

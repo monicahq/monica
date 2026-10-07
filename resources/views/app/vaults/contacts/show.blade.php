@@ -91,7 +91,7 @@
 
         <div role="separator" class="-mx-1 my-1 h-px bg-hairline"></div>
 
-        <x-actions-menu.item :href="$viewModel->vCardUrl()" data-turbo="true">
+        <x-actions-menu.item :href="$viewModel->vCardUrl()" download>
           {{ __('Export as vCard') }}
         </x-actions-menu.item>
 

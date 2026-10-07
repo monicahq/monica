@@ -6,7 +6,7 @@
   :quote="$viewModel->quote()"
 >
   <x-box>
-    <x-form method="post" :action="route('auth.magicLink.create')" class="space-y-4">
+    <x-form method="post" :action="route('auth.magicLink.create')" data-turbo="false" class="space-y-4">
       <x-input
         type="email"
         id="email"
