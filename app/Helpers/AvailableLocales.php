@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\File;
  *
  * The source language is always available, since `php artisan monica:localize`
  * writes its file from the code.
+ *
+ * The folder is read once per request: a screen asks for the list several
+ * times, and the files only change with a deployment.
  */
 class AvailableLocales
 {
@@ -35,18 +38,20 @@ class AvailableLocales
     /** @return list<string> */
     public static function codes(): array
     {
-        $codes = array_map(
-            fn (string $path): string => basename($path, '.json'),
-            File::glob(lang_path('*.json')) ?: [],
-        );
+        return once(function (): array {
+            $codes = array_map(
+                fn (string $path): string => basename($path, '.json'),
+                File::glob(lang_path('*.json')) ?: [],
+            );
 
-        $codes[] = (string) config('app.locale');
+            $codes[] = (string) config('app.locale');
 
-        $codes = array_unique($codes);
+            $codes = array_unique($codes);
 
-        sort($codes);
+            sort($codes);
 
-        return $codes;
+            return $codes;
+        });
     }
 
     public static function has(string $locale): bool

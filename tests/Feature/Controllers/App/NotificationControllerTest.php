@@ -17,7 +17,7 @@ class NotificationControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_returns_a_bounded_page_of_what_the_application_has_said(): void
+    public function it_draws_the_list_the_bar_fetches_when_it_is_opened(): void
     {
         $user = $this->signedIn();
         $this->notification($user, 'Birthday, Michael Scott');
@@ -25,8 +25,17 @@ class NotificationControllerTest extends TestCase
         $response = $this->get(route('notifications.index'));
 
         $response->assertStatus(200);
-        $response->assertJsonPath('unread_count', 1);
-        $response->assertJsonPath('notifications.0.title', 'Birthday, Michael Scott');
+        $response->assertSee('id="notification-list"', escape: false);
+        $response->assertSee('Birthday, Michael Scott');
+        $response->assertSee('Not read yet.');
+    }
+
+    #[Test]
+    public function the_empty_list_is_a_sentence(): void
+    {
+        $this->signedIn();
+
+        $this->get(route('notifications.index'))->assertSee('Nothing to catch up on.');
     }
 
     #[Test]

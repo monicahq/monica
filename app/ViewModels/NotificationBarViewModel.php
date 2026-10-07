@@ -21,23 +21,14 @@ use Illuminate\Support\Collection;
  *
  * The page is bounded whatever the account has accumulated. A person who has
  * not looked in a year has a year of notifications behind the bar, and reading
- * all of them to draw a list of ten would slow every signed in screen.
+ * all of them to draw a list of ten would slow every signed in screen. Every
+ * screen asks only for the count: the page is read when the panel is opened.
  */
 class NotificationBarViewModel
 {
     public function __construct(
         private readonly User $user,
     ) {}
-
-    /** @return array<string, mixed> */
-    public function toArray(): array
-    {
-        return [
-            'unread_count' => $this->unreadCount(),
-            'notifications' => $this->notifications(),
-            'empty_sentence' => __('Nothing to catch up on.'),
-        ];
-    }
 
     public function unreadCount(): int
     {

@@ -83,7 +83,7 @@ class NotificationAccessibilityTest extends TestCase
         $user = $this->signedIn();
         $this->notification($user);
 
-        $html = (string) $this->get(route('settings.index'))->getContent();
+        $html = (string) $this->get(route('notifications.index'))->getContent();
 
         $this->assertStringContainsString('Not read yet.', $html);
     }

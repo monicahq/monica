@@ -6,15 +6,15 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use App\ViewModels\NotificationBarViewModel;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class NotificationController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): View
     {
-        return response()->json(
-            new NotificationBarViewModel(user: $request->user())->toArray(),
-        );
+        return view('app.notifications._list', [
+            'viewModel' => new NotificationBarViewModel(user: $request->user()),
+        ]);
     }
 }

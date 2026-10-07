@@ -178,8 +178,10 @@ class AppServiceProvider extends ServiceProvider
                 scopes: $parameters['scopes'],
             ),
         ]));
+        // English on purpose: translating here would load a language file on every request, before
+        // the reader's language is known. The authorization screen translates it.
         Passport::tokensCan([
-            'mcp' => __('Use MCP server'),
+            'mcp' => 'Use MCP server',
         ]);
     }
 

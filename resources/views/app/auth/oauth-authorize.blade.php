@@ -10,12 +10,12 @@
       <x-detail-list.row :label="__('Signed in as')">{{ $viewModel->email() }}</x-detail-list.row>
       <x-detail-list.row :label="__('Sends you back to')">{{ $viewModel->redirectHost() }}</x-detail-list.row>
 
-      @if(count($viewModel->scopes) > 0)
+      @if(count($viewModel->permissions()) > 0)
         <x-detail-list.row :label="__('Permissions')">
           <ul class="space-y-2">
-            @foreach($viewModel->scopes as $scope)
+            @foreach($viewModel->permissions() as $permission)
               <li class="flex items-start gap-2">
-                <span class="text-sm">{{ __($scope->description) }}</span>
+                <span class="text-sm">{{ $permission }}</span>
               </li>
             @endforeach
           </ul>

@@ -2,13 +2,12 @@
 {{-- @var \App\ViewModels\NotificationBarViewModel|null $viewModel --}}
 @php
   $unread = $viewModel?->unreadCount() ?? 0;
-  $notifications = $viewModel?->notifications() ?? collect();
 @endphp
 
-<div x-data="{ open: false, confirming: false }" @keydown.escape.window="open = false; confirming = false" class="relative">
+<div x-data="{ open: false, confirming: false, loaded: false }" @keydown.escape.window="open = false; confirming = false" class="relative">
   <button
     type="button"
-    @click="open = ! open; confirming = false"
+    @click="open = ! open; confirming = false; if (open && ! loaded) { loaded = true; $ajax('{{ route('notifications.index') }}', { target: 'notification-list', focus: false }) }"
     @click.outside="open = false; confirming = false"
     ::aria-expanded="open ? 'true' : 'false'"
     aria-haspopup="dialog"
@@ -64,43 +63,8 @@
       @endif
     </div>
 
-    @if ($notifications->isEmpty())
-      <p class="px-3 py-6 text-center text-sm text-muted">{{ __('Nothing to catch up on.') }}</p>
-    @else
-      <ul class="max-h-96 divide-y divide-hairline overflow-y-auto">
-        @foreach ($notifications as $notification)
-          <li>
-            <form action="{{ $notification['url'] }}" method="post">
-              @csrf
-              @method('PUT')
-
-              <button
-                type="submit"
-                @class([
-                  'flex w-full cursor-pointer flex-col items-start gap-0.5 px-3 py-2.5 text-left transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset',
-                  'bg-card' => ! $notification['is_read'],
-                ])
-              >
-                <span class="flex w-full items-center gap-1.5">
-                  @unless ($notification['is_read'])
-                    <span aria-hidden="true" class="size-1.5 shrink-0 rounded-full bg-danger"></span>
-                  @endunless
-
-                  <span class="min-w-0 flex-1 truncate text-sm font-medium text-ink">{{ $notification['title'] }}</span>
-
-                  @unless ($notification['is_read'])
-                    <span class="sr-only">{{ __('Not read yet.') }}</span>
-                  @endunless
-                </span>
-
-                <span class="text-xs text-body">{{ $notification['body'] }}</span>
-
-                <span class="text-2xs text-muted-soft">{{ $notification['when'] }}</span>
-              </button>
-            </form>
-          </li>
-        @endforeach
-      </ul>
-    @endif
+    <div id="notification-list" x-merge="replace" class="dim-when-busy">
+      <p class="px-3 py-6 text-center text-sm text-muted">{{ __('Loading…') }}</p>
+    </div>
   </div>
 </div>
