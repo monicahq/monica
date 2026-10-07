@@ -31,12 +31,12 @@
       <x-icon name="grip" :size="15" :stroke-width="1.5" />
     </span>
 
-    <span aria-hidden="true" class="flex size-7.5 shrink-0 items-center justify-center rounded-md border border-hairline bg-card text-body">
-      @foreach ($marks as $key => $mark)
-        <span x-show="type === @js($key)" @if ($field['type'] !== $key) style="display: none" @endif class="flex">
-          <x-icon :name="$mark" :size="15" :stroke-width="1.5" />
+    <span data-field-mark aria-hidden="true" class="flex size-7.5 shrink-0 items-center justify-center rounded-md border border-hairline bg-card text-body">
+      @isset($marks[$field['type']])
+        <span data-kind="{{ $field['type'] }}" x-show="type === @js($field['type'])" class="flex">
+          <x-icon :name="$marks[$field['type']]" :size="15" :stroke-width="1.5" />
         </span>
-      @endforeach
+      @endisset
     </span>
 
     <div class="min-w-45 flex-1">
@@ -59,6 +59,7 @@
         :aria-label="__('Kind of answer it takes')"
         size="small"
         x-model="type"
+        @change="pickKind($el)"
         required
       >
         @foreach ($families as $family)
@@ -98,60 +99,17 @@
 
   <div class="flex flex-col gap-2.5 pl-11">
     {{-- Several kinds of field name the same setting, so only the settings of the kind that is picked are left switched on to be sent. --}}
-    @foreach ($settingsByType as $kind => $settings)
-      @continue($settings === [])
-
-      @php
-        $chosen = $field['type'] === $kind;
-      @endphp
-      <fieldset
-        x-cloak
-        x-show="type === @js($kind)"
-        :disabled="type !== @js($kind)"
-        @disabled(! $chosen)
-        class="m-0 flex min-w-0 flex-wrap items-end gap-2.5 border-0 p-0"
-      >
-        <legend class="sr-only">{{ __('How this field is checked') }}</legend>
-
-        @foreach ($settings as $setting)
-          @php
-            $settingId = $id.'-'.$kind.'-'.$setting['key'];
-            $value = $chosen ? ($field['settings'][$setting['key']] ?? '') : '';
-          @endphp
-          <div @class(['flex flex-col gap-1', match ($setting['width']) {
-            'narrow' => 'w-24',
-            'medium' => 'w-40',
-            default => 'w-60 max-w-full',
-          }])>
-            <x-caption>{{ $setting['label'] }}</x-caption>
-
-            @if ($setting['control'] === 'select')
-              <x-select
-                :id="$settingId"
-                :name="'fields['.$reference.'][settings]['.$setting['key'].']'"
-                :aria-label="$setting['label']"
-                size="small"
-              >
-                @foreach ($setting['options'] as $option)
-                  <option value="{{ $option['value'] }}" @selected($value === $option['value'])>{{ $option['label'] }}</option>
-                @endforeach
-              </x-select>
-            @else
-              <x-input
-                :id="$settingId"
-                :name="'fields['.$reference.'][settings]['.$setting['key'].']'"
-                :type="$setting['control'] === 'number' ? 'number' : 'text'"
-                :value="$value"
-                :aria-label="$setting['label']"
-                :placeholder="$setting['placeholder']"
-                size="small"
-                maxlength="255"
-              />
-            @endif
-          </div>
-        @endforeach
-      </fieldset>
-    @endforeach
+    <div data-field-settings class="contents">
+      @if (($settingsByType[$field['type']] ?? []) !== [])
+        @include('app.settings.account.life-event-types._settings', [
+          'reference' => $reference,
+          'kind' => $field['type'],
+          'settings' => $settingsByType[$field['type']],
+          'values' => $field['settings'],
+          'chosen' => true,
+        ])
+      @endif
+    </div>
 
     <fieldset
       x-cloak

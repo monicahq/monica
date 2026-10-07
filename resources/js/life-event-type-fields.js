@@ -108,6 +108,26 @@ export default () => ({
         this.settle(el);
     },
 
+    /**
+     * Copy in the icon and the settings of the kind just picked, the first time
+     * it is picked for this row. What was copied stays, hidden and switched off,
+     * so going back to a kind keeps what was typed in it.
+     */
+    pickKind(el) {
+        const editor = this.editor(el);
+        const field = el.closest('[data-field]');
+
+        [['data-field-mark', 'data-mark-template'], ['data-field-settings', 'data-settings-template']].forEach(([holder, template]) => {
+            const target = field.querySelector(`[${holder}]`);
+
+            if (target.querySelector(`:scope > [data-kind="${el.value}"]`) || ! editor.querySelector(`[${template}="${el.value}"]`)) {
+                return;
+            }
+
+            target.append(this.build(editor, `${template}="${el.value}"`, field.dataset.reference));
+        });
+    },
+
     addChoice(el) {
         const field = el.closest('[data-field]');
         const choice = this.build(this.editor(el), 'data-choice-template', field.dataset.reference);

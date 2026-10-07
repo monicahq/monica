@@ -154,6 +154,29 @@
         <template data-choice-template>
           @include('app.settings.account.life-event-types._choice', ['reference' => '__ref__', 'choice' => ''])
         </template>
+
+        {{-- A row is drawn with the icon and the settings of its own kind only. Those of another kind are copied from here the first time it is picked. --}}
+        @foreach ($marks as $kind => $mark)
+          <template data-mark-template="{{ $kind }}">
+            <span data-kind="{{ $kind }}" x-show="type === @js($kind)" class="flex">
+              <x-icon :name="$mark" :size="15" :stroke-width="1.5" />
+            </span>
+          </template>
+        @endforeach
+
+        @foreach ($settingsByType as $kind => $settings)
+          @continue($settings === [])
+
+          <template data-settings-template="{{ $kind }}">
+            @include('app.settings.account.life-event-types._settings', [
+              'reference' => '__ref__',
+              'kind' => $kind,
+              'settings' => $settings,
+              'values' => [],
+              'chosen' => true,
+            ])
+          </template>
+        @endforeach
       </div>
     </x-page-section>
 

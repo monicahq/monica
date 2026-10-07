@@ -145,6 +145,46 @@ class LifeEventTypeFormTest extends TestCase
     }
 
     #[Test]
+    public function it_draws_a_row_with_the_settings_of_its_own_kind_and_keeps_the_others_in_templates(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+
+        $type = new CreateLifeEventType(
+            user: $user,
+            lifeEventCategory: $category,
+            name: 'Beet harvest',
+        )->execute();
+
+        new ReplaceLifeEventTypeFields(
+            user: $user,
+            lifeEventType: $type,
+            groups: [],
+            fields: [[
+                'key' => null,
+                'group' => '',
+                'label' => 'Variety',
+                'type' => 'text',
+                'is_required' => false,
+                'help_text' => null,
+                'settings' => ['placeholder' => 'Detroit Dark Red'],
+                'choices' => [],
+            ]],
+        )->execute();
+
+        $html = $this->actingAs($user)->get(route('settings.lifeEventTypes.edit', $type))->getContent();
+
+        preg_match_all('/name="fields\[f\d+\]\[settings\]\[([a-z_]+)\]"/', $html, $sent);
+
+        $this->assertEqualsCanonicalizing(['placeholder', 'max_length'], $sent[1]);
+        $this->assertStringContainsString('@change="pickKind($el)"', $html);
+        $this->assertStringContainsString('data-settings-template="number"', $html);
+        $this->assertStringContainsString('data-mark-template="number"', $html);
+    }
+
+    #[Test]
     public function it_reads_the_choices_of_a_field_back_into_its_row(): void
     {
         Queue::fake();
