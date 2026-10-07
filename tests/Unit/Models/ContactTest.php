@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Models;
 
 use App\Enums\ContactGroupingEnum;
+use App\Enums\ContactNameKindEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NameOrderEnum;
@@ -13,6 +14,7 @@ use App\Enums\SortDirectionEnum;
 use App\Helpers\LocaleCollation;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\ContactNameRepresentation;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\LifeEvent;
@@ -73,8 +75,8 @@ class ContactTest extends TestCase
 
         $this->assertEquals('scott michael gary', $contact->sort_name);
 
-        $contact->last_name = 'Scarn';
-        $contact->save();
+        $contact->displayNameRepresentation->update(['family_name' => 'Scarn']);
+        $contact->refresh();
 
         $this->assertEquals('scarn michael gary', $contact->fresh()->sort_name);
     }
@@ -382,8 +384,8 @@ class ContactTest extends TestCase
         $contact = Contact::factory()->create(['last_name' => 'Scott']);
         $before = $contact->sort_key;
 
-        $contact->last_name = 'Scarn';
-        $contact->save();
+        $contact->displayNameRepresentation->update(['family_name' => 'Scarn']);
+        $contact->refresh();
 
         $fresh = $contact->fresh();
 
@@ -601,8 +603,8 @@ class ContactTest extends TestCase
     {
         $contact = Contact::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);
 
-        $contact->last_name = 'Halpert';
-        $contact->save();
+        $contact->displayNameRepresentation->update(['family_name' => 'Halpert']);
+        $contact->refresh();
 
         $this->assertSame('pam-halpert', $contact->fresh()->slug);
     }
@@ -612,8 +614,8 @@ class ContactTest extends TestCase
     {
         $contact = Contact::factory()->create(['first_name' => 'Dwight', 'last_name' => 'Schrute']);
 
-        $contact->middle_name = 'Kurt';
-        $contact->save();
+        $contact->displayNameRepresentation->update(['additional_name' => 'Kurt']);
+        $contact->refresh();
 
         $this->assertSame('dwight-kurt-schrute', $contact->fresh()->slug);
     }
@@ -624,8 +626,8 @@ class ContactTest extends TestCase
         $vault = Vault::factory()->create();
         $contact = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
 
-        $contact->last_name = 'Halpert';
-        $contact->save();
+        $contact->displayNameRepresentation->update(['family_name' => 'Halpert']);
+        $contact->refresh();
 
         $namesake = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
 
@@ -649,11 +651,11 @@ class ContactTest extends TestCase
     {
         $contact = Contact::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);
 
-        $contact->last_name = 'Halpert';
-        $contact->save();
+        $contact->displayNameRepresentation->update(['family_name' => 'Halpert']);
+        $contact->refresh();
 
-        $contact->last_name = 'Beesly';
-        $contact->save();
+        $contact->displayNameRepresentation->update(['family_name' => 'Beesly']);
+        $contact->refresh();
 
         $this->assertSame('pam-beesly', $contact->fresh()->slug);
     }
@@ -1169,8 +1171,8 @@ class ContactTest extends TestCase
         $this->writeOn($dwight, FieldTypeEnum::Relation, 'Former boss', ['related_contact_id' => $jan->id]);
         $engine->forget();
 
-        $jan->last_name = 'Gould';
-        $jan->save();
+        $jan->displayNameRepresentation->update(['family_name' => 'Gould']);
+        $jan->refresh();
 
         $this->assertTrue($engine->wasSent($michael));
         $this->assertTrue($engine->wasSent($dinner));
@@ -1193,6 +1195,55 @@ class ContactTest extends TestCase
         $this->assertSame([['name' => 'Michael Scott', 'label' => 'Partner of Michael Scott']], $jan->searchableLinkedNames());
     }
 
+    #[Test]
+    public function it_is_found_in_the_list_by_every_way_its_name_is_written(): void
+    {
+        $vault = Vault::factory()->create();
+        $minji = $this->minjiIn($vault);
+        Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'first_name' => 'Kevin', 'last_name' => 'Malone']);
+
+        foreach (['김민지', 'kim min-ji', '金敏智'] as $term) {
+            $found = Contact::query()->where('vault_id', $vault->id)->matchingSearch($term)->get();
+
+            $this->assertCount(1, $found, $term);
+            $this->assertTrue($minji->is($found->first()));
+        }
+
+        $this->assertCount(0, Contact::query()->where('vault_id', $vault->id)->matchingSearch('Gim Minji')->get());
+    }
+
+    #[Test]
+    public function it_sends_the_search_engine_every_way_its_name_is_written_the_shown_one_first(): void
+    {
+        $minji = $this->minjiIn(Vault::factory()->create());
+
+        $this->assertSame("김민지\nKim Min-ji\n金敏智", $minji->searchableName());
+    }
+
+    #[Test]
+    public function it_sends_the_search_engine_every_name_of_the_people_it_is_related_to(): void
+    {
+        $vault = Vault::factory()->create();
+        $minji = $this->minjiIn($vault);
+        $michael = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
+        $colleague = RelationshipType::factory()->create(['account_id' => $vault->account_id, 'role_a' => 'Colleague', 'role_b' => 'Colleague']);
+        Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id, 'relationship_type_id' => $colleague->id, 'contact_a_id' => $michael->id, 'contact_b_id' => $minji->id]);
+
+        $this->assertSame([['name' => "김민지\nKim Min-ji\n金敏智", 'label' => 'Colleague of 김민지']], $michael->searchableLinkedNames());
+    }
+
+    private function minjiIn(Vault $vault): Contact
+    {
+        $minji = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'first_name' => null, 'last_name' => null]);
+        $hangul = ContactNameRepresentation::factory()->create(['contact_id' => $minji->id, 'language_tag' => 'ko', 'script_code' => 'Hang', 'formatted_name' => '김민지', 'given_name' => '민지', 'family_name' => '김', 'name_order' => NameOrderEnum::FamilyFirst, 'position' => 1]);
+        ContactNameRepresentation::factory()->transliteration()->create(['contact_id' => $minji->id, 'language_tag' => 'ko', 'formatted_name' => 'Kim Min-ji', 'given_name' => 'Min-ji', 'family_name' => 'Kim', 'position' => 2]);
+        ContactNameRepresentation::factory()->create(['contact_id' => $minji->id, 'language_tag' => 'ko', 'script_code' => 'Hani', 'formatted_name' => '金敏智', 'given_name' => '敏智', 'family_name' => '金', 'position' => 3]);
+        $minji->display_name_representation_id = $hangul->id;
+        $minji->save();
+
+        return $minji->refresh();
+    }
+
     /** @param  array<string, mixed>  $attributes */
     private function writeOn(Contact $contact, FieldTypeEnum $type, string $label, array $attributes, bool $sensitive = false): FieldValue
     {
@@ -1208,5 +1259,86 @@ class ContactTest extends TestCase
             'field_id' => $field->id,
             'value_string' => null,
         ], $attributes));
+    }
+
+    #[Test]
+    public function it_copies_the_name_it_is_shown_under_into_its_own_columns(): void
+    {
+        $contact = Contact::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);
+        $married = ContactNameRepresentation::factory()->create([
+            'contact_id' => $contact->id,
+            'given_name' => 'Pam',
+            'family_name' => 'Halpert',
+        ]);
+
+        $this->assertSame('Pam Beesly', $contact->refresh()->name);
+
+        $contact->display_name_representation_id = $married->id;
+        $contact->save();
+
+        $this->assertSame('Halpert', $contact->last_name);
+        $this->assertSame('Pam Halpert', $contact->name);
+    }
+
+    #[Test]
+    public function it_keeps_its_address_and_its_place_in_the_list_when_another_name_changes(): void
+    {
+        $contact = Contact::factory()->create(['first_name' => 'Dwight', 'last_name' => 'Schrute']);
+        $other = ContactNameRepresentation::factory()->create(['contact_id' => $contact->id]);
+        $before = $contact->refresh()->only(['slug', 'sort_name', 'sort_key', 'search_key']);
+
+        $other->update(['given_name' => 'Mose', 'family_name' => 'Schrute']);
+
+        $this->assertSame($before, $contact->refresh()->only(['slug', 'sort_name', 'sort_key', 'search_key']));
+    }
+
+    #[Test]
+    public function it_follows_its_displayed_name_when_that_one_changes(): void
+    {
+        $contact = Contact::factory()->create(['first_name' => 'Andy', 'last_name' => 'Bernard']);
+
+        $contact->displayNameRepresentation->update(['given_name' => 'Andrew']);
+
+        $this->assertSame('Andrew Bernard', $contact->refresh()->name);
+        $this->assertSame('andrew-bernard', $contact->slug);
+    }
+
+    #[Test]
+    public function it_reads_sorts_and_draws_a_name_written_only_as_a_whole(): void
+    {
+        $contact = Contact::factory()->create(['first_name' => null, 'last_name' => null]);
+        $representation = ContactNameRepresentation::factory()->create([
+            'contact_id' => $contact->id,
+            'given_name' => null,
+            'family_name' => null,
+            'formatted_name' => '김민지',
+        ]);
+
+        $contact->display_name_representation_id = $representation->id;
+        $contact->save();
+
+        $this->assertSame('김민지', $contact->name);
+        $this->assertSame('김민지', $contact->sort_name);
+        $this->assertSame('김', $contact->initials);
+        $this->assertFalse($contact->isNameless());
+    }
+
+    #[Test]
+    public function it_finds_a_representation_by_script_or_by_kind(): void
+    {
+        $contact = Contact::factory()->create(['first_name' => null, 'last_name' => null]);
+        $latin = ContactNameRepresentation::factory()->transliteration()->create([
+            'contact_id' => $contact->id,
+            'formatted_name' => 'Kim Min-ji',
+        ]);
+        $phonetic = ContactNameRepresentation::factory()->phonetic('x-rr')->create([
+            'contact_id' => $contact->id,
+            'formatted_name' => 'Gim Minji',
+            'position' => 3,
+        ]);
+
+        $this->assertTrue($latin->is($contact->nameFor(script: 'Latn')));
+        $this->assertTrue($phonetic->is($contact->nameFor(kind: ContactNameKindEnum::Phonetic)));
+        $this->assertNull($contact->nameFor(script: 'Hani'));
     }
 }

@@ -181,7 +181,8 @@ class RelationshipsTest extends TestCase
     public function the_form_offers_to_name_a_nameless_contact(): void
     {
         $ross = $this->personIn('Ross', 'Geller');
-        $ross->update(['is_partial' => true, 'first_name' => null, 'last_name' => null]);
+        $ross->update(['is_partial' => true]);
+        $ross->displayNameRepresentation->delete();
         $relationship = $this->parentage($this->judy, $ross);
 
         $this->actingAs($this->user)

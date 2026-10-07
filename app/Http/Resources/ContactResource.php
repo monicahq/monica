@@ -22,6 +22,8 @@ class ContactResource extends JsonResource
             'attributes' => [
                 'slug' => $this->slug,
                 'name' => $this->name,
+                'formatted_name' => $this->formatted_name,
+                'name_representations' => ContactNameRepresentationResource::collection($this->nameRepresentations)->resolve($request),
                 'prefix' => $this->prefix,
                 'first_name' => $this->first_name,
                 'middle_name' => $this->middle_name,

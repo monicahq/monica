@@ -1267,6 +1267,26 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", ['first_name' => 'Pam']);
             }),
 
+            'contacts-name-representations-index' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $contact = $this->contactWithAPicture($vault);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/name-representations");
+            }),
+            'contacts-name-representations-update' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $contact = $this->contactWithAPicture($vault);
+
+                return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/name-representations", [
+                    'name_representations' => [
+                        ['kind' => 'written', 'given_name' => 'Pam', 'family_name' => 'Beesly'],
+                        ['kind' => 'transliteration', 'language' => 'ja', 'script' => 'Kana', 'formatted_name' => 'パム・ビーズリー'],
+                    ],
+                    'display' => 0,
+                    'nickname' => 'Pammy',
+                    'maiden_name' => null,
+                ]);
+            }),
             'contacts-name-update' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
                 $contact = $this->contactWithAPicture($vault);

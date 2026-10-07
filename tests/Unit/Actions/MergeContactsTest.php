@@ -6,6 +6,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\MergeContacts;
 use App\Actions\PreviewContactMerge;
+use App\Enums\ContactNameKindEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\SnapshotReasonEnum;
 use App\Enums\UserActionEnum;
@@ -15,6 +16,7 @@ use App\Exceptions\ContactChangedSinceThePreview;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\ContactMerge;
+use App\Models\ContactNameRepresentation;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
@@ -508,6 +510,85 @@ class MergeContactsTest extends TestCase
             'field_id' => $field->id,
             'field_key' => $field->key,
             'value_string' => $value,
+        ]);
+    }
+
+    #[Test]
+    public function it_brings_over_every_way_the_other_name_is_written_and_shows_the_one_chosen(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $kana = ContactNameRepresentation::factory()->transliteration()->create(['contact_id' => $james->id, 'script_code' => 'Kana', 'formatted_name' => 'ジェームズ・ハルパート']);
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james, resolutions: [
+            ['field_key' => '@display_name', 'row' => null, 'keep' => 'other'],
+        ])->execute();
+
+        $jim->refresh();
+        $this->assertSame('James Halpert', $jim->name);
+        $this->assertSame(3, $jim->nameRepresentations()->count());
+        $this->assertSame($jim->id, $kana->refresh()->contact_id);
+        $this->assertContains('display_name_replaced', array_column($merge->ledger, 'kind'));
+    }
+
+    #[Test]
+    public function it_keeps_the_survivors_name_when_nobody_answers_which_to_show(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+
+        new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertSame('Jim Halpert', $jim->refresh()->name);
+        $this->assertSame(2, $jim->nameRepresentations()->count());
+    }
+
+    #[Test]
+    public function it_leaves_a_way_of_writing_the_name_both_share_with_the_absorbed_contact(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $shared = ['kind' => ContactNameKindEnum::Transliteration, 'script_code' => 'Kana', 'formatted_name' => 'ジム・ハルパート', 'given_name' => null, 'family_name' => null];
+        ContactNameRepresentation::factory()->create([...$shared, 'contact_id' => $jim->id]);
+        $theirs = ContactNameRepresentation::factory()->create([...$shared, 'contact_id' => $james->id]);
+
+        new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertSame($james->id, $theirs->refresh()->contact_id);
+        $this->assertSame(3, $jim->nameRepresentations()->count());
+    }
+
+    #[Test]
+    public function it_tells_a_field_keyed_display_name_apart_from_the_name_shown(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        $field->key = 'display_name';
+        $field->label = 'Display name';
+        $field->save();
+        [$jim, $james] = $this->twoContactsOf($user, $version);
+        $this->valueFor($jim, $field, 'Big Tuna');
+        $theirs = $this->valueFor($james, $field, 'Jimothy');
+
+        new MergeContacts(user: $user, kept: $jim, absorbed: $james, resolutions: [
+            ['field_key' => 'display_name', 'row' => null, 'keep' => 'other'],
+            ['field_key' => '@display_name', 'row' => null, 'keep' => 'kept'],
+        ])->execute();
+
+        $this->assertSame('Jim Halpert', $jim->refresh()->name);
+        $this->assertDatabaseHas('field_values', [
+            'id' => $theirs->id,
+            'valuable_id' => $jim->id,
+            'is_detached' => false,
         ]);
     }
 }

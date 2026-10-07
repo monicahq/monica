@@ -7,6 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\SearchRecords;
 use App\Enums\FieldTypeEnum;
 use App\Models\Contact;
+use App\Models\ContactNameRepresentation;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\Field;
@@ -117,6 +118,26 @@ class SearchRecordsTest extends TestCase
 
         $this->assertSame([$dwight->id], $this->found($user, $vault, 'brine'));
         $this->assertSame([], $this->found($user, $vault, 'brine', withSensitive: false));
+    }
+
+    #[Test]
+    public function it_finds_a_contact_once_by_each_way_its_name_is_written(): void
+    {
+        if (DB::connection()->getDriverName() !== 'sqlite') {
+            $this->markTestSkipped('A full-text index sees only committed rows, and RefreshDatabase never commits.');
+        }
+
+        config(['scout.driver' => 'database']);
+        [$user, $vault] = $this->dunderMifflin();
+        $minji = $this->contact($vault, '민지', '김');
+        ContactNameRepresentation::factory()->transliteration()->create(['contact_id' => $minji->id, 'formatted_name' => 'Kim Min-ji']);
+        ContactNameRepresentation::factory()->create(['contact_id' => $minji->id, 'script_code' => 'Hani', 'formatted_name' => '金敏智', 'given_name' => null, 'family_name' => null]);
+        $this->contact($vault, 'Jim', 'Halpert');
+
+        $this->assertSame([$minji->id], $this->found($user, $vault, '민지'));
+        $this->assertSame([$minji->id], $this->found($user, $vault, 'Min-ji'));
+        $this->assertSame([$minji->id], $this->found($user, $vault, '金敏智'));
+        $this->assertSame([], $this->found($user, $vault, 'Minji Gim'));
     }
 
     #[Test]

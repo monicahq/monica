@@ -7,9 +7,9 @@ namespace App\Http\Controllers\App\Vaults;
 use App\Actions\CreateContact;
 use App\Actions\DestroyContact;
 use App\Actions\UpdateContactListView;
+use App\Actions\UpdateContactNameRepresentations;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
-use App\Enums\NameOrderEnum;
 use App\Enums\SortDirectionEnum;
 use App\Http\Controllers\Controller;
 use App\Jobs\RecordContactVisit;
@@ -24,8 +24,8 @@ use App\ViewModels\Vaults\ContactViewModel;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use InvalidArgumentException;
 
 class ContactController extends Controller
 {
@@ -132,27 +132,24 @@ class ContactController extends Controller
 
     public function create(Request $request, Vault $vault): RedirectResponse
     {
-        $validated = $request->validate($this->rules($request));
-        $nameOrder = $validated['name_order'] ?? null;
+        $validated = $request->validate($this->rules($request), [], UpdateContactNameRepresentations::attributes('names'));
 
         try {
             $contact = new CreateContact(
                 user: $request->user(),
                 vault: $vault,
                 structureVersion: $this->versionAskedFor($request),
-                prefix: $validated['prefix'] ?? null,
-                firstName: $validated['first_name'],
-                middleName: $validated['middle_name'] ?? null,
-                lastName: $validated['last_name'] ?? null,
-                suffix: $validated['suffix'] ?? null,
                 maidenName: $validated['maiden_name'] ?? null,
                 nickname: $validated['nickname'] ?? null,
-                nameOrder: $nameOrder === null ? null : NameOrderEnum::from($nameOrder),
                 isPartial: $request->boolean('is_partial'),
                 isFavourite: $request->boolean('is_favourite'),
+                nameRepresentations: array_values($validated['names']),
+                display: (int) $validated['display'],
             )->execute();
         } catch (AuthorizationException $e) {
-            return back()->withErrors(['first_name' => $e->getMessage()])->withInput();
+            return back()->withErrors(['names' => $e->getMessage()])->withInput();
+        } catch (InvalidArgumentException $e) {
+            return back()->withErrors(['names' => $e->getMessage()])->withInput();
         }
 
         $destination = $request->boolean('keep_going')
@@ -170,14 +167,9 @@ class ContactController extends Controller
     private function rules(Request $request): array
     {
         return [
-            'prefix' => ['nullable', 'string', 'max:50'],
-            'first_name' => ['required', 'string', 'max:255'],
-            'middle_name' => ['nullable', 'string', 'max:255'],
-            'last_name' => ['nullable', 'string', 'max:255'],
-            'suffix' => ['nullable', 'string', 'max:50'],
+            ...UpdateContactNameRepresentations::rules('names', [], requiresOne: true),
             'maiden_name' => ['nullable', 'string', 'max:255'],
             'nickname' => ['nullable', 'string', 'max:255'],
-            'name_order' => ['nullable', Rule::enum(NameOrderEnum::class)],
             'is_partial' => ['nullable', 'boolean'],
             'is_favourite' => ['nullable', 'boolean'],
             'keep_going' => ['nullable', 'boolean'],

@@ -237,8 +237,9 @@ class LifeEvent extends Model
                 continue;
             }
 
-            $name = $participation->participant->name;
-            $linked[] = ['name' => $name, 'label' => __('With :name', ['name' => $name])];
+            $participant = $participation->participant;
+            $name = $participant->name;
+            $linked[] = ['name' => $participant instanceof Contact ? $participant->searchableName() : $name, 'label' => __('With :name', ['name' => $name])];
         }
 
         return $linked;

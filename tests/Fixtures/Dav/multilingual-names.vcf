@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:4.0
+UID:kim-min-ji
+N;ALTID=1;LANGUAGE=ko;SCRIPT=Hang:김;민지;;;
+FN;ALTID=1;LANGUAGE=ko;SCRIPT=Hang;PREF=1:김민지
+N;ALTID=1;LANGUAGE=ko;SCRIPT=Latn;X-NAME-KIND=transliteration;SORT-AS=Kim:Kim;Min-ji;;;
+FN;ALTID=1;LANGUAGE=ko;SCRIPT=Latn;X-NAME-KIND=transliteration:Kim Min-ji
+N;ALTID=1;LANGUAGE=ko;SCRIPT=Hani;X-ORIGIN=family-register:金;敏智;;;
+FN;ALTID=1;LANGUAGE=ko;SCRIPT=Hani:金敏智
+N;ALTID=1;LANGUAGE=ko;SCRIPT=Latn;PHONETIC=x-rr:Gim;Minji;;;
+NICKNAME:Minnie
+EMAIL:minji@example.com
+END:VCARD

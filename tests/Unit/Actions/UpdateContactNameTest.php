@@ -9,6 +9,7 @@ use App\Enums\NameOrderEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\ContactNameRepresentation;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -162,5 +163,127 @@ class UpdateContactNameTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateContactName(user: $user, contact: $contact, firstName: 'Dwight')->execute();
+    }
+
+    #[Test]
+    public function it_changes_the_displayed_name_and_leaves_the_other_ways_of_writing_it_alone(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
+        $other = ContactNameRepresentation::factory()->transliteration()->create(['contact_id' => $contact->id, 'formatted_name' => 'Pamela Beesly']);
+        $displayedId = $contact->display_name_representation_id;
+
+        new UpdateContactName(user: $user, contact: $contact, firstName: 'Pam', lastName: 'Halpert')->execute();
+
+        $this->assertDatabaseHas('contact_name_representations', ['id' => $displayedId, 'family_name' => 'Halpert']);
+        $this->assertDatabaseHas('contact_name_representations', ['id' => $other->id, 'formatted_name' => 'Pamela Beesly']);
+        $this->assertSame($displayedId, $contact->refresh()->display_name_representation_id);
+    }
+
+    #[Test]
+    public function it_gives_a_contact_with_no_name_its_first_way_of_writing_one(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => null, 'last_name' => null]);
+
+        new UpdateContactName(user: $user, contact: $contact, firstName: 'Kevin', lastName: 'Malone')->execute();
+
+        $this->assertSame('Kevin', $contact->refresh()->displayNameRepresentation->given_name);
+    }
+
+    #[Test]
+    public function it_leaves_a_contact_nameless_when_every_part_is_emptied(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Creed', 'last_name' => 'Bratton']);
+
+        new UpdateContactName(user: $user, contact: $contact)->execute();
+
+        $contact->refresh();
+        $this->assertNull($contact->display_name_representation_id);
+        $this->assertSame(0, $contact->nameRepresentations()->count());
+        $this->assertTrue($contact->isNameless());
+    }
+
+    #[Test]
+    public function it_shows_the_next_way_of_writing_the_name_when_the_displayed_one_is_emptied(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Kelly', 'last_name' => 'Kapoor']);
+        $other = ContactNameRepresentation::factory()->create(['contact_id' => $contact->id, 'formatted_name' => 'केली कपूर', 'given_name' => null, 'family_name' => null]);
+
+        new UpdateContactName(user: $user, contact: $contact)->execute();
+
+        $this->assertSame($other->id, $contact->refresh()->display_name_representation_id);
+        $this->assertSame('केली कपूर', $contact->name);
+    }
+
+    #[Test]
+    public function it_keeps_a_name_written_only_in_full_when_only_the_nickname_changes(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => null, 'last_name' => null]);
+        $displayed = ContactNameRepresentation::factory()->create(['contact_id' => $contact->id, 'formatted_name' => 'Jim Halpert', 'given_name' => null, 'family_name' => null]);
+        ContactNameRepresentation::factory()->transliteration()->create(['contact_id' => $contact->id, 'formatted_name' => 'Big Tuna']);
+        $contact->display_name_representation_id = $displayed->id;
+        $contact->save();
+
+        new UpdateContactName(user: $user, contact: $contact, nickname: 'Jimbo')->execute();
+
+        $contact->refresh();
+        $this->assertSame($displayed->id, $contact->display_name_representation_id);
+        $this->assertSame('Jim Halpert', $contact->name);
+        $this->assertSame('Jimbo', $contact->nickname);
+        $this->assertSame(2, $contact->nameRepresentations()->count());
+    }
+
+    #[Test]
+    public function it_keeps_the_full_name_when_the_parts_it_is_given_are_the_ones_it_holds(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => null, 'last_name' => null]);
+        $displayed = ContactNameRepresentation::factory()->create(['contact_id' => $contact->id, 'formatted_name' => 'Dr Robert California', 'given_name' => 'Robert', 'family_name' => 'California']);
+        $contact->display_name_representation_id = $displayed->id;
+        $contact->save();
+
+        new UpdateContactName(user: $user, contact: $contact, firstName: 'Robert', lastName: 'California', nickname: 'The Lizard King')->execute();
+
+        $this->assertDatabaseHas('contact_name_representations', ['id' => $displayed->id, 'formatted_name' => 'Dr Robert California']);
+        $this->assertSame('Dr Robert California', $contact->refresh()->name);
+    }
+
+    #[Test]
+    public function it_drops_the_full_name_once_the_parts_change(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => null, 'last_name' => null]);
+        $displayed = ContactNameRepresentation::factory()->create(['contact_id' => $contact->id, 'formatted_name' => 'Dr Robert California', 'given_name' => 'Robert', 'family_name' => 'California']);
+        $contact->display_name_representation_id = $displayed->id;
+        $contact->save();
+
+        new UpdateContactName(user: $user, contact: $contact, firstName: 'Robert', lastName: 'Lipton')->execute();
+
+        $this->assertDatabaseHas('contact_name_representations', ['id' => $displayed->id, 'formatted_name' => null, 'family_name' => 'Lipton']);
     }
 }

@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\ContactListColumnController;
 use App\Http\Controllers\Api\ContactMeController;
 use App\Http\Controllers\Api\ContactMergeController;
 use App\Http\Controllers\Api\ContactNameController;
+use App\Http\Controllers\Api\ContactNameRepresentationController;
 use App\Http\Controllers\Api\ContactReminderController;
 use App\Http\Controllers\Api\ContactReminderOccurrenceController;
 use App\Http\Controllers\Api\ContactStructureVersionController;
@@ -233,6 +234,8 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::post('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'create'])->name('contacts.merge.create');
 
         Route::put('vaults/{vault}/contacts/{contact}/name', [ContactNameController::class, 'update'])->name('contacts.name.update');
+        Route::get('vaults/{vault}/contacts/{contact}/name-representations', [ContactNameRepresentationController::class, 'index'])->name('contacts.nameRepresentations');
+        Route::put('vaults/{vault}/contacts/{contact}/name-representations', [ContactNameRepresentationController::class, 'update'])->name('contacts.nameRepresentations.update');
 
         Route::put('vaults/{vault}/contacts/{contact}/favourite', [ContactFavouriteController::class, 'update'])->name('contacts.favourite.update');
         Route::post('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'update'])->name('contacts.avatar.update');

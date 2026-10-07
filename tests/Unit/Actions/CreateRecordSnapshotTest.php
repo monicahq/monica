@@ -11,6 +11,7 @@ use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\ContactNameRepresentation;
 use App\Models\Entity;
 use App\Models\Field;
 use App\Models\FieldValue;
@@ -284,5 +285,22 @@ class CreateRecordSnapshotTest extends TestCase
         $contact->unsetRelation('structureVersion');
 
         return $field;
+    }
+
+    #[Test]
+    public function it_writes_down_every_way_the_name_is_written_and_the_one_shown(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $kana = ContactNameRepresentation::factory()->transliteration()->create(['contact_id' => $contact->id, 'script_code' => 'Kana', 'formatted_name' => 'パム・ビーズリー']);
+
+        $snapshot = new CreateRecordSnapshot(user: $user, record: $contact->refresh())->execute();
+
+        $this->assertSame($contact->displayNameRepresentation->uuid, $snapshot->payload['record']['display_name_representation_uuid']);
+        $this->assertCount(2, $snapshot->payload['record']['name_representations']);
+        $this->assertSame($kana->uuid, $snapshot->payload['record']['name_representations'][1]['id']);
+        $this->assertSame('パム・ビーズリー', $snapshot->payload['record']['name_representations'][1]['formatted_name']);
     }
 }

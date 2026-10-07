@@ -228,10 +228,12 @@ class McpDocsViewModel
                 ['name' => 'list-contacts', 'description' => 'Lists the contacts in a vault. Can search, narrow to a grouping, and sort.'],
                 ['name' => 'get-contact', 'description' => 'Returns one contact: their names, their template, and whether they are a favourite or archived.'],
                 ['name' => 'get-me-contact', 'description' => 'Returns the contact that represents you in a vault.'],
+                ['name' => 'list-contact-name-representations', 'description' => 'Returns every way a contact’s name is written, and which one it is shown under.'],
             ]],
             ['name' => 'Contacts, changing', 'changesData' => true, 'tools' => [
                 ['name' => 'create-contact', 'description' => 'Adds a contact to a vault.'],
                 ['name' => 'update-contact-name', 'description' => 'Changes a contact’s first, middle or last name, or nickname.'],
+                ['name' => 'update-contact-name-representations', 'description' => 'Replaces every way a contact’s name is written, and chooses the one it is shown under.'],
                 ['name' => 'set-contact-favourite', 'description' => 'Marks a contact as a favourite, or removes the mark.'],
             ]],
             ['name' => 'Reminders, reading', 'changesData' => false, 'tools' => [

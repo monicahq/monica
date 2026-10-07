@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Vaults;
 
-use App\Actions\UpdateContactName;
-use App\Enums\NameOrderEnum;
+use App\Actions\UpdateContactNameRepresentations;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use App\Models\ContactNameRepresentation;
 use App\Models\Vault;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use InvalidArgumentException;
 
 class ContactNameController extends Controller
 {
@@ -19,29 +19,35 @@ class ContactNameController extends Controller
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
 
+        if ($request->missing('names') && $request->missing('names_included')) {
+            $display = $contact->nameRepresentations->search(fn (ContactNameRepresentation $representation): bool => $representation->id === $contact->display_name_representation_id);
+
+            $request->merge([
+                'names' => $contact->nameRepresentations->map(fn (ContactNameRepresentation $representation): array => ['id' => $representation->uuid, ...$representation->toComparable()])->all(),
+                'display' => $display === false ? null : $display,
+            ]);
+        }
+
+        $request->merge(['names' => $request->input('names', [])]);
+
         $validated = $request->validate([
-            'prefix' => ['nullable', 'string', 'max:50'],
-            'first_name' => ['nullable', 'string', 'max:255'],
-            'middle_name' => ['nullable', 'string', 'max:255'],
-            'last_name' => ['nullable', 'string', 'max:255'],
-            'suffix' => ['nullable', 'string', 'max:50'],
+            ...UpdateContactNameRepresentations::rules('names', $contact->nameRepresentations()->pluck('uuid')->all()),
             'maiden_name' => ['nullable', 'string', 'max:255'],
             'nickname' => ['nullable', 'string', 'max:255'],
-            'name_order' => ['nullable', Rule::enum(NameOrderEnum::class)],
-        ]);
+        ], [], UpdateContactNameRepresentations::attributes('names'));
 
-        new UpdateContactName(
-            user: $request->user(),
-            contact: $contact,
-            prefix: $validated['prefix'] ?? null,
-            firstName: $validated['first_name'] ?? null,
-            middleName: $validated['middle_name'] ?? null,
-            lastName: $validated['last_name'] ?? null,
-            suffix: $validated['suffix'] ?? null,
-            maidenName: $validated['maiden_name'] ?? null,
-            nickname: $validated['nickname'] ?? null,
-            nameOrder: isset($validated['name_order']) ? NameOrderEnum::from($validated['name_order']) : null,
-        )->execute();
+        try {
+            new UpdateContactNameRepresentations(
+                user: $request->user(),
+                contact: $contact,
+                nameRepresentations: array_values($validated['names'] ?? []),
+                display: isset($validated['display']) ? (int) $validated['display'] : null,
+                nickname: $validated['nickname'] ?? null,
+                maidenName: $validated['maiden_name'] ?? null,
+            )->execute();
+        } catch (InvalidArgumentException $e) {
+            return back()->withErrors(['names' => $e->getMessage()])->withInput();
+        }
 
         return redirect()
             ->route('contacts.show', ['vault' => $vault, 'contact' => $contact])

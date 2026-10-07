@@ -420,7 +420,8 @@ class ContactRelationshipControllerTest extends TestCase
         $user = User::factory()->create();
         $relationship = $this->relationshipOf($user);
         $contact = Contact::query()->findOrFail($relationship->contact_a_id);
-        $relationship->contactB->update(['is_partial' => true, 'first_name' => null, 'last_name' => null]);
+        $relationship->contactB->update(['is_partial' => true]);
+        $relationship->contactB->displayNameRepresentation->delete();
 
         $this->actingAs($user)
             ->put(route('contacts.relationships.update', [

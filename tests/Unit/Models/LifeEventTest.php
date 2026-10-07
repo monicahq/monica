@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Models;
 
 use App\Models\Contact;
+use App\Models\ContactNameRepresentation;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\LifeEventType;
@@ -32,6 +33,17 @@ class LifeEventTest extends TestCase
         LifeEventType::query()->whereKey($lifeEvent->life_event_type_id)->update(['name' => 'Booze cruise']);
 
         $this->assertEquals('Booze cruise', $lifeEvent->fresh()?->name);
+    }
+
+    #[Test]
+    public function it_sends_the_search_engine_every_name_of_who_was_there(): void
+    {
+        $dinner = LifeEvent::factory()->create(['title' => 'Dinner party']);
+        $jan = Contact::factory()->create(['account_id' => $dinner->account_id, 'vault_id' => $dinner->vault_id, 'first_name' => 'Jan', 'last_name' => 'Levinson']);
+        ContactNameRepresentation::factory()->transliteration()->create(['contact_id' => $jan->id, 'formatted_name' => 'ジャン・レビンソン']);
+        LifeEventParticipant::factory()->create(['account_id' => $dinner->account_id, 'life_event_id' => $dinner->id, 'participant_type' => Contact::class, 'participant_id' => $jan->id]);
+
+        $this->assertSame([['name' => "Jan Levinson\nジャン・レビンソン", 'label' => 'With Jan Levinson']], $dinner->refresh()->searchableLinkedNames());
     }
 
     #[Test]

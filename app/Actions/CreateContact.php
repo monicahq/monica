@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ContactNameKindEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
@@ -24,7 +25,8 @@ use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 /**
- * Write somebody down.
+ * Write somebody down. The name parts become the first way the name is written, and the one it is
+ * shown under; a caller holding several ways passes them as a list instead.
  */
 class CreateContact
 {
@@ -47,6 +49,8 @@ class CreateContact
         private readonly bool $isMe = false,
         private readonly bool $isPartial = false,
         private readonly bool $isFavourite = false,
+        private readonly ?array $nameRepresentations = null,
+        private readonly ?int $display = null,
     ) {}
 
     public function execute(): Contact
@@ -145,25 +149,60 @@ class CreateContact
                 'account_id' => $this->user->account_id,
                 'vault_id' => $this->vault->id,
                 'structure_version_id' => $this->version->id,
-                'prefix' => $this->prefix,
-                'first_name' => $this->firstName,
-                'middle_name' => $this->middleName,
-                'last_name' => $this->lastName,
-                'suffix' => $this->suffix,
                 'maiden_name' => $this->maidenName,
                 'nickname' => $this->nickname,
-                'name_order' => $this->nameOrder,
                 'is_me' => $this->isMe,
                 'is_partial' => $this->isPartial,
                 'is_favourite' => $this->isFavourite,
                 'avatar_colour' => Arr::random(Contact::AVATAR_COLOURS),
             ]);
 
+            $this->writeTheName();
+
             $this->vault->increment('contact_count');
             $this->version->increment('record_count');
 
             new WriteDefaultValues(user: $this->user, record: $this->contact)->execute();
         });
+    }
+
+    private function writeTheName(): void
+    {
+        $nameRepresentations = $this->nameRepresentations ?? $this->nameFromTheParts();
+
+        if ($nameRepresentations === []) {
+            return;
+        }
+
+        new UpdateContactNameRepresentations(
+            user: $this->user,
+            contact: $this->contact,
+            nameRepresentations: $nameRepresentations,
+            display: $this->nameRepresentations === null ? 0 : $this->display,
+            nickname: $this->nickname,
+            maidenName: $this->maidenName,
+            logsAndLooksForDuplicates: false,
+        )->execute();
+    }
+
+    /** @return list<array<string, mixed>> */
+    private function nameFromTheParts(): array
+    {
+        $parts = [$this->prefix, $this->firstName, $this->middleName, $this->lastName, $this->suffix];
+
+        if (array_filter($parts) === []) {
+            return [];
+        }
+
+        return [[
+            'kind' => ContactNameKindEnum::Written,
+            'prefix' => $this->prefix,
+            'given_name' => $this->firstName,
+            'additional_name' => $this->middleName,
+            'family_name' => $this->lastName,
+            'suffix' => $this->suffix,
+            'name_order' => $this->nameOrder,
+        ]];
     }
 
     private function lookForDuplicates(): void

@@ -12,12 +12,54 @@ $contactId = 'c4a1f7b2-8e36-4d59-b0a7-2f5c9d81e364';
 $otherContactId = '7b2e9034-5c18-4af6-9d21-0e83b6c47a5f';
 $vaultSlug = 'dunder-mifflin';
 
+$pamName = [
+    'id' => '0e6d3b1a-52c7-4f9e-8a41-b7d2c96f0e13',
+    'kind' => 'written',
+    'language' => null,
+    'script' => null,
+    'phonetic_system' => null,
+    'formatted_name' => null,
+    'prefix' => null,
+    'given_name' => 'Pam',
+    'additional_name' => null,
+    'family_name' => 'Beesly',
+    'suffix' => null,
+    'name_order' => 'given_first',
+    'position' => 1,
+    'is_display' => true,
+];
+
+$pamInKatakana = [
+    ...$pamName,
+    'id' => '4b91f2c8-6d03-4e57-a9b1-3c8e0d7f5a26',
+    'kind' => 'transliteration',
+    'language' => 'ja',
+    'script' => 'Kana',
+    'formatted_name' => 'パム・ビーズリー',
+    'given_name' => null,
+    'family_name' => null,
+    'name_order' => null,
+    'position' => 2,
+    'is_display' => false,
+];
+
+$dwightName = [
+    ...$pamName,
+    'id' => '9a27c5e1-3f84-4b6d-8e02-d1b7a4c96f38',
+    'given_name' => 'Dwight',
+    'additional_name' => 'Kurt',
+    'family_name' => 'Schrute',
+    'name_order' => null,
+];
+
 $contact = [
     'type' => 'contact',
     'id' => $contactId,
     'attributes' => [
         'slug' => 'pam-beesly',
         'name' => 'Pam Beesly',
+        'formatted_name' => null,
+        'name_representations' => [$pamName],
         'prefix' => null,
         'first_name' => 'Pam',
         'middle_name' => null,
@@ -55,6 +97,8 @@ $otherContact = [
     'attributes' => [
         'slug' => 'dwight-kurt-schrute',
         'name' => 'Dwight Kurt Schrute',
+        'formatted_name' => null,
+        'name_representations' => [$dwightName],
         'prefix' => null,
         'first_name' => 'Dwight',
         'middle_name' => 'Kurt',
@@ -143,11 +187,32 @@ $listParams = [
     ],
 ];
 
+$nameRepresentationFields = [
+    ['name' => 'id', 'type' => 'uuid', 'description' => 'The identifier of this way of writing the name. Send it back to keep it when the list is replaced.'],
+    ['name' => 'kind', 'type' => 'string', 'description' => 'written for the name in a script of its own, transliteration for the name carried into another script, phonetic for how it is pronounced.'],
+    ['name' => 'language', 'type' => 'string', 'description' => 'A BCP 47 language tag such as ko or ja, or null.'],
+    ['name' => 'script', 'type' => 'string', 'description' => 'An ISO 15924 script code such as Hang, Hani or Latn, or null.'],
+    ['name' => 'phonetic_system', 'type' => 'string', 'description' => 'For a pronunciation, the system it is written in, as the vCard PHONETIC parameter names it: ipa, piny, x-romaji, x-rr, x-other, or a token a device sent. Null for any other kind.'],
+    ['name' => 'formatted_name', 'type' => 'string', 'description' => 'The full name exactly as it should appear, up to 255 characters, or null to build it from the parts. Always null for a pronunciation, which is written in its parts.'],
+    ['name' => 'prefix', 'type' => 'string', 'description' => 'Up to 50 characters, or null.'],
+    ['name' => 'given_name', 'type' => 'string', 'description' => 'Up to 255 characters, or null.'],
+    ['name' => 'additional_name', 'type' => 'string', 'description' => 'Other given names, up to 255 characters, or null.'],
+    ['name' => 'family_name', 'type' => 'string', 'description' => 'Up to 255 characters, or null.'],
+    ['name' => 'suffix', 'type' => 'string', 'description' => 'Up to 50 characters, or null.'],
+    ['name' => 'name_order', 'type' => 'string', 'description' => 'Either given_first or family_first, or null to leave it to the reader.'],
+    ['name' => 'position', 'type' => 'integer', 'description' => 'Where it stands in the list, from 1.'],
+    ['name' => 'is_display', 'type' => 'boolean', 'description' => 'Whether this is the way the contact is shown under, in lists, titles, notifications and initials. Exactly one is, whenever the contact has a name.'],
+];
+
 $contactAttributes = [
     ['name' => 'slug', 'type' => 'string', 'description' => 'The readable name the contact is addressed by, built from the whole name above and unique within the vault. It keeps the alphabet the name is written in, so a name in Japanese is addressed in Japanese, sent as its own characters or percent encoded. It is not stable: correcting the name rebuilds it and the previous one stops answering, which is why a stored reference should be the id. Nothing lets you choose or edit it.'],
-    ['name' => 'name', 'type' => 'string', 'description' => 'The whole name, assembled from the parts below in the order this contact reads in. It is what the lists sort and search on, and it is built rather than stored, so it cannot be written directly.'],
+    ['name' => 'name', 'type' => 'string', 'description' => 'The name the contact is shown under: the formatted name of the way of writing it chosen for display, else its parts in the order it reads in. It is what the lists sort on, and it is built rather than stored, so it cannot be written directly.'],
+    ['name' => 'formatted_name', 'type' => 'string', 'description' => 'The full name exactly as written for the way of writing it chosen for display, or null when that way is only parts.'],
+    ['name' => 'name_representations', 'type' => 'array', 'description' => 'Every way the current name is written: in its own script, transliterated into another, or as it is pronounced, in the order the owner put them. Every one of them finds the contact in a search. Nothing is transliterated for you.'],
+    ['name' => 'name_representations[]', 'type' => 'object', 'description' => 'One way of writing the name.'],
+    ...array_map(fn (array $field): array => [...$field, 'name' => 'name_representations[].'.$field['name']], $nameRepresentationFields),
     ['name' => 'prefix', 'type' => 'string', 'description' => 'What comes before the name, up to 50 characters, or null. Dr and Sir are prefixes.'],
-    ['name' => 'first_name', 'type' => 'string', 'description' => 'The given name, up to 255 characters, or null. It is the only part required to write a contact down, and even it may be cleared afterwards.'],
+    ['name' => 'first_name', 'type' => 'string', 'description' => 'The given name of the way of writing the name chosen for display, up to 255 characters, or null. Like the prefix, the middle name, the last name, the suffix and the name order, it is a copy read from that way of writing it.'],
     ['name' => 'middle_name', 'type' => 'string', 'description' => 'Up to 255 characters, or null.'],
     ['name' => 'last_name', 'type' => 'string', 'description' => 'The family name, up to 255 characters, or null.'],
     ['name' => 'suffix', 'type' => 'string', 'description' => 'What comes after the name, up to 50 characters, or null. Jr and PhD are suffixes.'],
@@ -379,8 +444,9 @@ return [
             'method' => 'PUT',
             'path' => '/vaults/{vault}/contacts/{contact}/name',
             'examplePath' => '/vaults/'.$vaultId.'/contacts/'.$contactId.'/name',
-            'description' => 'Replace every part of a contact\'s name at once.',
+            'description' => 'Replace every part of the name a contact is shown under at once.',
             'body' => [
+                'It changes the way of writing the name chosen for display, and leaves every other way alone. A contact with none is given one. To change the others, or which one is shown, replace the list of ways below.',
                 'This replaces rather than patches, so every part has to be in the body even when it is null. A request carrying nothing but a new last name would otherwise erase the prefix, the nickname and the rest, and nothing here disappears without being asked for.',
                 'Every part may be null, including all of them together. A contact with no name still sorts, still searches and still draws initials: the product falls back to whatever it has rather than refusing you.',
                 'What the lists sort and search on is rebuilt from the new name as it is written, in the language of your account, so the contact moves to its new place in the list at once.',
@@ -390,6 +456,51 @@ return [
             'bodyParams' => $nameParams,
             'returns' => 'The contact object as it now reads. A contact belonging to somebody else, or reached through the wrong vault, answers 404 and is left as it was.',
             'response' => ['data' => $contact],
+        ],
+        [
+            'id' => 'contacts-name-representations-index',
+            'returnFields' => [
+                ['name' => 'data', 'type' => 'array', 'description' => 'Every way the name is written, in order.'],
+                ['name' => 'data[]', 'type' => 'object', 'description' => 'One way of writing the name.'],
+                ...array_map(fn (array $field): array => [...$field, 'name' => 'data[].'.$field['name']], $nameRepresentationFields),
+            ],
+            'title' => 'List the ways a name is written',
+            'label' => 'List the ways a name is written',
+            'method' => 'GET',
+            'path' => '/vaults/{vault}/contacts/{contact}/name-representations',
+            'examplePath' => '/vaults/'.$vaultId.'/contacts/'.$contactId.'/name-representations',
+            'description' => 'Retrieve every way the current name of a contact is written, and which one it is shown under.',
+            'body' => [
+                '김민지, Kim Min-ji and 金敏智 are three ways of writing one name, not three names. Former names and nicknames are not here.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'pathParams' => $identifier,
+            'returns' => 'The list, possibly empty. A contact belonging to somebody else, or reached through the wrong vault, answers 404.',
+            'response' => ['data' => [$pamName, $pamInKatakana]],
+        ],
+        [
+            'id' => 'contacts-name-representations-update',
+            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes),
+            'title' => 'Replace the ways a name is written',
+            'label' => 'Replace the ways a name is written',
+            'method' => 'PUT',
+            'path' => '/vaults/{vault}/contacts/{contact}/name-representations',
+            'examplePath' => '/vaults/'.$vaultId.'/contacts/'.$contactId.'/name-representations',
+            'description' => 'Send the whole list of ways the name is written, and say which one the contact is shown under.',
+            'body' => [
+                'The list sent is the list kept: a way of writing the name that carries an id is updated, one without is added, and one left out is deleted. An empty list leaves the contact with no name, which still sorts, searches and draws initials.',
+                'Changing a way of writing the name other than the one shown leaves the readable address and the place in the list alone, and the contact is found by the new text at once.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'pathParams' => $identifier,
+            'bodyParams' => [
+                ['name' => 'name_representations', 'type' => 'array', 'required' => true, 'description' => 'Every way the name is written, in order, at most 20. Each has the fields listed above except position and is_display, and needs a formatted name or at least one part. An id that is not one of this contact\'s is refused.', 'example' => [$pamName, $pamInKatakana]],
+                ['name' => 'display', 'type' => 'integer', 'required' => false, 'description' => 'The position in the list, from 0, of the way the contact is shown under. Required unless the list is empty. It cannot be a pronunciation.', 'example' => 0],
+                ['name' => 'nickname', 'type' => 'string', 'required' => true, 'description' => 'Up to 255 characters, or null.', 'example' => 'Pammy'],
+                ['name' => 'maiden_name', 'type' => 'string', 'required' => true, 'description' => 'Up to 255 characters, or null.', 'example' => null],
+            ],
+            'returns' => 'The contact object as it now reads. A pronunciation with no system or with a full name, a pronunciation chosen for display, a malformed language or script, the same id sent twice, or an id belonging to another contact answers 422 and changes nothing. A contact belonging to somebody else, or reached through the wrong vault, answers 404.',
+            'response' => ['data' => [...$contact, 'attributes' => [...$contact['attributes'], 'name_representations' => [$pamName, $pamInKatakana]]]],
         ],
         [
             'id' => 'contacts-destroy',

@@ -1,0 +1,37 @@
+{
+  "workflow": "speckit",
+  "specName": "Multilingual contact names",
+  "branch": "2026-10-06-multilingual-contact-names",
+  "currentStep": "implement",
+  "status": "implemented",
+  "history": [
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-10-06T20:46:04.719Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-10-06T20:54:26.223Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-10-06T20:56:01.294Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-10-06T21:42:30.840Z"
+    }
+  ]
+}

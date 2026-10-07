@@ -8,6 +8,7 @@ use App\Enums\FieldTypeEnum;
 use App\Jobs\DetectDuplicateContacts;
 use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
+use App\Models\ContactNameRepresentation;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\SectionVersion;
@@ -270,6 +271,40 @@ class DetectDuplicateContactsTest extends TestCase
     }
 
     #[Test]
+    public function it_pairs_two_contacts_sharing_only_a_transliteration(): void
+    {
+        $vault = Vault::factory()->create();
+        $hangul = $this->contactIn($vault, '민지', '김');
+        $latin = $this->contactIn($vault, 'Minnie', 'Kimball');
+        ContactNameRepresentation::factory()->transliteration()->create(['contact_id' => $hangul->id, 'given_name' => 'Min-ji', 'family_name' => 'Kim']);
+        ContactNameRepresentation::factory()->transliteration()->create(['contact_id' => $latin->id, 'given_name' => 'Min-ji', 'family_name' => 'Kim']);
+
+        new DetectDuplicateContacts(subject: $vault)->handle();
+
+        $this->assertDatabaseHas('contact_duplicate_candidates', [
+            'contact_id' => min($hangul->id, $latin->id),
+            'other_contact_id' => max($hangul->id, $latin->id),
+        ]);
+    }
+
+    #[Test]
+    public function it_only_suggests_two_contacts_sharing_a_pronunciation(): void
+    {
+        $vault = Vault::factory()->create();
+        $one = $this->contactIn($vault, 'Ryan', 'Howard');
+        $two = $this->contactIn($vault, 'Rian', 'Hauard');
+        ContactNameRepresentation::factory()->phonetic('ipa')->create(['contact_id' => $one->id, 'given_name' => 'ˈraɪən', 'family_name' => 'ˈhaʊərd']);
+        ContactNameRepresentation::factory()->phonetic('ipa')->create(['contact_id' => $two->id, 'given_name' => 'ˈraɪən', 'family_name' => 'ˈhaʊərd']);
+
+        new DetectDuplicateContacts(subject: $one)->handle();
+
+        $this->assertDatabaseCount('contact_duplicate_candidates', 1);
+        $this->assertDatabaseCount('contacts', 2);
+        $this->assertNull($one->refresh()->deleted_at);
+        $this->assertNull($two->refresh()->deleted_at);
+    }
+
+    #[Test]
     public function it_drops_a_pair_that_stopped_looking_alike(): void
     {
         $vault = Vault::factory()->create();
@@ -279,9 +314,7 @@ class DetectDuplicateContactsTest extends TestCase
         new DetectDuplicateContacts(subject: $vault)->handle();
         $this->assertDatabaseCount('contact_duplicate_candidates', 1);
 
-        $jimmy->last_name = 'Schrute';
-        $jimmy->first_name = 'Dwight';
-        $jimmy->save();
+        $jimmy->displayNameRepresentation->update(['given_name' => 'Dwight', 'family_name' => 'Schrute']);
 
         new DetectDuplicateContacts(subject: $vault)->handle();
 

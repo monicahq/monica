@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ContactNameKindEnum;
 use App\Http\Dav\OwnedFields;
 use App\Http\Dav\VCardMerger;
 use App\Http\Dav\VCardReader;
 use App\Models\Contact;
+use App\Models\ContactNameRepresentation;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
@@ -56,13 +58,9 @@ class ImportVCard
 
     private function writeTheName(VCardReader $reader): Contact
     {
-        $parts = $reader->nameParts();
+        $rows = array_slice($reader->nameRepresentations(), 0, UpdateContactNameRepresentations::MAXIMUM);
 
-        if (! $reader->hasAName()) {
-            $parts['first_name'] = $reader->fallbackFirstName();
-        }
-
-        if ($parts['first_name'] === null && ! $reader->hasAName()) {
+        if (collect($rows)->every(fn (array $row): bool => $row['kind'] === 'phonetic')) {
             throw new BadRequest('A card needs at least one part of a name.');
         }
 
@@ -70,28 +68,130 @@ class ImportVCard
             return new CreateContact(
                 user: $this->user,
                 vault: $this->vault,
-                prefix: $parts['prefix'],
-                firstName: $parts['first_name'],
-                middleName: $parts['middle_name'],
-                lastName: $parts['last_name'],
-                suffix: $parts['suffix'],
-                nickname: $parts['nickname'],
+                nickname: $reader->nickname(),
+                nameRepresentations: $rows,
+                display: $this->preferredIn($rows),
             )->execute();
         }
 
-        new UpdateContactName(
+        $nameCount = count($reader->propertiesOf('N'));
+        $single = $nameCount === 1 && $rows[0]['kind'] !== 'phonetic' ? $rows[0] : $rows[$this->preferredIn($rows)];
+
+        [$nameRepresentations, $display] = $nameCount > 1
+            ? $this->everyNameFrom($rows)
+            : $this->oneNameFrom($single);
+
+        new UpdateContactNameRepresentations(
             user: $this->user,
             contact: $this->contact,
-            prefix: $parts['prefix'],
-            firstName: $parts['first_name'],
-            middleName: $parts['middle_name'],
-            lastName: $parts['last_name'],
-            suffix: $parts['suffix'],
+            nameRepresentations: $nameRepresentations,
+            display: $display,
+            nickname: $reader->nickname(),
             maidenName: $this->contact->maiden_name,
-            nickname: $parts['nickname'],
         )->execute();
 
         return $this->contact;
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $rows
+     * @return array{0: list<array<string, mixed>>, 1: int}
+     */
+    private function everyNameFrom(array $rows): array
+    {
+        $existing = $this->contact->nameRepresentations()->get();
+        $displayedUuid = $existing->firstWhere('id', $this->contact->display_name_representation_id)?->uuid;
+        $taken = [];
+        $seenPropertyIds = [];
+
+        foreach ($rows as $index => $row) {
+            $propertyId = in_array($row['vcard_property_id'], $seenPropertyIds, true) ? null : $row['vcard_property_id'];
+            $seenPropertyIds[] = $propertyId;
+
+            $match = $existing->first(fn (ContactNameRepresentation $representation): bool => $propertyId !== null
+                && ! in_array($representation->id, $taken, true)
+                && in_array($propertyId, [$representation->uuid, $representation->vcard_property_id], true));
+
+            if ($match !== null) {
+                $taken[] = $match->id;
+            }
+
+            $rows[$index] = [...$row, 'id' => $match?->uuid, 'vcard_property_id' => $match !== null && $match->uuid === $propertyId ? null : $propertyId];
+        }
+
+        $display = collect($rows)->search(fn (array $row): bool => $row['is_preferred']);
+
+        if ($display === false) {
+            $display = collect($rows)->search(fn (array $row): bool => $displayedUuid !== null && $row['id'] === $displayedUuid && $row['kind'] !== 'phonetic');
+        }
+
+        return [$rows, $display === false ? $this->preferredIn($rows) : $display];
+    }
+
+    /**
+     * @param  array<string, mixed>  $row
+     * @return array{0: list<array<string, mixed>>, 1: int}
+     */
+    private function oneNameFrom(array $row): array
+    {
+        $existing = $this->contact->nameRepresentations()->get();
+        $target = $existing->first(fn (ContactNameRepresentation $representation): bool => $row['vcard_property_id'] !== null
+            && $representation->kind !== ContactNameKindEnum::Phonetic
+            && in_array($row['vcard_property_id'], [$representation->uuid, $representation->vcard_property_id], true))
+            ?? $existing->firstWhere('id', $this->contact->display_name_representation_id);
+
+        $rows = [];
+        $display = null;
+
+        foreach ($existing as $index => $representation) {
+            $current = ['id' => $representation->uuid, ...$representation->toComparable(), 'vcard_alt_id' => $representation->vcard_alt_id, 'vcard_property_id' => $representation->vcard_property_id];
+
+            if ($target !== null && $representation->id === $target->id) {
+                $current = [
+                    ...$current,
+                    'formatted_name' => $row['formatted_name'],
+                    'prefix' => $row['prefix'],
+                    'given_name' => $row['given_name'],
+                    'additional_name' => $row['additional_name'],
+                    'family_name' => $row['family_name'],
+                    'suffix' => $row['suffix'],
+                    'name_order' => $row['name_order'],
+                    'language' => $row['language'] ?? $current['language'],
+                    'script' => $row['script'] ?? $current['script'],
+                ];
+            }
+
+            if ($representation->id === $this->contact->display_name_representation_id) {
+                $display = $index;
+            }
+
+            $rows[] = $current;
+        }
+
+        if ($target === null) {
+            $rows[] = $row;
+            $display = count($rows) - 1;
+        }
+
+        return [$rows, $display ?? 0];
+    }
+
+    /** @param  list<array<string, mixed>>  $rows */
+    private function preferredIn(array $rows): int
+    {
+        foreach ($rows as $index => $row) {
+            if ($row['is_preferred']) {
+                return $index;
+            }
+        }
+
+        foreach ($rows as $index => $row) {
+            if ($row['kind'] !== 'phonetic') {
+                return $index;
+            }
+        }
+
+        return 0;
     }
 
     private function writeTheFields(VCardReader $reader, Contact $contact): void

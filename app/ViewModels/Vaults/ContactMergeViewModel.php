@@ -113,6 +113,7 @@ class ContactMergeViewModel
     public function movedLine(array $move): string
     {
         return match ($move['kind']) {
+            'name_representation' => trans_choice(':count way of writing the name comes over|:count ways of writing the name come over', $move['count']),
             'field_value' => trans_choice(':count answer comes over|:count answers come over', $move['count']),
             'field_value_row' => trans_choice(':count entry comes over|:count entries come over', $move['count']),
             'reminder' => trans_choice(':count reminder comes over|:count reminders come over', $move['count']),

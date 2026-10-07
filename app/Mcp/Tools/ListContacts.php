@@ -46,7 +46,7 @@ class ListContacts extends Tool
                 ContactSortEnum::fromValueOrName($validated['sort'] ?? null),
                 SortDirectionEnum::fromValueOrAscending($validated['direction'] ?? null),
             )
-            ->with(['vault', 'structureVersion.structure.owner', 'avatar'])
+            ->with(['vault', 'structureVersion.structure.owner', 'avatar', 'nameRepresentations'])
             ->get();
 
         return Response::json(ContactResource::collection($contacts)->resolve());

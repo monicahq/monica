@@ -1,6 +1,5 @@
 {{-- The form that writes somebody down. --}}
 {{-- @var \App\ViewModels\Vaults\ContactFormViewModel $viewModel --}}
-@use('App\Enums\NameOrderEnum')
 @php
   $vault = $viewModel->vault();
   $values = $viewModel->values();
@@ -22,22 +21,7 @@
     <x-paywall-prompt :message="$ceiling" id="contact-form-ceiling" />
   @endif
 
-  <div
-    x-data="{
-      firstName: @js($values['firstName']),
-      lastName: @js($values['lastName']),
-      nameOrder: @js($values['nameOrder']),
-      get given() { return this.firstName.trim() },
-      get family() { return this.lastName.trim() },
-      get written() {
-        const parts = this.nameOrder === @js(NameOrderEnum::FamilyFirst->value)
-          ? [this.family, this.given]
-          : [this.given, this.family]
-        return parts.filter(Boolean).join(' ')
-      },
-    }"
-    class="flex flex-col gap-8"
-  >
+  <div class="flex flex-col gap-8">
     <x-form id="contact-form" method="post" :action="$viewModel->action()" class="flex flex-col gap-8">
       @if ($viewModel->showsTemplates())
         <x-page-section :title="__('What this contact starts from')" :description="__('The template decides which fields the contact page holds. The vault’s own template is used unless you pick another here. It can be changed on the contact afterwards.')">
@@ -58,63 +42,10 @@
 
       <x-page-section :title="__('Name')">
         <x-panel>
-          <div class="flex flex-col gap-4.5">
-            <div class="grid gap-4 sm:grid-cols-2">
-              <x-input
-                id="first_name"
-                x-model="firstName"
-                :value="$values['firstName']"
-                :label="__('First name')"
-                :placeholder="__('Samir')"
-                :error="$errors->get('first_name')"
-                maxlength="255"
-                autofocus
-                required
-                required-mark
-              />
+          <div class="flex flex-col gap-6">
+            <x-contact-name-editor :block="$viewModel->nameEditor()" :short-name="__('this contact')" />
 
-              <x-input
-                id="last_name"
-                x-model="lastName"
-                :value="$values['lastName']"
-                :label="__('Last name')"
-                :placeholder="__('Haddad')"
-                :error="$errors->get('last_name')"
-                maxlength="255"
-                optional
-              />
-            </div>
-
-            <div class="grid gap-4 sm:grid-cols-[minmax(0,7rem)_minmax(0,1fr)_minmax(0,7rem)]">
-              <x-input
-                id="prefix"
-                :value="$values['prefix']"
-                :label="__('Prefix')"
-                :placeholder="__('Dr')"
-                :error="$errors->get('prefix')"
-                maxlength="50"
-                optional
-              />
-
-              <x-input
-                id="middle_name"
-                :value="$values['middleName']"
-                :label="__('Middle name')"
-                :error="$errors->get('middle_name')"
-                maxlength="255"
-                optional
-              />
-
-              <x-input
-                id="suffix"
-                :value="$values['suffix']"
-                :label="__('Suffix')"
-                :placeholder="__('Jr')"
-                :error="$errors->get('suffix')"
-                maxlength="50"
-                optional
-              />
-            </div>
+            <div class="h-px bg-hairline"></div>
 
             <div class="grid gap-4 sm:grid-cols-2">
               <x-input
@@ -135,24 +66,6 @@
                 optional
               />
             </div>
-
-            <x-select
-              id="name_order"
-              :label="__('Name order')"
-              :error="$errors->get('name_order')"
-              x-model="nameOrder"
-              optional
-              class="max-w-105"
-            >
-              @foreach ($viewModel->nameOrders() as $order)
-                <option value="{{ $order['value'] }}" @selected($values['nameOrder'] === $order['value'])>{{ $order['label'] }}</option>
-              @endforeach
-
-              <x-slot:help>
-                <span x-show="written === ''">{{ __('How this contact is written and sorted.') }}</span>
-                <span x-cloak x-show="written !== ''">{{ __('Written as') }} <span class="font-semibold text-ink" x-text="written"></span></span>
-              </x-slot:help>
-            </x-select>
           </div>
         </x-panel>
       </x-page-section>
@@ -185,13 +98,16 @@
         {{ __('Create another one after this') }}
       </x-checkbox>
 
-      <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
+      <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto" x-data="{ held: false }" @name-editor-busy.window="held = $event.detail">
+        <p id="contact-form-held" x-show="held" x-cloak class="text-sm text-muted">{{ __('Finish the change to the name first, or cancel it.') }}</p>
+
         <x-button.secondary :href="$viewModel->contactsUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
         <x-button
           form="contact-form"
           :disabled="! $viewModel->canCreate() || $ceiling !== null"
-          :aria-describedby="$ceiling !== null ? 'contact-form-ceiling' : null"
+          ::aria-disabled="held"
+          :aria-describedby="$ceiling !== null ? 'contact-form-ceiling' : 'contact-form-held'"
         >{{ __('Create the contact') }}</x-button>
       </div>
     </div>

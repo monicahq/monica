@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Dav;
 
 use App\Enums\AddressLabelEnum;
+use App\Enums\ContactNameKindEnum;
 use App\Enums\EmailLabelEnum;
 use App\Enums\PhoneLabelEnum;
 use App\Models\Contact;
@@ -13,12 +14,15 @@ use App\Models\FieldValue;
 use Illuminate\Support\Collection;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Document;
+use Sabre\VObject\Parameter;
 use Sabre\VObject\Property;
 use Sabre\VObject\Reader;
 
 class VCardMerger
 {
     private const array LABELLED = ['EMAIL', 'TEL', 'URL', 'ADR', 'X-ABDATE'];
+
+    private const array MANAGED_NAME_PARAMETERS = ['ALTID', 'PROP-ID', 'LANGUAGE', 'SCRIPT', 'PHONETIC', 'PREF', 'X-NAME-KIND', 'VALUE'];
 
     public function __construct(
         private readonly bool $reachesSensitiveFields = false,
@@ -76,17 +80,117 @@ class VCardMerger
 
     private function writeName(VCard $card, Contact $contact): void
     {
+        $kept = ['N' => $this->unmanagedParameters($card, 'N'), 'FN' => $this->unmanagedParameters($card, 'FN')];
+
         $card->remove('N');
         $card->remove('FN');
 
-        $this->put($card, 'N', [
-            (string) $contact->last_name,
-            (string) $contact->first_name,
-            (string) $contact->middle_name,
-            (string) $contact->prefix,
-            (string) $contact->suffix,
-        ]);
-        $this->put($card, 'FN', $contact->name);
+        $representations = $contact->nameRepresentations()->get();
+        $only = $representations->count() === 1 ? $representations->first() : null;
+
+        if ($representations->isEmpty() || ($only !== null && $only->kind === ContactNameKindEnum::Written && $only->language_tag === null && $only->script_code === null)) {
+            $this->put($card, 'N', [
+                (string) $contact->last_name,
+                (string) $contact->first_name,
+                (string) $contact->middle_name,
+                (string) $contact->prefix,
+                (string) $contact->suffix,
+            ]);
+            $this->put($card, 'FN', $contact->name);
+
+            return;
+        }
+
+        $altId = $representations->pluck('vcard_alt_id')->filter()->first() ?? '1';
+
+        foreach ($representations as $representation) {
+            $propertyId = $representation->vcard_property_id ?? $representation->uuid;
+            $isPhonetic = $representation->kind === ContactNameKindEnum::Phonetic;
+            $parameters = array_filter([
+                'ALTID' => $altId,
+                'PROP-ID' => $propertyId,
+                'LANGUAGE' => $representation->language_tag,
+                'SCRIPT' => $representation->script_code,
+                'X-NAME-KIND' => $representation->kind === ContactNameKindEnum::Transliteration ? 'transliteration' : null,
+            ]);
+            $signature = $this->signature($representation->language_tag, $representation->script_code, $isPhonetic);
+
+            $name = $this->put($card, 'N', [
+                (string) $representation->family_name,
+                (string) $representation->given_name,
+                (string) $representation->additional_name,
+                (string) $representation->prefix,
+                (string) $representation->suffix,
+            ]);
+            $this->dress($name, [
+                ...$kept['N'][$propertyId] ?? $kept['N'][$signature] ?? [],
+                ...$parameters,
+                ...($isPhonetic ? ['PHONETIC' => (string) $representation->phonetic_system] : []),
+            ]);
+
+            if ($isPhonetic) {
+                continue;
+            }
+
+            $formatted = $this->put($card, 'FN', $representation->displayText());
+            $this->dress($formatted, [
+                ...$kept['FN'][$propertyId] ?? $kept['FN'][$signature] ?? [],
+                ...$parameters,
+                ...($representation->id === $contact->display_name_representation_id ? ['PREF' => '1'] : []),
+            ]);
+        }
+    }
+
+    /**
+     * @return array<string, array<string, string>>
+     */
+    private function unmanagedParameters(VCard $card, string $property): array
+    {
+        $kept = [];
+
+        foreach ($card->select($property) as $found) {
+            if (! $found instanceof Property) {
+                continue;
+            }
+
+            $parameters = [];
+
+            foreach ($found->parameters() as $parameter) {
+                if (! in_array($parameter->name, self::MANAGED_NAME_PARAMETERS, true)) {
+                    $parameters[$parameter->name] = implode(',', $parameter->getParts());
+                }
+            }
+
+            $key = $this->parameterOf($found, 'PROP-ID') ?? $this->signature(
+                $this->parameterOf($found, 'LANGUAGE'),
+                $this->parameterOf($found, 'SCRIPT'),
+                $this->parameterOf($found, 'PHONETIC') !== null,
+            );
+
+            $kept[$key] ??= $parameters;
+        }
+
+        return $kept;
+    }
+
+    private function parameterOf(Property $property, string $name): ?string
+    {
+        $parameter = $property->parameters()[$name] ?? null;
+
+        return $parameter instanceof Parameter ? implode(',', $parameter->getParts()) : null;
+    }
+
+    private function signature(?string $language, ?string $script, bool $isPhonetic): string
+    {
+        return implode('|', [$language ?? '', $script ?? '', $isPhonetic ? 'phonetic' : 'written']);
+    }
+
+    /** @param  array<string, string>  $parameters */
+    private function dress(Property $property, array $parameters): void
+    {
+        foreach ($parameters as $name => $value) {
+            $property[$name] = $value;
+        }
     }
 
     private function writeNickname(VCard $card, Contact $contact): void

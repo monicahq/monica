@@ -34,7 +34,7 @@ class PreviewContactMergeTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $version = $this->publishedContactVersion($user);
         $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
-        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'Jim', 'Halpert');
 
         $preview = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
 
@@ -50,7 +50,7 @@ class PreviewContactMergeTest extends TestCase
         $version = $this->publishedContactVersion($user);
         $field = $this->fieldCarriedBy($version);
         $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
-        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'Jim', 'Halpert');
 
         $this->valueFor($jim, $field, 'jim@dundermifflin.com');
         $this->valueFor($james, $field, 'james@dundermifflin.com');
@@ -71,7 +71,7 @@ class PreviewContactMergeTest extends TestCase
         $version = $this->publishedContactVersion($user);
         $field = $this->fieldCarriedBy($version);
         $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
-        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'Jim', 'Halpert');
 
         $this->valueFor($james, $field, 'james@dundermifflin.com');
 
@@ -89,7 +89,7 @@ class PreviewContactMergeTest extends TestCase
         $version = $this->publishedContactVersion($user);
         $field = $this->fieldCarriedBy($version);
         $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
-        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'Jim', 'Halpert');
 
         $this->valueFor($jim, $field, 'jim@dundermifflin.com');
         $this->valueFor($james, $field, 'jim@dundermifflin.com');
@@ -106,7 +106,7 @@ class PreviewContactMergeTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $version = $this->publishedContactVersion($user);
         $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
-        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'Jim', 'Halpert');
 
         $jim->avatar_file_id = File::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id])->id;
         $jim->save();
@@ -115,7 +115,7 @@ class PreviewContactMergeTest extends TestCase
 
         $preview = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
 
-        $this->assertEquals('avatar', $preview['conflicts'][0]['field_key']);
+        $this->assertEquals('@avatar', $preview['conflicts'][0]['field_key']);
     }
 
     #[Test]
@@ -127,7 +127,7 @@ class PreviewContactMergeTest extends TestCase
         $theirs = $this->publishedContactVersion($user);
         $onlyTheirs = $this->fieldCarriedBy($theirs);
         $jim = $this->contactIn($vault, $mine, 'Jim', 'Halpert');
-        $james = $this->contactIn($vault, $theirs, 'James', 'Halpert');
+        $james = $this->contactIn($vault, $theirs, 'Jim', 'Halpert');
 
         $this->valueFor($james, $onlyTheirs, 'Loyalty 4471');
 
@@ -162,7 +162,7 @@ class PreviewContactMergeTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $version = $this->publishedContactVersion($user);
         $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
-        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'Jim', 'Halpert');
         $pam = $this->contactIn($vault, $version, 'Pam', 'Beesly');
 
         FieldValue::factory()->create([
@@ -185,7 +185,7 @@ class PreviewContactMergeTest extends TestCase
         $version = $this->publishedContactVersion($user);
         $field = $this->fieldCarriedBy($version);
         $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
-        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'Jim', 'Halpert');
         $value = $this->valueFor($james, $field, 'james@dundermifflin.com');
 
         $before = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute()['fingerprint'];
@@ -316,5 +316,47 @@ class PreviewContactMergeTest extends TestCase
             'field_key' => $field->key,
             'value_string' => $value,
         ]);
+    }
+
+    #[Test]
+    public function it_asks_which_name_to_show_when_the_two_are_shown_under_different_names(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+
+        $preview = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertSame([[
+            'field_key' => '@display_name',
+            'field_id' => null,
+            'label' => 'Name shown',
+            'row' => null,
+            'kept_value' => 'Jim Halpert',
+            'other_value' => 'James Halpert',
+        ]], $preview['conflicts']);
+        $this->assertContains(['kind' => 'name_representation', 'count' => 1], $preview['moves']);
+    }
+
+    #[Test]
+    public function it_gives_the_name_shown_a_key_no_field_can_take(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        $field->key = 'display_name';
+        $field->label = 'Display name';
+        $field->save();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = $this->contactIn($vault, $version, 'Jim', 'Halpert');
+        $james = $this->contactIn($vault, $version, 'James', 'Halpert');
+        $this->valueFor($jim, $field, 'Big Tuna');
+        $this->valueFor($james, $field, 'Jimothy');
+
+        $preview = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertSame(['@display_name', 'display_name'], array_column($preview['conflicts'], 'field_key'));
     }
 }

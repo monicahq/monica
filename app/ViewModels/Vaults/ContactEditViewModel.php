@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
-use App\Enums\NameOrderEnum;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
@@ -104,25 +103,18 @@ class ContactEditViewModel
         return route('contacts.show', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
+    public function nameEditor(): ContactNameEditorBlock
+    {
+        return new ContactNameEditorBlock(contact: $this->contact);
+    }
+
+    public function shortName(): string
+    {
+        return $this->contact->first_name ?? $this->contact->name;
+    }
+
     public function value(string $field): ?string
     {
         return old($field, $this->contact->$field);
-    }
-
-    /** @return array<int, array{value: string, label: string, isSelected: bool}> */
-    public function nameOrders(): array
-    {
-        $current = old('name_order', $this->contact->name_order?->value);
-
-        return array_map(fn (NameOrderEnum $order): array => [
-            'value' => $order->value,
-            'label' => __($order->label()),
-            'isSelected' => $current === $order->value,
-        ], NameOrderEnum::cases());
-    }
-
-    public function followsThePreference(): bool
-    {
-        return old('name_order', $this->contact->name_order?->value) === null;
     }
 }

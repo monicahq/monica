@@ -86,7 +86,7 @@ class CollectionChangesTest extends TestCase
         $this->travel(5)->seconds();
 
         $added = Contact::factory()->create($this->inVault($vault));
-        $changed->update(['first_name' => 'Dwight']);
+        $changed->displayNameRepresentation->update(['given_name' => 'Dwight']);
         $removed->delete();
 
         $changes = $this->changesIn($vault)->since($token);

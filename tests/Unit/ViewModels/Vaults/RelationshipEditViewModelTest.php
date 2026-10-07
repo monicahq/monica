@@ -83,7 +83,8 @@ class RelationshipEditViewModelTest extends TestCase
         $user = User::factory()->create();
         $parentage = $this->typeOn($this->categoryOf($user, 'Family', 1), RelationshipTypeEnum::ParentChild, 1);
         [$michael, $relationship] = $this->relationshipFrom($user, $parentage);
-        $relationship->contactB->update(['is_partial' => true, 'first_name' => null, 'last_name' => null]);
+        $relationship->contactB->update(['is_partial' => true]);
+        $relationship->contactB->displayNameRepresentation->delete();
 
         $viewModel = $this->viewModel($user, $michael, $relationship->refresh());
         $options = $viewModel->sentenceGroups()[0]['options'];
@@ -116,7 +117,7 @@ class RelationshipEditViewModelTest extends TestCase
         $jan->update(['is_partial' => true]);
         $this->assertSame(RelationshipEditViewModel::OTHER_IS_NAMED, $this->viewModel($user, $michael, $relationship->refresh())->otherState());
 
-        $jan->update(['first_name' => null, 'last_name' => null]);
+        $jan->displayNameRepresentation->delete();
         $this->assertSame(RelationshipEditViewModel::OTHER_IS_NAMELESS, $this->viewModel($user, $michael, $relationship->refresh())->otherState());
     }
 

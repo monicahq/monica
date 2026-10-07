@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
-use App\Enums\NameOrderEnum;
 use App\Enums\StructureAppliesToEnum;
 use App\Models\Contact;
 use App\Models\StructureVersion;
@@ -62,24 +61,23 @@ class ContactFormViewModel
     }
 
     /**
-     * @return array{prefix: string, firstName: string, middleName: string, lastName: string, suffix: string, nickname: string, maidenName: string, nameOrder: string, structureVersionId: string, isFavourite: bool, isPartial: bool, keepGoing: bool}
+     * @return array{nickname: string, maidenName: string, structureVersionId: string, isFavourite: bool, isPartial: bool, keepGoing: bool}
      */
     public function values(): array
     {
         return [
-            'prefix' => (string) old('prefix', ''),
-            'firstName' => (string) old('first_name', ''),
-            'middleName' => (string) old('middle_name', ''),
-            'lastName' => (string) old('last_name', ''),
-            'suffix' => (string) old('suffix', ''),
             'nickname' => (string) old('nickname', ''),
             'maidenName' => (string) old('maiden_name', ''),
-            'nameOrder' => (string) old('name_order', ''),
             'structureVersionId' => (string) old('structure_version_id', $this->defaultStructureVersionId()),
             'isFavourite' => $this->ticked('is_favourite'),
             'isPartial' => $this->ticked('is_partial'),
             'keepGoing' => $this->ticked('keep_going'),
         ];
+    }
+
+    public function nameEditor(): ContactNameEditorBlock
+    {
+        return new ContactNameEditorBlock;
     }
 
     /** @return array<int, array{id: int, name: string}> */
@@ -96,18 +94,6 @@ class ContactFormViewModel
     public function showsTemplates(): bool
     {
         return count($this->templates()) > 1;
-    }
-
-    /** @return array<int, array{value: string, label: string}> */
-    public function nameOrders(): array
-    {
-        $orders = [['value' => '', 'label' => __('Follow your own preference')]];
-
-        foreach (NameOrderEnum::cases() as $order) {
-            $orders[] = ['value' => $order->value, 'label' => __($order->label())];
-        }
-
-        return $orders;
     }
 
     /** @return array<int, array{id: string, name: string, help: string, checked: bool}> */

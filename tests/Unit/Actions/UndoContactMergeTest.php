@@ -12,6 +12,7 @@ use App\Exceptions\ContactMergeCannotBeUndone;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\ContactMerge;
+use App\Models\ContactNameRepresentation;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
@@ -384,5 +385,123 @@ class UndoContactMergeTest extends TestCase
 
         $this->assertTrue($engine->wasSent($jim));
         $this->assertTrue($engine->wasSent($james));
+    }
+
+    #[Test]
+    public function it_gives_back_every_way_of_writing_the_name_and_the_one_shown(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = StructureVersion::factory()->published()->create(['account_id' => $user->account_id]);
+        $jim = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'structure_version_id' => $version->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
+        $james = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'structure_version_id' => $version->id, 'first_name' => 'James', 'last_name' => 'Halpert']);
+        $jamesShown = $james->display_name_representation_id;
+        $jimShown = $jim->display_name_representation_id;
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james, resolutions: [
+            ['field_key' => '@display_name', 'row' => null, 'keep' => 'other'],
+        ])->execute();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertSame($jimShown, $jim->refresh()->display_name_representation_id);
+        $this->assertSame('Jim Halpert', $jim->name);
+        $this->assertSame(1, $jim->nameRepresentations()->count());
+        $this->assertSame($jamesShown, $james->refresh()->display_name_representation_id);
+        $this->assertSame(1, $james->nameRepresentations()->count());
+        $this->assertSame('James Halpert', $james->name);
+    }
+
+    #[Test]
+    public function it_shows_what_is_left_when_the_name_shown_before_the_merge_was_removed_since(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $jimShown = $jim->displayNameRepresentation;
+        $jamesShown = $james->display_name_representation_id;
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james, resolutions: [
+            ['field_key' => '@display_name', 'row' => null, 'keep' => 'other'],
+        ])->execute();
+        $jimShown->delete();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertNull($jim->refresh()->display_name_representation_id);
+        $this->assertSame(0, $jim->nameRepresentations()->count());
+        $this->assertSame($jamesShown, $james->refresh()->display_name_representation_id);
+        $this->assertSame('James Halpert', $james->name);
+    }
+
+    #[Test]
+    public function it_never_falls_back_on_a_pronunciation_when_the_name_shown_before_the_merge_was_removed_since(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $jimShown = $jim->displayNameRepresentation;
+        ContactNameRepresentation::factory()->phonetic()->create(['contact_id' => $jim->id, 'given_name' => 'Jim', 'family_name' => 'Halpert', 'position' => 0]);
+        $written = ContactNameRepresentation::factory()->create(['contact_id' => $jim->id, 'formatted_name' => 'Big Tuna', 'position' => 5]);
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james, resolutions: [
+            ['field_key' => '@display_name', 'row' => null, 'keep' => 'other'],
+        ])->execute();
+        $jimShown->delete();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertSame($written->id, $jim->refresh()->display_name_representation_id);
+    }
+
+    #[Test]
+    public function it_points_the_survivor_back_at_its_own_name_when_it_chose_one_that_came_with_the_merge(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $jimShown = $jim->display_name_representation_id;
+        $jamesShown = $james->display_name_representation_id;
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+        $jim->refresh();
+        $jim->display_name_representation_id = $jamesShown;
+        $jim->save();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertSame($jimShown, $jim->refresh()->display_name_representation_id);
+        $this->assertSame('Jim Halpert', $jim->name);
+        $this->assertSame($jamesShown, $james->refresh()->display_name_representation_id);
+        $this->assertSame('James Halpert', $james->name);
+    }
+
+    #[Test]
+    public function it_shows_the_absorbed_contacts_remaining_name_when_the_one_it_showed_was_removed_since(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $twin = ContactNameRepresentation::factory()->create(['contact_id' => $james->id, 'given_name' => 'Jim', 'family_name' => 'Halpert']);
+        $moved = $james->displayNameRepresentation;
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james, resolutions: [
+            ['field_key' => '@display_name', 'row' => null, 'keep' => 'other'],
+        ])->execute();
+        $this->assertSame($james->id, $twin->refresh()->contact_id);
+        $moved->refresh()->delete();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $james->refresh();
+        $this->assertSame($twin->id, $james->display_name_representation_id);
+        $this->assertSame('Jim', $james->first_name);
+        $this->assertSame('Jim Halpert', $james->name);
     }
 }

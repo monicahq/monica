@@ -228,7 +228,9 @@ class UpdateRelationshipTest extends TestCase
         $user = User::factory()->create();
         $vault = $this->vaultOf($user);
         $relationship = $this->relationshipOn($vault, $user);
-        $relationship->contactB->update(['is_partial' => true, 'first_name' => 'Ben', 'last_name' => null]);
+        $relationship->contactB->update(['is_partial' => true]);
+        $relationship->contactB->displayNameRepresentation->update(['given_name' => 'Ben', 'family_name' => null]);
+        $relationship->contactB->refresh();
 
         new UpdateRelationship(
             user: $user,
@@ -259,7 +261,9 @@ class UpdateRelationshipTest extends TestCase
         $user = User::factory()->create();
         $vault = $this->vaultOf($user);
         $relationship = $this->relationshipOn($vault, $user);
-        $relationship->contactB->update(['is_partial' => true, 'middle_name' => 'Hilda', 'nickname' => 'Benny']);
+        $relationship->contactB->update(['is_partial' => true, 'nickname' => 'Benny']);
+        $relationship->contactB->displayNameRepresentation->update(['additional_name' => 'Hilda']);
+        $relationship->contactB->refresh();
 
         new UpdateRelationship(
             user: $user,
@@ -288,7 +292,8 @@ class UpdateRelationshipTest extends TestCase
         $user = User::factory()->create();
         $vault = $this->vaultOf($user);
         $relationship = $this->relationshipOn($vault, $user);
-        $relationship->contactB->update(['is_partial' => true, 'first_name' => null, 'last_name' => null]);
+        $relationship->contactB->update(['is_partial' => true]);
+        $relationship->contactB->displayNameRepresentation->delete();
 
         new UpdateRelationship(
             user: $user,

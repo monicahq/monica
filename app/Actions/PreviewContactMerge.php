@@ -7,6 +7,7 @@ namespace App\Actions;
 use App\Exceptions\CannotAbsorbTheMeContact;
 use App\Exceptions\CannotMergeAContactWithItself;
 use App\Models\Contact;
+use App\Models\ContactNameRepresentation;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\User;
@@ -22,6 +23,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  */
 class PreviewContactMerge
 {
+    public const string AVATAR_KEY = '@avatar';
+
+    public const string DISPLAY_NAME_KEY = '@display_name';
+
     public function __construct(
         private readonly User $user,
         private readonly Contact $kept,
@@ -84,12 +89,25 @@ class PreviewContactMerge
 
         if ($this->kept->avatar_file_id !== null && $this->absorbed->avatar_file_id !== null) {
             $conflicts[] = [
-                'field_key' => 'avatar',
+                'field_key' => self::AVATAR_KEY,
                 'field_id' => null,
                 'label' => __('Photo'),
                 'row' => null,
                 'kept_value' => __('the photo it has now'),
                 'other_value' => __('the photo of :name', ['name' => $this->absorbed->name]),
+            ];
+        }
+
+        if ($this->kept->display_name_representation_id !== null
+            && $this->absorbed->display_name_representation_id !== null
+            && $this->kept->name !== $this->absorbed->name) {
+            $conflicts[] = [
+                'field_key' => self::DISPLAY_NAME_KEY,
+                'field_id' => null,
+                'label' => __('Name shown'),
+                'row' => null,
+                'kept_value' => $this->kept->name,
+                'other_value' => $this->absorbed->name,
             ];
         }
 
@@ -128,7 +146,13 @@ class PreviewContactMerge
             ->reject(fn (FieldValue $value): bool => $value->field_value_row_id === null && isset($mine[$value->field_id]))
             ->count();
 
+        $kept = $this->kept->nameRepresentations()->get()->map->toComparable()->all();
+        $names = $this->absorbed->nameRepresentations()->get()
+            ->reject(fn (ContactNameRepresentation $representation): bool => in_array($representation->toComparable(), $kept, true))
+            ->count();
+
         $moves = [
+            ['kind' => 'name_representation', 'count' => $names],
             ['kind' => 'field_value', 'count' => $values],
             ['kind' => 'field_value_row', 'count' => $this->rows($this->absorbed)->count()],
             ['kind' => 'reminder', 'count' => $this->absorbed->reminders()->count()],
@@ -181,7 +205,11 @@ class PreviewContactMerge
         $parts = [];
 
         foreach ([$this->kept, $this->absorbed] as $contact) {
-            $parts[] = "{$contact->id}:{$contact->sort_name}:{$contact->avatar_file_id}:{$contact->structure_version_id}";
+            $parts[] = "{$contact->id}:{$contact->sort_name}:{$contact->avatar_file_id}:{$contact->structure_version_id}:{$contact->display_name_representation_id}";
+
+            foreach ($contact->nameRepresentations()->get() as $representation) {
+                $parts[] = "{$representation->uuid}=".json_encode($representation->toComparable());
+            }
 
             foreach ($this->attachedValues($contact)->sortBy('id') as $value) {
                 $parts[] = "{$value->id}={$this->reads($value)}";

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Dav;
 
 use App\Actions\ExportContactVCard;
+use App\Enums\ContactNameKindEnum;
 use App\Enums\FieldTypeEnum;
 use App\Models\Contact;
 use App\Models\FieldValue;
@@ -15,6 +16,7 @@ use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\Attributes\Test;
+use Sabre\VObject\Reader;
 use Tests\Fixtures\Dav\Structure;
 use Tests\TestCase;
 
@@ -286,6 +288,77 @@ class AddressBookTest extends TestCase
             'HTTP_ACCEPT' => $accept,
             'HTTP_IF_MATCH' => $ifMatch,
         ]), $body);
+    }
+
+    #[Test]
+    public function it_hands_back_every_way_a_name_is_written_to_a_client_reading_vcard_4(): void
+    {
+        $vault = $this->vault();
+        Structure::asTheDefaultOf($this->user, $vault);
+
+        $this->dav('PUT', $this->book($vault).'minji.vcf', body: (string) file_get_contents(base_path('tests/Fixtures/Dav/multilingual-names.vcf')), contentType: 'text/vcard')
+            ->assertStatus(201);
+
+        $read = (string) $this->dav('GET', $this->book($vault).'minji.vcf', accept: 'text/vcard; version=4.0')->getContent();
+        $unfolded = str_replace("\r\n ", '', $read);
+
+        $this->assertSame(4, substr_count($unfolded, "\r\nN;"));
+        $this->assertStringContainsString('김민지', $unfolded);
+        $this->assertStringContainsString('Kim Min-ji', $unfolded);
+        $this->assertStringContainsString('金敏智', $unfolded);
+        $this->assertStringContainsString('PHONETIC=x-rr', $unfolded);
+    }
+
+    #[Test]
+    public function a_device_writing_one_name_takes_no_other_away(): void
+    {
+        $vault = $this->vault();
+        Structure::asTheDefaultOf($this->user, $vault);
+
+        $this->dav('PUT', $this->book($vault).'minji.vcf', body: (string) file_get_contents(base_path('tests/Fixtures/Dav/multilingual-names.vcf')), contentType: 'text/vcard')
+            ->assertStatus(201);
+        $this->dav('PUT', $this->book($vault).'minji.vcf', body: (string) file_get_contents(base_path('tests/Fixtures/Dav/single-name-client.vcf')), contentType: 'text/vcard')
+            ->assertSuccessful();
+
+        $contact = Contact::query()->where('vault_id', $vault->id)->sole();
+        $this->assertSame(4, $contact->nameRepresentations()->count());
+        $this->assertSame('Minnie Kim', $contact->name);
+    }
+
+    #[Test]
+    public function a_device_saving_every_name_as_json_updates_the_contact(): void
+    {
+        $vault = $this->vault();
+        Structure::asTheDefaultOf($this->user, $vault);
+
+        $this->dav('PUT', $this->book($vault).'minji.vcf', body: (string) file_get_contents(base_path('tests/Fixtures/Dav/multilingual-names.vcf')), contentType: 'text/vcard')
+            ->assertStatus(201);
+
+        $read = (string) $this->dav('GET', $this->book($vault).'minji.vcf', accept: 'text/vcard; version=4.0')->getContent();
+        $changed = str_replace('Kim Min-ji', 'Kim Minji', str_replace("\r\n ", '', $read));
+
+        $this->dav('PUT', $this->book($vault).'minji.vcf', body: (string) json_encode(Reader::read($changed)->jsonSerialize()), contentType: 'application/vcard+json')
+            ->assertSuccessful();
+
+        $contact = Contact::query()->where('vault_id', $vault->id)->sole();
+        $this->assertSame(4, $contact->nameRepresentations()->count());
+        $this->assertSame('Kim Minji', $contact->nameFor(kind: ContactNameKindEnum::Transliteration)?->displayText());
+        $this->assertSame('김민지', $contact->name);
+    }
+
+    #[Test]
+    public function it_accepts_two_ways_of_writing_a_name_without_a_full_name(): void
+    {
+        $vault = $this->vault();
+        Structure::asTheDefaultOf($this->user, $vault);
+        $card = "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:michael-scott\r\nN;ALTID=1:Scott;Michael;;;\r\nN;ALTID=1;LANGUAGE=ja:スコット;マイケル;;;\r\nEND:VCARD\r\n";
+
+        $this->dav('PUT', $this->book($vault).'michael.vcf', body: $card, contentType: 'text/vcard')
+            ->assertStatus(201);
+
+        $contact = Contact::query()->where('vault_id', $vault->id)->sole();
+        $this->assertSame(2, $contact->nameRepresentations()->count());
+        $this->assertSame('Michael Scott', $contact->name);
     }
 
     #[Test]

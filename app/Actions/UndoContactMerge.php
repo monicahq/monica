@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ContactNameKindEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\ContactMergeCannotBeUndone;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\ContactMerge;
+use App\Models\ContactNameRepresentation;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\Reminder;
@@ -45,6 +47,8 @@ class UndoContactMerge
             foreach (array_reverse($this->merge->ledger) as $entry) {
                 $this->reverse($entry);
             }
+
+            $this->showTheAbsorbedNameAgain();
 
             $this->merge->undone_at = now();
             $this->merge->undone_by_user_id = $this->user->id;
@@ -96,9 +100,51 @@ class UndoContactMerge
             'reminder_deactivated' => $this->wakeTheReminderUp($entry),
             'share_link_moved' => $this->giveTheShareLinkBack($entry),
             'avatar_replaced' => $this->putTheOldAvatarBack($entry),
+            'name_representation_moved' => $this->giveTheNameBack($entry),
+            'display_name_replaced' => $this->showTheOldNameAgain($entry),
             'partial_cleared' => $this->makeItPartialAgain(),
             default => null,
         };
+    }
+
+    /** @param array<string, mixed> $entry */
+    private function giveTheNameBack(array $entry): void
+    {
+        $representation = ContactNameRepresentation::query()->find($entry['id']);
+
+        if ($representation === null) {
+            return;
+        }
+
+        if ($this->kept->display_name_representation_id === $representation->id) {
+            $this->kept->display_name_representation_id = $this->kept->nameRepresentations()->whereKeyNot($representation->id)->where('kind', '!=', ContactNameKindEnum::Phonetic)->first()?->id;
+            $this->kept->save();
+        }
+
+        $representation->contact()->associate($this->absorbed);
+        $representation->position = (int) $entry['position'];
+        $representation->save();
+    }
+
+    /** @param array<string, mixed> $entry */
+    private function showTheOldNameAgain(array $entry): void
+    {
+        $displayed = $entry['was'] === null
+            ? null
+            : $this->kept->nameRepresentations()->whereKey($entry['was'])->first() ?? $this->kept->nameRepresentations()->where('kind', '!=', ContactNameKindEnum::Phonetic)->first();
+
+        $this->kept->display_name_representation_id = $displayed?->id;
+        $this->kept->save();
+    }
+
+    private function showTheAbsorbedNameAgain(): void
+    {
+        $displayed = $this->absorbed->nameRepresentations()->whereKey($this->absorbed->display_name_representation_id)->first()
+            ?? $this->absorbed->nameRepresentations()->where('kind', '!=', ContactNameKindEnum::Phonetic)->first();
+
+        $this->absorbed->display_name_representation_id = $displayed?->id;
+        $this->absorbed->copyDisplayName($displayed);
+        $this->absorbed->save();
     }
 
     /** @param array<string, mixed> $entry */

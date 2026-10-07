@@ -501,13 +501,14 @@ class ContactControllerTest extends TestCase
         $vault = $this->vaultReadyForContacts($user);
 
         $this->actingAs($user)->post(route('contacts.create', $vault), [
-            'first_name' => 'Bob',
+            'names' => [['kind' => 'written', 'given_name' => 'Bob']],
+            'display' => 0,
             'is_partial' => '1',
         ])
             ->assertSessionHas('status', 'Bob is written down.')
             ->assertSessionHas('status_description', 'A partial contact stays off the list of contacts until they are more than a first name.');
 
-        $this->actingAs($user)->post(route('contacts.create', $vault), ['first_name' => 'Michael'])
+        $this->actingAs($user)->post(route('contacts.create', $vault), ['names' => [['kind' => 'written', 'given_name' => 'Michael']], 'display' => 0])
             ->assertSessionHas('status_description', 'The rest of the page is yours to fill in whenever you know it.');
     }
 
@@ -637,12 +638,14 @@ class ContactControllerTest extends TestCase
         $vault = $this->vaultReadyForContacts($user);
 
         $this->actingAs($user)->post(route('contacts.create', $vault), [
-            'first_name' => 'Dwight',
+            'names' => [['kind' => 'written', 'given_name' => 'Dwight']],
+            'display' => 0,
             'keep_going' => '1',
         ])->assertRedirect(route('contacts.new', $vault));
 
         $this->actingAs($user)->post(route('contacts.create', $vault), [
-            'first_name' => 'Pam',
+            'names' => [['kind' => 'written', 'given_name' => 'Pam']],
+            'display' => 0,
         ])->assertRedirect(route('contacts.show', [
             'vault' => $vault,
             'contact' => Contact::query()->where('first_name', 'Pam')->sole(),
@@ -658,7 +661,7 @@ class ContactControllerTest extends TestCase
         $vault = $this->vaultReadyForContacts($user);
 
         $this->actingAs($user)->followingRedirects()
-            ->post(route('contacts.create', $vault), ['first_name' => 'Michael', 'last_name' => 'Scott'])
+            ->post(route('contacts.create', $vault), ['names' => [['kind' => 'written', 'given_name' => 'Michael', 'family_name' => 'Scott']], 'display' => 0])
             ->assertStatus(200)
             ->assertSee('Michael Scott is written down.')
             ->assertSee('The rest of the page is yours to fill in whenever you know it.');
@@ -673,14 +676,10 @@ class ContactControllerTest extends TestCase
         $vault = $this->vaultReadyForContacts($user);
 
         $this->actingAs($user)->post(route('contacts.create', $vault), [
-            'prefix' => 'Mr',
-            'first_name' => 'Michael',
-            'middle_name' => 'Gary',
-            'last_name' => 'Scott',
-            'suffix' => 'Jr',
+            'names' => [['kind' => 'written', 'prefix' => 'Mr', 'given_name' => 'Michael', 'additional_name' => 'Gary', 'family_name' => 'Scott', 'suffix' => 'Jr', 'name_order' => NameOrderEnum::FamilyFirst->value]],
+            'display' => 0,
             'nickname' => 'Prison Mike',
             'maiden_name' => '',
-            'name_order' => NameOrderEnum::FamilyFirst->value,
         ])
             ->assertRedirect(route('contacts.show', ['vault' => $vault, 'contact' => Contact::query()->sole()]))
             ->assertSessionHas('status', 'Scott Michael Gary is written down.');
@@ -708,7 +707,8 @@ class ContactControllerTest extends TestCase
         $vault = $this->vaultReadyForContacts($user);
 
         $this->actingAs($user)->post(route('contacts.create', $vault), [
-            'first_name' => 'Pam',
+            'names' => [['kind' => 'written', 'given_name' => 'Pam']],
+            'display' => 0,
             'is_favourite' => '1',
             'is_partial' => '1',
         ]);
@@ -728,7 +728,8 @@ class ContactControllerTest extends TestCase
         $vault = $this->vaultReadyForContacts($user);
 
         $this->actingAs($user)->post(route('contacts.create', $vault), [
-            'first_name' => 'Dwight',
+            'names' => [['kind' => 'written', 'given_name' => 'Dwight']],
+            'display' => 0,
             'keep_going' => '1',
         ])->assertRedirect(route('contacts.new', $vault));
 
@@ -745,7 +746,8 @@ class ContactControllerTest extends TestCase
         $work = $this->publishedContactTemplate($user, 'Work contact');
 
         $this->actingAs($user)->post(route('contacts.create', $vault), [
-            'first_name' => 'Jan',
+            'names' => [['kind' => 'written', 'given_name' => 'Jan']],
+            'display' => 0,
             'structure_version_id' => (string) $work->structure->published_version_id,
         ])->assertRedirect(route('contacts.show', ['vault' => $vault, 'contact' => Contact::query()->sole()]));
 
@@ -753,15 +755,15 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_contact_with_no_first_name(): void
+    public function it_refuses_a_contact_with_no_name(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user);
 
-        $this->actingAs($user)->post(route('contacts.create', $vault), ['last_name' => 'Scott'])
-            ->assertSessionHasErrors('first_name');
+        $this->actingAs($user)->post(route('contacts.create', $vault), ['names' => [], 'nickname' => 'Scott'])
+            ->assertSessionHasErrors('names');
 
         $this->assertEquals(0, Contact::query()->count());
     }
@@ -777,8 +779,8 @@ class ContactControllerTest extends TestCase
         $this->actingAs($user)
             ->from(route('contacts.new', $vault))
             ->post(route('contacts.create', $vault), [
-                'first_name' => '',
-                'last_name' => 'Scott',
+                'names' => [['kind' => 'phonetic', 'formatted_name' => 'Scott']],
+                'display' => 0,
                 'nickname' => 'Prison Mike',
                 'is_favourite' => '1',
             ])
@@ -786,7 +788,7 @@ class ContactControllerTest extends TestCase
 
         $form = $this->actingAs($user)->get(route('contacts.new', $vault));
 
-        $form->assertSee('value="Scott"', false)
+        $form->assertSee('Scott')
             ->assertSee('value="Prison Mike"', false);
 
         $this->assertMatchesRegularExpression(
@@ -808,7 +810,8 @@ class ContactControllerTest extends TestCase
         $this->actingAs($michael)
             ->from(route('contacts.new', $vault))
             ->post(route('contacts.create', $vault), [
-                'first_name' => '',
+                'names' => [['kind' => 'written', 'given_name' => '']],
+                'display' => 0,
                 'structure_version_id' => $elsewhere->structure->published_version_id,
             ]);
 
@@ -829,7 +832,8 @@ class ContactControllerTest extends TestCase
         $elsewhere = $this->publishedContactTemplate($dwight, 'Beet varieties');
 
         $this->actingAs($michael)->post(route('contacts.create', $vault), [
-            'first_name' => 'Michael',
+            'names' => [['kind' => 'written', 'given_name' => 'Michael']],
+            'display' => 0,
             'structure_version_id' => $elsewhere->structure->published_version_id,
         ])->assertSessionHasErrors('structure_version_id');
 
@@ -916,6 +920,51 @@ class ContactControllerTest extends TestCase
             ->assertSee('Scott', false)
             ->assertSee('Delete contact')
             ->assertSee(route('contacts.destroy', ['vault' => $vault, 'contact' => $michael]), false);
+    }
+
+    #[Test]
+    public function the_edit_screen_says_why_the_name_cannot_be_saved_while_it_is_being_changed(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.edit', ['vault' => $vault, 'contact' => $michael]))
+            ->assertSee('@name-editor-busy.window="held = $event.detail"', false)
+            ->assertSee(':aria-disabled="held"', false)
+            ->assertSee('aria-describedby="name-form-held"', false)
+            ->assertSee(__('Finish the change to the name first, or cancel it.'));
+    }
+
+    #[Test]
+    public function the_form_says_why_the_contact_cannot_be_created_while_the_name_is_being_changed(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)->get(route('contacts.new', $vault))
+            ->assertSee(':aria-disabled="held"', false)
+            ->assertSee('aria-describedby="contact-form-held"', false)
+            ->assertSee(__('Finish the change to the name first, or cancel it.'));
+    }
+
+    #[Test]
+    public function it_names_the_field_of_a_refused_name_in_plain_words(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)
+            ->post(route('contacts.create', $vault), [
+                'names' => [['kind' => 'phonetic', 'given_name' => 'Maikeru']],
+                'display' => 0,
+            ])
+            ->assertSessionHasErrors('names.0.phonetic_system');
+
+        $message = session('errors')->first('names.0.phonetic_system');
+
+        $this->assertStringContainsString(__('pronunciation system'), $message);
+        $this->assertStringNotContainsString('names.0', $message);
     }
 
     #[Test]
@@ -1413,10 +1462,10 @@ class ContactControllerTest extends TestCase
 
         $response = $this->actingAs($user)
             ->from(route('contacts.new', ['vault' => $vault]))
-            ->post(route('contacts.create', ['vault' => $vault]), ['first_name' => 'Pam']);
+            ->post(route('contacts.create', ['vault' => $vault]), ['names' => [['kind' => 'written', 'given_name' => 'Pam']], 'display' => 0]);
 
         $response->assertRedirect(route('contacts.new', ['vault' => $vault]));
-        $response->assertSessionHasErrors('first_name');
+        $response->assertSessionHasErrors('names');
         $this->assertSame(1, $user->account->contactCount());
     }
 

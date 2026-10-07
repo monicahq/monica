@@ -10,6 +10,7 @@ use App\Enums\ContactSortEnum;
 use App\Enums\SortDirectionEnum;
 use App\Models\Contact;
 use App\Models\ContactListColumn;
+use App\Models\ContactNameRepresentation;
 use App\Models\File;
 use App\Models\Section;
 use App\Models\StructureVersion;
@@ -21,6 +22,7 @@ use App\ViewModels\Vaults\ContactsViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -207,6 +209,35 @@ class ContactsViewModelTest extends TestCase
         $missed = new ContactsViewModel(user: $user, vault: $vault, query: 'Filippelli');
         $this->assertFalse($missed->vaultIsEmpty());
         $this->assertTrue($missed->noResults());
+    }
+
+    #[Test]
+    public function it_reads_the_names_of_a_page_of_people_without_a_query_per_person(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $queriesFor = function (int $people) use ($user, $vault): int {
+            Contact::query()->where('vault_id', $vault->id)->forceDelete();
+
+            for ($index = 0; $index < $people; $index++) {
+                $contact = $this->contact($vault, "Kevin{$index}", 'Malone');
+                ContactNameRepresentation::factory()->transliteration()->create(['contact_id' => $contact->id, 'formatted_name' => "ケビン{$index}"]);
+                ContactNameRepresentation::factory()->phonetic('ipa')->create(['contact_id' => $contact->id, 'formatted_name' => "ˈkɛvɪn{$index}"]);
+            }
+
+            DB::flushQueryLog();
+            DB::enableQueryLog();
+            new ContactsViewModel(user: $user, vault: $vault)->groups();
+            $count = count(DB::getQueryLog());
+            DB::disableQueryLog();
+
+            return $count;
+        };
+
+        $queriesFor(1);
+
+        $this->assertSame($queriesFor(3), $queriesFor(12));
     }
 
     /** @param  array<string, mixed>  $attributes */

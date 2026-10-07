@@ -46,6 +46,7 @@ updated_at                  datetime
 - Collisions are shown in the preview. The user chooses whether to keep both rows or remove an exact duplicate, and that choice is recorded in `resolutions`. Different types or dates are never combined automatically.
 - `Moi` is never absorbed (4.3). It can absorb another contact, never the reverse.
 - A merge is previewed before it runs. Conflicting values are shown side by side and the user chooses. Nothing is resolved silently.
+- Two contacts shown under different names make the preview ask which name to show (`display_name`). Every way the absorbed contact writes its name comes over except an exact duplicate, which stays on the absorbed contact; an unanswered question keeps the survivor's name. Both are in the ledger (`name_representation_moved`, `display_name_replaced`), so the undo gives them back ([ContactNameRepresentation](057-contact-name-representation-done.md)).
 - The merge writes to [Log](004-log-in-progress.md). It will emit a webhook (14.2) once webhook machinery exists; the log row is what that event is built from.
 - A value the survivor gave up at a conflict is detached rather than deleted, and reaches the set-aside screen. So does a value whose field the surviving structure does not carry. Nothing a merge touches is destroyed.
 - A merge is confirmed against the state it was previewed on. If either contact changed in between, the merge is refused and the preview is rebuilt, so nothing is applied to a state nobody looked at.

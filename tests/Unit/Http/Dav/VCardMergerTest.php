@@ -574,4 +574,109 @@ class VCardMergerTest extends TestCase
 
         return $kept;
     }
+
+    #[Test]
+    public function it_writes_every_way_the_name_is_written_as_alternatives_of_one_name(): void
+    {
+        $contact = $this->minji();
+
+        $card = Reader::read(new VCardMerger()->merge($contact));
+        $names = iterator_to_array($card->select('N'), false);
+        $formatted = iterator_to_array($card->select('FN'), false);
+
+        $this->assertCount(4, $names);
+        $this->assertCount(3, $formatted);
+        $this->assertSame(['1'], array_values(array_unique(array_map(fn ($property): string => (string) $property['ALTID'], [...$names, ...$formatted]))));
+        $this->assertSame('김민지', (string) collect($formatted)->first(fn ($property): bool => (string) $property['PREF'] === '1')?->getValue());
+        $this->assertSame('x-rr', (string) collect($names)->first(fn ($property): bool => isset($property['PHONETIC']))?->offsetGet('PHONETIC'));
+        $this->assertSame('transliteration', (string) collect($formatted)->first(fn ($property): bool => (string) $property->getValue() === 'Kim Min-ji')?->offsetGet('X-NAME-KIND'));
+        $this->assertSame('Minnie', (string) $card->NICKNAME);
+    }
+
+    #[Test]
+    public function it_writes_one_alternative_identifier_for_names_that_came_from_different_places(): void
+    {
+        $contact = $this->minji();
+        $representations = $contact->nameRepresentations()->get();
+        $representations[0]->update(['vcard_alt_id' => null]);
+        $representations[1]->update(['vcard_alt_id' => 'scranton']);
+        $representations[2]->update(['vcard_alt_id' => 'stamford']);
+
+        $card = Reader::read(new VCardMerger()->merge($contact));
+        $altIds = array_map(fn ($property): string => (string) $property['ALTID'], [...$card->select('N'), ...$card->select('FN')]);
+
+        $this->assertSame(['scranton'], array_values(array_unique($altIds)));
+    }
+
+    #[Test]
+    public function it_brings_back_the_order_of_a_name_and_a_display_name_that_is_not_the_first(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Structure::asTheDefaultOf($user, $vault);
+        $card = "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:kim-min-ji\r\n"
+            ."N;ALTID=1;LANGUAGE=ko;SCRIPT=Latn;PHONETIC=x-rr:Gim;Minji;;;\r\n"
+            ."N;ALTID=1;LANGUAGE=ko;SCRIPT=Latn;X-NAME-KIND=transliteration:Kim;Minji;;;\r\n"
+            ."FN;ALTID=1;LANGUAGE=ko;SCRIPT=Latn;X-NAME-KIND=transliteration:Kim Minji\r\n"
+            ."N;ALTID=1;LANGUAGE=ko;SCRIPT=Hang:김;민지;;;\r\n"
+            ."FN;ALTID=1;LANGUAGE=ko;SCRIPT=Hang;PREF=1:김민지\r\n"
+            ."END:VCARD\r\n";
+        $contact = new ImportVCard(user: $user, vault: $vault, card: $card)->execute();
+        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
+        Structure::asTheDefaultOf($user, $elsewhere);
+
+        $copy = new ImportVCard(user: $user, vault: $elsewhere, card: new VCardMerger()->merge($contact))->execute();
+
+        $read = fn (Contact $one): array => $one->nameRepresentations()->get()->map->toComparable()->all();
+        $this->assertSame('family_first', $read($contact)[1]['name_order']);
+        $this->assertSame($read($contact), $read($copy));
+        $this->assertSame('김민지', $copy->name);
+        $this->assertSame(['Gim', 'Minji'], [$read($copy)[0]['family_name'], $read($copy)[0]['given_name']]);
+    }
+
+    #[Test]
+    public function it_keeps_the_parameters_a_device_wrote_that_it_does_not_manage(): void
+    {
+        $contact = $this->minji();
+
+        $exported = new VCardMerger()->merge($contact);
+
+        $this->assertStringContainsString('SORT-AS=Kim', str_replace("\r\n ", '', $exported));
+        $this->assertStringContainsString('X-ORIGIN=family-register', str_replace("\r\n ", '', $exported));
+    }
+
+    #[Test]
+    public function it_loses_nothing_of_a_name_through_an_export_and_an_import(): void
+    {
+        $contact = $this->minji();
+        $elsewhere = Vault::factory()->create(['account_id' => $contact->account_id]);
+        $user = User::query()->where('account_id', $contact->account_id)->sole();
+        Structure::asTheDefaultOf($user, $elsewhere);
+
+        $copy = new ImportVCard(user: $user, vault: $elsewhere, card: new VCardMerger()->merge($contact))->execute();
+
+        $read = fn (Contact $one): array => $one->nameRepresentations()->get()->map->toComparable()->all();
+        $this->assertSame($read($contact), $read($copy));
+        $this->assertSame($contact->name, $copy->name);
+    }
+
+    #[Test]
+    public function it_writes_a_single_plain_name_the_way_it_always_has(): void
+    {
+        $contact = Contact::factory()->create(['first_name' => 'Dwight', 'last_name' => 'Schrute']);
+
+        $exported = new VCardMerger()->merge($contact);
+
+        $this->assertStringContainsString("N:Schrute;Dwight;;;\r\n", $exported);
+        $this->assertStringNotContainsString('ALTID', $exported);
+    }
+
+    private function minji(): Contact
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Structure::asTheDefaultOf($user, $vault);
+
+        return new ImportVCard(user: $user, vault: $vault, card: (string) file_get_contents(base_path('tests/Fixtures/Dav/multilingual-names.vcf')))->execute();
+    }
 }

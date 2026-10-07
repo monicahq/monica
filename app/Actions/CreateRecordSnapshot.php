@@ -8,6 +8,7 @@ use App\Enums\SnapshotReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\ContactNameRepresentation;
 use App\Models\Entity;
 use App\Models\Field;
 use App\Models\FieldValue;
@@ -99,6 +100,10 @@ class CreateRecordSnapshot
             'maiden_name' => $this->record->maiden_name,
             'nickname' => $this->record->nickname,
             'name_order' => $this->record->name_order?->value,
+            'name_representations' => $this->record->nameRepresentations()->get()
+                ->map(fn (ContactNameRepresentation $representation): array => ['id' => $representation->uuid, ...$representation->toComparable()])
+                ->all(),
+            'display_name_representation_uuid' => $this->record->displayNameRepresentation?->uuid,
             'is_me' => $this->record->is_me,
             'is_partial' => $this->record->is_partial,
             'is_favourite' => $this->record->is_favourite,

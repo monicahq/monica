@@ -7,11 +7,11 @@ namespace App\Jobs;
 use App\Helpers\LocaleCollation;
 use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
+use App\Models\ContactNameRepresentation;
 use App\Models\FieldValue;
 use App\Models\Vault;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -102,13 +102,14 @@ class DetectDuplicateContacts implements ShouldBeUnique, ShouldQueue
     {
         $found = [];
 
-        if ($contact->match_key !== '') {
-            $block = Contact::query()
-                ->where('vault_id', $contact->vault_id)
-                ->where('match_key', $contact->match_key)
-                ->where('is_me', false)
-                ->get();
+        $keys = $contact->nameRepresentations()->pluck('match_key')
+            ->push($contact->match_key)
+            ->filter(fn (string $key): bool => $key !== '')
+            ->unique()
+            ->values()
+            ->all();
 
+        foreach ($this->entriesSharing($contact->vault_id, $keys) as $block) {
             $this->compareWithin($block, $found, $contact->id);
         }
 
@@ -119,53 +120,106 @@ class DetectDuplicateContacts implements ShouldBeUnique, ShouldQueue
         return $found;
     }
 
-    /** @return list<Collection<int, Contact>> */
+    /** @return list<list<array{contact: Contact, given: string}>> */
     private function blocks(Vault $vault): array
     {
-        $keys = Contact::query()
+        $fromContacts = Contact::query()
             ->where('vault_id', $vault->id)
             ->where('match_key', '!=', '')
+            ->where('is_me', false)
+            ->select('id', 'match_key');
+
+        $fromNames = ContactNameRepresentation::query()
+            ->join('contacts', 'contacts.id', '=', 'contact_name_representations.contact_id')
+            ->where('contacts.vault_id', $vault->id)
+            ->whereNull('contacts.deleted_at')
+            ->where('contacts.is_me', false)
+            ->where('contact_name_representations.match_key', '!=', '')
+            ->select('contacts.id', 'contact_name_representations.match_key');
+
+        $keys = DB::query()
+            ->fromSub($fromContacts->toBase()->union($fromNames->toBase()), 'keyed')
             ->groupBy('match_key')
-            ->havingRaw('count(*) > 1')
+            ->havingRaw('count(distinct id) > 1')
             ->pluck('match_key')
             ->all();
 
+        return $this->entriesSharing($vault->id, $keys);
+    }
+
+    /**
+     * @param  list<string>  $keys
+     * @return list<list<array{contact: Contact, given: string}>>
+     */
+    private function entriesSharing(int $vaultId, array $keys): array
+    {
         if ($keys === []) {
             return [];
         }
 
-        return Contact::query()
-            ->where('vault_id', $vault->id)
+        $blocks = [];
+
+        $contacts = Contact::query()
+            ->where('vault_id', $vaultId)
             ->whereIn('match_key', $keys)
             ->where('is_me', false)
-            ->get()
-            ->groupBy('match_key')
-            ->values()
-            ->all();
+            ->get();
+
+        foreach ($contacts as $contact) {
+            $given = $this->givenNames($contact);
+            $blocks[$contact->match_key]["{$contact->id}:{$given}"] = ['contact' => $contact, 'given' => $given];
+        }
+
+        $representations = ContactNameRepresentation::query()
+            ->whereIn('match_key', $keys)
+            ->whereHas('contact', fn ($query) => $query->where('vault_id', $vaultId)->where('is_me', false))
+            ->with('contact')
+            ->get();
+
+        foreach ($representations as $representation) {
+            $given = $this->givenNamesOf($representation);
+            $blocks[$representation->match_key]["{$representation->contact_id}:{$given}"] ??= ['contact' => $representation->contact, 'given' => $given];
+        }
+
+        $blocks = array_map(array_values(...), $blocks);
+
+        return array_values(array_filter($blocks, fn (array $block): bool => count(array_unique(array_map(fn (array $entry): int => $entry['contact']->id, $block))) > 1));
     }
 
     /**
-     * @param  Collection<int, Contact>  $block
+     * @param  list<array{contact: Contact, given: string}>  $block
      * @param  array<string, array<string, mixed>>  $found
      */
-    private function compareWithin(Collection $block, array &$found, ?int $only = null): void
+    private function compareWithin(array $block, array &$found, ?int $only = null): void
     {
-        $contacts = $block->values();
-        $given = $contacts->mapWithKeys(fn (Contact $one): array => [$one->id => $this->givenNames($one)]);
+        if ($only !== null) {
+            $block = [
+                ...array_filter($block, fn (array $entry): bool => $entry['contact']->id === $only),
+                ...array_filter($block, fn (array $entry): bool => $entry['contact']->id !== $only),
+            ];
+        }
 
-        foreach ($contacts as $index => $one) {
-            foreach ($contacts->slice($index + 1) as $two) {
-                if ($only !== null && $one->id !== $only && $two->id !== $only) {
+        foreach ($block as $index => $one) {
+            if ($only !== null && $one['contact']->id !== $only) {
+                break;
+            }
+
+            foreach (array_slice($block, $index + 1) as $two) {
+                if ($one['contact']->id === $two['contact']->id) {
                     continue;
                 }
 
-                $likeness = $this->likeness($given[$one->id], $given[$two->id]);
+                if ($only !== null && $one['contact']->id !== $only && $two['contact']->id !== $only) {
+                    continue;
+                }
+
+                $likeness = $this->likeness($one['given'], $two['given']);
 
                 if ($likeness < self::NAME_THRESHOLD) {
                     continue;
                 }
 
-                $this->add($found, $one, $two, max(self::NAME_SCORE_FLOOR, $likeness), ['kind' => 'name']);
+                $this->add($found, $one['contact'], $two['contact'], max(self::NAME_SCORE_FLOOR, $likeness), ['kind' => 'name']);
             }
         }
     }
@@ -176,6 +230,17 @@ class DetectDuplicateContacts implements ShouldBeUnique, ShouldQueue
 
         if ($parts === '') {
             $parts = (string) ($contact->nickname ?? $contact->maiden_name ?? '');
+        }
+
+        return $parts === '' ? '' : LocaleCollation::foldForSearch($parts, $this->locale());
+    }
+
+    private function givenNamesOf(ContactNameRepresentation $representation): string
+    {
+        $parts = collect([$representation->given_name, $representation->additional_name])->filter()->implode(' ');
+
+        if ($parts === '' && $representation->family_name === null) {
+            $parts = (string) $representation->formatted_name;
         }
 
         return $parts === '' ? '' : LocaleCollation::foldForSearch($parts, $this->locale());
@@ -277,7 +342,10 @@ class DetectDuplicateContacts implements ShouldBeUnique, ShouldQueue
         }
 
         $found[$key]['score'] = max($found[$key]['score'], $score);
-        $found[$key]['reasons'][] = $reason;
+
+        if (! in_array($reason, $found[$key]['reasons'], true)) {
+            $found[$key]['reasons'][] = $reason;
+        }
     }
 
     /** `similar_text` rather than a Levenshtein distance, which is capped at 255 bytes. */

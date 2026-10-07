@@ -12,6 +12,7 @@ use App\Exceptions\ContactChangedSinceThePreview;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\ContactMerge;
+use App\Models\ContactNameRepresentation;
 use App\Models\FieldValue;
 use App\Models\RecordSnapshot;
 use App\Models\Reminder;
@@ -66,6 +67,7 @@ class MergeContacts
 
         DB::transaction(function () use ($decisions): void {
             $this->takeTheAvatar($decisions);
+            $this->takeTheNames($decisions);
             $this->takeTheValues($decisions);
             $this->takeTheRows($decisions);
             $this->takeThePointers();
@@ -134,7 +136,7 @@ class MergeContacts
             $given[$key] = $resolution['keep'];
         }
 
-        $undecided = array_diff(array_keys($asked), array_keys($given));
+        $undecided = array_diff(array_keys($asked), array_keys($given), [$this->key(PreviewContactMerge::DISPLAY_NAME_KEY, null)]);
 
         if ($undecided !== []) {
             throw ValidationException::withMessages([
@@ -147,7 +149,7 @@ class MergeContacts
 
     private function takeTheAvatar(array $decisions): void
     {
-        $wanted = $decisions[$this->key('avatar', null)] ?? null;
+        $wanted = $decisions[$this->key(PreviewContactMerge::AVATAR_KEY, null)] ?? null;
 
         if ($wanted !== 'other' && ! ($this->kept->avatar_file_id === null && $this->absorbed->avatar_file_id !== null)) {
             return;
@@ -156,6 +158,45 @@ class MergeContacts
         $this->ledger[] = ['kind' => 'avatar_replaced', 'was' => $this->kept->avatar_file_id];
 
         $this->kept->avatar_file_id = $this->absorbed->avatar_file_id;
+        $this->kept->save();
+    }
+
+    /** @param array<string, string> $decisions */
+    private function takeTheNames(array $decisions): void
+    {
+        $kept = $this->kept->nameRepresentations()->get();
+        $position = (int) $kept->max('position');
+        $absorbedDisplayId = $this->absorbed->display_name_representation_id;
+        $replacement = null;
+
+        foreach ($this->absorbed->nameRepresentations()->get() as $representation) {
+            $twin = $kept->first(fn (ContactNameRepresentation $mine): bool => $mine->toComparable() === $representation->toComparable());
+
+            if ($twin !== null) {
+                $replacement = $representation->id === $absorbedDisplayId ? $twin : $replacement;
+
+                continue;
+            }
+
+            $this->ledger[] = ['kind' => 'name_representation_moved', 'id' => $representation->id, 'from' => $this->absorbed->id, 'position' => $representation->position];
+
+            $representation->contact()->associate($this->kept);
+            $representation->position = ++$position;
+            $representation->save();
+
+            $replacement = $representation->id === $absorbedDisplayId ? $representation : $replacement;
+        }
+
+        $wanted = $decisions[$this->key(PreviewContactMerge::DISPLAY_NAME_KEY, null)] ?? null;
+        $keptHasNoName = $this->kept->display_name_representation_id === null;
+
+        if ($replacement === null || ($wanted !== 'other' && ! $keptHasNoName)) {
+            return;
+        }
+
+        $this->ledger[] = ['kind' => 'display_name_replaced', 'was' => $this->kept->display_name_representation_id];
+
+        $this->kept->display_name_representation_id = $replacement->id;
         $this->kept->save();
     }
 

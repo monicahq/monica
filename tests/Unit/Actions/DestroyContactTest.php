@@ -162,4 +162,20 @@ class DestroyContactTest extends TestCase
             'inactive_reason' => ReminderInactiveReasonEnum::RecordDeleted->value,
         ]);
     }
+
+    #[Test]
+    public function it_keeps_every_way_the_name_is_written_on_a_deleted_contact(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Todd', 'last_name' => 'Packer']);
+        $shown = $contact->display_name_representation_id;
+
+        new DestroyContact(user: $user, contact: $contact)->execute();
+
+        $this->assertDatabaseHas('contact_name_representations', ['id' => $shown, 'contact_id' => $contact->id]);
+        $this->assertSame($shown, Contact::withTrashed()->find($contact->id)?->display_name_representation_id);
+    }
 }

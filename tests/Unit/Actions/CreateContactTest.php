@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateContact;
+use App\Enums\ContactNameKindEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\VaultAlreadyHasAMeContact;
@@ -501,5 +502,73 @@ class CreateContactTest extends TestCase
         $template = Template::factory()->create(['account_id' => $account->id]);
 
         return StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+    }
+
+    #[Test]
+    public function it_writes_the_name_as_the_first_way_it_is_written_and_shows_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user->account);
+
+        $contact = new CreateContact(
+            user: $user,
+            vault: $vault,
+            structureVersion: $version,
+            firstName: 'Jim',
+            lastName: 'Halpert',
+        )->execute();
+
+        $this->assertDatabaseHas('contact_name_representations', [
+            'contact_id' => $contact->id,
+            'kind' => ContactNameKindEnum::Written->value,
+            'given_name' => 'Jim',
+            'family_name' => 'Halpert',
+            'position' => 1,
+        ]);
+        $this->assertSame($contact->nameRepresentations()->sole()->id, $contact->display_name_representation_id);
+        $this->assertSame('Jim Halpert', $contact->name);
+    }
+
+    #[Test]
+    public function it_writes_down_somebody_whose_name_is_not_known_yet_with_no_way_of_writing_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user->account);
+
+        $contact = new CreateContact(user: $user, vault: $vault, structureVersion: $version, isPartial: true)->execute();
+
+        $this->assertSame(0, $contact->nameRepresentations()->count());
+        $this->assertNull($contact->display_name_representation_id);
+        $this->assertTrue($contact->isNameless());
+    }
+
+    #[Test]
+    public function it_writes_several_ways_of_writing_the_name_at_once(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->publishedContactVersion($user->account);
+
+        $contact = new CreateContact(
+            user: $user,
+            vault: $vault,
+            structureVersion: $version,
+            nameRepresentations: [
+                ['kind' => 'written', 'language' => 'ko', 'script' => 'Hang', 'formatted_name' => '김민지'],
+                ['kind' => 'transliteration', 'language' => 'ko', 'script' => 'Latn', 'formatted_name' => 'Kim Min-ji'],
+            ],
+            display: 1,
+        )->execute();
+
+        $this->assertSame(2, $contact->nameRepresentations()->count());
+        $this->assertSame('Kim Min-ji', $contact->name);
     }
 }

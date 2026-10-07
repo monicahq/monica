@@ -251,7 +251,7 @@ class ContactMergeControllerTest extends TestCase
 
         return [
             $this->contactIn($vault, $version, 'Jim', 'Halpert'),
-            $this->contactIn($vault, $version, 'James', 'Halpert'),
+            $this->contactIn($vault, $version, 'Jim', 'Halpert'),
         ];
     }
 

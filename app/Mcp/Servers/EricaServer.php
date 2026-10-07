@@ -39,6 +39,7 @@ use App\Mcp\Tools\GetRelationshipCategory;
 use App\Mcp\Tools\GetRelationshipType;
 use App\Mcp\Tools\GetTemplate;
 use App\Mcp\Tools\GetTemplateVersion;
+use App\Mcp\Tools\ListContactNameRepresentations;
 use App\Mcp\Tools\ListContactReminderOccurrences;
 use App\Mcp\Tools\ListContactReminders;
 use App\Mcp\Tools\ListContacts;
@@ -74,6 +75,7 @@ use App\Mcp\Tools\SetTemplateFieldPosition;
 use App\Mcp\Tools\SetTemplatePosition;
 use App\Mcp\Tools\SetTemplateSectionPosition;
 use App\Mcp\Tools\UpdateContactName;
+use App\Mcp\Tools\UpdateContactNameRepresentations;
 use App\Mcp\Tools\UpdateContactReminder;
 use App\Mcp\Tools\UpdateEntityType;
 use App\Mcp\Tools\UpdateLifeEventCategory;
@@ -135,6 +137,7 @@ class EricaServer extends Server
     /** @var array<int, class-string<Tool>> */
     protected array $tools = [
         GetContact::class,
+        ListContactNameRepresentations::class,
         GetMeContact::class,
         ListLifeEventCategories::class,
         GetLifeEventCategory::class,
@@ -187,6 +190,7 @@ class EricaServer extends Server
         ListVaults::class,
         CreateContact::class,
         UpdateContactName::class,
+        UpdateContactNameRepresentations::class,
         SetContactFavourite::class,
         ListContactReminders::class,
         GetContactReminder::class,

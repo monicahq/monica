@@ -6,7 +6,10 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\ImportVCard;
 use App\Enums\AddressLabelEnum;
+use App\Enums\ContactNameKindEnum;
 use App\Enums\FieldTypeEnum;
+use App\Enums\NameOrderEnum;
+use App\Http\Dav\VCardMerger;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
@@ -18,6 +21,7 @@ use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Sabre\DAV\Exception\BadRequest;
+use Sabre\VObject\Reader;
 use Tests\Fixtures\Dav\Structure;
 use Tests\TestCase;
 
@@ -389,7 +393,8 @@ class ImportVCardTest extends TestCase
             card: "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:mose\r\nFN:Mose Schrute\r\nEND:VCARD\r\n",
         )->execute();
 
-        $this->assertEquals('Mose Schrute', $contact->first_name);
+        $this->assertSame('Mose Schrute', $contact->formatted_name);
+        $this->assertSame('Mose Schrute', $contact->name);
     }
 
     #[Test]
@@ -480,5 +485,203 @@ class ImportVCardTest extends TestCase
             ->flatMap(fn ($section) => $section->fields)
             ->values()
             ->all();
+    }
+
+    #[Test]
+    public function it_creates_one_contact_holding_every_way_a_card_writes_the_name(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+
+        $contact = new ImportVCard(user: $this->user, vault: $this->vault, card: $this->multilingualCard())->execute();
+
+        $this->assertSame(1, Contact::query()->count());
+        $this->assertSame(4, $contact->nameRepresentations()->count());
+        $this->assertSame('김민지', $contact->name);
+        $this->assertSame('Minnie', $contact->nickname);
+        $this->assertSame(ContactNameKindEnum::Phonetic, $contact->nameFor(kind: ContactNameKindEnum::Phonetic)?->kind);
+        $this->assertSame('Kim Min-ji', $contact->nameFor(kind: ContactNameKindEnum::Transliteration)?->displayText());
+    }
+
+    #[Test]
+    public function it_shows_the_first_written_name_when_no_full_name_is_preferred(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+        $card = str_replace(';PREF=1', '', $this->multilingualCard());
+        $card = str_replace("N;ALTID=1;LANGUAGE=ko;SCRIPT=Latn;PHONETIC=x-rr:Gim;Minji;;;\r\n", '', $card);
+        $card = str_replace("BEGIN:VCARD\r\nVERSION:4.0\r\n", "BEGIN:VCARD\r\nVERSION:4.0\r\nN;ALTID=1;LANGUAGE=ko;SCRIPT=Latn;PHONETIC=x-rr:Gim;Minji;;;\r\n", $card);
+
+        $contact = new ImportVCard(user: $this->user, vault: $this->vault, card: $card)->execute();
+
+        $this->assertSame('김민지', $contact->name);
+    }
+
+    #[Test]
+    public function it_reconciles_every_way_of_writing_the_name_from_a_card_carrying_several(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+        $contact = new ImportVCard(user: $this->user, vault: $this->vault, card: $this->multilingualCard())->execute();
+        $exported = new VCardMerger()->merge($contact);
+        $hanja = $contact->nameRepresentations()->where('script_code', 'Hani')->sole();
+        $card = Reader::read($exported);
+
+        foreach ([...$card->select('N'), ...$card->select('FN')] as $property) {
+            if ((string) $property['PROP-ID'] === $hanja->uuid) {
+                $card->remove($property);
+            }
+        }
+
+        $renamed = str_replace(['Min-ji', 'Kim Min-ji'], ['Minji', 'Kim Minji'], $card->serialize());
+
+        new ImportVCard(user: $this->user, vault: $this->vault, card: $renamed, contact: $contact->refresh())->execute();
+
+        $this->assertModelMissing($hanja);
+        $this->assertSame(3, $contact->nameRepresentations()->count());
+        $this->assertSame('Kim Minji', $contact->nameFor(kind: ContactNameKindEnum::Transliteration)?->displayText());
+        $this->assertSame('김민지', $contact->refresh()->name);
+    }
+
+    #[Test]
+    public function it_changes_only_the_displayed_name_from_a_device_that_writes_one(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+        $contact = new ImportVCard(user: $this->user, vault: $this->vault, card: $this->multilingualCard())->execute();
+
+        new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: (string) file_get_contents(base_path('tests/Fixtures/Dav/single-name-client.vcf')),
+            contact: $contact,
+        )->execute();
+
+        $this->assertSame(4, $contact->nameRepresentations()->count());
+        $this->assertSame('Minnie Kim', $contact->refresh()->name);
+        $this->assertSame('Kim Min-ji', $contact->nameFor(kind: ContactNameKindEnum::Transliteration)?->displayText());
+    }
+
+    #[Test]
+    public function it_changes_only_the_name_a_lone_property_identifier_points_at(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+        $contact = new ImportVCard(user: $this->user, vault: $this->vault, card: $this->multilingualCard())->execute();
+        $latin = $contact->nameFor(kind: ContactNameKindEnum::Transliteration);
+
+        new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:kim-min-ji\r\nN;PROP-ID={$latin?->uuid}:Kim;Minji;;;\r\nFN;PROP-ID={$latin?->uuid}:Kim Minji\r\nEND:VCARD\r\n",
+            contact: $contact,
+        )->execute();
+
+        $this->assertSame(4, $contact->nameRepresentations()->count());
+        $this->assertSame('Minji', $latin?->refresh()->given_name);
+        $this->assertSame('김민지', $contact->refresh()->name);
+    }
+
+    #[Test]
+    public function it_keeps_every_other_name_when_a_card_holds_one_name_and_several_full_names(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+        $contact = new ImportVCard(user: $this->user, vault: $this->vault, card: $this->multilingualCard())->execute();
+
+        new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:kim-min-ji\r\nN:Kim;Minnie;;;\r\nFN:Minnie Kim\r\nFN;LANGUAGE=ja:キム・ミンジ\r\nEND:VCARD\r\n",
+            contact: $contact,
+        )->execute();
+
+        $this->assertSame(4, $contact->nameRepresentations()->count());
+        $this->assertSame('Minnie Kim', $contact->refresh()->name);
+        $this->assertSame('Kim Min-ji', $contact->nameFor(kind: ContactNameKindEnum::Transliteration)?->displayText());
+    }
+
+    #[Test]
+    public function it_carries_the_order_a_single_name_is_written_in(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+        $contact = new ImportVCard(user: $this->user, vault: $this->vault, card: "BEGIN:VCARD\r\nVERSION:4.0\r\nN:Scott;Michael;;;\r\nFN:Michael Scott\r\nEND:VCARD\r\n")->execute();
+
+        new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: "BEGIN:VCARD\r\nVERSION:4.0\r\nN:Scott;Michael;;;\r\nFN:Scott Michael\r\nEND:VCARD\r\n",
+            contact: $contact,
+        )->execute();
+
+        $this->assertSame(NameOrderEnum::FamilyFirst, $contact->refresh()->displayNameRepresentation?->name_order);
+    }
+
+    #[Test]
+    public function it_never_shows_a_contact_under_a_pronunciation(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+        $contact = new ImportVCard(user: $this->user, vault: $this->vault, card: $this->multilingualCard())->execute();
+        $shown = $contact->displayNameRepresentation;
+
+        new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:kim-min-ji\r\nN;PROP-ID={$shown?->uuid};PHONETIC=x-rr:Gim;Minji;;;\r\nN;SCRIPT=Latn;X-NAME-KIND=transliteration:Kim;Minji;;;\r\nEND:VCARD\r\n",
+            contact: $contact,
+        )->execute();
+
+        $this->assertSame(ContactNameKindEnum::Phonetic, $shown?->refresh()->kind);
+        $this->assertSame(ContactNameKindEnum::Transliteration, $contact->refresh()->displayNameRepresentation?->kind);
+    }
+
+    #[Test]
+    public function it_refuses_a_card_whose_only_name_is_a_pronunciation(): void
+    {
+        $this->expectException(BadRequest::class);
+
+        new ImportVCard(user: $this->user, vault: $this->vault, card: "BEGIN:VCARD\r\nVERSION:4.0\r\nN;PHONETIC=ipa:ʃruːt;ˈdwaɪt;;;\r\nEND:VCARD\r\n")->execute();
+    }
+
+    #[Test]
+    public function it_matches_each_name_once_when_a_card_repeats_a_property_identifier(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+        $contact = new ImportVCard(user: $this->user, vault: $this->vault, card: $this->multilingualCard())->execute();
+        $shown = $contact->displayNameRepresentation;
+
+        new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:kim-min-ji\r\nN;PROP-ID={$shown?->uuid}:김;민지;;;\r\nFN;PROP-ID={$shown?->uuid};PREF=1:김민지\r\nN;PROP-ID={$shown?->uuid};SCRIPT=Latn:Kim;Minji;;;\r\nEND:VCARD\r\n",
+            contact: $contact,
+        )->execute();
+
+        $this->assertSame(2, $contact->nameRepresentations()->count());
+        $this->assertModelExists($shown);
+        $this->assertSame('김민지', $contact->refresh()->name);
+    }
+
+    #[Test]
+    public function it_cuts_a_name_too_long_for_the_record(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+        $long = str_repeat('Schrute', 50);
+
+        $contact = new ImportVCard(user: $this->user, vault: $this->vault, card: "BEGIN:VCARD\r\nVERSION:4.0\r\nN;ALTID={$long}:{$long};Dwight;;;\r\nFN;ALTID={$long}:Dwight\r\nEND:VCARD\r\n")->execute();
+        $shown = $contact->displayNameRepresentation;
+
+        $this->assertSame(255, mb_strlen((string) $shown?->family_name));
+        $this->assertSame(64, mb_strlen((string) $shown?->vcard_alt_id));
+    }
+
+    #[Test]
+    public function it_keeps_what_it_does_not_manage_on_the_kept_card(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+
+        $contact = new ImportVCard(user: $this->user, vault: $this->vault, card: $this->multilingualCard())->execute();
+
+        $this->assertStringContainsString('X-ORIGIN=family-register', (string) $contact->vcard);
+        $this->assertStringContainsString('SORT-AS=Kim', (string) $contact->vcard);
+    }
+
+    private function multilingualCard(): string
+    {
+        return (string) file_get_contents(base_path('tests/Fixtures/Dav/multilingual-names.vcf'));
     }
 }

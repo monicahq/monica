@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\ContactGroupingEnum;
+use App\Enums\ContactNameKindEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\RelationshipBehaviorEnum;
@@ -23,6 +24,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use LogicException;
 use Override;
 
 /**
@@ -72,6 +75,8 @@ use Override;
  * @property string|null $middle_name
  * @property string|null $last_name
  * @property string|null $suffix
+ * @property int|null $display_name_representation_id
+ * @property string|null $formatted_name
  * @property string|null $maiden_name
  * @property string|null $nickname
  * @property NameOrderEnum|null $name_order
@@ -99,6 +104,8 @@ use Override;
  * @property-read Vault $vault
  * @property-read StructureVersion $structureVersion
  * @property-read File|null $avatar
+ * @property-read ContactNameRepresentation|null $displayNameRepresentation
+ * @property-read Collection<int, ContactNameRepresentation> $nameRepresentations
  * @property-read string $name
  * @property-read string $initials
  */
@@ -108,14 +115,8 @@ use Override;
     'vault_id',
     'slug',
     'structure_version_id',
-    'prefix',
-    'first_name',
-    'middle_name',
-    'last_name',
-    'suffix',
     'maiden_name',
     'nickname',
-    'name_order',
     'is_me',
     'is_partial',
     'is_archived',
@@ -145,6 +146,8 @@ class Contact extends Model
     use SearchesRecords;
     use SoftDeletes;
 
+    private bool $isCopyingTheDisplayName = false;
+
     /**
      * The side of the square an uploaded avatar is cropped to. The biggest
      * place it is drawn is the header of the record at 104, so this stays sharp
@@ -170,9 +173,24 @@ class Contact extends Model
         'middle_name',
         'last_name',
         'suffix',
+        'formatted_name',
         'maiden_name',
         'nickname',
         'name_order',
+    ];
+
+    /**
+     * The columns holding a copy of the display representation. Only {@see copyDisplayName()}
+     * writes them once the contact exists.
+     */
+    public const array DISPLAY_NAME_COPY = [
+        'prefix',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'suffix',
+        'name_order',
+        'formatted_name',
     ];
 
     /**
@@ -205,6 +223,16 @@ class Contact extends Model
     protected static function booted(): void
     {
         static::saving(function (Contact $contact): void {
+            if ($contact->isDirty('display_name_representation_id')) {
+                $contact->copyDisplayName($contact->displayNameRepresentation()->first());
+            }
+
+            if ($contact->exists && ! $contact->isCopyingTheDisplayName && $contact->isDirty(self::DISPLAY_NAME_COPY)) {
+                throw new LogicException('A contact is renamed through its name representations, never by writing its name columns.');
+            }
+
+            $contact->isCopyingTheDisplayName = false;
+
             $contact->sort_name = $contact->buildSortName();
 
             $locale = $contact->account->locale();
@@ -404,6 +432,54 @@ class Contact extends Model
     }
 
     /**
+     * Get every way the current name is written, in the order the owner put them.
+     *
+     * @return HasMany<ContactNameRepresentation, $this>
+     */
+    public function nameRepresentations(): HasMany
+    {
+        return $this->hasMany(ContactNameRepresentation::class)->chaperone()->orderBy('position')->orderBy('id');
+    }
+
+    /**
+     * Get the representation the contact is listed, titled and drawn under.
+     *
+     * @return BelongsTo<ContactNameRepresentation, $this>
+     */
+    public function displayNameRepresentation(): BelongsTo
+    {
+        return $this->belongsTo(ContactNameRepresentation::class, 'display_name_representation_id');
+    }
+
+    /**
+     * The first representation in the given script, of the given kind, or both. Null when the
+     * contact holds none, since nothing is ever transliterated on the fly.
+     */
+    public function nameFor(?string $script = null, ?ContactNameKindEnum $kind = null): ?ContactNameRepresentation
+    {
+        return $this->nameRepresentations
+            ->when($script !== null, fn (Collection $representations): Collection => $representations->where('script_code', $script))
+            ->when($kind instanceof ContactNameKindEnum, fn (Collection $representations): Collection => $representations->where('kind', $kind))
+            ->first();
+    }
+
+    /**
+     * Copy the display representation into the columns every list reads, or empty them when the
+     * contact is left with no name. These columns are written here and nowhere else.
+     */
+    public function copyDisplayName(?ContactNameRepresentation $representation): void
+    {
+        $this->isCopyingTheDisplayName = true;
+        $this->prefix = $representation?->prefix;
+        $this->first_name = $representation?->given_name;
+        $this->middle_name = $representation?->additional_name;
+        $this->last_name = $representation?->family_name;
+        $this->suffix = $representation?->suffix;
+        $this->name_order = $representation?->name_order;
+        $this->formatted_name = $representation?->formatted_name;
+    }
+
+    /**
      * Whether there is a picture to draw instead of the initials.
      */
     public function hasAvatar(): bool
@@ -522,13 +598,26 @@ class Contact extends Model
         }
     }
 
+    /** @return list<string> */
+    public function searchableRelations(): array
+    {
+        return ['nameRepresentations'];
+    }
+
     /**
-     * The name the contact is found and listed under.
+     * Every name the contact is found under, the one it is shown under first, one to a line: 김민지,
+     * Kim Min-ji and 金敏智 all find the same person.
      */
     #[Override]
     public function searchableName(): string
     {
-        return $this->name;
+        return $this->nameRepresentations
+            ->toBase()
+            ->map(fn (ContactNameRepresentation $representation): string => $representation->displayText())
+            ->prepend($this->name)
+            ->filter()
+            ->unique()
+            ->implode("\n");
     }
 
     /**
@@ -544,7 +633,7 @@ class Contact extends Model
 
         $relationships = Relationship::query()
             ->forContact($this)
-            ->with(['relationshipType', 'contactA', 'contactB'])
+            ->with(['relationshipType', 'contactA.nameRepresentations', 'contactB.nameRepresentations'])
             ->get();
 
         foreach ($relationships as $relationship) {
@@ -557,7 +646,7 @@ class Contact extends Model
 
             $role = $isA ? $relationship->relationshipType->role_a : $relationship->relationshipType->role_b;
 
-            $linked[] = ['name' => $other->name, 'label' => __(':role of :name', ['role' => $role, 'name' => $other->name])];
+            $linked[] = ['name' => $other->searchableName(), 'label' => __(':role of :name', ['role' => $role, 'name' => $other->name])];
         }
 
         return $linked;
@@ -629,7 +718,13 @@ class Contact extends Model
 
         $query->where(function (Builder $query) use ($lowered, $folded): void {
             $query->whereLike('search_key', "%{$folded}%", caseSensitive: true)
-                ->orWhereLike('nickname', "%{$lowered}%", caseSensitive: false);
+                ->orWhereLike('nickname', "%{$lowered}%", caseSensitive: false)
+                ->orWhereExists(function (QueryBuilder $names) use ($folded): void {
+                    $names->selectRaw('1')
+                        ->from('contact_name_representations')
+                        ->whereColumn('contact_name_representations.contact_id', 'contacts.id')
+                        ->whereLike('contact_name_representations.search_key', "%{$folded}%", caseSensitive: true);
+                });
         });
     }
 
@@ -839,6 +934,12 @@ class Contact extends Model
      */
     public function nameInOrder(NameOrderEnum $order): string
     {
+        $formatted = mb_trim((string) $this->formatted_name);
+
+        if ($formatted !== '') {
+            return $formatted;
+        }
+
         $given = mb_trim("{$this->first_name} {$this->middle_name}");
         $name = $order->format($given, (string) $this->last_name);
 
@@ -860,6 +961,7 @@ class Contact extends Model
     {
         return mb_trim((string) ($this->last_name
             ?? $this->first_name
+            ?? $this->formatted_name
             ?? $this->nickname
             ?? $this->maiden_name));
     }
@@ -874,7 +976,7 @@ class Contact extends Model
             ->filter()
             ->implode(' ');
 
-        $sortName = mb_trim($parts !== '' ? $parts : (string) ($this->nickname ?? $this->maiden_name));
+        $sortName = mb_trim($parts !== '' ? $parts : (string) ($this->formatted_name ?? $this->nickname ?? $this->maiden_name));
 
         return mb_substr(mb_strtolower($sortName), 0, 511);
     }
