@@ -28,6 +28,7 @@ use App\Models\ValueListItem;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -305,6 +306,12 @@ class ContactTest extends TestCase
         Contact::factory()->count(2)->create(['vault_id' => $vault->id]);
 
         $this->assertCount(2, Contact::query()->matchingSearch('   ')->get());
+    }
+
+    #[Test]
+    public function it_looks_up_the_other_ways_a_name_is_written_by_contact_rather_than_reading_every_one(): void
+    {
+        $this->assertTrue(Schema::hasIndex('contact_name_representations', ['contact_id', 'search_key']));
     }
 
     #[Test]
