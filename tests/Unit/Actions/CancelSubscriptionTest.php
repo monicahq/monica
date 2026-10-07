@@ -44,7 +44,7 @@ class CancelSubscriptionTest extends TestCase
         $subscription = new CancelSubscription(user: $michael)->execute();
 
         $this->assertInstanceOf(Subscription::class, $subscription);
-        $this->assertSame('2026-10-07', $subscription->ends_at?->format('Y-m-d'));
+        $this->assertSame($this->stripePeriodEnd()->format('Y-m-d'), $subscription->ends_at?->format('Y-m-d'));
         $this->assertTrue($michael->account->fresh()->hasFullAccess());
 
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::SubscriptionCancelled

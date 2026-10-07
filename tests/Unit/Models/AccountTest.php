@@ -325,7 +325,7 @@ class AccountTest extends TestCase
         $account = Account::factory()->create();
         $this->subscribeAccount($account);
 
-        $this->assertSame('2026-10-07', $account->nextBillingDate()?->format('Y-m-d'));
+        $this->assertSame($this->stripePeriodEnd()->format('Y-m-d'), $account->nextBillingDate()?->format('Y-m-d'));
     }
 
     #[Test]

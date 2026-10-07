@@ -128,8 +128,8 @@ abstract class TestCase extends BaseTestCase
         $client->respondTo('subscription_items*', [
             'id' => 'si_dundermifflin',
             'object' => 'subscription_item',
-            'current_period_end' => CarbonImmutable::parse('2026-10-07 12:00:00')->getTimestamp(),
-            'current_period_start' => CarbonImmutable::parse('2026-09-07 12:00:00')->getTimestamp(),
+            'current_period_end' => $this->stripePeriodEnd()->getTimestamp(),
+            'current_period_start' => $this->stripePeriodEnd()->subMonth()->getTimestamp(),
         ]);
 
         foreach ($endpoints as $pattern => $body) {
@@ -223,6 +223,11 @@ abstract class TestCase extends BaseTestCase
      *
      * @return array<string, mixed>
      */
+    protected function stripePeriodEnd(): CarbonImmutable
+    {
+        return CarbonImmutable::today()->addMonth()->setTime(12, 0);
+    }
+
     protected function stripeSubscription(string $priceId = 'price_monthly', string $status = 'active'): array
     {
         return [
@@ -239,7 +244,7 @@ abstract class TestCase extends BaseTestCase
                     'id' => 'si_dundermifflin',
                     'object' => 'subscription_item',
                     'quantity' => 1,
-                    'current_period_end' => CarbonImmutable::parse('2026-10-07 12:00:00')->getTimestamp(),
+                    'current_period_end' => $this->stripePeriodEnd()->getTimestamp(),
                     'price' => [
                         'id' => $priceId,
                         'object' => 'price',

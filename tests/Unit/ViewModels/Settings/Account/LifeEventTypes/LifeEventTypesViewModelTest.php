@@ -9,6 +9,7 @@ use App\Models\LifeEventType;
 use App\Models\User;
 use App\ViewModels\Settings\Account\LifeEventTypes\LifeEventTypesViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -75,6 +76,32 @@ class LifeEventTypesViewModelTest extends TestCase
 
         $this->assertSame('Travel', new LifeEventTypesViewModel(user: $user)->rows()[0]['category']);
         $this->assertNull(new LifeEventTypesViewModel(user: $user, selected: $category)->rows()[0]['category']);
+    }
+
+    #[Test]
+    public function it_names_the_category_of_every_row_without_a_query_per_type(): void
+    {
+        $user = User::factory()->create();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Office']);
+        LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id]);
+        new LifeEventTypesViewModel(user: $user)->rows();
+
+        DB::flushQueryLog();
+        DB::enableQueryLog();
+        new LifeEventTypesViewModel(user: $user)->rows();
+        $queriesForOneType = count(DB::getRawQueryLog());
+        DB::disableQueryLog();
+
+        LifeEventType::factory()->count(10)->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id]);
+
+        DB::flushQueryLog();
+        DB::enableQueryLog();
+        $rows = new LifeEventTypesViewModel(user: $user)->rows();
+        $queriesForElevenTypes = count(DB::getRawQueryLog());
+        DB::disableQueryLog();
+
+        $this->assertSame(array_fill(0, 11, 'Office'), array_column($rows, 'category'));
+        $this->assertSame($queriesForOneType, $queriesForElevenTypes);
     }
 
     #[Test]

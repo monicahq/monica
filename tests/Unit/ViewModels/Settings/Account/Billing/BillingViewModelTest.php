@@ -258,7 +258,7 @@ class BillingViewModelTest extends TestCase
         $this->assertTrue($viewModel->isSubscribed());
         $this->assertSame(AccessKindEnum::Subscription, $viewModel->accessKind());
         $this->assertSame('Yearly subscription', $viewModel->accessKindLabel());
-        $this->assertSame('2026-10-07', $viewModel->renewsAt()?->format('Y-m-d'));
+        $this->assertSame($this->stripePeriodEnd()->format('Y-m-d'), $viewModel->renewsAt()?->format('Y-m-d'));
         $this->assertFalse($viewModel->isEnding());
     }
 

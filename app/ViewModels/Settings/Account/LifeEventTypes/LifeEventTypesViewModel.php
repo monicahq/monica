@@ -165,7 +165,7 @@ class LifeEventTypesViewModel
     {
         return $this->categories ??= LifeEventCategory::query()
             ->where('account_id', $this->user->account_id)
-            ->with(['lifeEventTypes' => fn ($query) => $query->orderBy('position')])
+            ->with(['lifeEventTypes' => fn ($query) => $query->orderBy('position')->chaperone()])
             ->orderBy('position')
             ->get();
     }
