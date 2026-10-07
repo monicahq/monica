@@ -60,13 +60,14 @@ class ContactsViewModelTest extends TestCase
         $this->contact($vault, 'Dwight', 'Schrute');
         $this->contact($vault, 'Devon', 'White', ['is_archived' => true]);
         $this->contact($vault, 'Bob', 'Vance', ['is_partial' => true]);
+        $this->contact($vault, 'Holly', 'Flax', ['is_partial' => true, 'is_favourite' => true]);
 
         $chips = collect(new ContactsViewModel(user: $user, vault: $vault)->filters())
             ->mapWithKeys(fn (array $chip): array => [$chip['key'] => $chip['count']]);
 
         $this->assertEquals(2, $chips['all']);
         $this->assertEquals(1, $chips['favourites']);
-        $this->assertEquals(1, $chips['names-only']);
+        $this->assertEquals(2, $chips['names-only']);
     }
 
     #[Test]

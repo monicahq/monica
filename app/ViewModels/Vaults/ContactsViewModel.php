@@ -24,9 +24,6 @@ class ContactsViewModel
     /** @var Paginator<int, Contact>|null */
     private ?Paginator $contacts = null;
 
-    /** @var array<string, int> */
-    private array $counts = [];
-
     /** @var list<ContactListColumn>|null */
     private ?array $columns = null;
 
@@ -339,7 +336,7 @@ class ContactsViewModel
 
     private function runCount(bool $favourites): int
     {
-        return $this->counts[$favourites ? 'favourites-first' : 'everybody-else'] ??= $this->matching()->where('is_favourite', $favourites)->count();
+        return $this->matchingTally()[(int) $favourites];
     }
 
     private function favouriteBefore(): ?bool
@@ -357,15 +354,71 @@ class ContactsViewModel
 
     private function countOf(ContactGroupingEnum $grouping): int
     {
-        return $this->counts[$grouping->value] ??= Contact::query()
-            ->where('vault_id', $this->vault->id)
-            ->inGrouping($grouping)
-            ->count();
+        $tally = $this->vaultTally();
+
+        return match ($grouping) {
+            ContactGroupingEnum::Everyone => $tally[0][0] + $tally[0][1],
+            ContactGroupingEnum::Favourites => $tally[0][1],
+            ContactGroupingEnum::NamesOnly => $tally[1][0] + $tally[1][1],
+        };
     }
 
     private function matchingCount(): int
     {
-        return once(fn (): int => $this->matching()->count());
+        return array_sum($this->matchingTally());
+    }
+
+    /**
+     * How many people the vault holds outside the archive, by whether they are only a name and
+     * whether they are a favourite. Every tab counts from this one query.
+     *
+     * @return array<int, array<int, int>>
+     */
+    private function vaultTally(): array
+    {
+        return once(function (): array {
+            $tally = [0 => [0 => 0, 1 => 0], 1 => [0 => 0, 1 => 0]];
+
+            $rows = Contact::query()
+                ->where('vault_id', $this->vault->id)
+                ->where('is_archived', false)
+                ->toBase()
+                ->select('is_partial', 'is_favourite')
+                ->selectRaw('count(*) as aggregate')
+                ->groupBy('is_partial', 'is_favourite')
+                ->get();
+
+            foreach ($rows as $row) {
+                $tally[(int) $row->is_partial][(int) $row->is_favourite] = (int) $row->aggregate;
+            }
+
+            return $tally;
+        });
+    }
+
+    /**
+     * How many people the list shows, the search included, by whether they are a favourite.
+     *
+     * @return array<int, int>
+     */
+    private function matchingTally(): array
+    {
+        return once(function (): array {
+            $tally = [0 => 0, 1 => 0];
+
+            $rows = $this->matching()
+                ->toBase()
+                ->select('is_favourite')
+                ->selectRaw('count(*) as aggregate')
+                ->groupBy('is_favourite')
+                ->get();
+
+            foreach ($rows as $row) {
+                $tally[(int) $row->is_favourite] = (int) $row->aggregate;
+            }
+
+            return $tally;
+        });
     }
 
     private function isNarrowed(): bool
