@@ -22,7 +22,9 @@ use Override;
  * and searched there. Every word must be found, in any order, as a word or as the start of one.
  *
  * MySQL, MariaDB and PostgreSQL search the columns through their full-text index. SQLite has none,
- * and falls back to LIKE, which is slower and does not rank by relevance.
+ * and falls back to LIKE, which is slower and does not rank by relevance. LIKE folds neither accents
+ * nor any capital outside ASCII, and finds a word only after the characters it is given, so on
+ * SQLite the columns hold a folded copy of the document and the words typed are folded the same way.
  */
 class MaterializedDatabaseEngine extends DatabaseEngine
 {
@@ -47,12 +49,18 @@ class MaterializedDatabaseEngine extends DatabaseEngine
         foreach ($models as $model) {
             $document = $model->searchableDocument();
 
-            $model->newQueryWithoutScopes()->whereKey($model->getKey())->toBase()->update([
+            $columns = [
                 'search_name' => $document['name'],
                 'search_body' => $document['body'],
                 'search_sensitive_body' => $document['sensitive_body'],
                 'search_linked_names' => $document['linked_names'],
-            ]);
+            ];
+
+            if ($model->getConnection()->getDriverName() === 'sqlite') {
+                $columns = array_map(SearchWords::foldForLike(...), $columns);
+            }
+
+            $model->newQueryWithoutScopes()->whereKey($model->getKey())->toBase()->update($columns);
         }
     }
 
@@ -98,6 +106,10 @@ class MaterializedDatabaseEngine extends DatabaseEngine
 
         $model = $builder->model;
         $connection = $builder->modelConnectionType();
+
+        if ($connection === 'sqlite') {
+            $words = array_map(SearchWords::foldForLike(...), $words);
+        }
         $like = $connection === 'pgsql' ? 'ilike' : 'like';
         $options = $this->getFullTextOptions($builder);
 

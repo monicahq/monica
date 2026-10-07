@@ -129,7 +129,7 @@ class RebuildSearchIndexCommandTest extends TestCase
             ->doesntExpectOutput('Emptied the search columns the database engine reads.')
             ->assertSuccessful();
 
-        $this->assertDatabaseHas('contacts', ['id' => $dwight->id, 'search_name' => 'Dwight Schrute']);
+        $this->assertEqualsIgnoringCase('Dwight Schrute', DB::table('contacts')->where('id', $dwight->id)->value('search_name'));
     }
 
     #[Test]

@@ -22,6 +22,10 @@ class MaterializedDatabaseEngineTest extends TestCase
     #[Test]
     public function it_writes_what_a_record_says_to_its_search_columns_when_it_is_saved(): void
     {
+        if (DB::connection()->getDriverName() === 'sqlite') {
+            $this->markTestSkipped('SQLite holds a folded copy of the document, which the next test proves.');
+        }
+
         config(['scout.driver' => 'database']);
         $vault = $this->vault();
         $dwight = $this->contact($vault, 'Dwight', 'Schrute', ['Employer' => 'Schrute Farms'], ['Beet recipe' => 'brine']);
@@ -31,6 +35,18 @@ class MaterializedDatabaseEngineTest extends TestCase
         $this->assertSame('Dwight Schrute', $columns->search_name);
         $this->assertSame('Schrute Farms', $columns->search_body);
         $this->assertSame('brine', $columns->search_sensitive_body);
+    }
+
+    #[Test]
+    public function it_writes_a_folded_copy_of_what_a_record_says_on_sqlite(): void
+    {
+        $this->searchWithLike();
+        $oscar = $this->contact($this->vault(), 'Óscar', 'Martínez', ['Email' => 'oscar@dunder-mifflin.com']);
+
+        $columns = DB::table('contacts')->where('id', $oscar->id)->first(['search_name', 'search_body']);
+
+        $this->assertSame('oscar martinez', $columns->search_name);
+        $this->assertSame('oscar dunder mifflin com', $columns->search_body);
     }
 
     #[Test]
@@ -56,6 +72,32 @@ class MaterializedDatabaseEngineTest extends TestCase
         $this->assertSame([$dwight->id], Contact::search('schru')->get()->modelKeys());
         $this->assertSame([], Contact::search('farms jim')->get()->modelKeys());
         $this->assertSame([], Contact::search('alpert')->get()->modelKeys());
+    }
+
+    #[Test]
+    public function it_finds_a_word_after_an_apostrophe_an_at_sign_or_a_dot(): void
+    {
+        $this->searchWithLike();
+        $vault = $this->vault();
+        $conan = $this->contact($vault, 'Conan', "O'Brien");
+        $jim = $this->contact($vault, 'Jim', 'Halpert', ['Email' => 'jim@dundermifflin.com']);
+
+        $this->assertSame([$conan->id], Contact::search('brien')->get()->modelKeys());
+        $this->assertSame([$jim->id], Contact::search('dundermifflin')->get()->modelKeys());
+        $this->assertSame([$jim->id], Contact::search('com')->get()->modelKeys());
+    }
+
+    #[Test]
+    public function it_finds_a_word_whatever_its_accents_and_capitals(): void
+    {
+        $this->searchWithLike();
+        $vault = $this->vault();
+        $oscar = $this->contact($vault, 'Óscar', 'Martínez');
+        $angela = $this->contact($vault, 'Angela', 'Martin');
+
+        $this->assertSame([$oscar->id], Contact::search('oscar martinez')->get()->modelKeys());
+        $this->assertSame([$oscar->id], Contact::search('ÓSCAR')->get()->modelKeys());
+        $this->assertSame([$angela->id], Contact::search('ANGÉLA')->get()->modelKeys());
     }
 
     #[Test]
