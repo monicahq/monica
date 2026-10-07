@@ -47,6 +47,18 @@ class GenerateDueReminderOccurrencesTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_a_rule_alone_until_its_window_reaches_the_next_deadline(): void
+    {
+        CarbonImmutable::setTestNow('2027-05-01 06:00:00');
+        $reminder = $this->rule('1984-05-12');
+        $reminder->update(['generate_from' => '2027-05-02 06:00:00']);
+
+        new GenerateDueReminderOccurrences()->handle();
+
+        $this->assertDatabaseCount('reminder_occurrences', 0);
+    }
+
+    #[Test]
     public function it_writes_nothing_new_when_it_runs_again(): void
     {
         CarbonImmutable::setTestNow('2027-05-01 06:00:00');
@@ -67,6 +79,7 @@ class GenerateDueReminderOccurrencesTest extends TestCase
             'vault_id' => $value->vault_id,
             'field_id' => $value->field_id,
             'remindable_id' => $value->valuable_id,
+            'generate_from' => now(),
         ]);
     }
 }

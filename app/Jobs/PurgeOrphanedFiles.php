@@ -16,6 +16,10 @@ use Illuminate\Foundation\Queue\Queueable;
  * Sweep up the files nothing points at any more, once they have sat orphaned for the grace period.
  * That period has to outlast the window in which a record can be restored, so restoring one still
  * finds the file it pointed at.
+ *
+ * The files a snapshot still names are read one account at a time and compared in memory, rather
+ * than handed to the database as one `NOT IN` list: that list grows with every snapshot of the
+ * instance and outruns the number of bound parameters SQLite accepts.
  */
 class PurgeOrphanedFiles implements ShouldQueue
 {
@@ -29,14 +33,19 @@ class PurgeOrphanedFiles implements ShouldQueue
             ->where('reference_count', 0)
             ->whereNotNull('orphaned_at')
             ->where('orphaned_at', '<=', $cutoff)
-            ->whereNotIn('id', RecordSnapshot::fileIdsInUse())
-            ->with('account')
             ->get()
             ->groupBy('account_id')
             ->each(function ($files, int $accountId): void {
                 $account = Account::query()->find($accountId);
 
                 if ($account === null) {
+                    return;
+                }
+
+                $inUse = RecordSnapshot::fileIdsInUse($account);
+                $files = $files->reject(fn (File $file): bool => in_array($file->id, $inUse, true));
+
+                if ($files->isEmpty()) {
                     return;
                 }
 

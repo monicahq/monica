@@ -55,6 +55,10 @@ use Override;
  * deleting is the only way somebody stops a rule, and it is a soft delete, so
  * the answers given to its past deadlines stay readable.
  *
+ * Deadlines are written ahead over a rolling window. `generate_from` is the
+ * instant that window reaches the first deadline not written yet, so the nightly
+ * pass only touches the rules that have something new to write.
+ *
  * @property int $id
  * @property string $uuid
  * @property int $account_id
@@ -71,6 +75,7 @@ use Override;
  * @property string $time_of_day
  * @property string $timezone
  * @property int $schedule_revision
+ * @property CarbonImmutable|null $generate_from
  * @property bool $is_active
  * @property ReminderInactiveReasonEnum|null $inactive_reason
  * @property CarbonImmutable|null $deactivated_at
@@ -102,6 +107,7 @@ use Override;
     'time_of_day',
     'timezone',
     'schedule_revision',
+    'generate_from',
     'is_active',
     'inactive_reason',
     'deactivated_at',
@@ -157,6 +163,7 @@ class Reminder extends Model
             'cadence' => ReminderCadenceEnum::class,
             'frequency_interval' => 'integer',
             'schedule_revision' => 'integer',
+            'generate_from' => 'immutable_datetime',
             'starts_on' => 'immutable_date',
             'is_active' => 'boolean',
             'inactive_reason' => ReminderInactiveReasonEnum::class,

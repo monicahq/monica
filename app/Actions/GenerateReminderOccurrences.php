@@ -13,7 +13,8 @@ use Illuminate\Support\Str;
 
 /**
  * Turn one rule into the concrete deadlines it produces between now and the far end of the rolling
- * window.
+ * window, and note when that window will reach the next deadline, so the nightly pass leaves the rule
+ * alone until then.
  */
 class GenerateReminderOccurrences
 {
@@ -27,6 +28,8 @@ class GenerateReminderOccurrences
     public function execute(): int
     {
         if (! $this->produces()) {
+            $this->reminder->update(['generate_from' => null]);
+
             return 0;
         }
 
@@ -49,12 +52,14 @@ class GenerateReminderOccurrences
     private function generate(): void
     {
         $now = CarbonImmutable::now();
+        $window = (int) config('monica.reminder_generation_window_in_days');
+        $until = $this->until ?? $now->addDays($window);
         $rows = [];
 
         $occurrences = ReminderSchedule::occurrencesBetween(
             reminder: $this->reminder,
             from: $now,
-            to: $this->until ?? $now->addDays((int) config('monica.reminder_generation_window_in_days')),
+            to: $until,
         );
 
         $taken = ReminderOccurrence::query()
@@ -86,5 +91,23 @@ class GenerateReminderOccurrences
         foreach (array_chunk($rows, 200) as $chunk) {
             $this->written += ReminderOccurrence::query()->insertOrIgnore($chunk);
         }
+
+        $this->reminder->update(['generate_from' => $this->firstDeadlineAfter($until)?->subDays($window)]);
+    }
+
+    private function firstDeadlineAfter(CarbonImmutable $until): ?CarbonImmutable
+    {
+        $day = $until->setTimezone($this->reminder->timezone)->startOfDay();
+        $date = ReminderSchedule::nextDate(reminder: $this->reminder, from: $day);
+
+        if ($date !== null && ReminderSchedule::instantOf(reminder: $this->reminder, localDate: $date)->lessThanOrEqualTo($until)) {
+            $date = ReminderSchedule::nextDate(reminder: $this->reminder, from: $day->addDay());
+        }
+
+        if ($date === null) {
+            return null;
+        }
+
+        return ReminderSchedule::instantOf(reminder: $this->reminder, localDate: $date);
     }
 }

@@ -17,6 +17,7 @@ use App\Models\ValueList;
 use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -352,6 +353,20 @@ class DetectDuplicateContactsTest extends TestCase
         ]);
 
         $this->assertEquals('scranton strangler', $contact->match_key);
+    }
+
+    #[Test]
+    public function it_queues_one_pass_per_vault_when_given_nothing(): void
+    {
+        Queue::fake();
+        $dunderMifflin = Vault::factory()->create();
+        $sabre = Vault::factory()->create();
+
+        new DetectDuplicateContacts()->handle();
+
+        Queue::assertPushedOn('low', DetectDuplicateContacts::class, fn (DetectDuplicateContacts $job): bool => $job->uniqueId() === "{$dunderMifflin->getMorphClass()}:{$dunderMifflin->id}");
+        Queue::assertPushedOn('low', DetectDuplicateContacts::class, fn (DetectDuplicateContacts $job): bool => $job->uniqueId() === "{$sabre->getMorphClass()}:{$sabre->id}");
+        Queue::assertPushed(DetectDuplicateContacts::class, 2);
     }
 
     #[Test]

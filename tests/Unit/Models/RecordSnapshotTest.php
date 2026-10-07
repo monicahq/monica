@@ -47,19 +47,20 @@ class RecordSnapshotTest extends TestCase
     }
 
     #[Test]
-    public function it_names_every_file_a_live_snapshot_still_points_at(): void
+    public function it_names_every_file_a_live_snapshot_of_the_account_still_points_at(): void
     {
-        RecordSnapshot::factory()->holding([4, 8])->create();
-        RecordSnapshot::factory()->holding([8, 15])->create();
+        $snapshot = RecordSnapshot::factory()->holding([4, 8])->create();
+        RecordSnapshot::factory()->holding([8, 15])->create(['account_id' => $snapshot->account_id]);
+        RecordSnapshot::factory()->holding([16, 23])->create();
 
-        $this->assertEqualsCanonicalizing([4, 8, 15], RecordSnapshot::fileIdsInUse());
+        $this->assertEqualsCanonicalizing([4, 8, 15], RecordSnapshot::fileIdsInUse(account: $snapshot->account));
     }
 
     #[Test]
     public function it_names_no_file_when_no_snapshot_points_at_one(): void
     {
-        RecordSnapshot::factory()->create();
+        $snapshot = RecordSnapshot::factory()->create();
 
-        $this->assertEquals([], RecordSnapshot::fileIdsInUse());
+        $this->assertEquals([], RecordSnapshot::fileIdsInUse(account: $snapshot->account));
     }
 }

@@ -162,16 +162,17 @@ class RecordSnapshot extends Model
     }
 
     /**
-     * Every file any live snapshot points at. The orphan sweep asks this before
-     * it takes anything: the grace period exists precisely so that restoring an
-     * older state recovers a file detached a moment ago, and a file a snapshot
-     * still names is not swept whatever its reference count says.
+     * Every file a live snapshot of the account points at. The orphan sweep asks
+     * this before it takes anything: the grace period exists precisely so that
+     * restoring an older state recovers a file detached a moment ago, and a file
+     * a snapshot still names is not swept whatever its reference count says.
      *
      * @return list<int>
      */
-    public static function fileIdsInUse(): array
+    public static function fileIdsInUse(Account $account): array
     {
         return self::query()
+            ->where('account_id', $account->id)
             ->select('file_ids')
             ->get()
             ->flatMap(fn (self $snapshot): array => $snapshot->file_ids)

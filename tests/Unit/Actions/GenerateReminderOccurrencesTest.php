@@ -206,6 +206,30 @@ class GenerateReminderOccurrencesTest extends TestCase
     }
 
     #[Test]
+    public function it_notes_when_the_window_will_reach_the_next_deadline_it_has_not_written(): void
+    {
+        CarbonImmutable::setTestNow('2027-05-01 06:00:00');
+        config(['monica.reminder_generation_window_in_days' => 90]);
+        $reminder = $this->rule('1984-05-12');
+
+        new GenerateReminderOccurrences(reminder: $reminder)->execute();
+
+        $this->assertSame('2028-02-12 07:00:00', $reminder->refresh()->generate_from->format('Y-m-d H:i:s'));
+    }
+
+    #[Test]
+    public function it_notes_nothing_to_come_once_a_rule_has_written_its_last_deadline(): void
+    {
+        CarbonImmutable::setTestNow('2027-05-01 06:00:00');
+        $reminder = $this->rule('2027-05-12', ReminderCadenceEnum::Once);
+        $reminder->update(['generate_from' => now()]);
+
+        new GenerateReminderOccurrences(reminder: $reminder)->execute();
+
+        $this->assertNull($reminder->refresh()->generate_from);
+    }
+
+    #[Test]
     public function it_gives_a_deadline_a_new_identity_once_the_schedule_has_changed(): void
     {
         CarbonImmutable::setTestNow('2027-05-01 06:00:00');

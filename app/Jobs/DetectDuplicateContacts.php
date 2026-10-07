@@ -20,8 +20,9 @@ use Illuminate\Support\Facades\Log;
  * Work out which contacts of a vault look like the same person. It proposes, and a person decides.
  *
  * It is on a queue because it must never be on the path of a save. Given a vault rather than a
- * contact it looks at the whole vault, which is what runs nightly and is the only thing that
- * notices a template that has just gained an identifying field.
+ * contact it looks at the whole vault, which is the only thing that notices a template that has just
+ * gained an identifying field. Given nothing, which is what runs nightly, it queues one pass per
+ * vault, so no single job grows with the instance and one vault failing leaves the others done.
  */
 class DetectDuplicateContacts implements ShouldBeUnique, ShouldQueue
 {
@@ -67,14 +68,14 @@ class DetectDuplicateContacts implements ShouldBeUnique, ShouldQueue
     {
         $vaults = 0;
 
-        Vault::query()->chunkById(100, function ($chunk) use (&$vaults): void {
+        Vault::query()->select('id')->chunkById(500, function ($chunk) use (&$vaults): void {
             foreach ($chunk as $vault) {
                 $vaults++;
-                new self($vault)->handle();
+                self::dispatch($vault)->onQueue('low');
             }
         });
 
-        Log::info('Looked for duplicate contacts.', ['vaults' => $vaults]);
+        Log::info('Queued a search for duplicate contacts in every vault.', ['vaults' => $vaults]);
     }
 
     /**
