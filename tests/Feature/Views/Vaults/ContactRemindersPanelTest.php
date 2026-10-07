@@ -82,9 +82,22 @@ class ContactRemindersPanelTest extends TestCase
     }
 
     #[Test]
-    public function add_unfolds_a_form_that_writes_the_reminder_and_redraws_the_panel_alone(): void
+    public function add_fetches_the_form_rather_than_carrying_it_on_every_visit(): void
     {
         $this->overview()
+            ->assertSee('\u0022formUrl\u0022:\u0022http', false)
+            ->assertSee('reminder-form', false)
+            ->assertDontSee('aria-controls="contact-reminder-form"', false)
+            ->assertDontSee('id="contact-reminder-form"', false)
+            ->assertDontSee('What should we remind you about?');
+    }
+
+    #[Test]
+    public function add_unfolds_a_form_that_writes_the_reminder_and_redraws_the_panel_alone(): void
+    {
+        $this->reminderForm()
+            ->assertSee('\u0022adding\u0022:true', false)
+            ->assertSee('\u0022formUrl\u0022:null', false)
             ->assertSee('aria-controls="contact-reminder-form"', false)
             ->assertSee('id="contact-reminder-form"', false)
             ->assertSee('action="'.route('contacts.reminders.create', ['vault' => $this->vault, 'contact' => $this->michael]).'"', false)
@@ -106,7 +119,7 @@ class ContactRemindersPanelTest extends TestCase
     {
         $this->user->update(['timezone' => 'America/Toronto']);
 
-        $this->overview()
+        $this->reminderForm()
             ->assertSee('aria-controls="contact-reminder-time"', false)
             ->assertSee('name="time"', false)
             ->assertSee('value="09:00"', false)
@@ -151,6 +164,13 @@ class ContactRemindersPanelTest extends TestCase
         return $this->actingAs($this->user)
             ->get(route('contacts.show', ['vault' => $this->vault, 'contact' => $this->michael]))
             ->assertStatus(200);
+    }
+
+    private function reminderForm(): TestResponse
+    {
+        return $this->actingAs($this->user)
+            ->get(route('contacts.reminderForm.new', ['vault' => $this->vault, 'contact' => $this->michael]))
+            ->assertOk();
     }
 
     private function deadline(string $name, string $day): ReminderOccurrence

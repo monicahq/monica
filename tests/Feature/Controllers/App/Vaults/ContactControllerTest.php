@@ -1101,6 +1101,27 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_asks_before_deleting_a_life_event_through_one_shared_card(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user, 'Someone in the family');
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        $dinner = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Dinner party at the condo']);
+        $fire = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Fire drill']);
+        LifeEventParticipant::factory()->create(['life_event_id' => $dinner->id, 'participant_id' => $michael->id]);
+        LifeEventParticipant::factory()->create(['life_event_id' => $fire->id, 'participant_id' => $michael->id]);
+
+        $response = $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertOk()
+            ->assertSee('data-destroy-url="'.route('contacts.lifeEvents.destroy', ['vault' => $vault, 'contact' => $michael, 'lifeEvent' => $dinner]).'"', escape: false)
+            ->assertSee('data-destroy-url="'.route('contacts.lifeEvents.destroy', ['vault' => $vault, 'contact' => $michael, 'lifeEvent' => $fire]).'"', escape: false)
+            ->assertSee('It is removed from the timeline of Michael. The people stay.')
+            ->assertSee('x-on:confirm-life-event-deletion.window', escape: false);
+
+        $this->assertSame(1, substr_count($response->getContent(), 'aria-label="Delete this life event?"'));
+    }
+
+    #[Test]
     public function it_links_the_other_people_on_the_timeline_who_have_a_page(): void
     {
         $user = User::factory()->create();
@@ -1131,7 +1152,8 @@ class ContactControllerTest extends TestCase
             ->assertOk()
             ->assertSee('Add a life event')
             ->assertSee('x-data="lifeEventPanel(', escape: false)
-            ->assertSee('aria-controls="life-event-panel"', escape: false)
+            ->assertDontSee('aria-controls="life-event-panel"', escape: false)
+            ->assertDontSee('Step 1 of 2 · Choose what happened')
             ->assertSee('Nothing on Michael’s timeline yet')
             ->assertDontSee('You added Michael Scott')
             ->assertDontSee('Write a note');

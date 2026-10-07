@@ -143,6 +143,29 @@ class ContactLifeEventControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_opens_the_panel_to_record_a_life_event(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+
+        $this->actingAs($user)
+            ->get(route('contacts.lifeEvents.new', ['vault' => $vault, 'contact' => $jim]))
+            ->assertOk()
+            ->assertSee('Step 1 of 2 · Choose what happened')
+            ->assertSee('aria-controls="life-event-panel"', escape: false);
+    }
+
+    #[Test]
+    public function it_does_not_open_the_panel_for_a_contact_through_another_vault(): void
+    {
+        [$user, , $jim] = $this->jim();
+        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)
+            ->get(route('contacts.lifeEvents.new', ['vault' => $elsewhere, 'contact' => $jim]))
+            ->assertNotFound();
+    }
+
+    #[Test]
     public function it_opens_the_panel_filled_in_to_correct_a_life_event(): void
     {
         Queue::fake();

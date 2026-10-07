@@ -18,17 +18,13 @@ class ImmediateFamilyBlock
     /** @return array<int, array{name: string, url: string|null, avatarUrl: string|null, age: int|null, note: string|null}> */
     public function children(): array
     {
-        return once(fn (): array => $this->rows(
-            Contact::query()->childrenOf($this->contact)->with('avatar')->orderBy('sort_key')->get()
-        ));
+        return once(fn (): array => $this->rows($this->childContacts()));
     }
 
     /** @return array<int, array{name: string, url: string|null, avatarUrl: string|null, age: int|null, note: string|null}> */
     public function currentPartners(): array
     {
-        return once(fn (): array => $this->rows(
-            Contact::query()->currentPartnersOf($this->contact)->with('avatar')->orderBy('sort_key')->get()
-        ));
+        return once(fn (): array => $this->rows($this->partnerContacts()));
     }
 
     public function childCount(): int
@@ -82,7 +78,7 @@ class ImmediateFamilyBlock
      */
     private function rows(Collection $people): array
     {
-        $ages = ContactAges::of($people->modelKeys());
+        $ages = $this->ages();
 
         return $people
             ->map(fn (Contact $person): array => [
@@ -98,5 +94,26 @@ class ImmediateFamilyBlock
             ])
             ->values()
             ->all();
+    }
+
+    /** @return Collection<int, Contact> */
+    private function childContacts(): Collection
+    {
+        return once(fn (): Collection => Contact::query()->childrenOf($this->contact)->with('avatar')->orderBy('sort_key')->get());
+    }
+
+    /** @return Collection<int, Contact> */
+    private function partnerContacts(): Collection
+    {
+        return once(fn (): Collection => Contact::query()->currentPartnersOf($this->contact)->with('avatar')->orderBy('sort_key')->get());
+    }
+
+    /** @return array<int, int> */
+    private function ages(): array
+    {
+        return once(fn (): array => ContactAges::of([
+            ...$this->childContacts()->modelKeys(),
+            ...$this->partnerContacts()->modelKeys(),
+        ]));
     }
 }

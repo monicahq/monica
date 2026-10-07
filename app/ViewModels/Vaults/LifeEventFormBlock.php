@@ -22,7 +22,19 @@ class LifeEventFormBlock
         private readonly Vault $vault,
         private readonly Contact $contact,
         private readonly ?LifeEvent $lifeEvent = null,
+        private readonly bool $isAskedFor = false,
     ) {}
+
+    /**
+     * Whether the page carries the panel. It is fetched when the reader asks
+     * for it, so the catalogue of types is loaded only by the page that shows
+     * it: the one asked for, the one correcting a life event, and the one a
+     * refused form comes back to.
+     */
+    public function isRendered(): bool
+    {
+        return $this->isAskedFor || $this->isEditing() || $this->oldType() instanceof LifeEventType;
+    }
 
     public function isEditing(): bool
     {
@@ -136,6 +148,11 @@ class LifeEventFormBlock
         return route('contacts.lifeEvents.create', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
+    public function newUrl(): string
+    {
+        return route('contacts.lifeEvents.new', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
     public function candidatesUrl(): string
     {
         return route('contacts.lifeEventCandidates.index', ['vault' => $this->vault, 'contact' => $this->contact]);
@@ -236,10 +253,13 @@ class LifeEventFormBlock
 
         $defaultDate = $this->lifeEvent?->happened_on->toDateString() ?? $this->today();
 
+        $categories = $this->isRendered() ? $this->categories() : [];
+
         return [
             'step' => $oldType instanceof LifeEventType ? 'details' : 'pick',
-            'open' => $oldType instanceof LifeEventType,
-            'category' => $oldType->life_event_category_id ?? ($this->categories()[0]['id'] ?? null),
+            'open' => $this->isAskedFor || $oldType instanceof LifeEventType,
+            'newUrl' => $this->isRendered() ? null : $this->newUrl(),
+            'category' => $oldType->life_event_category_id ?? ($categories[0]['id'] ?? null),
             'type' => $oldType instanceof LifeEventType ? [
                 'id' => $oldType->id,
                 'name' => $oldType->name,
@@ -248,7 +268,7 @@ class LifeEventFormBlock
             'people' => $this->oldParticipants(),
             'date' => (string) old('happened_on', $defaultDate),
             'today' => $this->today(),
-            'types' => collect($this->categories())->flatMap(fn (array $category): array => $category['types'])
+            'types' => collect($categories)->flatMap(fn (array $category): array => $category['types'])
                 ->map(fn (array $type): array => ['id' => $type['id'], 'name' => $type['name'], 'categoryName' => $type['categoryName']])
                 ->values()
                 ->all(),
@@ -265,7 +285,7 @@ class LifeEventFormBlock
             ],
             'candidatesUrl' => $this->candidatesUrl(),
             'cancelUrl' => $this->cancelUrl(),
-            'resultHeadings' => $this->resultHeadings(),
+            'resultHeadings' => $this->isRendered() ? $this->resultHeadings() : [],
             'copy' => [
                 'noMatch' => __('No type matches “:query”'),
                 'keep' => __('The date and the people stay as they are.'),

@@ -34,6 +34,20 @@ use Illuminate\View\View;
 
 class ContactLifeEventController extends Controller
 {
+    public function new(Request $request, Vault $vault, Contact $contact): View
+    {
+        abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
+
+        return view('app.vaults.contacts.show', [
+            'viewModel' => new ContactViewModel(
+                user: $request->user(),
+                vault: $vault,
+                contact: $contact,
+                opensLifeEventPanel: true,
+            ),
+        ]);
+    }
+
     public function create(Request $request, Vault $vault, Contact $contact): RedirectResponse
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);

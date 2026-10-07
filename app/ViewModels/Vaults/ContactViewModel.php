@@ -53,6 +53,8 @@ class ContactViewModel
         private readonly ?int $lifeEventEditedId = null,
         private readonly ?string $deletedLifeEventUuid = null,
         private readonly ?string $deletedLifeEventLine = null,
+        private readonly bool $opensLifeEventPanel = false,
+        private readonly bool $opensReminderForm = false,
     ) {}
 
     /** @return Collection<int, FieldValue> */
@@ -219,7 +221,8 @@ class ContactViewModel
     {
         return once(function (): ?array {
             $current = $this->contact->structureVersion;
-            $published = $current->structure->publishedVersion;
+            $structure = $current->structure;
+            $published = $structure->published_version_id === $current->id ? $current : $structure->publishedVersion;
 
             if ($published === null || $published->version_number <= $current->version_number) {
                 return null;
@@ -807,6 +810,7 @@ class ContactViewModel
             user: $this->user,
             vault: $this->vault,
             contact: $this->contact,
+            isAskedFor: $this->opensReminderForm,
         ));
     }
 
@@ -830,6 +834,7 @@ class ContactViewModel
             vault: $this->vault,
             contact: $this->contact,
             lifeEvent: $this->editingLifeEvent,
+            isAskedFor: $this->opensLifeEventPanel,
         ));
     }
 

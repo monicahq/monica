@@ -9,9 +9,12 @@
       'time' => old('time', $form->time()),
       'zone' => old('timezone', $form->timezone()),
       'timeOpen' => $errors->has('time') || $errors->has('timezone'),
+      'formUrl' => $deadlines->isFormRendered() ? null : $deadlines->formUrl(),
   ];
 @endphp
-<div id="contact-reminder-panel" x-merge="replace" x-data="@js($state)">
+<div id="contact-reminder-panel" x-merge="replace" x-data="@js($state)"
+  @if ($deadlines->isAskedFor()) x-init="$nextTick(() => document.getElementById('contact-reminder-name')?.focus())" @endif
+>
   <x-panel :title="__('Reminders')" icon="reminder" :flush="true" :clip="false" x-show="!adding">
     @if ($deadlines->canAdd())
       <x-slot:action>
@@ -19,9 +22,9 @@
           type="button"
           size="small"
           x-ref="addButton"
-          aria-controls="contact-reminder-form"
+          :aria-controls="$deadlines->isFormRendered() ? 'contact-reminder-form' : null"
           x-bind:aria-expanded="adding ? 'true' : 'false'"
-          x-on:click="adding = true; $nextTick(() => document.getElementById('contact-reminder-name').focus())"
+          x-on:click="formUrl ? $ajax(formUrl, { target: 'contact-reminder-panel' }) : (adding = true, $nextTick(() => document.getElementById('contact-reminder-name').focus()))"
         >{{ __('Add') }}</x-button.secondary>
       </x-slot:action>
     @endif
@@ -129,7 +132,7 @@
     @endunless
   </x-panel>
 
-  @if ($deadlines->canAdd())
+  @if ($deadlines->isFormRendered())
     <x-form
       id="contact-reminder-form"
       :action="$form->actionUrl()"

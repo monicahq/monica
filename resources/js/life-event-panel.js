@@ -11,8 +11,13 @@ export default (projection) => ({
     candidatesUrl: projection.candidatesUrl,
     copy: projection.copy,
     cancelUrl: projection.cancelUrl,
+    newUrl: projection.newUrl,
 
     init() {
+        if (this.open && this.step === 'pick') {
+            this.focusOn('life-event-type-search');
+        }
+
         if (this.cancelUrl && this.open) {
             this.$nextTick(() => {
                 document.getElementById('life-event-panel')?.scrollIntoView({ block: 'start' });
@@ -54,6 +59,12 @@ export default (projection) => ({
     },
 
     show() {
+        if (this.newUrl) {
+            this.$ajax(this.newUrl, { target: 'contact-timeline' });
+
+            return;
+        }
+
         this.open = true;
         this.focusOn('life-event-type-search');
     },

@@ -91,6 +91,30 @@ class LifeEventFormBlockTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_the_catalogue_of_types_to_the_page_that_asks_for_the_panel(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+        $work = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Work']);
+        LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $work->id, 'name' => 'Sales call']);
+
+        $closed = $this->block($user, $vault, $jim)->projection();
+
+        $this->assertFalse($this->block($user, $vault, $jim)->isRendered());
+        $this->assertFalse($closed['open']);
+        $this->assertEquals([], $closed['types']);
+        $this->assertEquals(route('contacts.lifeEvents.new', ['vault' => $vault, 'contact' => $jim]), $closed['newUrl']);
+
+        $askedFor = new LifeEventFormBlock(user: $user, vault: $vault, contact: $jim, isAskedFor: true);
+        $projection = $askedFor->projection();
+
+        $this->assertTrue($askedFor->isRendered());
+        $this->assertTrue($projection['open']);
+        $this->assertEquals('pick', $projection['step']);
+        $this->assertEquals(['Sales call'], array_column($projection['types'], 'name'));
+        $this->assertNull($projection['newUrl']);
+    }
+
+    #[Test]
     public function it_reopens_where_the_reader_was_when_the_form_came_back_refused(): void
     {
         Queue::fake();
@@ -111,6 +135,7 @@ class LifeEventFormBlockTest extends TestCase
 
         $this->assertEquals('details', $projection['step']);
         $this->assertTrue($projection['open']);
+        $this->assertNull($projection['newUrl']);
         $this->assertEquals('Call', $projection['type']['name']);
         $this->assertEquals([['id' => $pam->id, 'name' => 'Pam Beesly']], $projection['people']);
         $this->assertEquals(['title', "field-{$channel->id}"], $projection['openPieces']);

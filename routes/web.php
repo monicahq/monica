@@ -105,6 +105,7 @@ use App\Http\Controllers\App\Vaults\ContactMergeController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
 use App\Http\Controllers\App\Vaults\ContactRelationshipController;
 use App\Http\Controllers\App\Vaults\ContactReminderController;
+use App\Http\Controllers\App\Vaults\ContactReminderFormController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\ContactShareLinkController;
 use App\Http\Controllers\App\Vaults\ContactStructureVersionController;
@@ -302,6 +303,9 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::post('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'create'])
         ->name('contacts.merge.create');
 
+    Route::get('vaults/{vault}/contacts/{contact}/life-events/new', [ContactLifeEventController::class, 'new'])
+        ->name('contacts.lifeEvents.new');
+
     Route::post('vaults/{vault}/contacts/{contact}/life-events', [ContactLifeEventController::class, 'create'])
         ->name('contacts.lifeEvents.create');
 
@@ -340,6 +344,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->name('contacts.relationships.destroy');
 
     Route::get('vaults/{vault}/contacts/{contact}/reminders/new', [ContactReminderController::class, 'new'])->name('contacts.reminders.new');
+    Route::get('vaults/{vault}/contacts/{contact}/reminder-form', [ContactReminderFormController::class, 'new'])->name('contacts.reminderForm.new');
     Route::post('vaults/{vault}/contacts/{contact}/reminders', [ContactReminderController::class, 'create'])->name('contacts.reminders.create');
     Route::get('vaults/{vault}/contacts/{contact}/reminders/{reminder}/edit', [ContactReminderController::class, 'edit'])
         ->whereUuid('reminder')

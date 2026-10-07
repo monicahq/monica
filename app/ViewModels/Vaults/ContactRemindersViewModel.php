@@ -170,8 +170,8 @@ class ContactRemindersViewModel
             ->active()
             ->whereDate('local_date', '<=', $today->toDateString())
             ->orderBy('local_date')
-            ->with('vault')
-            ->get();
+            ->get()
+            ->each($this->attachVault(...));
 
         foreach ($waiting as $occurrence) {
             $occurrence->setRelation('reminder', $this->rules()->find($occurrence->reminder_id));
@@ -188,8 +188,8 @@ class ContactRemindersViewModel
             ->whereIn('reminder_id', $this->rules()->modelKeys())
             ->answered()
             ->orderByDesc('answered_at')
-            ->with('vault')
             ->get()
+            ->each($this->attachVault(...))
             ->map(fn (ReminderOccurrence $occurrence): ReminderRow => $this->rowFor(
                 $occurrence->setRelation('reminder', $this->rules()->find($occurrence->reminder_id)),
             ))
@@ -205,8 +205,26 @@ class ContactRemindersViewModel
             ->where('account_id', $this->contact->account_id)
             ->where('remindable_type', $this->contact->getMorphClass())
             ->where('remindable_id', $this->contact->id)
-            ->with(['vault', 'field', 'fieldValue', 'remindable'])
-            ->get());
+            ->with(['field', 'fieldValue'])
+            ->get()
+            ->each(function (Reminder $rule): void {
+                $rule->setRelation('remindable', $this->contact);
+                $this->attachVault($rule);
+            }));
+    }
+
+    /**
+     * Every reminder of the contact is kept in the contact's vault, which is
+     * already loaded, so it is handed over rather than fetched again. A record
+     * kept elsewhere still loads its own.
+     */
+    private function attachVault(Reminder|ReminderOccurrence $record): void
+    {
+        if ($record->vault_id !== $this->vault->id) {
+            return;
+        }
+
+        $record->setRelation('vault', $this->vault);
     }
 
     /** @return EloquentCollection<int, Reminder> */

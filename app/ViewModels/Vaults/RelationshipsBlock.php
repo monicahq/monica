@@ -58,7 +58,7 @@ class RelationshipsBlock
 
     public function total(): int
     {
-        return array_sum(array_column($this->groups(), 'count'));
+        return once(fn (): int => Relationship::query()->forContact($this->contact)->count());
     }
 
     public function emptyLine(): string

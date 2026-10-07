@@ -19,6 +19,7 @@ class ContactDeadlinesBlock
         private readonly User $user,
         private readonly Vault $vault,
         private readonly Contact $contact,
+        private readonly bool $isAskedFor = false,
     ) {}
 
     /** @return list<array{category: string, row: ReminderRow}> */
@@ -94,7 +95,27 @@ class ContactDeadlinesBlock
 
     public function isAdding(): bool
     {
-        return old('cadence') !== null;
+        return $this->isAskedFor || old('cadence') !== null;
+    }
+
+    public function isAskedFor(): bool
+    {
+        return $this->isAskedFor;
+    }
+
+    /**
+     * Whether the page carries the form. It is fetched when the reader asks
+     * for it, so the page that only lists the reminders is spared the list of
+     * every time zone.
+     */
+    public function isFormRendered(): bool
+    {
+        return $this->canAdd() && $this->isAdding();
+    }
+
+    public function formUrl(): string
+    {
+        return route('contacts.reminderForm.new', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
     public function form(): ContactReminderForm

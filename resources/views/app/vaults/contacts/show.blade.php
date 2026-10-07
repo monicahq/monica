@@ -166,7 +166,7 @@
               x-ref="addButton"
               x-on:click="show()"
               x-bind:aria-expanded="open ? 'true' : 'false'"
-              aria-controls="life-event-panel"
+              :aria-controls="$viewModel->lifeEventForm()->isRendered() ? 'life-event-panel' : null"
               x-bind:disabled="open"
             >
               <x-slot:icon><x-icon name="plus" :size="16" /></x-slot:icon>
@@ -194,9 +194,9 @@
             </div>
           @endif
 
-          @unless ($viewModel->lifeEventForm()->isEditing() && $viewModel->timeline()->lists((int) $viewModel->lifeEventForm()->editingId()))
+          @if ($viewModel->lifeEventForm()->isRendered() && ! ($viewModel->lifeEventForm()->isEditing() && $viewModel->timeline()->lists((int) $viewModel->lifeEventForm()->editingId())))
             @include('app.vaults.contacts._life-event-panel', ['form' => $viewModel->lifeEventForm()])
-          @endunless
+          @endif
 
           @include('app.vaults.contacts._timeline', ['timeline' => $viewModel->timeline(), 'form' => $viewModel->lifeEventForm()])
         </section>
