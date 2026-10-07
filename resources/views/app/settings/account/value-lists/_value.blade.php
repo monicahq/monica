@@ -5,6 +5,8 @@
 --}}
 @php
   $valueErrors = $errors->getBag('value'.$value['id']);
+  $isEditing = $value['isEditing'] || $valueErrors->has('label');
+  $rowId = 'value-'.$value['id'];
 @endphp
 
 <x-sortable-row
@@ -12,73 +14,72 @@
   :action="route('settings.valueListItemPosition.update', $value['id'])"
   :target="$target"
   padding="py-2 pr-4 pl-2"
-  dragstart="editing ? $event.preventDefault() : start($event, {{ $value['id'] }})"
-  x-data="{ editing: {{ $valueErrors->has('label') ? 'true' : 'false' }} }"
+  :dragstart="$isEditing ? '$event.preventDefault()' : null"
+  :id="$rowId"
+  x-merge="replace"
 >
-  <div x-show="! editing" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2.5 gap-y-1">
-    <p @class(['truncate', 'text-base font-semibold text-ink' => $value['isActive'], 'text-sm text-muted line-through' => ! $value['isActive']])>{{ $value['label'] }}</p>
-
-    @unless ($value['isActive'])
-      <x-badge>{{ __('no longer offered') }}</x-badge>
-    @endunless
-
-    <span class="ml-auto text-xs text-pretty text-muted">{{ $value['usageLabel'] }}</span>
-
-    <div class="flex shrink-0 items-center gap-0.5">
-      <x-button.ghost
-        size="small"
-        type="button"
-        @click="editing = true; $nextTick(() => $refs.label.focus())"
-      >{{ __('Edit') }}</x-button.ghost>
-
-      @if ($value['isActive'] && $value['canBeDeleted'])
-        <x-delete-action
-          :title="__('Delete “:value”?', ['value' => $value['label']])"
-          :confirm="__('Delete the value')"
-          :action="route('settings.valueListItems.destroy', $value['id'])"
-          :label="__('Delete')"
-          variant="ghost"
+  @if ($isEditing)
+    <div class="min-w-0 flex-1">
+      <x-form method="put" :action="route('settings.valueListItems.update', $value['id'])" :x-target="$target" class="flex flex-wrap items-start gap-3">
+        <x-input
+          :id="'value-'.$value['id'].'-label'"
+          name="label"
           size="small"
-          :x-target="$target"
-        >
-          <p>{{ __('Nothing uses it yet, so it is deleted for good and stops being offered anywhere.') }}</p>
-        </x-delete-action>
-      @elseif ($value['isActive'])
-        <x-form method="put" :action="route('settings.valueListItemActivation.update', $value['id'])" :x-target="$target">
-          <input type="hidden" name="active" value="0" />
+          :value="$value['label']"
+          :aria-label="__('Name of the value')"
+          :error="$valueErrors->get('label')"
+          class="max-w-80"
+          maxlength="255"
+          required
+          x-autofocus
+        />
 
-          <x-button.ghost size="small">{{ __('Stop offering') }}</x-button.ghost>
-        </x-form>
-      @else
-        <x-form method="put" :action="route('settings.valueListItemActivation.update', $value['id'])" :x-target="$target">
-          <input type="hidden" name="active" value="1" />
+        <div class="flex items-center gap-2">
+          <x-button size="small">{{ __('Save') }}</x-button>
 
-          <x-button.ghost size="small">{{ __('Offer again') }}</x-button.ghost>
-        </x-form>
-      @endif
+          <x-button.ghost size="small" :href="route('settings.valueLists.index')" :x-target="$rowId">{{ __('Cancel') }}</x-button.ghost>
+        </div>
+      </x-form>
     </div>
-  </div>
+  @else
+    <div class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2.5 gap-y-1">
+      <p @class(['truncate', 'text-base font-semibold text-ink' => $value['isActive'], 'text-sm text-muted line-through' => ! $value['isActive']])>{{ $value['label'] }}</p>
 
-  <div x-cloak x-show="editing" class="min-w-0 flex-1">
-    <x-form method="put" :action="route('settings.valueListItems.update', $value['id'])" :x-target="$target" class="flex flex-wrap items-start gap-3">
-      <x-input
-        :id="'value-'.$value['id'].'-label'"
-        name="label"
-        x-ref="label"
-        size="small"
-        :value="$value['label']"
-        :aria-label="__('Name of the value')"
-        :error="$valueErrors->get('label')"
-        class="max-w-80"
-        maxlength="255"
-        required
-      />
+      @unless ($value['isActive'])
+        <x-badge>{{ __('no longer offered') }}</x-badge>
+      @endunless
 
-      <div class="flex items-center gap-2">
-        <x-button size="small">{{ __('Save') }}</x-button>
+      <span class="ml-auto text-xs text-pretty text-muted">{{ $value['usageLabel'] }}</span>
 
-        <x-button.ghost size="small" type="button" @click="editing = false">{{ __('Cancel') }}</x-button.ghost>
+      <div class="flex shrink-0 items-center gap-0.5">
+        <x-button.ghost size="small" :href="$value['editUrl']" :x-target="$rowId">{{ __('Edit') }}</x-button.ghost>
+
+        @if ($value['isActive'] && $value['canBeDeleted'])
+          <x-delete-action
+            :title="__('Delete “:value”?', ['value' => $value['label']])"
+            :confirm="__('Delete the value')"
+            :action="route('settings.valueListItems.destroy', $value['id'])"
+            :label="__('Delete')"
+            variant="ghost"
+            size="small"
+            :x-target="$target"
+          >
+            <p>{{ __('Nothing uses it yet, so it is deleted for good and stops being offered anywhere.') }}</p>
+          </x-delete-action>
+        @elseif ($value['isActive'])
+          <x-form method="put" :action="route('settings.valueListItemActivation.update', $value['id'])" :x-target="$target">
+            <input type="hidden" name="active" value="0" />
+
+            <x-button.ghost size="small">{{ __('Stop offering') }}</x-button.ghost>
+          </x-form>
+        @else
+          <x-form method="put" :action="route('settings.valueListItemActivation.update', $value['id'])" :x-target="$target">
+            <input type="hidden" name="active" value="1" />
+
+            <x-button.ghost size="small">{{ __('Offer again') }}</x-button.ghost>
+          </x-form>
+        @endif
       </div>
-    </x-form>
-  </div>
+    </div>
+  @endif
 </x-sortable-row>

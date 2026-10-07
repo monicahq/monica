@@ -159,6 +159,22 @@ class ValueListsViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_opens_only_the_value_being_renamed(): void
+    {
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+
+        $salesman = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'position' => 1]);
+        ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'position' => 2]);
+
+        $values = new ValueListsViewModel(user: $user, editingItem: $salesman)->lists()[0]['values'];
+
+        $this->assertTrue($values[0]['isEditing']);
+        $this->assertFalse($values[1]['isEditing']);
+        $this->assertSame(route('settings.valueListItems.edit', $salesman->id), $values[0]['editUrl']);
+    }
+
+    #[Test]
     public function it_gives_the_user_to_the_sidebar(): void
     {
         $user = User::factory()->create();

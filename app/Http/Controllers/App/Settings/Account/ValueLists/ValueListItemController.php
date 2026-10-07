@@ -10,9 +10,11 @@ use App\Actions\UpdateValueListItem;
 use App\Http\Controllers\Controller;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
+use App\ViewModels\Settings\Account\ValueLists\ValueListsViewModel;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ValueListItemController extends Controller
 {
@@ -31,6 +33,18 @@ class ValueListItemController extends Controller
         return redirect()->route('settings.valueLists.index')
             ->with('status', __('The value is added.'))
             ->with('status_description', __('It goes at the end of the list, where you can move it from.'));
+    }
+
+    public function edit(Request $request, ValueListItem $valueListItem): View
+    {
+        abort_unless($valueListItem->account_id === $request->user()->account_id, 404);
+
+        return view('app.settings.account.value-lists.index', [
+            'viewModel' => new ValueListsViewModel(
+                user: $request->user(),
+                editingItem: $valueListItem,
+            ),
+        ]);
     }
 
     public function update(Request $request, ValueListItem $valueListItem): RedirectResponse

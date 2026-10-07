@@ -12,10 +12,11 @@ class ValueListsViewModel
 {
     public function __construct(
         private readonly User $user,
+        private readonly ?ValueListItem $editingItem = null,
     ) {}
 
     /**
-     * @return array<int, array{id: int, name: string, description: ?string, allowsUserValues: bool, addValueReason: ?string, canBeDeleted: bool, deleteReason: ?string, countLabel: string, values: array<int, array{id: int, label: string, isActive: bool, canBeDeleted: bool, usageLabel: string}>}>
+     * @return array<int, array{id: int, name: string, description: ?string, allowsUserValues: bool, addValueReason: ?string, canBeDeleted: bool, deleteReason: ?string, countLabel: string, values: array<int, array{id: int, label: string, isActive: bool, canBeDeleted: bool, usageLabel: string, isEditing: bool, editUrl: string}>}>
      */
     public function lists(): array
     {
@@ -41,6 +42,8 @@ class ValueListsViewModel
                         'isActive' => $item->is_active,
                         'canBeDeleted' => $this->user->can('delete', $item),
                         'usageLabel' => $this->usageLabel($item),
+                        'isEditing' => $this->editingItem?->is($item) ?? false,
+                        'editUrl' => route('settings.valueListItems.edit', $item->id),
                     ])
                     ->all(),
             ])

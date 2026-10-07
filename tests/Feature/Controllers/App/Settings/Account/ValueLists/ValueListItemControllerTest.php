@@ -51,6 +51,27 @@ class ValueListItemControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_opens_the_form_renaming_one_value(): void
+    {
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $item = ValueListItem::factory()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $list->id,
+            'label' => 'Assistant regional manager',
+        ]);
+
+        $this->actingAs($user)->get(route('settings.valueLists.index'))
+            ->assertDontSee('id="value-'.$item->id.'-label"', escape: false);
+
+        $this->actingAs($user)->get(route('settings.valueListItems.edit', $item->id))
+            ->assertStatus(200)
+            ->assertSee('id="value-'.$item->id.'-label"', escape: false)
+            ->assertSee('value="Assistant regional manager"', escape: false)
+            ->assertSee('x-target="value-'.$item->id.'"', escape: false);
+    }
+
+    #[Test]
     public function it_renames_a_value(): void
     {
         Queue::fake();
@@ -166,6 +187,9 @@ class ValueListItemControllerTest extends TestCase
         ]);
 
         $this->actingAs($michael)->post(route('settings.valueListItems.create', $list->id), ['label' => 'Mine now'])
+            ->assertNotFound();
+
+        $this->actingAs($michael)->get(route('settings.valueListItems.edit', $item->id))
             ->assertNotFound();
 
         $this->actingAs($michael)->put(route('settings.valueListItems.update', $item->id), ['label' => 'Mine now'])

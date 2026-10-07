@@ -454,6 +454,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::delete('settings/account/value-lists/{valueList}', [ValueListController::class, 'destroy'])->whereNumber('valueList')->name('settings.valueLists.destroy');
 
     Route::post('settings/account/value-lists/{valueList}/values', [ValueListItemController::class, 'create'])->whereNumber('valueList')->name('settings.valueListItems.create');
+    Route::get('settings/account/value-lists/values/{valueListItem}/edit', [ValueListItemController::class, 'edit'])->whereNumber('valueListItem')->name('settings.valueListItems.edit');
     Route::put('settings/account/value-lists/values/{valueListItem}', [ValueListItemController::class, 'update'])->whereNumber('valueListItem')->name('settings.valueListItems.update');
     Route::delete('settings/account/value-lists/values/{valueListItem}', [ValueListItemController::class, 'destroy'])->whereNumber('valueListItem')->name('settings.valueListItems.destroy');
     Route::put('settings/account/value-lists/values/{valueListItem}/position', [ValueListItemPositionController::class, 'update'])->whereNumber('valueListItem')->name('settings.valueListItemPosition.update');
