@@ -3073,6 +3073,7 @@
     "Update available": "업데이트 있음",
     "Updated :date": ":date 업데이트",
     "Updated :label in the value list :name": "값 목록 :name의 :label을(를) 고쳤습니다",
+    "Updated :section on :name": ":name의 :section을(를) 고쳤습니다",
     "Updated the field :label in the section :name": "섹션 :name의 필드 :label을(를) 고쳤습니다",
     "Updated the kind of record :name": "기록 종류 :name을(를) 고쳤습니다",
     "Updated the profile of :name": ":name의 프로필을 고쳤습니다",

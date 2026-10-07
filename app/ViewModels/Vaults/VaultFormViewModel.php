@@ -91,15 +91,15 @@ class VaultFormViewModel
 
     public function isFirstVault(): bool
     {
-        return ! Vault::query()->where('account_id', $this->user->account_id)->exists();
+        return once(fn (): bool => ! Vault::query()->where('account_id', $this->user->account_id)->exists());
     }
 
     public function currentDefaultName(): ?string
     {
-        return Vault::query()
+        return once(fn (): ?string => Vault::query()
             ->where('account_id', $this->user->account_id)
             ->where('is_default', true)
-            ->value('name');
+            ->value('name'));
     }
 
     public function defaultHintWhenTicked(): string

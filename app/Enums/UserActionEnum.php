@@ -163,6 +163,7 @@ enum UserActionEnum: string implements Translatable
     case FieldValueRowDeletion = 'field_value_row_deleted';
     case FieldValueSet = 'field_value_set';
     case FieldValueCleared = 'field_value_cleared';
+    case FieldValuesUpdate = 'field_values_updated';
     case FieldValuesDetached = 'field_values_detached';
     case FieldValuesReattached = 'field_values_reattached';
     case RecordSnapshotTaken = 'record_snapshot_taken';
@@ -361,6 +362,7 @@ enum UserActionEnum: string implements Translatable
             self::FieldValueRowDeletion => 'Removed a repetition of :label on :name',
             self::FieldValueSet => 'Filled in :label on :name',
             self::FieldValueCleared => 'Cleared :label on :name',
+            self::FieldValuesUpdate => 'Updated :section on :name',
             self::FieldValuesDetached => 'Marked :count value written in :label as unused|Marked :count values written in :label as unused',
             self::FieldValuesReattached => 'Restored :count value written in :label|Restored :count values written in :label',
             self::RecordSnapshotTaken => 'Saved the state of :name',

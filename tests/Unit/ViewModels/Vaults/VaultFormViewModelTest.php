@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\VaultFormViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -164,6 +165,29 @@ class VaultFormViewModelTest extends TestCase
         Vault::factory()->count(3)->create(['account_id' => $user->account_id]);
 
         $this->assertNull(new VaultFormViewModel(user: $user->fresh())->ceilingMessage());
+    }
+
+    #[Test]
+    public function it_asks_the_database_once_however_often_the_form_reads_the_default_vault(): void
+    {
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin', 'is_default' => true]);
+
+        $viewModel = new VaultFormViewModel(user: $user);
+
+        $viewModel->values();
+        $viewModel->defaultHintWhenTicked();
+        $viewModel->defaultHintWhenLeft();
+
+        DB::enableQueryLog();
+        $viewModel->values();
+        $viewModel->defaultHintWhenTicked();
+        $viewModel->defaultHintWhenLeft();
+        $again = count(DB::getQueryLog());
+        DB::disableQueryLog();
+
+        $this->assertSame(0, $again);
+        $this->assertSame('Dunder Mifflin stays the default.', $viewModel->defaultHintWhenLeft());
     }
 
     private function publishedContactTemplate(User $user, string $name, int $position = 1, bool $system = false): Template

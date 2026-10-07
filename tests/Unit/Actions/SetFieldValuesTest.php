@@ -13,11 +13,13 @@ use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
 use App\Enums\RepetitionOrderEnum;
+use App\Enums\UserActionEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\FieldIsRequired;
 use App\Exceptions\FieldValueIsNotUnique;
 use App\Exceptions\ReminderNeedsADate;
+use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
@@ -69,6 +71,112 @@ class SetFieldValuesTest extends TestCase
         $this->assertSame(2, $written);
         $this->assertDatabaseHas('field_values', ['field_id' => $city->id, 'value_string' => 'Scranton']);
         $this->assertDatabaseHas('field_values', ['field_id' => $notes->id, 'value_text' => 'Sells paper.']);
+    }
+
+    #[Test]
+    public function it_writes_one_entry_in_the_journal_for_the_whole_section(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $city = $this->fieldOn($contact, ['key' => 'city']);
+        $notes = $this->fieldOn($contact, ['key' => 'notes', 'type' => FieldTypeEnum::Textarea], beside: $city->sectionVersion);
+        $documents = $this->fieldOn($contact, ['key' => 'documents', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true], beside: $city->sectionVersion);
+        $description = $this->childOf($documents, ['key' => 'description']);
+        $section = $this->sectionOf($city);
+        FieldValue::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $contact->vault_id,
+            'valuable_type' => $contact->getMorphClass(),
+            'valuable_id' => $contact->id,
+            'field_id' => $notes->id,
+            'value_text' => 'Draws on the side.',
+        ]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [
+                $city->id => 'Scranton',
+                $notes->id => '',
+                $documents->id => [['values' => [$description->id => 'The lease']]],
+            ],
+        )->execute();
+
+        Queue::assertPushed(LogUserAction::class, 1);
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::FieldValuesUpdate
+                && $job->vault->id === $contact->vault_id
+                && $job->isAbout($contact)
+                && $job->parameters === ['section' => $section->sectionVersion->section->name, 'name' => 'Pam Beesly'],
+        );
+    }
+
+    #[Test]
+    public function it_writes_nothing_in_the_journal_when_nothing_changed(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $city = $this->fieldOn($contact, ['key' => 'city']);
+
+        new SetFieldValues(user: $user, record: $contact, section: $this->sectionOf($city), values: [$city->id => 'Scranton'])->execute();
+
+        Queue::fake();
+
+        new SetFieldValues(user: $user, record: $contact, section: $this->sectionOf($city), values: [$city->id => 'Scranton'])->execute();
+
+        Queue::assertNotPushed(LogUserAction::class);
+    }
+
+    #[Test]
+    public function it_moves_the_record_once_for_the_whole_section(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $city = $this->fieldOn($contact, ['key' => 'city']);
+        $notes = $this->fieldOn($contact, ['key' => 'notes', 'type' => FieldTypeEnum::Textarea], beside: $city->sectionVersion);
+        $contact->forceFill(['updated_at' => CarbonImmutable::now()->subYear()])->saveQuietly();
+        $saves = 0;
+
+        Contact::saved(function () use (&$saves): void {
+            $saves++;
+        });
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($city),
+            values: [$city->id => 'Scranton', $notes->id => 'Sells paper.'],
+        )->execute();
+
+        $this->assertSame(1, $saves);
+        $this->assertTrue($contact->refresh()->updated_at->isToday());
+    }
+
+    #[Test]
+    public function it_leaves_the_record_alone_when_nothing_changed(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $city = $this->fieldOn($contact, ['key' => 'city']);
+
+        new SetFieldValues(user: $user, record: $contact, section: $this->sectionOf($city), values: [$city->id => 'Scranton'])->execute();
+
+        $contact->forceFill(['updated_at' => CarbonImmutable::now()->subYear()])->saveQuietly();
+
+        new SetFieldValues(user: $user, record: $contact, section: $this->sectionOf($city), values: [$city->id => 'Scranton'])->execute();
+
+        $this->assertFalse($contact->refresh()->updated_at->isToday());
     }
 
     #[Test]

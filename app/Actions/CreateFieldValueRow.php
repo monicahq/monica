@@ -27,6 +27,7 @@ class CreateFieldValueRow
         private readonly User $user,
         private readonly Contact|Entity|LifeEvent $valuable,
         private readonly Field $field,
+        private readonly bool $writesToTheJournal = true,
     ) {}
 
     public function execute(): FieldValueRow
@@ -81,6 +82,10 @@ class CreateFieldValueRow
 
     private function log(): void
     {
+        if (! $this->writesToTheJournal) {
+            return;
+        }
+
         LogUserAction::dispatch(
             account: $this->user->account,
             user: $this->user,

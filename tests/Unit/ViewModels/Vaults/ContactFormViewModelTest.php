@@ -15,6 +15,7 @@ use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use App\ViewModels\Vaults\ContactFormViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -130,6 +131,27 @@ class ContactFormViewModelTest extends TestCase
 
         $this->assertEquals(route('contacts.index', $vault), $viewModel->contactsUrl());
         $this->assertEquals(route('contacts.create', $vault), $viewModel->action());
+    }
+
+    #[Test]
+    public function it_asks_the_database_once_however_often_the_form_reads_its_starting_template(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $viewModel = new ContactFormViewModel(user: $user, vault: $vault);
+        $viewModel->values();
+        $viewModel->canCreate();
+
+        DB::enableQueryLog();
+        $viewModel->values();
+        $viewModel->canCreate();
+        $viewModel->blocker();
+        $again = count(DB::getQueryLog());
+        DB::disableQueryLog();
+
+        $this->assertSame(0, $again);
+        $this->assertTrue($viewModel->canCreate());
     }
 
     private function vaultReadyForContacts(User $user, string $name = 'Basic contact'): Vault

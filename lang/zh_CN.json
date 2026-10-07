@@ -3073,6 +3073,7 @@
     "Update available": "有可用更新",
     "Updated :date": "更新于 :date",
     "Updated :label in the value list :name": "已更新选项列表 :name 中的 :label",
+    "Updated :section on :name": "已更新 :name 的 :section",
     "Updated the field :label in the section :name": "已更新区块 :name 中的字段 :label",
     "Updated the kind of record :name": "已更新记录类型 :name",
     "Updated the profile of :name": "已更新 :name 的个人资料",

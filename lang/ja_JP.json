@@ -3073,6 +3073,7 @@
     "Update available": "更新があります",
     "Updated :date": ":dateに更新",
     "Updated :label in the value list :name": "選択リスト:nameの:labelを更新しました",
+    "Updated :section on :name": ":nameの:sectionを更新しました",
     "Updated the field :label in the section :name": "セクション:nameのフィールド:labelを更新しました",
     "Updated the kind of record :name": "レコードの種類:nameを更新しました",
     "Updated the profile of :name": ":nameのプロフィールを更新しました",

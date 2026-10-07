@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\Api;
 
 use App\Helpers\StripeCatalogue;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
@@ -70,6 +71,8 @@ class SubscriptionControllerTest extends TestCase
     #[Test]
     public function it_cancels_at_the_end_of_the_paid_period_and_answers_nothing(): void
     {
+        $this->travelTo(CarbonImmutable::parse('2026-09-20 12:00:00', 'UTC'));
+
         $michael = User::factory()->create();
         $subscription = $this->subscribeAccount($michael->account);
         Sanctum::actingAs($michael);

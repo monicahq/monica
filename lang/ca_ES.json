@@ -3073,6 +3073,7 @@
     "Update available": "Actualització disponible",
     "Updated :date": "Actualitzat el :date",
     "Updated :label in the value list :name": "Ha actualitzat :label a la llista de valors :name",
+    "Updated :section on :name": "Ha actualitzat :section a :name",
     "Updated the field :label in the section :name": "Ha actualitzat el camp :label a la secció :name",
     "Updated the kind of record :name": "Ha actualitzat el tipus de registre :name",
     "Updated the profile of :name": "Ha actualitzat el perfil de :name",

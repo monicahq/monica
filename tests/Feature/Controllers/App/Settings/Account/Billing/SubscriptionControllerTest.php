@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Billing;
 
 use App\Helpers\StripeCatalogue;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Fixtures\Stripe\FakeStripeClient;
@@ -67,6 +68,8 @@ class SubscriptionControllerTest extends TestCase
     #[Test]
     public function it_stops_a_subscription_renewing_and_names_the_day_access_ends(): void
     {
+        $this->travelTo(CarbonImmutable::parse('2026-09-20 12:00:00', 'UTC'));
+
         $michael = User::factory()->create();
         $subscription = $this->subscribeAccount($michael->account);
 

@@ -133,25 +133,29 @@ class ContactFormViewModel
 
     private function startingVersion(): ?StructureVersion
     {
-        $chosen = (int) $this->values()['structureVersionId'];
+        return once(function (): ?StructureVersion {
+            $chosen = (int) $this->values()['structureVersionId'];
 
-        if ($chosen === 0) {
-            return null;
-        }
+            if ($chosen === 0) {
+                return null;
+            }
 
-        return StructureVersion::query()
-            ->where('account_id', $this->user->account_id)
-            ->find($chosen);
+            return StructureVersion::query()
+                ->where('account_id', $this->user->account_id)
+                ->find($chosen);
+        });
     }
 
     private function defaultStructureVersionId(): string
     {
-        $version = VaultDefaultTemplate::query()
-            ->where('vault_id', $this->vault->id)
-            ->where('applies_to', StructureAppliesToEnum::Contact)
-            ->value('structure_version_id');
+        return once(function (): string {
+            $version = VaultDefaultTemplate::query()
+                ->where('vault_id', $this->vault->id)
+                ->where('applies_to', StructureAppliesToEnum::Contact)
+                ->value('structure_version_id');
 
-        return $version === null ? '' : (string) $version;
+            return $version === null ? '' : (string) $version;
+        });
     }
 
     private function ticked(string $field): bool

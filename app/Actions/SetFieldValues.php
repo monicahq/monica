@@ -8,9 +8,11 @@ use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
+use App\Enums\UserActionEnum;
 use App\Enums\ValueListEnum;
 use App\Exceptions\FieldIsRequired;
 use App\Exceptions\ReminderNeedsADate;
+use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\Field;
@@ -22,6 +24,7 @@ use App\Models\StructureVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -34,6 +37,8 @@ use InvalidArgumentException;
 class SetFieldValues
 {
     private int $written = 0;
+
+    private bool $changed = false;
 
     /**
      * @param  array<int, mixed>  $values  what was typed, keyed by field id
@@ -66,14 +71,22 @@ class SetFieldValues
         $this->refuseAReminderWithNoDate($fields);
 
         DB::transaction(function () use ($fields): void {
-            foreach ($fields as $field) {
-                $this->save($field);
-            }
+            Model::withoutTouchingOn([$this->record::class], function () use ($fields): void {
+                foreach ($fields as $field) {
+                    $this->save($field);
+                }
 
-            foreach ($fields as $field) {
-                $this->saveTheReminder($field);
+                foreach ($fields as $field) {
+                    $this->saveTheReminder($field);
+                }
+            });
+
+            if ($this->changed) {
+                $this->record->touch();
             }
         });
+
+        $this->log();
 
         return $this->written;
     }
@@ -303,7 +316,7 @@ class SetFieldValues
             return;
         }
 
-        new SetFieldValue(
+        $value = new SetFieldValue(
             user: $this->user,
             valuable: $this->record,
             field: $field,
@@ -316,8 +329,10 @@ class SetFieldValues
             valueListItems: $this->chosenItems($field, $given),
             yearIsUnknown: (bool) ($this->yearIsUnknown[$field->id] ?? false),
             monthIsUnknown: (bool) ($this->monthIsUnknown[$field->id] ?? false),
+            writesToTheJournal: false,
         )->execute();
 
+        $this->changed = $this->changed || $value->wasRecentlyCreated || $value->wasChanged();
         $this->written++;
     }
 
@@ -325,7 +340,7 @@ class SetFieldValues
     {
         $pointsAtSomebody = $field->relation_target === RelationTargetEnum::Contact;
 
-        new SetFieldValue(
+        $value = new SetFieldValue(
             user: $this->user,
             valuable: $this->record,
             field: $field,
@@ -336,8 +351,10 @@ class SetFieldValues
             relatedEntity: $pointsAtSomebody
                 ? null
                 : Entity::query()->where('vault_id', $this->record->vault_id)->where('uuid', $uuid)->first(),
+            writesToTheJournal: false,
         )->execute();
 
+        $this->changed = $this->changed || $value->wasRecentlyCreated || $value->wasChanged();
         $this->written++;
     }
 
@@ -359,8 +376,10 @@ class SetFieldValues
             field: $field,
             row: $row,
             file: $file,
+            writesToTheJournal: false,
         )->execute();
 
+        $this->changed = true;
         $this->written++;
     }
 
@@ -393,6 +412,7 @@ class SetFieldValues
                 user: $this->user,
                 valuable: $this->record,
                 field: $field,
+                writesToTheJournal: false,
             )->execute();
 
             $kept[] = $row->id;
@@ -408,8 +428,9 @@ class SetFieldValues
                 continue;
             }
 
-            new DestroyFieldValueRow(user: $this->user, row: $row)->execute();
+            new DestroyFieldValueRow(user: $this->user, row: $row, writesToTheJournal: false)->execute();
 
+            $this->changed = true;
             $this->written++;
         }
 
@@ -428,6 +449,8 @@ class SetFieldValues
 
             $row->position = $position;
             $row->save();
+
+            $this->changed = true;
         }
     }
 
@@ -478,9 +501,29 @@ class SetFieldValues
             return;
         }
 
-        new DestroyFieldValue(user: $this->user, fieldValue: $existing)->execute();
+        new DestroyFieldValue(user: $this->user, fieldValue: $existing, writesToTheJournal: false)->execute();
 
+        $this->changed = true;
         $this->written++;
+    }
+
+    private function log(): void
+    {
+        if (! $this->changed) {
+            return;
+        }
+
+        LogUserAction::dispatch(
+            account: $this->user->account,
+            user: $this->user,
+            action: UserActionEnum::FieldValuesUpdate,
+            vault: $this->record->vault,
+            parameters: [
+                'section' => $this->section->title_override ?? $this->section->sectionVersion->section->name,
+                'name' => $this->record->name,
+            ],
+            loggable: $this->record,
+        )->onQueue('low');
     }
 
     private function given(Field $field): mixed

@@ -24,6 +24,7 @@ class DestroyFieldValueRow
     public function __construct(
         private readonly User $user,
         private readonly FieldValueRow $row,
+        private readonly bool $writesToTheJournal = true,
     ) {}
 
     public function execute(): void
@@ -99,6 +100,10 @@ class DestroyFieldValueRow
 
     private function log(): void
     {
+        if (! $this->writesToTheJournal) {
+            return;
+        }
+
         LogUserAction::dispatch(
             account: $this->user->account,
             user: $this->user,

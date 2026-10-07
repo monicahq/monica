@@ -25,7 +25,9 @@ use App\Models\ValueListItem;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
@@ -67,6 +69,39 @@ class SetFieldValueTest extends TestCase
                 && $job->isAbout($value)
                 && $job->parameters === ['label' => 'City', 'name' => 'Pam Beesly'],
         );
+    }
+
+    #[Test]
+    public function it_writes_nothing_in_the_journal_when_asked_not_to(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOf($user, ['key' => 'city']);
+
+        new SetFieldValue(user: $user, valuable: $contact, field: $field, value: 'Scranton', writesToTheJournal: false)->execute();
+
+        Queue::assertNotPushed(LogUserAction::class);
+    }
+
+    #[Test]
+    public function it_leaves_the_value_lists_alone_when_no_item_is_chosen(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOf($user, ['key' => 'city']);
+        $statements = [];
+
+        DB::listen(function (QueryExecuted $query) use (&$statements): void {
+            $statements[] = $query->sql;
+        });
+
+        new SetFieldValue(user: $user, valuable: $contact, field: $field, value: 'Scranton')->execute();
+
+        $this->assertSame([], array_filter($statements, fn (string $sql): bool => str_contains($sql, 'value_list_items')));
     }
 
     #[Test]

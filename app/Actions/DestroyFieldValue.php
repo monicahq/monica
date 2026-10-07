@@ -24,6 +24,7 @@ class DestroyFieldValue
     public function __construct(
         private readonly User $user,
         private readonly FieldValue $fieldValue,
+        private readonly bool $writesToTheJournal = true,
     ) {}
 
     public function execute(): void
@@ -53,10 +54,12 @@ class DestroyFieldValue
                 ->merge($this->fieldValue->value_list_item_ids ?? [])
                 ->filter();
 
-            ValueListItem::query()
-                ->whereIn('id', $chosen->all())
-                ->where('usage_count', '>', 0)
-                ->decrement('usage_count');
+            if ($chosen->isNotEmpty()) {
+                ValueListItem::query()
+                    ->whereIn('id', $chosen->all())
+                    ->where('usage_count', '>', 0)
+                    ->decrement('usage_count');
+            }
 
             $rule = $this->fieldValue->reminder;
 
@@ -70,6 +73,10 @@ class DestroyFieldValue
 
     private function log(): void
     {
+        if (! $this->writesToTheJournal) {
+            return;
+        }
+
         LogUserAction::dispatch(
             account: $this->user->account,
             user: $this->user,

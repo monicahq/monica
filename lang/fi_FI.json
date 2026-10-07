@@ -3073,6 +3073,7 @@
     "Update available": "Päivitys saatavilla",
     "Updated :date": "Päivitetty :date",
     "Updated :label in the value list :name": "Päivitti kohteen :label arvolistassa :name",
+    "Updated :section on :name": "Päivitti osion :section kohteessa :name",
     "Updated the field :label in the section :name": "Päivitti kentän :label osiossa :name",
     "Updated the kind of record :name": "Päivitti tietuetyypin :name",
     "Updated the profile of :name": "Päivitti kohteen :name profiilin",

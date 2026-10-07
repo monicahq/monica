@@ -3073,6 +3073,7 @@
     "Update available": "May update na",
     "Updated :date": "Na-update :date",
     "Updated :label in the value list :name": "Na-update ang :label sa listahan ng halagang :name",
+    "Updated :section on :name": "Na-update ang :section sa :name",
     "Updated the field :label in the section :name": "Na-update ang field na :label sa seksyong :name",
     "Updated the kind of record :name": "Na-update ang uri ng record na :name",
     "Updated the profile of :name": "Na-update ang profile ni :name",

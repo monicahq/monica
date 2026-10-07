@@ -31,15 +31,17 @@ class VaultDeadlines
 
         $waiting = ReminderOccurrence::query()
             ->awaitingAnswerInVault(vault: $this->vault, untilDay: $today)
-            ->with(['vault', 'reminder.remindable.avatar', 'reminder.field'])
-            ->get();
+            ->with(['reminder.remindable.avatar', 'reminder.field'])
+            ->get()
+            ->each(fn (ReminderOccurrence $occurrence): ReminderOccurrence => $occurrence->setRelation('vault', $this->vault));
 
         $rules = Reminder::query()
             ->where('vault_id', $this->vault->id)
             ->where('account_id', $this->vault->account_id)
             ->active()
-            ->with(['vault', 'remindable.avatar', 'field', 'fieldValue'])
-            ->get();
+            ->with(['remindable.avatar', 'field', 'fieldValue'])
+            ->get()
+            ->each(fn (Reminder $rule): Reminder => $rule->setRelation('vault', $this->vault));
 
         return $waiting
             ->concat(NextReminderDeadlines::for($rules, $today))

@@ -3073,6 +3073,7 @@
     "Update available": "Aktualisierung verfügbar",
     "Updated :date": "Aktualisiert am :date",
     "Updated :label in the value list :name": "Hat :label in der Werteliste :name aktualisiert",
+    "Updated :section on :name": "Hat :section bei :name aktualisiert",
     "Updated the field :label in the section :name": "Hat das Feld :label im Abschnitt :name aktualisiert",
     "Updated the kind of record :name": "Hat die Datensatzart :name geändert",
     "Updated the profile of :name": "Hat das Profil von :name aktualisiert",

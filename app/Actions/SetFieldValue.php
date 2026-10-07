@@ -55,6 +55,7 @@ class SetFieldValue
         private readonly ?Entity $relatedEntity = null,
         private readonly bool $yearIsUnknown = false,
         private readonly bool $monthIsUnknown = false,
+        private readonly bool $writesToTheJournal = true,
     ) {}
 
     public function execute(): FieldValue
@@ -442,18 +443,29 @@ class SetFieldValue
             ->merge(array_map(fn (ValueListItem $item): int => $item->id, $this->valueListItems))
             ->filter();
 
-        ValueListItem::query()
-            ->whereIn('id', $before->diff($after)->all())
-            ->where('usage_count', '>', 0)
-            ->decrement('usage_count');
+        $released = $before->diff($after);
+        $taken = $after->diff($before);
 
-        ValueListItem::query()
-            ->whereIn('id', $after->diff($before)->all())
-            ->increment('usage_count');
+        if ($released->isNotEmpty()) {
+            ValueListItem::query()
+                ->whereIn('id', $released->all())
+                ->where('usage_count', '>', 0)
+                ->decrement('usage_count');
+        }
+
+        if ($taken->isNotEmpty()) {
+            ValueListItem::query()
+                ->whereIn('id', $taken->all())
+                ->increment('usage_count');
+        }
     }
 
     private function log(): void
     {
+        if (! $this->writesToTheJournal) {
+            return;
+        }
+
         LogUserAction::dispatch(
             account: $this->user->account,
             user: $this->user,

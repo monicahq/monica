@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Override;
 
 /**
@@ -145,6 +146,22 @@ class FieldValue extends Model
             'is_detached' => 'boolean',
             'detached_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Touch the record, unless the caller has set it aside with
+     * `Model::withoutTouchingOn()`. Laravel would still load the record and
+     * fire its `saved` event, so a section of eight values would rebuild the
+     * record eight times. The caller then touches the record once itself.
+     */
+    #[Override]
+    public function touchOwners(): void
+    {
+        if (self::isIgnoringTouch(Relation::getMorphedModel($this->valuable_type) ?? $this->valuable_type)) {
+            return;
+        }
+
+        parent::touchOwners();
     }
 
     /**

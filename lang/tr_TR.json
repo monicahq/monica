@@ -3073,6 +3073,7 @@
     "Update available": "Güncelleme var",
     "Updated :date": ":date tarihinde güncellendi",
     "Updated :label in the value list :name": ":name değer listesinde :label güncellendi",
+    "Updated :section on :name": ":name üzerindeki :section güncellendi",
     "Updated the field :label in the section :name": ":name bölümünde :label alanı güncellendi",
     "Updated the kind of record :name": ":name kayıt türü güncellendi",
     "Updated the profile of :name": ":name profili güncellendi",

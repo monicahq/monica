@@ -10,6 +10,7 @@ use App\Exceptions\AccountHasNoSubscription;
 use App\Helpers\StripeCatalogue;
 use App\Jobs\LogUserAction;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Cashier\Subscription;
@@ -35,6 +36,8 @@ class CancelSubscriptionTest extends TestCase
     #[Test]
     public function it_stops_the_subscription_renewing_at_the_end_of_the_paid_period(): void
     {
+        $this->travelTo(CarbonImmutable::parse('2026-09-20 12:00:00', 'UTC'));
+
         $michael = User::factory()->create();
         $subscribed = $this->subscribeAccount($michael->account);
 
