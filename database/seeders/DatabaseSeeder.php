@@ -11,6 +11,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(MarketplaceCategorySeeder::class);
-        $this->call(ExampleAccountSeeder::class);
+
+        if (! app()->environment("production")) {
+            $this->call(ExampleAccountSeeder::class);
+        }
     }
 }
