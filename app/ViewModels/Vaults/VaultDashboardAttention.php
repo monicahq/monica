@@ -29,7 +29,6 @@ class VaultDashboardAttention
         }
 
         $today = CarbonImmutable::now($this->user->timezone)->startOfDay();
-        $lastDay = $today->addDays(self::DAYS_AHEAD)->toDateString();
 
         $rows = [
             ReminderOccurrenceCategoryEnum::Overdue->value => [],
@@ -37,11 +36,7 @@ class VaultDashboardAttention
             ReminderOccurrenceCategoryEnum::Upcoming->value => [],
         ];
 
-        foreach (new VaultDeadlines(user: $this->user, vault: $this->vault)->rows() as $row) {
-            if ($row->occurrence()->local_date->toDateString() > $lastDay) {
-                continue;
-            }
-
+        foreach (new VaultDeadlines(user: $this->user, vault: $this->vault)->rowsUntil($today->addDays(self::DAYS_AHEAD)) as $row) {
             $rows[ReminderOccurrenceCategoryEnum::for($row->occurrence(), $today)->value][] = $row;
         }
 

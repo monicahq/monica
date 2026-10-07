@@ -10,12 +10,14 @@ use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 /**
  * The dates of a vault still waiting for somebody: every deadline due by today that nobody has
  * answered, then the next deadline of each active reminder. The reminders screen and the dashboard
- * both list these, so they read them from one place.
+ * both list these, so they read them from one place. The dashboard stops at a day, and asks the
+ * database for that span rather than building every row.
  */
 class VaultDeadlines
 {
@@ -45,6 +47,56 @@ class VaultDeadlines
 
         return $waiting
             ->concat(NextReminderDeadlines::for($rules, $today))
+            ->map(fn (ReminderOccurrence $occurrence): ReminderRow => new ReminderRow(
+                user: $this->user,
+                occurrence: $occurrence,
+            ))
+            ->values();
+    }
+
+    /** @return Collection<int, ReminderRow> */
+    public function rowsUntil(CarbonImmutable $lastDay): Collection
+    {
+        $today = CarbonImmutable::now($this->user->timezone)->startOfDay();
+        $window = (int) config('monica.reminder_generation_window_in_days');
+
+        $waiting = ReminderOccurrence::query()
+            ->awaitingAnswerInVault(vault: $this->vault, untilDay: $today)
+            ->with(['vault', 'reminder.remindable.avatar', 'reminder.field'])
+            ->get();
+
+        $generated = ReminderOccurrence::query()
+            ->where('vault_id', $this->vault->id)
+            ->where('account_id', $this->vault->account_id)
+            ->active()
+            ->whereDate('local_date', '>', $today->toDateString())
+            ->whereDate('local_date', '<=', $lastDay->toDateString())
+            ->whereHas('reminder', function (Builder $rule): void {
+                $rule->where('is_active', true);
+            })
+            ->with(['vault', 'reminder.vault', 'reminder.remindable.avatar', 'reminder.field', 'reminder.fieldValue'])
+            ->orderBy('local_date')
+            ->orderBy('scheduled_for')
+            ->get()
+            ->unique('reminder_id');
+
+        // A rule has every deadline written until `generate_from` plus the window. Only a rule whose
+        // written deadlines stop before the last day, two days of margin covering the time zones, is
+        // worked out from its schedule.
+        $behind = Reminder::query()
+            ->where('vault_id', $this->vault->id)
+            ->where('account_id', $this->vault->account_id)
+            ->active()
+            ->where('generate_from', '<=', $lastDay->addDays(2)->subDays($window))
+            ->whereNotIn('id', $generated->pluck('reminder_id')->all())
+            ->with(['vault', 'remindable.avatar', 'field', 'fieldValue'])
+            ->get();
+
+        $computed = NextReminderDeadlines::for($behind, $today)
+            ->filter(fn (ReminderOccurrence $occurrence): bool => $occurrence->local_date->toDateString() <= $lastDay->toDateString());
+
+        return $waiting
+            ->concat($generated->concat($computed)->sortBy(fn (ReminderOccurrence $occurrence): string => $occurrence->local_date->toDateString()))
             ->map(fn (ReminderOccurrence $occurrence): ReminderRow => new ReminderRow(
                 user: $this->user,
                 occurrence: $occurrence,
