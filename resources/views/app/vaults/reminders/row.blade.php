@@ -79,21 +79,17 @@
       </x-slot:glyph>
 
       @if ($row->testUrl() !== null)
-        <x-modal.form
-          :title="__('Send yourself a test?')"
-          :description="__('This reminder is emailed to you now, as it will arrive. Nothing else changes.')"
-          :confirm="__('Send it')"
-          method="post"
-          :action="$row->testUrl()"
+        <button
+          type="button"
+          role="menuitem"
+          data-test-url="{{ $row->testUrl() }}"
+          @click="menuOpen = false; $refs.menuTrigger.focus(); $dispatch('confirm-reminder-test', { url: $el.dataset.testUrl })"
+          class="{{ $item }}"
         >
-          <x-slot:trigger>
-            <button type="button" role="menuitem" @click="menuOpen = false; $refs.menuTrigger.focus(); open = true" class="{{ $item }}">
-              <x-icon name="mail" :size="16" :stroke-width="1.5" class="shrink-0" />
+          <x-icon name="mail" :size="16" :stroke-width="1.5" class="shrink-0" />
 
-              {{ __('Send me a test') }}
-            </button>
-          </x-slot:trigger>
-        </x-modal.form>
+          {{ __('Send me a test') }}
+        </button>
       @endif
 
       @if ($isLink)

@@ -18,6 +18,8 @@ class VaultRemindersViewModel
 
     public const string GroupByContact = 'contact';
 
+    public const int PER_PAGE = 50;
+
     /** @var Collection<int, ReminderRow>|null */
     private ?Collection $rows = null;
 
@@ -25,6 +27,7 @@ class VaultRemindersViewModel
         private readonly User $user,
         private readonly Vault $vault,
         private readonly string $groupBy = self::GroupByWhen,
+        private readonly int $page = 1,
     ) {}
 
     public function user(): User
@@ -88,15 +91,51 @@ class VaultRemindersViewModel
     }
 
     /**
-     * @return array<int, array{title: string, count: string, isOverdue: bool, rows: list<ReminderRow>}>
+     * The groups holding the rows of this page. A later page carries on the list where the previous
+     * one stopped, so a group the previous page was already in does not get its heading twice.
+     *
+     * @return array<int, array{title: string, count: string, isOverdue: bool, showsHeading: bool, rows: list<ReminderRow>}>
      */
     public function groups(): array
     {
-        if ($this->groupBy() === self::GroupByContact) {
-            return $this->byContact();
+        $groups = $this->groupBy() === self::GroupByContact ? $this->byContact() : $this->byWhen();
+        $start = ($this->page() - 1) * self::PER_PAGE;
+        $end = $start + self::PER_PAGE;
+        $position = 0;
+        $onThisPage = [];
+
+        foreach ($groups as $group) {
+            $first = $position;
+            $position += count($group['rows']);
+
+            if ($position <= $start || $first >= $end) {
+                continue;
+            }
+
+            $onThisPage[] = [
+                ...$group,
+                'showsHeading' => $first >= $start,
+                'rows' => array_slice($group['rows'], max($start - $first, 0), $end - max($first, $start)),
+            ];
         }
 
-        return $this->byWhen();
+        return $onThisPage;
+    }
+
+    public function holdsNothing(): bool
+    {
+        return $this->rows()->isEmpty();
+    }
+
+    public function nextPageUrl(): ?string
+    {
+        if ($this->page() * self::PER_PAGE >= $this->rows()->count()) {
+            return null;
+        }
+
+        $route = $this->groupBy() === self::GroupByContact ? 'reminders.byContact' : 'reminders.index';
+
+        return route($route, ['vault' => $this->vault, 'page' => $this->page() + 1]);
     }
 
     public function hasAnyRule(): bool
@@ -184,6 +223,11 @@ class VaultRemindersViewModel
             ])
             ->sortByCollator('title')
             ->all();
+    }
+
+    private function page(): int
+    {
+        return max($this->page, 1);
     }
 
     private function countLine(int $count): string

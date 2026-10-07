@@ -10,6 +10,7 @@ use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault;
+use App\ViewModels\Vaults\VaultRemindersViewModel;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -294,6 +295,49 @@ class VaultReminderControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Michael Scott');
         $response->assertDontSee('A deleted contact');
+    }
+
+    #[Test]
+    public function it_offers_the_next_page_and_answers_it(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        foreach (range(1, VaultRemindersViewModel::PER_PAGE) as $day) {
+            $this->deadline($this->ruleAbout($user, $vault), $day);
+        }
+
+        $this->deadline($this->ruleAbout($user, $vault, 'Creed', 'Bratton'), VaultRemindersViewModel::PER_PAGE + 1);
+
+        $first = $this->actingAs($user)->get(route('reminders.index', $vault));
+
+        $first->assertStatus(200);
+        $first->assertSee('Load more');
+        $first->assertSee(route('reminders.index', ['vault' => $vault, 'page' => 2]), escape: false);
+        $first->assertDontSee('Creed Bratton');
+
+        $second = $this->actingAs($user)->get(route('reminders.index', ['vault' => $vault, 'page' => 2]));
+
+        $second->assertStatus(200);
+        $second->assertSee('Creed Bratton');
+        $second->assertDontSee('Load more');
+    }
+
+    #[Test]
+    public function it_asks_before_sending_a_test_with_one_card_for_the_whole_page(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $kevin = $this->deadline($this->ruleAbout($user, $vault, 'Kevin', 'Malone'), 2);
+        $alone = (string) $this->actingAs($user)->get(route('reminders.index', $vault))->getContent();
+
+        $oscar = $this->deadline($this->ruleAbout($user, $vault, 'Oscar', 'Martinez'), 3);
+        $response = $this->actingAs($user)->get(route('reminders.index', $vault));
+
+        $this->assertSame(substr_count($alone, 'Send yourself a test?'), substr_count((string) $response->getContent(), 'Send yourself a test?'));
+        $response->assertSee(route('reminders.occurrences.testNotification.create', ['vault' => $vault, 'reminderOccurrence' => $kevin]), escape: false);
+        $response->assertSee(route('reminders.occurrences.testNotification.create', ['vault' => $vault, 'reminderOccurrence' => $oscar]), escape: false);
     }
 
     private function ruleAbout(User $user, Vault $vault, string $first = 'Stanley', string $last = 'Hudson'): Reminder

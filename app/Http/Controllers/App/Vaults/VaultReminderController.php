@@ -21,6 +21,7 @@ class VaultReminderController extends Controller
                 user: $request->user(),
                 vault: $vault,
                 groupBy: VaultRemindersViewModel::GroupByWhen,
+                page: $request->integer('page', 1),
             ),
         ]);
     }
@@ -32,6 +33,7 @@ class VaultReminderController extends Controller
                 user: $request->user(),
                 vault: $vault,
                 groupBy: VaultRemindersViewModel::GroupByContact,
+                page: $request->integer('page', 1),
             ),
         ]);
     }

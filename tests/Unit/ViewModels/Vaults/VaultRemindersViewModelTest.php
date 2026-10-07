@@ -175,6 +175,51 @@ class VaultRemindersViewModelTest extends TestCase
         $this->assertStringEndsWith("/vaults/{$vault->slug}/reminders/by-contact", $viewModel->groupedByContactUrl());
     }
 
+    #[Test]
+    public function it_shows_one_page_of_rows_and_gives_a_group_its_heading_only_where_it_starts(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->deadline($this->onceIn($user, $vault, '2026-09-01', 'Michael', 'Scott'), '2026-09-01');
+        $this->deadline($this->onceIn($user, $vault, '2026-09-02', 'Dwight', 'Schrute'), '2026-09-02');
+
+        foreach (range(1, VaultRemindersViewModel::PER_PAGE) as $day) {
+            $this->onceIn($user, $vault, CarbonImmutable::parse('2026-09-04')->addDays($day)->toDateString());
+        }
+
+        $first = new VaultRemindersViewModel(user: $user, vault: $vault, page: 1);
+        $second = new VaultRemindersViewModel(user: $user, vault: $vault, page: 2);
+
+        $this->assertSame(['Overdue', 'Upcoming'], array_column($first->groups(), 'title'));
+        $this->assertSame([true, true], array_column($first->groups(), 'showsHeading'));
+        $this->assertCount(VaultRemindersViewModel::PER_PAGE - 2, $first->groups()[1]['rows']);
+        $this->assertSame('50 reminders', $first->groups()[1]['count']);
+        $this->assertStringEndsWith("/vaults/{$vault->slug}/reminders?page=2", (string) $first->nextPageUrl());
+
+        $this->assertSame(['Upcoming'], array_column($second->groups(), 'title'));
+        $this->assertSame([false], array_column($second->groups(), 'showsHeading'));
+        $this->assertCount(2, $second->groups()[0]['rows']);
+        $this->assertNull($second->nextPageUrl());
+    }
+
+    #[Test]
+    public function it_asks_for_the_next_page_in_the_grouping_being_read(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'UTC'));
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        foreach (range(1, VaultRemindersViewModel::PER_PAGE + 1) as $day) {
+            $this->onceIn($user, $vault, CarbonImmutable::parse('2026-09-04')->addDays($day)->toDateString());
+        }
+
+        $viewModel = $this->viewModelFor($user, $vault, VaultRemindersViewModel::GroupByContact);
+
+        $this->assertStringEndsWith("/vaults/{$vault->slug}/reminders/by-contact?page=2", (string) $viewModel->nextPageUrl());
+    }
+
     private function viewModelFor(User $user, Vault $vault, string $groupBy = VaultRemindersViewModel::GroupByWhen): VaultRemindersViewModel
     {
         return new VaultRemindersViewModel(user: $user, vault: $vault, groupBy: $groupBy);

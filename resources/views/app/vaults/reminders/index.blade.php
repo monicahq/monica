@@ -25,7 +25,7 @@
     'current' => 'active',
   ])
 
-  @if ($groups === [])
+  @if ($viewModel->holdsNothing())
     <x-panel>
       <x-empty-state :title="$viewModel->emptyTitle()">
         <x-slot:icon>
@@ -57,36 +57,60 @@
     </div>
 
     <div id="reminders-list" x-merge="replace" class="flex flex-col gap-9 dim-when-busy">
-      @foreach ($groups as $group)
-        <section
-          @class([
-            'relative flex flex-col gap-3.5 rounded-xl',
-            'border border-warning-edge bg-warning-tint p-3.5' => $group['isOverdue'],
-          ])
-        >
-          <h2 class="flex items-baseline gap-2.5">
-            @if ($group['isOverdue'])
-              <x-icon name="clock" :size="14" :stroke-width="1.6" class="shrink-0 self-center text-warning" />
+      <div id="reminders-rows" x-merge="append" class="flex flex-col gap-9">
+        @foreach ($groups as $group)
+          <section
+            @class([
+              'relative flex flex-col gap-3.5 rounded-xl',
+              'border border-warning-edge bg-warning-tint p-3.5' => $group['isOverdue'],
+            ])
+          >
+            @if ($group['showsHeading'])
+              <h2 class="flex items-baseline gap-2.5">
+                @if ($group['isOverdue'])
+                  <x-icon name="clock" :size="14" :stroke-width="1.6" class="shrink-0 self-center text-warning" />
+                @endif
+
+                <span
+                  @class([
+                    'text-2xs font-semibold tracking-caption uppercase',
+                    'text-warning' => $group['isOverdue'],
+                    'text-muted' => ! $group['isOverdue'],
+                  ])
+                >{{ $group['title'] }}</span>
+
+                <span class="text-xs text-muted-soft">{{ $group['count'] }}</span>
+              </h2>
             @endif
 
-            <span
-              @class([
-                'text-2xs font-semibold tracking-caption uppercase',
-                'text-warning' => $group['isOverdue'],
-                'text-muted' => ! $group['isOverdue'],
-              ])
-            >{{ $group['title'] }}</span>
+            <div class="flex flex-col gap-2.5">
+              @foreach ($group['rows'] as $row)
+                @include('app.vaults.reminders.row', ['row' => $row])
+              @endforeach
+            </div>
+          </section>
+        @endforeach
+      </div>
 
-            <span class="text-xs text-muted-soft">{{ $group['count'] }}</span>
-          </h2>
+      <div id="reminders-pagination" class="text-center">
+        @if ($viewModel->nextPageUrl())
+          <x-link :href="$viewModel->nextPageUrl()" x-target="reminders-rows reminders-pagination">{{ __('Load more') }}</x-link>
+        @endif
+      </div>
+    </div>
 
-          <div class="flex flex-col gap-2.5">
-            @foreach ($group['rows'] as $row)
-              @include('app.vaults.reminders.row', ['row' => $row])
-            @endforeach
-          </div>
-        </section>
-      @endforeach
+    <div x-data="{ testUrl: '' }" class="contents">
+      <x-modal.form
+        :title="__('Send yourself a test?')"
+        :description="__('This reminder is emailed to you now, as it will arrive. Nothing else changes.')"
+        :confirm="__('Send it')"
+        method="post"
+        x-bind:action="testUrl"
+      >
+        <x-slot:trigger>
+          <span hidden x-on:confirm-reminder-test.window="testUrl = $event.detail.url; open = true"></span>
+        </x-slot:trigger>
+      </x-modal.form>
     </div>
   @endif
 </x-shell>

@@ -8,6 +8,7 @@ use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 /**
@@ -29,6 +30,14 @@ class NextReminderDeadlines
             ->whereIn('reminder_id', $rules->modelKeys())
             ->active()
             ->whereDate('local_date', '>', $today->toDateString())
+            ->where('local_date', function (Builder $next) use ($today): void {
+                $next->selectRaw('min(local_date)')
+                    ->from('reminder_occurrences', 'next')
+                    ->whereColumn('next.reminder_id', 'reminder_occurrences.reminder_id')
+                    ->whereNull('next.answer')
+                    ->whereNull('next.cancelled_at')
+                    ->whereDate('next.local_date', '>', $today->toDateString());
+            })
             ->orderBy('local_date')
             ->get()
             ->unique('reminder_id')
