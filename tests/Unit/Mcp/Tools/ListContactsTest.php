@@ -58,6 +58,44 @@ class ListContactsTest extends TestCase
     }
 
     #[Test]
+    public function it_answers_the_page_that_was_asked_for(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Angela', 'created_at' => '2026-01-01']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Dwight', 'created_at' => '2026-02-01']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Kevin', 'created_at' => '2026-03-01']);
+
+        EricaServer::actingAs($user)->tool(ListContacts::class, ['vault' => $vault->uuid, 'sort' => 'added', 'page' => 2, 'per_page' => 2])
+            ->assertOk()
+            ->assertSee('Kevin')
+            ->assertDontSee('Angela')
+            ->assertSee('"page":2')
+            ->assertSee('"total":3');
+    }
+
+    #[Test]
+    public function it_brings_an_absurd_page_size_back_into_range(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        EricaServer::actingAs($user)->tool(ListContacts::class, ['vault' => $vault->uuid, 'per_page' => 1000])
+            ->assertOk()
+            ->assertSee('"per_page":'.config('monica.api_maximum_items_per_page'));
+    }
+
+    #[Test]
+    public function it_refuses_a_page_size_that_is_not_a_number(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        EricaServer::actingAs($user)->tool(ListContacts::class, ['vault' => $vault->uuid, 'per_page' => 'many'])
+            ->assertHasErrors();
+    }
+
+    #[Test]
     public function it_answers_an_empty_vault_without_erroring(): void
     {
         $user = User::factory()->create();

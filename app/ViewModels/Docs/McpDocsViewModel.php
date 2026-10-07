@@ -225,7 +225,7 @@ class McpDocsViewModel
                 ['name' => 'search-records', 'description' => 'Finds the people, entities and life events of a vault, or of every vault, holding every word given, typing mistakes tolerated.'],
             ]],
             ['name' => 'Contacts, reading', 'changesData' => false, 'tools' => [
-                ['name' => 'list-contacts', 'description' => 'Lists the contacts in a vault. Can search, narrow to a grouping, and sort.'],
+                ['name' => 'list-contacts', 'description' => 'Lists the contacts in a vault, a page at a time. Can search, narrow to a grouping, and sort.'],
                 ['name' => 'get-contact', 'description' => 'Returns one contact: their names, their template, and whether they are a favourite or archived.'],
                 ['name' => 'get-me-contact', 'description' => 'Returns the contact that represents you in a vault.'],
                 ['name' => 'list-contact-name-representations', 'description' => 'Returns every way a contact’s name is written, and which one it is shown under.'],
