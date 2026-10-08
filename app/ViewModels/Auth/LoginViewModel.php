@@ -53,4 +53,9 @@ class LoginViewModel extends GuestViewModel
     {
         return (bool) config('monica.magic_link_enabled');
     }
+
+    public function registrationIsEnabled(): bool
+    {
+        return (bool) config('monica.registration_enabled');
+    }
 }

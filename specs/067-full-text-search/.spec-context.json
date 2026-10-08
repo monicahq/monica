@@ -3,7 +3,7 @@
   "specName": "Full text search",
   "branch": "2026-09-29-full-text-search",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -297,6 +297,13 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-09-29T22:02:08.728Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-10-07T20:44:31.536Z"
     }
   ],
   "telemetryInstanceId": "dfb54039-37a6-4c55-a7ab-34673e19a889",

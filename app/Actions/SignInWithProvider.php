@@ -56,6 +56,7 @@ class SignInWithProvider
             return;
         }
 
+        $this->refuseWhenRegistrationIsDisabled();
         $this->refuseWithoutEmail();
         $this->refuseWhenTheAddressIsTaken();
 
@@ -78,6 +79,17 @@ class SignInWithProvider
 
         throw ValidationException::withMessages([
             'provider' => __('These credentials do not match our records.'),
+        ]);
+    }
+
+    private function refuseWhenRegistrationIsDisabled(): void
+    {
+        if (config('monica.registration_enabled')) {
+            return;
+        }
+
+        throw ValidationException::withMessages([
+            'provider' => __('This instance does not accept new accounts.'),
         ]);
     }
 

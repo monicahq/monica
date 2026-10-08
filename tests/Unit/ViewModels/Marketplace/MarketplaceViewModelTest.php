@@ -225,4 +225,16 @@ class MarketplaceViewModelTest extends TestCase
 
         $this->assertSame(['Élodie', 'Erin', 'Zoe'], $names);
     }
+
+    #[Test]
+    public function it_says_whether_registration_is_enabled(): void
+    {
+        config()->set('monica.registration_enabled', true);
+
+        $this->assertTrue(new MarketplaceViewModel()->registrationIsEnabled());
+
+        config()->set('monica.registration_enabled', false);
+
+        $this->assertFalse(new MarketplaceViewModel()->registrationIsEnabled());
+    }
 }

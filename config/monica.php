@@ -35,6 +35,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Registration
+    |--------------------------------------------------------------------------
+    |
+    | Whether somebody may create an account on this instance. Switching it off takes the sign up
+    | screen, both of its submissions and the API endpoint out of the instance, and refuses a
+    | first sign in through an outside provider. Whoever already has an account is not affected.
+    |
+    */
+    'registration_enabled' => (bool) env('MONICA_REGISTRATION_ENABLED', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Signing in through an outside provider
     |--------------------------------------------------------------------------
     |

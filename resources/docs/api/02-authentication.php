@@ -20,6 +20,7 @@ return [
             'description' => 'Open an account from outside the browser, and get a token for it.',
             'body' => [
                 'The account this builds is the account the sign up screen builds, down to the first vault and the lists it starts with. The terms are asked for here too, because a second way in that skipped them would be a way around them.',
+                'An instance can stop accepting new accounts. While it does, this endpoint answers 404 whatever the body holds, before anything is validated, exactly as the sign up screen does.',
             ],
             'rateLimit' => 'Six requests per minute, per address.',
             'bodyParams' => [

@@ -3,7 +3,7 @@
   "specName": "Vault dashboard redesign",
   "branch": "2026-10-02-dashboard",
   "currentStep": "implement",
-  "status": "implementing",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -217,7 +217,15 @@
       "kind": "complete",
       "by": "extension",
       "at": "2026-10-02T13:17:36.415Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-10-07T20:44:31.536Z"
     }
   ],
-  "currentTask": "T025"
+  "currentTask": "T025",
+  "telemetryInstanceId": "17cf9ed5-db4b-4086-afc8-60ce99bf669a"
 }

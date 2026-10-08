@@ -20,7 +20,7 @@
             <p class="text-[18px] leading-normal text-pretty text-muted sm:text-[20px] 2xl:text-[22px]">{{ __('Learn how Monica works, and connect it to your scripts, your assistant and your devices.') }}</p>
 
             <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-              <x-button :href="route('auth.register.new')">
+              <x-button :href="$viewModel->registrationIsEnabled() ? route('auth.register.new') : route('auth.login.new')">
                 {{ __('Get started with Monica') }}
                 <x-icon name="chevron-right" :size="16" />
               </x-button>

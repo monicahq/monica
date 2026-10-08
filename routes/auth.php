@@ -19,10 +19,16 @@ use App\Http\Controllers\App\Auth\TwoFactorChallengeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest'])->group(function (): void {
-    Route::get('register', [RegistrationController::class, 'new'])->name('auth.register.new');
-    Route::post('register', [RegistrationController::class, 'create'])->name('auth.register.create');
+    /*
+     * Creating an account. The whole flow answers 404 while `monica.registration_enabled` is off.
+     * The second passkey step is not here: it runs for an account that already exists.
+     */
+    Route::middleware(['registration'])->group(function (): void {
+        Route::get('register', [RegistrationController::class, 'new'])->name('auth.register.new');
+        Route::post('register', [RegistrationController::class, 'create'])->name('auth.register.create');
 
-    Route::post('register/passkey', [RegistrationPasskeyController::class, 'create'])->name('auth.registerPasskey.create');
+        Route::post('register/passkey', [RegistrationPasskeyController::class, 'create'])->name('auth.registerPasskey.create');
+    });
 
     Route::put('locale', [LocaleController::class, 'update'])
         ->name('auth.locale.update');

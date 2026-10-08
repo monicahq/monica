@@ -225,6 +225,46 @@ class SignInWithProviderTest extends TestCase
         $this->assertFalse($signedIn->is($onGitHub));
     }
 
+    #[Test]
+    public function it_refuses_somebody_the_instance_has_never_seen_while_registration_is_disabled(): void
+    {
+        Queue::fake();
+        config()->set('monica.registration_enabled', false);
+
+        try {
+            new SignInWithProvider(
+                provider: SsoProviderEnum::GitHub,
+                providerUser: $this->providerUser(),
+            )->execute();
+
+            $this->fail('The sign in was not refused.');
+        } catch (ValidationException $exception) {
+            $this->assertSame(['This instance does not accept new accounts.'], $exception->errors()['provider']);
+        }
+
+        $this->assertEquals(0, User::query()->count());
+    }
+
+    #[Test]
+    public function it_still_signs_in_a_connected_user_while_registration_is_disabled(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        config()->set('monica.registration_enabled', false);
+
+        $user = User::factory()->create([
+            'sso_provider' => SsoProviderEnum::GitHub,
+            'sso_id' => '108120124',
+        ]);
+
+        $signedIn = new SignInWithProvider(
+            provider: SsoProviderEnum::GitHub,
+            providerUser: $this->providerUser(),
+        )->execute();
+
+        $this->assertTrue($signedIn->is($user));
+    }
+
     private function providerUser(
         string $id = '108120124',
         ?string $email = 'michael.scott@dundermifflin.com',

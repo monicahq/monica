@@ -50,9 +50,17 @@
                       return String(next) !== ''
                     }
 
-                    return this.mode === 'switchedOff'
-                      ? String(this.current) === '1' && String(next) === '0'
-                      : Number(next) < Number(this.current)
+                    const isOn = this.current === true || String(this.current) === '1'
+
+                    if (this.mode === 'switchedOff') {
+                      return isOn && String(next) === '0'
+                    }
+
+                    if (this.mode === 'switchedOn') {
+                      return ! isOn && String(next) === '1'
+                    }
+
+                    return Number(next) < Number(this.current)
                   },
                 }"
                 @submit="if (! confirming && takesSomethingAway($refs.value.value)) { $event.preventDefault(); confirming = true }"

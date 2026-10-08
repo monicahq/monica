@@ -184,4 +184,16 @@ class RegistrationControllerTest extends TestCase
         $response->assertSessionHasErrors('cf-turnstile-response');
         $this->assertGuest();
     }
+
+    #[Test]
+    public function it_answers_not_found_while_registration_is_disabled(): void
+    {
+        config()->set('monica.registration_enabled', false);
+
+        $this->get(route('auth.register.new'))->assertNotFound();
+        $this->post(route('auth.register.create'), $this->validPayload())->assertNotFound();
+
+        $this->assertDatabaseMissing('users', ['email' => 'michael.scott@dundermifflin.com']);
+        $this->assertGuest();
+    }
 }

@@ -63,3 +63,6 @@ A chronological list of every feature and improvement shipped during development
 * Docs: Counted the API rate limit per person rather than per key, and described the paginated lists that exist.
 * Docs: Explained on /docs/mcp how an assistant connects through OAuth, and how to disconnect it.
 * Docs: Built the OpenAPI document on every request instead of keeping the first one forever.
+* Auth: Closed registration on an instance with `MONICA_REGISTRATION_ENABLED`, refusing every way of creating an account.
+* Admin: Opened or closed registration from the configuration screen, with a warning before opening it.
+* Fix: Warned before switching off sign in links on the configuration screen, which never asked before.

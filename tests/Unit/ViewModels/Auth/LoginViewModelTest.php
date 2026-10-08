@@ -104,4 +104,16 @@ class LoginViewModelTest extends TestCase
 
         $this->assertFalse(new LoginViewModel()->magicLinkIsEnabled());
     }
+
+    #[Test]
+    public function it_says_whether_registration_is_enabled(): void
+    {
+        config()->set('monica.registration_enabled', true);
+
+        $this->assertTrue(new LoginViewModel()->registrationIsEnabled());
+
+        config()->set('monica.registration_enabled', false);
+
+        $this->assertFalse(new LoginViewModel()->registrationIsEnabled());
+    }
 }

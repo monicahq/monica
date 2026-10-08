@@ -1433,10 +1433,11 @@ The same person is usually the instance administrator.
 - **Need and success:** providers, passkeys, sign in links and the human check are set as the operator wants.
 - **Scope:** provider credentials and callback URLs; Microsoft needs an extra package (D26); passkeys need
   HTTPS and use the host of the app URL; sign in links on or off and their lifetime; Turnstile and its
-  strictness; registration cannot be closed (no switch exists).
+  strictness; closing registration with `MONICA_REGISTRATION_ENABLED` or from the Configuration
+  screen, and letting somebody in by opening it briefly.
 - **Applicability:** self hosted. **Links:** related `signin.*`.
 - **Evidence:** `config/services.php`, `config/passkeys.php`, `config/turnstile.php`, `InstanceSettingEnum`.
-- **Examples:** none. **Acceptance:** "registration cannot be closed" stated plainly.
+- **Examples:** none. **Acceptance:** an operator closes registration and opens it again without help.
 - **Delivery:** P1, ready.
 
 #### `hosting.notification-channels` Offer Telegram and text messages

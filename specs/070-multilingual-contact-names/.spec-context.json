@@ -3,7 +3,7 @@
   "specName": "Multilingual contact names",
   "branch": "2026-10-06-multilingual-contact-names",
   "currentStep": "implement",
-  "status": "implemented",
+  "status": "completed",
   "history": [
     {
       "step": "specify",
@@ -32,6 +32,14 @@
       "kind": "start",
       "by": "extension",
       "at": "2026-10-06T21:42:30.840Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-10-07T20:44:31.536Z"
     }
-  ]
+  ],
+  "telemetryInstanceId": "1a1121fd-3d3f-477a-8281-c73a888838bc"
 }

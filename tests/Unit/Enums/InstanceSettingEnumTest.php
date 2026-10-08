@@ -6,6 +6,7 @@ namespace Tests\Unit\Enums;
 
 use App\Enums\InstanceSettingEnum;
 use App\Enums\InstanceSettingGroupEnum;
+use App\Enums\InstanceSettingKindEnum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -109,5 +110,16 @@ class InstanceSettingEnumTest extends TestCase
         }
 
         $this->assertNull(InstanceSettingEnum::TelegramBotUrl->warning());
+    }
+
+    #[Test]
+    public function it_warns_when_registration_is_switched_on(): void
+    {
+        $setting = InstanceSettingEnum::RegistrationEnabled;
+
+        $this->assertSame(InstanceSettingGroupEnum::SigningIn, $setting->group());
+        $this->assertSame(InstanceSettingKindEnum::Boolean, $setting->kind());
+        $this->assertSame('switchedOn', $setting->warnsWhen());
+        $this->assertSame('Anybody who reaches this instance can create an account until it is switched off again.', $setting->warning());
     }
 }

@@ -78,7 +78,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->name('api.v1.')->group(function (): void {
     Route::get('status', [StatusController::class, 'show'])->middleware('throttle:60,1')->name('status');
 
-    Route::post('register', [RegistrationController::class, 'store'])->middleware('throttle:6,1')->name('register');
+    Route::post('register', [RegistrationController::class, 'store'])->middleware(['registration', 'throttle:6,1'])->name('register');
     Route::post('login', [LoginController::class, 'store'])->middleware('throttle:6,1')->name('login');
 
     Route::middleware(['auth:sanctum'])->group(function (): void {

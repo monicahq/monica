@@ -75,6 +75,11 @@ class DocsViewModel
         return implode("\n", $lines)."\n";
     }
 
+    public function registrationIsEnabled(): bool
+    {
+        return (bool) config('monica.registration_enabled');
+    }
+
     public function host(): string
     {
         return (string) parse_url((string) config('app.url'), PHP_URL_HOST);

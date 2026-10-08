@@ -51,4 +51,16 @@ class DocsViewModelTest extends TestCase
         $this->assertStringStartsWith("# Monica\n", $text);
         $this->assertStringContainsString('## API reference', $text);
     }
+
+    #[Test]
+    public function it_says_whether_registration_is_enabled(): void
+    {
+        config()->set('monica.registration_enabled', true);
+
+        $this->assertTrue(new DocsViewModel()->registrationIsEnabled());
+
+        config()->set('monica.registration_enabled', false);
+
+        $this->assertFalse(new DocsViewModel()->registrationIsEnabled());
+    }
 }

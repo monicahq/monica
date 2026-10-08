@@ -187,9 +187,11 @@
           {{ __('Your templates') }}
         </x-button.secondary>
       @else
-        <x-button.secondary :href="route('auth.register.new')" size="small">
-          {{ __('Create an account') }}
-        </x-button.secondary>
+        @if ($viewModel->registrationIsEnabled())
+          <x-button.secondary :href="route('auth.register.new')" size="small">
+            {{ __('Create an account') }}
+          </x-button.secondary>
+        @endif
       @endauth
     </div>
   </section>

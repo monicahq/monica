@@ -14,6 +14,11 @@ class MarketplaceLayout extends Component
         public ?string $title = null,
     ) {}
 
+    public function registrationIsEnabled(): bool
+    {
+        return (bool) config('monica.registration_enabled');
+    }
+
     #[Override]
     public function render(): View
     {

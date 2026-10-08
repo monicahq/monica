@@ -39,7 +39,9 @@
             {{ __('Sign in') }}
           </a>
 
-          <x-button :href="route('auth.register.new')" size="small">{{ __('Create an account') }}</x-button>
+          @if ($registrationIsEnabled())
+            <x-button :href="route('auth.register.new')" size="small">{{ __('Create an account') }}</x-button>
+          @endif
         @endauth
       </div>
     </header>

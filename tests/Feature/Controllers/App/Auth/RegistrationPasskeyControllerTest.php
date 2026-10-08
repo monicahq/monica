@@ -138,4 +138,15 @@ class RegistrationPasskeyControllerTest extends TestCase
             ->post(route('auth.registerPasskey.create'), $this->payload())
             ->assertRedirect(route('home.index'));
     }
+
+    #[Test]
+    public function it_answers_not_found_while_registration_is_disabled(): void
+    {
+        config()->set('monica.registration_enabled', false);
+
+        $this->post(route('auth.registerPasskey.create'), $this->payload())->assertNotFound();
+
+        $this->assertDatabaseMissing('users', ['email' => 'michael.scott@dundermifflin.com']);
+        $this->assertGuest();
+    }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Middleware\EnsureFlagIsOn;
 use App\Http\Middleware\EnsureMagicLinkIsEnabled;
+use App\Http\Middleware\EnsureRegistrationIsEnabled;
 use App\Http\Middleware\EnsureSsoProviderIsAvailable;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\EnsureUserIsAdministrator;
@@ -49,6 +50,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'flag' => EnsureFlagIsOn::class,
             'magic.link' => EnsureMagicLinkIsEnabled::class,
             'portal.timing' => InsertServerGenerationTime::class,
+            'registration' => EnsureRegistrationIsEnabled::class,
             'sso' => EnsureSsoProviderIsAvailable::class,
         ]);
         $middleware->api(prepend: [

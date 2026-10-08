@@ -170,4 +170,15 @@ class RegistrationControllerTest extends TestCase
         $response->assertCreated();
         $this->assertStringNotContainsString('a-very-strong-password', $response->getContent());
     }
+
+    #[Test]
+    public function it_answers_not_found_while_registration_is_disabled(): void
+    {
+        config()->set('monica.registration_enabled', false);
+
+        $response = $this->json('POST', '/api/v1/register', $this->payload());
+
+        $response->assertNotFound();
+        $this->assertSame(0, User::query()->count());
+    }
 }

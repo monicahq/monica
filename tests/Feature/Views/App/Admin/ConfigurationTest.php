@@ -135,10 +135,19 @@ class ConfigurationTest extends TestCase
         $response = $this->actingAs($this->administrator())->get('/admin/configuration');
 
         $this->assertEquals(
-            3,
+            4,
             substr_count($response->getContent(), 'takesSomethingAway($refs.value.value)'),
-            'Only the three settings that can take something away carry the confirmation.'
+            'Only the four settings that warn before a change carry the confirmation.'
         );
+    }
+
+    #[Test]
+    public function it_asks_before_registration_is_switched_on(): void
+    {
+        $response = $this->actingAs($this->administrator())->get('/admin/configuration');
+
+        $response->assertSee("mode: 'switchedOn'", false);
+        $response->assertSee('Anybody who reaches this instance can create an account until it is switched off again.');
     }
 
     #[Test]

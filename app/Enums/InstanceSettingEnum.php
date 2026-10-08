@@ -20,6 +20,7 @@ enum InstanceSettingEnum: string implements Translatable
     case RememberDurationDays = 'remember_duration_days';
     case MagicLinkEnabled = 'magic_link_enabled';
     case MagicLinkDurationMinutes = 'magic_link_duration_minutes';
+    case RegistrationEnabled = 'registration_enabled';
 
     case ReminderGenerationWindowInDays = 'reminder_generation_window_in_days';
     case NotificationMaximumAttempts = 'notification_maximum_attempts';
@@ -145,7 +146,7 @@ enum InstanceSettingEnum: string implements Translatable
             self::PaidStorageLimitInBytes, self::MaxFileSizeInKilobytes => InstanceSettingGroupEnum::Accounts,
 
             self::RememberDurationDays, self::MagicLinkEnabled,
-            self::MagicLinkDurationMinutes => InstanceSettingGroupEnum::SigningIn,
+            self::MagicLinkDurationMinutes, self::RegistrationEnabled => InstanceSettingGroupEnum::SigningIn,
 
             self::GithubClientId, self::GithubClientSecret, self::GoogleClientId,
             self::GoogleClientSecret, self::MicrosoftClientId, self::MicrosoftClientSecret,
@@ -166,7 +167,7 @@ enum InstanceSettingEnum: string implements Translatable
     public function kind(): InstanceSettingKindEnum
     {
         return match ($this) {
-            self::MagicLinkEnabled, self::SelfHosted => InstanceSettingKindEnum::Boolean,
+            self::MagicLinkEnabled, self::RegistrationEnabled, self::SelfHosted => InstanceSettingKindEnum::Boolean,
 
             self::TelegramBotUrl => InstanceSettingKindEnum::Url,
 
@@ -238,6 +239,7 @@ enum InstanceSettingEnum: string implements Translatable
     {
         return match ($this) {
             self::MagicLinkEnabled => 'Any sign in link already emailed stops working, and whoever holds one has to ask for another way in.',
+            self::RegistrationEnabled => 'Anybody who reaches this instance can create an account until it is switched off again.',
             self::NotificationRetentionMonths => 'Notifications older than the new number are swept on the next run, and nothing brings them back.',
             self::OrphanedFileGracePeriodInDays => 'Files detached longer ago than the new number become eligible for the sweep, and a restored record can no longer recover them.',
             self::TelegramBotToken, self::TelegramBotWebhookSecret => 'Telegram stops reaching this instance until the bot is registered again.',
@@ -253,6 +255,7 @@ enum InstanceSettingEnum: string implements Translatable
     {
         return match ($this) {
             self::MagicLinkEnabled => 'switchedOff',
+            self::RegistrationEnabled => 'switchedOn',
             self::NotificationRetentionMonths, self::OrphanedFileGracePeriodInDays => 'lowered',
             self::TelegramBotToken, self::TelegramBotWebhookSecret => 'replaced',
             default => null,
@@ -270,6 +273,7 @@ enum InstanceSettingEnum: string implements Translatable
             self::RememberDurationDays => 'How long a session survives when somebody asks to be remembered.',
             self::MagicLinkEnabled => 'Whether somebody may sign in with a link emailed to them.',
             self::MagicLinkDurationMinutes => 'How long a sign in link stays usable.',
+            self::RegistrationEnabled => 'Whether somebody may create an account on this instance.',
             self::ReminderGenerationWindowInDays => 'How far ahead reminder deadlines are generated.',
             self::NotificationMaximumAttempts => 'How many times a refused notification is attempted again.',
             self::NotificationRetentionMonths => 'How long a notification is kept before it is swept.',

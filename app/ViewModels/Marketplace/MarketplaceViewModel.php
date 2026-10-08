@@ -205,6 +205,11 @@ class MarketplaceViewModel
             ->doesntExist();
     }
 
+    public function registrationIsEnabled(): bool
+    {
+        return (bool) config('monica.registration_enabled');
+    }
+
     /** @return array<string, mixed> */
     private function card(MarketplaceListing $listing): array
     {

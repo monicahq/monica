@@ -110,9 +110,11 @@
     </x-auth-footnote>
   @endif
 
-  <x-auth-footnote :href="route('auth.register.new')" :label="__('Create an account')">
-    {{ __('New to :app?', ['app' => config('app.name')]) }}
-  </x-auth-footnote>
+  @if ($viewModel->registrationIsEnabled())
+    <x-auth-footnote :href="route('auth.register.new')" :label="__('Create an account')">
+      {{ __('New to :app?', ['app' => config('app.name')]) }}
+    </x-auth-footnote>
+  @endif
 
   <div class="flex items-center gap-3">
     <x-language-picker :locales="$viewModel->locales()" :current="$viewModel->currentLocale()" />
