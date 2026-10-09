@@ -14,10 +14,12 @@ use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use Monicahq\Cloudflare\Http\Middleware\TrustProxies as CloudflareTrustProxies;
 use Sentry\Laravel\Integration as SentryIntegration;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -45,6 +47,7 @@ return Application::configure(basePath: dirname(__DIR__))
             Request::HEADER_X_FORWARDED_PROTO |
             Request::HEADER_X_FORWARDED_AWS_ELB
         );
+        $middleware->replace(TrustProxies::class, CloudflareTrustProxies::class);
         $middleware->alias([
             'active' => EnsureUserIsActive::class,
             'administrator' => EnsureUserIsAdministrator::class,

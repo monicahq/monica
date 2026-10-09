@@ -49,6 +49,8 @@ use Laravel\Scout\EngineManager;
 use Laravel\Scout\Jobs\MakeSearchableUniquely;
 use Laravel\Scout\Jobs\RemoveFromSearchUniquely;
 use Laravel\Scout\Scout;
+use Monicahq\Cloudflare\Facades\CloudflareProxies;
+use Monicahq\Cloudflare\LaravelCloudflare;
 use Override;
 use SocialiteProviders\Manager\SocialiteWasCalled;
 
@@ -118,6 +120,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->applyInstanceSettings();
         $this->forceSecureUrls();
+        $this->configureTrustedProxies();
         $this->configureRateLimiting();
         $this->configureCollation();
         $this->configureDefaultsProduction();
@@ -217,6 +220,23 @@ class AppServiceProvider extends ServiceProvider
         }
 
         URL::forceScheme('https');
+    }
+
+    /**
+     * Cloudflare's address ranges join the proxies the deployment already trusts rather than
+     * replace them, so a balancer standing between Cloudflare and the application stays trusted.
+     */
+    private function configureTrustedProxies(): void
+    {
+        LaravelCloudflare::getProxiesUsing(function (): array {
+            $configuredProxies = (string) config('trustedproxy.proxies');
+
+            if (in_array($configuredProxies, ['*', '**'], true)) {
+                return [...CloudflareProxies::load(), '0.0.0.0/0', '::/0'];
+            }
+
+            return [...CloudflareProxies::load(), ...array_filter(array_map(trim(...), explode(',', $configuredProxies)))];
+        });
     }
 
     private function configureRateLimiting(): void

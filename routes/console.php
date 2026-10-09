@@ -20,6 +20,10 @@ if (config('telescope.enabled')) {
     Schedule::command('telescope:prune')->daily();
 }
 
+if (config('laravelcloudflare.enabled')) {
+    Schedule::command('cloudflare:reload')->dailyAt('01:25');
+}
+
 Schedule::job(new PurgeOrphanedFiles, 'low')->dailyAt('03:20')->sentryMonitor();
 
 Schedule::job(new DetectDuplicateContacts, 'low')->dailyAt('03:40')->sentryMonitor();
