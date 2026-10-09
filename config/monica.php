@@ -238,6 +238,31 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | The queue behind each priority
+    |--------------------------------------------------------------------------
+    |
+    | The application sends its background work at one of three priorities,
+    | high, default and low, and these name the queue each one lands on. Work
+    | that names no queue goes to the default one. A value left blank keeps the
+    | shipped name. The worker command keeps listing the priorities,
+    | `high,default,low`, and reaches the queues named here. A priority is sent
+    | to the queue named here and no further, so to run everything on one queue,
+    | give all three the same name.
+    |
+    | A worker reads these once, when it starts, so a change needs the workers
+    | restarted. Change a name while its queue is empty: work already waiting
+    | on the old name is not moved.
+    |
+    */
+
+    'queues' => [
+        'high' => env('MONICA_QUEUE_HIGH', 'high'),
+        'default' => env('MONICA_QUEUE_DEFAULT', 'default'),
+        'low' => env('MONICA_QUEUE_LOW', 'low'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Screenshot Link
     |--------------------------------------------------------------------------
     |

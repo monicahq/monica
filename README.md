@@ -46,6 +46,15 @@ process of its container: its log files are symbolic links to `/dev/stderr`, and
 whose standard error is a pipe cannot open that, so running it under a supervisor fails with
 `AH00015` before it serves anything.
 
+The `queue` worker listens to `high,default,low`. Those words name priorities, and
+`MONICA_QUEUE_HIGH`, `MONICA_QUEUE_DEFAULT` and `MONICA_QUEUE_LOW` name the queue behind each one
+(`high`, `default` and `low` when unset or blank). Work that names no queue, search indexing
+included, has the default priority. The application sends to the configured names and the worker
+reads from them, so its command never changes. Give all three the same name and a single
+`php artisan queue:work` started without `--queue` runs everything. A worker reads these names
+only when it starts: change one while its queue is empty, then run `php artisan queue:restart`.
+Work still waiting on the old name stays there.
+
 No Vite dev server runs in the stack. The entrypoint builds the assets once at every start, so a
 page has a manifest to read, and a change to the CSS or the JavaScript needs either a restart or
 `docker compose exec app bun run build`. For a dev server and its hot reloading, run `bun run dev`

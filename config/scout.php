@@ -76,7 +76,7 @@ return [
     | with your search engines are queued. When this is set to "true" then
     | all automatic data syncing will get queued for better performance.
     | Saving a record never waits for the engine, so this stays on, on the
-    | "high" queue, so a change is found within seconds.
+    | "default" queue.
     |
     */
 

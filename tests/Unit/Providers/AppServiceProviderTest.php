@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\Providers;
 
 use App\Models\User;
+use App\Providers\AppServiceProvider;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Queue;
 use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -131,5 +133,52 @@ class AppServiceProviderTest extends TestCase
             ->sortByCollator(fn (string $name): string => $name);
 
         $this->assertSame(['Ångström', 'Martin', 'Scott'], $sorted->all());
+    }
+
+    #[Test]
+    public function it_forwards_the_high_priority_to_the_configured_queue(): void
+    {
+        config(['monica.queues.high' => 'monica-high']);
+        $this->app->getProvider(AppServiceProvider::class)->boot();
+
+        Queue::connection('database')->pushRaw('{}', 'high');
+
+        $this->assertDatabaseHas('jobs', ['queue' => 'monica-high']);
+        $this->assertSame('monica-high', Queue::connection('database')->pop('high')?->getQueue());
+    }
+
+    #[Test]
+    public function it_forwards_work_naming_no_queue_to_the_configured_default_queue(): void
+    {
+        config(['monica.queues.default' => 'monica-default']);
+        $this->app->getProvider(AppServiceProvider::class)->boot();
+
+        Queue::connection('database')->pushRaw('{}');
+
+        $this->assertDatabaseHas('jobs', ['queue' => 'monica-default']);
+    }
+
+    #[Test]
+    public function it_keeps_the_shipped_name_when_the_setting_is_blank(): void
+    {
+        config(['monica.queues.high' => '  ']);
+        $this->app->getProvider(AppServiceProvider::class)->boot();
+
+        Queue::connection('database')->pushRaw('{}', 'high');
+
+        $this->assertDatabaseHas('jobs', ['queue' => 'high']);
+    }
+
+    #[Test]
+    public function it_forwards_both_priorities_to_the_default_queue(): void
+    {
+        config(['monica.queues' => ['high' => 'default', 'low' => 'default']]);
+        $this->app->getProvider(AppServiceProvider::class)->boot();
+
+        Queue::connection('database')->pushRaw('{}', 'high');
+        Queue::connection('database')->pushRaw('{}', 'low');
+
+        $this->assertNotNull(Queue::connection('database')->pop('default'));
+        $this->assertNotNull(Queue::connection('database')->pop('default'));
     }
 }

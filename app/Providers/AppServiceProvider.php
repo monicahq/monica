@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
@@ -129,8 +130,19 @@ class AppServiceProvider extends ServiceProvider
         $this->configurePassport();
         $this->configureSearch();
         $this->configureFlags();
+        $this->configureQueues();
         $this->configureAssets();
         $this->refuseDeactivatedUsers();
+    }
+
+    /**
+     * `high`, `default` and `low` name priorities, not queues: every dispatch and every worker list
+     * says them, and the forward turns each into the queue the operator chose, on push and on poll
+     * alike. A blank name forwards nothing, so the priority stays on its shipped queue.
+     */
+    private function configureQueues(): void
+    {
+        Queue::forward(array_filter(config('monica.queues'), filled(...)));
     }
 
     /**
