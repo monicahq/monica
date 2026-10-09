@@ -7,6 +7,7 @@ namespace Tests\Feature\Controllers\App\Auth;
 use App\Enums\SsoProviderEnum;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Socialite\Facades\Socialite;
@@ -50,6 +51,23 @@ class SsoControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_remembers_the_browser_of_the_user_the_provider_names(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        $this->offer('github');
+
+        User::factory()->create([
+            'sso_provider' => SsoProviderEnum::GitHub,
+            'sso_id' => '108120124',
+        ]);
+        $this->mockUser('github');
+
+        $this->get(route('auth.sso.callback', ['provider' => 'github']))
+            ->assertCookie(Auth::guard('web')->getRecallerName());
+    }
+
+    #[Test]
     public function it_creates_an_account_for_somebody_it_has_never_seen(): void
     {
         Queue::fake();
@@ -67,6 +85,19 @@ class SsoControllerTest extends TestCase
             'sso_id' => '108120124',
         ]);
         $this->assertAuthenticated();
+    }
+
+    #[Test]
+    public function it_remembers_the_browser_of_the_account_it_creates(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        $this->offer('github');
+
+        $this->mockUser('github');
+
+        $this->get(route('auth.sso.callback', ['provider' => 'github']))
+            ->assertCookie(Auth::guard('web')->getRecallerName());
     }
 
     #[Test]
@@ -89,6 +120,23 @@ class SsoControllerTest extends TestCase
 
         $this->assertGuest();
         Notification::assertNothingSent();
+    }
+
+    #[Test]
+    public function it_carries_the_decision_to_remember_through_the_challenge(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        $this->offer('github');
+
+        User::factory()->twoFactor()->create([
+            'sso_provider' => SsoProviderEnum::GitHub,
+            'sso_id' => '108120124',
+        ]);
+        $this->mockUser('github');
+
+        $this->get(route('auth.sso.callback', ['provider' => 'github']))
+            ->assertSessionHas('twoFactor.remember', true);
     }
 
     #[Test]

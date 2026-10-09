@@ -9,6 +9,7 @@ use App\Jobs\LogUserAction;
 use App\Models\Passkey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\URL;
@@ -53,6 +54,42 @@ class PasswordControllerTest extends TestCase
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserPasswordUpdate
                 && $job->user->id === $user->id,
         );
+    }
+
+    #[Test]
+    public function it_keeps_the_browser_that_changed_the_password_remembered(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['password' => Hash::make('beets-bears-battlestar')]);
+
+        $response = $this->withConfirmedPassword()
+            ->withCookie(Auth::guard('web')->getRecallerName(), 'remembered')
+            ->actingAs($user)
+            ->put(route('settings.password.update'), [
+                'current_password' => 'beets-bears-battlestar',
+                'new_password' => 'schrute-farms-2005',
+                'new_password_confirmation' => 'schrute-farms-2005',
+            ]);
+
+        $this->assertSame(
+            Auth::guard('web')->hashPasswordForCookie($user->refresh()->password),
+            explode('|', $response->getCookie(Auth::guard('web')->getRecallerName())->getValue())[2],
+        );
+    }
+
+    #[Test]
+    public function it_leaves_a_browser_that_was_not_remembered_unremembered(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['password' => Hash::make('beets-bears-battlestar')]);
+
+        $this->withConfirmedPassword()->actingAs($user)->put(route('settings.password.update'), [
+            'current_password' => 'beets-bears-battlestar',
+            'new_password' => 'schrute-farms-2005',
+            'new_password_confirmation' => 'schrute-farms-2005',
+        ])->assertCookieMissing(Auth::guard('web')->getRecallerName());
     }
 
     #[Test]
@@ -124,6 +161,26 @@ class PasswordControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_the_browser_that_removed_the_password_remembered(): void
+    {
+        Queue::fake();
+        URL::forceScheme('https');
+
+        $user = User::factory()->create();
+        Passkey::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->withConfirmedPassword()
+            ->withCookie(Auth::guard('web')->getRecallerName(), 'remembered')
+            ->actingAs($user)
+            ->delete(route('settings.password.destroy'));
+
+        $this->assertSame(
+            Auth::guard('web')->hashPasswordForCookie(''),
+            explode('|', $response->getCookie(Auth::guard('web')->getRecallerName())->getValue())[2],
+        );
+    }
+
+    #[Test]
     public function it_refuses_to_remove_the_password_of_somebody_with_no_passkey(): void
     {
         Queue::fake();
@@ -152,6 +209,27 @@ class PasswordControllerTest extends TestCase
         $response->assertRedirect(route('settings.security.index'));
         $this->assertNotNull($user->refresh()->password);
         $this->assertNotNull($user->refresh()->password_changed_at);
+    }
+
+    #[Test]
+    public function it_keeps_the_browser_that_set_a_password_remembered(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['password' => null]);
+
+        $response = $this->withConfirmedPassword()
+            ->withCookie(Auth::guard('web')->getRecallerName(), 'remembered')
+            ->actingAs($user)
+            ->post(route('settings.password.create'), [
+                'new_password' => 'thatswhatshesaid',
+                'new_password_confirmation' => 'thatswhatshesaid',
+            ]);
+
+        $this->assertSame(
+            Auth::guard('web')->hashPasswordForCookie($user->refresh()->password),
+            explode('|', $response->getCookie(Auth::guard('web')->getRecallerName())->getValue())[2],
+        );
     }
 
     #[Test]

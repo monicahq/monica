@@ -364,6 +364,20 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
+     * Get the password the framework fingerprints for sessions and the remember cookie.
+     *
+     * An account made through a passkey or a provider has no password, and the framework
+     * refuses to recall a remembered browser whose account password is not a string. An
+     * empty string lets it recognise one, and nothing can sign in with it: the hasher
+     * refuses to check anything against an empty hash.
+     */
+    #[Override]
+    public function getAuthPassword(): string
+    {
+        return $this->password ?? '';
+    }
+
+    /**
      * Get the preferred locale of the entity.
      *
      * @return string

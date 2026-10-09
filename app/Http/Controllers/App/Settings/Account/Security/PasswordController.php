@@ -7,8 +7,10 @@ namespace App\Http\Controllers\App\Settings\Account\Security;
 use App\Actions\DestroyUserPassword;
 use App\Actions\UpdateUserPassword;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\SessionGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
@@ -25,6 +27,8 @@ class PasswordController extends Controller
             user: $request->user(),
             password: $validated['new_password'],
         )->execute();
+
+        $this->keepThisBrowserRemembered($request);
 
         $request->session()->forget('auth.password_confirmed_at');
 
@@ -50,6 +54,8 @@ class PasswordController extends Controller
             password: $validated['new_password'],
         )->execute();
 
+        $this->keepThisBrowserRemembered($request);
+
         return redirect()->route('settings.security.index')
             ->with('status', __('Your password is set.'))
             ->with('status_description', __('You can sign in with it, or with any passkey you hold.'));
@@ -61,10 +67,32 @@ class PasswordController extends Controller
             user: $request->user(),
         )->execute();
 
+        $this->keepThisBrowserRemembered($request);
+
         $request->session()->forget('auth.password_confirmed_at');
 
         return redirect()->route('settings.security.index')
             ->with('status', __('Your password is removed.'))
             ->with('status_description', __('Your passkeys, and a link sent to your email address, are what sign you in now.'));
+    }
+
+    /**
+     * A new password changes the fingerprint the remember cookie carries, so the
+     * cookie of the browser that made the change would stop working. Hand it a new
+     * one, but only if it was remembered in the first place.
+     */
+    private function keepThisBrowserRemembered(Request $request): void
+    {
+        $guard = Auth::guard('web');
+
+        if (! $guard instanceof SessionGuard) {
+            return;
+        }
+
+        if (! $request->hasCookie($guard->getRecallerName())) {
+            return;
+        }
+
+        $guard->login($request->user(), remember: true);
     }
 }

@@ -111,7 +111,7 @@ The **Me contact** exists in the model and the API but has no screen that create
 | Fact | Default | Where |
 | --- | --- | --- |
 | Minimum password length | 8 on every form | `Password::min(8)` in controllers (the stricter production default in `AppServiceProvider` is never applied, D17) |
-| Remember me | 30 days* | `remember_duration_days` |
+| Remember me | 400 days* | `remember_duration_days` |
 | Sign in link validity, use | 5 minutes*, once | `magic_link_duration_minutes`; can be switched off* (`magic_link_enabled`) |
 | Email confirmation link | 60 minutes | `auth.verification.expire` |
 | Password reset link | 60 minutes, one request per 60 seconds | `config/auth.php` |
@@ -1047,7 +1047,7 @@ default.
 - **Identity:** `…/2-sign-in-with-your-password.md`. How-to. Users.
 - **Need and success:** the reader is signed in and understands **Remember me**, lockout and the generic refusal.
 - **Applicability:** remember me length set by the instance.
-- **Scope:** the form; remember me; the same refusal for a wrong password, a deactivated user or an unknown
+- **Scope:** the form; remember me, ticked by default and worth unticking on a shared computer; the same refusal for a wrong password, a deactivated user or an unknown
   address, and why; lockout after repeated failures; every failure emails the owner; the two factor step.
 - **Links:** related `signin.magic-link`, `security.two-factor`, `reference.emails`.
 - **Evidence:** `LoginController`, `AttemptLogin`; `LoginControllerTest`.
@@ -1059,7 +1059,8 @@ default.
 - **Need and success:** the reader signs in without a password.
 - **Applicability:** can be switched off by the instance (then the option is absent).
 - **Scope:** request, open, done; once only; short lifetime named in the email; any device; the neutral
-  confirmation; an email after signing in this way; two factor still applies.
+  confirmation; an email after signing in this way; two factor still applies; the browser that opened the
+  link stays signed in for the remembered duration, without asking.
 - **Links:** related `reference.emails`. **Evidence:** `MagicLinkController`; `MagicLinkControllerTest`.
 - **Examples:** none. **Acceptance:** numbers as defaults. **Delivery:** P0, ready.
 
@@ -1068,7 +1069,7 @@ default.
 - **Need and success:** the reader signs in with a passkey from their device.
 - **Applicability:** needs HTTPS; the device and browser must support passkeys.
 - **Scope:** **Sign in with a passkey**; no two factor code is asked after a passkey (and why a passkey
-  already proves two things); a warning email arrives. Excludes adding passkeys (`security.passkeys`).
+  already proves two things); a warning email arrives; the browser stays signed in for the remembered duration. Excludes adding passkeys (`security.passkeys`).
 - **Links:** related `security.passkeys`. **Evidence:** `laravel/passkeys` routes, `HandlePasskeyLogin`; `tests/Feature/Auth/Passkey*`.
 - **Examples:** none. **Acceptance:** the two factor statement matches D22 resolution. **Delivery:** P0, ready.
 
@@ -1077,7 +1078,8 @@ default.
 - **Need and success:** the reader signs in through a provider, or connects one to an existing account.
 - **Applicability:** only providers the instance configured appear.
 - **Scope:** first sign in creates an account without a password; refusal when the address already has an
-  account (connect from settings instead); one provider per user; disconnecting needs a password or passkey.
+  account (connect from settings instead); one provider per user; disconnecting needs a password or passkey;
+  the browser stays signed in for the remembered duration, without asking.
 - **Links:** related `security.password`. **Evidence:** `SsoController` (both), `SignInWithProvider`; tests.
 - **Examples:** none. **Acceptance:** refusal messages quoted. **Delivery:** P1, ready.
 

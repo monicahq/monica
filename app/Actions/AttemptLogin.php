@@ -10,7 +10,6 @@ use App\Jobs\LogUserAction;
 use App\Models\User;
 use App\Notifications\LoginFailed;
 use Illuminate\Auth\Events\Lockout;
-use Illuminate\Auth\SessionGuard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
@@ -86,12 +85,6 @@ class AttemptLogin
             $this->user = $candidate;
 
             return;
-        }
-
-        $guard = Auth::guard('web');
-
-        if ($guard instanceof SessionGuard) {
-            $guard->setRememberDuration((int) config('monica.remember_duration_days') * 24 * 60);
         }
 
         if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {

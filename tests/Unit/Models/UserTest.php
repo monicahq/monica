@@ -73,11 +73,11 @@ class UserTest extends TestCase
     }
 
     #[Test]
-    public function it_has_no_authentication_password_when_the_user_signs_in_through_sso(): void
+    public function it_hands_the_framework_an_empty_authentication_password_when_the_user_signs_in_through_sso(): void
     {
         $user = User::factory()->singleSignOn()->create();
 
-        $this->assertNull($user->getAuthPassword());
+        $this->assertSame('', $user->getAuthPassword());
     }
 
     #[Test]

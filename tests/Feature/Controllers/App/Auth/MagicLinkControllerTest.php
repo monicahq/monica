@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Notifications\MagicLinkCreated;
 use Carbon\CarbonInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\URL;
@@ -103,6 +104,17 @@ class MagicLinkControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_remembers_the_browser_that_opened_the_link(): void
+    {
+        Queue::fake();
+
+        $link = $this->linkFor(User::factory()->create());
+
+        $this->get($this->signedUrlFor($link))
+            ->assertCookie(Auth::guard('web')->getRecallerName());
+    }
+
+    #[Test]
     public function it_sends_somebody_who_uses_two_factor_to_the_challenge(): void
     {
         Queue::fake();
@@ -116,6 +128,17 @@ class MagicLinkControllerTest extends TestCase
         $response->assertSessionHas('twoFactor.user.id', $user->id);
         $response->assertSessionHas('twoFactor.signInMethod', 'email_link');
         $this->assertGuest();
+    }
+
+    #[Test]
+    public function it_carries_the_decision_to_remember_through_the_challenge(): void
+    {
+        Queue::fake();
+
+        $link = $this->linkFor(User::factory()->twoFactor()->create());
+
+        $this->get($this->signedUrlFor($link))
+            ->assertSessionHas('twoFactor.remember', true);
     }
 
     #[Test]

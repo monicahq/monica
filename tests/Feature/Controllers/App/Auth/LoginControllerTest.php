@@ -25,6 +25,30 @@ class LoginControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_to_remember_the_browser_ticked_by_default(): void
+    {
+        $response = $this->get(route('auth.login.new'));
+
+        $this->assertMatchesRegularExpression('/<input[^>]*id="remember"[^>]*\schecked/s', $response->getContent());
+    }
+
+    #[Test]
+    public function it_keeps_the_remember_box_unticked_when_a_failed_sign_in_left_it_so(): void
+    {
+        User::factory()->create(['email' => 'dwight@dundermifflin.com']);
+
+        $response = $this->from(route('auth.login.new'))
+            ->followingRedirects()
+            ->post(route('auth.login.create'), [
+                'email' => 'dwight@dundermifflin.com',
+                'password' => 'bears-beets-battlestar',
+            ]);
+
+        $this->assertMatchesRegularExpression('/<input[^>]*id="remember"/s', $response->getContent());
+        $this->assertDoesNotMatchRegularExpression('/<input[^>]*id="remember"[^>]*\schecked/s', $response->getContent());
+    }
+
+    #[Test]
     public function it_signs_a_user_in(): void
     {
         Queue::fake();

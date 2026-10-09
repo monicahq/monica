@@ -138,6 +138,32 @@ class TwoFactorChallengeControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_remembers_somebody_for_the_duration_the_instance_sets_once_the_code_is_accepted(): void
+    {
+        $google2fa = new Google2FA;
+        $secret = $google2fa->generateSecretKey();
+        User::factory()->twoFactor($secret)->create(['email' => 'jim@dundermifflin.com']);
+
+        $this->post(route('auth.login.create'), [
+            'email' => 'jim@dundermifflin.com',
+            'password' => 'password',
+            'remember' => 'on',
+        ])->assertRedirect(route('auth.twoFactor.new'));
+
+        $this->app['auth']->forgetGuards();
+
+        $response = $this->post(route('auth.twoFactor.create'), [
+            'code' => $google2fa->getCurrentOtp($secret),
+        ]);
+
+        $this->assertEqualsWithDelta(
+            now()->addDays((int) config('monica.remember_duration_days'))->getTimestamp(),
+            $response->getCookie(Auth::guard('web')->getRecallerName(), decrypt: false)->getExpiresTime(),
+            60,
+        );
+    }
+
+    #[Test]
     public function it_forgets_somebody_who_did_not_ask_to_be_remembered(): void
     {
         $google2fa = new Google2FA;
@@ -155,6 +181,25 @@ class TwoFactorChallengeControllerTest extends TestCase
 
         $this->assertAuthenticatedAs($user);
         $response->assertCookieMissing(Auth::guard('web')->getRecallerName());
+    }
+
+    #[Test]
+    public function it_remembers_somebody_who_came_through_a_link_by_email(): void
+    {
+        $google2fa = new Google2FA;
+        $secret = $google2fa->generateSecretKey();
+        $user = User::factory()->twoFactor($secret)->create();
+
+        $response = $this->withSession([
+            'twoFactor.user.id' => $user->id,
+            'twoFactor.remember' => true,
+            'twoFactor.signInMethod' => 'email_link',
+        ])->post(route('auth.twoFactor.create'), [
+            'code' => $google2fa->getCurrentOtp($secret),
+        ]);
+
+        $this->assertAuthenticatedAs($user);
+        $response->assertCookie(Auth::guard('web')->getRecallerName());
     }
 
     #[Test]

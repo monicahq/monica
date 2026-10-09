@@ -36,7 +36,7 @@ export default (config) => ({
         this.announce('');
 
         try {
-            const { redirect } = await Passkeys.verify();
+            const { redirect } = await Passkeys.verify({ remember: true });
 
             window.location = redirect ?? config.redirectUrl;
         } catch (error) {

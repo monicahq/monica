@@ -67,11 +67,17 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Put what an administrator chose in front of what the deployment supplied,
      * before anything else boots and reads a value.
+     *
+     * The web guard reads how long it remembers a browser from its configuration
+     * each time it is built, so every way in, the passkey package's included,
+     * gets the instance's duration rather than the framework's 400 days.
      */
     private function applyInstanceSettings(): void
     {
         InstanceSettings::stashDeploymentValues();
         InstanceSettings::apply();
+
+        config()->set('auth.guards.web.remember', (int) config('monica.remember_duration_days') * 24 * 60);
     }
 
     /**

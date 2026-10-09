@@ -17,7 +17,7 @@ return [
     |
     */
 
-    'remember_duration_days' => env('MONICA_REMEMBER_DURATION_DAYS', 30),
+    'remember_duration_days' => env('MONICA_REMEMBER_DURATION_DAYS', 400),
 
     /*
     |--------------------------------------------------------------------------

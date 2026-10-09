@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\User;
 use App\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
@@ -55,6 +56,15 @@ class RegistrationControllerTest extends TestCase
         $this->assertEquals(1, Account::query()->count());
         $this->assertTrue($user->is($user->account->user));
         $this->assertEquals('Michael Scott', $user->name);
+    }
+
+    #[Test]
+    public function it_remembers_the_browser_of_the_new_account(): void
+    {
+        Queue::fake();
+
+        $this->post(route('auth.register.create'), $this->validPayload())
+            ->assertCookie(Auth::guard('web')->getRecallerName());
     }
 
     #[Test]

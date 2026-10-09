@@ -54,13 +54,13 @@ class MagicLinkController extends Controller
 
         if ($user->usesTwoFactorAuthentication()) {
             $request->session()->put('twoFactor.user.id', $user->id);
-            $request->session()->put('twoFactor.remember', false);
+            $request->session()->put('twoFactor.remember', true);
             $request->session()->put('twoFactor.signInMethod', SignInMethodEnum::EmailLink->value);
 
             return redirect()->route('auth.twoFactor.new');
         }
 
-        Auth::guard('web')->login($user);
+        Auth::guard('web')->login($user, remember: true);
 
         $request->session()->regenerate();
 

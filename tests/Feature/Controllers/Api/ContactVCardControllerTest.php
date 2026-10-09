@@ -107,7 +107,7 @@ class ContactVCardControllerTest extends TestCase
             ->get("/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/vcard")
             ->streamedContent();
 
-        $throughTheScreen = $this->actingAs($user)
+        $throughTheScreen = $this->actingAs($user, 'web')
             ->get(route('contacts.vcard.show', ['vault' => $vault, 'contact' => $contact]))
             ->streamedContent();
 

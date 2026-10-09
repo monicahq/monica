@@ -81,14 +81,14 @@ class SsoController extends Controller
 
         if ($user->usesTwoFactorAuthentication()) {
             $request->session()->put('twoFactor.user.id', $user->id);
-            $request->session()->put('twoFactor.remember', false);
+            $request->session()->put('twoFactor.remember', true);
             $request->session()->put('twoFactor.signInMethod', SignInMethodEnum::Provider->value);
             $request->session()->put('twoFactor.provider', $provider->value);
 
             return redirect()->route('auth.twoFactor.new');
         }
 
-        Auth::guard('web')->login($user);
+        Auth::guard('web')->login($user, remember: true);
         $request->session()->regenerate();
 
         return redirect()->intended(route('home.index'));

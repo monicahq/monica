@@ -7,6 +7,7 @@ namespace Tests\Feature\Controllers\App\Auth;
 use App\Models\Passkey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -51,6 +52,15 @@ class RegistrationPasskeyControllerTest extends TestCase
         $this->post(route('auth.registerPasskey.create'), $this->payload());
 
         $this->assertAuthenticated();
+    }
+
+    #[Test]
+    public function it_remembers_the_browser_of_the_new_person(): void
+    {
+        Queue::fake();
+
+        $this->post(route('auth.registerPasskey.create'), $this->payload())
+            ->assertCookie(Auth::guard('web')->getRecallerName());
     }
 
     #[Test]

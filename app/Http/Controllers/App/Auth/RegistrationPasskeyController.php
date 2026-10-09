@@ -43,7 +43,7 @@ class RegistrationPasskeyController extends Controller
             locale: App::currentLocale(),
         )->execute();
 
-        Auth::login($user);
+        Auth::login($user, remember: true);
 
         return redirect()->route('auth.registerPasskey.new');
     }

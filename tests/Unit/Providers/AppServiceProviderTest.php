@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -29,6 +31,28 @@ class AppServiceProviderTest extends TestCase
 
         $this->assertDatabaseMissing('features', ['name' => 'retired-capability']);
         $this->assertDatabaseHas('features', ['name' => 'example-capability']);
+    }
+
+    #[Test]
+    public function it_remembers_a_browser_for_the_duration_the_instance_sets(): void
+    {
+        $this->assertSame((int) config('monica.remember_duration_days') * 24 * 60, config('auth.guards.web.remember'));
+    }
+
+    #[Test]
+    public function it_keeps_the_duration_on_a_guard_built_again(): void
+    {
+        $this->app['auth']->forgetGuards();
+
+        Auth::guard('web')->login(User::factory()->create(), remember: true);
+
+        $cookie = Cookie::queued(Auth::guard('web')->getRecallerName());
+
+        $this->assertEqualsWithDelta(
+            now()->addDays((int) config('monica.remember_duration_days'))->getTimestamp(),
+            $cookie->getExpiresTime(),
+            60,
+        );
     }
 
     #[Test]

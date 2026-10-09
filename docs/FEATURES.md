@@ -66,3 +66,8 @@ A chronological list of every feature and improvement shipped during development
 * Auth: Closed registration on an instance with `MONICA_REGISTRATION_ENABLED`, refusing every way of creating an account.
 * Admin: Opened or closed registration from the configuration screen, with a warning before opening it.
 * Fix: Warned before switching off sign in links on the configuration screen, which never asked before.
+* Auth: Kept the browser signed in for the instance's remembered duration after signing in with a passkey, a link by email or a provider.
+* Auth: Kept the browser signed in for the instance's remembered duration after creating an account.
+* Auth: Ticked Remember me by default on the sign in form.
+* Settings/security: Signed out every other device when the password is changed or reset.
+* Fix: Remembered somebody who passed two factor authentication for the instance's duration rather than always 400 days.
