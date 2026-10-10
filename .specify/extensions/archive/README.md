@@ -11,9 +11,9 @@ This extension is the "Outer Loop" of the Double-Loop Parity framework: once a P
 ## Features
 
 - **Lifecycle separation**: Operates purely on merging feature-level knowledge into project-level memory.
-- **Layout tolerant**: Accepts both feature-directory naming schemes spec-kit creates, sequential (`specs/007-invoice-settings`) and timestamped (`specs/20260814-101500-invoice-settings`). It also tolerates a feature nested under a scope directory (`specs/billing/006-invoice-settings`), which spec-kit does not create itself but which projects do arrange by hand. Nothing keys on a three-digit prefix, and a feature is always named by its full path relative to the repository root, so two features sharing a basename in different scopes are never confused. Passing a scope directory is refused rather than expanded into a batch run.
+- **Layout tolerant**: Accepts both feature-directory naming schemes spec-kit creates, sequential (`specs/007-invoice-settings`) and timestamped (`specs/20260814-101500-invoice-settings`). It also tolerates a feature nested under a scope directory (`specs/billing/006-invoice-settings`), which spec-kit does not create itself but which projects do arrange by hand. Nothing keys on a three-digit prefix, and a feature is always named by its full path relative to the repository root, so two features sharing a basename in different scopes are never confused. Passing a scope directory is refused rather than expanded into a batch run. A feature directory outside `specs/`, which core allows through an absolute `SPECIFY_FEATURE_DIRECTORY`, is refused with its own error, because every source ref and changelog link is a `specs/`-relative path.
 - **Ecosystem consistency**: Uses the core Spec-Kit `check-prerequisites` script to locate the repository root, in whichever runtime the project was initialised with: bash, PowerShell or Python. The feature to archive always comes from the path you pass, never from the script's own feature state, which points at whatever you worked on last rather than what you are archiving.
-- **Consolidation**: A detection pass keys every incoming item with a semantic slug, shortlists lookalike pairs against the existing entries, and issues an explicit fold / separate / contradiction verdict per pair. It then folds exactly the fold verdicts, so the main spec stays a single consolidated specification instead of a per-feature digest. The report always states how many pairs were examined and folded, so "zero duplicates" means "examined and found distinct", not "did not look". Existing entries are never merged into each other, so an established requirement ID cannot disappear behind your back.
+- **Consolidation**: A detection pass keys every incoming item with a semantic slug, shortlists lookalike pairs against the existing entries, and issues an explicit fold / separate / contradiction verdict per pair. It then folds exactly the fold verdicts, so the main spec stays a single consolidated specification instead of a per-feature digest. Whenever the pass runs, the report states how many pairs were examined and folded, so "zero duplicates" means "examined and found distinct", not "did not look". Existing entries are never merged into each other, so an established requirement ID cannot disappear behind your back.
 - **Traceability**: Adds item-level `[Source: specs/007-invoice/spec.md -> FR-012]` refs and revision notes in the main memory artifacts. A ref names the artifact the content actually came from (`spec.md`, `plan.md`, `data-model.md`), and an entry consolidated from several features carries one ref per feature.
 - **Supersession**: Detects requirements a later feature wholly replaces and asks you to confirm before deleting anything. Confirmed removals are deleted from the main spec and recorded in `changelog.md`, and their IDs are never reissued. Anything you do not confirm stays put and is recorded as an unresolved contradiction, so the next archival raises it again instead of losing it.
 - **Constitution compliance**: Checks each feature against the project constitution in three ways, because a MUST rule can fail in more than one. A **conflict** is feature content that contradicts a rule; you are asked, and an unresolved one withholds *that item only* while the rest of the feature archives normally. An **unmet obligation** is a rule requiring a statement the feature never makes ("every feature that stores user data MUST state its retention rule"); you are asked about it, but it is never a reason to withhold anything. An **action-requiring** rule ("all API routes MUST have automated tests") is reported as unverified and never flagged, because this command reads artifacts and cannot inspect a test run: a plan claiming coverage is a claim, not a verification. A feature's own `## Constitution Check` is read but never archived, and it cannot close a flag by asserting compliance, though a sentence in it recording what changed and why does satisfy a rule that asks for exactly that.
@@ -24,7 +24,7 @@ This extension is the "Outer Loop" of the Double-Loop Parity framework: once a P
 
 ## Hooks
 
-The command checks `.specify/extensions.yml` for `before_archive` and `after_archive` hooks. **These are extension-defined events, not core Spec-Kit ones.** Core fires `before_`/`after_` hooks for its own commands (`specify`, `plan`, `tasks`, `implement`, and so on); archival runs after the cycle, so this command reads and reports the hooks itself. Another extension can register on them, but they only fire when `speckit.archive.run` is invoked.
+The command checks `.specify/extensions.yml` for `before_archive` and `after_archive` hooks. **These are extension-defined events, not core Spec-Kit ones.** Core fires `before_`/`after_` hooks for its own commands (`specify`, `plan`, `tasks`, `implement`, and so on); archival runs after the cycle, so this command reads and reports the hooks itself. Another extension can register on them, but they only fire when `speckit.archive.run` is invoked. They follow core's hook rules: a hook without an `enabled` field counts as enabled, a hook with a `condition` is skipped, and an unreadable `extensions.yml` is reported rather than ignored.
 
 ## Requirements
 
@@ -35,14 +35,14 @@ Spec-Kit **0.14.0 or later**. That floor is set by the last core feature this ex
 You can install this extension via the Spec-Kit CLI:
 
 ```bash
-specify extension add archive --from https://github.com/stn1slv/spec-kit-archive/archive/refs/tags/v1.3.0.zip
+specify extension add archive --from https://github.com/stn1slv/spec-kit-archive/archive/refs/tags/v1.4.0.zip
 ```
-*(Note: Replace `v1.3.0` with the latest release version)*
+*(Note: Replace `v1.4.0` with the latest release version)*
 
 To upgrade an existing installation, add `--force`. Without it the CLI refuses to overwrite the installed version:
 
 ```bash
-specify extension add archive --from https://github.com/stn1slv/spec-kit-archive/archive/refs/tags/v1.3.0.zip --force
+specify extension add archive --from https://github.com/stn1slv/spec-kit-archive/archive/refs/tags/v1.4.0.zip --force
 ```
 
 ## Usage
@@ -51,9 +51,11 @@ specify extension add archive --from https://github.com/stn1slv/spec-kit-archive
 /speckit.archive.run <feature-dir>
 ```
 
-> The command ID is `speckit.archive.run`. Invoke it using the syntax your integration uses: `/speckit.archive.run` for dot-command agents; `/speckit-archive-run` for hyphen and skills agents (Copilot, Cline, Forge, Junie among them); `$speckit-archive-run` for Codex or ZCode in skills mode; `/skill:speckit-archive-run` for Kimi.
+> The command ID is `speckit.archive.run`. Invoke it with the syntax your integration uses, for example `/speckit.archive.run`, `/speckit-archive-run`, `$speckit-archive-run` or `/skill:speckit-archive-run`. Spec Kit's [Command Invocation](https://github.com/github/spec-kit/blob/main/docs/reference/integrations.md#command-invocation) reference lists which integration uses which form.
 
 **One feature per run.** There is no batch or range mode: `specs/001 thru specs/008` and `specs/00*` are rejected. Archive several features by running the command once per feature, in ascending order, so each run builds on the previous one.
+
+**When to run it.** Run it on the default branch after the feature's pull request is merged. Spec Kit has no merge event, so nothing triggers it for you. Running it inside a workflow step or on the feature branch is not recommended: a workflow step runs the agent non-interactively, so the questions in step 3 below cannot be answered; and two branches archived in parallel would each assign the same next requirement IDs and conflict at merge.
 
 You can optionally restrict the scope of the updates:
 - `--spec-only` updates only `.specify/memory/spec.md`
@@ -68,6 +70,16 @@ Free-form text after the feature path is **guidance**, like in the core spec-kit
 ```
 
 Guidance steers attention, emphasis, and report detail. It cannot add content sources, skip steps, change scope or IDs, or approve removals, and the report echoes it verbatim so every run stays auditable. Do not put feature paths (in any form) or leading bare feature references into guidance, because those are rejected as a second feature. A feature path is recognised by its shape, so **any** `specs/...` token in guidance is rejected, not only a numbered one; name a path in prose without the `specs/` prefix when guidance must mention it. The path-less form stays deliberately narrow, matching only a token that opens with three or more digits which then end it or meet a hyphen. So `2FA`, `3rd-party`, `24/7` and `v2` read as ordinary guidance, and so do measure-and-unit tokens such as `90-day`, `30-day` and `24-hour`. Three digits is the floor because no feature directory spec-kit creates has a shorter leading run. The bound this leaves: a token that does open with three or more digits and a hyphen, `100-day` or an ISO date such as `2026-08-21`, is still read as a feature reference when it sits beside `to`, `thru` or `through`, so write those in prose. Prose, punctuation, and numbers inside sentences are fine.
+
+## Using the archived memory
+
+Core Spec Kit commands load only `.specify/memory/constitution.md`, so `spec.md` and `plan.md` in `.specify/memory/` do not reach the next `/speckit.specify` or `/speckit.plan` by themselves. Options:
+
+- Mention the files in your prompt, for example "read `.specify/memory/spec.md` first". This costs nothing and you choose when.
+- Install the community [`memory-loader`](https://github.com/KevinBrown5280/spec-kit-memory-loader) extension. It loads every file in `.specify/memory/`, including `changelog.md`, before each lifecycle command. That is simple but expensive once the memory files grow.
+- Install the community [`memory`](https://github.com/zaytsevand/spec-kit-memory) extension. It recalls related specs before `specify` and `plan` through an external memory tool that you configure.
+
+If you come from OpenSpec: the community `openspec` extension keeps OpenSpec's model of change folders whose spec deltas are synced into canonical specs. This extension instead keeps each feature's spec as written and maintains one consolidated project view next to the constitution.
 
 ## Workflow
 

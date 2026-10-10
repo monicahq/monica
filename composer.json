@@ -127,6 +127,13 @@
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+        ],
+        "specify-upgrade": [
+            "specify integration upgrade --force",
+            "specify extension add companion --from https://github.com/alfredoperez/speckit-companion/releases/download/companion-latest/companion.zip --force",
+            "specify extension add bug --force",
+            "specify extension add assess --force",
+            "specify extension add archive --from https://github.com/stn1slv/spec-kit-archive/archive/refs/tags/v1.4.0.zip --force"
         ]
     },
     "extra": {

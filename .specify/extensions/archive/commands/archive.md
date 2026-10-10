@@ -60,7 +60,7 @@ Rules 2 and 4 have **different jobs**, and keeping them apart is what lets each 
    ```
    and stop.
 3. **Unrecognized flag.** Flags are recognized **only until the first non-flag token**: a `--` token in that leading position that is not one of the four modifiers gets `ERROR: Unrecognized flag '[token]'. Supported: --spec-only, --plan-only, --changelog-only, --agent-only.` and stops the run. From the first non-flag token onward, everything — including words that start with `--`, such as guidance about a `--force` flag — is **guidance text** (see Guidance Text below), taken verbatim. Rule 2 has already run, so a second feature reference, range, or glob written in any form rule 2 recognizes has already been rejected before guidance exists.
-4. **Ambiguous first token.** The first token must resolve to **exactly one** existing directory under `REPO_ROOT`, by the resolution ladder in 0.1 step 2. If nothing matches, or more than one does, output `ERROR: '[token]' does not resolve to exactly one feature directory` — listing the matches when there are several — and stop. If it resolves to a **scope directory** rather than a feature, 0.1 step 2 stops with its own message instead.
+4. **Ambiguous first token.** The first token must resolve to **exactly one** existing directory under `REPO_ROOT`, by the resolution ladder in 0.1 step 2. If nothing matches, or more than one does, output `ERROR: '[token]' does not resolve to exactly one feature directory` — listing the matches when there are several — and stop. If it resolves to a **scope directory** rather than a feature, or names an existing directory outside `specs/`, 0.1 step 2 stops with its own message instead.
 
 ### Guidance Text
 
@@ -163,8 +163,8 @@ A **feature directory** is a directory under `SPECS_DIR` that directly contains 
 
 Resolve the token by this ladder, stopping at the first match:
 
-  a. **As a path**, when it names an existing directory **lying under `SPECS_DIR`**. Normalise it first, per the base rule above: `../specs/002-x` and `./specs/002-x` against the current working directory, `/repo/specs/002-x` as absolute, everything else under `REPO_ROOT`. A directory outside `SPECS_DIR` is not a feature directory and takes rule 4's error, because `FEATURE_ID` is defined as a `specs/`-prefixed path and every ref, changelog link and idempotency match built from it would otherwise be wrong. Take it as given otherwise — 0.2 does the validating. Do **not** require it to contain `spec.md` here: a directory holding `plan.md` but no `spec.md` must reach 0.2, which answers it with the actionable "Missing required files" message, rather than being turned away with a misleading resolution error.
-  b. Otherwise, **as a prefix of the final path segment** of exactly one **existing directory** sharing the token's parent path — so `specs/001` matches `specs/001-task-manager`, and `specs/billing/006` matches `specs/billing/006-invoice-settings`. The match must **also lie under `SPECS_DIR`**, for exactly the reason branch (a) tests it: without that guard a token like `sr` expands to `src/` at the repo root, which is not a scope directory either, so the run carries an `FEATURE_ID` that cannot be `specs/`-prefixed past rule 4 and reports the wrong error. Match on the directory name alone; do **not** require it to contain `spec.md`, for the same reason branch (a) does not: a directory holding only `plan.md` must reach 0.2 and get its actionable "Missing required files" message rather than a misleading resolution error. This search is **non-recursive**: a prefix never reaches into a scope directory the token did not name, so `specs/006` does not find `specs/billing/006-invoice-settings`.
+  a. **As a path**, when it names an existing directory. Normalise it first, per the base rule above: `../specs/002-x` and `./specs/002-x` against the current working directory, `/repo/specs/002-x` as absolute, everything else under `REPO_ROOT`. An existing directory outside `SPECS_DIR` is not a feature directory: output `ERROR: '[token]' lies outside specs/. Only feature directories under REPO_ROOT/specs can be archived.` and stop, because `FEATURE_ID` is defined as a `specs/`-prefixed path and every ref, changelog link and idempotency match built from it would otherwise be wrong. This covers a feature directory that `SPECIFY_FEATURE_DIRECTORY` places outside the project, which core allows. A token that names no existing directory falls through to branch (b) as before. Take it as given otherwise — 0.2 does the validating. Do **not** require it to contain `spec.md` here: a directory holding `plan.md` but no `spec.md` must reach 0.2, which answers it with the actionable "Missing required files" message, rather than being turned away with a misleading resolution error.
+  b. Otherwise, **as a prefix of the final path segment** of exactly one **existing directory** sharing the token's parent path — so `specs/001` matches `specs/001-task-manager`, and `specs/billing/006` matches `specs/billing/006-invoice-settings`. The match must **also lie under `SPECS_DIR`**, for exactly the reason branch (a) tests it: without that guard a token like `sr` expands to `src/` at the repo root, which is not a scope directory either, so the run carries an `FEATURE_ID` that cannot be `specs/`-prefixed past rule 4 and reports the wrong error. A prefix match outside `SPECS_DIR` takes rule 4's error, not branch (a)'s outside-`specs/` message, because a prefix that happens to match such a directory was never a request for it. Match on the directory name alone; do **not** require it to contain `spec.md`, for the same reason branch (a) does not: a directory holding only `plan.md` must reach 0.2 and get its actionable "Missing required files" message rather than a misleading resolution error. This search is **non-recursive**: a prefix never reaches into a scope directory the token did not name, so `specs/006` does not find `specs/billing/006-invoice-settings`.
 
 If the ladder finds nothing, or branch (b) finds more than one, apply rule 4's error. If **the resolved directory** — from either branch — contains **no `spec.md` but does contain feature directories below it**, at any depth, it is a scope directory, not a feature: output `ERROR: '[token]' is a scope directory, not a feature` — listing the feature directories it holds — and stop. Never expand a scope directory into the features under it; that would be the batch mode this command does not have.
 
@@ -276,26 +276,34 @@ While extracting, note for each MUST rule — Core Principle, Architecture Stand
 Check if `REPO_ROOT/.specify/extensions.yml` exists:
 - If it exists, also note (for Step 6) whether the top-level `installed` list names a bugfix extension — an entry whose id is, starts with, or ends with `bug` or `bugfix` — `bug`, `bugfix`, `spec-kit-bugfix` all count; an id merely containing `bug` elsewhere, like `debug-tools`, does not. The first-party extension's id is exactly `bug`, which the "is" branch already matches, so this rule needs no addition for it. When the file or its `installed` list is absent, or the file cannot be parsed, record "unknown" and move on. This is context only, never a gate: the `bugs/` handling keys on the files existing, not on the installer.
 - If it exists, read it and look for entries under `hooks.before_archive`
-- If the YAML cannot be parsed or is invalid, skip hook checking silently
-- Filter to only hooks where `enabled: true`
+- If the YAML cannot be parsed or is invalid, do not skip silently: tell the user that `.specify/extensions.yml` could not be read (include the parser error) and that no hooks were checked, including any mandatory (`optional: false`) hooks registered there, then continue normally
+- Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
 - For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
   - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
-  - If the hook defines a non-empty `condition`, skip the hook
-- For each executable hook, output based on its `optional` flag:
+  - If the hook defines a non-empty `condition`, skip the hook. Core's HookExecutor never fires `before_archive` or `after_archive`, so nothing else evaluates the condition and a hook carrying one does not run from this command. When a skipped hook is mandatory (`optional: false`), tell the user it was skipped and why
+- For each executable hook, output the following based on its `optional` flag:
   - **Optional hook** (`optional: true`):
     ```
     ## Extension Hooks
+
     **Optional Pre-Hook**: {extension}
-    Command: `/{command}` — {description}
+    Command: `/{command}`
+    Description: {description}
+
+    Prompt: {prompt}
     To execute: `/{command}`
     ```
   - **Mandatory hook** (`optional: false`):
     ```
     ## Extension Hooks
+
     **Automatic Pre-Hook**: {extension}
-    EXECUTE_COMMAND: /{command}
-    Wait for the result before proceeding.
+    Executing: `/{command}`
+    EXECUTE_COMMAND: {command}
+
+    Wait for the result of the hook command before continuing.
     ```
+    After emitting the block above you MUST actually invoke the hook and wait for it to finish before continuing. Run it the same way you would run the command yourself in this agent/session (the invocation may differ from the literal `{command}` id shown above, e.g. a skills-mode agent runs it as `/skill:speckit-...` or `$speckit-...`). Emitting the block alone does not run the hook. If a mandatory pre-hook fails or reports an error, tell the user which hook failed and stop the run before Step 1; only 0.4's bootstrap has written anything by then, and say so. A failed mandatory post-hook is reported the same way, but the archival already written stands.
 - If no hooks are registered or the file does not exist, skip silently
 
 ---
@@ -311,7 +319,7 @@ Current spec-kit does not manage these files itself: the opt-in `agent-context` 
 
       Both files are read **only to learn where to write**, never for content, which is the same footing `agent-context-config.yml` and `.specify/extensions.yml` already sit on in Allowed Sources. Following the lookup the owning extension uses is the whole point: guessing a different answer than the tool that owns these files would write to the wrong anchor while looking like it worked.
 
-   c. **Last-resort probe.** Only when neither of the above produced **a name at all** — no config, an unparseable one, an empty config value, no integration key, or a key the map does not cover — probe for the first of `GEMINI.md`, `AGENTS.md`, `CLAUDE.md` in `REPO_ROOT`, and **say in the report that this branch was taken**. It is a guess, and a partial one: those three filenames are the mapped anchor for twenty of the thirty-seven integrations the defaults map knows, so it is right more often than not, and wrong in two distinct ways for the other seventeen. A project whose real anchor is `.github/copilot-instructions.md`, `QWEN.md` or `.cursor/rules/specify-rules.mdc` is not found at all. Worse, the probe takes the first name that **exists** rather than the one the project uses, and `GEMINI.md` is first, so a project anchored on `AGENTS.md` that also happens to carry a stray `GEMINI.md` is written to the wrong file. Recommend setting `context_file` explicitly whenever this branch runs.
+   c. **Last-resort probe.** Only when neither of the above produced **a name at all** — no config, an unparseable one, an empty config value, no integration key, or a key the map does not cover — probe for the first of `GEMINI.md`, `AGENTS.md`, `CLAUDE.md` in `REPO_ROOT`, and **say in the report that this branch was taken**. It is a guess, and a partial one: those three filenames are the mapped anchor for most of the integrations the defaults map knows, so it is right more often than not, and wrong in two distinct ways for the rest. A project whose real anchor is `.github/copilot-instructions.md`, `QWEN.md` or `.cursor/rules/specify-rules.mdc` is not found at all. Worse, the probe takes the first name that **exists** rather than the one the project uses, and `GEMINI.md` is first, so a project anchored on `AGENTS.md` that also happens to carry a stray `GEMINI.md` is written to the wrong file. Recommend setting `context_file` explicitly whenever this branch runs.
 
 **A name is a target, whether or not the file exists.** Branches (a) and (b) both *resolve* targets; existence is checked afterwards, never as part of deciding which branch won. A target that does not exist on disk is **skipped and named in the report** — this holds identically for a configured path and for one the defaults map produced. Falling through to (c) because a resolved name points at a missing file is **wrong**, and it is precisely how a run ends up writing to an anchor that is not the project's.
 
@@ -385,6 +393,25 @@ Judge the two artifacts **separately**, because a run can have one populated and
 - Plan-side — 2.2 dependency conflicts, 2.2 Technical Context scalar conflicts, and the Architecture, Integration and Testing rows of 2.3 — keys on `.specify/memory/plan.md`. (The scalar check is skipped when that file is empty or out of scope, like the rest of the plan side: an empty main plan has neither shared fields nor legacy blocks to disagree with.)
 
 2.1 always runs: the constitution is independent of both.
+
+### 2.0 Already-Retired Items
+
+**Run this before 2.1**, so an item that will not be archived raises no constitution finding, no Step 3 question and no withholding. **Skip it when `spec.md` is not in scope**, since nothing is added to the main spec then.
+
+Read the `RETIRED:` lines in `.specify/memory/changelog.md`, if that file exists. Identify a line's parts by their keywords, never by arrow characters, which tools sometimes rewrite: the retired ID follows `RETIRED:`; the `from` part is the parenthesised text after it; the replacement follows `replaced by`, or the line says `no replacement` or `replacement withheld`; the reason follows `Reason:`. A `from` part may hold several refs separated by `; `, and the line names an item when any one of them does.
+
+**Finding a candidate.** An incoming item is a candidate when a line's `from` part names it:
+
+- **Item-level ref**, written from 1.4.0 (`from specs/001-task-manager/spec.md -> FR-004`): this feature's artifact and the item's own feature-local ID or quoted phrase.
+- **File-only ref**, written before 1.4.0 (`from specs/001-task-manager/spec.md`): this feature's artifact, with the retired ID equal to the item's feature-local ID.
+- **Directory-level ref** (`from specs/001-task-manager`), written when the retired entry carried a legacy ref: treated like a file-only ref for any artifact of that directory.
+- A line whose `from` part names no source is never a candidate.
+
+**Confirming it by content.** A candidate is only a hint, because feature-local IDs move: a populated spec renumbers incoming items, and a feature spec edited after the retirement may renumber its own. Accept the match only when the content agrees too: the incoming item contradicts the line's live replacement (below) by 2.5's contradiction test, or, when there is no live replacement, it states the behaviour the line's `Reason:` says was retired. Otherwise archive the item normally and name the near-match under `## Outstanding Items`, so the user sees that a retired ID and this item meet. A renumbered item whose ID differs is never a candidate; it reaches 2.5 like any other item and may be raised there as a contradiction. When that contradiction would replace an entry from a later feature with this earlier feature's item, say so in the Step 3 supersession question: confirming it would retire the newer behaviour.
+
+**The live replacement.** Follow the chain from the line's replacement: an ID that is itself retired leads to its own `RETIRED:` line, and so on. The live replacement is the first ID along the chain still present in `.specify/memory/spec.md`. The chain has none when it reaches `no replacement`, `replacement withheld`, a `<pending>` marker, an ID that is neither live nor retired, or an ID already visited. Name a `<pending>` marker or a loop under `## Outstanding Items`, because both mean an earlier run left its record unfinished.
+
+**What an accepted match does.** The item is **already retired**: it is not asked about again, because the user confirmed its removal on the run that retired it. Do not add it to main memory, leave it out of 2.1 to 2.5, and list it under `## Superseded Requirements`. Never match by resemblance alone: another feature restating the same behaviour goes through 2.1 to 2.5 as usual.
 
 ### 2.1 Constitution Compliance (CRITICAL)
 
@@ -539,10 +566,10 @@ If conflicts or gaps require human judgment, ask **only questions that materiall
 
 **Withholding is the one exception to this command's completeness promise**, and it is bounded to exactly the flagged item. Three rules elsewhere read as absolutes and must be understood with it:
 
-- The opening promise that nothing is lost from the feature's own artifacts, and 5.1's **Empty seed** rule that nothing extracted in Step 1 may be left out, both mean *nothing except an item withheld by an unresolved 2.1 conflict*. That item is named in the report instead, so it is visible rather than lost, and re-archiving after the conflict is resolved brings it in.
+- The opening promise that nothing is lost from the feature's own artifacts, and 5.1's **Empty seed** rule that nothing extracted in Step 1 may be left out, both mean *nothing except an item withheld by an unresolved 2.1 conflict*. That item is named in the report instead, so it is visible rather than lost, and re-archiving after the conflict is resolved brings it in. An item 2.0 finds **already retired** is left out on the same terms: it is named under `## Superseded Requirements`, and the earlier confirmed removal is why it stays out.
 - A withheld item's **2.5 fold verdict is not applied.** The pair simply does not fold, exactly as a fold pair whose target was removed by a supersession does not fold; count it as not folded, and name the reversion in the Step 6 report. "Folding matches the verdict table exactly" means every fold it marks *whose incoming item was archived*.
 - When a withheld item is the **replacement for a confirmed supersession**, its `RETIRED:` line cannot name a replacement that was never written. Close it as `→ replacement withheld (unresolved constitution conflict)` (5.1.1 step 3 defines this closure) and name the pair under `## Outstanding Items`. This satisfies the no-`<pending>` rule with a true statement rather than a false `no replacement`. **Warn about this pairing in the questions themselves**: when a supersession candidate's replacing item is also a conflict candidate, say so in the supersession question, so the user is not confirming a removal whose replacement they are about to withhold in the next answer. **Both questions are still asked.** They decide different things — the conflict question decides the fate of the *incoming* item, the supersession question decides whether an *existing* main-memory entry is removed — and no answer to the first can stand in for the second, because removal always needs its own explicit confirmation. One statement being covered by two findings is a reason to cross-reference the questions, never a reason to drop one.
-- Two other absolutes are amended by the same exception. 5.1 step 2's "never drop a story" and 5.2's "compose **all** of them into the shared field" both mean *all except an item withheld this way*. A withheld story is named in the report rather than archived; a withheld plan statement is not composed into a shared field.
+- Two other absolutes are amended by the same exception. 5.1 step 2's "never drop a story" and 5.2's "compose **all** of them into the shared field" both mean *all except an item withheld this way, or an item 2.0 found already retired*. A withheld story is named in the report rather than archived; a withheld plan statement is not composed into a shared field.
 
 **Always ask** if any supersession candidates were detected in Step 2.4, **provided the supersession gate is open** (defined once below). Removal is destructive and requires explicit confirmation. Ask this question first if the budget is tight.
 
@@ -640,12 +667,12 @@ This gives the user a preview before edits are applied. Include every confirmed 
 
   Placement is fixed rather than left to taste because later runs **read** these notes: 5.2's settled-conflict exception depends on finding one an earlier run wrote, and a note filed elsewhere is a note the next run will miss. **Where an artifact already carries revision notes in some other place or form** — an older version's `## Revision History` section, or comment lines at the end of a file — leave them exactly where they are (the preserve-existing-layout rule), start the fixed-place block anyway, and name the split under `## Outstanding Items` so a reader knows to look in both. Do not retrofit old notes into the new form.
 - Respect scoping hints — skip artifacts not in scope and explicitly note them. **Out of scope means not written, never not read**: artifacts outside the scope are still read when a rule requires it (for example collecting retired IDs or checking for a prior run in `changelog.md`). A rule that reads a missing artifact treats it as empty rather than stopping, so no rule below needs its own existence check.
-- **Idempotency is judged per artifact, not per run.** This feature has already been merged into an artifact if that artifact carries source refs naming it, **or an entry naming it** — the changelog's Merged Features Log entry, or the agent file's Recent Changes bullet, neither of which carries source refs. **"Naming it" means matching `FEATURE_ID`, the full `REPO_ROOT`-relative path**: `specs/billing/006-invoices` and `specs/reporting/006-invoices` are different features, and matching on `006-invoices` alone would let the second be mistaken for the first and skipped as already archived.
+- **Idempotency is judged per artifact, not per run.** This feature has already been merged into an artifact if that artifact carries source refs naming it, **or an entry naming it** — the changelog's Merged Features Log entry, or the agent file's Recent Changes bullet, neither of which carries source refs. **"Naming it" means matching `FEATURE_ID`, the full `REPO_ROOT`-relative path**: `specs/billing/006-invoices` and `specs/reporting/006-invoices` are different features, and matching on `006-invoices` alone would let the second be mistaken for the first and skipped as already archived. **Already merged never means skip the artifact.** It suppresses duplicate entries and duplicate refs, nothing else: on every run, a section of that artifact still missing this feature's content is completed, and an entry this feature contributed is updated where the feature's own text now differs. In `spec.md` such an update is checked like an incoming item (2.4 and 2.5 against the other entries); in `spec.md` and `plan.md` it is recorded in the revision note; in every artifact it is listed under `## Edits Applied` with the old and new wording. On an entry folded from several features it changes only the clause this feature contributed; when that clause cannot be separated from another feature's wording, leave the entry as it is and name the difference under `## Outstanding Items`. Three things stay untouched even then: lines this command declares append-only or frozen (the changelog's Superseded block and legacy per-feature plan blocks), the wording other features contributed to a folded entry, and anything only 2.4's supersession flow may remove.
 
   - **Legacy entry forms still count as naming it.** Versions before 1.3.0 wrote the agent file's Recent Changes bullet as a bare final segment (`- 001-task-manager: ...`), with no `specs/` prefix, so an agent file written by one of them holds no `FEATURE_ID` to match. Treat a bullet naming this feature's **final segment** as an existing entry too, and when you touch it, **rewrite it in place to the `FEATURE_ID` form** — the same touch-to-upgrade the Legacy refs rule applies to directory-level source refs, and for the same reason. Without this the run appends a second bullet for a feature that is already there. Match the bare form only when the final segment is unambiguous across the features already named in that file; when two scopes share a basename, leave the ambiguous legacy bullet alone, add the `FEATURE_ID` entry, and name the collision under `## Outstanding Items`. **Each agent context file is its own artifact** for this purpose, so when a project keeps several in sync, a Recent Changes bullet present in one and absent in another is completed independently in each. Check the artifact you are about to write, not `changelog.md` on its behalf, because scope modifiers mean a feature can be present in `spec.md` while no changelog entry exists. When it is already present, update in place: never append a second copy, and never attach a source ref an entry already cites.
 - **Detect and follow the project's existing ID convention** (FR-XXX, REQ-XXX, Flow1, US-XX, etc.). Continue the sequence from the highest existing ID in main memory. Never reuse or renumber existing IDs. **When `.specify/memory/spec.md` is empty** there is no convention to detect and no highest ID: adopt the **feature spec's own** convention and carry its IDs across unchanged, so `FR-007` in the feature stays `FR-007` in main memory and its source ref matches. Do not renumber, and never inherit example IDs left behind by template placeholder text. Assumptions are the one exception: they take `AS-###` IDs assigned by 5.1 step 8 even on an empty spec, because feature specs usually leave them unnumbered and the main spec needs a stable key. Key this on the spec being empty, **not** on the run being a first archival: scope modifiers make runs possible where `plan.md` is being seeded while `spec.md` is already populated, and carrying the feature's IDs into a populated spec would duplicate existing ones.
   - **Retired IDs still win.** Carry the feature's IDs across unchanged **except** any that appear in the retired list (next rule). Renumber a colliding item above the highest ID in **both** the retired list and the feature's own carried IDs, per the next rule — renumbering above the retired list alone would land on an ID the feature already uses.
-- **Retired IDs are off-limits.** Before assigning any new ID, read `.specify/memory/changelog.md` and collect the ID immediately following each `RETIRED:` marker. **Collect only that ID** — the rest of the line names the live replacement and must be ignored. Continue numbering above the highest ID found in **either** the main spec or that retired list, so a retired ID is never reissued even when it was the highest-numbered entry.
+- **Retired IDs are off-limits.** Before assigning any new ID, read `.specify/memory/changelog.md` and collect the ID immediately following each `RETIRED:` marker. **Collect only that ID** — the rest of the line names the source and the live replacement and must be ignored. Continue numbering above the highest ID found in **either** the main spec or that retired list, so a retired ID is never reissued even when it was the highest-numbered entry.
 - **When consolidating equivalent items, keep the earliest existing ID** and attach the later features' source refs to it. Never renumber the surviving entry.
 - **Constitution constraints must be respected** — do not merge content that violates them. This governs 2.1's **conflict** branch, where specific feature content contradicts a rule. It does **not** govern 2.1's **unmet obligation** branch, where nothing contradicts anything and the triggering content is the feature's ordinary work: that content is archived normally and the gap is reported. Never withhold a story, requirement, or entity over an unmet obligation.
 
@@ -681,7 +708,7 @@ For each supersession candidate **confirmed by the user in Step 3**:
 2. **Retire its ID.** It must never be reused or reassigned, even though its number is now unused.
 3. **Open** a line in the feature's changelog entry, immediately, before moving to the next candidate:
    ```
-   - RETIRED: FR-005 (from specs/003-billing/spec.md) → replaced by <pending>. Reason: [one line]
+   - RETIRED: FR-005 (from specs/003-billing/spec.md -> FR-003) → replaced by <pending>. Reason: [one line]
    ```
    The retired ID and reason are written **now**, so no entry is ever removed without a record existing. Only the replacement reference is left open, because it is not known yet.
 
@@ -764,7 +791,7 @@ Four rules keep it narrow:
 
 ### 5.4 Archive to Changelog
 
-Create or update `.specify/memory/changelog.md`. **One entry per feature**: if this feature already has an entry in the Merged Features Log, update that entry in place rather than appending a second one.
+Create or update `.specify/memory/changelog.md`. A newly created file opens with the title `# Changelog`, followed by the `## Merged Features Log` heading. **One entry per feature**: if this feature already has an entry in the Merged Features Log, update that entry in place rather than appending a second one.
 
 **Newest first.** The Merged Features Log is reverse-chronological: insert a new feature entry **directly under the `## Merged Features Log` heading**, above all earlier entries. Updating an existing entry keeps it where it is, and entries inherited from older versions are never reordered. When you update an entry an older version wrote, bring **that entry's own** header and `**Spec:**` line to the current format (the `archived` label and the file link) — the same touch-to-upgrade principle as legacy refs; entries this run does not touch keep whatever format they have. The `## Unresolved Contradictions` section stays at the end of the file regardless.
 
@@ -784,8 +811,8 @@ The entry's date is the **archival date**, which is why the header says `archive
 - [Modules/services added]
 
 **Superseded:**
-- RETIRED: FR-005 (from specs/003-billing/spec.md) → replaced by FR-022. Reason: [one line]
-- RETIRED: FR-008 (from specs/004-export/spec.md) → no replacement. Reason: [one line]
+- RETIRED: FR-005 (from specs/003-billing/spec.md -> FR-003) → replaced by FR-022. Reason: [one line]
+- RETIRED: FR-008 (from specs/004-export/spec.md -> FR-002) → no replacement. Reason: [one line]
 
 **Tasks Completed:** [completed]/[total] tasks
 **Bugs addressed:** [the bug identifiers collected from `**Bugfix**:` annotations in the feature artifacts, e.g. BUG-001, BUG-003, login-timeout — the annotation *is* the corroboration, so this line works even when no bug reports exist in either layout; these include every report the Step 1 audit classifies **addressed** (an annotation may also name a bug that has no report file). Identifiers appear exactly as the annotation writes them, so a repo-level report's slug sits here beside `BUG-###` IDs and is never normalized into an invented number. Never list an identifier on the strength of a report's Status claim alone: the annotation is what puts it here. Omit this line when none]
@@ -795,7 +822,7 @@ Count tasks using the checkbox format: `- [X]` or `- [x]` = completed; `- [ ]` =
 
 The **Superseded** block is a permanent audit trail of IDs removed from the main spec in 5.1.1, and belongs to the feature entry that removed them. It is **append-only across runs**: once a run has finished, its lines are immutable — never edit, reorder, or prune them. (Completing a line you opened earlier in the *current* run, per 5.1.1 step 3, is part of writing it, not a rewrite.) Omit the block when the feature retired nothing, and never add a line for a removal that did not happen.
 
-Every line starts with the literal marker `RETIRED:` followed by the retired ID, because 5.1's ID rules scan for exactly that marker when collecting IDs that must never be reissued. The rest of the line names a **live** replacement and is deliberately ignored by that scan. If the retired entry carried several source refs, list them all; if it carried a legacy ref or none, say so.
+Every line starts with the literal marker `RETIRED:` followed by the retired ID, because 5.1's ID rules scan for exactly that marker when collecting IDs that must never be reissued. The rest of the line names a **live** replacement and is deliberately ignored by that scan. The `from` part copies the retired entry's item-level source refs exactly as the entry carried them (`specs/003-billing/spec.md -> FR-003`), because 2.4 matches a later run's incoming items against them; the feature-local ID after the arrow often differs from the retired main-memory ID. If the entry carried several source refs, list them all, separated by `; `; if it carried a legacy ref or none, say so.
 
 #### Unresolved Contradictions (top-level, not per-feature)
 
@@ -861,12 +888,13 @@ Output the following structured report. Use **absolute paths** for all file refe
 [List any conflicts that were resolved and how, or "None"]
 
 ## Consolidation
-[Always give the 2.5 numbers first: `incoming items: M; candidate pairs examined: K (dropped by the shortlist cap: D); folded: N` — a zero must be legible as "examined and found distinct", never as "did not look". Then each fold, e.g. "this feature's equivalent requirement folded into FR-012, which now carries 2 source refs", any fold verdict that reverted to a new entry because its target was retired, and any fold that did not happen at all because its incoming item was withheld over an unresolved conflict. Or "None (target was empty; 2.5 skipped)" / "None (spec.md out of scope; 2.5 skipped)"]
+[When 2.5 ran, give its numbers first: `incoming items: M; candidate pairs examined: K (dropped by the shortlist cap: D); folded: N` — a zero must be legible as "examined and found distinct", never as "did not look". When 2.5 was skipped, give only the matching skip reason from the end of this template and no numbers, because a printed zero would read as "examined". Then each fold, e.g. "this feature's equivalent requirement folded into FR-012, which now carries 2 source refs", any fold verdict that reverted to a new entry because its target was retired, and any fold that did not happen at all because its incoming item was withheld over an unresolved conflict. Or "None (target was empty; 2.5 skipped)" / "None (spec.md out of scope; 2.5 skipped)"]
 
 ## Superseded Requirements
 [Confirmed removals as `OLD-ID (retired) → replaced by NEW-ID` or `OLD-ID (retired, no replacement)`. Also list:
 - candidates left unresolved, and the contradiction each leaves in the spec (these are also written to changelog.md and re-raised next run)
 - **deferred and unrecorded** — candidates deferred because the supersession gate was closed *and* the contradiction could not be written to changelog.md. Name the scope responsible and state plainly that these will **not** be raised again automatically; recommend a re-run at full scope
+- incoming items not re-added because 2.0 found them **already retired**, each as `specs/001-task-manager/spec.md -> FR-004 (retired as FR-004, live replacement FR-009)` or `(retired as SC-003, no live replacement)`; when the chain moved past the line's own replacement, name both (`line names FR-009, retired since; no live replacement`)
 - dangling references to retired IDs found in spec.md, plan.md, constitution.md, or any discovered agent context file
 - passages that restate a retired entry's behavior without naming its ID (5.1.1 step 4's bounded look): quote each, name the retired ID it echoes, recommend review, and state what was examined when nothing turned up
 Or "None"]
@@ -892,9 +920,11 @@ Or "None"]
 
 ### 7.1 Check Extension Hooks (after archival)
 
+**You MUST complete this section before ending the run.** It follows the Step 6 report on purpose: do not move the report after it, and do not treat the report as the end of the run.
+
 Check if `REPO_ROOT/.specify/extensions.yml` exists:
 - Look for entries under `hooks.after_archive`
-- Apply the same filtering and output logic as Step 0.6
+- Apply the same parse-error, filtering, invocation and output logic as Step 0.6, labelling the blocks **Automatic Hook** and **Optional Hook** instead of Pre-Hook
 - If no hooks are registered or the file does not exist, skip silently
 
 ### 7.2 Recommendations
@@ -923,7 +953,7 @@ Provide actionable next steps:
 - Folding matches the 2.5 verdict table exactly, and the report's Consolidation section carries the examined/folded counts when 2.5 ran (a skipped 2.5 reports its skip reason instead).
 - All non-conflicting feature content merged into main memory artifacts.
 - Feature content folded into existing entries where the 2.5 verdict table judged them equivalent, each carrying item-level source refs; any pairs the shortlist cap dropped are named in the report. No pre-existing entry merged into another.
-- Confirmed supersessions applied, their IDs retired, and one `RETIRED:` line opened at removal and closed out by 5.1 step 9 — none left `<pending>`. Unresolved contradictions recorded in the top-level changelog section so the next run re-raises them, or reported as "deferred and unrecorded" when scope prevented that. Nothing removed without explicit confirmation.
+- Confirmed supersessions applied, their IDs retired, and one `RETIRED:` line opened at removal and closed out by 5.1 step 9 — none left `<pending>`. No item that 2.0 found already retired was re-added. Unresolved contradictions recorded in the top-level changelog section so the next run re-raises them, or reported as "deferred and unrecorded" when scope prevented that. Nothing removed without explicit confirmation.
 - Constitution compliance verified for all merged content, and every 2.1 finding reported with its disposition — conflicts resolved in Step 3 or the conflicting item withheld and reported, unmet obligations asked and recorded with no content withheld over one, action-requiring rules reported as unverified rather than flagged (a feature statement admitting the action was skipped is an ordinary conflict, not an exception to this), and no missing statement written by this command into any artifact.
 - Legacy per-feature blocks left unmodified, and every shared Technical Context field written beside them composed from each contributing feature whose value survived, with one source ref per surviving contributor — a feature counts as surviving while **any** of its contributions to that field remain, so a ref goes only when all of them are gone (a value dropped as the losing side of a scalar conflict is named in the report instead, and a legacy line carrying no ref contributes its value without one).
 - Memory directory bootstrapped for every artifact this run's scope will populate, and any artifact whose bootstrap was suppressed by scope named under `## Scoping`.

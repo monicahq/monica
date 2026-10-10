@@ -8,19 +8,17 @@
         "dev": "vite"
     },
     "devDependencies": {
-        "@tailwindcss/vite": "^4.0.0",
-        "concurrently": "^9.0.1",
-        "laravel-vite-plugin": "^3.1",
-        "tailwindcss": "^4.0.0",
-        "vite": "^8.0.0"
-    },
-    "dependencies": {
-        "@alpinejs/anchor": "^3.16.1",
-        "@alpinejs/focus": "^3.16.0",
-        "@alpinejs/morph": "^3.15.12",
+        "@alpinejs/anchor": "^3.17.4",
+        "@alpinejs/focus": "^3.17.4",
+        "@alpinejs/morph": "^3.17.4",
         "@hotwired/turbo": "^8.0.23",
         "@imacrayon/alpine-ajax": "^0.12.7",
         "@laravel/passkeys": "^0.4.0",
-        "alpinejs": "^3.15.12"
+        "@tailwindcss/vite": "^4.3.3",
+        "alpinejs": "^3.17.4",
+        "concurrently": "^9.2.5",
+        "laravel-vite-plugin": "^3.2.0",
+        "tailwindcss": "^4.3.3",
+        "vite": "^8.3.4"
     }
 }

@@ -1,5 +1,7 @@
 installed:
 - archive
+- assess
+- bug
 - companion
 settings:
   auto_execute_hooks: true

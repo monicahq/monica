@@ -11,7 +11,7 @@ Keep each test self-contained. Do not use values created by another test.
 First identify the subject of the check, then find an assertion designed for it. A subject-specific assertion identifies the incorrect value when the test fails.
 
 1. Search Laravel's assertions for framework subjects such as responses, the database, sessions, models, queues, events, mail, and notifications.
-2. Fetch the PHPUnit 12.5.37 documentation at `https://phpunit.de/documentation.html` for the assertions of PHPUnit for a plain value, a type, a format, or a shape.
+2. Fetch the PHPUnit 12.5.38 documentation at `https://phpunit.de/documentation.html` for the assertions of PHPUnit for a plain value, a type, a format, or a shape.
 3. Build the check by hand only if no assertion exists for the subject.
 4. Confirm the name in the documentation before you use it. Do not write an assertion that you did not confirm.
 
@@ -26,7 +26,7 @@ Use the assertion in this table for each subject.
 
 Use `assertSame()` and not `assertEquals()`, because `assertSame()` also compares the type.
 
-Assert each fact once. Do not assert a 200 status before `assertSee`, because `assertSee` already shows that the page rendered.
+Assert each fact once, but status and content are separate facts. `assertSee` passes on an error page that contains the text, so keep `assertOk()` alongside it when the status is part of the behavior.
 
 ## Named Response Assertions
 

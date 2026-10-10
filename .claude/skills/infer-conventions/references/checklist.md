@@ -9,11 +9,11 @@ Each item gives the fork, then a hint (a grep or dir to spot which side the app 
 ## A. Validation & HTTP input
 
 1. Validation entry point: inline `$request->validate()` vs Form Request classes vs `Validator::make()`.
-   - Hint: `ls app/Http/Requests`; grep `->validate(` / `Validator::make(` in `app/Http/Controllers`.
+   - Hint: `ls app/Http/Requests`; grep -- `->validate(` / `Validator::make(` in `app/Http/Controllers`.
 2. Custom rule location: invokable rule objects in `app/Rules` vs inline closures vs `Validator::extend()` in a provider. Rule objects are the default `make:rule` path, so record only if the app leans on closures or `Validator::extend` instead. "No rule objects" alone is just no-signal.
    - Hint: `ls app/Rules`; grep `Validator::extend` in `app/Providers`.
 3. Typed input retrieval: typed getters (`$request->string()`, `->integer()`, `->enum()`, `->date()`) vs raw `$request->input()` / dynamic properties.
-   - Hint: grep `->string(` / `->integer(` / `->enum(` vs `->input(` in `app/Http`.
+   - Hint: grep -- `->string(` / `->integer(` / `->enum(` vs `->input(` in `app/Http`.
 4. Custom messages/attributes: `lang/*/validation.php` vs Form Request `messages()` / `attributes()` methods.
    - Hint: `ls lang`; grep `function messages`, `function attributes` in `app/Http/Requests`.
 
@@ -26,7 +26,7 @@ Each item gives the fork, then a hint (a grep or dir to spot which side the app 
 7. Route handler style: closures in `routes/*.php` vs controller classes.
    - Hint: count `function ()` vs `::class` in `routes/web.php`, `routes/api.php`.
 8. Middleware assignment: route/group `->middleware()` vs controller `HasMiddleware::middleware()` vs `#[Middleware]` attribute.
-   - Hint: grep `implements HasMiddleware`, `#[Middleware(` in controllers vs `->middleware(` in routes.
+   - Hint: grep -- `implements HasMiddleware`, `#[Middleware(` in controllers vs `->middleware(` in routes.
 9. Route model binding: implicit (type-hinted models) vs explicit `Route::bind` vs manual `findOrFail`.
    - Hint: typed model params in signatures vs `findOrFail(` in controllers; grep `Route::bind`.
 10. Rate limiting: named `RateLimiter::for()` + `throttle:name` vs inline `throttle:60,1`.
@@ -37,7 +37,7 @@ Each item gives the fork, then a hint (a grep or dir to spot which side the app 
 11. Authorization home: Gates (`Gate::define`) vs Policy classes in `app/Policies`.
     - Hint: `ls app/Policies`; grep `Gate::define` in `app/Providers`.
 12. Authorization call site: `$this->authorize()` / `Gate::authorize()` vs `$user->can()` vs `can` middleware vs `#[Authorize]` vs `@can` in Blade.
-    - Hint: grep `authorize(`, `->can(`, `middleware('can:`, `#[Authorize(`, `@can(`.
+    - Hint: grep -- `authorize(`, `->can(`, `middleware('can:`, `#[Authorize(`, `@can(`.
 
 ## D. Eloquent & models
 
@@ -56,7 +56,7 @@ Each item gives the fork, then a hint (a grep or dir to spot which side the app 
 19. Model events: observers (`app/Observers`, `#[ObservedBy]`) vs `booted()` closures vs event classes.
     - Hint: `ls app/Observers`; grep `booted`, `::observe`, `#[ObservedBy]`.
 20. Eager-load posture: explicit per-query `->with()` vs model-level `$with` defaults. Treat `preventLazyLoading()` separately as a development guard because it can complement either posture.
-    - Hint: grep `protected $with`, `->with(`, and separately `preventLazyLoading` in `app/`.
+    - Hint: grep -- `protected $with`, `->with(`, and separately `preventLazyLoading` in `app/`.
 
 ## E. Architecture & organization
 
@@ -89,11 +89,11 @@ No Livewire/Inertia/Flux package is installed. This app may be API-only. Confirm
 ## G. Database & migrations
 
 33. Foreign keys: `foreignId()->constrained()` vs `foreignIdFor(Model::class)` vs manual `foreign()->references()->on()`.
-    - Hint: grep `foreignId(`, `foreignIdFor(`, `->foreign(` in `database/migrations`.
+    - Hint: grep -- `foreignId(`, `foreignIdFor(`, `->foreign(` in `database/migrations`.
 34. `down()` methods: real reverse logic vs omitted / one-way migrations.
     - Hint: grep `function down` vs the migration count.
 35. Enum storage: DB `enum()` column vs `string()` + PHP-enum cast on the model.
-    - Hint: grep `->enum(` in migrations vs string columns cast to enums.
+    - Hint: grep -- `->enum(` in migrations vs string columns cast to enums.
 36. Transactions: `DB::transaction(fn ...)` closure vs manual `beginTransaction` / `commit` / `rollBack`.
     - Hint: grep `DB::transaction`, `beginTransaction` in `app/`.
 37. Idempotent writes: `upsert` / `updateOrCreate` / `firstOrCreate` vs find-then-save.
@@ -108,14 +108,14 @@ No Livewire/Inertia/Flux package is installed. This app may be API-only. Confirm
 40. Fixtures: compare how equivalent test-owned records are created, such as factories vs manual inserts. Track seeders separately for shared reference data because `$this->seed()` commonly and legitimately coexists with factories.
     - Hint: grep `::factory(` and direct inserts in `tests/`; separately inspect `$this->seed(` calls and what those seeders provide.
 41. Collaborator isolation: how the app doubles its own classes, Mockery `mock()` / `spy()` vs real integration. Ignore facade fakes like `Mail::fake()` here, they isolate framework services by default and are not a fork against Mockery.
-    - Hint: grep `->mock(`, `->spy(`, `Mockery::` in `tests/`.
+    - Hint: grep -- `->mock(`, `->spy(`, `Mockery::` in `tests/`.
 42. Endpoint assertions: array `assertJson([...])` / `assertJsonFragment` vs fluent `AssertableJson`.
     - Hint: grep `AssertableJson`, `assertJsonFragment` in `tests/`.
 
 ## I. Responses & API resources
 
 43. Response shape: API Resource classes vs `response()->json()` vs returning models/arrays directly.
-    - Hint: `ls app/Http/Resources`; grep `JsonResource`, `->json(` in controllers.
+    - Hint: `ls app/Http/Resources`; grep -- `JsonResource`, `->json(` in controllers.
 44. Resource relationship inclusion: `whenLoaded()` guards vs unconditional relationship access. Do not count ordinary scalar attributes as rivals to conditional relationships, and evaluate general `when()` fields separately.
     - Hint: compare relationship fields using `whenLoaded(` with unconditional relationship property access in `app/Http/Resources`.
 45. Pagination contracts: within comparable endpoint categories, length-aware `paginate()` vs `simplePaginate()` vs `cursorPaginate()`. These have different totals, navigation, ordering, and performance contracts, so record only a stable path-scoped API policy, never a project-wide majority.
@@ -126,7 +126,7 @@ No Livewire/Inertia/Flux package is installed. This app may be API-only. Confirm
 ## J. Strings, collections & dates
 
 47. Iteration idiom: `collect()->map()->filter()` pipelines vs `array_map` / `foreach`.
-    - Hint: grep `collect(`, `->map(` vs `array_map`, `foreach` density in `app/`.
+    - Hint: grep -- `collect(`, `->map(` vs `array_map`, `foreach` density in `app/`.
 48. String API: fluent `Str::of()->...` (Stringable) vs static `Str::` vs native (`trim`, `strtoupper`).
     - Hint: grep `Str::of(` vs `Str::` vs native string funcs.
 49. Dates: compare equivalent construction call styles (`now()` / `today()` helpers vs `Carbon::`) separately from the application's mutable/immutable date policy. `Date::use(CarbonImmutable::class)` can make helpers return immutable dates, so those signals are complementary rather than conflicting.

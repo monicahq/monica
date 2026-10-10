@@ -1,20 +1,6 @@
 {
   "schema_version": "1.0",
   "extensions": {
-    "archive": {
-      "version": "1.3.0",
-      "source": "local",
-      "manifest_hash": "sha256:f7e3b0f009cdf13919317786e3fc4fde5285df60506d61e0093e2720ece51974",
-      "enabled": true,
-      "priority": 10,
-      "registered_commands": {
-        "claude": [
-          "speckit.archive.run"
-        ]
-      },
-      "registered_skills": [],
-      "installed_at": "2026-09-29T02:06:59.887185+00:00"
-    },
     "companion": {
       "version": "0.24.0",
       "source": "local",
@@ -49,7 +35,55 @@
         ]
       },
       "registered_skills": [],
-      "installed_at": "2026-10-03T16:46:49.609508+00:00"
+      "installed_at": "2026-10-10T08:53:17.011951+00:00"
+    },
+    "bug": {
+      "version": "1.0.1",
+      "source": "local",
+      "manifest_hash": "sha256:0f8ca9b828f8855be72a17cdef1f355fba81d7173b16f349d500d2ab367384fb",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "claude": [
+          "speckit.bug.assess",
+          "speckit.bug.fix",
+          "speckit.bug.test"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-10-10T08:53:17.391472+00:00"
+    },
+    "assess": {
+      "version": "1.0.1",
+      "source": "local",
+      "manifest_hash": "sha256:a1c87d9ce8088e7865f1d352137777a693b0595ccc310957c7c051a604ca1db2",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "claude": [
+          "speckit.assess.intake",
+          "speckit.assess.research",
+          "speckit.assess.define",
+          "speckit.assess.shape",
+          "speckit.assess.decide"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-10-10T08:53:18.019815+00:00"
+    },
+    "archive": {
+      "version": "1.4.0",
+      "source": "local",
+      "manifest_hash": "sha256:cdfc1d14c91467b155327e79008c84df19ecbaeb8d2dcc8cf4f489b7e716e3bf",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "claude": [
+          "speckit.archive.run"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-10-10T08:53:20.288592+00:00"
     }
   }
 }

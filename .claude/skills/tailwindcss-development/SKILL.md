@@ -48,16 +48,16 @@ In Tailwind v4, import Tailwind with a regular CSS `@import` statement instead o
 
 ### Replaced Utilities
 
-Tailwind v4 removed deprecated utilities. Use the replacements shown below. Opacity values remain numeric.
+Tailwind v4 removed deprecated utilities. Use the replacements shown below. For opacity, drop the `*-opacity-*` class and append the value as a modifier on the existing color: `bg-blue-500 bg-opacity-50` becomes `bg-blue-500/50`, `text-white text-opacity-75` becomes `text-white/75`.
 
 | Deprecated | Replacement |
 |------------|-------------|
-| bg-opacity-* | bg-black/* |
-| text-opacity-* | text-black/* |
-| border-opacity-* | border-black/* |
-| divide-opacity-* | divide-black/* |
-| ring-opacity-* | ring-black/* |
-| placeholder-opacity-* | placeholder-black/* |
+| bg-opacity-* | bg-{color}/* |
+| text-opacity-* | text-{color}/* |
+| border-opacity-* | border-{color}/* |
+| divide-opacity-* | divide-{color}/* |
+| ring-opacity-* | ring-{color}/* |
+| placeholder-opacity-* | placeholder-{color}/* |
 | flex-shrink-* | shrink-* |
 | flex-grow-* | grow-* |
 | overflow-ellipsis | text-ellipsis |

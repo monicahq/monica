@@ -157,7 +157,7 @@ class TemplateBuilderViewModel
             return false;
         }
 
-        return $this->version()?->assembly->where('structure_version_page_id', $page->id)->isEmpty() === true;
+        return optional($this->version())->assembly->where('structure_version_page_id', $page->id)->isEmpty() === true;
     }
 
     /** @return array<int, array{id: int, uuid: string, label: string}> */

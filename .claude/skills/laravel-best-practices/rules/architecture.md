@@ -103,7 +103,7 @@ $posts = Post::query()
 
 ## Use Atomic Locks for Race Conditions
 
-Use a lock when concurrent execution must be serialized. `Cache::lock()` provides an atomic lock when the configured cache store supports locks. `lockForUpdate()` locks selected database rows and must run inside a database transaction. These mechanisms solve different coordination problems.
+Use a lock when concurrent execution must be serialized. `Cache::lock()` provides an atomic lock when the configured cache store supports locks. `lockForUpdate()` locks selected database rows and must run inside a database transaction. These mechanisms solve different coordination problems. Set the lease (`10` below) longer than the callback can ever run: once it expires, another process can acquire the lock while the first is still working.
 
 ```php
 Cache::lock('order-processing-'.$order->id, 10)->block(5, function () use ($order) {
