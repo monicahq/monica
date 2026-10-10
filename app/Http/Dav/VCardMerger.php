@@ -11,6 +11,8 @@ use App\Enums\PhoneLabelEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use Closure;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Collection;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Document;
@@ -24,9 +26,31 @@ class VCardMerger
 
     private const array MANAGED_NAME_PARAMETERS = ['ALTID', 'PROP-ID', 'LANGUAGE', 'SCRIPT', 'PHONETIC', 'PREF', 'X-NAME-KIND', 'VALUE'];
 
+    /**
+     * A merger told the contact arrives preloaded reads the relations it needs from the contact
+     * rather than from the database. Only a caller that loaded them for this very merge says so,
+     * since a relation loaded earlier may no longer say what the database says.
+     */
     public function __construct(
         private readonly bool $reachesSensitiveFields = false,
+        private readonly bool $preloaded = false,
     ) {}
+
+    /**
+     * The relations a preloaded contact carries, loaded up front for a batch of cards, so that
+     * merging each card asks nothing more of the database.
+     *
+     * @return array<int|string, string|Closure>
+     */
+    public static function relations(): array
+    {
+        return [
+            'avatar',
+            'nameRepresentations',
+            'fieldValues' => fn (MorphMany $query): MorphMany => self::values($query),
+            'structureVersion.sectionVersions.fields',
+        ];
+    }
 
     public function merge(Contact $contact): string
     {
@@ -85,7 +109,9 @@ class VCardMerger
         $card->remove('N');
         $card->remove('FN');
 
-        $representations = $contact->nameRepresentations()->get();
+        $representations = $this->preloaded
+            ? $contact->nameRepresentations
+            : $contact->nameRepresentations()->get();
         $only = $representations->count() === 1 ? $representations->first() : null;
 
         if ($representations->isEmpty() || ($only !== null && $only->kind === ContactNameKindEnum::Written && $only->language_tag === null && $only->script_code === null)) {
@@ -221,7 +247,7 @@ class VCardMerger
 
     private function writeFields(VCard $card, Contact $contact): void
     {
-        $owned = new OwnedFields($contact);
+        $owned = new OwnedFields($contact, preloaded: $this->preloaded);
         $values = $this->valuesOf($contact);
 
         foreach ($owned->properties() as $property) {
@@ -478,12 +504,22 @@ class VCardMerger
     /** @return Collection<int, FieldValue> */
     private function valuesOf(Contact $contact): Collection
     {
-        return $contact->fieldValues()
+        return $this->preloaded
+            ? $contact->fieldValues
+            : self::values($contact->fieldValues())->get();
+    }
+
+    /**
+     * @param  MorphMany<FieldValue, Contact>  $query
+     * @return MorphMany<FieldValue, Contact>
+     */
+    private static function values(MorphMany $query): MorphMany
+    {
+        return $query
             ->attached()
             ->with('field')
             ->orderBy('field_id')
             ->orderByRaw('field_value_row_id is null desc')
-            ->orderBy('field_value_row_id')
-            ->get();
+            ->orderBy('field_value_row_id');
     }
 }

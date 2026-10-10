@@ -14,6 +14,7 @@ use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\Attributes\Test;
 use Sabre\VObject\Reader;
@@ -635,5 +636,77 @@ class AddressBookTest extends TestCase
         $response->assertStatus(403);
         $this->assertNotSoftDeleted($me);
         $this->assertDatabaseMissing('contacts', ['vault_id' => $utica->id]);
+    }
+
+    #[Test]
+    public function it_finds_a_card_under_the_name_a_device_chose_and_not_under_its_uuid(): void
+    {
+        $vault = $this->vault();
+        $named = Contact::factory()->create($this->inVault($vault, ['first_name' => 'Dwight', 'dav_uri' => 'dwight.vcf']));
+
+        $this->dav('GET', $this->book($vault).'dwight.vcf')->assertOk();
+        $this->dav('GET', $this->book($vault).$named->uuid.'.vcf')->assertNotFound();
+    }
+
+    #[Test]
+    public function it_hands_several_cards_at_once_and_only_those_asked_for(): void
+    {
+        $vault = $this->vault();
+        $jim = Contact::factory()->create($this->inVault($vault, ['first_name' => 'Jim']));
+        Contact::factory()->create($this->inVault($vault, ['first_name' => 'Pam', 'dav_uri' => 'pam.vcf']));
+        Contact::factory()->create($this->inVault($vault, ['first_name' => 'Toby']));
+        $archived = Contact::factory()->create($this->inVault($vault, ['first_name' => 'Devon', 'is_archived' => true]));
+
+        $response = $this->multiget($vault, [$jim->uuid.'.vcf', 'pam.vcf', $archived->uuid.'.vcf']);
+
+        $response->assertStatus(207);
+        $response->assertSee('FN:Jim', escape: false);
+        $response->assertSee('FN:Pam', escape: false);
+        $response->assertDontSee('FN:Toby', escape: false);
+        $response->assertDontSee('FN:Devon', escape: false);
+    }
+
+    #[Test]
+    public function it_reads_a_batch_of_cards_in_a_number_of_queries_that_does_not_grow_with_the_batch(): void
+    {
+        $vault = $this->vault();
+        $version = Structure::withFields($this->user, [
+            ['type' => FieldTypeEnum::Email, 'label' => 'Work email'],
+        ]);
+        $make = fn (int $count): array => Contact::factory()->count($count)
+            ->create($this->inVault($vault, ['structure_version_id' => $version->id]))
+            ->map(fn (Contact $contact): string => $contact->uuid.'.vcf')
+            ->all();
+
+        $few = $make(2);
+        $many = $make(10);
+
+        $this->multiget($vault, $few);
+        DB::enableQueryLog();
+        $this->multiget($vault, $few)->assertStatus(207);
+        $forFew = count(DB::getQueryLog());
+        DB::flushQueryLog();
+        $this->multiget($vault, $many)->assertStatus(207);
+        $forMany = count(DB::getQueryLog());
+        DB::disableQueryLog();
+
+        $this->assertSame($forFew, $forMany);
+    }
+
+    /** @param  array<int, string>  $cardUris */
+    private function multiget(Vault $vault, array $cardUris): TestResponse
+    {
+        $hrefs = implode('', array_map(
+            fn (string $uri): string => '<d:href>/'.$this->book($vault).$uri.'</d:href>',
+            $cardUris,
+        ));
+
+        return $this->dav('REPORT', $this->book($vault), depth: '1', body: <<<XML
+            <?xml version="1.0"?>
+            <c:addressbook-multiget xmlns:d="DAV:" xmlns:c="urn:ietf:params:xml:ns:carddav">
+              <d:prop><d:getetag/><c:address-data/></d:prop>
+              $hrefs
+            </c:addressbook-multiget>
+            XML);
     }
 }

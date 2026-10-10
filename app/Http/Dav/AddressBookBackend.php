@@ -11,6 +11,7 @@ use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Override;
 use Sabre\CardDAV\Backend\BackendInterface;
@@ -86,12 +87,9 @@ class AddressBookBackend implements BackendInterface, SyncSupport
     #[Override]
     public function getMultipleCards($addressBookId, array $uris): array
     {
-        $vault = $this->vault($addressBookId);
-
-        return $this->members($vault)
-            ->filter(fn (Contact $contact): bool => in_array($this->uriOf($contact), $uris, true))
+        return $this->membersAt($this->vault($addressBookId), array_map(strval(...), $uris))
+            ->get()
             ->map(fn (Contact $contact): array => $this->row($contact, withCard: true))
-            ->values()
             ->all();
     }
 
@@ -206,7 +204,7 @@ class AddressBookBackend implements BackendInterface, SyncSupport
         ];
 
         if ($withCard) {
-            $row['carddata'] = new VCardMerger($this->reachesSensitiveFields)->merge($contact);
+            $row['carddata'] = new VCardMerger($this->reachesSensitiveFields, preloaded: true)->merge($contact);
             $row['size'] = strlen($row['carddata']);
         }
 
@@ -224,18 +222,46 @@ class AddressBookBackend implements BackendInterface, SyncSupport
 
     private function contact(Vault $vault, string $cardUri): ?Contact
     {
-        return $this->members($vault)
-            ->first(fn (Contact $contact): bool => $this->uriOf($contact) === $cardUri);
+        return $this->membersAt($vault, [$cardUri])->first();
     }
 
     /** @return Collection<int, Contact> */
     private function members(Vault $vault): Collection
     {
+        return $this->membersQuery($vault)->get();
+    }
+
+    /**
+     * The members living at the addresses given, found by the database rather than by reading the
+     * whole vault. An address is the name a device chose, or the uuid for a card made here, which
+     * only answers when no device ever named it otherwise, mirroring uriOf().
+     *
+     * @param  array<int, string>  $cardUris
+     * @return Builder<Contact>
+     */
+    private function membersAt(Vault $vault, array $cardUris): Builder
+    {
+        $uuids = array_values(array_map(
+            fn (string $uri): string => substr($uri, 0, -4),
+            array_filter($cardUris, fn (string $uri): bool => str_ends_with($uri, '.vcf')),
+        ));
+
+        return $this->membersQuery($vault)
+            ->with(VCardMerger::relations())
+            ->where(fn (Builder $query): Builder => $query
+                ->whereIn('dav_uri', $cardUris)
+                ->orWhere(fn (Builder $query): Builder => $query
+                    ->whereNull('dav_uri')
+                    ->whereIn('uuid', $uuids)));
+    }
+
+    /** @return Builder<Contact> */
+    private function membersQuery(Vault $vault): Builder
+    {
         return Contact::query()
             ->where('vault_id', $vault->id)
             ->inGrouping(ContactGroupingEnum::Everyone)
-            ->with(['avatar', 'structureVersion'])
-            ->get();
+            ->with(['avatar', 'structureVersion']);
     }
 
     private function changesIn(Vault $vault): CollectionChanges

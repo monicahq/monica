@@ -19,6 +19,7 @@ class OwnedFields
 
     public function __construct(
         private readonly Contact $contact,
+        private readonly bool $preloaded = false,
     ) {}
 
     /** @return array<int, Field> */
@@ -67,13 +68,21 @@ class OwnedFields
         return $this->byProperty = $grouped;
     }
 
-    /** @return Collection<int, Field> */
+    /**
+     * A preloaded contact carries its structure with the sections and fields, so a batch of cards
+     * sharing one structure asks for it once rather than once per card.
+     *
+     * @return Collection<int, Field>
+     */
     private function fields(): Collection
     {
-        return $this->contact->structureVersion
-            ->sectionVersions()
-            ->with('fields')
-            ->get()
+        $structure = $this->contact->structureVersion;
+
+        $sections = $this->preloaded
+            ? $structure->sectionVersions
+            : $structure->sectionVersions()->with('fields')->get();
+
+        return $sections
             ->flatMap(fn (SectionVersion $section): Collection => $section->fields->values());
     }
 }
