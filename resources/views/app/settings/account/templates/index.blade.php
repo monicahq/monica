@@ -46,7 +46,7 @@
       <span class="ml-auto text-xs text-pretty text-muted">{{ $viewModel->summary() }}</span>
     </div>
 
-    <x-page-section :title="__('Your templates')" :description="__('Yours to change, version and publish.')">
+    <x-page-section :title="__('Your templates')">
       <x-panel :flush="true">
         @forelse ($viewModel->ownTemplates() as $template)
           @include('app.settings.account.templates._row', ['template' => $template])
@@ -63,7 +63,7 @@
     </x-page-section>
 
     @if ($viewModel->suppliedTemplates() !== [])
-      <x-page-section :title="__('Supplied with Monica')" :description="__('They work as they are. Copy one to change it.')">
+      <x-page-section :title="__('Supplied with Monica')">
         <x-panel :flush="true">
           @foreach ($viewModel->suppliedTemplates() as $template)
             @include('app.settings.account.templates._row', ['template' => $template])
