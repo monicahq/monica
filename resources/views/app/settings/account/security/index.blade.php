@@ -46,9 +46,15 @@
     </x-panel>
   </x-page-section>
 
-  <x-page-section :title="__('Connected assistants')" :description="__('An assistant you connected through OAuth acts as you on the MCP server, without a key of its own.')">
-    <x-panel :flush="true">
-      @include('app.settings.account.security._connected-assistants', ['viewModel' => $viewModel])
-    </x-panel>
-  </x-page-section>
+  @if ($viewModel->mcpIsOn() || $viewModel->assistantsNotice() !== null)
+    <x-page-section :title="__('Connected assistants')" :description="__('An assistant you connected through OAuth acts as you on the MCP server, without a key of its own.')">
+      @if ($viewModel->assistantsNotice() !== null)
+        <x-notice tone="quiet">{{ $viewModel->assistantsNotice() }}</x-notice>
+      @endif
+
+      <x-panel :flush="true">
+        @include('app.settings.account.security._connected-assistants', ['viewModel' => $viewModel])
+      </x-panel>
+    </x-page-section>
+  @endif
 </x-settings.page>

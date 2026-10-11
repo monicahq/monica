@@ -17,7 +17,9 @@ use App\Models\ValueList;
 use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -342,6 +344,37 @@ class FieldValueRulesTest extends TestCase
 
         $this->assertFalse(Validator::make(['fields' => [$field->id => $sprinkles->uuid]], $rules)->fails());
         $this->assertTrue(Validator::make(['fields' => [$field->id => $fern->uuid]], $rules)->fails());
+    }
+
+    #[Test]
+    public function it_refuses_a_file_and_says_why_while_file_upload_is_off_for_the_account(): void
+    {
+        $vault = Vault::factory()->create();
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Image, 'is_required' => false]);
+        $vault->account->features()->deactivate('file-upload');
+        Feature::flushCache();
+
+        $withAFile = Validator::make(
+            ['fields' => [$field->id => UploadedFile::fake()->image('dwight.jpg')]],
+            FieldValueRules::for(collect([$field]), $vault),
+        );
+        $withoutAFile = Validator::make(['fields' => []], FieldValueRules::for(collect([$field]), $vault));
+
+        $this->assertSame(['Uploads are unavailable on this account for now.'], $withAFile->errors()->get("fields.{$field->id}"));
+        $this->assertFalse($withoutAFile->fails());
+    }
+
+    #[Test]
+    public function a_required_file_field_blocks_saving_and_says_why_while_file_upload_is_off_for_the_account(): void
+    {
+        $vault = Vault::factory()->create();
+        $field = Field::factory()->create(['type' => FieldTypeEnum::File, 'is_required' => true]);
+        $vault->account->features()->deactivate('file-upload');
+        Feature::flushCache();
+
+        $validator = Validator::make(['fields' => []], FieldValueRules::for(collect([$field]), $vault));
+
+        $this->assertSame(['Uploads are unavailable on this account for now.'], $validator->errors()->get("fields.{$field->id}"));
     }
 
     private function countryOf(Field $field, CountryEnum $country, bool $active = true): ValueListItem

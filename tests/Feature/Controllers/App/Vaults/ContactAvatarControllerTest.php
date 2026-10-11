@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -67,6 +68,38 @@ class ContactAvatarControllerTest extends TestCase
 
         $response->assertRedirect(route('contacts.edit', ['vault' => $vault, 'contact' => $contact]));
         $response->assertSessionHas('status', 'The photo is removed.');
+
+        $this->assertFalse($contact->refresh()->hasAvatar());
+    }
+
+    #[Test]
+    public function it_refuses_an_upload_but_still_takes_the_picture_off_while_file_upload_is_off(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+
+        new UpdateContactAvatar(
+            user: $user,
+            vault: $vault,
+            contact: $contact,
+            upload: UploadedFile::fake()->image('pam.jpg', 400, 400),
+        )->execute();
+
+        $user->account->features()->deactivate('file-upload');
+        Feature::flushCache();
+
+        $this->actingAs($user)->post(
+            route('contacts.avatar.update', ['vault' => $vault, 'contact' => $contact]),
+            ['avatar' => UploadedFile::fake()->image('michael.jpg', 400, 400)],
+        )->assertNotFound();
+
+        $this->actingAs($user)->delete(
+            route('contacts.avatar.destroy', ['vault' => $vault, 'contact' => $contact]),
+        )->assertRedirect(route('contacts.edit', ['vault' => $vault, 'contact' => $contact]));
 
         $this->assertFalse($contact->refresh()->hasAvatar());
     }

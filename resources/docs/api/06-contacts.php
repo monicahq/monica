@@ -381,6 +381,7 @@ return [
         ],
         [
             'id' => 'contacts-vcard',
+            'flag' => 'vcard-export',
             'title' => 'Get a contact as a vCard',
             'label' => 'Get a contact as a vCard',
             'method' => 'GET',

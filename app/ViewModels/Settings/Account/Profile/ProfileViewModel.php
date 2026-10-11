@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Settings\Account\Profile;
 
+use App\Helpers\FlagState;
 use App\Models\User;
 use App\ViewModels\Auth\ConfirmPasswordViewModel;
 
@@ -44,6 +45,11 @@ class ProfileViewModel
     public function hasPhoto(): bool
     {
         return $this->user->hasPhoto();
+    }
+
+    public function uploadsAreOn(): bool
+    {
+        return FlagState::isOn('file-upload', $this->user->account);
     }
 
     public function email(): string

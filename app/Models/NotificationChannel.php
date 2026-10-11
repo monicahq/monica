@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\NotificationChannelEnum;
+use App\Helpers\FlagState;
 use App\Models\Concerns\ResolvesModelInAccount;
 use Carbon\CarbonImmutable;
 use Database\Factories\NotificationChannelFactory;
@@ -169,11 +170,34 @@ class NotificationChannel extends Model
     }
 
     /**
+     * Whether the account may use this channel at all. Text messages are
+     * withdrawn while the `sms-notifications` flag is off for the account; the
+     * row and its number are kept, ready for the day it comes back on.
+     */
+    public function isOffered(): bool
+    {
+        if ($this->channel !== NotificationChannelEnum::Sms) {
+            return true;
+        }
+
+        return FlagState::isOn('sms-notifications', $this->account);
+    }
+
+    /**
      * Whether a notification should be written for this channel at all.
      */
     public function mayCarry(): bool
     {
-        return $this->is_enabled && $this->isReady();
+        return $this->is_enabled && $this->isOffered() && $this->isReady();
+    }
+
+    /**
+     * A channel the account is not offered is not found, so every route naming
+     * it answers 404, on the web and on the API alike.
+     */
+    protected function isReachableThroughAnAddress(): bool
+    {
+        return $this->isOffered();
     }
 
     /**

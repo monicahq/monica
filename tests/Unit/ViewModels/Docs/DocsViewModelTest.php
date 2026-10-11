@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Docs;
 
+use App\Models\User;
 use App\ViewModels\Docs\ApiDocsViewModel;
 use App\ViewModels\Docs\DocsViewModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class DocsViewModelTest extends TestCase
 {
+    use RefreshDatabase;
+
     #[Test]
     public function it_links_every_area_to_its_pages(): void
     {
@@ -22,6 +27,31 @@ class DocsViewModelTest extends TestCase
             'MCP' => route('docs.mcp.index'),
             'CardDAV and CalDAV' => route('docs.carddav.index'),
         ], $urls);
+    }
+
+    #[Test]
+    public function it_leaves_out_what_is_switched_off_for_every_account(): void
+    {
+        Feature::for(null)->deactivate('carddav');
+        Feature::for(null)->deactivate('mcp-server');
+        Feature::flushCache();
+
+        $viewModel = new DocsViewModel;
+
+        $this->assertSame(['Using Monica', 'API'], array_column($viewModel->areas(), 'title'));
+        $this->assertStringNotContainsString(route('docs.carddav.markdown.index'), $viewModel->llmsText());
+        $this->assertStringNotContainsString(route('docs.mcp.markdown.index'), $viewModel->llmsText());
+    }
+
+    #[Test]
+    public function it_shows_an_account_what_is_switched_on_for_it(): void
+    {
+        Feature::for(null)->deactivate('carddav');
+        $jim = User::factory()->create();
+        $jim->account->features()->activate('carddav');
+        Feature::flushCache();
+
+        $this->assertContains('CardDAV and CalDAV', array_column(new DocsViewModel(account: $jim->account)->areas(), 'title'));
     }
 
     #[Test]

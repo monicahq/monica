@@ -17,6 +17,7 @@ use App\Models\ReminderOccurrence;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -142,6 +143,27 @@ class NotifyReminderOccurrenceTest extends TestCase
         $this->assertDatabaseMissing('notifications', [
             'notifiable_id' => $occurrence->id,
             'channel' => NotificationChannelEnum::Telegram->value,
+        ]);
+    }
+
+    #[Test]
+    public function it_writes_nothing_for_text_messages_while_sms_notifications_is_off_for_the_account(): void
+    {
+        $occurrence = $this->dueOccurrence();
+        NotificationChannel::query()
+            ->where('account_id', $occurrence->account_id)
+            ->where('channel', NotificationChannelEnum::Sms->value)
+            ->firstOrFail()
+            ->fill(['is_enabled' => true, 'destination' => '+15705550100', 'proven_at' => now()])
+            ->save();
+        $occurrence->account->features()->deactivate('sms-notifications');
+        Feature::flushCache();
+
+        new NotifyReminderOccurrence(occurrence: $occurrence->refresh())->execute();
+
+        $this->assertDatabaseMissing('notifications', [
+            'notifiable_id' => $occurrence->id,
+            'channel' => NotificationChannelEnum::Sms->value,
         ]);
     }
 

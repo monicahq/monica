@@ -12,5 +12,5 @@ Route::middleware('throttle:10,1')->group(function (): void {
 });
 
 Mcp::web('mcp', EricaServer::class)
-    ->middleware(['api', 'auth:sanctum,api', 'throttle:mcp', SetMcpLogSource::class])
+    ->middleware(['api', 'auth:sanctum,api', 'flag:mcp-server', 'throttle:mcp', SetMcpLogSource::class])
     ->withoutMiddleware('throttle:api');

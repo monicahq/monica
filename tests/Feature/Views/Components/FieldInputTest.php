@@ -13,6 +13,7 @@ use App\Models\ValueList;
 use App\Models\ValueListItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\TestView;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -322,6 +323,33 @@ class FieldInputTest extends TestCase
     }
 
     /** @param  array<string, mixed>  $attributes */
+    #[Test]
+    public function a_file_field_offers_no_upload_while_file_upload_is_off(): void
+    {
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Image, 'label' => 'Portrait', 'is_required' => false]);
+
+        $this->render($field)->assertSee('type="file"', escape: false);
+
+        Feature::for(null)->deactivate('file-upload');
+        Feature::flushCache();
+
+        $rendered = $this->render($field);
+
+        $rendered->assertDontSee('type="file"', escape: false);
+        $rendered->assertSee('Portrait');
+        $rendered->assertDontSee('Uploads are unavailable on this account for now.');
+    }
+
+    #[Test]
+    public function a_required_file_field_says_why_it_cannot_be_filled_in_while_file_upload_is_off(): void
+    {
+        $field = Field::factory()->create(['type' => FieldTypeEnum::File, 'label' => 'Lease', 'is_required' => true]);
+        Feature::for(null)->deactivate('file-upload');
+        Feature::flushCache();
+
+        $this->render($field)->assertSee('Uploads are unavailable on this account for now.');
+    }
+
     private function addressField(?ValueList $labels = null, array $attributes = []): Field
     {
         return Field::factory()->create(array_merge([

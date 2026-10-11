@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Actions\VerifyPasskey;
 use App\Enums\SsoProviderEnum;
+use App\Helpers\FlagState;
 use App\Helpers\InstanceSettings;
 use App\Helpers\LocaleCollation;
 use App\Helpers\MaterializedDatabaseEngine;
@@ -202,15 +203,19 @@ class AppServiceProvider extends ServiceProvider
         Passport::tokensExpireIn(CarbonInterval::day());
         Passport::refreshTokensExpireIn(CarbonInterval::days(30));
 
-        Passport::authorizationView(fn (array $parameters): Response => response()->view('app.auth.oauth-authorize', [
-            'viewModel' => new OAuthAuthorizationViewModel(
-                client: $parameters['client'],
-                authToken: $parameters['authToken'],
-                user: $parameters['user'],
-                redirectUri: $parameters['request']->string('redirect_uri')->toString(),
-                scopes: $parameters['scopes'],
-            ),
-        ]));
+        Passport::authorizationView(function (array $parameters): Response {
+            abort_unless(FlagState::isOn('mcp-server', $parameters['user']->account), 404);
+
+            return response()->view('app.auth.oauth-authorize', [
+                'viewModel' => new OAuthAuthorizationViewModel(
+                    client: $parameters['client'],
+                    authToken: $parameters['authToken'],
+                    user: $parameters['user'],
+                    redirectUri: $parameters['request']->string('redirect_uri')->toString(),
+                    scopes: $parameters['scopes'],
+                ),
+            ]);
+        });
         // English on purpose: translating here would load a language file on every request, before
         // the reader's language is known. The authorization screen translates it.
         Passport::tokensCan([

@@ -60,7 +60,7 @@ class BuildOpenApiDocument
             $groups[] = [
                 'name' => $group['name'],
                 'description' => $group['description'] ?? '',
-                'sections' => $group['sections'],
+                'sections' => ApiDocsViewModel::offeredToEveryAccount($group['sections']),
             ];
         }
 

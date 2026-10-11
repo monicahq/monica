@@ -10,6 +10,7 @@ use App\Models\NotificationChannel;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -194,6 +195,21 @@ class NotificationChannelControllerTest extends TestCase
         $this->signedIn();
 
         $this->put(route('settings.notifications.update', 'carrier-pigeon'), ['is_enabled' => '0'])->assertStatus(404);
+    }
+
+    #[Test]
+    public function it_answers_not_found_for_text_messages_while_sms_notifications_is_off_for_the_account(): void
+    {
+        $user = $this->signedIn();
+        $user->account->features()->deactivate('sms-notifications');
+        Feature::flushCache();
+
+        $response = $this->put(route('settings.notifications.update', 'sms'), [
+            'is_enabled' => '1',
+            'destination' => '+15705550172',
+        ]);
+
+        $response->assertNotFound();
     }
 
     private function signedIn(): User

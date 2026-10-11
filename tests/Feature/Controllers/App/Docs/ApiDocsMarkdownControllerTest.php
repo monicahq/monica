@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Docs;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ApiDocsMarkdownControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     #[Test]
     public function it_hands_the_whole_reference_to_a_visitor_who_is_not_signed_in(): void
     {

@@ -58,10 +58,15 @@
               </span>
 
               <div class="mt-4 grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-8 gap-y-3">
-                <span class="text-base text-body">CardDAV</span>
-                <span class="truncate font-mono text-base text-ink">{{ $viewModel->host() }}/dav</span>
-                <span class="text-base text-body">MCP</span>
-                <span class="truncate font-mono text-base text-ink">{{ $viewModel->host() }}/mcp</span>
+                @if ($viewModel->carddavIsOn())
+                  <span class="text-base text-body">CardDAV</span>
+                  <span class="truncate font-mono text-base text-ink">{{ $viewModel->host() }}/dav</span>
+                @endif
+
+                @if ($viewModel->mcpIsOn())
+                  <span class="text-base text-body">MCP</span>
+                  <span class="truncate font-mono text-base text-ink">{{ $viewModel->host() }}/mcp</span>
+                @endif
               </div>
             </div>
           </div>

@@ -14,7 +14,9 @@ use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
+use Laravel\Pennant\Feature;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -124,6 +126,27 @@ class EntityControllerTest extends TestCase
         $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$type->uuid}/entities", ['name' => ''])
             ->assertUnprocessable()
             ->assertJsonValidationErrors('name');
+    }
+
+    #[Test]
+    public function it_refuses_a_file_while_file_upload_is_off_for_the_account(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Schrute Farms']);
+        $type = EntityType::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->entityDefaultCarrying($vault, $type, ['Animal details' => ['portrait' => FieldTypeEnum::Image]]);
+        $portrait = $version->inputFields()->firstOrFail();
+        $user->account->features()->deactivate('file-upload');
+        Feature::flushCache();
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$type->uuid}/entities", [
+            'name' => 'Mose’s goat',
+            'fields' => [$portrait->id => UploadedFile::fake()->image('goat.jpg')],
+        ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(["fields.{$portrait->id}" => 'Uploads are unavailable on this account for now.']);
     }
 
     #[Test]

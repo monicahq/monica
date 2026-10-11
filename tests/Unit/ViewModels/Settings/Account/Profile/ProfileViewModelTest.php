@@ -7,6 +7,7 @@ namespace Tests\Unit\ViewModels\Settings\Account\Profile;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Profile\ProfileViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -54,6 +55,18 @@ class ProfileViewModelTest extends TestCase
 
         $this->assertTrue($withPhoto->hasPhoto());
         $this->assertFalse($withoutPhoto->hasPhoto());
+    }
+
+    #[Test]
+    public function it_offers_an_upload_only_while_file_upload_is_on_for_the_account(): void
+    {
+        $jim = User::factory()->create();
+        $dwight = User::factory()->create();
+        $dwight->account->features()->deactivate('file-upload');
+        Feature::flushCache();
+
+        $this->assertTrue(new ProfileViewModel(user: $jim)->uploadsAreOn());
+        $this->assertFalse(new ProfileViewModel(user: $dwight)->uploadsAreOn());
     }
 
     #[Test]

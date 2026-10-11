@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Tests\Feature\Views\Components\ApiDocs;
 
 use App\ViewModels\Docs\ApiDocsViewModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SidebarTest extends TestCase
 {
+    use RefreshDatabase;
+
     #[Test]
     public function it_carries_the_two_headings_of_the_reference(): void
     {

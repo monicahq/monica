@@ -12,6 +12,7 @@ use App\Models\FieldValue;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 use App\Models\Vault;
+use App\Rules\UploadsAreUnavailable;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
@@ -103,6 +104,10 @@ class FieldValueRules
     private static function forOne(Field $field, ?bool $required = null, ?Vault $vault = null): array
     {
         $required ??= $field->is_required;
+
+        if ($field->type->holdsAFile() && ! FlagState::isOn('file-upload', $vault?->account)) {
+            return ['nullable', new UploadsAreUnavailable(required: $required)];
+        }
 
         $rules = [$required ? 'required' : 'nullable'];
 

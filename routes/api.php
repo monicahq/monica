@@ -226,7 +226,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::get('vaults/{vault}/search', [SearchController::class, 'index'])->name('search');
         Route::get('vaults/{vault}/contacts/me', [ContactMeController::class, 'show'])->name('contacts.me');
         Route::get('vaults/{vault}/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
-        Route::get('vaults/{vault}/contacts/{contact}/vcard', [ContactVCardController::class, 'show'])->name('contacts.vcard.show');
+        Route::get('vaults/{vault}/contacts/{contact}/vcard', [ContactVCardController::class, 'show'])->middleware('flag:vcard-export')->name('contacts.vcard.show');
         Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
         Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
@@ -238,7 +238,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/contacts/{contact}/name-representations', [ContactNameRepresentationController::class, 'update'])->name('contacts.nameRepresentations.update');
 
         Route::put('vaults/{vault}/contacts/{contact}/favourite', [ContactFavouriteController::class, 'update'])->name('contacts.favourite.update');
-        Route::post('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'update'])->name('contacts.avatar.update');
+        Route::post('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'update'])->middleware('flag:file-upload')->name('contacts.avatar.update');
         Route::delete('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'destroy'])->name('contacts.avatar.destroy');
         Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])->name('contacts.templateVersion.update');
 

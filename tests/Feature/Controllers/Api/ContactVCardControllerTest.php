@@ -17,6 +17,7 @@ use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Fixtures\Dav\Structure;
 use Tests\TestCase;
@@ -235,6 +236,20 @@ class ContactVCardControllerTest extends TestCase
 
         $this->withToken($user->createToken('Michael’s script')->plainTextToken)
             ->getJson("/api/v1/vaults/{$otherVault->uuid}/contacts/{$contact->uuid}/vcard")
+            ->assertNotFound();
+    }
+
+    #[Test]
+    public function it_answers_not_found_while_vcard_export_is_off_for_the_account(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+        $user->account->features()->deactivate('vcard-export');
+        Feature::flushCache();
+
+        $this->withToken($user->createToken('Michael’s script')->plainTextToken)
+            ->get("/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/vcard")
             ->assertNotFound();
     }
 

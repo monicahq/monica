@@ -6,11 +6,14 @@ namespace Tests\Feature\Controllers\App\Docs;
 
 use App\ViewModels\Docs\ApiDocsSection;
 use App\ViewModels\Docs\ApiDocsViewModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ApiDocsControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     #[Test]
     public function the_way_in_leads_to_the_page_the_reference_opens_with(): void
     {

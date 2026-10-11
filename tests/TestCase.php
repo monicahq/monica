@@ -33,6 +33,7 @@ use Laravel\Cashier\Subscription;
 use Laravel\Passport\Client;
 use Laravel\Passport\RefreshToken;
 use Laravel\Passport\Token;
+use Laravel\Pennant\Feature;
 use Laravel\Scout\EngineManager;
 use Laravel\Scout\Engines\MeilisearchEngine;
 use Meilisearch\Contracts\TasksQuery;
@@ -60,6 +61,11 @@ abstract class TestCase extends BaseTestCase
         // The test client parses addresses with parse_url, which turns the bytes a UTF-8 locale on macOS
         // calls control characters into underscores and so breaks addresses written in another alphabet.
         setlocale(LC_CTYPE, 'C');
+
+        // The capabilities that ship withdrawn are on for the suite. A test of a gate switches its flag off.
+        foreach (['carddav', 'file-upload', 'sms-notifications', 'vcard-export'] as $flag) {
+            Feature::define($flag, true);
+        }
     }
 
     #[Override]

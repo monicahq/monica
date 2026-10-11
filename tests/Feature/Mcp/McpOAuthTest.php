@@ -7,6 +7,7 @@ namespace Tests\Feature\Mcp;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -54,6 +55,17 @@ class McpOAuthTest extends TestCase
         $response->assertSee('dwight@dundermifflin.com');
         $response->assertSee('claude.ai');
         $response->assertSee('action="'.route('passport.authorizations.approve').'"', false);
+    }
+
+    #[Test]
+    public function it_answers_not_found_when_the_mcp_server_is_switched_off_for_the_person(): void
+    {
+        $pam = User::factory()->create();
+        $clientId = $this->registerClient();
+        $pam->account->features()->deactivate('mcp-server');
+        Feature::flushCache();
+
+        $this->actingAs($pam)->get($this->authorizationUrl($clientId))->assertNotFound();
     }
 
     #[Test]

@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use Laravel\Pennant\Feature;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -186,6 +187,21 @@ class NotificationChannelControllerTest extends TestCase
         Account::factory()->create();
 
         $this->json('GET', route('api.v1.notificationChannels'))->assertJsonCount(4, 'data');
+    }
+
+    #[Test]
+    public function it_leaves_text_messages_out_while_sms_notifications_is_off_for_the_account(): void
+    {
+        $user = $this->signedIn();
+        $user->account->features()->deactivate('sms-notifications');
+        Feature::flushCache();
+
+        $this->json('GET', route('api.v1.notificationChannels'))
+            ->assertOk()
+            ->assertJsonCount(3, 'data')
+            ->assertJsonMissing(['id' => 'sms']);
+
+        $this->json('GET', route('api.v1.notificationChannels.show', 'sms'))->assertNotFound();
     }
 
     private function signedIn(): User

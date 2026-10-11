@@ -76,6 +76,20 @@ class NotificationChannelsViewModel
         ];
     }
 
+    public function smsNotice(): ?string
+    {
+        $sms = NotificationChannel::query()
+            ->where('account_id', $this->user->account_id)
+            ->where('channel', NotificationChannelEnum::Sms->value)
+            ->first();
+
+        if ($sms === null || $sms->isOffered() || $sms->destination === null) {
+            return null;
+        }
+
+        return __('Text messages are unavailable on this account for now. Your number is kept.');
+    }
+
     public function workingCount(): int
     {
         return $this->rows()->filter(fn (NotificationChannel $row): bool => $row->mayCarry())->count();
@@ -91,7 +105,7 @@ class NotificationChannelsViewModel
 
         return collect(NotificationChannelEnum::cases())
             ->map(fn (NotificationChannelEnum $channel): ?NotificationChannel => $rows->get($channel->value))
-            ->filter()
+            ->filter(fn (?NotificationChannel $row): bool => $row?->isOffered() === true)
             ->values();
     }
 

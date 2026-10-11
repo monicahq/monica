@@ -32,6 +32,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -738,6 +739,34 @@ class ContactSectionControllerTest extends TestCase
             )
             ->assertRedirect(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]))
             ->assertSessionHasErrors('fields.'.$documents->id.'.0.values.'.$file->id);
+
+        $this->assertSame(0, File::query()->count());
+    }
+
+    #[Test]
+    public function it_refuses_a_file_and_saves_nothing_while_file_upload_is_off_for_the_account(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        [$documents, $file] = $this->documentsOn($user, $michael);
+        $section = StructureVersionSection::query()->where('section_version_id', $documents->section_version_id)->sole();
+        $user->account->features()->deactivate('file-upload');
+        Feature::flushCache();
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
+                ['fields' => [$documents->id => [
+                    ['values' => [$file->id => UploadedFile::fake()->create('lease.pdf', 8, 'application/pdf')]],
+                ]]],
+            )
+            ->assertRedirect(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]))
+            ->assertSessionHasErrors(['fields.'.$documents->id.'.0.values.'.$file->id => 'Uploads are unavailable on this account for now.']);
 
         $this->assertSame(0, File::query()->count());
     }

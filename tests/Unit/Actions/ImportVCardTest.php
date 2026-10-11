@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\ImportVCard;
+use App\Actions\UpdateContactAvatar;
 use App\Enums\AddressLabelEnum;
 use App\Enums\ContactNameKindEnum;
 use App\Enums\FieldTypeEnum;
@@ -19,6 +20,10 @@ use App\Models\ValueList;
 use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\VObject\Reader;
@@ -407,6 +412,38 @@ class ImportVCardTest extends TestCase
             vault: $this->vault,
             card: 'beets',
         )->execute();
+    }
+
+    #[Test]
+    public function it_leaves_the_avatar_as_it_is_while_file_upload_is_off_for_the_account(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+        Structure::asTheDefaultOf($this->user, $this->vault, []);
+        $photo = UploadedFile::fake()->image('dwight.jpg', 200, 200)->getContent();
+
+        $contact = new ImportVCard(user: $this->user, vault: $this->vault, card: $this->card())->execute();
+        new UpdateContactAvatar(
+            user: $this->user,
+            vault: $this->vault,
+            contact: $contact,
+            upload: UploadedFile::fake()->image('beets.jpg', 200, 200),
+        )->execute();
+        $avatarId = $contact->refresh()->avatar_file_id;
+
+        $this->user->account->features()->deactivate('file-upload');
+        Feature::flushCache();
+
+        new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: $this->cardCarrying('PHOTO:data:image/jpeg;base64,'.base64_encode($photo)."\r\n"),
+            contact: $contact,
+        )->execute();
+        $this->assertSame($avatarId, $contact->refresh()->avatar_file_id);
+
+        new ImportVCard(user: $this->user, vault: $this->vault, card: $this->card(), contact: $contact)->execute();
+        $this->assertSame($avatarId, $contact->refresh()->avatar_file_id);
     }
 
     private function labelOn(StructureVersion $version, int $index, ?string $key, string $label): ValueListItem

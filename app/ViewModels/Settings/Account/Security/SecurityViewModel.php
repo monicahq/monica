@@ -7,6 +7,7 @@ namespace App\ViewModels\Settings\Account\Security;
 use App\Enums\ApiKeyClientEnum;
 use App\Enums\ApiKeyScopeEnum;
 use App\Enums\SsoProviderEnum;
+use App\Helpers\FlagState;
 use App\Helpers\PasskeyAvailability;
 use App\Helpers\PasswordRequirements;
 use App\Helpers\SsoProviderAvailability;
@@ -85,6 +86,25 @@ class SecurityViewModel
             ])
             ->values()
             ->all();
+    }
+
+    public function mcpIsOn(): bool
+    {
+        return FlagState::isOn('mcp-server', $this->user->account);
+    }
+
+    public function assistantsNotice(): ?string
+    {
+        if ($this->mcpIsOn() || $this->connectedAssistants() === []) {
+            return null;
+        }
+
+        return __('The MCP server is unavailable on this account for now. Your connected assistants are kept.');
+    }
+
+    public function davIsOn(): bool
+    {
+        return FlagState::isOn('carddav', $this->user->account);
     }
 
     public function davAddress(): string

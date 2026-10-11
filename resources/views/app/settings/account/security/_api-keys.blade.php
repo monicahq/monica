@@ -24,24 +24,26 @@
     </div>
   @endif
 
-  <div class="flex flex-col gap-2 border-b border-hairline px-4 py-3.5">
-    <p class="text-base font-semibold text-ink">{{ __('Address for a contacts or calendar application') }}</p>
+  @if ($viewModel->davIsOn())
+    <div class="flex flex-col gap-2 border-b border-hairline px-4 py-3.5">
+      <p class="text-base font-semibold text-ink">{{ __('Address for a contacts or calendar application') }}</p>
 
-    <p class="text-sm text-pretty text-muted">{{ __('Add this address to the contacts or calendar application of a phone or a computer, with your email address and one of the keys below as the password. Your account password will not work.') }}</p>
+      <p class="text-sm text-pretty text-muted">{{ __('Add this address to the contacts or calendar application of a phone or a computer, with your email address and one of the keys below as the password. Your account password will not work.') }}</p>
 
-    <a href="{{ route('docs.carddav.index') }}" class="w-fit rounded-xs text-sm text-ink underline decoration-hairline-strong underline-offset-3 hover:decoration-ink focus-ring">{{ __('How to connect your contacts and calendar apps') }}</a>
+      <a href="{{ route('docs.carddav.index') }}" class="w-fit rounded-xs text-sm text-ink underline decoration-hairline-strong underline-offset-3 hover:decoration-ink focus-ring">{{ __('How to connect your contacts and calendar apps') }}</a>
 
-    <x-code-value surface="canvas">{{ $viewModel->davAddress() }}</x-code-value>
+      <x-code-value surface="canvas">{{ $viewModel->davAddress() }}</x-code-value>
 
-    <div class="flex flex-wrap items-center gap-2.5">
-      <x-copy-button
-        variant="secondary"
-        :text="$viewModel->davAddress()"
-        :label="__('Copy the address')"
-        :failure="__('We could not copy it. Select the address and copy it by hand.')"
-      />
+      <div class="flex flex-wrap items-center gap-2.5">
+        <x-copy-button
+          variant="secondary"
+          :text="$viewModel->davAddress()"
+          :label="__('Copy the address')"
+          :failure="__('We could not copy it. Select the address and copy it by hand.')"
+        />
+      </div>
     </div>
-  </div>
+  @endif
 
   <div class="flex w-full items-center gap-3 border-b border-hairline px-4 py-3.5 text-left transition-colors duration-(--duration-fast) ease-out last:border-b-0">
     <div class="min-w-0 flex-1">

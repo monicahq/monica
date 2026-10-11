@@ -9,6 +9,7 @@ use App\Models\Account;
 use App\Models\NotificationChannel;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -105,6 +106,28 @@ class NotificationChannelTest extends TestCase
         $this->assertSame($mine->id, new NotificationChannel()->resolveRouteBinding('telegram')?->id);
         $this->assertNotSame($theirs->id, new NotificationChannel()->resolveRouteBinding('telegram')?->id);
         $this->assertNull(new NotificationChannel()->resolveRouteBinding('carrier-pigeon'));
+    }
+
+    #[Test]
+    public function text_messages_are_neither_offered_nor_carried_while_sms_notifications_is_off_for_the_account(): void
+    {
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+        $sms = $this->row($account, NotificationChannelEnum::Sms);
+        $sms->update(['is_enabled' => true, 'destination' => '+15705550100', 'proven_at' => now()]);
+
+        $this->assertTrue($sms->isOffered());
+        $this->assertTrue($sms->mayCarry());
+
+        $account->features()->deactivate('sms-notifications');
+        Feature::flushCache();
+        $this->actingAs($user);
+
+        $this->assertFalse($sms->isOffered());
+        $this->assertFalse($sms->mayCarry());
+        $this->assertTrue($this->row($account, NotificationChannelEnum::Email)->isOffered());
+        $this->assertNull(new NotificationChannel()->resolveRouteBinding('sms'));
+        $this->assertNotNull(new NotificationChannel()->resolveRouteBinding('email'));
     }
 
     /**

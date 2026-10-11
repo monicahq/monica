@@ -21,30 +21,34 @@
         <x-avatar id="profile-avatar" :user="$viewModel->user()" :size="72" />
 
         <div class="flex min-w-0 flex-1 flex-col gap-3">
-          <p class="text-sm text-pretty text-muted">{{ __('A square photo reads best. JPEG, PNG or WebP, up to 5 MB. Without one you keep your initials on a coloured background.') }}</p>
+          @if ($viewModel->uploadsAreOn())
+            <p class="text-sm text-pretty text-muted">{{ __('A square photo reads best. JPEG, PNG or WebP, up to 5 MB. Without one you keep your initials on a coloured background.') }}</p>
 
-          <x-form
-            method="post"
-            :action="route('settings.photo.update')"
-            :upload="true"
-            id="photo-form"
-            class="flex flex-wrap items-center gap-2.5"
-            x-on:submit="if (tooBig) $event.preventDefault()"
-          >
-            <x-file-input
-              id="photo"
-              accept="image/jpeg,image/png,image/webp"
-              :error="$errors->get('photo')"
-              required
-              class="w-auto"
-              aria-label="{{ __('Choose a photo') }}"
-              x-on:change="tooBig = window.oversizedFiles($event.target.files, 5120).length > 0"
-            />
+            <x-form
+              method="post"
+              :action="route('settings.photo.update')"
+              :upload="true"
+              id="photo-form"
+              class="flex flex-wrap items-center gap-2.5"
+              x-on:submit="if (tooBig) $event.preventDefault()"
+            >
+              <x-file-input
+                id="photo"
+                accept="image/jpeg,image/png,image/webp"
+                :error="$errors->get('photo')"
+                required
+                class="w-auto"
+                aria-label="{{ __('Choose a photo') }}"
+                x-on:change="tooBig = window.oversizedFiles($event.target.files, 5120).length > 0"
+              />
 
-            <x-button size="small">{{ __('Upload') }}</x-button>
-          </x-form>
+              <x-button size="small">{{ __('Upload') }}</x-button>
+            </x-form>
 
-          <p x-show="tooBig" x-cloak x-text="tooBigMessage" class="text-xs text-error"></p>
+            <p x-show="tooBig" x-cloak x-text="tooBigMessage" class="text-xs text-error"></p>
+          @elseif ($viewModel->hasPhoto())
+            <x-notice tone="quiet">{{ __('Uploads are unavailable on this account for now.') }}</x-notice>
+          @endif
 
           @if ($viewModel->hasPhoto())
             <div

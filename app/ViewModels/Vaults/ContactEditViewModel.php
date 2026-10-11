@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Helpers\FlagState;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
@@ -67,6 +68,11 @@ class ContactEditViewModel
         }
 
         return route('files.show', ['vault' => $this->vault, 'file' => $this->contact->avatar]);
+    }
+
+    public function uploadsAreOn(): bool
+    {
+        return FlagState::isOn('file-upload', $this->user->account);
     }
 
     public function updateAvatarUrl(): string

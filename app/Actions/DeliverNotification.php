@@ -47,6 +47,12 @@ class DeliverNotification
             return false;
         }
 
+        if ($this->channelRow()?->isOffered() === false) {
+            $this->abandon(__('This channel is unavailable on this account for now.'));
+
+            return false;
+        }
+
         try {
             $this->hand();
         } catch (Throwable $e) {

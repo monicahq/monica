@@ -61,6 +61,7 @@ return [
     'middleware' => [
         StartSessionInLocalEnvironment::class,
         AuthenticateWithApiKeyOnBasicAuth::class,
+        'flag:carddav',
         SetApiLocale::class,
         'throttle:api',
     ],

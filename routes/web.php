@@ -137,15 +137,19 @@ Route::get('llms.txt', [LlmsTextController::class, 'index'])
     ->name('llmsText.index');
 
 Route::get('docs/mcp', [McpDocsController::class, 'index'])
+    ->middleware(['flag:mcp-server'])
     ->name('docs.mcp.index');
 
 Route::get('docs/mcp.md', [McpDocsMarkdownController::class, 'index'])
+    ->middleware(['flag:mcp-server'])
     ->name('docs.mcp.markdown.index');
 
 Route::get('docs/carddav', [CarddavDocsController::class, 'index'])
+    ->middleware(['flag:carddav'])
     ->name('docs.carddav.index');
 
 Route::get('docs/carddav.md', [CarddavDocsMarkdownController::class, 'index'])
+    ->middleware(['flag:carddav'])
     ->name('docs.carddav.markdown.index');
 
 Route::get('docs/api', [ApiDocsController::class, 'index'])
@@ -252,6 +256,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->name('contacts.name.update');
 
     Route::post('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'update'])
+        ->middleware(['flag:file-upload'])
         ->name('contacts.avatar.update');
 
     Route::delete('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'destroy'])
@@ -364,6 +369,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->whereIn('filter', ['all', 'overdue', 'today', 'upcoming', 'history'])
         ->name('contacts.reminders.index');
     Route::get('vaults/{vault}/contacts/{contact}/vcard', [ContactVCardController::class, 'show'])
+        ->middleware(['flag:vcard-export'])
         ->name('contacts.vcard.show');
 
     Route::get('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'show'])
@@ -589,7 +595,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         Route::delete('settings/account/security/assistants/{client}', [ConnectedAssistantController::class, 'destroy'])->whereUuid('client')->name('settings.connectedAssistants.destroy');
     });
 
-    Route::post('settings/account/profile/photo', [PhotoController::class, 'update'])->name('settings.photo.update');
+    Route::post('settings/account/profile/photo', [PhotoController::class, 'update'])->middleware('flag:file-upload')->name('settings.photo.update');
     Route::delete('settings/account/profile/photo', [PhotoController::class, 'destroy'])->name('settings.photo.destroy');
     Route::get('settings/account/profile/photo/{user}/{size}', [PhotoController::class, 'show'])->whereNumber(['user', 'size'])->name('settings.photo.show');
 });

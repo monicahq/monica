@@ -29,28 +29,32 @@
       <x-contact-avatar :name="$contact->name" :url="$viewModel->avatarUrl()" :size="72" />
 
       <div class="flex min-w-0 flex-1 flex-col gap-3">
-        <x-form
-          method="post"
-          :action="$viewModel->updateAvatarUrl()"
-          :upload="true"
-          id="avatar-form"
-          class="flex flex-wrap items-center gap-2.5"
-          x-on:submit="if (tooBig) $event.preventDefault()"
-        >
-          <x-file-input
-            id="avatar"
-            accept="image/jpeg,image/png,image/webp"
-            :error="$errors->get('avatar')"
-            required
-            class="w-auto"
-            aria-label="{{ __('Choose a photo') }}"
-            x-on:change="tooBig = window.oversizedFiles($event.target.files, 5120).length > 0"
-          />
+        @if ($viewModel->uploadsAreOn())
+          <x-form
+            method="post"
+            :action="$viewModel->updateAvatarUrl()"
+            :upload="true"
+            id="avatar-form"
+            class="flex flex-wrap items-center gap-2.5"
+            x-on:submit="if (tooBig) $event.preventDefault()"
+          >
+            <x-file-input
+              id="avatar"
+              accept="image/jpeg,image/png,image/webp"
+              :error="$errors->get('avatar')"
+              required
+              class="w-auto"
+              aria-label="{{ __('Choose a photo') }}"
+              x-on:change="tooBig = window.oversizedFiles($event.target.files, 5120).length > 0"
+            />
 
-          <x-button size="small">{{ __('Upload') }}</x-button>
-        </x-form>
+            <x-button size="small">{{ __('Upload') }}</x-button>
+          </x-form>
 
-        <p x-show="tooBig" x-cloak x-text="tooBigMessage" class="text-xs text-error"></p>
+          <p x-show="tooBig" x-cloak x-text="tooBigMessage" class="text-xs text-error"></p>
+        @elseif ($viewModel->hasAvatar())
+          <x-notice tone="quiet">{{ __('Uploads are unavailable on this account for now.') }}</x-notice>
+        @endif
 
         @if ($viewModel->hasAvatar())
           <x-modal.warning

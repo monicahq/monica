@@ -49,6 +49,40 @@ The pull request that releases a capability to everybody deletes the class, remo
 it, and runs `php artisan pennant:purge --except-registered` in its deployment notes. A flag left in
 place forever is a second version of the product that nobody tests.
 
+## One exception: a permanent switch
+
+`mcp-server` ships on and never dies. It is the administrator's way to withdraw the MCP server from
+one account or from everybody, not a capability waiting for its release. Its resolver accepts the
+null scope and answers `true` there, which is what makes it ship on:
+
+```php
+public function resolve(?Account $account): bool
+{
+    if ($account === null) {
+        return true;
+    }
+
+    return Feature::for(null)->active(self::class);
+}
+```
+
+A new permanent switch is a decision for the person asking for it, never a default. Every other flag
+dies with its release.
+
+## Absent, and said once
+
+A control behind a flag that is off is absent, not disabled. An account that holds data under the
+withdrawn capability (a phone number for text messages, a connected assistant, an uploaded file) is
+told so in one sentence where the capability lived, and that its data is kept. Nobody else is told
+anything.
+
+## In the tests
+
+`tests/TestCase.php` defines the flags that ship off as on, so the suite exercises the product as it
+will be once released. A test of a gate switches its flag off for its account and calls
+`Feature::flushCache()`. A test of what ships calls `Feature::discover()` first, to undo the
+definitions. A new flag that ships off is added to that list in the same change.
+
 ## Switching
 
 `monica:switch-flag {flag} {on|off} --email=...|--every-account`, or the Flags screen of the admin

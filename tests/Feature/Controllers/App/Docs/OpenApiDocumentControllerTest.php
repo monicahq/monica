@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Docs;
 
 use App\ViewModels\Docs\ApiDocsViewModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class OpenApiDocumentControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     #[Test]
     public function it_hands_the_document_to_a_visitor_who_is_not_signed_in(): void
     {

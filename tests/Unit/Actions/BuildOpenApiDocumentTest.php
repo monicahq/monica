@@ -6,11 +6,15 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\BuildOpenApiDocument;
 use App\ViewModels\Docs\ApiDocsViewModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class BuildOpenApiDocumentTest extends TestCase
 {
+    use RefreshDatabase;
+
     #[Test]
     public function it_declares_the_version_of_the_format_it_follows(): void
     {
@@ -126,6 +130,15 @@ class BuildOpenApiDocumentTest extends TestCase
     }
 
     /** @return list<string> */
+    #[Test]
+    public function it_leaves_out_an_endpoint_switched_off_for_every_account(): void
+    {
+        Feature::for(null)->deactivate('vcard-export');
+        Feature::flushCache();
+
+        $this->assertNotContains('GET /vaults/{vault}/contacts/{contact}/vcard', $this->described());
+    }
+
     private function described(): array
     {
         $described = [];

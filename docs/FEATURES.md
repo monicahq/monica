@@ -72,3 +72,10 @@ A chronological list of every feature and improvement shipped during development
 * Auth: Ticked Remember me by default on the sign in form.
 * Settings/security: Signed out every other device when the password is changed or reset.
 * Fix: Remembered somebody who passed two factor authentication for the instance's duration rather than always 400 days.
+* Admin/flags: Put CardDAV and CalDAV synchronisation behind the carddav flag, off for every account until switched on.
+* Admin/flags: Put the vCard download behind the vcard-export flag, off for every account until switched on.
+* Admin/flags: Put text message notifications behind the sms-notifications flag, off for every account until switched on.
+* Admin/flags: Put every file upload behind the file-upload flag, off for every account until switched on.
+* Admin/flags: Added the mcp-server flag, on for every account, so the administrator can withdraw the MCP server.
+* Settings: Told an account holding a phone number, a connected assistant or an uploaded file when its capability is withdrawn, and that its data is kept.
+* Docs: Left the CardDAV, MCP and vCard documentation out while the capability is switched off for every account.

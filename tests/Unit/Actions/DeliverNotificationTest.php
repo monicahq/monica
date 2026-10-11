@@ -19,6 +19,7 @@ use Carbon\CarbonImmutable;
 use Database\Factories\NotificationFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
 use Tests\TestCase;
@@ -238,6 +239,26 @@ class DeliverNotificationTest extends TestCase
 
         $this->assertNotNull($notification->failed_at);
         $this->assertSame(1, $notification->attempts);
+        NotificationFacade::assertNothingSent();
+    }
+
+    #[Test]
+    public function it_abandons_a_text_message_queued_before_sms_notifications_was_switched_off_without_blaming_the_channel(): void
+    {
+        NotificationFacade::fake();
+        $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Sms])->create();
+        $row = $this->switchOn($notification, NotificationChannelEnum::Sms);
+        $notification->account->features()->deactivate('sms-notifications');
+        Feature::flushCache();
+
+        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+
+        $row->refresh();
+
+        $this->assertNotNull($notification->refresh()->failed_at);
+        $this->assertSame(0, $row->consecutive_failures);
+        $this->assertTrue($row->is_enabled);
+        $this->assertNull($row->disabled_reason);
         NotificationFacade::assertNothingSent();
     }
 

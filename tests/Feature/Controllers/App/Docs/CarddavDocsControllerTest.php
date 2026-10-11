@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Docs;
 
 use App\ViewModels\Docs\CarddavDocsViewModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class CarddavDocsControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     #[Test]
     public function it_offers_a_public_guide_and_markdown_with_the_instance_connection_details(): void
     {
@@ -52,5 +56,20 @@ class CarddavDocsControllerTest extends TestCase
 
         $markdown->assertDontSee('What a device needs');
         $markdown->assertSee('# Get your profile', false);
+    }
+
+    #[Test]
+    public function it_answers_a_visitor_only_while_the_flag_is_on_for_every_account(): void
+    {
+        Feature::for(null)->deactivate('carddav');
+        Feature::flushCache();
+
+        $this->get('/docs/carddav')->assertNotFound();
+        $this->get('/docs/carddav.md')->assertNotFound();
+
+        Feature::for(null)->activate('carddav');
+        Feature::flushCache();
+
+        $this->get('/docs/carddav')->assertOk();
     }
 }

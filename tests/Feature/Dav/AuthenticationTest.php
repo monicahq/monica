@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Testing\TestResponse;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -168,6 +169,44 @@ class AuthenticationTest extends TestCase
         $response = $this->davOnTheSessionOf($user);
 
         $response->assertStatus(401);
+    }
+
+    #[Test]
+    public function it_withdraws_the_address_books_and_the_calendar_while_carddav_is_off_for_the_account(): void
+    {
+        $jim = User::factory()->create();
+        $key = $jim->createToken('Jim’s phone')->plainTextToken;
+        $jim->account->features()->deactivate('carddav');
+        Feature::flushCache();
+
+        $this->dav('PROPFIND', 'dav/', $jim->email, $key)->assertNotFound();
+        $this->dav('PROPFIND', 'dav/addressbooks/'.$jim->email.'/', $jim->email, $key, depth: '1')->assertNotFound();
+        $this->dav('PROPFIND', 'dav/calendars/'.$jim->email.'/', $jim->email, $key, depth: '1')->assertNotFound();
+    }
+
+    #[Test]
+    public function it_still_challenges_a_device_with_no_credential_while_carddav_is_off_for_every_account(): void
+    {
+        Feature::for(null)->deactivate('carddav');
+        Feature::flushCache();
+
+        $response = $this->call('PROPFIND', 'dav/');
+
+        $response->assertStatus(401);
+    }
+
+    #[Test]
+    public function it_answers_an_account_switched_on_while_another_is_switched_off(): void
+    {
+        $jim = User::factory()->create();
+        $dwight = User::factory()->create();
+        $key = $jim->createToken('Jim’s phone')->plainTextToken;
+        $dwight->account->features()->deactivate('carddav');
+        Feature::flushCache();
+
+        $response = $this->dav('PROPFIND', 'dav/', $jim->email, $key);
+
+        $response->assertStatus(207);
     }
 
     private function davOnTheSessionOf(User $user): TestResponse

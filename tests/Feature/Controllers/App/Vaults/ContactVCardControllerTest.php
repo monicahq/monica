@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Fixtures\Dav\Structure;
 use Tests\TestCase;
@@ -81,6 +82,19 @@ class ContactVCardControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('contacts.vcard.show', ['vault' => $otherVault, 'contact' => $contact]))
             ->assertStatus(404);
+    }
+
+    #[Test]
+    public function it_answers_not_found_while_vcard_export_is_off_for_the_account(): void
+    {
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $user->account->features()->deactivate('vcard-export');
+        Feature::flushCache();
+
+        $this->actingAs($user)
+            ->get(route('contacts.vcard.show', ['vault' => $contact->vault, 'contact' => $contact]))
+            ->assertNotFound();
     }
 
     private function contactOf(User $user): Contact

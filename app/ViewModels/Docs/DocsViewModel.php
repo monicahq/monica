@@ -4,14 +4,21 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Docs;
 
+use App\Helpers\FlagState;
+use App\Models\Account;
+
 class DocsViewModel
 {
+    public function __construct(
+        private readonly ?Account $account = null,
+    ) {}
+
     /**
      * @return list<array{icon: string, kind: string, title: string, description: string, url: ?string, hue: int}>
      */
     public function areas(): array
     {
-        return [
+        $areas = [
             [
                 'icon' => 'journal',
                 'kind' => __('Guide'),
@@ -28,23 +35,41 @@ class DocsViewModel
                 'url' => route('docs.api.index'),
                 'hue' => 295,
             ],
-            [
+        ];
+
+        if ($this->mcpIsOn()) {
+            $areas[] = [
                 'icon' => 'layers',
                 'kind' => __('Reference'),
                 'title' => __('MCP'),
                 'description' => __('Point an assistant at your instance so it can read your directory and record people in it, with the access you have.'),
                 'url' => route('docs.mcp.index'),
                 'hue' => 190,
-            ],
-            [
+            ];
+        }
+
+        if ($this->carddavIsOn()) {
+            $areas[] = [
                 'icon' => 'device',
                 'kind' => __('Guide'),
                 'title' => __('CardDAV and CalDAV'),
                 'description' => __('Keep the contacts and calendar apps on your phone and computer in step with Monica.'),
                 'url' => route('docs.carddav.index'),
                 'hue' => 20,
-            ],
-        ];
+            ];
+        }
+
+        return $areas;
+    }
+
+    public function mcpIsOn(): bool
+    {
+        return FlagState::isOn('mcp-server', $this->account);
+    }
+
+    public function carddavIsOn(): bool
+    {
+        return FlagState::isOn('carddav', $this->account);
     }
 
     public function llmsText(): string
@@ -63,14 +88,19 @@ class DocsViewModel
             $lines[] = "- [{$section->title}](".route('docs.api.markdown.show', ['section' => $section->id]).')';
         }
 
-        $lines[] = '';
-        $lines[] = '## MCP';
-        $lines[] = '';
-        $lines[] = '- [MCP]('.route('docs.mcp.markdown.index').'): connect an assistant to Monica';
-        $lines[] = '';
-        $lines[] = '## CardDAV and CalDAV';
-        $lines[] = '';
-        $lines[] = '- [Sync your contacts and calendars]('.route('docs.carddav.markdown.index').'): connect a device, understand what syncs, and manage access';
+        if ($this->mcpIsOn()) {
+            $lines[] = '';
+            $lines[] = '## MCP';
+            $lines[] = '';
+            $lines[] = '- [MCP]('.route('docs.mcp.markdown.index').'): connect an assistant to Monica';
+        }
+
+        if ($this->carddavIsOn()) {
+            $lines[] = '';
+            $lines[] = '## CardDAV and CalDAV';
+            $lines[] = '';
+            $lines[] = '- [Sync your contacts and calendars]('.route('docs.carddav.markdown.index').'): connect a device, understand what syncs, and manage access';
+        }
 
         return implode("\n", $lines)."\n";
     }

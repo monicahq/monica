@@ -10,6 +10,7 @@ use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\FieldValueFormatter;
+use App\Helpers\FlagState;
 use App\Models\Contact;
 use App\Models\ContactMerge;
 use App\Models\Field;
@@ -157,8 +158,12 @@ class ContactViewModel
         return route('contacts.merge.new', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
-    public function vCardUrl(): string
+    public function vCardUrl(): ?string
     {
+        if (! FlagState::isOn('vcard-export', $this->user->account)) {
+            return null;
+        }
+
         return route('contacts.vcard.show', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 

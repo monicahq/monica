@@ -20,7 +20,9 @@ class NotificationChannelController extends Controller
         $channels = NotificationChannel::query()
             ->where('account_id', $request->user()->account_id)
             ->orderBy('id')
-            ->get();
+            ->get()
+            ->filter(fn (NotificationChannel $channel): bool => $channel->isOffered())
+            ->values();
 
         return response()->json([
             'data' => NotificationChannelResource::collection($channels)->resolve(),

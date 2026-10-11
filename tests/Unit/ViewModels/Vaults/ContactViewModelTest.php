@@ -32,6 +32,7 @@ use App\ViewModels\Vaults\FamilyTreeBlock;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -56,6 +57,24 @@ class ContactViewModelTest extends TestCase
         $this->assertSame('Health', $pages[1]['label']);
         $this->assertSame(2, $pages[1]['count']);
         $this->assertFalse($pages[1]['isSelected']);
+    }
+
+    #[Test]
+    public function it_offers_the_vcard_only_while_vcard_export_is_on_for_the_account(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $this->assertSame(
+            route('contacts.vcard.show', ['vault' => $vault, 'contact' => $contact]),
+            new ContactViewModel(user: $user, vault: $vault, contact: $contact)->vCardUrl(),
+        );
+
+        $user->account->features()->deactivate('vcard-export');
+        Feature::flushCache();
+
+        $this->assertNull(new ContactViewModel(user: $user, vault: $vault, contact: $contact)->vCardUrl());
     }
 
     #[Test]

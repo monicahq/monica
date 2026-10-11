@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\ContactNameKindEnum;
+use App\Helpers\FlagState;
 use App\Http\Dav\OwnedFields;
 use App\Http\Dav\VCardMerger;
 use App\Http\Dav\VCardReader;
@@ -412,6 +413,10 @@ class ImportVCard
 
     private function writeThePhoto(VCardReader $reader, Contact $contact): void
     {
+        if (! FlagState::isOn('file-upload', $this->user->account)) {
+            return;
+        }
+
         $sent = $reader->photo();
         $avatar = $contact->avatar;
 

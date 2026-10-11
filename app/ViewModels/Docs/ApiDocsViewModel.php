@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Docs;
 
+use App\Helpers\FlagState;
 use Illuminate\Support\Facades\Route;
 
 class ApiDocsViewModel
@@ -14,6 +15,21 @@ class ApiDocsViewModel
     public static function baseUrl(): string
     {
         return rtrim((string) config('app.url'), '/').'/api/v1';
+    }
+
+    /**
+     * The sections a visitor may read: one naming a flag is described only while the flag is on for
+     * every account, since the reference is public.
+     *
+     * @param  list<array<string, mixed>>  $sections
+     * @return list<array<string, mixed>>
+     */
+    public static function offeredToEveryAccount(array $sections): array
+    {
+        return array_values(array_filter(
+            $sections,
+            fn (array $section): bool => ! isset($section['flag']) || FlagState::isOn($section['flag'], null),
+        ));
     }
 
     /** @return list<array{name: string, guide: bool, sections: list<ApiDocsSection>}> */
@@ -34,7 +50,7 @@ class ApiDocsViewModel
                 'guide' => $group['guide'] ?? false,
                 'sections' => array_map(
                     fn (array $section): ApiDocsSection => new ApiDocsSection($section),
-                    $group['sections'],
+                    self::offeredToEveryAccount($group['sections']),
                 ),
             ];
         }, $files);

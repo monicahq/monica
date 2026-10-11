@@ -8,6 +8,7 @@ use App\Enums\SsoProviderEnum;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Security\SecurityViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -166,6 +167,34 @@ class SecurityViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_tells_only_an_account_with_an_assistant_that_the_mcp_server_is_unavailable(): void
+    {
+        $pam = User::factory()->create();
+        $dwight = User::factory()->create();
+        $this->oauthTokenFor(user: $pam);
+        $pam->account->features()->deactivate('mcp-server');
+        $dwight->account->features()->deactivate('mcp-server');
+        Feature::flushCache();
+
+        $this->assertFalse(new SecurityViewModel(user: $pam)->mcpIsOn());
+        $this->assertSame(
+            'The MCP server is unavailable on this account for now. Your connected assistants are kept.',
+            new SecurityViewModel(user: $pam)->assistantsNotice(),
+        );
+        $this->assertNull(new SecurityViewModel(user: $dwight)->assistantsNotice());
+    }
+
+    #[Test]
+    public function it_says_nothing_about_the_mcp_server_while_it_is_on(): void
+    {
+        $pam = User::factory()->create();
+        $this->oauthTokenFor(user: $pam);
+
+        $this->assertTrue(new SecurityViewModel(user: $pam)->mcpIsOn());
+        $this->assertNull(new SecurityViewModel(user: $pam)->assistantsNotice());
+    }
+
+    #[Test]
     public function it_names_the_provider_that_signs_the_user_in(): void
     {
         $this->offer('github');
@@ -247,6 +276,18 @@ class SecurityViewModelTest extends TestCase
         $viewModel = new SecurityViewModel(user: $user);
 
         $this->assertEquals(route('sabre.dav', ['path' => ''], absolute: true), $viewModel->davAddress());
+    }
+
+    #[Test]
+    public function it_offers_the_address_only_while_carddav_is_on_for_the_account(): void
+    {
+        $jim = User::factory()->create();
+        $dwight = User::factory()->create();
+        $dwight->account->features()->deactivate('carddav');
+        Feature::flushCache();
+
+        $this->assertTrue(new SecurityViewModel(user: $jim)->davIsOn());
+        $this->assertFalse(new SecurityViewModel(user: $dwight)->davIsOn());
     }
 
     #[Test]

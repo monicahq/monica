@@ -66,6 +66,16 @@ trait ResolvesModelInAccount
     }
 
     /**
+     * Whether a record found in the account may be reached through an address
+     * at all. A model withdrawing some of its records from every route, while
+     * keeping them, says so here.
+     */
+    protected function isReachableThroughAnAddress(): bool
+    {
+        return true;
+    }
+
+    /**
      * Find one record of the account by the column named.
      *
      * Nobody signed in means no account to look in, and a query with no account
@@ -85,9 +95,15 @@ trait ResolvesModelInAccount
             return null;
         }
 
-        return $this->query()
+        $record = $this->query()
             ->where($field, $value)
             ->where('account_id', $accountId)
             ->first();
+
+        if ($record === null || ! $record->isReachableThroughAnAddress()) {
+            return null;
+        }
+
+        return $record;
     }
 }

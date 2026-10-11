@@ -23,6 +23,10 @@
         </x-notice>
       @endif
 
+      @if ($viewModel->smsNotice() !== null)
+        <x-notice tone="quiet">{{ $viewModel->smsNotice() }}</x-notice>
+      @endif
+
       @foreach ($channels as $channel)
         @if ($channel['is_configured_on_the_instance'])
           @include('app.settings.account.notifications._channel', ['channel' => $channel, 'working' => $working])

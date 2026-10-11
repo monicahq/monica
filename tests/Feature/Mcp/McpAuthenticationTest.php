@@ -6,6 +6,7 @@ namespace Tests\Feature\Mcp;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -65,6 +66,23 @@ class McpAuthenticationTest extends TestCase
         $response = $this->withToken($key->plainTextToken)->postJson('/mcp', $this->listTools());
 
         $response->assertOk();
+    }
+
+    #[Test]
+    public function it_answers_not_found_to_an_account_the_mcp_server_is_switched_off_for(): void
+    {
+        $pam = User::factory()->create();
+        $dwight = User::factory()->create();
+        $pamsKey = $pam->createToken('Pam’s assistant')->plainTextToken;
+        $dwightsKey = $dwight->createToken('Dwight’s assistant')->plainTextToken;
+        $pam->account->features()->deactivate('mcp-server');
+        Feature::flushCache();
+
+        $this->withToken($pamsKey)->postJson('/mcp', $this->listTools())->assertNotFound();
+
+        $this->app['auth']->forgetGuards();
+
+        $this->withToken($dwightsKey)->postJson('/mcp', $this->listTools())->assertOk();
     }
 
     /** @return array<string, mixed> */

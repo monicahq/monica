@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -58,6 +59,32 @@ class PhotoControllerTest extends TestCase
 
         $response->assertRedirect(route('settings.profile.index'));
         $response->assertSessionHas('status', 'Your photo is removed.');
+
+        $this->assertFalse($user->refresh()->hasPhoto());
+    }
+
+    #[Test]
+    public function it_refuses_an_upload_but_still_removes_a_photo_while_file_upload_is_off(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+
+        new UpdateUserPhoto(
+            user: $user,
+            file: UploadedFile::fake()->image('pam.jpg', 400, 400),
+        )->execute();
+
+        $user->account->features()->deactivate('file-upload');
+        Feature::flushCache();
+
+        $this->actingAs($user->fresh())->post(route('settings.photo.update'), [
+            'photo' => UploadedFile::fake()->image('dwight.jpg', 400, 400),
+        ])->assertNotFound();
+
+        $this->actingAs($user->fresh())->delete(route('settings.photo.destroy'))
+            ->assertRedirect(route('settings.profile.index'));
 
         $this->assertFalse($user->refresh()->hasPhoto());
     }

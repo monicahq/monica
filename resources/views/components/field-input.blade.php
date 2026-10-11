@@ -36,6 +36,7 @@
   use App\Enums\FieldTypeEnum;
   use App\Enums\ValueListEnum;
   use App\Helpers\FieldValueFormatter;
+  use App\Helpers\FlagState;
   use App\Models\ValueList;
 
   $name ??= "fields[{$field->id}]";
@@ -43,6 +44,7 @@
   $yearName ??= "year_is_unknown[{$field->id}]";
   $reminderName ??= "reminders[{$field->id}]";
   $type = $field->type;
+  $uploadsAreOn = ! $type->holdsAFile() || FlagState::isOn('file-upload', $vault?->account ?? auth()->user()?->account);
 
   $items = ($type->usesValueList() || $type->usesALabelList()) && $field->valueList
       ? $field->valueList->items->where('is_active', true)->sortBy('position')->values()
@@ -102,6 +104,24 @@
       :chosen-name="$related?->name"
       :error="$error"
     />
+    @break
+
+  @case($type->holdsAFile() && ! $uploadsAreOn)
+    <div class="flex flex-col gap-1.5">
+      <p class="text-label text-ink">{{ $field->label }}</p>
+
+      @if ($value?->file !== null)
+        <p class="text-xs text-pretty text-muted">
+          {{ __('Holding :name.', ['name' => $value->file->original_name]) }}
+        </p>
+      @endif
+
+      @if ($value?->file !== null || $field->is_required)
+        <x-notice tone="quiet">{{ __('Uploads are unavailable on this account for now.') }}</x-notice>
+      @endif
+
+      <x-error :id="$error ? $id.'-error' : null" :messages="$error" />
+    </div>
     @break
 
   @case($type->holdsAFile())

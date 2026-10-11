@@ -7,11 +7,15 @@ namespace Tests\Unit\ViewModels\Docs;
 use App\ViewModels\Docs\ApiDocsCodeSamples;
 use App\ViewModels\Docs\ApiDocsSection;
 use App\ViewModels\Docs\ApiDocsViewModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ApiDocsViewModelTest extends TestCase
 {
+    use RefreshDatabase;
+
     #[Test]
     public function it_documents_every_registered_route(): void
     {
@@ -90,6 +94,17 @@ class ApiDocsViewModelTest extends TestCase
         $this->assertInstanceOf(ApiDocsSection::class, $section);
         $this->assertEquals('GET', $section->method);
         $this->assertEquals('/me', $section->path);
+    }
+
+    #[Test]
+    public function it_leaves_out_an_endpoint_switched_off_for_every_account(): void
+    {
+        $this->assertNotNull(new ApiDocsViewModel()->section('contacts-vcard'));
+
+        Feature::for(null)->deactivate('vcard-export');
+        Feature::flushCache();
+
+        $this->assertNull(new ApiDocsViewModel()->section('contacts-vcard'));
     }
 
     #[Test]
