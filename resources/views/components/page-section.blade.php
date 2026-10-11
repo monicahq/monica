@@ -15,9 +15,9 @@
 <section {{ $attributes->class(['flex flex-col gap-3']) }}>
   @if ($title)
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-0.5">
-      <h2 @class(['shrink-0 text-section-title text-ink', 'flex items-center gap-2' => $icon])>
+      <h2 @class(['shrink-0 text-section-title text-ink', 'flex items-baseline gap-2' => $icon])>
         @if ($icon)
-          <x-icon :name="$icon" :size="17" :stroke-width="1.6" class="text-muted" />
+          <x-icon :name="$icon" :size="17" :stroke-width="1.6" class="self-center text-muted" />
         @endif
 
         {{ $title }}
