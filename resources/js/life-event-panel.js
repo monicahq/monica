@@ -1,8 +1,10 @@
 export default (projection) => ({
+    view: 'timeline',
     open: projection.open,
     step: projection.step,
     category: projection.category,
     type: projection.type,
+    subject: projection.subject,
     people: projection.people,
     openPieces: projection.openPieces,
     date: projection.date,
@@ -28,6 +30,7 @@ export default (projection) => ({
 
     query: '',
     personQuery: '',
+    subjectQuery: '',
     adding: false,
     changing: false,
     dropNote: '',
@@ -130,7 +133,29 @@ export default (projection) => ({
         return this.people.some((person) => person.id === id);
     },
 
+    changeSubject() {
+        this.step = 'who';
+        this.subjectQuery = '';
+        this.searchSubjects();
+        this.focusOn('life-event-subject-search');
+    },
+
+    searchSubjects() {
+        const parameters = new URLSearchParams({ query: this.subjectQuery, list: 'life-event-subjects' });
+
+        this.$ajax(`${this.candidatesUrl}?${parameters}`, { target: 'life-event-subjects' });
+    },
+
     choose(id, name) {
+        if (this.step === 'who') {
+            this.subject = { id, name };
+            this.remove(id);
+            this.step = 'pick';
+            this.focusOn('life-event-type-search');
+
+            return;
+        }
+
         if (!this.isChosen(id)) {
             this.people.push({ id, name });
         }
@@ -151,6 +176,7 @@ export default (projection) => ({
     searchPeople() {
         const parameters = new URLSearchParams({ query: this.personQuery });
 
+        parameters.append('except[]', this.subject.id);
         this.people.forEach((person) => parameters.append('except[]', person.id));
 
         this.$ajax(`${this.candidatesUrl}?${parameters}`, { target: 'life-event-candidates' });
@@ -168,11 +194,13 @@ export default (projection) => ({
         this.open = false;
         this.step = 'pick';
         this.type = null;
+        this.subject = projection.subject;
         this.people = [];
         this.openPieces = [];
         this.date = projection.today;
         this.query = '';
         this.personQuery = '';
+        this.subjectQuery = '';
         this.adding = false;
         this.changing = false;
         this.dropNote = '';

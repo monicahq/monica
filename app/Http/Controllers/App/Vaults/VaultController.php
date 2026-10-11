@@ -44,6 +44,7 @@ class VaultController extends Controller
             'viewModel' => new VaultDashboardViewModel(
                 user: $request->user(),
                 vault: $vault,
+                lifeEventJustAddedId: $request->session()->get('lifeEventJustAdded'),
             ),
         ]);
     }

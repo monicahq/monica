@@ -121,6 +121,8 @@ use App\Http\Controllers\App\Vaults\SearchController;
 use App\Http\Controllers\App\Vaults\SetAsideValueController;
 use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
+use App\Http\Controllers\App\Vaults\VaultLifeEventCandidateController;
+use App\Http\Controllers\App\Vaults\VaultLifeEventController;
 use App\Http\Controllers\App\Vaults\VaultReminderController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
 use App\Http\Controllers\App\WelcomeController;
@@ -222,6 +224,10 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('vaults/{vault}', [VaultController::class, 'show'])->name('vaults.show');
     Route::put('vaults/{vault}', [VaultController::class, 'update'])->name('vaults.update');
     Route::delete('vaults/{vault}', [VaultController::class, 'destroy'])->name('vaults.destroy');
+
+    Route::get('vaults/{vault}/life-events/new', [VaultLifeEventController::class, 'new'])->name('vaults.lifeEvents.new');
+    Route::post('vaults/{vault}/life-events', [VaultLifeEventController::class, 'create'])->name('vaults.lifeEvents.create');
+    Route::get('vaults/{vault}/life-events/candidates', [VaultLifeEventCandidateController::class, 'index'])->name('vaults.lifeEventCandidates.index');
 
     Route::get('vaults/{vault}/files/{file}', [FileController::class, 'show'])
         ->whereUuid('file')

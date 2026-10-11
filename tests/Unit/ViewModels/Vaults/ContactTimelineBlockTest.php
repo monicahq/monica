@@ -244,6 +244,37 @@ class ContactTimelineBlockTest extends TestCase
         $this->assertEquals('07-03', $this->block($user, $vault, $jim)->years()[0]['entries'][0]['date']);
     }
 
+    #[Test]
+    public function it_links_every_entry_to_the_contact_page_when_read_only(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+        $lifeEvent = $this->lifeEventWith($jim, '2026-07-03', 'Moved to a house near the office');
+
+        $block = new ContactTimelineBlock(user: $user, vault: $vault, contact: $jim, isReadOnly: true);
+
+        $this->assertTrue($block->isReadOnly());
+        $this->assertEquals(
+            route('contacts.lifeEvents.edit', ['vault' => $vault, 'contact' => $jim, 'lifeEvent' => $lifeEvent]),
+            $block->years()[0]['entries'][0]['editUrl'],
+        );
+    }
+
+    #[Test]
+    public function it_lists_as_many_entries_as_asked_and_no_further_page_when_read_only(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+
+        for ($day = 1; $day <= 12; $day++) {
+            $this->lifeEventWith($jim, sprintf('2026-07-%02d', $day), "Day {$day}");
+        }
+
+        $block = new ContactTimelineBlock(user: $user, vault: $vault, contact: $jim, perPage: 10, isReadOnly: true);
+
+        $this->assertCount(10, $block->years()[0]['entries']);
+        $this->assertSame('Day 12', $block->years()[0]['entries'][0]['title']);
+        $this->assertNull($block->nextPageUrl());
+    }
+
     /** @return array{0: User, 1: Vault, 2: Contact} */
     private function jim(): array
     {

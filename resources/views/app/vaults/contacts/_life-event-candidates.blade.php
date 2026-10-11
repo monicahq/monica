@@ -1,6 +1,9 @@
 {{-- The people of the vault who could be added to a life event, narrowed as somebody types. --}}
-{{-- @var array<int, array{id: int, name: string}> $candidates --}}
-<div id="life-event-candidates" x-merge="replace" aria-live="polite" class="dim-when-busy max-h-70 overflow-y-auto overscroll-contain rounded-lg border border-hairline bg-canvas shadow-pop">
+{{--
+  @var array<int, array{id: int, name: string}> $candidates
+  @var string $listId
+--}}
+<div id="{{ $listId }}" x-merge="replace" aria-live="polite" class="dim-when-busy max-h-70 overflow-y-auto overscroll-contain rounded-lg border border-hairline bg-canvas shadow-pop">
   @forelse ($candidates as $candidate)
     <button
       type="button"

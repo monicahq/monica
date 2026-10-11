@@ -7,12 +7,17 @@
 @endphp
 
 <div id="life-event-panel" x-show="open" x-cloak class="rounded-lg border border-hairline bg-canvas shadow-panel">
-  <x-form :method="$form->method()" :action="$form->action()" upload x-target="contact-timeline">
+  <x-form :method="$form->method()" :action="$form->action()" upload x-target="contact-timeline" x-on:keydown.escape="cancel($el)">
     <input type="hidden" name="life_event_type_id" x-bind:value="type ? type.id : ''" />
+
+    @if ($form->choosesSubject())
+      <input type="hidden" name="contact_id" x-bind:value="subject.id" />
+    @endif
 
     <div class="flex flex-wrap items-center gap-3 border-b border-hairline p-5">
       <div class="flex min-w-0 flex-col">
         <h3 class="text-card-title text-ink">{{ $form->title() }}</h3>
+        <p class="text-xs text-muted" x-show="step === 'who'" x-cloak>{{ $form->captions()['who'] }}</p>
         <p class="text-xs text-muted" x-show="step === 'pick'">{{ $form->captions()['pick'] }}</p>
         <p class="text-xs text-muted" x-show="step === 'details'" x-cloak>{{ $form->captions()['details'] }}</p>
       </div>
@@ -35,7 +40,41 @@
       </button>
     </div>
 
+    @if ($form->choosesSubject())
+      <div x-show="step === 'who'" x-cloak>
+        <div class="flex flex-col gap-3 p-5">
+          <div class="max-w-90">
+            <x-input
+              type="search"
+              id="life-event-subject-search"
+              size="small"
+              :placeholder="__('Search the people in this vault')"
+              aria-label="{{ __('Search the people in this vault') }}"
+              x-model="subjectQuery"
+              x-on:input.debounce.400ms="searchSubjects()"
+              x-on:keydown.enter.prevent="searchSubjects()"
+              autocomplete="off"
+            />
+          </div>
+
+          <div id="life-event-subjects" x-merge="replace" aria-live="polite" class="dim-when-busy"></div>
+        </div>
+
+        <p class="border-t border-hairline p-5 text-sm text-body">
+          {{ __('Not in this vault yet?') }}
+          <x-link :href="route('contacts.new', $form->vault())" :turbo="true">{{ __('Add somebody first.') }}</x-link>
+        </p>
+      </div>
+    @endif
+
     <div x-show="step === 'pick'">
+      @if ($form->choosesSubject())
+        <p class="flex flex-wrap items-center gap-x-2 gap-y-1 border-b border-hairline px-5 py-2.5 text-sm text-body">
+          <span>{!! __('For :name', ['name' => '<strong class="font-medium text-ink" x-text="subject.name">'.e($form->contactName()).'</strong>']) !!}</span>
+          <button type="button" x-on:click="changeSubject()" class="focus-ring rounded-sm font-medium text-link underline decoration-hairline-strong underline-offset-2 hover:decoration-ink">{{ __('Change') }}</button>
+        </p>
+      @endif
+
       <div x-show="changing" x-cloak class="flex items-start gap-2.5 border-b border-hairline p-5 text-sm text-body">
         <span class="pt-0.5 text-muted" aria-hidden="true"><x-icon name="info" :size="15" /></span>
         <p><span x-text="copy.keep"></span> <span x-text="dropNote"></span></p>
@@ -165,10 +204,14 @@
             <span class="text-label text-ink">{{ __('Who was there') }}</span>
 
             <div class="flex flex-wrap items-center gap-2">
-              <span class="inline-flex h-8 items-center gap-1.5 rounded-full border border-hairline bg-canvas pr-3 pl-1 text-sm font-medium text-body">
-                <x-contact-avatar :name="$form->contactName()" :size="24" />
-                {{ $form->contactName() }}
-              </span>
+              @if ($form->choosesSubject())
+                <span class="inline-flex h-8 items-center rounded-full border border-hairline bg-canvas px-3 text-sm font-medium text-body" x-text="subject.name">{{ $form->contactName() }}</span>
+              @else
+                <span class="inline-flex h-8 items-center gap-1.5 rounded-full border border-hairline bg-canvas pr-3 pl-1 text-sm font-medium text-body">
+                  <x-contact-avatar :name="$form->contactName()" :size="24" />
+                  {{ $form->contactName() }}
+                </span>
+              @endif
 
               <template x-for="person in people" x-bind:key="person.id">
                 <span class="inline-flex h-8 items-center gap-1.5 rounded-full border border-hairline bg-canvas pr-1 pl-3 text-sm font-medium text-body">

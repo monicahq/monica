@@ -32,7 +32,18 @@ class ContactTimelineBlock
         private readonly ?int $justAddedId = null,
         private readonly ?int $editingId = null,
         private readonly ?int $editedId = null,
+        private readonly int $perPage = self::PER_PAGE,
+        private readonly bool $isReadOnly = false,
     ) {}
+
+    /**
+     * Whether the timeline is shown away from the contact's page, as on the
+     * vault dashboard, where it is only read and leads to the page for more.
+     */
+    public function isReadOnly(): bool
+    {
+        return $this->isReadOnly;
+    }
 
     /** @return array<int, array{year: int, countLabel: string, showsHeading: bool, entries: array<int, array{id: int, icon: string, tint: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string, deleteLine: string}>}> */
     public function years(): array
@@ -75,6 +86,10 @@ class ContactTimelineBlock
 
     public function nextPageUrl(): ?string
     {
+        if ($this->isReadOnly) {
+            return null;
+        }
+
         return $this->paginator()->nextPageUrl();
     }
 
@@ -102,7 +117,7 @@ class ContactTimelineBlock
             ])
             ->orderByDesc('happened_on')
             ->orderByDesc('id')
-            ->simplePaginate(self::PER_PAGE, ['*'], 'timelinePage', $this->page));
+            ->simplePaginate($this->perPage, ['*'], 'timelinePage', $this->page));
     }
 
     /** @return Builder<LifeEvent> */
@@ -138,7 +153,7 @@ class ContactTimelineBlock
         return $this->query()
             ->orderByDesc('happened_on')
             ->orderByDesc('id')
-            ->skip(($this->page - 1) * self::PER_PAGE - 1)
+            ->skip(($this->page - 1) * $this->perPage - 1)
             ->first()
             ?->happened_on->year;
     }

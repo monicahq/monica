@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
+use App\Enums\DateFormatEnum;
 use App\Models\Contact;
 use App\Models\ContactNameRepresentation;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\LifeEventType;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -60,5 +62,22 @@ class LifeEventTest extends TestCase
         $this->assertStringContainsString('The condo', (string) $document['body']);
         $this->assertSame('Jan Levinson', $document['linked_names']);
         $this->assertSame([['name' => 'Jan Levinson', 'label' => 'With Jan Levinson']], $dinner->searchableLinkedNames());
+    }
+
+    #[Test]
+    public function it_words_the_confirmation_for_the_reader(): void
+    {
+        $promotion = LifeEvent::factory()->create(['title' => null, 'happened_on' => '2026-10-11']);
+        LifeEventType::query()->whereKey($promotion->life_event_type_id)->update(['name' => 'Promotion']);
+        $michael = Contact::factory()->create(['account_id' => $promotion->account_id, 'vault_id' => $promotion->vault_id, 'first_name' => 'Michael']);
+        $dwight = Contact::factory()->create(['account_id' => $promotion->account_id, 'vault_id' => $promotion->vault_id, 'first_name' => 'Dwight']);
+        LifeEventParticipant::factory()->create(['account_id' => $promotion->account_id, 'life_event_id' => $promotion->id, 'participant_type' => Contact::class, 'participant_id' => $michael->id, 'position' => 0]);
+        LifeEventParticipant::factory()->create(['account_id' => $promotion->account_id, 'life_event_id' => $promotion->id, 'participant_type' => Contact::class, 'participant_id' => $dwight->id, 'position' => 1]);
+        $reader = User::factory()->create(['date_format' => DateFormatEnum::YearFirst]);
+
+        $this->assertSame(
+            ['type' => 'Promotion', 'date' => '2026-10-11', 'names' => 'Michael and Dwight'],
+            $promotion->fresh()?->confirmationParts($reader),
+        );
     }
 }

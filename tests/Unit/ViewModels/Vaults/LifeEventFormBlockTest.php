@@ -221,6 +221,63 @@ class LifeEventFormBlockTest extends TestCase
         $this->assertEquals(['Channel'], array_column($block->fieldsOf($call->refresh()), 'label'));
     }
 
+    #[Test]
+    public function it_records_for_the_contact_of_the_page_it_is_on(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+
+        $block = $this->block($user, $vault, $jim);
+        $projection = $block->projection();
+
+        $this->assertFalse($block->choosesSubject());
+        $this->assertEquals(route('contacts.lifeEvents.create', ['vault' => $vault, 'contact' => $jim]), $block->action());
+        $this->assertEquals(route('contacts.lifeEvents.new', ['vault' => $vault, 'contact' => $jim]), $projection['newUrl']);
+        $this->assertEquals(['id' => $jim->id, 'name' => 'Jim'], $projection['subject']);
+    }
+
+    #[Test]
+    public function it_records_from_the_dashboard_for_whoever_is_chosen(): void
+    {
+        [$user, $vault, $michael] = $this->jim();
+
+        $block = new LifeEventFormBlock(user: $user, vault: $vault, contact: $michael, choosesSubject: true);
+        $projection = $block->projection();
+
+        $this->assertTrue($block->choosesSubject());
+        $this->assertEquals(route('vaults.lifeEvents.create', $vault), $block->action());
+        $this->assertEquals(route('vaults.lifeEvents.new', $vault), $projection['newUrl']);
+        $this->assertEquals(route('vaults.lifeEventCandidates.index', $vault), $projection['candidatesUrl']);
+        $this->assertEquals(['id' => $michael->id, 'name' => 'Jim'], $projection['subject']);
+    }
+
+    #[Test]
+    public function it_brings_back_the_person_chosen_on_the_dashboard_when_the_form_is_refused(): void
+    {
+        [$user, $vault, $michael] = $this->jim();
+        $pam = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
+
+        $this->withOldInput(['contact_id' => (string) $pam->id, 'participants' => [(string) $michael->id]]);
+
+        $projection = new LifeEventFormBlock(user: $user, vault: $vault, contact: $michael, choosesSubject: true)->projection();
+
+        $this->assertEquals(['id' => $pam->id, 'name' => 'Pam'], $projection['subject']);
+        $this->assertEquals([['id' => $michael->id, 'name' => $michael->name]], $projection['people']);
+    }
+
+    #[Test]
+    public function it_does_not_bring_back_a_person_chosen_in_another_vault(): void
+    {
+        [$user, $vault, $michael] = $this->jim();
+        $stamford = Vault::factory()->create(['account_id' => $user->account_id]);
+        $karen = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $stamford->id]);
+
+        $this->withOldInput(['contact_id' => (string) $karen->id]);
+
+        $projection = new LifeEventFormBlock(user: $user, vault: $vault, contact: $michael, choosesSubject: true)->projection();
+
+        $this->assertEquals($michael->id, $projection['subject']['id']);
+    }
+
     /** @param  array<string, mixed>  $input */
     private function withOldInput(array $input): void
     {

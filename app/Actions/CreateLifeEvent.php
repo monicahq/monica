@@ -22,8 +22,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Record something that happened, from the page of one of the people who were there, and put it on
- * the timeline of every one of them.
+ * Record something that happened, from the page of one of the people who were there or from the
+ * vault dashboard, and put it on the timeline of every one of them.
  */
 class CreateLifeEvent
 {
@@ -47,6 +47,7 @@ class CreateLifeEvent
         private readonly ?int $durationInMinutes = null,
         private readonly array $participants = [],
         private readonly array $values = [],
+        private readonly LifeEventSourceEnum $createdFrom = LifeEventSourceEnum::Contact,
     ) {}
 
     public function execute(): LifeEvent
@@ -133,7 +134,7 @@ class CreateLifeEvent
             'narrative' => $this->narrative,
             'location' => $this->location,
             'duration_in_minutes' => $this->durationInMinutes,
-            'created_from' => LifeEventSourceEnum::Contact,
+            'created_from' => $this->createdFrom,
             'created_by_user_id' => $this->user->id,
             'participant_count' => $participantCount,
         ]);

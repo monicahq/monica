@@ -6,6 +6,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\CreateLifeEvent;
 use App\Enums\FieldTypeEnum;
+use App\Enums\LifeEventSourceEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\LifeEventTypeIsNotAvailable;
 use App\Jobs\LogUserAction;
@@ -70,6 +71,30 @@ class CreateLifeEventTest extends TestCase
         $this->assertEquals(1, $lifeEventType->structure->publishedVersion->refresh()->record_count);
 
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventCreation);
+    }
+
+    #[Test]
+    public function it_records_where_the_life_event_was_written(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactOn($vault, 'Michael');
+
+        $lifeEvent = new CreateLifeEvent(
+            user: $user,
+            vault: $vault,
+            contact: $michael,
+            lifeEventType: $this->lifeEventTypeAsking($user, 'Promotion'),
+            happenedOn: CarbonImmutable::parse('2026-10-11'),
+            createdFrom: LifeEventSourceEnum::Dashboard,
+        )->execute();
+
+        $this->assertDatabaseHas('life_events', [
+            'id' => $lifeEvent->id,
+            'created_from' => 'dashboard',
+        ]);
     }
 
     #[Test]

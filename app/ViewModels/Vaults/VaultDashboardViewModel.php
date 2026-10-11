@@ -27,6 +27,8 @@ class VaultDashboardViewModel
 
     private const int LIFE_EVENTS_SHOWN = 5;
 
+    private const int TIMELINE_SHOWN = 10;
+
     private ?VaultDashboardAttention $attention = null;
 
     /** @var Collection<int, Contact>|null */
@@ -35,6 +37,8 @@ class VaultDashboardViewModel
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
+        private readonly bool $opensLifeEventPanel = false,
+        private readonly ?int $lifeEventJustAddedId = null,
     ) {}
 
     public function vault(): Vault
@@ -179,6 +183,69 @@ class VaultDashboardViewModel
                 ];
             })
             ->all();
+    }
+
+    /**
+     * The panel that writes down a life event, for the signed in person unless
+     * somebody else is chosen. A vault without its Me contact offers none.
+     */
+    public function lifeEventForm(): ?LifeEventFormBlock
+    {
+        $me = $this->meContact();
+
+        if (! $me instanceof Contact) {
+            return null;
+        }
+
+        return once(fn (): LifeEventFormBlock => new LifeEventFormBlock(
+            user: $this->user,
+            vault: $this->vault,
+            contact: $me,
+            isAskedFor: $this->opensLifeEventPanel,
+            choosesSubject: true,
+        ));
+    }
+
+    /**
+     * The latest life events of the signed in person, read only. Their page
+     * holds the rest, and the way to change one.
+     */
+    public function timeline(): ?ContactTimelineBlock
+    {
+        $me = $this->meContact();
+
+        if (! $me instanceof Contact) {
+            return null;
+        }
+
+        return once(fn (): ContactTimelineBlock => new ContactTimelineBlock(
+            user: $this->user,
+            vault: $this->vault,
+            contact: $me,
+            justAddedId: $this->lifeEventJustAddedId,
+            perPage: self::TIMELINE_SHOWN,
+            isReadOnly: true,
+        ));
+    }
+
+    public function timelineCount(): int
+    {
+        return $this->meContact()->life_event_count ?? 0;
+    }
+
+    public function fullTimelineUrl(): ?string
+    {
+        $me = $this->meContact();
+
+        return $me instanceof Contact ? route('contacts.show', ['vault' => $this->vault, 'contact' => $me]) : null;
+    }
+
+    private function meContact(): ?Contact
+    {
+        return once(fn (): ?Contact => $this->vault
+            ->contacts()
+            ->where('is_me', true)
+            ->first());
     }
 
     /** @return Collection<int, Contact> */

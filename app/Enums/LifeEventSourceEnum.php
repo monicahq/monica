@@ -8,6 +8,7 @@ enum LifeEventSourceEnum: string
 {
     case Day = 'day';
     case Contact = 'contact';
+    case Dashboard = 'dashboard';
     case Api = 'api';
     case Mcp = 'mcp';
     case Import = 'import';

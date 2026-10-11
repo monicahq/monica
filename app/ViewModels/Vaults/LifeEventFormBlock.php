@@ -23,6 +23,7 @@ class LifeEventFormBlock
         private readonly Contact $contact,
         private readonly ?LifeEvent $lifeEvent = null,
         private readonly bool $isAskedFor = false,
+        private readonly bool $choosesSubject = false,
     ) {}
 
     /**
@@ -34,6 +35,15 @@ class LifeEventFormBlock
     public function isRendered(): bool
     {
         return $this->isAskedFor || $this->isEditing() || $this->oldType() instanceof LifeEventType;
+    }
+
+    /**
+     * Whether the reader picks who the life event happened to, as on the vault
+     * dashboard, rather than recording it for the contact whose page this is.
+     */
+    public function choosesSubject(): bool
+    {
+        return $this->choosesSubject;
     }
 
     public function isEditing(): bool
@@ -51,12 +61,12 @@ class LifeEventFormBlock
         return $this->isEditing() ? __('Edit life event') : __('Add a life event');
     }
 
-    /** @return array{pick: string, details: string} */
+    /** @return array{who: string, pick: string, details: string} */
     public function captions(): array
     {
         return $this->isEditing()
-            ? ['pick' => __('Choose a different type'), 'details' => __('Change anything, then save')]
-            : ['pick' => __('Step 1 of 2 · Choose what happened'), 'details' => __('Step 2 of 2 · Fill in the details')];
+            ? ['who' => '', 'pick' => __('Choose a different type'), 'details' => __('Change anything, then save')]
+            : ['who' => __('Choose who it happened to'), 'pick' => __('Step 1 of 2 · Choose what happened'), 'details' => __('Step 2 of 2 · Fill in the details')];
     }
 
     public function submitLabel(): string
@@ -145,16 +155,28 @@ class LifeEventFormBlock
 
     public function createUrl(): string
     {
+        if ($this->choosesSubject) {
+            return route('vaults.lifeEvents.create', $this->vault);
+        }
+
         return route('contacts.lifeEvents.create', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
     public function newUrl(): string
     {
+        if ($this->choosesSubject) {
+            return route('vaults.lifeEvents.new', $this->vault);
+        }
+
         return route('contacts.lifeEvents.new', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
     public function candidatesUrl(): string
     {
+        if ($this->choosesSubject) {
+            return route('vaults.lifeEventCandidates.index', $this->vault);
+        }
+
         return route('contacts.lifeEventCandidates.index', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
@@ -168,9 +190,28 @@ class LifeEventFormBlock
         return now($this->user->timezone)->toDateString();
     }
 
+    /**
+     * Who the life event is recorded for: the person chosen before the form
+     * came back refused, else the contact the block is built on.
+     */
+    public function subject(): Contact
+    {
+        return once(function (): Contact {
+            $id = old('contact_id');
+
+            if (! $this->choosesSubject || ! is_numeric($id)) {
+                return $this->contact;
+            }
+
+            return Contact::query()
+                ->where('vault_id', $this->vault->id)
+                ->find((int) $id) ?? $this->contact;
+        });
+    }
+
     public function contactName(): string
     {
-        return $this->contact->first_name ?? $this->contact->name;
+        return $this->subject()->first_name ?? $this->subject()->name;
     }
 
     public function vault(): Vault
@@ -211,7 +252,7 @@ class LifeEventFormBlock
 
         return Contact::query()
             ->where('vault_id', $this->vault->id)
-            ->whereKeyNot($this->contact->id)
+            ->whereKeyNot($this->subject()->id)
             ->whereIn('id', $ids)
             ->get()
             ->sortBy(fn (Contact $contact): int|false => array_search($contact->id, array_values($ids)))
@@ -265,6 +306,7 @@ class LifeEventFormBlock
                 'name' => $oldType->name,
                 'categoryName' => $oldType->lifeEventCategory->name,
             ] : null,
+            'subject' => ['id' => $this->subject()->id, 'name' => $this->contactName()],
             'people' => $this->oldParticipants(),
             'date' => (string) old('happened_on', $defaultDate),
             'today' => $this->today(),

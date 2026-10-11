@@ -21,6 +21,7 @@ class ContactLifeEventCandidateController extends Controller
         $except = array_filter((array) $request->input('except', []), is_numeric(...));
 
         return view('app.vaults.contacts._life-event-candidates', [
+            'listId' => 'life-event-candidates',
             'candidates' => Contact::query()
                 ->where('vault_id', $vault->id)
                 ->whereKeyNot([$contact->id, ...$except])

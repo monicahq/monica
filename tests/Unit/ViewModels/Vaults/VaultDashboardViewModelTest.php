@@ -199,4 +199,66 @@ class VaultDashboardViewModelTest extends TestCase
         $this->assertEquals(route('contacts.new', $vault), $viewModel->newContactUrl());
         $this->assertEquals(route('contacts.index', $vault), $viewModel->allContactsUrl());
     }
+
+    #[Test]
+    public function it_offers_to_write_down_a_life_event_for_the_signed_in_person(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Michael', 'is_me' => true]);
+
+        $form = new VaultDashboardViewModel(user: $user, vault: $vault)->lifeEventForm();
+
+        $this->assertNotNull($form);
+        $this->assertTrue($form->choosesSubject());
+        $this->assertEquals(['id' => $michael->id, 'name' => 'Michael'], $form->projection()['subject']);
+    }
+
+    #[Test]
+    public function it_offers_no_life_event_form_in_a_vault_without_the_signed_in_person(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->assertNull(new VaultDashboardViewModel(user: $user, vault: $vault)->lifeEventForm());
+    }
+
+    #[Test]
+    public function it_shows_the_ten_latest_life_events_of_the_signed_in_person(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Michael', 'is_me' => true]);
+        $jim = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Jim']);
+
+        for ($day = 1; $day <= 12; $day++) {
+            $lifeEvent = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => "Meeting {$day}", 'happened_on' => sprintf('2026-09-%02d', $day)]);
+            LifeEventParticipant::factory()->create(['life_event_id' => $lifeEvent->id, 'participant_id' => $michael->id]);
+        }
+
+        $prank = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Prank on Dwight', 'happened_on' => '2026-09-30']);
+        LifeEventParticipant::factory()->create(['life_event_id' => $prank->id, 'participant_id' => $jim->id]);
+
+        $viewModel = new VaultDashboardViewModel(user: $user, vault: $vault, lifeEventJustAddedId: $lifeEvent->id);
+        $entries = $viewModel->timeline()?->years()[0]['entries'] ?? [];
+
+        $this->assertCount(10, $entries);
+        $this->assertSame('Meeting 12', $entries[0]['title']);
+        $this->assertTrue($entries[0]['isJustAdded']);
+        $this->assertNotContains('Prank on Dwight', array_column($entries, 'title'));
+        $this->assertTrue($viewModel->timeline()?->isReadOnly());
+        $this->assertSame(route('contacts.show', ['vault' => $vault, 'contact' => $michael]), $viewModel->fullTimelineUrl());
+    }
+
+    #[Test]
+    public function it_shows_no_timeline_in_a_vault_without_the_signed_in_person(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $viewModel = new VaultDashboardViewModel(user: $user, vault: $vault);
+
+        $this->assertNull($viewModel->timeline());
+        $this->assertNull($viewModel->fullTimelineUrl());
+    }
 }

@@ -8,6 +8,8 @@ use App\Enums\StructureAppliesToEnum;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\RecordVaultVisit;
 use App\Models\Contact;
+use App\Models\LifeEvent;
+use App\Models\LifeEventParticipant;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\StructureVersion;
@@ -98,6 +100,31 @@ class VaultControllerTest extends TestCase
             ->assertSee('Favourite people')
             ->assertSee('Recently viewed')
             ->assertSee('Recent life events');
+    }
+
+    #[Test]
+    public function it_shows_my_timeline_without_deleting_from_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Michael', 'is_me' => true]);
+        $dinner = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Dinner party at the condo']);
+        LifeEventParticipant::factory()->create(['life_event_id' => $dinner->id, 'participant_id' => $michael->id]);
+
+        $this->actingAs($user)->get(route('vaults.show', $vault))
+            ->assertOk()
+            ->assertSee('role="tablist"', escape: false)
+            ->assertSee('aria-controls="dashboard-panel-timeline"', escape: false)
+            ->assertSee('aria-controls="dashboard-panel-attention"', escape: false)
+            ->assertSee('Add a life event')
+            ->assertSee('Dinner party at the condo')
+            ->assertSee('Nothing due this week')
+            ->assertSee('View full timeline')
+            ->assertSee('href="'.route('contacts.show', ['vault' => $vault, 'contact' => $michael]).'"', escape: false)
+            ->assertDontSee('Delete life event')
+            ->assertDontSee('Load more');
     }
 
     #[Test]

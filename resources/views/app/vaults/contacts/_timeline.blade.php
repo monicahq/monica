@@ -74,17 +74,23 @@
                   </div>
 
                   <div class="flex shrink-0 gap-0.5 transition-opacity motion-reduce:transition-none opacity-0 group-focus-within:opacity-100 group-hover:opacity-100 pointer-coarse:opacity-100">
-                    <x-button.ghost :href="$entry['editUrl']" size="small" x-target="contact-timeline" aria-label="{{ __('Edit :name', ['name' => $entry['title']]) }}">{{ __('Edit') }}</x-button.ghost>
+                    @if ($timeline->isReadOnly())
+                      <x-button.ghost :href="$entry['editUrl']" size="small" aria-label="{{ __('Edit :name', ['name' => $entry['title']]) }}">{{ __('Edit') }}</x-button.ghost>
+                    @else
+                      <x-button.ghost :href="$entry['editUrl']" size="small" x-target="contact-timeline" aria-label="{{ __('Edit :name', ['name' => $entry['title']]) }}">{{ __('Edit') }}</x-button.ghost>
+                    @endif
 
-                    <x-button.ghost
-                      type="button"
-                      size="small"
-                      data-destroy-url="{{ $entry['destroyUrl'] }}"
-                      data-delete-line="{{ $entry['deleteLine'] }}"
-                      @click="$dispatch('confirm-life-event-deletion', { url: $el.dataset.destroyUrl, line: $el.dataset.deleteLine })"
-                      class="hover:text-error"
-                      aria-label="{{ __('Delete :name', ['name' => $entry['title']]) }}"
-                    >{{ __('Delete') }}</x-button.ghost>
+                    @unless ($timeline->isReadOnly())
+                      <x-button.ghost
+                        type="button"
+                        size="small"
+                        data-destroy-url="{{ $entry['destroyUrl'] }}"
+                        data-delete-line="{{ $entry['deleteLine'] }}"
+                        @click="$dispatch('confirm-life-event-deletion', { url: $el.dataset.destroyUrl, line: $el.dataset.deleteLine })"
+                        class="hover:text-error"
+                        aria-label="{{ __('Delete :name', ['name' => $entry['title']]) }}"
+                      >{{ __('Delete') }}</x-button.ghost>
+                    @endunless
                   </div>
                 </div>
               </div>
@@ -102,7 +108,7 @@
   @endif
 </div>
 
-@unless ($timeline->holdsNothing())
+@unless ($timeline->holdsNothing() || $timeline->isReadOnly())
   <div x-data="{ deletion: { url: '', line: '' } }" class="contents">
     <x-modal.warning
       :title="__('Delete this life event?')"

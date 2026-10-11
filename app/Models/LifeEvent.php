@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\DateFormatEnum;
 use App\Enums\DatePrecisionEnum;
 use App\Enums\LifeEventSourceEnum;
+use App\Helpers\AvailableLocales;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInVault;
 use App\Models\Concerns\SearchesRecords;
@@ -211,6 +213,33 @@ class LifeEvent extends Model
     public function fieldValueRows(): MorphMany
     {
         return $this->morphMany(FieldValueRow::class, 'valuable');
+    }
+
+    /**
+     * The type, the full date in the reader's format and the first names of everybody who was
+     * there, for the sentence that says whose timeline the life event is on.
+     *
+     * @return array{type: string, date: string, names: string}
+     */
+    public function confirmationParts(User $reader): array
+    {
+        $names = $this->participants()
+            ->with('participant')
+            ->get()
+            ->map(fn (LifeEventParticipant $participant): mixed => $participant->participant)
+            ->filter(fn (mixed $person): bool => $person instanceof Contact)
+            ->map(fn (Contact $person): string => $person->first_name ?? $person->name)
+            ->values();
+
+        $format = $reader->date_format->value ?? (string) AvailableLocales::details(app()->getLocale())['date_format'];
+
+        return [
+            'type' => $this->lifeEventType->name,
+            'date' => DateFormatEnum::write($this->happened_on, $format),
+            'names' => $names->count() > 1
+                ? __(':names and :last', ['names' => $names->slice(0, -1)->implode(__(', ')), 'last' => $names->last()])
+                : (string) $names->first(),
+        ];
     }
 
     /**
