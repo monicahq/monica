@@ -17,7 +17,13 @@
     @include('app.vaults.contacts._favourite', ['viewModel' => $viewModel])
 
     <div class="min-w-60 flex-1">
-      <h1 class="text-page-title text-balance text-ink">{{ $viewModel->title() }}</h1>
+      <div class="flex flex-wrap items-center gap-3">
+        <h1 class="text-page-title text-balance text-ink">{{ $viewModel->title() }}</h1>
+
+        @if ($viewModel->isMe())
+          <x-badge tone="accent">{{ __('You') }}</x-badge>
+        @endif
+      </div>
 
       @if ($viewModel->isArchived())
         <p class="mt-2">

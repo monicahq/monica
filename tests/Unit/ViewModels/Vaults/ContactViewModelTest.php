@@ -291,6 +291,18 @@ class ContactViewModelTest extends TestCase
     }
 
     #[Test]
+    public function only_the_contact_standing_for_the_user_is_said_to_be_them(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
+        $me = $this->contact($user, $version, ['is_me' => true]);
+        $somebodyElse = $this->contact($user, $version, ['first_name' => 'Dwight', 'last_name' => 'Schrute']);
+
+        $this->assertTrue((new ContactViewModel(user: $user, vault: $me->vault, contact: $me))->isMe());
+        $this->assertFalse((new ContactViewModel(user: $user, vault: $somebodyElse->vault, contact: $somebodyElse))->isMe());
+    }
+
+    #[Test]
     public function somebody_nobody_has_spoken_to_says_so(): void
     {
         $user = User::factory()->create();

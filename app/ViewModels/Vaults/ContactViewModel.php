@@ -112,6 +112,11 @@ class ContactViewModel
         return $this->contact->is_archived;
     }
 
+    public function isMe(): bool
+    {
+        return $this->contact->is_me;
+    }
+
     public function peopleUrl(): string
     {
         return route('contacts.index', $this->vault);
