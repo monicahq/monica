@@ -129,6 +129,26 @@ class CreateLifeEventTest extends TestCase
     }
 
     #[Test]
+    public function it_records_where_it_was_written_from(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $lifeEvent = new CreateLifeEvent(
+            user: $user,
+            vault: $vault,
+            contact: $this->contactOn($vault, 'Kevin'),
+            lifeEventType: $this->lifeEventTypeAsking($user, 'Chili day'),
+            happenedOn: CarbonImmutable::parse('2026-09-01'),
+            createdFrom: LifeEventSourceEnum::Api,
+        )->execute();
+
+        $this->assertDatabaseHas('life_events', ['id' => $lifeEvent->id, 'created_from' => 'api']);
+    }
+
+    #[Test]
     public function it_counts_the_life_event_for_every_participant(): void
     {
         Queue::fake();

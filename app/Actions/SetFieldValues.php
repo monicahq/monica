@@ -47,6 +47,7 @@ class SetFieldValues
      * @param  array<int, bool>  $yearIsUnknown
      * @param  array<int, bool>  $monthIsUnknown
      * @param  array<int, array<string, mixed>>  $reminders  what was asked of each date, keyed by field id
+     * @param  array<int, int>  $keptFieldIds  the fields to leave exactly as they are, such as the sensitive ones the caller cannot see
      */
     public function __construct(
         private readonly User $user,
@@ -58,6 +59,7 @@ class SetFieldValues
         private readonly array $yearIsUnknown = [],
         private readonly array $monthIsUnknown = [],
         private readonly array $reminders = [],
+        private readonly array $keptFieldIds = [],
     ) {}
 
     public function execute(): int
@@ -108,6 +110,7 @@ class SetFieldValues
         return $this->section->sectionVersion->fields
             ->whereNull('parent_field_id')
             ->filter(fn (Field $field): bool => $field->type->hasAnInput())
+            ->reject(fn (Field $field): bool => in_array($field->id, $this->keptFieldIds, true))
             ->values();
     }
 

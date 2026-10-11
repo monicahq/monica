@@ -61,6 +61,32 @@ class FieldValueRules
         return $rules;
     }
 
+    /**
+     * The same rules for a caller that cannot send a file, such as the API or MCP: a file field
+     * refuses any value instead of asking for an upload.
+     *
+     * @param  Collection<int, Field>  $fields
+     * @return array<string, array<int, mixed>>
+     */
+    public static function withoutFiles(Collection $fields, ?Vault $vault = null): array
+    {
+        $rules = self::for($fields, $vault);
+
+        foreach ($fields as $field) {
+            if ($field->type->holdsAFile()) {
+                $rules["fields.{$field->id}"] = ['prohibited'];
+            }
+
+            foreach ($field->type->isRepeater() ? $field->children : [] as $child) {
+                if ($child->type->holdsAFile()) {
+                    $rules["fields.{$field->id}.*.values.{$child->id}"] = ['prohibited'];
+                }
+            }
+        }
+
+        return $rules;
+    }
+
     /** @return array<string, array<int, mixed>> */
     private static function forRepetitionsOf(Field $field, ?Vault $vault): array
     {

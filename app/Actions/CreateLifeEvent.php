@@ -22,8 +22,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Record something that happened, from the page of one of the people who were there or from the
- * vault dashboard, and put it on the timeline of every one of them.
+ * Record something that happened, from the page of one of the people who were there, from the vault
+ * dashboard, or from outside through the API or MCP, and put it on the timeline of every one of them.
  */
 class CreateLifeEvent
 {

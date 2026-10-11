@@ -9,6 +9,7 @@ use App\Actions\ReplaceLifeEventTypeFields;
 use App\Actions\UpdateLifeEvent;
 use App\Enums\FieldTypeEnum;
 use App\Enums\UserActionEnum;
+use App\Exceptions\FieldIsRequired;
 use App\Exceptions\LifeEventTypeIsNotAvailable;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -98,6 +99,69 @@ class UpdateLifeEventTest extends TestCase
         $this->update($user, $vault, $jim, $lifeEvent, $call->refresh(), '2026-07-03');
 
         $this->assertEquals($recordedOn, $lifeEvent->refresh()->structure_version_id);
+    }
+
+    #[Test]
+    public function it_leaves_every_value_alone_when_it_is_given_none(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $jim] = $this->office();
+        $call = $this->lifeEventTypeAsking($user, 'Call', ['Channel' => FieldTypeEnum::Text]);
+        $channel = $call->structure->publishedVersion->inputFields()->firstOrFail();
+        $lifeEvent = $this->record($user, $vault, $jim, $call, values: [$channel->id => 'Mobile']);
+
+        $this->update($user, $vault, $jim, $lifeEvent, $call, '2026-08-30', values: null);
+
+        $this->assertEquals('2026-08-30', $lifeEvent->refresh()->happened_on->toDateString());
+        $this->assertDatabaseHas('field_values', ['valuable_id' => $lifeEvent->id, 'field_id' => $channel->id, 'value_string' => 'Mobile']);
+    }
+
+    #[Test]
+    public function it_leaves_a_kept_field_alone_when_it_replaces_the_values(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $jim] = $this->office();
+        $call = $this->lifeEventTypeAsking($user, 'Call', ['Channel' => FieldTypeEnum::Text, 'Topic' => FieldTypeEnum::Text]);
+        [$channel, $topic] = $call->structure->publishedVersion->inputFields()->all();
+        $lifeEvent = $this->record($user, $vault, $jim, $call, values: [$channel->id => 'Mobile', $topic->id => 'Scott’s Tots']);
+
+        $this->update($user, $vault, $jim, $lifeEvent, $call, '2026-08-30', values: [$channel->id => 'Landline'], keptFieldIds: [$topic->id]);
+
+        $this->assertDatabaseHas('field_values', ['valuable_id' => $lifeEvent->id, 'field_id' => $channel->id, 'value_string' => 'Landline']);
+        $this->assertDatabaseHas('field_values', ['valuable_id' => $lifeEvent->id, 'field_id' => $topic->id, 'value_string' => 'Scott’s Tots']);
+    }
+
+    #[Test]
+    public function it_refuses_a_required_field_of_a_new_type_when_it_is_given_no_values(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $jim] = $this->office();
+        $call = $this->lifeEventTypeAsking($user, 'Call');
+        $meal = $this->lifeEventTypeAsking($user, 'Meal');
+        new ReplaceLifeEventTypeFields(
+            user: $user,
+            lifeEventType: $meal,
+            groups: [],
+            fields: [[
+                'key' => null,
+                'group' => '',
+                'label' => 'Dish',
+                'type' => FieldTypeEnum::Text->value,
+                'is_required' => true,
+                'help_text' => null,
+                'settings' => [],
+                'choices' => [],
+            ]],
+        )->execute();
+        $meal->refresh();
+        $lifeEvent = $this->record($user, $vault, $jim, $call);
+
+        $this->expectException(FieldIsRequired::class);
+
+        $this->update($user, $vault, $jim, $lifeEvent, $meal, '2026-07-03', values: null);
     }
 
     #[Test]
@@ -215,10 +279,11 @@ class UpdateLifeEventTest extends TestCase
 
     /**
      * @param  list<Contact>  $participants
-     * @param  array<int, mixed>  $values
+     * @param  array<int, mixed>|null  $values
      * @param  array<int, int>  $removedFieldIds
+     * @param  array<int, int>  $keptFieldIds
      */
-    private function update(User $user, Vault $vault, Contact $contact, LifeEvent $lifeEvent, LifeEventType $type, string $on, ?string $title = null, array $participants = [], array $values = [], array $removedFieldIds = []): LifeEvent
+    private function update(User $user, Vault $vault, Contact $contact, LifeEvent $lifeEvent, LifeEventType $type, string $on, ?string $title = null, array $participants = [], ?array $values = [], array $removedFieldIds = [], array $keptFieldIds = []): LifeEvent
     {
         return new UpdateLifeEvent(
             user: $user,
@@ -231,6 +296,7 @@ class UpdateLifeEventTest extends TestCase
             participants: $participants,
             values: $values,
             removedFieldIds: $removedFieldIds,
+            keptFieldIds: $keptFieldIds,
         )->execute();
     }
 }

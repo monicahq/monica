@@ -9,6 +9,7 @@ use App\Mcp\Tools\AnswerReminderOccurrence;
 use App\Mcp\Tools\CreateContact;
 use App\Mcp\Tools\CreateContactReminder;
 use App\Mcp\Tools\CreateEntityType;
+use App\Mcp\Tools\CreateLifeEvent;
 use App\Mcp\Tools\CreateLifeEventCategory;
 use App\Mcp\Tools\CreateLifeEventType;
 use App\Mcp\Tools\CreateRelationshipCategory;
@@ -18,6 +19,7 @@ use App\Mcp\Tools\CreateTemplateDraft;
 use App\Mcp\Tools\CreateTemplateField;
 use App\Mcp\Tools\DeleteContactReminder;
 use App\Mcp\Tools\DeleteEntityType;
+use App\Mcp\Tools\DeleteLifeEvent;
 use App\Mcp\Tools\DeleteLifeEventCategory;
 use App\Mcp\Tools\DeleteLifeEventType;
 use App\Mcp\Tools\DeleteRelationshipCategory;
@@ -30,6 +32,7 @@ use App\Mcp\Tools\GetContact;
 use App\Mcp\Tools\GetContactReminder;
 use App\Mcp\Tools\GetEmailSent;
 use App\Mcp\Tools\GetEntityType;
+use App\Mcp\Tools\GetLifeEvent;
 use App\Mcp\Tools\GetLifeEventCategory;
 use App\Mcp\Tools\GetLifeEventType;
 use App\Mcp\Tools\GetLifeEventTypeFields;
@@ -47,6 +50,7 @@ use App\Mcp\Tools\ListEmailsSent;
 use App\Mcp\Tools\ListEntityTypes;
 use App\Mcp\Tools\ListLifeEventCategories;
 use App\Mcp\Tools\ListLifeEventCategoryTypes;
+use App\Mcp\Tools\ListLifeEvents;
 use App\Mcp\Tools\ListLifeEventTypes;
 use App\Mcp\Tools\ListLogs;
 use App\Mcp\Tools\ListRelationshipCategories;
@@ -58,6 +62,7 @@ use App\Mcp\Tools\ListVaults;
 use App\Mcp\Tools\PublishTemplateVersion;
 use App\Mcp\Tools\RemoveTemplateSection;
 use App\Mcp\Tools\ReplaceLifeEventTypeFields;
+use App\Mcp\Tools\RestoreLifeEvent;
 use App\Mcp\Tools\SearchRecords;
 use App\Mcp\Tools\SetContactFavourite;
 use App\Mcp\Tools\SetEntityTypeActivation;
@@ -78,6 +83,7 @@ use App\Mcp\Tools\UpdateContactName;
 use App\Mcp\Tools\UpdateContactNameRepresentations;
 use App\Mcp\Tools\UpdateContactReminder;
 use App\Mcp\Tools\UpdateEntityType;
+use App\Mcp\Tools\UpdateLifeEvent;
 use App\Mcp\Tools\UpdateLifeEventCategory;
 use App\Mcp\Tools\UpdateLifeEventType;
 use App\Mcp\Tools\UpdateRelationshipCategory;
@@ -122,6 +128,12 @@ A life event type is a kind of thing that happens to a contact, filed under a ca
 for fields of its own. replace-life-event-type-fields replaces the whole set and never changes a life
 event already recorded. Types and categories that came with the account, or that are in use, cannot be
 deleted, only switched off with set-life-event-type-activation or set-life-event-category-activation.
+
+A life event is something that happened on a date, with contacts of the vault who were there; the
+first of them is the person it is recorded for and has to stay first. Before writing one, read its
+type's fields with get-life-event-type-fields: values are keyed by field id, never by key, since a key
+is only unique inside its group. A file field cannot be written. update-life-event keeps whatever it
+is not given, and a deleted life event comes back with restore-life-event.
 
 The account's activity and the emails it was sent are read with list-logs and list-emails-sent, a
 page at a time, newest first, with the total. Read one email with get-email-sent to see what it said.
@@ -199,6 +211,12 @@ class EricaServer extends Server
         DeleteContactReminder::class,
         ListContactReminderOccurrences::class,
         AnswerReminderOccurrence::class,
+        ListLifeEvents::class,
+        GetLifeEvent::class,
+        CreateLifeEvent::class,
+        UpdateLifeEvent::class,
+        DeleteLifeEvent::class,
+        RestoreLifeEvent::class,
         CreateTemplate::class,
         UpdateTemplate::class,
         DuplicateTemplate::class,

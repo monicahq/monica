@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Correct a life event from the page of one of the people who were there: what happened, when, who
- * else was there and what was written down about it.
+ * Correct a life event from the page of one of the people who were there, or from outside through
+ * the API or MCP: what happened, when, who else was there and what was written down about it.
  */
 class UpdateLifeEvent
 {
@@ -32,8 +32,9 @@ class UpdateLifeEvent
 
     /**
      * @param  list<Contact>  $participants  the other people who were there, in the order they were chosen
-     * @param  array<int, mixed>  $values  the custom field values, keyed by field id, uploads included
+     * @param  array<int, mixed>|null  $values  the custom field values, keyed by field id, uploads included; null leaves every value as it is
      * @param  array<int, int>  $removedFieldIds  the file fields somebody removed, whose file goes with them
+     * @param  array<int, int>  $keptFieldIds  the fields whose value stays as it is whatever $values says, such as the sensitive ones the caller cannot see
      */
     public function __construct(
         private readonly User $user,
@@ -47,8 +48,9 @@ class UpdateLifeEvent
         private readonly ?string $location = null,
         private readonly ?int $durationInMinutes = null,
         private readonly array $participants = [],
-        private readonly array $values = [],
+        private readonly ?array $values = [],
         private readonly array $removedFieldIds = [],
+        private readonly array $keptFieldIds = [],
     ) {}
 
     public function execute(): LifeEvent
@@ -57,8 +59,10 @@ class UpdateLifeEvent
 
         $this->validate($before);
 
-        DB::transaction(function () use ($before): void {
-            if ($this->lifeEvent->life_event_type_id !== $this->lifeEventType->id) {
+        $changesType = $this->lifeEvent->life_event_type_id !== $this->lifeEventType->id;
+
+        DB::transaction(function () use ($before, $changesType): void {
+            if ($changesType) {
                 $this->moveToTheNewType();
             }
 
@@ -79,13 +83,16 @@ class UpdateLifeEvent
                 ->get()
                 ->each(fn (FieldValue $value) => new DestroyFieldValue(user: $this->user, fieldValue: $value)->execute());
 
-            foreach ($this->version->assembly as $section) {
-                new SetFieldValues(
-                    user: $this->user,
-                    record: $this->lifeEvent,
-                    section: $section,
-                    values: $this->values,
-                )->execute();
+            if ($this->values !== null || $changesType) {
+                foreach ($this->version->assembly as $section) {
+                    new SetFieldValues(
+                        user: $this->user,
+                        record: $this->lifeEvent,
+                        section: $section,
+                        values: $this->values ?? [],
+                        keptFieldIds: $changesType ? [] : $this->keptFieldIds,
+                    )->execute();
+                }
             }
 
             $this->recountLifeEventsOf([...$before, ...$this->contactIds()]);

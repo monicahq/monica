@@ -34,6 +34,8 @@ use App\Http\Controllers\Api\LifeEventCategoryActivationController;
 use App\Http\Controllers\Api\LifeEventCategoryController;
 use App\Http\Controllers\Api\LifeEventCategoryPositionController;
 use App\Http\Controllers\Api\LifeEventCategoryTypeController;
+use App\Http\Controllers\Api\LifeEventController;
+use App\Http\Controllers\Api\LifeEventRestorationController;
 use App\Http\Controllers\Api\LifeEventTypeActivationController;
 use App\Http\Controllers\Api\LifeEventTypeController;
 use App\Http\Controllers\Api\LifeEventTypeFieldController;
@@ -257,5 +259,12 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/contacts/{contact}/reminder-occurrences/{occurrence}/answer', [ReminderOccurrenceAnswerController::class, 'update'])
             ->where('occurrence', '[0-9a-fA-F-]{36}')
             ->name('contacts.reminderOccurrences.answer.update');
+
+        Route::get('vaults/{vault}/life-events', [LifeEventController::class, 'index'])->name('lifeEvents');
+        Route::get('vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'show'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.show');
+        Route::post('vaults/{vault}/life-events', [LifeEventController::class, 'create'])->name('lifeEvents.create');
+        Route::put('vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'update'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.update');
+        Route::delete('vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'destroy'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.destroy');
+        Route::put('vaults/{vault}/life-events/{lifeEvent}/restoration', [LifeEventRestorationController::class, 'update'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.restoration.update');
     });
 });

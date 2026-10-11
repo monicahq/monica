@@ -247,6 +247,16 @@ class McpDocsViewModel
                 ['name' => 'delete-contact-reminder', 'description' => 'Stops a reminder for good. The answers already given stay.'],
                 ['name' => 'answer-reminder-occurrence', 'description' => 'Records whether you remembered a date or forgot it. The answer is final.'],
             ]],
+            ['name' => 'Life events, reading', 'changesData' => false, 'tools' => [
+                ['name' => 'list-life-events', 'description' => 'Lists the life events of a vault, the most recent first. Can narrow to the ones one contact took part in.'],
+                ['name' => 'get-life-event', 'description' => 'Returns one life event: its type, its date, who was there and the values of its custom fields.'],
+            ]],
+            ['name' => 'Life events, changing', 'changesData' => true, 'tools' => [
+                ['name' => 'create-life-event', 'description' => 'Writes down something that happened, with the people who were there and the values of its custom fields.'],
+                ['name' => 'update-life-event', 'description' => 'Changes a life event. What is left out keeps its value.'],
+                ['name' => 'delete-life-event', 'description' => 'Takes a life event off every timeline. It can be restored.'],
+                ['name' => 'restore-life-event', 'description' => 'Puts a deleted life event back.'],
+            ]],
             ['name' => 'Templates', 'changesData' => false, 'tools' => [
                 ['name' => 'list-templates', 'description' => 'Lists the templates of your account.'],
                 ['name' => 'get-template', 'description' => 'Returns one template: its name, what it describes, whether it is active and which version is published.'],
@@ -344,7 +354,8 @@ class McpDocsViewModel
         $count = array_sum(array_map(fn (array $group): int => count($group['tools']), $this->toolGroups()));
 
         return [
-            "MCP currently exposes {$count} tools. Contact responses include identity and metadata, but not the contents of custom fields, notes, or life events.",
+            "MCP currently exposes {$count} tools. Contact responses include identity and metadata, but not the contents of custom fields or notes.",
+            'A life event is something that happened on a date, with the people who were there. Its type decides which custom fields it carries, so read them with get-life-event-type-fields before writing one: values are keyed by field id. The first participant is the person the life event is recorded for. A deleted life event can be put back with restore-life-event.',
             'Our goal is to make every action available in Monica accessible through MCP.',
         ];
     }

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
+use App\Http\Resources\LifeEventResource;
 use App\Models\Contact;
 use App\Models\EmailSent;
 use App\Models\EntityType;
 use App\Models\Field;
+use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
 use App\Models\Log;
@@ -23,6 +25,7 @@ use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
 use Laravel\Mcp\Request;
 
@@ -84,6 +87,22 @@ trait MirrorsAnApiCapability
         }
 
         return $contact;
+    }
+
+    protected function lifeEvent(Vault $vault, string $address, bool $withTrashed = false): LifeEvent
+    {
+        $lifeEvent = LifeEvent::query()
+            ->where('vault_id', $vault->id)
+            ->where('uuid', $address)
+            ->when($withTrashed, fn (Builder $query): Builder => $query->withTrashed())
+            ->with(LifeEventResource::RELATIONS)
+            ->first();
+
+        if ($lifeEvent === null) {
+            throw $this->doesNotExist(__('That life event does not exist.'));
+        }
+
+        return $lifeEvent;
     }
 
     protected function template(Request $request, string $address): Template

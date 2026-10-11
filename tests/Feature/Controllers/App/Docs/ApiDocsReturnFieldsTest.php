@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Docs;
 
+use App\Actions\CreateLifeEvent;
 use App\Actions\MergeContacts;
 use App\Enums\ContactListColumnSourceEnum;
 use App\Enums\FieldTypeEnum;
@@ -21,6 +22,7 @@ use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
+use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
 use App\Models\Log;
@@ -44,6 +46,7 @@ use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use App\ViewModels\Docs\ApiDocsSection;
 use App\ViewModels\Docs\ApiDocsViewModel;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -1112,6 +1115,55 @@ class ApiDocsReturnFieldsTest extends TestCase
                 ]);
             }),
 
+            'life-events-index' => $this->asSomebody(function (User $user): TestResponse {
+                $lifeEvent = $this->aLifeEventWithAValue($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$lifeEvent->vault->uuid}/life-events");
+            }),
+
+            'life-events-show' => $this->asSomebody(function (User $user): TestResponse {
+                $lifeEvent = $this->aLifeEventWithAValue($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$lifeEvent->vault->uuid}/life-events/{$lifeEvent->uuid}");
+            }),
+
+            'life-events-create' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+                $type = $this->lifeEventTypeWithAField($user)->refresh();
+                $venue = $type->structure->publishedVersion->inputFields()->firstOrFail();
+
+                return $this->json('POST', "/api/v1/vaults/{$vault->uuid}/life-events", [
+                    'life_event_type' => $type->uuid,
+                    'happened_on' => '2026-10-09',
+                    'participants' => [$contact->uuid],
+                    'fields' => [$venue->id => 'Poor Richard’s'],
+                ]);
+            }),
+
+            'life-events-update' => $this->asSomebody(function (User $user): TestResponse {
+                $lifeEvent = $this->aLifeEventWithAValue($user);
+
+                return $this->json('PUT', "/api/v1/vaults/{$lifeEvent->vault->uuid}/life-events/{$lifeEvent->uuid}", [
+                    'life_event_type' => $lifeEvent->lifeEventType->uuid,
+                    'happened_on' => '2026-10-10',
+                    'participants' => [$lifeEvent->participants->firstOrFail()->participant->uuid],
+                ]);
+            }),
+
+            'life-events-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $lifeEvent = $this->aLifeEventWithAValue($user);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$lifeEvent->vault->uuid}/life-events/{$lifeEvent->uuid}");
+            }),
+
+            'life-events-restoration-update' => $this->asSomebody(function (User $user): TestResponse {
+                $lifeEvent = $this->aLifeEventWithAValue($user);
+                $lifeEvent->delete();
+
+                return $this->json('PUT', "/api/v1/vaults/{$lifeEvent->vault->uuid}/life-events/{$lifeEvent->uuid}/restoration");
+            }),
+
             'relationship-categories-index' => $this->asSomebody(function (User $user): TestResponse {
                 RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
 
@@ -1579,6 +1631,23 @@ class ApiDocsReturnFieldsTest extends TestCase
         ]);
 
         return $type;
+    }
+
+    private function aLifeEventWithAValue(User $user): LifeEvent
+    {
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+        $type = $this->lifeEventTypeWithAField($user)->refresh();
+        $venue = $type->structure->publishedVersion->inputFields()->firstOrFail();
+
+        return new CreateLifeEvent(
+            user: $user,
+            vault: $vault,
+            contact: $contact,
+            lifeEventType: $type,
+            happenedOn: CarbonImmutable::parse('2026-10-09'),
+            values: [$venue->id => 'Poor Richard’s'],
+        )->execute();
     }
 
     private function aManualReminder(User $user): Reminder

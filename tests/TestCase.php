@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use App\Actions\AddSectionToStructureVersion;
+use App\Actions\CreateStructureVersionDraft;
+use App\Actions\PublishStructureVersion;
 use App\Actions\ReplaceLifeEventTypeFields;
 use App\Enums\FieldTypeEnum;
 use App\Enums\SsoProviderEnum;
@@ -25,6 +28,7 @@ use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Carbon\CarbonImmutable;
+use Closure;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithCachedConfig;
 use Illuminate\Foundation\Testing\WithCachedRoutes;
@@ -493,6 +497,35 @@ abstract class TestCase extends BaseTestCase
                 'choices' => [],
             ], array_keys($fields), array_values($fields)),
         )->execute();
+
+        return $lifeEventType->refresh();
+    }
+
+    /**
+     * A life event type whose published version adds one section holding the fields the callback
+     * writes, which is how an imported type comes to carry a sensitive field or a repeater with
+     * fields inside it.
+     *
+     * @param  Closure(SectionVersion): void  $fields
+     */
+    protected function lifeEventTypeHolding(User $user, string $name, Closure $fields): LifeEventType
+    {
+        $lifeEventType = $this->lifeEventTypeAsking($user, $name);
+
+        $draft = new CreateStructureVersionDraft(
+            user: $user,
+            structureVersion: $lifeEventType->structure->publishedVersion,
+        )->execute();
+
+        $sectionVersion = SectionVersion::factory()->create([
+            'account_id' => $user->account_id,
+            'section_id' => Section::factory()->create(['account_id' => $user->account_id])->id,
+        ]);
+
+        $fields($sectionVersion);
+
+        new AddSectionToStructureVersion(user: $user, structureVersion: $draft, sectionVersion: $sectionVersion)->execute();
+        new PublishStructureVersion(user: $user, structureVersion: $draft, changeNote: 'Imported.')->execute();
 
         return $lifeEventType->refresh();
     }
