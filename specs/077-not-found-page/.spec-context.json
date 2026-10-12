@@ -1,0 +1,37 @@
+{
+  "workflow": "speckit",
+  "specName": "A Page of Our Own When an Address Leads Nowhere",
+  "branch": "2026-10-12-not-found-page",
+  "currentStep": "implement",
+  "status": "implemented",
+  "history": [
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-10-12T18:09:19.834Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-10-12T18:12:19.230Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-10-12T18:13:24.547Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-10-12T18:18:04.820Z"
+    }
+  ]
+}

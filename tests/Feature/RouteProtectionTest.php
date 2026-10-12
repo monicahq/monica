@@ -61,6 +61,7 @@ class RouteProtectionTest extends TestCase
         'api.v1.register',
         'api.v1.login',
         'telegram.webhook',
+        'notFound.show',
     ];
 
     /** @var list<class-string<Model>> */

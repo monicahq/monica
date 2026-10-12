@@ -17,6 +17,7 @@ use App\Http\Controllers\App\Docs\PortalDocsController;
 use App\Http\Controllers\App\Docs\PortalDocsMarkdownController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\Marketplace\MarketplaceController;
+use App\Http\Controllers\App\NotFoundController;
 use App\Http\Controllers\App\NotificationController;
 use App\Http\Controllers\App\NotificationReadController;
 use App\Http\Controllers\App\Settings\Account\AccountController;
@@ -608,3 +609,5 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
 require __DIR__.'/auth.php';
 require __DIR__.'/administrator.php';
+
+Route::fallback([NotFoundController::class, 'show'])->where('fallbackPlaceholder', '^(?!api/|mcp$).*')->name('notFound.show');
