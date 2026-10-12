@@ -483,18 +483,17 @@ class Contact extends VCardResource
     {
         return Attribute::make(
             get: function ($value) {
-                $type = self::AVATAR_TYPE_SVG;
-                $content = AvatarHelper::generateRandomAvatar($this);
-
                 if ($this->file) {
                     $type = self::AVATAR_TYPE_URL;
                     $content = 'https://ucarecdn.com/'.$this->file->uuid.'/-/scale_crop/300x300/smart/-/format/auto/-/quality/smart_retina/';
+
+                    return [
+                        'type' => $type,
+                        'content' => $content,
+                    ];
                 }
 
-                return [
-                    'type' => $type,
-                    'content' => $content,
-                ];
+                return AvatarHelper::generateRandomAvatar($this, Auth::user()?->avatar_style);
             }
         );
     }
