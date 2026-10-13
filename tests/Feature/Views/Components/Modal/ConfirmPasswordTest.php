@@ -45,6 +45,23 @@ class ConfirmPasswordTest extends TestCase
     }
 
     #[Test]
+    public function it_says_why_it_asks_in_the_words_of_the_sign_in_screens_by_default(): void
+    {
+        $this->blade('<x-modal.confirm-password :offers-password="true" />')
+            ->assertSee('Confirm it is you', escape: false)
+            ->assertSee('What you are about to change decides how you sign in', escape: false);
+    }
+
+    #[Test]
+    public function it_says_why_it_asks_in_the_words_it_is_given(): void
+    {
+        $this->blade('<x-modal.confirm-password :offers-password="true" description="Michael wants to change the paper supplier." />')
+            ->assertSee('Confirm it is you', escape: false)
+            ->assertSee('Michael wants to change the paper supplier.', escape: false)
+            ->assertDontSee('What you are about to change decides how you sign in', escape: false);
+    }
+
+    #[Test]
     public function it_asks_the_server_whether_the_confirmation_still_holds(): void
     {
         $rendered = $this->blade('<x-modal.confirm-password :offers-password="true" />')->__toString();

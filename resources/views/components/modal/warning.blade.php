@@ -5,6 +5,7 @@
   @var string|null $cancel
   @var string $method
   @var string $action
+  @var bool $confirmsPassword
 --}}
 @props([
   'title' => null,
@@ -12,6 +13,7 @@
   'cancel' => null,
   'method' => 'delete',
   'action' => '',
+  'confirmsPassword' => false,
 ])
 
 <div x-data="{ open: false }" @keydown.escape.window="open = false" class="contents">
@@ -52,7 +54,11 @@
 
           <x-button.secondary size="small" type="button" @click="open = false">{{ $cancel ?? __('Keep it') }}</x-button.secondary>
 
-          <x-button.danger size="small">{{ $confirm ?? __('Delete') }}</x-button.danger>
+          @if ($confirmsPassword)
+            <x-button.danger size="small" @click.prevent="open = false; $dispatch('confirm-password', { form: $el.form })">{{ $confirm ?? __('Delete') }}</x-button.danger>
+          @else
+            <x-button.danger size="small">{{ $confirm ?? __('Delete') }}</x-button.danger>
+          @endif
         </x-form>
       </div>
     </div>

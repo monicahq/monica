@@ -36,4 +36,14 @@ class DeleteActionTest extends TestCase
             ->assertSee('type="button"', escape: false)
             ->assertSee('open = true', escape: false);
     }
+
+    #[Test]
+    public function it_hands_its_form_to_the_credential_card_when_asked_to(): void
+    {
+        $rendered = $this->blade(
+            '<x-delete-action title="Fire Ryan?" confirm="Fire him" label="Fire Ryan" action="/admin/configuration/1" confirms-password><p>Dunder Mifflin loses its temp.</p></x-delete-action>',
+        );
+
+        $rendered->assertSee("\$dispatch('confirm-password', { form: \$el.form })", escape: false);
+    }
 }

@@ -9,6 +9,7 @@ use App\Enums\InstanceSettingGroupEnum;
 use App\Helpers\InstanceSettings;
 use App\Models\InstanceSetting;
 use App\Models\TelegramWebhookRegistration;
+use App\Models\User;
 use App\ViewModels\Admin\ConfigurationViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
@@ -22,7 +23,7 @@ class ConfigurationViewModelTest extends TestCase
     #[Test]
     public function it_puts_every_setting_in_a_group(): void
     {
-        $groups = new ConfigurationViewModel()->groups();
+        $groups = new ConfigurationViewModel(user: User::factory()->create())->groups();
 
         $this->assertCount(count(InstanceSettingGroupEnum::cases()), $groups);
 
@@ -34,7 +35,7 @@ class ConfigurationViewModelTest extends TestCase
     #[Test]
     public function it_opens_the_screen_with_whether_the_instance_is_self_hosted(): void
     {
-        $groups = new ConfigurationViewModel()->groups();
+        $groups = new ConfigurationViewModel(user: User::factory()->create())->groups();
 
         $this->assertEquals(InstanceSettingGroupEnum::Instance->value, $groups[0]['key']);
         $this->assertEquals(InstanceSettingEnum::SelfHosted->value, $groups[0]['settings'][0]['name']);
@@ -125,7 +126,7 @@ class ConfigurationViewModelTest extends TestCase
     {
         InstanceSetting::factory()->create(['name' => 'a_setting_that_was_dropped']);
 
-        $viewModel = new ConfigurationViewModel;
+        $viewModel = new ConfigurationViewModel(user: User::factory()->create());
 
         $this->assertTrue($viewModel->hasOrphaned());
         $this->assertEquals([['name' => 'a_setting_that_was_dropped']], $viewModel->orphaned());
@@ -136,7 +137,7 @@ class ConfigurationViewModelTest extends TestCase
     {
         InstanceSetting::factory()->create(['name' => InstanceSettingEnum::FreeVaultLimit->value]);
 
-        $this->assertFalse(new ConfigurationViewModel()->hasOrphaned());
+        $this->assertFalse(new ConfigurationViewModel(user: User::factory()->create())->hasOrphaned());
     }
 
     #[Test]
@@ -160,10 +161,33 @@ class ConfigurationViewModelTest extends TestCase
         $this->assertNull($this->find(InstanceSettingEnum::TelegramBotWebhookSecret)['warning']);
     }
 
+    #[Test]
+    public function it_offers_the_password_to_an_administrator_who_has_one(): void
+    {
+        $michael = User::factory()->create();
+
+        $credentials = new ConfigurationViewModel(user: $michael)->credentials();
+
+        $this->assertTrue($credentials->offersPassword());
+        $this->assertFalse($credentials->offersNothing());
+    }
+
+    #[Test]
+    public function it_offers_nothing_to_an_administrator_with_neither_credential(): void
+    {
+        $jan = User::factory()->singleSignOn()->create();
+
+        $credentials = new ConfigurationViewModel(user: $jan)->credentials();
+
+        $this->assertFalse($credentials->offersPassword());
+        $this->assertFalse($credentials->offersPasskey());
+        $this->assertTrue($credentials->offersNothing());
+    }
+
     /** @return array<string, mixed> */
     private function find(InstanceSettingEnum $setting): array
     {
-        foreach (new ConfigurationViewModel()->groups() as $group) {
+        foreach (new ConfigurationViewModel(user: User::factory()->create())->groups() as $group) {
             foreach ($group['settings'] as $shown) {
                 if ($shown['name'] === $setting->value) {
                     return $shown;

@@ -8,8 +8,10 @@ use App\Enums\InstanceSettingEnum;
 use App\Helpers\InstanceSettings;
 use App\Models\Administrator;
 use App\Models\InstanceSetting;
+use App\Models\TelegramWebhookRegistration;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -132,13 +134,93 @@ class ConfigurationTest extends TestCase
     #[Test]
     public function it_asks_nothing_before_a_change_that_takes_nothing_away(): void
     {
+        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
+
+        $form = $this->formAt($content, route('admin.configuration.update', ['setting' => InstanceSettingEnum::FreeContactLimit->value]));
+
+        $this->assertStringNotContainsString('takesSomethingAway', $form);
+        $this->assertStringContainsString("@click.prevent=\"\$dispatch('confirm-password', { form: \$el.form })\"", $form);
+    }
+
+    #[Test]
+    public function it_asks_for_a_credential_on_the_screen_itself(): void
+    {
         $response = $this->actingAs($this->administrator())->get('/admin/configuration');
 
-        $this->assertEquals(
-            4,
-            substr_count($response->getContent(), 'takesSomethingAway($refs.value.value)'),
-            'Only the four settings that warn before a change carry the confirmation.'
+        $response->assertSee('x-data="confirmPassword(', false);
+        $response->assertSee('Confirm it is you');
+        $response->assertSee('What you are about to change decides how this instance behaves for everybody, so we ask for a credential first. You will not be asked again for a little while.');
+    }
+
+    #[Test]
+    public function it_shows_the_warning_before_it_asks_for_a_credential(): void
+    {
+        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
+
+        $form = $this->formAt($content, route('admin.configuration.update', ['setting' => InstanceSettingEnum::RegistrationEnabled->value]));
+
+        $this->assertStringContainsString(
+            "@click.prevent=\"if (! confirming && takesSomethingAway(\$refs.value.value)) { confirming = true } else { \$dispatch('confirm-password', { form: \$el.form }) }\"",
+            $form,
         );
+        $this->assertStringNotContainsString('@submit', $content);
+    }
+
+    #[Test]
+    public function it_asks_no_credential_from_a_setting_that_cannot_be_changed(): void
+    {
+        config()->set('services.vonage.installed', false);
+
+        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
+
+        $form = $this->formAt($content, route('admin.configuration.update', ['setting' => InstanceSettingEnum::VonageSmsFrom->value]));
+
+        $this->assertStringContainsString('aria-disabled="true"', $form);
+        $this->assertStringNotContainsString('confirm-password', $form);
+    }
+
+    #[Test]
+    public function it_asks_for_a_credential_before_a_setting_is_put_back(): void
+    {
+        InstanceSetting::factory()->create([
+            'name' => InstanceSettingEnum::FreeContactLimit->value,
+            'value' => '5',
+        ]);
+
+        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
+
+        $form = $this->formAt($content, route('admin.configuration.destroy', ['setting' => InstanceSettingEnum::FreeContactLimit->value]), last: true);
+
+        $this->assertStringContainsString('Put it back', $form);
+        $this->assertStringContainsString("\$dispatch('confirm-password', { form: \$el.form })", $form);
+    }
+
+    #[Test]
+    public function it_asks_for_a_credential_before_a_secret_is_cleared(): void
+    {
+        InstanceSetting::factory()->create([
+            'name' => InstanceSettingEnum::MailPassword->value,
+            'value' => 'a-stored-one',
+        ]);
+
+        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
+
+        $form = $this->formAt($content, route('admin.configuration.destroy', ['setting' => InstanceSettingEnum::MailPassword->value]), last: true);
+
+        $this->assertStringContainsString('Clear it', $form);
+        $this->assertStringContainsString("\$dispatch('confirm-password', { form: \$el.form })", $form);
+    }
+
+    #[Test]
+    public function it_asks_for_a_credential_before_a_value_nothing_reads_is_removed(): void
+    {
+        InstanceSetting::factory()->create(['name' => 'a_setting_that_was_dropped']);
+
+        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
+
+        $form = $this->formAt($content, route('admin.configuration.orphans.destroy', ['name' => 'a_setting_that_was_dropped']));
+
+        $this->assertStringContainsString("\$dispatch('confirm-password', { form: \$el.form })", $form);
     }
 
     #[Test]
@@ -232,6 +314,86 @@ class ConfigurationTest extends TestCase
         $response->assertSee('id="telegram-unavailable"', false);
         $response->assertSee('aria-describedby="telegram-unavailable"', false);
         $response->assertSee('Set the bot token first.');
+    }
+
+    #[Test]
+    public function it_asks_for_a_credential_before_registering_the_telegram_bot_but_not_before_checking_it(): void
+    {
+        $this->makeTelegramAvailable();
+
+        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
+
+        $register = $this->formAt($content, route('admin.configuration.telegram.registration.create'));
+        $check = $this->formAt($content, route('admin.configuration.telegram.check.create'));
+
+        $this->assertStringContainsString("@click.prevent=\"\$dispatch('confirm-password', { form: \$el.form })\"", $register);
+        $this->assertStringNotContainsString('confirm-password', $check);
+    }
+
+    #[Test]
+    public function it_asks_for_a_credential_before_generating_a_telegram_secret(): void
+    {
+        $this->makeTelegramAvailable();
+
+        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
+
+        $form = $this->formAt($content, route('admin.configuration.telegram.secret.create'));
+
+        $this->assertStringContainsString("@click.prevent=\"\$dispatch('confirm-password', { form: \$el.form })\"", $form);
+    }
+
+    #[Test]
+    public function it_warns_before_it_asks_for_a_credential_when_a_new_telegram_secret_breaks_the_registration(): void
+    {
+        $this->makeTelegramAvailable();
+        TelegramWebhookRegistration::factory()->current()->create();
+
+        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
+
+        $form = $this->formAt($content, route('admin.configuration.telegram.secret.create'));
+
+        $this->assertStringContainsString(
+            "@click.prevent=\"if (! confirming) { confirming = true } else { \$dispatch('confirm-password', { form: \$el.form }) }\"",
+            $form,
+        );
+        $this->assertStringContainsString('Generate again to go ahead.', $form);
+    }
+
+    #[Test]
+    public function it_asks_no_credential_from_a_telegram_control_that_is_unavailable(): void
+    {
+        config(['services.telegram.installed' => false]);
+
+        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
+
+        $register = $this->formAt($content, route('admin.configuration.telegram.registration.create'));
+        $secret = $this->formAt($content, route('admin.configuration.telegram.secret.create'));
+
+        $this->assertStringContainsString('aria-disabled="true"', $register);
+        $this->assertStringNotContainsString('confirm-password', $register);
+        $this->assertStringContainsString('aria-disabled="true"', $secret);
+        $this->assertStringNotContainsString('confirm-password', $secret);
+    }
+
+    private function makeTelegramAvailable(): void
+    {
+        config([
+            'services.telegram.installed' => true,
+            'services.telegram.token' => 'dwight-schrute-beet-farm',
+            'services.telegram.webhook_secret' => 'bears-beets-battlestar-galactica',
+        ]);
+        URL::forceScheme('https');
+        URL::forceRootUrl('https://erica.dundermifflin.com');
+    }
+
+    private function formAt(string $content, string $action, bool $last = false): string
+    {
+        $needle = 'action="'.$action.'"';
+        $start = $last ? strrpos($content, $needle) : strpos($content, $needle);
+
+        $this->assertNotFalse($start, "No form posts to {$action}.");
+
+        return substr($content, $start, strpos($content, '</form>', $start) - $start);
     }
 
     private function administrator(): User

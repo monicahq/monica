@@ -16,10 +16,10 @@ use Illuminate\View\View;
 
 class InstanceSettingController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
         return view('app.admin.configuration.index', [
-            'viewModel' => new ConfigurationViewModel,
+            'viewModel' => new ConfigurationViewModel(user: $request->user()),
         ]);
     }
 

@@ -1,0 +1,606 @@
+{
+  "workflow": "companion",
+  "specName": "Admin Password Confirmation",
+  "branch": "main",
+  "currentStep": "implement",
+  "status": "completed",
+  "history": [
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-10-13T07:57:22.493Z"
+    },
+    {
+      "step": "specify",
+      "substep": null,
+      "kind": "complete",
+      "by": "extension",
+      "at": "2026-10-13T08:00:42.620Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-10-13T14:08:01.513Z"
+    },
+    {
+      "step": "plan",
+      "substep": "research",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T14:11:58.991Z"
+    },
+    {
+      "step": "plan",
+      "substep": "design",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T14:12:48.226Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T14:12:52.222Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-10-13T16:34:06.698Z"
+    },
+    {
+      "step": "tasks",
+      "substep": "generate",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T16:36:25.335Z"
+    },
+    {
+      "step": "tasks",
+      "substep": null,
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T16:36:25.510Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "start",
+      "by": "extension",
+      "at": "2026-10-13T17:01:55.868Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T001",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:02:28.117Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T002",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:03:04.966Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T003",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:03:05.060Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T004",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:03:58.195Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T005",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:03:58.299Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T013",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:05:39.008Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T014",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:05:39.093Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T015",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:05:39.177Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T016",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:06:10.381Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T017",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:06:10.470Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T018",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:06:10.559Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T006",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:07:21.332Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T007",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:07:21.416Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T008",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:07:21.502Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T009",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:08:28.057Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T010",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:08:28.141Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T011",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:08:28.225Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T012",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:08:28.305Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T019",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:09:42.156Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "task": "T020",
+      "kind": "complete",
+      "by": "ai",
+      "at": "2026-10-13T17:12:33.851Z"
+    },
+    {
+      "step": "implement",
+      "substep": null,
+      "kind": "complete",
+      "by": "user",
+      "at": "2026-10-13T18:19:08.272Z"
+    }
+  ],
+  "telemetryInstanceId": "016e7a24-bbc9-4aa0-a407-2c0fcc7ce357",
+  "selectedAt": "2026-10-13T07:57:22.493Z",
+  "last_action": "20/21 tasks done; T021 browser check left open",
+  "coverage": {
+    "FR-001": {
+      "title": "Every gated admin action asks for the credential in the card over the current screen",
+      "tasks": [
+        "T007",
+        "T010",
+        "T012",
+        "T014",
+        "T018",
+        "T021"
+      ],
+      "tests": [
+        "tests/Feature/Views/App/Admin/ConfigurationTest.php",
+        "tests/Feature/Views/App/Admin/FlagsTest.php"
+      ]
+    },
+    "FR-002": {
+      "title": "After acceptance the original submission goes through with the values entered",
+      "tasks": [
+        "T012",
+        "T021"
+      ]
+    },
+    "FR-003": {
+      "title": "A recent confirmation lets a gated admin action through without the card",
+      "tasks": [
+        "T021"
+      ]
+    },
+    "FR-004": {
+      "title": "Cancelling leaves the record unchanged and keeps what was typed",
+      "tasks": [
+        "T012",
+        "T021"
+      ]
+    },
+    "FR-005": {
+      "title": "The card offers password, passkey or both, and says so when neither is held",
+      "tasks": [
+        "T006",
+        "T009",
+        "T013",
+        "T016"
+      ],
+      "tests": [
+        "tests/Unit/ViewModels/Admin/ConfigurationViewModelTest.php",
+        "tests/Unit/ViewModels/Admin/FlagsViewModelTest.php"
+      ]
+    },
+    "FR-006": {
+      "title": "The card describes the admin action in fitting words",
+      "tasks": [
+        "T002",
+        "T004",
+        "T007",
+        "T012",
+        "T014",
+        "T018",
+        "T019"
+      ],
+      "tests": [
+        "tests/Feature/Views/Components/Modal/ConfirmPasswordTest.php"
+      ]
+    },
+    "FR-007": {
+      "title": "An existing warning still appears first, the card after it",
+      "tasks": [
+        "T003",
+        "T005",
+        "T007",
+        "T010",
+        "T012",
+        "T014",
+        "T018"
+      ],
+      "tests": [
+        "tests/Feature/Views/Components/Modal/WarningTest.php",
+        "tests/Feature/Views/App/Admin/ConfigurationTest.php"
+      ]
+    },
+    "FR-008": {
+      "title": "The server keeps refusing a gated admin action without a recent confirmation",
+      "tasks": [
+        "T008",
+        "T015",
+        "T020"
+      ],
+      "tests": [
+        "tests/Feature/Controllers/App/Admin/InstanceSettingControllerTest.php",
+        "tests/Feature/Controllers/App/Admin/FlagActivationControllerTest.php"
+      ]
+    },
+    "FR-009": {
+      "title": "The gated admin actions stay the same set as today",
+      "tasks": [
+        "T008",
+        "T015",
+        "T020"
+      ]
+    },
+    "FR-010": {
+      "title": "The card is usable by keyboard and screen reader as on the security screen",
+      "tasks": [
+        "T003",
+        "T005",
+        "T021"
+      ]
+    }
+  },
+  "size": "normal",
+  "classification": {
+    "projectedFiles": 10,
+    "projectedTasks": 14,
+    "scopeSignal": "none",
+    "verdict": "normal"
+  },
+  "expectations": [
+    "gating further admin actions (administrators, account activation, lifetime access, storage limit, per-account flags)",
+    "changing the security and profile screens wording",
+    "removing the full confirmation screen"
+  ],
+  "context": [
+    "area: resources/views/components/modal/confirm-password.blade.php and resources/js/confirm-password.js",
+    "area: resources/views/app/admin/configuration and resources/views/app/admin/flags",
+    "area: routes/administrator.php password.confirm group",
+    "constraint: server-side password.confirm middleware stays as the rule"
+  ],
+  "intent": "Ask for the credential in the existing confirm-password card on gated admin actions instead of the full-page detour",
+  "assistant": "claude",
+  "decisions": [
+    {
+      "decision": "Move the inline two step warning from @submit to the Save button click, then dispatch confirm-password from the same handler",
+      "why": "requestSubmit fires submit but not click, so a card on click with the warning on submit puts the card first (breaks FR-007), and a submit interceptor loops",
+      "rejected": "A pass-through flag the card sets before resubmitting"
+    },
+    {
+      "decision": "x-modal.warning gains a confirmsPassword prop that closes the warning and dispatches confirm-password with its form",
+      "why": "The teleported warning holds x-trap.inert, so the card would be inert behind it; one dialog at a time keeps the warning first",
+      "rejected": "A second admin warning component"
+    },
+    {
+      "decision": "x-modal.confirm-password gains a description prop defaulting to the sign-in sentence",
+      "why": "FR-006 admin wording while security and profile keep their text",
+      "rejected": "A slot or a purpose enum"
+    },
+    {
+      "decision": "ConfigurationViewModel and FlagsViewModel take the User and expose credentials(); the card is placed per screen",
+      "why": "Matches SecurityViewModel and ProfileViewModel",
+      "rejected": "Including the card in the admin layout"
+    },
+    {
+      "decision": "Omit data-model.md and contracts/",
+      "why": "Constitution XI: no data is added and the plan Interface table carries the contract",
+      "rejected": "Writing both from the dispatch briefs"
+    },
+    {
+      "decision": "x-delete-action declares its own confirmsPassword prop",
+      "why": "a kebab key forwarded only through $attributes lands as ${confirms-password}, never $confirmsPassword, so the warning never saw it",
+      "rejected": "forwarding through $attributes as the plan said"
+    },
+    {
+      "decision": "bare x-data on the admin forms whose Save or Register dispatches",
+      "why": "the admin layout has no Alpine root, so @click handlers outside a component never start",
+      "rejected": "adding x-data to layouts/admin.blade.php, which changes every admin screen"
+    }
+  ],
+  "step_summaries": {
+    "plan": {
+      "summary": "Plan reuses x-modal.confirm-password on the seven gated admin actions with two component props and no server or JavaScript change",
+      "key_finding": "The card resubmits with requestSubmit(), which fires submit but not click, so the existing @submit warnings would come after the card unless they move to the click handler"
+    },
+    "tasks": {
+      "summary": "21 tasks: setup, foundational (2 components, 2 waves), US1 configuration (3 waves), US2 flags (3 waves), polish; US3 covered inside US1 and US2 view model tests"
+    },
+    "implement": {
+      "summary": "Admin configuration and every-account flag switches confirm a credential in the card in place of the full screen redirect"
+    }
+  },
+  "approach": "Each gated admin button dispatches the existing confirm-password event; inline warnings run first in the same click handler, and x-modal.warning gains a confirmsPassword opt-in that closes itself before handing its form to the card. The card gets a description prop for admin wording, the admin view models expose credentials(), and the stock password.confirm middleware stays the rule.",
+  "currentTask": "T020",
+  "task_summaries": {
+    "T001": {
+      "status": "DONE",
+      "did": "Fast-forwarded main to origin/main and created branch 2026-10-13-admin-password-confirmation without writing .git/config"
+    },
+    "T002": {
+      "status": "DONE",
+      "did": "Tests for the card's description prop: default sentence and override",
+      "files": [
+        "tests/Feature/Views/Components/Modal/ConfirmPasswordTest.php"
+      ]
+    },
+    "T003": {
+      "status": "DONE",
+      "did": "Tests for the warning's confirmsPassword prop, directly and through x-delete-action, and its default",
+      "files": [
+        "tests/Feature/Views/Components/Modal/WarningTest.php"
+      ]
+    },
+    "T004": {
+      "status": "DONE",
+      "did": "description prop on x-modal.confirm-password, null keeps the sign in sentence",
+      "files": [
+        "resources/views/components/modal/confirm-password.blade.php"
+      ]
+    },
+    "T005": {
+      "status": "DONE",
+      "did": "confirmsPassword prop on x-modal.warning; x-delete-action needed its own prop because a kebab key forwarded through $attributes never becomes $confirmsPassword",
+      "files": [
+        "resources/views/components/modal/warning.blade.php",
+        "resources/views/components/delete-action.blade.php"
+      ]
+    },
+    "T013": {
+      "status": "DONE",
+      "did": "Built FlagsViewModel with user: and tested credentials() for a password holder and for an administrator with neither credential",
+      "files": [
+        "tests/Unit/ViewModels/Admin/FlagsViewModelTest.php"
+      ]
+    },
+    "T014": {
+      "status": "DONE",
+      "did": "New view test: admin card wording and the confirm-password dispatch on both every-account warnings",
+      "files": [
+        "tests/Feature/Views/App/Admin/FlagsTest.php"
+      ]
+    },
+    "T015": {
+      "status": "DONE",
+      "did": "Asserted an unconfirmed every-account deactivation redirects to confirmation and leaves the flag on",
+      "files": [
+        "tests/Feature/Controllers/App/Admin/FlagActivationControllerTest.php"
+      ]
+    },
+    "T016": {
+      "status": "DONE",
+      "did": "FlagsViewModel takes the user and exposes credentials()",
+      "files": [
+        "app/ViewModels/Admin/FlagsViewModel.php"
+      ]
+    },
+    "T017": {
+      "status": "DONE",
+      "did": "FlagController passes the signed in user to the view model",
+      "files": [
+        "app/Http/Controllers/App/Admin/FlagController.php"
+      ]
+    },
+    "T018": {
+      "status": "DONE",
+      "did": "Flags screen places the credential card with the admin wording; both every-account warnings confirm the password",
+      "files": [
+        "resources/views/app/admin/flags/index.blade.php"
+      ]
+    },
+    "T006": {
+      "status": "DONE",
+      "did": "View model built with user everywhere; credentials() tested for a password holder and for an administrator with neither credential",
+      "files": [
+        "tests/Unit/ViewModels/Admin/ConfigurationViewModelTest.php"
+      ]
+    },
+    "T007": {
+      "status": "DONE",
+      "did": "Asserted card and admin description, Save dispatch after warning with no @submit, refused setting and unavailable Telegram buttons dispatch nothing, Clear/Put back/orphan/Register/Generate dispatch, Check ungated; replaced exact count with per form assertion",
+      "files": [
+        "tests/Feature/Views/App/Admin/ConfigurationTest.php"
+      ]
+    },
+    "T008": {
+      "status": "DONE",
+      "did": "Unconfirmed put back and orphan removal redirect to the confirmation screen and change nothing",
+      "files": [
+        "tests/Feature/Controllers/App/Admin/InstanceSettingControllerTest.php"
+      ]
+    },
+    "T009": {
+      "status": "DONE",
+      "did": "Constructor takes the User; credentials() returns ConfirmPasswordViewModel",
+      "files": [
+        "app/ViewModels/Admin/ConfigurationViewModel.php"
+      ]
+    },
+    "T010": {
+      "status": "DONE",
+      "did": "Generate a secret warns then dispatches, Register dispatches, Check ungated; unavailable buttons rendered separately with aria-disabled and no Alpine handler; forms carry x-data for an Alpine scope",
+      "files": [
+        "resources/views/app/admin/configuration/_telegram.blade.php"
+      ]
+    },
+    "T011": {
+      "status": "DONE",
+      "did": "index() takes the Request and passes user to the view model; no other call site",
+      "files": [
+        "app/Http/Controllers/App/Admin/InstanceSettingController.php"
+      ]
+    },
+    "T012": {
+      "status": "DONE",
+      "did": "Card placed at top with admin description; warning check moved from @submit to Save @click.prevent then dispatch; refused Save has no handler; Clear, Put back and orphan removal pass confirms-password; plain forms get x-data",
+      "files": [
+        "resources/views/app/admin/configuration/index.blade.php"
+      ]
+    },
+    "T019": {
+      "status": "DONE",
+      "did": "Translated the admin card sentence into every configured locale; monica:localize --check passes",
+      "files": [
+        "lang/*.json"
+      ]
+    },
+    "T020": {
+      "status": "DONE",
+      "did": "Suite 7311 passed, 2 failed in TrustedProxiesTest from the local .env APP_TRUSTED_PROXIES=* (pass with it cleared); phpstan 0, pint clean, localize --check passes"
+    }
+  },
+  "verified": [
+    {
+      "what": "feature tests",
+      "command": "php artisan test --compact tests/Feature/Views/Components tests/Feature/Views/App/Admin tests/Feature/Controllers/App/Admin tests/Unit/ViewModels/Admin",
+      "source": "derived",
+      "exitCode": 0,
+      "durationSeconds": 24.8,
+      "result": "{\"tool\":\"phpunit\",\"result\":\"passed\",\"tests\":565,\"passed\":565,\"assertions\":1519,\"duration_ms\":23962,\"risky\":1}"
+    },
+    {
+      "what": "phpstan",
+      "command": "vendor/bin/phpstan analyse --no-progress --memory-limit=2G",
+      "source": "derived",
+      "exitCode": 0,
+      "durationSeconds": 2.2,
+      "result": "{\"tool\":\"phpstan\",\"result\":\"passed\",\"errors\":0}"
+    },
+    {
+      "what": "localize check",
+      "command": "php artisan monica:localize --check",
+      "source": "derived",
+      "exitCode": 0,
+      "durationSeconds": 2.4,
+      "result": "| zh_CN | 3589 | | · +--------+------------+---------+ · The locale files are up to date."
+    },
+    {
+      "what": "full suite",
+      "command": "php artisan test --compact --parallel",
+      "result": "7311 passed, 2 failed (TrustedProxiesTest)",
+      "warnings": [
+        "TrustedProxiesTest fails because the local .env sets APP_TRUSTED_PROXIES=*; passes with it cleared, unrelated to this change"
+      ]
+    }
+  ],
+  "concerns": [
+    {
+      "note": "T021 browser walk-through not done: needs an administrator account with a password on the local instance, and creating one needs approval",
+      "step": "implement"
+    }
+  ]
+}

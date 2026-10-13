@@ -51,23 +51,38 @@
       <form
         method="POST"
         action="{{ route('admin.configuration.telegram.secret.create') }}"
-        @if ($panel->secretReplacementWarning())
-          x-data="{ confirming: false }"
-          @submit="if (! confirming) { $event.preventDefault(); confirming = true }"
-        @endif
+        x-data="{ confirming: false }"
         class="flex flex-col items-end gap-2"
       >
         @csrf
 
-        <x-button.secondary
-          type="submit"
-          size="small"
-          :aria-disabled="$panel->canGenerateSecret() ? null : 'true'"
-          :aria-describedby="$panel->canGenerateSecret() ? null : 'telegram-unavailable'"
-          :onclick="$panel->canGenerateSecret() ? null : 'return false'"
-        >
-          {{ __('Generate a secret') }}
-        </x-button.secondary>
+        @if (! $panel->canGenerateSecret())
+          <x-button.secondary
+            type="submit"
+            size="small"
+            aria-disabled="true"
+            aria-describedby="telegram-unavailable"
+            onclick="return false"
+          >
+            {{ __('Generate a secret') }}
+          </x-button.secondary>
+        @elseif ($panel->secretReplacementWarning())
+          <x-button.secondary
+            type="submit"
+            size="small"
+            @click.prevent="if (! confirming) { confirming = true } else { $dispatch('confirm-password', { form: $el.form }) }"
+          >
+            {{ __('Generate a secret') }}
+          </x-button.secondary>
+        @else
+          <x-button.secondary
+            type="submit"
+            size="small"
+            @click.prevent="$dispatch('confirm-password', { form: $el.form })"
+          >
+            {{ __('Generate a secret') }}
+          </x-button.secondary>
+        @endif
 
         @if ($panel->secretReplacementWarning())
           <p x-cloak x-show="confirming" role="alert" class="max-w-xs text-right text-xs text-error">
@@ -90,18 +105,28 @@
         </x-button.secondary>
       </form>
 
-      <form method="POST" action="{{ route('admin.configuration.telegram.registration.create') }}">
+      <form method="POST" action="{{ route('admin.configuration.telegram.registration.create') }}" x-data>
         @csrf
 
-        <x-button.secondary
-          type="submit"
-          size="small"
-          :aria-disabled="$panel->unavailableReason() ? 'true' : null"
-          :aria-describedby="$panel->unavailableReason() ? 'telegram-unavailable' : null"
-          :onclick="$panel->unavailableReason() ? 'return false' : null"
-        >
-          {{ __('Register with Telegram') }}
-        </x-button.secondary>
+        @if ($panel->unavailableReason())
+          <x-button.secondary
+            type="submit"
+            size="small"
+            aria-disabled="true"
+            aria-describedby="telegram-unavailable"
+            onclick="return false"
+          >
+            {{ __('Register with Telegram') }}
+          </x-button.secondary>
+        @else
+          <x-button.secondary
+            type="submit"
+            size="small"
+            @click.prevent="$dispatch('confirm-password', { form: $el.form })"
+          >
+            {{ __('Register with Telegram') }}
+          </x-button.secondary>
+        @endif
       </form>
     </div>
   </div>

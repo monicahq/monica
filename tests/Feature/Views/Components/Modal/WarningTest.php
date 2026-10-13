@@ -68,4 +68,27 @@ class WarningTest extends TestCase
             (string) $rendered,
         );
     }
+
+    #[Test]
+    public function it_hands_its_form_to_the_credential_card_when_asked_to(): void
+    {
+        $rendered = $this->blade(
+            '<x-modal.warning title="Fire Ryan?" action="/admin/configuration/1" confirms-password><p>Dunder Mifflin loses its temp.</p><x-slot:trigger><button type="button" @click="open = true">Fire Ryan</button></x-slot:trigger></x-modal.warning>',
+        );
+
+        $rendered->assertSee("@click.prevent=\"open = false; \$dispatch('confirm-password', { form: \$el.form })\"", escape: false);
+        $rendered->assertDontSee('confirms-password', escape: false);
+    }
+
+    #[Test]
+    public function it_submits_its_own_form_unless_asked_otherwise(): void
+    {
+        $template = '<x-modal.warning title="Fire Ryan?" action="/admin/configuration/1" %s><p>Dunder Mifflin loses its temp.</p><x-slot:trigger><button type="button" @click="open = true">Fire Ryan</button></x-slot:trigger></x-modal.warning>';
+
+        $default = (string) $this->blade(sprintf($template, ''));
+        $declined = (string) $this->blade(sprintf($template, ':confirms-password="false"'));
+
+        $this->assertSame($default, $declined);
+        $this->assertStringNotContainsString('confirm-password', $default);
+    }
 }

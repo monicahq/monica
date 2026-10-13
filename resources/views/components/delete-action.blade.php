@@ -6,6 +6,7 @@
   @var string $label
   @var string $variant
   @var string $size
+  @var bool $confirmsPassword
 --}}
 @props([
   'title',
@@ -14,6 +15,7 @@
   'label',
   'variant' => 'secondary',
   'size' => 'default',
+  'confirmsPassword' => false,
 ])
 
 @php
@@ -23,7 +25,7 @@
   };
 @endphp
 
-<x-modal.warning :title="$title" :confirm="$confirm" :action="$action" {{ $attributes }}>
+<x-modal.warning :title="$title" :confirm="$confirm" :action="$action" :confirms-password="$confirmsPassword" {{ $attributes }}>
   <x-slot:trigger>
     <x-button
       :variant="$variant"

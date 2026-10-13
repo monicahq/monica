@@ -1,11 +1,13 @@
-{{-- The card that asks for a credential before a change to the way somebody signs in. --}}
+{{-- The card that asks for a credential before a sensitive change. --}}
 {{--
   @var bool $offersPassword
   @var bool $offersPasskey
+  @var string|null $description
 --}}
 @props([
   'offersPassword' => false,
   'offersPasskey' => false,
+  'description' => null,
 ])
 
 <div
@@ -45,7 +47,7 @@
         <div class="flex min-w-0 flex-col gap-3">
           <p class="text-card-title text-ink">{{ __('Confirm it is you') }}</p>
 
-          <p class="text-sm leading-relaxed text-body">{{ __('What you are about to change decides how you sign in, so we ask for a credential first. You will not be asked again for a little while.') }}</p>
+          <p class="text-sm leading-relaxed text-body">{{ $description ?? __('What you are about to change decides how you sign in, so we ask for a credential first. You will not be asked again for a little while.') }}</p>
 
           @if ($offersPassword)
             <x-input

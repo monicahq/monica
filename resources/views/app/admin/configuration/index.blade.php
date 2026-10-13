@@ -1,6 +1,12 @@
 {{-- How this instance behaves, and the only screen that changes it without a terminal. --}}
 {{-- @var \App\ViewModels\Admin\ConfigurationViewModel $viewModel --}}
 <x-admin-layout :title="__('Configuration')">
+  <x-modal.confirm-password
+    :offers-password="$viewModel->credentials()->offersPassword()"
+    :offers-passkey="$viewModel->credentials()->offersPasskey()"
+    :description="__('What you are about to change decides how this instance behaves for everybody, so we ask for a credential first. You will not be asked again for a little while.')"
+  />
+
   <x-page-header
     :title="__('Configuration')"
     :description="__('What governs this instance. A change takes effect on the next request, and work already running finishes under the value it started with.')"
@@ -63,7 +69,8 @@
                     return Number(next) < Number(this.current)
                   },
                 }"
-                @submit="if (! confirming && takesSomethingAway($refs.value.value)) { $event.preventDefault(); confirming = true }"
+              @else
+                x-data
               @endif
             >
               @csrf
@@ -98,15 +105,35 @@
                 />
               @endif
 
-              <x-button.secondary
-                type="submit"
-                size="small"
-                :aria-disabled="$setting['changeable'] ? null : 'true'"
-                :aria-describedby="$setting['reason'] ? 'reason-'.$setting['name'] : null"
-                :onclick="$setting['changeable'] ? null : 'return false'"
-              >
-                {{ __('Save') }}
-              </x-button.secondary>
+              @if (! $setting['changeable'])
+                <x-button.secondary
+                  type="submit"
+                  size="small"
+                  aria-disabled="true"
+                  :aria-describedby="$setting['reason'] ? 'reason-'.$setting['name'] : null"
+                  onclick="return false"
+                >
+                  {{ __('Save') }}
+                </x-button.secondary>
+              @elseif ($setting['warning'])
+                <x-button.secondary
+                  type="submit"
+                  size="small"
+                  :aria-describedby="$setting['reason'] ? 'reason-'.$setting['name'] : null"
+                  @click.prevent="if (! confirming && takesSomethingAway($refs.value.value)) { confirming = true } else { $dispatch('confirm-password', { form: $el.form }) }"
+                >
+                  {{ __('Save') }}
+                </x-button.secondary>
+              @else
+                <x-button.secondary
+                  type="submit"
+                  size="small"
+                  :aria-describedby="$setting['reason'] ? 'reason-'.$setting['name'] : null"
+                  @click.prevent="$dispatch('confirm-password', { form: $el.form })"
+                >
+                  {{ __('Save') }}
+                </x-button.secondary>
+              @endif
               </div>
 
               @if ($setting['warning'])
@@ -123,6 +150,7 @@
                 :label="$setting['kind'] === 'secret' ? __('Clear') : __('Put back')"
                 :action="route('admin.configuration.destroy', ['setting' => $setting['name']])"
                 size="small"
+                confirms-password
               >
                 <p>{{ __('This instance goes back to the value its deployment supplies.') }}</p>
               </x-delete-action>
@@ -151,6 +179,7 @@
               :label="__('Remove')"
               :action="route('admin.configuration.orphans.destroy', ['name' => $orphan['name']])"
               size="small"
+              confirms-password
             >
               <p>{{ __('Nothing reads it any more. Removing it only tidies this screen.') }}</p>
             </x-delete-action>

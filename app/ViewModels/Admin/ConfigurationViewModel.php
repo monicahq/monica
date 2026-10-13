@@ -10,12 +10,23 @@ use App\Helpers\InstanceSettings;
 use App\Helpers\TelegramWebhook;
 use App\Models\InstanceSetting;
 use App\Models\TelegramWebhookRegistration;
+use App\Models\User;
+use App\ViewModels\Auth\ConfirmPasswordViewModel;
 
 /**
  * What the configuration screen of the admin space shows.
  */
 class ConfigurationViewModel
 {
+    public function __construct(
+        private readonly User $user,
+    ) {}
+
+    public function credentials(): ConfirmPasswordViewModel
+    {
+        return new ConfirmPasswordViewModel(user: $this->user);
+    }
+
     /** @return array<string, string|null> */
     private function stored(): array
     {

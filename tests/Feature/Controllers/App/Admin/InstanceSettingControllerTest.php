@@ -126,6 +126,39 @@ class InstanceSettingControllerTest extends TestCase
         $this->assertDatabaseMissing('instance_settings', ['name' => 'free_contact_limit']);
     }
 
+    #[Test]
+    public function it_asks_for_a_credential_before_putting_a_setting_back(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $user->id]);
+        $setting = InstanceSetting::factory()->create([
+            'name' => InstanceSettingEnum::FreeContactLimit->value,
+            'value' => '5',
+        ]);
+
+        $response = $this->actingAs($user)
+            ->delete('/admin/configuration/'.InstanceSettingEnum::FreeContactLimit->value);
+
+        $response->assertRedirect(route('auth.confirmPassword.new'));
+        $this->assertSame('5', $setting->refresh()->value);
+    }
+
+    #[Test]
+    public function it_asks_for_a_credential_before_removing_a_value_the_product_no_longer_reads(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $user->id]);
+        InstanceSetting::factory()->create(['name' => 'a_setting_that_was_dropped']);
+
+        $response = $this->actingAs($user)
+            ->delete('/admin/configuration/orphans/a_setting_that_was_dropped');
+
+        $response->assertRedirect(route('auth.confirmPassword.new'));
+        $this->assertDatabaseHas('instance_settings', ['name' => 'a_setting_that_was_dropped']);
+    }
+
     private function administrator(): User
     {
         $user = User::factory()->create();
