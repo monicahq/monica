@@ -3,7 +3,6 @@
 <x-auth-page
   :title="__('Forgot your password?')"
   :description="__('Give your email address and we will send you a link to choose a new one.')"
-  :quote="$viewModel->quote()"
 >
   <x-status :message="session('status')" />
 

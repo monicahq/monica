@@ -40,7 +40,7 @@
             ],
           ]) }})"
         >
-          <div x-cloak x-show="supported" class="space-y-3">
+          <div x-show="supported" class="space-y-3">
             <x-button
               type="button"
               class="w-full"

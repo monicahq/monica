@@ -96,7 +96,6 @@
             <x-button.secondary
               size="small"
               type="button"
-              x-cloak
               x-show="supported"
               x-bind:disabled="busy"
               @click="confirm()"

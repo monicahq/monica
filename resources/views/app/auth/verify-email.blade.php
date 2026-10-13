@@ -3,7 +3,6 @@
 <x-auth-page
   :title="__('Confirm your email address')"
   :description="__('We sent a link to :email. Click it, and your account is ready.', ['email' => $viewModel->email()])"
-  :quote="$viewModel->quote()"
 >
   <x-status :message="session('status')" />
 

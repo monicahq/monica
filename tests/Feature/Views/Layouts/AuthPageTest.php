@@ -9,12 +9,6 @@ use Tests\TestCase;
 
 class AuthPageTest extends TestCase
 {
-    /** @return array{text: string, author: string, source: string} */
-    private function quote(): array
-    {
-        return ['text' => 'Bears. Beets. Battlestar Galactica.', 'author' => 'Jim Halpert', 'source' => 'The Office'];
-    }
-
     #[Test]
     public function it_keeps_turbo_from_showing_a_stale_copy_or_fetching_on_hover(): void
     {
@@ -58,17 +52,6 @@ class AuthPageTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_the_quote_only_when_it_is_given_one(): void
-    {
-        $this->blade('<x-auth-page title="Welcome back" :quote="$quote">The card</x-auth-page>', ['quote' => $this->quote()])
-            ->assertSee('Bears. Beets. Battlestar Galactica.')
-            ->assertSee('Jim Halpert');
-
-        $this->blade('<x-auth-page title="Welcome back">The card</x-auth-page>')
-            ->assertDontSee('Jim Halpert');
-    }
-
-    #[Test]
     public function every_screen_a_visitor_sees_offers_the_same_way_to_change_the_theme(): void
     {
         $this->blade('<x-auth-page title="Welcome back">The card</x-auth-page>')
@@ -80,7 +63,13 @@ class AuthPageTest extends TestCase
     {
         $this->blade('<x-auth-page title="Welcome back">The card</x-auth-page>')
             ->assertSee(config('app.name'))
-            ->assertSee(__('Open source HR'))
             ->assertSee(now()->format('Y'));
+    }
+
+    #[Test]
+    public function the_name_of_the_application_leads_home(): void
+    {
+        $this->blade('<x-auth-page title="Welcome back">The card</x-auth-page>')
+            ->assertSee('href="'.route('home.index').'"', escape: false);
     }
 }

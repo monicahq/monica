@@ -3,7 +3,6 @@
 <x-auth-page
   :title="__('Get a link to sign in')"
   :description="__('Give your email address and we will send you a link that signs you in.')"
-  :quote="$viewModel->quote()"
 >
   <x-box>
     <x-form method="post" :action="route('auth.magicLink.create')" data-turbo="false" class="space-y-4">

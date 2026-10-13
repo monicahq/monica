@@ -3,7 +3,6 @@
 <x-auth-page
   :title="__('One more step')"
   :description="__('Open your authenticator app and type the code it is showing.')"
-  :quote="$viewModel->quote()"
 >
   <x-box>
     <x-form method="post" :action="route('auth.twoFactor.create')" class="space-y-4">

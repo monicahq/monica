@@ -2,7 +2,6 @@
 {{-- @var \App\ViewModels\Auth\NewPasswordViewModel $viewModel --}}
 <x-auth-page
   :title="__('Choose a new password')"
-  :quote="$viewModel->quote()"
 >
   <x-box>
     <x-form method="post" :action="route('auth.password.update')" class="space-y-4">

@@ -13,16 +13,6 @@ use Tests\TestCase;
 class RegisterViewModelTest extends TestCase
 {
     #[Test]
-    public function it_gives_a_quote(): void
-    {
-        $quote = new RegisterViewModel()->quote();
-
-        $this->assertArrayHasKey('text', $quote);
-        $this->assertArrayHasKey('author', $quote);
-        $this->assertArrayHasKey('source', $quote);
-    }
-
-    #[Test]
     public function it_gives_the_languages_the_interface_speaks(): void
     {
         $locales = new RegisterViewModel()->locales();

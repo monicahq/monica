@@ -137,7 +137,6 @@
     --shadow-control: 0 1px 2px rgb(9 9 11 / 0.06);
     --shadow-nav-active: inset 0 0 0 1px var(--hairline), 0 1px 2px rgb(0 0 0 / 0.04);
     --shadow-pop: 0 10px 24px -8px var(--pop-shadow);
-    --shadow-quote: 0 18px 40px -22px var(--quote-shadow);
 
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -260,9 +259,6 @@
     --duration-slow: 220ms;
 
     --pop-shadow: rgba(9, 9, 11, 0.16);
-    --quote-shadow: rgba(9, 9, 11, 0.14);
-
-    --quote-bands: #f4f4f5, #efeff2, #eceaef, #f0edee, #f4f2f0, #fafafa;
 
     color-scheme: light;
 }
@@ -323,9 +319,6 @@
         --topbar-hairline: #27272a;
 
         --pop-shadow: rgba(0, 0, 0, 0.6);
-        --quote-shadow: rgba(0, 0, 0, 0.5);
-
-        --quote-bands: #18181b, #1b1b1f, #1f1d22, #201e1e, #1e1d1a, #18181b;
 
         color-scheme: dark;
     }

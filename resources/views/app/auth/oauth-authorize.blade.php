@@ -3,7 +3,6 @@
 <x-auth-page
   :title="__('Connect :name', ['name' => $viewModel->clientName()])"
   :description="__('This assistant is asking to read and change what your account holds, on your behalf.')"
-  :quote="$viewModel->quote()"
 >
   <x-box class="space-y-4">
     <x-detail-list>

@@ -8,14 +8,6 @@ use App\Helpers\AvailableLocales;
 
 abstract class GuestViewModel
 {
-    /** @return array{text: string, author: string, source: string} */
-    public function quote(): array
-    {
-        $quotes = config('quotes');
-
-        return $quotes[array_rand($quotes)];
-    }
-
     /** @return array<int, array{code: string, label: string, region: string, flag: string}> */
     public function locales(): array
     {

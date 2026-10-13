@@ -1,27 +1,47 @@
-{{-- The shell of every screen a visitor signs in through: the card on one side, a line from The Office on the other. --}}
+{{-- The shell of every screen a visitor signs in through: one centred column over a landscape. --}}
 {{--
   @var string $title
   @var string|null $description
-  @var array{text: string, author: string, source: string}|null $quote
 --}}
 @props([
   'title',
   'description' => null,
-  'quote' => null,
 ])
 
 <x-guest-layout :title="$title">
-  <div class="grid min-h-screen grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)]">
-    <main class="flex min-w-0 flex-col justify-center px-6 py-10 sm:px-15">
-      <div class="mx-auto my-auto w-full max-w-md space-y-6">
-        <div class="space-y-2">
-          <div class="flex items-center gap-3">
-            <x-logo :size="30" />
+  <div class="relative isolate flex min-h-screen flex-col">
+    <img
+      src="{{ asset('images/sign-in-landscape.webp') }}"
+      alt=""
+      width="1983"
+      height="793"
+      decoding="async"
+      loading="lazy"
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 w-full select-none dark:hidden"
+    />
 
-            <h1 class="text-2xl font-semibold tracking-tight text-ink">{{ $title }}</h1>
+    <img
+      src="{{ asset('images/sign-in-landscape-dark.webp') }}"
+      alt=""
+      width="1983"
+      height="793"
+      decoding="async"
+      loading="lazy"
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 hidden w-full select-none dark:block"
+    />
 
-            <x-theme-toggle class="ml-auto" />
-          </div>
+    <main class="flex flex-1 flex-col justify-center px-6 py-10">
+      <div class="mx-auto w-full max-w-md space-y-6">
+        <div class="space-y-3 text-center">
+          <a href="{{ route('home.index') }}" class="focus-ring inline-flex items-center gap-3 rounded-md no-underline">
+            <x-logo :size="36" />
+
+            <span class="text-3xl font-medium tracking-tight text-ink">{{ config('app.name') }}</span>
+          </a>
+
+          <h1 class="text-3xl font-semibold tracking-tight text-ink">{{ $title }}</h1>
 
           @isset($description)
             <p class="text-sm text-body">{{ $description }}</p>
@@ -30,14 +50,16 @@
 
         {{ $slot }}
       </div>
-
-      <p class="pt-10 text-center text-xs text-muted-soft">
-        © {{ config('app.name') }} {{ now()->format('Y') }} ⋅ {{ __('Open source HR') }}
-      </p>
     </main>
 
-    @isset($quote)
-      @include('app.auth._quote', ['quote' => $quote])
-    @endisset
+    <footer class="flex flex-wrap items-center justify-between gap-4 px-6 pb-6 sm:px-20">
+      <p class="text-xs text-body">© {{ config('app.name') }} {{ now()->format('Y') }}</p>
+
+      <div class="flex items-center gap-2">
+        {{ $footer ?? '' }}
+
+        <x-theme-toggle class="border border-hairline-strong bg-canvas" />
+      </div>
+    </footer>
   </div>
 </x-guest-layout>

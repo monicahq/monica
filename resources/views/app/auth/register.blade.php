@@ -8,8 +8,6 @@
 
 <x-auth-page
   :title="__('Create your account')"
-  :description="__('An account holds one person, and everything in it is yours alone.')"
-  :quote="$viewModel->quote()"
 >
   <x-status :message="session('status')" />
 
@@ -130,9 +128,7 @@
     {{ __('Already have an account?') }}
   </x-auth-footnote>
 
-  <div class="flex items-center gap-3">
+  <x-slot:footer>
     <x-language-picker :locales="$viewModel->locales()" :current="$viewModel->currentLocale()" />
-
-    <span class="text-xs text-muted-soft">{{ __('You can change it any time.') }}</span>
-  </div>
+  </x-slot:footer>
 </x-auth-page>

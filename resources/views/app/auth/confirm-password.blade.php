@@ -63,7 +63,7 @@
           ]) }})"
           @passkey-confirmed="window.location = $event.detail.redirect"
         >
-          <div x-cloak x-show="supported" class="flex flex-col gap-2.5">
+          <div x-show="supported" class="flex flex-col gap-2.5">
             <x-button.secondary
               type="button"
               class="w-full"
