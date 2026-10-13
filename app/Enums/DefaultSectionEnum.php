@@ -83,7 +83,7 @@ enum DefaultSectionEnum: string implements Translatable
                 DefaultFieldEnum::Website,
             ],
             self::Addresses => [
-                DefaultFieldEnum::Address,
+                DefaultFieldEnum::Addresses,
             ],
             self::Documents => [
                 DefaultFieldEnum::Document,

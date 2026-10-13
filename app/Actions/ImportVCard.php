@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\ContactNameKindEnum;
+use App\Exceptions\NotEnoughRepetitions;
+use App\Exceptions\TooManyRepetitions;
 use App\Helpers\FlagState;
 use App\Http\Dav\OwnedFields;
 use App\Http\Dav\VCardMerger;
@@ -21,6 +23,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\VObject\Component;
 use Sabre\VObject\Parameter;
@@ -62,7 +65,7 @@ class ImportVCard
         $rows = array_slice($reader->nameRepresentations(), 0, UpdateContactNameRepresentations::MAXIMUM);
 
         if (collect($rows)->every(fn (array $row): bool => $row['kind'] === 'phonetic')) {
-            throw new BadRequest('A card needs at least one part of a name.');
+            $rows = array_slice([$this->borrowedName($reader), ...$rows], 0, UpdateContactNameRepresentations::MAXIMUM);
         }
 
         if ($this->contact === null) {
@@ -92,6 +95,45 @@ class ImportVCard
         )->execute();
 
         return $this->contact;
+    }
+
+    /**
+     * @return array{kind: string, language: string|null, script: string|null, phonetic_system: string|null, formatted_name: string|null, prefix: string|null, given_name: string|null, additional_name: string|null, family_name: string|null, suffix: string|null, name_order: string|null, vcard_alt_id: string|null, vcard_property_id: string|null, is_preferred: bool}
+     */
+    private function borrowedName(VCardReader $reader): array
+    {
+        $email = $reader->first('EMAIL');
+        $phone = $reader->first('TEL');
+
+        $borrowed = collect([
+            $reader->first('ORG')?->getParts()[0] ?? null,
+            $reader->first('NICKNAME')?->getParts()[0] ?? null,
+            $email === null ? null : $this->text($email),
+            $phone === null ? null : $this->text($phone),
+        ])
+            ->map(fn (?string $candidate): string => mb_trim((string) $candidate))
+            ->first(fn (string $candidate): bool => $candidate !== '');
+
+        if ($borrowed === null) {
+            throw new BadRequest('A card needs a name, an organisation, a nickname, an email address or a phone number.');
+        }
+
+        return [
+            'kind' => 'written',
+            'language' => null,
+            'script' => null,
+            'phonetic_system' => null,
+            'formatted_name' => mb_substr($borrowed, 0, 255),
+            'prefix' => null,
+            'given_name' => null,
+            'additional_name' => null,
+            'family_name' => null,
+            'suffix' => null,
+            'name_order' => null,
+            'vcard_alt_id' => null,
+            'vcard_property_id' => null,
+            'is_preferred' => false,
+        ];
     }
 
     /**
@@ -233,9 +275,7 @@ class ImportVCard
         }
 
         if ($onTheCard === null) {
-            if ($held !== null) {
-                new DestroyFieldValue(user: $this->user, fieldValue: $held)->execute();
-            }
+            $this->removeTheValue($held);
 
             return;
         }
@@ -243,33 +283,60 @@ class ImportVCard
         $written = $this->valueOf($field, $onTheCard);
 
         if ($written['value'] === null) {
-            if ($held !== null) {
-                new DestroyFieldValue(user: $this->user, fieldValue: $held)->execute();
-            }
+            $this->removeTheValue($held);
 
             return;
         }
 
-        $row = $held?->field_value_row_id === null
-            ? null
-            : FieldValueRow::query()->find($held->field_value_row_id);
+        $repeater = $growable ? $field->parent : null;
 
-        if ($held === null && $growable) {
-            $row = new CreateFieldValueRow(user: $this->user, valuable: $contact, field: $field)->execute();
+        try {
+            DB::transaction(function () use ($contact, $field, $held, $onTheCard, $written, $repeater): void {
+                $row = $held?->field_value_row_id === null
+                    ? null
+                    : FieldValueRow::query()->find($held->field_value_row_id);
+
+                if ($held === null && $repeater !== null) {
+                    $row = new CreateFieldValueRow(user: $this->user, valuable: $contact, field: $repeater)->execute();
+                }
+
+                $label = $this->labelOf($field, $onTheCard);
+
+                new SetFieldValue(
+                    user: $this->user,
+                    valuable: $contact,
+                    field: $field,
+                    row: $row,
+                    value: $written['value'],
+                    valueListItem: $label['item'],
+                    labelWording: $label['wording'],
+                    yearIsUnknown: $written['yearIsUnknown'],
+                )->execute();
+            });
+        } catch (InvalidArgumentException|TooManyRepetitions) {
+            return;
+        }
+    }
+
+    private function removeTheValue(?FieldValue $held): void
+    {
+        if ($held === null) {
+            return;
         }
 
-        $label = $this->labelOf($field, $onTheCard);
+        $row = $held->row;
 
-        new SetFieldValue(
-            user: $this->user,
-            valuable: $contact,
-            field: $field,
-            row: $row,
-            value: $written['value'],
-            valueListItem: $label['item'],
-            labelWording: $label['wording'],
-            yearIsUnknown: $written['yearIsUnknown'],
-        )->execute();
+        new DestroyFieldValue(user: $this->user, fieldValue: $held)->execute();
+
+        if ($row === null || $row->values()->exists()) {
+            return;
+        }
+
+        try {
+            new DestroyFieldValueRow(user: $this->user, row: $row, writesToTheJournal: false)->execute();
+        } catch (NotEnoughRepetitions) {
+            return;
+        }
     }
 
     /**

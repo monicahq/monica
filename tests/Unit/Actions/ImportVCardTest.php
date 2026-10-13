@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
+use App\Actions\CreateDefaultValueLists;
 use App\Actions\ImportVCard;
 use App\Actions\UpdateContactAvatar;
 use App\Enums\AddressLabelEnum;
@@ -11,6 +12,7 @@ use App\Enums\ContactNameKindEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NameOrderEnum;
 use App\Http\Dav\VCardMerger;
+use App\Jobs\CreateDefaultTemplate;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
@@ -21,6 +23,7 @@ use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Pennant\Feature;
@@ -374,6 +377,60 @@ class ImportVCardTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_one_email_address_and_one_phone_number_on_the_default_template(): void
+    {
+        new CreateDefaultTemplate(user: $this->user)->handle();
+
+        $contact = $this->importCarrying("EMAIL:dwight@dundermifflin.test\r\nTEL:+15705551212\r\n");
+
+        $this->assertSame(['dwight@dundermifflin.test'], $this->writtenIn($contact, 'email')->pluck('value')->all());
+        $this->assertSame(['+15705551212'], $this->writtenIn($contact, 'phone')->pluck('value')->all());
+    }
+
+    #[Test]
+    public function it_writes_every_email_address_phone_number_and_address_in_the_order_of_the_card(): void
+    {
+        new CreateDefaultValueLists(user: $this->user)->execute();
+        new CreateDefaultTemplate(user: $this->user)->handle();
+
+        $contact = $this->importCarrying(
+            "EMAIL;TYPE=work:dwight@dundermifflin.test\r\nEMAIL;TYPE=home:dwight@schrutefarms.test\r\n"
+            ."TEL;TYPE=work:+15705551212\r\nTEL;TYPE=home:+15705550100\r\n"
+            ."ADR;TYPE=work:;;1725 Slough Avenue;Scranton;PA;18505;USA\r\nADR;TYPE=home:;;Schrute Farms;Honesdale;PA;18431;USA\r\n",
+        );
+
+        $emails = $this->writtenIn($contact, 'email');
+        $this->assertSame(['dwight@dundermifflin.test', 'dwight@schrutefarms.test'], $emails->pluck('value')->all());
+        $this->assertSame(['work', 'home'], $emails->map(fn (FieldValue $value): ?string => $value->valueListItem?->key)->all());
+        $this->assertSame(['+15705551212', '+15705550100'], $this->writtenIn($contact, 'phone')->pluck('value')->all());
+        $this->assertSame(['1725 Slough Avenue', 'Schrute Farms'], $this->writtenIn($contact, 'address')->map(fn (FieldValue $value): string => $value->value['street'])->all());
+    }
+
+    #[Test]
+    public function it_removes_the_repetition_of_a_phone_number_the_card_no_longer_carries(): void
+    {
+        new CreateDefaultTemplate(user: $this->user)->handle();
+        $contact = $this->importCarrying("TEL:+15705551212\r\nTEL:+15705550100\r\nTEL:+15705550200\r\n");
+
+        $this->importCarrying("TEL:+15705551212\r\nTEL:+15705550200\r\n", $contact);
+
+        $this->assertSame(['+15705551212', '+15705550200'], $this->writtenIn($contact, 'phone')->pluck('value')->all());
+        $this->assertSame(2, $contact->fieldValueRows()->whereHas('field', fn ($query) => $query->where('key', 'phones'))->count());
+    }
+
+    #[Test]
+    public function it_leaves_on_the_card_an_email_address_its_repeater_has_no_room_for(): void
+    {
+        new CreateDefaultTemplate(user: $this->user)->handle();
+        Field::query()->where('account_id', $this->user->account_id)->where('key', 'emails')->update(['repeat_max' => 1]);
+
+        $contact = $this->importCarrying("EMAIL:dwight@dundermifflin.test\r\nEMAIL:dwight@schrutefarms.test\r\n");
+
+        $this->assertSame(['dwight@dundermifflin.test'], $this->writtenIn($contact, 'email')->pluck('value')->all());
+        $this->assertStringContainsString('dwight@schrutefarms.test', (string) $contact->vcard);
+    }
+
+    #[Test]
     public function it_refuses_a_card_carrying_no_name_at_all(): void
     {
         Structure::asTheDefaultOf($this->user, $this->vault);
@@ -385,6 +442,58 @@ class ImportVCardTest extends TestCase
             vault: $this->vault,
             card: "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:nobody\r\nFN: \r\nN:;;;;\r\nEND:VCARD\r\n",
         )->execute();
+    }
+
+    #[Test]
+    public function it_names_a_contact_with_no_name_after_its_organisation(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+
+        $contact = $this->importNameless("ORG:Dunder Mifflin;Scranton\r\nNICKNAME:Paper people\r\nEMAIL:info@dundermifflin.test\r\n");
+
+        $this->assertSame('Dunder Mifflin', $contact->name);
+    }
+
+    #[Test]
+    public function it_names_a_contact_with_no_name_and_no_organisation_after_its_nickname(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+
+        $contact = $this->importNameless("NICKNAME:Big Tuna\r\nEMAIL:jim@dundermifflin.test\r\n");
+
+        $this->assertSame('Big Tuna', $contact->name);
+    }
+
+    #[Test]
+    public function it_names_a_contact_after_its_email_address_before_its_phone_number(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+
+        $contact = $this->importNameless("TEL:+15705550100\r\nEMAIL:jim@dundermifflin.test\r\n");
+
+        $this->assertSame('jim@dundermifflin.test', $contact->name);
+    }
+
+    #[Test]
+    public function it_names_a_contact_holding_only_a_phone_number_and_an_empty_name_after_the_number(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+
+        $contact = $this->importNameless("FN: \r\nN:;;;;\r\nTEL:+15705550100\r\n");
+
+        $this->assertSame('+15705550100', $contact->name);
+    }
+
+    #[Test]
+    public function it_adds_no_name_part_to_the_card_of_a_contact_named_after_its_organisation(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault);
+
+        $contact = $this->importNameless("ORG:Dunder Mifflin\r\n");
+
+        $card = Reader::read(new VCardMerger()->merge($contact));
+        $this->assertSame(['', '', '', '', ''], $card->N->getParts());
+        $this->assertSame('Dunder Mifflin', (string) $card->FN);
     }
 
     #[Test]
@@ -472,6 +581,36 @@ class ImportVCardTest extends TestCase
             "FN:Dwight Schrute\r\n".
             $property.
             "END:VCARD\r\n";
+    }
+
+    private function importCarrying(string $properties, ?Contact $contact = null): Contact
+    {
+        return new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: $this->cardCarrying($properties),
+            contact: $contact,
+        )->execute();
+    }
+
+    private function importNameless(string $properties): Contact
+    {
+        return new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:nobody\r\n{$properties}END:VCARD\r\n",
+        )->execute();
+    }
+
+    /** @return Collection<int, FieldValue> */
+    private function writtenIn(Contact $contact, string $key): Collection
+    {
+        return $contact->fieldValues()
+            ->with(['field', 'valueListItem', 'row'])
+            ->get()
+            ->filter(fn (FieldValue $value): bool => $value->field->key === $key)
+            ->sortBy(fn (FieldValue $value): int => $value->row->position ?? 0)
+            ->values();
     }
 
     private function card(): string

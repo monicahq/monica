@@ -6,7 +6,10 @@ namespace App\Http\Dav;
 
 use Override;
 use Sabre\CardDAV\Plugin;
+use Sabre\DAV\Exception\UnsupportedMediaType;
 use Sabre\VObject\Component\VCard;
+use Sabre\VObject\Document;
+use Sabre\VObject\Node;
 use Sabre\VObject\Parameter;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Property;
@@ -14,6 +17,10 @@ use Sabre\VObject\Reader;
 
 class CardDavPlugin extends Plugin
 {
+    private const string UNREADABLE_LINE = 'X-MONICA-UNREADABLE-LINE';
+
+    private const int MOST_UNREADABLE_LINES = 50;
+
     /**
      * @param  string|resource  $data
      * @param  string  $target
@@ -26,10 +33,19 @@ class CardDavPlugin extends Plugin
             $data = $this->withTheDisplayedNameOnly(is_resource($data) ? (string) stream_get_contents($data) : $data);
         }
 
-        return parent::convertVCard($data, $target, $propertiesFilter);
+        $converted = parent::convertVCard($data, $target, $propertiesFilter);
+
+        if ($target === 'jcard') {
+            return $converted;
+        }
+
+        return $this->withTheUnreadableLinesAsSent($converted);
     }
 
     /**
+     * A device whose card is refused retries it forever, so every card that reads as one is
+     * repaired and accepted. Only a client asking for strict handling still gets the refusal.
+     *
      * @param  string|resource  $data
      * @param  bool  $modified
      */
@@ -38,6 +54,13 @@ class CardDavPlugin extends Plugin
     {
         if (is_resource($data)) {
             $data = (string) stream_get_contents($data);
+        }
+
+        if ($this->server->getHTTPPrefer()['handling'] !== 'strict') {
+            $data = $this->repaired($data);
+            $modified = true;
+
+            return;
         }
 
         if (str_starts_with($data, '[')) {
@@ -60,6 +83,88 @@ class CardDavPlugin extends Plugin
         }
 
         parent::validateVCard($probe, $modified);
+    }
+
+    private function repaired(string $data): string
+    {
+        if (str_starts_with($data, '[')) {
+            try {
+                $data = Reader::readJson($data)->serialize();
+            } catch (ParseException $exception) {
+                throw new UnsupportedMediaType('This resource only supports valid vCard or jCard data.', 0, $exception);
+            }
+        }
+
+        $unreadable = [];
+        $card = $this->readSettingAside($data, $unreadable);
+
+        if (! $card instanceof VCard) {
+            throw new UnsupportedMediaType('This collection can only hold vCards.');
+        }
+
+        $card->validate(Node::PROFILE_CARDDAV | Node::REPAIR);
+
+        foreach ($unreadable as $line) {
+            $card->add(self::UNREADABLE_LINE, $line);
+        }
+
+        return $card->serialize();
+    }
+
+    /**
+     * The parser names the first line it cannot read, so that line and its continuation are set
+     * aside and the rest is read again, until nothing is left that it refuses. Blank lines go first:
+     * the parser skips them without always counting them, which would name the wrong line.
+     *
+     * @param  list<string>  $unreadable
+     */
+    private function readSettingAside(string $data, array &$unreadable): Document
+    {
+        $lines = array_values(array_filter(preg_split('/\r?\n/', $data) ?: [], fn (string $line): bool => $line !== ''));
+
+        for ($attempt = 0; ; $attempt++) {
+            try {
+                return Reader::read(implode("\r\n", $lines), Reader::OPTION_FORGIVING);
+            } catch (ParseException $exception) {
+                if ($attempt === self::MOST_UNREADABLE_LINES || preg_match('/Line starting at (\d+)/', $exception->getMessage(), $match) !== 1) {
+                    throw new UnsupportedMediaType('This resource only supports valid vCard or jCard data.', 0, $exception);
+                }
+
+                $start = (int) $match[1] - 1;
+                $end = $start + 1;
+
+                while (isset($lines[$end]) && in_array(substr($lines[$end], 0, 1), [' ', "\t"], true)) {
+                    $end++;
+                }
+
+                $unreadable[] = implode("\n", array_slice($lines, $start, $end - $start));
+                array_splice($lines, $start, $end - $start);
+            }
+        }
+    }
+
+    private function withTheUnreadableLinesAsSent(string $card): string
+    {
+        $document = Reader::read($card, Reader::OPTION_FORGIVING);
+        $sent = array_map(fn (Property $property): string => (string) $property->getValue(), iterator_to_array($document->select(self::UNREADABLE_LINE), false));
+
+        if ($sent === []) {
+            return $card;
+        }
+
+        $lines = [];
+        $continuing = false;
+
+        foreach (explode("\r\n", $card) as $line) {
+            if ($continuing && in_array(substr($line, 0, 1), [' ', "\t"], true)) {
+                continue;
+            }
+
+            $continuing = preg_match('/^'.self::UNREADABLE_LINE.'[;:]/i', $line) === 1;
+            $lines[] = $continuing ? str_replace("\n", "\r\n", (string) array_shift($sent)) : $line;
+        }
+
+        return implode("\r\n", $lines);
     }
 
     private function withOneOfItsAlternativeNames(string $data): ?string

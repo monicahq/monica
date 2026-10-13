@@ -61,7 +61,7 @@ class VCardMergerTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_a_value_the_record_holds_with_the_label_of_its_field(): void
+    public function it_writes_a_value_the_record_holds(): void
     {
         $user = User::factory()->create();
         $version = Structure::withFields($user, [
@@ -73,7 +73,6 @@ class VCardMergerTest extends TestCase
         $card = new VCardMerger()->merge($contact);
 
         $this->assertStringContainsString('TEL:+15705551212', $card);
-        $this->assertStringContainsString('X-ABLabel:Work', $card);
     }
 
     #[Test]
@@ -133,7 +132,7 @@ class VCardMergerTest extends TestCase
     }
 
     #[Test]
-    public function it_falls_back_to_the_name_of_the_field_when_the_value_carries_no_label(): void
+    public function it_writes_no_label_beside_a_phone_number_that_carries_none(): void
     {
         $user = User::factory()->create();
         $version = Structure::withFields($user, [
@@ -144,7 +143,24 @@ class VCardMergerTest extends TestCase
 
         $card = new VCardMerger()->merge($contact);
 
-        $this->assertStringContainsString('X-ABLabel:Work', $card);
+        $this->assertStringContainsString("\r\nTEL:+15705551212\r\n", $card);
+        $this->assertStringNotContainsString('X-ABLabel', $card);
+    }
+
+    #[Test]
+    public function it_keeps_the_label_a_device_wrote_beside_a_value_that_carries_none(): void
+    {
+        $user = User::factory()->create();
+        $version = Structure::withFields($user, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Work'],
+        ]);
+        $contact = $this->contact([
+            'structure_version_id' => $version->id,
+            'vcard' => "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:dwight\r\nFN:Dwight Schrute\r\nitem1.TEL:+15705551212\r\nitem1.X-ABLabel:Boat\r\nEND:VCARD\r\n",
+        ]);
+        $this->value($contact, $version, 0, ['value_string' => '+15705551212']);
+
+        $this->assertMatchesRegularExpression('/^item1\.X-ABLabel:Boat\r$/im', new VCardMerger()->merge($contact));
     }
 
     #[Test]
@@ -395,7 +411,7 @@ class VCardMergerTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_the_name_of_the_field_beside_an_address_nobody_labelled(): void
+    public function it_writes_no_label_beside_an_address_nobody_labelled(): void
     {
         $user = User::factory()->create();
         $version = Structure::withFields($user, [
@@ -404,7 +420,7 @@ class VCardMergerTest extends TestCase
         $contact = $this->contact(['structure_version_id' => $version->id]);
         $this->value($contact, $version, 0, ['value_string' => null, 'value_json' => $this->slough()]);
 
-        $this->assertStringContainsString('X-ABLabel:Branch', new VCardMerger()->merge($contact));
+        $this->assertStringNotContainsString('X-ABLabel', new VCardMerger()->merge($contact));
     }
 
     #[Test]

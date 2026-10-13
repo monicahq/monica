@@ -17,6 +17,7 @@ enum DefaultFieldEnum: string implements Translatable
     case Phones = 'phones';
     case Phone = 'phone';
     case Website = 'website';
+    case Addresses = 'addresses';
     case Address = 'address';
     case Document = 'document';
     case File = 'file';
@@ -49,6 +50,7 @@ enum DefaultFieldEnum: string implements Translatable
             self::Phones => 'Phones',
             self::Phone => 'Phone',
             self::Website => 'Website',
+            self::Addresses => 'Addresses',
             self::Address => 'Address',
             self::Document => 'Document',
             self::File => 'File',
@@ -83,6 +85,7 @@ enum DefaultFieldEnum: string implements Translatable
             self::Phones => FieldTypeEnum::Repeater,
             self::Phone => FieldTypeEnum::Phone,
             self::Website => FieldTypeEnum::Url,
+            self::Addresses => FieldTypeEnum::Repeater,
             self::Address => FieldTypeEnum::Address,
             self::Document => FieldTypeEnum::Repeater,
             self::File => FieldTypeEnum::File,
@@ -121,6 +124,7 @@ enum DefaultFieldEnum: string implements Translatable
             self::Notes => [self::Note],
             self::Emails => [self::Email],
             self::Phones => [self::Phone],
+            self::Addresses => [self::Address],
             self::Caregivers => [self::CaregiverPerson, self::CaregiverRole],
             default => [],
         };
@@ -169,6 +173,7 @@ enum DefaultFieldEnum: string implements Translatable
             self::Notes => RepetitionOrderEnum::NewestFirst,
             self::Emails => RepetitionOrderEnum::NewestLast,
             self::Phones => RepetitionOrderEnum::NewestLast,
+            self::Addresses => RepetitionOrderEnum::NewestLast,
             self::Caregivers => RepetitionOrderEnum::NewestLast,
             default => null,
         };

@@ -79,3 +79,10 @@ A chronological list of every feature and improvement shipped during development
 * Admin/flags: Added the mcp-server flag, on for every account, so the administrator can withdraw the MCP server.
 * Settings: Told an account holding a phone number, a connected assistant or an uploaded file when its capability is withdrawn, and that its data is kept.
 * Docs: Left the CardDAV, MCP and vCard documentation out while the capability is switched off for every account.
+* Fix: Saved a contact from a device whose card holds an email address or a phone number, instead of failing.
+* CardDAV: Saved every email address, phone number and address a device sends, in the order of the card.
+* CardDAV: Accepted vCard 2.1 cards and cards written slightly outside the standard, repaired rather than refused.
+* CardDAV: Kept a line of a card that cannot be read and handed it back to the device unchanged.
+* CardDAV: Named a contact sent with no name after its organisation, nickname, email address or phone number.
+* Templates: Let the default contact template of a new account hold several addresses.
+* CardDAV: Stopped writing the name of the field as the label of an email address, phone number, address or website that has none.

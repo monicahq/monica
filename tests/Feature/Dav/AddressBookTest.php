@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Dav;
 
+use App\Actions\CreateDefaultValueLists;
 use App\Actions\ExportContactVCard;
 use App\Enums\ContactNameKindEnum;
 use App\Enums\FieldTypeEnum;
+use App\Jobs\CreateDefaultTemplate;
 use App\Models\Contact;
 use App\Models\FieldValue;
 use App\Models\Log;
@@ -69,7 +71,7 @@ class AddressBookTest extends TestCase
     }
 
     #[Test]
-    public function it_hands_a_card_carrying_the_name_the_nickname_and_the_values_with_their_labels(): void
+    public function it_hands_a_card_carrying_the_name_the_nickname_and_the_values(): void
     {
         $vault = $this->vault();
         $version = Structure::withFields($this->user, [
@@ -94,7 +96,6 @@ class AddressBookTest extends TestCase
         $this->assertStringContainsString('N:Schrute;Dwight;;;', (string) $card);
         $this->assertStringContainsString('NICKNAME:Beet farmer', (string) $card);
         $this->assertStringContainsString('dwight@dundermifflin.test', (string) $card);
-        $this->assertStringContainsString('Work email', (string) $card);
         $this->assertStringContainsString('+15705551212', (string) $card);
         $this->assertStringNotContainsString('4000', (string) $card);
     }
@@ -280,7 +281,7 @@ class AddressBookTest extends TestCase
         ]);
     }
 
-    private function dav(string $method, string $uri, string $depth = '0', string $body = '', ?string $accept = null, string $contentType = 'application/xml', ?string $ifMatch = null): TestResponse
+    private function dav(string $method, string $uri, string $depth = '0', string $body = '', ?string $accept = null, string $contentType = 'application/xml', ?string $ifMatch = null, ?string $prefer = null): TestResponse
     {
         return $this->call($method, $uri, [], [], [], array_filter([
             'HTTP_AUTHORIZATION' => 'Basic '.base64_encode($this->user->email.':'.$this->key),
@@ -288,6 +289,7 @@ class AddressBookTest extends TestCase
             'CONTENT_TYPE' => $contentType,
             'HTTP_ACCEPT' => $accept,
             'HTTP_IF_MATCH' => $ifMatch,
+            'HTTP_PREFER' => $prefer,
         ]), $body);
     }
 
@@ -503,8 +505,20 @@ class AddressBookTest extends TestCase
 
         $response = $this->dav('PUT', $this->book($vault).'nobody.vcf', contentType: 'text/vcard', body: "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:nobody\r\nEND:VCARD\r\n");
 
-        $response->assertStatus(415);
+        $response->assertStatus(400);
         $this->assertDatabaseCount('contacts', 0);
+    }
+
+    #[Test]
+    public function it_names_a_card_holding_only_a_phone_number_after_the_number(): void
+    {
+        $vault = $this->vault();
+        Structure::asTheDefaultOf($this->user, $vault);
+
+        $response = $this->dav('PUT', $this->book($vault).'unknown.vcf', contentType: 'text/vcard', body: "BEGIN:VCARD\r\nVERSION:3.0\r\nTEL:+15705550100\r\nEND:VCARD\r\n");
+
+        $response->assertStatus(201);
+        $this->assertSame('+15705550100', Contact::query()->where('vault_id', $vault->id)->sole()->name);
     }
 
     #[Test]
@@ -527,6 +541,61 @@ class AddressBookTest extends TestCase
         $response = $this->dav('PUT', $this->book($vault).'nonsense.vcf', contentType: 'text/vcard', body: 'this is not a card');
 
         $response->assertStatus(415);
+    }
+
+    #[Test]
+    public function it_accepts_a_vcard_2_1_card(): void
+    {
+        $vault = $this->vault();
+        Structure::asTheDefaultOf($this->user, $vault);
+
+        $response = $this->dav('PUT', $this->book($vault).'pam.vcf', contentType: 'text/vcard', body: "BEGIN:VCARD\r\nVERSION:2.1\r\nN:Beesly;Pam;;;\r\nTEL;CELL:+15705550200\r\nEND:VCARD\r\n");
+
+        $response->assertStatus(201);
+        $this->assertSame('Pam', Contact::query()->where('vault_id', $vault->id)->sole()->first_name);
+    }
+
+    #[Test]
+    public function it_hands_back_a_line_it_could_not_read_as_it_was_sent(): void
+    {
+        $vault = $this->vault();
+        Structure::asTheDefaultOf($this->user, $vault);
+
+        $this->dav('PUT', $this->book($vault).'angela.vcf', contentType: 'text/vcard', body: "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:angela\r\nFN:Angela Martin\r\nthis line has no colon\r\nEND:VCARD\r\n")
+            ->assertStatus(201);
+
+        $response = $this->dav('GET', $this->book($vault).'angela.vcf', accept: 'text/vcard; version=4.0');
+
+        $response->assertOk();
+        $this->assertStringContainsString("\r\nthis line has no colon\r\n", (string) $response->getContent());
+    }
+
+    #[Test]
+    public function it_writes_every_email_address_phone_number_and_address_on_the_default_template(): void
+    {
+        $vault = $this->vault();
+        new CreateDefaultValueLists(user: $this->user)->execute();
+        new CreateDefaultTemplate(user: $this->user)->handle();
+
+        $response = $this->dav('PUT', $this->book($vault).'dwight.vcf', contentType: 'text/vcard', body: "BEGIN:VCARD\r\nVERSION:3.0\r\nN:Schrute;Dwight;;;\r\nFN:Dwight Schrute\r\n"
+            ."EMAIL;TYPE=work:dwight@dundermifflin.test\r\nEMAIL;TYPE=home:dwight@schrutefarms.test\r\n"
+            ."TEL;TYPE=work:+15705551212\r\nTEL;TYPE=home:+15705550100\r\n"
+            ."ADR;TYPE=work:;;1725 Slough Avenue;Scranton;PA;18505;USA\r\nADR;TYPE=home:;;Schrute Farms;Honesdale;PA;18431;USA\r\nEND:VCARD\r\n");
+
+        $response->assertStatus(201);
+        $this->assertSame(6, Contact::query()->where('vault_id', $vault->id)->sole()->fieldValues()->count());
+    }
+
+    #[Test]
+    public function it_still_refuses_a_vcard_2_1_card_when_the_client_asks_for_strict_handling(): void
+    {
+        $vault = $this->vault();
+        Structure::asTheDefaultOf($this->user, $vault);
+
+        $response = $this->dav('PUT', $this->book($vault).'pam.vcf', contentType: 'text/vcard', body: "BEGIN:VCARD\r\nVERSION:2.1\r\nN:Beesly;Pam;;;\r\nFN:Pam Beesly\r\nEND:VCARD\r\n", prefer: 'handling=strict');
+
+        $response->assertStatus(415);
+        $this->assertDatabaseCount('contacts', 0);
     }
 
     #[Test]

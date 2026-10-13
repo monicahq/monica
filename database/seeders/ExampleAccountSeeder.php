@@ -284,22 +284,11 @@ class ExampleAccountSeeder extends Seeder
         $this->writeChoice($contact, DefaultFieldEnum::Category, ValueListEnum::ContactCategories, $person['category']->value);
         $this->writeChoice($contact, DefaultFieldEnum::Gender, ValueListEnum::Genders, $person['gender']->value);
 
-        if ($person['address'] !== null) {
-            [$address, $label] = $person['address'];
-
-            new SetFieldValue(
-                user: $this->user,
-                valuable: $contact,
-                field: $this->fields[DefaultFieldEnum::Address->value],
-                value: $address,
-                valueListItem: $this->item(ValueListEnum::AddressLabels, $label->value),
-            )->execute();
-        }
-
         $repeated = [
             (DefaultFieldEnum::Emails)->value => DefaultFieldEnum::Email,
             (DefaultFieldEnum::Notes)->value => DefaultFieldEnum::Note,
             (DefaultFieldEnum::Phones)->value => DefaultFieldEnum::Phone,
+            (DefaultFieldEnum::Addresses)->value => DefaultFieldEnum::Address,
         ];
 
         foreach ($repeated as $repeater => $field) {

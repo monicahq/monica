@@ -40,8 +40,7 @@ A field marked sensitive appears only when the key carries `sensitive-fields`; o
 | --- | --- |
 | No credential, wrong key, revoked key, the account password, username not the key's owner | 401, `WWW-Authenticate: Basic` with the application's name as the realm |
 | A vault of another account, or a card, event or task not in the named vault | 404 |
-| `PUT` of a body that is not a card, or of one without the `FN` the standard requires | 415, from the standard's own validation |
-| `PUT` of a card that validates but carries no usable name part | 400 |
+| `PUT` of a card that is refused | see [074's contract](../../074-carddav-accept-any-vcard/contracts/carddav-save.md) |
 | `PUT` with a stale `If-Match` | 412 |
 | `DELETE` of the Me contact's card | 403 |
 | Any write to a calendar, or `MKCOL`, `MKCALENDAR`, `ACL`, `PROPPATCH`, `DELETE` on a collection | 403 |

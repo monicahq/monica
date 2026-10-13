@@ -98,7 +98,7 @@ Somebody whose template puts an address field inside a repeater records a home a
 - **FR-013**: Every string this feature adds MUST be translated in every configured locale.
 - **FR-014**: An address value MUST carry, optionally, a label saying what the address is for, picked from the value list the field names, and a newly created address field MUST arrive naming the account's supplied Address labels list, changeable to another list or to none, as an email or phone field does.
 - **FR-015**: The label MUST stand beside the address under the field's own name, the open label MUST take a typed wording of its own, and the record MUST show the label beside the address and the address alone when there is none.
-- **FR-016**: An exported or synchronised address MUST carry its label as the property's type, home and work as the standard types and any other as a wording of its own, the field's name MUST travel only when no label was picked, and a label arriving on a card MUST be kept.
+- **FR-016**: An exported or synchronised address MUST carry its label as the property's type, home and work as the standard types and any other as a wording of its own, no label MUST travel when none was picked, not even the field's name, and a label arriving on a card MUST be kept.
 - **FR-017**: The country MUST be picked from the account's Countries list rather than typed, and a country a device wrote that names no item of the list MUST be kept and shown as it arrived until somebody picks one in its place.
 
 ### Key Entities

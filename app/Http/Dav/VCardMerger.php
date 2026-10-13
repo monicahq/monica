@@ -310,7 +310,9 @@ class VCardMerger
     /**
      * Say what a property is for. The value's own label goes on as the type every address book
      * reads, or as a wording of its own when nothing standard fits. A value carrying no label
-     * falls back to the name of the field it came from, which is all a card used to carry.
+     * gets none, and keeps whatever the device itself wrote beside it: the name of the field would
+     * come back from the device as a label nobody chose. A date is the exception, since the name
+     * of its field is the only thing saying which date it is.
      */
     private function label(VCard $card, Property $property, Field $field, ?FieldValue $value): void
     {
@@ -331,8 +333,13 @@ class VCardMerger
         }
 
         $wording = $typed === null || $typed === ''
-            ? ($item === null ? $field->label : $item->label)
+            ? ($item->label ?? ($property->name === 'X-ABDATE' ? $field->label : null))
             : $typed;
+
+        if ($wording === null) {
+            return;
+        }
+
         $group = (string) $property->group;
 
         if ($group === '') {
