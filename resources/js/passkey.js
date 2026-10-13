@@ -1,79 +1,102 @@
-import { Passkeys, UserCancelledError, PasskeyExistsError, InvalidDomainError, NotSupportedError } from '@laravel/passkeys';
+export default (config) => {
+    // The client library is fetched only on screens that offer a passkey. It is requested as soon as the
+    // component starts rather than on click, because Safari refuses a WebAuthn call made after the click
+    // has waited on the network.
+    let library = Promise.resolve(null);
 
-export default (config) => ({
-    busy: false,
-    message: '',
-    failed: false,
+    return {
+        busy: false,
+        message: '',
+        failed: false,
 
-    supported: false,
+        supported: false,
 
-    init() {
-        this.supported = Passkeys.isSupported();
-    },
+        init() {
+            this.supported = typeof globalThis.PublicKeyCredential === 'function';
 
-    announce(message, failed = false) {
-        this.message = message;
-        this.failed = failed;
-    },
+            if (this.supported) {
+                library = import('@laravel/passkeys').catch(() => null);
+            }
+        },
 
-    async register() {
-        this.busy = true;
-        this.announce('');
+        async passkeys() {
+            const loaded = await library;
 
-        try {
-            await Passkeys.register({ name: '_' });
+            if (! loaded) {
+                throw new Error(config.text.failed);
+            }
 
-            window.location = config.redirectUrl;
-        } catch (error) {
-            this.announce(this.explain(error), true);
-        } finally {
-            this.busy = false;
-        }
-    },
+            return loaded.Passkeys;
+        },
 
-    async signIn() {
-        this.busy = true;
-        this.announce('');
+        announce(message, failed = false) {
+            this.message = message;
+            this.failed = failed;
+        },
 
-        try {
-            const { redirect } = await Passkeys.verify({ remember: true });
+        async register() {
+            this.busy = true;
+            this.announce('');
 
-            window.location = redirect ?? config.redirectUrl;
-        } catch (error) {
-            this.announce(this.explain(error), true);
-        } finally {
-            this.busy = false;
-        }
-    },
+            try {
+                const passkeys = await this.passkeys();
 
-    async confirm() {
-        this.busy = true;
-        this.announce('');
+                await passkeys.register({ name: '_' });
 
-        try {
-            const { redirect } = await Passkeys.verify({ routes: config.routes });
+                window.location = config.redirectUrl;
+            } catch (error) {
+                this.announce(this.explain(error), true);
+            } finally {
+                this.busy = false;
+            }
+        },
 
-            this.$dispatch('passkey-confirmed', { redirect });
-        } catch (error) {
-            this.announce(this.explain(error), true);
-        } finally {
-            this.busy = false;
-        }
-    },
+        async signIn() {
+            this.busy = true;
+            this.announce('');
 
-    explain(error) {
-        if (error instanceof UserCancelledError) {
-            return config.text.cancelled;
-        }
+            try {
+                const passkeys = await this.passkeys();
+                const { redirect } = await passkeys.verify({ remember: true }));
 
-        if (error instanceof PasskeyExistsError) {
-            return config.text.alreadyRegistered;
-        }
+                window.location = redirect ?? config.redirectUrl;
+            } catch (error) {
+                this.announce(this.explain(error), true);
+            } finally {
+                this.busy = false;
+            }
+        },
 
-        if (error instanceof InvalidDomainError || error instanceof NotSupportedError) {
-            return config.text.failed;
-        }
+        async confirm() {
+            this.busy = true;
+            this.announce('');
 
-        return error?.message || config.text.failed;
-    },
-});
+            try {
+                const passkeys = await this.passkeys();
+                const { redirect } = await passkeys.verify({ routes: config.routes });
+
+                this.$dispatch('passkey-confirmed', { redirect });
+            } catch (error) {
+                this.announce(this.explain(error), true);
+            } finally {
+                this.busy = false;
+            }
+        },
+
+        explain(error) {
+            if (error?.name === 'UserCancelledError') {
+                return config.text.cancelled;
+            }
+
+            if (error?.name === 'PasskeyExistsError') {
+                return config.text.alreadyRegistered;
+            }
+
+            if (error?.name === 'InvalidDomainError' || error?.name === 'NotSupportedError') {
+                return config.text.failed;
+            }
+
+            return error?.message || config.text.failed;
+        },
+    };
+};
