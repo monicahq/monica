@@ -38,9 +38,9 @@
         @if ($tree->parents() !== [])
           <h4 class="sr-only">{{ __('Parents') }}</h4>
 
-          <ul class="flex list-none justify-center gap-2">
+          <ul class="flex list-none justify-center">
             @foreach ($tree->parents() as $parent)
-              <li class="relative flex flex-col items-center pb-5 before:absolute before:bottom-0 before:left-1/2 before:h-5 before:w-px before:-translate-x-1/2 before:bg-hairline-strong after:absolute after:inset-x-0 after:bottom-5 after:h-px after:bg-hairline-strong first:after:left-1/2 last:after:right-1/2 only:after:hidden">
+              <li class="relative flex flex-col items-center px-1 pb-5 before:absolute before:bottom-0 before:left-1/2 before:h-5 before:w-px before:-translate-x-1/2 before:bg-hairline-strong after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-hairline-strong first:after:left-1/2 last:after:right-1/2 only:after:hidden">
                 @include('app.vaults.contacts._family-tree-node', $node($parent))
               </li>
             @endforeach
@@ -76,9 +76,9 @@
 
           <h4 class="sr-only">{{ __('Children') }}</h4>
 
-          <ul class="flex list-none justify-center gap-2">
+          <ul class="flex list-none justify-center">
             @foreach ($tree->children() as $child)
-              <li class="relative flex flex-col items-center pt-5 before:absolute before:top-0 before:left-1/2 before:h-5 before:w-px before:-translate-x-1/2 before:bg-hairline-strong after:absolute after:inset-x-0 after:top-0 after:h-px after:bg-hairline-strong first:after:left-1/2 last:after:right-1/2 only:after:hidden">
+              <li class="relative flex flex-col items-center px-1 pt-5 before:absolute before:top-0 before:left-1/2 before:h-5 before:w-px before:-translate-x-1/2 before:bg-hairline-strong after:absolute after:inset-x-0 after:top-0 after:h-px after:bg-hairline-strong first:after:left-1/2 last:after:right-1/2 only:after:hidden">
                 @include('app.vaults.contacts._family-tree-node', $node($child, 32))
               </li>
             @endforeach
