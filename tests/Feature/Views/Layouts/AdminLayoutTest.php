@@ -36,7 +36,8 @@ class AdminLayoutTest extends TestCase
     {
         $this->actingAs($this->administrator())
             ->blade('<x-admin-layout>Anything</x-admin-layout>')
-            ->assertSee('Leave the admin space');
+            ->assertSee('Leave the admin space')
+            ->assertSee('aria-label="Leave the admin space"', escape: false);
     }
 
     #[Test]

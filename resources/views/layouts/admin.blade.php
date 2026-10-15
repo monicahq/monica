@@ -21,10 +21,11 @@
           <a
             href="{{ route('home.index') }}"
             data-turbo="true"
-            class="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-md border border-on-primary/20 px-3 text-sm font-medium whitespace-nowrap text-on-primary no-underline transition-colors duration-(--duration-fast) ease-out hover:bg-on-primary/10 focus-visible:ring-[3px] focus-visible:ring-on-primary/40 focus-visible:outline-none"
+            aria-label="{{ __('Leave the admin space') }}"
+            class="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-md border border-on-primary/20 px-2 text-sm font-medium whitespace-nowrap text-on-primary no-underline transition-colors duration-(--duration-fast) ease-out hover:bg-on-primary/10 focus-visible:ring-[3px] focus-visible:ring-on-primary/40 focus-visible:outline-none sm:px-3"
           >
             <x-icon name="chevron-right" :size="15" :stroke-width="1.7" class="rotate-180" />
-            {{ __('Leave the admin space') }}
+            <span class="max-sm:hidden">{{ __('Leave the admin space') }}</span>
           </a>
 
           <x-theme-toggle tone="inverted" />
