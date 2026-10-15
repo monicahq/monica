@@ -16,13 +16,13 @@ class TopBarTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function the_bar_of_a_screen_outside_a_vault_says_nothing_about_who_is_signed_in(): void
+    public function the_bar_of_a_screen_outside_a_vault_shows_who_is_signed_in_but_not_their_email_address(): void
     {
         $user = User::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);
 
         $rendered = $this->actingAs($user)->blade('<x-account-layout>Anything</x-account-layout>');
 
-        $rendered->assertDontSee('PB');
+        $rendered->assertSee('PB');
         $rendered->assertDontSee($user->email);
         $rendered->assertSee('Switch between the light and dark theme');
     }
@@ -122,6 +122,22 @@ class TopBarTest extends TestCase
         $this->actingAs($user)
             ->blade('<x-account-layout>Anything</x-account-layout>')
             ->assertSee('Account settings');
+    }
+
+    #[Test]
+    public function the_way_out_sits_in_the_bar_only_where_no_navigation_column_carries_it(): void
+    {
+        $user = User::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);
+
+        $this->actingAs($user)
+            ->blade('<x-account-layout>Anything</x-account-layout>')
+            ->assertSee(route('auth.login.destroy'), escape: false)
+            ->assertSee('Sign out');
+
+        $this->actingAs($user)
+            ->blade('<x-shell>Anything</x-shell>')
+            ->assertDontSee(route('auth.login.destroy'), escape: false)
+            ->assertDontSee('Sign out');
     }
 
     #[Test]

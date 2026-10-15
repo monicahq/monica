@@ -30,7 +30,7 @@
             <span class="max-sm:hidden">{{ __('Back to the app') }}</span>
           </x-button.bar>
 
-          <x-avatar :user="auth()->user()" :size="32" />
+          <x-account-menu :user="auth()->user()" />
         @else
           <a
             href="{{ route('auth.login.new') }}"

@@ -29,7 +29,7 @@
 
           <x-theme-toggle tone="inverted" />
 
-          <x-avatar :user="auth()->user()" :size="26" />
+          <x-account-menu :user="auth()->user()" />
         </div>
       </div>
 

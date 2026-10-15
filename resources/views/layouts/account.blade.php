@@ -18,9 +18,11 @@
       <span class="truncate text-sm font-semibold tracking-tight text-ink">{{ config('app.name') }}</span>
 
       <div class="ml-auto flex items-center gap-2.5">
-        <x-bar-links />
+        <x-bar-links :settings="false" />
 
         <x-theme-toggle />
+
+        <x-account-menu :user="auth()->user()" />
       </div>
     </header>
 

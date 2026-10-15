@@ -40,6 +40,15 @@ class AdminLayoutTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_a_way_out(): void
+    {
+        $this->actingAs($this->administrator())
+            ->blade('<x-admin-layout>Anything</x-admin-layout>')
+            ->assertSee(route('auth.login.destroy'), escape: false)
+            ->assertSee('Sign out');
+    }
+
+    #[Test]
     public function it_carries_no_dock_since_the_dock_points_into_a_vault(): void
     {
         $this->actingAs($this->administrator())
