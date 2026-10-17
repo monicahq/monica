@@ -1,11 +1,16 @@
 ---
 name: speckit-assess-research
-description: Gather evidence — users, market, prior art, and data — to support or challenge the idea
+description: Gather evidence — users, market, prior art, and data — to support or
+  challenge the idea
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: spec-kit-core
-  source: assess:commands/speckit.assess.research.md
+  source: extension:assess
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Assess Research Skill
 
 # Research an Idea
 

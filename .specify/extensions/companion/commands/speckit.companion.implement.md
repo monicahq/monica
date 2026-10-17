@@ -120,7 +120,7 @@ Execute `tasks.md` phase by phase in dependency order. Each phase is laid out as
 
 5. **At each join line, check the workers' claims before crossing it.** A worker's report names files it touched and tests it ran; confirm the files exist and the test files are on disk before its result becomes the next phase's input. A claim that does not check out gets one re-run with the specific correction, and a second failure stops the step rather than building on it.
 
-   Then reconcile. Hand the type-check and the lint to one worker and take back only the verdict and the failing names. Fix any seam drift between workers. Then run `--materialize` once more as a backstop: it is idempotent, and it catches any finish whose fold was missed. `tasks.md` is owned only through `--materialize`.
+   Then reconcile. Hand the type-check, and the lint only if the project actually has one in its `package.json` scripts, to one worker and take back only the verdict and the failing names. A lint nothing defines is not a check you can run. Fix any seam drift between workers. Then run `--materialize` once more as a backstop: it is idempotent, and it catches any finish whose fold was missed. `tasks.md` is owned only through `--materialize`.
 
 6. **Run the project's own checks before you call this done.** Validating against the spec's **Functional Requirements** and **Success Criteria** by reading is not validation. Run the suite and the type-check or build the project actually uses, read from its `package.json` scripts, `Makefile`, or the repo's own instructions, and do not invent a command: a test you wrote and never executed is a guess about your own code.
 

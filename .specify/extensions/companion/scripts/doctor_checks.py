@@ -177,10 +177,11 @@ def _journaled_task_ids(ctx: dict) -> set:
     }
 
 
-def _task_finish_times(ctx: dict) -> list:
+def _agent_task_finish_times(ctx: dict) -> list:
+    # The extension's end-of-step sync writes every finish in one call, by design.
     out = []
     for e in log_entries(ctx):
-        if _is_per_task(e) and _entry_kind(e) == "complete":
+        if _is_per_task(e) and _entry_kind(e) == "complete" and e.get("by") == "ai":
             ts = parse_time(e.get("at"))
             if ts is not None:
                 out.append((e.get("task"), ts))
@@ -257,7 +258,7 @@ def check_record(feature_dir: Path, ctx: dict, now: datetime | None = None) -> t
     # run journaling four tasks at the identical millisecond, three times over,
     # scored a 60s span and warned about nothing. Cluster first, then judge each
     # cluster on its own span.
-    finishes = _task_finish_times(ctx)
+    finishes = _agent_task_finish_times(ctx)
     clusters, current = [], []
     for entry in finishes:
         if current and (entry[1] - current[0][1]).total_seconds() > BURST_WINDOW_SECONDS:

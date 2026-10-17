@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -46,7 +46,7 @@ jobs:
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       - name: Cache composer files
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-8.4-${{ hashFiles('**/composer.lock') }}
@@ -67,7 +67,7 @@ jobs:
 
   #   steps:
   #     - name: Checkout sources
-  #       uses: actions/checkout@v6
+  #       uses: actions/checkout@v7
 
   #     - name: Setup PHP
   #       uses: shivammathur/setup-php@v2
@@ -80,7 +80,7 @@ jobs:
   #       id: composer-cache
   #       run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
   #     - name: Cache composer files
-  #       uses: actions/cache@v5
+  #       uses: actions/cache@v6
   #       with:
   #         path: ${{ steps.composer-cache.outputs.dir }}
   #         key: ${{ runner.os }}-composer-8.4-${{ hashFiles('**/composer.lock') }}
@@ -101,14 +101,14 @@ jobs:
 
   #   steps:
   #     - name: Checkout sources
-  #       uses: actions/checkout@v6
+  #       uses: actions/checkout@v7
 
   #     # Bun runs the build script, but the vite binary carries a node shebang,
   #     # so node is what actually executes it. Vite needs a recent one, and
   #     # pinning it here means an upgrade of the runner image cannot change the
   #     # version the build runs on.
   #     - name: Setup node
-  #       uses: actions/setup-node@v6
+  #       uses: actions/setup-node@v7
   #       with:
   #         node-version: '24'
 

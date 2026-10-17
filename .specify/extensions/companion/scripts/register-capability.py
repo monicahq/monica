@@ -127,7 +127,7 @@ def register(root: str, name: str, match: list[str], exclude: list[str],
     # the whole point of the adoption wizard.
     enabled = living["enabled"] if meta["origin"] != "none" else True
     _write_registry(config_path, enabled, capabilities, living.get("exempt"),
-                    living.get("rules"))
+                    living.get("rules"), living.get("layout"))
     migrated = cc.should_drop_legacy(meta) and _drop_legacy_block(legacy_path)
 
     result = {
@@ -146,9 +146,9 @@ def register(root: str, name: str, match: list[str], exclude: list[str],
 
 
 def _write_registry(config_path: str, enabled: bool, capabilities: list[dict],
-                    exempt=None, rules=None) -> None:
+                    exempt=None, rules=None, layout=None) -> None:
     """Write the registry, splicing into an existing file so its comments survive."""
-    rendered = cc.render_registry(enabled, capabilities, exempt, rules)
+    rendered = cc.render_registry(enabled, capabilities, exempt, rules, layout)
     if os.path.isfile(config_path):
         with open(config_path, encoding="utf-8") as fh:
             rendered = cc.splice_registry(fh.read(), rendered)

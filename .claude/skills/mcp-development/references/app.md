@@ -27,7 +27,14 @@ class DashboardApp extends AppResource
         createMcpApp(async (app) => {
             document.getElementById('run-btn').addEventListener('click', async () => {
                 const result = await app.callServerTool({ name: 'tool-name', arguments: {} });
-                document.getElementById('output').textContent = result.content[0]?.text ?? '';
+                const output = document.getElementById('output');
+
+                if (result.isError) {
+                    output.textContent = `Error: ${result.content[0]?.text ?? 'Unknown error'}`;
+                    return;
+                }
+
+                output.textContent = result.content[0]?.text ?? '';
             });
         });
         </script>
@@ -307,7 +314,14 @@ Renders a complete self-contained HTML document with the MCP SDK inlined. `creat
         createMcpApp(async (app) => {
             document.getElementById('run-btn').addEventListener('click', async () => {
                 const result = await app.callServerTool({ name: 'tool-name', arguments: {} });
-                document.getElementById('output').textContent = result.content[0]?.text ?? '';
+                const output = document.getElementById('output');
+
+                if (result.isError) {
+                    output.textContent = `Error: ${result.content[0]?.text ?? 'Unknown error'}`;
+                    return;
+                }
+
+                output.textContent = result.content[0]?.text ?? '';
             });
         });
         </script>
@@ -703,9 +717,19 @@ class GetMonitorData extends Tool
 ```js
 createMcpApp(async (app) => {
     async function poll() {
-        const result = await app.callServerTool('get-monitor-data');
-        const data = JSON.parse(result.content[0]?.text ?? '{}');
-        document.getElementById('cpu').textContent = data.cpu;
+        try {
+            const result = await app.callServerTool('get-monitor-data');
+
+            if (result.isError) {
+                document.getElementById('cpu').textContent = result.content[0]?.text ?? 'Unavailable';
+                return;
+            }
+
+            const data = JSON.parse(result.content[0]?.text ?? '{}');
+            document.getElementById('cpu').textContent = data.cpu;
+        } catch {
+            // transport failure or malformed payload, retry on next tick
+        }
     }
 
     setInterval(poll, 2000);
@@ -776,6 +800,11 @@ In the client, convert the base64 blob to a data URI for rendering:
 
 ```js
 const result = await app.callServerTool('get-image', { id: 42 });
+
+if (result.isError) {
+    return;
+}
+
 const blob = result.content[0];
 img.src = `data:${blob.mimeType};base64,${blob.data}`;
 ```
@@ -798,8 +827,17 @@ createMcpApp(async (app) => {
     });
 
     app.onToolResult((params) => {
-        const data = JSON.parse(params.result.content[0]?.text ?? "{}");
-        renderResults(data);
+        if (params.result.isError) {
+            document.getElementById("error").textContent =
+                params.result.content[0]?.text ?? "Unknown error";
+            return;
+        }
+
+        try {
+            renderResults(JSON.parse(params.result.content[0]?.text ?? "{}"));
+        } catch {
+            document.getElementById("error").textContent = "Malformed tool result";
+        }
     });
 });
 ```

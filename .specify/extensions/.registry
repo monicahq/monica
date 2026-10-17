@@ -1,14 +1,75 @@
 {
   "schema_version": "1.0",
   "extensions": {
-    "companion": {
-      "version": "0.24.0",
+    "bug": {
+      "version": "1.0.1",
       "source": "local",
-      "manifest_hash": "sha256:7c54bfa901137d782f650fe08e1f658229bb92406f21731527734cca0c5c6a63",
+      "manifest_hash": "sha256:0f8ca9b828f8855be72a17cdef1f355fba81d7173b16f349d500d2ab367384fb",
       "enabled": true,
       "priority": 10,
       "registered_commands": {
         "claude": [
+          "speckit.bug.assess",
+          "speckit.bug.fix",
+          "speckit.bug.test"
+        ]
+      },
+      "registered_skills": [
+        "speckit-bug-assess",
+        "speckit-bug-fix",
+        "speckit-bug-test"
+      ],
+      "installed_at": "2026-10-10T08:53:17.391472+00:00"
+    },
+    "assess": {
+      "version": "1.0.1",
+      "source": "local",
+      "manifest_hash": "sha256:a1c87d9ce8088e7865f1d352137777a693b0595ccc310957c7c051a604ca1db2",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "claude": [
+          "speckit.assess.intake",
+          "speckit.assess.research",
+          "speckit.assess.define",
+          "speckit.assess.shape",
+          "speckit.assess.decide"
+        ]
+      },
+      "registered_skills": [
+        "speckit-assess-intake",
+        "speckit-assess-research",
+        "speckit-assess-define",
+        "speckit-assess-shape",
+        "speckit-assess-decide"
+      ],
+      "installed_at": "2026-10-10T08:53:18.019815+00:00"
+    },
+    "archive": {
+      "version": "1.4.0",
+      "source": "local",
+      "manifest_hash": "sha256:cdfc1d14c91467b155327e79008c84df19ecbaeb8d2dcc8cf4f489b7e716e3bf",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "claude": [
+          "speckit.archive.run"
+        ]
+      },
+      "registered_skills": [
+        "speckit-archive-run"
+      ],
+      "installed_at": "2026-10-10T08:53:20.288592+00:00"
+    },
+    "companion": {
+      "version": "0.25.0",
+      "source": "local",
+      "manifest_hash": "sha256:6c71d56fbf5912e3d0c056b56e0d30ff571fc9b370add089147f3e65ee622b09",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "claude": [
+          "speckit.companion.before-step",
           "speckit.companion.after-specify",
           "speckit.companion.after-plan",
           "speckit.companion.after-tasks",
@@ -35,55 +96,7 @@
         ]
       },
       "registered_skills": [],
-      "installed_at": "2026-10-10T08:53:17.011951+00:00"
-    },
-    "bug": {
-      "version": "1.0.1",
-      "source": "local",
-      "manifest_hash": "sha256:0f8ca9b828f8855be72a17cdef1f355fba81d7173b16f349d500d2ab367384fb",
-      "enabled": true,
-      "priority": 10,
-      "registered_commands": {
-        "claude": [
-          "speckit.bug.assess",
-          "speckit.bug.fix",
-          "speckit.bug.test"
-        ]
-      },
-      "registered_skills": [],
-      "installed_at": "2026-10-10T08:53:17.391472+00:00"
-    },
-    "assess": {
-      "version": "1.0.1",
-      "source": "local",
-      "manifest_hash": "sha256:a1c87d9ce8088e7865f1d352137777a693b0595ccc310957c7c051a604ca1db2",
-      "enabled": true,
-      "priority": 10,
-      "registered_commands": {
-        "claude": [
-          "speckit.assess.intake",
-          "speckit.assess.research",
-          "speckit.assess.define",
-          "speckit.assess.shape",
-          "speckit.assess.decide"
-        ]
-      },
-      "registered_skills": [],
-      "installed_at": "2026-10-10T08:53:18.019815+00:00"
-    },
-    "archive": {
-      "version": "1.4.0",
-      "source": "local",
-      "manifest_hash": "sha256:cdfc1d14c91467b155327e79008c84df19ecbaeb8d2dcc8cf4f489b7e716e3bf",
-      "enabled": true,
-      "priority": 10,
-      "registered_commands": {
-        "claude": [
-          "speckit.archive.run"
-        ]
-      },
-      "registered_skills": [],
-      "installed_at": "2026-10-10T08:53:20.288592+00:00"
+      "installed_at": "2026-10-17T11:40:17.748372+00:00"
     }
   }
 }

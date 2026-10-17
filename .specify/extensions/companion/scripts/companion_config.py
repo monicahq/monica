@@ -512,8 +512,11 @@ LEGACY_CONFIG_REL = os.path.join(".specify", "companion.yml")
 
 # Top-level keys the registry file owns, in emit order. `rules` is owned so a
 # rewrite re-emits it: an owned region that stopped at `capabilities` would
-# delete a `rules` block that happened to sit above it.
-REGISTRY_KEYS = ("enabled", "exempt", "capabilities", "rules")
+# delete a `rules` block that happened to sit above it. `layout` is owned for
+# the same reason — it has always been read here and was never emitted, so a
+# registry rewrite deleted whichever layout the project had chosen and sent
+# every later adoption back to asking.
+REGISTRY_KEYS = ("enabled", "layout", "exempt", "capabilities", "rules")
 
 #: Pipeline steps that may carry authored guidance. An unrecognised key is
 #: dropped rather than passed through, so a typo never reaches a step silently.
@@ -809,15 +812,20 @@ def atomic_write_text(path: str, text: str) -> None:
         raise
 
 
-def render_registry(enabled: bool, capabilities: list, exempt=None, rules=None) -> str:
+def render_registry(enabled: bool, capabilities: list, exempt=None, rules=None,
+                    layout=None) -> str:
     """Render the registry file's flattened body from a normalized capability list.
 
     `exempt=None` omits the key (the reader then applies DEFAULT_EXEMPT_GLOBS); an empty
     list is written as `exempt: []`, which the reader honors as "no exemptions".
     `rules` is re-emitted because the owned region covers it — a rewrite that
-    dropped the argument would delete the project's authored guidance.
+    dropped the argument would delete the project's authored guidance. `layout`
+    is re-emitted for the same reason, and omitted when it is the default, so a
+    project that never chose keeps a file that never says.
     """
     lines = [f"enabled: {'true' if enabled else 'false'}"]
+    if layout and layout != "central":
+        lines.append(f"layout: {layout}")
     if exempt is not None:
         lines.append(f"exempt: {_yaml_flow_list(exempt)}")
     if capabilities:

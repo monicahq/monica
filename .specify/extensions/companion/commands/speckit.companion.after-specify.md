@@ -18,10 +18,20 @@ directory and files are created by the core `speckit.specify` workflow.
 
 ## Execution
 
-Run the writer script from the repository root:
+Run the writer script from the repository root, twice.
+
+First the start, only if the `before_specify` hook had you read the clock when this step began. Pass exactly the time it printed:
 
 ```bash
-python3 .specify/extensions/companion/scripts/write-context.py --step specify --status specified --by extension
+python3 .specify/extensions/companion/scripts/write-context.py --step specify --status specifying --kind start --by extension --at <the time you read>
+```
+
+Skip that call when you read no time. A start the GUI already recorded makes it a no-op.
+
+Then the finish, every time:
+
+```bash
+python3 .specify/extensions/companion/scripts/write-context.py --step specify --status specified --kind complete --by extension
 ```
 
 The script resolves the active feature directory on its own, in this order:
@@ -29,11 +39,7 @@ The script resolves the active feature directory on its own, in this order:
 `.specify/feature.json` → current git branch prefix.
 
 If you already know the feature directory (e.g. the one `speckit.specify` just
-created), pass it explicitly so resolution is unambiguous:
-
-```bash
-python3 .specify/extensions/companion/scripts/write-context.py --feature-dir specs/<NNN>-<slug> --step specify --status specified --by extension
-```
+created), pass `--feature-dir specs/<NNN>-<slug>` on both calls so resolution is unambiguous.
 
 ## Graceful Degradation
 

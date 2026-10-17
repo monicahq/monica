@@ -62,7 +62,7 @@ jobs:
     # against a real one; every other test runs on Scout's null engine.
     services:
       meilisearch:
-        image: getmeili/meilisearch:v1.54.2
+        image: getmeili/meilisearch:v1.55.0
         env:
           MEILI_MASTER_KEY: testing-master-key
           MEILI_NO_ANALYTICS: true
@@ -71,7 +71,7 @@ jobs:
 
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup PHP ${{ matrix.php-version }}
         uses: shivammathur/setup-php@v2
@@ -100,7 +100,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache composer files
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}

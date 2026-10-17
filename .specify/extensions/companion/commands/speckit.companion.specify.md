@@ -199,7 +199,7 @@ python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <fe
 5. **Classify the change, to right-size the ceremony.** After the spec content is drafted, decide whether this change is small enough to fast-track straight to implement, or large enough to keep the full specify → plan → tasks → implement pipeline. Apply the shared size definition below. This is a best-effort heuristic and **MUST err toward `normal`** on weak or conflicting signals.
 
 <!-- speckit-companion:part sizing -->
-- **small**: the change plausibly touches **≤ 5 files** and decomposes into **≤ 10 tasks**.
+- **small**: the change plausibly touches **≤ 5 files** and decomposes into **≤ 10 tasks**, and is easy to undo and easy to check. A change that is hard to reverse (a migration, deleted stored data, a published contract) or hard to verify is never small, whatever its file count.
 - **oversized**: the change clearly exceeds the small bar by a wide margin (broad multi-subsystem
   work, many new files, or a long task list).
 - **normal**: anything in between (the default).
@@ -209,9 +209,11 @@ python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <fe
 
    ```
    crossedGuardrail = the change exceeds the **small** bar above (more files or tasks than it allows)
+   riskyToShip      = the change is hard to undo or hard to check, as the small bar above defines
 
    verdict = "simple"    if  the change is **small** by the definition above
                          and scopeSignal != "larger"
+                         and not riskyToShip
              "oversized" if  the change exceeds the small bar by a wide margin —
                              roughly double it (more than 10 files or more than 20
                              tasks), or spans multiple subsystems
@@ -225,6 +227,12 @@ python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <fe
      ```
 
      Exactly at the threshold (`projectedFiles == 5` / `projectedTasks == 10`) is the simple ceiling: it does **not** warn and stays eligible for `simple`.
+
+     When `riskyToShip == true` and neither of those holds, print this line instead, verbatim, and run the branch the verdict names. Print one line or the other, never both:
+
+     ```
+     [companion] Change is hard to undo or hard to check — running the full pipeline as <normal|oversized>.
+     ```
 <!-- /speckit-companion:node classify-size -->
 <!-- speckit-companion:node persist-size -->
 6. **Persist the size verdict** so `plan` and `tasks` can right-size their output without re-deciding it. Right after classifying, record the verdict on the spec's context from the repository root:

@@ -101,6 +101,7 @@ Produce an implementation plan and its design artifacts in phases: load context 
   - `plan.md`: keep the **Summary** only. **Skip the Project Structure section** (the task list already names every file) and **skip the Constitution Check** unless there is a real violation to flag.
   - **Skip `data-model.md`**; fold the one or two types into the plan's prose.
   - Write the design rationale as a short **Key Decisions** note folded into `plan.md` (a few Decision/why lines), not a separate `research.md`, unless a decision genuinely needs its own page.
+  - Skip the plan's blocks (calls, code, states, screens).
   - Generate `contracts/` only if the feature exposes an interface a consumer or test codes against.
 
 This budget governs every step that follows. Where a later step would produce something the budget skips, omit it. Do not produce it and then delete it.
@@ -136,6 +137,20 @@ When it prints reader briefs, dispatch every one of them in a single message, un
    - **Summary**: 2–4 plain-language sentences giving the primary requirement plus the technical approach. If a stack choice genuinely isn't obvious from the codebase (a new language, a newly-added dependency, a non-default storage or test setup), name it in a sentence here. Otherwise don't restate the project's known stack.
    - **Project Structure**: the concrete source layout this feature touches, as a short tree of real directories/files, plus a one-line **Structure Decision**. Use the actual paths; do not leave placeholder option-trees in the output. *(Skipped at `simple` size per the budget.)*
 <!-- /speckit-companion:node plan-doc -->
+<!-- speckit-companion:node pick-blocks -->
+   **Add a block to `plan.md` only where the change needs one.** Skip this at `simple` size. Decide each row, then run the command with the names that apply, or `none`, and write what it prints into `plan.md`.
+
+   | Block | Write it when |
+   |---|---|
+   | `calls` | the change crosses functions or files |
+   | `code` | one line needs a note to be understood |
+   | `states` | the change adds or alters a lifecycle |
+   | `screens` | the change alters what a person sees |
+
+   ```bash
+   python3 .specify/extensions/companion/scripts/plan-blocks.py --feature-dir <feature_directory> <names>
+   ```
+<!-- /speckit-companion:node pick-blocks -->
 <!-- /speckit-companion:phase author -->
 <!-- speckit-companion:phase check -->
 <!-- speckit-companion:node constitution-check -->

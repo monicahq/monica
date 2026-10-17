@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: companion
   name: "SpecKit Companion"
-  version: "0.24.0"
+  version: "0.25.0"
   description: "Records your spec-kit runs live: status, resume, and a health check for what actually happened."
   author: alfredoperez
   repository: https://github.com/alfredoperez/speckit-companion
@@ -29,6 +29,9 @@ requires:
 
 provides:
   commands:
+    - name: speckit.companion.before-step
+      file: commands/speckit.companion.before-step.md
+      description: "Capture a spec-kit step's start into .spec-context.json for the Companion GUI"
     - name: speckit.companion.after-specify
       file: commands/speckit.companion.after-specify.md
       description: "Capture the current spec-kit step into .spec-context.json for the Companion GUI"
@@ -100,6 +103,22 @@ provides:
       description: "Sync living specs from your current changes — group working-tree changes (uncommitted included) by capability and update every affected spec in one pass (opt-in, update-not-regenerate, never halts)"
 
 hooks:
+  before_specify:
+    command: speckit.companion.before-step
+    optional: false
+    description: "Read the clock so after_specify can record when specify started"
+  before_plan:
+    command: speckit.companion.before-step
+    optional: false
+    description: "Record plan start (currentStep=plan, status=planning) into .spec-context.json"
+  before_tasks:
+    command: speckit.companion.before-step
+    optional: false
+    description: "Record tasks start (currentStep=tasks, status=tasking) into .spec-context.json"
+  before_implement:
+    command: speckit.companion.before-step
+    optional: false
+    description: "Record implement start (currentStep=implement, status=implementing) into .spec-context.json"
   after_specify:
     command: speckit.companion.after-specify
     optional: false

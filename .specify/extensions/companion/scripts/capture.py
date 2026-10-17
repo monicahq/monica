@@ -325,8 +325,74 @@ def append_verification_runs(feature_dir: Path, specs: list[str]) -> tuple[Path 
             skipped.append(spec)
             continue
         entries.append(json.dumps(run_verification(what.strip(), command.strip())))
-    target = append_capture_entries(feature_dir, "verified", "what", entries) if entries else None
+    target = append_capture_entries(feature_dir, "verified", "what", entries, replace=True) if entries else None
     return target, skipped
+
+
+PLAN_CHECK_WHAT = "plan blocks check out"
+
+
+PLAN_KINDS = (("calls", "blocks"), ("code", "code_blocks"), ("states", "state_blocks"), ("screens", "screens"))
+
+
+def record_plan_report(feature_dir: Path, report: dict, started: float | None = None) -> Path | None:
+    """Record a check_plan report as the derived verification and set planBlocks to the blocks the plan holds."""
+    import time
+
+    import check_plan
+
+    held = [kind for kind, key in PLAN_KINDS if report[key]]
+    ctx = read_ctx(feature_dir / ".spec-context.json")
+    picked = ctx.get("planBlocksPicked")
+    notes = []
+    if isinstance(picked, list) and picked:
+        notes = [f"picked {kind} but the plan has no {kind} block" for kind in picked if kind not in held]
+        notes += [f"the plan has a {kind} block that was not picked" for kind in held if kind not in picked]
+    for note in notes:
+        print(f"[companion] Plan blocks: {note}.", file=sys.stderr)
+    if not check_plan.has_blocks(report):
+        return _set_plan_blocks(feature_dir, held) if picked else None
+    root = _repo_root_for(feature_dir)
+    try:
+        shown = feature_dir.resolve().relative_to(root.resolve()).as_posix()
+    except ValueError:
+        shown = str(feature_dir)
+    errors = report["errors"]
+    tail = [ln for ln in check_plan.render_human(report).strip().splitlines() if ln.strip()][-3:]
+    entry = {
+        "what": PLAN_CHECK_WHAT,
+        "command": f"python3 .specify/extensions/companion/scripts/check_plan.py --feature-dir {shown} --strict",
+        "source": "derived",
+        "exitCode": 1 if errors else 0,
+        "durationSeconds": round(time.monotonic() - started, 1) if started is not None else 0,
+        "result": " · ".join([*tail, *notes]),
+    }
+    if errors:
+        entry["warnings"] = ["exited 1"]
+        print(f"[companion] Plan blocks: {errors} error(s). Run check_plan.py --feature-dir {shown} to see them.",
+              file=sys.stderr)
+    path = append_capture_entries(feature_dir, "verified", "what", [json.dumps(entry)], replace=True)
+    _set_plan_blocks(feature_dir, held)
+    return path
+
+
+def _set_plan_blocks(feature_dir: Path, held: list) -> Path | None:
+    target = feature_dir / ".spec-context.json"
+    ctx = read_ctx(target)
+    fill_required(ctx, feature_dir, _git_branch(_repo_root_for(feature_dir)) or "main")
+    ctx["planBlocks"] = held
+    atomic_write(target, ctx)
+    return target
+
+
+def record_plan_check(feature_dir: Path) -> Path | None:
+    """Run check_plan in-process and record it as a derived verification; None when the plan has no checked block."""
+    import time
+
+    import check_plan
+
+    started = time.monotonic()
+    return record_plan_report(feature_dir, check_plan.check_feature(feature_dir), started)
 
 
 def _entry_identity(item, identity_key: str) -> str | None:
@@ -340,9 +406,12 @@ def _entry_identity(item, identity_key: str) -> str | None:
 
 
 def append_capture_entries(
-    feature_dir: Path, field: str, identity_key: str, raws: list[str],
+    feature_dir: Path, field: str, identity_key: str, raws: list[str], replace: bool = False,
 ) -> Path | None:
     """De-duped additive append onto ctx[field] (decisions/verified/concerns).
+
+    With `replace`, a new entry takes the place of an earlier one with the same
+    identity: a check that was run again reports its latest result.
 
     Mirrors set_living_specs_loaded: preserves first-seen order, normalizes
     pre-existing duplicates, never touches lifecycle keys. Bare strings already
@@ -356,13 +425,16 @@ def append_capture_entries(
     fill_required(ctx, feature_dir, branch)
     prior = ctx.get(field)
     merged: list = []
-    seen: set[str] = set()
-    for item in (list(prior) if isinstance(prior, list) else []) + entries:
+    seen: dict[str, int] = {}
+    stored = list(prior) if isinstance(prior, list) else []
+    for index, item in enumerate(stored + entries):
         ident = _entry_identity(item, identity_key)
         if ident is not None:
             if ident in seen:
+                if replace and index >= len(stored):
+                    merged[seen[ident]] = item
                 continue
-            seen.add(ident)
+            seen[ident] = len(merged)
         merged.append(item)
     ctx[field] = merged
     atomic_write(target, ctx)

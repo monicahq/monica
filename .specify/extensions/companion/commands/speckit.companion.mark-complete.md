@@ -35,6 +35,8 @@ Pass `--feature-dir specs/<NNN>-<slug>` when you already know it.
 completed`, preserving the canonical invariant that the last `history` entry's step equals
 `currentStep`. It is the only sanctioned writer of `completed`.
 
+A spec whose record holds no verification and no concern explaining why still completes. The script records one concern, `finished, unverified`, and prints a `[companion] Warning:` line. That line reports a completed spec, not a failed command: do not retry it.
+
 ### Fold living-spec deltas (opt-in, best-effort)
 
 **Account for every loaded capability first — a delta or an explicit skip, never silence.** Living

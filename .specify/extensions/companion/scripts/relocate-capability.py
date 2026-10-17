@@ -354,10 +354,11 @@ def _prune_empty_dirs(root: str, rel_dir: str) -> None:
 
 
 def _write_config(config_path: str, original: str | None, enabled: bool,
-                  capabilities: list[dict], exempt=None, rules=None) -> None:
+                  capabilities: list[dict], exempt=None, rules=None,
+                  layout=None) -> None:
     """Re-emit the registry through the shared renderer and splice it back, writing via
     a temp file + os.replace so a partial file never lands."""
-    rendered = cc.render_registry(enabled, capabilities, exempt, rules)
+    rendered = cc.render_registry(enabled, capabilities, exempt, rules, layout)
     if original is not None:
         rendered = cc.splice_registry(original, rendered)
     cc.atomic_write_text(config_path, rendered)
@@ -439,7 +440,8 @@ def relocate(root: str, to: str, name: str | None = None, spec: str | None = Non
             else:
                 entry["spec"] = plan["spec"]
         _write_config(config_path, original, living["enabled"], capabilities,
-                      living.get("exempt"), living.get("rules"))
+                      living.get("exempt"), living.get("rules"),
+                      living.get("layout"))
         if cc.should_drop_legacy(meta) and regcap._drop_legacy_block(legacy_path):
             result["migratedFrom"] = LEGACY_CONFIG_REL
     except BaseException:

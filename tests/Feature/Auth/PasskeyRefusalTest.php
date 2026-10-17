@@ -63,7 +63,7 @@ class PasskeyRefusalTest extends TestCase
     }
 
     /** @param  array<string, mixed>  $assertion */
-    private function attempt(array $assertion): TestResponse
+    private function attemptPasskeySignIn(array $assertion): TestResponse
     {
         return $this->withChallenge()->postJson(route('passkey.login'), $assertion);
     }
@@ -80,7 +80,7 @@ class PasskeyRefusalTest extends TestCase
     #[Test]
     public function it_refuses_a_credential_that_was_never_registered_here(): void
     {
-        $response = $this->attempt($this->assertion('nobody-owns-this'));
+        $response = $this->attemptPasskeySignIn($this->assertion('nobody-owns-this'));
 
         $response->assertStatus(422);
         $response->assertJsonPath('errors.passkey.0', self::MESSAGE);
@@ -93,7 +93,7 @@ class PasskeyRefusalTest extends TestCase
         $user = User::factory()->create(['is_active' => false]);
         $this->registerPasskeyFor($user, 'a-deactivated-user-credential');
 
-        $response = $this->attempt($this->assertion('a-deactivated-user-credential'));
+        $response = $this->attemptPasskeySignIn($this->assertion('a-deactivated-user-credential'));
 
         $response->assertStatus(422);
         $response->assertJsonPath('errors.passkey.0', self::MESSAGE);
@@ -107,7 +107,7 @@ class PasskeyRefusalTest extends TestCase
         $this->registerPasskeyFor($user, 'a-deleted-user-credential');
         $user->delete();
 
-        $response = $this->attempt($this->assertion('a-deleted-user-credential'));
+        $response = $this->attemptPasskeySignIn($this->assertion('a-deleted-user-credential'));
 
         $response->assertStatus(422);
         $response->assertJsonPath('errors.passkey.0', self::MESSAGE);
@@ -123,7 +123,7 @@ class PasskeyRefusalTest extends TestCase
         $user = User::factory()->create(['is_active' => false]);
         $passkey = $this->registerPasskeyFor($user, 'a-deactivated-user-credential');
 
-        $this->attempt($this->assertion('a-deactivated-user-credential'))->assertStatus(422);
+        $this->attemptPasskeySignIn($this->assertion('a-deactivated-user-credential'))->assertStatus(422);
 
         $this->assertNull($passkey->refresh()->last_used_at);
         Queue::assertNotPushed(LogUserAction::class);
@@ -136,10 +136,10 @@ class PasskeyRefusalTest extends TestCase
         $assertion = $this->assertion('a-credential-being-guessed');
 
         for ($attempt = 1; $attempt <= 5; $attempt++) {
-            $this->attempt($assertion)->assertStatus(422);
+            $this->attemptPasskeySignIn($assertion)->assertStatus(422);
         }
 
-        $this->attempt($assertion)->assertStatus(429);
+        $this->attemptPasskeySignIn($assertion)->assertStatus(429);
     }
 
     #[Test]
@@ -148,20 +148,20 @@ class PasskeyRefusalTest extends TestCase
         $hammered = $this->assertion('a-credential-being-guessed');
 
         for ($attempt = 1; $attempt <= 6; $attempt++) {
-            $this->attempt($hammered);
+            $this->attemptPasskeySignIn($hammered);
         }
 
-        $this->attempt($this->assertion('somebody-elses-credential'))
+        $this->attemptPasskeySignIn($this->assertion('somebody-elses-credential'))
             ->assertStatus(422);
     }
 
     #[Test]
     public function it_signs_nobody_in_from_an_assertion_that_never_arrived(): void
     {
-        $this->attempt([])->assertStatus(422);
+        $this->attemptPasskeySignIn([])->assertStatus(422);
         $this->assertGuest();
 
-        $this->attempt([
+        $this->attemptPasskeySignIn([
             'credential' => [
                 'id' => 'a-credential',
                 'type' => 'public-key',
@@ -177,7 +177,7 @@ class PasskeyRefusalTest extends TestCase
         $this->registerPasskeyFor($deactivated, 'deactivated');
 
         $bodies = collect(['unregistered', 'deactivated'])
-            ->map(fn (string $id): array => $this->attempt($this->assertion($id))->json())
+            ->map(fn (string $id): array => $this->attemptPasskeySignIn($this->assertion($id))->json())
             ->unique()
             ->all();
 
