@@ -1,0 +1,5 @@
+{"at":"2026-10-13T20:46:30.578Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/079-sign-out-main-page","files":[".spec-context.json"],"bytes":313,"in_bytes":84,"ms":12}
+{"at":"2026-10-13T21:40:24.199Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/079-sign-out-main-page","files":[".spec-context.json"],"bytes":521,"in_bytes":93,"ms":12}
+{"at":"2026-10-13T21:42:04.928Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/079-sign-out-main-page","files":[".spec-context.json"],"bytes":682,"in_bytes":105,"ms":11}
+{"at":"2026-10-14T07:28:47.672Z","tool":"write-context","op":"tasks-sync","ok":true,"reason":null,"spec":"specs/079-sign-out-main-page","files":[".spec-context.json"],"bytes":2980,"in_bytes":137,"ms":14}
+{"at":"2026-10-14T08:14:06.687Z","tool":"write-context","op":"tasks-sync","ok":true,"reason":null,"spec":"specs/079-sign-out-main-page","files":[".spec-context.json"],"bytes":2980,"in_bytes":137,"ms":11}

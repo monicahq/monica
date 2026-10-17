@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Admin;
 
+use App\Helpers\PageSize;
 use App\Http\Controllers\Controller;
 use App\ViewModels\Admin\AdministratorLogsViewModel;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ class AdministratorLogController extends Controller
             'viewModel' => new AdministratorLogsViewModel(
                 administratorId: $request->integer('administrator') ?: null,
                 accountId: $request->integer('account') ?: null,
+                size: PageSize::from($request, AdministratorLogsViewModel::PER_PAGE),
             ),
         ]);
     }

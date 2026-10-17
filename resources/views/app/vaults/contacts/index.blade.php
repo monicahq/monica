@@ -64,6 +64,9 @@
         <form method="get" action="{{ $viewModel->searchUrl() }}" x-target.push="contacts" role="search" class="w-72 max-w-full">
           <input type="hidden" name="sort" value="{{ $viewModel->sort() }}" />
           <input type="hidden" name="direction" value="{{ $viewModel->direction() }}" />
+          @if ($viewModel->size() !== $viewModel->defaultSize())
+            <input type="hidden" name="size" value="{{ $viewModel->size() }}" />
+          @endif
 
           <x-input
             type="search"
@@ -146,18 +149,14 @@
               </tr>
             </thead>
 
-            <tbody id="contact-rows" x-merge="append">
+            <tbody id="contact-rows">
               @include('app.vaults.contacts._groups', ['viewModel' => $viewModel])
             </tbody>
           </table>
         </div>
 
         <x-slot:footer id="pagination" class="flex flex-wrap items-center gap-3">
-          @if ($viewModel->hasMorePages())
-            <x-link x-target="contact-rows pagination" :href="$viewModel->nextPageUrl()">{{ __('Load more') }}</x-link>
-          @else
-            <span class="text-xs text-pretty text-muted">{{ $viewModel->endLine() }}</span>
-          @endif
+          <x-pagination :paginator="$viewModel->contacts()" :size="$viewModel->size()" :default="$viewModel->defaultSize()" target="contacts" class="grow" />
 
           <x-button.secondary
             :href="$ceiling === null ? $viewModel->newContactUrl() : null"

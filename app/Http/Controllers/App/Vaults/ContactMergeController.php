@@ -10,6 +10,7 @@ use App\Exceptions\CannotAbsorbTheMeContact;
 use App\Exceptions\CannotMergeAContactWithItself;
 use App\Exceptions\ContactChangedSinceThePreview;
 use App\Exceptions\ContactMergeCannotBeUndone;
+use App\Helpers\PageSize;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\ContactMerge;
@@ -30,6 +31,8 @@ class ContactMergeController extends Controller
                 user: $request->user(),
                 vault: $vault,
                 contact: $contact,
+                query: $request->string('query')->toString(),
+                size: PageSize::from($request, ContactMergeViewModel::PER_PAGE),
             ),
         ]);
     }

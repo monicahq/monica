@@ -76,6 +76,53 @@ class ContactReminderControllerTest extends TestCase
     }
 
     #[Test]
+    public function the_history_loads_twenty_five_answers_at_a_time(): void
+    {
+        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $kevin = $this->contact($vault);
+        $rule = $this->manual($kevin, 'Ask about the band');
+
+        foreach (range(1, 26) as $daysAgo) {
+            $this->deadline($rule, -$daysAgo)
+                ->forceFill(['answer' => 'remembered', 'answered_at' => now()->subDays($daysAgo)])
+                ->save();
+        }
+
+        $history = route('contacts.reminders.index', ['vault' => $vault, 'contact' => $kevin, 'filter' => 'history']);
+
+        $this->actingAs($user)
+            ->get($history)
+            ->assertStatus(200)
+            ->assertSee('id="contact-reminders-rows"', escape: false)
+            ->assertSee('id="contact-reminders-footer"', escape: false)
+            ->assertSee(__('Load more'))
+            ->assertSee("{$history}?page=2", escape: false)
+            ->assertDontSee(__('End of list'));
+
+        $this->actingAs($user)
+            ->get("{$history}?page=2")
+            ->assertStatus(200)
+            ->assertSee('id="contact-reminders-rows"', escape: false)
+            ->assertSee('id="contact-reminders-footer"', escape: false)
+            ->assertSee(__('End of list'))
+            ->assertDontSee(__('Load more'));
+    }
+
+    #[Test]
+    public function a_history_page_reached_through_the_wrong_vault_is_not_found(): void
+    {
+        $user = User::factory()->create();
+        $here = Vault::factory()->create(['account_id' => $user->account_id]);
+        $there = Vault::factory()->create(['account_id' => $user->account_id]);
+        $kevin = $this->contact($there);
+
+        $this->actingAs($user)
+            ->get(route('contacts.reminders.index', ['vault' => $here, 'contact' => $kevin, 'filter' => 'history', 'page' => 2]))
+            ->assertStatus(404);
+    }
+
+    #[Test]
     public function it_offers_a_form_for_a_new_reminder_rather_than_a_filter(): void
     {
         $user = User::factory()->create();

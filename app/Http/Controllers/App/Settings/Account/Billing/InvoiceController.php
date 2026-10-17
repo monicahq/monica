@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Settings\Account\Billing;
 
+use App\Helpers\PageSize;
 use App\Http\Controllers\Controller;
 use App\ViewModels\Settings\Account\Billing\InvoicesViewModel;
 use Illuminate\Http\RedirectResponse;
@@ -17,6 +18,7 @@ class InvoiceController extends Controller
         return view('app.settings.account.billing.invoices', [
             'viewModel' => new InvoicesViewModel(
                 user: $request->user(),
+                size: PageSize::from($request, InvoicesViewModel::PER_PAGE),
             ),
         ]);
     }

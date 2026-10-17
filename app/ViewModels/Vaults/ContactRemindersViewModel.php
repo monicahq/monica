@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Enums\ReminderOccurrenceCategoryEnum;
+use App\Helpers\ContactReminderDates;
 use App\Helpers\NextReminderDeadlines;
 use App\Models\Contact;
 use App\Models\Reminder;
@@ -13,10 +14,13 @@ use App\Models\User;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ContactRemindersViewModel
 {
     public const string FilterAll = 'all';
+
+    public const int PER_PAGE = 25;
 
     /** @var list<string> */
     public const array FILTERS = ['all', 'overdue', 'today', 'upcoming', 'history'];
@@ -24,11 +28,15 @@ class ContactRemindersViewModel
     /** @var array<string, list<ReminderRow>>|null */
     private ?array $rows = null;
 
+    /** @var LengthAwarePaginator<int, ReminderOccurrence>|null */
+    private ?LengthAwarePaginator $history = null;
+
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
         private readonly Contact $contact,
         private readonly string $filter = self::FilterAll,
+        private readonly int $page = 1,
     ) {}
 
     public function user(): User
@@ -71,8 +79,34 @@ class ContactRemindersViewModel
         return in_array($this->filter, self::FILTERS, true) ? $this->filter : self::FilterAll;
     }
 
-    /** @return list<array{key: string, label: string, count: int, url: string, isCurrent: bool}> */
-    public function filters(): array
+    public function page(): int
+    {
+        return max($this->page, 1);
+    }
+
+    public function nextPageUrl(): ?string
+    {
+        if ($this->filter() !== ContactReminderDates::History) {
+            return null;
+        }
+
+        if (! $this->history()->hasMorePages()) {
+            return null;
+        }
+
+        return route('contacts.reminders.index', [
+            'vault' => $this->vault,
+            'contact' => $this->contact,
+            'filter' => ContactReminderDates::History,
+            'page' => $this->page() + 1,
+        ]);
+    }
+
+    /**
+     * @param  list<string>  $keys
+     * @return list<array{key: string, label: string, count: int, url: string, isCurrent: bool}>
+     */
+    public function filters(array $keys = self::FILTERS): array
     {
         $rows = $this->rows();
         $labels = [
@@ -86,16 +120,18 @@ class ContactRemindersViewModel
         return array_map(fn (string $key): array => [
             'key' => $key,
             'label' => $labels[$key],
-            'count' => $key === self::FilterAll
-                ? count($rows['overdue']) + count($rows['today']) + count($rows['upcoming'])
-                : count($rows[$key]),
+            'count' => match ($key) {
+                self::FilterAll => count($rows['overdue']) + count($rows['today']) + count($rows['upcoming']),
+                ContactReminderDates::History => $this->historyCount(),
+                default => count($rows[$key]),
+            },
             'url' => route('contacts.reminders.index', array_filter([
                 'vault' => $this->vault,
                 'contact' => $this->contact,
                 'filter' => $key === self::FilterAll ? null : $key,
             ])),
             'isCurrent' => $this->filter() === $key,
-        ], self::FILTERS);
+        ], $keys);
     }
 
     /** @return list<array{key: string, title: string, note: string, rows: list<ReminderRow>}> */
@@ -184,18 +220,35 @@ class ContactRemindersViewModel
             $rows['upcoming'][] = $this->rowFor($occurrence);
         }
 
-        $rows['history'] = ReminderOccurrence::query()
-            ->whereIn('reminder_id', $this->rules()->modelKeys())
-            ->answered()
-            ->orderByDesc('answered_at')
-            ->get()
-            ->each($this->attachVault(...))
-            ->map(fn (ReminderOccurrence $occurrence): ReminderRow => $this->rowFor(
-                $occurrence->setRelation('reminder', $this->rules()->find($occurrence->reminder_id)),
-            ))
-            ->all();
+        if ($this->filter() === ContactReminderDates::History) {
+            $rows['history'] = array_map($this->rowFor(...), $this->history()->items());
+        }
 
         return $this->rows = $rows;
+    }
+
+    /** @return LengthAwarePaginator<int, ReminderOccurrence> */
+    private function history(): LengthAwarePaginator
+    {
+        return $this->history ??= ContactReminderDates::page(
+            $this->user,
+            $this->contact,
+            ContactReminderDates::History,
+            self::PER_PAGE,
+            $this->page(),
+        );
+    }
+
+    private function historyCount(): int
+    {
+        if ($this->filter() === ContactReminderDates::History) {
+            return $this->history()->total();
+        }
+
+        return ReminderOccurrence::query()
+            ->whereIn('reminder_id', $this->rules()->modelKeys())
+            ->answered()
+            ->count();
     }
 
     /** @return EloquentCollection<int, Reminder> */

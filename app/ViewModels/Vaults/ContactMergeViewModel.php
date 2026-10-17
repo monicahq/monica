@@ -5,17 +5,23 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Actions\PreviewContactMerge;
+use App\Helpers\PageSize;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ContactMergeViewModel
 {
+    public const int PER_PAGE = 20;
+
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
         private readonly Contact $contact,
         private readonly ?Contact $other = null,
+        private readonly string $query = '',
+        private readonly int|string $size = self::PER_PAGE,
     ) {}
 
     public function user(): User
@@ -59,18 +65,45 @@ class ContactMergeViewModel
 
     public function emptyLine(): string
     {
+        if (mb_trim($this->query) !== '') {
+            return __('Nobody here matches “:query”.', ['query' => $this->query]);
+        }
+
         return __('There is nobody else in this vault to merge with yet.');
     }
 
-    /** @return list<array{uuid: string, name: string, url: string}> */
-    public function candidates(): array
+    public function query(): string
     {
-        return $this->vault->contacts()
+        return $this->query;
+    }
+
+    public function searchUrl(): string
+    {
+        return route('contacts.merge.new', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
+    public function size(): int|string
+    {
+        return $this->size;
+    }
+
+    public function defaultSize(): int
+    {
+        return self::PER_PAGE;
+    }
+
+    /** @return LengthAwarePaginator<int, array{uuid: string, name: string, url: string}> */
+    public function candidates(): LengthAwarePaginator
+    {
+        $candidates = Contact::query()
+            ->where('vault_id', $this->vault->id)
             ->whereKeyNot($this->contact->id)
             ->where('is_me', false)
-            ->orderBy('sort_key')
-            ->get()
-            ->map(fn (Contact $contact): array => [
+            ->matchingSearch($this->query, $this->user->locale)
+            ->orderBy('sort_key');
+
+        return PageSize::paginate($candidates, $this->size)
+            ->through(fn (Contact $contact): array => [
                 'uuid' => $contact->uuid,
                 'name' => $contact->name,
                 'url' => route('contacts.merge.show', [
@@ -78,8 +111,7 @@ class ContactMergeViewModel
                     'contact' => $this->contact,
                     'other' => $contact,
                 ]),
-            ])
-            ->all();
+            ]);
     }
 
     /** @return list<array{name: string, avatarUrl: string|null, url: string}> */

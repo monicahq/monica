@@ -5,25 +5,40 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Enums\CountryEnum;
+use App\Helpers\PageSize;
 use App\Helpers\ShareLinkSummary;
 use App\Models\Contact;
 use App\Models\ShareLink;
 use App\Models\ShareLinkVisit;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ShareLinkViewModel
 {
+    public const int PER_PAGE = 20;
+
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
         private readonly Contact $contact,
         private readonly ShareLink $shareLink,
+        private readonly int|string $size = self::PER_PAGE,
     ) {}
 
     public function user(): User
     {
         return $this->user;
+    }
+
+    public function size(): int|string
+    {
+        return $this->size;
+    }
+
+    public function defaultSize(): int
+    {
+        return self::PER_PAGE;
     }
 
     public function vault(): Vault
@@ -158,20 +173,21 @@ class ShareLinkViewModel
         return __('Nothing has opened this address. Every visit appears here with its date, its time and roughly where it came from. There is no account behind the link, so nothing about the person is recorded.');
     }
 
-    /** @return array<int, array{when: string, where: string, agent: string, failed: bool}> */
-    public function visits(): array
+    /** @return LengthAwarePaginator<int, array{when: string, where: string, agent: string, failed: bool}> */
+    public function visits(): LengthAwarePaginator
     {
-        return $this->shareLink
-            ->visits()
-            ->limit(50)
-            ->get()
-            ->map(fn (ShareLinkVisit $visit): array => [
+        return PageSize::paginate($this->shareLink->visits(), $this->size)
+            ->through(fn (ShareLinkVisit $visit): array => [
                 'when' => $visit->viewed_at->isoFormat('LL, LT'),
                 'where' => $this->whereFrom($visit),
-                'agent' => $visit->user_agent ?? __('an unnamed browser'),
+                'agent' => $this->agentOf($visit),
                 'failed' => $visit->password_failed,
-            ])
-            ->all();
+            ]);
+    }
+
+    private function agentOf(ShareLinkVisit $visit): string
+    {
+        return $visit->user_agent ?? __('an unnamed browser');
     }
 
     private function whereFrom(ShareLinkVisit $visit): string

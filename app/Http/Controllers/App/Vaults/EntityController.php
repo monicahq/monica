@@ -13,6 +13,7 @@ use App\Exceptions\NotEnoughRepetitions;
 use App\Exceptions\NotEnoughStorageLeft;
 use App\Exceptions\TooManyRepetitions;
 use App\Helpers\FieldValueRules;
+use App\Helpers\PageSize;
 use App\Http\Controllers\Controller;
 use App\Models\EntityType;
 use App\Models\Field;
@@ -36,6 +37,7 @@ class EntityController extends Controller
                 user: $request->user(),
                 vault: $vault,
                 entityType: $entityType,
+                size: PageSize::from($request, EntitiesViewModel::PER_PAGE),
             ),
         ]);
     }

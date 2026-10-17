@@ -9,6 +9,7 @@ use App\Enums\RelationTargetEnum;
 use App\Enums\RepetitionOrderEnum;
 use App\Exceptions\AcceptedFileKindIsNotValid;
 use App\Exceptions\PublishedVersionIsFrozen;
+use App\Models\Concerns\ResolvesModelInAccount;
 use Carbon\CarbonImmutable;
 use Database\Factories\FieldFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -103,6 +104,8 @@ class Field extends Model
 {
     /** @use HasFactory<FieldFactory> */
     use HasFactory;
+
+    use ResolvesModelInAccount;
 
     /**
      * How long a key may be, which the column enforces and the action that

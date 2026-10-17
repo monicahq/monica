@@ -1130,6 +1130,52 @@ class ContactViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_shows_ten_notes_at_a_time_newest_first_with_the_way_to_the_rest(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['General' => ['Notes' => ['Notes']]]);
+        $contact = $this->contact($user, $version);
+        $notes = $this->noteRepeater($version, 'Notes');
+
+        foreach (range(1, 12) as $number) {
+            $this->writeNote($contact, $notes, "Note {$number}", CarbonImmutable::parse('2026-01-01')->addDays($number));
+        }
+
+        $field = $this->sectionsOn($user, $contact, 'general')[0]['fields'][0];
+
+        $this->assertCount(10, $field['notes']['entries']);
+        $this->assertSame(['Note 12'], $field['notes']['entries'][0]['shown']);
+        $this->assertSame("field-{$notes->id}-rows", $field['rowsMore']['rowsId']);
+        $this->assertSame(10, $field['rowsMore']['count']);
+        $this->assertFalse($field['rowsMore']['showsEnd']);
+        $this->assertStringContainsString('page=2', (string) $field['rowsMore']['nextPageUrl']);
+    }
+
+    #[Test]
+    public function it_hands_the_edit_form_every_row_of_a_repeater(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['General' => ['Notes' => ['Notes']]]);
+        $contact = $this->contact($user, $version);
+        $notes = $this->noteRepeater($version, 'Notes');
+
+        foreach (range(1, 12) as $number) {
+            $this->writeNote($contact, $notes, "Note {$number}");
+        }
+
+        $field = new ContactViewModel(
+            user: $user,
+            vault: $contact->vault,
+            contact: $contact,
+            selectedPageKey: 'general',
+            editingSection: $version->assembly->first(),
+        )->sections()[0]['fields'][0];
+
+        $this->assertCount(12, $field['rows']);
+        $this->assertNull($field['rowsMore']);
+    }
+
+    #[Test]
     public function it_names_a_note_repeater_whose_label_is_not_the_section_name(): void
     {
         $user = User::factory()->create();

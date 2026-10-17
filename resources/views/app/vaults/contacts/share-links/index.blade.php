@@ -26,8 +26,8 @@
   </div>
 
   <div id="share-links" x-merge="replace" class="dim-when-busy">
-    <x-panel :flush="true">
-      @forelse ($links as $link)
+    <x-list-panel :items="$links" :paginator="$links" :size="$viewModel->size()" :default="$viewModel->defaultSize()">
+      @foreach ($links as $link)
         <x-row icon="link">
           <div class="flex flex-wrap items-center gap-2.5">
             <a
@@ -69,7 +69,9 @@
             @endif
           </x-slot:end>
         </x-row>
-      @empty
+      @endforeach
+
+      <x-slot:empty>
         <x-empty-state :title="__('Create your first sharing link')">
           <x-slot:icon>
             <x-icon name="link" :size="30" :stroke-width="1.4" />
@@ -81,8 +83,8 @@
             <x-button :href="$viewModel->newUrl()" data-turbo="true" size="small">{{ __('Create sharing link') }}</x-button>
           </x-slot:action>
         </x-empty-state>
-      @endforelse
-    </x-panel>
+      </x-slot:empty>
+    </x-list-panel>
   </div>
 
   <x-notice tone="quiet" icon="lock" :title="__('Why revoked links stay on the list')">

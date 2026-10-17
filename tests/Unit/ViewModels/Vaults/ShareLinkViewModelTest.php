@@ -175,8 +175,48 @@ class ShareLinkViewModelTest extends TestCase
 
         $viewModel = $this->viewModel($user, $contact, $link);
 
-        $this->assertSame([], $viewModel->visits());
+        $this->assertSame([], $viewModel->visits()->items());
         $this->assertStringContainsString('roughly where it came from', $viewModel->visitsEmptyLine());
+    }
+
+    #[Test]
+    public function it_shows_twenty_visits_a_page_newest_first_and_still_counts_them_all(): void
+    {
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $link = ShareLink::factory()->for($contact, 'shareable')->create(['view_count' => 60]);
+
+        for ($index = 1; $index <= 60; $index++) {
+            ShareLinkVisit::factory()->for($link)->create([
+                'account_id' => $link->account_id,
+                'user_agent' => "Browser {$index}",
+                'viewed_at' => now()->subMinutes($index),
+            ]);
+        }
+
+        $firstPage = $this->viewModel($user, $contact, $link)->visits();
+
+        $this->assertSame(60, $firstPage->total());
+        $this->assertCount(20, $firstPage);
+        $this->assertSame('Browser 1', $firstPage[0]['agent']);
+        $this->assertSame('Browser 20', $firstPage[19]['agent']);
+
+        $this->app['request']->merge(['page' => 2]);
+
+        $secondPage = $this->viewModel($user, $contact, $link)->visits();
+
+        $this->assertCount(20, $secondPage);
+        $this->assertSame('Browser 21', $secondPage[0]['agent']);
+        $this->assertSame('Browser 40', $secondPage[19]['agent']);
+
+        $this->app['request']->merge(['page' => 3]);
+
+        $thirdPage = $this->viewModel($user, $contact, $link)->visits();
+
+        $this->assertCount(20, $thirdPage);
+        $this->assertSame('Browser 41', $thirdPage[0]['agent']);
+        $this->assertSame('Browser 60', $thirdPage[19]['agent']);
+        $this->assertSame('Opened 60 times', $this->viewModel($user, $contact, $link)->visitsHeader());
     }
 
     private function viewModel(User $user, Contact $contact, ShareLink $link): ShareLinkViewModel

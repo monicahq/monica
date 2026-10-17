@@ -175,24 +175,60 @@ class ContactsViewModelTest extends TestCase
 
         $everybody = new ContactsViewModel(user: $user, vault: $vault);
         $this->assertSame('', $everybody->resultLine());
-        $this->assertEquals('End of the list. 2 people, no pages.', $everybody->endLine());
 
         $narrowed = new ContactsViewModel(user: $user, vault: $vault, query: 'schrute');
         $this->assertEquals('1 of 2 shown.', $narrowed->resultLine());
-        $this->assertEquals('End of the list. One person, no pages.', $narrowed->endLine());
     }
 
     #[Test]
-    public function it_says_nothing_about_the_end_of_a_list_that_never_started(): void
+    public function it_pages_at_the_size_asked_and_keeps_the_view_in_its_links(): void
     {
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user);
 
-        $this->contact($vault, 'Michael', 'Scott');
+        foreach (range(1, 120) as $number) {
+            $this->contact($vault, "Schrute {$number}", 'Farms');
+        }
 
-        $matchingNobody = new ContactsViewModel(user: $user, vault: $vault, query: 'beesly');
+        $this->app['request']->merge(['page' => 2, 'size' => 100, 'sort' => 'name', 'direction' => 'desc']);
+        $second = new ContactsViewModel(user: $user, vault: $vault, sort: ContactSortEnum::Name, direction: SortDirectionEnum::Descending, size: 100);
 
-        $this->assertSame('', $matchingNobody->endLine());
+        $this->assertSame(100, $second->contacts()->perPage());
+        $this->assertSame(120, $second->contacts()->total());
+        $this->assertCount(20, $second->groups()[0]['people']);
+        $this->assertStringContainsString('size=100', (string) $second->contacts()->previousPageUrl());
+        $this->assertStringContainsString('direction=desc', (string) $second->contacts()->previousPageUrl());
+        $this->assertStringContainsString('size=100', $second->filters()[0]['url']);
+        $this->assertStringContainsString('size=100', $second->headings()[0]['url']);
+
+        $this->app['request']->merge(['page' => 1, 'size' => 'all']);
+        $everybody = new ContactsViewModel(user: $user, vault: $vault, size: 'all');
+
+        $this->assertCount(120, $everybody->groups()[0]['people']);
+        $this->assertFalse($everybody->contacts()->hasPages());
+        $this->assertStringNotContainsString('size=', $everybody->searchUrl());
+    }
+
+    #[Test]
+    public function it_tells_a_favourite_run_apart_from_a_page_boundary_at_any_size(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        foreach (range(1, 21) as $number) {
+            $this->contact($vault, "Stanley {$number}", 'Hudson', ['is_favourite' => true]);
+        }
+
+        $this->contact($vault, 'Dwight', 'Schrute');
+
+        Paginator::currentPageResolver(fn (): int => 2);
+
+        $groups = new ContactsViewModel(user: $user, vault: $vault, size: 20)->groups();
+
+        $this->assertCount(2, $groups);
+        $this->assertNull($groups[0]['label']);
+        $this->assertCount(1, $groups[0]['people']);
+        $this->assertCount(1, $groups[1]['people']);
     }
 
     #[Test]
@@ -348,7 +384,9 @@ class ContactsViewModelTest extends TestCase
             }
 
             $page++;
-        } while ($page <= 3);
+        } while ($viewModel->contacts()->hasMorePages());
+
+        $this->assertSame(3, $page);
 
         $this->assertCount(55, $seen);
         $this->assertCount(55, array_unique($seen));

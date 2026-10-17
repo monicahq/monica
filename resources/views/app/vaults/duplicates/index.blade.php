@@ -73,8 +73,6 @@
       </ul>
     </x-panel>
 
-    <div class="mt-4">
-      {{ $pairs->links() }}
-    </div>
+    <x-pagination :paginator="$pairs" :size="$viewModel->size()" :default="$viewModel->defaultSize()" />
   @endif
 </x-shell>

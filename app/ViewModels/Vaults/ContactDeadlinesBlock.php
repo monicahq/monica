@@ -41,16 +41,11 @@ class ContactDeadlinesBlock
     /** @return list<array{key: string, label: string, count: int}> */
     public function filters(): array
     {
-        $filters = array_filter(
-            $this->reminders()->filters(),
-            fn (array $filter): bool => in_array($filter['key'], self::FILTERS, true),
-        );
-
-        return array_values(array_map(fn (array $filter): array => [
+        return array_map(fn (array $filter): array => [
             'key' => $filter['key'],
             'label' => $filter['label'],
             'count' => $filter['count'],
-        ], $filters));
+        ], $this->reminders()->filters(self::FILTERS));
     }
 
     public function emptyTitle(string $filter): string

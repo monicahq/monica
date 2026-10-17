@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
-use App\Enums\DateFormatEnum;
-use App\Enums\FieldTypeEnum;
 use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
-use App\Helpers\AvailableLocales;
 use App\Helpers\FieldValueFormatter;
 use App\Helpers\FlagState;
 use App\Models\Contact;
@@ -41,6 +38,9 @@ class ContactViewModel
     public const string PAGE_VERSION_HISTORY = 'version-history';
 
     private const int HEADER_FACTS = 3;
+
+    /** @var array<int, ContactFieldRowsViewModel> */
+    private array $fieldRows = [];
 
     public function __construct(
         private readonly User $user,
@@ -644,6 +644,7 @@ class ContactViewModel
                 'rawValue' => $this->values()->get($field->id),
                 'isEditable' => $field->type->hasAnInput(),
                 'rows' => $this->repetitionsOf($field),
+                'rowsMore' => $this->editingSection === null && $field->type->isRepeater() ? $this->fieldRows($field)->more() : null,
                 'notes' => $this->notesOf($field, $row),
                 'reminder' => $this->reminderFor($field),
                 'reminderMark' => $this->reminderMarkOn($field),
@@ -655,55 +656,24 @@ class ContactViewModel
     /** @return array{showsLabel: bool, entries: array<int, array{id: int, shown: array<int, string>, hidden: array<int, string>, addedLine: string}>}|null */
     private function notesOf(Field $field, StructureVersionSection $row): ?array
     {
-        if (! $this->readsAsNotes($field)) {
+        if (! $this->fieldRows($field)->readsAsNotes()) {
             return null;
-        }
-
-        $entries = [];
-
-        foreach ($this->repetitions()->get($field->id, collect()) as $repetition) {
-            $text = trim((string) $repetition->values->first()?->value_text);
-
-            if ($text === '') {
-                continue;
-            }
-
-            $paragraphs = preg_split('/\R\s*\R/', $text) ?: [$text];
-
-            $entries[] = [
-                'id' => $repetition->id,
-                'shown' => array_slice($paragraphs, 0, 2),
-                'hidden' => array_slice($paragraphs, 2),
-                'addedLine' => __('Added :date', [
-                    'date' => DateFormatEnum::write(
-                        $repetition->created_at->setTimezone($this->user->timezone),
-                        $this->dateFormat(),
-                    ),
-                ]),
-            ];
         }
 
         return [
             'showsLabel' => $field->label !== $this->nameOf($row),
-            'entries' => $entries,
+            'entries' => $this->fieldRows($field)->noteEntries(),
         ];
     }
 
-    private function readsAsNotes(Field $field): bool
+    private function fieldRows(Field $field): ContactFieldRowsViewModel
     {
-        if (! $field->type->isRepeater()) {
-            return false;
-        }
-
-        $answers = $field->children->filter(fn (Field $child): bool => $child->type->storesValue());
-
-        return $answers->count() === 1 && $answers->first()->type === FieldTypeEnum::Textarea;
-    }
-
-    private function dateFormat(): string
-    {
-        return $this->user->date_format->value
-            ?? (string) AvailableLocales::details(app()->getLocale())['date_format'];
+        return $this->fieldRows[$field->id] ??= new ContactFieldRowsViewModel(
+            user: $this->user,
+            vault: $this->vault,
+            contact: $this->contact,
+            field: $field,
+        );
     }
 
     private function reminderFor(Field $field): ?ContactReminderBlock
@@ -776,34 +746,15 @@ class ContactViewModel
             return [];
         }
 
-        $children = $field->children->filter(fn (Field $child): bool => $child->type->storesValue());
+        if ($this->editingSection === null) {
+            return $this->fieldRows($field)->shapedRows();
+        }
 
         return $this->repetitions()
             ->get($field->id, collect())
-            ->map(fn (FieldValueRow $row): array => [
-                'id' => $row->id,
-                'fields' => $children
-                    ->map(fn (Field $child): array => $this->answerOn($row, $child))
-                    ->values()
-                    ->all(),
-            ])
+            ->map(fn (FieldValueRow $row): array => $this->fieldRows($field)->shapeRow($row))
             ->values()
             ->all();
-    }
-
-    /** @return array<string, mixed> */
-    private function answerOn(FieldValueRow $row, Field $child): array
-    {
-        $value = $row->values->firstWhere('field_id', $child->id);
-
-        return [
-            'id' => $child->id,
-            'label' => $child->label,
-            'help' => $child->help_text,
-            'field' => $child,
-            'rawValue' => $value,
-            'value' => $value === null ? null : $this->formatter()->format($value),
-        ];
     }
 
     private function fieldsOn(StructureVersionPage $page): int

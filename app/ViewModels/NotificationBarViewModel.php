@@ -8,7 +8,7 @@ use App\Enums\NotificationChannelEnum;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\Paginator;
 
 /**
  * What the notification bar shows: how many are unread, and a page of the most
@@ -22,12 +22,16 @@ use Illuminate\Support\Collection;
  * The page is bounded whatever the account has accumulated. A person who has
  * not looked in a year has a year of notifications behind the bar, and reading
  * all of them to draw a list of ten would slow every signed in screen. Every
- * screen asks only for the count: the page is read when the panel is opened.
+ * screen asks only for the count: the page is read when the panel is opened,
+ * and the next one when Load more is asked for.
  */
 class NotificationBarViewModel
 {
+    public const int PER_PAGE = 25;
+
     public function __construct(
         private readonly User $user,
+        private readonly int $page = 1,
     ) {}
 
     public function unreadCount(): int
@@ -35,15 +39,31 @@ class NotificationBarViewModel
         return $this->scope()->whereNull('read_at')->count();
     }
 
-    /** @return Collection<int, array<string, mixed>> */
-    public function notifications(): Collection
+    public function page(): int
     {
-        return $this->scope()
+        return $this->page;
+    }
+
+    /** @return Paginator<int, array<string, mixed>> */
+    public function notifications(): Paginator
+    {
+        return $this->paginator();
+    }
+
+    public function nextPageUrl(): ?string
+    {
+        return $this->paginator()->nextPageUrl();
+    }
+
+    /** @return Paginator<int, array<string, mixed>> */
+    private function paginator(): Paginator
+    {
+        return once(fn (): Paginator => $this->scope()
             ->orderByDesc('created_at')
             ->orderByDesc('id')
-            ->limit($this->pageSize())
-            ->get()
-            ->map(fn (Notification $notification): array => $this->shapeOf($notification));
+            ->simplePaginate(self::PER_PAGE, ['*'], 'page', $this->page)
+            ->withPath(route('notifications.index'))
+            ->through(fn (Notification $notification): array => $this->shapeOf($notification)));
     }
 
     /** @return array<string, mixed> */
@@ -57,11 +77,6 @@ class NotificationBarViewModel
             'when' => $notification->created_at->setTimezone($this->user->timezone)->diffForHumans(),
             'url' => route('notifications.read.update', $notification->uuid),
         ];
-    }
-
-    private function pageSize(): int
-    {
-        return (int) config('monica.api_default_items_per_page');
     }
 
     /** @return Builder<Notification> */

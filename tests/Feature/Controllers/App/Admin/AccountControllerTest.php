@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Admin;
 
+use App\Models\Account;
 use App\Models\Administrator;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -101,6 +102,32 @@ class AccountControllerTest extends TestCase
             ->get(route('admin.accounts.show', ['account' => $pam->account_id]))
             ->assertSee('example-capability')
             ->assertSee(route('admin.accounts.flags.activation.create', ['account' => $pam->account_id, 'flag' => 'example-capability']), escape: false);
+    }
+
+    #[Test]
+    public function it_shows_the_accounts_in_numbered_pages(): void
+    {
+        $michael = $this->administrator();
+        Account::factory()->count(20)->create();
+
+        $response = $this->actingAs($michael)->get(route('admin.accounts.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee(__('Rows per page'), escape: false);
+        $response->assertSee('aria-current="page"', escape: false);
+        $response->assertSee('1 to 20 of 21', escape: false);
+    }
+
+    #[Test]
+    public function it_takes_the_page_size_from_the_url(): void
+    {
+        $michael = $this->administrator();
+        Account::factory()->count(20)->create();
+
+        $response = $this->actingAs($michael)->get(route('admin.accounts.index', ['size' => 10]));
+
+        $response->assertStatus(200);
+        $response->assertSee('1 to 10 of 21', escape: false);
     }
 
     private function administrator(): User

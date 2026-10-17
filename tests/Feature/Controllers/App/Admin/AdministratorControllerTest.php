@@ -115,6 +115,32 @@ class AdministratorControllerTest extends TestCase
         $response->assertDontSee('Withdraw it', escape: false);
     }
 
+    #[Test]
+    public function it_shows_the_administrators_in_numbered_pages(): void
+    {
+        $michael = $this->administrator();
+        Administrator::factory()->count(20)->create();
+
+        $response = $this->actingAs($michael)->get(route('admin.administrators.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee(__('Rows per page'), escape: false);
+        $response->assertSee('aria-current="page"', escape: false);
+        $response->assertSee('1 to 20 of 21', escape: false);
+    }
+
+    #[Test]
+    public function it_takes_the_page_size_from_the_url(): void
+    {
+        $michael = $this->administrator();
+        Administrator::factory()->count(20)->create();
+
+        $response = $this->actingAs($michael)->get(route('admin.administrators.index', ['size' => 10]));
+
+        $response->assertStatus(200);
+        $response->assertSee('1 to 10 of 21', escape: false);
+    }
+
     private function administrator(string $first = 'Michael', string $last = 'Scott'): User
     {
         $user = User::factory()->create(['first_name' => $first, 'last_name' => $last]);

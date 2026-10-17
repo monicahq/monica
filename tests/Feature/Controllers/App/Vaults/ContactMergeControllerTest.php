@@ -40,6 +40,64 @@ class ContactMergeControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_narrows_the_picker_to_the_typed_name(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactIn($vault, $version, 'Michael', 'Scott');
+        $this->contactIn($vault, $version, 'Dwight', 'Schrute');
+        $this->contactIn($vault, $version, 'Jim', 'Halpert');
+
+        $response = $this->actingAs($user)->get(
+            route('contacts.merge.new', ['vault' => $vault, 'contact' => $michael, 'query' => 'dwi'])
+        );
+
+        $response->assertStatus(200);
+        $response->assertSee('Dwight Schrute');
+        $response->assertDontSee('Jim Halpert');
+    }
+
+    #[Test]
+    public function it_pages_the_picker_and_offers_a_search_field(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactIn($vault, $version, 'Michael', 'Scott');
+
+        for ($index = 1; $index <= 25; $index++) {
+            $this->contactIn($vault, $version, 'Dwight', "Schrute {$index}");
+        }
+
+        $response = $this->actingAs($user)->get(
+            route('contacts.merge.new', ['vault' => $vault, 'contact' => $michael])
+        );
+
+        $response->assertStatus(200);
+        $response->assertSee('role="search"', escape: false);
+        $response->assertSee('name="query"', escape: false);
+        $response->assertSee('1 to 20 of 25');
+        $response->assertSee(route('contacts.merge.new', ['vault' => $vault, 'contact' => $michael, 'page' => 2]), escape: false);
+    }
+
+    #[Test]
+    public function it_does_not_find_a_page_of_the_picker_reached_through_the_wrong_vault(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $otherVault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactIn($vault, $version, 'Michael', 'Scott');
+
+        $response = $this->actingAs($user)->get(
+            route('contacts.merge.new', ['vault' => $otherVault, 'contact' => $michael, 'page' => 2])
+        );
+
+        $response->assertStatus(404);
+    }
+
+    #[Test]
     public function it_opens_either_record_from_the_screen(): void
     {
         $user = User::factory()->create();

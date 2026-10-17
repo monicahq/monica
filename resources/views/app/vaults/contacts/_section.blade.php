@@ -70,6 +70,15 @@
       @forelse ($section['fields'] as $field)
         @if ($field['notes'] !== null)
           @include('app.vaults.contacts._notes', ['field' => $field, 'section' => $section])
+        @elseif ($field['rowsMore'] !== null)
+          <x-detail-list.row :label="$field['label']" value-class="">
+            @include('app.vaults.contacts._field-rows', [
+              'field' => $field['field'],
+              'rows' => $field['rows'],
+              'notes' => null,
+              'more' => $field['rowsMore'],
+            ])
+          </x-detail-list.row>
         @else
           <x-detail-list.row :label="$field['label']" value-class="">
             <x-field-value

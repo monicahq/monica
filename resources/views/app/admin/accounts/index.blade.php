@@ -15,6 +15,8 @@
       />
     </div>
 
+    <input type="hidden" name="size" value="{{ $viewModel->size() }}">
+
     <x-button type="submit">{{ __('Look it up') }}</x-button>
 
     @if ($viewModel->isSearching())
@@ -25,7 +27,9 @@
   <x-list-panel
     :items="$viewModel->rows()"
     id="accounts"
-    :next-page-url="$viewModel->hasMorePages() ? $viewModel->nextPageUrl() : null"
+    :paginator="$viewModel->accounts()"
+    :size="$viewModel->size()"
+    :default="$viewModel->defaultSize()"
   >
     <x-slot:empty>
       <x-empty-state :title="$viewModel->isSearching() ? __('Nothing matches that') : __('There are no accounts yet')">

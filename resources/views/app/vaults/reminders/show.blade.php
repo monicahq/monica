@@ -158,8 +158,8 @@
       @endif
     </section>
 
-    @if ($deliveryLog !== [])
-      @include('app.vaults.reminders._history', ['entries' => $deliveryLog])
+    @if ($deliveryLog->isNotEmpty())
+      @include('app.vaults.reminders._history', ['entries' => $deliveryLog, 'showsEnd' => $viewModel->deliveryPage() > 1])
     @endif
   </div>
 </x-shell>

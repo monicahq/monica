@@ -39,7 +39,7 @@
     <p id="entity-add-refusal" class="max-w-reading-narrow text-sm text-pretty text-muted">{{ $addRefusal }}</p>
   @endif
 
-  <x-list-panel :items="$entities">
+  <x-list-panel :items="$entities" :paginator="$entities" :size="$viewModel->size()" :default="$viewModel->defaultSize()">
     @foreach ($entities as $entity)
       <div class="flex min-w-0 items-center gap-3 border-b border-hairline px-4 py-2.75 last:border-b-0">
         <x-contact-avatar :name="$entity['name']" :url="$entity['avatarUrl']" :size="32" />

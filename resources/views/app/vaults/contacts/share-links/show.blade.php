@@ -70,6 +70,10 @@
         @empty
           <p class="px-4.5 py-4 text-sm text-pretty text-muted">{{ $viewModel->visitsEmptyLine() }}</p>
         @endforelse
+
+        <x-slot:footer>
+          <x-pagination :paginator="$visits" :size="$viewModel->size()" :default="$viewModel->defaultSize()" id="visits" />
+        </x-slot:footer>
       </x-panel>
     </div>
 

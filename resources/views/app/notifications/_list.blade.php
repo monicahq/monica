@@ -1,12 +1,23 @@
-{{-- The notifications listed in the bar's panel, fetched when the panel is first opened. --}}
+{{-- The notifications listed in the bar's panel, fetched when the panel is first opened, a page at a time. --}}
 {{-- @var \App\ViewModels\NotificationBarViewModel $viewModel --}}
 @php($notifications = $viewModel->notifications())
 
-<div id="notification-list" x-merge="replace" class="dim-when-busy">
-  @if ($notifications->isEmpty())
-    <p class="px-3 py-6 text-center text-sm text-muted">{{ __('Nothing to catch up on.') }}</p>
-  @else
-    <ul class="max-h-96 divide-y divide-hairline overflow-y-auto">
+<div id="notification-list" x-merge="replace" class="max-h-96 overflow-y-auto dim-when-busy">
+  <x-list-panel
+    :items="$notifications"
+    id="notification-rows"
+    merge="append"
+    target="notification-rows notification-footer"
+    footer-id="notification-footer"
+    :next-page-url="$viewModel->nextPageUrl()"
+    :shows-end="$viewModel->page() > 1"
+    class="rounded-none border-0"
+  >
+    <x-slot:empty>
+      <p class="px-3 py-6 text-center text-sm text-muted">{{ __('Nothing to catch up on.') }}</p>
+    </x-slot:empty>
+
+    <ul class="divide-y divide-hairline">
       @foreach ($notifications as $notification)
         <li>
           <form action="{{ $notification['url'] }}" method="post">
@@ -40,5 +51,5 @@
         </li>
       @endforeach
     </ul>
-  @endif
+  </x-list-panel>
 </div>

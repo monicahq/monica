@@ -14,7 +14,10 @@ class NotificationController extends Controller
     public function index(Request $request): View
     {
         return view('app.notifications._list', [
-            'viewModel' => new NotificationBarViewModel(user: $request->user()),
+            'viewModel' => new NotificationBarViewModel(
+                user: $request->user(),
+                page: max(1, $request->integer('page', 1)),
+            ),
         ]);
     }
 }

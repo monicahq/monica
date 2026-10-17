@@ -4,23 +4,38 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Helpers\PageSize;
 use App\Helpers\ShareLinkSummary;
 use App\Models\Contact;
 use App\Models\ShareLink;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ContactShareLinksViewModel
 {
+    public const int PER_PAGE = 20;
+
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
         private readonly Contact $contact,
+        private readonly int|string $size = self::PER_PAGE,
     ) {}
 
     public function user(): User
     {
         return $this->user;
+    }
+
+    public function size(): int|string
+    {
+        return $this->size;
+    }
+
+    public function defaultSize(): int
+    {
+        return self::PER_PAGE;
     }
 
     public function vault(): Vault
@@ -64,15 +79,12 @@ class ContactShareLinksViewModel
     }
 
     /**
-     * @return array<int, array{uuid: string, label: string, meta: string, state: string, stateTone: string, shows: string, opened: string, lastSeen: string, ends: string, isLive: bool, showUrl: string, editUrl: string, revokeUrl: string, revokeLine: string}>
+     * @return LengthAwarePaginator<int, array{uuid: string, label: string, meta: string, state: string, stateTone: string, shows: string, opened: string, lastSeen: string, ends: string, isLive: bool, showUrl: string, editUrl: string, revokeUrl: string, revokeLine: string}>
      */
-    public function links(): array
+    public function links(): LengthAwarePaginator
     {
-        return $this->contact
-            ->shareLinks()
-            ->with('createdBy')
-            ->get()
-            ->map(fn (ShareLink $link): array => [
+        return PageSize::paginate($this->contact->shareLinks()->with('createdBy'), $this->size)
+            ->through(fn (ShareLink $link): array => [
                 'uuid' => $link->uuid,
                 'label' => $link->label,
                 'meta' => $this->metaOf($link),
@@ -80,17 +92,14 @@ class ContactShareLinksViewModel
                 'stateTone' => $this->toneOf($link),
                 'shows' => ShareLinkSummary::showsLine($link, $this->contact),
                 'opened' => $this->openedLine($link),
-                'lastSeen' => $link->last_viewed_at === null
-                    ? __('never opened')
-                    : $link->last_viewed_at->diffForHumans(),
+                'lastSeen' => $this->lastSeenLine($link),
                 'ends' => ShareLinkSummary::endsLine($link),
                 'isLive' => $link->isUsable(),
                 'showUrl' => route('contacts.shareLinks.show', ['vault' => $this->vault, 'contact' => $this->contact, 'shareLink' => $link]),
                 'editUrl' => route('contacts.shareLinks.edit', ['vault' => $this->vault, 'contact' => $this->contact, 'shareLink' => $link]),
                 'revokeUrl' => route('contacts.shareLinks.destroy', ['vault' => $this->vault, 'contact' => $this->contact, 'shareLink' => $link]),
                 'revokeLine' => $this->revokeLine($link),
-            ])
-            ->all();
+            ]);
     }
 
     private function metaOf(ShareLink $link): string
@@ -129,6 +138,15 @@ class ContactShareLinksViewModel
         }
 
         return 'success';
+    }
+
+    private function lastSeenLine(ShareLink $link): string
+    {
+        if ($link->last_viewed_at === null) {
+            return __('never opened');
+        }
+
+        return $link->last_viewed_at->diffForHumans();
     }
 
     private function openedLine(ShareLink $link): string

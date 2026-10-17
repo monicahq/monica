@@ -5,21 +5,28 @@ declare(strict_types=1);
 namespace App\ViewModels\Admin;
 
 use App\Enums\MarketplaceVersionStatusEnum;
+use App\Helpers\PageSize;
 use App\Models\MarketplaceListingVersion;
-use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ModerationQueueViewModel
 {
-    private const int PER_PAGE = 20;
+    public const int PER_PAGE = 20;
 
-    /** @return Paginator<int, MarketplaceListingVersion> */
-    public function submissions(): Paginator
+    public function __construct(
+        private readonly int|string $size = self::PER_PAGE,
+    ) {}
+
+    /** @return LengthAwarePaginator<int, MarketplaceListingVersion> */
+    public function submissions(): LengthAwarePaginator
     {
-        return once(fn (): Paginator => MarketplaceListingVersion::query()
-            ->where('status', MarketplaceVersionStatusEnum::Submitted)
-            ->with(['listing.category', 'listing.account.user'])
-            ->oldest()
-            ->simplePaginate(self::PER_PAGE));
+        return once(fn (): LengthAwarePaginator => PageSize::paginate(
+            MarketplaceListingVersion::query()
+                ->where('status', MarketplaceVersionStatusEnum::Submitted)
+                ->with(['listing.category', 'listing.account.user'])
+                ->oldest(),
+            $this->size,
+        ));
     }
 
     public function waitingCount(): int
@@ -27,5 +34,15 @@ class ModerationQueueViewModel
         return once(fn (): int => MarketplaceListingVersion::query()
             ->where('status', MarketplaceVersionStatusEnum::Submitted)
             ->count());
+    }
+
+    public function size(): int|string
+    {
+        return $this->size;
+    }
+
+    public function defaultSize(): int
+    {
+        return self::PER_PAGE;
     }
 }

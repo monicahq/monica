@@ -30,6 +30,7 @@ class ReminderViewModel
         private readonly User $user,
         private readonly Vault $vault,
         private readonly Reminder $reminder,
+        private readonly int $deliveryPage = 1,
     ) {}
 
     public function user(): User
@@ -293,10 +294,20 @@ class ReminderViewModel
         );
     }
 
-    /** @return list<array{date: string, time: string, title: string, note: string, tone: string}> */
-    public function deliveryLog(): array
+    public function deliveryPage(): int
     {
-        return new ReminderHistory(user: $this->user, reminder: $this->reminder)->get();
+        return $this->deliveryPage;
+    }
+
+    /** @return Paginator<int, array{date: string, time: string, title: string, note: string, tone: string}> */
+    public function deliveryLog(): Paginator
+    {
+        $history = new ReminderHistory(user: $this->user, reminder: $this->reminder, page: $this->deliveryPage);
+
+        return new Paginator($history->get(), ReminderHistory::LIMIT, $this->deliveryPage, [
+            'path' => route('reminders.show', ['vault' => $this->vault, 'reminder' => $this->reminder]),
+            'pageName' => 'deliveryPage',
+        ])->hasMorePagesWhen($history->hasMore())->withQueryString();
     }
 
     private function rowFor(ReminderOccurrence $occurrence): ReminderRow

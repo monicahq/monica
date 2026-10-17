@@ -10,19 +10,20 @@ use App\Enums\ContactSortEnum;
 use App\Enums\SortDirectionEnum;
 use App\Helpers\ContactListCatalogue;
 use App\Helpers\ContactListCells;
+use App\Helpers\PageSize;
 use App\Models\Contact;
 use App\Models\ContactListColumn;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ContactsViewModel
 {
-    private const int PER_PAGE = 50;
+    public const int PER_PAGE = 50;
 
-    /** @var Paginator<int, Contact>|null */
-    private ?Paginator $contacts = null;
+    /** @var LengthAwarePaginator<int, Contact>|null */
+    private ?LengthAwarePaginator $contacts = null;
 
     /** @var list<ContactListColumn>|null */
     private ?array $columns = null;
@@ -34,7 +35,18 @@ class ContactsViewModel
         private readonly ContactGroupingEnum $grouping = ContactGroupingEnum::Everyone,
         private readonly ContactSortEnum $sort = ContactSortEnum::Name,
         private readonly SortDirectionEnum $direction = SortDirectionEnum::Ascending,
+        private readonly int|string $size = self::PER_PAGE,
     ) {}
+
+    public function size(): int|string
+    {
+        return $this->size;
+    }
+
+    public function defaultSize(): int
+    {
+        return self::PER_PAGE;
+    }
 
     public function vault(): Vault
     {
@@ -173,6 +185,7 @@ class ContactsViewModel
                 'query' => $this->query === '' ? null : $this->query,
                 'sort' => $sort->value,
                 'direction' => ($isCurrent ? $otherWay : $firstWay)->value,
+                'size' => $this->sizeInUrl(),
             ]),
             'ariaSort' => $isCurrent ? ($this->direction === SortDirectionEnum::Ascending ? 'ascending' : 'descending') : null,
         ];
@@ -211,15 +224,6 @@ class ContactsViewModel
         );
     }
 
-    public function endLine(): string
-    {
-        if ($this->matchingCount() === 0) {
-            return '';
-        }
-
-        return trans_choice('{1}End of the list. One person, no pages.|End of the list. :count people, no pages.', $this->matchingCount());
-    }
-
     public function vaultIsEmpty(): bool
     {
         return ! $this->isNarrowed() && $this->matchingCount() === 0;
@@ -245,16 +249,6 @@ class ContactsViewModel
             ->where('vault_id', $this->vault->id)
             ->where('is_partial', true)
             ->count());
-    }
-
-    public function hasMorePages(): bool
-    {
-        return $this->contacts()->hasMorePages();
-    }
-
-    public function nextPageUrl(): ?string
-    {
-        return $this->contacts()->nextPageUrl();
     }
 
     public function query(): string
@@ -298,13 +292,13 @@ class ContactsViewModel
         return route('vaults.show', $this->vault);
     }
 
-    /** @return Paginator<int, Contact> */
-    private function contacts(): Paginator
+    /** @return LengthAwarePaginator<int, Contact> */
+    public function contacts(): LengthAwarePaginator
     {
-        return $this->contacts ??= $this->ordered()
-            ->with(['structureVersion.structure.owner', 'avatar'])
-            ->simplePaginate(self::PER_PAGE)
-            ->withQueryString();
+        return $this->contacts ??= PageSize::paginate(
+            $this->ordered()->with(['structureVersion.structure.owner', 'avatar']),
+            $this->size,
+        );
     }
 
     /** @return Builder<Contact> */
@@ -346,7 +340,7 @@ class ContactsViewModel
         }
 
         $contact = $this->ordered()
-            ->skip(($this->contacts()->currentPage() - 1) * self::PER_PAGE - 1)
+            ->skip(($this->contacts()->currentPage() - 1) * $this->contacts()->perPage() - 1)
             ->first();
 
         return $contact?->is_favourite;
@@ -434,7 +428,13 @@ class ContactsViewModel
             'query' => $this->query === '' ? null : $this->query,
             'sort' => $this->sort->value,
             'direction' => $this->direction->value,
+            'size' => $this->sizeInUrl(),
         ]);
+    }
+
+    private function sizeInUrl(): int|string|null
+    {
+        return $this->size === self::PER_PAGE ? null : $this->size;
     }
 
     public function searchUrl(): string

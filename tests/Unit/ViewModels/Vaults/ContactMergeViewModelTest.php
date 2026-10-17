@@ -41,7 +41,7 @@ class ContactMergeViewModelTest extends TestCase
 
         $candidates = new ContactMergeViewModel(user: $user, vault: $vault, contact: $jim)->candidates();
 
-        $this->assertSame([], $candidates);
+        $this->assertCount(0, $candidates);
     }
 
     #[Test]
@@ -55,7 +55,79 @@ class ContactMergeViewModelTest extends TestCase
 
         $candidates = new ContactMergeViewModel(user: $user, vault: $vault, contact: $jim)->candidates();
 
-        $this->assertSame([], $candidates);
+        $this->assertCount(0, $candidates);
+    }
+
+    #[Test]
+    public function it_narrows_the_candidates_to_the_typed_name(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
+        $dwight = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Dwight', 'last_name' => 'Schrute']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
+
+        $viewModel = new ContactMergeViewModel(user: $user, vault: $vault, contact: $michael, query: 'dwi');
+        $candidates = $viewModel->candidates();
+
+        $this->assertCount(1, $candidates);
+        $this->assertEquals($dwight->uuid, $candidates[0]['uuid']);
+        $this->assertEquals('dwi', $viewModel->query());
+        $this->assertEquals(route('contacts.merge.new', ['vault' => $vault, 'contact' => $michael]), $viewModel->searchUrl());
+    }
+
+    #[Test]
+    public function it_says_when_nobody_matches_the_typed_name(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
+
+        $this->assertStringContainsString('toby', new ContactMergeViewModel(user: $user, vault: $vault, contact: $michael, query: 'toby')->emptyLine());
+        $this->assertStringNotContainsString('toby', new ContactMergeViewModel(user: $user, vault: $vault, contact: $michael)->emptyLine());
+    }
+
+    #[Test]
+    public function it_pages_the_candidates_twenty_at_a_time(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'is_me' => true]);
+
+        for ($index = 1; $index <= 45; $index++) {
+            Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Dwight', 'last_name' => "Schrute {$index}"]);
+        }
+
+        $firstPage = new ContactMergeViewModel(user: $user, vault: $vault, contact: $michael)->candidates();
+
+        $this->assertCount(20, $firstPage);
+        $this->assertEquals(45, $firstPage->total());
+        $this->assertEquals(3, $firstPage->lastPage());
+        $this->assertEquals(20, new ContactMergeViewModel(user: $user, vault: $vault, contact: $michael)->defaultSize());
+
+        $this->app['request']->merge(['page' => 3]);
+        $lastPage = new ContactMergeViewModel(user: $user, vault: $vault, contact: $michael)->candidates();
+
+        $this->assertCount(5, $lastPage);
+        $this->assertNotContains($michael->uuid, $lastPage->pluck('uuid'));
+    }
+
+    #[Test]
+    public function it_puts_every_candidate_on_one_page_when_asked_for_all(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
+
+        for ($index = 1; $index <= 25; $index++) {
+            Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Dwight', 'last_name' => "Schrute {$index}"]);
+        }
+
+        $viewModel = new ContactMergeViewModel(user: $user, vault: $vault, contact: $michael, size: 'all');
+
+        $this->assertCount(25, $viewModel->candidates());
+        $this->assertEquals('all', $viewModel->size());
     }
 
     #[Test]

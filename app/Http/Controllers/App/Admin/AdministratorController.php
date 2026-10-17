@@ -9,6 +9,7 @@ use App\Actions\WithdrawAdministratorAccess;
 use App\Exceptions\AdministratorCannotLockThemselvesOut;
 use App\Exceptions\AdministratorCapacityIsAlreadyHeld;
 use App\Exceptions\InstanceMustKeepAnAdministrator;
+use App\Helpers\PageSize;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\ViewModels\Admin\AdministratorsViewModel;
@@ -18,10 +19,12 @@ use Illuminate\View\View;
 
 class AdministratorController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
         return view('app.admin.administrators.index', [
-            'viewModel' => new AdministratorsViewModel,
+            'viewModel' => new AdministratorsViewModel(
+                size: PageSize::from($request, AdministratorsViewModel::PER_PAGE),
+            ),
         ]);
     }
 

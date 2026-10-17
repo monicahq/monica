@@ -8,7 +8,9 @@ use App\Actions\DeactivateReminders;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceCategoryEnum;
+use App\Enums\UserActionEnum;
 use App\Models\Contact;
+use App\Models\Log;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -16,6 +18,7 @@ use App\Models\Vault;
 use App\ViewModels\Vaults\ReminderViewModel;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -243,12 +246,43 @@ class ReminderViewModelTest extends TestCase
         );
     }
 
-    private function viewModel(User $user, Reminder $reminder): ReminderViewModel
+    #[Test]
+    public function it_pages_the_delivery_log_fifty_at_a_time_on_its_own_page_name(): void
+    {
+        $reminder = $this->reminderAbout($user = User::factory()->create());
+
+        Log::factory()->count(51)->create([
+            'account_id' => $reminder->account_id,
+            'vault_id' => $reminder->vault_id,
+            'user_id' => $user->id,
+            'action' => UserActionEnum::ReminderUpdate->value,
+            'parameters' => ['label' => 'Birthday', 'name' => 'Michael Scott'],
+            'loggable_type' => Reminder::class,
+            'loggable_id' => $reminder->id,
+        ]);
+
+        $first = $this->viewModel($user, $reminder)->deliveryLog();
+        $second = $this->viewModel($user, $reminder, deliveryPage: 2);
+
+        $this->assertInstanceOf(Paginator::class, $first);
+        $this->assertCount(50, $first);
+        $this->assertTrue($first->hasMorePages());
+        $this->assertSame(
+            route('reminders.show', ['vault' => $reminder->vault, 'reminder' => $reminder, 'deliveryPage' => 2]),
+            $first->nextPageUrl(),
+        );
+        $this->assertSame(2, $second->deliveryPage());
+        $this->assertCount(1, $second->deliveryLog());
+        $this->assertNull($second->deliveryLog()->nextPageUrl());
+    }
+
+    private function viewModel(User $user, Reminder $reminder, int $deliveryPage = 1): ReminderViewModel
     {
         return new ReminderViewModel(
             user: $user,
             vault: Vault::query()->findOrFail($reminder->vault_id),
             reminder: $reminder,
+            deliveryPage: $deliveryPage,
         );
     }
 }

@@ -48,13 +48,9 @@
       @endforeach
     </div>
 
-    @if ($viewModel->administrators()->hasMorePages())
-      <x-slot:footer>
-        <div class="text-center">
-          <x-link :href="$viewModel->administrators()->nextPageUrl()">{{ __('Load more') }}</x-link>
-        </div>
-      </x-slot:footer>
-    @endif
+    <x-slot:footer>
+      <x-pagination :paginator="$viewModel->administrators()" :size="$viewModel->size()" :default="$viewModel->defaultSize()" />
+    </x-slot:footer>
   </x-panel>
 
   <x-panel :title="__('Add an administrator')" :subtitle="__('They have to have an account on this instance already. Nobody is invited into the admin space from outside it.')">

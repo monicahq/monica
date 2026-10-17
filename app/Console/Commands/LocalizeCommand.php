@@ -9,6 +9,7 @@ use App\Helpers\AvailableLocales;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Translation\MessageSelector;
 use LaravelLang\Publisher\Helpers\Config;
@@ -438,6 +439,10 @@ class LocalizeCommand extends Command
             $code = $this->codeOf($file);
 
             foreach ($this->keysIn($code) as $key) {
+                if ($this->answeredByAGroupFile($key)) {
+                    continue;
+                }
+
                 $keys[$key] = true;
             }
 
@@ -468,6 +473,29 @@ class LocalizeCommand extends Command
         sort($keys, SORT_STRING);
 
         return $keys;
+    }
+
+    /**
+     * A key such as `pagination.next` that a `lang/<locale>/<group>.php` file answers is not a
+     * string to translate here: Laravel reads a JSON line before a group file, so writing it to
+     * the JSON would hide the group's wording behind the key itself.
+     */
+    private function answeredByAGroupFile(string $key): bool
+    {
+        if (! str_contains($key, '.')) {
+            return false;
+        }
+
+        [$group, $item] = explode('.', $key, 2);
+        $path = lang_path($this->sourceLocale().'/'.$group.'.php');
+
+        if (! is_file($path)) {
+            return false;
+        }
+
+        $lines = require $path;
+
+        return is_array($lines) && Arr::has($lines, $item);
     }
 
     /** @return list<SplFileInfo> */

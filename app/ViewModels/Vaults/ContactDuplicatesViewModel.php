@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Helpers\PageSize;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\User;
 use App\Models\Vault;
-use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ContactDuplicatesViewModel
 {
-    private const int PER_PAGE = 25;
+    public const int PER_PAGE = 20;
 
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
+        private readonly int|string $size = self::PER_PAGE,
     ) {}
 
     public function user(): User
@@ -48,17 +50,26 @@ class ContactDuplicatesViewModel
         return route('vaults.duplicates.search.create', $this->vault);
     }
 
-    /** @return Paginator<int, ContactDuplicateCandidate> */
-    public function pairs(): Paginator
+    public function size(): int|string
     {
-        return once(fn (): Paginator => ContactDuplicateCandidate::query()
+        return $this->size;
+    }
+
+    public function defaultSize(): int
+    {
+        return self::PER_PAGE;
+    }
+
+    /** @return LengthAwarePaginator<int, ContactDuplicateCandidate> */
+    public function pairs(): LengthAwarePaginator
+    {
+        return once(fn (): LengthAwarePaginator => PageSize::paginate(ContactDuplicateCandidate::query()
             ->standing()
             ->whereBothContactsExist()
             ->where('vault_id', $this->vault->id)
             ->with(['contact', 'otherContact'])
             ->orderByDesc('score')
-            ->orderBy('id')
-            ->simplePaginate(self::PER_PAGE));
+            ->orderBy('id'), $this->size));
     }
 
     /** @return array{name: string, other_name: string, why: string, compare_url: string, dismiss_url: string} */

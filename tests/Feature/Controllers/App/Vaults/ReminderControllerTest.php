@@ -85,6 +85,31 @@ class ReminderControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_pages_the_delivery_details_fifty_at_a_time(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $rule = $this->ruleAbout($user, $vault);
+        Log::factory()->count(60)->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'loggable_type' => Reminder::class,
+            'loggable_id' => $rule->id,
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]))
+            ->assertSee(__('Load more'))
+            ->assertSee('deliveryPage=2', escape: false)
+            ->assertDontSee(__('End of list'));
+
+        $this->actingAs($user)
+            ->get(route('reminders.show', ['vault' => $vault, 'reminder' => $rule, 'deliveryPage' => 2]))
+            ->assertSee(__('End of list'))
+            ->assertDontSee(__('Load more'));
+    }
+
+    #[Test]
     public function it_asks_before_it_deletes(): void
     {
         $user = User::factory()->create();

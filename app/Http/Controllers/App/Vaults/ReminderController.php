@@ -25,6 +25,7 @@ class ReminderController extends Controller
                 user: $request->user(),
                 vault: $vault,
                 reminder: $reminder,
+                deliveryPage: max(1, $request->integer('deliveryPage', 1)),
             ),
         ]);
     }

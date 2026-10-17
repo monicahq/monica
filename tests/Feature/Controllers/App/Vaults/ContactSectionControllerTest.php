@@ -113,6 +113,42 @@ class ContactSectionControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_every_note_when_a_section_holding_more_than_a_page_is_saved_unchanged(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        [$notes, $note] = $this->notesOn($user, $michael);
+
+        $rows = [];
+
+        foreach (range(1, 12) as $number) {
+            $rows[] = $this->writeNote($michael, $notes, $note, "Note {$number}");
+        }
+
+        $section = StructureVersionSection::query()->where('section_version_id', $notes->section_version_id)->sole();
+
+        $this->actingAs($user)
+            ->get(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]))
+            ->assertSee('Note 1')
+            ->assertSee('Note 12');
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
+                ['fields' => [$notes->id => array_map(fn (FieldValueRow $row): array => [
+                    'id' => $row->id,
+                    'values' => [$note->id => $row->values()->sole()->value_text],
+                ], $rows)]],
+            )
+            ->assertSessionHasNoErrors();
+
+        $this->assertSame(12, FieldValueRow::query()->where('field_id', $notes->id)->count());
+    }
+
+    #[Test]
     public function it_writes_nothing_in_a_block_it_was_not_asked_about(): void
     {
         Queue::fake();

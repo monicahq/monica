@@ -9,6 +9,7 @@ use App\Actions\RevokeShareLink;
 use App\Actions\UpdateShareLink;
 use App\Enums\ShareLinkExpiryEnum;
 use App\Exceptions\ShareLinkIsRevoked;
+use App\Helpers\PageSize;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\ShareLink;
@@ -33,6 +34,7 @@ class ContactShareLinkController extends Controller
                 user: $request->user(),
                 vault: $vault,
                 contact: $contact,
+                size: PageSize::from($request, ContactShareLinksViewModel::PER_PAGE),
             ),
         ]);
     }
@@ -85,6 +87,7 @@ class ContactShareLinkController extends Controller
                 vault: $vault,
                 contact: $contact,
                 shareLink: $shareLink,
+                size: PageSize::from($request, ShareLinkViewModel::PER_PAGE),
             ),
         ]);
     }

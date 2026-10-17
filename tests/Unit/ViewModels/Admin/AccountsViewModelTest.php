@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Admin;
 
+use App\Helpers\PageSize;
 use App\Models\Account;
 use App\Models\User;
 use App\ViewModels\Admin\AccountsViewModel;
@@ -143,11 +144,39 @@ class AccountsViewModelTest extends TestCase
     #[Test]
     public function it_hands_back_one_page_at_a_time(): void
     {
-        Account::factory()->count(26)->create();
+        Account::factory()->count(21)->create();
 
-        $accounts = new AccountsViewModel()->accounts();
+        $firstPage = new AccountsViewModel()->accounts();
 
-        $this->assertCount(25, $accounts);
-        $this->assertTrue($accounts->hasMorePages());
+        $this->assertCount(20, $firstPage);
+        $this->assertSame(21, $firstPage->total());
+
+        $this->app['request']->merge(['page' => 2]);
+
+        $this->assertCount(1, new AccountsViewModel()->accounts());
+    }
+
+    #[Test]
+    public function it_hands_back_everybody_on_one_page_when_asked_for_all(): void
+    {
+        Account::factory()->count(21)->create();
+
+        $accounts = new AccountsViewModel(size: PageSize::ALL)->accounts();
+
+        $this->assertCount(21, $accounts);
+        $this->assertSame(21, $accounts->total());
+        $this->assertFalse($accounts->hasMorePages());
+    }
+
+    #[Test]
+    public function it_keeps_the_search_in_the_page_links(): void
+    {
+        User::factory()->count(21)->create(['last_name' => 'Schrute']);
+        $this->app['request']->merge(['query' => 'schrute']);
+
+        $nextPageUrl = new AccountsViewModel(query: 'schrute')->accounts()->nextPageUrl();
+
+        $this->assertStringContainsString('query=schrute', (string) $nextPageUrl);
+        $this->assertStringContainsString('page=2', (string) $nextPageUrl);
     }
 }

@@ -39,6 +39,49 @@ class NotificationControllerTest extends TestCase
     }
 
     #[Test]
+    public function a_full_page_offers_to_load_more(): void
+    {
+        $user = $this->signedIn();
+        $this->thirtyNotifications($user);
+
+        $response = $this->get(route('notifications.index'));
+
+        $response->assertSee('Anniversary, Jim Halpert');
+        $response->assertDontSee('Birthday, Michael Scott');
+        $response->assertSee(__('Load more'));
+        $response->assertDontSee(__('End of list'));
+    }
+
+    #[Test]
+    public function the_last_page_holds_the_rest_and_says_it_is_the_end(): void
+    {
+        $user = $this->signedIn();
+        $this->thirtyNotifications($user);
+
+        $response = $this->get(route('notifications.index', ['page' => 2]));
+
+        $response->assertSee('Birthday, Michael Scott');
+        $response->assertDontSee('Anniversary, Jim Halpert');
+        $this->assertSame(5, substr_count((string) $response->getContent(), 'Birthday, Michael Scott'));
+        $response->assertSee(__('End of list'));
+        $response->assertDontSee(__('Load more'));
+    }
+
+    #[Test]
+    public function a_short_list_offers_nothing_more(): void
+    {
+        $user = $this->signedIn();
+        $this->notification($user, 'Birthday, Michael Scott');
+        $this->notification($user, 'Anniversary, Jim Halpert');
+        $this->notification($user, 'Birthday, Dwight Schrute');
+
+        $response = $this->get(route('notifications.index'));
+
+        $response->assertDontSee(__('Load more'));
+        $response->assertDontSee(__('End of list'));
+    }
+
+    #[Test]
     public function opening_one_marks_it_read_and_lands_on_the_record(): void
     {
         $user = $this->signedIn();
@@ -102,14 +145,26 @@ class NotificationControllerTest extends TestCase
         return $user;
     }
 
-    private function notification(User $user, string $title): Notification
+    private function thirtyNotifications(User $user): void
+    {
+        foreach (range(1, 25) as $minutesAgo) {
+            $this->notification($user, 'Anniversary, Jim Halpert', now()->subMinutes($minutesAgo));
+        }
+
+        foreach (range(26, 30) as $minutesAgo) {
+            $this->notification($user, 'Birthday, Michael Scott', now()->subMinutes($minutesAgo));
+        }
+    }
+
+    private function notification(User $user, string $title, mixed $when = null): Notification
     {
         return Notification::factory()->create([
             'account_id' => $user->account_id,
             'user_id' => $user->id,
             'channel' => NotificationChannelEnum::InApp,
             'title' => $title,
-            'sent_at' => now(),
+            'sent_at' => $when ?? now(),
+            'created_at' => $when ?? now(),
         ]);
     }
 }

@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Helpers\PageSize;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class EntitiesViewModel
 {
+    public const int PER_PAGE = 20;
+
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
         private readonly EntityType $entityType,
+        private readonly int|string $size = self::PER_PAGE,
     ) {}
 
     public function user(): User
@@ -69,24 +74,33 @@ class EntitiesViewModel
         return __('No :name in this vault yet', ['name' => $this->entityType->name_plural]);
     }
 
-    /** @return list<array{id: int, name: string, avatarUrl: string|null, isArchived: bool}> */
-    public function entities(): array
+    public function size(): int|string
     {
-        return Entity::query()
+        return $this->size;
+    }
+
+    public function defaultSize(): int
+    {
+        return self::PER_PAGE;
+    }
+
+    /** @return LengthAwarePaginator<int, array{id: int, name: string, avatarUrl: string|null, isArchived: bool}> */
+    public function entities(): LengthAwarePaginator
+    {
+        $query = Entity::query()
             ->where('vault_id', $this->vault->id)
             ->where('entity_type_id', $this->entityType->id)
             ->with('avatar')
-            ->orderBy('sort_name')
-            ->get()
-            ->map(fn (Entity $entity): array => [
+            ->orderBy('sort_name');
+
+        return PageSize::paginate($query, $this->size)
+            ->through(fn (Entity $entity): array => [
                 'id' => $entity->id,
                 'name' => $entity->name,
                 'avatarUrl' => $entity->avatar === null
                     ? null
                     : route('files.variants.show', ['vault' => $this->vault, 'file' => $entity->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]),
                 'isArchived' => $entity->is_archived,
-            ])
-            ->values()
-            ->all();
+            ]);
     }
 }

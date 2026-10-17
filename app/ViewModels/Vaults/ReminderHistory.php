@@ -17,24 +17,20 @@ use Illuminate\Support\Collection;
 
 class ReminderHistory
 {
-    private const int LIMIT = 50;
+    public const int LIMIT = 50;
 
     public function __construct(
         private readonly User $user,
         private readonly Reminder $reminder,
+        private readonly int $page = 1,
     ) {}
 
     /** @return list<array{date: string, time: string, title: string, note: string, tone: string}> */
     public function get(): array
     {
-        $events = $this->fromTheJournal()
-            ->merge($this->fromWhatWentOut())
-            ->merge($this->fromWhatIsNoLongerKept())
-            ->sortByDesc(fn (array $event): CarbonImmutable => $event['at'])
-            ->take(self::LIMIT)
-            ->values();
-
-        return $events
+        return $this->merged()
+            ->slice(($this->page - 1) * self::LIMIT, self::LIMIT)
+            ->values()
             ->map(fn (array $event): array => [
                 'date' => DateFormatEnum::write($event['at'], $this->dateFormat()),
                 'time' => $this->user->time_format->format($event['at']),
@@ -43,6 +39,30 @@ class ReminderHistory
                 'tone' => $event['tone'],
             ])
             ->all();
+    }
+
+    public function hasMore(): bool
+    {
+        return $this->merged()->count() > $this->page * self::LIMIT;
+    }
+
+    /** @return Collection<int, array{at: CarbonImmutable, title: string, note: string, tone: string}> */
+    private function merged(): Collection
+    {
+        return once(fn (): Collection => $this->fromTheJournal()
+            ->merge($this->fromWhatWentOut())
+            ->merge($this->fromWhatIsNoLongerKept())
+            ->sortByDesc(fn (array $event): CarbonImmutable => $event['at'])
+            ->values());
+    }
+
+    /**
+     * Each source reads one row past the page's end, so a source that alone fills
+     * every page so far still reveals whether it holds a next one.
+     */
+    private function window(): int
+    {
+        return $this->page * self::LIMIT + 1;
     }
 
     /** @return Collection<int, array{at: CarbonImmutable, title: string, note: string, tone: string}> */
@@ -67,7 +87,7 @@ class ReminderHistory
                     });
             })
             ->latest()
-            ->take(self::LIMIT)
+            ->take($this->window())
             ->get()
             ->toBase()
             ->map(fn (Log $log): array => [
@@ -87,7 +107,7 @@ class ReminderHistory
             ->whereIn('notifiable_id', $this->reminder->occurrences()->select('id'))
             ->whereNotNull('sent_at')
             ->latest('sent_at')
-            ->take(self::LIMIT)
+            ->take($this->window())
             ->get()
             ->toBase()
             ->map(fn (Notification $notification): array => [
@@ -123,7 +143,7 @@ class ReminderHistory
             ->whereNotNull('notified_at')
             ->whereNotIn('id', $stillRecorded)
             ->latest('notified_at')
-            ->take(self::LIMIT)
+            ->take($this->window())
             ->get()
             ->toBase()
             ->map(fn (ReminderOccurrence $occurrence): array => [

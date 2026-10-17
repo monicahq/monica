@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Admin;
 
 use App\Enums\AdministratorActionEnum;
+use App\Helpers\PageSize;
 use App\Models\Account;
 use App\Models\AdministratorLog;
 use App\Models\User;
@@ -84,14 +85,41 @@ class AdministratorLogsViewModelTest extends TestCase
     #[Test]
     public function it_hands_back_one_page_at_a_time(): void
     {
+        AdministratorLog::factory()->count(21)->create();
+
+        $firstPage = new AdministratorLogsViewModel()->entries();
+
+        $this->assertCount(20, $firstPage);
+        $this->assertSame(21, $firstPage->total());
+
+        $this->app['request']->merge(['page' => 2]);
+
+        $this->assertCount(1, new AdministratorLogsViewModel()->entries());
+    }
+
+    #[Test]
+    public function it_hands_back_everything_on_one_page_when_asked_for_all(): void
+    {
+        AdministratorLog::factory()->count(21)->create();
+
+        $entries = new AdministratorLogsViewModel(size: PageSize::ALL)->entries();
+
+        $this->assertCount(21, $entries);
+        $this->assertSame(21, $entries->total());
+        $this->assertFalse($entries->hasMorePages());
+    }
+
+    #[Test]
+    public function it_keeps_the_administrator_filter_in_the_page_links(): void
+    {
         $michael = User::factory()->create();
+        AdministratorLog::factory()->count(21)->create(['user_id' => $michael->id]);
+        $this->app['request']->merge(['administrator' => $michael->id]);
 
-        AdministratorLog::factory()->count(26)->create(['user_id' => $michael->id]);
+        $nextPageUrl = new AdministratorLogsViewModel(administratorId: $michael->id)->entries()->nextPageUrl();
 
-        $entries = new AdministratorLogsViewModel()->entries();
-
-        $this->assertCount(25, $entries);
-        $this->assertTrue($entries->hasMorePages());
+        $this->assertStringContainsString("administrator={$michael->id}", (string) $nextPageUrl);
+        $this->assertStringContainsString('page=2', (string) $nextPageUrl);
     }
 
     #[Test]

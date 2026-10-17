@@ -117,6 +117,32 @@ class AdministratorLogControllerTest extends TestCase
         $response->assertSee('Michael Scott', escape: false);
     }
 
+    #[Test]
+    public function it_shows_the_record_in_numbered_pages(): void
+    {
+        $michael = $this->administrator();
+        AdministratorLog::factory()->count(21)->create(['user_id' => $michael->id]);
+
+        $response = $this->actingAs($michael)->get(route('admin.logs.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee(__('Rows per page'), escape: false);
+        $response->assertSee('aria-current="page"', escape: false);
+        $response->assertSee('1 to 20 of 21', escape: false);
+    }
+
+    #[Test]
+    public function it_takes_the_page_size_from_the_url(): void
+    {
+        $michael = $this->administrator();
+        AdministratorLog::factory()->count(21)->create(['user_id' => $michael->id]);
+
+        $response = $this->actingAs($michael)->get(route('admin.logs.index', ['size' => 10]));
+
+        $response->assertStatus(200);
+        $response->assertSee('1 to 10 of 21', escape: false);
+    }
+
     private function administrator(): User
     {
         $michael = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);

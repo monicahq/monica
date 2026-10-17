@@ -31,6 +31,7 @@ class ContactReminderController extends Controller
                 vault: $vault,
                 contact: $contact,
                 filter: $filter ?? ContactRemindersViewModel::FilterAll,
+                page: $request->integer('page', 1),
             ),
         ]);
     }

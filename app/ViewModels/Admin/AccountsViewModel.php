@@ -4,26 +4,29 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Admin;
 
+use App\Helpers\PageSize;
 use App\Models\Account;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AccountsViewModel
 {
-    private const int PER_PAGE = 25;
+    public const int PER_PAGE = 20;
 
     public function __construct(
         private readonly string $query = '',
+        private readonly int|string $size = self::PER_PAGE,
     ) {}
 
-    /** @return Paginator<int, Account> */
-    public function accounts(): Paginator
+    /** @return LengthAwarePaginator<int, Account> */
+    public function accounts(): LengthAwarePaginator
     {
-        return once(fn (): Paginator => $this->matching()
-            ->with('userIncludingDeleted')
-            ->latest()
-            ->simplePaginate(self::PER_PAGE)
-            ->withQueryString());
+        return once(fn (): LengthAwarePaginator => PageSize::paginate(
+            $this->matching()
+                ->with('userIncludingDeleted')
+                ->latest(),
+            $this->size,
+        ));
     }
 
     /**
@@ -52,14 +55,14 @@ class AccountsViewModel
         }, $this->accounts()->items());
     }
 
-    public function hasMorePages(): bool
+    public function size(): int|string
     {
-        return $this->accounts()->hasMorePages();
+        return $this->size;
     }
 
-    public function nextPageUrl(): ?string
+    public function defaultSize(): int
     {
-        return $this->accounts()->nextPageUrl();
+        return self::PER_PAGE;
     }
 
     public function query(): string

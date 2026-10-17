@@ -28,7 +28,7 @@ class NotificationBarViewModelTest extends TestCase
 
         $this->assertSame(
             ['Anniversary, Jim Halpert', 'Birthday, Michael Scott'],
-            $viewModel->notifications()->pluck('title')->all(),
+            $viewModel->notifications()->getCollection()->pluck('title')->all(),
         );
     }
 
@@ -70,18 +70,40 @@ class NotificationBarViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_one_page_whatever_has_accumulated(): void
+    public function it_reads_the_newest_twenty_five_and_points_at_the_next_page(): void
     {
-        config(['monica.api_default_items_per_page' => 2]);
-
         $user = User::factory()->create();
-        $this->notification(user: $user, title: 'Birthday, Michael Scott', when: now());
-        $this->notification(user: $user, title: 'Anniversary, Jim Halpert', when: now());
-        $this->notification(user: $user, title: 'Birthday, Dwight Schrute', when: now());
+        $this->thirtyNotifications($user);
 
         $viewModel = new NotificationBarViewModel(user: $user);
 
-        $this->assertCount(2, $viewModel->notifications());
+        $this->assertCount(25, $viewModel->notifications());
+        $this->assertSame('Birthday, Michael Scott', $viewModel->notifications()->getCollection()->first()['title']);
+        $this->assertSame(1, $viewModel->page());
+        $this->assertStringContainsString('page=2', (string) $viewModel->nextPageUrl());
+        $this->assertStringStartsWith(route('notifications.index'), (string) $viewModel->nextPageUrl());
+    }
+
+    #[Test]
+    public function the_second_page_holds_the_rest_and_points_nowhere(): void
+    {
+        $user = User::factory()->create();
+        $this->thirtyNotifications($user);
+
+        $viewModel = new NotificationBarViewModel(user: $user, page: 2);
+
+        $this->assertCount(5, $viewModel->notifications());
+        $this->assertSame(2, $viewModel->page());
+        $this->assertNull($viewModel->nextPageUrl());
+    }
+
+    private function thirtyNotifications(User $user): void
+    {
+        $this->notification(user: $user, title: 'Birthday, Michael Scott', when: now());
+
+        foreach (range(1, 29) as $minutesAgo) {
+            $this->notification(user: $user, title: 'Anniversary, Jim Halpert', when: now()->subMinutes($minutesAgo));
+        }
     }
 
     private function notification(User $user, string $title, mixed $when, NotificationChannelEnum $channel = NotificationChannelEnum::InApp): Notification

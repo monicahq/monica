@@ -47,6 +47,39 @@ class InvoiceControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_pages_the_payments_twenty_at_a_time(): void
+    {
+        $michael = User::factory()->create(['locale' => 'en']);
+        Payment::factory()->count(25)->create(['account_id' => $michael->account_id]);
+
+        $this->actingAs($michael)
+            ->get(route('settings.invoices.index'))
+            ->assertStatus(200)
+            ->assertSee(__('Rows per page'))
+            ->assertSee('1 to 20 of 25');
+
+        $this->actingAs($michael)
+            ->get(route('settings.invoices.index', ['page' => 2]))
+            ->assertStatus(200)
+            ->assertSee('21 to 25 of 25');
+    }
+
+    #[Test]
+    public function it_leaves_another_account_payments_out_of_the_list(): void
+    {
+        $michael = User::factory()->create(['locale' => 'en']);
+        $dwight = User::factory()->create();
+        Payment::factory()->create(['account_id' => $michael->account_id, 'invoice_number' => 'DM-0042']);
+        Payment::factory()->create(['account_id' => $dwight->account_id, 'invoice_number' => 'SF-0001']);
+
+        $this->actingAs($michael)
+            ->get(route('settings.invoices.index'))
+            ->assertStatus(200)
+            ->assertSee('Invoice DM-0042')
+            ->assertDontSee('Invoice SF-0001');
+    }
+
+    #[Test]
     public function it_sends_the_reader_to_the_invoice_stripe_holds(): void
     {
         $michael = User::factory()->create();

@@ -97,6 +97,7 @@ use App\Http\Controllers\App\Vaults\ContactDuplicateController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateDismissalController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateSearchController;
 use App\Http\Controllers\App\Vaults\ContactFavouriteController;
+use App\Http\Controllers\App\Vaults\ContactFieldRowController;
 use App\Http\Controllers\App\Vaults\ContactLifeEventCandidateController;
 use App\Http\Controllers\App\Vaults\ContactLifeEventController;
 use App\Http\Controllers\App\Vaults\ContactLifeEventFieldController;
@@ -285,6 +286,10 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('vaults/{vault}/contacts/{contact}/sections/{structureVersionSection}', [ContactSectionController::class, 'update'])
         ->whereNumber('structureVersionSection')
         ->name('contacts.sections.update');
+
+    Route::get('vaults/{vault}/contacts/{contact}/fields/{field}/rows', [ContactFieldRowController::class, 'index'])
+        ->whereNumber('field')
+        ->name('contacts.fieldRows.index');
 
     Route::get('vaults/{vault}/contacts/{contact}/share-links', [ContactShareLinkController::class, 'index'])
         ->name('contacts.shareLinks.index');

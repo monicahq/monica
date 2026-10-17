@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Admin;
 
+use App\Helpers\PageSize;
 use App\Models\Administrator;
 use App\Models\User;
 use App\ViewModels\Admin\AdministratorsViewModel;
@@ -80,11 +81,27 @@ class AdministratorsViewModelTest extends TestCase
     #[Test]
     public function it_hands_back_one_page_at_a_time(): void
     {
-        Administrator::factory()->count(26)->create();
+        Administrator::factory()->count(21)->create();
 
-        $administrators = new AdministratorsViewModel()->administrators();
+        $firstPage = new AdministratorsViewModel()->administrators();
 
-        $this->assertCount(25, $administrators);
-        $this->assertTrue($administrators->hasMorePages());
+        $this->assertCount(20, $firstPage);
+        $this->assertSame(21, $firstPage->total());
+
+        $this->app['request']->merge(['page' => 2]);
+
+        $this->assertCount(1, new AdministratorsViewModel()->administrators());
+    }
+
+    #[Test]
+    public function it_hands_back_everybody_on_one_page_when_asked_for_all(): void
+    {
+        Administrator::factory()->count(21)->create();
+
+        $administrators = new AdministratorsViewModel(size: PageSize::ALL)->administrators();
+
+        $this->assertCount(21, $administrators);
+        $this->assertSame(21, $administrators->total());
+        $this->assertFalse($administrators->hasMorePages());
     }
 }

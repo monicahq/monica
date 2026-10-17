@@ -39,6 +39,48 @@ class EntityControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_draws_the_numbered_pages_under_the_records(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+        VaultDefaultTemplate::factory()->forEntity($type)->create(['vault_id' => $vault->id]);
+        Entity::factory()->count(25)->create(['vault_id' => $vault->id, 'entity_type_id' => $type->id]);
+
+        $this->actingAs($user)->get(route('entities.index', ['vault' => $vault, 'entityType' => $type]))
+            ->assertStatus(200)
+            ->assertSee('aria-current="page"', escape: false)
+            ->assertSee(__('Rows per page'));
+    }
+
+    #[Test]
+    public function it_reads_the_page_size_from_the_query(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+        VaultDefaultTemplate::factory()->forEntity($type)->create(['vault_id' => $vault->id]);
+        Entity::factory()->count(20)->create(['vault_id' => $vault->id, 'entity_type_id' => $type->id, 'name' => 'Bandit']);
+        Entity::factory()->create(['vault_id' => $vault->id, 'entity_type_id' => $type->id, 'name' => 'Sprinkles']);
+
+        $this->actingAs($user)->get(route('entities.index', ['vault' => $vault, 'entityType' => $type]))
+            ->assertStatus(200)
+            ->assertDontSee('Sprinkles');
+
+        $this->actingAs($user)->get(route('entities.index', ['vault' => $vault, 'entityType' => $type, 'size' => 'all']))
+            ->assertStatus(200)
+            ->assertSee('Sprinkles');
+    }
+
+    #[Test]
+    public function it_answers_not_found_for_a_page_through_the_wrong_vault(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+        VaultDefaultTemplate::factory()->forEntity($type)->create(['vault_id' => $vault->id]);
+        Entity::factory()->count(25)->create(['vault_id' => $vault->id, 'entity_type_id' => $type->id]);
+        $stamford = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('entities.index', ['vault' => $stamford, 'entityType' => $type, 'page' => 2]))
+            ->assertNotFound();
+    }
+
+    #[Test]
     public function it_says_so_when_the_type_is_turned_off(): void
     {
         [$user, $vault, $type] = $this->vaultWithType(['is_active' => false]);

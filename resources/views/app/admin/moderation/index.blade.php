@@ -16,7 +16,9 @@
   <x-list-panel
     :items="$viewModel->submissions()"
     id="submissions"
-    :next-page-url="$viewModel->submissions()->hasMorePages() ? $viewModel->submissions()->nextPageUrl() : null"
+    :paginator="$viewModel->submissions()"
+    :size="$viewModel->size()"
+    :default="$viewModel->defaultSize()"
   >
     <x-slot:empty>
       <x-empty-state :title="__('Nothing is waiting')">

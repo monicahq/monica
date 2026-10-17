@@ -12,6 +12,7 @@ use App\Models\Vault;
 use App\ViewModels\Vaults\ContactDeadlinesBlock;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -72,6 +73,26 @@ class ContactDeadlinesBlockTest extends TestCase
         $this->assertSame(['all', 'overdue', 'today', 'upcoming'], array_column($filters, 'key'));
         $this->assertSame(['All', 'Overdue', 'Today', 'Upcoming'], array_column($filters, 'label'));
         $this->assertSame([2, 1, 0, 1], array_column($filters, 'count'));
+    }
+
+    #[Test]
+    public function it_never_reads_the_answers_for_the_contact_page(): void
+    {
+        $this->deadline($this->rule('Send him the photos from the wedding', '2026-09-20'), '2026-09-20');
+        ReminderOccurrence::factory()->for($this->rule('Return the foosball table', '2026-08-12'))->remembered()->create([
+            'scheduled_for' => CarbonImmutable::parse('2026-08-12 09:00:00', 'UTC'),
+            'local_date' => '2026-08-12',
+        ]);
+
+        DB::enableQueryLog();
+        $block = $this->block();
+        $block->rows();
+        $block->filters();
+        $queries = array_column(DB::getQueryLog(), 'query');
+        DB::disableQueryLog();
+
+        $this->assertNotEmpty($queries);
+        $this->assertSame([], preg_grep('/reminder_occurrences.*answer.{0,2} is not null/i', $queries));
     }
 
     #[Test]

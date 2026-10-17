@@ -7,6 +7,7 @@ namespace Tests\Feature\Controllers\App\Vaults;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\VersionStatusEnum;
+use App\Helpers\PageSize;
 use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
 use App\Models\Field;
@@ -526,7 +527,7 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_the_next_page_and_appends_it(): void
+    public function it_offers_numbered_pages_and_a_choice_of_how_many_rows_a_page_holds(): void
     {
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user);
@@ -538,12 +539,43 @@ class ContactControllerTest extends TestCase
         ]);
 
         $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all']))
-            ->assertSee('Load more')
-            ->assertDontSee('End of the list.');
+            ->assertSee('1 to 50 of 51')
+            ->assertSee('aria-current="page"', escape: false)
+            ->assertSee('Rows per page')
+            ->assertSee(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'page' => 2]), escape: false)
+            ->assertDontSee('Load more');
 
-        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'page' => 2]))
-            ->assertDontSee('Load more')
-            ->assertSee('End of the list. 51 people, no pages.');
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'size' => 10, 'page' => 2]))
+            ->assertSee('11 to 20 of 51')
+            ->assertSee('value="10" selected', escape: false)
+            ->assertSee(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'size' => 10, 'page' => 3]));
+
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'size' => 7]))
+            ->assertSee('1 to 50 of 51');
+    }
+
+    #[Test]
+    public function it_remembers_the_rows_a_page_holds_for_the_next_visit(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        Contact::factory()->count(21)->create([
+            'vault_id' => $vault->id,
+            'account_id' => $user->account_id,
+            'structure_version_id' => $vault->defaultTemplates()->sole()->structure_version_id,
+        ]);
+
+        $chosen = $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'size' => 10]));
+
+        $chosen->assertSee('1 to 10 of 21');
+        $chosen->assertCookie(PageSize::COOKIE, json_encode(['contacts.index' => 10]));
+
+        $this->actingAs($user)
+            ->withCookie(PageSize::COOKIE, json_encode(['contacts.index' => 10]))
+            ->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all']))
+            ->assertSee('1 to 10 of 21')
+            ->assertSee('value="10" selected', escape: false);
     }
 
     #[Test]

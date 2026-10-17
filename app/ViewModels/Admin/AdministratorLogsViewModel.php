@@ -4,29 +4,32 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Admin;
 
+use App\Helpers\PageSize;
 use App\Models\AdministratorLog;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class AdministratorLogsViewModel
 {
-    private const int PER_PAGE = 25;
+    public const int PER_PAGE = 20;
 
     public function __construct(
         private readonly ?int $administratorId = null,
         private readonly ?int $accountId = null,
+        private readonly int|string $size = self::PER_PAGE,
     ) {}
 
-    /** @return Paginator<int, AdministratorLog> */
-    public function entries(): Paginator
+    /** @return LengthAwarePaginator<int, AdministratorLog> */
+    public function entries(): LengthAwarePaginator
     {
-        return once(fn (): Paginator => $this->matching()
-            ->with(['user', 'account.user'])
-            ->latest()
-            ->simplePaginate(self::PER_PAGE)
-            ->withQueryString());
+        return once(fn (): LengthAwarePaginator => PageSize::paginate(
+            $this->matching()
+                ->with(['user', 'account.user'])
+                ->latest(),
+            $this->size,
+        ));
     }
 
     /** @return Collection<int, User> */
@@ -51,6 +54,16 @@ class AdministratorLogsViewModel
     public function isFiltered(): bool
     {
         return $this->administratorId !== null || $this->accountId !== null;
+    }
+
+    public function size(): int|string
+    {
+        return $this->size;
+    }
+
+    public function defaultSize(): int
+    {
+        return self::PER_PAGE;
     }
 
     /** @return Builder<AdministratorLog> */

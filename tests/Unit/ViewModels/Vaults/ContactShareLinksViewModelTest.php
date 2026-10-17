@@ -144,7 +144,40 @@ class ContactShareLinksViewModelTest extends TestCase
 
         $viewModel = new ContactShareLinksViewModel(user: $user, vault: $michael->vault, contact: $michael);
 
-        $this->assertSame([], $viewModel->links());
+        $this->assertSame([], $viewModel->links()->items());
+    }
+
+    #[Test]
+    public function it_shows_twenty_links_a_page_newest_first_with_the_revoked_ones_kept(): void
+    {
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+
+        for ($index = 1; $index <= 25; $index++) {
+            $factory = ShareLink::factory()->for($contact, 'shareable');
+
+            if ($index % 5 === 0) {
+                $factory = $factory->revoked();
+            }
+
+            $factory->create(['label' => "Link {$index}", 'created_at' => now()->subMinutes($index)]);
+        }
+
+        $firstPage = new ContactShareLinksViewModel(user: $user, vault: $contact->vault, contact: $contact)->links();
+
+        $this->assertSame(25, $firstPage->total());
+        $this->assertCount(20, $firstPage);
+        $this->assertSame('Link 1', $firstPage[0]['label']);
+        $this->assertSame('Link 20', $firstPage[19]['label']);
+        $this->assertSame('Revoked', $firstPage[4]['state']);
+
+        $this->app['request']->merge(['page' => 2]);
+
+        $secondPage = new ContactShareLinksViewModel(user: $user, vault: $contact->vault, contact: $contact)->links();
+
+        $this->assertCount(5, $secondPage);
+        $this->assertSame('Link 21', $secondPage[0]['label']);
+        $this->assertSame('Revoked', $secondPage[4]['state']);
     }
 
     /** @return array<string, mixed> */

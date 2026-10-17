@@ -359,6 +359,33 @@ class ContactShareLinkControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_page_of_visits_of_a_link_that_is_onto_another_contact(): void
+    {
+        $user = User::factory()->create();
+        $michael = $this->contactOf($user);
+        $dwight = $this->contactOn($michael->vault, 'Dwight', 'Schrute');
+        $link = ShareLink::factory()->for($dwight, 'shareable')->create();
+
+        $this->actingAs($user)
+            ->get(route('contacts.shareLinks.show', ['vault' => $michael->vault, 'contact' => $michael, 'shareLink' => $link, 'page' => 2]))
+            ->assertNotFound();
+    }
+
+    #[Test]
+    public function it_offers_the_page_size_when_the_links_fill_more_than_one_page(): void
+    {
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        ShareLink::factory()->count(25)->for($contact, 'shareable')->create();
+
+        $this->actingAs($user)
+            ->get(route('contacts.shareLinks.index', ['vault' => $contact->vault, 'contact' => $contact]))
+            ->assertStatus(200)
+            ->assertSee(__('Rows per page'))
+            ->assertSee(route('contacts.shareLinks.index', ['vault' => $contact->vault, 'contact' => $contact, 'page' => 2]), false);
+    }
+
+    #[Test]
     public function it_refuses_somebody_in_another_vault(): void
     {
         $user = User::factory()->create();

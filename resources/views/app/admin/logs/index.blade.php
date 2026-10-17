@@ -19,6 +19,8 @@
         <input type="hidden" name="account" value="{{ $viewModel->accountId() }}">
       @endif
 
+      <input type="hidden" name="size" value="{{ $viewModel->size() }}">
+
       <x-button type="submit" size="small">{{ __('Narrow the record') }}</x-button>
 
       @if ($viewModel->isFiltered())
@@ -30,7 +32,9 @@
   <x-list-panel
     :items="$viewModel->entries()"
     id="entries"
-    :next-page-url="$viewModel->entries()->hasMorePages() ? $viewModel->entries()->nextPageUrl() : null"
+    :paginator="$viewModel->entries()"
+    :size="$viewModel->size()"
+    :default="$viewModel->defaultSize()"
   >
     <x-slot:empty>
       <x-empty-state :title="__('Nothing has been done yet')">

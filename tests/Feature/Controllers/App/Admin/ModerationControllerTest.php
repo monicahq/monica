@@ -138,6 +138,30 @@ class ModerationControllerTest extends TestCase
             ->assertSee('Let it into the catalogue', escape: false);
     }
 
+    #[Test]
+    public function it_shows_the_queue_in_numbered_pages(): void
+    {
+        MarketplaceListingVersion::factory()->count(21)->create();
+
+        $response = $this->actingAs($this->administrator())->get(route('admin.moderation.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee(__('Rows per page'), escape: false);
+        $response->assertSee('aria-current="page"', escape: false);
+        $response->assertSee('1 to 20 of 21', escape: false);
+    }
+
+    #[Test]
+    public function it_takes_the_page_size_from_the_url(): void
+    {
+        MarketplaceListingVersion::factory()->count(21)->create();
+
+        $response = $this->actingAs($this->administrator())->get(route('admin.moderation.index', ['size' => 10]));
+
+        $response->assertStatus(200);
+        $response->assertSee('1 to 10 of 21', escape: false);
+    }
+
     private function administrator(): User
     {
         $michael = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);

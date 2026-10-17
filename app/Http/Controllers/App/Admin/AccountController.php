@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Admin;
 
+use App\Helpers\PageSize;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\ViewModels\Admin\AccountsViewModel;
@@ -18,6 +19,7 @@ class AccountController extends Controller
         return view('app.admin.accounts.index', [
             'viewModel' => new AccountsViewModel(
                 query: (string) $request->string('query'),
+                size: PageSize::from($request, AccountsViewModel::PER_PAGE),
             ),
         ]);
     }

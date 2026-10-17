@@ -112,6 +112,22 @@ class LocalizeCommandTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_a_line_of_a_group_file_to_that_file(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        File::ensureDirectoryExists($this->langPath.'/en');
+        File::put($this->langPath.'/en/pagination.php', "<?php\n\nreturn ['next' => 'Next &raquo;'];\n");
+        $this->writeScratch("return __('pagination.next').__('pagination.nowhere');");
+
+        $this->artisan('monica:localize')->assertSuccessful();
+
+        $english = $this->translations('en');
+
+        $this->assertArrayNotHasKey('pagination.next', $english);
+        $this->assertArrayHasKey('pagination.nowhere', $english);
+    }
+
+    #[Test]
     public function it_ignores_a_call_written_inside_a_comment(): void
     {
         $this->app->useLangPath($this->langPath);

@@ -12,6 +12,7 @@ use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\SortDirectionEnum;
 use App\Helpers\AlpineAjaxTargets;
+use App\Helpers\PageSize;
 use App\Http\Controllers\Controller;
 use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
@@ -63,6 +64,7 @@ class ContactController extends Controller
                 grouping: $grouping,
                 sort: $sort,
                 direction: $direction,
+                size: PageSize::from($request, ContactsViewModel::PER_PAGE),
             ),
         ]);
     }

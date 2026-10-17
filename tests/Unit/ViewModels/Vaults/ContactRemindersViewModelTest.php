@@ -110,6 +110,42 @@ class ContactRemindersViewModelTest extends TestCase
     }
 
     #[Test]
+    public function the_history_shows_the_newest_twenty_five_answers_and_counts_them_all(): void
+    {
+        $this->sixtyAnswers();
+
+        $viewModel = $this->viewModel('history');
+        $rows = $viewModel->groups()[0]['rows'];
+        $filters = collect($viewModel->filters())->pluck('count', 'key')->all();
+
+        $this->assertCount(25, $rows);
+        $this->assertSame('2026-08-29', $rows[0]->occurrence()->local_date->toDateString());
+        $this->assertSame('2026-08-05', $rows[24]->occurrence()->local_date->toDateString());
+        $this->assertSame(60, $filters['history']);
+        $this->assertStringEndsWith('?page=2', $viewModel->nextPageUrl());
+    }
+
+    #[Test]
+    public function the_last_page_of_the_history_holds_what_is_left_and_offers_no_more(): void
+    {
+        $this->sixtyAnswers();
+
+        $viewModel = $this->viewModel('history', 3);
+
+        $this->assertCount(10, $viewModel->groups()[0]['rows']);
+        $this->assertSame(3, $viewModel->page());
+        $this->assertNull($viewModel->nextPageUrl());
+    }
+
+    #[Test]
+    public function another_filter_offers_no_next_page(): void
+    {
+        $this->sixtyAnswers();
+
+        $this->assertNull($this->viewModel('all', 1)->nextPageUrl());
+    }
+
+    #[Test]
     public function it_says_what_an_empty_filter_would_hold(): void
     {
         $this->assertSame('No reminders about Chandler Bing yet', $this->viewModel()->emptyTitle());
@@ -148,9 +184,20 @@ class ContactRemindersViewModelTest extends TestCase
         $this->assertSame([], $this->viewModel()->groups());
     }
 
-    private function viewModel(string $filter = 'all'): ContactRemindersViewModel
+    private function viewModel(string $filter = 'all', int $page = 1): ContactRemindersViewModel
     {
-        return new ContactRemindersViewModel(user: $this->user, vault: $this->vault, contact: $this->chandler, filter: $filter);
+        return new ContactRemindersViewModel(user: $this->user, vault: $this->vault, contact: $this->chandler, filter: $filter, page: $page);
+    }
+
+    private function sixtyAnswers(): void
+    {
+        $flat = $this->rule('Call about the flat on Bedford Street', '2026-07-01');
+        $flat->update(['cadence' => ReminderCadenceEnum::Weekly]);
+
+        foreach (range(0, 59) as $offset) {
+            $day = CarbonImmutable::parse('2026-07-01', 'UTC')->addDays($offset)->toDateString();
+            $this->deadline($flat, $day, ReminderAnswerEnum::Remembered, "{$day} 10:00:00");
+        }
     }
 
     private function rule(string $name, string $startsOn): Reminder

@@ -61,11 +61,29 @@
           @endif
         </div>
 
-        <div class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-panel">
-          @foreach ($group['rows'] as $row)
-            @include('app.vaults.contacts.reminders._row', ['row' => $row, 'answered' => $group['key'] === 'history'])
-          @endforeach
-        </div>
+        @if ($group['key'] === 'history')
+          <x-list-panel
+            :items="$group['rows']"
+            id="contact-reminders-rows"
+            merge="append"
+            target="contact-reminders-rows contact-reminders-footer"
+            footer-id="contact-reminders-footer"
+            :next-page-url="$viewModel->nextPageUrl()"
+            :shows-end="$viewModel->page() > 1"
+          >
+            @foreach ($group['rows'] as $row)
+              @include('app.vaults.contacts.reminders._row', ['row' => $row, 'answered' => true])
+            @endforeach
+
+            <x-slot:empty></x-slot:empty>
+          </x-list-panel>
+        @else
+          <div class="overflow-hidden rounded-lg border border-hairline bg-canvas shadow-panel">
+            @foreach ($group['rows'] as $row)
+              @include('app.vaults.contacts.reminders._row', ['row' => $row, 'answered' => false])
+            @endforeach
+          </div>
+        @endif
       </section>
     @empty
       <div class="flex flex-col items-center gap-1.5 rounded-lg border border-dashed border-hairline-strong px-6 py-10 text-center">
