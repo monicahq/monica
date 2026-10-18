@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Actions\ActivateFlag;
 use App\Actions\ArchiveContact;
 use App\Actions\CreateAccount;
 use App\Actions\CreateContact;
@@ -41,6 +42,7 @@ use App\Models\Vault;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
+use Laravel\Pennant\Feature;
 
 class ExampleAccountSeeder extends Seeder
 {
@@ -81,6 +83,7 @@ class ExampleAccountSeeder extends Seeder
         $this->createLifeEvents();
         $this->createContactReminders();
         $this->grantAdministratorAccess();
+        $this->activateFlags();
 
         $this->command?->info('Signed in as '.self::EMAIL.' with the password '.self::PASSWORD.'.');
     }
@@ -102,6 +105,13 @@ class ExampleAccountSeeder extends Seeder
     private function grantAdministratorAccess(): void
     {
         new GrantAdministratorAccess($this->user)->execute();
+    }
+
+    private function activateFlags(): void
+    {
+        foreach (Feature::defined() as $flag) {
+            new ActivateFlag(account: $this->user->account, flag: $flag)->execute();
+        }
     }
 
     private function readTheFields(): void
