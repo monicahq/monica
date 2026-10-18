@@ -33,17 +33,18 @@
 </x-mail::panel>
 @endif
 
+<x-mail::closing>
 @foreach ($outroLines as $line)
 {{ $line }}
 
 @endforeach
-
 @if (! empty($salutation))
 {{ $salutation }}
 @else
 {{ __('Thanks,') }}<br>
 {{ config('app.name') }}
 @endif
+</x-mail::closing>
 
 @isset($actionText)
 <x-slot:subcopy>

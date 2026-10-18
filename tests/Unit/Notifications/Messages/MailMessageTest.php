@@ -13,23 +13,33 @@ class MailMessageTest extends TestCase
     #[Test]
     public function it_boxes_the_panel(): void
     {
-        $rendered = (string) new MailMessage()
+        $asPanel = (string) new MailMessage()
             ->line('Somebody tried to sign in.')
             ->panel('Change your password now.')
             ->render();
 
-        $this->assertStringContainsString('class="panel"', $rendered);
-        $this->assertStringContainsString('Change your password now.', $rendered);
+        $asLine = (string) new MailMessage()
+            ->line('Somebody tried to sign in.')
+            ->line('Change your password now.')
+            ->render();
+
+        $this->assertStringContainsString('Change your password now.', $asPanel);
+        $this->assertNotEquals($asLine, $asPanel);
     }
 
     #[Test]
-    public function it_boxes_nothing_when_there_is_no_panel(): void
+    public function it_boxes_nothing_when_the_panel_is_empty(): void
     {
-        $rendered = (string) new MailMessage()
+        $withoutPanel = (string) new MailMessage()
             ->line('Somebody tried to sign in.')
             ->render();
 
-        $this->assertStringNotContainsString('class="panel"', $rendered);
+        $withEmptyPanel = (string) new MailMessage()
+            ->line('Somebody tried to sign in.')
+            ->panel('')
+            ->render();
+
+        $this->assertEquals($withoutPanel, $withEmptyPanel);
     }
 
     #[Test]

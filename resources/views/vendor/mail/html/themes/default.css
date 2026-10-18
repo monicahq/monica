@@ -1,0 +1,248 @@
+/* The light palette, written onto each element when the email is built. The dark one is in layout.blade.php, since this file loses its media queries. */
+
+body {
+    -webkit-text-size-adjust: none;
+    background-color: #fafafa;
+    color: #3f3f46;
+    margin: 0;
+    padding: 0;
+    width: 100% !important;
+}
+
+body,
+table,
+td,
+p,
+a,
+span,
+h1,
+strong {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+table {
+    border-collapse: separate;
+    mso-table-lspace: 0;
+    mso-table-rspace: 0;
+}
+
+img {
+    border: 0;
+    outline: none;
+    text-decoration: none;
+}
+
+.email-page {
+    background-color: #fafafa;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.email-page-cell {
+    background-color: #fafafa;
+    padding: 40px 40px 32px;
+}
+
+.email-column {
+    margin: 0 auto;
+    max-width: 600px;
+    width: 600px;
+}
+
+.email-card {
+    background-color: #ffffff;
+    border: 1px solid #e4e4e7;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    width: 100%;
+}
+
+/* Header */
+
+.email-header {
+    border-bottom: 1px solid #e4e4e7;
+    padding: 20px 32px;
+}
+
+.email-header a {
+    text-decoration: none;
+}
+
+.email-header-mark {
+    padding-right: 10px;
+    vertical-align: middle;
+}
+
+.email-header-name {
+    color: #09090b;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 20px;
+    vertical-align: middle;
+}
+
+.email-mark-light {
+    display: block;
+}
+
+.email-mark-dark {
+    display: none;
+    mso-hide: all;
+}
+
+/* Content */
+
+.email-content {
+    padding: 32px 32px 36px;
+}
+
+.email-content h1 {
+    color: #09090b;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 28px;
+    margin: 0 0 12px;
+}
+
+.email-content p {
+    color: #3f3f46;
+    font-size: 15px;
+    line-height: 24px;
+    margin: 0 0 16px;
+}
+
+.email-content strong {
+    color: #09090b;
+    font-weight: 600;
+}
+
+.email-content a {
+    color: #09090b;
+}
+
+.email-closing {
+    padding-top: 12px;
+}
+
+.email-closing p {
+    color: #52525b;
+    font-size: 14px;
+    line-height: 22px;
+    margin: 0 0 20px;
+}
+
+.email-closing p:last-of-type {
+    margin-bottom: 0;
+}
+
+/* Button */
+
+.email-button {
+    padding: 8px 0 12px;
+}
+
+.email-content .email-button-link {
+    background-color: #18181b;
+    border: 1px solid #18181b;
+    border-radius: 6px;
+    color: #fafafa;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    padding: 10px 18px;
+    text-decoration: none;
+}
+
+.email-content .email-button-success {
+    background-color: #15803d;
+    border-color: #15803d;
+    color: #fafafa;
+}
+
+.email-content .email-button-error {
+    background-color: #b91c1c;
+    border-color: #b91c1c;
+    color: #fafafa;
+}
+
+/* Panel */
+
+.email-panel-wrapper {
+    padding: 4px 0 16px;
+}
+
+.email-panel {
+    background-color: #fafafa;
+    border: 1px solid #e4e4e7;
+    border-radius: 6px;
+    padding: 16px;
+}
+
+.email-content .email-panel p {
+    color: #52525b;
+    font-size: 14px;
+    line-height: 22px;
+    margin: 0 0 12px;
+}
+
+.email-content .email-panel p:last-of-type {
+    margin-bottom: 0;
+}
+
+/* Fallback strip */
+
+.email-strip {
+    background-color: #fafafa;
+    border-top: 1px solid #e4e4e7;
+    padding: 18px 32px 20px;
+}
+
+.email-strip p {
+    color: #71717a;
+    font-size: 12.5px;
+    line-height: 19px;
+    margin: 0;
+}
+
+.email-strip .break-all {
+    display: block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    line-height: 18px;
+    margin-top: 6px;
+    word-break: break-all;
+}
+
+.email-strip a {
+    color: #27272a;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    text-decoration: underline;
+    text-decoration-color: #d4d4d8;
+}
+
+/* Footer */
+
+.email-footer {
+    padding: 24px 32px 0;
+}
+
+.email-footer-mark {
+    padding-right: 8px;
+    vertical-align: middle;
+}
+
+.email-footer-mark img {
+    opacity: 0.55;
+}
+
+.email-footer p {
+    color: #71717a;
+    font-size: 12px;
+    line-height: 18px;
+    margin: 0;
+}
