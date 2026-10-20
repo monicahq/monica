@@ -15,11 +15,15 @@ use Illuminate\View\View;
 
 class TwoFactorController extends Controller
 {
-    public function new(Request $request): View
+    public function new(Request $request): View|RedirectResponse
     {
         $enrolment = new EnableTwoFactorAuthentication(
             user: $request->user(),
         )->execute();
+
+        if ($enrolment === null) {
+            return redirect()->route('settings.security.index');
+        }
 
         return view('app.settings.account.security.two-factor', [
             'viewModel' => new TwoFactorEnrolmentViewModel(

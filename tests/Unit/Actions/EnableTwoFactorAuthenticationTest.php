@@ -43,15 +43,31 @@ class EnableTwoFactorAuthenticationTest extends TestCase
     }
 
     #[Test]
-    public function it_mints_a_new_secret_every_time_and_forgets_what_came_before(): void
+    public function it_mints_a_new_secret_every_time_until_one_is_confirmed(): void
     {
-        $user = User::factory()->twoFactor()->create();
+        $user = User::factory()->create();
 
         $first = new EnableTwoFactorAuthentication(user: $user)->execute();
         $second = new EnableTwoFactorAuthentication(user: $user)->execute();
 
         $this->assertNotEquals($first['secret'], $second['secret']);
         $this->assertEquals($second['secret'], $user->refresh()->two_factor_secret);
-        $this->assertNull($user->two_factor_recovery_codes);
+    }
+
+    #[Test]
+    public function it_leaves_a_confirmed_app_untouched(): void
+    {
+        $user = User::factory()->twoFactor(secret: 'DWIGHTSCHRUTEBEETS')->create([
+            'two_factor_confirmed_at' => '2026-10-01 09:00:00',
+        ]);
+
+        $enrolment = new EnableTwoFactorAuthentication(user: $user)->execute();
+
+        $user->refresh();
+
+        $this->assertNull($enrolment);
+        $this->assertEquals('DWIGHTSCHRUTEBEETS', $user->two_factor_secret);
+        $this->assertEquals('2026-10-01 09:00:00', $user->two_factor_confirmed_at->toDateTimeString());
+        $this->assertEquals(['scranton-1', 'scranton-2'], $user->two_factor_recovery_codes);
     }
 }

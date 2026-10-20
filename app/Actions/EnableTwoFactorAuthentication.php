@@ -13,7 +13,8 @@ use PragmaRX\Google2FA\Google2FA;
 
 /**
  * Start enrolling somebody in two factor authentication: mint the secret their authenticator app
- * will share with us, and draw the square they point their camera at.
+ * will share with us, and draw the square they point their camera at. An app already confirmed is
+ * left untouched, and nothing is returned.
  */
 class EnableTwoFactorAuthentication
 {
@@ -25,9 +26,13 @@ class EnableTwoFactorAuthentication
         private readonly User $user,
     ) {}
 
-    /** @return array{secret: string, qrCode: string} */
-    public function execute(): array
+    /** @return array{secret: string, qrCode: string}|null */
+    public function execute(): ?array
     {
+        if ($this->user->usesTwoFactorAuthentication()) {
+            return null;
+        }
+
         $this->generate();
 
         return [
@@ -41,7 +46,6 @@ class EnableTwoFactorAuthentication
         $this->secret = new Google2FA()->generateSecretKey();
 
         $this->user->two_factor_secret = $this->secret;
-        $this->user->two_factor_confirmed_at = null;
         $this->user->two_factor_recovery_codes = null;
         $this->user->save();
     }

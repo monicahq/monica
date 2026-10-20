@@ -31,6 +31,21 @@ class TwoFactorControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_sends_somebody_whose_app_is_on_back_to_the_security_screen(): void
+    {
+        $user = User::factory()->twoFactor(secret: 'DWIGHTSCHRUTEBEETS')->create();
+
+        $response = $this->withConfirmedPassword()->actingAs($user)->get(route('settings.twoFactor.new'));
+
+        $response->assertRedirect(route('settings.security.index'));
+
+        $user->refresh();
+
+        $this->assertEquals('DWIGHTSCHRUTEBEETS', $user->two_factor_secret);
+        $this->assertTrue($user->usesTwoFactorAuthentication());
+    }
+
+    #[Test]
     public function it_turns_two_factor_authentication_on(): void
     {
         Queue::fake();
