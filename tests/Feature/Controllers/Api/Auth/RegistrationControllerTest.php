@@ -46,6 +46,18 @@ class RegistrationControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_stores_an_email_address_typed_with_capitals_in_lowercase(): void
+    {
+        Queue::fake();
+
+        $this->json('POST', '/api/v1/register', $this->payload([
+            'email' => 'Michael.Scott@DunderMifflin.com',
+        ]))->assertCreated();
+
+        $this->assertDatabaseHas('users', ['email' => 'michael.scott@dundermifflin.com']);
+    }
+
+    #[Test]
     public function it_hands_the_token_back_as_a_string_and_nothing_else(): void
     {
         Queue::fake();

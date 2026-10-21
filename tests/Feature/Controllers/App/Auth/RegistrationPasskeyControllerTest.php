@@ -93,6 +93,18 @@ class RegistrationPasskeyControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_stores_an_email_address_typed_with_capitals_in_lowercase(): void
+    {
+        Queue::fake();
+
+        $this->post(route('auth.registerPasskey.create'), $this->payload([
+            'email' => 'Michael.Scott@DunderMifflin.com',
+        ]))->assertRedirect(route('auth.registerPasskey.new'));
+
+        $this->assertDatabaseHas('users', ['email' => 'michael.scott@dundermifflin.com']);
+    }
+
+    #[Test]
     public function it_refuses_an_email_address_somebody_already_uses(): void
     {
         Queue::fake();

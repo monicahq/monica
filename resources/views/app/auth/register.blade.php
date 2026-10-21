@@ -13,7 +13,7 @@
 
   <div x-data="{
     terms: @js((bool) old('terms')),
-    mode: {{ \Illuminate\Support\Js::from(! $viewModel->passkeysAreAvailable() || $errors->has('password') ? 'password' : 'passkey') }},
+    mode: {{ \Illuminate\Support\Js::from($viewModel->registrationMethod()) }},
   }">
     @if ($viewModel->passkeysAreAvailable())
       <p class="mb-4 text-sm text-pretty text-muted" x-show="mode === 'passkey'">{{ __('You will sign in with a passkey, unlocked by your fingerprint, your face or your device PIN. Nothing to remember, nothing to type.') }}</p>
@@ -96,6 +96,8 @@
 
           <p class="text-xs text-muted">{{ $viewModel->passwordRequirements() }}</p>
         </div>
+
+        <input type="hidden" name="registration_method" value="password" x-bind:value="mode">
 
         <input type="hidden" name="timezone" x-data x-init="$el.value = Intl.DateTimeFormat().resolvedOptions().timeZone ?? ''">
 

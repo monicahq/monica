@@ -27,10 +27,12 @@ class RegistrationController extends Controller
 
     public function create(Request $request): RedirectResponse
     {
+        $request->merge(['email' => mb_strtolower(trim((string) $request->input('email')))]);
+
         $rules = [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class, 'disposable_email'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class, 'disposable_email'],
             'password' => ['required', 'string', 'max:255', 'confirmed', Password::default()],
             'timezone' => ['nullable', 'string', 'timezone:all'],
             'terms' => ['accepted'],

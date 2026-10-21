@@ -19,6 +19,15 @@ class RegisterViewModel extends GuestViewModel
         return PasskeyAvailability::reason();
     }
 
+    public function registrationMethod(): string
+    {
+        if (! $this->passkeysAreAvailable()) {
+            return 'password';
+        }
+
+        return old('registration_method') === 'password' ? 'password' : 'passkey';
+    }
+
     public function passwordRules(): string
     {
         return PasswordRequirements::passwordRules();

@@ -105,6 +105,32 @@ class RegistrationControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_stores_an_email_address_typed_with_capitals_in_lowercase(): void
+    {
+        Queue::fake();
+
+        $response = $this->post(route('auth.register.create'), $this->validPayload([
+            'email' => 'Michael.Scott@DunderMifflin.com',
+        ]));
+
+        $response->assertRedirect(route('auth.verification.notice'));
+        $this->assertDatabaseHas('users', ['email' => 'michael.scott@dundermifflin.com']);
+    }
+
+    #[Test]
+    public function it_refuses_an_email_address_already_taken_when_typed_with_capitals(): void
+    {
+        User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $response = $this->post(route('auth.register.create'), $this->validPayload([
+            'email' => 'Michael.Scott@dundermifflin.com',
+        ]));
+
+        $response->assertSessionHasErrors('email');
+        $this->assertGuest();
+    }
+
+    #[Test]
     public function it_refuses_a_password_that_is_too_short(): void
     {
         $response = $this->post(route('auth.register.create'), $this->validPayload([

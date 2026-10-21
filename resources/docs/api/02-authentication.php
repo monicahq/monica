@@ -42,7 +42,7 @@ return [
                     'name' => 'email',
                     'type' => 'string',
                     'required' => true,
-                    'description' => 'The address to sign in with. Lowercase, held by nobody else, and not from a throwaway provider.',
+                    'description' => 'The address to sign in with, stored in lowercase. Held by nobody else, and not from a throwaway provider.',
                     'example' => 'michael.scott@dundermifflin.com',
                 ],
                 [
