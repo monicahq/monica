@@ -101,10 +101,25 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "bunx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --queue=high,default,low --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"bun run dev\" --names=server,queue,logs,vite --kill-others"
+            "@php artisan dev"
+        ],
+        "lint": [
+            "pint --parallel"
+        ],
+        "lint:check": [
+            "pint --parallel --test"
+        ],
+        "ci:check": [
+            "Composer\\Config::disableProcessTimeout",
+            "@test"
+        ],
+        "types:check": [
+            "phpstan analyse"
         ],
         "test": [
             "@php artisan config:clear --ansi @no_additional_args",
+            "@lint:check",
+            "@types:check",
             "@php artisan test --parallel"
         ],
         "post-autoload-dump": [

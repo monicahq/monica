@@ -4,8 +4,8 @@
     "type": "module",
     "packageManager": "bun@1.4.3",
     "scripts": {
-        "build": "vite build",
-        "dev": "vite"
+        "build": "vp build",
+        "dev": "vp dev"
     },
     "devDependencies": {
         "@alpinejs/anchor": "^3.17.4",
@@ -19,6 +19,16 @@
         "concurrently": "^10.0.6",
         "laravel-vite-plugin": "^3.2.0",
         "tailwindcss": "^4.3.3",
-        "vite": "^8.3.4"
+        "vite": "npm:@voidzero-dev/vite-plus-core@1.3.0",
+        "vite-plus": "^1.3.0"
+    },
+    "overrides": {
+        "vite": "npm:@voidzero-dev/vite-plus-core@1.3.0"
+    },
+    "optionalDependencies": {
+        "@laravel/multiplex": "^0.4.1",
+        "@rollup/rollup-linux-x64-gnu": "4.9.5",
+        "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1",
+        "lightningcss-linux-x64-gnu": "^1.29.1"
     }
 }
