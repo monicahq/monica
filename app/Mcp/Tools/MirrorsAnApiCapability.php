@@ -13,6 +13,7 @@ use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
 use App\Models\Log;
+use App\Models\Relationship;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
 use App\Models\Reminder;
@@ -257,6 +258,21 @@ trait MirrorsAnApiCapability
         }
 
         return $reminder;
+    }
+
+    protected function relationship(Contact $contact, string $uuid): Relationship
+    {
+        $relationship = Relationship::query()
+            ->forContact($contact)
+            ->where('uuid', $uuid)
+            ->with(['vault', 'relationshipType', 'contactA', 'contactB'])
+            ->first();
+
+        if ($relationship === null) {
+            throw $this->doesNotExist(__('That relationship does not exist.'));
+        }
+
+        return $relationship;
     }
 
     protected function reminderOccurrence(Contact $contact, string $uuid): ReminderOccurrence

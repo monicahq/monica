@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\ContactMeController;
 use App\Http\Controllers\Api\ContactMergeController;
 use App\Http\Controllers\Api\ContactNameController;
 use App\Http\Controllers\Api\ContactNameRepresentationController;
+use App\Http\Controllers\Api\ContactRelationshipController;
 use App\Http\Controllers\Api\ContactReminderController;
 use App\Http\Controllers\Api\ContactReminderOccurrenceController;
 use App\Http\Controllers\Api\ContactStructureVersionController;
@@ -259,6 +260,18 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/contacts/{contact}/reminder-occurrences/{occurrence}/answer', [ReminderOccurrenceAnswerController::class, 'update'])
             ->where('occurrence', '[0-9a-fA-F-]{36}')
             ->name('contacts.reminderOccurrences.answer.update');
+
+        Route::get('vaults/{vault}/contacts/{contact}/relationships', [ContactRelationshipController::class, 'index'])->name('contacts.relationships');
+        Route::post('vaults/{vault}/contacts/{contact}/relationships', [ContactRelationshipController::class, 'create'])->name('contacts.relationships.create');
+        Route::get('vaults/{vault}/contacts/{contact}/relationships/{relationship}', [ContactRelationshipController::class, 'show'])
+            ->where('relationship', '[0-9a-fA-F-]{36}')
+            ->name('contacts.relationships.show');
+        Route::put('vaults/{vault}/contacts/{contact}/relationships/{relationship}', [ContactRelationshipController::class, 'update'])
+            ->where('relationship', '[0-9a-fA-F-]{36}')
+            ->name('contacts.relationships.update');
+        Route::delete('vaults/{vault}/contacts/{contact}/relationships/{relationship}', [ContactRelationshipController::class, 'destroy'])
+            ->where('relationship', '[0-9a-fA-F-]{36}')
+            ->name('contacts.relationships.destroy');
 
         Route::get('vaults/{vault}/life-events', [LifeEventController::class, 'index'])->name('lifeEvents');
         Route::get('vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'show'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.show');

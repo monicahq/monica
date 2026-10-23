@@ -65,7 +65,7 @@ class McpDocsViewModelTest extends TestCase
     #[Test]
     public function it_counts_the_tools_it_lists(): void
     {
-        $this->assertStringStartsWith('MCP currently exposes 87 tools.', new McpDocsViewModel()->toolsSummary()[0]);
+        $this->assertStringStartsWith('MCP currently exposes 92 tools.', new McpDocsViewModel()->toolsSummary()[0]);
     }
 
     #[Test]
@@ -74,7 +74,7 @@ class McpDocsViewModelTest extends TestCase
         $changing = array_filter(new McpDocsViewModel()->toolGroups(), fn (array $group): bool => $group['changesData']);
 
         $this->assertSame(
-            ['Contacts, changing', 'Reminders, changing', 'Life events, changing', 'Templates, changing', 'Template drafts', 'Sections', 'Fields', 'Entity types, changing', 'Relationship vocabulary, changing', 'Life event vocabulary, changing'],
+            ['Contacts, changing', 'Reminders, changing', 'Relationships, changing', 'Life events, changing', 'Templates, changing', 'Template drafts', 'Sections', 'Fields', 'Entity types, changing', 'Relationship vocabulary, changing', 'Life event vocabulary, changing'],
             array_values(array_column($changing, 'name')),
         );
     }

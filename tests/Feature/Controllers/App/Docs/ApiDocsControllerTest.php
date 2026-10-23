@@ -132,7 +132,7 @@ class ApiDocsControllerTest extends TestCase
             new ApiDocsViewModel()->sections(),
         );
 
-        $this->assertCount(148, $ids);
+        $this->assertCount(153, $ids);
 
         foreach ($ids as $id) {
             $this->get(route('docs.api.show', ['section' => $id]))

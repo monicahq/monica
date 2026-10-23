@@ -7,6 +7,7 @@ namespace App\Mcp\Servers;
 use App\Mcp\Tools\AddTemplateSection;
 use App\Mcp\Tools\AnswerReminderOccurrence;
 use App\Mcp\Tools\CreateContact;
+use App\Mcp\Tools\CreateContactRelationship;
 use App\Mcp\Tools\CreateContactReminder;
 use App\Mcp\Tools\CreateEntityType;
 use App\Mcp\Tools\CreateLifeEvent;
@@ -17,6 +18,7 @@ use App\Mcp\Tools\CreateRelationshipType;
 use App\Mcp\Tools\CreateTemplate;
 use App\Mcp\Tools\CreateTemplateDraft;
 use App\Mcp\Tools\CreateTemplateField;
+use App\Mcp\Tools\DeleteContactRelationship;
 use App\Mcp\Tools\DeleteContactReminder;
 use App\Mcp\Tools\DeleteEntityType;
 use App\Mcp\Tools\DeleteLifeEvent;
@@ -29,6 +31,7 @@ use App\Mcp\Tools\DeleteTemplateDraft;
 use App\Mcp\Tools\DeleteTemplateField;
 use App\Mcp\Tools\DuplicateTemplate;
 use App\Mcp\Tools\GetContact;
+use App\Mcp\Tools\GetContactRelationship;
 use App\Mcp\Tools\GetContactReminder;
 use App\Mcp\Tools\GetEmailSent;
 use App\Mcp\Tools\GetEntityType;
@@ -43,6 +46,7 @@ use App\Mcp\Tools\GetRelationshipType;
 use App\Mcp\Tools\GetTemplate;
 use App\Mcp\Tools\GetTemplateVersion;
 use App\Mcp\Tools\ListContactNameRepresentations;
+use App\Mcp\Tools\ListContactRelationships;
 use App\Mcp\Tools\ListContactReminderOccurrences;
 use App\Mcp\Tools\ListContactReminders;
 use App\Mcp\Tools\ListContacts;
@@ -81,6 +85,7 @@ use App\Mcp\Tools\SetTemplatePosition;
 use App\Mcp\Tools\SetTemplateSectionPosition;
 use App\Mcp\Tools\UpdateContactName;
 use App\Mcp\Tools\UpdateContactNameRepresentations;
+use App\Mcp\Tools\UpdateContactRelationship;
 use App\Mcp\Tools\UpdateContactReminder;
 use App\Mcp\Tools\UpdateEntityType;
 use App\Mcp\Tools\UpdateLifeEvent;
@@ -127,6 +132,12 @@ only switched off with set-entity-type-activation.
 A relationship type gives each of two linked contacts a role and is filed under a category. Types and
 categories that came with the account, or that are in use, cannot be deleted, only switched off with
 set-relationship-type-activation or set-relationship-category-activation.
+
+A relationship links two contacts of one vault with a relationship type, and one record holds both
+sides. Find the type with list-relationship-types and both people with list-contacts or
+search-records before calling create-contact-relationship, and list-contact-relationships first to
+avoid recording the same link twice. holds_role_a says which person holds role_a of a type that is
+not symmetric. The other person can also be somebody not written down yet, named or not.
 
 A life event type is a kind of thing that happens to a contact, filed under a category, and it can ask
 for fields of its own. replace-life-event-type-fields replaces the whole set and never changes a life
@@ -215,6 +226,11 @@ class EricaServer extends Server
         DeleteContactReminder::class,
         ListContactReminderOccurrences::class,
         AnswerReminderOccurrence::class,
+        ListContactRelationships::class,
+        GetContactRelationship::class,
+        CreateContactRelationship::class,
+        UpdateContactRelationship::class,
+        DeleteContactRelationship::class,
         ListLifeEvents::class,
         GetLifeEvent::class,
         CreateLifeEvent::class,

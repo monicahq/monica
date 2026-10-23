@@ -68,7 +68,7 @@ class McpDocsViewModel
         'text' => 'Your assistant can use every tool listed below in every vault in your account, whether it connects with a key or through OAuth. Choosing “AI Assistant” when creating an API key only labels the key—it does not limit what your assistant can access or change.',
     ];
 
-    public const string LAST_UPDATED = '2026-09-29';
+    public const string LAST_UPDATED = '2026-10-23';
 
     public const string SOURCE_URL = 'https://github.com/monicahq/monica';
 
@@ -246,6 +246,15 @@ class McpDocsViewModel
                 ['name' => 'update-contact-reminder', 'description' => 'Changes what a reminder says and when it comes back.'],
                 ['name' => 'delete-contact-reminder', 'description' => 'Stops a reminder for good. The answers already given stay.'],
                 ['name' => 'answer-reminder-occurrence', 'description' => 'Records whether you remembered a date or forgot it. The answer is final.'],
+            ]],
+            ['name' => 'Relationships, reading', 'changesData' => false, 'tools' => [
+                ['name' => 'list-contact-relationships', 'description' => 'Lists the people a contact is linked to, with the role each holds.'],
+                ['name' => 'get-contact-relationship', 'description' => 'Returns one relationship: its type, both people, whether it is current or ended, and its dates.'],
+            ]],
+            ['name' => 'Relationships, changing', 'changesData' => true, 'tools' => [
+                ['name' => 'create-contact-relationship', 'description' => 'Links a contact to somebody else, such as a partner or a parent. The other person can be somebody not written down yet.'],
+                ['name' => 'update-contact-relationship', 'description' => 'Changes a relationship’s type, roles, dates or whether it ended. What you leave out keeps its value.'],
+                ['name' => 'delete-contact-relationship', 'description' => 'Deletes a relationship. Both people stay.'],
             ]],
             ['name' => 'Life events, reading', 'changesData' => false, 'tools' => [
                 ['name' => 'list-life-events', 'description' => 'Lists the life events of a vault, the most recent first. Can narrow to the ones one contact took part in.'],

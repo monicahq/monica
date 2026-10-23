@@ -30,6 +30,7 @@ use App\Models\Notification;
 use App\Models\NotificationChannel;
 use App\Models\NotificationPreference;
 use App\Models\Payment;
+use App\Models\Relationship;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
 use App\Models\Reminder;
@@ -1517,6 +1518,46 @@ class ApiDocsReturnFieldsTest extends TestCase
                 ]);
             }),
 
+            'relationships-index' => $this->asSomebody(function (User $user): TestResponse {
+                $relationship = $this->aRelationship($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$relationship->vault->uuid}/contacts/{$relationship->contactA->uuid}/relationships");
+            }),
+
+            'relationships-create' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+                $pam = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+                $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}/relationships", [
+                    'relationship_type' => $type->uuid,
+                    'other_contact' => $pam->uuid,
+                ]);
+            }),
+
+            'relationships-show' => $this->asSomebody(function (User $user): TestResponse {
+                $relationship = $this->aRelationship($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$relationship->vault->uuid}/contacts/{$relationship->contactA->uuid}/relationships/{$relationship->uuid}");
+            }),
+
+            'relationships-update' => $this->asSomebody(function (User $user): TestResponse {
+                $relationship = $this->aRelationship($user);
+
+                return $this->json('PUT', "/api/v1/vaults/{$relationship->vault->uuid}/contacts/{$relationship->contactA->uuid}/relationships/{$relationship->uuid}", [
+                    'status' => 'ended',
+                    'started_on' => '2007-05-10',
+                    'ended_on' => '2008-01-15',
+                ]);
+            }),
+
+            'relationships-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $relationship = $this->aRelationship($user);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$relationship->vault->uuid}/contacts/{$relationship->contactA->uuid}/relationships/{$relationship->uuid}");
+            }),
+
             default => null,
         };
     }
@@ -1656,6 +1697,13 @@ class ApiDocsReturnFieldsTest extends TestCase
         $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
 
         return Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create();
+    }
+
+    private function aRelationship(User $user): Relationship
+    {
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        return Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
     }
 
     private function asSomebody(callable $call): TestResponse
