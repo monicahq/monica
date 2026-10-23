@@ -24,6 +24,9 @@ import timezonePicker from './timezone-picker';
 
 window.Turbo = Turbo;
 
+// The docs offer each page as Markdown. Turbo would fetch it as a page, get text back, then load it a second time.
+Turbo.config.drive.unvisitableExtensions.add('.md');
+
 Alpine.data('apiDocsSidebarScroll', apiDocsSidebarScroll);
 Alpine.data('carddavDocs', (options) => mcpDocs({ ...options, endpoint: '/dav' }));
 Alpine.data('confirmPassword', confirmPassword);

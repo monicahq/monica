@@ -86,3 +86,5 @@ A chronological list of every feature and improvement shipped during development
 * CardDAV: Named a contact sent with no name after its organisation, nickname, email address or phone number.
 * Templates: Let the default contact template of a new account hold several addresses.
 * CardDAV: Stopped writing the name of the field as the label of an email address, phone number, address or website that has none.
+* Forms: Said why a form was refused when the page had expired, the same request came too often, or the action was not allowed, instead of reloading the page silently.
+* Docs: Opened the Markdown version of a page with one request instead of two.
