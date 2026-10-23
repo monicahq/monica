@@ -230,6 +230,17 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
+     * Get the security keys that answer the two factor challenge for the user,
+     * oldest first.
+     *
+     * @return HasMany<SecurityKey, $this>
+     */
+    public function securityKeys(): HasMany
+    {
+        return $this->hasMany(SecurityKey::class)->oldest('id');
+    }
+
+    /**
      * Get the name the user is called by, in the order they asked their name to
      * read in. The interface language cannot decide that order: somebody
      * reading Monica in English may still want their family name first.
@@ -329,12 +340,26 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get whether the user finished enrolling in two factor authentication, and
-     * therefore has to answer a challenge before they are signed in.
+     * Get whether the user finished enrolling an authenticator app, the one
+     * second factor that answers with a typed code.
+     */
+    public function usesAuthenticatorApp(): bool
+    {
+        return $this->two_factor_confirmed_at !== null;
+    }
+
+    /**
+     * Get whether the user has to answer a challenge before they are signed in:
+     * they hold an authenticator app, a security key, or both. A passkey
+     * answers that challenge but never turns it on.
      */
     public function usesTwoFactorAuthentication(): bool
     {
-        return $this->two_factor_confirmed_at !== null;
+        if ($this->usesAuthenticatorApp()) {
+            return true;
+        }
+
+        return $this->securityKeys()->exists();
     }
 
     /**

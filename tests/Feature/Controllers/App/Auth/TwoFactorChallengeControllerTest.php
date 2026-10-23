@@ -6,13 +6,17 @@ namespace Tests\Feature\Controllers\App\Auth;
 
 use App\Enums\SignInMethodEnum;
 use App\Enums\SsoProviderEnum;
+use App\Models\SecurityKey;
 use App\Models\User;
 use App\Notifications\NewLoginDetected;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
+use ParagonIE\ConstantTime\Base64UrlSafe;
 use PHPUnit\Framework\Attributes\Test;
 use PragmaRX\Google2FA\Google2FA;
+use Tests\Fixtures\WebAuthn\SoftwareAuthenticator;
 use Tests\TestCase;
 
 class TwoFactorChallengeControllerTest extends TestCase
@@ -213,6 +217,130 @@ class TwoFactorChallengeControllerTest extends TestCase
         $response->assertRedirect(route('home.index'));
         $this->assertAuthenticatedAs($user);
         $this->assertEquals(['scranton-2'], $user->refresh()->two_factor_recovery_codes);
+    }
+
+    #[Test]
+    public function it_offers_a_key_on_the_challenge_to_somebody_who_holds_one(): void
+    {
+        URL::forceScheme('https');
+        $user = User::factory()->create();
+        SecurityKey::factory()->for($user)->create();
+
+        $response = $this->withSession(['twoFactor.user.id' => $user->id])
+            ->get(route('auth.twoFactor.new'));
+
+        $response->assertOk();
+        $response->assertSee('Use a security key or passkey');
+        $response->assertSee('x-data="passkey(', escape: false);
+        $response->assertSee('aria-live="polite"', escape: false);
+        $response->assertSee('Recovery code');
+    }
+
+    #[Test]
+    public function it_puts_the_reader_back_on_the_code_field_after_a_refused_code(): void
+    {
+        URL::forceScheme('https');
+        $user = User::factory()->twoFactor()->create();
+        SecurityKey::factory()->for($user)->create();
+
+        $first = $this->withSession(['twoFactor.user.id' => $user->id])
+            ->get(route('auth.twoFactor.new'));
+        $this->from(route('auth.twoFactor.new'))
+            ->post(route('auth.twoFactor.create'), ['code' => '000000']);
+        $afterRefusal = $this->get(route('auth.twoFactor.new'));
+
+        $this->assertStringNotContainsString('autofocus', $this->codeField($first->getContent()));
+        $this->assertStringContainsString('autofocus', $this->codeField($afterRefusal->getContent()));
+        $afterRefusal->assertSee('That code is not right.');
+    }
+
+    private function codeField(string $html): string
+    {
+        preg_match('/<input[^>]*id="code"[^>]*>/s', $html, $matches);
+
+        return $matches[0] ?? '';
+    }
+
+    #[Test]
+    public function it_offers_no_key_to_somebody_with_the_app_alone(): void
+    {
+        URL::forceScheme('https');
+        $user = User::factory()->twoFactor()->create();
+
+        $response = $this->withSession(['twoFactor.user.id' => $user->id])
+            ->get(route('auth.twoFactor.new'));
+
+        $response->assertDontSee('Use a security key or passkey');
+    }
+
+    #[Test]
+    public function it_signs_somebody_in_with_a_security_key_and_warns_them_once(): void
+    {
+        Notification::fake();
+        URL::forceScheme('https');
+        $user = User::factory()->create();
+        $authenticator = new SoftwareAuthenticator;
+        SecurityKey::factory()->for($user)->create([
+            'credential_id' => $authenticator->credentialId(),
+            'credential' => $authenticator->credentialRecord(),
+        ]);
+
+        $this->withSession([
+            'twoFactor.user.id' => $user->id,
+            'twoFactor.signInMethod' => SignInMethodEnum::EmailLink->value,
+        ]);
+        $challenge = $this->getJson(route('auth.twoFactorKeyOptions.show'))->json('options.challenge');
+
+        $response = $this->postJson(route('auth.twoFactor.create'), [
+            'credential' => $authenticator->answer(Base64UrlSafe::decodeNoPadding($challenge)),
+            'remember' => false,
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('redirect', route('home.index'));
+        $this->assertAuthenticatedAs($user);
+        $this->assertNull(session('twoFactor.user.id'));
+        Notification::assertSentToTimes($user, NewLoginDetected::class, 1);
+    }
+
+    #[Test]
+    public function it_keeps_somebody_on_the_challenge_when_the_key_is_refused(): void
+    {
+        URL::forceScheme('https');
+        $user = User::factory()->create();
+        $authenticator = new SoftwareAuthenticator;
+        SecurityKey::factory()->for($user)->create([
+            'credential_id' => $authenticator->credentialId(),
+            'credential' => $authenticator->credentialRecord(),
+        ]);
+
+        $this->withSession(['twoFactor.user.id' => $user->id]);
+        $this->getJson(route('auth.twoFactorKeyOptions.show'))->assertOk();
+
+        $response = $this->postJson(route('auth.twoFactor.create'), [
+            'credential' => $authenticator->answer(random_bytes(32)),
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('credential');
+        $this->assertGuest();
+        $this->assertEquals($user->id, session('twoFactor.user.id'));
+    }
+
+    #[Test]
+    public function it_says_it_took_too_long_when_a_key_answers_a_challenge_nobody_asked(): void
+    {
+        $user = User::factory()->create();
+        $authenticator = new SoftwareAuthenticator;
+
+        $response = $this->withSession(['twoFactor.user.id' => $user->id])
+            ->postJson(route('auth.twoFactor.create'), [
+                'credential' => $authenticator->answer(random_bytes(32)),
+            ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonPath('redirect', route('auth.login.new'));
+        $this->assertGuest();
     }
 
     #[Test]

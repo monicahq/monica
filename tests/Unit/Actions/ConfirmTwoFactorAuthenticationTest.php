@@ -8,6 +8,7 @@ use App\Actions\ConfirmTwoFactorAuthentication;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
+use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -100,5 +101,28 @@ class ConfirmTwoFactorAuthenticationTest extends TestCase
 
         $this->assertFalse($confirmed);
         $this->assertNull($user->refresh()->two_factor_confirmed_at);
+    }
+
+    #[Test]
+    public function it_keeps_the_recovery_codes_issued_when_a_security_key_came_first(): void
+    {
+        Queue::fake();
+
+        $google2fa = new Google2FA;
+        $secret = $google2fa->generateSecretKey();
+        $user = User::factory()->create([
+            'two_factor_secret' => $secret,
+            'two_factor_recovery_codes' => ['scranton-1', 'scranton-2'],
+        ]);
+        SecurityKey::factory()->for($user)->create();
+
+        new ConfirmTwoFactorAuthentication(
+            user: $user,
+            code: $google2fa->getCurrentOtp($secret),
+        )->execute();
+
+        $this->assertEquals(['scranton-1', 'scranton-2'], $user->refresh()->two_factor_recovery_codes);
+        $this->assertTrue($user->usesAuthenticatorApp());
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::AuthenticatorAppAdded);
     }
 }

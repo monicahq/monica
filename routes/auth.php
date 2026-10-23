@@ -16,6 +16,7 @@ use App\Http\Controllers\App\Auth\RegistrationPasskeyController;
 use App\Http\Controllers\App\Auth\ScreenshotLinkController;
 use App\Http\Controllers\App\Auth\SsoController;
 use App\Http\Controllers\App\Auth\TwoFactorChallengeController;
+use App\Http\Controllers\App\Auth\TwoFactorKeyOptionsController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest'])->group(function (): void {
@@ -73,6 +74,9 @@ Route::middleware(['guest'])->group(function (): void {
     Route::post('reset-password', [NewPasswordController::class, 'update'])->name('auth.password.update');
 
     Route::get('two-factor-challenge', [TwoFactorChallengeController::class, 'new'])->name('auth.twoFactor.new');
+    Route::get('two-factor-challenge/key-options', [TwoFactorKeyOptionsController::class, 'show'])
+        ->middleware('throttle:12,1,two-factor-key-options')
+        ->name('auth.twoFactorKeyOptions.show');
     Route::post('two-factor-challenge', [TwoFactorChallengeController::class, 'create'])
         ->middleware('throttle:6,1')
         ->name('auth.twoFactor.create');

@@ -6,6 +6,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\VerifyPasskey;
 use App\Models\Passkey;
+use App\Models\SecurityKey;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Validation\ValidationException;
 use Laravel\Passkeys\Support\WebAuthn;
@@ -37,6 +38,17 @@ class VerifyPasskeyTest extends TestCase
         $this->expectExceptionMessage(self::MESSAGE);
 
         new VerifyPasskey()->getPasskey($this->credentialFor(Base64UrlSafe::encodeUnpadded('nobody-owns-this')));
+    }
+
+    #[Test]
+    public function it_refuses_a_security_key_at_the_passkey_sign_in_in_the_same_words(): void
+    {
+        $securityKey = SecurityKey::factory()->create();
+
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage(self::MESSAGE);
+
+        new VerifyPasskey()->getPasskey($this->credentialFor($securityKey->credential_id));
     }
 
     private function credentialFor(string $credentialId): PublicKeyCredential

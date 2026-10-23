@@ -32,8 +32,8 @@ number_format               string (20)                     separators used for 
 last_login_at               datetime                        when the user last signed in
 last_login_ip               string (45)                     address the last sign in came from, so a new one can be flagged
 two_factor_secret           text                            encrypted TOTP secret, null until the user enrols
-two_factor_confirmed_at     datetime                        when enrolment finished, null while two factor is not in use
-two_factor_recovery_codes   text                            encrypted list of single use recovery codes
+two_factor_confirmed_at     datetime                        when the authenticator app was confirmed, null while it is not in use
+two_factor_recovery_codes   text                            encrypted list of single use recovery codes, present while two factor is on
 last_saved_at               datetime                        when the user last saved their own profile, shown on that screen
 remember_token              string (100)                    remember token
 created_at                  datetime
@@ -50,10 +50,12 @@ No role, no permission, no invitation, no membership. Section 4.1 removes them, 
 - `belongsTo` [Account](001-account-in-progress.md)
 - `hasMany` [MagicLink](003-magic-link-in-progress.md), [Log](004-log-in-progress.md), [EmailSent](005-email-sent-in-progress.md), [Notification](042-notification-done.md)
 - `morphMany` [PersonalAccessToken](006-personal-access-token-in-progress.md)
+- `hasMany` SecurityKey: a WebAuthn credential that answers the second step of signing in (`security_keys`: `name`, `credential_id`, `credential`, `last_used_at`). It has no file of its own; spec 081 decides it.
 
 ## Rules
 
 - A user is soft deleted. A hard delete would orphan logs, which must survive the user they describe (see [Log](004-log-in-progress.md)).
+- Two factor authentication is on while the user holds a confirmed authenticator app or at least one security key, and the recovery codes exist exactly while it is on. A security key never signs anybody in on its own. A passkey answers the challenge but never turns it on.
 - `timezone` must be a valid IANA identifier. It defaults from the browser at sign up and is editable afterwards.
 - Changing `timezone`, `locale` or any format never rewrites stored data. It changes rendering only, and it never shifts an already computed reminder occurrence (3.1, 10.3).
 - The user is not the `Moi` contact. `Moi` is a contact in a vault ([Contact](019-contact-done.md)) and carries the fields, life events and relations. The user carries the credentials. Renaming one does not rename the other, and the specification does not ask it to.

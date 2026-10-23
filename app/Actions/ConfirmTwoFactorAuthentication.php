@@ -9,6 +9,7 @@ use App\Helpers\RecoveryCodes;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use PragmaRX\Google2FA\Google2FA;
 
 /**
@@ -17,6 +18,8 @@ use PragmaRX\Google2FA\Google2FA;
 class ConfirmTwoFactorAuthentication
 {
     private string $code;
+
+    private bool $turnsTwoFactorOn = false;
 
     public function __construct(
         private readonly User $user,
@@ -31,7 +34,10 @@ class ConfirmTwoFactorAuthentication
             return false;
         }
 
-        $this->confirm();
+        DB::transaction(function (): void {
+            $this->confirm();
+        });
+
         $this->log();
 
         return true;
@@ -48,8 +54,16 @@ class ConfirmTwoFactorAuthentication
 
     private function confirm(): void
     {
+        User::query()->whereKey($this->user->id)->lockForUpdate()->first();
+        $this->user->refresh();
+
+        $this->turnsTwoFactorOn = ! $this->user->usesTwoFactorAuthentication();
+
+        if ($this->turnsTwoFactorOn) {
+            $this->user->two_factor_recovery_codes = RecoveryCodes::generate();
+        }
+
         $this->user->two_factor_confirmed_at = now();
-        $this->user->two_factor_recovery_codes = RecoveryCodes::generate();
         $this->user->save();
     }
 
@@ -58,7 +72,7 @@ class ConfirmTwoFactorAuthentication
         LogUserAction::dispatch(
             account: $this->user->account,
             user: $this->user,
-            action: UserActionEnum::TwoFactorEnabled,
+            action: $this->turnsTwoFactorOn ? UserActionEnum::TwoFactorEnabled : UserActionEnum::AuthenticatorAppAdded,
         )->onQueue('low');
     }
 }

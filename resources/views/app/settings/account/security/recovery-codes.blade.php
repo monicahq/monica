@@ -7,7 +7,7 @@
   :back-href="route('settings.security.index')"
   :back-label="__('Back to security')"
 >
-  <x-page-header :title="__('Your recovery codes')" :description="__('Each one signs you in once, if you ever lose the phone. This is the only time they are shown, so put them somewhere safe now.')" />
+  <x-page-header :title="__('Your recovery codes')" :description="__('Each one signs you in once, if you ever lose your phone or your key. This is the only time they are shown, so put them somewhere safe now.')" />
 
   <section class="flex flex-col gap-3">
     <x-panel>

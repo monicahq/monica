@@ -27,6 +27,8 @@ enum UserActionEnum: string implements Translatable
     case TwoFactorEnabled = 'two_factor_enabled';
     case TwoFactorDisabled = 'two_factor_disabled';
     case TwoFactorRecoveryCodesRegenerated = 'two_factor_recovery_codes_regenerated';
+    case AuthenticatorAppAdded = 'authenticator_app_added';
+    case AuthenticatorAppRemoved = 'authenticator_app_removed';
     case UserLogin = 'user_logged_in';
     case MagicLinkCreation = 'magic_link_created';
     case ApiKeyCreation = 'api_key_created';
@@ -38,6 +40,10 @@ enum UserActionEnum: string implements Translatable
     case PasskeyLogin = 'passkey_logged_in';
     case PasswordConfirmed = 'password_confirmed';
     case PasskeyConfirmed = 'passkey_confirmed';
+    case SecurityKeyAdded = 'security_key_added';
+    case SecurityKeyRenamed = 'security_key_renamed';
+    case SecurityKeyRemoved = 'security_key_removed';
+    case SecurityKeyUsed = 'security_key_used';
     case PasswordConfirmationRefused = 'password_confirmation_refused';
     case UserPasswordRemoved = 'user_password_removed';
     case UserPasswordSet = 'user_password_set';
@@ -222,6 +228,8 @@ enum UserActionEnum: string implements Translatable
             self::TwoFactorEnabled => 'Turned two-factor authentication on',
             self::TwoFactorDisabled => 'Turned two-factor authentication off',
             self::TwoFactorRecoveryCodesRegenerated => 'Asked for new recovery codes',
+            self::AuthenticatorAppAdded => 'Added the authenticator app',
+            self::AuthenticatorAppRemoved => 'Removed the authenticator app',
             self::UserLogin => 'Signed in',
             self::MagicLinkCreation => 'Asked for a sign-in link',
             self::ApiKeyCreation => 'Created the API key called :name',
@@ -233,6 +241,10 @@ enum UserActionEnum: string implements Translatable
             self::PasskeyLogin => 'Signed in with the passkey called :name',
             self::PasswordConfirmed => 'Confirmed their password before a sensitive action',
             self::PasskeyConfirmed => 'Confirmed who they are with the passkey called :name',
+            self::SecurityKeyAdded => 'Added the security key called :name',
+            self::SecurityKeyRenamed => 'Renamed a security key to :name',
+            self::SecurityKeyRemoved => 'Removed the security key called :name',
+            self::SecurityKeyUsed => 'Confirmed a sign in with the security key called :name',
             self::PasswordConfirmationRefused => 'Gave the wrong password before a sensitive action',
             self::UserPasswordRemoved => 'Removed their password',
             self::UserPasswordSet => 'Set a password',

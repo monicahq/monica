@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\VerifyTwoFactorCode;
+use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -14,6 +15,25 @@ use Tests\TestCase;
 class VerifyTwoFactorCodeTest extends TestCase
 {
     use RefreshDatabase;
+
+    #[Test]
+    public function it_refuses_the_code_of_an_authenticator_app_nobody_finished_pairing(): void
+    {
+        $google2fa = new Google2FA;
+        $secret = $google2fa->generateSecretKey();
+        $user = User::factory()->create([
+            'two_factor_secret' => $secret,
+            'two_factor_confirmed_at' => null,
+        ]);
+        SecurityKey::factory()->for($user)->create();
+
+        $verified = new VerifyTwoFactorCode(
+            user: $user,
+            code: $google2fa->getCurrentOtp($secret),
+        )->execute();
+
+        $this->assertFalse($verified);
+    }
 
     #[Test]
     public function it_accepts_the_code_the_authenticator_app_is_showing(): void

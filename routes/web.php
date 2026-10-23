@@ -58,6 +58,8 @@ use App\Http\Controllers\App\Settings\Account\Security\PasskeyController;
 use App\Http\Controllers\App\Settings\Account\Security\PasswordController;
 use App\Http\Controllers\App\Settings\Account\Security\RecoveryCodeController;
 use App\Http\Controllers\App\Settings\Account\Security\SecurityController;
+use App\Http\Controllers\App\Settings\Account\Security\SecurityKeyController;
+use App\Http\Controllers\App\Settings\Account\Security\SecurityKeyOptionsController;
 use App\Http\Controllers\App\Settings\Account\Security\SsoController;
 use App\Http\Controllers\App\Settings\Account\Security\TwoFactorController;
 use App\Http\Controllers\App\Settings\Account\Templates\ChildFieldController;
@@ -128,6 +130,7 @@ use App\Http\Controllers\App\Vaults\VaultLifeEventController;
 use App\Http\Controllers\App\Vaults\VaultReminderController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
 use App\Http\Controllers\App\WelcomeController;
+use App\Http\Middleware\EnsurePasswordIsConfirmedWhenThereIsOne;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -580,8 +583,6 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         Route::post('settings/account/security/two-factor', [TwoFactorController::class, 'create'])->name('settings.twoFactor.create');
         Route::delete('settings/account/security/two-factor', [TwoFactorController::class, 'destroy'])->name('settings.twoFactor.destroy');
 
-        Route::post('settings/account/security/recovery-codes', [RecoveryCodeController::class, 'create'])->name('settings.recoveryCodes.create');
-
         Route::get('settings/account/security/sso/{provider}/redirect', [SsoController::class, 'redirect'])
             ->middleware(['sso', 'throttle:6,1'])
             ->whereIn('provider', SsoProviderEnum::values())
@@ -605,6 +606,14 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         Route::delete('settings/account/security/api-keys/{apiKey}', [ApiKeyController::class, 'destroy'])->whereNumber('apiKey')->name('settings.apiKeys.destroy');
 
         Route::delete('settings/account/security/assistants/{client}', [ConnectedAssistantController::class, 'destroy'])->whereUuid('client')->name('settings.connectedAssistants.destroy');
+    });
+
+    Route::middleware([EnsurePasswordIsConfirmedWhenThereIsOne::class])->group(function (): void {
+        Route::post('settings/account/security/recovery-codes', [RecoveryCodeController::class, 'create'])->name('settings.recoveryCodes.create');
+        Route::get('settings/account/security/security-keys/options', [SecurityKeyOptionsController::class, 'show'])->name('settings.securityKeyOptions.show');
+        Route::post('settings/account/security/security-keys', [SecurityKeyController::class, 'create'])->name('settings.securityKeys.create');
+        Route::put('settings/account/security/security-keys/{securityKey}', [SecurityKeyController::class, 'update'])->whereNumber('securityKey')->name('settings.securityKeys.update');
+        Route::delete('settings/account/security/security-keys/{securityKey}', [SecurityKeyController::class, 'destroy'])->whereNumber('securityKey')->name('settings.securityKeys.destroy');
     });
 
     Route::post('settings/account/profile/photo', [PhotoController::class, 'update'])->middleware('flag:file-upload')->name('settings.photo.update');

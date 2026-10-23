@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\EnableTwoFactorAuthentication;
+use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -69,5 +70,16 @@ class EnableTwoFactorAuthenticationTest extends TestCase
         $this->assertEquals('DWIGHTSCHRUTEBEETS', $user->two_factor_secret);
         $this->assertEquals('2026-10-01 09:00:00', $user->two_factor_confirmed_at->toDateTimeString());
         $this->assertEquals(['scranton-1', 'scranton-2'], $user->two_factor_recovery_codes);
+    }
+
+    #[Test]
+    public function it_keeps_the_recovery_codes_while_a_security_key_stands(): void
+    {
+        $user = User::factory()->create(['two_factor_recovery_codes' => ['scranton-1', 'scranton-2']]);
+        SecurityKey::factory()->for($user)->create();
+
+        new EnableTwoFactorAuthentication(user: $user)->execute();
+
+        $this->assertEquals(['scranton-1', 'scranton-2'], $user->refresh()->two_factor_recovery_codes);
     }
 }

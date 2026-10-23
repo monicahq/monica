@@ -13,6 +13,8 @@ enum EmailType: string
     case PasswordResetRequested = 'password_reset_requested';
     case PasskeyAdded = 'passkey_added';
     case PasskeyRemoved = 'passkey_removed';
+    case SecurityKeyAdded = 'security_key_added';
+    case SecurityKeyRemoved = 'security_key_removed';
     case PasswordRemoved = 'password_removed';
     case PasswordSet = 'password_set';
     case PasswordChanged = 'password_changed';

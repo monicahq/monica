@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Auth;
 
+use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -196,6 +197,32 @@ class LoginControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertJsonStructure(['token']);
+    }
+
+    #[Test]
+    public function it_asks_an_account_protected_by_a_security_key_alone_for_a_recovery_code(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create([
+            'email' => 'michael.scott@dundermifflin.com',
+            'two_factor_recovery_codes' => ['scranton-1'],
+        ]);
+        SecurityKey::factory()->for($user)->create();
+
+        $withoutCode = $this->json('POST', '/api/v1/login', [
+            'email' => 'michael.scott@dundermifflin.com',
+            'password' => 'password',
+        ]);
+        $withRecoveryCode = $this->json('POST', '/api/v1/login', [
+            'email' => 'michael.scott@dundermifflin.com',
+            'password' => 'password',
+            'code' => 'scranton-1',
+        ]);
+
+        $withoutCode->assertUnauthorized();
+        $withRecoveryCode->assertOk();
+        $this->assertDatabaseCount('personal_access_tokens', 1);
     }
 
     #[Test]

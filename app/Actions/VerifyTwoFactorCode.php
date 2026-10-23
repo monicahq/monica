@@ -38,6 +38,10 @@ class VerifyTwoFactorCode
             return false;
         }
 
+        if (! $this->user->usesAuthenticatorApp()) {
+            return false;
+        }
+
         return new Google2FA()->verifyKey($this->user->two_factor_secret, $this->code);
     }
 

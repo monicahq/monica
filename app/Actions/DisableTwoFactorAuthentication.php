@@ -7,10 +7,11 @@ namespace App\Actions;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 /**
- * Turn two factor authentication off, and forget everything it needed: the secret the
- * authenticator app shares with us, and the recovery codes.
+ * Turn the authenticator app off, and forget the secret it shares with us. The recovery codes
+ * go too, unless a security key still answers the second step.
  */
 class DisableTwoFactorAuthentication
 {
@@ -20,7 +21,10 @@ class DisableTwoFactorAuthentication
 
     public function execute(): User
     {
-        $this->disable();
+        DB::transaction(function (): void {
+            $this->disable();
+        });
+
         $this->log();
 
         return $this->user;
@@ -28,9 +32,16 @@ class DisableTwoFactorAuthentication
 
     private function disable(): void
     {
+        User::query()->whereKey($this->user->id)->lockForUpdate()->first();
+        $this->user->refresh();
+
         $this->user->two_factor_secret = null;
         $this->user->two_factor_confirmed_at = null;
-        $this->user->two_factor_recovery_codes = null;
+
+        if (! $this->user->securityKeys()->exists()) {
+            $this->user->two_factor_recovery_codes = null;
+        }
+
         $this->user->save();
     }
 
@@ -39,7 +50,7 @@ class DisableTwoFactorAuthentication
         LogUserAction::dispatch(
             account: $this->user->account,
             user: $this->user,
-            action: UserActionEnum::TwoFactorDisabled,
+            action: $this->user->usesTwoFactorAuthentication() ? UserActionEnum::AuthenticatorAppRemoved : UserActionEnum::TwoFactorDisabled,
         )->onQueue('low');
     }
 }

@@ -27,6 +27,15 @@ class UserActionEnumTest extends TestCase
     }
 
     #[Test]
+    public function it_names_the_security_key_a_security_key_action_was_about(): void
+    {
+        $this->assertEquals('Added the security key called :name', UserActionEnum::SecurityKeyAdded->description());
+        $this->assertEquals('Renamed a security key to :name', UserActionEnum::SecurityKeyRenamed->description());
+        $this->assertEquals('Removed the security key called :name', UserActionEnum::SecurityKeyRemoved->description());
+        $this->assertEquals('Confirmed a sign in with the security key called :name', UserActionEnum::SecurityKeyUsed->description());
+    }
+
+    #[Test]
     public function it_names_the_passkey_a_passkey_action_was_about(): void
     {
         $this->assertEquals('Added the passkey called :name', UserActionEnum::PasskeyAdded->description());

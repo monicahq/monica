@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Settings\Account\Security;
 
 use App\Enums\SsoProviderEnum;
+use App\Models\SecurityKey;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Security\SecurityViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,6 +16,62 @@ use Tests\TestCase;
 class SecurityViewModelTest extends TestCase
 {
     use RefreshDatabase;
+
+    #[Test]
+    public function it_warns_that_removing_the_last_second_factor_turns_two_factor_off(): void
+    {
+        $user = User::factory()->create();
+        SecurityKey::factory()->for($user)->create();
+
+        $viewModel = new SecurityViewModel(user: $user);
+
+        $this->assertEquals('Two-factor authentication turns off, and your recovery codes stop working.', $viewModel->securityKeyRemovalWarning());
+    }
+
+    #[Test]
+    public function it_warns_that_two_factor_stays_on_while_another_factor_remains(): void
+    {
+        $user = User::factory()->twoFactor()->create();
+        SecurityKey::factory()->for($user)->create();
+
+        $viewModel = new SecurityViewModel(user: $user);
+
+        $this->assertEquals('Two-factor authentication stays on with your other security keys or your authenticator app.', $viewModel->securityKeyRemovalWarning());
+        $this->assertEquals('Your security keys still answer the second step when you sign in.', $viewModel->authenticatorAppRemovalWarning());
+    }
+
+    #[Test]
+    public function it_lists_the_security_keys_with_when_they_were_last_used(): void
+    {
+        $user = User::factory()->create();
+        SecurityKey::factory()->for($user)->create(['name' => 'Dundie key']);
+        SecurityKey::factory()->create();
+
+        $keys = new SecurityViewModel(user: $user)->securityKeys();
+
+        $this->assertCount(1, $keys);
+        $this->assertEquals('Dundie key', $keys[0]['name']);
+        $this->assertNull($keys[0]['lastUsedAt']);
+    }
+
+    #[Test]
+    public function it_says_when_a_key_last_answered(): void
+    {
+        $user = User::factory()->create();
+        SecurityKey::factory()->for($user)->create(['last_used_at' => now()->subDays(2)]);
+
+        $keys = new SecurityViewModel(user: $user)->securityKeys();
+
+        $this->assertEquals('2 days ago', $keys[0]['lastUsedAt']);
+    }
+
+    #[Test]
+    public function it_warns_that_removing_the_app_alone_turns_two_factor_off(): void
+    {
+        $viewModel = new SecurityViewModel(user: User::factory()->twoFactor()->create());
+
+        $this->assertEquals('Two-factor authentication turns off, and your recovery codes stop working.', $viewModel->authenticatorAppRemovalWarning());
+    }
 
     #[Test]
     public function it_gives_the_person_who_is_signed_in(): void

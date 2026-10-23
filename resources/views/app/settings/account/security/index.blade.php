@@ -36,10 +36,16 @@
     <x-notice tone="quiet">{{ __('Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.') }}</x-notice>
 
     <x-panel :flush="true">
-      @if ($viewModel->usesTwoFactorAuthentication())
+      @if ($viewModel->usesAuthenticatorApp())
         @include('app.settings.account.security._two-factor-on', ['viewModel' => $viewModel])
       @else
         @include('app.settings.account.security._two-factor-off')
+      @endif
+
+      @include('app.settings.account.security._security-keys', ['viewModel' => $viewModel])
+
+      @if ($viewModel->usesTwoFactorAuthentication())
+        @include('app.settings.account.security._recovery-codes', ['viewModel' => $viewModel])
       @endif
     </x-panel>
   </x-page-section>

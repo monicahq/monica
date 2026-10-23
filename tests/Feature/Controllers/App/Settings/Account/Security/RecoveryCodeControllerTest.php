@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Security;
 
+use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -13,6 +14,23 @@ use Tests\TestCase;
 class RecoveryCodeControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    #[Test]
+    public function it_hands_out_new_codes_to_an_account_without_a_password_without_asking_for_one(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create([
+            'password' => null,
+            'two_factor_recovery_codes' => ['scranton-1'],
+        ]);
+        SecurityKey::factory()->for($user)->create();
+
+        $response = $this->actingAs($user)->post(route('settings.recoveryCodes.create'));
+
+        $response->assertRedirect(route('settings.recoveryCodes.show'));
+        $this->assertCount(8, $user->refresh()->two_factor_recovery_codes);
+    }
 
     #[Test]
     public function it_hands_out_a_new_set_of_recovery_codes(): void

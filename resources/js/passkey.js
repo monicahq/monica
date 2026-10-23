@@ -17,6 +17,10 @@ export default (config) => {
             if (this.supported) {
                 library = import('@laravel/passkeys').catch(() => null);
             }
+
+            if (this.supported && config.openOnLoad) {
+                this.secondFactor(true);
+            }
         },
 
         async passkeys() {
@@ -41,9 +45,9 @@ export default (config) => {
             try {
                 const passkeys = await this.passkeys();
 
-                await passkeys.register({ name: '_' });
+                const added = await passkeys.register({ name: '_', routes: config.routes });
 
-                window.location = config.redirectUrl;
+                window.location = added?.redirect ?? config.redirectUrl;
             } catch (error) {
                 this.announce(this.explain(error), true);
             } finally {
@@ -83,6 +87,31 @@ export default (config) => {
             }
         },
 
+        // The prompt opened as the screen loaded, before anybody pressed anything, is refused by browsers
+        // that only answer a press (Safari). That refusal looks exactly like a dismissed prompt, so it asks
+        // for the press instead of reporting a failure.
+        async secondFactor(openedOnLoad = false) {
+            this.busy = true;
+            this.announce(config.text.opening);
+
+            try {
+                const passkeys = await this.passkeys();
+                const { redirect } = await passkeys.verify({ routes: config.routes });
+
+                window.location = redirect ?? config.redirectUrl;
+            } catch (error) {
+                if (openedOnLoad && error?.name === 'UserCancelledError') {
+                    this.announce(config.text.waiting);
+
+                    return;
+                }
+
+                this.announce(this.explain(error), true);
+            } finally {
+                this.busy = false;
+            }
+        },
+
         explain(error) {
             if (error?.name === 'UserCancelledError') {
                 return config.text.cancelled;
@@ -93,6 +122,16 @@ export default (config) => {
             }
 
             if (error?.name === 'InvalidDomainError' || error?.name === 'NotSupportedError') {
+                return config.text.failed;
+            }
+
+            // The client turns an answer that is not JSON, a throttled request or an error page, into an
+            // English sentence naming the status. That sentence is never the reader's.
+            if (/status 429/.test(error?.message ?? '')) {
+                return config.text.tooMany ?? config.text.failed;
+            }
+
+            if (/^Request failed with status/.test(error?.message ?? '')) {
                 return config.text.failed;
             }
 

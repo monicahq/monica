@@ -370,8 +370,9 @@ alone.
 - **FR-018**: Adding a passkey MUST NOT remove or weaken any existing way to sign in. Password,
   magic link and identity provider sign in all keep working exactly as they do today.
 - **FR-019**: A passkey MUST be a way to sign in on its own, standing in place of the email address
-  and the password rather than following them. The system MUST NOT offer a passkey as a second
-  factor, and MUST NOT add it to the two factor challenge screen.
+  and the password rather than following them. Amended by spec 081: a passkey MAY also answer the
+  two factor challenge, beside the security keys that spec adds, but it never turns two factor
+  authentication on.
 - **FR-020**: A passkey sign in MUST NOT ask for a two factor code, including from a user who has
   two factor authentication enabled. A passkey is held by a device and released only once its owner
   has proved themselves to that device, so the assertion already carries both factors, and a code
@@ -379,7 +380,8 @@ alone.
 - **FR-021**: The system MUST say that signing in with a passkey does not ask for the two factor
   code, and MUST say it both where passkeys are presented and where the two factor setting is.
   Somebody who turned two factor authentication on has to be able to see that a passkey does not go
-  through it.
+  through it. Since spec 081, a security key does go through it: it answers the challenge and never
+  signs in on its own.
 - **FR-022**: The magic link MUST keep asking for the two factor code exactly as it does today. The
   exemption in FR-020 belongs to passkeys alone, because a link is a single emailed secret with
   nothing proving who opened it, and MUST NOT be read as a general rule that skipping the password
@@ -562,8 +564,9 @@ alone.
   choice, so the product explains it instead of trying to work around it.
 - Using a passkey to confirm a sensitive action already inside the application, such as changing an
   email address or deleting an account, is out of scope for this version.
-- A passkey is a way to sign in in its own right, not a second factor. It stands where the email
-  address and the password stand, and nothing is added to the two factor challenge screen.
+- A passkey is a way to sign in in its own right. It stands where the email address and the
+  password stand. Spec 081 lets it answer the two factor challenge too, which adds nothing a passkey
+  sign in does not already prove.
 - A passkey sign in does not ask for the two factor code. A passkey is released by the device only
   once its owner has proved themselves to it, so the assertion already carries both factors. This is
   a deliberate exception to the rule the magic link follows, where skipping the password does not

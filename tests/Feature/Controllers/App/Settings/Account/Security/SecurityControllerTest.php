@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Settings\Account\Security;
 
 use App\Models\Passkey;
+use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
@@ -154,6 +155,34 @@ class SecurityControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.security.index'));
 
         $response->assertSee('asksForConfirmation: false', escape: false);
+    }
+
+    #[Test]
+    public function it_lists_the_security_keys_and_offers_to_add_one(): void
+    {
+        URL::forceScheme('https');
+        $user = User::factory()->create();
+        SecurityKey::factory()->for($user)->create(['name' => 'Dundie key']);
+
+        $response = $this->actingAs($user)->get(route('settings.security.index'));
+
+        $response->assertOk();
+        $response->assertSee('Dundie key');
+        $response->assertSee('Add a security key');
+        $response->assertSee('Two-factor authentication turns off, and your recovery codes stop working.');
+        $response->assertSee('Recovery codes');
+    }
+
+    #[Test]
+    public function it_offers_no_way_to_add_a_security_key_over_an_insecure_connection(): void
+    {
+        URL::forceScheme('http');
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('settings.security.index'));
+
+        $response->assertSee('Security keys need a secure connection');
+        $response->assertDontSee('Add a security key');
     }
 
     #[Test]

@@ -40,6 +40,8 @@ class TwoFactorController extends Controller
             'code' => ['required', 'string', 'max:255'],
         ]);
 
+        $turnsTwoFactorOn = ! $request->user()->usesTwoFactorAuthentication();
+
         $confirmed = new ConfirmTwoFactorAuthentication(
             user: $request->user(),
             code: $validated['code'],
@@ -47,6 +49,12 @@ class TwoFactorController extends Controller
 
         if (! $confirmed) {
             return back()->withErrors(['code' => __('That code is not right. Check your authenticator app is showing the current one.')]);
+        }
+
+        if (! $turnsTwoFactorOn) {
+            return redirect()->route('settings.security.index')
+                ->with('status', __('Two-factor authentication is on.'))
+                ->with('status_description', __('We will ask for a code the next time you sign in.'));
         }
 
         return redirect()->route('settings.recoveryCodes.show')
@@ -60,6 +68,12 @@ class TwoFactorController extends Controller
         new DisableTwoFactorAuthentication(
             user: $request->user(),
         )->execute();
+
+        if ($request->user()->usesTwoFactorAuthentication()) {
+            return redirect()->route('settings.security.index')
+                ->with('status', __('The authenticator app is removed.'))
+                ->with('status_description', __('Your security keys still answer the second step when you sign in.'));
+        }
 
         return redirect()->route('settings.security.index')
             ->with('status', __('Two-factor authentication is off.'))

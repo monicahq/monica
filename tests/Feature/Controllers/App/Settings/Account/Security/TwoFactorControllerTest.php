@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Security;
 
+use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -42,7 +43,7 @@ class TwoFactorControllerTest extends TestCase
         $user->refresh();
 
         $this->assertEquals('DWIGHTSCHRUTEBEETS', $user->two_factor_secret);
-        $this->assertTrue($user->usesTwoFactorAuthentication());
+        $this->assertTrue($user->usesAuthenticatorApp());
     }
 
     #[Test]
@@ -160,5 +161,39 @@ class TwoFactorControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee($user->refresh()->two_factor_recovery_codes[0], escape: false)
             ->assertSee('This is the only time they are shown', escape: false);
+    }
+
+    #[Test]
+    public function it_keeps_the_codes_out_of_sight_when_the_app_joins_a_security_key(): void
+    {
+        Queue::fake();
+
+        $google2fa = new Google2FA;
+        $secret = $google2fa->generateSecretKey();
+        $user = User::factory()->create([
+            'two_factor_secret' => $secret,
+            'two_factor_recovery_codes' => ['scranton-1'],
+        ]);
+        SecurityKey::factory()->for($user)->create();
+
+        $response = $this->withConfirmedPassword()->actingAs($user)
+            ->post(route('settings.twoFactor.create'), ['code' => $google2fa->getCurrentOtp($secret)]);
+
+        $response->assertRedirect(route('settings.security.index'));
+        $response->assertSessionMissing('recoveryCodes');
+    }
+
+    #[Test]
+    public function it_says_the_security_keys_still_answer_once_the_app_is_turned_off(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->twoFactor()->create();
+        SecurityKey::factory()->for($user)->create();
+
+        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.twoFactor.destroy'));
+
+        $response->assertSessionHas('status', 'The authenticator app is removed.');
+        $this->assertTrue($user->refresh()->usesTwoFactorAuthentication());
     }
 }

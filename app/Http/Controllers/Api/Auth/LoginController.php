@@ -70,7 +70,7 @@ class LoginController extends Controller
 
     private function passesSecondFactor(User $user, ?string $code): bool
     {
-        if ($user->two_factor_confirmed_at === null) {
+        if (! $user->usesTwoFactorAuthentication()) {
             return true;
         }
 

@@ -11,6 +11,7 @@ use App\Helpers\FlagState;
 use App\Helpers\PasskeyAvailability;
 use App\Helpers\PasswordRequirements;
 use App\Helpers\SsoProviderAvailability;
+use App\Models\SecurityKey;
 use App\Models\User;
 use App\ViewModels\Auth\ConfirmPasswordViewModel;
 use Illuminate\Database\Eloquent\Builder;
@@ -41,6 +42,50 @@ class SecurityViewModel
     public function twoFactorConfirmedAt(): ?string
     {
         return $this->user->two_factor_confirmed_at?->diffForHumans();
+    }
+
+    public function usesAuthenticatorApp(): bool
+    {
+        return $this->user->usesAuthenticatorApp();
+    }
+
+    /** @return list<array{id: int, name: string, addedAt: string, lastUsedAt: string|null}> */
+    public function securityKeys(): array
+    {
+        return $this->user->securityKeys()
+            ->get()
+            ->map(fn (SecurityKey $securityKey): array => [
+                'id' => $securityKey->id,
+                'name' => $securityKey->name,
+                'addedAt' => $securityKey->created_at?->diffForHumans() ?? '',
+                'lastUsedAt' => $securityKey->last_used_at?->diffForHumans(),
+            ])
+            ->values()
+            ->all();
+    }
+
+    public function securityKeyRemovalWarning(): string
+    {
+        $factors = $this->user->securityKeys()->count();
+
+        if ($this->usesAuthenticatorApp()) {
+            $factors++;
+        }
+
+        if ($factors > 1) {
+            return __('Two-factor authentication stays on with your other security keys or your authenticator app.');
+        }
+
+        return __('Two-factor authentication turns off, and your recovery codes stop working.');
+    }
+
+    public function authenticatorAppRemovalWarning(): string
+    {
+        if ($this->user->securityKeys()->exists()) {
+            return __('Your security keys still answer the second step when you sign in.');
+        }
+
+        return __('Two-factor authentication turns off, and your recovery codes stop working.');
     }
 
     public function recoveryCodesRemaining(): int

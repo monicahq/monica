@@ -12,6 +12,7 @@ use App\Models\Contact;
 use App\Models\Field;
 use App\Models\MarketplaceListingVersion;
 use App\Models\Passkey;
+use App\Models\SecurityKey;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
@@ -71,6 +72,7 @@ class RouteProtectionTest extends TestCase
         MarketplaceListingVersion::class,
         Passkey::class,
         PackagePasskey::class,
+        SecurityKey::class,
         StructureVersion::class,
         StructureVersionPage::class,
         StructureVersionSection::class,

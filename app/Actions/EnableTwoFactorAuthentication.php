@@ -29,7 +29,7 @@ class EnableTwoFactorAuthentication
     /** @return array{secret: string, qrCode: string}|null */
     public function execute(): ?array
     {
-        if ($this->user->usesTwoFactorAuthentication()) {
+        if ($this->user->usesAuthenticatorApp()) {
             return null;
         }
 
@@ -46,7 +46,11 @@ class EnableTwoFactorAuthentication
         $this->secret = new Google2FA()->generateSecretKey();
 
         $this->user->two_factor_secret = $this->secret;
-        $this->user->two_factor_recovery_codes = null;
+
+        if (! $this->user->securityKeys()->exists()) {
+            $this->user->two_factor_recovery_codes = null;
+        }
+
         $this->user->save();
     }
 

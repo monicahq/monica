@@ -8,6 +8,7 @@ use App\Actions\DisableTwoFactorAuthentication;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
+use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -44,5 +45,23 @@ class DisableTwoFactorAuthenticationTest extends TestCase
                 && $job->account->id === $account->id
                 && $job->user->id === $user->id,
         );
+    }
+
+    #[Test]
+    public function it_keeps_two_factor_authentication_on_while_a_security_key_remains(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->twoFactor()->create();
+        SecurityKey::factory()->for($user)->create();
+
+        new DisableTwoFactorAuthentication(user: $user)->execute();
+
+        $user->refresh();
+
+        $this->assertFalse($user->usesAuthenticatorApp());
+        $this->assertTrue($user->usesTwoFactorAuthentication());
+        $this->assertEquals(['scranton-1', 'scranton-2'], $user->two_factor_recovery_codes);
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::AuthenticatorAppRemoved);
     }
 }
