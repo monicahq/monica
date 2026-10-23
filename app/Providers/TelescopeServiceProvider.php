@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\User;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
@@ -23,14 +24,25 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         $isLocal = $this->app->environment('local');
 
-        Telescope::filter(function (IncomingEntry $entry) use ($isLocal) {
-            return $isLocal ||
-                   $entry->isReportableException() ||
-                   $entry->isFailedRequest() ||
-                   $entry->isFailedJob() ||
-                   $entry->isScheduledTask() ||
-                   $entry->hasMonitoredTag();
-        });
+        Telescope::filter(fn (IncomingEntry $entry): bool =>
+            $isLocal ||
+            $entry->isReportableException() ||
+            $entry->isFailedRequest() ||
+            $entry->isFailedJob() ||
+            $entry->isScheduledTask() ||
+            $entry->hasMonitoredTag()
+        );
+
+        Telescope::filterBatch(fn (Collection $entries): bool =>
+            $entries->contains(fn (IncomingEntry $entry): bool =>
+                $isLocal ||
+                $entry->isReportableException() ||
+                $entry->isFailedJob() ||
+                $entry->isScheduledTask() ||
+                $entry->isSlowQuery() ||
+                $entry->hasMonitoredTag()
+            )
+        );
     }
 
     /**
@@ -58,8 +70,6 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      */
     protected function gate(): void
     {
-        Gate::define('viewTelescope', function (User $user) {
-            return $user->isAdministrator();
-        });
+        Gate::define('viewTelescope', fn (User $user): bool => $user->isAdministrator());
     }
 }

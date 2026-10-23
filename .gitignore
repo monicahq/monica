@@ -29,6 +29,7 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 app/Scratch.php
+.claude/settings.local.json
 
 # Boost writes rules here; this project keeps them in .claude/rules
 .ai/
