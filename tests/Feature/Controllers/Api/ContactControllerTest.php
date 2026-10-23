@@ -55,7 +55,7 @@ class ContactControllerTest extends TestCase
                 'created_at',
                 'updated_at',
             ],
-            'links' => ['self'],
+            'links' => ['self', 'web'],
         ],
     ];
 
@@ -668,7 +668,8 @@ class ContactControllerTest extends TestCase
             ->assertOk()
             ->assertJsonPath('data.id', $contact->uuid)
             ->assertJsonPath('data.attributes.slug', 'jim-halpert')
-            ->assertJsonPath('data.links.self', route('api.v1.contacts.show', [$vault, $contact]));
+            ->assertJsonPath('data.links.self', route('api.v1.contacts.show', [$vault, $contact]))
+            ->assertJsonPath('data.links.web', route('contacts.show', [$vault, $contact]));
     }
 
     #[Test]

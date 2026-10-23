@@ -6,6 +6,9 @@ use App\ViewModels\Docs\ApiDocsFields;
 use App\ViewModels\Docs\ApiDocsViewModel;
 
 $base = ApiDocsViewModel::baseUrl();
+$application = rtrim((string) config('app.url'), '/');
+
+$webLink = 'The page of the contact in the application, which opens for somebody signed in rather than for a key. It is the link to give a person.';
 
 $vaultId = '9d4f1c2e-7b3a-4f88-9a2d-6c1e5b0f7a31';
 $contactId = 'c4a1f7b2-8e36-4d59-b0a7-2f5c9d81e364';
@@ -88,6 +91,7 @@ $contact = [
     ],
     'links' => [
         'self' => $base.'/vaults/'.$vaultSlug.'/contacts/pam-beesly',
+        'web' => $application.'/vaults/'.$vaultSlug.'/contacts/pam-beesly',
     ],
 ];
 
@@ -124,6 +128,7 @@ $otherContact = [
     ],
     'links' => [
         'self' => $base.'/vaults/'.$vaultSlug.'/contacts/dwight-kurt-schrute',
+        'web' => $application.'/vaults/'.$vaultSlug.'/contacts/dwight-kurt-schrute',
     ],
 ];
 
@@ -324,7 +329,7 @@ return [
         [
             'id' => 'contacts-index',
             'returnFields' => [
-                ...ApiDocsFields::page('contact', 'contact', 'contacts', $contactAttributes),
+                ...ApiDocsFields::page('contact', 'contact', 'contacts', $contactAttributes, webLink: $webLink),
                 ['name' => 'data[].columns', 'type' => 'array', 'description' => 'What the people screen of this vault shows beside the name, in its order. Hidden columns, and columns no template supplies any more, are left out.'],
                 ['name' => 'data[].columns[]', 'type' => 'object', 'description' => 'One column.'],
                 ['name' => 'data[].columns[].source', 'type' => 'string', 'description' => 'What the column shows, one of the sources the column endpoints below list.'],
@@ -363,7 +368,7 @@ return [
         ],
         [
             'id' => 'contacts-show',
-            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes),
+            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes, webLink: $webLink),
             'title' => 'Get a contact',
             'label' => 'Get a contact',
             'method' => 'GET',
@@ -401,7 +406,7 @@ return [
         ],
         [
             'id' => 'contacts-me',
-            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes),
+            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes, webLink: $webLink),
             'title' => 'Get the Me contact',
             'label' => 'Get the Me contact',
             'method' => 'GET',
@@ -419,7 +424,7 @@ return [
         ],
         [
             'id' => 'contacts-create',
-            'returnFields' => ApiDocsFields::one('contact', 'contact', $freshContactAttributes),
+            'returnFields' => ApiDocsFields::one('contact', 'contact', $freshContactAttributes, webLink: $webLink),
             'title' => 'Create a contact',
             'label' => 'Create a contact',
             'method' => 'POST',
@@ -439,7 +444,7 @@ return [
         ],
         [
             'id' => 'contacts-name-update',
-            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes),
+            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes, webLink: $webLink),
             'title' => 'Change a name',
             'label' => 'Change a name',
             'method' => 'PUT',
@@ -481,7 +486,7 @@ return [
         ],
         [
             'id' => 'contacts-name-representations-update',
-            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes),
+            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes, webLink: $webLink),
             'title' => 'Replace the ways a name is written',
             'label' => 'Replace the ways a name is written',
             'method' => 'PUT',
@@ -524,7 +529,7 @@ return [
         ],
         [
             'id' => 'contacts-favourite-update',
-            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes),
+            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes, webLink: $webLink),
             'title' => 'Mark a favourite',
             'label' => 'Mark a favourite',
             'method' => 'PUT',
@@ -544,7 +549,7 @@ return [
         ],
         [
             'id' => 'contacts-avatar-update',
-            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes),
+            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes, webLink: $webLink),
             'title' => 'Put a picture on a contact',
             'label' => 'Put a picture on a contact',
             'method' => 'POST',
@@ -567,7 +572,7 @@ return [
         ],
         [
             'id' => 'contacts-avatar-destroy',
-            'returnFields' => ApiDocsFields::one('contact', 'contact', $freshContactAttributes),
+            'returnFields' => ApiDocsFields::one('contact', 'contact', $freshContactAttributes, webLink: $webLink),
             'title' => 'Remove a picture',
             'label' => 'Remove a picture',
             'method' => 'DELETE',
@@ -586,7 +591,7 @@ return [
         ],
         [
             'id' => 'contacts-template-version-update',
-            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes),
+            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes, webLink: $webLink),
             'title' => 'Move to another version',
             'label' => 'Move to another version',
             'method' => 'PUT',

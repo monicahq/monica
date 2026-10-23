@@ -49,6 +49,7 @@ class ContactResource extends JsonResource
             ],
             'links' => [
                 'self' => route('api.v1.contacts.show', [$this->vault, $this->resource]),
+                'web' => route('contacts.show', [$this->vault, $this->resource]),
             ],
         ];
     }

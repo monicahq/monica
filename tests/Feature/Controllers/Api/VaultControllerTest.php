@@ -39,7 +39,7 @@ class VaultControllerTest extends TestCase
                 'created_at',
                 'updated_at',
             ],
-            'links' => ['self'],
+            'links' => ['self', 'web'],
         ],
     ];
 
@@ -172,6 +172,7 @@ class VaultControllerTest extends TestCase
         $response->assertJsonPath('data.attributes.contact_count', 12);
         $response->assertJsonPath('data.attributes.created_at', $vault->created_at->timestamp);
         $response->assertJsonPath('data.links.self', route('api.v1.vaults.show', $vault));
+        $response->assertJsonPath('data.links.web', route('vaults.show', $vault));
     }
 
     #[Test]

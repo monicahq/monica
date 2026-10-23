@@ -6,6 +6,9 @@ use App\ViewModels\Docs\ApiDocsFields;
 use App\ViewModels\Docs\ApiDocsViewModel;
 
 $base = ApiDocsViewModel::baseUrl();
+$application = rtrim((string) config('app.url'), '/');
+
+$webLink = 'The page of the vault in the application, which opens for somebody signed in rather than for a key. It is the link to give a person.';
 
 $vault = [
     'type' => 'vault',
@@ -23,6 +26,7 @@ $vault = [
     ],
     'links' => [
         'self' => $base.'/vaults/dunder-mifflin',
+        'web' => $application.'/vaults/dunder-mifflin',
     ],
 ];
 
@@ -42,6 +46,7 @@ $otherVault = [
     ],
     'links' => [
         'self' => $base.'/vaults/schrute-farms',
+        'web' => $application.'/vaults/schrute-farms',
     ],
 ];
 
@@ -91,7 +96,7 @@ return [
     'sections' => [
         [
             'id' => 'vaults-index',
-            'returnFields' => ApiDocsFields::page('vault', 'vault', 'vaults', $vaultAttributes),
+            'returnFields' => ApiDocsFields::page('vault', 'vault', 'vaults', $vaultAttributes, webLink: $webLink),
             'title' => 'List vaults',
             'label' => 'List vaults',
             'method' => 'GET',
@@ -115,7 +120,7 @@ return [
         ],
         [
             'id' => 'vaults-show',
-            'returnFields' => ApiDocsFields::one('vault', 'vault', $vaultAttributes),
+            'returnFields' => ApiDocsFields::one('vault', 'vault', $vaultAttributes, webLink: $webLink),
             'title' => 'Get a vault',
             'label' => 'Get a vault',
             'method' => 'GET',
@@ -133,7 +138,7 @@ return [
         ],
         [
             'id' => 'vaults-create',
-            'returnFields' => ApiDocsFields::one('vault', 'vault', $vaultAttributes),
+            'returnFields' => ApiDocsFields::one('vault', 'vault', $vaultAttributes, webLink: $webLink),
             'title' => 'Create a vault',
             'label' => 'Create a vault',
             'method' => 'POST',
@@ -185,7 +190,7 @@ return [
         ],
         [
             'id' => 'vaults-update',
-            'returnFields' => ApiDocsFields::one('vault', 'vault', $vaultAttributes),
+            'returnFields' => ApiDocsFields::one('vault', 'vault', $vaultAttributes, webLink: $webLink),
             'title' => 'Update a vault',
             'label' => 'Update a vault',
             'method' => 'PUT',

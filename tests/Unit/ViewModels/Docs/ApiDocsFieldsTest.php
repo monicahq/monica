@@ -34,6 +34,17 @@ class ApiDocsFieldsTest extends TestCase
     }
 
     #[Test]
+    public function it_describes_the_page_a_record_opens_in_the_application_when_it_has_one(): void
+    {
+        $fields = ApiDocsFields::one('vault', 'vault', $this->attributes, webLink: 'The page of the vault.');
+
+        $web = collect($fields)->firstWhere('name', 'data.links.web');
+
+        $this->assertSame('The page of the vault.', $web['description']);
+        $this->assertSame('data.links.web', array_column($fields, 'name')[array_key_last($fields)]);
+    }
+
+    #[Test]
     public function it_leaves_the_links_off_a_record_that_is_only_read_inside_another(): void
     {
         $fields = ApiDocsFields::nested('field', 'field', $this->attributes);

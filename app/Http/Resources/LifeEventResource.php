@@ -88,7 +88,20 @@ class LifeEventResource extends JsonResource
             ],
             'links' => [
                 'self' => route('api.v1.lifeEvents.show', [$this->vault, $this->resource]),
+                'web' => $this->webLocation(),
             ],
         ];
+    }
+
+    /** A life event has no page of its own: it is read on the timeline of the contact it is recorded for. */
+    private function webLocation(): ?string
+    {
+        $subject = $this->participants->first()?->participant;
+
+        if (! $subject instanceof Contact) {
+            return null;
+        }
+
+        return route('contacts.show', [$this->vault, $subject]);
     }
 }

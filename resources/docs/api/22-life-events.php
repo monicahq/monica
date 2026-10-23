@@ -6,6 +6,9 @@ use App\ViewModels\Docs\ApiDocsFields;
 use App\ViewModels\Docs\ApiDocsViewModel;
 
 $base = ApiDocsViewModel::baseUrl();
+$application = rtrim((string) config('app.url'), '/');
+
+$webLink = 'The page of the contact the life event is recorded for, whose timeline shows it, in the application. It is the link to give a person.';
 
 $vaultSlug = 'dunder-mifflin';
 $lifeEventId = '7c1e5a92-4b3d-4f80-a6e2-93d0b1c4f857';
@@ -35,6 +38,7 @@ $lifeEvent = [
     ],
     'links' => [
         'self' => $base.'/vaults/'.$vaultSlug.'/life-events/'.$lifeEventId,
+        'web' => $application.'/vaults/'.$vaultSlug.'/contacts/pam-beesly',
     ],
 ];
 
@@ -98,7 +102,7 @@ return [
     'sections' => [
         [
             'id' => 'life-events-index',
-            'returnFields' => ApiDocsFields::page('life_event', 'life event', 'life events', $lifeEventAttributes),
+            'returnFields' => ApiDocsFields::page('life_event', 'life event', 'life events', $lifeEventAttributes, webLink: $webLink),
             'title' => 'List the life events of a vault',
             'label' => 'List life events',
             'method' => 'GET',
@@ -124,7 +128,7 @@ return [
         ],
         [
             'id' => 'life-events-show',
-            'returnFields' => ApiDocsFields::one('life_event', 'life event', $lifeEventAttributes),
+            'returnFields' => ApiDocsFields::one('life_event', 'life event', $lifeEventAttributes, webLink: $webLink),
             'title' => 'Get a life event',
             'label' => 'Get a life event',
             'method' => 'GET',
@@ -141,7 +145,7 @@ return [
         ],
         [
             'id' => 'life-events-create',
-            'returnFields' => ApiDocsFields::one('life_event', 'life event', $lifeEventAttributes),
+            'returnFields' => ApiDocsFields::one('life_event', 'life event', $lifeEventAttributes, webLink: $webLink),
             'title' => 'Record a life event',
             'label' => 'Record a life event',
             'method' => 'POST',
@@ -161,7 +165,7 @@ return [
         ],
         [
             'id' => 'life-events-update',
-            'returnFields' => ApiDocsFields::one('life_event', 'life event', $lifeEventAttributes),
+            'returnFields' => ApiDocsFields::one('life_event', 'life event', $lifeEventAttributes, webLink: $webLink),
             'title' => 'Change a life event',
             'label' => 'Change a life event',
             'method' => 'PUT',
@@ -194,7 +198,7 @@ return [
         ],
         [
             'id' => 'life-events-restoration-update',
-            'returnFields' => ApiDocsFields::one('life_event', 'life event', $lifeEventAttributes),
+            'returnFields' => ApiDocsFields::one('life_event', 'life event', $lifeEventAttributes, webLink: $webLink),
             'title' => 'Restore a life event',
             'label' => 'Restore a life event',
             'method' => 'PUT',

@@ -32,6 +32,7 @@ class VaultResource extends JsonResource
             ],
             'links' => [
                 'self' => route('api.v1.vaults.show', $this->resource),
+                'web' => route('vaults.show', $this->resource),
             ],
         ];
     }

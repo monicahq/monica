@@ -46,7 +46,7 @@ class LifeEventControllerTest extends TestCase
             'created_at',
             'updated_at',
         ],
-        'links' => ['self'],
+        'links' => ['self', 'web'],
     ];
 
     #[Test]
@@ -115,6 +115,7 @@ class LifeEventControllerTest extends TestCase
         $response->assertJsonPath('data.attributes.participants.1.name', $pam->name);
         $response->assertJsonPath('data.attributes.fields.0.label', 'Boat');
         $response->assertJsonPath('data.attributes.fields.0.value', 'Lake Wallenpaupack');
+        $response->assertJsonPath('data.links.web', route('contacts.show', [$vault, $jim]));
     }
 
     #[Test]

@@ -107,6 +107,10 @@ Every capability here is confined to the account the presented key belongs to. A
 outside it does not exist as far as this server is concerned, and asking for one answers not found
 rather than forbidden. Reach a vault by its address, which every listing gives you.
 
+A vault, a contact and a life event each carry two links. links.web opens the page in Erica for the
+person you are working for, and is the one to show them. links.self is the JSON API address, which
+answers only to an API key and refuses a browser, so never hand it to the person.
+
 Nothing here invents a rule of its own: each capability answers exactly as the equivalent JSON API
 endpoint would, and a change made here is recorded in the account's changelog as having arrived from
 an assistant.

@@ -10,13 +10,14 @@ class ApiDocsFields
      * @param  string  $type  The constant the record's `type` always holds.
      * @param  string  $singular  What one of these is called, in a sentence.
      * @param  list<array{name: string, type: string, description: string, opaque?: bool}>  $attributes
+     * @param  string|null  $webLink  What links.web opens, for a record that has a page in the application.
      * @return list<array{name: string, type: string, description: string, opaque?: bool}>
      */
-    public static function one(string $type, string $singular, array $attributes, bool $withLinks = true): array
+    public static function one(string $type, string $singular, array $attributes, bool $withLinks = true, ?string $webLink = null): array
     {
         return [
             ['name' => 'data', 'type' => 'object', 'description' => "The {$singular}."],
-            ...self::record($type, 'data', $attributes, $withLinks),
+            ...self::record($type, 'data', $attributes, $withLinks, $webLink),
         ];
     }
 
@@ -25,14 +26,15 @@ class ApiDocsFields
      * @param  string  $singular  What one of these is called, in a sentence.
      * @param  string  $plural  What several of them are called, in a sentence.
      * @param  list<array{name: string, type: string, description: string, opaque?: bool}>  $attributes
+     * @param  string|null  $webLink  What links.web opens, for a record that has a page in the application.
      * @return list<array{name: string, type: string, description: string, opaque?: bool}>
      */
-    public static function page(string $type, string $singular, string $plural, array $attributes, bool $withLinks = true): array
+    public static function page(string $type, string $singular, string $plural, array $attributes, bool $withLinks = true, ?string $webLink = null): array
     {
         return [
             ['name' => 'data', 'type' => 'array', 'description' => "The {$plural} on this page. An empty list rather than an error when there are none."],
             ['name' => 'data[]', 'type' => 'object', 'description' => "One {$singular}."],
-            ...self::record($type, 'data[]', $attributes, $withLinks),
+            ...self::record($type, 'data[]', $attributes, $withLinks, $webLink),
             ['name' => 'meta', 'type' => 'object', 'description' => 'Where you are in the collection.'],
             ['name' => 'meta.page', 'type' => 'integer', 'description' => 'The page this is, counting from 1.'],
             ['name' => 'meta.per_page', 'type' => 'integer', 'description' => 'How many one page holds, which is the size that was asked for once it has been brought into the allowed range.'],
@@ -81,7 +83,7 @@ class ApiDocsFields
      * @param  list<array{name: string, type: string, description: string, opaque?: bool}>  $attributes
      * @return list<array{name: string, type: string, description: string, opaque?: bool}>
      */
-    private static function record(string $type, string $prefix, array $attributes, bool $withLinks = true): array
+    private static function record(string $type, string $prefix, array $attributes, bool $withLinks = true, ?string $webLink = null): array
     {
         $rows = [
             ['name' => "{$prefix}.type", 'type' => 'string', 'description' => "Always {$type}. It names the kind of record, so a caller holding several kinds can tell them apart without looking at where they came from."],
@@ -96,6 +98,10 @@ class ApiDocsFields
         if ($withLinks) {
             $rows[] = ['name' => "{$prefix}.links", 'type' => 'object', 'description' => 'Where to find this record.'];
             $rows[] = ['name' => "{$prefix}.links.self", 'type' => 'string', 'description' => 'The absolute address this record is read from.'];
+        }
+
+        if ($withLinks && $webLink !== null) {
+            $rows[] = ['name' => "{$prefix}.links.web", 'type' => 'string', 'description' => $webLink];
         }
 
         return $rows;
