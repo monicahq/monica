@@ -34,6 +34,32 @@ class PasskeyTest extends TestCase
     }
 
     #[Test]
+    public function it_reads_as_the_name_it_was_given(): void
+    {
+        $passkey = Passkey::factory()->make(['name' => 'Dwight’s YubiKey']);
+
+        $this->assertEquals('Dwight’s YubiKey', $passkey->displayName());
+    }
+
+    #[Test]
+    public function it_reads_an_unnamed_passkey_as_its_authenticator(): void
+    {
+        $passkey = Passkey::factory()->make(['name' => '_']);
+        $passkey->credential = ['aaguid' => 'ea9b8d66-4d01-1d21-3ce4-b6b48cb575d4'] + $passkey->credential;
+
+        $this->assertEquals('Google Password Manager', $passkey->displayName());
+    }
+
+    #[Test]
+    public function it_reads_an_unnamed_passkey_from_an_unknown_authenticator_as_this_device(): void
+    {
+        $passkey = Passkey::factory()->make(['name' => '_']);
+        $passkey->credential = ['aaguid' => '00000000-0000-0000-0000-000000000000'] + $passkey->credential;
+
+        $this->assertEquals('This device', $passkey->displayName());
+    }
+
+    #[Test]
     public function it_resolves_a_passkey_of_the_signed_in_user(): void
     {
         $user = User::factory()->create();

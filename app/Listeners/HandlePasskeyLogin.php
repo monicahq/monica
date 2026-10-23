@@ -8,6 +8,7 @@ use App\Enums\SignInMethodEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
+use App\Models\Passkey;
 use App\Models\User;
 use App\Notifications\NewLoginDetected;
 use Illuminate\Support\Facades\Auth;
@@ -22,14 +23,15 @@ class HandlePasskeyLogin
 {
     public function handle(PasskeyVerified $event): void
     {
+        $passkey = $event->passkey;
         $user = $event->user;
 
-        if (! $user instanceof User) {
+        if (! $passkey instanceof Passkey || ! $user instanceof User) {
             return;
         }
 
         if (Auth::guard('web')->check()) {
-            $this->recordConfirmation($user, $event);
+            $this->recordConfirmation($user, $passkey);
 
             return;
         }
@@ -46,8 +48,8 @@ class HandlePasskeyLogin
             account: $user->account,
             user: $user,
             action: UserActionEnum::PasskeyLogin,
-            parameters: ['name' => $event->passkey->name],
-            loggable: $event->passkey,
+            parameters: ['name' => $passkey->displayName()],
+            loggable: $passkey,
         )->onQueue('low');
 
         $user->notify(new NewLoginDetected(
@@ -56,14 +58,14 @@ class HandlePasskeyLogin
         ));
     }
 
-    private function recordConfirmation(User $user, PasskeyVerified $event): void
+    private function recordConfirmation(User $user, Passkey $passkey): void
     {
         LogUserAction::dispatch(
             account: $user->account,
             user: $user,
             action: UserActionEnum::PasskeyConfirmed,
-            parameters: ['name' => $event->passkey->name],
-            loggable: $event->passkey,
+            parameters: ['name' => $passkey->displayName()],
+            loggable: $passkey,
         )->onQueue('low');
     }
 }

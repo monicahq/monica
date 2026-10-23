@@ -40,30 +40,6 @@ class PasskeyListViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_names_an_unnamed_passkey_after_its_authenticator(): void
-    {
-        $user = User::factory()->create();
-        $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => '_']);
-        $passkey->update(['credential' => ['aaguid' => 'ea9b8d66-4d01-1d21-3ce4-b6b48cb575d4'] + $passkey->credential]);
-
-        $passkeys = new PasskeyListViewModel(user: $user)->passkeys();
-
-        $this->assertEquals('Google Password Manager', $passkeys[0]['name']);
-    }
-
-    #[Test]
-    public function it_names_an_unnamed_passkey_from_an_unknown_authenticator_this_device(): void
-    {
-        $user = User::factory()->create();
-        $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => '_']);
-        $passkey->update(['credential' => ['aaguid' => '00000000-0000-0000-0000-000000000000'] + $passkey->credential]);
-
-        $passkeys = new PasskeyListViewModel(user: $user)->passkeys();
-
-        $this->assertEquals('This device', $passkeys[0]['name']);
-    }
-
-    #[Test]
     public function it_puts_the_most_recently_used_first(): void
     {
         $user = User::factory()->create();

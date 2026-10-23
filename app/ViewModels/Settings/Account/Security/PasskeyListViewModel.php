@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Settings\Account\Security;
 
+use App\Models\Passkey;
 use App\Models\User;
-use Laravel\Passkeys\Passkey;
 
 class PasskeyListViewModel
 {
@@ -16,14 +16,15 @@ class PasskeyListViewModel
     /** @return array<int, array{id: int, name: string, addedAt: string, lastUsedAt: ?string}> */
     public function passkeys(): array
     {
-        return $this->user->passkeys()
+        return Passkey::query()
+            ->where('user_id', $this->user->id)
             ->orderByRaw('last_used_at IS NULL')
             ->orderByDesc('last_used_at')
             ->orderByDesc('created_at')
             ->get()
             ->map(fn (Passkey $passkey): array => [
                 'id' => $passkey->id,
-                'name' => $passkey->name !== '_' ? $passkey->name : ($passkey->authenticator ?? __('This device')),
+                'name' => $passkey->displayName(),
                 'addedAt' => $passkey->created_at->diffForHumans(),
                 'lastUsedAt' => $passkey->last_used_at?->diffForHumans(),
             ])

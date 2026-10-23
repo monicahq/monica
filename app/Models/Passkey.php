@@ -50,6 +50,20 @@ class Passkey extends BasePasskey
     }
 
     /**
+     * The name a person reads for this passkey. A passkey registered without a
+     * name is stored as `_`, so it reads as the device its AAGUID names, or as
+     * this device when the AAGUID names none.
+     */
+    public function displayName(): string
+    {
+        if ($this->name !== '_') {
+            return $this->name;
+        }
+
+        return $this->authenticator ?? __('This device');
+    }
+
+    /**
      * Resolve a passkey named in a URL, and only ever one of your own.
      *
      * The package binds `{passkey}` through this method and then checks
