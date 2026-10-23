@@ -26,7 +26,7 @@
         <ul @class(['grid flex-1', 'sm:grid-cols-2' => count($renewing) > 1])>
           @foreach ($renewing as $offer)
             <li @class([
-              'flex flex-col gap-1.5 p-6',
+              '@container flex flex-col gap-1.5 p-6',
               'border-t border-hairline bg-card sm:border-t-0 sm:border-l' => ! $loop->first,
               'sm:rounded-br-lg' => $loop->last && ! $loop->first,
             ])>
@@ -38,8 +38,8 @@
                 @endif
               </h4>
 
-              <p class="text-[44px] leading-none font-semibold tracking-[-0.05em] whitespace-nowrap text-ink">
-                {{ $offer['amount'] }}<span class="text-[16px] font-medium tracking-normal text-muted"> {{ $offer['kind'] === \App\Enums\OfferKindEnum::Monthly ? __('/ month') : __('/ year') }}</span>
+              <p class="flex flex-wrap items-baseline gap-x-1.5 gap-y-1 text-[length:clamp(28px,18cqi,44px)] leading-none font-semibold tracking-[-0.05em] text-ink">
+                <span class="whitespace-nowrap">{{ $offer['amount'] }}</span><span class="text-[16px] font-medium tracking-normal text-muted">{{ $offer['kind'] === \App\Enums\OfferKindEnum::Monthly ? __('/ month') : __('/ year') }}</span>
               </p>
 
               <p class="mt-2 text-base font-medium text-ink">{{ __($offer['kind']->tagline()) }}</p>
@@ -72,13 +72,13 @@
     @endif
 
     @foreach ($once as $offer)
-      <section aria-labelledby="plans-lifetime" class="flex flex-col gap-1.5 rounded-lg bg-primary px-6 py-7 text-on-primary shadow-[0_20px_40px_-12px_rgb(0_0_0/0.45)]">
+      <section aria-labelledby="plans-lifetime" class="@container flex flex-col gap-1.5 rounded-lg bg-primary px-6 py-7 text-on-primary shadow-[0_20px_40px_-12px_rgb(0_0_0/0.45)]">
         <span class="self-start rounded-full bg-on-primary px-2.5 py-0.75 text-xs font-semibold tracking-[0.06em] text-primary uppercase">{{ __('One time fee') }}</span>
 
         <h3 id="plans-lifetime" class="mt-3.5 text-[14px] font-semibold">{{ __('Lifetime') }}</h3>
 
-        <p class="text-[56px] leading-none font-semibold tracking-[-0.05em] whitespace-nowrap">
-          {{ $offer['amount'] }}<span class="text-[16px] font-medium tracking-normal"> {{ __('once') }}</span>
+        <p class="flex flex-wrap items-baseline gap-x-1.5 gap-y-1 text-[length:clamp(28px,18cqi,56px)] leading-none font-semibold tracking-[-0.05em]">
+          <span class="whitespace-nowrap">{{ $offer['amount'] }}</span><span class="text-[16px] font-medium tracking-normal">{{ __('once') }}</span>
         </p>
 
         <p class="mt-2.5 text-base font-semibold">{{ __($offer['kind']->tagline()) }}</p>
