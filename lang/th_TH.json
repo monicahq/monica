@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "เข้าสู่ระบบเป็น :name · :email",
     "Signed in with the passkey called :name": "เข้าสู่ระบบด้วยพาสคีย์ชื่อ :name",
     "Signing in": "การเข้าสู่ระบบ",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "การลงชื่อเข้าใช้ด้วยพาสคีย์จะไม่ขอรหัสสองชั้น เพราะพาสคีย์ต้องใช้อุปกรณ์นี้และลายนิ้วมือ ใบหน้า หรือ PIN ของอุปกรณ์อยู่แล้ว",
     "Signing in with an outside provider": "เข้าสู่ระบบด้วยผู้ให้บริการภายนอก",
     "Signs you in.": "ลงชื่อเข้าใช้ให้คุณ",
     "Simple": "แบบง่าย",

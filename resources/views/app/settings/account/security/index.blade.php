@@ -25,12 +25,16 @@
   </x-page-section>
 
   <x-page-section :title="__('Passkeys')" :description="__('A passkey is kept on your device and is unlocked by your fingerprint, your face or your device PIN. Nothing is typed, so nothing can be phished.')">
+    <x-notice tone="quiet">{{ __('Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.') }}</x-notice>
+
     <x-panel :flush="true">
       @include('app.settings.account.security._passkeys', ['viewModel' => $viewModel])
     </x-panel>
   </x-page-section>
 
   <x-page-section :title="__('Two-factor authentication')" :description="__('A password can be guessed, reused or stolen. A code that changes every thirty seconds, on a phone you hold, cannot be taken from a distance.')">
+    <x-notice tone="quiet">{{ __('Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.') }}</x-notice>
+
     <x-panel :flush="true">
       @if ($viewModel->usesTwoFactorAuthentication())
         @include('app.settings.account.security._two-factor-on', ['viewModel' => $viewModel])

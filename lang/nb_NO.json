@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "Innlogget som :name · :email",
     "Signed in with the passkey called :name": "Logget inn med passnøkkelen som heter :name",
     "Signing in": "Innlogging",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Når du logger inn med en passnøkkel, blir du ikke bedt om tofaktorkoden, fordi passnøkkelen allerede krever denne enheten og fingeravtrykket ditt, ansiktet ditt eller PIN-koden til enheten.",
     "Signing in with an outside provider": "Innlogging via en ekstern leverandør",
     "Signs you in.": "Logger deg inn.",
     "Simple": "Enkel",

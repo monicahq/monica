@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "Bejelentkezve mint :name · :email",
     "Signed in with the passkey called :name": "Bejelentkezett a(z) :name nevű azonosítókulccsal",
     "Signing in": "Bejelentkezés",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Az azonosítókulccsal történő bejelentkezés nem kéri a kétfaktoros kódot, mert az azonosítókulcshoz már kell ez az eszköz és az ujjlenyomatod, az arcod vagy az eszköz PIN-kódja.",
     "Signing in with an outside provider": "Bejelentkezés külső szolgáltatóval",
     "Signs you in.": "Bejelentkezteti Önt.",
     "Simple": "Egyszerű",

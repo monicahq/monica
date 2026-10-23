@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "Sínithe isteach mar :name · :email",
     "Signed in with the passkey called :name": "Shínigh isteach leis an bpaseochair darb ainm :name",
     "Signing in": "Síniú isteach",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Ní iarrtar an cód dhá fhachtóir nuair a shíníonn tú isteach le paseochair, mar go dteastaíonn an gléas seo agus do mhéarlorg, d’aghaidh nó PIN do ghléis ón bpaseochair cheana féin.",
     "Signing in with an outside provider": "Síniú isteach le soláthraí seachtrach",
     "Signs you in.": "Síníonn sé isteach tú.",
     "Simple": "Simplí",

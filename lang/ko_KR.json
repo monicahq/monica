@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": ":name님으로 로그인 · :email",
     "Signed in with the passkey called :name": ":name(이)라는 패스키로 로그인했습니다",
     "Signing in": "로그인",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "패스키로 로그인할 때는 2단계 인증 코드를 묻지 않습니다. 패스키에는 이미 이 기기와 지문, 얼굴 또는 기기 PIN이 필요하기 때문입니다.",
     "Signing in with an outside provider": "외부 제공자로 로그인",
     "Signs you in.": "로그인에 사용됩니다.",
     "Simple": "단순",

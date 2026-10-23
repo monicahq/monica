@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "Sessão iniciada como :name · :email",
     "Signed in with the passkey called :name": "Entrou com a chave de acesso chamada :name",
     "Signing in": "Acesso",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Entrar com uma chave de acesso não pede o código de dois fatores, porque a chave de acesso já exige este dispositivo e a sua impressão digital, o seu rosto ou o PIN do dispositivo.",
     "Signing in with an outside provider": "Acesso por meio de um provedor externo",
     "Signs you in.": "Faz seu login.",
     "Simple": "Simples",

@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "Zalogowano jako :name · :email",
     "Signed in with the passkey called :name": "Zalogowano kluczem dostępu o nazwie :name",
     "Signing in": "Logowanie",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Logowanie kluczem dostępu nie wymaga kodu dwuetapowego, bo klucz dostępu już wymaga tego urządzenia oraz twojego odcisku palca, twarzy albo kodu PIN urządzenia.",
     "Signing in with an outside provider": "Logowanie przez zewnętrznego dostawcę",
     "Signs you in.": "Loguje Cię.",
     "Simple": "Proste",

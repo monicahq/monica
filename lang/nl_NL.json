@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "Aangemeld als :name · :email",
     "Signed in with the passkey called :name": "Meldde zich aan met de passkey :name",
     "Signing in": "Aanmelden",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Inloggen met een passkey vraagt niet om de tweefactorcode, omdat de passkey al dit apparaat nodig heeft en je vingerafdruk, je gezicht of de pincode van je apparaat.",
     "Signing in with an outside provider": "Aanmelden via een externe aanbieder",
     "Signs you in.": "Meldt je aan.",
     "Simple": "Eenvoudig",

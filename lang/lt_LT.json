@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "Prisijungta kaip :name · :email",
     "Signed in with the passkey called :name": "Prisijungė su prieigos raktu :name",
     "Signing in": "Prisijungimas",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Prisijungiant prieigos raktu dviejų veiksnių kodo neprašoma, nes prieigos raktui jau reikia šio įrenginio ir jūsų pirštų atspaudo, veido arba įrenginio PIN kodo.",
     "Signing in with an outside provider": "Prisijungimas per išorinį tiekėją",
     "Signs you in.": "Prijungia jus.",
     "Simple": "Paprastas",

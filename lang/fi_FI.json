@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "Kirjautuneena nimellä :name · :email",
     "Signed in with the passkey called :name": "Kirjautui avainkoodilla nimeltä :name",
     "Signing in": "Kirjautuminen",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Avainkoodilla kirjautuminen ei kysy kaksivaiheista koodia, koska avainkoodi vaatii jo tämän laitteen ja sormenjälkesi, kasvosi tai laitteen PIN-koodin.",
     "Signing in with an outside provider": "Kirjautuminen ulkoisen palvelun kautta",
     "Signs you in.": "Kirjaa sinut sisään.",
     "Simple": "Yksinkertainen",

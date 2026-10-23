@@ -155,4 +155,54 @@ class SecurityControllerTest extends TestCase
 
         $response->assertSee('asksForConfirmation: false', escape: false);
     }
+
+    #[Test]
+    public function it_says_a_passkey_skips_the_two_factor_code_where_passkeys_and_two_factor_are(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('settings.security.index'));
+
+        $sentence = 'Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.';
+
+        $response->assertSeeInOrder(['Passkeys', $sentence, 'Two-factor authentication', $sentence, 'API keys'], escape: false);
+    }
+
+    #[Test]
+    public function it_moves_focus_through_the_removal_of_a_passkey_and_ties_the_warning_to_the_button(): void
+    {
+        URL::forceScheme('https');
+        $user = User::factory()->create();
+        $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Michael MacBook']);
+
+        $response = $this->actingAs($user)->get(route('settings.security.index'));
+
+        $response->assertSee('x-ref="remove"', escape: false);
+        $response->assertSee('confirming = true; $nextTick(() => $refs.keep.focus())', escape: false);
+        $response->assertSee('x-ref="keep"', escape: false);
+        $response->assertSee('confirming = false; $nextTick(() => $refs.remove.focus())', escape: false);
+        $response->assertSee("id=\"passkey-warning-{$passkey->id}\"", escape: false);
+        $response->assertSee("aria-describedby=\"passkey-warning-{$passkey->id}\"", escape: false);
+    }
+
+    #[Test]
+    public function it_keeps_the_rename_form_open_with_the_error_when_the_name_is_refused(): void
+    {
+        URL::forceScheme('https');
+        $user = User::factory()->create();
+        $refused = Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Michael MacBook']);
+        Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Dwight Phone']);
+
+        $response = $this->withConfirmedPassword()
+            ->actingAs($user)
+            ->from(route('settings.security.index'))
+            ->followingRedirects()
+            ->put(route('settings.passkeys.update', $refused->id), ['name' => '']);
+
+        $response->assertSee('The name field is required.', escape: false);
+        $response->assertSee("aria-describedby=\"passkey-name-{$refused->id}-error\"", escape: false);
+        $response->assertSee('aria-invalid="true"', escape: false);
+        $this->assertSame(1, substr_count($response->getContent(), 'renaming: true'));
+        $this->assertSame(1, substr_count($response->getContent(), 'aria-invalid="true"'));
+    }
 }

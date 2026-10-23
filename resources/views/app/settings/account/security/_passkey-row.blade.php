@@ -1,5 +1,7 @@
 {{-- One passkey, with the two things somebody can do to it. --}}
 {{-- @var array{id: int, name: string, addedAt: string, lastUsedAt: ?string} $passkey --}}
+@php($renameErrors = $errors->getBag('passkey'.$passkey['id']))
+
 <x-row
   :title="$passkey['name']"
   :description="$passkey['lastUsedAt']
@@ -9,7 +11,7 @@
   icon-class="bg-success-tint text-success"
 >
   <x-slot:end>
-    <div x-data="{ renaming: false, confirming: false }" class="flex flex-wrap items-center justify-end gap-2.5">
+    <div x-data="{ renaming: {{ $renameErrors->has('name') ? 'true' : 'false' }}, confirming: false }" class="flex flex-wrap items-center justify-end gap-2.5">
       <x-button.secondary
         size="small"
         type="button"
@@ -30,6 +32,8 @@
           name="name"
           :label="__('Name')"
           :value="$passkey['name']"
+          :error="$renameErrors->get('name')"
+          :autofocus="$renameErrors->has('name')"
           size="small"
           class="w-44"
         />
@@ -42,21 +46,22 @@
       <x-button.secondary
         size="small"
         type="button"
+        x-ref="remove"
         x-show="! renaming && ! confirming"
-        @click="confirming = true"
+        @click="confirming = true; $nextTick(() => $refs.keep.focus())"
       >{{ __('Remove') }}</x-button.secondary>
 
       <div x-cloak x-show="confirming" class="flex flex-wrap items-center justify-end gap-2.5">
         @if ($lastOneOnAPasswordlessAccount ?? false)
-          <p class="text-xs text-error text-pretty">{{ __('This is your last passkey and you have no password. A link sent to your email address would be the only way to sign in. Set a password instead?') }}</p>
+          <p id="passkey-warning-{{ $passkey['id'] }}" class="text-xs text-error text-pretty">{{ __('This is your last passkey and you have no password. A link sent to your email address would be the only way to sign in. Set a password instead?') }}</p>
         @else
-          <p class="text-xs text-error">{{ __('This device will no longer sign you in. This cannot be undone.') }}</p>
+          <p id="passkey-warning-{{ $passkey['id'] }}" class="text-xs text-error">{{ __('This device will no longer sign you in. This cannot be undone.') }}</p>
         @endif
 
-        <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep it') }}</x-button.secondary>
+        <x-button.secondary size="small" type="button" x-ref="keep" @click="confirming = false; $nextTick(() => $refs.remove.focus())">{{ __('Keep it') }}</x-button.secondary>
 
         <x-form method="delete" :action="route('passkey.destroy', $passkey['id'])">
-          <x-button.danger size="small" type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Remove') }}</x-button.danger>
+          <x-button.danger size="small" type="submit" aria-describedby="passkey-warning-{{ $passkey['id'] }}" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Remove') }}</x-button.danger>
         </x-form>
       </div>
     </div>

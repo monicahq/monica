@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": ":name · :email ஆக உள்நுழைந்துள்ளீர்கள்",
     "Signed in with the passkey called :name": ":name எனும் கடவுச்சாவியுடன் உள்நுழைந்தது",
     "Signing in": "உள்நுழைவு",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "கடவுச்சாவியுடன் உள்நுழையும்போது இரு-படி குறியீடு கேட்கப்படுவதில்லை, ஏனெனில் கடவுச்சாவிக்கு ஏற்கெனவே இந்தச் சாதனமும் உங்கள் விரலடையாளம், முகம் அல்லது சாதனத்தின் PIN-உம் தேவை.",
     "Signing in with an outside provider": "வெளி வழங்குநர் மூலம் உள்நுழைவு",
     "Signs you in.": "உங்களை உள்நுழைய வைக்கிறது.",
     "Simple": "எளிமை",

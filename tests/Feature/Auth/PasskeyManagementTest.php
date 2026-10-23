@@ -64,7 +64,7 @@ class PasskeyManagementTest extends TestCase
 
         $response = $this->withConfirmedPassword()->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), ['name' => '  ']);
 
-        $response->assertSessionHasErrors('name');
+        $response->assertSessionHasErrors('name', errorBag: "passkey{$passkey->id}");
         $this->assertEquals('Michael MacBook', $passkey->refresh()->name);
     }
 
@@ -80,7 +80,7 @@ class PasskeyManagementTest extends TestCase
             'name' => str_repeat('a', 256),
         ]);
 
-        $response->assertSessionHasErrors('name');
+        $response->assertSessionHasErrors('name', errorBag: "passkey{$passkey->id}");
         $this->assertEquals('Michael MacBook', $passkey->refresh()->name);
     }
 

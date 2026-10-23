@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "已以 :name 身份登录 · :email",
     "Signed in with the passkey called :name": "已使用名为 :name 的通行密钥登录",
     "Signing in": "登录",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "使用通行密钥登录时不会要求两步验证码，因为通行密钥本身已需要这台设备以及你的指纹、面容或设备 PIN。",
     "Signing in with an outside provider": "通过外部提供方登录",
     "Signs you in.": "为你登录。",
     "Simple": "简单",

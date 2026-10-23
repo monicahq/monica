@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": ":name · :email sifatida kirilgan",
     "Signed in with the passkey called :name": ":name nomli kirish kaliti bilan kirildi",
     "Signing in": "Kirish",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Kirish kaliti bilan kirganda ikki bosqichli kod soʻralmaydi, chunki kirish kaliti uchun allaqachon shu qurilma va barmoq izingiz, yuzingiz yoki qurilmangiz PIN kodi kerak.",
     "Signing in with an outside provider": "Tashqi provayder orqali kirish",
     "Signs you in.": "Sizni tizimga kiritadi.",
     "Simple": "Oddiy",

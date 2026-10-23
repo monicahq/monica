@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": ":nameとしてサインイン中 · :email",
     "Signed in with the passkey called :name": ":nameというパスキーでサインインしました",
     "Signing in": "サインイン",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "パスキーでサインインするときは2要素認証コードを求められません。パスキーにはすでにこの端末と、指紋、顔、端末のPINのいずれかが必要だからです。",
     "Signing in with an outside provider": "外部プロバイダーでのサインイン",
     "Signs you in.": "サインインに使えます。",
     "Simple": "シンプル",

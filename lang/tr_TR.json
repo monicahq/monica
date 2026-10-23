@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": ":name · :email olarak girdiniz",
     "Signed in with the passkey called :name": ":name adlı geçiş anahtarı ile giriş yaptı",
     "Signing in": "Oturum açma",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Geçiş anahtarıyla oturum açarken iki adımlı doğrulama kodu sorulmaz, çünkü geçiş anahtarı zaten bu cihazı ve parmak izinizi, yüzünüzü veya cihaz PIN’inizi gerektirir.",
     "Signing in with an outside provider": "Dış sağlayıcı ile oturum açma",
     "Signs you in.": "Oturumunuzu açar.",
     "Simple": "Basit",

@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "Skráð inn sem :name · :email",
     "Signed in with the passkey called :name": "Skráði sig inn með aðgangslyklinum sem heitir :name",
     "Signing in": "Innskráning",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Innskráning með aðgangslykli biður ekki um tveggja þátta kóðann, því aðgangslykillinn krefst þegar þessa tækis og fingrafars þíns, andlits þíns eða PIN-númers tækisins.",
     "Signing in with an outside provider": "Innskráning gegnum utanaðkomandi þjónustu",
     "Signs you in.": "Skráir þig inn.",
     "Simple": "Einfalt",

@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "Συνδεδεμένος ως :name · :email",
     "Signed in with the passkey called :name": "Συνδέθηκε με το κλειδί πρόσβασης με όνομα :name",
     "Signing in": "Σύνδεση",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Η σύνδεση με κλειδί πρόσβασης δεν ζητά τον κωδικό δύο παραγόντων, αφού το κλειδί πρόσβασης ήδη χρειάζεται αυτή τη συσκευή και το δακτυλικό σας αποτύπωμα, το πρόσωπό σας ή το PIN της συσκευής.",
     "Signing in with an outside provider": "Σύνδεση μέσω εξωτερικού παρόχου",
     "Signs you in.": "Σας συνδέει.",
     "Simple": "Απλό",

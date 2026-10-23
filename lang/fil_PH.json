@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "Naka-sign in bilang :name · :email",
     "Signed in with the passkey called :name": "Nag-sign in sa passkey na :name",
     "Signing in": "Pag-sign in",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Hindi humihingi ng two-factor code ang pag-sign in gamit ang passkey, dahil kailangan na ng passkey ang device na ito at ang fingerprint mo, ang mukha mo o ang PIN ng device mo.",
     "Signing in with an outside provider": "Pag-sign in gamit ang panlabas na tagapagbigay",
     "Signs you in.": "Sina-sign in ka.",
     "Simple": "Payak",

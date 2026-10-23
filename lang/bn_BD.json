@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": ":name · :email হিসেবে সাইন-ইন করা",
     "Signed in with the passkey called :name": ":name নামের পাসকি দিয়ে সাইন-ইন করা হয়েছে",
     "Signing in": "সাইন ইন",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "পাসকি দিয়ে সাইন ইন করলে দুই-ধাপের কোড চাওয়া হয় না, কারণ পাসকির জন্য আগে থেকেই এই ডিভাইস এবং আপনার আঙুলের ছাপ, আপনার মুখ বা আপনার ডিভাইসের PIN লাগে।",
     "Signing in with an outside provider": "বাইরের সরবরাহকারী দিয়ে সাইন ইন",
     "Signs you in.": "আপনাকে সাইন ইন করায়।",
     "Simple": "সরল",

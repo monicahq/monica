@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": "Đăng nhập với tên :name · :email",
     "Signed in with the passkey called :name": "Đã đăng nhập bằng khóa truy cập tên :name",
     "Signing in": "Đăng nhập",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "Đăng nhập bằng khóa truy cập không hỏi mã hai lớp, vì khóa truy cập đã cần thiết bị này và dấu tay, khuôn mặt hoặc mã PIN của thiết bị.",
     "Signing in with an outside provider": "Đăng nhập bằng nhà cung cấp bên ngoài",
     "Signs you in.": "Đăng nhập cho bạn.",
     "Simple": "Đơn giản",

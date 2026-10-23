@@ -14,7 +14,7 @@ class PasskeyController extends Controller
 {
     public function update(Request $request, Passkey $passkey): RedirectResponse
     {
-        $validated = $request->validate([
+        $validated = $request->validateWithBag("passkey{$passkey->id}", [
             'name' => ['required', 'string', 'max:255'],
         ]);
 

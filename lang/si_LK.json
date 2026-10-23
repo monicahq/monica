@@ -2348,6 +2348,7 @@
     "Signed in as :name · :email": ":name · :email ලෙස පිවිසී ඇත",
     "Signed in with the passkey called :name": ":name නම් මුරයතුරෙන් පිවිසුණා",
     "Signing in": "පිවිසීම",
+    "Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.": "මුරයතුරකින් පිවිසෙන විට ද්විපියවර කේතය ඉල්ලන්නේ නැත, මන්ද මුරයතුරට දැනටමත් මෙම උපාංගය සහ ඔබේ ඇඟිලි සලකුණ, ඔබේ මුහුණ හෝ ඔබේ උපාංගයේ PIN එක අවශ්‍ය වේ.",
     "Signing in with an outside provider": "පිටත සපයන්නෙකු හරහා පිවිසීම",
     "Signs you in.": "ඔබව පිවිසෙයි.",
     "Simple": "සරල",
