@@ -27,6 +27,7 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
 use Laravel\Mcp\Request;
 
@@ -39,6 +40,9 @@ use Laravel\Mcp\Request;
  * The refusal is raised as a validation error because that is the one kind the MCP package relays
  * word for word whatever the debug setting. Any other exception reaches the assistant as a generic
  * server error once debug is off, and is reported as one.
+ *
+ * A lookup that succeeds leaves the vault and the record it found on the request, which is how the
+ * MCP history names what a call reached without ever naming what it was refused.
  */
 trait MirrorsAnApiCapability
 {
@@ -72,6 +76,8 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That vault does not exist.'));
         }
 
+        request()->attributes->set('mcp_vault', $vault);
+
         return $vault;
     }
 
@@ -87,7 +93,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That contact does not exist.'));
         }
 
-        return $contact;
+        return $this->found($contact);
     }
 
     protected function lifeEvent(Vault $vault, string $address, bool $withTrashed = false): LifeEvent
@@ -103,7 +109,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That life event does not exist.'));
         }
 
-        return $lifeEvent;
+        return $this->found($lifeEvent);
     }
 
     protected function template(Request $request, string $address): Template
@@ -114,7 +120,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That template does not exist.'));
         }
 
-        return $template;
+        return $this->found($template);
     }
 
     protected function entityType(Request $request, string $address): EntityType
@@ -125,7 +131,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That entity type does not exist.'));
         }
 
-        return $entityType;
+        return $this->found($entityType);
     }
 
     protected function relationshipType(Request $request, string $address): RelationshipType
@@ -136,7 +142,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That relationship type does not exist.'));
         }
 
-        return $relationshipType;
+        return $this->found($relationshipType);
     }
 
     protected function relationshipCategory(Request $request, string $address): RelationshipCategory
@@ -147,7 +153,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That relationship category does not exist.'));
         }
 
-        return $relationshipCategory;
+        return $this->found($relationshipCategory);
     }
 
     protected function lifeEventType(Request $request, string $address): LifeEventType
@@ -158,7 +164,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That life event type does not exist.'));
         }
 
-        return $lifeEventType;
+        return $this->found($lifeEventType);
     }
 
     protected function lifeEventCategory(Request $request, string $address): LifeEventCategory
@@ -169,7 +175,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That life event category does not exist.'));
         }
 
-        return $lifeEventCategory;
+        return $this->found($lifeEventCategory);
     }
 
     protected function log(Request $request, string $id): Log
@@ -184,7 +190,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That log entry does not exist.'));
         }
 
-        return $log;
+        return $this->found($log);
     }
 
     protected function emailSent(Request $request, string $id): EmailSent
@@ -199,7 +205,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That email does not exist.'));
         }
 
-        return $emailSent;
+        return $this->found($emailSent);
     }
 
     protected function version(Template $template, int $number): StructureVersion
@@ -210,7 +216,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That version does not exist.'));
         }
 
-        return $version;
+        return $this->found($version);
     }
 
     protected function section(StructureVersion $version, string $id): StructureVersionSection
@@ -221,7 +227,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That section does not exist.'));
         }
 
-        return $section;
+        return $this->found($section);
     }
 
     protected function field(SectionVersion $sectionVersion, string $id): Field
@@ -232,7 +238,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That field does not exist.'));
         }
 
-        return $field;
+        return $this->found($field);
     }
 
     protected function page(StructureVersion $version, string $uuid): StructureVersionPage
@@ -243,7 +249,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That page does not exist.'));
         }
 
-        return $page;
+        return $this->found($page);
     }
 
     protected function reminder(Contact $contact, string $uuid): Reminder
@@ -257,7 +263,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That reminder does not exist.'));
         }
 
-        return $reminder;
+        return $this->found($reminder);
     }
 
     protected function relationship(Contact $contact, string $uuid): Relationship
@@ -272,7 +278,7 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That relationship does not exist.'));
         }
 
-        return $relationship;
+        return $this->found($relationship);
     }
 
     protected function reminderOccurrence(Contact $contact, string $uuid): ReminderOccurrence
@@ -287,7 +293,20 @@ trait MirrorsAnApiCapability
             throw $this->doesNotExist(__('That reminder date does not exist.'));
         }
 
-        return $occurrence;
+        return $this->found($occurrence);
+    }
+
+    /**
+     * @template TRecord of Model
+     *
+     * @param  TRecord  $record
+     * @return TRecord
+     */
+    private function found(Model $record): Model
+    {
+        request()->attributes->set('mcp_subject', $record);
+
+        return $record;
     }
 
     protected function doesNotExist(string $message): ValidationException

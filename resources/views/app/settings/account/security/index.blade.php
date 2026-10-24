@@ -65,6 +65,10 @@
       <x-panel :flush="true">
         @include('app.settings.account.security._connected-assistants', ['viewModel' => $viewModel])
       </x-panel>
+
+      @if ($viewModel->mcpIsOn())
+        <x-link :href="route('settings.mcpCalls.index')">{{ __('See every call assistants made') }}</x-link>
+      @endif
     </x-page-section>
   @endif
 </x-settings.page>

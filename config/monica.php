@@ -168,6 +168,18 @@ return [
 
     'notification_retention_months' => env('MONICA_NOTIFICATION_RETENTION_MONTHS', 12),
 
+    /*
+    |--------------------------------------------------------------------------
+    | MCP history
+    |--------------------------------------------------------------------------
+    |
+    | Every call an assistant makes to a tool is kept this many days, then
+    | removed by the daily prune. The history screen states the figure.
+    |
+    */
+
+    'mcp_call_retention_in_days' => env('MONICA_MCP_CALL_RETENTION_IN_DAYS', 90),
+
     'notification_channel_failure_threshold' => env('MONICA_NOTIFICATION_CHANNEL_FAILURE_THRESHOLD', 5),
 
     'notification_proof_code_minutes' => env('MONICA_NOTIFICATION_PROOF_CODE_MINUTES', 10),

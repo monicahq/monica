@@ -101,6 +101,7 @@ use Laravel\Mcp\Server\Attributes\Instructions;
 use Laravel\Mcp\Server\Attributes\Name;
 use Laravel\Mcp\Server\Attributes\Version;
 use Laravel\Mcp\Server\Tool;
+use Override;
 
 #[Name('Erica')]
 #[Version('1.0.0')]
@@ -256,4 +257,10 @@ class EricaServer extends Server
         DeleteTemplateField::class,
         SetTemplateFieldPosition::class,
     ];
+
+    #[Override]
+    protected function boot(): void
+    {
+        $this->addMethod('tools/call', RecordedCallTool::class);
+    }
 }

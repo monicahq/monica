@@ -54,6 +54,7 @@ use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipType
 use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipTypePositionController;
 use App\Http\Controllers\App\Settings\Account\Security\ApiKeyController;
 use App\Http\Controllers\App\Settings\Account\Security\ConnectedAssistantController;
+use App\Http\Controllers\App\Settings\Account\Security\McpCallController;
 use App\Http\Controllers\App\Settings\Account\Security\PasskeyController;
 use App\Http\Controllers\App\Settings\Account\Security\PasswordController;
 use App\Http\Controllers\App\Settings\Account\Security\RecoveryCodeController;
@@ -568,6 +569,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('settings/account/templates/{template}/sections/{structureVersionSection}/fields/{field}/position', [FieldPositionController::class, 'update'])->whereNumber(['structureVersionSection', 'field'])->name('settings.fieldPosition.update');
 
     Route::get('settings/account/security', [SecurityController::class, 'index'])->name('settings.security.index');
+    Route::get('settings/account/security/mcp-history', [McpCallController::class, 'index'])->middleware(['flag:mcp-server'])->name('settings.mcpCalls.index');
 
     /*
      * Everything that decides how somebody signs in, or hands out access outliving the session.

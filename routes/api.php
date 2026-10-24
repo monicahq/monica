@@ -42,6 +42,7 @@ use App\Http\Controllers\Api\LifeEventTypeController;
 use App\Http\Controllers\Api\LifeEventTypeFieldController;
 use App\Http\Controllers\Api\LifeEventTypePositionController;
 use App\Http\Controllers\Api\LogController;
+use App\Http\Controllers\Api\McpCallController;
 use App\Http\Controllers\Api\MeContactListViewController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\MeTimezoneController;
@@ -124,6 +125,9 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
         Route::get('logs', [LogController::class, 'index'])->name('logs');
         Route::get('logs/{log}', [LogController::class, 'show'])->where('log', '[1-9][0-9]*')->name('logs.show');
+
+        Route::get('mcp-calls', [McpCallController::class, 'index'])->middleware('flag:mcp-server')->name('mcpCalls');
+        Route::get('mcp-calls/{mcpCall}', [McpCallController::class, 'show'])->middleware('flag:mcp-server')->where('mcpCall', '[0-9a-fA-F-]{36}')->name('mcpCalls.show');
 
         Route::get('emails-sent', [EmailSentController::class, 'index'])->name('emailsSent');
         Route::get('emails-sent/{emailSent}', [EmailSentController::class, 'show'])->where('emailSent', '[1-9][0-9]*')->name('emailsSent.show');

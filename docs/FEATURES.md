@@ -88,3 +88,9 @@ A chronological list of every feature and improvement shipped during development
 * CardDAV: Stopped writing the name of the field as the label of an email address, phone number, address or website that has none.
 * Forms: Said why a form was refused when the page had expired, the same request came too often, or the action was not allowed, instead of reloading the page silently.
 * Docs: Opened the Markdown version of a page with one request instead of two.
+* MCP: Recorded every tool call an assistant makes, with its real result, including reads, refusals, invalid parameters, errors and calls that never finished.
+* MCP: Masked passwords, tokens and the values of sensitive fields before a call is recorded, and capped the size of what is kept.
+* Settings/security/MCP history: Added a page listing every call assistants made, grouped by day, each one unfolding into its parameters and response.
+* Settings/security/MCP history: Added filters by period, connection, result and tool.
+* Settings/security/MCP history: Kept calls for 90 days, a period the instance can change, then removed them automatically.
+* API: Added endpoints to list and read the MCP history.

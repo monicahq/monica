@@ -360,6 +360,16 @@ class Account extends Model
     }
 
     /**
+     * Get every call an assistant made to a tool of the MCP server.
+     *
+     * @return HasMany<McpCall, $this>
+     */
+    public function mcpCalls(): HasMany
+    {
+        return $this->hasMany(McpCall::class);
+    }
+
+    /**
      * Get everything the account has been told, on every channel.
      *
      * @return HasMany<Notification, $this>

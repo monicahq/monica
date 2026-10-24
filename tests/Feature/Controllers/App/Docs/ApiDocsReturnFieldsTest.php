@@ -26,6 +26,7 @@ use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
 use App\Models\Log;
+use App\Models\McpCall;
 use App\Models\Notification;
 use App\Models\NotificationChannel;
 use App\Models\NotificationPreference;
@@ -616,6 +617,18 @@ class ApiDocsReturnFieldsTest extends TestCase
                 $log = $this->aLog($user);
 
                 return $this->json('GET', "/api/v1/logs/{$log->id}");
+            }),
+
+            'mcp-calls-index' => $this->asSomebody(function (User $user): TestResponse {
+                $this->anMcpCall($user);
+
+                return $this->json('GET', '/api/v1/mcp-calls');
+            }),
+
+            'mcp-calls-show' => $this->asSomebody(function (User $user): TestResponse {
+                $call = $this->anMcpCall($user);
+
+                return $this->json('GET', "/api/v1/mcp-calls/{$call->uuid}");
             }),
 
             'emails-sent-index' => $this->asSomebody(function (User $user): TestResponse {
@@ -1734,6 +1747,21 @@ class ApiDocsReturnFieldsTest extends TestCase
             'account_id' => $user->account_id,
             'user_id' => $user->id,
             'parameters' => ['name' => 'Dunder Mifflin'],
+        ]);
+    }
+
+    private function anMcpCall(User $user): McpCall
+    {
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        return McpCall::factory()->invalidParameters()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+            'vault_id' => $vault->id,
+            'subject_type' => $contact->getMorphClass(),
+            'subject_id' => $contact->id,
+            'response' => '{"content":[],"isError":true}',
         ]);
     }
 
