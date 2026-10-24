@@ -32,7 +32,7 @@
 @endphp
 
 @isset($href)
-  <a href="{{ $href }}" {{ $attributes->class($classes) }}>
+  <a href="{{ $href }}" @if (! $attributes->has('data-turbo') && $attributes->whereStartsWith('x-target')->isEmpty()) data-turbo="true" @endif {{ $attributes->class($classes) }}>
     @isset($icon)
       <span class="shrink-0">{{ $icon }}</span>
     @endisset

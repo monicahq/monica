@@ -17,6 +17,7 @@
         "@tailwindcss/vite": "^4.3.3",
         "alpinejs": "^3.17.4",
         "concurrently": "^10.0.6",
+        "instant.page": "^5.2.0",
         "laravel-vite-plugin": "^3.2.0",
         "tailwindcss": "^4.3.3",
         "vite": "npm:@voidzero-dev/vite-plus-core@1.3.0",

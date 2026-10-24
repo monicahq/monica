@@ -36,7 +36,7 @@
       @endif
 
       @if ($viewModel->isKnownToStripe() && $viewModel->hasFullAccess() && ! $viewModel->wasGranted())
-        <x-button.secondary :href="route('settings.subscriptionPortal.show')" target="_blank" rel="noopener noreferrer" class="w-full">{{ __('See it on Stripe') }}</x-button.secondary>
+        <x-button.secondary :href="route('settings.subscriptionPortal.show')" target="_blank" rel="noopener noreferrer" data-no-instant class="w-full">{{ __('See it on Stripe') }}</x-button.secondary>
       @endif
 
       @if ($viewModel->paymentCount() > 0)

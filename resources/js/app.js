@@ -1,3 +1,5 @@
+import 'instant.page';
+
 import * as Turbo from '@hotwired/turbo';
 import Alpine from 'alpinejs';
 import morph from '@alpinejs/morph';
@@ -23,6 +25,21 @@ import searchShortcut from './search-shortcut';
 import timezonePicker from './timezone-picker';
 
 window.Turbo = Turbo;
+
+Turbo.session.drive = false;
+
+// A link Turbo drives is preloaded on hover by Turbo itself, and Turbo cannot reuse what instant.page
+// fetched, so instant.page is told to leave that link alone before its own listeners look at it.
+const leaveTurboLinksToTurbo = (event) => {
+    const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+
+    if (link && Turbo.session.elementIsNavigatable(link)) {
+        link.dataset.noInstant = '';
+    }
+};
+
+window.addEventListener('mouseover', leaveTurboLinksToTurbo, { capture: true, passive: true });
+window.addEventListener('touchstart', leaveTurboLinksToTurbo, { capture: true, passive: true });
 
 // The docs offer each page as Markdown. Turbo would fetch it as a page, get text back, then load it a second time.
 Turbo.config.drive.unvisitableExtensions.add('.md');
@@ -165,4 +182,6 @@ Alpine.store('theme', {
     },
 });
 
+// Started at once rather than on turbo:load, which only fires once every image has loaded. Alpine
+// watches the document, so it also sets up the body a Turbo visit swaps in.
 Alpine.start();

@@ -33,7 +33,7 @@
 @endphp
 
 @isset($href)
-  <a href="{{ $href }}" {{ $attributes->merge($hover)->class($classes) }}>
+  <a href="{{ $href }}" @if (! $attributes->has('data-turbo') && $attributes->whereStartsWith('x-target')->isEmpty()) data-turbo="true" @endif {{ $attributes->merge($hover)->class($classes) }}>
 @else
   <button type="{{ $type }}" {{ $attributes->merge($hover)->class($classes) }}>
 @endisset

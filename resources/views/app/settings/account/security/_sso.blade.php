@@ -35,7 +35,7 @@
     <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-3.5">
       <p class="text-sm font-medium text-ink">{{ $provider['name'] }}</p>
 
-      <x-button.secondary :href="$provider['url']" data-turbo="false">{{ __('Connect') }}</x-button.secondary>
+      <x-button.secondary :href="$provider['url']" data-turbo="false" data-no-instant>{{ __('Connect') }}</x-button.secondary>
     </div>
   @empty
     @include('app.settings.account.security._sso-unavailable')

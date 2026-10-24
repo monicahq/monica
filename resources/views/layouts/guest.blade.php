@@ -5,6 +5,8 @@
   <head>
     @include('partials.meta', ['title' => $title ?? null])
 
+    <meta name="turbo-prefetch" content="false" />
+
     @if (config('turnstile.enabled'))
       <meta name="turbo-visit-control" content="reload" />
     @endif

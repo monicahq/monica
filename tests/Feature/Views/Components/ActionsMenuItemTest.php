@@ -42,4 +42,17 @@ class ActionsMenuItemTest extends TestCase
         $this->assertStringContainsString('text-error', $rendered);
         $this->assertSame(1, mb_substr_count($rendered, 'class='));
     }
+
+    #[Test]
+    public function it_goes_through_turbo_only_when_it_leads_somewhere(): void
+    {
+        $this->blade('<x-actions-menu.item href="/somewhere">Rename</x-actions-menu.item>')
+            ->assertSee('data-turbo="true"', escape: false);
+
+        $this->blade('<x-actions-menu.item @click="open = true">Rename</x-actions-menu.item>')
+            ->assertDontSee('data-turbo', escape: false);
+
+        $this->blade('<x-actions-menu.item href="/somewhere" data-turbo="false">Rename</x-actions-menu.item>')
+            ->assertDontSee('data-turbo="true"', escape: false);
+    }
 }

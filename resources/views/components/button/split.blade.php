@@ -7,7 +7,7 @@
 @props([
   'label',
   'href' => null,
-  'turbo' => false,
+  'turbo' => true,
 ])
 
 @php

@@ -65,7 +65,7 @@
                         $names = collect($entry['with'])
                           ->map(fn (array $person): string => $person['url'] === null
                             ? e($person['name'])
-                            : '<a href="'.e($person['url']).'" class="font-medium text-link underline decoration-hairline-strong underline-offset-2 hover:decoration-ink">'.e($person['name']).'</a>')
+                            : '<a href="'.e($person['url']).'" data-turbo="true" class="font-medium text-link underline decoration-hairline-strong underline-offset-2 hover:decoration-ink">'.e($person['name']).'</a>')
                           ->implode(e(__(', ')));
                       @endphp
 

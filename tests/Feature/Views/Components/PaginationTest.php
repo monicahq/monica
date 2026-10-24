@@ -128,4 +128,16 @@ class PaginationTest extends TestCase
         );
         $targeted->assertSee('x-target.push="contacts"', escape: false);
     }
+
+    #[Test]
+    public function it_leaves_its_links_to_turbo_unless_alpine_ajax_takes_them(): void
+    {
+        $this->blade(self::CALL, ['paginator' => $this->paginator(120, 20, 3), 'size' => 20])
+            ->assertSee('data-turbo="true"', escape: false);
+
+        $this->blade(
+            '<x-pagination :paginator="$paginator" :size="20" :default="20" target="contacts" />',
+            ['paginator' => $this->paginator(120, 20, 3)],
+        )->assertDontSee('data-turbo="true"', escape: false);
+    }
 }

@@ -55,7 +55,7 @@
 
     <div class="flex flex-col gap-2">
       @foreach ($viewModel->providersToOffer() as $provider)
-        <x-button.secondary :href="$provider['url']" data-turbo="false" class="w-full">
+        <x-button.secondary :href="$provider['url']" data-turbo="false" data-no-instant class="w-full">
           {{ __('Continue with :provider', ['provider' => $provider['name']]) }}
         </x-button.secondary>
       @endforeach

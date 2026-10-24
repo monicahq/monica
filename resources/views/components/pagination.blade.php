@@ -43,7 +43,7 @@
               <span class="sr-only">{!! __('pagination.previous') !!}</span>
             </span>
           @else
-            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" @if ($target) x-target.push="{{ $target }}" @endif class="{{ $link }}">
+            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" @if ($target) x-target.push="{{ $target }}" @else data-turbo="true" @endif class="{{ $link }}">
               <svg class="size-5 rtl:rotate-180" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
               <span class="sr-only">{!! __('pagination.previous') !!}</span>
             </a>
@@ -57,14 +57,14 @@
             @elseif ($page['active'])
               <span aria-current="page" class="{{ $step }} border-hairline bg-hover font-medium text-ink">{{ $page['label'] }}</span>
             @else
-              <a href="{{ $page['url'] }}" aria-label="{{ __('Page :page', ['page' => $page['label']]) }}" @if ($target) x-target.push="{{ $target }}" @endif class="{{ $link }}">{{ $page['label'] }}</a>
+              <a href="{{ $page['url'] }}" aria-label="{{ __('Page :page', ['page' => $page['label']]) }}" @if ($target) x-target.push="{{ $target }}" @else data-turbo="true" @endif class="{{ $link }}">{{ $page['label'] }}</a>
             @endif
           </li>
         @endforeach
 
         <li>
           @if ($paginator->hasMorePages())
-            <a href="{{ $paginator->nextPageUrl() }}" rel="next" @if ($target) x-target.push="{{ $target }}" @endif class="{{ $link }}">
+            <a href="{{ $paginator->nextPageUrl() }}" rel="next" @if ($target) x-target.push="{{ $target }}" @else data-turbo="true" @endif class="{{ $link }}">
               <svg class="size-5 rtl:rotate-180" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
               <span class="sr-only">{!! __('pagination.next') !!}</span>
             </a>

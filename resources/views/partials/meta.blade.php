@@ -12,7 +12,6 @@
 @endif
 
 <meta name="turbo-cache-control" content="no-cache" />
-<meta name="turbo-prefetch" content="false" />
 
 <title>{{ $title ?? config('app.name') }}</title>
 

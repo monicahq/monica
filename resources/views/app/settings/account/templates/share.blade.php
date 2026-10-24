@@ -58,7 +58,7 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-2.5">
-          <x-button :href="$viewModel->downloadUrl()" download>{{ __('Export the template') }}</x-button>
+          <x-button :href="$viewModel->downloadUrl()" download data-no-instant>{{ __('Export the template') }}</x-button>
 
           <x-button.ghost :href="$viewModel->exportUrl()" data-turbo="true">{{ __('See what is inside') }}</x-button.ghost>
         </div>

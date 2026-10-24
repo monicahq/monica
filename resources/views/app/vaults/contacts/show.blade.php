@@ -54,7 +54,7 @@
         <div role="separator" class="-mx-1 my-1 h-px bg-hairline"></div>
 
         @if ($viewModel->vCardUrl() !== null)
-          <x-actions-menu.item :href="$viewModel->vCardUrl()" download>
+          <x-actions-menu.item :href="$viewModel->vCardUrl()" download data-no-instant>
             {{ __('Export as vCard') }}
           </x-actions-menu.item>
         @endif

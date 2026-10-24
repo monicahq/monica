@@ -94,3 +94,5 @@ A chronological list of every feature and improvement shipped during development
 * Settings/security/MCP history: Added filters by period, connection, result and tool.
 * Settings/security/MCP history: Kept calls for 90 days, a period the instance can change, then removed them automatically.
 * API: Added endpoints to list and read the MCP history.
+* UI: Loaded the next page in advance while the pointer rests on its link, and left page changes to the browser again rather than to Turbo.
+* UI: Changed pages without a full reload for most links inside the app, loading the next page while the pointer rests on its link.

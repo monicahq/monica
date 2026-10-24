@@ -19,4 +19,21 @@ class ButtonTest extends TestCase
         $this->blade('<x-button>Save</x-button>')
             ->assertSee('<button type="submit"', escape: false);
     }
+
+    #[Test]
+    public function it_goes_through_turbo_unless_the_caller_or_alpine_ajax_takes_the_link(): void
+    {
+        $this->blade('<x-button href="/vaults">Your vaults</x-button>')
+            ->assertSee('data-turbo="true"', escape: false);
+
+        $this->blade('<x-button href="/vaults" data-turbo="false">Your vaults</x-button>')
+            ->assertSee('data-turbo="false"', escape: false)
+            ->assertDontSee('data-turbo="true"', escape: false);
+
+        $this->blade('<x-button href="/vaults" x-target="rows">Your vaults</x-button>')
+            ->assertDontSee('data-turbo', escape: false);
+
+        $this->blade('<x-button>Save</x-button>')
+            ->assertDontSee('data-turbo', escape: false);
+    }
 }
