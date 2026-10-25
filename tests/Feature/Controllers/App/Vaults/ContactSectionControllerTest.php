@@ -204,6 +204,26 @@ class ContactSectionControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_does_not_validate_against_a_section_of_another_account(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $theirs = $this->versionWithSections(User::factory()->create(), 'Health', ['Ongoing' => 'Confidential diagnosis']);
+        Field::query()->where('label', 'Confidential diagnosis')->firstOrFail()->update(['is_required' => true]);
+        $section = $this->sectionNamed($theirs, 'Ongoing');
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section->id]),
+                [],
+            )
+            ->assertNotFound()
+            ->assertSessionDoesntHaveErrors();
+    }
+
+    #[Test]
     public function it_saves_an_address_and_what_it_is_for(): void
     {
         Queue::fake();

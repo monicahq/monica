@@ -15,7 +15,6 @@ use App\Models\Passkey;
 use App\Models\SecurityKey;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
-use App\Models\StructureVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -75,7 +74,6 @@ class RouteProtectionTest extends TestCase
         SecurityKey::class,
         StructureVersion::class,
         StructureVersionPage::class,
-        StructureVersionSection::class,
         User::class,
         ValueList::class,
         ValueListItem::class,

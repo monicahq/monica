@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Exceptions\PublishedVersionIsFrozen;
+use App\Models\Concerns\ResolvesModelInAccount;
 use Carbon\CarbonImmutable;
 use Database\Factories\StructureVersionSectionFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -65,6 +66,8 @@ class StructureVersionSection extends Model
 {
     /** @use HasFactory<StructureVersionSectionFactory> */
     use HasFactory;
+
+    use ResolvesModelInAccount;
 
     /**
      * A row is as frozen as the version it belongs to. Once the structure version has been
