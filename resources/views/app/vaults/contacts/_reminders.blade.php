@@ -136,6 +136,7 @@
     <x-form
       id="contact-reminder-form"
       :action="$form->actionUrl()"
+      :method="$form->method()"
       x-ref="form"
       x-target="contact-reminder-panel"
       x-show="adding"
