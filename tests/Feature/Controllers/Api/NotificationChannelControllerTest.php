@@ -204,6 +204,25 @@ class NotificationChannelControllerTest extends TestCase
         $this->json('GET', route('api.v1.notificationChannels.show', 'sms'))->assertNotFound();
     }
 
+    #[Test]
+    public function asking_for_another_code_inside_the_wait_is_refused(): void
+    {
+        NotificationFacade::fake();
+        $this->freezeTime();
+        $user = $this->signedIn();
+        $this->channel($user, NotificationChannelEnum::Sms)->update([
+            'destination' => '+15705550172',
+            'proof_sent_count' => 1,
+            'proof_last_sent_at' => now()->subSeconds(50),
+        ]);
+
+        $response = $this->json('POST', route('api.v1.notificationChannels.proof.store', 'sms'));
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['channel' => 'You can ask for another code in 10 seconds.']);
+        NotificationFacade::assertNothingSent();
+    }
+
     private function signedIn(): User
     {
         $account = Account::factory()->create();

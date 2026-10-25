@@ -22,6 +22,8 @@ class NotificationChannelResource extends JsonResource
     #[Override]
     public function toArray(Request $request): array
     {
+        $proofCode = $request->user()->inspect('sendProofCode', $this->resource);
+
         return [
             'type' => 'notification_channel',
             'id' => $this->channel->value,
@@ -36,6 +38,8 @@ class NotificationChannelResource extends JsonResource
                 'is_proven' => $this->isProven(),
                 'is_configured_on_the_instance' => $this->channel->isConfiguredOnTheInstance(),
                 'disabled_reason' => $this->disabled_reason,
+                'can_send_proof_code' => $proofCode->allowed(),
+                'proof_code_refusal' => $proofCode->allowed() ? null : $proofCode->message(),
             ],
             'links' => [
                 'self' => route('api.v1.notificationChannels.show', $this->channel->value),

@@ -96,3 +96,8 @@ A chronological list of every feature and improvement shipped during development
 * API: Added endpoints to list and read the MCP history.
 * UI: Loaded the next page in advance while the pointer rests on its link, and left page changes to the browser again rather than to Turbo.
 * UI: Changed pages without a full reload for most links inside the app, loading the next page while the pointer rests on its link.
+* Settings/account/notifications: Let somebody remove the phone number of the text message channel, after a warning, so it is erased and nothing more is sent to it.
+* Settings/account/notifications: Let somebody disconnect Telegram, after a warning, so the conversation is forgotten and a connection still in progress stops working.
+* Settings/account/notifications: Let somebody ask for another text message code, once a minute and up to the limit, with the reason shown when it cannot be sent yet.
+* Settings/account/notifications: Let somebody remove a phone number kept while text messages are unavailable on their account.
+* API: Added an endpoint to remove the setup of a notification channel, and said on every channel whether another code may be sent.

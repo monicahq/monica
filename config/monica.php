@@ -188,6 +188,8 @@ return [
 
     'notification_proof_maximum_sends' => env('MONICA_NOTIFICATION_PROOF_MAXIMUM_SENDS', 3),
 
+    'notification_proof_resend_seconds' => env('MONICA_NOTIFICATION_PROOF_RESEND_SECONDS', 60),
+
     /*
     |--------------------------------------------------------------------------
     | The largest single file

@@ -3,7 +3,7 @@ id: notifications.channels
 title: Choose how you are notified
 slug: notification-channels
 section: reminders-and-notifications
-last_updated: 2026-09-29
+last_updated: 2026-10-25
 ---
 
 # Choose how you are notified
@@ -67,7 +67,7 @@ Choose **Send me a code**. Monica texts a six digit code to the number.
 :::
 
 :::step title="Type the code back"
-In **The code**, type the code, then choose **Confirm**. By default, the code works for 10 minutes, and you have five tries.
+In **The code**, type the code, then choose **Confirm**. By default, the code works for 10 minutes, and you have five tries. If it expired or you used your tries, choose **Send another code**: the new code replaces the old one. You can ask once a minute, and three codes in all for one number.
 :::
 
 :::step title="Switch it on"
@@ -79,7 +79,11 @@ Switch the channel on, then choose **Send a test**.
 Use a number that is yours alone. Anybody who can read the messages on it will read everything Monica tells you.
 :::
 
-To stop using the number, choose **Cancel this connection**. To use another one, cancel the connection and start again.
+## Remove a number or a Telegram conversation
+
+When you change phone, or stop using Telegram, choose **Remove the setup** under the channel. Monica asks you to confirm, then erases the number or forgets the conversation and switches the channel off. Nothing more is sent there, not even a notification that was waiting. To use the channel again, set it up from the start.
+
+If text messages are no longer offered on your account, the notice that says your number is kept offers **Remove the number**.
 
 ## When Monica switches a channel off
 

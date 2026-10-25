@@ -13,6 +13,7 @@ use App\Models\Account;
 use App\Models\NotificationChannel;
 use App\Models\User;
 use App\Notifications\ChannelProofCode;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -93,9 +94,78 @@ class SendChannelProofCodeTest extends TestCase
         [$user, $channel] = $this->readyTextMessage();
         $channel->update(['proof_sent_count' => (int) config('monica.notification_proof_maximum_sends')]);
 
-        $this->expectException(ChannelIsNotValid::class);
+        try {
+            new SendChannelProofCode(user: $user, channel: $channel)->execute();
+            $this->fail('A code was sent past the limit.');
+        } catch (AuthorizationException $e) {
+            $this->assertSame('No more codes will be sent to this number. Remove it to type a number again.', $e->getMessage());
+        }
+
+        NotificationFacade::assertNothingSent();
+    }
+
+    #[Test]
+    public function another_code_sent_after_the_wait_replaces_the_first_with_a_full_set_of_tries(): void
+    {
+        NotificationFacade::fake();
+        $this->freezeTime();
+        [$user, $channel] = $this->readyTextMessage();
+        $channel->update([
+            'proof_code_hash' => Hash::make('111111'),
+            'proof_expires_at' => now()->subMinute(),
+            'proof_attempts' => 5,
+            'proof_sent_count' => 1,
+            'proof_last_sent_at' => now()->subSeconds((int) config('monica.notification_proof_resend_seconds')),
+        ]);
 
         new SendChannelProofCode(user: $user, channel: $channel)->execute();
+
+        $channel->refresh();
+
+        $this->assertFalse(Hash::check('111111', (string) $channel->proof_code_hash));
+        $this->assertSame(0, $channel->proof_attempts);
+        $this->assertSame(2, $channel->proof_sent_count);
+        $this->assertEqualsWithDelta(
+            now()->addMinutes((int) config('monica.notification_proof_code_minutes'))->timestamp,
+            $channel->proof_expires_at->timestamp,
+            1,
+        );
+    }
+
+    #[Test]
+    public function no_code_is_sent_inside_the_wait(): void
+    {
+        NotificationFacade::fake();
+        $this->freezeTime();
+        [$user, $channel] = $this->readyTextMessage();
+        $channel->update(['proof_sent_count' => 1, 'proof_last_sent_at' => now()->subSeconds(20)]);
+
+        try {
+            new SendChannelProofCode(user: $user, channel: $channel)->execute();
+            $this->fail('A code was sent inside the wait.');
+        } catch (AuthorizationException $e) {
+            $this->assertSame('You can ask for another code in 40 seconds.', $e->getMessage());
+        }
+
+        NotificationFacade::assertNothingSent();
+        $this->assertSame(1, $channel->refresh()->proof_sent_count);
+    }
+
+    #[Test]
+    public function a_request_that_loses_the_race_inside_the_wait_sends_nothing(): void
+    {
+        NotificationFacade::fake();
+        $this->freezeTime();
+        [$user, $channel] = $this->readyTextMessage();
+
+        NotificationChannel::query()->whereKey($channel->id)->update(['proof_last_sent_at' => now()]);
+
+        try {
+            new SendChannelProofCode(user: $user, channel: $channel)->execute();
+            $this->fail('The request that lost the race sent a code.');
+        } catch (AuthorizationException) {
+            NotificationFacade::assertNothingSent();
+        }
     }
 
     #[Test]

@@ -45,6 +45,8 @@ class NotificationChannelsViewModel
     /** @return array<string, mixed> */
     private function shapeOf(NotificationChannel $row): array
     {
+        $proofCode = $this->user->inspect('sendProofCode', $row);
+
         return [
             'channel' => $row->channel->value,
             'label' => __($row->channel->label()),
@@ -72,11 +74,48 @@ class NotificationChannelsViewModel
             'proof_confirm_url' => route('settings.notifications.proof.update', $row->channel->value),
             'test_url' => route('settings.notifications.test.store', $row->channel->value),
             'connection_url' => route('settings.notifications.connection.store', $row->channel->value),
-            'reset_url' => route('settings.notifications.reset', $row->channel->value),
+            'holds_setup' => $row->holdsSetup(),
+            'removal_warning' => $this->removalWarning($row),
+            'setup_url' => route('settings.notifications.setup.destroy', $row->channel->value),
+            'can_send_proof_code' => $proofCode->allowed(),
+            'proof_code_refusal' => $proofCode->allowed() ? null : $proofCode->message(),
         ];
     }
 
+    private function removalWarning(NotificationChannel $row): ?string
+    {
+        return match ($row->channel) {
+            NotificationChannelEnum::Sms => __('The number :number will be erased from your account.', ['number' => $row->destination]),
+            NotificationChannelEnum::Telegram => __('Your Telegram conversation will be forgotten.'),
+            NotificationChannelEnum::InApp, NotificationChannelEnum::Email => null,
+        };
+    }
+
     public function smsNotice(): ?string
+    {
+        if (! $this->keptNumber() instanceof NotificationChannel) {
+            return null;
+        }
+
+        return __('Text messages are unavailable on this account for now. Your number is kept.');
+    }
+
+    /** @return array{url: string, warning: string}|null */
+    public function keptNumberRemoval(): ?array
+    {
+        $sms = $this->keptNumber();
+
+        if (! $sms instanceof NotificationChannel) {
+            return null;
+        }
+
+        return [
+            'url' => route('settings.notifications.setup.destroy', NotificationChannelEnum::Sms->value),
+            'warning' => (string) $this->removalWarning($sms),
+        ];
+    }
+
+    private function keptNumber(): ?NotificationChannel
     {
         $sms = NotificationChannel::query()
             ->where('account_id', $this->user->account_id)
@@ -87,7 +126,7 @@ class NotificationChannelsViewModel
             return null;
         }
 
-        return __('Text messages are unavailable on this account for now. Your number is kept.');
+        return $sms;
     }
 
     public function workingCount(): int

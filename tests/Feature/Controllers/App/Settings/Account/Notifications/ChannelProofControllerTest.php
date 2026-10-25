@@ -69,6 +69,36 @@ class ChannelProofControllerTest extends TestCase
         $this->put(route('settings.notifications.proof.update', 'sms'), [])->assertSessionHasErrors('code');
     }
 
+    #[Test]
+    public function asking_again_inside_the_wait_is_refused_with_the_time_left(): void
+    {
+        NotificationFacade::fake();
+        $this->freezeTime();
+        $user = $this->readyTextMessage();
+        $this->channel($user)->update(['proof_sent_count' => 1, 'proof_last_sent_at' => now()->subSeconds(45)]);
+
+        $response = $this->post(route('settings.notifications.proof.store', 'sms'));
+
+        $response->assertSessionHasErrors(['proof' => 'You can ask for another code in 15 seconds.']);
+        NotificationFacade::assertNothingSent();
+    }
+
+    #[Test]
+    public function the_screen_keeps_the_refused_control_and_points_it_at_its_reason(): void
+    {
+        $this->freezeTime();
+        $user = $this->readyTextMessage();
+        $this->channel($user)->update(['proof_sent_count' => 1, 'proof_last_sent_at' => now()->subSeconds(45)]);
+
+        $response = $this->get(route('settings.notifications.index'));
+
+        $response->assertOk();
+        $response->assertSee('aria-disabled="true"', escape: false);
+        $response->assertSee('aria-describedby="sms-proof-code-refusal"', escape: false);
+        $response->assertSee('id="sms-proof-code-refusal"', escape: false);
+        $response->assertSee('You can ask for another code in 15 seconds.');
+    }
+
     private function readyTextMessage(): User
     {
         $account = Account::factory()->create();

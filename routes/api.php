@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegistrationController;
 use App\Http\Controllers\Api\BillingController;
 use App\Http\Controllers\Api\ChannelProofController as ApiChannelProofController;
+use App\Http\Controllers\Api\ChannelSetupController as ApiChannelSetupController;
 use App\Http\Controllers\Api\ChannelTestController as ApiChannelTestController;
 use App\Http\Controllers\Api\CheckoutSessionController;
 use App\Http\Controllers\Api\ContactAvatarController;
@@ -119,6 +120,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::post('notification-channels/{channel}/proof', [ApiChannelProofController::class, 'create'])->name('notificationChannels.proof.store');
         Route::put('notification-channels/{channel}/proof', [ApiChannelProofController::class, 'update'])->name('notificationChannels.proof.update');
         Route::post('notification-channels/{channel}/test', [ApiChannelTestController::class, 'create'])->name('notificationChannels.test.store');
+        Route::delete('notification-channels/{channel}/setup', [ApiChannelSetupController::class, 'destroy'])->name('notificationChannels.setup.destroy');
 
         Route::get('notification-preferences', [ApiNotificationPreferenceController::class, 'show'])->name('notificationPreferences.show');
         Route::put('notification-preferences', [ApiNotificationPreferenceController::class, 'update'])->name('notificationPreferences.update');

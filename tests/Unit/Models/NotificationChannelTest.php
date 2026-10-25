@@ -130,6 +130,42 @@ class NotificationChannelTest extends TestCase
         $this->assertNotNull(new NotificationChannel()->resolveRouteBinding('email'));
     }
 
+    #[Test]
+    public function a_channel_nobody_has_set_up_holds_no_setup(): void
+    {
+        $channel = NotificationChannel::factory()->channel(NotificationChannelEnum::Sms)->make();
+
+        $this->assertFalse($channel->holdsSetup());
+    }
+
+    #[Test]
+    public function a_number_is_a_setup(): void
+    {
+        $channel = NotificationChannel::factory()->channel(NotificationChannelEnum::Sms)->unproven()->make();
+
+        $this->assertTrue($channel->holdsSetup());
+    }
+
+    #[Test]
+    public function a_code_waiting_to_be_typed_back_is_a_setup(): void
+    {
+        $channel = NotificationChannel::factory()->channel(NotificationChannelEnum::Sms)->make([
+            'proof_code_hash' => 'a hash',
+        ]);
+
+        $this->assertTrue($channel->holdsSetup());
+    }
+
+    #[Test]
+    public function a_telegram_connection_in_progress_is_a_setup(): void
+    {
+        $channel = NotificationChannel::factory()->channel(NotificationChannelEnum::Telegram)->make([
+            'verification_token_hash' => hash('sha256', 'dunder-mifflin'),
+        ]);
+
+        $this->assertTrue($channel->holdsSetup());
+    }
+
     /**
      * The row an account already has for a channel. Every account is given one
      * per channel when it is made, so a test never creates one of its own.

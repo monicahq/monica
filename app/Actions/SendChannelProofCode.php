@@ -10,6 +10,8 @@ use App\Jobs\LogUserAction;
 use App\Models\NotificationChannel;
 use App\Models\User;
 use App\Notifications\ChannelProofCode;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
 
@@ -38,12 +40,7 @@ class SendChannelProofCode
 
         $code = $this->code();
 
-        $this->channel->proof_code_hash = Hash::make($code);
-        $this->channel->proof_expires_at = now()->addMinutes((int) config('monica.notification_proof_code_minutes'));
-        $this->channel->proof_attempts = 0;
-        $this->channel->proof_sent_count++;
-        $this->channel->proof_last_sent_at = now();
-        $this->channel->save();
+        $this->store($code);
 
         $this->user->notify(new ChannelProofCode(
             code: $code,
@@ -72,20 +69,37 @@ class SendChannelProofCode
             throw new ModelNotFoundException('This channel is in another account.');
         }
 
-        if (! $this->channel->channel->provesSilently()) {
-            throw new ChannelIsNotValid('This channel says for itself whether a destination is wrong, so it has nothing to prove.');
-        }
-
-        if (! $this->channel->channel->isConfiguredOnTheInstance()) {
-            throw new ChannelIsNotValid('This server has not been set up to send on this channel, so no code can be sent.');
-        }
+        $this->user->authorize('sendProofCode', $this->channel);
 
         if (! $this->channel->isSetUp()) {
-            throw new ChannelIsNotValid('Fill in the destination and the credential before asking for a code.');
+            throw new ChannelIsNotValid('Type a number before asking for a code.');
         }
+    }
 
-        if ($this->channel->proof_sent_count >= (int) config('monica.notification_proof_maximum_sends')) {
-            throw new ChannelIsNotValid('No more codes will be sent to this destination. Change it and start again.');
+    private function store(string $code): void
+    {
+        $wait = (int) config('monica.notification_proof_resend_seconds');
+
+        $stored = NotificationChannel::query()
+            ->whereKey($this->channel->id)
+            ->where(fn (Builder $query): Builder => $query
+                ->whereNull('proof_last_sent_at')
+                ->orWhere('proof_last_sent_at', '<=', now()->subSeconds($wait)))
+            ->update([
+                'proof_code_hash' => Hash::make($code),
+                'proof_expires_at' => now()->addMinutes((int) config('monica.notification_proof_code_minutes')),
+                'proof_attempts' => 0,
+                'proof_sent_count' => $this->channel->proof_sent_count + 1,
+                'proof_last_sent_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+        $this->channel->refresh();
+
+        if ($stored === 0) {
+            $this->user->authorize('sendProofCode', $this->channel);
+
+            throw new AuthorizationException;
         }
     }
 

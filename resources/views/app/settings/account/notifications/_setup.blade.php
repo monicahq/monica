@@ -40,6 +40,24 @@
           <x-button type="submit" size="small">{{ __('Confirm') }}</x-button>
         </div>
       </x-form>
+
+      @if ($channel['can_send_proof_code'])
+        <x-form method="post" :action="$channel['proof_url']">
+          <x-button type="submit" variant="secondary" size="small">{{ __('Send another code') }}</x-button>
+        </x-form>
+      @else
+        <div class="flex flex-wrap items-center gap-2">
+          <x-button
+            type="button"
+            variant="secondary"
+            size="small"
+            aria-disabled="true"
+            :aria-describedby="$channel['channel'] . '-proof-code-refusal'"
+          >{{ __('Send another code') }}</x-button>
+
+          <p id="{{ $channel['channel'] }}-proof-code-refusal" class="text-xs text-pretty text-muted">{{ $channel['proof_code_refusal'] }}</p>
+        </div>
+      @endif
     </div>
   @endif
 @endif

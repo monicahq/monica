@@ -23,8 +23,24 @@
         </x-notice>
       @endif
 
-      @if ($viewModel->smsNotice() !== null)
-        <x-notice tone="quiet">{{ $viewModel->smsNotice() }}</x-notice>
+      @php($keptNumberRemoval = $viewModel->keptNumberRemoval())
+
+      @if ($keptNumberRemoval !== null)
+        <x-notice tone="quiet">
+          <div class="flex flex-col items-start gap-2">
+            <p>{{ $viewModel->smsNotice() }}</p>
+
+            <x-delete-action
+              :title="__('Remove :name?', ['name' => __('Text message')])"
+              :confirm="__('Remove')"
+              :action="$keptNumberRemoval['url']"
+              :label="__('Remove the number')"
+              size="small"
+            >
+              <p>{{ $keptNumberRemoval['warning'] }}</p>
+            </x-delete-action>
+          </div>
+        </x-notice>
       @endif
 
       @foreach ($channels as $channel)

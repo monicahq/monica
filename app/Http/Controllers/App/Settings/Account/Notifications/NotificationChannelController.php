@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Settings\Account\Notifications;
 
-use App\Actions\ResetNotificationChannel;
 use App\Actions\UpdateNotificationChannel;
 use App\Exceptions\ChannelIsNotValid;
 use App\Http\Controllers\Controller;
@@ -45,16 +44,5 @@ class NotificationChannelController extends Controller
 
         return redirect()->route('settings.notifications.index')
             ->with('status', __('Your notification settings are saved.'));
-    }
-
-    public function reset(Request $request, NotificationChannel $channel): RedirectResponse
-    {
-        new ResetNotificationChannel(
-            user: $request->user(),
-            channel: $channel,
-        )->execute();
-
-        return redirect()->route('settings.notifications.index')
-            ->with('status', __('The notification channel connection has been reset.'));
     }
 }

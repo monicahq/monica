@@ -8,8 +8,8 @@ namespace App\ViewModels\Docs;
  * The API reference written as Markdown, for a reader that is not a browser.
  *
  * The same sections the docs portal draws as HTML, handed over as plain text at
- * `/docs/api/markdown` so that a client, an agent or a `curl` can read the
- * whole reference, or one endpoint of it, without parsing a page.
+ * `/docs/api.md`, or one endpoint at `/docs/api/{section}.md`, so that a client,
+ * an agent or a `curl` can read it without parsing a page.
  */
 class ApiDocsMarkdown
 {

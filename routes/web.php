@@ -40,6 +40,7 @@ use App\Http\Controllers\App\Settings\Account\Logs\EmailSentController;
 use App\Http\Controllers\App\Settings\Account\Logs\LogController;
 use App\Http\Controllers\App\Settings\Account\Notifications\ChannelConnectionController;
 use App\Http\Controllers\App\Settings\Account\Notifications\ChannelProofController;
+use App\Http\Controllers\App\Settings\Account\Notifications\ChannelSetupController;
 use App\Http\Controllers\App\Settings\Account\Notifications\ChannelTestController;
 use App\Http\Controllers\App\Settings\Account\Notifications\NotificationChannelController;
 use App\Http\Controllers\App\Settings\Account\Notifications\TelegramWebhookController;
@@ -468,7 +469,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('settings/account/notifications/{channel}/proof', [ChannelProofController::class, 'update'])->name('settings.notifications.proof.update');
     Route::post('settings/account/notifications/{channel}/test', [ChannelTestController::class, 'create'])->name('settings.notifications.test.store');
     Route::post('settings/account/notifications/{channel}/connection', [ChannelConnectionController::class, 'create'])->name('settings.notifications.connection.store');
-    Route::post('settings/account/notifications/{channel}/reset', [NotificationChannelController::class, 'reset'])->name('settings.notifications.reset');
+    Route::delete('settings/account/notifications/{channel}/setup', [ChannelSetupController::class, 'destroy'])->name('settings.notifications.setup.destroy');
 
     Route::get('settings/account/value-lists', [ValueListController::class, 'index'])->name('settings.valueLists.index');
     Route::post('settings/account/value-lists', [ValueListController::class, 'create'])->name('settings.valueLists.create');

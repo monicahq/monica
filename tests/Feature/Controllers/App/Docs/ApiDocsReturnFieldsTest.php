@@ -677,6 +677,12 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('PUT', '/api/v1/notification-channels/telegram', ['is_enabled' => true]);
             }),
 
+            'notification-channels-setup-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $this->aTextMessageAwaitingProof($user);
+
+                return $this->json('DELETE', '/api/v1/notification-channels/sms/setup');
+            }),
+
             'notification-channels-proof-store' => $this->asSomebody(function (User $user): TestResponse {
                 $this->aTextMessageAwaitingProof($user);
 

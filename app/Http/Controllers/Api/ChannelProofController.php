@@ -11,6 +11,7 @@ use App\Exceptions\ProofCodeIsNotValid;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NotificationChannelResource;
 use App\Models\NotificationChannel;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -29,7 +30,7 @@ class ChannelProofController extends Controller
                 user: $request->user(),
                 channel: $channel,
             )->execute();
-        } catch (ChannelIsNotValid $e) {
+        } catch (ChannelIsNotValid|AuthorizationException $e) {
             throw ValidationException::withMessages(['channel' => $e->getMessage()]);
         }
 

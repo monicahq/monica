@@ -144,6 +144,18 @@ class NotificationChannel extends Model
     }
 
     /**
+     * Whether the account has given this channel anything that removing its
+     * setup would take away: a destination, a code waiting to be typed back, or
+     * a connection opened with the bot and not finished.
+     */
+    public function holdsSetup(): bool
+    {
+        return ($this->destination !== null && $this->destination !== '')
+            || $this->proof_code_hash !== null
+            || $this->verification_token_hash !== null;
+    }
+
+    /**
      * Whether the destination has been shown to be the account's own. A channel
      * that refuses a wrong destination loudly proves itself by working, so it
      * has nothing to prove here.

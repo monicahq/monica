@@ -29,6 +29,7 @@ description: Conventions for writing pull requests, including Conventional Commi
 | Scope | Area |
 | --- | --- |
 | `reminders` | Reminders, dates, occurrences, the reminder detail page |
+| `notifications` | Notification channels, notification settings, the in-app notifications, quiet hours and the daily summary |
 | `contacts` | Contact record, contact list, timeline, duplicates, relationships, favourites |
 | `templates` | Templates, pages, sections, fields, entity types, value lists |
 | `vaults` | Vaults, vault dashboard, vault settings, vault navigation |

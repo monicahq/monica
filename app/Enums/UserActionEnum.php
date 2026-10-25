@@ -200,6 +200,7 @@ enum UserActionEnum: string implements Translatable
     case NotificationChannelDisabled = 'notification_channel_disabled';
     case NotificationChannelUpdate = 'notification_channel_updated';
     case NotificationChannelCredentialRemoved = 'notification_channel_credential_removed';
+    case NotificationChannelSetupRemoved = 'notification_channel_setup_removed';
     case NotificationChannelProofRequested = 'notification_channel_proof_requested';
     case NotificationChannelProven = 'notification_channel_proven';
     case NotificationChannelTested = 'notification_channel_tested';
@@ -401,6 +402,7 @@ enum UserActionEnum: string implements Translatable
             self::NotificationChannelDisabled => 'Switched :name off for notifications',
             self::NotificationChannelUpdate => 'Changed the settings of :name',
             self::NotificationChannelCredentialRemoved => 'Removed the credential of :name',
+            self::NotificationChannelSetupRemoved => 'Removed the setup of :name',
             self::NotificationChannelProofRequested => 'Asked for a code to prove their :name destination',
             self::NotificationChannelProven => 'Proved their :name destination is their own',
             self::NotificationChannelTested => 'Sent a test message on :name',

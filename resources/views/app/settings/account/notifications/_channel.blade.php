@@ -83,12 +83,6 @@
                 <x-button type="submit" variant="secondary" size="small">{{ __('Connect a different conversation') }}</x-button>
               </x-form>
             @endif
-
-            @if ($channel['requires_proof'])
-              <x-form method="post" :action="$channel['reset_url']">
-                <x-button type="submit" variant="secondary" size="small">{{ __('Cancel this connection') }}</x-button>
-              </x-form>
-            @endif
           </div>
 
           @if ($channel['discovers_destination'])
@@ -99,6 +93,21 @@
             <p class="text-xs text-body">{{ __('Your destination is set: :destination.', ['destination' => $channel['destination']]) }}</p>
           @endif
         @endunless
+
+        @if ($channel['holds_setup'])
+          <div>
+            <x-delete-action
+              :title="__('Remove :name?', ['name' => $channel['label']])"
+              :confirm="__('Remove')"
+              :action="$channel['setup_url']"
+              :label="__('Remove the setup')"
+              size="small"
+            >
+              <p>{{ $channel['removal_warning'] }}</p>
+              <p>{{ __('To use this channel again, you will set it up from the start.') }}</p>
+            </x-delete-action>
+          </div>
+        @endif
       </div>
 
       @include('app.settings.account.notifications._preview', ['channel' => $channel])

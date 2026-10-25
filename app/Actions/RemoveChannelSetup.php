@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\UserActionEnum;
+use App\Exceptions\ChannelIsNotValid;
 use App\Jobs\LogUserAction;
 use App\Models\NotificationChannel;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Reset a notification channel's connection, including its destination and proof status.
+ * Remove what the account gave a channel, its number or its Telegram conversation, and switch the
+ * channel off. The channel itself stays, ready to be set up again from the start.
  */
-class ResetNotificationChannel
+class RemoveChannelSetup
 {
     public function __construct(
         private readonly User $user,
@@ -24,7 +26,11 @@ class ResetNotificationChannel
     {
         $this->validate();
 
-        $this->update();
+        if (! $this->channel->holdsSetup()) {
+            return $this->channel;
+        }
+
+        $this->remove();
         $this->log();
 
         return $this->channel;
@@ -35,11 +41,16 @@ class ResetNotificationChannel
         if ($this->channel->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This channel is in another account.');
         }
+
+        if (! $this->channel->channel->needsDestination()) {
+            throw new ChannelIsNotValid('This channel has nothing to remove.');
+        }
     }
 
-    private function update(): void
+    private function remove(): void
     {
         $this->channel->destination = null;
+        $this->channel->verification_token_hash = null;
         $this->channel->proven_at = null;
         $this->channel->proof_code_hash = null;
         $this->channel->proof_expires_at = null;
@@ -52,16 +63,12 @@ class ResetNotificationChannel
         $this->channel->save();
     }
 
-    /**
-     * Switching a channel on or off is the thing worth reading later, so it is
-     * recorded as itself rather than as one more settings change.
-     */
     private function log(): void
     {
         LogUserAction::dispatch(
             account: $this->user->account,
             user: $this->user,
-            action: UserActionEnum::NotificationChannelDisabled,
+            action: UserActionEnum::NotificationChannelSetupRemoved,
             parameters: ['name' => __($this->channel->channel->label())],
             loggable: $this->channel,
         )->onQueue('low');

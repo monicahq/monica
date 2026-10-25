@@ -30,6 +30,7 @@
         <env name="MAIL_MAILER" value="array"/>
         <env name="LOG_CHANNEL" value="null" />
         <env name="LARAVEL_CLOUDFLARE_ENABLED" value="false"/>
+        <env name="APP_TRUSTED_PROXIES" value=""/>
         <env name="MONICA_SELF_HOSTED" value="false"/>
         <env name="VONAGE_KEY" value="testing-key"/>
         <env name="VONAGE_SECRET" value="testing-secret"/>

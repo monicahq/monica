@@ -21,6 +21,8 @@ $email = [
         'is_proven' => true,
         'is_configured_on_the_instance' => true,
         'disabled_reason' => null,
+        'can_send_proof_code' => false,
+        'proof_code_refusal' => 'This channel says for itself whether a destination is wrong, so it has nothing to prove.',
     ],
     'links' => [
         'self' => $base.'/notification-channels/email',
@@ -41,6 +43,8 @@ $telegram = [
         'is_proven' => true,
         'is_configured_on_the_instance' => true,
         'disabled_reason' => null,
+        'can_send_proof_code' => false,
+        'proof_code_refusal' => 'This channel says for itself whether a destination is wrong, so it has nothing to prove.',
     ],
     'links' => [
         'self' => $base.'/notification-channels/telegram',
@@ -61,6 +65,8 @@ $sms = [
         'is_proven' => false,
         'is_configured_on_the_instance' => true,
         'disabled_reason' => null,
+        'can_send_proof_code' => true,
+        'proof_code_refusal' => null,
     ],
     'links' => [
         'self' => $base.'/notification-channels/sms',
@@ -69,6 +75,9 @@ $sms = [
 
 $provenSms = $sms;
 $provenSms['attributes']['is_proven'] = true;
+
+$removedSms = $sms;
+$removedSms['attributes']['destination'] = null;
 
 $channelAttributes = [
     ['name' => 'channel', 'type' => 'string', 'description' => 'Which channel this is: in_app, email, telegram or sms. It is also the address of the record, so this is what goes in the path.'],
@@ -81,6 +90,8 @@ $channelAttributes = [
     ['name' => 'is_proven', 'type' => 'boolean', 'description' => 'Whether it has been proved. Always true for a channel with nothing to prove.'],
     ['name' => 'is_configured_on_the_instance', 'type' => 'boolean', 'description' => 'Whether this particular server has been set up to send on the channel. False only for a channel whose provider account belongs to the instance, which today means Telegram and the text message. Switching on a channel that is false here answers 422.'],
     ['name' => 'disabled_reason', 'type' => 'string', 'description' => 'Why the product switched the channel off itself, up to 255 characters, or null when it did not. Set when a channel refuses everything sent to it several times in a row.'],
+    ['name' => 'can_send_proof_code', 'type' => 'boolean', 'description' => 'Whether a code may be sent to the destination right now. False on a channel with nothing to prove, inside the wait after a send, and once every code allowed has been sent.'],
+    ['name' => 'proof_code_refusal', 'type' => 'string', 'description' => 'Why no code may be sent right now, in the words the settings screen prints, or null when one may.'],
 ];
 
 $preferenceAttributes = [
@@ -189,6 +200,24 @@ return [
             'response' => ['data' => $telegram],
         ],
         [
+            'id' => 'notification-channels-setup-destroy',
+            'returnFields' => ApiDocsFields::one('notification_channel', 'channel', $channelAttributes),
+            'title' => 'Remove the setup of a notification channel',
+            'label' => 'Remove a setup',
+            'method' => 'DELETE',
+            'path' => '/notification-channels/{channel}/setup',
+            'examplePath' => '/notification-channels/sms/setup',
+            'description' => 'Erase what the account gave a channel, its number or its Telegram conversation, and switch the channel off.',
+            'body' => [
+                'The channel itself stays, so it is still listed and can be set up again from the start. A code waiting to be typed back and a Telegram connection not yet finished stop working, and nothing more is sent to the erased destination, including notifications already waiting.',
+                'In app and email hold nothing to remove and answer 422. A channel nobody has set up is returned unchanged. A number kept while text messages are withdrawn from the account can still be removed here, the one request that reaches that channel.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'pathParams' => $channelPathParam,
+            'returns' => 'The channel as it now stands, with destination null and is_enabled false.',
+            'response' => ['data' => $removedSms],
+        ],
+        [
             'id' => 'notification-channels-proof-store',
             'responseStatus' => 201,
             'returnFields' => ApiDocsFields::one('notification_channel', 'channel', $channelAttributes),
@@ -200,7 +229,8 @@ return [
             'description' => 'Send a code to a destination to find out whether it is really yours.',
             'body' => [
                 'Only a channel whose requires_proof is true accepts this. A text message provider takes any well formed number, so a send that appears to have worked proves nothing; a code that comes back proves somebody holding that number typed it.',
-                'The code lasts a limited time and only so many may be asked for on the same destination. Both limits are settings of this instance, and both refusals answer 422.',
+                'Call it again for another code to the same destination. The new code replaces the previous one, which stops being accepted, and starts with its full lifetime and its full set of tries.',
+                'Two sends are at least the wait set by this instance apart (one minute unless it says otherwise), and only so many codes may be sent before the destination has to be removed and typed again. A request inside the wait, including one racing another, or past the limit, answers 422 on channel with the reason that proof_code_refusal gives.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $channelPathParam,

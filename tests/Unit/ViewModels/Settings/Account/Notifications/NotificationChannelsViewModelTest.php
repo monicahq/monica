@@ -121,6 +121,122 @@ class NotificationChannelsViewModelTest extends TestCase
         $this->assertNull($this->viewModel($pam)->smsNotice());
     }
 
+    #[Test]
+    public function it_offers_to_remove_a_number_and_names_it_in_the_warning(): void
+    {
+        $user = $this->user();
+        $this->channel($user, NotificationChannelEnum::Sms)->update(['destination' => '+15705550172']);
+
+        $sms = $this->viewModel($user)->channels()->firstWhere('channel', 'sms');
+
+        $this->assertTrue($sms['holds_setup']);
+        $this->assertSame('The number +15705550172 will be erased from your account.', $sms['removal_warning']);
+    }
+
+    #[Test]
+    public function it_offers_to_remove_a_number_still_waiting_for_its_code(): void
+    {
+        $user = $this->user();
+        $this->channel($user, NotificationChannelEnum::Sms)->update([
+            'destination' => '+15705550172',
+            'proof_code_hash' => 'a hash',
+            'proof_expires_at' => now()->addMinutes(10),
+        ]);
+
+        $this->assertTrue($this->viewModel($user)->channels()->firstWhere('channel', 'sms')['holds_setup']);
+    }
+
+    #[Test]
+    public function it_offers_no_removal_on_a_channel_nobody_set_up(): void
+    {
+        $channels = $this->viewModel($this->user())->channels();
+
+        $this->assertFalse($channels->firstWhere('channel', 'sms')['holds_setup']);
+        $this->assertFalse($channels->firstWhere('channel', 'telegram')['holds_setup']);
+        $this->assertFalse($channels->firstWhere('channel', 'email')['holds_setup']);
+    }
+
+    #[Test]
+    public function it_warns_that_the_telegram_conversation_will_be_forgotten(): void
+    {
+        $user = $this->user();
+        $this->channel($user, NotificationChannelEnum::Telegram)->update(['destination' => '424242']);
+
+        $telegram = $this->viewModel($user)->channels()->firstWhere('channel', 'telegram');
+
+        $this->assertTrue($telegram['holds_setup']);
+        $this->assertSame('Your Telegram conversation will be forgotten.', $telegram['removal_warning']);
+    }
+
+    #[Test]
+    public function it_offers_to_remove_a_number_kept_while_text_messages_are_withdrawn(): void
+    {
+        $pam = $this->user();
+        $dwight = $this->user();
+        $this->channel($pam, NotificationChannelEnum::Sms)->update(['destination' => '+15705550100']);
+        $pam->account->features()->deactivate('sms-notifications');
+        $dwight->account->features()->deactivate('sms-notifications');
+        Feature::flushCache();
+
+        $this->assertSame(
+            [
+                'url' => route('settings.notifications.setup.destroy', 'sms'),
+                'warning' => 'The number +15705550100 will be erased from your account.',
+            ],
+            $this->viewModel($pam)->keptNumberRemoval(),
+        );
+        $this->assertNull($this->viewModel($dwight)->keptNumberRemoval());
+    }
+
+    #[Test]
+    public function it_offers_another_code_once_the_wait_is_over(): void
+    {
+        $user = $this->user();
+        $this->channel($user, NotificationChannelEnum::Sms)->update([
+            'destination' => '+15705550172',
+            'proof_sent_count' => 1,
+            'proof_last_sent_at' => now()->subMinutes(2),
+        ]);
+
+        $sms = $this->viewModel($user)->channels()->firstWhere('channel', 'sms');
+
+        $this->assertTrue($sms['can_send_proof_code']);
+        $this->assertNull($sms['proof_code_refusal']);
+    }
+
+    #[Test]
+    public function it_says_how_long_is_left_before_another_code(): void
+    {
+        $this->freezeTime();
+        $user = $this->user();
+        $this->channel($user, NotificationChannelEnum::Sms)->update([
+            'destination' => '+15705550172',
+            'proof_sent_count' => 1,
+            'proof_last_sent_at' => now()->subSeconds(59),
+        ]);
+
+        $sms = $this->viewModel($user)->channels()->firstWhere('channel', 'sms');
+
+        $this->assertFalse($sms['can_send_proof_code']);
+        $this->assertSame('You can ask for another code in 1 second.', $sms['proof_code_refusal']);
+    }
+
+    #[Test]
+    public function it_says_no_more_codes_will_be_sent_once_they_are_spent(): void
+    {
+        $user = $this->user();
+        $this->channel($user, NotificationChannelEnum::Sms)->update([
+            'destination' => '+15705550172',
+            'proof_sent_count' => (int) config('monica.notification_proof_maximum_sends'),
+            'proof_last_sent_at' => now()->subHour(),
+        ]);
+
+        $this->assertSame(
+            'No more codes will be sent to this number. Remove it to type a number again.',
+            $this->viewModel($user)->channels()->firstWhere('channel', 'sms')['proof_code_refusal'],
+        );
+    }
+
     private function user(): User
     {
         $account = Account::factory()->create();
