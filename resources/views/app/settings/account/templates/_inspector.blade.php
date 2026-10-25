@@ -165,7 +165,7 @@
               x-target="builder"
             >
               <x-slot:trigger>
-                <x-button.secondary size="small" type="button" @click="open = true" class="text-error">
+                <x-button.secondary size="small" type="button" tone="danger" @click="open = true">
                   {{ __('Delete the field') }}
                 </x-button.secondary>
               </x-slot:trigger>

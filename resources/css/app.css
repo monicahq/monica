@@ -126,6 +126,7 @@
     --color-error-hover: var(--danger-hover);
     --color-error-tint: var(--danger-tint);
     --color-error-edge: var(--danger-edge);
+    --color-error-text: var(--danger-text);
 
     --radius-xs: 4px;
     --radius-sm: 6px;
@@ -250,6 +251,7 @@
     --danger-hover: #991b1b;
     --danger-tint: #fef2f2;
     --danger-edge: #fecaca;
+    --danger-text: #ffffff;
 
     --topbar: #ffffff;
     --topbar-hairline: #e4e4e7;
@@ -314,6 +316,7 @@
         --danger-hover: #fca5a5;
         --danger-tint: #2a1214;
         --danger-edge: #7f1d1d;
+        --danger-text: #18181b;
 
         --topbar: #09090b;
         --topbar-hairline: #27272a;

@@ -180,7 +180,7 @@
             :action="route('settings.templateVersions.destroy', [$template, $version])"
           >
             <x-slot:trigger>
-              <x-button.secondary size="small" type="button" @click="open = true" class="hover:text-error">
+              <x-button.secondary size="small" type="button" tone="danger" @click="open = true">
                 {{ __('Delete the draft') }}
               </x-button.secondary>
             </x-slot:trigger>

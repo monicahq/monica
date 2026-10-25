@@ -4,12 +4,14 @@
   @var string $type
   @var string $size
   @var string $variant
+  @var string $tone
 --}}
 @props([
   'href',
   'type' => 'submit',
   'size' => 'default',
   'variant' => 'primary',
+  'tone' => 'default',
 ])
 
 @php
@@ -20,11 +22,14 @@
     .'disabled:pointer-events-none disabled:cursor-default disabled:opacity-50 disabled:shadow-none '
     .'aria-disabled:pointer-events-none aria-disabled:cursor-default aria-disabled:opacity-50 aria-disabled:shadow-none';
 
+  $danger = $tone === 'danger';
+
   $fill = match ($variant) {
-    'secondary', 'bar' => 'border-hairline-strong bg-canvas text-ink shadow-control '
-      .'hover:bg-hover hover:border-muted-soft focus-visible:border-focus',
-    'ghost' => 'border-transparent text-body hover:bg-hover hover:text-ink',
-    'danger' => 'border-transparent bg-error text-white hover:bg-error-hover',
+    'secondary', 'bar' => 'border-hairline-strong bg-canvas shadow-control '
+      .'hover:bg-hover hover:border-muted-soft focus-visible:border-focus '
+      .($danger ? 'text-error' : 'text-ink'),
+    'ghost' => 'border-transparent hover:bg-hover '.($danger ? 'text-error' : 'text-body hover:text-ink'),
+    'danger' => 'border-transparent bg-error text-error-text hover:bg-error-hover',
     default => 'border-transparent bg-action-primary text-action-primary-text hover:bg-action-primary-hover',
   };
 

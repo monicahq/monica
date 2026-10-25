@@ -133,29 +133,33 @@
     </x-form>
 
     <div class="flex flex-wrap items-center gap-3.5">
-      @if ($viewModel->isEdit())
-        <x-modal.warning
-          :title="__('Delete “:name”?', ['name' => $values['name']])"
-          :confirm="__('Delete the template')"
-          :action="route('settings.templates.destroy', $viewModel->template())"
-        >
-          <x-slot:trigger>
-            <x-button.secondary type="button" @click="open = true" class="text-error">
-              {{ __('Delete the template') }}
-            </x-button.secondary>
-          </x-slot:trigger>
-
-          <p>{{ __('Every version of it goes, and the slug stays taken so an old link cannot reach something else.') }}</p>
-
-          <p>{{ __('This is refused while any record still points at one of its versions.') }}</p>
-        </x-modal.warning>
-      @endif
-
       <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
         <x-button.secondary :href="$viewModel->cancelUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
         <x-button form="template-form" ::disabled="! named">{{ $viewModel->saveLabel() }}</x-button>
       </div>
     </div>
+
+    @if ($viewModel->isEdit())
+      <x-delete-section :title="__('Delete the template')">
+        <x-slot:trigger>
+          <x-modal.warning
+            :title="__('Delete “:name”?', ['name' => $values['name']])"
+            :confirm="__('Delete the template')"
+            :action="route('settings.templates.destroy', $viewModel->template())"
+          >
+            <x-slot:trigger>
+              <x-button.danger type="button" @click="open = true">
+                {{ __('Delete the template') }}
+              </x-button.danger>
+            </x-slot:trigger>
+
+            <p>{{ __('Every version of it goes, and the slug stays taken so an old link cannot reach something else.') }}</p>
+
+            <p>{{ __('This is refused while any record still points at one of its versions.') }}</p>
+          </x-modal.warning>
+        </x-slot:trigger>
+      </x-delete-section>
+    @endif
   </div>
 </x-settings.page>

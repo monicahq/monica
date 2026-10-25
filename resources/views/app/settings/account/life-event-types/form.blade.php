@@ -186,10 +186,10 @@
   @if ($viewModel->isEdit())
     <x-page-section :title="__('Removing this type')">
       @if ($viewModel->canDelete())
-        <x-panel tone="danger" :title="__('Delete this type')" icon="close">
-          <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <p class="min-w-60 flex-1 text-sm text-pretty text-body">{{ __('No life event is recorded with this type, so it can be deleted for good.') }}</p>
+        <x-delete-section :title="__('Delete this type')">
+          <p>{{ __('No life event is recorded with this type, so it can be deleted for good.') }}</p>
 
+          <x-slot:trigger>
             <x-delete-action
               :title="__('Delete “:name”?', ['name' => $viewModel->title()])"
               :confirm="__('Delete the type')"
@@ -199,19 +199,19 @@
             >
               <p>{{ __('No life event is recorded with this type, so nothing you have written will change.') }}</p>
             </x-delete-action>
-          </div>
-        </x-panel>
+          </x-slot:trigger>
+        </x-delete-section>
       @else
         {{-- The control stays and says why it refuses, which .claude/rules/policies.md asks for. --}}
-        <x-panel>
-          <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <p id="life-event-type-delete-reason" class="min-w-60 flex-1 text-sm text-pretty text-body">{{ $viewModel->deleteRefusal() }}</p>
+        <x-delete-section :title="__('Delete this type')">
+          <p id="life-event-type-delete-reason">{{ $viewModel->deleteRefusal() }}</p>
 
-            <x-button.secondary type="button" aria-disabled="true" aria-describedby="life-event-type-delete-reason" class="shrink-0">
+          <x-slot:trigger>
+            <x-button.danger type="button" aria-disabled="true" aria-describedby="life-event-type-delete-reason">
               {{ __('Delete this type') }}
-            </x-button.secondary>
-          </div>
-        </x-panel>
+            </x-button.danger>
+          </x-slot:trigger>
+        </x-delete-section>
       @endif
     </x-page-section>
   @endif

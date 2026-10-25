@@ -30,7 +30,7 @@
   $surface = $variant === 'inset' ? 'bg-card' : 'bg-canvas';
   $edge = $danger ? 'border-error-edge' : 'border-hairline';
   $band = $danger ? 'border-error-edge bg-error-tint' : 'border-hairline';
-  $mark = $danger ? 'border-transparent bg-error text-white' : ($tint ?? 'border-hairline bg-card text-body');
+  $mark = $danger ? 'border-transparent bg-error text-error-text' :($tint ?? 'border-hairline bg-card text-body');
 
   $align = $subtitle ? 'items-start' : 'items-center';
 @endphp

@@ -87,7 +87,7 @@
                         data-destroy-url="{{ $entry['destroyUrl'] }}"
                         data-delete-line="{{ $entry['deleteLine'] }}"
                         @click="$dispatch('confirm-life-event-deletion', { url: $el.dataset.destroyUrl, line: $el.dataset.deleteLine })"
-                        class="hover:text-error"
+                        tone="danger"
                         aria-label="{{ __('Delete :name', ['name' => $entry['title']]) }}"
                       >{{ __('Delete') }}</x-button.ghost>
                     @endunless

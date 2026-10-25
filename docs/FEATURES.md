@@ -101,3 +101,7 @@ A chronological list of every feature and improvement shipped during development
 * Settings/account/notifications: Let somebody ask for another text message code, once a minute and up to the limit, with the reason shown when it cannot be sent yet.
 * Settings/account/notifications: Let somebody remove a phone number kept while text messages are unavailable on their account.
 * API: Added an endpoint to remove the setup of a notification channel, and said on every channel whether another code may be sent.
+* Settings and vaults: Drew every section that deletes what a screen is about (a vault, a contact, a template, a type) as a red box with a solid red button, the same on every screen.
+* Settings and vaults: Kept a deletion that is refused in its red box, its button dimmed with the reason beside it.
+* Settings and vaults: Showed every delete button in a list or inside a section in red text, where most of them had been drawn in black.
+* UI: Made the label of solid red buttons readable in the dark theme.

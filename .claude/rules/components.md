@@ -22,6 +22,7 @@ than like a component:
 | `x-detail-list` + `x-detail-list.row` | A run of labelled values, one to a line |
 | `x-sortable-row` + `x-position-form` | A row somebody reorders by dragging, and the form recording where it landed |
 | `x-delete-action` | A quiet button that destroys something, the card that asks first, and the warning that it is final |
+| `x-delete-section` | A red panel that deletes the screen's own record, what goes with it, and the button |
 | `x-actions-menu` + `x-actions-menu.item` | The button that unfolds the rest of what may be done here, the menu it unfolds, and one line of it |
 | `x-copy-button` | The button that puts a value on the clipboard and says whether it got there |
 | `x-code-value` | A value meant to be copied exactly, in a fixed-width face |

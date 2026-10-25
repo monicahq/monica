@@ -193,10 +193,6 @@
     </x-form>
 
     <div class="flex flex-wrap items-center gap-3.5">
-      @if ($viewModel->isEdit())
-        @include('app.settings.account.entity-types._delete', ['viewModel' => $viewModel])
-      @endif
-
       <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
         <span x-cloak x-show="! named" class="text-xs text-pretty text-muted">{{ __('Both names are enough.') }}</span>
 
@@ -205,5 +201,9 @@
         <x-button form="entity-type-form" ::disabled="! named">{{ $viewModel->saveLabel() }}</x-button>
       </div>
     </div>
+
+    @if ($viewModel->isEdit())
+      @include('app.settings.account.entity-types._delete', ['viewModel' => $viewModel])
+    @endif
   </div>
 </x-settings.page>

@@ -149,14 +149,12 @@
     @endif
   </x-panel>
 
-  <x-panel :title="__('Delete this vault')" icon="vault" tone="danger">
-    <div class="flex flex-wrap items-center gap-3.5">
-      <div class="flex max-w-prose flex-col gap-2 text-sm text-pretty text-muted">
-        <p>{{ __('Everything filed in this vault is deleted with it: the contacts, and everything written about them.') }}</p>
+  <x-delete-section :title="__('Delete this vault')" icon="vault">
+    <p>{{ __('Everything filed in this vault is deleted with it: the contacts, and everything written about them.') }}</p>
 
-        <p>{{ __('Nothing in the application restores a vault, so this cannot be undone.') }}</p>
-      </div>
+    <p>{{ __('Nothing in the application restores a vault, so this cannot be undone.') }}</p>
 
+    <x-slot:trigger>
       <x-modal.warning
         :title="__('Delete “:name”?', ['name' => $vault->name])"
         :confirm="__('Delete the vault')"
@@ -164,7 +162,7 @@
         :action="$viewModel->destroyAction()"
       >
         <x-slot:trigger>
-          <x-button.danger type="button" size="small" @click="open = true" class="sm:ml-auto">
+          <x-button.danger type="button" @click="open = true">
             {{ __('Delete this vault') }}
           </x-button.danger>
         </x-slot:trigger>
@@ -183,6 +181,6 @@
 
         <p>{{ __('This cannot be undone.') }}</p>
       </x-modal.warning>
-    </div>
-  </x-panel>
+    </x-slot:trigger>
+  </x-delete-section>
 </x-shell>

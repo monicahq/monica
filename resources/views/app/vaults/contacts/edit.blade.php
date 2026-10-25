@@ -63,7 +63,7 @@
             :action="$viewModel->destroyAvatarUrl()"
           >
             <x-slot:trigger>
-              <x-button.ghost type="button" size="small" class="self-start" @click="open = true">
+              <x-button.ghost type="button" size="small" tone="danger" class="self-start" @click="open = true">
                 {{ __('Remove the photo') }}
               </x-button.ghost>
             </x-slot:trigger>
@@ -117,10 +117,10 @@
     </div>
   </x-form>
 
-  <x-panel :title="__('Delete contact')" icon="people">
-    <div class="flex flex-wrap items-center gap-3.5">
-      <p id="delete-contact-reason" class="max-w-prose text-sm text-pretty text-muted">{{ $viewModel->deleteDescription() }}</p>
+  <x-delete-section :title="__('Delete contact')" icon="people">
+    <p id="delete-contact-reason">{{ $viewModel->deleteDescription() }}</p>
 
+    <x-slot:trigger>
       @if ($viewModel->mayBeDeleted())
         <x-modal.warning
           :title="__('Delete :name?', ['name' => $contact->name])"
@@ -128,23 +128,22 @@
           :action="$viewModel->destroyUrl()"
         >
           <x-slot:trigger>
-            <x-button.secondary type="button" @click="open = true" class="text-error sm:ml-auto">
+            <x-button.danger type="button" @click="open = true">
               {{ __('Delete the contact') }}
-            </x-button.secondary>
+            </x-button.danger>
           </x-slot:trigger>
 
           <p>{{ __('Everything written on the record is deleted with them.') }}</p>
         </x-modal.warning>
       @else
-        <x-button.secondary
+        <x-button.danger
           type="button"
           aria-disabled="true"
           aria-describedby="delete-contact-reason"
-          class="sm:ml-auto"
         >
           {{ __('Delete the contact') }}
-        </x-button.secondary>
+        </x-button.danger>
       @endif
-    </div>
-  </x-panel>
+    </x-slot:trigger>
+  </x-delete-section>
 </x-shell>

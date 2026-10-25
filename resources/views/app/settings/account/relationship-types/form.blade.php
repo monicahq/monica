@@ -190,15 +190,15 @@
     @endif
 
     <div class="flex flex-wrap items-center gap-3.5">
-      @if ($viewModel->isEdit())
-        @include('app.settings.account.relationship-types._delete', ['viewModel' => $viewModel])
-      @endif
-
       <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
         <x-button.secondary :href="route('settings.relationshipTypes.index')" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
         <x-button form="relationship-type-form">{{ $viewModel->saveLabel() }}</x-button>
       </div>
     </div>
+
+    @if ($viewModel->isEdit())
+      @include('app.settings.account.relationship-types._delete', ['viewModel' => $viewModel])
+    @endif
   </div>
 </x-settings.page>

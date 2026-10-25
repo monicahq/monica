@@ -18,13 +18,6 @@
   'confirmsPassword' => false,
 ])
 
-@php
-  $tint = match ($variant) {
-      'ghost' => 'hover:text-error',
-      default => 'text-error',
-  };
-@endphp
-
 <x-modal.warning :title="$title" :confirm="$confirm" :action="$action" :confirms-password="$confirmsPassword" {{ $attributes }}>
   <x-slot:trigger>
     <x-button
@@ -32,7 +25,7 @@
       :href="null"
       type="button"
       :size="$size"
-      :class="$tint"
+      tone="danger"
       @click="open = true"
     >{{ $label }}</x-button>
   </x-slot:trigger>

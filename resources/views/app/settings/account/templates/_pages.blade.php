@@ -83,7 +83,7 @@
               x-target="builder"
             >
               <x-slot:trigger>
-                <x-button.ghost size="small" type="button" @click="open = true" class="hover:text-error">{{ __('Remove') }}</x-button.ghost>
+                <x-button.ghost size="small" type="button" tone="danger" @click="open = true">{{ __('Remove') }}</x-button.ghost>
               </x-slot:trigger>
 
               <p>{{ __('It holds nothing, so nothing is deleted with it. The remaining tabs keep their order.') }}</p>

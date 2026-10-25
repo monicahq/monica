@@ -27,7 +27,7 @@
             <button
               type="button"
               @click="open = true"
-              class="cursor-pointer text-xs text-muted underline underline-offset-2 transition-colors hover:text-error focus-ring"
+              class="cursor-pointer text-xs text-error underline underline-offset-2 focus-ring"
             >{{ __('Delete') }}</button>
           </x-slot:trigger>
 
