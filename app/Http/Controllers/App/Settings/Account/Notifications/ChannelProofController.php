@@ -18,8 +18,12 @@ class ChannelProofController extends Controller
 {
     public function create(Request $request, NotificationChannel $channel): RedirectResponse
     {
-        if (($destination = $request->input('destination')) !== null) {
-            $channel->destination = $destination;
+        $validated = $request->validate([
+            'destination' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        if (($validated['destination'] ?? null) !== null) {
+            $channel->destination = $validated['destination'];
             $channel->save();
         }
 

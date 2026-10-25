@@ -33,6 +33,19 @@ class ChannelProofControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_destination_longer_than_its_box(): void
+    {
+        NotificationFacade::fake();
+        $user = $this->readyTextMessage();
+
+        $response = $this->post(route('settings.notifications.proof.store', 'sms'), ['destination' => str_repeat('1', 256)]);
+
+        $response->assertSessionHasErrors('destination');
+        $this->assertSame('+15705550172', $this->channel($user)->destination);
+        NotificationFacade::assertNothingSent();
+    }
+
+    #[Test]
     public function typing_the_code_back_proves_the_number(): void
     {
         $user = $this->readyTextMessage();

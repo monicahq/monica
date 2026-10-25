@@ -94,6 +94,23 @@ class NotificationChannelControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_destination_longer_than_its_box_before_sending_a_code(): void
+    {
+        NotificationFacade::fake();
+        $user = $this->signedIn();
+        $this->channel($user, NotificationChannelEnum::Sms)->fill([
+            'destination' => '+15705550172',
+        ])->save();
+
+        $response = $this->json('POST', route('api.v1.notificationChannels.proof.store', 'sms'), ['destination' => str_repeat('1', 256)]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('destination');
+        $this->assertSame('+15705550172', $this->channel($user, NotificationChannelEnum::Sms)->destination);
+        NotificationFacade::assertNothingSent();
+    }
+
+    #[Test]
     public function it_sends_a_code_and_takes_it_back(): void
     {
         NotificationFacade::fake();
