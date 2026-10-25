@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Cashier\Cashier;
+use Laravel\Mcp\Server\Registrar;
 use Laravel\Passkeys\Actions\VerifyPasskey as BaseVerifyPasskey;
 use Laravel\Passkeys\Contracts\PasskeyConfirmationResponse as PasskeyConfirmationResponseContract;
 use Laravel\Passkeys\Contracts\PasskeyDeletedResponse as PasskeyDeletedResponseContract;
@@ -219,7 +220,7 @@ class AppServiceProvider extends ServiceProvider
         // English on purpose: translating here would load a language file on every request, before
         // the reader's language is known. The authorization screen translates it.
         Passport::tokensCan([
-            'mcp' => 'Use MCP server',
+            Registrar::OAUTH_SCOPE => 'Use MCP server',
         ]);
     }
 
@@ -272,7 +273,7 @@ class AppServiceProvider extends ServiceProvider
             }
 
             return Limit::perMinute(60)
-                ->by((string) ($token?->getKey() ?: $request->ip()));
+                ->by($token instanceof PersonalAccessToken ? "key:{$token->getKey()}" : (string) $request->ip());
         });
         RateLimiter::for('passkey', fn (Request $request): Limit => Limit::perMinute(self::MAX_LOGIN_ATTEMPTS)
             ->by($request->string('credential.id')->lower()->toString().'|'.$request->ip()));

@@ -35,13 +35,15 @@ class SearchRecords extends Tool
             'group' => ['nullable', 'string', 'max:100'],
         ]);
 
+        $withSensitive = $this->reachesSensitiveFields($request);
+
         $result = new SearchRecordsAction(
             user: $this->user($request),
             vault: $this->vault($request, $validated['vault']),
             query: $validated['query'],
             acrossAccount: ($validated['scope'] ?? 'vault') === 'account',
             group: $validated['group'] ?? null,
-            withSensitive: false,
+            withSensitive: $withSensitive,
         )->execute();
 
         if ($result['status'] !== SearchRecordsAction::SEARCHED) {
@@ -52,9 +54,10 @@ class SearchRecords extends Tool
             'group' => $group['key'],
             'label' => $group['label'],
             'total' => $group['results']->total(),
-            'results' => collect($group['results']->items())->map(function (Contact|Entity|LifeEvent $record) use ($result): array {
+            'results' => collect($group['results']->items())->map(function (Contact|Entity|LifeEvent $record) use ($result, $withSensitive): array {
                 $resource = SearchResultResource::make($record);
                 $resource->words = $result['words'];
+                $resource->withSensitive = $withSensitive;
 
                 return $resource->toArray(new HttpRequest);
             })->values()->all(),

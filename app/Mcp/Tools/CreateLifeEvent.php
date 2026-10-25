@@ -71,7 +71,10 @@ class CreateLifeEvent extends Tool
             return Response::error($e->getMessage());
         }
 
-        return Response::json(new LifeEventResource($this->lifeEvent($vault, $lifeEvent->uuid))->resolve());
+        $resource = new LifeEventResource($this->lifeEvent($vault, $lifeEvent->uuid));
+        $resource->withSensitive = $this->reachesSensitiveFields($request);
+
+        return Response::json($resource->resolve());
     }
 
     /** @return array<string, Type> */

@@ -51,8 +51,15 @@ class ListLifeEvents extends Tool
             ->orderByDesc('id')
             ->paginate($perPage, ['*'], 'page', max(1, (int) ($validated['page'] ?? 1)));
 
+        $withSensitive = $this->reachesSensitiveFields($request);
+
         return Response::json([
-            'data' => LifeEventResource::collection($lifeEvents->items())->resolve(),
+            'data' => array_map(function (LifeEvent $lifeEvent) use ($withSensitive): array {
+                $resource = new LifeEventResource($lifeEvent);
+                $resource->withSensitive = $withSensitive;
+
+                return $resource->resolve();
+            }, $lifeEvents->items()),
             'meta' => [
                 'page' => $lifeEvents->currentPage(),
                 'per_page' => $lifeEvents->perPage(),

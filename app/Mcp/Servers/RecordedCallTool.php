@@ -35,8 +35,8 @@ use Throwable;
  * It does what the package's `CallTool` and `ToolInvoker` do, and keeps the exception a tool raised
  * before the package turns it into plain text, since that text no longer says whether the call was
  * refused, given wrong parameters or broke. The row is written before the tool runs, as
- * interrupted, so a call that never returns can never read as a success. A request with no API
- * key or connected assistant behind it is answered without being recorded.
+ * interrupted, so a call that never returns can never read as a success. The route only admits an
+ * API key or a connected assistant, so every call that reaches here is recorded.
  */
 class RecordedCallTool implements Errable, Method
 {

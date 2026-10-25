@@ -6,6 +6,8 @@ namespace Tests\Feature\Mcp;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Mcp\Server\Registrar;
+use Laravel\Passport\Passport;
 use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -55,6 +57,38 @@ class McpAuthenticationTest extends TestCase
         $response = $this->withToken($key->plainTextToken)->postJson('/mcp', $this->listTools());
 
         $response->assertUnauthorized();
+    }
+
+    #[Test]
+    public function it_refuses_a_browser_session(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->postJson('/mcp', $this->listTools());
+
+        $response->assertUnauthorized();
+    }
+
+    #[Test]
+    public function it_refuses_an_assistant_whose_token_lacks_the_scope_of_the_mcp_server(): void
+    {
+        $user = User::factory()->create();
+        Passport::actingAs($user, []);
+
+        $response = $this->postJson('/mcp', $this->listTools());
+
+        $response->assertForbidden();
+    }
+
+    #[Test]
+    public function it_admits_an_assistant_whose_token_holds_the_scope_of_the_mcp_server(): void
+    {
+        $user = User::factory()->create();
+        Passport::actingAs($user, [Registrar::OAUTH_SCOPE]);
+
+        $response = $this->postJson('/mcp', $this->listTools());
+
+        $response->assertOk();
     }
 
     #[Test]

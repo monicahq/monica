@@ -220,6 +220,14 @@ class McpCallRecordingTest extends TestCase
         $this->assertSame(0, McpCall::query()->count());
     }
 
+    #[Test]
+    public function it_records_nothing_for_a_browser_session(): void
+    {
+        $this->actingAs($this->user)->postJson('/mcp', $this->envelope('get-contact', []))->assertUnauthorized();
+
+        $this->assertSame(0, McpCall::query()->count());
+    }
+
     /** @param  array<string, mixed>  $arguments */
     private function callTool(string $tool, array $arguments, string $uri = '/mcp'): TestResponse
     {

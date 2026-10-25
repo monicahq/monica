@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
+use App\Enums\ApiKeyScopeEnum;
 use App\Http\Resources\LifeEventResource;
 use App\Models\Contact;
 use App\Models\EmailSent;
@@ -30,6 +31,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
 use Laravel\Mcp\Request;
+use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * What every tool does the same way: naming the API capability it mirrors, deciding whether the
@@ -66,6 +68,21 @@ trait MirrorsAnApiCapability
         }
 
         return $user;
+    }
+
+    /**
+     * Whether the key presented may read the values of sensitive fields, which the API decides the
+     * same way: a key holds the ability, a connected assistant never does.
+     */
+    protected function reachesSensitiveFields(Request $request): bool
+    {
+        $token = $this->user($request)->currentAccessToken();
+
+        if (! $token instanceof PersonalAccessToken) {
+            return false;
+        }
+
+        return in_array(ApiKeyScopeEnum::SensitiveFields->value, $token->abilities ?? [], true);
     }
 
     protected function vault(Request $request, string $address): Vault

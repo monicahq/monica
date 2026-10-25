@@ -79,7 +79,7 @@ class UpdateLifeEvent extends Tool
             ? $request->validate(FieldValueRules::withoutFiles($version?->inputFields() ?? new Collection, $vault))['fields'] ?? []
             : null;
 
-        $hiddenFieldIds = ($version?->inputFields() ?? new Collection)
+        $hiddenFieldIds = $this->reachesSensitiveFields($request) ? [] : ($version?->inputFields() ?? new Collection)
             ->filter(fn (Field $field): bool => $field->is_sensitive && ! array_key_exists($field->id, $values ?? []))
             ->pluck('id')
             ->all();
@@ -106,7 +106,10 @@ class UpdateLifeEvent extends Tool
             return Response::error($e->getMessage());
         }
 
-        return Response::json(new LifeEventResource($this->lifeEvent($vault, $lifeEvent->uuid))->resolve());
+        $resource = new LifeEventResource($this->lifeEvent($vault, $lifeEvent->uuid));
+        $resource->withSensitive = $this->reachesSensitiveFields($request);
+
+        return Response::json($resource->resolve());
     }
 
     /** @return array<string, Type> */

@@ -30,7 +30,10 @@ class GetLifeEvent extends Tool
 
         $lifeEvent = $this->lifeEvent($this->vault($request, $validated['vault']), $validated['life_event']);
 
-        return Response::json(new LifeEventResource($lifeEvent)->resolve());
+        $resource = new LifeEventResource($lifeEvent);
+        $resource->withSensitive = $this->reachesSensitiveFields($request);
+
+        return Response::json($resource->resolve());
     }
 
     /** @return array<string, Type> */

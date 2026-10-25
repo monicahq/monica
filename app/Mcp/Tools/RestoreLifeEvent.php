@@ -51,7 +51,10 @@ class RestoreLifeEvent extends Tool
             lifeEvent: $lifeEvent,
         )->execute();
 
-        return Response::json(new LifeEventResource($this->lifeEvent($vault, $lifeEvent->uuid))->resolve());
+        $resource = new LifeEventResource($this->lifeEvent($vault, $lifeEvent->uuid));
+        $resource->withSensitive = $this->reachesSensitiveFields($request);
+
+        return Response::json($resource->resolve());
     }
 
     /** @return array<string, Type> */
