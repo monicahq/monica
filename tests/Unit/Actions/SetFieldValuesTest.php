@@ -329,6 +329,49 @@ class SetFieldValuesTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_an_item_of_another_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::Select, 'value_list_id' => $list->id]);
+        $theirs = ValueListItem::factory()->create();
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($field),
+            values: [$field->id => (string) $theirs->id],
+        )->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_multiple_choice_naming_an_item_of_another_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $mine = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+        $theirs = ValueListItem::factory()->create();
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($field),
+            values: [$field->id => [(string) $mine->id, (string) $theirs->id]],
+        )->execute();
+    }
+
+    #[Test]
     public function it_writes_the_label_beside_the_number_it_belongs_to(): void
     {
         Queue::fake();

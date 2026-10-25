@@ -641,7 +641,7 @@ class SetFieldValues
             return null;
         }
 
-        return ValueListItem::query()->find($label);
+        return $this->itemInTheAccount($label);
     }
 
     private function chosenItem(Field $field, mixed $given): ?ValueListItem
@@ -650,7 +650,7 @@ class SetFieldValues
             return null;
         }
 
-        return ValueListItem::query()->find($given);
+        return $this->itemInTheAccount($given);
     }
 
     /** @return list<ValueListItem> */
@@ -660,10 +660,30 @@ class SetFieldValues
             return [];
         }
 
-        return ValueListItem::query()
+        $items = ValueListItem::query()
             ->whereIn('id', $given)
+            ->where('account_id', $this->user->account_id)
             ->orderBy('position')
-            ->get()
-            ->all();
+            ->get();
+
+        if ($items->count() !== count(array_unique($given))) {
+            throw new ModelNotFoundException('This item is in another account.');
+        }
+
+        return $items->all();
+    }
+
+    private function itemInTheAccount(mixed $id): ValueListItem
+    {
+        $item = ValueListItem::query()
+            ->whereKey($id)
+            ->where('account_id', $this->user->account_id)
+            ->first();
+
+        if ($item === null) {
+            throw new ModelNotFoundException('This item is in another account.');
+        }
+
+        return $item;
     }
 }
