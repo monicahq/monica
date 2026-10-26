@@ -136,6 +136,7 @@ use App\Http\Middleware\EnsurePasswordIsConfirmedWhenThereIsOne;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
+use Laravel\Nightwatch\Http\Middleware\Sample;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
@@ -627,4 +628,4 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 require __DIR__.'/auth.php';
 require __DIR__.'/administrator.php';
 
-Route::fallback([NotFoundController::class, 'show'])->where('fallbackPlaceholder', '^(?!api/|mcp$).*')->name('notFound.show');
+Route::fallback([NotFoundController::class, 'show'])->middleware(Sample::rate(0.01))->where('fallbackPlaceholder', '^(?!api/|mcp$).*')->name('notFound.show');

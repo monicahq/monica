@@ -79,9 +79,10 @@ use App\Http\Controllers\Api\TemplateDuplicateController;
 use App\Http\Controllers\Api\TemplatePositionController;
 use App\Http\Controllers\Api\VaultController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Nightwatch\Http\Middleware\Sample;
 
 Route::prefix('v1')->name('api.v1.')->group(function (): void {
-    Route::get('status', [StatusController::class, 'show'])->middleware('throttle:60,1')->name('status');
+    Route::get('status', [StatusController::class, 'show'])->middleware(['throttle:60,1', Sample::rate(0.01)])->name('status');
 
     Route::post('register', [RegistrationController::class, 'store'])->middleware(['registration', 'throttle:6,1'])->name('register');
     Route::post('login', [LoginController::class, 'store'])->middleware('throttle:6,1')->name('login');

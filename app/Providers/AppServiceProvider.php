@@ -21,8 +21,10 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Events\DiagnosingHealth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
@@ -38,6 +40,12 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Cashier\Cashier;
 use Laravel\Mcp\Server\Registrar;
+use Laravel\Nightwatch\Facades\Nightwatch;
+use Laravel\Nightwatch\Records\Command;
+use Laravel\Nightwatch\Records\Exception as ExceptionRecord;
+use Laravel\Nightwatch\Records\OutgoingRequest;
+use Laravel\Nightwatch\Records\Query;
+use Laravel\Nightwatch\Records\Request as RequestRecord;
 use Laravel\Passkeys\Actions\VerifyPasskey as BaseVerifyPasskey;
 use Laravel\Passkeys\Contracts\PasskeyConfirmationResponse as PasskeyConfirmationResponseContract;
 use Laravel\Passkeys\Contracts\PasskeyDeletedResponse as PasskeyDeletedResponseContract;
@@ -60,6 +68,10 @@ use SocialiteProviders\Manager\SocialiteWasCalled;
 class AppServiceProvider extends ServiceProvider
 {
     private const int MAX_LOGIN_ATTEMPTS = 5;
+
+    private const string FRAMEWORK_TABLE_QUERY = '/\b(?:from|into|update) [`"]?(?:sessions|cache|cache_locks|jobs|job_batches|failed_jobs|telescope_\w+)\b/';
+
+    private const string TELEGRAM_BOT_TOKEN = '#bot\d+:[A-Za-z0-9_-]+#';
 
     #[Override]
     public function register(): void
@@ -134,6 +146,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureFlags();
         $this->configureQueues();
         $this->configureAssets();
+        $this->configureNightwatch();
         $this->refuseDeactivatedUsers();
     }
 
@@ -311,5 +324,44 @@ class AppServiceProvider extends ServiceProvider
                 ->uncompromised()
             : null,
         );
+    }
+
+    /**
+     * A trace carries what explains a request and nothing that names somebody. The session,
+     * cache and queue tables are the framework's own traffic, a login throttle key holds an
+     * address, and a link token, a signature, a search term, the Telegram bot token or an
+     * address on a command line would otherwise leave with the trace. Who made a request is
+     * sent as an id, and the health check opens no trace at all.
+     */
+    private function configureNightwatch(): void
+    {
+        Nightwatch::user(fn (Authenticatable $user): array => ['id' => $user->getAuthIdentifier()]);
+
+        Event::listen(DiagnosingHealth::class, fn () => Nightwatch::dontSample());
+
+        Nightwatch::rejectQueries(fn (Query $query): bool => preg_match(self::FRAMEWORK_TABLE_QUERY, $query->sql) === 1);
+
+        Nightwatch::rejectCacheKeys(['/@/']);
+
+        Nightwatch::redactRequests(function (RequestRecord $request): void {
+            $request->url = preg_replace(
+                ['/[A-Za-z0-9]{64}/', '/([?&](?:code|query|signature)=)[^&]*/'],
+                ['***', '$1***'],
+                $request->url,
+            ) ?? $request->url;
+            $request->headers->remove('X-Telegram-Bot-Api-Secret-Token');
+        });
+
+        Nightwatch::redactOutgoingRequests(function (OutgoingRequest $outgoingRequest): void {
+            $outgoingRequest->url = preg_replace(self::TELEGRAM_BOT_TOKEN, 'bot***', $outgoingRequest->url) ?? $outgoingRequest->url;
+        });
+
+        Nightwatch::redactExceptions(function (ExceptionRecord $exception): void {
+            $exception->message = preg_replace(self::TELEGRAM_BOT_TOKEN, 'bot***', $exception->message) ?? $exception->message;
+        });
+
+        Nightwatch::redactCommands(function (Command $command): void {
+            $command->command = preg_replace('/[^\s=]+@\S+/', '***', $command->command) ?? $command->command;
+        });
     }
 }

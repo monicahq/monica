@@ -20,8 +20,9 @@ use App\Http\Controllers\App\Admin\TelegramRegistrationController;
 use App\Http\Controllers\App\Admin\TelegramWebhookSecretController;
 use App\Http\Controllers\App\Admin\UserActivationController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Nightwatch\Http\Middleware\Sample;
 
-Route::middleware(['administrator'])->group(function (): void {
+Route::middleware(['administrator', Sample::always()])->group(function (): void {
     Route::get('admin', [OverviewController::class, 'index'])->name('admin.overview.index');
 
     Route::get('admin/logs', [AdministratorLogController::class, 'index'])->name('admin.logs.index');
