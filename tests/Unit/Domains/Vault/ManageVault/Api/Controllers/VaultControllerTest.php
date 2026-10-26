@@ -205,4 +205,17 @@ class VaultControllerTest extends ApiTestCase
 
         $response->assertResourceNotFound();
     }
+
+    /** @test */
+    public function read_only_token_cannot_destroy_a_vault(): void
+    {
+        $user = $this->createUser(['read']);
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+        ]);
+        $vault = $this->setPermissionInVault($user, Vault::PERMISSION_MANAGE, $vault);
+
+        $response = $this->delete('/api/vaults/'.$vault->id);
+        $response->assertStatus(403);
+    }
 }
