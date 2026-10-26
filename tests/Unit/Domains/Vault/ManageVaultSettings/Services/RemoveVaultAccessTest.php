@@ -150,4 +150,68 @@ class RemoveVaultAccessTest extends TestCase
             'contact_reminder_id' => $contactReminder->id,
         ]);
     }
+
+    /** @test */
+    public function it_does_not_remove_reminders_in_other_vaults(): void
+    {
+        $regis = $this->createAdministrator();
+        $anotherUser = User::factory()->create([
+            'account_id' => $regis->account_id,
+        ]);
+
+        $vault1 = $this->createVault($regis->account);
+        $vault1 = $this->setPermissionInVault($regis, Vault::PERMISSION_MANAGE, $vault1);
+        $contact1 = Contact::factory()->create(['vault_id' => $vault1->id]);
+        $vault1->users()->save($anotherUser, [
+            'permission' => Vault::PERMISSION_MANAGE,
+            'contact_id' => $contact1->id,
+        ]);
+
+        $vault2 = $this->createVault($regis->account);
+        $contact2 = Contact::factory()->create(['vault_id' => $vault2->id]);
+        $vault2->users()->save($anotherUser, [
+            'permission' => Vault::PERMISSION_VIEW,
+            'contact_id' => $contact2->id,
+        ]);
+
+        $channel = UserNotificationChannel::factory()->create([
+            'user_id' => $anotherUser->id,
+            'active' => false,
+        ]);
+
+        $otherContactInVault1 = Contact::factory()->create(['vault_id' => $vault1->id]);
+        $reminder1 = ContactReminder::factory()->create([
+            'contact_id' => $otherContactInVault1->id,
+            'type' => ContactReminder::TYPE_ONE_TIME,
+        ]);
+        $reminder1->userNotificationChannels()->attach($channel->id, [
+            'scheduled_at' => Carbon::now(),
+        ]);
+
+        $otherContactInVault2 = Contact::factory()->create(['vault_id' => $vault2->id]);
+        $reminder2 = ContactReminder::factory()->create([
+            'contact_id' => $otherContactInVault2->id,
+            'type' => ContactReminder::TYPE_ONE_TIME,
+        ]);
+        $reminder2->userNotificationChannels()->attach($channel->id, [
+            'scheduled_at' => Carbon::now(),
+        ]);
+
+        (new RemoveVaultAccess)->execute([
+            'account_id' => $regis->account_id,
+            'author_id' => $regis->id,
+            'vault_id' => $vault1->id,
+            'user_id' => $anotherUser->id,
+        ]);
+
+        $this->assertDatabaseMissing('contact_reminder_scheduled', [
+            'user_notification_channel_id' => $channel->id,
+            'contact_reminder_id' => $reminder1->id,
+        ]);
+
+        $this->assertDatabaseHas('contact_reminder_scheduled', [
+            'user_notification_channel_id' => $channel->id,
+            'contact_reminder_id' => $reminder2->id,
+        ]);
+    }
 }
