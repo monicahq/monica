@@ -117,7 +117,7 @@
     </x-form>
   </x-page-section>
 
-  <x-page-section :title="__('Email address')" :description="__('What you sign in with, and where every way back into the account is sent.')">
+  <x-page-section :title="__('Email address')">
     <x-form method="put" :action="route('settings.email.update')">
       <x-panel>
         <x-input
