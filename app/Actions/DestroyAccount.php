@@ -6,6 +6,8 @@ namespace App\Actions;
 
 use App\Exceptions\ProviderUnreachable;
 use App\Models\Account;
+use App\Models\AccountExport;
+use App\Models\AccountImport;
 use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -14,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Laravel\Pennant\Feature;
 
 /**
- * Delete an account and everything under it.
+ * Delete an account and everything under it, the export and import files on disk included.
  *
  * A subscription is stopped at Stripe first, and the deletion is refused outright when Stripe does
  * not answer: deleting anyway would leave somebody being charged with no account to show them what
@@ -34,6 +36,7 @@ class DestroyAccount
         $this->destroyPhoto();
         $this->destroyApiKeys();
         $this->forgetFlags();
+        $this->destroyTransferFiles();
         $this->destroy();
     }
 
@@ -78,6 +81,19 @@ class DestroyAccount
     private function forgetFlags(): void
     {
         Feature::for($this->account)->forget(Feature::stored());
+    }
+
+    private function destroyTransferFiles(): void
+    {
+        $disks = AccountExport::query()
+            ->where('account_id', $this->account->id)
+            ->pluck('disk')
+            ->merge(AccountImport::query()->where('account_id', $this->account->id)->pluck('disk'))
+            ->unique();
+
+        foreach ($disks as $disk) {
+            Storage::disk($disk)->deleteDirectory($this->account->transfersDirectory());
+        }
     }
 
     private function destroy(): void

@@ -1,0 +1,11 @@
+{
+    "version": "9.0",
+    "app_version": "9.0.0",
+    "export_date": "2031-01-01T00:00:00.000000Z",
+    "account": {
+        "uuid": "00000000-0000-4000-8000-000000000000",
+        "data": [],
+        "properties": {},
+        "instance": {}
+    }
+}

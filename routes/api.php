@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\AccountExportController;
+use App\Http\Controllers\Api\AccountExportDownloadController;
+use App\Http\Controllers\Api\AccountImportContactController;
+use App\Http\Controllers\Api\AccountImportController;
+use App\Http\Controllers\Api\AccountImportReportController;
 use App\Http\Controllers\Api\ApiKeyController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegistrationController;
@@ -286,5 +291,17 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'update'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.update');
         Route::delete('vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'destroy'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.destroy');
         Route::put('vaults/{vault}/life-events/{lifeEvent}/restoration', [LifeEventRestorationController::class, 'update'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.restoration.update');
+
+        Route::get('exports', [AccountExportController::class, 'index'])->name('accountExports');
+        Route::get('exports/{accountExport}', [AccountExportController::class, 'show'])->where('accountExport', '[0-9a-fA-F-]{36}')->name('accountExports.show');
+        Route::post('exports', [AccountExportController::class, 'create'])->middleware('throttle:20,1')->name('accountExports.create');
+        Route::get('exports/{accountExport}/download', [AccountExportDownloadController::class, 'show'])->where('accountExport', '[0-9a-fA-F-]{36}')->name('accountExports.download.show');
+
+        Route::get('imports/{accountImport}', [AccountImportController::class, 'show'])->where('accountImport', '[0-9a-fA-F-]{36}')->name('accountImports.show');
+        Route::post('imports', [AccountImportController::class, 'create'])->middleware('throttle:20,1')->name('accountImports.create');
+        Route::put('imports/{accountImport}', [AccountImportController::class, 'update'])->where('accountImport', '[0-9a-fA-F-]{36}')->name('accountImports.update');
+        Route::delete('imports/{accountImport}', [AccountImportController::class, 'destroy'])->where('accountImport', '[0-9a-fA-F-]{36}')->name('accountImports.destroy');
+        Route::get('imports/{accountImport}/contacts', [AccountImportContactController::class, 'index'])->where('accountImport', '[0-9a-fA-F-]{36}')->name('accountImports.contacts');
+        Route::get('imports/{accountImport}/report', [AccountImportReportController::class, 'index'])->where('accountImport', '[0-9a-fA-F-]{36}')->name('accountImports.report');
     });
 });

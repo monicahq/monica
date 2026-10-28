@@ -6,6 +6,11 @@ namespace Tests\Feature\Controllers\App\Docs;
 
 use App\Actions\CreateLifeEvent;
 use App\Actions\MergeContacts;
+use App\Enums\AccountExportStatusEnum;
+use App\Enums\AccountImportOutcomeEnum;
+use App\Enums\AccountImportReasonEnum;
+use App\Enums\AccountImportSourceEnum;
+use App\Enums\AccountImportStatusEnum;
 use App\Enums\ContactListColumnSourceEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NotificationChannelEnum;
@@ -13,6 +18,9 @@ use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\StripeCatalogue;
 use App\Jobs\CreateDefaultTemplate;
+use App\Models\AccountExport;
+use App\Models\AccountImport;
+use App\Models\AccountImportItem;
 use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\ContactListColumn;
@@ -97,7 +105,7 @@ class ApiDocsReturnFieldsTest extends TestCase
         $problems = [];
 
         foreach ($this->endpoints() as $section) {
-            if (! $section->answersInJson()) {
+            if (! $section->answersWithFields()) {
                 continue;
             }
 
@@ -116,7 +124,7 @@ class ApiDocsReturnFieldsTest extends TestCase
         foreach ($this->endpoints() as $section) {
             $answersWithNothing = $section->responseStatus === 204;
 
-            if (! $section->answersInJson()) {
+            if (! $section->answersWithFields()) {
                 if ($section->hasReturnFields()) {
                     $unexpected[] = $section->id;
                 }
@@ -1577,11 +1585,135 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('DELETE', "/api/v1/vaults/{$relationship->vault->uuid}/contacts/{$relationship->contactA->uuid}/relationships/{$relationship->uuid}");
             }),
 
+            'account-imports-show' => $this->asSomebody(function (User $user): TestResponse {
+                $import = $this->anImportOfAFileImportedBefore($user, [
+                    'status' => AccountImportStatusEnum::Completed,
+                    'source_format' => AccountImportSourceEnum::MonicaFour,
+                    'summary' => ['contacts' => ['found' => 5, 'left_out' => 0]],
+                    'ended_at' => now(),
+                ]);
+                AccountImportItem::factory()->create(['account_import_id' => $import->id, 'kind' => 'contact', 'outcome' => AccountImportOutcomeEnum::Imported]);
+
+                return $this->json('GET', "/api/v1/imports/{$import->uuid}");
+            }),
+
+            'account-imports-create' => $this->asSomebody(function (User $user): TestResponse {
+                Storage::fake('local');
+                $file = '{"version": "1.0-preview.1"}';
+                $scranton = Vault::factory()->create(['account_id' => $user->account_id]);
+                AccountImport::factory()->create([
+                    'user_id' => $user->id,
+                    'status' => AccountImportStatusEnum::Completed,
+                    'source_checksum' => hash('sha256', $file),
+                    'vault_id' => $scranton->id,
+                ]);
+
+                return $this->json('POST', '/api/v1/imports', [
+                    'file' => UploadedFile::fake()->createWithContent('monica.json', $file),
+                ]);
+            }),
+
+            'account-imports-update' => $this->asSomebody(function (User $user): TestResponse {
+                $import = $this->anImportOfAFileImportedBefore($user, [
+                    'status' => AccountImportStatusEnum::Read,
+                    'source_format' => AccountImportSourceEnum::MonicaFour,
+                    'summary' => ['contacts' => ['found' => 5, 'left_out' => 0]],
+                ]);
+                $stamford = Vault::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/imports/{$import->uuid}", [
+                    'vault' => $stamford->uuid,
+                    'me_contact' => null,
+                ]);
+            }),
+
+            'account-imports-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $import = $this->anImportOfAFileImportedBefore($user, [
+                    'status' => AccountImportStatusEnum::Writing,
+                    'source_format' => AccountImportSourceEnum::MonicaFour,
+                    'summary' => ['contacts' => ['found' => 5, 'left_out' => 0]],
+                ]);
+
+                return $this->json('DELETE', "/api/v1/imports/{$import->uuid}");
+            }),
+
+            'account-imports-contacts-index' => $this->asSomebody(function (User $user): TestResponse {
+                $import = AccountImport::factory()->create(['user_id' => $user->id, 'status' => AccountImportStatusEnum::Read]);
+                AccountImportItem::factory()->create([
+                    'account_import_id' => $import->id,
+                    'kind' => 'contact',
+                    'payload' => ['properties' => ['first_name' => 'Dwight', 'last_name' => 'Schrute']],
+                ]);
+
+                return $this->json('GET', "/api/v1/imports/{$import->uuid}/contacts");
+            }),
+
+            'account-imports-report-index' => $this->asSomebody(function (User $user): TestResponse {
+                $import = AccountImport::factory()->create(['user_id' => $user->id, 'status' => AccountImportStatusEnum::Completed, 'ended_at' => now()]);
+                AccountImportItem::factory()->create([
+                    'account_import_id' => $import->id,
+                    'kind' => 'reminder',
+                    'outcome' => AccountImportOutcomeEnum::LeftOut,
+                    'reason' => AccountImportReasonEnum::OneTimeReminderInThePast->value,
+                ]);
+
+                return $this->json('GET', "/api/v1/imports/{$import->uuid}/report");
+            }),
+
+            'account-exports-index' => $this->asSomebody(function (User $user): TestResponse {
+                $scranton = Vault::factory()->create(['account_id' => $user->account_id]);
+                AccountExport::factory()->create([
+                    'user_id' => $user->id,
+                    'vault_ids' => [$scranton->id],
+                    'status' => AccountExportStatusEnum::Ready,
+                    'size_in_bytes' => 48211,
+                    'ready_at' => now(),
+                    'expires_at' => now()->addDays(7),
+                ]);
+
+                return $this->json('GET', '/api/v1/exports');
+            }),
+
+            'account-exports-show' => $this->asSomebody(function (User $user): TestResponse {
+                $scranton = Vault::factory()->create(['account_id' => $user->account_id]);
+                $export = AccountExport::factory()->create([
+                    'user_id' => $user->id,
+                    'vault_ids' => [$scranton->id],
+                    'status' => AccountExportStatusEnum::Ready,
+                    'size_in_bytes' => 48211,
+                    'ready_at' => now(),
+                    'expires_at' => now()->addDays(7),
+                ]);
+
+                return $this->json('GET', "/api/v1/exports/{$export->uuid}");
+            }),
+
+            'account-exports-create' => $this->asSomebody(function (User $user): TestResponse {
+                $user->withAccessToken($user->createToken('Michael’s script', ['sensitive-fields'])->accessToken);
+                Vault::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('POST', '/api/v1/exports');
+            }),
+
             default => null,
         };
     }
 
-    /** @param  callable(User): TestResponse  $call */
+    /** @param array<string, mixed> $attributes */
+    private function anImportOfAFileImportedBefore(User $user, array $attributes): AccountImport
+    {
+        $scranton = Vault::factory()->create(['account_id' => $user->account_id]);
+        $import = AccountImport::factory()->create(['user_id' => $user->id, ...$attributes]);
+        AccountImport::factory()->create([
+            'user_id' => $user->id,
+            'status' => AccountImportStatusEnum::Completed,
+            'source_checksum' => $import->source_checksum,
+            'vault_id' => $scranton->id,
+        ]);
+
+        return $import;
+    }
+
     private function vaultReadyForContacts(User $user): Vault
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -1725,6 +1857,7 @@ class ApiDocsReturnFieldsTest extends TestCase
         return Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
     }
 
+    /** @param  callable(User): TestResponse  $call */
     private function asSomebody(callable $call): TestResponse
     {
         $user = User::factory()->create();

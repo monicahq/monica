@@ -20,6 +20,7 @@
         ['key' => 'preferences', 'label' => __('Preferences'), 'icon' => 'settings', 'url' => route('settings.preferences.index')],
         ['key' => 'notifications', 'label' => __('Notifications'), 'icon' => 'bell', 'url' => route('settings.notifications.index')],
         ['key' => 'logs', 'label' => __('Logs'), 'icon' => 'timeline', 'url' => route('settings.logs.index')],
+        ['key' => 'transfer', 'label' => __('Export and import'), 'icon' => 'file', 'url' => route('settings.accountImports.index')],
       ],
     ],
     [

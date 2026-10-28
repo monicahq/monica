@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Helpers;
 
+use App\Actions\CreateLifeEventType;
+use App\Actions\ReplaceLifeEventTypeFields;
 use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
 use App\Enums\ValueListEnum;
@@ -14,6 +16,7 @@ use App\Helpers\StructureFileReader;
 use App\Helpers\ValueListSnapshot;
 use App\Models\EntityType;
 use App\Models\Field;
+use App\Models\LifeEventCategory;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
@@ -23,6 +26,7 @@ use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -337,6 +341,97 @@ class StructureFileReaderTest extends TestCase
     }
 
     #[Test]
+    public function it_reads_the_labels_a_phone_offers_with_the_one_somebody_types_themselves(): void
+    {
+        $file = $this->file();
+        $file['template']['pages'][0]['sections'][0]['section']['fields'][] = ['key' => 'phone', 'type' => 'phone', 'label' => 'Phone', 'position' => 2, 'value_list_reference' => 'phone_labels'];
+        $file['value_lists'] = ['phone_labels' => ['key' => 'phone_labels', 'name' => 'Phone labels', 'items' => [
+            ['key' => 'mobile', 'label' => 'Mobile', 'position' => 1],
+            ['key' => ValueListItem::OPEN_KEY, 'label' => 'Something else', 'position' => 2],
+        ]]];
+
+        $read = StructureFileReader::read(json_encode($file));
+
+        $this->assertSame(['mobile', ValueListItem::OPEN_KEY], array_column($read['value_lists']['phone_labels']['items'], 'key'));
+        $this->assertSame('phone_labels', $read['template']['pages'][0]['sections'][0]['section']['fields'][1]['value_list_reference']);
+    }
+
+    #[Test]
+    public function it_reads_a_list_that_takes_each_value_once(): void
+    {
+        $file = $this->file();
+        $file['template']['pages'][0]['sections'][0]['section']['fields'][0]['options'] = ['distinct_in_list' => true];
+
+        $read = StructureFileReader::read(json_encode($file));
+
+        $this->assertSame(['distinct_in_list' => true], $read['template']['pages'][0]['sections'][0]['section']['fields'][0]['options']);
+    }
+
+    #[Test]
+    public function it_reads_back_a_life_event_type_whose_fields_carry_settings(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $type = new CreateLifeEventType(
+            user: $user,
+            lifeEventCategory: LifeEventCategory::factory()->create(['account_id' => $user->account_id]),
+            name: 'Beet harvest',
+        )->execute();
+
+        new ReplaceLifeEventTypeFields(
+            user: $user,
+            lifeEventType: $type,
+            groups: [],
+            fields: [
+                $this->aLifeEventTypeField('Weight', 'number', ['unit' => 'kg', 'min' => '0', 'max' => '400', 'decimals' => '1']),
+                $this->aLifeEventTypeField('Sold at the stand', 'boolean', ['affirmative' => 'Sold', 'negative' => 'Kept']),
+                $this->aLifeEventTypeField('Notes', 'text', ['max_length' => '120']),
+                $this->aLifeEventTypeField('Varieties', 'multiselect', ['max_choices' => '2'], ['Detroit', 'Chioggia', 'Golden']),
+            ],
+        )->execute();
+
+        $read = StructureFileReader::read(StructureFile::encode(StructureFile::ofLifeEventType($type->refresh())), expecting: 'life_event_type');
+
+        $options = collect($read['life_event_type']['pages'])
+            ->flatMap(fn (array $page): array => $page['sections'])
+            ->flatMap(fn (array $placement): array => $placement['section']['fields'])
+            ->mapWithKeys(fn (array $field): array => [$field['label'] => $field['options'] ?? null]);
+
+        $this->assertSame(['min' => 0, 'max' => 400, 'decimals' => 1, 'unit' => 'kg'], $options['Weight']);
+        $this->assertSame(['affirmative' => 'Sold', 'negative' => 'Kept'], $options['Sold at the stand']);
+        $this->assertSame(['max_length' => 120], $options['Notes']);
+        $this->assertSame(['max_choices' => 2], $options['Varieties']);
+    }
+
+    #[Test]
+    public function it_refuses_a_counted_setting_that_is_not_a_whole_number_of_zero_or_more(): void
+    {
+        foreach (['twelve', -1, 1.5] as $wrong) {
+            $file = $this->file();
+            $file['template']['pages'][0]['sections'][0]['section']['fields'][0]['options'] = ['max_length' => $wrong];
+
+            try {
+                StructureFileReader::read(json_encode($file));
+                $this->fail('A max_length of '.json_encode($wrong).' was read.');
+            } catch (StructureFileIsNotReadable) {
+                $this->addToAssertionCount(1);
+            }
+        }
+    }
+
+    #[Test]
+    public function it_still_refuses_a_setting_this_version_does_not_know(): void
+    {
+        $file = $this->file();
+        $file['template']['pages'][0]['sections'][0]['section']['fields'][0]['options'] = ['colour_of_the_beets' => 'red'];
+
+        $this->expectException(StructureFileIsNotReadable::class);
+
+        StructureFileReader::read(json_encode($file));
+    }
+
+    #[Test]
     public function it_refuses_a_key_that_is_not_a_key(): void
     {
         $file = $this->file();
@@ -535,7 +630,6 @@ class StructureFileReaderTest extends TestCase
         $this->assertNull($section['colour']);
     }
 
-    /** @return array<string, mixed> */
     #[Test]
     public function it_reads_a_life_event_type_file(): void
     {
@@ -606,6 +700,25 @@ class StructureFileReaderTest extends TestCase
         $this->expectExceptionMessage('life_event_type.pages.0');
 
         StructureFileReader::read(StructureFile::encode($file), expecting: 'life_event_type');
+    }
+
+    /**
+     * @param  array<string, string>  $settings
+     * @param  list<string>  $choices
+     * @return array<string, mixed>
+     */
+    private function aLifeEventTypeField(string $label, string $type, array $settings, array $choices = []): array
+    {
+        return [
+            'key' => null,
+            'group' => '',
+            'label' => $label,
+            'type' => $type,
+            'is_required' => false,
+            'help_text' => null,
+            'settings' => $settings,
+            'choices' => $choices,
+        ];
     }
 
     /** @return array<string, mixed> */

@@ -14,6 +14,7 @@ use App\Models\Field;
 use App\Models\Section;
 use App\Models\StructureVersionPage;
 use App\Models\Template;
+use App\Models\ValueListItem;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use JsonException;
@@ -58,6 +59,10 @@ class StructureFileReader
     public const int MAX_DEFAULT_VALUES = 50;
 
     private const string COLOUR = '/^#[0-9a-f]{6}$/';
+
+    private const array COUNTED_OPTIONS = ['max_length', 'min', 'max', 'decimals', 'max_choices'];
+
+    private const array WORDED_OPTIONS = ['unit', 'affirmative', 'negative'];
 
     private int $fieldCount = 0;
 
@@ -441,7 +446,7 @@ class StructureFileReader
             $this->refuse(__('A field in this file offers choices without saying which list they come from.'));
         }
 
-        if (! $type->usesValueList() && $reference !== null) {
+        if (! $type->usesValueList() && ! $type->usesALabelList() && $reference !== null) {
             $this->refuse(__('A field in this file names a value list although its kind offers none.'));
         }
 
@@ -568,7 +573,9 @@ class StructureFileReader
             $path = "{$parentPath}.items.{$index}";
 
             $item = StructureFileValues::object($row, $path, ['key', 'label', 'label_translation_key', 'position', 'is_active'], []);
-            $key = StructureFileValues::identifier($item, 'key', $path, 64);
+            $key = ($item['key'] ?? null) === ValueListItem::OPEN_KEY
+                ? ValueListItem::OPEN_KEY
+                : StructureFileValues::identifier($item, 'key', $path, 64);
 
             if ($key !== null && in_array($key, $keys, true)) {
                 $this->refuse(__('Two choices of one list carry the same key.'));
@@ -690,12 +697,26 @@ class StructureFileReader
             return null;
         }
 
-        $options = StructureFileValues::object($field['options'], "{$path}.options", ['accepted_mime_types'], []);
-        $accepted = $options['accepted_mime_types'] ?? null;
+        $options = StructureFileValues::object($field['options'], "{$path}.options", ['accepted_mime_types', 'distinct_in_list', ...self::COUNTED_OPTIONS, ...self::WORDED_OPTIONS], []);
+        $read = StructureFileValues::boolean($options, 'distinct_in_list', "{$path}.options") ? ['distinct_in_list' => true] : [];
 
-        if ($accepted === null) {
-            return null;
+        foreach (self::COUNTED_OPTIONS as $key) {
+            $count = StructureFileValues::nullableInteger($options, $key, "{$path}.options", 0, PHP_INT_MAX);
+
+            if ($count !== null) {
+                $read[$key] = $count;
+            }
         }
+
+        foreach (self::WORDED_OPTIONS as $key) {
+            $words = StructureFileValues::nullableString($options, $key, "{$path}.options", 255);
+
+            if ($words !== null) {
+                $read[$key] = $words;
+            }
+        }
+
+        $accepted = $options['accepted_mime_types'] ?? [];
 
         if (! is_array($accepted) || ! array_is_list($accepted) || count($accepted) > Field::MAX_ACCEPTED_MIME_TYPES) {
             $this->refuse(__('A field in this file says which kinds of file it takes in a way that cannot be read, at :path.', ['path' => $path]));
@@ -707,7 +728,11 @@ class StructureFileReader
             }
         }
 
-        return $accepted === [] ? null : ['accepted_mime_types' => $accepted];
+        if ($accepted !== []) {
+            $read['accepted_mime_types'] = $accepted;
+        }
+
+        return $read === [] ? null : $read;
     }
 
     private function safe(string $word): string

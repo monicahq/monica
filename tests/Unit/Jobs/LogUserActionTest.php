@@ -11,7 +11,9 @@ use App\Models\Account;
 use App\Models\Log;
 use App\Models\User;
 use App\Models\Vault;
+use DomainException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -291,5 +293,23 @@ class LogUserActionTest extends TestCase
             'source' => LogSourceEnum::Web->value,
             'source_detail' => null,
         ]);
+    }
+
+    #[Test]
+    public function it_waits_for_the_work_it_records_to_be_committed(): void
+    {
+        $michael = User::factory()->create();
+
+        try {
+            DB::transaction(function () use ($michael): void {
+                LogUserAction::dispatch(account: $michael->account, user: $michael, action: UserActionEnum::UserProfileUpdate);
+
+                $this->assertDatabaseMissing('logs', ['user_id' => $michael->id, 'action' => UserActionEnum::UserProfileUpdate->value]);
+
+                throw new DomainException('The Scranton branch merger fell through.');
+            });
+        } catch (DomainException) {
+            $this->assertDatabaseMissing('logs', ['user_id' => $michael->id, 'action' => UserActionEnum::UserProfileUpdate->value]);
+        }
     }
 }

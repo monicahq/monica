@@ -38,3 +38,4 @@ app/Scratch.php
 .lerd.yaml
 .php-version
 .env.before_lerd
+.claude/settings.local.json

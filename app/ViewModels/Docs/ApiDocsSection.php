@@ -44,6 +44,8 @@ class ApiDocsSection
 
     public readonly string $responseMediaType;
 
+    public readonly bool $responseIsFile;
+
     /** @var array<string, mixed>|null */
     public readonly ?array $response;
 
@@ -66,6 +68,7 @@ class ApiDocsSection
         $this->returns = $section['returns'] ?? null;
         $this->responseStatus = $section['responseStatus'] ?? 200;
         $this->responseMediaType = $section['responseMediaType'] ?? 'application/json';
+        $this->responseIsFile = $section['responseIsFile'] ?? false;
         $this->response = $section['response'] ?? null;
         $this->overriddenBody = $section['exampleBody'] ?? null;
         $this->returnFields = $section['returnFields'] ?? [];
@@ -91,12 +94,13 @@ class ApiDocsSection
     }
 
     /**
-     * Whether the endpoint answers in JSON. One does not, handing the caller a vCard, and the
-     * checks that read an answer field by field have nothing to read in that case.
+     * Whether the endpoint answers with a JSON body the reference documents field by field. Two
+     * hand the caller a file instead, a vCard and the export of an account, and the checks that
+     * read an answer field by field have nothing to read in either.
      */
-    public function answersInJson(): bool
+    public function answersWithFields(): bool
     {
-        return $this->responseMediaType === 'application/json';
+        return $this->responseMediaType === 'application/json' && ! $this->responseIsFile;
     }
 
     /**

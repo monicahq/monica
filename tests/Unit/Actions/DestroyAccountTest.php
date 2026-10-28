@@ -7,6 +7,8 @@ namespace Tests\Unit\Actions;
 use App\Actions\DestroyAccount;
 use App\Exceptions\ProviderUnreachable;
 use App\Models\Account;
+use App\Models\AccountExport;
+use App\Models\AccountImport;
 use App\Models\EmailSent;
 use App\Models\Log;
 use App\Models\MagicLink;
@@ -104,6 +106,31 @@ class DestroyAccountTest extends TestCase
         foreach (User::photoPixelSizes() as $pixels) {
             Storage::assertMissing($user->photoVariantPath($pixels));
         }
+    }
+
+    #[Test]
+    public function it_deletes_the_export_and_import_files_of_the_account_from_every_disk(): void
+    {
+        Storage::fake('local');
+        Storage::fake('s3');
+
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+        $export = AccountExport::factory()->create(['user_id' => $user->id, 'disk' => 's3']);
+        $import = AccountImport::factory()->create(['user_id' => $user->id, 'disk' => 'local']);
+        $stamford = AccountExport::factory()->create(['disk' => 's3']);
+        Storage::disk('s3')->put($export->path, '{}');
+        Storage::disk('local')->put($import->path, '{}');
+        Storage::disk('s3')->put($stamford->path, '{}');
+
+        new DestroyAccount(
+            user: $user,
+            account: $account,
+        )->execute();
+
+        Storage::disk('s3')->assertMissing($export->path);
+        Storage::disk('local')->assertMissing($import->path);
+        Storage::disk('s3')->assertExists($stamford->path);
     }
 
     #[Test]

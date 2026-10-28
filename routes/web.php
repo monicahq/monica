@@ -87,6 +87,9 @@ use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionControlle
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPageController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateSectionPositionController;
 use App\Http\Controllers\App\Settings\Account\Templates\TemplateShareController;
+use App\Http\Controllers\App\Settings\Account\Transfer\AccountExportController;
+use App\Http\Controllers\App\Settings\Account\Transfer\AccountExportDownloadController;
+use App\Http\Controllers\App\Settings\Account\Transfer\AccountImportController;
 use App\Http\Controllers\App\Settings\Account\ValueLists\ValueListController;
 use App\Http\Controllers\App\Settings\Account\ValueLists\ValueListItemActivationController;
 use App\Http\Controllers\App\Settings\Account\ValueLists\ValueListItemController;
@@ -532,6 +535,23 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('settings/account/templates/import', [TemplateImportController::class, 'new'])->name('settings.templateImport.new');
     Route::post('settings/account/templates/import/check', [TemplateImportCheckController::class, 'create'])->middleware('throttle:20,1')->name('settings.templateImportCheck.create');
     Route::post('settings/account/templates/import', [TemplateImportController::class, 'create'])->middleware('throttle:20,1')->name('settings.templateImport.create');
+
+    Route::get('settings/account/imports', [AccountImportController::class, 'index'])->name('settings.accountImports.index');
+
+    /*
+     * An export holds every value of every vault it covers, sensitive ones included, which is what the
+     * API asks a dedicated scope for, and an import writes a whole file into the account. Reading the
+     * screen above costs nothing; every step of both costs a credential here.
+     */
+    Route::middleware(['password.confirm:auth.confirmPassword.new'])->group(function (): void {
+        Route::post('settings/account/exports', [AccountExportController::class, 'create'])->middleware('throttle:20,1')->name('settings.accountExports.create');
+        Route::get('settings/account/exports/{accountExport}/download', [AccountExportDownloadController::class, 'show'])->name('settings.accountExportDownloads.show');
+
+        Route::post('settings/account/imports', [AccountImportController::class, 'create'])->middleware('throttle:20,1')->name('settings.accountImports.create');
+        Route::get('settings/account/imports/{accountImport}', [AccountImportController::class, 'show'])->name('settings.accountImports.show');
+        Route::put('settings/account/imports/{accountImport}', [AccountImportController::class, 'update'])->name('settings.accountImports.update');
+        Route::delete('settings/account/imports/{accountImport}', [AccountImportController::class, 'destroy'])->name('settings.accountImports.destroy');
+    });
 
     Route::get('settings/account/templates/{template}/pages/{structureVersionPage}/sections/import', [SectionImportController::class, 'new'])->name('settings.sectionImport.new');
     Route::post('settings/account/templates/{template}/pages/{structureVersionPage}/sections/import/check', [SectionImportCheckController::class, 'create'])->middleware('throttle:20,1')->name('settings.sectionImportCheck.create');

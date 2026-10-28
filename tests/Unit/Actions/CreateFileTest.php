@@ -15,9 +15,11 @@ use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
+use RuntimeException;
 use Tests\TestCase;
 
 class CreateFileTest extends TestCase
@@ -243,5 +245,24 @@ class CreateFileTest extends TestCase
             upload: UploadedFile::fake()->create('scan.pdf', 1),
             vault: $elsewhere,
         )->execute();
+    }
+
+    #[Test]
+    public function it_removes_the_stored_bytes_when_the_work_around_it_is_rolled_back(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $angela = User::factory()->create();
+
+        try {
+            DB::transaction(function () use ($angela): void {
+                new CreateFile(user: $angela, upload: UploadedFile::fake()->create('party-planning.pdf', 4, 'application/pdf'))->execute();
+
+                throw new RuntimeException('The party planning committee was dissolved.');
+            });
+        } catch (RuntimeException) {
+            $this->assertSame([], Storage::disk('local')->allFiles());
+        }
     }
 }

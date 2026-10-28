@@ -1,0 +1,13 @@
+{
+    "version": "1.0-preview.1",
+    "app_version": "3.6.1",
+    "account": {
+        "uuid": "00000000-0000-4000-8000-000000000000",
+        "data": [
+            {
+                "count": 1,
+                "type": "contact",
+                "values": [
+                    {
+                        "uuid": "10000000-0000-4000-8000-000000000001",
+                        "properties": {"first_name": "Toby

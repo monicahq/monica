@@ -154,6 +154,9 @@ Model 056, [Structure](056-structure-done.md), is the container models 012 to 01
 |---|---|---|
 | 055 | [StructureVersionPage](055-structure-version-page-done.md) | 5.2, 6 |
 | 056 | [Structure](056-structure-done.md) | 5.2, 6, 7, 9.3 |
+| 058 | [AccountExport](058-account-export-done.md) | 4.2, 11, 12 |
+| 059 | [AccountImport](059-account-import-done.md) | 4.3, 11, 12 |
+| 060 | [AccountImportItem](060-account-import-item-done.md) | 12 |
 
 ## Not modelled here
 

@@ -1,0 +1,481 @@
+{
+    "version": "1.0-preview.1",
+    "app_version": "3.6.1",
+    "export_date": "2022-01-12T10:15:01.863521Z",
+    "url": "https://monica.example.test",
+    "exported_by": "00000000-0000-4000-8000-000000000001",
+    "account": {
+        "uuid": "00000000-0000-4000-8000-000000000000",
+        "created_at": "2016-12-13T17:17:00.000000Z",
+        "updated_at": "2022-01-11T22:04:07.000000Z",
+        "data": [
+            {
+                "count": 1,
+                "type": "user",
+                "values": [
+                    {
+                        "uuid": "00000000-0000-4000-8000-000000000001",
+                        "first_name": "Michael",
+                        "last_name": "Scott",
+                        "email": "michael@dundermifflin.test",
+                        "email_verified_at": "2021-09-25 13:06:18",
+                        "google2fa_secret": "JBSWY3DPEHPK3PXP",
+                        "created_at": "2016-12-12T21:17:00.000000Z",
+                        "updated_at": "2022-01-11T22:04:02.000000Z",
+                        "properties": {
+                            "locale": "en",
+                            "timezone": "America/New_York",
+                            "currency": "USD",
+                            "me_contact": "10000000-0000-4000-8000-000000000001"
+                        }
+                    }
+                ]
+            },
+            {
+                "count": 5,
+                "type": "contact",
+                "values": [
+                    {
+                        "uuid": "10000000-0000-4000-8000-000000000001",
+                        "created_at": "2017-03-15T13:42:47.000000Z",
+                        "updated_at": "2022-01-11T22:07:12.000000Z",
+                        "properties": {
+                            "first_name": "Michael",
+                            "middle_name": "Gary",
+                            "last_name": "Scott",
+                            "job": "Regional Manager",
+                            "company": "Dunder Mifflin",
+                            "food_preferences": "Pizza from Alfredo's",
+                            "is_starred": true,
+                            "is_partial": false,
+                            "is_active": true,
+                            "is_dead": false,
+                            "number_of_views": 12,
+                            "vcard": "BEGIN:VCARD\nVERSION:3.0\nEND:VCARD",
+                            "distant_etag": "etag-1",
+                            "avatar": {
+                                "avatar_source": "photo",
+                                "avatar_gravatar_url": null,
+                                "avatar_adorable_uuid": "20000000-0000-4000-8000-000000000099",
+                                "avatar_default_url": "avatars/michael.jpg",
+                                "avatar_photo": "30000000-0000-4000-8000-000000000001",
+                                "has_avatar": true,
+                                "avatar_external_url": null,
+                                "avatar_file_name": null,
+                                "avatar_location": "local",
+                                "gravatar_url": null,
+                                "default_avatar_color": "#b3d5fe"
+                            },
+                            "tags": ["boss", "improv"],
+                            "gender": "40000000-0000-4000-8000-000000000001",
+                            "birthdate": {
+                                "uuid": "50000000-0000-4000-8000-000000000001",
+                                "is_age_based": false,
+                                "is_year_unknown": false,
+                                "date": "1964-03-15T00:00:00.000000Z",
+                                "created_at": "2017-03-15T13:42:47.000000Z",
+                                "updated_at": "2017-03-15T13:42:47.000000Z"
+                            }
+                        },
+                        "data": [
+                            {
+                                "count": 2,
+                                "type": "contact_field",
+                                "values": [
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000001",
+                                        "created_at": "2017-03-15T13:42:47.000000Z",
+                                        "updated_at": "2017-03-15T13:42:47.000000Z",
+                                        "properties": {"type": "70000000-0000-4000-8000-000000000001", "data": "michael@dundermifflin.test"}
+                                    },
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000002",
+                                        "created_at": "2017-03-15T13:42:47.000000Z",
+                                        "updated_at": "2017-03-15T13:42:47.000000Z",
+                                        "properties": {"type": "70000000-0000-4000-8000-000000000002", "data": "+1 570 555 0100"}
+                                    }
+                                ]
+                            },
+                            {
+                                "count": 1,
+                                "type": "address",
+                                "values": [
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000003",
+                                        "created_at": "2017-03-15T13:42:47.000000Z",
+                                        "updated_at": "2017-03-15T13:42:47.000000Z",
+                                        "properties": {
+                                            "name": "Condo",
+                                            "street": "126 Kellum Court",
+                                            "city": "Scranton",
+                                            "province": "PA",
+                                            "postal_code": "18510",
+                                            "latitude": null,
+                                            "longitude": null,
+                                            "country": "US"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "count": 2,
+                                "type": "note",
+                                "values": [
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000004",
+                                        "created_at": "2018-01-02T10:00:00.000000Z",
+                                        "updated_at": "2018-01-02T10:00:00.000000Z",
+                                        "properties": {"body": "World's best boss mug on the desk."}
+                                    },
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000005",
+                                        "created_at": "2019-01-02T10:00:00.000000Z",
+                                        "updated_at": "2019-01-02T10:00:00.000000Z",
+                                        "properties": {"body": "Hosts the Dundies every year."}
+                                    }
+                                ]
+                            },
+                            {
+                                "count": 2,
+                                "type": "reminder",
+                                "values": [
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000006",
+                                        "created_at": "2017-03-15T13:42:47.000000Z",
+                                        "updated_at": "2017-03-15T13:42:47.000000Z",
+                                        "properties": {
+                                            "initial_date": "1964-03-15T00:00:00.000000Z",
+                                            "title": "Wish happy birthday to Michael",
+                                            "frequency_type": "year",
+                                            "frequency_number": 1,
+                                            "delible": false,
+                                            "inactive": false
+                                        }
+                                    },
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000007",
+                                        "created_at": "2019-12-01T10:00:00.000000Z",
+                                        "updated_at": "2019-12-01T10:00:00.000000Z",
+                                        "properties": {
+                                            "initial_date": "2020-01-10T00:00:00.000000Z",
+                                            "title": "Book the Dundies venue",
+                                            "frequency_type": "one_time",
+                                            "frequency_number": 1,
+                                            "delible": true,
+                                            "inactive": false
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "count": 1,
+                                "type": "gift",
+                                "values": [
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000008",
+                                        "created_at": "2019-12-01T10:00:00.000000Z",
+                                        "updated_at": "2019-12-01T10:00:00.000000Z",
+                                        "properties": {"name": "Oven mitt", "comment": "For Secret Santa", "status": "offered", "photos": []}
+                                    }
+                                ]
+                            },
+                            {
+                                "count": 1,
+                                "type": "debt",
+                                "values": [
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000009",
+                                        "created_at": "2019-03-23T13:01:45.000000Z",
+                                        "updated_at": "2019-03-23T13:01:45.000000Z",
+                                        "properties": {
+                                            "amount": "20.00",
+                                            "currency": {"id": 2, "iso": "USD", "name": "US Dollar", "symbol": "$", "created_at": null, "updated_at": null},
+                                            "status": "inprogress",
+                                            "in_debt": true
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "count": 1,
+                                "type": "task",
+                                "values": [
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000010",
+                                        "created_at": "2019-09-06T11:19:13.000000Z",
+                                        "updated_at": "2019-09-06T15:02:04.000000Z",
+                                        "properties": {"title": "Plan the fun run", "description": "Rabies awareness", "completed": true, "completed_at": "2019-09-06T11:19:26.000000Z"}
+                                    }
+                                ]
+                            },
+                            {
+                                "count": 1,
+                                "type": "photo",
+                                "values": ["30000000-0000-4000-8000-000000000001"]
+                            },
+                            {
+                                "count": 1,
+                                "type": "document",
+                                "values": ["30000000-0000-4000-8000-000000000002"]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "10000000-0000-4000-8000-000000000002",
+                        "created_at": "2017-04-01T09:00:00.000000Z",
+                        "updated_at": "2022-01-11T22:07:12.000000Z",
+                        "properties": {
+                            "first_name": "Dwight",
+                            "middle_name": "Kurt",
+                            "last_name": "Schrute",
+                            "nickname": "Assistant to the Regional Manager",
+                            "is_starred": false,
+                            "is_partial": false,
+                            "is_active": true,
+                            "is_dead": false,
+                            "number_of_views": 4,
+                            "stay_in_touch_frequency": 30,
+                            "avatar": {"avatar_source": "default", "has_avatar": false, "default_avatar_color": "#93521e"},
+                            "gender": "40000000-0000-4000-8000-000000000001",
+                            "birthdate": {
+                                "uuid": "50000000-0000-4000-8000-000000000002",
+                                "is_age_based": false,
+                                "is_year_unknown": true,
+                                "date": "1900-01-20T00:00:00.000000Z",
+                                "created_at": "2017-04-01T09:00:00.000000Z",
+                                "updated_at": "2017-04-01T09:00:00.000000Z"
+                            }
+                        },
+                        "data": [
+                            {
+                                "count": 3,
+                                "type": "contact_field",
+                                "values": [
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000011",
+                                        "created_at": "2017-04-01T09:00:00.000000Z",
+                                        "updated_at": "2017-04-01T09:00:00.000000Z",
+                                        "properties": {"type": "70000000-0000-4000-8000-000000000001", "data": "dwight@schrutefarms.test"}
+                                    },
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000012",
+                                        "created_at": "2017-04-01T09:00:00.000000Z",
+                                        "updated_at": "2017-04-01T09:00:00.000000Z",
+                                        "properties": {"type": "70000000-0000-4000-8000-000000000003", "data": "https://facebook.example.test/schrutefarms"}
+                                    },
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000013",
+                                        "created_at": "2017-04-01T09:00:00.000000Z",
+                                        "updated_at": "2017-04-01T09:00:00.000000Z",
+                                        "properties": {"type": "70000000-0000-4000-8000-000000000004", "data": "beetfarmer"}
+                                    }
+                                ]
+                            },
+                            {
+                                "count": 1,
+                                "type": "life_event",
+                                "values": [
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000014",
+                                        "created_at": "2018-11-02T21:10:16.000000Z",
+                                        "updated_at": "2018-11-02T21:10:16.000000Z",
+                                        "properties": {"name": "Angela, in the warehouse", "note": "Do not tell Michael.", "happened_at": "2005-11-01T00:00:00.000000Z", "type": "80000000-0000-4000-8000-000000000002"}
+                                    }
+                                ]
+                            },
+                            {
+                                "count": 1,
+                                "type": "call",
+                                "values": [
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000015",
+                                        "created_at": "2019-05-01T10:00:00.000000Z",
+                                        "updated_at": "2019-05-01T10:00:00.000000Z",
+                                        "properties": {"called_at": "2019-05-01T10:00:00.000000Z", "content": "Beet harvest is early this year.", "contact_called": true, "emotions": ["happy"]}
+                                    }
+                                ]
+                            },
+                            {
+                                "count": 1,
+                                "type": "conversation",
+                                "values": [
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000016",
+                                        "created_at": "2019-06-01T10:00:00.000000Z",
+                                        "updated_at": "2019-06-01T10:00:00.000000Z",
+                                        "properties": {
+                                            "happened_at": "2019-06-01T10:00:00.000000Z",
+                                            "contact_field_type": "70000000-0000-4000-8000-000000000002",
+                                            "messages": [
+                                                {"uuid": "60000000-0000-4000-8000-000000000017", "created_at": "2019-06-01T10:00:00.000000Z", "updated_at": "2019-06-01T10:00:00.000000Z", "properties": {"content": "Identity theft is not a joke.", "written_at": "2019-06-01T10:00:00.000000Z", "written_by_me": false}},
+                                                {"uuid": "60000000-0000-4000-8000-000000000018", "created_at": "2019-06-01T10:01:00.000000Z", "updated_at": "2019-06-01T10:01:00.000000Z", "properties": {"content": "Bears, beets, Battlestar Galactica.", "written_at": "2019-06-01T10:01:00.000000Z", "written_by_me": true}}
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "count": 1,
+                                "type": "pet",
+                                "values": [
+                                    {
+                                        "uuid": "60000000-0000-4000-8000-000000000019",
+                                        "created_at": "2019-06-01T10:00:00.000000Z",
+                                        "updated_at": "2019-06-01T10:00:00.000000Z",
+                                        "properties": {"name": "Mose's goat", "category": "other"}
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "10000000-0000-4000-8000-000000000003",
+                        "created_at": "2017-05-01T09:00:00.000000Z",
+                        "updated_at": "2022-01-11T22:07:12.000000Z",
+                        "properties": {
+                            "first_name": "Jim",
+                            "last_name": "Halpert",
+                            "is_starred": false,
+                            "is_partial": false,
+                            "is_active": true,
+                            "is_dead": false,
+                            "avatar": {"avatar_source": "adorable", "has_avatar": false, "default_avatar_color": "#bd5067"},
+                            "gender": "40000000-0000-4000-8000-000000000001",
+                            "birthdate": {
+                                "uuid": "50000000-0000-4000-8000-000000000003",
+                                "is_age_based": true,
+                                "is_year_unknown": false,
+                                "date": "1978-01-01T00:00:00.000000Z",
+                                "created_at": "2017-05-01T09:00:00.000000Z",
+                                "updated_at": "2017-05-01T09:00:00.000000Z"
+                            }
+                        },
+                        "data": [
+                            {"count": 1, "type": "activity", "values": ["90000000-0000-4000-8000-000000000001"]}
+                        ]
+                    },
+                    {
+                        "uuid": "10000000-0000-4000-8000-000000000004",
+                        "created_at": "2017-05-02T09:00:00.000000Z",
+                        "updated_at": "2022-01-11T22:07:12.000000Z",
+                        "properties": {
+                            "first_name": "Pam",
+                            "last_name": "Beesly",
+                            "is_starred": false,
+                            "is_partial": false,
+                            "is_active": false,
+                            "is_dead": false,
+                            "avatar": {"avatar_source": "default", "has_avatar": false, "default_avatar_color": "#b3d5fe"},
+                            "gender": "40000000-0000-4000-8000-000000000002"
+                        },
+                        "data": [
+                            {"count": 1, "type": "activity", "values": ["90000000-0000-4000-8000-000000000001"]}
+                        ]
+                    },
+                    {
+                        "uuid": "10000000-0000-4000-8000-000000000005",
+                        "created_at": "2017-05-03T09:00:00.000000Z",
+                        "updated_at": "2022-01-11T22:07:12.000000Z",
+                        "properties": {
+                            "first_name": "Cece",
+                            "is_starred": false,
+                            "is_partial": true,
+                            "is_active": true,
+                            "is_dead": false,
+                            "avatar": {"avatar_source": "default", "has_avatar": false, "default_avatar_color": "#93521e"}
+                        },
+                        "data": []
+                    }
+                ]
+            },
+            {
+                "count": 4,
+                "type": "relationship",
+                "values": [
+                    {"uuid": "a0000000-0000-4000-8000-000000000001", "created_at": "2018-04-13T02:55:47.000000Z", "updated_at": "2018-04-13T02:55:47.000000Z", "properties": {"type": "parent", "contact_is": "10000000-0000-4000-8000-000000000003", "of_contact": "10000000-0000-4000-8000-000000000005"}},
+                    {"uuid": "a0000000-0000-4000-8000-000000000002", "created_at": "2018-04-13T02:55:47.000000Z", "updated_at": "2018-04-13T02:55:47.000000Z", "properties": {"type": "child", "contact_is": "10000000-0000-4000-8000-000000000005", "of_contact": "10000000-0000-4000-8000-000000000003"}},
+                    {"uuid": "a0000000-0000-4000-8000-000000000003", "created_at": "2018-04-13T02:55:47.000000Z", "updated_at": "2018-04-13T02:55:47.000000Z", "properties": {"type": "godfather", "contact_is": "10000000-0000-4000-8000-000000000001", "of_contact": "10000000-0000-4000-8000-000000000005"}},
+                    {"uuid": "a0000000-0000-4000-8000-000000000004", "created_at": "2018-04-13T02:55:47.000000Z", "updated_at": "2018-04-13T02:55:47.000000Z", "properties": {"type": "godson", "contact_is": "10000000-0000-4000-8000-000000000005", "of_contact": "10000000-0000-4000-8000-000000000001"}}
+                ]
+            },
+            {
+                "count": 1,
+                "type": "addressbook",
+                "values": [
+                    {"uuid": "b0000000-0000-4000-8000-000000000001", "created_at": "2018-01-01T00:00:00.000000Z", "updated_at": "2018-01-01T00:00:00.000000Z", "user": "00000000-0000-4000-8000-000000000001", "contacts": ["10000000-0000-4000-8000-000000000002"], "properties": {"name": "Schrute Farms", "description": "Synchronised"}}
+                ]
+            },
+            {
+                "count": 1,
+                "type": "addressbook_subscription",
+                "values": [
+                    {"uuid": "b0000000-0000-4000-8000-000000000002", "created_at": "2018-01-01T00:00:00.000000Z", "updated_at": "2018-01-01T00:00:00.000000Z", "properties": {"addressbook": "b0000000-0000-4000-8000-000000000001", "name": "Schrute Farms", "uri": "https://dav.schrutefarms.test/addressbooks/dwight/", "username": "dwight.schrute", "capabilities": {"syncCollection": true}, "frequency": 180, "readonly": false, "active": true, "sync_token": "token-1", "local_sync_token": {"id": 1}}}
+                ]
+            },
+            {
+                "count": 1,
+                "type": "photo",
+                "values": [
+                    {"uuid": "30000000-0000-4000-8000-000000000001", "created_at": "2018-12-23T19:48:52.000000Z", "updated_at": "2018-12-23T19:48:52.000000Z", "properties": {"original_filename": "michael.jpg", "filesize": 640, "mime_type": "image/jpeg", "dataUrl": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD//gA7Q1JFQVRPUjogZ2QtanBlZyB2MS4wICh1c2luZyBJSkcgSlBFRyB2ODApLCBxdWFsaXR5ID0gODAK/9sAQwAGBAUGBQQGBgUGBwcGCAoQCgoJCQoUDg8MEBcUGBgXFBYWGh0lHxobIxwWFiAsICMmJykqKRkfLTAtKDAlKCko/9sAQwEHBwcKCAoTCgoTKBoWGigoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgo/8AAEQgAAQABAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8A+VKKKKAP/9k="}}
+                ]
+            },
+            {
+                "count": 1,
+                "type": "document",
+                "values": [
+                    {"uuid": "30000000-0000-4000-8000-000000000002", "created_at": "2021-05-16T09:14:16.000000Z", "updated_at": "2021-05-16T09:14:16.000000Z", "properties": {"original_filename": "dundies.pdf", "filesize": 46, "type": "document", "mime_type": "application/pdf", "number_of_downloads": 0, "dataUrl": "data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iajw8Pj5lbmRvYmoKdHJhaWxlcjw8Pj4KJSVFT0YK"}}
+                ]
+            },
+            {
+                "count": 1,
+                "type": "activity",
+                "values": [
+                    {"uuid": "90000000-0000-4000-8000-000000000001", "created_at": "2018-07-25T10:44:54.000000Z", "updated_at": "2018-07-25T10:44:54.000000Z", "properties": {"summary": "Booze cruise", "description": "On Lake Wallenpaupack.", "happened_at": "2018-07-25T00:00:00.000000Z", "type": "c0000000-0000-4000-8000-000000000001"}}
+                ]
+            }
+        ],
+        "properties": {
+            "default_gender": "40000000-0000-4000-8000-000000000001",
+            "journal_entries": [
+                {"created_at": "2021-05-01T19:06:27.000000Z", "updated_at": "2021-05-01T19:06:27.000000Z", "uuid": "d0000000-0000-4000-8000-000000000001", "properties": {"type": "entry", "title": "Dinner party", "post": "Jan invited Jim and Pam. Snack by snack.", "date": "2021-05-01T19:06:27.000000Z"}},
+                {"created_at": "2021-05-02T19:06:27.000000Z", "updated_at": "2021-05-02T19:06:27.000000Z", "uuid": "d0000000-0000-4000-8000-000000000002", "properties": {"date": "2021-05-02T19:06:27.000000Z", "type": "day", "rate": 2, "comment": "Long day at the office.", "day": 2, "month": 5, "year": 2021}}
+            ],
+            "modules": [
+                {"key": "love_relationships", "translation_key": "app.relationship_type_group_love", "created_at": "2018-04-12T21:03:58.000000Z", "updated_at": "2018-04-12T21:03:58.000000Z", "properties": {"active": true, "delible": false}}
+            ],
+            "reminder_rules": [
+                {"number_of_days_before": 7, "created_at": "2018-03-15T13:41:53.000000Z", "updated_at": "2018-03-15T13:41:53.000000Z", "properties": {"active": true}}
+            ],
+            "audit_logs": [
+                {"created_at": "2018-03-15T13:41:53.000000Z", "updated_at": "2018-03-15T13:41:53.000000Z", "properties": {"action": "contact_created", "author": "00000000-0000-4000-8000-000000000001", "author_name": "Michael Scott", "audited_at": "2018-03-15T13:41:53.000000Z", "contact": "10000000-0000-4000-8000-000000000002", "objects": "{}", "should_appear_on_dashboard": true}}
+            ]
+        },
+        "instance": {
+            "activity_types": [
+                {"uuid": "c0000000-0000-4000-8000-000000000001", "created_at": "2018-01-01T00:00:00.000000Z", "updated_at": "2018-01-01T00:00:00.000000Z", "properties": {"translation_key": "just_hung_out", "name": "just hung out", "category": "c0000000-0000-4000-8000-000000000002"}}
+            ],
+            "activity_type_categories": [
+                {"uuid": "c0000000-0000-4000-8000-000000000002", "created_at": "2018-01-01T00:00:00.000000Z", "updated_at": "2018-01-01T00:00:00.000000Z", "properties": {"translation_key": "simple_activities", "name": "Simple activities"}}
+            ],
+            "contact_field_types": [
+                {"uuid": "70000000-0000-4000-8000-000000000001", "created_at": "2018-01-01T00:00:00.000000Z", "updated_at": "2018-01-01T00:00:00.000000Z", "properties": {"name": "Email", "fontawesome_icon": "fa fa-envelope-open-o", "protocol": "mailto:", "delible": false, "type": "email"}},
+                {"uuid": "70000000-0000-4000-8000-000000000002", "created_at": "2018-01-01T00:00:00.000000Z", "updated_at": "2018-01-01T00:00:00.000000Z", "properties": {"name": "Phone", "fontawesome_icon": "fa fa-volume-control-phone", "protocol": "tel:", "delible": false, "type": "phone"}},
+                {"uuid": "70000000-0000-4000-8000-000000000003", "created_at": "2018-01-01T00:00:00.000000Z", "updated_at": "2018-01-01T00:00:00.000000Z", "properties": {"name": "Facebook", "fontawesome_icon": "fa fa-facebook-official", "protocol": null, "delible": true, "type": null}},
+                {"uuid": "70000000-0000-4000-8000-000000000004", "created_at": "2018-01-01T00:00:00.000000Z", "updated_at": "2018-01-01T00:00:00.000000Z", "properties": {"name": "Telegram", "fontawesome_icon": "fa fa-telegram", "protocol": "telegram:", "delible": true, "type": null}}
+            ],
+            "genders": [
+                {"uuid": "40000000-0000-4000-8000-000000000001", "created_at": "2018-01-01T00:00:00.000000Z", "updated_at": "2018-01-01T00:00:00.000000Z", "properties": {"name": "Man", "type": "M"}},
+                {"uuid": "40000000-0000-4000-8000-000000000002", "created_at": "2018-01-01T00:00:00.000000Z", "updated_at": "2018-01-01T00:00:00.000000Z", "properties": {"name": "Woman", "type": "F"}},
+                {"uuid": "40000000-0000-4000-8000-000000000003", "created_at": "2018-01-01T00:00:00.000000Z", "updated_at": "2018-01-01T00:00:00.000000Z", "properties": {"name": "Rather not say", "type": "U"}}
+            ],
+            "life_event_types": [
+                {"uuid": "80000000-0000-4000-8000-000000000001", "created_at": "2018-09-29T01:58:36.000000Z", "updated_at": "2018-09-29T01:58:36.000000Z", "properties": {"core_monica_data": false, "translation_key": "new_job", "category": "80000000-0000-4000-8000-000000000010"}},
+                {"uuid": "80000000-0000-4000-8000-000000000002", "created_at": "2018-09-29T01:58:36.000000Z", "updated_at": "2018-09-29T01:58:36.000000Z", "properties": {"core_monica_data": false, "translation_key": "first_kiss", "category": "80000000-0000-4000-8000-000000000011"}}
+            ],
+            "life_event_categories": [
+                {"uuid": "80000000-0000-4000-8000-000000000010", "created_at": "2018-09-29T01:58:36.000000Z", "updated_at": "2018-09-29T01:58:36.000000Z", "properties": {"core_monica_data": false, "translation_key": "work_education"}},
+                {"uuid": "80000000-0000-4000-8000-000000000011", "created_at": "2018-09-29T01:58:36.000000Z", "updated_at": "2018-09-29T01:58:36.000000Z", "properties": {"core_monica_data": false, "translation_key": "family_relationships"}}
+            ]
+        }
+    }
+}

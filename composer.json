@@ -26,6 +26,7 @@
         "aws/aws-sdk-php": "^3.399",
         "bacon/bacon-qr-code": "^3.1",
         "erag/laravel-disposable-email": "^5.2",
+        "halaxa/json-machine": "^1.2",
         "intervention/image": "^4.0",
         "laravel/cashier": "^16.8",
         "laravel/framework": "^13.8",

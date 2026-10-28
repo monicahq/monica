@@ -182,6 +182,10 @@ enum UserActionEnum: string implements Translatable
     case SectionExported = 'section_exported';
     case TemplateImported = 'template_imported';
     case SectionImported = 'section_imported';
+    case AccountExportRequested = 'account_export_requested';
+    case AccountExportDownloaded = 'account_export_downloaded';
+    case AccountImportStarted = 'account_import_started';
+    case AccountImportEnded = 'account_import_ended';
     case MarketplaceListingCreation = 'marketplace_listing_created';
     case MarketplaceListingUpdate = 'marketplace_listing_updated';
     case MarketplaceListingSubmission = 'marketplace_listing_submitted';
@@ -349,6 +353,10 @@ enum UserActionEnum: string implements Translatable
             self::SectionExported => 'Exported the section :section of the template :name as a file',
             self::TemplateImported => 'Imported the template :name from a file',
             self::SectionImported => 'Imported the section :section into the template :name from a file',
+            self::AccountExportRequested => 'Asked for an export of :count vault|Asked for an export of :count vaults',
+            self::AccountExportDownloaded => 'Downloaded an export of :count vault|Downloaded an export of :count vaults',
+            self::AccountImportStarted => 'Started importing a file',
+            self::AccountImportEnded => 'Ended an import that brought :count item over|Ended an import that brought :count items over',
             self::FieldCreation => 'Added the field :label to the section :name',
             self::FieldUpdate => 'Updated the field :label in the section :name',
             self::FieldPositionUpdate => 'Moved the field :label in the section :name',

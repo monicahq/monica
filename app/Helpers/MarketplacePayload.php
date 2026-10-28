@@ -33,6 +33,24 @@ class MarketplacePayload
     }
 
     /** @return array<string, mixed> */
+    public static function ofTemplateVersion(Template $template, StructureVersion $version): array
+    {
+        $payload = new self;
+        $described = $payload->template($template, $version);
+
+        return ['type' => 'template', 'template' => $described, 'value_lists' => $payload->valueLists];
+    }
+
+    /** @return array<string, mixed> */
+    public static function ofLifeEventTypeVersion(LifeEventType $lifeEventType, StructureVersion $version): array
+    {
+        $payload = new self;
+        $described = $payload->lifeEventType($lifeEventType, $version);
+
+        return ['type' => 'life_event_type', 'life_event_type' => $described, 'value_lists' => $payload->valueLists];
+    }
+
+    /** @return array<string, mixed> */
     public static function ofSectionVersion(SectionVersion $sectionVersion): array
     {
         $payload = new self;
@@ -76,9 +94,9 @@ class MarketplacePayload
     }
 
     /** @return array<string, mixed> */
-    private function template(Template $template): array
+    private function template(Template $template, ?StructureVersion $version = null): array
     {
-        $version = $template->structure->publishedVersion;
+        $version ??= $template->structure->publishedVersion;
 
         return [
             'slug' => $template->slug,
@@ -100,9 +118,9 @@ class MarketplacePayload
      *
      * @return array<string, mixed>
      */
-    private function lifeEventType(LifeEventType $lifeEventType): array
+    private function lifeEventType(LifeEventType $lifeEventType, ?StructureVersion $version = null): array
     {
-        $version = $lifeEventType->structure->publishedVersion;
+        $version ??= $lifeEventType->structure->publishedVersion;
 
         return [
             'name' => $lifeEventType->getRawOriginal('name'),

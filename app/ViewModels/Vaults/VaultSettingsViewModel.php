@@ -7,11 +7,13 @@ namespace App\ViewModels\Vaults;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
+use App\Models\AccountExport;
 use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
+use App\ViewModels\Auth\ConfirmPasswordViewModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -42,7 +44,7 @@ class VaultSettingsViewModel
 
     public function description(): string
     {
-        return __('What :name is called, what a new contact in it starts from, and how to delete it.', [
+        return __('What :name is called, what a new contact in it starts from, how to export it, and how to delete it.', [
             'name' => $this->vault->name,
         ]);
     }
@@ -84,6 +86,23 @@ class VaultSettingsViewModel
     public function destroyAction(): string
     {
         return route('vaults.destroy', $this->vault);
+    }
+
+    public function exportAction(): string
+    {
+        return route('settings.accountExports.create');
+    }
+
+    public function exportRefusal(): ?string
+    {
+        $answer = $this->user->inspect('create', AccountExport::class);
+
+        return $answer->denied() ? $answer->message() : null;
+    }
+
+    public function credentials(): ConfirmPasswordViewModel
+    {
+        return new ConfirmPasswordViewModel(user: $this->user);
     }
 
     /** @return array<int, array{name: string, versions: array<int, array{id: int, label: string}>}> */

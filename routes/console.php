@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Jobs\DeliverDueNotifications;
 use App\Jobs\DetectDuplicateContacts;
 use App\Jobs\GenerateDueReminderOccurrences;
+use App\Jobs\PurgeAbandonedAccountImports;
+use App\Jobs\PurgeExpiredAccountExports;
 use App\Jobs\PurgeOrphanedFiles;
 use App\Jobs\SendNotificationDigests;
 use Illuminate\Support\Facades\Schedule;
@@ -25,6 +27,10 @@ if (config('laravelcloudflare.enabled')) {
 }
 
 Schedule::job(new PurgeOrphanedFiles, 'low')->dailyAt('03:20')->sentryMonitor();
+
+Schedule::job(new PurgeExpiredAccountExports, 'low')->dailyAt('03:30')->sentryMonitor();
+
+Schedule::job(new PurgeAbandonedAccountImports, 'low')->dailyAt('03:35')->sentryMonitor();
 
 Schedule::job(new DetectDuplicateContacts, 'low')->dailyAt('03:40')->sentryMonitor();
 

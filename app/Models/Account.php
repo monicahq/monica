@@ -629,4 +629,14 @@ class Account extends Model
     {
         return $this->contacts()->where('is_me', false)->where('is_partial', false)->count();
     }
+
+    /**
+     * Get the folder holding the working files of the account's exports and
+     * imports, one folder per export or import beneath it, so removing it removes
+     * every file a transfer left behind.
+     */
+    public function transfersDirectory(): string
+    {
+        return "accounts/{$this->id}/transfers";
+    }
 }

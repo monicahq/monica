@@ -13,6 +13,12 @@
     <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="vault-settings" />
   </x-slot:sidebar>
 
+  <x-modal.confirm-password
+    :offers-password="$viewModel->credentials()->offersPassword()"
+    :offers-passkey="$viewModel->credentials()->offersPasskey()"
+    :description="__('An export holds everything in the vault, sensitive fields included, so we ask for a credential first. You will not be asked again for a little while.')"
+  />
+
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
   <div
@@ -147,6 +153,33 @@
         </div>
       </x-slot:footer>
     @endif
+  </x-panel>
+
+  <x-panel
+    :title="__('Export this vault')"
+    icon="file"
+  >
+    <x-form id="vault-export-form" method="post" :action="$viewModel->exportAction()" class="flex flex-col gap-4">
+      <input type="hidden" name="vault" value="{{ $vault->id }}" />
+
+      <p class="max-w-prose text-sm text-pretty text-body">{{ __('One file holding the contacts, entities, relationships, life events, reminders and files of this vault, with the templates they use. It can be downloaded for seven days from Export and import.') }}</p>
+
+      <x-notice tone="warning" :title="__('The file is not encrypted')">
+        {{ __('It holds everything in this vault, sensitive fields included. Anybody who gets hold of it can read all of it, so keep it somewhere only you can reach.') }}
+      </x-notice>
+    </x-form>
+
+    <x-slot:footer>
+      <div class="flex flex-wrap items-center justify-end gap-3.5">
+        @if ($viewModel->exportRefusal() !== null)
+          <p id="vault-export-refusal" class="max-w-reading-narrow text-xs text-pretty text-muted">{{ $viewModel->exportRefusal() }}</p>
+
+          <x-button size="small" type="button" aria-disabled="true" aria-describedby="vault-export-refusal">{{ __('Prepare the export') }}</x-button>
+        @else
+          <x-button size="small" form="vault-export-form" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Prepare the export') }}</x-button>
+        @endif
+      </div>
+    </x-slot:footer>
   </x-panel>
 
   <x-delete-section :title="__('Delete this vault')" icon="vault">

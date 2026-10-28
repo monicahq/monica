@@ -14,6 +14,7 @@ use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -71,6 +72,8 @@ class CreateFile
         $dimensions = $this->dimensions();
 
         DB::transaction(function () use ($disk, $size, $dimensions): void {
+            DB::afterRollBack(fn (): bool => Storage::disk($disk)->delete($this->path));
+
             $this->file = File::query()->create([
                 'account_id' => $this->user->account_id,
                 'vault_id' => $this->vault?->id,

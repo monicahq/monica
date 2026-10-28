@@ -29,4 +29,7 @@ enum EmailType: string
     case ChannelProofCode = 'channel_proof_code';
     case ChannelDisabled = 'channel_disabled';
     case ChannelTestMessage = 'channel_test_message';
+    case AccountExportReady = 'account_export_ready';
+    case AccountExportFailed = 'account_export_failed';
+    case AccountImportEnded = 'account_import_ended';
 }

@@ -10,7 +10,7 @@ use App\Models\Account;
 use App\Models\Log;
 use App\Models\User;
 use App\Models\Vault;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Queue\Queueable;
 
@@ -19,7 +19,7 @@ use Illuminate\Foundation\Queue\Queueable;
  * address, the subject and the interface it came through are read in the constructor, since the
  * queue has no request behind it and half of what is worth recording is a deletion.
  */
-class LogUserAction implements ShouldQueue
+class LogUserAction implements ShouldQueueAfterCommit
 {
     use Queueable;
 

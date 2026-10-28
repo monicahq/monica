@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Helpers;
 
 use App\Models\LifeEventType;
+use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
 use App\Models\Template;
 use Illuminate\Support\Str;
@@ -12,6 +13,19 @@ use Illuminate\Support\Str;
 class StructureFile
 {
     public const int FORMAT_VERSION = 1;
+
+    /** @return array<string, mixed> */
+    public static function ofTemplateVersion(Template $template, StructureVersion $version): array
+    {
+        $payload = MarketplacePayload::ofTemplateVersion($template, $version);
+
+        return [
+            'monica' => ['format' => 'template', 'format_version' => self::FORMAT_VERSION],
+            'exported_at' => now()->toIso8601ZuluString(),
+            'template' => $payload['template'],
+            'value_lists' => $payload['value_lists'],
+        ];
+    }
 
     /** @return array<string, mixed> */
     public static function ofTemplate(Template $template): array
@@ -47,6 +61,19 @@ class StructureFile
     public static function ofLifeEventType(LifeEventType $lifeEventType): array
     {
         $payload = MarketplacePayload::of($lifeEventType);
+
+        return [
+            'monica' => ['format' => 'life_event_type', 'format_version' => self::FORMAT_VERSION],
+            'exported_at' => now()->toIso8601ZuluString(),
+            'life_event_type' => $payload['life_event_type'],
+            'value_lists' => $payload['value_lists'],
+        ];
+    }
+
+    /** @return array<string, mixed> */
+    public static function ofLifeEventTypeVersion(LifeEventType $lifeEventType, StructureVersion $version): array
+    {
+        $payload = MarketplacePayload::ofLifeEventTypeVersion($lifeEventType, $version);
 
         return [
             'monica' => ['format' => 'life_event_type', 'format_version' => self::FORMAT_VERSION],
