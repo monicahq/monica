@@ -449,7 +449,7 @@ Route::middleware([
                     Route::get('slices', [SliceOfLifeController::class, 'index'])->name('slices.index');
                     Route::post('slices', [SliceOfLifeController::class, 'store'])->name('slices.store');
 
-                    Route::middleware('can:slice-owner,journal,slice')->prefix('slices/{slice}')->group(function () {
+                    Route::middleware('can:sliceOfLife-owner,journal,slice')->prefix('slices/{slice}')->group(function () {
                         Route::get('', [SliceOfLifeController::class, 'show'])->name('slices.show');
                         Route::get('edit', [SliceOfLifeController::class, 'edit'])->name('slices.edit');
                         Route::put('', [SliceOfLifeController::class, 'update'])->name('slices.update');
