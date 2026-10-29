@@ -75,7 +75,7 @@ class VaultController extends Controller
             'dueTasks' => VaultShowViewHelper::dueTasks($vault, Auth::user()),
             'moodTrackingEvents' => VaultShowViewHelper::moodTrackingEvents($vault, Auth::user()),
             'defaultTab' => $vault->default_activity_tab,
-            'lifeEvents' => ModuleLifeEventViewHelper::data($contact, Auth::user()),
+            'lifeEvents' => $contact ? ModuleLifeEventViewHelper::data($contact, Auth::user()) : null,
             'lifeMetrics' => VaultLifeMetricsViewHelper::data($vault, Auth::user(), Carbon::now()->year),
             'url' => [
                 'feed' => route('vault.feed.show', [
