@@ -84,6 +84,10 @@ class ContactShowViewHelper
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
                 ]),
+                'merge_contact' => route('contact.merge.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
                 'destroy' => route('contact.destroy', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
@@ -135,6 +139,10 @@ class ContactShowViewHelper
                     'contact' => $contact->id,
                 ]),
                 'move_contact' => route('contact.move.show', [
+                    'vault' => $contact->vault_id,
+                    'contact' => $contact->id,
+                ]),
+                'merge_contact' => route('contact.merge.show', [
                     'vault' => $contact->vault_id,
                     'contact' => $contact->id,
                 ]),

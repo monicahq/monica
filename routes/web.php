@@ -6,6 +6,7 @@ use App\Domains\Contact\ManageContact\Web\Controllers\ContactArchiveController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactFavoriteController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactLabelController;
+use App\Domains\Contact\ManageContact\Web\Controllers\ContactMergeController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactMoveController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactNoTemplateController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactPageController;
@@ -270,6 +271,10 @@ Route::middleware([
                     // move contact to another vault
                     Route::get('move', [ContactMoveController::class, 'show'])->name('contact.move.show');
                     Route::post('move', [ContactMoveController::class, 'store'])->name('contact.move.store');
+
+                    // merge contacts
+                    Route::get('merge', [ContactMergeController::class, 'show'])->name('contact.merge.show');
+                    Route::post('merge', [ContactMergeController::class, 'store'])->name('contact.merge.store');
 
                     // template
                     Route::get('update-template', [ContactNoTemplateController::class, 'show'])->name('contact.blank');
