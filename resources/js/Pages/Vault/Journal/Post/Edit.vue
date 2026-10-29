@@ -1,6 +1,6 @@
 <script setup>
 import { Link, useForm } from '@inertiajs/vue3';
-import { watch, ref } from 'vue';
+import { watch, ref, defineProps, computed } from 'vue';
 import { debounce } from 'lodash';
 import { trans } from 'laravel-vue-i18n';
 import { DatePicker } from 'v-calendar';
@@ -17,11 +17,19 @@ import ContactSelector from '@/Shared/Form/ContactSelector.vue';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
 import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
+import {
+  buildContactMentionIndex,
+  deserializeTokenizedMentions,
+  mentionLabelForContact,
+  serializeEditorMentions,
+} from '@/utils/mentionUtils.js';
 
 const props = defineProps({
   layoutData: Object,
   data: Object,
 });
+
+const initialContactMentionIndex = buildContactMentionIndex(props.data.contacts ?? []);
 
 const form = useForm({
   title: props.data.title,
@@ -30,7 +38,7 @@ const form = useForm({
   sections: props.data.sections.map((section) => ({
     id: section.id,
     label: section.label,
-    content: section.content,
+    content: deserializeTokenizedMentions(section.content || '', initialContactMentionIndex),
   })),
   uuid: null,
   name: null,
@@ -40,6 +48,28 @@ const form = useForm({
   size: null,
 });
 
+const hasInvalidMentions = ref(false); // Track if there are invalid mentions
+const mentionErrorMessage = ref(''); // Error message for invalid mentions
+
+const contactMentionIndex = computed(() => buildContactMentionIndex(form.contacts ?? []));
+
+const tributeOptions = computed(() => ({
+  trigger: '@',
+  values: form.contacts.map((contact) => {
+    const mentionLabel = mentionLabelForContact(contact, contactMentionIndex.value);
+
+    return {
+      key: mentionLabel,
+      value: mentionLabel,
+      mentionLabel,
+      id: contact.id,
+      original: contact,
+    };
+  }),
+  selectTemplate: function (item) {
+    return `@"${item.original.mentionLabel}"`;
+  },
+}));
 const saveInProgress = ref(false);
 const statistics = ref(props.data.statistics);
 const deletePhotoModalShown = ref(false);
@@ -131,8 +161,44 @@ const destroyPhoto = () => {
 const update = () => {
   saveInProgress.value = true;
 
+  // Clone form to avoid modifying the UI content
+  let processedForm = JSON.parse(JSON.stringify(form));
+
+  let invalidMentionsFound = false;
+  let invalidMentionText = '';
+
+  processedForm.sections.forEach((section) => {
+    if (section.content) {
+      const mentionResult = serializeEditorMentions(section.content, contactMentionIndex.value);
+
+      section.content = mentionResult.content;
+
+      if (mentionResult.invalidMentions.length > 0) {
+        invalidMentionsFound = true;
+
+        const invalidMention = mentionResult.invalidMentions[0];
+        if (invalidMention.reason === 'ambiguous') {
+          invalidMentionText = `${trans('Mention is ambiguous. Pick a suggestion with short ID')}: @"${invalidMention.label}"`;
+        } else {
+          invalidMentionText = `${trans('Invalid mention')}: @"${invalidMention.label}"`;
+        }
+      }
+    }
+  });
+
+  if (!invalidMentionsFound) {
+    hasInvalidMentions.value = false;
+    mentionErrorMessage.value = '';
+  } else {
+    // If invalid mentions were found, set the error state and stop the upload
+    hasInvalidMentions.value = true;
+    mentionErrorMessage.value = invalidMentionText;
+    saveInProgress.value = false;
+    return; // Prevent the form from being uploaded
+  }
+
   axios
-    .put(props.data.url.update, form)
+    .put(props.data.url.update, processedForm)
     .then((response) => {
       setTimeout(() => (saveInProgress.value = false), 350);
       statistics.value = response.data.data;
@@ -326,7 +392,18 @@ const destroy = () => {
                     :required="true"
                     :maxlength="65535"
                     :markdown="true"
-                    :textarea-class="'block w-full'" />
+                    :tribute-options="tributeOptions"
+                    :textarea-class="{
+                      'block w-full': true,
+                      'border-red-500': hasInvalidMentions, // Add the red border if invalid mentions
+                    }" />
+                  <p class="mt-2 text-xs text-gray-500">
+                    {{ $t('Use @"Name". If names are duplicated, pick @"Name (id)" from suggestions.') }}
+                  </p>
+                </div>
+                <!-- Show error message if invalid mentions exist -->
+                <div v-if="hasInvalidMentions" class="text-red-500 text-sm mt-2">
+                  {{ mentionErrorMessage }}
                 </div>
               </div>
             </div>
@@ -343,7 +420,8 @@ const destroy = () => {
 
             <!-- auto save -->
             <div class="mb-6 text-sm">
-              <div v-if="!saveInProgress" class="flex items-center justify-center">
+              <!-- Show the auto-saved message unless there's an error with mentions -->
+              <div v-if="!hasInvalidMentions && !saveInProgress" class="flex items-center justify-center">
                 <svg
                   class="me-2 h-4 w-4 text-green-700"
                   xmlns="http://www.w3.org/2000/svg"
@@ -369,6 +447,10 @@ const destroy = () => {
 
                 <span>{{ $t('Saving in progress') }}</span>
               </div>
+            </div>
+
+            <div v-if="hasInvalidMentions" class="text-red-500 text-sm mt-2 flex items-center justify-center">
+              <span>{{ $t('Not saving until errors are fixed') }}</span>
             </div>
 
             <!-- written at -->

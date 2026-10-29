@@ -5,6 +5,7 @@ namespace Tests\Unit\Domains\Vault\ManageJournals\Services;
 use App\Domains\Vault\ManageJournals\Services\UpdatePost;
 use App\Exceptions\NotEnoughPermissionException;
 use App\Models\Account;
+use App\Models\Contact;
 use App\Models\Journal;
 use App\Models\Post;
 use App\Models\PostSection;
@@ -113,6 +114,90 @@ class UpdatePostTest extends TestCase
         ]);
 
         $this->executeService($regis, $regis->account, $vault, $journal, $post);
+    }
+
+    /** @test */
+    public function it_fails_if_a_mentioned_contact_is_not_in_the_contacts_payload(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
+        $journal = Journal::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $post = Post::factory()->create([
+            'journal_id' => $journal->id,
+        ]);
+
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+
+        PostSection::factory()->create([
+            'post_id' => $post->id,
+            'content' => 'this is a content',
+        ]);
+
+        $this->expectException(ValidationException::class);
+
+        (new UpdatePost)->execute([
+            'account_id' => $regis->account->id,
+            'vault_id' => $vault->id,
+            'author_id' => $regis->id,
+            'journal_id' => $journal->id,
+            'post_id' => $post->id,
+            'title' => 'title',
+            'sections' => [
+                [
+                    'id' => PostSection::first()->id,
+                    'content' => 'mention {{{CONTACT-ID:'.$contact->id.'|Regis Troyat}}}',
+                ],
+            ],
+            'contacts' => [],
+            'written_at' => null,
+        ]);
+    }
+
+    /** @test */
+    public function it_fails_if_submitted_contacts_do_not_belong_to_the_vault(): void
+    {
+        $regis = $this->createUser();
+        $vault = $this->createVault($regis->account);
+        $vault = $this->setPermissionInVault($regis, Vault::PERMISSION_EDIT, $vault);
+        $journal = Journal::factory()->create([
+            'vault_id' => $vault->id,
+        ]);
+        $post = Post::factory()->create([
+            'journal_id' => $journal->id,
+        ]);
+
+        $foreignContact = Contact::factory()->create();
+
+        PostSection::factory()->create([
+            'post_id' => $post->id,
+            'content' => 'this is a content',
+        ]);
+
+        $this->expectException(ValidationException::class);
+
+        (new UpdatePost)->execute([
+            'account_id' => $regis->account->id,
+            'vault_id' => $vault->id,
+            'author_id' => $regis->id,
+            'journal_id' => $journal->id,
+            'post_id' => $post->id,
+            'title' => 'title',
+            'sections' => [
+                [
+                    'id' => PostSection::first()->id,
+                    'content' => 'this is a content',
+                ],
+            ],
+            'contacts' => [
+                ['id' => $foreignContact->id],
+            ],
+            'written_at' => null,
+        ]);
     }
 
     private function executeService(User $author, Account $account, Vault $vault, Journal $journal, Post $post): void

@@ -118,6 +118,7 @@ class PostController extends Controller
             'post_id' => $postId,
             'title' => $request->input('title'),
             'sections' => $request->input('sections'),
+            'contacts' => $request->input('contacts', []),
             'written_at' => Carbon::parse($request->input('date'))->format('Y-m-d'),
         ]);
 

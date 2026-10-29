@@ -5,6 +5,9 @@ namespace App\Domains\Vault\ManageJournals\Services;
 use App\Interfaces\ServiceInterface;
 use App\Models\Post;
 use App\Services\BaseService;
+use Illuminate\Validation\ValidationException;
+
+use function Safe\preg_match_all;
 
 class UpdatePost extends BaseService implements ServiceInterface
 {
@@ -25,6 +28,8 @@ class UpdatePost extends BaseService implements ServiceInterface
             'post_id' => 'required|integer|exists:posts,id',
             'title' => 'nullable|string|max:255',
             'sections' => 'required',
+            'contacts' => 'sometimes|array',
+            'contacts.*.id' => 'required|uuid',
             'written_at' => 'nullable|date_format:Y-m-d',
         ];
     }
@@ -64,6 +69,9 @@ class UpdatePost extends BaseService implements ServiceInterface
 
         $this->post = $journal->posts()
             ->findOrFail($this->data['post_id']);
+
+        $this->validateSubmittedContacts();
+        $this->validateSectionMentions();
     }
 
     private function update(): void
@@ -91,6 +99,72 @@ class UpdatePost extends BaseService implements ServiceInterface
                 ->update([
                     'content' => $section['content'],
                 ]);
+        }
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function getSubmittedContactIds(): array
+    {
+        return collect($this->data['contacts'] ?? [])
+            ->pluck('id')
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    private function validateSubmittedContacts(): void
+    {
+        $submittedContactIds = $this->getSubmittedContactIds();
+
+        if (count($submittedContactIds) === 0) {
+            return;
+        }
+
+        $validContactIds = $this->vault->contacts()
+            ->whereIn('id', $submittedContactIds)
+            ->pluck('id')
+            ->all();
+
+        $invalidContactIds = array_values(array_diff($submittedContactIds, $validContactIds));
+
+        if (count($invalidContactIds) > 0) {
+            throw ValidationException::withMessages([
+                'contacts' => trans('Some selected contacts do not belong to this vault.'),
+            ]);
+        }
+    }
+
+    private function validateSectionMentions(): void
+    {
+        $submittedContactIds = $this->getSubmittedContactIds();
+        $mentionedContactIds = [];
+
+        foreach ($this->data['sections'] as $section) {
+            $content = $section['content'] ?? '';
+            if ($content === '') {
+                continue;
+            }
+
+            preg_match_all('/\{\{\{CONTACT-ID:([a-f0-9-]+)\|[^}]*\}\}\}/', $content, $matches);
+
+            foreach ($matches[1] ?? [] as $contactId) {
+                $mentionedContactIds[] = $contactId;
+            }
+        }
+
+        $mentionedContactIds = array_values(array_unique($mentionedContactIds));
+        if (count($mentionedContactIds) === 0) {
+            return;
+        }
+
+        $unknownMentions = array_values(array_diff($mentionedContactIds, $submittedContactIds));
+        if (count($unknownMentions) > 0) {
+            throw ValidationException::withMessages([
+                'sections' => trans('A mention references a contact that is not attached to this post.'),
+            ]);
         }
     }
 }
