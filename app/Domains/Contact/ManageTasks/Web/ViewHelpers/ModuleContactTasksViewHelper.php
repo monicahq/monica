@@ -12,15 +12,15 @@ class ModuleContactTasksViewHelper
 {
     public static function data(Contact $contact, User $user): array
     {
-        $tasks = $contact->tasks() // @phpstan-ignore method.notFound
-            ->notCompleted()
+        $tasks = $contact->tasks()
+            ->notCompleted() // @phpstan-ignore method.notFound
             ->orderBy('id', 'desc')
             ->get();
 
         $tasksCollection = $tasks->map(fn ($task) => self::dtoTask($contact, $task, $user));
 
-        $completedTasksCount = $contact->tasks() // @phpstan-ignore method.notFound
-            ->completed()
+        $completedTasksCount = $contact->tasks()
+            ->completed() // @phpstan-ignore method.notFound
             ->count();
 
         return [
@@ -41,8 +41,8 @@ class ModuleContactTasksViewHelper
 
     public static function completed(Contact $contact, User $user): Collection
     {
-        return $contact->tasks() // @phpstan-ignore method.notFound
-            ->completed()
+        return $contact->tasks()
+            ->completed() // @phpstan-ignore method.notFound
             ->orderBy('completed_at', 'desc')
             ->get()
             ->map(fn ($task) => self::dtoTask($contact, $task, $user));

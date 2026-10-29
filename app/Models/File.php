@@ -49,7 +49,7 @@ class File extends Model
     /**
      * The event map for the model.
      *
-     * @var array
+     * @var array<string, class-string>
      */
     protected $dispatchesEvents = [
         'deleted' => FileDeleted::class,
@@ -58,7 +58,7 @@ class File extends Model
     /**
      * Get the vault associated with the file.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Vault, $this>
+     * @return BelongsTo<Vault, $this>
      */
     public function vault(): BelongsTo
     {

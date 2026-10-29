@@ -158,7 +158,7 @@ class AddressBookSynchronizer
         $deleted = $data->filter(fn ($contact): bool => is_array($contact) && $contact['status'] === '404')
             ->map(fn (array $contact, string $href): ContactDto => new ContactDeleteDto($href));
 
-        return $updated->merge($deleted); // @phpstan-ignore argument.type
+        return $updated->merge($deleted);
     }
 
     /**
@@ -179,7 +179,7 @@ class AddressBookSynchronizer
         $deleted = $data->filter(fn ($contact): bool => is_array($contact) && $contact['status'] === '404')
             ->map(fn (array $contact, string $href): ContactDto => new ContactDeleteDto($href));
 
-        return $updated->merge($deleted); // @phpstan-ignore argument.type
+        return $updated->merge($deleted);
     }
 
     /**
