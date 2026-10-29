@@ -90,7 +90,9 @@ class ContactShowViewHelperTest extends TestCase
                 'move_contact' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/move',
                 'destroy_avatar' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/avatar',
                 'download_vcard' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/vcard',
+                'download_json' => env('APP_URL').'/vaults/'.$contact->vault->id.'/contacts/'.$contact->id.'/export/json',
             ],
+
             $array['url']
         );
     }

@@ -255,6 +255,7 @@ Route::middleware([
                     Route::delete('', [ContactController::class, 'destroy'])->name('contact.destroy');
 
                     Route::post('vcard', [ContactVCardController::class, 'download'])->name('contact.vcard.download')->withoutMiddleware([HandleInertiaRequests::class]);
+                    Route::post('export/json', [ContactJsonExportController::class, 'download'])->name('contact.export.json')->withoutMiddleware([HandleInertiaRequests::class]);
 
                     // quick facts
                     Route::get('quickFacts/{template}', [ContactQuickFactController::class, 'show'])->name('contact.quick_fact.show');
