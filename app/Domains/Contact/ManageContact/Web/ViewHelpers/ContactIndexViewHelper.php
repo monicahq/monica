@@ -69,6 +69,9 @@ class ContactIndexViewHelper
                     'create' => route('contact.create', [
                         'vault' => $vault->id,
                     ]),
+                    'import' => route('contact.import.create', [
+                        'vault' => $vault->id,
+                    ]),
                 ],
                 'sort' => [
                     'update' => route('contact.sort.update', [

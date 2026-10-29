@@ -5,6 +5,7 @@ use App\Domains\Contact\ManageCalls\Web\Controllers\ContactModuleCallController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactArchiveController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactFavoriteController;
+use App\Domains\Contact\ManageContact\Web\Controllers\ContactImportController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactLabelController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactMoveController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactNoTemplateController;
@@ -245,6 +246,14 @@ Route::middleware([
                 // create a contact
                 Route::get('create', [ContactController::class, 'create'])->name('contact.create');
                 Route::post('', [ContactController::class, 'store'])->name('contact.store');
+
+                // import contacts
+                Route::get('import', [ContactImportController::class, 'create'])->name('contact.import.create');
+                Route::post('import', [ContactImportController::class, 'store'])->name('contact.import.store');
+                Route::get('import/{importJob}/errors.csv', [ContactImportController::class, 'errorsCsv'])->name('contact.import.errors.csv');
+                Route::get('import/{importJob}', [ContactImportController::class, 'show'])->name('contact.import.show');
+                Route::get('import/{importJob}/progress', [ContactImportController::class, 'progress'])->name('contact.import.progress');
+                Route::delete('import/{importJob}', [ContactImportController::class, 'cancel'])->name('contact.import.cancel');
 
                 // contact page
                 Route::middleware('can:contact-owner,vault,contact')->prefix('{contact}')->group(function () {

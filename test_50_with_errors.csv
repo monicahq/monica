@@ -1,0 +1,52 @@
+first_name,last_name,email,phone,company
+John,Doe,john@example.com,555-123-4567,Acme Inc
+Jane,Smith,jane@example.com,555-234-5678,Globex Corp
+,Bob,bob@example.com,555-345-6789,Initech
+Alice,Johnson,alice@example.com,555-456-7890,Umbrella Corp
+Charlie,,charlie@example.com,555-567-8901,Hooli
+Eve,Williams,eve@example.com,555-678-9012,MegaCorp
+Frank,Miller,frank@example.com,555-789-0123,
+Grace,Davis,not-an-email,555-890-1234,Bigtel
+Hank,Wilson,hank@example.com,12,Soylent
+Ivy,Brown,ivy@example.com,555-012-3456,Aperture
+Jack,Jones,jack@example.com,555-123-4567,Stark Industries
+Karen,Garcia,karen@example.com,555-234-5678,Wonka Industries
+Leo,Martinez,leo@example.com,555-345-6789,Cyberdyne
+Maria,Anderson,maria@example.com,555-456-7890,Wayne Enterprises
+Nate,Thomas,not-an-email-either,555-567-8901,
+Olivia,Jackson,olivia@example.com,555-678-9012,Genco
+,White,,555-789-0123,Los Pollos
+Quinn,Harris,quinn@example.com,555-890-1234,Dunder Mifflin
+Rachel,Martin,rachel@example.com,555-901-2345,Pied Piper
+Sam,Moore,sam@example.com,555-012-3456,Initech
+Tina,Clark,tina@example.com,555-123-4567,Globex Corp
+Uma,Robinson,uma@example.com,555-234-5678,Acme Inc
+,incomplete1,bad-email-format,,
+Vince,young,vince@example.com,555-456-7890,MegaCorp
+Wendy,King,wendy@example.com,555-567-8901,
+Xander,Wright,,999,Bigtel
+Yara,Adams,yara@example.com,555-789-0123,Hooli
+Zack,Baker,zack@example.com,555-890-1234,Aperture
+Amy,Carter,amy@example.com,555-901-2345,Stark Industries
+Brian,Evans,,555-012-3456,Wonka Industries
+,incomplete2,no-name@example.com,555-123-4567,
+Cathy,Foster,cathy@example.com,555-234-5678,Cyberdyne
+,incomplete3,another-bad-email,555-345-6789,Wayne Enterprises
+Dan,Green,dan@example.com,555-456-7890,
+Ella,Harris,ella@example.com,555-567-8901,Genco
+,incomplete4,fourth-bad@example.com,555-678-9012,Los Pollos
+Fred,Irving,fred@example.com,555-789-0123,
+Gina,,gina@example.com,555-890-1234,
+,incomplete5,fifth-bad@example.com,555-901-2345,Pied Piper
+Henry,Jones,henry@example.com,not-a-valid-phone,Hooli
+Iris,Kelly,iris@example.com,555-123-4567,MegaCorp
+,incomplete6,,555-234-5678,Globex Corp
+Jake,,jake@example.com,555-345-6789,Acme Inc
+,incomplete7,jake@example.com,555-456-7890,Initech
+Laura,Smith,,,Bigtel
+,incomplete8,bad.email@,555-678-9012,
+Mike,Miller,mike@example.com,555-789-0123,
+,incomplete9,mike@example.com,555-890-1234,
+Nora,Wilson,nora@example.com,555-901-2345,
+,incomplete10,no-name@example.com,555-012-3456,
+Oscar,Peterson,oscar@example.com,555-123-4567,
