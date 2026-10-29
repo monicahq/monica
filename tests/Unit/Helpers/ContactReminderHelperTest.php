@@ -60,6 +60,21 @@ class ContactReminderHelperTest extends TestCase
     }
 
     /** @test */
+    public function it_gets_the_date_based_on_a_month_or_day_on_february_29(): void
+    {
+        $user = User::factory()->create();
+        $reminder = ContactReminder::factory()->create([
+            'day' => 29,
+            'month' => 2,
+            'year' => null,
+        ]);
+        $this->assertEquals(
+            'Feb 29',
+            ContactReminderHelper::formatDate($reminder, $user)
+        );
+    }
+
+    /** @test */
     public function it_cant_get_the_date_if_the_date_is_not_set(): void
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1));
