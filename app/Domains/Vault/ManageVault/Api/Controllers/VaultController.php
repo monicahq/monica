@@ -21,7 +21,7 @@ class VaultController extends ApiController
     public function __construct()
     {
         $this->middleware('abilities:read')->only(['index', 'show']);
-        $this->middleware('abilities:write')->only(['store', 'update', 'delete']);
+        $this->middleware('abilities:write')->only(['store', 'update', 'destroy']);
 
         parent::__construct();
     }
