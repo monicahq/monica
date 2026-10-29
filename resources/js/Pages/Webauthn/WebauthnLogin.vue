@@ -72,10 +72,16 @@ const stop = () => {
 };
 
 const loginWaitForKey = (publicKey) => {
+  if (!publicKey) {
+    return;
+  }
+
   processing.value = true;
+  const optionsJSON = JSON.parse(JSON.stringify(publicKey));
+
   browserSupportsWebAuthnAutofill()
     .then((available) =>
-      startAuthentication({ optionsJSON: publicKey, useBrowserAutofill: props.autofill && available }),
+      startAuthentication({ optionsJSON, useBrowserAutofill: props.autofill && available }),
     )
     .then((data) => webauthnLoginCallback(data))
     .catch((error) => {
