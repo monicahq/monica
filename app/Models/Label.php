@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Label extends Model
@@ -24,6 +25,8 @@ class Label extends Model
         'name',
         'slug',
         'description',
+        'category',
+        'color',
         'bg_color',
         'text_color',
     ];
@@ -56,5 +59,16 @@ class Label extends Model
     public function feedItem(): MorphOne
     {
         return $this->morphOne(ContactFeedItem::class, 'feedable');
+    }
+
+    /**
+     * Get all taggables (polymorphic relationships) for this label.
+     * This enables tagging multiple model types: contacts, activities, etc.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Taggable, $this>
+     */
+    public function taggables(): HasMany
+    {
+        return $this->hasMany(Taggable::class, 'label_id');
     }
 }

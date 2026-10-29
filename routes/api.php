@@ -1,7 +1,9 @@
 <?php
 
+use App\Domains\Contact\ManageContact\Api\Controllers\ContactController;
 use App\Domains\Settings\ManageUsers\Api\Controllers\UserController;
 use App\Domains\Vault\ManageVault\Api\Controllers\VaultController;
+use App\Domains\Vault\ManageTags\Api\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,4 +24,17 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
 
     // vaults
     Route::apiResource('vaults', VaultController::class);
+
+    // tags
+    Route::prefix('vaults/{vaultId}')->group(function () {
+        Route::apiResource('tags', TagController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
+        
+        // Contact tag endpoints
+        Route::post('contacts/{contactId}/tags', [TagController::class, 'attachTag'])->name('tags.attach');
+        Route::delete('contacts/{contactId}/tags/{tagId}', [TagController::class, 'detachTag'])->name('tags.detach');
+    });
+
+    // contacts with tag filtering
+    Route::get('contacts', [ContactController::class, 'index'])->name('contacts.index');
 });
+

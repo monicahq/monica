@@ -197,6 +197,17 @@ class Contact extends VCardResource
     }
 
     /**
+     * Get all taggables (polymorphic relationships) for this contact.
+     * Enables the contact to be tagged through the polymorphic taggables table.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\App\Models\Taggable, $this>
+     */
+    public function taggables(): MorphMany
+    {
+        return $this->morphMany(Taggable::class, 'taggable');
+    }
+
+    /**
      * Get the contact information records associated with the contact.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ContactInformation, $this>
