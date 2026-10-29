@@ -5,6 +5,7 @@ namespace App\Domains\Vault\ManageJournals\Web\ViewHelpers;
 use App\Helpers\DateHelper;
 use App\Helpers\SliceOfLifeHelper;
 use App\Helpers\SQLHelper;
+use App\Helpers\StorageHelper;
 use App\Models\Journal;
 use App\Models\Post;
 use App\Models\SliceOfLife;
@@ -85,7 +86,7 @@ class JournalShowViewHelper
                     'photo' => optional(optional($post)->files)->first() ? [
                         'id' => $post->files->first()->id,
                         'url' => [
-                            'show' => 'https://ucarecdn.com/'.$post->files->first()->uuid.'/-/scale_crop/75x75/smart/-/format/auto/-/quality/smart_retina/',
+                            'show' => StorageHelper::cdnBase().$post->files->first()->uuid.'/-/scale_crop/75x75/smart/-/format/auto/-/quality/smart_retina/',
                         ],
                     ] : null,
                     'url' => [
@@ -204,7 +205,7 @@ class JournalShowViewHelper
                 'id' => $slice->id,
                 'name' => $slice->name,
                 'date_range' => SliceOfLifeHelper::getDateRange($slice),
-                'cover_image' => $slice->file ? 'https://ucarecdn.com/'.$slice->file->uuid.'/-/scale_crop/200x100/smart/-/format/auto/-/quality/smart_retina/' : null,
+                'cover_image' => $slice->file ? StorageHelper::cdnBase().$slice->file->uuid.'/-/scale_crop/200x100/smart/-/format/auto/-/quality/smart_retina/' : null,
                 'url' => [
                     'show' => route('slices.show', [
                         'vault' => $journal->vault_id,

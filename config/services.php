@@ -33,6 +33,7 @@ return [
     'uploadcare' => [
         'public_key' => env('UPLOADCARE_PUBLIC_KEY', null),
         'private_key' => env('UPLOADCARE_PRIVATE_KEY', null),
+        'cdn_base' => env('UPLOADCARE_CDN_BASE', 'https://ucarecdn.com'),
     ],
 
     /*

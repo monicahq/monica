@@ -440,5 +440,15 @@ class ContactTest extends TestCase
             ],
             $contact->avatar
         );
+
+        config(['services.uploadcare.cdn_base' => 'https://abc123.ucarecd.net']);
+
+        $this->assertEquals(
+            [
+                'type' => 'url',
+                'content' => 'https://abc123.ucarecd.net/123/-/scale_crop/300x300/smart/-/format/auto/-/quality/smart_retina/',
+            ],
+            $contact->avatar
+        );
     }
 }

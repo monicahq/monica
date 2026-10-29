@@ -238,6 +238,7 @@ const navigateToSelected = () => {
                   :public-key="data.avatar.uploadcare.publicKey"
                   :secure-signature="data.avatar.uploadcare.signature"
                   :secure-expire="data.avatar.uploadcare.expire"
+                  :cdn-base="data.avatar.uploadcare.cdnBase"
                   :tabs="'file'"
                   :preview-step="false"
                   @success="onSuccess"

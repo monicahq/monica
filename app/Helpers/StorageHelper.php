@@ -41,6 +41,15 @@ class StorageHelper
             'publicKey' => config('services.uploadcare.public_key'),
             'signature' => optional($signature)->getSignature(),
             'expire' => optional(optional($signature)->getExpire())->getTimestamp(),
+            'cdnBase' => rtrim(config('services.uploadcare.cdn_base'), '/'),
         ];
+    }
+
+    /**
+     * Get the base URL of the Uploadcare CDN, with a trailing slash.
+     */
+    public static function cdnBase(): string
+    {
+        return rtrim(config('services.uploadcare.cdn_base'), '/').'/';
     }
 }

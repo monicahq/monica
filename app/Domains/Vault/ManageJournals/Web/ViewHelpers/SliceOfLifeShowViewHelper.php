@@ -76,7 +76,7 @@ class SliceOfLifeShowViewHelper
             'name' => $slice->name,
             'description' => $slice->description,
             'date_range' => SliceOfLifeHelper::getDateRange($slice),
-            'cover_image' => $slice->file ? 'https://ucarecdn.com/'.$slice->file->uuid.'/-/scale_crop/800x100/smart/-/format/auto/-/quality/smart_retina/' : null,
+            'cover_image' => $slice->file ? StorageHelper::cdnBase().$slice->file->uuid.'/-/scale_crop/800x100/smart/-/format/auto/-/quality/smart_retina/' : null,
             'url' => [
                 'show' => route('slices.show', [
                     'vault' => $slice->journal->vault_id,
