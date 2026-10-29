@@ -1,0 +1,31 @@
+name: Check Translation Consistency
+
+on:
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  translation-checker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, ctype, iconv
+
+      - name: Install Dependencies
+        run: composer install --no-ansi --no-interaction --no-scripts --prefer-dist
+
+      - name: Copy Environment File
+        run: cp .env.example .env
+
+      - name: Generate Encryption Key
+        run: php artisan key:generate
+
+      - name: Run Translation Consistency Check
+        run: php artisan lang:check-consistency
