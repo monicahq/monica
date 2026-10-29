@@ -87,10 +87,17 @@ class RemoveVaultAccess extends BaseService implements ServiceInterface
      */
     private function removeAllRemindersForThisUserInThisVault(): void
     {
-        $this->user->notificationChannels->each(function (UserNotificationChannel $notificationChannel) {
-            $notificationChannel->contactReminders->each(function ($reminder) {
-                $reminder->pivot->delete();
-            });
+        $contactIds = Contact::withTrashed()
+            ->where('vault_id', $this->vault->id)
+            ->pluck('id');
+
+        $this->user->notificationChannels->each(function (UserNotificationChannel $notificationChannel) use ($contactIds) {
+            $notificationChannel->contactReminders()
+                ->whereIn('contact_id', $contactIds)
+                ->get()
+                ->each(function ($reminder) {
+                    $reminder->pivot->delete();
+                });
         });
     }
 }
