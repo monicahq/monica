@@ -80,6 +80,7 @@ class ContactController extends Controller
             'template_id' => $request->input('template_id'),
             'prefix' => $request->input('prefix'),
             'suffix' => $request->input('suffix'),
+            'pronouns' => $request->input('pronouns'),
             'listed' => true,
         ];
 
@@ -152,6 +153,7 @@ class ContactController extends Controller
             'pronoun_id' => $request->input('pronoun_id'),
             'prefix' => $request->input('prefix'),
             'suffix' => $request->input('suffix'),
+            'pronouns' => $request->input('pronouns'),
         ];
 
         $contact = (new UpdateContact)->execute($data);

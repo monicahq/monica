@@ -37,6 +37,7 @@ class UpdateContact extends BaseService implements ServiceInterface
             'pronoun_id' => 'nullable|integer|exists:pronouns,id',
             'suffix' => 'nullable|string|max:255',
             'prefix' => 'nullable|string|max:255',
+            'pronouns' => 'nullable|string|max:255',
         ];
     }
 
@@ -68,6 +69,7 @@ class UpdateContact extends BaseService implements ServiceInterface
         $this->contact->nickname = $this->valueOrNull($data, 'nickname');
         $this->contact->suffix = $this->valueOrNull($data, 'suffix');
         $this->contact->prefix = $this->valueOrNull($data, 'prefix');
+        $this->contact->pronouns = $this->valueOrNull($data, 'pronouns');
         if ($this->valueOrNull($this->data, 'gender_id')) {
             $this->contact->gender_id = $this->gender->id;
         } else {

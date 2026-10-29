@@ -31,6 +31,7 @@ class CreateContact extends BaseService implements ServiceInterface
             'suffix' => 'nullable|string|max:255',
             'gender_id' => 'nullable|integer|exists:genders,id',
             'pronoun_id' => 'nullable|integer|exists:pronouns,id',
+            'pronouns' => 'nullable|string|max:255',
             'template_id' => 'nullable|integer|exists:templates,id',
             'listed' => 'required|boolean',
         ];
@@ -101,6 +102,7 @@ class CreateContact extends BaseService implements ServiceInterface
             'maiden_name' => $this->valueOrNull($this->data, 'maiden_name'),
             'gender_id' => $this->valueOrNull($this->data, 'gender_id'),
             'pronoun_id' => $this->valueOrNull($this->data, 'pronoun_id'),
+            'pronouns' => $this->valueOrNull($this->data, 'pronouns'),
             'suffix' => $this->valueOrNull($this->data, 'suffix'),
             'prefix' => $this->valueOrNull($this->data, 'prefix'),
             'template_id' => $templateId,

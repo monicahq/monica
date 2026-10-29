@@ -64,6 +64,7 @@ class Contact extends VCardResource
         'distant_uri',
         'prefix',
         'suffix',
+        'pronouns',
     ];
 
     /**

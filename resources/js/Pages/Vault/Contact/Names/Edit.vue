@@ -123,7 +123,16 @@
               :class="'mb-5'"
               :placeholder="$t('Choose a value')"
               :dropdown-class="'block w-full'"
-              :label="$t('Pronoun')" />
+              :label="$t('Pronoun (preset)')" />
+
+            <!-- preferred pronouns (text) -->
+            <text-input
+              v-model="form.pronouns"
+              :class="'mb-5'"
+              :input-class="'block w-full'"
+              :required="false"
+              :maxlength="255"
+              :label="$t('Preferred pronouns (e.g. they/them, she/her)')" />
 
             <!-- prefix -->
             <text-input
@@ -205,6 +214,7 @@ export default {
         suffix: '',
         gender_id: '',
         pronoun_id: '',
+        pronouns: '',
         errors: [],
       },
     };
@@ -218,6 +228,7 @@ export default {
     this.form.maiden_name = this.data.contact.maiden_name;
     this.form.gender_id = this.data.contact.gender_id;
     this.form.pronoun_id = this.data.contact.pronoun_id;
+    this.form.pronouns = this.data.contact.pronouns;
     this.form.suffix = this.data.contact.suffix;
     this.form.prefix = this.data.contact.prefix;
   },
