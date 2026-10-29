@@ -50,6 +50,18 @@
     </x-panel>
   </x-page-section>
 
+  <x-page-section :title="__('Where you are signed in')" :description="__('Every device signed in to your account. Remove one you do not recognise.')">
+    <x-panel :flush="true">
+      @include('app.settings.account.security._sessions', ['viewModel' => $viewModel])
+
+      @if ($viewModel->canSignOutOtherDevices())
+        <x-slot:footer>
+          @include('app.settings.account.security._sign-out-other-devices')
+        </x-slot:footer>
+      @endif
+    </x-panel>
+  </x-page-section>
+
   <x-page-section :title="__('API keys')" :description="__('An API key lets a script or another system act as you, with exactly the access you have.')">
     <x-panel :flush="true">
       @include('app.settings.account.security._api-keys', ['viewModel' => $viewModel])

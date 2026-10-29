@@ -105,3 +105,6 @@ A chronological list of every feature and improvement shipped during development
 * Settings and vaults: Kept a deletion that is refused in its red box, its button dimmed with the reason beside it.
 * Settings and vaults: Showed every delete button in a list or inside a section in red text, where most of them had been drawn in black.
 * UI: Made the label of solid red buttons readable in the dark theme.
+* Settings/account/security: Listed every device signed in to the account, with the one in hand marked.
+* Settings/account/security: Let somebody sign out any other device, which also ends remembered sign in on every device.
+* Settings/account/security: Let somebody with a password sign out every device but the one in hand at once, remembered ones included.

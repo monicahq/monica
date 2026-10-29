@@ -8,7 +8,9 @@ use App\Models\Passkey;
 use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -233,5 +235,81 @@ class SecurityControllerTest extends TestCase
         $response->assertSee('aria-invalid="true"', escape: false);
         $this->assertSame(1, substr_count($response->getContent(), 'renaming: true'));
         $this->assertSame(1, substr_count($response->getContent(), 'aria-invalid="true"'));
+    }
+
+    #[Test]
+    public function it_lists_the_devices_signed_in_and_marks_the_one_in_hand(): void
+    {
+        config(['session.driver' => 'database']);
+        $user = User::factory()->create();
+        $currentSessionId = Str::random(40);
+        $this->insertSession(id: $currentSessionId, user: $user, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+        $this->insertSession(id: Str::random(40), user: $user, userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1');
+
+        $response = $this->actingAs($user)
+            ->withCookie(config('session.cookie'), $currentSessionId)
+            ->get(route('settings.security.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Where you are signed in', escape: false);
+        $response->assertSee('Chrome on macOS', escape: false);
+        $response->assertSee('Safari on iPhone', escape: false);
+        $this->assertSame(1, substr_count($response->getContent(), 'This device'));
+    }
+
+    #[Test]
+    public function it_offers_to_sign_out_every_device_but_the_one_in_hand(): void
+    {
+        config(['session.driver' => 'database']);
+        $user = User::factory()->create();
+        $currentSessionId = Str::random(40);
+        $otherSessionId = Str::random(40);
+        $this->insertSession(id: $currentSessionId, user: $user, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36');
+        $this->insertSession(id: $otherSessionId, user: $user, userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1');
+
+        $response = $this->actingAs($user)
+            ->withCookie(config('session.cookie'), $currentSessionId)
+            ->get(route('settings.security.index'));
+
+        $response->assertSee('action="'.route('settings.sessions.destroy', $otherSessionId).'"', escape: false);
+        $response->assertSee('Safari on iPhone is asked to sign in at its next request.', escape: false);
+        $response->assertDontSee(route('settings.sessions.destroy', $currentSessionId), escape: false);
+    }
+
+    #[Test]
+    public function it_offers_to_sign_out_everywhere_else_behind_the_password(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('settings.security.index'));
+
+        $response->assertSee('action="'.route('settings.otherSessions.destroy').'"', escape: false);
+        $response->assertSee('form="sign-out-other-devices"', escape: false);
+        $response->assertSee('name="password"', escape: false);
+    }
+
+    #[Test]
+    public function it_says_the_devices_cannot_be_listed_when_sessions_are_kept_in_files(): void
+    {
+        config(['session.driver' => 'file']);
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('settings.security.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('This instance keeps sessions where they cannot be listed.', escape: false);
+        $response->assertDontSee('This device', escape: false);
+    }
+
+    private function insertSession(string $id, User $user, string $userAgent): void
+    {
+        DB::table('sessions')->insert([
+            'id' => $id,
+            'user_id' => $user->id,
+            'ip_address' => '10.0.0.1',
+            'user_agent' => $userAgent,
+            'payload' => '',
+            'last_activity' => now()->getTimestamp(),
+        ]);
     }
 }

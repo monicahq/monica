@@ -326,6 +326,16 @@ class SecurityViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_to_sign_out_every_other_device_only_to_an_account_with_a_password(): void
+    {
+        $withPassword = User::factory()->create();
+        $withoutPassword = User::factory()->create(['password' => null]);
+
+        $this->assertTrue(new SecurityViewModel(user: $withPassword)->canSignOutOtherDevices());
+        $this->assertFalse(new SecurityViewModel(user: $withoutPassword)->canSignOutOtherDevices());
+    }
+
+    #[Test]
     public function it_gives_the_address_a_device_is_given(): void
     {
         $user = User::factory()->create();

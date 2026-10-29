@@ -22,6 +22,7 @@ class SecurityViewModel
 {
     public function __construct(
         private readonly User $user,
+        private readonly string $currentSessionId = '',
     ) {}
 
     public function usesSingleSignOn(): bool
@@ -173,6 +174,11 @@ class SecurityViewModel
         return new PasskeyListViewModel(user: $this->user);
     }
 
+    public function sessions(): SessionListViewModel
+    {
+        return new SessionListViewModel(user: $this->user, currentSessionId: $this->currentSessionId);
+    }
+
     public function passkeysAreAvailable(): bool
     {
         return PasskeyAvailability::onThisInstance();
@@ -191,6 +197,11 @@ class SecurityViewModel
     public function passwordRequirements(): string
     {
         return PasswordRequirements::description();
+    }
+
+    public function canSignOutOtherDevices(): bool
+    {
+        return $this->user->password !== null;
     }
 
     public function usesPasswordlessSignIn(): bool

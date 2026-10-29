@@ -56,12 +56,14 @@ use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipType
 use App\Http\Controllers\App\Settings\Account\Security\ApiKeyController;
 use App\Http\Controllers\App\Settings\Account\Security\ConnectedAssistantController;
 use App\Http\Controllers\App\Settings\Account\Security\McpCallController;
+use App\Http\Controllers\App\Settings\Account\Security\OtherSessionController;
 use App\Http\Controllers\App\Settings\Account\Security\PasskeyController;
 use App\Http\Controllers\App\Settings\Account\Security\PasswordController;
 use App\Http\Controllers\App\Settings\Account\Security\RecoveryCodeController;
 use App\Http\Controllers\App\Settings\Account\Security\SecurityController;
 use App\Http\Controllers\App\Settings\Account\Security\SecurityKeyController;
 use App\Http\Controllers\App\Settings\Account\Security\SecurityKeyOptionsController;
+use App\Http\Controllers\App\Settings\Account\Security\SessionController;
 use App\Http\Controllers\App\Settings\Account\Security\SsoController;
 use App\Http\Controllers\App\Settings\Account\Security\TwoFactorController;
 use App\Http\Controllers\App\Settings\Account\Templates\ChildFieldController;
@@ -591,6 +593,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('settings/account/templates/{template}/sections/{structureVersionSection}/fields/{field}/position', [FieldPositionController::class, 'update'])->whereNumber(['structureVersionSection', 'field'])->name('settings.fieldPosition.update');
 
     Route::get('settings/account/security', [SecurityController::class, 'index'])->name('settings.security.index');
+    Route::delete('settings/account/security/other-sessions', [OtherSessionController::class, 'destroy'])->name('settings.otherSessions.destroy');
     Route::get('settings/account/security/mcp-history', [McpCallController::class, 'index'])->middleware(['flag:mcp-server'])->name('settings.mcpCalls.index');
 
     /*
@@ -628,6 +631,8 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
         Route::post('settings/account/security/api-keys', [ApiKeyController::class, 'create'])->name('settings.apiKeys.create');
         Route::delete('settings/account/security/api-keys/{apiKey}', [ApiKeyController::class, 'destroy'])->whereNumber('apiKey')->name('settings.apiKeys.destroy');
+
+        Route::delete('settings/account/security/sessions/{session}', [SessionController::class, 'destroy'])->whereAlphaNumeric('session')->name('settings.sessions.destroy');
 
         Route::delete('settings/account/security/assistants/{client}', [ConnectedAssistantController::class, 'destroy'])->whereUuid('client')->name('settings.connectedAssistants.destroy');
     });

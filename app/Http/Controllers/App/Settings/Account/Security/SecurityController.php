@@ -16,6 +16,7 @@ class SecurityController extends Controller
         return view('app.settings.account.security.index', [
             'viewModel' => new SecurityViewModel(
                 user: $request->user(),
+                currentSessionId: $request->session()->getId(),
             ),
         ]);
     }

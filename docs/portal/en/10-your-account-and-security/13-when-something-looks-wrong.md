@@ -3,7 +3,7 @@ id: security.suspicious-activity
 title: An email says somebody signed in
 slug: when-something-looks-wrong
 section: your-account-and-security
-last_updated: 2026-09-29
+last_updated: 2026-10-29
 ---
 
 # An email says somebody signed in
@@ -47,6 +47,7 @@ A service no longer signs you in. Nothing else changed. If you did not do it, co
 If you think somebody else reached your account:
 
 1. @doc(security.password, "Change your password") to one you use nowhere else.
-2. Remove any passkey, API key or connected assistant you do not recognise, in **Security and access**.
-3. @doc(security.two-factor, "Turn on two factor authentication").
-4. Read @doc(account.logs, "your activity log") to see what was done.
+2. Under **Where you are signed in**, in **Security and access**, remove any device you do not recognise. It is asked to sign in again at its next request. To end every session but the one you are using, choose **Sign out everywhere else** and type your password.
+3. Remove any passkey, API key or connected assistant you do not recognise, in the same place.
+4. @doc(security.two-factor, "Turn on two factor authentication").
+5. Read @doc(account.logs, "your activity log") to see what was done.
