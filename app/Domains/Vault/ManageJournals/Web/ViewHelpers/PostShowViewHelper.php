@@ -5,6 +5,7 @@ namespace App\Domains\Vault\ManageJournals\Web\ViewHelpers;
 use App\Helpers\ContactCardHelper;
 use App\Helpers\DateHelper;
 use App\Helpers\SliceOfLifeHelper;
+use App\Helpers\StorageHelper;
 use App\Models\Contact;
 use App\Models\File;
 use App\Models\MoodTrackingEvent;
@@ -152,7 +153,7 @@ class PostShowViewHelper
                 'id' => $file->id,
                 'name' => $file->name,
                 'url' => [
-                    'display' => 'https://ucarecdn.com/'.$file->uuid.'/-/scale_crop/100x100/smart/-/format/auto/-/quality/smart_retina/',
+                    'display' => StorageHelper::cdnBase().$file->uuid.'/-/scale_crop/100x100/smart/-/format/auto/-/quality/smart_retina/',
                 ],
             ]);
     }

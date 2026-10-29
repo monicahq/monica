@@ -14,6 +14,7 @@
         :public-key="data.uploadcare.publicKey"
         :secure-signature="data.uploadcare.signature"
         :secure-expire="data.uploadcare.expire"
+        :cdn-base="data.uploadcare.cdnBase"
         :tabs="'file'"
         :preview-step="false"
         @success="onSuccess"

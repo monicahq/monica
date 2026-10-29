@@ -52,4 +52,15 @@ class StorageHelperTest extends TestCase
 
         $this->assertTrue(StorageHelper::canUploadFile($account));
     }
+
+    /** @test */
+    public function it_gets_the_uploadcare_cdn_base(): void
+    {
+        $this->assertEquals('https://ucarecdn.com/', StorageHelper::cdnBase());
+
+        config(['services.uploadcare.cdn_base' => 'https://abc123.ucarecd.net/']);
+
+        $this->assertEquals('https://abc123.ucarecd.net/', StorageHelper::cdnBase());
+        $this->assertEquals('https://abc123.ucarecd.net', StorageHelper::uploadcare()['cdnBase']);
+    }
 }

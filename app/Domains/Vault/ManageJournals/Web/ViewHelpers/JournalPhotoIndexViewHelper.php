@@ -2,6 +2,7 @@
 
 namespace App\Domains\Vault\ManageJournals\Web\ViewHelpers;
 
+use App\Helpers\StorageHelper;
 use App\Models\File;
 use App\Models\Journal;
 use App\Models\Post;
@@ -51,7 +52,7 @@ class JournalPhotoIndexViewHelper
                     'journal' => $post->journal->id,
                     'post' => $post->id,
                 ]),
-                'display' => 'https://ucarecdn.com/'.$file->uuid.'/-/scale_crop/200x200/smart/-/format/auto/-/quality/smart_retina/',
+                'display' => StorageHelper::cdnBase().$file->uuid.'/-/scale_crop/200x200/smart/-/format/auto/-/quality/smart_retina/',
             ],
         ];
     }

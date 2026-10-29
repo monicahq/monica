@@ -8,6 +8,7 @@ use App\Helpers\ContactImportantDateHelper;
 use App\Helpers\ImportantDateHelper;
 use App\Helpers\NameHelper;
 use App\Helpers\ScoutHelper;
+use App\Helpers\StorageHelper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -488,7 +489,7 @@ class Contact extends VCardResource
 
                 if ($this->file) {
                     $type = self::AVATAR_TYPE_URL;
-                    $content = 'https://ucarecdn.com/'.$this->file->uuid.'/-/scale_crop/300x300/smart/-/format/auto/-/quality/smart_retina/';
+                    $content = StorageHelper::cdnBase().$this->file->uuid.'/-/scale_crop/300x300/smart/-/format/auto/-/quality/smart_retina/';
                 }
 
                 return [
