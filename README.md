@@ -158,6 +158,17 @@ We wanted to open source Monica for several reasons:
 - **Once you’ve created a community of passionate developers around your project, you’ve won.**
   Developers are powerful influencers: they create apps, discuss your product on forums, and share it with their networks. Nurture your relationship with developers – users will follow.
 
+
+### Local Development
+
+If you want to run Monica locally for development or testing purposes, the repository is already configured with [Laravel Sail](https://laravel.com/docs/sail).
+
+Make sure you have [Docker](https://www.docker.com/) installed and running on your machine, then execute the following command from the project root:
+
+bash  
+bash sail-init.sh
+
+
 ### Patreon
 
 You can support the development of Monica [on Patreon](https://www.patreon.com/monicahq). Thanks for your help.
