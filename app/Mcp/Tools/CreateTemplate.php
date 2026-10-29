@@ -34,6 +34,8 @@ class CreateTemplate extends Tool
                 Rule::requiredIf(fn (): bool => $request->get('applies_to') === StructureAppliesToEnum::Entity->value),
                 'nullable',
                 'string',
+                'bail',
+                'uuid',
                 Rule::exists('entity_types', 'uuid')->where('account_id', $user->account_id),
             ],
         ]);

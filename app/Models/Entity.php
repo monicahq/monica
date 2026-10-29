@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\CollationKey;
 use App\Exceptions\EntityNeedsAName;
 use App\Helpers\LocaleCollation;
 use App\Models\Concerns\HasUuids;
@@ -137,6 +138,7 @@ class Entity extends Model
     protected function casts(): array
     {
         return [
+            'sort_key' => CollationKey::class,
             'is_archived' => 'boolean',
             'last_consulted_at' => 'datetime',
             'deleted_with_vault' => 'boolean',

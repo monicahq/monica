@@ -46,6 +46,8 @@ class CreateTemplateField extends Tool
             'relation_entity_type_id' => [
                 'nullable',
                 'string',
+                'bail',
+                'uuid',
                 Rule::exists('entity_types', 'uuid')->where('account_id', $user->account_id)->where('is_active', true),
             ],
             'parent_id' => ['nullable', 'integer'],

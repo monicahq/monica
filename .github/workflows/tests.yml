@@ -8,8 +8,12 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
-      - '.github/workflows/tests.yml'
+      - .github/actions/js/action.yml
+      - .github/actions/php/action.yml
+      - .github/workflows/tests.yml
       - '**/*.php'
+      - '**/*.js'
+      - '**/*.css'
       - .env.example
       - composer.json
       - composer.lock
@@ -45,9 +49,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.4']
-        # connection: [sqlite, mysql, pgsql]
-        connection: [mysql]
+        php-version: ['8.5']
+        connection: [sqlite, mysql, pgsql]
 
     # Selects the database connection for every step, including the plain
     # `artisan migrate` (phpunit.xml pins DB_CONNECTION to "testing", so this
@@ -62,7 +65,7 @@ jobs:
     # against a real one; every other test runs on Scout's null engine.
     services:
       meilisearch:
-        image: getmeili/meilisearch:v1.55.0
+        image: getmeili/meilisearch:v1.56
         env:
           MEILI_MASTER_KEY: testing-master-key
           MEILI_NO_ANALYTICS: true
@@ -71,45 +74,14 @@ jobs:
 
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Setup PHP ${{ matrix.php-version }}
-        uses: shivammathur/setup-php@v2
+      - name: Setup PHP
+        uses: ./.github/actions/php
         with:
           php-version: ${{ matrix.php-version }}
-          # gd is what the image manipulation runs on, so the photo tests need
-          # it. The runner image does not guarantee it, so it is asked for here.
-          extensions: mbstring, dom, fileinfo, gd, ${{ matrix.connection }}
-          coverage: none
+          connection: ${{ matrix.connection }}
 
-      - name: Check PHP Version
-        run: php -v
-
-      - name: Check Composer Version
-        run: composer -V
-
-      - name: Check PHP Extensions
-        run: php -m
-
-      # Composer
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache composer files
-        uses: actions/cache@v6
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php-version }}
-            ${{ runner.os }}-composer-
-
-      - name: Install composer dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
 
       # The tests render Blade views, so @vite needs a manifest. Building the
       # real assets is the job of the Static analysis workflow, so a stub is
@@ -160,6 +132,7 @@ jobs:
       # therefore has to be allowed to create databases, which is why the
       # postgres step above grants CREATEDB.
       - name: Run tests
+        if: matrix.connection != 'sqlite'
         run: php artisan test --parallel
 
       # A provider whose driver needs a package of its own ships that package as

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
-use App\Enums\StructureAppliesToEnum;
 use App\Enums\VaultColourEnum;
 use App\Models\StructureVersion;
 use App\Models\Template;

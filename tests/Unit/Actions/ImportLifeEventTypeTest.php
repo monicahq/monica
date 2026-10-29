@@ -10,18 +10,18 @@ use App\Actions\CreateStructureVersionDraft;
 use App\Actions\ImportLifeEventType;
 use App\Actions\PublishStructureVersion;
 use App\Enums\StructureAppliesToEnum;
+use App\Exceptions\StructureFileIsNotReadable;
 use App\Helpers\StructureFile;
+use App\Models\Field;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
-use App\Models\Field;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
-use App\Exceptions\StructureFileIsNotReadable;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\TestCase;
 
 class ImportLifeEventTypeTest extends TestCase

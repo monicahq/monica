@@ -44,6 +44,8 @@ class FieldController extends TemplateScopedController
             'relation_entity_type_id' => [
                 'nullable',
                 'string',
+                'bail',
+                'uuid',
                 Rule::exists('entity_types', 'uuid')->where('account_id', $request->user()->account_id)->where('is_active', true),
             ],
             'parent_id' => ['nullable', 'integer'],

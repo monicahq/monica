@@ -36,6 +36,8 @@ class TemplateSectionController extends Controller
             'page' => [
                 'nullable',
                 'string',
+                'bail',
+                'uuid',
                 Rule::exists('structure_version_pages', 'uuid')->where('structure_version_id', $version->id),
             ],
         ]);

@@ -77,6 +77,7 @@ class CreateNotificationPreferenceTest extends TestCase
 
         $this->assertSame('UTC', $preference->timezone);
     }
+
     #[Test]
     public function it_writes_nothing_when_the_account_already_has_the_row(): void
     {

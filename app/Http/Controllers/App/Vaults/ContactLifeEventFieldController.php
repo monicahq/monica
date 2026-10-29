@@ -19,6 +19,8 @@ class ContactLifeEventFieldController extends Controller
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
 
+        abort_if($request->filled('lifeEvent') && ! $request->string('lifeEvent')->isUuid(), 404);
+
         $lifeEvent = $request->filled('lifeEvent')
             ? LifeEvent::query()->where('vault_id', $vault->id)->where('uuid', (string) $request->string('lifeEvent'))->firstOrFail()
             : null;

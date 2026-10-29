@@ -7,6 +7,7 @@ namespace App\Http\Dav;
 use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Support\Str;
 use Override;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Server;
@@ -50,6 +51,10 @@ class MoveGuard extends ServerPlugin
         $parts = explode('/', trim($path, '/'));
 
         if (count($parts) !== 4 || $parts[0] !== 'addressbooks') {
+            return null;
+        }
+
+        if (! Str::isUuid($parts[2])) {
             return null;
         }
 

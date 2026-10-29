@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use Symfony\Component\Console\Exception\NamespaceNotFoundException;
+
 /**
  * Sentry Laravel SDK configuration file.
  *
@@ -55,7 +59,7 @@ return [
 
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#ignore_exceptions
     'ignore_exceptions' => [
-        \Symfony\Component\Console\Exception\NamespaceNotFoundException::class,
+        NamespaceNotFoundException::class,
     ],
 
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#ignore_transactions

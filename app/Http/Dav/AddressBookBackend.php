@@ -13,6 +13,7 @@ use App\Models\Vault;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Override;
 use Sabre\CardDAV\Backend\BackendInterface;
 use Sabre\CardDAV\Backend\SyncSupport;
@@ -125,7 +126,7 @@ class AddressBookBackend implements BackendInterface, SyncSupport
     {
         $uid = (string) (new VCardReader($cardData)->first('UID')?->getValue() ?? '');
 
-        if ($uid === '') {
+        if (! Str::isUuid($uid)) {
             return null;
         }
 
@@ -243,7 +244,7 @@ class AddressBookBackend implements BackendInterface, SyncSupport
     {
         $uuids = array_values(array_map(
             fn (string $uri): string => substr($uri, 0, -4),
-            array_filter($cardUris, fn (string $uri): bool => str_ends_with($uri, '.vcf')),
+            array_filter($cardUris, fn (string $uri): bool => str_ends_with($uri, '.vcf') && Str::isUuid(substr($uri, 0, -4))),
         ));
 
         return $this->membersQuery($vault)

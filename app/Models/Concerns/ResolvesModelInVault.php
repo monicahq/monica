@@ -8,6 +8,7 @@ use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Override;
 
 /**
@@ -85,9 +86,16 @@ trait ResolvesModelInVault
      *
      * The id is only ever asked for with a value that reads as one, because a
      * database is entitled to refuse a uuid compared against an integer column.
+     * The same goes the other way: the uuid is only asked for with a value that
+     * reads as one, because a database is entitled to refuse a string that is not
+     * a uuid compared against a uuid column, and the answer is then not found.
      */
     private function findInVault(string $field, mixed $value): ?self
     {
+        if ($field === 'uuid' && ! Str::isUuid((string) $value)) {
+            return null;
+        }
+
         $accountId = Auth::user()?->account_id;
 
         if ($accountId === null) {

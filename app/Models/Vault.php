@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Override;
 
 /**
@@ -177,14 +178,19 @@ class Vault extends Model
      *
      * The API resolves its own records rather than leaning on route model binding, so the rule that
      * both spellings answer has to hold here too. Everything else about the query is left alone:
-     * this widens which column is read and never which records are in reach.
+     * this widens which column is read and never which records are in reach. An address that is not
+     * a uuid is never compared against the uuid column, which a database may refuse outright.
      *
      * @param  Builder<$this>  $query
      */
     public function scopeAddressedBy(Builder $query, string $address): void
     {
         $query->where(function (Builder $query) use ($address): void {
-            $query->where('slug', $address)->orWhere('uuid', $address);
+            $query->where('slug', $address);
+
+            if (Str::isUuid($address)) {
+                $query->orWhere('uuid', $address);
+            }
         });
     }
 

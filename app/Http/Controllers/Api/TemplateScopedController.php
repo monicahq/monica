@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Template;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
+use App\Models\Template;
 use Illuminate\Http\Request;
 
 /**

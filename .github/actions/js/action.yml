@@ -1,0 +1,56 @@
+name: Install node.js and build assets
+description: Install node.js dependencies and build assets
+
+inputs:
+  node-version:
+    description: 'Node.js version to setup'
+    required: false
+    default: '24'
+
+outputs:
+  commit:
+    description: The commit hash of the build
+    value: ${{ steps.version.outputs.commit }}
+  version:
+    description: The version of the build
+    value: ${{ steps.version.outputs.version }}
+  release:
+    description: The release of the build
+    value: ${{ steps.version.outputs.release }}
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+
+    - name: Install dependencies
+      shell: bash
+      run: bun install --frozen-lockfile
+
+    - name: Get version
+      id: version
+      shell: bash
+      run: |
+        commit=$(git log --pretty="%H" -n1)
+        version=$(git describe --abbrev=0 --tags 2>/dev/null || echo '0.0.0' | sed 's/^v//')
+        release=$(git log --pretty="%h" -n1 $commit)
+        echo "commit=$commit" >> $GITHUB_OUTPUT
+        echo "version=$version" >> $GITHUB_OUTPUT
+        echo "release=$release" >> $GITHUB_OUTPUT
+
+    - name: Prepare environment
+      shell: bash
+      run: |
+        { \
+          echo "VITE_PROD_SOURCE_MAPS=true"; \
+          echo "VITE_SENTRY_RELEASE=${{ steps.version.outputs.release }}"; \
+        } | tee .env
+
+    - name: Build assets
+      shell: bash
+      run: bun run build

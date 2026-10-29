@@ -63,6 +63,8 @@ class ContactRelationshipController extends Controller
             'relationship_type' => [
                 'required',
                 'string',
+                'bail',
+                'uuid',
                 Rule::exists('relationship_types', 'uuid')->where('account_id', $request->user()->account_id),
             ],
             'other_contact' => ['nullable', 'string', 'prohibits:first_name,last_name'],
@@ -117,6 +119,8 @@ class ContactRelationshipController extends Controller
                 'sometimes',
                 'required',
                 'string',
+                'bail',
+                'uuid',
                 Rule::exists('relationship_types', 'uuid')->where('account_id', $request->user()->account_id),
             ],
             'status' => ['sometimes', 'required', Rule::in(RelationshipStatusEnum::values())],

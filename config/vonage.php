@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use GuzzleHttp\Client;
+
 return [
 
     /*
@@ -74,6 +78,6 @@ return [
         'version' => env('VONAGE_APP_VERSION', '1.1.2'),
     ],
 
-    'http_client' => \GuzzleHttp\Client::class,
+    'http_client' => Client::class,
 
 ];

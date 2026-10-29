@@ -41,6 +41,8 @@ class AddTemplateSection extends Tool
                 'prohibits:name',
                 'nullable',
                 'string',
+                'bail',
+                'uuid',
                 Rule::exists('sections', 'uuid')->where('account_id', $user->account_id),
             ],
             'name' => ['required_without:section_id', 'nullable', 'string', 'max:255'],

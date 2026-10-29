@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Models\Account;
-use App\Models\Template;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
+use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;

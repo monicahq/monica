@@ -59,6 +59,8 @@ class TemplateController extends Controller
                 Rule::requiredIf(fn (): bool => $request->string('applies_to')->value() === StructureAppliesToEnum::Entity->value),
                 'nullable',
                 'string',
+                'bail',
+                'uuid',
                 Rule::exists('entity_types', 'uuid')->where('account_id', $request->user()->account_id),
             ],
         ]);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Casts\CollationKey;
 use App\Helpers\LocaleCollation;
 use App\Models\Account;
 use App\Models\Contact;
@@ -61,10 +62,16 @@ class RebuildOrderingKeys
         $sortBindings = [];
         $searchBindings = [];
 
+        // PostgreSQL types a bare parameter inside a case as text, which a bytea column refuses.
+        $sortValue = DB::connection()->getDriverName() === 'pgsql' ? 'cast(? as bytea)' : '?';
+
         foreach ($records as $record) {
-            $sortWhens .= ' when ? then ?';
+            $sortWhens .= " when ? then {$sortValue}";
             $sortBindings[] = $record->id;
-            $sortBindings[] = LocaleCollation::sortKey($record->sort_name, $this->locale);
+            $sortBindings[] = CollationKey::bindable(
+                LocaleCollation::sortKey($record->sort_name, $this->locale),
+                DB::connection(),
+            );
 
             $searchWhens .= ' when ? then ?';
             $searchBindings[] = $record->id;

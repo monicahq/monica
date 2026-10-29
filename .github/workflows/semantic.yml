@@ -5,10 +5,6 @@ permissions:
   pull-requests: read
 
 on:
-  # pull_request, not pull_request_target. A pull request from a fork does run
-  # this workflow, and the token it gets is read only, which is all that reading
-  # a title needs. pull_request_target would hand a write token to a workflow
-  # running against a branch somebody else controls, and buys nothing here.
   pull_request:
     types: [opened, edited, synchronize]
   workflow_dispatch:
@@ -19,6 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: amannn/action-semantic-pull-request@v6
+      - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

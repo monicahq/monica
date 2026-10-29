@@ -6,12 +6,12 @@ namespace Tests\Unit\ViewModels\Settings\Account\Templates;
 
 use App\Enums\VersionStatusEnum;
 use App\Models\StructureVersion;
+use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Templates\TemplatesViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use App\Models\StructureVersionSection;
 use Tests\TestCase;
 
 class TemplatesViewModelTest extends TestCase

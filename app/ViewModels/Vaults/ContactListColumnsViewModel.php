@@ -10,6 +10,7 @@ use App\Models\ContactListColumn;
 use App\Models\Section;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Support\Str;
 
 class ContactListColumnsViewModel
 {
@@ -152,7 +153,7 @@ class ContactListColumnsViewModel
     {
         $sections = Section::query()
             ->where('account_id', $this->user->account_id)
-            ->whereIn('uuid', array_filter(array_map(fn (mixed $column): mixed => is_array($column) ? ($column['section'] ?? null) : null, $submitted)))
+            ->whereIn('uuid', array_filter(array_map(fn (mixed $column): mixed => is_array($column) ? ($column['section'] ?? null) : null, $submitted), fn (mixed $section): bool => is_string($section) && Str::isUuid($section)))
             ->get()
             ->keyBy('uuid');
 

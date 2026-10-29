@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(MarketplaceCategorySeeder::class);
 
-        if (! app()->environment("production")) {
+        if (! app()->environment('production')) {
             $this->call(ExampleAccountSeeder::class);
         }
     }

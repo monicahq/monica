@@ -60,6 +60,8 @@ class RelationshipTypeController extends Controller
             'relationship_category_id' => [
                 'required',
                 'string',
+                'bail',
+                'uuid',
                 Rule::exists('relationship_categories', 'uuid')
                     ->where('account_id', $request->user()->account_id)
                     ->whereNull('deleted_at'),
@@ -102,6 +104,8 @@ class RelationshipTypeController extends Controller
             'relationship_category_id' => [
                 'required',
                 'string',
+                'bail',
+                'uuid',
                 Rule::exists('relationship_categories', 'uuid')
                     ->where('account_id', $request->user()->account_id)
                     ->whereNull('deleted_at'),

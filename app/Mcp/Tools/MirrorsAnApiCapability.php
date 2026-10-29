@@ -29,6 +29,7 @@ use App\Models\Vault;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Mcp\Request;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -115,6 +116,10 @@ trait MirrorsAnApiCapability
 
     protected function lifeEvent(Vault $vault, string $address, bool $withTrashed = false): LifeEvent
     {
+        if (! Str::isUuid($address)) {
+            throw $this->doesNotExist(__('That life event does not exist.'));
+        }
+
         $lifeEvent = LifeEvent::query()
             ->where('vault_id', $vault->id)
             ->where('uuid', $address)
@@ -131,7 +136,7 @@ trait MirrorsAnApiCapability
 
     protected function template(Request $request, string $address): Template
     {
-        $template = $this->user($request)->account->templates()->where('uuid', $address)->first();
+        $template = Str::isUuid($address) ? $this->user($request)->account->templates()->where('uuid', $address)->first() : null;
 
         if ($template === null) {
             throw $this->doesNotExist(__('That template does not exist.'));
@@ -142,7 +147,7 @@ trait MirrorsAnApiCapability
 
     protected function entityType(Request $request, string $address): EntityType
     {
-        $entityType = $this->user($request)->account->entityTypes()->where('uuid', $address)->first();
+        $entityType = Str::isUuid($address) ? $this->user($request)->account->entityTypes()->where('uuid', $address)->first() : null;
 
         if ($entityType === null) {
             throw $this->doesNotExist(__('That entity type does not exist.'));
@@ -153,7 +158,7 @@ trait MirrorsAnApiCapability
 
     protected function relationshipType(Request $request, string $address): RelationshipType
     {
-        $relationshipType = $this->user($request)->account->relationshipTypes()->where('uuid', $address)->first();
+        $relationshipType = Str::isUuid($address) ? $this->user($request)->account->relationshipTypes()->where('uuid', $address)->first() : null;
 
         if ($relationshipType === null) {
             throw $this->doesNotExist(__('That relationship type does not exist.'));
@@ -164,7 +169,7 @@ trait MirrorsAnApiCapability
 
     protected function relationshipCategory(Request $request, string $address): RelationshipCategory
     {
-        $relationshipCategory = $this->user($request)->account->relationshipCategories()->where('uuid', $address)->first();
+        $relationshipCategory = Str::isUuid($address) ? $this->user($request)->account->relationshipCategories()->where('uuid', $address)->first() : null;
 
         if ($relationshipCategory === null) {
             throw $this->doesNotExist(__('That relationship category does not exist.'));
@@ -175,7 +180,7 @@ trait MirrorsAnApiCapability
 
     protected function lifeEventType(Request $request, string $address): LifeEventType
     {
-        $lifeEventType = $this->user($request)->account->lifeEventTypes()->where('uuid', $address)->first();
+        $lifeEventType = Str::isUuid($address) ? $this->user($request)->account->lifeEventTypes()->where('uuid', $address)->first() : null;
 
         if ($lifeEventType === null) {
             throw $this->doesNotExist(__('That life event type does not exist.'));
@@ -186,7 +191,7 @@ trait MirrorsAnApiCapability
 
     protected function lifeEventCategory(Request $request, string $address): LifeEventCategory
     {
-        $lifeEventCategory = $this->user($request)->account->lifeEventCategories()->where('uuid', $address)->first();
+        $lifeEventCategory = Str::isUuid($address) ? $this->user($request)->account->lifeEventCategories()->where('uuid', $address)->first() : null;
 
         if ($lifeEventCategory === null) {
             throw $this->doesNotExist(__('That life event category does not exist.'));
@@ -260,6 +265,10 @@ trait MirrorsAnApiCapability
 
     protected function page(StructureVersion $version, string $uuid): StructureVersionPage
     {
+        if (! Str::isUuid($uuid)) {
+            throw $this->doesNotExist(__('That page does not exist.'));
+        }
+
         $page = $version->pages()->where('uuid', $uuid)->first();
 
         if ($page === null) {
@@ -271,6 +280,10 @@ trait MirrorsAnApiCapability
 
     protected function reminder(Contact $contact, string $uuid): Reminder
     {
+        if (! Str::isUuid($uuid)) {
+            throw $this->doesNotExist(__('That reminder does not exist.'));
+        }
+
         $reminder = $contact->reminders()
             ->where('uuid', $uuid)
             ->with(['vault', 'field', 'fieldValue', 'remindable'])
@@ -285,6 +298,10 @@ trait MirrorsAnApiCapability
 
     protected function relationship(Contact $contact, string $uuid): Relationship
     {
+        if (! Str::isUuid($uuid)) {
+            throw $this->doesNotExist(__('That relationship does not exist.'));
+        }
+
         $relationship = Relationship::query()
             ->forContact($contact)
             ->where('uuid', $uuid)
@@ -300,6 +317,10 @@ trait MirrorsAnApiCapability
 
     protected function reminderOccurrence(Contact $contact, string $uuid): ReminderOccurrence
     {
+        if (! Str::isUuid($uuid)) {
+            throw $this->doesNotExist(__('That reminder date does not exist.'));
+        }
+
         $occurrence = ReminderOccurrence::query()
             ->where('account_id', $contact->account_id)
             ->where('uuid', $uuid)

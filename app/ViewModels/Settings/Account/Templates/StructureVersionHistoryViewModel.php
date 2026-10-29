@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Settings\Account\Templates;
 
-use App\Models\Template;
 use App\Models\StructureVersion;
+use App\Models\Template;
 use App\Models\User;
 
 class StructureVersionHistoryViewModel

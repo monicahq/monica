@@ -166,12 +166,12 @@ class FieldValueRules
         }
 
         if ($field->relation_target === RelationTargetEnum::Contact) {
-            return ['string', Rule::exists('contacts', 'uuid')->where('vault_id', $vault->id)->whereNull('deleted_at')];
+            return ['bail', 'string', 'uuid', Rule::exists('contacts', 'uuid')->where('vault_id', $vault->id)->whereNull('deleted_at')];
         }
 
         $exists = Rule::exists('entities', 'uuid')->where('vault_id', $vault->id)->whereNull('deleted_at');
 
-        return ['string', $field->relation_entity_type_id === null ? $exists : $exists->where('entity_type_id', $field->relation_entity_type_id)];
+        return ['bail', 'string', 'uuid', $field->relation_entity_type_id === null ? $exists : $exists->where('entity_type_id', $field->relation_entity_type_id)];
     }
 
     /** @return array<string, array<int, mixed>> */

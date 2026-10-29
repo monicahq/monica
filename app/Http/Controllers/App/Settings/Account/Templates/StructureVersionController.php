@@ -8,8 +8,8 @@ use App\Actions\CreateStructureVersionDraft;
 use App\Actions\DestroyStructureVersion;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Controllers\Controller;
-use App\Models\Template;
 use App\Models\StructureVersion;
+use App\Models\Template;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 

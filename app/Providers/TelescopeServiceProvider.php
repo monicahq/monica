@@ -24,8 +24,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         $isLocal = $this->app->environment('local');
 
-        Telescope::filter(fn (IncomingEntry $entry): bool =>
-            $isLocal ||
+        Telescope::filter(fn (IncomingEntry $entry): bool => $isLocal ||
             $entry->isReportableException() ||
             $entry->isFailedRequest() ||
             $entry->isFailedJob() ||
@@ -33,15 +32,13 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
             $entry->hasMonitoredTag()
         );
 
-        Telescope::filterBatch(fn (Collection $entries): bool =>
-            $entries->contains(fn (IncomingEntry $entry): bool =>
-                $isLocal ||
+        Telescope::filterBatch(fn (Collection $entries): bool => $entries->contains(fn (IncomingEntry $entry): bool => $isLocal ||
                 $entry->isReportableException() ||
                 $entry->isFailedJob() ||
                 $entry->isScheduledTask() ||
                 $entry->isSlowQuery() ||
                 $entry->hasMonitoredTag()
-            )
+        )
         );
     }
 

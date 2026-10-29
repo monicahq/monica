@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Concerns;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Override;
 
 /**
@@ -86,9 +87,16 @@ trait ResolvesModelInAccount
      *
      * The id is only ever asked for with a value that reads as one, because a
      * database is entitled to refuse a uuid compared against an integer column.
+     * The same goes the other way: the uuid is only asked for with a value that
+     * reads as one, because a database is entitled to refuse a string that is not
+     * a uuid compared against a uuid column, and the answer is then not found.
      */
     private function findInAccount(string $field, mixed $value): ?self
     {
+        if ($field === 'uuid' && ! Str::isUuid((string) $value)) {
+            return null;
+        }
+
         $accountId = Auth::user()?->account_id;
 
         if ($accountId === null) {

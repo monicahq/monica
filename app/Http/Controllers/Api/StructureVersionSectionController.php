@@ -33,6 +33,8 @@ class StructureVersionSectionController extends TemplateScopedController
                 'prohibits:name',
                 'nullable',
                 'string',
+                'bail',
+                'uuid',
                 Rule::exists('sections', 'uuid')->where('account_id', $request->user()->account_id),
             ],
             'name' => ['required_without:section_id', 'nullable', 'string', 'max:255'],

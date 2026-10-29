@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Fixtures\Dav;
 
 use App\Enums\FieldTypeEnum;
-use App\Enums\StructureAppliesToEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Field;
 use App\Models\Section;

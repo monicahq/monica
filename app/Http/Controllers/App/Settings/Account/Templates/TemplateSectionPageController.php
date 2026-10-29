@@ -24,6 +24,8 @@ class TemplateSectionPageController extends Controller
             'page' => [
                 'required',
                 'string',
+                'bail',
+                'uuid',
                 Rule::exists('structure_version_pages', 'uuid')
                     ->where('structure_version_id', $structureVersionSection->structure_version_id),
             ],
