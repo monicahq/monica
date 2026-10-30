@@ -17,6 +17,7 @@ import ContactSelector from '@/Shared/Form/ContactSelector.vue';
 import JetConfirmationModal from '@/Components/Jetstream/ConfirmationModal.vue';
 import JetDangerButton from '@/Components/Jetstream/DangerButton.vue';
 import JetSecondaryButton from '@/Components/Jetstream/SecondaryButton.vue';
+import QuillEditor from '@/Components/QuillEditor.vue';
 
 const props = defineProps({
   layoutData: Object,
@@ -318,16 +319,15 @@ const destroy = () => {
                   :maxlength="255"
                   @esc-key-pressed="createNoteModalShown = false" />
 
-                <div v-for="section in form.sections" :key="section.id" class="mb-8">
-                  <text-area
+                <div v-for="(section, index) in form.sections" :key="section.id" class="mb-8">
+                  <QuillEditor
                     v-model="section.content"
-                    :label="section.label"
-                    :rows="10"
-                    :required="true"
-                    :maxlength="65535"
-                    :markdown="true"
-                    :textarea-class="'block w-full'" />
+                    :label="`${section.label}`"
+                    :max-length="65535"
+                    :editor-height="'200px'"
+                  />
                 </div>
+
               </div>
             </div>
           </div>

@@ -123,12 +123,9 @@ class PostShowViewHelper
             ->whereNotNull('content')
             ->get()
             ->map(fn (PostSection $section) => [
-                'id' => $section->id,
-                'label' => $section->label,
-                'content' => (string) Str::of($section->content)->markdown([
-                    'html_input' => 'strip',
-                    'allow_unsafe_links' => false,
-                ]),
+                'id'      => $section->id,
+                'label'   => $section->label,
+                'content' => $section->content
             ]);
     }
 

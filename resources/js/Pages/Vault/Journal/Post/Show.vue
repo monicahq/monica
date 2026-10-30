@@ -7,6 +7,7 @@ defineProps({
   layoutData: Object,
   data: Object,
 });
+
 </script>
 
 <template>
@@ -138,7 +139,7 @@ defineProps({
                     {{ section.label }}
                   </div>
 
-                  <div class="mb-6" v-html="section.content"></div>
+                  <div v-if="section.content" class="mb-6" v-html="section.content"></div>
                 </div>
               </div>
 
