@@ -11,6 +11,7 @@ use App\Enums\PhoneLabelEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\ValueListItem;
 use Closure;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Collection;
@@ -48,7 +49,7 @@ class VCardMerger
             'avatar',
             'nameRepresentations',
             'fieldValues' => fn (MorphMany $query): MorphMany => self::values($query),
-            'structureVersion.sectionVersions.fields',
+            'structureVersion.sectionVersions.fields.valueList.items',
         ];
     }
 
@@ -60,6 +61,7 @@ class VCardMerger
         $this->writeNickname($card, $contact);
         $this->writePhoto($card, $contact);
         $this->writeFields($card, $contact);
+        $this->writeCategories($card, $contact);
         $this->writeIdentity($card, $contact);
 
         return $card->serialize();
@@ -260,6 +262,40 @@ class VCardMerger
                     $slot++;
                 }
             }
+        }
+    }
+
+    /**
+     * Every category the contact holds, in the order of the list, as the one `CATEGORIES` a card
+     * carries. A structure with no field for categories leaves the property the device wrote as
+     * it is, since the contact holds nothing it could replace it with.
+     */
+    private function writeCategories(VCard $card, Contact $contact): void
+    {
+        $fields = collect(new OwnedFields($contact, preloaded: $this->preloaded)->categoryFields())
+            ->reject(fn (Field $field): bool => $field->is_sensitive && ! $this->reachesSensitiveFields);
+
+        if ($fields->isEmpty()) {
+            return;
+        }
+
+        $held = $this->valuesOf($contact)
+            ->whereIn('field_id', $fields->pluck('id'))
+            ->flatMap(fn (FieldValue $value): array => array_map(intval(...), $value->value_list_item_ids ?? []));
+
+        $labels = $fields->first()->valueList->items
+            ->whereIn('id', $held->unique()->all())
+            ->sortBy('position')
+            ->map(fn (ValueListItem $item): string => $item->label)
+            ->values()
+            ->all();
+
+        foreach ($card->select('CATEGORIES') as $categories) {
+            $card->remove($categories);
+        }
+
+        if ($labels !== []) {
+            $card->add('CATEGORIES', $labels);
         }
     }
 

@@ -14,6 +14,7 @@ use App\Models\Field;
 use App\Models\McpCall;
 use App\Models\User;
 use App\Models\Vault;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\TestResponse;
 use Laravel\Mcp\Facades\Mcp;
@@ -51,6 +52,8 @@ class McpCallRecordingTest extends TestCase
     #[Test]
     public function it_records_a_read_with_the_vault_and_the_contact_it_reached(): void
     {
+        $this->travelTo(CarbonImmutable::parse('2026-10-30 12:52:06.123', 'UTC'));
+
         $this->callTool('get-contact', ['vault' => $this->vault->uuid, 'contact' => $this->contact->uuid])
             ->assertOk()
             ->assertJsonPath('result.isError', false);
@@ -72,7 +75,7 @@ class McpCallRecordingTest extends TestCase
         $this->assertSame('7', $call->json_rpc_id);
         $this->assertSame('127.0.0.1', $call->ip_address);
         $this->assertNotNull($call->duration_in_milliseconds);
-        $this->assertMatchesRegularExpression('/\.\d{3}$/', (string) $call->getRawOriginal('started_at'));
+        $this->assertStringEndsWith('.123', (string) $call->getRawOriginal('started_at'));
         $this->assertStringContainsString($this->contact->uuid, (string) $call->parameters);
         $this->assertStringContainsString('Schrute', (string) $call->response);
         $this->assertNull($call->error_code);

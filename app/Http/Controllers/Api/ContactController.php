@@ -10,6 +10,7 @@ use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\SortDirectionEnum;
+use App\Enums\ValueListEnum;
 use App\Helpers\ContactListCatalogue;
 use App\Helpers\ContactListCells;
 use App\Http\Controllers\Controller;
@@ -18,9 +19,11 @@ use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
 use App\Models\ContactListColumn;
 use App\Models\StructureVersion;
+use App\Models\ValueList;
 use App\Models\Vault;
 use App\Rules\PublishedContactStructureVersion;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -38,7 +41,16 @@ class ContactController extends Controller
             'query' => ['nullable', 'string', 'max:255'],
             'sort' => ['nullable', 'string', Rule::in(ContactSortEnum::values())],
             'direction' => ['nullable', 'string', Rule::enum(SortDirectionEnum::class)],
+            'categories' => ['array'],
+            'categories.*' => ['integer', Rule::exists('value_list_items', 'id')
+                ->where('account_id', $vault->account_id)
+                ->where('value_list_id', ValueList::query()
+                    ->where('account_id', $vault->account_id)
+                    ->where('key', ValueListEnum::ContactCategories->value)
+                    ->value('id'))],
         ]);
+
+        $categoryIds = array_map(intval(...), $validated['categories'] ?? []);
 
         $perPage = max(1, min(
             (int) $request->query('per_page', (string) config('monica.api_default_items_per_page')),
@@ -49,6 +61,7 @@ class ContactController extends Controller
             ->where('vault_id', $vault->id)
             ->inGrouping(ContactGroupingEnum::fromValueOrEveryone($validated['filter'] ?? null))
             ->matchingSearch($validated['query'] ?? '')
+            ->when($categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($categoryIds))
             ->sortedBy(
                 ContactSortEnum::fromValueOrName($validated['sort'] ?? null),
                 SortDirectionEnum::fromValueOrAscending($validated['direction'] ?? null),

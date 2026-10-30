@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Dav;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\ValueListEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\SectionVersion;
@@ -32,6 +33,22 @@ class OwnedFields
     public function properties(): array
     {
         return array_keys($this->byProperty());
+    }
+
+    /**
+     * The fields holding the contact's categories: every multiple choice drawing on the account's
+     * "Contact categories" list. They share one `CATEGORIES` property, a list of labels, so they
+     * stay out of the properties written one value at a time.
+     *
+     * @return array<int, Field>
+     */
+    public function categoryFields(): array
+    {
+        return $this->fields()
+            ->filter(fn (Field $field): bool => $field->type === FieldTypeEnum::Multiselect
+                && $field->valueList?->key === ValueListEnum::ContactCategories->value)
+            ->values()
+            ->all();
     }
 
     public static function propertyFor(Field $field): ?string

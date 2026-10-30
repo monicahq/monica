@@ -367,6 +367,7 @@
     "Added :added · last used :used": "Προστέθηκε :added · τελευταία χρήση :used",
     "Added :added · never used yet": "Προστέθηκε :added · δεν έχει χρησιμοποιηθεί ακόμη",
     "Added :date": "Προστέθηκε στις :date",
+    "Added :label": "Προστέθηκε το :label",
     "Added :label to the value list :name": "Πρόσθεσε το :label στη λίστα τιμών :name",
     "Added a repetition of :label on :name": "Πρόσθεσε μια επανάληψη του :label στο :name",
     "Added the :heading column.": "Η στήλη :heading προστέθηκε.",
@@ -2548,6 +2549,7 @@
     "Show All": "Εμφάνιση όλων",
     "Show everything": "Εμφάνιση όλων",
     "Show less": "Εμφάνιση λιγότερων",
+    "Show these people": "Εμφάνιση αυτών των ατόμων",
     "Showing": "Εμφάνιση",
     "Shown in settings and when you pick a relationship.": "Εμφανίζεται στις ρυθμίσεις και όταν επιλέγετε σχέση.",
     "Shown in the header area of the record as well as in its section.": "Εμφανίζεται στην περιοχή κεφαλίδας της εγγραφής όπως και στην ενότητά της.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}κάθε εβδομάδα|κάθε :count εβδομάδες",
     "{1}every year|every :count years": "{1}κάθε χρόνο|κάθε :count χρόνια",
     "{1}used once|used :count times": "{1}χρησιμοποιήθηκε μία φορά|χρησιμοποιήθηκε :count φορές",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "Το «:label» δεν προσφέρεται πλέον. Προσφέρετέ το ξανά από τις λίστες τιμών στις ρυθμίσεις σας.",
     "“Appointments” above the repeater": "«Ραντεβού» πάνω από την επαναλαμβανόμενη ομάδα",
     "“Ask the vet for the batch number.”": "«Ζητήστε από τον κτηνίατρο τον αριθμό παρτίδας.»"
 }

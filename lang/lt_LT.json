@@ -367,6 +367,7 @@
     "Added :added · last used :used": "Pridėta :added · paskutinį kartą naudota :used",
     "Added :added · never used yet": "Pridėta :added · dar nenaudota",
     "Added :date": "Pridėta :date",
+    "Added :label": "Pridėta: :label",
     "Added :label to the value list :name": "Pridėjo :label į verčių sąrašą :name",
     "Added a repetition of :label on :name": "Pridėjo :label pakartojimą įraše :name",
     "Added the :heading column.": "Stulpelis :heading pridėtas.",
@@ -2548,6 +2549,7 @@
     "Show All": "Rodyti viską",
     "Show everything": "Rodyti viską",
     "Show less": "Rodyti mažiau",
+    "Show these people": "Rodyti šiuos žmones",
     "Showing": "Rodomi nuo",
     "Shown in settings and when you pick a relationship.": "Rodoma nustatymuose ir kai pasirenkate ryšį.",
     "Shown in the header area of the record as well as in its section.": "Rodoma įrašo antraštėje ir jo skyriuje.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}kiekvieną savaitę|kas :count savaites|kas :count savaičių",
     "{1}every year|every :count years": "{1}kiekvienais metais|kas :count metus|kas :count metų",
     "{1}used once|used :count times": "{1}naudota vieną kartą|naudota :count kartus|naudota :count kartų",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "„:label“ daugiau nesiūloma. Vėl pasiūlykite tai savo nustatymų verčių sąrašuose.",
     "“Appointments” above the repeater": "„Vizitai“ virš pasikartojančios grupės",
     "“Ask the vet for the batch number.”": "„Paklauskite veterinaro partijos numerio.“"
 }

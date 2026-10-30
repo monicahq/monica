@@ -367,6 +367,7 @@
     "Added :added · last used :used": "Curtha leis :added · úsáidte go deireanach :used",
     "Added :added · never used yet": "Curtha leis :added · níor úsáideadh riamh go fóill",
     "Added :date": "Curtha leis ar :date",
+    "Added :label": "Curtha leis: :label",
     "Added :label to the value list :name": "Chuir :label leis an liosta luachanna :name",
     "Added a repetition of :label on :name": "Chuir athdhéanamh de :label le :name",
     "Added the :heading column.": "Cuireadh an colún :heading leis.",
@@ -2548,6 +2549,7 @@
     "Show All": "Taispeáin gach rud",
     "Show everything": "Taispeáin gach rud",
     "Show less": "Taispeáin níos lú",
+    "Show these people": "Taispeáin na daoine seo",
     "Showing": "Ag taispeáint",
     "Shown in settings and when you pick a relationship.": "Taispeántar sna socruithe agus nuair a roghnaíonn tú gaol.",
     "Shown in the header area of the record as well as in its section.": "Taispeántar i limistéar ceanntáisc an taifid chomh maith le ina rannán.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}gach seachtain|gach :count sheachtain|gach :count seachtain",
     "{1}every year|every :count years": "{1}gach bliain|gach :count bhliain|gach :count bliain",
     "{1}used once|used :count times": "{1}úsáidte uair amháin|úsáidte :count uair|úsáidte :count uair",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "Ní thugtar “:label” a thuilleadh. Tabhair arís é ó na liostaí luachanna i do shocruithe.",
     "“Appointments” above the repeater": "“Ceapacháin” os cionn an athdhéantóra",
     "“Ask the vet for the batch number.”": "“Iarr uimhir an bhaisc ar an tréidlia.”"
 }

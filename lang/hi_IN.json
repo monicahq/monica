@@ -367,6 +367,7 @@
     "Added :added · last used :used": ":added जोड़ा गया · अंतिम उपयोग :used",
     "Added :added · never used yet": ":added जोड़ा गया · अभी तक कभी उपयोग नहीं",
     "Added :date": ":date को जोड़ा गया",
+    "Added :label": ":label जोड़ा गया",
     "Added :label to the value list :name": "मान सूची :name में :label जोड़ा",
     "Added a repetition of :label on :name": ":name पर :label का एक दोहराव जोड़ा",
     "Added the :heading column.": ":heading कॉलम जोड़ा गया।",
@@ -2548,6 +2549,7 @@
     "Show All": "सब दिखाएं",
     "Show everything": "सब कुछ दिखाएँ",
     "Show less": "कम दिखाएँ",
+    "Show these people": "इन लोगों को दिखाएँ",
     "Showing": "दिखा रहा है",
     "Shown in settings and when you pick a relationship.": "सेटिंग में और संबंध चुनते समय दिखाया जाता है।",
     "Shown in the header area of the record as well as in its section.": "रिकॉर्ड के शीर्ष भाग में और उसके अनुभाग में भी दिखाया जाता है।",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}हर सप्ताह|हर :count सप्ताह",
     "{1}every year|every :count years": "{1}हर साल|हर :count साल",
     "{1}used once|used :count times": "{1}एक बार इस्तेमाल हुआ|:count बार इस्तेमाल हुआ",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "“:label” अब नहीं दिया जाता। इसे अपनी सेटिंग्स की मान सूचियों से फिर से दें।",
     "“Appointments” above the repeater": "दोहराव के ऊपर “मुलाक़ातें”",
     "“Ask the vet for the batch number.”": "“पशु-चिकित्सक से बैच नंबर पूछें।”"
 }

@@ -28,6 +28,7 @@ class ContactsViewModel
     /** @var list<ContactListColumn>|null */
     private ?array $columns = null;
 
+    /** @param  list<int>  $categoryIds */
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
@@ -36,6 +37,7 @@ class ContactsViewModel
         private readonly ContactSortEnum $sort = ContactSortEnum::Name,
         private readonly SortDirectionEnum $direction = SortDirectionEnum::Ascending,
         private readonly int|string $size = self::PER_PAGE,
+        private readonly array $categoryIds = [],
     ) {}
 
     public function size(): int|string
@@ -186,6 +188,7 @@ class ContactsViewModel
                 'sort' => $sort->value,
                 'direction' => ($isCurrent ? $otherWay : $firstWay)->value,
                 'size' => $this->sizeInUrl(),
+                'categories' => $this->categoryIds === [] ? null : $this->categoryIds,
             ]),
             'ariaSort' => $isCurrent ? ($this->direction === SortDirectionEnum::Ascending ? 'ascending' : 'descending') : null,
         ];
@@ -209,6 +212,28 @@ class ContactsViewModel
             'url' => $this->url(grouping: $grouping),
             'isCurrent' => $grouping === $this->grouping,
         ], ContactGroupingEnum::cases());
+    }
+
+    /**
+     * The categories somebody in the grouping holds, offered to narrow the list, with how many
+     * people hold each and whether the list is narrowed to it.
+     *
+     * @return list<array{id: int, label: string, count: int, isChosen: bool}>
+     */
+    public function categories(): array
+    {
+        return array_map(fn (array $held): array => [
+            'id' => $held['item']->id,
+            'label' => $held['item']->label,
+            'count' => $held['contacts'],
+            'isChosen' => in_array($held['item']->id, $this->categoryIds, true),
+        ], $this->vault->categoriesHeldByContacts($this->grouping));
+    }
+
+    /** @return list<int> */
+    public function categoryIds(): array
+    {
+        return $this->categoryIds;
     }
 
     public function resultLine(): string
@@ -315,7 +340,8 @@ class ContactsViewModel
         return Contact::query()
             ->where('vault_id', $this->vault->id)
             ->inGrouping($this->grouping)
-            ->matchingSearch($this->query);
+            ->matchingSearch($this->query)
+            ->when($this->categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($this->categoryIds));
     }
 
     private function searchTerm(): string
@@ -417,7 +443,7 @@ class ContactsViewModel
 
     private function isNarrowed(): bool
     {
-        return $this->searchTerm() !== '' || $this->grouping !== ContactGroupingEnum::Everyone;
+        return $this->searchTerm() !== '' || $this->grouping !== ContactGroupingEnum::Everyone || $this->categoryIds !== [];
     }
 
     private function url(?ContactGroupingEnum $grouping = null): string
@@ -429,6 +455,7 @@ class ContactsViewModel
             'sort' => $this->sort->value,
             'direction' => $this->direction->value,
             'size' => $this->sizeInUrl(),
+            'categories' => $this->categoryIds === [] ? null : $this->categoryIds,
         ]);
     }
 

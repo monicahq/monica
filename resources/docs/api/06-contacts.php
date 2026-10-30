@@ -83,6 +83,7 @@ $contact = [
         'is_me' => false,
         'structure_version_id' => 4,
         'template_name' => 'Default contact',
+        'categories' => [['id' => 12, 'label' => 'Colleague']],
         'last_life_event_at' => null,
         'created_at' => 1756252800,
         'last_interaction_at' => null,
@@ -120,6 +121,7 @@ $otherContact = [
         'is_me' => false,
         'structure_version_id' => 4,
         'template_name' => 'Default contact',
+        'categories' => [],
         'last_life_event_at' => 1756166400,
         'created_at' => 1756080000,
         'last_interaction_at' => 1756166400,
@@ -190,6 +192,12 @@ $listParams = [
         'description' => 'How many contacts one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.',
         'default' => '25',
     ],
+    [
+        'name' => 'categories[]',
+        'type' => 'integer',
+        'required' => false,
+        'description' => 'Narrow the list to the people holding any of these categories, by the identifiers the list of categories below gives. It narrows together with the filter. An identifier that is not one of your contact categories answers 422.',
+    ],
 ];
 
 $nameRepresentationFields = [
@@ -235,6 +243,10 @@ $contactAttributes = [
     ['name' => 'is_me', 'type' => 'boolean', 'description' => 'Whether this contact represents you. Exactly one contact per vault is, it cannot be deleted, and nothing here hands the title to somebody else.'],
     ['name' => 'structure_version_id', 'type' => 'integer', 'description' => 'The published version of the template this contact renders from. It says what pages the contact has and what is written on them. Publishing a new version moves nobody: a contact stays on the version it points at until it is moved.'],
     ['name' => 'template_name', 'type' => 'string', 'description' => 'What that template is called, which is what the lists show beside a contact.'],
+    ['name' => 'categories', 'type' => 'array', 'description' => 'The categories the contact holds, in the order of your list of contact categories. A category is a choice of that list held in any field of the template drawing on it. Empty when the contact holds none.'],
+    ['name' => 'categories[]', 'type' => 'object', 'description' => 'One category.'],
+    ['name' => 'categories[].id', 'type' => 'integer', 'description' => 'The identifier of the category, which is what the list of contacts filters on.'],
+    ['name' => 'categories[].label', 'type' => 'string', 'description' => 'What the category is called, in the language of the request for a category the application supplied.'],
     ['name' => 'last_life_event_at', 'type' => 'timestamp', 'description' => 'When the contact last took part in a life event, as a count of seconds since 1970, or null when they never have. It says nothing about whether you were there.'],
     ['name' => 'last_interaction_at', 'type' => 'timestamp', 'description' => 'When you and the contact last took part in the same life event, as a count of seconds since 1970, or null when you never have. This is what "last spoke" reads, and what an inactivity reminder counts from.'],
     ['name' => 'last_consulted_at', 'type' => 'timestamp', 'description' => 'When the contact was last consulted on their own, as a count of seconds since 1970, or null when they never have been: their page opened in Monica, the contact read through this endpoint, or read by an assistant connected over MCP. Listing contacts does not change it.'],
@@ -253,6 +265,18 @@ $freshContactAttributes = array_values(array_filter(
 ));
 
 $freshContact = [...$contact, 'attributes' => [...$contact['attributes'], 'avatar' => null, 'updated_at' => null]];
+
+$newContactAttributes = array_values(array_filter(
+    array_map(
+        fn (array $field): array => $field['name'] === 'categories'
+            ? [...$field, 'description' => 'Always empty here. A contact is written down before it holds a category, and giving it one is saving a section of its page.']
+            : $field,
+        $freshContactAttributes,
+    ),
+    fn (array $field): bool => ! str_starts_with($field['name'], 'categories['),
+));
+
+$newContact = [...$freshContact, 'attributes' => [...$freshContact['attributes'], 'categories' => []]];
 
 $nameParams = [
     ['name' => 'prefix', 'type' => 'string', 'required' => true, 'description' => 'What comes before the name, up to 50 characters, or null. Send it even when it is null.', 'example' => null],
@@ -424,7 +448,7 @@ return [
         ],
         [
             'id' => 'contacts-create',
-            'returnFields' => ApiDocsFields::one('contact', 'contact', $freshContactAttributes, webLink: $webLink),
+            'returnFields' => ApiDocsFields::one('contact', 'contact', $newContactAttributes, webLink: $webLink),
             'title' => 'Create a contact',
             'label' => 'Create a contact',
             'method' => 'POST',
@@ -440,7 +464,7 @@ return [
             'bodyParams' => $writeParams,
             'returns' => 'The contact object as it now reads, including the name assembled from the parts you sent. A vault belonging to somebody else answers 404 and nobody is written down.',
             'responseStatus' => 201,
-            'response' => ['data' => $freshContact],
+            'response' => ['data' => $newContact],
         ],
         [
             'id' => 'contacts-name-update',
@@ -610,6 +634,64 @@ return [
             ],
             'returns' => 'The contact object as it now reads, on its new version. A contact belonging to somebody else, a version not on offer, or the wrong vault each answer 404 and the contact is left where it was.',
             'response' => ['data' => $contact],
+        ],
+        [
+            'id' => 'contacts-sections-update',
+            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes, webLink: $webLink),
+            'title' => 'Save a section of a contact',
+            'label' => 'Save a section',
+            'method' => 'PUT',
+            'path' => '/vaults/{vault}/contacts/{contact}/sections/{section}',
+            'examplePath' => '/vaults/'.$vaultId.'/contacts/'.$contactId.'/sections/31',
+            'description' => 'Write every field of one section of a contact\'s page in one call, the way the page saves it.',
+            'body' => [
+                'The section is named by its identifier, and it has to be one the contact\'s template version places. The call replaces the whole section: a field left out is emptied, except a sensitive field your key has no scope to reach, which is left as it is. A file cannot be sent here.',
+                'A multiple choice field also takes new_choices, wordings to add to its list as the contact is saved. A wording naming a choice the list holds, whatever its case and the spaces around it, picks that choice rather than adding a second one. Nothing is added unless the whole section is saved.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'pathParams' => [...$identifier, ['name' => 'section', 'type' => 'integer', 'required' => true, 'description' => 'The identifier of the section.']],
+            'bodyParams' => [
+                ['name' => 'fields', 'type' => 'object', 'required' => false, 'description' => 'The values, keyed by the identifier of their field. A multiple choice field takes an array of the identifiers of the choices.', 'example' => ['118' => [12]]],
+                ['name' => 'labels', 'type' => 'object', 'required' => false, 'description' => 'For an email, a phone or an address, the identifier of the label picked beside it, keyed by field.'],
+                ['name' => 'label_wordings', 'type' => 'object', 'required' => false, 'description' => 'The wording typed for the open label, up to 255 characters, keyed by field.'],
+                ['name' => 'year_is_unknown', 'type' => 'object', 'required' => false, 'description' => 'For a date, true when its year is not known, keyed by field.'],
+                ['name' => 'month_is_unknown', 'type' => 'object', 'required' => false, 'description' => 'For a date, true when its month is not known either, keyed by field.'],
+                ['name' => 'new_choices', 'type' => 'object', 'required' => false, 'description' => 'For a multiple choice field, an array of wordings to find or add to its list, each up to 255 characters, keyed by field.', 'example' => ['118' => ['Finer Things Club']]],
+            ],
+            'returns' => 'The contact object as it now reads. A contact, a vault or a section belonging to somebody else answers 404. A wording naming a choice that is no longer offered, and a list that does not take choices of its own, answer 422 on fields, and nothing is written.',
+            'response' => ['data' => [...$contact, 'attributes' => [...$contact['attributes'], 'categories' => [['id' => 12, 'label' => 'Colleague'], ['id' => 31, 'label' => 'Finer Things Club']]]]],
+        ],
+        [
+            'id' => 'contact-categories-index',
+            'title' => 'List the categories held in a vault',
+            'label' => 'List contact categories',
+            'method' => 'GET',
+            'path' => '/vaults/{vault}/contact-categories',
+            'examplePath' => '/vaults/'.$vaultId.'/contact-categories',
+            'description' => 'List the categories somebody in a vault holds, with how many people hold each, which is what the people screen offers to narrow its list with.',
+            'body' => [
+                'A category is a choice of your list of contact categories, which every vault of the account shares. Only the categories somebody in the vault holds are listed, in the order of the list, and a category that is no longer offered is still listed while somebody holds it. A person holding a category in two fields counts once.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'pathParams' => [$vaultParam],
+            'queryParams' => [
+                ['name' => 'filter', 'type' => 'string', 'required' => false, 'description' => 'Count only the people of one grouping: all, favourites or names-only.', 'default' => 'all'],
+            ],
+            'returns' => 'Every category held in the vault, with how many people hold it. A vault belonging to somebody else answers 404.',
+            'returnFields' => [
+                ['name' => 'data', 'type' => 'array', 'description' => 'The categories, in the order of the list.'],
+                ['name' => 'data[]', 'type' => 'object', 'description' => 'One category.'],
+                ['name' => 'data[].type', 'type' => 'string', 'description' => 'Always contact_category.'],
+                ['name' => 'data[].id', 'type' => 'integer', 'description' => 'The identifier of the category, which the list of contacts filters on.'],
+                ['name' => 'data[].attributes', 'type' => 'object', 'description' => 'What the category is.'],
+                ['name' => 'data[].attributes.label', 'type' => 'string', 'description' => 'What the category is called.'],
+                ['name' => 'data[].attributes.is_active', 'type' => 'boolean', 'description' => 'False when the category is no longer offered. It stays on the people who hold it.'],
+                ['name' => 'data[].attributes.contacts_count', 'type' => 'integer', 'description' => 'How many people of the vault hold it.'],
+            ],
+            'response' => ['data' => [
+                ['type' => 'contact_category', 'id' => 12, 'attributes' => ['label' => 'Colleague', 'is_active' => true, 'contacts_count' => 4]],
+                ['type' => 'contact_category', 'id' => 31, 'attributes' => ['label' => 'Finer Things Club', 'is_active' => true, 'contacts_count' => 2]],
+            ]],
         ],
         [
             'id' => 'contact-list-columns-show',

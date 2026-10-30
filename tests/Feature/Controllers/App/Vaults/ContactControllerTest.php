@@ -6,11 +6,13 @@ namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\NameOrderEnum;
+use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\PageSize;
 use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
 use App\Models\Field;
+use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
@@ -182,6 +184,54 @@ class ContactControllerTest extends TestCase
                 'sort' => 'name',
                 'direction' => 'asc',
             ]));
+    }
+
+    #[Test]
+    public function it_keeps_the_categories_when_it_redirects_the_bare_address(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'categories' => [7]]))
+            ->assertRedirect(route('contacts.index', [
+                'vault' => $vault,
+                'filter' => 'all',
+                'sort' => 'name',
+                'direction' => 'asc',
+                'categories' => [7],
+            ]));
+    }
+
+    #[Test]
+    public function it_offers_the_categories_held_in_the_vault_to_narrow_the_list(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $list = ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $user->account_id]);
+        $sales = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Sales']);
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+        $jim = $this->contact($vault, 'Jim', 'Halpert');
+        $this->contact($vault, 'Toby', 'Flenderson');
+        FieldValue::factory()->create(['valuable_id' => $jim->id, 'field_id' => $field->id, 'value_string' => null, 'value_list_item_ids' => [$sales->id]]);
+
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'categories' => [$sales->id]]))
+            ->assertOk()
+            ->assertSee('Categories')
+            ->assertSee('name="categories[]"', false)
+            ->assertSee('Halpert')
+            ->assertDontSee('Flenderson');
+    }
+
+    #[Test]
+    public function it_refuses_a_category_outside_the_accounts_list_of_categories(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $user->account_id]);
+        $elsewhere = ValueListItem::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('contacts.index', ['vault' => $vault, 'filter' => 'all', 'categories' => [$elsewhere->id]]))
+            ->assertSessionHasErrors('categories.0');
     }
 
     #[Test]

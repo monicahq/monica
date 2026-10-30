@@ -367,6 +367,7 @@
     "Added :added · last used :used": "Eklendi :added · son kullanım :used",
     "Added :added · never used yet": "Eklendi :added · henüz kullanılmadı",
     "Added :date": ":date tarihinde eklendi",
+    "Added :label": ":label eklendi",
     "Added :label to the value list :name": ":name değer listesine :label eklendi",
     "Added a repetition of :label on :name": ":name üzerinde :label için bir tekrar eklendi",
     "Added the :heading column.": ":heading sütunu eklendi.",
@@ -2548,6 +2549,7 @@
     "Show All": "Hepsini Göster ↓",
     "Show everything": "Hepsini göster",
     "Show less": "Daha az göster",
+    "Show these people": "Bu kişileri göster",
     "Showing": "Gösteri",
     "Shown in settings and when you pick a relationship.": "Ayarlarda ve bir ilişki seçerken gösterilir.",
     "Shown in the header area of the record as well as in its section.": "Kaydın başlık alanında ve kendi bölümünde gösterilir.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "her :count hafta",
     "{1}every year|every :count years": "her :count yıl",
     "{1}used once|used :count times": ":count kez kullanıldı",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "“:label” artık sunulmuyor. Ayarlarınızdaki değer listelerinden yeniden sunabilirsiniz.",
     "“Appointments” above the repeater": "Tekrarlayıcının üstünde “Randevular”",
     "“Ask the vet for the batch number.”": "“Veterinerden parti numarasını isteyin.”"
 }

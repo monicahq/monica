@@ -367,6 +367,7 @@
     "Added :added · last used :used": "Lisätty :added · viimeksi käytetty :used",
     "Added :added · never used yet": "Lisätty :added · ei vielä käytetty",
     "Added :date": "Lisätty :date",
+    "Added :label": ":label lisätty",
     "Added :label to the value list :name": "Lisäsi kohteen :label arvolistaan :name",
     "Added a repetition of :label on :name": "Lisäsi toiston kohteesta :label kohteeseen :name",
     "Added the :heading column.": "Sarake :heading lisättiin.",
@@ -2548,6 +2549,7 @@
     "Show All": "Näytä kaikki",
     "Show everything": "Näytä kaikki",
     "Show less": "Näytä vähemmän",
+    "Show these people": "Näytä nämä henkilöt",
     "Showing": "Näyttää",
     "Shown in settings and when you pick a relationship.": "Näkyy asetuksissa ja kun valitset suhteen.",
     "Shown in the header area of the record as well as in its section.": "Näkyy tietueen otsikkoalueella sekä omassa osiossaan.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}joka viikko|:count viikon välein",
     "{1}every year|every :count years": "{1}joka vuosi|:count vuoden välein",
     "{1}used once|used :count times": "{1}käytetty kerran|käytetty :count kertaa",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "”:label” ei ole enää tarjolla. Tarjoa se uudelleen asetustesi arvolistoista.",
     "“Appointments” above the repeater": "”Tapaamiset” toistoryhmän yläpuolella",
     "“Ask the vet for the batch number.”": "”Kysy eläinlääkäriltä eränumero.”"
 }

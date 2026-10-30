@@ -367,6 +367,7 @@
     "Added :added · last used :used": ":added சேர்க்கப்பட்டது · கடைசியாகப் பயன்படுத்தியது :used",
     "Added :added · never used yet": ":added சேர்க்கப்பட்டது · இன்னும் பயன்படுத்தப்படவில்லை",
     "Added :date": ":date இல் சேர்க்கப்பட்டது",
+    "Added :label": ":label சேர்க்கப்பட்டது",
     "Added :label to the value list :name": "மதிப்புப் பட்டியல் :name இல் :label சேர்க்கப்பட்டது",
     "Added a repetition of :label on :name": ":name இல் :label இன் ஒரு மீள்வு சேர்க்கப்பட்டது",
     "Added the :heading column.": ":heading நெடுவரிசை சேர்க்கப்பட்டது.",
@@ -2548,6 +2549,7 @@
     "Show All": "அனைத்தையும் காட்டு",
     "Show everything": "அனைத்தையும் காட்டு",
     "Show less": "குறைவாகக் காட்டு",
+    "Show these people": "இவர்களைக் காட்டு",
     "Showing": "காட்டும்",
     "Shown in settings and when you pick a relationship.": "அமைப்புகளிலும், நீங்கள் ஒரு உறவைத் தேர்வுசெய்யும்போதும் காட்டப்படுகிறது.",
     "Shown in the header area of the record as well as in its section.": "பதிவேட்டின் தலைப்புப் பகுதியிலும் அதன் பகுதியிலும் காட்டப்படுகிறது.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}ஒவ்வொரு வாரமும்|ஒவ்வொரு :count வாரங்களுக்கும்",
     "{1}every year|every :count years": "{1}ஒவ்வொரு ஆண்டும்|ஒவ்வொரு :count ஆண்டுகளுக்கும்",
     "{1}used once|used :count times": "{1}ஒருமுறை பயன்படுத்தப்பட்டது|:count முறை பயன்படுத்தப்பட்டது",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "“:label” இனி வழங்கப்படுவதில்லை. உங்கள் அமைப்புகளில் உள்ள மதிப்புப் பட்டியல்களிலிருந்து அதை மீண்டும் வழங்கவும்.",
     "“Appointments” above the repeater": "மீளிக்கு மேலே “சந்திப்புகள்”",
     "“Ask the vet for the batch number.”": "“கால்நடை மருத்துவரிடம் தொகுதி எண்ணைக் கேளுங்கள்.”"
 }

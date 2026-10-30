@@ -9,6 +9,7 @@ use App\Enums\FieldTypeEnum;
 use App\Enums\ValueListEnum;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -324,6 +325,65 @@ class FieldInputTest extends TestCase
 
     /** @param  array<string, mixed>  $attributes */
     #[Test]
+    public function a_multiple_choice_of_categories_offers_to_add_a_category(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $list = $this->listOffering(['Family', 'Colleague']);
+        $list->update(['key' => ValueListEnum::ContactCategories->value]);
+        $field = $this->multipleChoiceNaming($list);
+
+        $rendered = $this->render($field);
+
+        $rendered->assertSee('name="new_choices['.$field->id.'][]"', escape: false);
+        $rendered->assertSee('Add a category');
+    }
+
+    #[Test]
+    public function a_multiple_choice_of_another_list_offers_to_add_a_value(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $field = $this->multipleChoiceNaming($this->listOffering(['Sales', 'Accounting']));
+
+        $rendered = $this->render($field);
+
+        $rendered->assertSee('Add a value');
+        $rendered->assertDontSee('Add a category');
+    }
+
+    #[Test]
+    public function a_multiple_choice_keeps_a_held_value_that_is_no_longer_offered(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $list = $this->listOffering(['Sales', 'Accounting', 'Warehouse']);
+        $field = $this->multipleChoiceNaming($list);
+        $list->items()->whereIn('label', ['Sales', 'Warehouse'])->update(['is_active' => false]);
+        $sales = $list->items()->where('label', 'Sales')->first();
+        $value = FieldValue::factory()->make(['field_id' => $field->id, 'value_list_item_ids' => [$sales->id]]);
+
+        $rendered = $this->render($field, $value);
+
+        $rendered->assertSee('name="fields['.$field->id.'][]"', escape: false);
+        $rendered->assertSee('value="'.$sales->id.'"', escape: false);
+        $rendered->assertSee('Accounting');
+        $rendered->assertDontSee('Warehouse');
+    }
+
+    #[Test]
+    public function a_multiple_choice_offers_no_value_of_ones_own_when_its_list_takes_none(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $list = $this->listOffering(['Sales']);
+        $list->update(['allows_user_values' => false]);
+        $field = $this->multipleChoiceNaming($list);
+
+        $rendered = $this->render($field);
+
+        $rendered->assertSee('Sales');
+        $rendered->assertDontSee('new_choices', escape: false);
+        $rendered->assertDontSee('Add a value');
+    }
+
+    #[Test]
     public function a_file_field_offers_no_upload_while_file_upload_is_off(): void
     {
         $field = Field::factory()->create(['type' => FieldTypeEnum::Image, 'label' => 'Portrait', 'is_required' => false]);
@@ -395,6 +455,15 @@ class FieldInputTest extends TestCase
         }
 
         return $list;
+    }
+
+    private function multipleChoiceNaming(ValueList $list): Field
+    {
+        return Field::factory()->create([
+            'type' => FieldTypeEnum::Multiselect,
+            'label' => 'Department',
+            'value_list_id' => $list->id,
+        ]);
     }
 
     private function phoneNaming(ValueList $list): Field

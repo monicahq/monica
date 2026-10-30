@@ -11,6 +11,7 @@ use App\Enums\AddressLabelEnum;
 use App\Enums\ContactNameKindEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NameOrderEnum;
+use App\Enums\ValueListEnum;
 use App\Http\Dav\VCardMerger;
 use App\Jobs\CreateDefaultTemplate;
 use App\Models\Contact;
@@ -570,6 +571,65 @@ class ImportVCardTest extends TestCase
             'key' => $key,
             'label' => $label,
         ]);
+    }
+
+    #[Test]
+    public function it_reads_the_categories_a_card_carries_and_adds_the_ones_the_list_lacks(): void
+    {
+        [$version, $list] = $this->categoriesStructure();
+        $sales = ValueListItem::factory()->create(['account_id' => $this->user->account_id, 'value_list_id' => $list->id, 'label' => 'Sales', 'position' => 1]);
+
+        $contact = $this->importCarrying("CATEGORIES:sales,Finer Things Club\r\n");
+
+        $finerThings = ValueListItem::query()->where('value_list_id', $list->id)->where('label', 'Finer Things Club')->sole();
+        $this->assertSame([$sales->id, $finerThings->id], $this->valueOf($contact, $version, 0)->value_list_item_ids);
+    }
+
+    #[Test]
+    public function it_skips_a_category_no_longer_offered_and_keeps_the_others(): void
+    {
+        [$version, $list] = $this->categoriesStructure();
+        $sales = ValueListItem::factory()->create(['account_id' => $this->user->account_id, 'value_list_id' => $list->id, 'label' => 'Sales']);
+        ValueListItem::factory()->disabled()->create(['account_id' => $this->user->account_id, 'value_list_id' => $list->id, 'label' => 'Party Planning Committee']);
+
+        $contact = $this->importCarrying("CATEGORIES:Party Planning Committee,Sales\r\n");
+
+        $this->assertSame([$sales->id], $this->valueOf($contact, $version, 0)->value_list_item_ids);
+        $this->assertSame(2, ValueListItem::query()->where('value_list_id', $list->id)->count());
+    }
+
+    #[Test]
+    public function it_empties_the_categories_of_a_contact_whose_card_carries_none(): void
+    {
+        [$version, $list] = $this->categoriesStructure();
+        $sales = ValueListItem::factory()->create(['account_id' => $this->user->account_id, 'value_list_id' => $list->id, 'label' => 'Sales']);
+        $contact = $this->importCarrying("CATEGORIES:Sales\r\n");
+
+        $this->importCarrying('', $contact);
+
+        $this->assertSame(0, FieldValue::query()->where('valuable_id', $contact->id)->where('field_id', $this->fieldsOf($version)[0]->id)->count());
+        $this->assertModelExists($sales);
+    }
+
+    #[Test]
+    public function it_keeps_the_categories_on_the_card_when_the_structure_holds_none(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault, [['type' => FieldTypeEnum::Phone, 'label' => 'Phone']]);
+
+        $contact = $this->importCarrying("CATEGORIES:Golf\r\n");
+
+        $this->assertStringContainsString('CATEGORIES:Golf', (string) $contact->vcard);
+        $this->assertSame(0, ValueListItem::query()->where('account_id', $this->user->account_id)->count());
+    }
+
+    /** @return array{0: StructureVersion, 1: ValueList} */
+    private function categoriesStructure(): array
+    {
+        $version = Structure::asTheDefaultOf($this->user, $this->vault, [['type' => FieldTypeEnum::Multiselect, 'label' => 'Category']]);
+        $list = ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $this->user->account_id]);
+        $this->fieldsOf($version)[0]->update(['value_list_id' => $list->id]);
+
+        return [$version, $list];
     }
 
     private function cardCarrying(string $property): string

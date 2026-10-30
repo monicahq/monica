@@ -367,6 +367,7 @@
     "Added :added · last used :used": "Added :added · last used :used",
     "Added :added · never used yet": "Added :added · never used yet",
     "Added :date": "Added :date",
+    "Added :label": "Added :label",
     "Added :label to the value list :name": "Added :label to the value list :name",
     "Added a repetition of :label on :name": "Added a repetition of :label on :name",
     "Added the :heading column.": "Added the :heading column.",
@@ -2548,6 +2549,7 @@
     "Show All": "Show All",
     "Show everything": "Show everything",
     "Show less": "Show less",
+    "Show these people": "Show these people",
     "Showing": "Showing",
     "Shown in settings and when you pick a relationship.": "Shown in settings and when you pick a relationship.",
     "Shown in the header area of the record as well as in its section.": "Shown in the header area of the record as well as in its section.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}every week|every :count weeks",
     "{1}every year|every :count years": "{1}every year|every :count years",
     "{1}used once|used :count times": "{1}used once|used :count times",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "“:label” is no longer offered. Offer it again from the value lists in your settings.",
     "“Appointments” above the repeater": "“Appointments” above the repeater",
     "“Ask the vet for the batch number.”": "“Ask the vet for the batch number.”"
 }

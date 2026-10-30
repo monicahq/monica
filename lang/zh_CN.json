@@ -367,6 +367,7 @@
     "Added :added · last used :used": "添加于 :added · 最后使用 :used",
     "Added :added · never used yet": "添加于 :added · 尚未使用",
     "Added :date": "添加于 :date",
+    "Added :label": "已添加 :label",
     "Added :label to the value list :name": "已在选项列表 :name 中添加 :label",
     "Added a repetition of :label on :name": "已在 :name 上添加 :label 的一次重复",
     "Added the :heading column.": "已添加 :heading 列。",
@@ -2548,6 +2549,7 @@
     "Show All": "显示所有",
     "Show everything": "显示全部",
     "Show less": "收起",
+    "Show these people": "显示这些人",
     "Showing": "显示中",
     "Shown in settings and when you pick a relationship.": "在设置中以及选择关系时显示。",
     "Shown in the header area of the record as well as in its section.": "除区块内之外，也显示在记录的顶部区域。",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "每 :count 周",
     "{1}every year|every :count years": "每 :count 年",
     "{1}used once|used :count times": "已使用 :count 次",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "“:label”已停止提供。请在设置的选项列表中重新提供。",
     "“Appointments” above the repeater": "重复组上方的“预约”",
     "“Ask the vet for the batch number.”": "“批号请向兽医询问。”"
 }

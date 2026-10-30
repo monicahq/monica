@@ -367,6 +367,7 @@
     "Added :added · last used :used": ":added එකතු කළා · අවසන් වරට භාවිත :used",
     "Added :added · never used yet": ":added එකතු කළා · තවම කිසිදා භාවිත කර නැත",
     "Added :date": ":date දින එක් කළා",
+    "Added :label": ":label එකතු කළා",
     "Added :label to the value list :name": "අගය ලැයිස්තුව :name හට :label එකතු කළා",
     "Added a repetition of :label on :name": ":name හි :label හි පුනරාවර්තනයක් එකතු කළා",
     "Added the :heading column.": ":heading තීරුව එකතු කළා.",
@@ -2548,6 +2549,7 @@
     "Show All": "සියල්ල පෙන්වන්න",
     "Show everything": "සියල්ල පෙන්වන්න",
     "Show less": "අඩුවෙන් පෙන්වන්න",
+    "Show these people": "මෙම පුද්ගලයින් පෙන්වන්න",
     "Showing": "පෙන්වන්නේ",
     "Shown in settings and when you pick a relationship.": "සැකසුම්වල සහ ඔබ බැඳීමක් තෝරන විට පෙන්වයි.",
     "Shown in the header area of the record as well as in its section.": "වාර්තාවේ ශීර්ෂ ප්‍රදේශයේ මෙන්ම එහි කොටසේද පෙන්වයි.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "සෑම සති :count කට",
     "{1}every year|every :count years": "සෑම වසර :count කට",
     "{1}used once|used :count times": "වාර :count ක් භාවිත කළා",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "“:label” තවදුරටත් ලබා නොදේ. ඔබේ සැකසුම්වල අගය ලැයිස්තුවලින් එය නැවත ලබා දෙන්න.",
     "“Appointments” above the repeater": "පුනරාවර්තකයට ඉහළින් “හමුවීම්”",
     "“Ask the vet for the batch number.”": "“පශු වෛද්‍යවරයාගෙන් කණ්ඩායම් අංකය අසන්න.”"
 }

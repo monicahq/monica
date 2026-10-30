@@ -367,6 +367,7 @@
     "Added :added · last used :used": "Lagt til :added · sist brukt :used",
     "Added :added · never used yet": "Lagt til :added · aldri brukt ennå",
     "Added :date": "Lagt til :date",
+    "Added :label": ":label er lagt til",
     "Added :label to the value list :name": "La :label til i verdilisten :name",
     "Added a repetition of :label on :name": "La til en gjentakelse av :label på :name",
     "Added the :heading column.": "La til kolonnen :heading.",
@@ -2548,6 +2549,7 @@
     "Show All": "Vis alt",
     "Show everything": "Vis alt",
     "Show less": "Vis mindre",
+    "Show these people": "Vis disse personene",
     "Showing": "Viser",
     "Shown in settings and when you pick a relationship.": "Vises i innstillingene og når du velger en relasjon.",
     "Shown in the header area of the record as well as in its section.": "Vises i overskriftsfeltet på posten i tillegg til i sin egen seksjon.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}hver uke|hver :count uke",
     "{1}every year|every :count years": "{1}hvert år|hvert :count år",
     "{1}used once|used :count times": "{1}brukt én gang|brukt :count ganger",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "«:label» tilbys ikke lenger. Tilby den igjen fra verdilistene i innstillingene dine.",
     "“Appointments” above the repeater": "«Avtaler» over gjentakelsen",
     "“Ask the vet for the batch number.”": "«Spør veterinæren om batchnummeret.»"
 }

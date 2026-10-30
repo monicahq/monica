@@ -367,6 +367,7 @@
     "Added :added · last used :used": "Đã thêm :added · dùng lần cuối :used",
     "Added :added · never used yet": "Đã thêm :added · chưa dùng lần nào",
     "Added :date": "Thêm ngày :date",
+    "Added :label": "Đã thêm :label",
     "Added :label to the value list :name": "Đã thêm :label vào danh sách giá trị :name",
     "Added a repetition of :label on :name": "Đã thêm một lần lặp của :label trên :name",
     "Added the :heading column.": "Đã thêm cột :heading.",
@@ -2548,6 +2549,7 @@
     "Show All": "Hiển thị tất cả",
     "Show everything": "Hiện tất cả",
     "Show less": "Thu gọn",
+    "Show these people": "Hiển thị những người này",
     "Showing": "Đang hiển thị",
     "Shown in settings and when you pick a relationship.": "Hiện trong thiết lập và khi bạn chọn một quan hệ.",
     "Shown in the header area of the record as well as in its section.": "Hiện ở phần đầu của bản ghi và cả trong mục của nó.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "mỗi :count tuần",
     "{1}every year|every :count years": "mỗi :count năm",
     "{1}used once|used :count times": "đã dùng :count lần",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "“:label” không còn được đưa ra. Hãy đưa ra lại từ danh sách giá trị trong phần cài đặt của bạn.",
     "“Appointments” above the repeater": "“Cuộc hẹn” bên trên nhóm lặp",
     "“Ask the vet for the batch number.”": "“Hỏi thú y số lô.”"
 }

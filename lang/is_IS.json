@@ -367,6 +367,7 @@
     "Added :added · last used :used": "Bætt við :added · síðast notað :used",
     "Added :added · never used yet": "Bætt við :added · aldrei notað enn",
     "Added :date": "Bætt við :date",
+    "Added :label": ":label bætt við",
     "Added :label to the value list :name": "Bætti :label við gildalistann :name",
     "Added a repetition of :label on :name": "Bætti við endurtekningu af :label á :name",
     "Added the :heading column.": "Dálkinum :heading var bætt við.",
@@ -2548,6 +2549,7 @@
     "Show All": "Sýna allt",
     "Show everything": "Sýna allt",
     "Show less": "Sýna minna",
+    "Show these people": "Sýna þetta fólk",
     "Showing": "Sýni",
     "Shown in settings and when you pick a relationship.": "Birtist í stillingum og þegar þú velur tengsl.",
     "Shown in the header area of the record as well as in its section.": "Birtist í haussvæði færslunnar sem og í sínum hluta.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}í hverri viku|á :count vikna fresti",
     "{1}every year|every :count years": "{1}á hverju ári|á :count ára fresti",
     "{1}used once|used :count times": "{1}notað einu sinni|notað :count sinnum",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "„:label“ er ekki lengur í boði. Bjóddu það aftur úr gildalistunum í stillingunum þínum.",
     "“Appointments” above the repeater": "„Bókanir“ fyrir ofan endurtekninguna",
     "“Ask the vet for the batch number.”": "„Spyrðu dýralækninn um lotunúmerið.“"
 }

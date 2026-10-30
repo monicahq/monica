@@ -14,6 +14,7 @@ use App\Enums\AccountImportStatusEnum;
 use App\Enums\ContactListColumnSourceEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NotificationChannelEnum;
+use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\StripeCatalogue;
@@ -52,6 +53,8 @@ use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use App\ViewModels\Docs\ApiDocsSection;
@@ -68,6 +71,7 @@ use Laravel\Sanctum\Sanctum;
 use Laravel\Scout\EngineManager;
 use Laravel\Scout\Engines\CollectionEngine;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\Fixtures\Dav\Structure;
 use Tests\TestCase;
 
 class ApiDocsReturnFieldsTest extends TestCase
@@ -1306,6 +1310,28 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts");
             }),
 
+            'contacts-sections-update' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                [$version, $field] = $this->categoriesTemplate($user);
+                $contact = $this->contactWithAPicture($vault);
+                $contact->update(['structure_version_id' => $version->id]);
+                $section = StructureVersionSection::query()->where('structure_version_id', $version->id)->sole();
+
+                return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/sections/{$section->id}", [
+                    'new_choices' => [$field->id => ['Finer Things Club']],
+                ]);
+            }),
+
+            'contact-categories-index' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                [, $field] = $this->categoriesTemplate($user);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $field->value_list_id]);
+                $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+                FieldValue::factory()->create(['valuable_type' => Contact::class, 'valuable_id' => $contact->id, 'field_id' => $field->id, 'value_string' => null, 'value_list_item_ids' => [$item->id]]);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contact-categories");
+            }),
+
             'contact-list-columns-show' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
                 $work = $this->contactTemplateCarrying($user, 'Professional', ['Work' => ['company']])['Work'];
@@ -1444,6 +1470,7 @@ class ApiDocsReturnFieldsTest extends TestCase
                 Storage::fake('local');
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
                 $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+                $this->holdACategory($contact);
 
                 return $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
                     'avatar' => UploadedFile::fake()->image('pam.jpg', 400, 400),
@@ -1479,6 +1506,7 @@ class ApiDocsReturnFieldsTest extends TestCase
                     'structure_version_id' => $version->id,
                     'avatar_file_id' => $file->id,
                 ]);
+                $this->holdACategory($contact);
 
                 return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/template-version", []);
             }),
@@ -1739,11 +1767,36 @@ class ApiDocsReturnFieldsTest extends TestCase
             'mime_type' => 'image/webp',
         ]);
 
-        return Contact::factory()->create([
+        $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
             'account_id' => $vault->account_id,
             'avatar_file_id' => $file->id,
         ]);
+
+        $this->holdACategory($contact);
+
+        return $contact;
+    }
+
+    private function holdACategory(Contact $contact): void
+    {
+        $list = $this->categoriesOf($contact->account_id);
+        $item = ValueListItem::factory()->create(['account_id' => $contact->account_id, 'value_list_id' => $list->id]);
+        $field = Field::factory()->create(['account_id' => $contact->account_id, 'type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+
+        FieldValue::factory()->create([
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'value_string' => null,
+            'value_list_item_ids' => [$item->id],
+        ]);
+    }
+
+    private function categoriesOf(int $accountId): ValueList
+    {
+        return ValueList::query()->where('account_id', $accountId)->where('key', ValueListEnum::ContactCategories->value)->first()
+            ?? ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $accountId]);
     }
 
     /** @return array{Template, StructureVersion} */
@@ -1858,6 +1911,19 @@ class ApiDocsReturnFieldsTest extends TestCase
     }
 
     /** @param  callable(User): TestResponse  $call */
+    /** @return array{0: StructureVersion, 1: Field} */
+    private function categoriesTemplate(User $user): array
+    {
+        $version = Structure::withFields($user, [['type' => FieldTypeEnum::Multiselect, 'label' => 'Category']]);
+        $list = $this->categoriesOf($user->account_id);
+        $field = Field::query()
+            ->whereIn('section_version_id', StructureVersionSection::query()->where('structure_version_id', $version->id)->select('section_version_id'))
+            ->sole();
+        $field->update(['value_list_id' => $list->id]);
+
+        return [$version, $field->refresh()];
+    }
+
     private function asSomebody(callable $call): TestResponse
     {
         $user = User::factory()->create();

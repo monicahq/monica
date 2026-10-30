@@ -75,6 +75,7 @@ class RollBackAccountImport
 
             $this->removeTheOwnTypes();
             $this->removeTheCopiesOfStructures();
+            $this->removeTheCategoriesItAdded();
 
             $this->import->status = AccountImportStatusEnum::RolledBack;
             $this->import->ended_at = now();
@@ -245,6 +246,19 @@ class RollBackAccountImport
 
         ValueList::withTrashed()->whereIn('id', $ledger->flatMap(fn (array $made): array => (array) ($made['value_lists'] ?? [])))->forceDelete();
         EntityType::withTrashed()->whereIn('id', $ledger->flatMap(fn (array $made): array => (array) ($made['entity_types'] ?? [])))->forceDelete();
+    }
+
+    private function removeTheCategoriesItAdded(): void
+    {
+        $added = AccountImportItem::query()
+            ->where('account_import_id', $this->import->id)
+            ->get(['payload'])
+            ->flatMap(fn (AccountImportItem $item): array => (array) ($item->payload['value_list_items'] ?? []));
+
+        ValueListItem::withTrashed()
+            ->whereIn('id', $added)
+            ->where('usage_count', 0)
+            ->forceDelete();
     }
 
     /** @param Builder<AccountImportItem> $ids */

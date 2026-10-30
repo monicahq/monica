@@ -1348,4 +1348,45 @@ class ContactTest extends TestCase
         $this->assertTrue($phonetic->is($contact->nameFor(kind: ContactNameKindEnum::Phonetic)));
         $this->assertNull($contact->nameFor(script: 'Hani'));
     }
+
+    #[Test]
+    public function it_narrows_to_the_people_holding_any_of_the_given_categories(): void
+    {
+        $vault = Vault::factory()->create();
+        $sales = ValueListItem::factory()->create(['account_id' => $vault->account_id]);
+        $finerThings = ValueListItem::factory()->create(['account_id' => $vault->account_id, 'value_list_id' => $sales->value_list_id]);
+        $warehouse = ValueListItem::factory()->create(['account_id' => $vault->account_id, 'value_list_id' => $sales->value_list_id]);
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $sales->value_list_id]);
+
+        $jim = Contact::factory()->create(['vault_id' => $vault->id]);
+        $pam = Contact::factory()->create(['vault_id' => $vault->id]);
+        $darryl = Contact::factory()->create(['vault_id' => $vault->id]);
+        $dwight = Contact::factory()->create(['vault_id' => $vault->id]);
+        Contact::factory()->create(['vault_id' => $vault->id]);
+
+        $this->hold($jim, $field, [$sales->id]);
+        $this->hold($pam, $field, [$warehouse->id, $finerThings->id]);
+        $this->hold($darryl, $field, [$warehouse->id]);
+        $this->hold($dwight, $field, [$sales->id], ['is_detached' => true]);
+
+        $this->assertEqualsCanonicalizing(
+            [$jim->id, $pam->id],
+            Contact::query()->holdingAnyCategory([$sales->id, $finerThings->id])->pluck('id')->all(),
+        );
+    }
+
+    /**
+     * @param  list<int>  $itemIds
+     * @param  array<string, mixed>  $attributes
+     */
+    private function hold(Contact $contact, Field $field, array $itemIds, array $attributes = []): void
+    {
+        FieldValue::factory()->create([
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'value_string' => null,
+            'value_list_item_ids' => $itemIds,
+            ...$attributes,
+        ]);
+    }
 }

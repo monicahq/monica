@@ -204,6 +204,52 @@ class ContactSectionControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_new_choice_longer_than_a_label(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        [$section, $category] = $this->sectionWithAMultipleChoice($user, $michael);
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
+                ['new_choices' => [$category->id => [str_repeat('a', 256)]]],
+            )
+            ->assertSessionHasErrors('new_choices.'.$category->id.'.0');
+
+        $this->assertSame(0, FieldValue::query()->count());
+    }
+
+    #[Test]
+    public function it_sends_the_block_back_open_when_a_new_choice_names_one_no_longer_offered(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        [$section, $category] = $this->sectionWithAMultipleChoice($user, $michael);
+        ValueListItem::factory()->disabled()->create([
+            'account_id' => $user->account_id,
+            'value_list_id' => $category->value_list_id,
+            'label' => 'Party Planning Committee',
+        ]);
+
+        $this->actingAs($user)
+            ->put(
+                route('contacts.sections.update', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]),
+                ['new_choices' => [$category->id => ['party planning committee']]],
+            )
+            ->assertRedirect(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]))
+            ->assertSessionHasErrors(['fields' => '“Party Planning Committee” is no longer offered. Offer it again from the value lists in your settings.']);
+
+        $this->assertSame(0, FieldValue::query()->count());
+    }
+
+    #[Test]
     public function it_does_not_validate_against_a_section_of_another_account(): void
     {
         $user = User::factory()->create();
@@ -1356,6 +1402,19 @@ class ContactSectionControllerTest extends TestCase
         $version->update(['status' => VersionStatusEnum::Published]);
 
         return $version->refresh();
+    }
+
+    /** @return array{0: StructureVersionSection, 1: Field} */
+    private function sectionWithAMultipleChoice(User $user, Contact $contact): array
+    {
+        $version = $this->versionWithSections($user, 'About', ['Belongs to' => 'Category']);
+        $contact->update(['structure_version_id' => $version->id]);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $category = Field::query()->where('label', 'Category')->firstOrFail();
+        $category->sectionVersion->update(['status' => VersionStatusEnum::Draft]);
+        $category->update(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+
+        return [$this->sectionNamed($version, 'Belongs to'), $category->refresh()];
     }
 
     private function sectionNamed(StructureVersion $version, string $name): StructureVersionSection

@@ -367,6 +367,7 @@
     "Added :added · last used :used": ":added qoʻshildi · oxirgi ishlatilgani :used",
     "Added :added · never used yet": ":added qoʻshildi · hali hech qachon ishlatilmagan",
     "Added :date": ":date da qoʻshildi",
+    "Added :label": ":label qoʻshildi",
     "Added :label to the value list :name": ":name qiymatlar roʻyxatiga :label qoʻshildi",
     "Added a repetition of :label on :name": ":name da :label takrorlanishi qoʻshildi",
     "Added the :heading column.": ":heading ustuni qoʻshildi.",
@@ -2548,6 +2549,7 @@
     "Show All": "Hammasini koʻrsatish",
     "Show everything": "Hammasini koʻrsatish",
     "Show less": "Kamroq koʻrsatish",
+    "Show these people": "Bu odamlarni koʻrsatish",
     "Showing": "Ko’rsatgan",
     "Shown in settings and when you pick a relationship.": "Sozlamalarda va munosabat tanlaganingizda koʻrsatiladi.",
     "Shown in the header area of the record as well as in its section.": "Yozuvning sarlavha qismida va uning boʻlimida ham koʻrsatiladi.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "har :count haftada",
     "{1}every year|every :count years": "har :count yilda",
     "{1}used once|used :count times": ":count marta ishlatilgan",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "“:label” endi taklif qilinmaydi. Uni sozlamalaringizdagi qiymatlar roʻyxatlaridan qayta taklif qiling.",
     "“Appointments” above the repeater": "Takrorlagich ustida “Uchrashuvlar”",
     "“Ask the vet for the batch number.”": "“Veterinardan partiya raqamini soʻrang.”"
 }

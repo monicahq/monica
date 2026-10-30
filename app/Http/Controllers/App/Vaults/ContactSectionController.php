@@ -13,6 +13,7 @@ use App\Exceptions\ReminderIsNotValid;
 use App\Exceptions\ReminderNeedsADate;
 use App\Exceptions\TooManyRepetitions;
 use App\Exceptions\ValueAlreadyHasAReminder;
+use App\Exceptions\ValueListItemIsStopped;
 use App\Helpers\AlpineAjaxTargets;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveFieldValuesRequest;
@@ -20,6 +21,7 @@ use App\Models\Contact;
 use App\Models\StructureVersionSection;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactViewModel;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -61,8 +63,9 @@ class ContactSectionController extends Controller
                 yearIsUnknown: $request->validated('year_is_unknown', []),
                 monthIsUnknown: $request->validated('month_is_unknown', []),
                 reminders: $request->validated('reminders', []),
+                newChoices: $request->validated('new_choices', []),
             )->execute();
-        } catch (FieldIsRequired|FieldValueIsNotUnique|NotEnoughRepetitions|NotEnoughStorageLeft|ReminderIsNotValid|ReminderNeedsADate|TooManyRepetitions|ValueAlreadyHasAReminder $e) {
+        } catch (AuthorizationException|FieldIsRequired|FieldValueIsNotUnique|NotEnoughRepetitions|NotEnoughStorageLeft|ReminderIsNotValid|ReminderNeedsADate|TooManyRepetitions|ValueAlreadyHasAReminder|ValueListItemIsStopped $e) {
             return redirect()
                 ->route('contacts.sections.edit', ['vault' => $vault, 'contact' => $contact, 'structureVersionSection' => $structureVersionSection])
                 ->withInput()

@@ -24,6 +24,7 @@ use App\Enums\DatePrecisionEnum;
 use App\Enums\DefaultTemplateEnum;
 use App\Enums\LogSourceEnum;
 use App\Enums\ReminderCadenceEnum;
+use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\CreateDefaultTemplate;
@@ -46,6 +47,8 @@ use App\Models\Reminder;
 use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use App\Notifications\AccountImportEnded;
 use Carbon\CarbonInterface;
@@ -135,11 +138,32 @@ class WriteAccountImportItemTest extends TestCase
         $notes = implode("\n", $this->notesOf($this->me($import)));
 
         $this->assertStringContainsString('Job: Regional Manager', $notes);
-        $this->assertStringContainsString('Tags: boss, improv', $notes);
+        $this->assertStringNotContainsString('Tags:', $notes);
         $this->assertStringContainsString('Gift: Oven mitt', $notes);
         $this->assertStringContainsString('You owe 20.00 USD', $notes);
         $this->assertStringContainsString('Task: Plan the fun run', $notes);
         $this->assertStringContainsString('Hosts the Dundies every year.', $notes);
+    }
+
+    #[Test]
+    public function it_writes_the_tags_as_categories_and_records_the_ones_it_added(): void
+    {
+        $import = $this->imported();
+        $michael = $this->me($import);
+        $categories = ValueList::query()
+            ->where('account_id', $this->michael->account_id)
+            ->where('key', ValueListEnum::ContactCategories->value)
+            ->sole();
+
+        $held = FieldValue::query()
+            ->where('valuable_type', $michael->getMorphClass())
+            ->where('valuable_id', $michael->id)
+            ->whereIn('field_id', Field::query()->where('value_list_id', $categories->id)->select('id'))
+            ->sole();
+        $added = $import->items()->get()->flatMap(fn (AccountImportItem $item): array => $item->payload['value_list_items'] ?? []);
+
+        $this->assertEqualsCanonicalizing(['boss', 'improv'], ValueListItem::query()->whereIn('id', $held->value_list_item_ids)->pluck('label')->all());
+        $this->assertEqualsCanonicalizing($held->value_list_item_ids, $added->all());
     }
 
     #[Test]

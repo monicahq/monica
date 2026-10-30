@@ -644,7 +644,7 @@ class ContactViewModel
                 'rawValue' => $this->values()->get($field->id),
                 'isEditable' => $field->type->hasAnInput(),
                 'rows' => $this->repetitionsOf($field),
-                'rowsMore' => $this->editingSection === null && $field->type->isRepeater() ? $this->fieldRows($field)->more() : null,
+                'rowsMore' => $this->editingSection?->is($row) !== true && $field->type->isRepeater() ? $this->fieldRows($field)->more() : null,
                 'notes' => $this->notesOf($field, $row),
                 'reminder' => $this->reminderFor($field),
                 'reminderMark' => $this->reminderMarkOn($field),

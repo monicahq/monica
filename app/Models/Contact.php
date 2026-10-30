@@ -12,6 +12,7 @@ use App\Enums\NameOrderEnum;
 use App\Enums\RelationshipBehaviorEnum;
 use App\Enums\RelationshipStatusEnum;
 use App\Enums\SortDirectionEnum;
+use App\Enums\ValueListEnum;
 use App\Helpers\LocaleCollation;
 use App\Helpers\ReservedAddressWords;
 use App\Helpers\SlugBuilder;
@@ -699,6 +700,62 @@ class Contact extends Model
                 $grouping === ContactGroupingEnum::Favourites,
                 fn (Builder $query): Builder => $query->where('is_favourite', true),
             );
+    }
+
+    /**
+     * Get the categories the contact holds, in the order of the account's list.
+     *
+     * A category is a choice of the account's "Contact categories" list, held in any multiple
+     * choice field of the structure drawing on that list. A value whose field has left the
+     * structure is set aside and counts for nothing.
+     *
+     * @return Collection<int, ValueListItem>
+     */
+    public function heldCategories(): Collection
+    {
+        $categories = ValueList::query()
+            ->where('account_id', $this->account_id)
+            ->where('key', ValueListEnum::ContactCategories->value)
+            ->select('id');
+
+        $itemIds = FieldValue::query()
+            ->where('valuable_type', $this->getMorphClass())
+            ->where('valuable_id', $this->id)
+            ->where('is_detached', false)
+            ->whereIn('field_id', Field::query()->whereIn('value_list_id', $categories)->select('id'))
+            ->pluck('value_list_item_ids')
+            ->flatten()
+            ->map(intval(...))
+            ->unique();
+
+        return ValueListItem::query()
+            ->whereIn('id', $itemIds)
+            ->orderBy('position')
+            ->get();
+    }
+
+    /**
+     * Scope the query to the people holding any of the given categories.
+     *
+     * A category is a choice of the account's "Contact categories" list, held in whichever
+     * multiple choice field of the person's structure draws on that list. A value whose field
+     * has left the structure is set aside, so it no longer files the person anywhere.
+     *
+     * @param  Builder<$this>  $query
+     * @param  array<int, int>  $itemIds
+     */
+    public function scopeHoldingAnyCategory(Builder $query, array $itemIds): void
+    {
+        $query->whereExists(fn (QueryBuilder $values): QueryBuilder => $values
+            ->from('field_values')
+            ->whereColumn('field_values.valuable_id', 'contacts.id')
+            ->where('field_values.valuable_type', $this->getMorphClass())
+            ->where('field_values.is_detached', false)
+            ->where(function (QueryBuilder $chosen) use ($itemIds): void {
+                foreach ($itemIds as $itemId) {
+                    $chosen->orWhereJsonContains('field_values.value_list_item_ids', $itemId);
+                }
+            }));
     }
 
     /**

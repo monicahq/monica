@@ -166,6 +166,7 @@ class WriteAccountImportItem implements SourceFormatVisitor
 
         $this->outcome = AccountImportOutcomeEnum::MergedIntoMe;
         $this->keptPayload = [
+            ...($this->keptPayload ?? []),
             'values' => array_values(array_diff($valuesOfMe(), $valuesBefore)),
             'rows' => array_values(array_diff($rowsOfMe(), $rowsBefore)),
             'avatar_file' => $me->avatar_file_id === $avatarBefore ? null : $me->avatar_file_id,

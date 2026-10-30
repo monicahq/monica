@@ -4,9 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
+use App\Enums\ContactGroupingEnum;
+use App\Enums\FieldTypeEnum;
+use App\Enums\ValueListEnum;
 use App\Models\Account;
+use App\Models\Contact;
+use App\Models\Field;
+use App\Models\FieldValue;
 use App\Models\ShareLink;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -196,5 +204,65 @@ class VaultTest extends TestCase
         $vault->save();
 
         $this->assertSame('famille', $vault->fresh()->slug);
+    }
+
+    #[Test]
+    public function it_counts_the_people_holding_each_category_of_the_vault_in_the_order_of_the_list(): void
+    {
+        $vault = Vault::factory()->create();
+        $list = ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $vault->account_id]);
+        $sales = $this->categoryOf($list, 'Sales', 1);
+        $finerThings = $this->categoryOf($list, 'Finer Things Club', 2);
+        $partyPlanning = ValueListItem::factory()->disabled()->create(['account_id' => $vault->account_id, 'value_list_id' => $list->id, 'position' => 3]);
+        $scranton = $this->categoryOf($list, 'Scranton Strangler', 4);
+        $this->categoryOf($list, 'Nobody holds this', 5);
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+        $secondField = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+
+        $jim = Contact::factory()->create(['vault_id' => $vault->id]);
+        $this->hold($jim, $field, [$sales->id]);
+        $this->hold($jim, $secondField, [$sales->id]);
+        $this->hold(Contact::factory()->create(['vault_id' => $vault->id]), $field, [$finerThings->id, $sales->id]);
+        $this->hold(Contact::factory()->create(['vault_id' => $vault->id]), $field, [$partyPlanning->id]);
+        $this->hold(Contact::factory()->create(['vault_id' => $vault->id, 'is_archived' => true]), $field, [$scranton->id]);
+
+        $otherVault = Vault::factory()->create(['account_id' => $vault->account_id]);
+        $this->hold(Contact::factory()->create(['vault_id' => $otherVault->id]), $field, [$scranton->id]);
+
+        $held = $vault->categoriesHeldByContacts(ContactGroupingEnum::Everyone);
+
+        $this->assertSame(
+            [[$sales->id, 2], [$finerThings->id, 1], [$partyPlanning->id, 1]],
+            array_map(fn (array $category): array => [$category['item']->id, $category['contacts']], $held),
+        );
+    }
+
+    #[Test]
+    public function it_offers_no_category_when_the_account_has_no_list_of_them(): void
+    {
+        $vault = Vault::factory()->create();
+
+        $this->assertSame([], $vault->categoriesHeldByContacts(ContactGroupingEnum::Everyone));
+    }
+
+    private function categoryOf(ValueList $list, string $label, int $position): ValueListItem
+    {
+        return ValueListItem::factory()->create([
+            'account_id' => $list->account_id,
+            'value_list_id' => $list->id,
+            'label' => $label,
+            'position' => $position,
+        ]);
+    }
+
+    /** @param  list<int>  $itemIds */
+    private function hold(Contact $contact, Field $field, array $itemIds): void
+    {
+        FieldValue::factory()->create([
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'value_string' => null,
+            'value_list_item_ids' => $itemIds,
+        ]);
     }
 }

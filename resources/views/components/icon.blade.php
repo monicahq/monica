@@ -52,6 +52,7 @@
     'chevron-down' => '<path d="M4.4 6.4 8 10l3.6-3.6"></path>',
     'chevron-right' => '<path d="M6.4 4.4 10 8l-3.6 3.6"></path>',
     'arrow-right' => '<line x1="2.8" y1="8" x2="12.8" y2="8"></line><path d="M9.2 4.4 12.8 8l-3.6 3.6"></path>',
+    'enter' => '<path d="M12.8 3.2v4.4a1.6 1.6 0 0 1-1.6 1.6H3.6"></path><path d="M6.4 6.4 3.6 9.2 6.4 12"></path>',
     'sun' => '<circle cx="8" cy="8" r="3"></circle><line x1="8" y1="1.6" x2="8" y2="3"></line><line x1="8" y1="13" x2="8" y2="14.4"></line><line x1="1.6" y1="8" x2="3" y2="8"></line><line x1="13" y1="8" x2="14.4" y2="8"></line>',
     'moon' => '<path d="M13 9.6A5.6 5.6 0 0 1 6.4 3a5.6 5.6 0 1 0 6.6 6.6"></path>',
     'grip' => '<circle cx="6" cy="4" r="1" fill="currentColor" stroke="none"></circle><circle cx="10" cy="4" r="1" fill="currentColor" stroke="none"></circle><circle cx="6" cy="8" r="1" fill="currentColor" stroke="none"></circle><circle cx="10" cy="8" r="1" fill="currentColor" stroke="none"></circle><circle cx="6" cy="12" r="1" fill="currentColor" stroke="none"></circle><circle cx="10" cy="12" r="1" fill="currentColor" stroke="none"></circle>',

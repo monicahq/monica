@@ -367,6 +367,7 @@
     "Added :added · last used :used": ":added যোগ হয়েছে · শেষ ব্যবহার :used",
     "Added :added · never used yet": ":added যোগ হয়েছে · এখনও কখনও ব্যবহার হয়নি",
     "Added :date": ":date-এ যোগ করা হয়েছে",
+    "Added :label": ":label যোগ হয়েছে",
     "Added :label to the value list :name": "মানের তালিকা :name-এ :label যোগ করা হয়েছে",
     "Added a repetition of :label on :name": ":name-এ :label-এর একটি পুনরাবৃত্তি যোগ করা হয়েছে",
     "Added the :heading column.": ":heading কলাম যোগ করা হয়েছে।",
@@ -2548,6 +2549,7 @@
     "Show All": "সব দেখাও",
     "Show everything": "সব কিছু দেখান",
     "Show less": "কম দেখান",
+    "Show these people": "এই মানুষদের দেখান",
     "Showing": "প্রদর্শন করা হচ্ছে",
     "Shown in settings and when you pick a relationship.": "সেটিংসে আর আপনি কোনো সম্পর্ক বাছার সময় দেখানো হয়।",
     "Shown in the header area of the record as well as in its section.": "রেকর্ডের শিরোভাগে আর তার বিভাগেও দেখানো হয়।",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}প্রতি সপ্তাহে|প্রতি :count সপ্তাহে",
     "{1}every year|every :count years": "{1}প্রতি বছরে|প্রতি :count বছরে",
     "{1}used once|used :count times": "{1}একবার ব্যবহার হয়েছে|:count বার ব্যবহার হয়েছে",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "“:label” আর দেওয়া হয় না। সেটিংসের মানের তালিকা থেকে এটি আবার দিন।",
     "“Appointments” above the repeater": "পুনরাবৃত্তকের উপরে “সাক্ষাৎ”",
     "“Ask the vet for the batch number.”": "“পশুচিকিৎসকের কাছে ব্যাচ নম্বর জিজ্ঞেস করুন।”"
 }

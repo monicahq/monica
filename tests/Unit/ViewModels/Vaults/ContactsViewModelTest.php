@@ -7,15 +7,21 @@ namespace Tests\Unit\ViewModels\Vaults;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactListColumnSourceEnum;
 use App\Enums\ContactSortEnum;
+use App\Enums\FieldTypeEnum;
 use App\Enums\SortDirectionEnum;
+use App\Enums\ValueListEnum;
 use App\Models\Contact;
 use App\Models\ContactListColumn;
 use App\Models\ContactNameRepresentation;
+use App\Models\Field;
+use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\Section;
 use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use App\ViewModels\Vaults\ContactsViewModel;
@@ -636,5 +642,50 @@ class ContactsViewModelTest extends TestCase
         $this->assertNull($headings[1]['url']);
         $this->assertNull($headings[3]['ariaSort']);
         $this->assertStringContainsString('sort=last-spoke&direction=desc', (string) $headings[3]['url']);
+    }
+
+    #[Test]
+    public function it_narrows_the_grouping_to_the_categories_chosen_and_keeps_them_on_every_link(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $list = ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $user->account_id]);
+        $sales = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Sales', 'position' => 1]);
+        $accounting = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Accounting', 'position' => 2]);
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+
+        $jim = $this->contact($vault, 'Jim', 'Halpert', ['is_favourite' => true]);
+        $dwight = $this->contact($vault, 'Dwight', 'Schrute');
+        $angela = $this->contact($vault, 'Angela', 'Martin', ['is_favourite' => true]);
+        $this->contact($vault, 'Toby', 'Flenderson', ['is_favourite' => true]);
+        $this->hold($jim, $field, [$sales->id]);
+        $this->hold($dwight, $field, [$sales->id]);
+        $this->hold($angela, $field, [$accounting->id]);
+
+        $viewModel = new ContactsViewModel(
+            user: $user,
+            vault: $vault,
+            grouping: ContactGroupingEnum::Favourites,
+            categoryIds: [$sales->id],
+        );
+
+        $this->assertSame([$jim->id], $viewModel->contacts()->pluck('id')->all());
+        $this->assertSame(
+            [['label' => 'Sales', 'count' => 1, 'isChosen' => true], ['label' => 'Accounting', 'count' => 1, 'isChosen' => false]],
+            array_map(fn (array $category): array => array_diff_key($category, ['id' => true]), $viewModel->categories()),
+        );
+        $this->assertStringContainsString('categories%5B0%5D='.$sales->id, collect($viewModel->filters())->firstWhere('key', 'all')['url']);
+        $this->assertStringContainsString('categories%5B0%5D='.$sales->id, (string) $viewModel->headings()[0]['url']);
+    }
+
+    /** @param  list<int>  $itemIds */
+    private function hold(Contact $contact, Field $field, array $itemIds): void
+    {
+        FieldValue::factory()->create([
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'value_string' => null,
+            'value_list_item_ids' => $itemIds,
+        ]);
     }
 }

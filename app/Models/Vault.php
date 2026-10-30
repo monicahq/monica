@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ContactGroupingEnum;
+use App\Enums\ValueListEnum;
 use App\Enums\VaultColourEnum;
 use App\Helpers\ReservedAddressWords;
 use App\Helpers\SlugBuilder;
@@ -14,6 +16,7 @@ use Database\Factories\VaultFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -288,5 +291,50 @@ class Vault extends Model
     public function slugReservations(): HasMany
     {
         return $this->hasMany(VaultSlugReservation::class);
+    }
+
+    /**
+     * Get the categories somebody in the vault holds, each with how many people hold it.
+     *
+     * A category is a choice of the account's "Contact categories" list. Only the people of the
+     * grouping count, a choice no longer offered is still listed while somebody holds it, and a
+     * person holding a category in two fields counts once. The list is in the order of the list.
+     *
+     * @return list<array{item: ValueListItem, contacts: int}>
+     */
+    public function categoriesHeldByContacts(ContactGroupingEnum $grouping): array
+    {
+        $list = ValueList::query()
+            ->where('account_id', $this->account_id)
+            ->where('key', ValueListEnum::ContactCategories->value)
+            ->first();
+
+        if ($list === null) {
+            return [];
+        }
+
+        $counts = FieldValue::query()
+            ->where('vault_id', $this->id)
+            ->where('valuable_type', new Contact()->getMorphClass())
+            ->whereIn('valuable_id', $this->contacts()->inGrouping($grouping)->select('id'))
+            ->whereIn('field_id', Field::query()->where('value_list_id', $list->id)->select('id'))
+            ->where('is_detached', false)
+            ->whereNotNull('value_list_item_ids')
+            ->get(['valuable_id', 'value_list_item_ids'])
+            ->groupBy('valuable_id')
+            ->flatMap(fn (EloquentCollection $values): array => $values
+                ->flatMap(fn (FieldValue $value): array => array_map(intval(...), $value->value_list_item_ids ?? []))
+                ->unique()
+                ->all())
+            ->countBy();
+
+        return ValueListItem::query()
+            ->where('value_list_id', $list->id)
+            ->whereIn('id', $counts->keys())
+            ->orderBy('position')
+            ->get()
+            ->map(fn (ValueListItem $item): array => ['item' => $item, 'contacts' => (int) $counts->get($item->id)])
+            ->values()
+            ->all();
     }
 }

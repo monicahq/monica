@@ -1176,6 +1176,26 @@ class ContactViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_the_way_to_more_notes_on_a_section_read_beside_the_one_being_edited(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['General' => ['Identity' => ['Nickname'], 'Notes' => ['Notes']]]);
+        $contact = $this->contact($user, $version);
+        $notes = $this->noteRepeater($version, 'Notes');
+        $this->writeNote($contact, $notes, 'Dwight brought beets.');
+
+        $sections = new ContactViewModel(
+            user: $user,
+            vault: $contact->vault,
+            contact: $contact,
+            selectedPageKey: 'general',
+            editingSection: $version->assembly->first(),
+        )->sections();
+
+        $this->assertSame("field-{$notes->id}-rows", $sections[1]['fields'][0]['rowsMore']['rowsId']);
+    }
+
+    #[Test]
     public function it_names_a_note_repeater_whose_label_is_not_the_section_name(): void
     {
         $user = User::factory()->create();

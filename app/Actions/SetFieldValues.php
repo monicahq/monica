@@ -48,6 +48,7 @@ class SetFieldValues
      * @param  array<int, bool>  $monthIsUnknown
      * @param  array<int, array<string, mixed>>  $reminders  what was asked of each date, keyed by field id
      * @param  array<int, int>  $keptFieldIds  the fields to leave exactly as they are, such as the sensitive ones the caller cannot see
+     * @param  array<int, array<int, string>>  $newChoices  the wordings typed beside a multiselect, keyed by field id, found or added to its list
      */
     public function __construct(
         private readonly User $user,
@@ -60,6 +61,7 @@ class SetFieldValues
         private readonly array $monthIsUnknown = [],
         private readonly array $reminders = [],
         private readonly array $keptFieldIds = [],
+        private readonly array $newChoices = [],
     ) {}
 
     public function execute(): int
@@ -292,7 +294,7 @@ class SetFieldValues
 
         $this->saveOne(
             $field,
-            $this->given($field),
+            $this->withTheNewChoices($field, $this->given($field)),
             null,
             $this->labels[$field->id] ?? null,
             $this->labelWordings[$field->id] ?? null,
@@ -538,6 +540,10 @@ class SetFieldValues
     {
         $given = $this->given($field);
 
+        if ($this->newChoicesFor($field) !== []) {
+            return false;
+        }
+
         if (! $field->type->isRepeater()) {
             return $this->isBlank($given);
         }
@@ -651,6 +657,40 @@ class SetFieldValues
         }
 
         return $this->itemInTheAccount($given);
+    }
+
+    private function withTheNewChoices(Field $field, mixed $given): mixed
+    {
+        $wordings = $this->newChoicesFor($field);
+
+        if ($field->type !== FieldTypeEnum::Multiselect || $wordings === [] || $field->valueList === null) {
+            return $given;
+        }
+
+        $held = array_map('intval', $this->valueOn($field)->value_list_item_ids ?? []);
+        $chosen = is_array($given) ? array_map('intval', $given) : [];
+
+        foreach ($wordings as $wording) {
+            $chosen[] = new FindOrCreateValueListItem(
+                user: $this->user,
+                valueList: $field->valueList,
+                wording: $wording,
+                heldItemIds: $held,
+            )->execute()->id;
+        }
+
+        return array_values(array_unique($chosen));
+    }
+
+    /** @return list<string> */
+    private function newChoicesFor(Field $field): array
+    {
+        $given = $this->newChoices[$field->id] ?? [];
+
+        return array_values(array_filter(
+            array_map(fn (mixed $wording): string => mb_trim((string) $wording), is_array($given) ? $given : []),
+            fn (string $wording): bool => $wording !== '',
+        ));
     }
 
     /** @return list<ValueListItem> */

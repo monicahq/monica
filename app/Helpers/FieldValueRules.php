@@ -46,6 +46,8 @@ class FieldValueRules
 
             if ($field->type === FieldTypeEnum::Multiselect) {
                 $rules["fields.{$field->id}.*"] = self::choiceRule($field);
+                $rules["new_choices.{$field->id}"] = ['array'];
+                $rules["new_choices.{$field->id}.*"] = ['nullable', 'string', 'max:255'];
             }
 
             if ($field->type === FieldTypeEnum::Address) {

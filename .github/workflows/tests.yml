@@ -43,7 +43,7 @@ jobs:
   #############
   tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     name: PHP ${{ matrix.php-version }} + ${{ matrix.connection }}
 
     strategy:

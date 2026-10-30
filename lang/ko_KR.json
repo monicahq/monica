@@ -367,6 +367,7 @@
     "Added :added · last used :used": ":added 추가 · 마지막 사용 :used",
     "Added :added · never used yet": ":added 추가 · 아직 사용한 적 없음",
     "Added :date": ":date에 추가함",
+    "Added :label": ":label 추가함",
     "Added :label to the value list :name": "값 목록 :name에 :label을(를) 추가했습니다",
     "Added a repetition of :label on :name": ":name에 :label 반복 항목을 추가했습니다",
     "Added the :heading column.": ":heading 열을 추가했습니다.",
@@ -2548,6 +2549,7 @@
     "Show All": "모두 보기",
     "Show everything": "전체 보기",
     "Show less": "접기",
+    "Show these people": "이 사람들 표시",
     "Showing": "보기",
     "Shown in settings and when you pick a relationship.": "설정과 관계를 고를 때 표시됩니다.",
     "Shown in the header area of the record as well as in its section.": "섹션뿐 아니라 기록의 머리글 영역에도 표시됩니다.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": ":count주마다",
     "{1}every year|every :count years": ":count년마다",
     "{1}used once|used :count times": ":count번 사용",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "“:label”은(는) 더 이상 제공되지 않습니다. 설정의 값 목록에서 다시 제공하세요.",
     "“Appointments” above the repeater": "반복 그룹 위의 “예약”",
     "“Ask the vet for the batch number.”": "“수의사에게 배치 번호를 물어보세요.”"
 }

@@ -367,6 +367,7 @@
     "Added :added · last used :used": "เพิ่ม :added · ใช้ครั้งล่าสุด :used",
     "Added :added · never used yet": "เพิ่ม :added · ยังไม่เคยใช้",
     "Added :date": "เพิ่มเมื่อ :date",
+    "Added :label": "เพิ่ม :label แล้ว",
     "Added :label to the value list :name": "เพิ่ม :label ในรายการค่า :name",
     "Added a repetition of :label on :name": "เพิ่มการซ้ำของ :label บน :name",
     "Added the :heading column.": "เพิ่มคอลัมน์ :heading แล้ว",
@@ -2548,6 +2549,7 @@
     "Show All": "แสดงทั้งหมด",
     "Show everything": "แสดงทั้งหมด",
     "Show less": "แสดงน้อยลง",
+    "Show these people": "แสดงคนเหล่านี้",
     "Showing": "แสดง",
     "Shown in settings and when you pick a relationship.": "แสดงในการตั้งค่าและเมื่อคุณเลือกความสัมพันธ์",
     "Shown in the header area of the record as well as in its section.": "แสดงในส่วนหัวของระเบียนและในส่วนของมันด้วย",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "ทุก :count สัปดาห์",
     "{1}every year|every :count years": "ทุก :count ปี",
     "{1}used once|used :count times": "ใช้ไป :count ครั้ง",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "“:label” ไม่เสนอให้อีกแล้ว เสนอให้อีกครั้งได้จากรายการค่าในการตั้งค่าของคุณ",
     "“Appointments” above the repeater": "“การนัดหมาย” อยู่เหนือกลุ่มซ้ำ",
     "“Ask the vet for the batch number.”": "“ถามสัตวแพทย์ถึงเลขที่ล็อต”"
 }

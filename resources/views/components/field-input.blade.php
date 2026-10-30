@@ -234,6 +234,14 @@
     @break
 
   @case($type === FieldTypeEnum::Multiselect)
+    @php
+      $takesNewChoices = $field->valueList !== null && (auth()->user()?->can('addItem', $field->valueList) ?? false);
+      $listed = $field->valueList === null
+          ? collect()
+          : $field->valueList->items->filter(fn ($item) => $item->is_active || in_array($item->id, $chosenMany))->sortBy('position')->values();
+      $addLabel = $field->valueList?->key === ValueListEnum::ContactCategories->value ? __('Add a category') : __('Add a value');
+    @endphp
+
     <fieldset class="flex flex-col gap-2">
       <legend class="text-label text-ink">{{ $field->label }}</legend>
 
@@ -241,19 +249,15 @@
         <p class="text-xs text-muted">{{ $field->help_text }}</p>
       @endif
 
-      <div class="flex flex-wrap gap-2 pt-0.5">
-        @foreach ($items as $item)
-          <x-option-row
-            chip
-            :id="$id.'-'.$item->id"
-            :name="$name.'[]'"
-            :value="$item->id"
-            :checked="in_array($item->id, $chosenMany, false)"
-          >
-            {{ $item->label }}
-          </x-option-row>
-        @endforeach
-      </div>
+      <x-multi-select
+        :items="$listed"
+        :id="$id"
+        :name="$name"
+        :chosen="$chosenMany"
+        :label="$field->label"
+        :add-label="$takesNewChoices ? $addLabel : null"
+        :new-name="'new_choices['.$field->id.'][]'"
+      />
 
       <x-error :id="$error ? $id.'-error' : null" :messages="$error" />
     </fieldset>

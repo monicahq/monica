@@ -21,6 +21,7 @@ use App\Actions\WriteAccountExport;
 use App\Enums\AccountImportStatusEnum;
 use App\Enums\DefaultTemplateEnum;
 use App\Enums\FieldTypeEnum;
+use App\Enums\ValueListEnum;
 use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\SeedLifeEventCategories;
@@ -86,6 +87,24 @@ class RollBackAccountImportTest extends TestCase
         $this->assertFalse(RelationshipType::query()->where('account_id', $this->michael->account_id)->where('name', 'Godparent')->exists());
         $this->assertSame(AccountImportStatusEnum::RolledBack, $import->refresh()->status);
         Notification::assertSentTo($this->michael, AccountImportEnded::class, fn (AccountImportEnded $notification): bool => $notification->rolledBack);
+    }
+
+    #[Test]
+    public function it_removes_the_categories_the_import_added_and_keeps_the_ones_that_were_there(): void
+    {
+        $categories = ValueList::query()
+            ->where('account_id', $this->michael->account_id)
+            ->where('key', ValueListEnum::ContactCategories->value)
+            ->sole();
+        $improv = ValueListItem::factory()->create(['account_id' => $this->michael->account_id, 'value_list_id' => $categories->id, 'label' => 'Improv']);
+        $import = $this->imported(vault: null);
+        $boss = ValueListItem::query()->where('value_list_id', $categories->id)->where('label', 'boss')->sole();
+
+        new RollBackAccountImport(import: $import)->execute();
+
+        $this->assertNull(ValueListItem::withTrashed()->find($boss->id));
+        $this->assertModelExists($improv);
+        $this->assertSame(0, $improv->refresh()->usage_count);
     }
 
     #[Test]

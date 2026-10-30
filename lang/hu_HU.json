@@ -367,6 +367,7 @@
     "Added :added · last used :used": "Hozzáadva :added · utoljára használva :used",
     "Added :added · never used yet": "Hozzáadva :added · még nem használták",
     "Added :date": "Hozzáadva: :date",
+    "Added :label": ":label hozzáadva",
     "Added :label to the value list :name": "Hozzáadta a(z) :label elemet a(z) :name értéklistához",
     "Added a repetition of :label on :name": "Hozzáadta a(z) :label egy ismétlődését ehhez: :name",
     "Added the :heading column.": "A(z) :heading oszlop hozzáadva.",
@@ -2548,6 +2549,7 @@
     "Show All": "Mutasd az összeset",
     "Show everything": "Minden megjelenítése",
     "Show less": "Kevesebb mutatása",
+    "Show these people": "Ezeknek az embereknek a megjelenítése",
     "Showing": "Bemutató",
     "Shown in settings and when you pick a relationship.": "A beállításokban és kapcsolat választásakor jelenik meg.",
     "Shown in the header area of the record as well as in its section.": "A rekord fejlécében is megjelenik, nem csak a saját szakaszában.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}minden héten|:count hetente",
     "{1}every year|every :count years": "{1}minden évben|:count évente",
     "{1}used once|used :count times": "{1}egyszer használva|:count alkalommal használva",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "„:label” már nincs felkínálva. Kínáld fel újra a beállításaid értéklistáiban.",
     "“Appointments” above the repeater": "„Időpontok” az ismétlődő csoport felett",
     "“Ask the vet for the batch number.”": "„Kérdezd meg az állatorvostól a gyártási számot.”"
 }

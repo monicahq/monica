@@ -19,6 +19,7 @@ use App\Enums\VersionStatusEnum;
 use App\Exceptions\FieldIsRequired;
 use App\Exceptions\FieldValueIsNotUnique;
 use App\Exceptions\ReminderNeedsADate;
+use App\Exceptions\ValueListItemIsStopped;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
@@ -326,6 +327,59 @@ class SetFieldValuesTest extends TestCase
         $value = FieldValue::query()->where('field_id', $field->id)->firstOrFail();
 
         $this->assertEqualsCanonicalizing([$first->id, $second->id], $value->value_list_item_ids);
+    }
+
+    #[Test]
+    public function it_adds_the_wordings_typed_beside_a_multiple_choice_and_chooses_them(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $sales = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Sales']);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($field),
+            values: [$field->id => [(string) $sales->id]],
+            newChoices: [$field->id => ['Art class', ' sales ', 'art CLASS', '']],
+        )->execute();
+
+        $artClass = ValueListItem::query()->where('value_list_id', $list->id)->where('label', 'Art class')->sole();
+        $value = FieldValue::query()->where('field_id', $field->id)->firstOrFail();
+
+        $this->assertSame(2, ValueListItem::query()->where('value_list_id', $list->id)->count());
+        $this->assertEqualsCanonicalizing([$sales->id, $artClass->id], $value->value_list_item_ids);
+    }
+
+    #[Test]
+    public function it_writes_nothing_when_a_wording_names_a_choice_no_longer_offered(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+        ValueListItem::factory()->disabled()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Party Planning Committee']);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+
+        try {
+            new SetFieldValues(
+                user: $user,
+                record: $contact,
+                section: $this->sectionOf($field),
+                values: [],
+                newChoices: [$field->id => ['Finer Things Club', 'Party Planning Committee']],
+            )->execute();
+
+            $this->fail('A wording naming a choice no longer offered was accepted.');
+        } catch (ValueListItemIsStopped) {
+            $this->assertSame(1, ValueListItem::query()->where('value_list_id', $list->id)->count());
+            $this->assertSame(0, FieldValue::query()->where('field_id', $field->id)->count());
+        }
     }
 
     #[Test]

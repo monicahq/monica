@@ -3,6 +3,7 @@
 @php
   $vault = $viewModel->vault();
   $ceiling = $viewModel->ceilingMessage();
+  $categories = $viewModel->categories();
 @endphp
 <x-shell :title="$viewModel->title()" wide>
   <x-slot:breadcrumb>
@@ -67,6 +68,9 @@
           @if ($viewModel->size() !== $viewModel->defaultSize())
             <input type="hidden" name="size" value="{{ $viewModel->size() }}" />
           @endif
+          @foreach ($viewModel->categoryIds() as $categoryId)
+            <input type="hidden" name="categories[]" value="{{ $categoryId }}" />
+          @endforeach
 
           <x-input
             type="search"
@@ -80,6 +84,31 @@
         </form>
       </div>
     </div>
+
+    @if ($categories !== [])
+      <form method="get" action="{{ $viewModel->searchUrl() }}" x-target.push="contacts" class="flex flex-wrap items-end gap-x-3 gap-y-2">
+        <input type="hidden" name="sort" value="{{ $viewModel->sort() }}" />
+        <input type="hidden" name="direction" value="{{ $viewModel->direction() }}" />
+        @if ($viewModel->query() !== '')
+          <input type="hidden" name="query" value="{{ $viewModel->query() }}" />
+        @endif
+        @if ($viewModel->size() !== $viewModel->defaultSize())
+          <input type="hidden" name="size" value="{{ $viewModel->size() }}" />
+        @endif
+
+        <fieldset class="flex min-w-0 flex-wrap items-center gap-2">
+          <legend class="mb-2 text-label text-ink">{{ __('Categories') }}</legend>
+
+          @foreach ($categories as $category)
+            <x-option-row chip :id="'category-'.$category['id']" name="categories[]" :value="$category['id']" :checked="$category['isChosen']">
+              {{ $category['label'] }} <span class="text-muted">{{ $category['count'] }}</span>
+            </x-option-row>
+          @endforeach
+        </fieldset>
+
+        <x-button type="submit" variant="secondary" size="small">{{ __('Show these people') }}</x-button>
+      </form>
+    @endif
 
     @if ($viewModel->resultLine() !== '')
       <p class="text-sm text-pretty text-muted">{{ $viewModel->resultLine() }}</p>

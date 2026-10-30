@@ -7,10 +7,13 @@ namespace App\Actions;
 use App\Enums\AccountImportOutcomeEnum;
 use App\Enums\AccountImportReasonEnum;
 use App\Enums\DatePrecisionEnum;
+use App\Enums\FieldTypeEnum;
 use App\Enums\LifeEventSourceEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
+use App\Enums\ValueListEnum;
 use App\Exceptions\NotEnoughStorageLeft;
+use App\Exceptions\ValueListItemIsStopped;
 use App\Helpers\MonicaFourVocabulary;
 use App\Models\AccountImportItem;
 use App\Models\Contact;
@@ -26,6 +29,7 @@ use App\Models\RelationshipType;
 use App\Models\Reminder;
 use App\Models\ValueListItem;
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -288,10 +292,11 @@ trait WritesMonicaFourItems
             }
         }
 
-        $tagList = $this->text(implode(', ', $tags));
+        $leftOver = $this->writeTheTags($contact, $fields, $tags);
+        $tagList = $this->text(implode(', ', $leftOver));
 
         if ($tagList !== null && $this->addANote($contact, $fields, __(':label: :value', ['label' => __('Tags'), 'value' => $tagList]))) {
-            $this->countWritten('tags', count($tags));
+            $this->countWritten('tags', count($leftOver));
         }
 
         foreach ((array) $this->payload('gifts', []) as $gift) {
@@ -703,6 +708,64 @@ trait WritesMonicaFourItems
         }
 
         return true;
+    }
+
+    /**
+     * @param  array<string, Field>  $fields
+     * @param  array<int, mixed>  $tags
+     * @return list<string>
+     */
+    private function writeTheTags(Contact $contact, array $fields, array $tags): array
+    {
+        $wordings = array_values(array_filter(array_map(fn (mixed $tag): ?string => $this->shortText($tag), $tags)));
+
+        $field = collect($fields)->first(fn (Field $field): bool => $field->parent_field_id === null
+            && $field->type === FieldTypeEnum::Multiselect
+            && $field->valueList?->key === ValueListEnum::ContactCategories->value);
+
+        if (! $field instanceof Field || $wordings === []) {
+            return $wordings;
+        }
+
+        if ($this->meAlreadyHolds($contact, $field)) {
+            return [];
+        }
+
+        $chosen = [];
+        $leftOver = [];
+
+        foreach ($wordings as $wording) {
+            try {
+                $item = new FindOrCreateValueListItem(user: $this->user, valueList: $field->valueList, wording: $wording)->execute();
+            } catch (AuthorizationException|ValueListItemIsStopped) {
+                $leftOver[] = $wording;
+
+                continue;
+            }
+
+            if ($item->wasRecentlyCreated) {
+                $this->keptPayload = [
+                    ...($this->keptPayload ?? []),
+                    'value_list_items' => [...($this->keptPayload['value_list_items'] ?? []), $item->id],
+                ];
+            }
+
+            $chosen[$item->id] = $item;
+        }
+
+        if ($chosen !== []) {
+            new SetFieldValue(
+                user: $this->user,
+                valuable: $contact,
+                field: $field,
+                valueListItems: collect($chosen)->sortBy('position')->values()->all(),
+                writesToTheJournal: false,
+            )->execute();
+
+            $this->countWritten('tags', count($chosen));
+        }
+
+        return $leftOver;
     }
 
     /** @param array<string, Field> $fields */

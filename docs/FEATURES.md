@@ -108,3 +108,12 @@ A chronological list of every feature and improvement shipped during development
 * Settings/account/security: Listed every device signed in to the account, with the one in hand marked.
 * Settings/account/security: Let somebody sign out any other device, which also ends remembered sign in on every device.
 * Settings/account/security: Let somebody with a password sign out every device but the one in hand at once, remembered ones included.
+* Vaults/contacts: Let somebody add a new category to a contact while editing it, created only when the contact is saved.
+* Vaults/contacts: Picked the existing category when a typed one matches it whatever its case, and refused one that is no longer offered.
+* Vaults/people: Let somebody narrow the people of a vault to one or more categories, with how many people hold each.
+* CardDAV: Synchronised a contact's categories with devices both ways through the vCard CATEGORIES property.
+* Settings/account/imports: Imported Monica 4 tags as categories rather than as a note, and removed the ones an import added when it is rolled back.
+* API: Added an endpoint to save a section of a contact, which can add new categories as it saves.
+* API: Added an endpoint listing the categories held in a vault, and a categories filter on the list of contacts.
+* API: Returned the categories a contact holds with every contact.
+* MCP: Let the contact list tool narrow the people of a vault to some categories.

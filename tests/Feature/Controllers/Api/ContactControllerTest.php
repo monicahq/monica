@@ -5,14 +5,20 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Enums\ContactListColumnSourceEnum;
+use App\Enums\FieldTypeEnum;
 use App\Enums\NameOrderEnum;
+use App\Enums\ValueListEnum;
 use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
 use App\Models\ContactListColumn;
+use App\Models\Field;
+use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Carbon\CarbonImmutable;
@@ -50,6 +56,7 @@ class ContactControllerTest extends TestCase
                 'is_me',
                 'structure_version_id',
                 'template_name',
+                'categories',
                 'last_life_event_at',
                 'last_consulted_at',
                 'created_at',
@@ -306,6 +313,43 @@ class ContactControllerTest extends TestCase
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors(['filter', 'sort', 'direction']);
+    }
+
+    #[Test]
+    public function it_lists_only_the_people_holding_any_of_the_categories_asked_for(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $list = ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $user->account_id]);
+        $sales = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Sales']);
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Jim']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Toby']);
+        FieldValue::factory()->create(['valuable_id' => $jim->id, 'field_id' => $field->id, 'value_string' => null, 'value_list_item_ids' => [$sales->id]]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?categories[]={$sales->id}");
+
+        $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonPath('data.0.attributes.first_name', 'Jim');
+        $response->assertJsonPath('data.0.attributes.categories', [['id' => $sales->id, 'label' => 'Sales']]);
+    }
+
+    #[Test]
+    public function it_refuses_a_category_outside_the_accounts_list_of_categories(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $user->account_id]);
+        $elsewhere = ValueListItem::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?categories[]={$elsewhere->id}")
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('categories.0');
     }
 
     #[Test]

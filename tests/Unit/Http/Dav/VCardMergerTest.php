@@ -7,6 +7,7 @@ namespace Tests\Unit\Http\Dav;
 use App\Actions\ImportVCard;
 use App\Enums\AddressLabelEnum;
 use App\Enums\FieldTypeEnum;
+use App\Enums\ValueListEnum;
 use App\Http\Dav\VCardMerger;
 use App\Models\Contact;
 use App\Models\Field;
@@ -482,6 +483,61 @@ class VCardMergerTest extends TestCase
             'key' => $key,
             'label' => $label,
         ]);
+    }
+
+    #[Test]
+    public function it_writes_the_categories_a_contact_holds_in_the_order_of_the_list(): void
+    {
+        $user = User::factory()->create();
+        [$version, $list] = $this->structureWithCategories($user);
+        $sales = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Sales', 'position' => 1]);
+        $finerThings = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Finer Things Club', 'position' => 2]);
+        $contact = $this->contact(['structure_version_id' => $version->id]);
+        $this->value($contact, $version, 0, ['value_string' => null, 'value_list_item_ids' => [$finerThings->id, $sales->id]]);
+
+        $card = new VCardMerger()->merge($contact);
+
+        $this->assertStringContainsString('CATEGORIES:Sales,Finer Things Club', $card);
+    }
+
+    #[Test]
+    public function it_takes_the_categories_a_device_wrote_off_a_contact_holding_none(): void
+    {
+        $user = User::factory()->create();
+        [$version] = $this->structureWithCategories($user);
+        $contact = $this->contact([
+            'structure_version_id' => $version->id,
+            'vcard' => "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:jim\r\nCATEGORIES:Pranks\r\nEND:VCARD\r\n",
+        ]);
+
+        $card = new VCardMerger()->merge($contact);
+
+        $this->assertStringNotContainsString('CATEGORIES', $card);
+    }
+
+    #[Test]
+    public function it_leaves_the_categories_a_device_wrote_when_the_structure_holds_none(): void
+    {
+        $user = User::factory()->create();
+        $version = Structure::withFields($user, [['type' => FieldTypeEnum::Phone, 'label' => 'Work']]);
+        $contact = $this->contact([
+            'structure_version_id' => $version->id,
+            'vcard' => "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:jim\r\nCATEGORIES:Pranks\r\nEND:VCARD\r\n",
+        ]);
+
+        $card = new VCardMerger()->merge($contact);
+
+        $this->assertStringContainsString('CATEGORIES:Pranks', $card);
+    }
+
+    /** @return array{0: StructureVersion, 1: ValueList} */
+    private function structureWithCategories(User $user): array
+    {
+        $version = Structure::withFields($user, [['type' => FieldTypeEnum::Multiselect, 'label' => 'Category']]);
+        $list = ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $user->account_id]);
+        $this->fieldsOf($version)[0]->update(['value_list_id' => $list->id]);
+
+        return [$version, $list];
     }
 
     private function contact(array $attributes = []): Contact

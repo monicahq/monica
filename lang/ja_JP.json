@@ -367,6 +367,7 @@
     "Added :added · last used :used": "追加:added · 最終使用:used",
     "Added :added · never used yet": "追加:added · 未使用",
     "Added :date": ":dateに追加",
+    "Added :label": ":label を追加しました",
     "Added :label to the value list :name": "選択リスト「:name」に:labelを追加しました",
     "Added a repetition of :label on :name": ":nameの:labelの繰り返しを追加しました",
     "Added the :heading column.": ":heading列を追加しました。",
@@ -2548,6 +2549,7 @@
     "Show All": "すべて表示",
     "Show everything": "すべて表示",
     "Show less": "折りたたむ",
+    "Show these people": "この人たちを表示",
     "Showing": "表示中",
     "Shown in settings and when you pick a relationship.": "設定画面と、関係を選ぶときに表示されます。",
     "Shown in the header area of the record as well as in its section.": "セクション内だけでなく、レコードのヘッダー部分にも表示されます。",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": ":count週間ごと",
     "{1}every year|every :count years": ":count年ごと",
     "{1}used once|used :count times": ":count回使用",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "「:label」は提供終了です。設定の選択リストから再び提供してください。",
     "“Appointments” above the repeater": "繰り返しの上に「予約」",
     "“Ask the vet for the batch number.”": "「ロット番号は動物病院にお尋ねください。」"
 }

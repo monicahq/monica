@@ -7,6 +7,7 @@ namespace App\Actions;
 use App\Enums\ContactNameKindEnum;
 use App\Exceptions\NotEnoughRepetitions;
 use App\Exceptions\TooManyRepetitions;
+use App\Exceptions\ValueListItemIsStopped;
 use App\Helpers\FlagState;
 use App\Http\Dav\OwnedFields;
 use App\Http\Dav\VCardMerger;
@@ -19,6 +20,7 @@ use App\Models\FieldValueRow;
 use App\Models\User;
 use App\Models\ValueListItem;
 use App\Models\Vault;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -53,6 +55,7 @@ class ImportVCard
             $contact = $this->writeTheName($reader);
 
             $this->writeTheFields($reader, $contact);
+            $this->writeTheCategories($reader, $contact);
             $this->writeThePhoto($reader, $contact);
             $this->keepTheCard($contact);
 
@@ -318,6 +321,53 @@ class ImportVCard
         }
     }
 
+    private function writeTheCategories(VCardReader $reader, Contact $contact): void
+    {
+        $field = new OwnedFields($contact)->categoryFields()[0] ?? null;
+
+        if ($field === null || ($field->is_sensitive && ! $this->reachesSensitiveFields)) {
+            return;
+        }
+
+        $held = $this->valuesOf($contact, $field)->first();
+        $heldIds = array_map(intval(...), $held->value_list_item_ids ?? []);
+
+        $wordings = collect($reader->propertiesOf('CATEGORIES'))
+            ->flatMap(fn (Property $categories): array => $categories->getParts())
+            ->map(fn (mixed $wording): string => mb_trim((string) $wording))
+            ->filter(fn (string $wording): bool => $wording !== '');
+
+        $chosen = [];
+
+        foreach ($wordings as $wording) {
+            try {
+                $item = new FindOrCreateValueListItem(
+                    user: $this->user,
+                    valueList: $field->valueList,
+                    wording: $wording,
+                    heldItemIds: $heldIds,
+                )->execute();
+            } catch (AuthorizationException|ValueListItemIsStopped) {
+                continue;
+            }
+
+            $chosen[$item->id] = $item;
+        }
+
+        if ($chosen === []) {
+            $this->removeTheValue($held);
+
+            return;
+        }
+
+        new SetFieldValue(
+            user: $this->user,
+            valuable: $contact,
+            field: $field,
+            valueListItems: collect($chosen)->sortBy('position')->values()->all(),
+        )->execute();
+    }
+
     private function removeTheValue(?FieldValue $held): void
     {
         if ($held === null) {
@@ -342,7 +392,8 @@ class ImportVCard
     /**
      * Which of the field's labels the card is naming. The wording a device wrote wins over the
      * standard type, because an account that renamed a label meant that wording. Nothing is ever
-     * added to the list: the account owns it, and a synchronising device may not write to it.
+     * added to the list: the account owns it, and a synchronising device may not write to it. The
+     * one exception is a category, which a device may add, as `writeTheCategories()` does.
      */
     /** @return array{item: ?ValueListItem, wording: ?string} */
     private function labelOf(Field $field, Property $onTheCard): array

@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\ChannelSetupController as ApiChannelSetupController
 use App\Http\Controllers\Api\ChannelTestController as ApiChannelTestController;
 use App\Http\Controllers\Api\CheckoutSessionController;
 use App\Http\Controllers\Api\ContactAvatarController;
+use App\Http\Controllers\Api\ContactCategoryController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContactDuplicateController;
 use App\Http\Controllers\Api\ContactDuplicateDismissalController;
@@ -28,6 +29,7 @@ use App\Http\Controllers\Api\ContactNameRepresentationController;
 use App\Http\Controllers\Api\ContactRelationshipController;
 use App\Http\Controllers\Api\ContactReminderController;
 use App\Http\Controllers\Api\ContactReminderOccurrenceController;
+use App\Http\Controllers\Api\ContactSectionController;
 use App\Http\Controllers\Api\ContactStructureVersionController;
 use App\Http\Controllers\Api\ContactVCardController;
 use App\Http\Controllers\Api\EmailSentController;
@@ -238,6 +240,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/contact-list-columns', [ContactListColumnController::class, 'update'])->name('contactListColumns.update');
 
         Route::get('vaults/{vault}/contacts', [ContactController::class, 'index'])->name('contacts');
+        Route::get('vaults/{vault}/contact-categories', [ContactCategoryController::class, 'index'])->name('contactCategories');
         Route::get('vaults/{vault}/search', [SearchController::class, 'index'])->name('search');
         Route::get('vaults/{vault}/contacts/me', [ContactMeController::class, 'show'])->name('contacts.me');
         Route::get('vaults/{vault}/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
@@ -256,6 +259,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::post('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'update'])->middleware('flag:file-upload')->name('contacts.avatar.update');
         Route::delete('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'destroy'])->name('contacts.avatar.destroy');
         Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])->name('contacts.templateVersion.update');
+        Route::put('vaults/{vault}/contacts/{contact}/sections/{section}', [ContactSectionController::class, 'update'])->name('contacts.sections.update');
 
         Route::get('vaults/{vault}/contacts/{contact}/reminders', [ContactReminderController::class, 'index'])->name('contacts.reminders');
         Route::post('vaults/{vault}/contacts/{contact}/reminders', [ContactReminderController::class, 'create'])->name('contacts.reminders.create');

@@ -7,9 +7,12 @@ namespace App\Mcp\Tools;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\SortDirectionEnum;
+use App\Enums\ValueListEnum;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
+use App\Models\ValueList;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\JsonSchema\Types\Type;
 use Illuminate\Validation\Rule;
 use Laravel\Mcp\Request;
@@ -36,7 +39,16 @@ class ListContacts extends Tool
             'direction' => ['nullable', 'string', Rule::enum(SortDirectionEnum::class)],
             'page' => ['nullable', 'integer'],
             'per_page' => ['nullable', 'integer'],
+            'categories' => ['nullable', 'array'],
+            'categories.*' => ['integer', Rule::exists('value_list_items', 'id')
+                ->where('account_id', $this->user($request)->account_id)
+                ->where('value_list_id', ValueList::query()
+                    ->where('account_id', $this->user($request)->account_id)
+                    ->where('key', ValueListEnum::ContactCategories->value)
+                    ->value('id'))],
         ]);
+
+        $categoryIds = array_map(intval(...), $validated['categories'] ?? []);
 
         $vault = $this->vault($request, $validated['vault']);
 
@@ -49,6 +61,7 @@ class ListContacts extends Tool
             ->where('vault_id', $vault->id)
             ->inGrouping(ContactGroupingEnum::fromValueOrEveryone($validated['filter'] ?? null))
             ->matchingSearch($validated['query'] ?? '')
+            ->when($categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($categoryIds))
             ->sortedBy(
                 ContactSortEnum::fromValueOrName($validated['sort'] ?? null),
                 SortDirectionEnum::fromValueOrAscending($validated['direction'] ?? null),
@@ -86,6 +99,9 @@ class ListContacts extends Tool
                 ->description('Either asc or desc.'),
             'page' => $schema->integer()->description('The page to read, starting at 1.'),
             'per_page' => $schema->integer()->description("How many contacts a page holds: {$default} unless asked, {$maximum} at most."),
+            'categories' => $schema->array()
+                ->items($schema->integer())
+                ->description('Narrow the list to the people holding any of these categories, by the ids the API lists for the vault.'),
         ];
     }
 }

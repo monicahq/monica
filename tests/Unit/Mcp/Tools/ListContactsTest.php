@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
+use App\Enums\FieldTypeEnum;
+use App\Enums\ValueListEnum;
 use App\Mcp\Servers\EricaServer;
 use App\Mcp\Tools\ListContacts;
 use App\Models\Contact;
+use App\Models\Field;
+use App\Models\FieldValue;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -55,6 +61,24 @@ class ListContactsTest extends TestCase
             ->assertOk()
             ->assertSee('Beesly')
             ->assertDontSee('Scott');
+    }
+
+    #[Test]
+    public function it_narrows_the_list_to_the_people_holding_any_of_the_categories_asked_for(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $list = ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $user->account_id]);
+        $sales = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Halpert']);
+        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Flenderson']);
+        FieldValue::factory()->create(['valuable_id' => $jim->id, 'field_id' => $field->id, 'value_string' => null, 'value_list_item_ids' => [$sales->id]]);
+
+        EricaServer::actingAs($user)->tool(ListContacts::class, ['vault' => $vault->uuid, 'categories' => [$sales->id]])
+            ->assertOk()
+            ->assertSee('Halpert')
+            ->assertDontSee('Flenderson');
     }
 
     #[Test]

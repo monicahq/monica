@@ -367,6 +367,7 @@
     "Added :added · last used :used": "Toegevoegd :added · laatst gebruikt :used",
     "Added :added · never used yet": "Toegevoegd :added · nog nooit gebruikt",
     "Added :date": "Toegevoegd op :date",
+    "Added :label": ":label toegevoegd",
     "Added :label to the value list :name": "Voegde :label toe aan de waardelijst :name",
     "Added a repetition of :label on :name": "Heeft een herhaling van :label bij :name toegevoegd",
     "Added the :heading column.": "Kolom :heading toegevoegd.",
@@ -2548,6 +2549,7 @@
     "Show All": "Alles tonen",
     "Show everything": "Alles tonen",
     "Show less": "Minder tonen",
+    "Show these people": "Deze personen tonen",
     "Showing": "Toont",
     "Shown in settings and when you pick a relationship.": "Te zien in de instellingen en wanneer u een relatie kiest.",
     "Shown in the header area of the record as well as in its section.": "Getoond in de kop van het record én in zijn sectie.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}elke week|elke :count weken",
     "{1}every year|every :count years": "{1}elk jaar|elke :count jaar",
     "{1}used once|used :count times": "{1}één keer gebruikt|:count keer gebruikt",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "“:label” wordt niet meer aangeboden. Bied hem opnieuw aan via de waardelijsten in je instellingen.",
     "“Appointments” above the repeater": "“Afspraken” boven de herhaler",
     "“Ask the vet for the batch number.”": "“Vraag de dierenarts om het batchnummer.”"
 }

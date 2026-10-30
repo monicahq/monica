@@ -11,12 +11,14 @@ use App\Actions\UpdateContactNameRepresentations;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\SortDirectionEnum;
+use App\Enums\ValueListEnum;
 use App\Helpers\AlpineAjaxTargets;
 use App\Helpers\PageSize;
 use App\Http\Controllers\Controller;
 use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
 use App\Models\StructureVersion;
+use App\Models\ValueList;
 use App\Models\Vault;
 use App\Rules\PublishedContactStructureVersion;
 use App\ViewModels\Vaults\ContactEditViewModel;
@@ -26,6 +28,7 @@ use App\ViewModels\Vaults\ContactViewModel;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use InvalidArgumentException;
 
@@ -44,8 +47,19 @@ class ContactController extends Controller
                 'filter' => $grouping->value,
                 'sort' => $sort->value,
                 'direction' => $direction->value,
+                'categories' => $request->input('categories'),
             ]);
         }
+
+        $validated = $request->validate([
+            'categories' => ['array'],
+            'categories.*' => ['integer', Rule::exists('value_list_items', 'id')
+                ->where('account_id', $user->account_id)
+                ->where('value_list_id', ValueList::query()
+                    ->where('account_id', $user->account_id)
+                    ->where('key', ValueListEnum::ContactCategories->value)
+                    ->value('id'))],
+        ]);
 
         if (! $request->prefetch()) {
             new UpdateContactListView(
@@ -65,6 +79,7 @@ class ContactController extends Controller
                 sort: $sort,
                 direction: $direction,
                 size: PageSize::from($request, ContactsViewModel::PER_PAGE),
+                categoryIds: array_map(intval(...), $validated['categories'] ?? []),
             ),
         ]);
     }

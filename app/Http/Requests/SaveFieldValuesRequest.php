@@ -66,6 +66,7 @@ class SaveFieldValuesRequest extends FormRequest
             'fields' => ['array'],
             'labels' => ['array'],
             'label_wordings' => ['array'],
+            'new_choices' => ['array'],
             'year_is_unknown' => ['array'],
             'month_is_unknown' => ['array'],
             'reminders' => ['array'],
@@ -88,6 +89,7 @@ class SaveFieldValuesRequest extends FormRequest
         foreach ($this->fieldsInTheSection() as $field) {
             $names["fields.{$field->id}"] = mb_strtolower($field->label);
             $names["labels.{$field->id}"] = mb_strtolower($field->label);
+            $names["new_choices.{$field->id}.*"] = mb_strtolower($field->label);
             $names = array_merge($names, $this->addressPartsOf($field, "fields.{$field->id}"));
 
             foreach ($field->children as $child) {

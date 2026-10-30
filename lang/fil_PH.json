@@ -367,6 +367,7 @@
     "Added :added · last used :used": "Naidagdag :added · huling gamit :used",
     "Added :added · never used yet": "Naidagdag :added · hindi pa nagamit",
     "Added :date": "Idinagdag noong :date",
+    "Added :label": "Naidagdag ang :label",
     "Added :label to the value list :name": "Idinagdag ang :label sa listahan ng halaga :name",
     "Added a repetition of :label on :name": "Idinagdag ang isang ulit ng :label sa :name",
     "Added the :heading column.": "Naidagdag ang column na :heading.",
@@ -2548,6 +2549,7 @@
     "Show All": "Ipakita lahat",
     "Show everything": "Ipakita ang lahat",
     "Show less": "Ipakita nang kaunti",
+    "Show these people": "Ipakita ang mga taong ito",
     "Showing": "Nagpapakita",
     "Shown in settings and when you pick a relationship.": "Ipinapakita sa mga setting at kapag pumipili ka ng relasyon.",
     "Shown in the header area of the record as well as in its section.": "Ipinapakita sa itaas na bahagi ng record at gayundin sa seksyon nito.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}bawat linggo|bawat :count linggo",
     "{1}every year|every :count years": "{1}bawat taon|bawat :count taon",
     "{1}used once|used :count times": "{1}nagamit minsan|nagamit nang :count beses",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "Hindi na inaalok ang “:label”. Ialok itong muli mula sa mga listahan ng halaga sa iyong mga setting.",
     "“Appointments” above the repeater": "“Mga Appointment” sa itaas ng repeater",
     "“Ask the vet for the batch number.”": "“Tanungin ang beterinaryo tungkol sa batch number.”"
 }

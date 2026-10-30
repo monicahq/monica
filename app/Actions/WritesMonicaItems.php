@@ -14,6 +14,7 @@ use App\Enums\ReminderSourceEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\NotEnoughStorageLeft;
+use App\Exceptions\ValueListItemIsStopped;
 use App\Helpers\StructureFileReader;
 use App\Helpers\StructureWriter;
 use App\Helpers\TextSanitizer;
@@ -37,6 +38,7 @@ use App\Models\StructureVersionSection;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -600,7 +602,7 @@ trait WritesMonicaItems
     {
         $column = $field->type->valueColumn();
         $items = collect((array) ($value['list_items'] ?? []))
-            ->map(fn (mixed $name): ?ValueListItem => $this->itemOf($field, $name))
+            ->map(fn (mixed $name): ?ValueListItem => $this->itemOf($field, $name) ?? $this->choiceAddedTo($field, $name))
             ->filter()
             ->values()
             ->all();
@@ -623,6 +625,28 @@ trait WritesMonicaItems
             monthIsUnknown: (bool) ($value['month_is_unknown'] ?? false),
             writesToTheJournal: false,
         )->execute();
+    }
+
+    private function choiceAddedTo(Field $field, mixed $name): ?ValueListItem
+    {
+        if (! is_string($name) || $field->valueList === null) {
+            return null;
+        }
+
+        try {
+            $item = new FindOrCreateValueListItem(user: $this->user, valueList: $field->valueList, wording: $name)->execute();
+        } catch (AuthorizationException|ValueListItemIsStopped) {
+            return null;
+        }
+
+        if ($item->wasRecentlyCreated) {
+            $this->keptPayload = [
+                ...($this->keptPayload ?? []),
+                'value_list_items' => [...($this->keptPayload['value_list_items'] ?? []), $item->id],
+            ];
+        }
+
+        return $item;
     }
 
     private function rowOf(Contact|Entity|LifeEvent $record, Field $repeater, mixed $position): FieldValueRow

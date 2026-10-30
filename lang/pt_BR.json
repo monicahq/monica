@@ -367,6 +367,7 @@
     "Added :added · last used :used": "Adicionada :added · usada :used",
     "Added :added · never used yet": "Adicionada :added · nunca usada ainda",
     "Added :date": "Adicionada em :date",
+    "Added :label": ":label acrescentado",
     "Added :label to the value list :name": "Adicionou :label à lista de valores :name",
     "Added a repetition of :label on :name": "Adicionou uma repetição de :label em :name",
     "Added the :heading column.": "Coluna :heading adicionada.",
@@ -2548,6 +2549,7 @@
     "Show All": "Mostre tudo",
     "Show everything": "Mostrar tudo",
     "Show less": "Mostrar menos",
+    "Show these people": "Mostrar estas pessoas",
     "Showing": "Exibindo",
     "Shown in settings and when you pick a relationship.": "Mostrado nas configurações e ao escolher uma relação.",
     "Shown in the header area of the record as well as in its section.": "Mostrado no topo do registro além da sua seção.",
@@ -3951,6 +3953,7 @@
     "{1}every week|every :count weeks": "{1}todas as semanas|a cada :count semanas",
     "{1}every year|every :count years": "{1}todos os anos|a cada :count anos",
     "{1}used once|used :count times": "{1}usado uma vez|usado :count vezes",
+    "“:label” is no longer offered. Offer it again from the value lists in your settings.": "“:label” já não é oferecido. Ofereça-o novamente nas listas de valores das suas configurações.",
     "“Appointments” above the repeater": "“Consultas” por cima do repetidor",
     "“Ask the vet for the batch number.”": "“Peça ao veterinário o número do lote.”"
 }
