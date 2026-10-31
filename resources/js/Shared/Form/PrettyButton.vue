@@ -14,7 +14,7 @@ defineProps({
 
 <template>
   <button
-    :class="'dark:box-s relative border-zinc-900 bg-white text-sm dark:border-zinc-100 dark:bg-gray-800 dark:text-gray-100 flex'"
+    :class="'dark:box-s relative cursor-pointer border-zinc-900 bg-white text-sm dark:border-zinc-100 dark:bg-gray-800 dark:text-gray-100 flex'"
     :disabled="state === 'loading' || state === 'disabled'"
     type="submit">
     <span v-if="state === 'loading'">
@@ -28,9 +28,9 @@ defineProps({
 
       <MinusIcon v-else-if="icon === 'minus'" />
 
-      <Trash2 class="icon relative me-1 inline h-5 w-5" v-else-if="icon === 'trash'" />
+      <Trash2 class="icon relative me-1 inline h-5 w-5 cursor-pointer" v-else-if="icon === 'trash'" />
 
-      <span>
+      <span class="cursor-pointer">
         {{ text }}
       </span>
 

@@ -21,7 +21,7 @@ defineProps({
 
   <svg
     v-if="type == 'entry'"
-    class="icon relative me-1 inline h-5 w-5"
+    class="icon relative me-1 inline h-5 w-5 cursor-pointer"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
