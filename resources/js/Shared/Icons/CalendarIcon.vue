@@ -7,7 +7,7 @@ defineProps({
 <template>
   <svg
     v-if="type == 'filled'"
-    class="ms-2 h-4 w-4"
+    class="me-1 h-4 w-4"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
