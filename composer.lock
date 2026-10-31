@@ -11617,16 +11617,16 @@
         },
         {
             "name": "uploadcare/uploadcare-php",
-            "version": "v4.2.0",
+            "version": "v4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uploadcare/uploadcare-php.git",
-                "reference": "9a1300fe20abf86f765684c739145ed5e5c5e982"
+                "reference": "c53edeedbbcf43fd6723271c49230db7820cbf52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uploadcare/uploadcare-php/zipball/9a1300fe20abf86f765684c739145ed5e5c5e982",
-                "reference": "9a1300fe20abf86f765684c739145ed5e5c5e982",
+                "url": "https://api.github.com/repos/uploadcare/uploadcare-php/zipball/c53edeedbbcf43fd6723271c49230db7820cbf52",
+                "reference": "c53edeedbbcf43fd6723271c49230db7820cbf52",
                 "shasum": ""
             },
             "require": {
@@ -11642,7 +11642,9 @@
                 "fakerphp/faker": "^1.20",
                 "friendsofphp/php-cs-fixer": "^3.11",
                 "phpunit/phpunit": "^9.5",
+                "rector/rector": "^2.1",
                 "symfony/dotenv": "^5.4",
+                "symfony/string": "^6.4",
                 "symfony/var-dumper": "^5.4",
                 "vimeo/psalm": "^4.27"
             },
@@ -11675,9 +11677,9 @@
             "support": {
                 "email": "help@uploadcare.com",
                 "issues": "https://github.com/uploadcare/uploadcare-php/issues",
-                "source": "https://github.com/uploadcare/uploadcare-php/tree/v4.2.0"
+                "source": "https://github.com/uploadcare/uploadcare-php/tree/v4.2.1"
             },
-            "time": "2023-11-09T20:54:50+00:00"
+            "time": "2025-08-13T10:25:38+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -18298,6 +18300,6 @@
         "ext-fileinfo": "*",
         "ext-intl": "*"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }
