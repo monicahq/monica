@@ -19,7 +19,10 @@ class ModuleContactInformationViewHelper
             ->groupBy(fn (ContactInformation $info) => $info->contactInformationType->type)
             ->map(fn (Collection $collection) => $collection
                 ->map(fn (ContactInformation $info) => self::dto($info))
-            );
+                ->values()
+                ->toArray()
+            )
+            ->toArray();
         $groups = self::infoGroups();
 
         $infoTypes = $user->account
@@ -68,10 +71,11 @@ class ModuleContactInformationViewHelper
             );
     }
 
-    public static function infoGroups(): Collection
+    public static function infoGroups(): array
     {
         return collect(config('app.contact_information_groups'))
-            ->map(fn (array $group) => __($group['name_translation_key']));
+            ->map(fn (array $group) => __($group['name_translation_key']))
+            ->toArray();
     }
 
     public static function dto(ContactInformation $info): array

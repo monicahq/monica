@@ -61,23 +61,40 @@ class ImportAddress extends Importer implements ImportVCardResource
         return $contact->refresh();
     }
 
+    /**
+     * Get or create the address type from vCard ADR field.
+     * 
+     * Maps vCard TYPE parameter to Monica AddressType. Handles special cases:
+     * - "HOME,pref" or "HOME,xxx" maps to "home" type
+     * - Creates new types if they don't exist (with permission)
+     * 
+     * @param Property $adr The vCard ADR property with optional TYPE parameter
+     * @return AddressType|null The matched/created AddressType, or null if no type specified
+     */
     private function getAddressType(Property $adr): ?AddressType
     {
         $type = Arr::get($adr->parameters(), 'TYPE');
 
         if ($type) {
+            $typeValue = $type->getValue();
+            
+            // Map HOME,xxx to 'home' type
+            if (str_starts_with(strtolower($typeValue), 'home')) {
+                $typeValue = 'home';
+            }
+            
             try {
                 return AddressType::where([
                     'account_id' => $this->account()->id,
-                    'type' => $type->getValue(),
+                    'type' => $typeValue,
                 ])->firstOrFail();
             } catch (ModelNotFoundException) {
                 try {
                     return (new CreateAddressType)->execute([
                         'account_id' => $this->account()->id,
                         'author_id' => $this->author()->id,
-                        'name' => $type->getValue(),
-                        'type' => $type->getValue(),
+                        'name' => $typeValue,
+                        'type' => $typeValue,
                     ]);
                 } catch (NotEnoughPermissionException) {
                     // catch
@@ -88,34 +105,67 @@ class ImportAddress extends Importer implements ImportVCardResource
         return null;
     }
 
+    /**
+     * Update an existing address with vCard data.
+     * 
+     * Maps vCard ADR parts to Monica address fields:
+     * - parts[0]: PO Box (unused)
+     * - parts[1]: Extended address (apartment/suite) → line_2
+     * - parts[2]: Street address → line_1 (formatted with comma after number)
+     * - parts[3]: City
+     * - parts[4]: Province/State
+     * - parts[5]: Postal code
+     * - parts[6]: Country
+     * 
+     * @param Property $adr The vCard ADR property
+     * @param Address $address The existing Monica address to update
+     * @param AddressType|null $addressType The address type (home, work, etc.)
+     * @return void
+     */
     private function updateAddress(Property $adr, Address $address, ?AddressType $addressType)
     {
+        $parts = $adr->getParts();
+        
         (new UpdateAddress)->execute([
             'account_id' => $this->account()->id,
             'vault_id' => $this->vault()->id,
             'author_id' => $this->author()->id,
             'address_id' => $address->id,
             'address_type_id' => optional($addressType)->id,
-            'line_1' => Arr::get($adr->getParts(), 1),
-            'line_2' => Arr::get($adr->getParts(), 2),
-            'city' => Arr::get($adr->getParts(), 3),
-            'province' => Arr::get($adr->getParts(), 4),
-            'postal_code' => Arr::get($adr->getParts(), 5),
-            'country' => Arr::get($adr->getParts(), 6),
+            'line_1' => $this->formatStreetAddress(Arr::get($parts, 2)),
+            'line_2' => Arr::get($parts, 1),
+            'city' => Arr::get($parts, 3),
+            'province' => Arr::get($parts, 4),
+            'postal_code' => Arr::get($parts, 5),
+            'country' => Arr::get($parts, 6),
         ]);
     }
 
+    /**
+     * Create a new address from vCard data and associate it with contact.
+     * 
+     * Maps vCard ADR parts to Monica address fields (see updateAddress for mapping details).
+     * Automatically associates the created address with the contact.
+     * 
+     * @param Contact $contact The contact to associate the address with
+     * @param Property $adr The vCard ADR property
+     * @param AddressType|null $addressType The address type (home, work, etc.)
+     * @return void
+     */
     private function createAddress(Contact $contact, Property $adr, ?AddressType $addressType)
     {
+        $parts = $adr->getParts();
+        $line1 = $this->formatStreetAddress(Arr::get($parts, 2));
+        
         $address = Address::where([
             'vault_id' => $this->vault()->id,
             'address_type_id' => optional($addressType)->id,
-            'line_1' => Arr::get($adr->getParts(), 1),
-            'line_2' => Arr::get($adr->getParts(), 2),
-            'city' => Arr::get($adr->getParts(), 3),
-            'province' => Arr::get($adr->getParts(), 4),
-            'postal_code' => Arr::get($adr->getParts(), 5),
-            'country' => Arr::get($adr->getParts(), 6),
+            'line_1' => $line1,
+            'line_2' => Arr::get($parts, 1),
+            'city' => Arr::get($parts, 3),
+            'province' => Arr::get($parts, 4),
+            'postal_code' => Arr::get($parts, 5),
+            'country' => Arr::get($parts, 6),
         ])->first();
 
         if ($address === null) {
@@ -124,12 +174,12 @@ class ImportAddress extends Importer implements ImportVCardResource
                 'vault_id' => $this->vault()->id,
                 'author_id' => $this->author()->id,
                 'address_type_id' => optional($addressType)->id,
-                'line_1' => Arr::get($adr->getParts(), 1),
-                'line_2' => Arr::get($adr->getParts(), 2),
-                'city' => Arr::get($adr->getParts(), 3),
-                'province' => Arr::get($adr->getParts(), 4),
-                'postal_code' => Arr::get($adr->getParts(), 5),
-                'country' => Arr::get($adr->getParts(), 6),
+                'line_1' => $line1,
+                'line_2' => Arr::get($parts, 1),
+                'city' => Arr::get($parts, 3),
+                'province' => Arr::get($parts, 4),
+                'postal_code' => Arr::get($parts, 5),
+                'country' => Arr::get($parts, 6),
             ]);
         }
 
@@ -143,6 +193,13 @@ class ImportAddress extends Importer implements ImportVCardResource
         ]);
     }
 
+    /**
+     * Remove an address association from a contact.
+     * 
+     * @param Contact $contact The contact to remove the address from
+     * @param Address $address The address to disassociate
+     * @return void
+     */
     private function removeAddress(Contact $contact, Address $address)
     {
         (new RemoveAddressFromContact)->execute([
@@ -152,5 +209,38 @@ class ImportAddress extends Importer implements ImportVCardResource
             'contact_id' => $contact->id,
             'address_id' => $address->id,
         ]);
+    }
+    
+    /**
+     * Format street address to add proper spacing after street numbers.
+     * 
+     * Handles various vCard formatting issues:
+     * - Newline characters: "61\nRue Des Lutiers" → "61, Rue Des Lutiers"
+     * - Missing space: "61Rue Des Lutiers" → "61, Rue Des Lutiers"
+     * - Already spaced: "61 Rue Des Lutiers" → "61, Rue Des Lutiers"
+     * 
+     * Also normalizes whitespace (tabs, multiple spaces, etc.).
+     * 
+     * @param string|null $street The raw street address from vCard
+     * @return string|null The formatted street address, or null if empty
+     */
+    private function formatStreetAddress(?string $street): ?string
+    {
+        if (empty($street)) {
+            return null;
+        }
+        
+        // Replace newlines/multiple spaces with single space
+        $street = preg_replace('/[\n\r\t]+/', ' ', $street);
+        $street = preg_replace('/\s+/', ' ', $street);
+        $street = trim($street);
+        
+        // If address starts with digits followed by space or letter, add ", "
+        // Examples: "61 Rue" → "61, Rue" or "61Rue" → "61, Rue"
+        if (preg_match('/^(\d+)\s*(.+)$/', $street, $matches)) {
+            return $matches[1] . ', ' . trim($matches[2]);
+        }
+        
+        return $street;
     }
 }

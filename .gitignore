@@ -38,3 +38,7 @@ npm-debug.log
 yarn-error.log
 monica.db
 sail
+# Import temporary files
+/storage/app/tmp/
+/storage/logs/*.log
+*.vcf

@@ -71,19 +71,24 @@ const update = () => {
             <div class="mb-3 flex items-center justify-between">
               <h3>{{ $t('All contacts in the vault') }}</h3>
 
-              <div class="flex items-center">
+              <div class="flex items-center gap-2">
                 <dropdown
                   v-model="form.sort_order"
                   :data="data.contact_sort_orders"
                   :required="false"
-                  :dropdown-class="'block w-full me-2'"
+                  :dropdown-class="'block w-full'"
                   @change="update()" />
+
+                <pretty-link
+                  v-if="layoutData.vault.permission.at_least_editor"
+                  :href="data.url.contact.import"
+                  :text="$t('Import')"
+                  :icon="'upload'" />
 
                 <pretty-link
                   v-if="layoutData.vault.permission.at_least_editor"
                   :href="data.url.contact.create"
                   :text="$t('Add a contact')"
-                  class="ms-3"
                   :icon="'plus'" />
               </div>
             </div>

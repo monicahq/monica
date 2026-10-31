@@ -159,6 +159,17 @@ class ImportContactInformation extends Importer implements ImportVCardResource
         if ($property->name === 'X-SOCIAL-PROFILE') {
             return self::getParameter($property, 'X-USER') ?? $property->getValue();
         }
+        
+        if ($property->name === 'ORG') {
+            // ORG can be multi-valued like "Company;Department;Unit"
+            // We only take the first part (company name)
+            $value = $property->getValue();
+            if (is_string($value) && str_contains($value, ';')) {
+                $parts = explode(';', $value);
+                return trim($parts[0]);
+            }
+            return trim($value);
+        }
 
         return $property->getValue();
     }

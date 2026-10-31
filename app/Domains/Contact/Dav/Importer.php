@@ -57,10 +57,24 @@ abstract class Importer implements ImportVCardResource
 
     /**
      * Formats and returns a string for DAV Card/Cal.
+     * 
+     * This method cleans vCard field values by:
+     * - Converting escaped semicolons (\;) to regular semicolons
+     * - Removing leading/trailing whitespace
+     * - Removing trailing semicolons (common in vCard format)
+     * 
+     * @param string|null $value The raw value from vCard field
+     * @return string|null The formatted value, or null if empty
      */
     protected function formatValue(?string $value): ?string
     {
-        return ! empty($value) ? str_replace('\;', ';', trim($value)) : null;
+        if (empty($value)) {
+            return null;
+        }
+        
+        $formatted = str_replace('\\;', ';', trim($value));
+        // Remove trailing semicolon (e.g., "Company;" -> "Company")
+        return rtrim($formatted, ';');
     }
 
     /**

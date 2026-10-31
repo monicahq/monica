@@ -10,10 +10,21 @@ class VaultContactSearchViewHelper
 {
     public static function data(Vault $vault, string $term): Collection
     {
-        /** @var Collection<int, Contact> */
-        $contacts = Contact::search($term)
-            ->where('vault_id', $vault->id)
-            ->orderBy('first_name')
+        // Use simple database search instead of Scout
+        // Scout requires FULLTEXT indexes which may not be configured
+        $query = Contact::where('vault_id', $vault->id);
+        
+        if (!empty($term)) {
+            $query->where(function ($q) use ($term) {
+                $q->where('first_name', 'like', '%'.$term.'%')
+                    ->orWhere('last_name', 'like', '%'.$term.'%')
+                    ->orWhere('nickname', 'like', '%'.$term.'%')
+                    ->orWhere('maiden_name', 'like', '%'.$term.'%')
+                    ->orWhere('middle_name', 'like', '%'.$term.'%');
+            });
+        }
+        
+        $contacts = $query->orderBy('first_name')
             ->orderBy('last_name')
             ->take(5)
             ->get();

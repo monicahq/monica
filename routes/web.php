@@ -5,6 +5,7 @@ use App\Domains\Contact\ManageCalls\Web\Controllers\ContactModuleCallController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactArchiveController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactFavoriteController;
+use App\Domains\Contact\ManageContact\Web\Controllers\ContactImportController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactLabelController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactMoveController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactNoTemplateController;
@@ -245,6 +246,14 @@ Route::middleware([
                 // create a contact
                 Route::get('create', [ContactController::class, 'create'])->name('contact.create');
                 Route::post('', [ContactController::class, 'store'])->name('contact.store');
+
+                // import contacts from vCard
+                Route::get('import', [ContactImportController::class, 'index'])->name('contact.import.index');
+                Route::post('import/upload', [ContactImportController::class, 'upload'])->name('contact.import.upload');
+                Route::post('import/contact-detail', [ContactImportController::class, 'contactDetail'])->name('contact.import.detail');
+                Route::get('import/photo/{sessionKey}/{index}', [ContactImportController::class, 'getPhoto'])->name('contact.import.photo');
+                Route::post('import', [ContactImportController::class, 'import'])->name('contact.import.store');
+                Route::delete('import', [ContactImportController::class, 'cancel'])->name('contact.import.cancel');
 
                 // contact page
                 Route::middleware('can:contact-owner,vault,contact')->prefix('{contact}')->group(function () {
