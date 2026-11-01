@@ -119,6 +119,28 @@ class DestroyFileTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_the_bytes_of_a_file_attached_again_after_it_was_loaded(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $user->account->update(['storage_used_in_bytes' => 5000]);
+        $file = $this->fileOnDisk($user, 2000);
+
+        File::query()->whereKey($file->id)->update(['reference_count' => 1]);
+
+        $this->assertThrows(
+            fn () => new DestroyFile(account: $user->account, file: $file, user: $user)->execute(),
+            CannotDeleteAFileInUse::class,
+        );
+
+        Storage::disk('local')->assertExists($file->path);
+        $this->assertNotSoftDeleted('files', ['id' => $file->id]);
+        $this->assertEquals(5000, $user->account->fresh()->storage_used_in_bytes);
+    }
+
+    #[Test]
     public function it_refuses_a_file_in_another_account(): void
     {
         Queue::fake();

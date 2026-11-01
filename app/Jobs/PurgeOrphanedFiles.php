@@ -6,6 +6,7 @@ namespace App\Jobs;
 
 use App\Actions\DestroyFile;
 use App\Enums\UserActionEnum;
+use App\Exceptions\CannotDeleteAFileInUse;
 use App\Models\Account;
 use App\Models\File;
 use App\Models\RecordSnapshot;
@@ -29,34 +30,47 @@ class PurgeOrphanedFiles implements ShouldQueue
     {
         $cutoff = now()->subDays((int) config('monica.orphaned_file_grace_period_in_days'));
 
-        File::query()
+        $orphans = File::query()
             ->where('reference_count', 0)
             ->whereNotNull('orphaned_at')
-            ->where('orphaned_at', '<=', $cutoff)
-            ->get()
-            ->groupBy('account_id')
-            ->each(function ($files, int $accountId): void {
-                $account = Account::query()->find($accountId);
+            ->where('orphaned_at', '<=', $cutoff);
 
-                if ($account === null) {
-                    return;
+        $accountIds = (clone $orphans)->distinct()->pluck('account_id');
+
+        foreach ($accountIds as $accountId) {
+            $account = Account::query()->find($accountId);
+
+            if ($account === null) {
+                continue;
+            }
+
+            $inUse = RecordSnapshot::fileIdsInUse($account);
+            $count = 0;
+
+            foreach ((clone $orphans)->where('account_id', $accountId)->lazyById() as $file) {
+                if (in_array($file->id, $inUse, true)) {
+                    continue;
                 }
 
-                $inUse = RecordSnapshot::fileIdsInUse($account);
-                $files = $files->reject(fn (File $file): bool => in_array($file->id, $inUse, true));
-
-                if ($files->isEmpty()) {
-                    return;
+                try {
+                    new DestroyFile(account: $account, file: $file)->execute();
+                } catch (CannotDeleteAFileInUse) {
+                    continue;
                 }
 
-                $files->each(fn (File $file) => new DestroyFile(account: $account, file: $file)->execute());
+                $count++;
+            }
 
-                LogUserAction::dispatch(
-                    account: $account,
-                    user: null,
-                    action: UserActionEnum::OrphanedFilesSwept,
-                    parameters: ['count' => $files->count()],
-                )->onQueue('low');
-            });
+            if ($count === 0) {
+                continue;
+            }
+
+            LogUserAction::dispatch(
+                account: $account,
+                user: null,
+                action: UserActionEnum::OrphanedFilesSwept,
+                parameters: ['count' => $count],
+            )->onQueue('low');
+        }
     }
 }

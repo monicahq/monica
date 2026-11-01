@@ -53,20 +53,28 @@ class DestroyFile
         $this->name = $this->file->original_name;
         $size = $this->file->size_in_bytes;
 
-        $this->file->disk()->delete($this->file->path);
-
-        foreach ($this->file->variants ?? [] as $variant) {
-            $this->file->disk()->delete($this->file->path.$variant['suffix']);
-        }
-
         DB::transaction(function () use ($size): void {
-            $this->file->delete();
+            // The purge loads files before destroying them, so something may have attached this one since.
+            $deleted = File::query()
+                ->whereKey($this->file->id)
+                ->where('reference_count', 0)
+                ->delete();
+
+            if ($deleted !== 1) {
+                throw new CannotDeleteAFileInUse('This file is pointed at again.');
+            }
 
             Account::query()
                 ->whereKey($this->account->id)
                 ->where('storage_used_in_bytes', '>=', $size)
                 ->decrement('storage_used_in_bytes', $size);
         });
+
+        $this->file->disk()->delete($this->file->path);
+
+        foreach ($this->file->variants ?? [] as $variant) {
+            $this->file->disk()->delete($this->file->path.$variant['suffix']);
+        }
     }
 
     private function log(): void
