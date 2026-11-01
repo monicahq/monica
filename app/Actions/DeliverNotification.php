@@ -97,7 +97,7 @@ class DeliverNotification
         $user = $this->notification->user;
         $payload = $this->notification->payload ?? [];
 
-        $user->notify(new ReminderDue(
+        $user->notifyNow(new ReminderDue(
             reminderName: $this->notification->title,
             recordName: (string) ($payload['record_name'] ?? ''),
             sourceDate: (string) ($payload['local_date'] ?? ''),

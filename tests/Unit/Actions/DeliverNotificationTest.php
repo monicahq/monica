@@ -18,10 +18,13 @@ use App\Notifications\ReminderDue;
 use Carbon\CarbonImmutable;
 use Database\Factories\NotificationFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use Illuminate\Support\Facades\Queue;
 use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
+use Tests\Fixtures\Notifications\RefusingChannel;
 use Tests\TestCase;
 use Throwable;
 use Vonage\Client\Exception\RequestException as VonageRequestException;
@@ -371,13 +374,30 @@ class DeliverNotificationTest extends TestCase
         $this->assertNull($notification->refresh()->failed_at);
     }
 
+    #[Test]
+    public function a_refusal_from_the_channel_itself_is_recorded_even_with_a_queue_running(): void
+    {
+        Queue::fake();
+        $this->app->make(ChannelManager::class)->extend('telegram', fn (): RefusingChannel => new RefusingChannel);
+        $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
+        $row = $this->switchOn($notification, NotificationChannelEnum::Telegram);
+
+        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+
+        $notification->refresh();
+        $this->assertNull($notification->sent_at);
+        $this->assertSame('Bad Request: chat not found', $notification->failure_reason);
+        $this->assertSame(1, $row->refresh()->consecutive_failures);
+        Queue::assertNothingPushed();
+    }
+
     /**
      * Stand in for the outbound service, which is not called in a test, and
      * make it refuse the way that service refuses.
      */
     private function refuseWith(Throwable $refusal): void
     {
-        NotificationFacade::shouldReceive('send')->andThrow($refusal);
+        NotificationFacade::shouldReceive('sendNow')->andThrow($refusal);
         NotificationFacade::shouldReceive('locale')->andReturnSelf();
     }
 
