@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "තැපැල් ප්‍රවාහනය පිවිසෙන මුරපදය.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "උත්සාහ කිහිපයකින් පසුවත් ගෙවීම අය කළ නොහැකි විය, එබැවින් දායකත්වය අවසන් වී ගිණුම නොමිලේ සැලැස්මට නැවත පැමිණියේය.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "ඔබේ එක් වර මිලදී ගැනීමේ ගෙවීම ආපසු ගෙවා ඇත, එබැවින් ගිණුම නොමිලේ සැලැස්මට නැවත පැමිණියේය.",
+    "The payment needs confirming before the subscription can move up.": "දායකත්වය දිගු එකකට මාරු කිරීමට පෙර ගෙවීම තහවුරු කළ යුතුය.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "ගෙවීම :date දින බැංකුව මගින් ආපසු ගෙන ඇත, එබැවින් ගිණුම නොමිලේ සැලැස්මට නැවත පැමිණියේය. කිසිවක් මකා දමා නැත.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "ගෙවීම ඔබේ බැංකුව සමඟ ප්‍රතිවිරෝධයට ලක් වී ඇත, එබැවින් එය විසඳෙන තුරු ගිණුම නොමිලේ සැලැස්මට නැවත පැමිණ ඇත.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "ගෙවීම :date දින ආපසු ගෙවා ඇත, එබැවින් ගිණුම නොමිලේ සැලැස්මට නැවත පැමිණියේය. කිසිවක් මකා දමා නැත.",

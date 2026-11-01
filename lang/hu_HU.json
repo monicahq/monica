@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "A jelszó, amellyel a levéltovábbítás bejelentkezik.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "A fizetést több próbálkozás után sem sikerült beszedni, így az előfizetés véget ért, és a fiók visszakerült az ingyenes csomagra.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "Az egyszeri vásárlásod árát visszatérítettük, így a fiók visszakerült az ingyenes csomagra.",
+    "The payment needs confirming before the subscription can move up.": "A fizetést meg kell erősíteni, mielőtt az előfizetés hosszabbra válthat.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "A fizetést :date napján a bank visszahívta, így a fiók visszakerült az ingyenes csomagra. Semmi nem törlődött.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "A fizetést megtámadták a bankodnál, így a fiók az ügy rendezéséig visszakerült az ingyenes csomagra.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "A fizetést :date napján visszatérítettük, így a fiók visszakerült az ingyenes csomagra. Semmi nem törlődött.",

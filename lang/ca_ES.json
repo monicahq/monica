@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "La contrasenya amb què s’autentica el transport de correu.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "No s’ha pogut cobrar el pagament després de diversos intents, així que la subscripció s’ha acabat i el compte torna al pla gratuït.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "El pagament de la teva compra d’un sol cop s’ha retornat, així que el compte torna al pla gratuït.",
+    "The payment needs confirming before the subscription can move up.": "Cal confirmar el pagament abans que la subscripció pugui passar a una de més llarga.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "El pagament es va reclamar al banc el :date, així que el compte torna al pla gratuït. No s’ha esborrat res.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "El pagament s’ha reclamat al teu banc, així que el compte torna al pla gratuït mentre això es resol.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "El pagament es va retornar el :date, així que el compte torna al pla gratuït. No s’ha esborrat res.",

@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "Lösenordet som e-posttransporten loggar in med.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "Betalningen kunde inte genomföras efter flera försök, så prenumerationen upphörde och kontot är tillbaka på gratisplanen.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "Betalningen för ditt engångsköp har återbetalats, så kontot är tillbaka på gratisplanen.",
+    "The payment needs confirming before the subscription can move up.": "Betalningen måste bekräftas innan prenumerationen kan flyttas upp.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "Betalningen drogs tillbaka av banken den :date, så kontot är tillbaka på gratisplanen. Ingenting togs bort.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "Betalningen bestreds hos din bank, så kontot är tillbaka på gratisplanen till dess att det är utrett.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "Betalningen återbetalades den :date, så kontot är tillbaka på gratisplanen. Ingenting togs bort.",

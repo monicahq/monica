@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "메일 전송이 로그인할 때 쓰는 비밀번호.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "여러 번 시도했지만 결제를 받을 수 없어 구독이 끝났고, 계정은 무료 요금제로 돌아갔습니다.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "한 번 구입한 금액이 환불되어 계정은 무료 요금제로 돌아갔습니다.",
+    "The payment needs confirming before the subscription can move up.": "구독을 더 긴 기간으로 옮기려면 결제를 확인해야 합니다.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "결제가 :date에 은행에서 회수되어 계정은 무료 요금제로 돌아갔습니다. 삭제된 것은 없습니다.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "결제에 대해 거래 은행에 이의가 제기되어, 정리될 때까지 계정은 무료 요금제로 돌아갔습니다.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "결제가 :date에 환불되어 계정은 무료 요금제로 돌아갔습니다. 삭제된 것은 없습니다.",

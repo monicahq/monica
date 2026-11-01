@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "Ο κωδικός με τον οποίο συνδέεται η μεταφορά αλληλογραφίας.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "Η πληρωμή δεν κατέστη δυνατή μετά από πολλές προσπάθειες, γι’ αυτό η συνδρομή έληξε και ο λογαριασμός επέστρεψε στο δωρεάν πρόγραμμα.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "Η πληρωμή της εφάπαξ αγοράς σας επιστράφηκε, γι’ αυτό ο λογαριασμός επέστρεψε στο δωρεάν πρόγραμμα.",
+    "The payment needs confirming before the subscription can move up.": "Η πληρωμή πρέπει να επιβεβαιωθεί πριν η συνδρομή περάσει σε μεγαλύτερη.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "Η πληρωμή ανακλήθηκε από την τράπεζα στις :date, γι’ αυτό ο λογαριασμός επέστρεψε στο δωρεάν πρόγραμμα. Τίποτα δεν διαγράφηκε.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "Η πληρωμή αμφισβητήθηκε στην τράπεζά σας, γι’ αυτό ο λογαριασμός επέστρεψε στο δωρεάν πρόγραμμα ώσπου να τακτοποιηθεί.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "Η πληρωμή επιστράφηκε στις :date, γι’ αυτό ο λογαριασμός επέστρεψε στο δωρεάν πρόγραμμα. Τίποτα δεν διαγράφηκε.",

@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "Lykilorðið sem póstflutningurinn skráir sig inn með.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "Greiðslan gekk ekki eftir nokkrar tilraunir, svo áskriftin lauk og reikningurinn er aftur á fríu leiðinni.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "Greiðslan fyrir eina kaupin þín var endurgreidd, svo reikningurinn er aftur á fríu leiðinni.",
+    "The payment needs confirming before the subscription can move up.": "Staðfesta þarf greiðsluna áður en hægt er að færa áskriftina upp.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "Greiðslan var dregin til baka af bankanum þann :date, svo reikningurinn er aftur á fríu leiðinni. Engu var eytt.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "Greiðslan var vefengd hjá bankanum þínum, svo reikningurinn er aftur á fríu leiðinni þar til það er útkljáð.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "Greiðslan var endurgreidd þann :date, svo reikningurinn er aftur á fríu leiðinni. Engu var eytt.",

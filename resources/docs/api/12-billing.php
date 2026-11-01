@@ -296,7 +296,7 @@ return [
                     'example' => 'price_1QdundieYearly',
                 ],
             ],
-            'returns' => 'The billing object as it now stands. 422 when there is no subscription, when it is already ending, or when the price is not a longer subscription.',
+            'returns' => 'The billing object as it now stands. 422 when there is no subscription, when it is already ending, or when the price is not a longer subscription. 402 when the bank asks for the payment to be confirmed, with a payment_url to open in a browser: the subscription has already moved and stays past due until the payment is confirmed there.',
             'response' => ['data' => $billing],
         ],
         [

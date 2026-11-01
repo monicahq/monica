@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "Slaptažodis, kuriuo prisijungia pašto siuntimas.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "Mokėjimo po kelių bandymų paimti nepavyko, todėl prenumerata baigėsi ir paskyra grįžo prie nemokamo plano.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "Mokėjimas už jūsų vienkartinį pirkimą grąžintas, todėl paskyra grįžo prie nemokamo plano.",
+    "The payment needs confirming before the subscription can move up.": "Prieš pereinant prie ilgesnės prenumeratos, reikia patvirtinti mokėjimą.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "Mokėjimas :date banke atšauktas, todėl paskyra grįžo prie nemokamo plano. Niekas neištrinta.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "Mokėjimas užprotestuotas jūsų banke, todėl paskyra grįžo prie nemokamo plano, kol tai išsprendžiama.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "Mokėjimas grąžintas :date, todėl paskyra grįžo prie nemokamo plano. Niekas neištrinta.",

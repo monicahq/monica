@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "মেইল পরিবহন যে পাসওয়ার্ড দিয়ে সাইন ইন করে।",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "কয়েকবার চেষ্টার পরেও পেমেন্ট নেওয়া যায়নি, তাই সাবস্ক্রিপশন শেষ হয়েছে আর অ্যাকাউন্টটি বিনামূল্যের প্ল্যানে ফিরে এসেছে।",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "আপনার একবারের কেনার পেমেন্ট ফেরত দেওয়া হয়েছে, তাই অ্যাকাউন্টটি বিনামূল্যের প্ল্যানে ফিরে এসেছে।",
+    "The payment needs confirming before the subscription can move up.": "সাবস্ক্রিপশন দীর্ঘ মেয়াদে যাওয়ার আগে পেমেন্টটি নিশ্চিত করতে হবে।",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "পেমেন্টটি :date-এ ব্যাংক থেকে ফিরিয়ে নেওয়া হয়েছে, তাই অ্যাকাউন্টটি বিনামূল্যের প্ল্যানে ফিরে এসেছে। কিছুই মুছে ফেলা হয়নি।",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "পেমেন্ট নিয়ে আপনার ব্যাংকে আপত্তি তোলা হয়েছে, তাই তা মিটে যাওয়া পর্যন্ত অ্যাকাউন্টটি বিনামূল্যের প্ল্যানে ফিরে এসেছে।",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "পেমেন্টটি :date-এ ফেরত দেওয়া হয়েছে, তাই অ্যাকাউন্টটি বিনামূল্যের প্ল্যানে ফিরে এসেছে। কিছুই মুছে ফেলা হয়নি।",

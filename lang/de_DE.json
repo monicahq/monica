@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "Das Passwort, mit dem sich der E-Mail-Transport anmeldet.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "Die Zahlung war nach mehreren Versuchen nicht einzuziehen, deshalb endete das Abo und für das Konto gilt wieder der kostenlose Tarif.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "Die Zahlung für Ihren einmaligen Kauf wurde zurückerstattet, deshalb gilt für das Konto wieder der kostenlose Tarif.",
+    "The payment needs confirming before the subscription can move up.": "Die Zahlung muss bestätigt werden, bevor das Abo auf ein längeres umgestellt werden kann.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "Die Zahlung wurde am :date zurückgebucht, daher fällt das Konto auf den kostenlosen Tarif zurück. Nichts wurde gelöscht.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "Die Zahlung wurde bei Ihrer Bank angefochten, deshalb gilt für das Konto wieder der kostenlose Tarif, solange das geklärt wird.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "Die Zahlung wurde am :date erstattet, daher fällt das Konto auf den kostenlosen Tarif zurück. Nichts wurde gelöscht.",

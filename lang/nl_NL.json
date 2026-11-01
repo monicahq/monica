@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "Het wachtwoord waarmee het e-mailtransport zich aanmeldt.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "De betaling kon na meerdere pogingen niet worden afgeschreven, dus het abonnement is geëindigd en het account valt terug op het gratis pakket.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "De betaling voor je eenmalige aankoop is terugbetaald, dus het account valt terug op het gratis pakket.",
+    "The payment needs confirming before the subscription can move up.": "De betaling moet worden bevestigd voordat het abonnement kan worden omgezet naar een langer abonnement.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "De betaling is op :date teruggevorderd, dus het account gaat terug naar het gratis pakket. Er is niets verwijderd.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "De betaling is bij je bank betwist, dus het account valt terug op het gratis pakket zolang dat wordt uitgezocht.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "De betaling is op :date terugbetaald, dus het account gaat terug naar het gratis pakket. Er is niets verwijderd.",

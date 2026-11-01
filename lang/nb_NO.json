@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "Passordet e-posttransporten logger inn med.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "Betalingen kunne ikke gjennomføres etter flere forsøk, så abonnementet ble avsluttet og kontoen er tilbake på gratisplanen.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "Betalingen for engangskjøpet ditt er refundert, så kontoen er tilbake på gratisplanen.",
+    "The payment needs confirming before the subscription can move up.": "Betalingen må bekreftes før abonnementet kan flyttes opp.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "Betalingen ble trukket tilbake av banken den :date, så kontoen er tilbake på gratisplanen. Ingenting ble slettet.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "Betalingen ble bestridt overfor banken din, så kontoen er tilbake på gratisplanen mens det avklares.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "Betalingen ble refundert den :date, så kontoen er tilbake på gratisplanen. Ingenting ble slettet.",

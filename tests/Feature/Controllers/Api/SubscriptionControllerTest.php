@@ -69,6 +69,31 @@ class SubscriptionControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_hands_back_where_to_confirm_the_payment_when_it_needs_confirming(): void
+    {
+        $michael = User::factory()->create();
+        $this->subscribeAccount($michael->account, 'price_monthly');
+        $this->stripe->respondTo('subscriptions/*', [
+            ...$this->stripeSubscription('price_yearly', 'past_due'),
+            'latest_invoice' => [
+                'id' => 'in_dundermifflin',
+                'object' => 'invoice',
+                'payments' => [
+                    'object' => 'list',
+                    'data' => [['object' => 'invoice_payment', 'payment' => ['type' => 'payment_intent', 'payment_intent' => 'pi_dundermifflin']]],
+                ],
+            ],
+        ]);
+        $this->stripe->respondTo('payment_intents/*', ['id' => 'pi_dundermifflin', 'object' => 'payment_intent', 'status' => 'requires_action']);
+        Sanctum::actingAs($michael);
+
+        $this->json('PUT', route('api.v1.billing.subscription.update'), ['price_id' => 'price_yearly'])
+            ->assertStatus(402)
+            ->assertJsonPath('message', 'The payment needs confirming before the subscription can move up.')
+            ->assertJsonPath('payment_url', route('cashier.payment', ['pi_dundermifflin']));
+    }
+
+    #[Test]
     public function it_cancels_at_the_end_of_the_paid_period_and_answers_nothing(): void
     {
         $this->travelTo(CarbonImmutable::parse('2026-09-20 12:00:00', 'UTC'));

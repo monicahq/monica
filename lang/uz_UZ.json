@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "Pochta uzatgichi kiradigan parol.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "Bir necha urinishdan keyin ham toʻlovni yechib boʻlmadi, shu sababli obuna tugadi va hisob bepul tarifga qaytdi.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "Bir martalik xaridingiz uchun toʻlov qaytarildi, shu sababli hisob bepul tarifga qaytdi.",
+    "The payment needs confirming before the subscription can move up.": "Obunani uzoqroq muddatliga koʻchirishdan oldin toʻlovni tasdiqlash kerak.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "Toʻlov :date kuni bankda qaytarib olindi, shu sababli hisob bepul tarifga qaytdi. Hech narsa oʻchirilmadi.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "Toʻlov bankingizda daʼvo qilindi, shu sababli u hal boʻlgunga qadar hisob bepul tarifga qaytdi.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "Toʻlov :date kuni qaytarildi, shu sababli hisob bepul tarifga qaytdi. Hech narsa oʻchirilmadi.",

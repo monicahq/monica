@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "அஞ்சல் கடத்தி உள்நுழையும் கடவுச்சொல்.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "பல முயற்சிகளுக்குப் பிறகும் கட்டணத்தை வசூலிக்க முடியவில்லை, எனவே சந்தா முடிந்தது, கணக்கு இலவச திட்டத்துக்குத் திரும்பியது.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "உங்கள் ஒருமுறை வாங்கலுக்கான கட்டணம் திரும்பச் செலுத்தப்பட்டது, எனவே கணக்கு இலவச திட்டத்துக்குத் திரும்பியது.",
+    "The payment needs confirming before the subscription can move up.": "சந்தாவை நீண்ட ஒன்றுக்கு மாற்றும் முன் கட்டணத்தை உறுதிப்படுத்த வேண்டும்.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "கட்டணம் :date அன்று வங்கியில் திரும்பப் பெறப்பட்டது, எனவே கணக்கு இலவச திட்டத்துக்குத் திரும்பியது. எதுவும் நீக்கப்படவில்லை.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "கட்டணத்திற்கு உங்கள் வங்கியில் மறுப்பு தெரிவிக்கப்பட்டது, எனவே அது தீரும் வரை கணக்கு இலவச திட்டத்துக்குத் திரும்பியுள்ளது.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "கட்டணம் :date அன்று திரும்பச் செலுத்தப்பட்டது, எனவே கணக்கு இலவச திட்டத்துக்குத் திரும்பியது. எதுவும் நீக்கப்படவில்லை.",

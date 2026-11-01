@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "वह पासवर्ड जिससे मेल परिवहन साइन इन करता है।",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "कई प्रयासों के बाद भी भुगतान नहीं लिया जा सका, इसलिए सदस्यता समाप्त हुई और खाता निःशुल्क प्लान पर लौट आया।",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "आपकी एक बार की खरीद का भुगतान वापस कर दिया गया, इसलिए खाता निःशुल्क प्लान पर लौट आया।",
+    "The payment needs confirming before the subscription can move up.": "सदस्यता लंबी अवधि पर जाने से पहले भुगतान की पुष्टि करनी होगी।",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "भुगतान :date को बैंक से वापस ले लिया गया, इसलिए खाता निःशुल्क प्लान पर लौट आया। कुछ भी मिटाया नहीं गया।",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "भुगतान पर आपके बैंक के साथ विवाद हुआ, इसलिए जब तक वह तय हो, खाता निःशुल्क प्लान पर लौट आया है।",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "भुगतान :date को वापस कर दिया गया, इसलिए खाता निःशुल्क प्लान पर लौट आया। कुछ भी मिटाया नहीं गया।",

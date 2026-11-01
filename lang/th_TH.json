@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "รหัสผ่านที่ระบบส่งอีเมลใช้เข้าสู่ระบบ",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "เรียกเก็บเงินไม่สำเร็จหลังพยายามหลายครั้ง จึงยุติการสมัคร และบัญชีกลับไปที่แพ็กเกจฟรี",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "เงินค่าซื้อครั้งเดียวของคุณได้รับการคืนแล้ว จึงทำให้บัญชีกลับไปที่แพ็กเกจฟรี",
+    "The payment needs confirming before the subscription can move up.": "ต้องยืนยันการชำระเงินก่อนจึงจะย้ายการสมัครขึ้นได้",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "การชำระเงินถูกเรียกคืนที่ธนาคารเมื่อวันที่ :date จึงทำให้บัญชีกลับไปที่แพ็กเกจฟรี ไม่มีอะไรถูกลบ",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "การชำระเงินถูกโต้แย้งกับธนาคารของคุณ จึงทำให้บัญชีกลับไปที่แพ็กเกจฟรีจนกว่าเรื่องจะยุติ",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "การชำระเงินได้รับการคืนเมื่อวันที่ :date จึงทำให้บัญชีกลับไปที่แพ็กเกจฟรี ไม่มีอะไรถูกลบ",

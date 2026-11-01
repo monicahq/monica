@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "Ang password na ginagamit ng transport ng mail sa pag-sign in.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "Hindi nakuha ang bayad kahit paulit-ulit na sinubukan, kaya natapos ang subscription at bumalik ang account sa libreng plano.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "Naibalik ang bayad sa minsanang pagbili mo, kaya bumalik ang account sa libreng plano.",
+    "The payment needs confirming before the subscription can move up.": "Kailangang kumpirmahin ang bayad bago mailipat ang subscription.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "Binawi ng bangko ang bayad noong :date, kaya bumalik ang account sa libreng plano. Walang nabura.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "Kinuwestiyon ang bayad sa bangko mo, kaya bumalik ang account sa libreng plano habang hindi pa nalilinaw iyon.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "Naibalik ang bayad noong :date, kaya bumalik ang account sa libreng plano. Walang nabura.",

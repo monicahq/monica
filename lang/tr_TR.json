@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "Posta taşıyıcısının oturum açarken kullandığı parola.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "Ödeme birkaç denemeden sonra alınamadı, bu yüzden abonelik sona erdi ve hesap ücretsiz plana döndü.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "Tek seferlik satın alımınızın ödemesi geri ödendi, bu yüzden hesap ücretsiz plana döndü.",
+    "The payment needs confirming before the subscription can move up.": "Aboneliğin daha uzun bir teklife geçebilmesi için ödemenin onaylanması gerekiyor.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "Ödeme :date tarihinde bankadan geri çekildi, bu yüzden hesap ücretsiz plana geri döndü. Hiçbir şey silinmedi.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "Ödeme bankanız üzerinden itiraza konu oldu, bu yüzden konu çözülene kadar hesap ücretsiz plana döndü.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "Ödeme :date tarihinde iade edildi, bu yüzden hesap ücretsiz plana geri döndü. Hiçbir şey silinmedi.",

@@ -11,6 +11,7 @@ use App\Exceptions\SubscriptionCannotBeChanged;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class SubscriptionController extends Controller
 {
@@ -20,6 +21,8 @@ class SubscriptionController extends Controller
             $subscription = new UpgradeSubscription(user: $request->user(), priceId: $price)->execute();
         } catch (AccountHasNoSubscription|SubscriptionCannotBeChanged $e) {
             return redirect()->route('settings.billing.index')->withErrors(['subscription' => $e->getMessage()]);
+        } catch (IncompletePayment $e) {
+            return redirect()->route('cashier.payment', [$e->payment->asStripePaymentIntent()->id, 'redirect' => route('settings.billing.index')]);
         }
 
         return redirect()->route('settings.billing.index')

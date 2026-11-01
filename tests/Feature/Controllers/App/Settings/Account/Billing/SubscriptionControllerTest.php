@@ -43,6 +43,30 @@ class SubscriptionControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_sends_a_payment_that_needs_confirming_to_the_confirmation_page(): void
+    {
+        $michael = User::factory()->create();
+        $this->subscribeAccount($michael->account, 'price_monthly');
+        $this->stripe->respondTo('subscriptions/*', [
+            ...$this->stripeSubscription('price_yearly', 'past_due'),
+            'latest_invoice' => [
+                'id' => 'in_dundermifflin',
+                'object' => 'invoice',
+                'payments' => [
+                    'object' => 'list',
+                    'data' => [['object' => 'invoice_payment', 'payment' => ['type' => 'payment_intent', 'payment_intent' => 'pi_dundermifflin']]],
+                ],
+            ],
+        ]);
+        $this->stripe->respondTo('payment_intents/*', ['id' => 'pi_dundermifflin', 'object' => 'payment_intent', 'status' => 'requires_action']);
+
+        $response = $this->actingAs($michael)
+            ->put(route('settings.subscription.update', ['price' => 'price_yearly']));
+
+        $response->assertRedirect(route('cashier.payment', ['pi_dundermifflin', 'redirect' => route('settings.billing.index')]));
+    }
+
+    #[Test]
     public function it_refuses_a_move_it_cannot_make(): void
     {
         $michael = User::factory()->create();

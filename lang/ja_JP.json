@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "メール送信がサインインに使うパスワード。",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "何度試しても支払いを受け取れなかったため、サブスクリプションは終了し、アカウントは無料プランに戻りました。",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "買い切り購入の支払いが返金されたため、アカウントは無料プランに戻りました。",
+    "The payment needs confirming before the subscription can move up.": "サブスクリプションを長い期間へ変更するには、支払いの確認が必要です。",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "支払いが :date に銀行で取り消されたため、アカウントは無料プランに戻りました。何も削除されていません。",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "支払いについてお客様の銀行で異議が申し立てられたため、解決までアカウントは無料プランに戻っています。",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "支払いが :date に返金されたため、アカウントは無料プランに戻りました。何も削除されていません。",

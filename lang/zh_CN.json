@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "邮件传输登录所用的密码。",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "多次尝试后仍无法收款，因此订阅结束，账户回到免费方案。",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "你一次性购买的款项已退回，因此账户回到免费方案。",
+    "The payment needs confirming before the subscription can move up.": "需要先确认付款，订阅才能换成更长的周期。",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "该付款于 :date 在银行被撤回，因此账户回到免费方案。没有删除任何内容。",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "该付款在你的银行遭到争议，因此在事情解决之前，账户回到免费方案。",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "该付款于 :date 已退回，因此账户回到免费方案。没有删除任何内容。",

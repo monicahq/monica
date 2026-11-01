@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "An pasfhocal a shíníonn an t-iompar poist isteach leis.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "Níorbh fhéidir an íocaíocht a bhaint tar éis roinnt iarrachtaí, mar sin chríochnaigh an síntiús agus tá an cuntas ar an bplean saor in aisce arís.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "Aisíocadh an íocaíocht ar do cheannach aonuaire, mar sin tá an cuntas ar an bplean saor in aisce arís.",
+    "The payment needs confirming before the subscription can move up.": "Ní mór an íocaíocht a dheimhniú sular féidir an síntiús a bhogadh suas.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "Tarraingíodh an íocaíocht siar ag an mbanc ar :date, mar sin tá an cuntas ar an bplean saor in aisce arís. Níor scriosadh aon rud.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "Cuireadh an íocaíocht faoi dhíospóid le do bhanc, mar sin tá an cuntas ar an bplean saor in aisce go dtí go réitítear é.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "Aisíocadh an íocaíocht ar :date, mar sin tá an cuntas ar an bplean saor in aisce arís. Níor scriosadh aon rud.",

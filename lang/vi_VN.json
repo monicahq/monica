@@ -3058,6 +3058,7 @@
     "The password the mail transport signs in with.": "Mật khẩu mà bộ gửi thư dùng để đăng nhập.",
     "The payment could not be taken after several attempts, so the subscription ended and the account is back on the free plan.": "Không thu được tiền sau nhiều lần thử, nên đăng ký đã kết thúc và tài khoản trở lại gói miễn phí.",
     "The payment for your one time purchase was refunded, so the account is back on the free plan.": "Khoản thanh toán cho lần mua một lần của bạn đã được hoàn, nên tài khoản trở lại gói miễn phí.",
+    "The payment needs confirming before the subscription can move up.": "Cần xác nhận thanh toán trước khi đăng ký có thể chuyển lên.",
     "The payment was charged back on :date, so the account is back on the free plan. Nothing was deleted.": "Khoản thanh toán bị ngân hàng thu hồi ngày :date, nên tài khoản trở lại gói miễn phí. Không có gì bị xóa.",
     "The payment was disputed with your bank, so the account is back on the free plan while that is settled.": "Khoản thanh toán bị khiếu nại với ngân hàng của bạn, nên tài khoản trở lại gói miễn phí cho đến khi việc đó được giải quyết.",
     "The payment was refunded on :date, so the account is back on the free plan. Nothing was deleted.": "Khoản thanh toán đã được hoàn ngày :date, nên tài khoản trở lại gói miễn phí. Không có gì bị xóa.",
