@@ -529,6 +529,32 @@ class ContactRelationshipControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_to_remove_a_relationship_that_does_not_involve_the_contact(): void
+    {
+        $user = User::factory()->create();
+        $michael = $this->contactOf($user, 'Michael', 'Scott');
+        $dwight = $this->contactOn($michael->vault, 'Dwight', 'Schrute');
+        $jim = $this->contactOn($michael->vault, 'Jim', 'Halpert');
+        $relationship = Relationship::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $michael->vault_id,
+            'relationship_type_id' => $this->typesOf($user)['sibling']->id,
+            'contact_a_id' => $jim->id,
+            'contact_b_id' => $dwight->id,
+        ]);
+
+        $this->actingAs($user)
+            ->delete(route('contacts.relationships.destroy', [
+                'vault' => $michael->vault,
+                'contact' => $michael,
+                'relationship' => $relationship,
+            ]))
+            ->assertStatus(404);
+
+        $this->assertNotSoftDeleted($relationship);
+    }
+
+    #[Test]
     public function it_refuses_a_relationship_reached_through_the_wrong_vault(): void
     {
         $user = User::factory()->create();

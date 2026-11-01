@@ -156,6 +156,7 @@ class ContactRelationshipController extends Controller
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
         abort_unless($relationship->vault_id === $vault->id, 404);
+        abort_unless($relationship->involves($contact), 404);
 
         new DestroyRelationship(
             user: $request->user(),
