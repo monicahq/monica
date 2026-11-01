@@ -132,8 +132,9 @@ abstract class TestCase extends BaseTestCase
             'customer' => 'cus_dundermifflin',
             'amount' => 19900,
             'amount_refunded' => 19900,
-            'invoice' => 'in_dundermifflin',
+            'payment_intent' => 'pi_dundermifflin',
         ]);
+        $client->respondTo('invoice_payments*', $this->stripeInvoicePayments('in_dundermifflin'));
         $client->respondTo('subscriptions*', $this->stripeSubscription());
         $client->respondTo('subscription_items*', [
             'id' => 'si_dundermifflin',
@@ -212,6 +213,26 @@ abstract class TestCase extends BaseTestCase
                     'usd' => ['unit_amount' => $dollars[$kind]],
                 ],
             ], $kinds),
+        ];
+    }
+
+    /**
+     * The invoice payments Stripe lists for one payment intent, which is how a charge leads back
+     * to its invoice.
+     *
+     * @return array<string, mixed>
+     */
+    protected function stripeInvoicePayments(string $invoiceId): array
+    {
+        return [
+            'object' => 'list',
+            'url' => '/v1/invoice_payments',
+            'has_more' => false,
+            'data' => [[
+                'id' => "inpay_{$invoiceId}",
+                'object' => 'invoice_payment',
+                'invoice' => $invoiceId,
+            ]],
         ];
     }
 

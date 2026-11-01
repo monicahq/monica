@@ -79,7 +79,7 @@ class HandleStripeDisputeClosedTest extends TestCase
             'id' => 'ch_dundermifflin',
             'object' => 'charge',
             'customer' => 'cus_nobody',
-            'invoice' => 'in_dundermifflin',
+            'payment_intent' => 'pi_dundermifflin',
         ]);
 
         new HandleStripeDisputeClosed()->handle(new WebhookReceived($this->event('won')));

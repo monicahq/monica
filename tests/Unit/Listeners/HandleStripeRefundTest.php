@@ -64,7 +64,7 @@ class HandleStripeRefundTest extends TestCase
             'customer' => 'cus_dundermifflin',
             'amount' => 19900,
             'amount_refunded' => 0,
-            'invoice' => 'in_dundermifflin',
+            'payment_intent' => 'pi_dundermifflin',
         ]);
 
         new HandleStripeRefund()->handle(new WebhookReceived($this->dispute()));
@@ -146,12 +146,30 @@ class HandleStripeRefundTest extends TestCase
             'stripe_subscription_id' => 'sub_dundermifflin',
         ]);
 
-        $payload = $this->refund();
-        $payload['data']['object']['invoice'] = 'in_renewal';
+        $this->stripe->respondTo('invoice_payments*', $this->stripeInvoicePayments('in_renewal'));
 
-        new HandleStripeRefund()->handle(new WebhookReceived($payload));
+        new HandleStripeRefund()->handle(new WebhookReceived($this->refund()));
 
         $this->assertFalse($subscription->fresh()->valid());
+    }
+
+    #[Test]
+    public function it_keeps_the_lifetime_purchase_when_the_last_renewal_before_it_is_refunded(): void
+    {
+        $michael = $this->somebodyWhoBought();
+        $this->subscribeAccount($michael->account, endsAt: now()->addWeeks(2)->toImmutable());
+        Payment::factory()->forSubscription()->create([
+            'account_id' => $michael->account_id,
+            'stripe_id' => 'in_renewal',
+            'stripe_subscription_id' => 'sub_dundermifflin',
+        ]);
+
+        $this->stripe->respondTo('invoice_payments*', $this->stripeInvoicePayments('in_renewal'));
+
+        new HandleStripeRefund()->handle(new WebhookReceived($this->refund()));
+
+        $this->assertDatabaseHas('stripe_orders', ['account_id' => $michael->account_id, 'stripe_status' => StripeOrder::PAID]);
+        $this->assertTrue($michael->account->fresh()->hasFullAccess());
     }
 
     #[Test]
@@ -204,7 +222,7 @@ class HandleStripeRefundTest extends TestCase
                 'customer' => 'cus_dundermifflin',
                 'amount' => 19900,
                 'amount_refunded' => 19900,
-                'invoice' => 'in_dundermifflin',
+                'payment_intent' => 'pi_dundermifflin',
             ]],
         ];
     }

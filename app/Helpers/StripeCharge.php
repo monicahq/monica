@@ -69,14 +69,14 @@ class StripeCharge
     }
 
     /**
-     * The payment the charge settled, when the charge names the invoice behind it. Null leaves the
-     * caller to work from what the account holds instead, which ends in the same place.
+     * The payment the charge settled, found through the invoice behind it. Null leaves the caller
+     * to work from what the account holds instead.
      *
      * @param  array<string, mixed>  $charge
      */
     public static function paymentFor(array $charge): ?Payment
     {
-        $invoiceId = $charge['invoice'] ?? null;
+        $invoiceId = $charge['invoice'] ?? self::invoiceBehind($charge['payment_intent'] ?? null);
 
         if (is_array($invoiceId)) {
             $invoiceId = $invoiceId['id'] ?? null;
@@ -87,5 +87,36 @@ class StripeCharge
         }
 
         return Payment::query()->where('stripe_id', $invoiceId)->first();
+    }
+
+    /**
+     * Since the dahlia API version a charge no longer names its invoice, so the invoice is asked
+     * for through the payment intent the charge settled.
+     */
+    private static function invoiceBehind(mixed $paymentIntent): mixed
+    {
+        if (is_array($paymentIntent)) {
+            $paymentIntent = $paymentIntent['id'] ?? null;
+        }
+
+        if (! is_string($paymentIntent) || $paymentIntent === '') {
+            return null;
+        }
+
+        try {
+            $invoicePayments = Cashier::stripe()->invoicePayments->all([
+                'payment' => ['type' => 'payment_intent', 'payment_intent' => $paymentIntent],
+                'limit' => 1,
+            ]);
+        } catch (Exception $exception) {
+            Log::warning('Stripe would not say which invoice a payment intent paid.', [
+                'payment_intent' => $paymentIntent,
+                'reason' => $exception->getMessage(),
+            ]);
+
+            return null;
+        }
+
+        return $invoicePayments->first()?->toArray()['invoice'] ?? null;
     }
 }

@@ -93,21 +93,55 @@ class StripeChargeTest extends TestCase
     }
 
     #[Test]
-    public function it_finds_the_payment_the_charge_settled(): void
+    public function it_finds_the_payment_the_charge_settled_through_its_payment_intent(): void
     {
+        $client = $this->fakeStripe();
+        $payment = Payment::factory()->create(['stripe_id' => 'in_dundermifflin']);
+
+        $this->assertTrue($payment->is(StripeCharge::paymentFor(['payment_intent' => 'pi_dundermifflin'])));
+        $this->assertTrue($payment->is(StripeCharge::paymentFor(['payment_intent' => ['id' => 'pi_dundermifflin']])));
+        $this->assertSame(
+            ['type' => 'payment_intent', 'payment_intent' => 'pi_dundermifflin'],
+            $client->lastParams('GET invoice_payments')['payment'],
+        );
+    }
+
+    #[Test]
+    public function it_reads_the_invoice_a_charge_still_names(): void
+    {
+        $client = $this->fakeStripe();
         $payment = Payment::factory()->create(['stripe_id' => 'in_dundermifflin']);
 
         $this->assertTrue($payment->is(StripeCharge::paymentFor(['invoice' => 'in_dundermifflin'])));
         $this->assertTrue($payment->is(StripeCharge::paymentFor(['invoice' => ['id' => 'in_dundermifflin']])));
+        $this->assertFalse($client->sent('GET invoice_payments'));
     }
 
     #[Test]
-    public function it_finds_no_payment_when_the_charge_names_no_invoice(): void
+    public function it_finds_no_payment_when_the_charge_leads_to_no_invoice_here(): void
     {
+        $client = $this->fakeStripe();
         Payment::factory()->create(['stripe_id' => 'in_dundermifflin']);
 
         $this->assertNull(StripeCharge::paymentFor([]));
-        $this->assertNull(StripeCharge::paymentFor(['invoice' => null]));
+        $this->assertNull(StripeCharge::paymentFor(['payment_intent' => null]));
         $this->assertNull(StripeCharge::paymentFor(['invoice' => 'in_nobody']));
+
+        $client->respondTo('invoice_payments*', ['object' => 'list', 'url' => '/v1/invoice_payments', 'has_more' => false, 'data' => []]);
+
+        $this->assertNull(StripeCharge::paymentFor(['payment_intent' => 'pi_dundermifflin']));
+    }
+
+    #[Test]
+    public function it_writes_down_a_payment_intent_stripe_will_not_answer_for(): void
+    {
+        Log::spy();
+
+        $client = $this->fakeStripe();
+        $client->failOn('invoice_payments*');
+        Payment::factory()->create(['stripe_id' => 'in_dundermifflin']);
+
+        $this->assertNull(StripeCharge::paymentFor(['payment_intent' => 'pi_dundermifflin']));
+        Log::shouldHaveReceived('warning')->once();
     }
 }
