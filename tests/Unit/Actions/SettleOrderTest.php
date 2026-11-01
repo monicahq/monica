@@ -148,6 +148,63 @@ class SettleOrderTest extends TestCase
     }
 
     #[Test]
+    public function it_unlocks_nothing_when_another_run_settles_the_order_after_it_was_read(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        $jim = User::factory()->create(['email' => 'jim.halpert@dundermifflin.com']);
+        $order = StripeOrder::factory()->create(['account_id' => $jim->account_id, 'stripe_id' => 'cs_test_stamford']);
+        $settledElsewhere = false;
+
+        StripeOrder::retrieved(function (StripeOrder $retrieved) use (&$settledElsewhere): void {
+            if ($settledElsewhere) {
+                return;
+            }
+
+            $settledElsewhere = true;
+            StripeOrder::query()->whereKey($retrieved->id)->update(['stripe_status' => StripeOrder::PAID]);
+        });
+
+        $result = new SettleOrder(
+            account: $jim->account,
+            sessionId: 'cs_test_stamford',
+            session: $this->stripeCheckoutSession(id: 'cs_test_stamford', paymentStatus: 'paid'),
+        )->execute();
+
+        $this->assertSame($order->id, $result?->id);
+        $this->assertDatabaseHas('stripe_orders', ['id' => $order->id, 'stripe_status' => StripeOrder::PAID]);
+        Notification::assertNothingSent();
+        Queue::assertNotPushed(LogUserAction::class);
+    }
+
+    #[Test]
+    public function it_never_settles_again_an_order_that_was_refunded(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        $toby = User::factory()->create(['email' => 'toby.flenderson@dundermifflin.com']);
+        $order = StripeOrder::factory()->create([
+            'account_id' => $toby->account_id,
+            'stripe_id' => 'cs_test_costa_rica',
+            'stripe_status' => StripeOrder::REFUNDED,
+        ]);
+
+        $settled = new SettleOrder(
+            account: $toby->account,
+            sessionId: 'cs_test_costa_rica',
+            session: $this->stripeCheckoutSession(id: 'cs_test_costa_rica', paymentStatus: 'paid'),
+        )->execute();
+
+        $this->assertNull($settled);
+        $this->assertDatabaseHas('stripe_orders', ['id' => $order->id, 'stripe_status' => StripeOrder::REFUNDED]);
+        $this->assertFalse($toby->account->fresh()->hasFullAccess());
+        Notification::assertNothingSent();
+        Queue::assertNotPushed(LogUserAction::class);
+    }
+
+    #[Test]
     public function it_refuses_an_account_that_already_holds_the_purchase(): void
     {
         Queue::fake();

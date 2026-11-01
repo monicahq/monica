@@ -20,9 +20,11 @@ use Laravel\Cashier\Cashier;
  * Settle the order behind a checkout session Stripe says was paid, which is what opens full access
  * bought outright.
  *
- * Two things reach here and neither may unlock twice, so the idempotence is here rather than in
- * them: the buyer coming back to the address Stripe redirects them to, and Stripe's own confirmation
- * that the session completed, which is what covers a buyer who closes the tab. The order is matched
+ * Two things reach here, often at the same moment, and neither may unlock twice, so the idempotence
+ * is here rather than in them: the buyer coming back to the address Stripe redirects them to, and
+ * Stripe's own confirmation that the session completed, which is what covers a buyer who closes the
+ * tab. The order is marked paid in one conditional write, and only the run that wrote it unlocks. An
+ * order already refunded or disputed is never paid again by a replay. The order is matched
  * on the session and the account together, so a session belonging to somebody else finds nothing.
  *
  * A second purchase on an account that already holds one is refused, because money was taken for
@@ -61,7 +63,12 @@ class SettleOrder
         }
 
         $this->validate($order);
-        $this->settle($order, (string) $session['payment_status']);
+
+        if (! $this->claim($order)) {
+            return $order->refresh()->isSettled() ? $order : null;
+        }
+
+        $this->settle();
         $this->stopTheSubscriptionRenewing();
         $this->notify();
         $this->log($order);
@@ -103,11 +110,24 @@ class SettleOrder
         }
     }
 
-    private function settle(StripeOrder $order, string $status): void
+    private function claim(StripeOrder $order): bool
     {
-        $order->stripe_status = $status;
-        $order->save();
+        $claimed = StripeOrder::query()
+            ->whereKey($order->id)
+            ->whereNotIn('stripe_status', [StripeOrder::PAID, StripeOrder::REFUNDED, StripeOrder::DISPUTED])
+            ->update(['stripe_status' => StripeOrder::PAID]);
 
+        if ($claimed === 0) {
+            return false;
+        }
+
+        $order->refresh();
+
+        return true;
+    }
+
+    private function settle(): void
+    {
         $this->account->billing_email = $this->account->stripeEmail() ?? $this->account->billing_email;
         $this->account->save();
         $this->account->unsetRelation('orders');

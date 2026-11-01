@@ -26,7 +26,8 @@ use Illuminate\Support\Facades\Log;
  * No charge is ever translated back into a checkout session: an account holds at most one purchase,
  * so the account the charge names is enough to find the order. Money back on an account holding
  * neither a purchase nor a subscription is written to the log at error level rather than dropped,
- * since somebody has to look at money that came back from nothing.
+ * since somebody has to look at money that came back from nothing. Stripe sending the same refund
+ * again finds the purchase already withdrawn or the subscription already ended, and changes nothing.
  *
  * Either way the order and the payment row stay, so the history survives, and nothing is said to
  * somebody who still holds full access another way, such as through a grant.
@@ -41,7 +42,9 @@ class EndAccess
 
     public function execute(): Account
     {
-        $this->withdrawWhatTheMoneyPaidFor();
+        if (! $this->withdrawWhatTheMoneyPaidFor()) {
+            return $this->account;
+        }
 
         if ($this->stillHoldsFullAccess()) {
             return $this->account;
@@ -53,19 +56,29 @@ class EndAccess
         return $this->account;
     }
 
-    private function withdrawWhatTheMoneyPaidFor(): void
+    private function withdrawWhatTheMoneyPaidFor(): bool
     {
         if (! $this->moneyWasGivenBack()) {
-            return;
+            return true;
         }
 
         if ($this->paidForASubscription()) {
-            $this->account->subscription()?->cancelNow();
+            $subscription = $this->account->subscription();
 
-            return;
+            if ($subscription?->ended()) {
+                return false;
+            }
+
+            $subscription?->cancelNow();
+
+            return true;
         }
 
         $order = $this->account->settledOrder();
+
+        if ($order === null && $this->account->orders->whereIn('stripe_status', [StripeOrder::REFUNDED, StripeOrder::DISPUTED])->isNotEmpty()) {
+            return false;
+        }
 
         if ($order === null) {
             Log::error('Stripe gave money back on an account holding nothing to withdraw.', [
@@ -74,15 +87,17 @@ class EndAccess
                 'payment' => $this->payment?->stripe_id,
             ]);
 
-            return;
+            return true;
         }
 
-        $order->stripe_status = $this->reason === AccessEndReasonEnum::Disputed
-            ? StripeOrder::DISPUTED
-            : StripeOrder::REFUNDED;
-        $order->save();
+        $withdrawn = StripeOrder::query()
+            ->whereKey($order->id)
+            ->where('stripe_status', StripeOrder::PAID)
+            ->update(['stripe_status' => $this->reason === AccessEndReasonEnum::Disputed ? StripeOrder::DISPUTED : StripeOrder::REFUNDED]);
 
         $this->account->unsetRelation('orders');
+
+        return $withdrawn === 1;
     }
 
     /**

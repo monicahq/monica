@@ -84,6 +84,41 @@ class EndAccessTest extends TestCase
     }
 
     #[Test]
+    public function it_changes_nothing_when_stripe_sends_the_same_refund_of_the_purchase_again(): void
+    {
+        Log::spy();
+
+        $dwight = User::factory()->create(['email' => 'dwight.schrute@dundermifflin.com']);
+        $order = StripeOrder::factory()->settled()->create(['account_id' => $dwight->account_id]);
+        $payment = Payment::factory()->create(['account_id' => $dwight->account_id, 'stripe_subscription_id' => null]);
+
+        new EndAccess(account: $dwight->account, reason: AccessEndReasonEnum::Refunded, payment: $payment)->execute();
+        new EndAccess(account: $dwight->account->fresh(), reason: AccessEndReasonEnum::Refunded, payment: $payment)->execute();
+
+        $this->assertDatabaseHas('stripe_orders', ['id' => $order->id, 'stripe_status' => StripeOrder::REFUNDED]);
+        Notification::assertSentToTimes($dwight, AccessEnded::class, 1);
+        Queue::assertPushed(LogUserAction::class, 1);
+        Log::shouldNotHaveReceived('error');
+    }
+
+    #[Test]
+    public function it_changes_nothing_when_stripe_sends_the_same_refund_of_a_renewal_again(): void
+    {
+        $pam = User::factory()->create(['email' => 'pam.beesly@dundermifflin.com']);
+        $this->subscribeAccount($pam->account);
+        $payment = Payment::factory()->forSubscription()->create([
+            'account_id' => $pam->account_id,
+            'stripe_subscription_id' => 'sub_dundermifflin',
+        ]);
+
+        new EndAccess(account: $pam->account, reason: AccessEndReasonEnum::Refunded, payment: $payment)->execute();
+        new EndAccess(account: $pam->account->fresh(), reason: AccessEndReasonEnum::Refunded, payment: $payment)->execute();
+
+        Notification::assertSentToTimes($pam, AccessEnded::class, 1);
+        Queue::assertPushed(LogUserAction::class, 1);
+    }
+
+    #[Test]
     public function it_withdraws_whatever_the_account_holds_when_nothing_names_the_payment(): void
     {
         $michael = User::factory()->create();
