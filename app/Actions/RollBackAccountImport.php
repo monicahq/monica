@@ -254,7 +254,9 @@ class RollBackAccountImport
     {
         $added = AccountImportItem::query()
             ->where('account_import_id', $this->import->id)
-            ->get(['payload'])
+            ->whereNotNull('payload->value_list_items')
+            ->select(['id', 'payload'])
+            ->lazyById(500)
             ->flatMap(fn (AccountImportItem $item): array => (array) ($item->payload['value_list_items'] ?? []));
 
         ValueListItem::withTrashed()
