@@ -61,6 +61,29 @@ class TwoFactorChallengeControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_stops_accepting_codes_after_five_wrong_ones(): void
+    {
+        $google2fa = new Google2FA;
+        $secret = $google2fa->generateSecretKey();
+        $user = User::factory()->twoFactor($secret)->create();
+
+        for ($attempt = 0; $attempt < 5; $attempt++) {
+            $this->withSession(['twoFactor.user.id' => $user->id])
+                ->post(route('auth.twoFactor.create'), ['code' => '000000']);
+        }
+
+        $response = $this->withSession(['twoFactor.user.id' => $user->id])
+            ->from(route('auth.twoFactor.new'))
+            ->post(route('auth.twoFactor.create'), [
+                'code' => $google2fa->getCurrentOtp($secret),
+            ]);
+
+        $response->assertRedirect(route('auth.twoFactor.new'));
+        $response->assertSessionHasErrors('code');
+        $this->assertGuest();
+    }
+
+    #[Test]
     public function it_warns_about_a_sign_in_without_a_password_once_the_code_is_right(): void
     {
         Notification::fake();

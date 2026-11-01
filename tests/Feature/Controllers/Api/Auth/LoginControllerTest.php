@@ -165,6 +165,33 @@ class LoginControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_stops_accepting_codes_after_five_wrong_ones(): void
+    {
+        Queue::fake();
+
+        $secret = new Google2FA()->generateSecretKey();
+        User::factory()->twoFactor($secret)->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        for ($attempt = 0; $attempt < 5; $attempt++) {
+            $this->json('POST', '/api/v1/login', [
+                'email' => 'michael.scott@dundermifflin.com',
+                'password' => 'password',
+                'code' => '000000',
+            ]);
+        }
+
+        $response = $this->json('POST', '/api/v1/login', [
+            'email' => 'michael.scott@dundermifflin.com',
+            'password' => 'password',
+            'code' => new Google2FA()->getCurrentOtp($secret),
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('code');
+        $this->assertDatabaseCount('personal_access_tokens', 0);
+    }
+
+    #[Test]
     public function it_hands_back_a_token_when_the_second_factor_is_right(): void
     {
         Queue::fake();

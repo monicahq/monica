@@ -6,14 +6,21 @@ namespace App\Actions;
 
 use App\Helpers\TextSanitizer;
 use App\Models\User;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 use PragmaRX\Google2FA\Google2FA;
 
 /**
  * Check the code somebody typed at the two factor challenge, against the code their authenticator
- * app is showing, and failing that against their recovery codes.
+ * app is showing, and failing that against their recovery codes. Five wrong codes in a row lock the
+ * challenge for that person for a few minutes, whatever address the guesses come from.
  */
 class VerifyTwoFactorCode
 {
+    private const MAX_ATTEMPTS = 5;
+
+    private const DECAY_SECONDS = 300;
+
     private string $code;
 
     public function __construct(
@@ -25,11 +32,35 @@ class VerifyTwoFactorCode
 
     public function execute(): bool
     {
-        if ($this->verifyTimedCode()) {
+        $this->validate();
+
+        if ($this->verifyTimedCode() || $this->verifyRecoveryCode()) {
+            RateLimiter::clear($this->throttleKey());
+
             return true;
         }
 
-        return $this->verifyRecoveryCode();
+        RateLimiter::hit($this->throttleKey(), self::DECAY_SECONDS);
+
+        return false;
+    }
+
+    private function validate(): void
+    {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), self::MAX_ATTEMPTS)) {
+            return;
+        }
+
+        throw ValidationException::withMessages([
+            'code' => __('Too many sign-in attempts. Please try again in :seconds seconds.', [
+                'seconds' => RateLimiter::availableIn($this->throttleKey()),
+            ]),
+        ]);
+    }
+
+    private function throttleKey(): string
+    {
+        return "two-factor:{$this->user->id}";
     }
 
     private function verifyTimedCode(): bool
