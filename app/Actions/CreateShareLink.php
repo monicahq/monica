@@ -109,6 +109,6 @@ class CreateShareLink
             vault: $this->shareLink->vault,
             parameters: ['label' => $this->label, 'name' => $this->shareable->name],
             loggable: $this->shareLink,
-        )->onQueue('low');
+        );
     }
 }

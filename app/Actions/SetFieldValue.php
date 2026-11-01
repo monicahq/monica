@@ -473,6 +473,6 @@ class SetFieldValue
             vault: $this->valuable->vault,
             parameters: ['label' => $this->field->label, 'name' => $this->valuable->name],
             loggable: $this->fieldValue,
-        )->onQueue('low');
+        );
     }
 }

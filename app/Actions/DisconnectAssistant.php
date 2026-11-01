@@ -60,6 +60,6 @@ class DisconnectAssistant
             user: $this->user,
             action: UserActionEnum::AssistantDisconnection,
             parameters: ['name' => $this->tokens->first()->client->name],
-        )->onQueue('low');
+        );
     }
 }

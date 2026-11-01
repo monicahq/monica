@@ -51,6 +51,6 @@ class DeactivateLifeEventType
             action: UserActionEnum::LifeEventTypeDeactivated,
             parameters: ['name' => $this->lifeEventType->name],
             loggable: $this->lifeEventType,
-        )->onQueue('low');
+        );
     }
 }

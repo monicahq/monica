@@ -86,6 +86,6 @@ class DestroyFile
             vault: $this->file->vault,
             parameters: ['name' => $this->name],
             loggable: $this->file,
-        )->onQueue('low');
+        );
     }
 }

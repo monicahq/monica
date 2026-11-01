@@ -73,6 +73,6 @@ class ConfirmChannelProofCode
             action: UserActionEnum::NotificationChannelProven,
             parameters: ['name' => __($this->channel->channel->label())],
             loggable: $this->channel,
-        )->onQueue('low');
+        );
     }
 }

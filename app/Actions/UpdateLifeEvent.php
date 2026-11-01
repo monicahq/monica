@@ -108,7 +108,7 @@ class UpdateLifeEvent
                 'name' => $this->contact->name,
             ],
             loggable: $this->lifeEvent,
-        )->onQueue('low');
+        );
 
         return $this->lifeEvent->refresh();
     }

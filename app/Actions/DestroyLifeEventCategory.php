@@ -53,6 +53,6 @@ class DestroyLifeEventCategory
             action: UserActionEnum::LifeEventCategoryDeletion,
             parameters: ['name' => $this->lifeEventCategory->name],
             loggable: $this->lifeEventCategory,
-        )->onQueue('low');
+        );
     }
 }

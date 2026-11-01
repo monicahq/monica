@@ -164,6 +164,6 @@ class CreateLifeEvent
                 'name' => $this->contact->name,
             ],
             loggable: $this->lifeEvent,
-        )->onQueue('low');
+        );
     }
 }

@@ -165,6 +165,6 @@ class SettleOrder
             action: UserActionEnum::FullAccessPurchased,
             loggable: $order,
             source: LogSourceEnum::System,
-        )->onQueue('low');
+        );
     }
 }

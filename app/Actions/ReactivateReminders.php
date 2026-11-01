@@ -106,7 +106,7 @@ class ReactivateReminders
             vault: $this->subject instanceof Field ? null : $this->subject->vault,
             parameters: ['name' => $this->name(), 'count' => $this->count],
             loggable: $this->subject,
-        )->onQueue('low');
+        );
     }
 
     private function name(): string

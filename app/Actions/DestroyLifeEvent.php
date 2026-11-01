@@ -55,7 +55,7 @@ class DestroyLifeEvent
                 'name' => $this->contact->name,
             ],
             loggable: $this->lifeEvent,
-        )->onQueue('low');
+        );
     }
 
     private function validate(): void

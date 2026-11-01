@@ -66,7 +66,7 @@ class DestroySecurityKey
             user: $this->user,
             action: UserActionEnum::SecurityKeyRemoved,
             parameters: ['name' => $this->securityKey->name],
-        )->onQueue('low');
+        );
 
         if (! $this->turnsTwoFactorOff) {
             return;
@@ -76,6 +76,6 @@ class DestroySecurityKey
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::TwoFactorDisabled,
-        )->onQueue('low');
+        );
     }
 }

@@ -105,7 +105,7 @@ class UpdateNotificationChannel
             action: $action,
             parameters: ['name' => __($this->channel->channel->label())],
             loggable: $this->channel,
-        )->onQueue('low');
+        );
     }
 
     private function destinationChanges(): bool

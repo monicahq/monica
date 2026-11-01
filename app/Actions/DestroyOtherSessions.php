@@ -76,7 +76,7 @@ class DestroyOtherSessions
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::OtherSessionsRemoved,
-        )->onQueue('low');
+        );
 
         foreach ($this->devices as $device) {
             LogUserAction::dispatch(
@@ -84,7 +84,7 @@ class DestroyOtherSessions
                 user: $this->user,
                 action: UserActionEnum::SessionRemoved,
                 parameters: ['device' => $device],
-            )->onQueue('low');
+            );
         }
     }
 }

@@ -64,6 +64,6 @@ class DismissDuplicateCandidate
                 'other' => $this->candidate->otherContact->name,
             ],
             loggable: $this->candidate->contact,
-        )->onQueue('low');
+        );
     }
 }

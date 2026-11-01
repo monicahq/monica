@@ -57,6 +57,6 @@ class DestroyValueList
             action: UserActionEnum::ValueListDeletion,
             parameters: ['name' => $this->name],
             loggable: $this->valueList,
-        )->onQueue('low');
+        );
     }
 }

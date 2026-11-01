@@ -71,6 +71,6 @@ class DestroyTemplate
             action: UserActionEnum::TemplateDeletion,
             parameters: ['name' => $this->name],
             loggable: $this->template,
-        )->onQueue('low');
+        );
     }
 }

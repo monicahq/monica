@@ -70,6 +70,6 @@ class UpdateUserProfile
             user: $this->user,
             action: UserActionEnum::UserProfileUpdate,
             parameters: ['name' => $this->user->name],
-        )->onQueue('low');
+        );
     }
 }

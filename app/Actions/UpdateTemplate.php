@@ -63,6 +63,6 @@ class UpdateTemplate
             action: UserActionEnum::TemplateUpdate,
             parameters: ['name' => $this->template->name],
             loggable: $this->template,
-        )->onQueue('low');
+        );
     }
 }

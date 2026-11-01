@@ -45,6 +45,6 @@ class RestoreGroup
             vault: $this->vault,
             parameters: ['name' => $this->group->name],
             loggable: $this->group,
-        )->onQueue('low');
+        );
     }
 }

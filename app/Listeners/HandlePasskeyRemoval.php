@@ -27,7 +27,7 @@ class HandlePasskeyRemoval
             user: $user,
             action: UserActionEnum::PasskeyRemoved,
             parameters: ['name' => $passkey->displayName()],
-        )->onQueue('low');
+        );
 
         $user->notify(new PasskeyRemoved(name: $passkey->displayName()));
     }

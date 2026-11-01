@@ -178,6 +178,6 @@ class CreateField
                 'name' => $this->sectionVersion->section->name,
             ],
             loggable: $this->field,
-        )->onQueue('low');
+        );
     }
 }

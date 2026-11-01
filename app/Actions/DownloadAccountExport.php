@@ -50,6 +50,6 @@ class DownloadAccountExport
             action: UserActionEnum::AccountExportDownloaded,
             parameters: ['count' => count($this->export->vault_ids)],
             loggable: $this->export,
-        )->onQueue('low');
+        );
     }
 }

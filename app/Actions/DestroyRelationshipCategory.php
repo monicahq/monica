@@ -69,6 +69,6 @@ class DestroyRelationshipCategory
             action: UserActionEnum::RelationshipCategoryDeletion,
             parameters: ['name' => $this->name],
             loggable: $this->relationshipCategory,
-        )->onQueue('low');
+        );
     }
 }

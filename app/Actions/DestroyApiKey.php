@@ -37,6 +37,6 @@ class DestroyApiKey
             user: $this->user,
             action: UserActionEnum::ApiKeyDeletion,
             parameters: ['name' => $this->name],
-        )->onQueue('low');
+        );
     }
 }

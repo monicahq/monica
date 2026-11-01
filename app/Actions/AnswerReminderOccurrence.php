@@ -93,6 +93,6 @@ class AnswerReminderOccurrence
                 'date' => $this->occurrence->local_date->format('Y-m-d'),
             ],
             loggable: $this->occurrence,
-        )->onQueue('low');
+        );
     }
 }

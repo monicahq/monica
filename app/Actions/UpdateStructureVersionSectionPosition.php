@@ -68,6 +68,6 @@ class UpdateStructureVersionSectionPosition
                 'name' => $this->row->structureVersion->structure->owner->name,
             ],
             loggable: $this->row->structureVersion->structure->owner,
-        )->onQueue('low');
+        );
     }
 }

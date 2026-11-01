@@ -28,7 +28,7 @@ class HandlePasskeyRegistration
             action: UserActionEnum::PasskeyAdded,
             parameters: ['name' => $passkey->displayName()],
             loggable: $passkey,
-        )->onQueue('low');
+        );
 
         $user->notify(new PasskeyAdded(name: $passkey->displayName()));
     }

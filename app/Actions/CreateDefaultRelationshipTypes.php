@@ -101,6 +101,6 @@ class CreateDefaultRelationshipTypes
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::RelationshipTypesSeeded,
-        )->onQueue('low');
+        );
     }
 }

@@ -306,6 +306,6 @@ class UpdateContactNameRepresentations
             parameters: ['name' => $this->contact->name],
             loggable: $this->contact,
             changes: $this->changes,
-        )->onQueue('low')->afterCommit();
+        )->afterCommit();
     }
 }

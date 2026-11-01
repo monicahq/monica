@@ -70,6 +70,6 @@ class DestroyStructureVersion
                 'version' => $this->versionNumber,
             ],
             loggable: $this->owner,
-        )->onQueue('low');
+        );
     }
 }

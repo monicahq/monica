@@ -111,6 +111,6 @@ class DestroyFieldValueRow
             vault: $this->row->valuable->vault,
             parameters: ['label' => $this->label, 'name' => $this->row->valuable->name],
             loggable: $this->row,
-        )->onQueue('low');
+        );
     }
 }

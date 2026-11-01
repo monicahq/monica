@@ -152,6 +152,6 @@ class PublishStructureVersion
                 'version' => $this->structureVersion->version_number,
             ],
             loggable: $owner,
-        )->onQueue('low');
+        );
     }
 }

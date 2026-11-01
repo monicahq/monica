@@ -24,7 +24,7 @@ description: Actions are what the user does within an application. Use when work
   Action; the administrator capacity is guarded by the `administrator` middleware, not here. A broken
   domain rule (a draft version, a template that describes something else) is an
   `InvalidArgumentException` or a dedicated exception, not a `ModelNotFoundException`.
-- You MUST dispatch `LogUserAction` on the `low` queue, along with any other loggers.
+- You MUST dispatch `LogUserAction`, along with any other loggers. The job puts itself on the `low` queue, so do not chain `onQueue()` to it.
 
 ## Action naming conventions
 

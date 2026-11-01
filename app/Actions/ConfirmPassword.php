@@ -38,6 +38,6 @@ class ConfirmPassword
             action: $confirmed
                 ? UserActionEnum::PasswordConfirmed
                 : UserActionEnum::PasswordConfirmationRefused,
-        )->onQueue('low');
+        );
     }
 }

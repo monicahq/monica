@@ -84,6 +84,6 @@ class StartChannelConnection
             action: UserActionEnum::NotificationChannelConnectionStarted,
             parameters: ['name' => __($this->channel->channel->label())],
             loggable: $this->channel,
-        )->onQueue('low');
+        );
     }
 }

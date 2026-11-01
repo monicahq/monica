@@ -50,7 +50,7 @@ class HandlePasskeyLogin
             action: UserActionEnum::PasskeyLogin,
             parameters: ['name' => $passkey->displayName()],
             loggable: $passkey,
-        )->onQueue('low');
+        );
 
         $user->notify(new NewLoginDetected(
             ip: request()->ip() ?? '',
@@ -66,6 +66,6 @@ class HandlePasskeyLogin
             action: UserActionEnum::PasskeyConfirmed,
             parameters: ['name' => $passkey->displayName()],
             loggable: $passkey,
-        )->onQueue('low');
+        );
     }
 }

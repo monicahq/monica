@@ -61,7 +61,7 @@ class DisconnectProviderFromUser
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::UserSsoDisconnected,
-        )->onQueue('low');
+        );
     }
 
     private function notify(string $provider): void

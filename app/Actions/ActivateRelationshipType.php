@@ -50,6 +50,6 @@ class ActivateRelationshipType
             action: UserActionEnum::RelationshipTypeActivated,
             parameters: ['name' => $this->relationshipType->name],
             loggable: $this->relationshipType,
-        )->onQueue('low');
+        );
     }
 }

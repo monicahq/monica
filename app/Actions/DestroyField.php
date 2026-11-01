@@ -58,6 +58,6 @@ class DestroyField
                 'name' => $this->section->name,
             ],
             loggable: $this->section,
-        )->onQueue('low');
+        );
     }
 }

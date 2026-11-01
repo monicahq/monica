@@ -93,6 +93,6 @@ class CreateFieldValueRow
             vault: $this->valuable->vault,
             parameters: ['label' => $this->field->label, 'name' => $this->valuable->name],
             loggable: $this->row,
-        )->onQueue('low');
+        );
     }
 }

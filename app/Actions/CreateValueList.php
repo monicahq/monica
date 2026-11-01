@@ -75,6 +75,6 @@ class CreateValueList
             action: UserActionEnum::ValueListCreation,
             parameters: ['name' => $this->valueList->name],
             loggable: $this->valueList,
-        )->onQueue('low');
+        );
     }
 }

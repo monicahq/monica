@@ -119,7 +119,7 @@ class VerifySecondFactorKey
             action: $key instanceof SecurityKey ? UserActionEnum::SecurityKeyUsed : UserActionEnum::PasskeyConfirmed,
             parameters: ['name' => $key->name],
             loggable: $key,
-        )->onQueue('low');
+        );
     }
 
     private function refuse(): never

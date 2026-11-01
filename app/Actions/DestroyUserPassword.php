@@ -69,7 +69,7 @@ class DestroyUserPassword
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::UserPasswordRemoved,
-        )->onQueue('low');
+        );
     }
 
     private function notify(): void

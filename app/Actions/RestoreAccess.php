@@ -96,6 +96,6 @@ class RestoreAccess
             action: UserActionEnum::FullAccessRestored,
             loggable: $this->payment,
             source: LogSourceEnum::System,
-        )->onQueue('low');
+        );
     }
 }

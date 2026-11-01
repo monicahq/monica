@@ -73,6 +73,6 @@ class UpdateStructureVersionPage
                 'name' => $this->page->structureVersion->structure->owner->name,
             ],
             loggable: $this->page->structureVersion->structure->owner,
-        )->onQueue('low');
+        );
     }
 }

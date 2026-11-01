@@ -73,6 +73,6 @@ class ConfirmTwoFactorAuthentication
             account: $this->user->account,
             user: $this->user,
             action: $this->turnsTwoFactorOn ? UserActionEnum::TwoFactorEnabled : UserActionEnum::AuthenticatorAppAdded,
-        )->onQueue('low');
+        );
     }
 }

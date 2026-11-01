@@ -39,6 +39,6 @@ class UpdateTimezone
             user: $this->user,
             action: UserActionEnum::UserTimezoneUpdate,
             parameters: ['name' => $this->timezone],
-        )->onQueue('low');
+        );
     }
 }

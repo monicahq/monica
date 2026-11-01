@@ -222,6 +222,6 @@ class CreateRecordSnapshot
             vault: $this->record->vault,
             parameters: ['name' => $this->record->name, 'reason' => $this->reason->value],
             loggable: $this->snapshot,
-        )->onQueue('low');
+        );
     }
 }

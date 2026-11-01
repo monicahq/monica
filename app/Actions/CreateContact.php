@@ -219,6 +219,6 @@ class CreateContact
             vault: $this->vault,
             parameters: ['name' => $this->contact->name],
             loggable: $this->contact,
-        )->onQueue('low')->afterCommit();
+        )->afterCommit();
     }
 }

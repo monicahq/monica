@@ -62,7 +62,7 @@ class CreateGroupMembership
                 'group' => $this->group->name,
             ],
             loggable: $membership,
-        )->onQueue('low');
+        );
 
         return $membership;
     }

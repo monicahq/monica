@@ -105,6 +105,6 @@ class CreateSection
             action: UserActionEnum::SectionCreation,
             parameters: ['name' => $this->section->name],
             loggable: $this->section,
-        )->onQueue('low');
+        );
     }
 }

@@ -80,6 +80,6 @@ class UpdateValueList
             parameters: ['name' => $this->valueList->name],
             loggable: $this->valueList,
             changes: $this->changes,
-        )->onQueue('low');
+        );
     }
 }

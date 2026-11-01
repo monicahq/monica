@@ -57,6 +57,6 @@ class DestroyRelationshipType
             action: UserActionEnum::RelationshipTypeDeletion,
             parameters: ['name' => $this->name],
             loggable: $this->relationshipType,
-        )->onQueue('low');
+        );
     }
 }

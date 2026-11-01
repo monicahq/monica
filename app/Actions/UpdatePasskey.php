@@ -51,6 +51,6 @@ class UpdatePasskey
             action: UserActionEnum::PasskeyRenamed,
             parameters: ['name' => $this->passkey->name],
             loggable: $this->passkey,
-        )->onQueue('low');
+        );
     }
 }

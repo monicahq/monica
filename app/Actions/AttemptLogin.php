@@ -126,7 +126,7 @@ class AttemptLogin
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::UserLogin,
-        )->onQueue('low');
+        );
     }
 
     private function throttleKey(): string

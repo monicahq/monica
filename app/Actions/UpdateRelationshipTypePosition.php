@@ -67,6 +67,6 @@ class UpdateRelationshipTypePosition
             action: UserActionEnum::RelationshipTypePositionUpdate,
             parameters: ['name' => $this->relationshipType->name],
             loggable: $this->relationshipType,
-        )->onQueue('low');
+        );
     }
 }

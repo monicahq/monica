@@ -50,6 +50,6 @@ class ActivateEntityType
             action: UserActionEnum::EntityTypeActivated,
             parameters: ['name' => $this->entityType->name_plural],
             loggable: $this->entityType,
-        )->onQueue('low');
+        );
     }
 }

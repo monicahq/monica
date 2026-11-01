@@ -56,6 +56,6 @@ class DestroyValueListItem
             action: UserActionEnum::ValueListItemDeletion,
             parameters: ['label' => $this->label, 'name' => $this->name],
             loggable: $this->item,
-        )->onQueue('low');
+        );
     }
 }

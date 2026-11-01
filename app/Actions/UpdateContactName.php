@@ -175,6 +175,6 @@ class UpdateContactName
             parameters: ['name' => $this->contact->name],
             loggable: $this->contact,
             changes: $this->changes,
-        )->onQueue('low');
+        );
     }
 }

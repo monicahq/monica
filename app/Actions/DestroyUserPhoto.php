@@ -52,6 +52,6 @@ class DestroyUserPhoto
             user: $this->user,
             action: UserActionEnum::UserPhotoDeletion,
             parameters: ['name' => $this->user->name],
-        )->onQueue('low');
+        );
     }
 }

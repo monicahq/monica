@@ -64,6 +64,6 @@ class DestroyRelationship
                 'name' => $this->relationship->contactA->name,
                 'other' => $this->relationship->contactB->name,
             ],
-        )->onQueue('low');
+        );
     }
 }

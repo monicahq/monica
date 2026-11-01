@@ -57,6 +57,6 @@ class CreateRelationshipCategory
             action: UserActionEnum::RelationshipCategoryCreation,
             parameters: ['name' => $this->relationshipCategory->name],
             loggable: $this->relationshipCategory,
-        )->onQueue('low');
+        );
     }
 }

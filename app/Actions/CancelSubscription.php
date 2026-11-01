@@ -62,6 +62,6 @@ class CancelSubscription
             user: $this->user,
             action: UserActionEnum::SubscriptionCancelled,
             loggable: $this->subscription,
-        )->onQueue('low');
+        );
     }
 }

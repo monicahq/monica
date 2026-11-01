@@ -49,6 +49,8 @@ class LogUserAction implements ShouldQueueAfterCommit
         ?string $sourceDetail = null,
         ?string $ipAddress = null,
     ) {
+        $this->onQueue('low');
+
         $this->ipAddress = $ipAddress ?? request()->ip();
         $this->source = $source ?? request()->attributes->get('log_source', LogSourceEnum::Web);
         $this->sourceDetail = $sourceDetail ?? request()->attributes->get('log_source_detail');

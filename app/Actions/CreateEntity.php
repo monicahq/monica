@@ -143,6 +143,6 @@ class CreateEntity
             vault: $this->vault,
             parameters: ['name' => $this->entity->name],
             loggable: $this->entity,
-        )->onQueue('low');
+        );
     }
 }

@@ -68,6 +68,6 @@ class RemoveSectionFromStructureVersion
                 'name' => $this->owner->name,
             ],
             loggable: $this->owner,
-        )->onQueue('low');
+        );
     }
 }

@@ -69,6 +69,6 @@ class ResumeSubscription
             user: $this->user,
             action: UserActionEnum::SubscriptionResumed,
             loggable: $this->subscription,
-        )->onQueue('low');
+        );
     }
 }

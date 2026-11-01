@@ -95,6 +95,6 @@ class CreateRelationshipType
             action: UserActionEnum::RelationshipTypeCreation,
             parameters: ['name' => $this->relationshipType->name],
             loggable: $this->relationshipType,
-        )->onQueue('low');
+        );
     }
 }

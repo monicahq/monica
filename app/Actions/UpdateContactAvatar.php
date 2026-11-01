@@ -144,6 +144,6 @@ class UpdateContactAvatar
             vault: $this->vault,
             parameters: ['name' => $this->contact->name],
             loggable: $this->contact,
-        )->onQueue('low');
+        );
     }
 }

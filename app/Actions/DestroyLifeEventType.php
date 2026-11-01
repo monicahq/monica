@@ -57,6 +57,6 @@ class DestroyLifeEventType
             action: UserActionEnum::LifeEventTypeDeletion,
             parameters: ['name' => $this->name],
             loggable: $this->lifeEventType,
-        )->onQueue('low');
+        );
     }
 }

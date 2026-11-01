@@ -63,6 +63,6 @@ class SetDefaultVault
             action: UserActionEnum::VaultDefaultSet,
             parameters: ['name' => $this->vault->name],
             loggable: $this->vault,
-        )->onQueue('low');
+        );
     }
 }

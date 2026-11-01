@@ -70,7 +70,7 @@ class PurgeOrphanedFiles implements ShouldQueue
                 user: null,
                 action: UserActionEnum::OrphanedFilesSwept,
                 parameters: ['count' => $count],
-            )->onQueue('low');
+            );
         }
     }
 }

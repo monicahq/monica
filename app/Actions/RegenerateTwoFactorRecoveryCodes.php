@@ -47,6 +47,6 @@ class RegenerateTwoFactorRecoveryCodes
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::TwoFactorRecoveryCodesRegenerated,
-        )->onQueue('low');
+        );
     }
 }

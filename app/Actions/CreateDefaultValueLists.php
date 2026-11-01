@@ -103,6 +103,6 @@ class CreateDefaultValueLists
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::ValueListsSeeded,
-        )->onQueue('low')->afterCommit();
+        )->afterCommit();
     }
 }

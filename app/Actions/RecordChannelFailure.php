@@ -59,7 +59,7 @@ class RecordChannelFailure
             parameters: ['name' => __($this->channel->channel->label()), 'reason' => $this->channel->disabled_reason],
             loggable: $this->channel,
             source: LogSourceEnum::System,
-        )->onQueue('low');
+        );
 
         if ($user !== null) {
             $user->notify(new ChannelDisabled(

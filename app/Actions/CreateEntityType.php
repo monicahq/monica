@@ -92,6 +92,6 @@ class CreateEntityType
             action: UserActionEnum::EntityTypeCreation,
             parameters: ['name' => $this->entityType->name_plural],
             loggable: $this->entityType,
-        )->onQueue('low');
+        );
     }
 }

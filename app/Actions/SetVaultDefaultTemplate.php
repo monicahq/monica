@@ -77,6 +77,6 @@ class SetVaultDefaultTemplate
             vault: $this->vault,
             parameters: ['name' => $this->structureVersion->structure->owner->name],
             loggable: $this->default,
-        )->onQueue('low');
+        );
     }
 }

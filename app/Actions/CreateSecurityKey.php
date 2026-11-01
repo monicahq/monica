@@ -127,7 +127,7 @@ class CreateSecurityKey
             action: UserActionEnum::SecurityKeyAdded,
             parameters: ['name' => $securityKey->name],
             loggable: $securityKey,
-        )->onQueue('low');
+        );
 
         if (! $this->turnsTwoFactorOn) {
             return;
@@ -137,7 +137,7 @@ class CreateSecurityKey
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::TwoFactorEnabled,
-        )->onQueue('low');
+        );
     }
 
     private function refuse(string $message): never

@@ -58,7 +58,7 @@ class UpdateGroupMembership
                 'group' => $this->membership->group->name,
             ],
             loggable: $this->membership,
-        )->onQueue('low');
+        );
 
         return $this->membership;
     }

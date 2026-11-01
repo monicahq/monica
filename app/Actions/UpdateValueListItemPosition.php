@@ -65,6 +65,6 @@ class UpdateValueListItemPosition
             action: UserActionEnum::ValueListItemPositionUpdate,
             parameters: ['label' => $this->item->label, 'name' => $this->item->valueList->name],
             loggable: $this->item,
-        )->onQueue('low');
+        );
     }
 }

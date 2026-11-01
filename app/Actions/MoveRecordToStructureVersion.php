@@ -182,6 +182,6 @@ class MoveRecordToStructureVersion
                 'version' => $this->structureVersion->version_number,
             ],
             loggable: $this->record,
-        )->onQueue('low');
+        );
     }
 }

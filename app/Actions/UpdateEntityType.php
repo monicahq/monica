@@ -88,6 +88,6 @@ class UpdateEntityType
             parameters: ['name' => $this->entityType->name_plural],
             loggable: $this->entityType,
             changes: $this->changes,
-        )->onQueue('low');
+        );
     }
 }

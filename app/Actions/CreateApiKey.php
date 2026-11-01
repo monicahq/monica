@@ -49,6 +49,6 @@ class CreateApiKey
             user: $this->user,
             action: UserActionEnum::ApiKeyCreation,
             parameters: ['name' => $this->name, 'scopes' => $this->scopes, 'client' => $this->client->value],
-        )->onQueue('low');
+        );
     }
 }

@@ -134,6 +134,6 @@ class CreateStructureVersionDraft
                 'version' => $this->draft->version_number,
             ],
             loggable: $this->draft->structure->owner,
-        )->onQueue('low');
+        );
     }
 }

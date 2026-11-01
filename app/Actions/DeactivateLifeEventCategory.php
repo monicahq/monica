@@ -51,6 +51,6 @@ class DeactivateLifeEventCategory
             action: UserActionEnum::LifeEventCategoryDeactivated,
             parameters: ['name' => $this->lifeEventCategory->name],
             loggable: $this->lifeEventCategory,
-        )->onQueue('low');
+        );
     }
 }

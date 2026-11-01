@@ -69,6 +69,6 @@ class UpdateSection
             action: UserActionEnum::SectionUpdate,
             parameters: ['name' => $this->section->name],
             loggable: $this->section,
-        )->onQueue('low');
+        );
     }
 }

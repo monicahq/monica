@@ -54,6 +54,6 @@ class RecordSubscription
             action: UserActionEnum::SubscriptionStarted,
             loggable: $this->subscription,
             source: LogSourceEnum::System,
-        )->onQueue('low');
+        );
     }
 }

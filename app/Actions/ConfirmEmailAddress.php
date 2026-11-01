@@ -36,6 +36,6 @@ class ConfirmEmailAddress
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::EmailConfirmation,
-        )->onQueue('low');
+        );
     }
 }

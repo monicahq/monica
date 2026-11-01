@@ -86,6 +86,6 @@ class UpgradeSubscription
             user: $this->user,
             action: UserActionEnum::SubscriptionUpgraded,
             loggable: $this->subscription,
-        )->onQueue('low');
+        );
     }
 }

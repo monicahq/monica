@@ -90,6 +90,6 @@ class DestroyContact
             vault: $this->contact->vault,
             parameters: ['name' => $this->name],
             loggable: $this->contact,
-        )->onQueue('low');
+        );
     }
 }

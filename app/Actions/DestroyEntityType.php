@@ -53,6 +53,6 @@ class DestroyEntityType
             action: UserActionEnum::EntityTypeDeletion,
             parameters: ['name' => $this->name],
             loggable: $this->entityType,
-        )->onQueue('low');
+        );
     }
 }

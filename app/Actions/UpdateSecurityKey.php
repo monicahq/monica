@@ -56,6 +56,6 @@ class UpdateSecurityKey
             action: UserActionEnum::SecurityKeyRenamed,
             parameters: ['name' => $this->securityKey->name],
             loggable: $this->securityKey,
-        )->onQueue('low');
+        );
     }
 }

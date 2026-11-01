@@ -450,7 +450,7 @@ class MergeContacts
                 'other' => $this->absorbed->name,
             ],
             loggable: $this->kept,
-        )->onQueue('low');
+        );
     }
 
     /** @return list<int> */

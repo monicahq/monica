@@ -206,7 +206,7 @@ class WriteAccountImportBatch implements ShouldQueue
             vault: $this->import->vault,
             parameters: ['count' => $imported],
             loggable: $this->import,
-        )->onQueue('low');
+        );
 
         $this->import->user->notify(new AccountImportEnded(
             imported: $imported,

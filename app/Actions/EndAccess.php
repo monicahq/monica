@@ -146,6 +146,6 @@ class EndAccess
             user: $this->account->user,
             action: UserActionEnum::FullAccessEnded,
             source: LogSourceEnum::System,
-        )->onQueue('low');
+        );
     }
 }

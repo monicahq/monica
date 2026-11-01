@@ -86,6 +86,6 @@ class MoveSectionToStructureVersionPage
                 'label' => $this->page->label,
             ],
             loggable: $this->row->structureVersion->structure->owner,
-        )->onQueue('low');
+        );
     }
 }

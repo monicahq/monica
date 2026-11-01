@@ -165,6 +165,6 @@ class DestroyVault
             action: UserActionEnum::VaultDeletion,
             parameters: ['name' => $this->name],
             loggable: $this->vault,
-        )->onQueue('low');
+        );
     }
 }

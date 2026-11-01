@@ -362,7 +362,7 @@ trait WritesMonicaItems
             vault: $this->vault(),
             parameters: ['name' => $entity->name],
             loggable: $entity,
-        )->onQueue('low');
+        );
 
         $this->record = $entity;
         $this->writeTheValues($entity, (array) $this->payload('values', []));

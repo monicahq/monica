@@ -76,7 +76,7 @@ class CreateMagicLink
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::MagicLinkCreation,
-        )->onQueue('low');
+        );
     }
 
     private function minutes(): int

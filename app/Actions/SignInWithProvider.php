@@ -175,6 +175,6 @@ class SignInWithProvider
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::UserLogin,
-        )->onQueue('low');
+        );
     }
 }

@@ -69,6 +69,6 @@ class ConnectProviderToUser
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::UserSsoConnected,
-        )->onQueue('low');
+        );
     }
 }

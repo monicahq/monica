@@ -56,6 +56,6 @@ class RevokeShareLink
             vault: $this->shareLink->vault,
             parameters: ['label' => $this->shareLink->label],
             loggable: $this->shareLink,
-        )->onQueue('low');
+        );
     }
 }

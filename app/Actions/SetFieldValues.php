@@ -528,7 +528,7 @@ class SetFieldValues
                 'name' => $this->record->name,
             ],
             loggable: $this->record,
-        )->onQueue('low');
+        );
     }
 
     private function given(Field $field): mixed

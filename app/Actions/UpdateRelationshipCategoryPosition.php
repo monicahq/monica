@@ -66,6 +66,6 @@ class UpdateRelationshipCategoryPosition
             action: UserActionEnum::RelationshipCategoryPositionUpdate,
             parameters: ['name' => $this->relationshipCategory->name],
             loggable: $this->relationshipCategory,
-        )->onQueue('low');
+        );
     }
 }

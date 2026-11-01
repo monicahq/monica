@@ -51,6 +51,6 @@ class DisableTwoFactorAuthentication
             account: $this->user->account,
             user: $this->user,
             action: $this->user->usesTwoFactorAuthentication() ? UserActionEnum::AuthenticatorAppRemoved : UserActionEnum::TwoFactorDisabled,
-        )->onQueue('low');
+        );
     }
 }

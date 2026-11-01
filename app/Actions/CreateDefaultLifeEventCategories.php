@@ -67,6 +67,6 @@ class CreateDefaultLifeEventCategories
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::LifeEventCategoriesSeeded,
-        )->onQueue('low');
+        );
     }
 }

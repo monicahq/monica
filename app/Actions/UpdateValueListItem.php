@@ -117,6 +117,6 @@ class UpdateValueListItem
             parameters: ['label' => $this->item->label, 'name' => $this->item->valueList->name],
             loggable: $this->item,
             changes: $this->changes,
-        )->onQueue('low');
+        );
     }
 }

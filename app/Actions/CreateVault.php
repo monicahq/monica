@@ -144,6 +144,6 @@ class CreateVault
             action: UserActionEnum::VaultCreation,
             parameters: ['name' => $this->vault->name],
             loggable: $this->vault,
-        )->onQueue('low')->afterCommit();
+        )->afterCommit();
     }
 }

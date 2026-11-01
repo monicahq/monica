@@ -75,6 +75,6 @@ class CompleteChannelConnection
             loggable: $channel,
             source: LogSourceEnum::Automation,
             sourceDetail: $channel->channel->value,
-        )->onQueue('low');
+        );
     }
 }

@@ -84,6 +84,6 @@ class PublishSectionVersion
                 'version' => $this->sectionVersion->version_number,
             ],
             loggable: $this->sectionVersion->section,
-        )->onQueue('low');
+        );
     }
 }

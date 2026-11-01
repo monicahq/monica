@@ -69,6 +69,6 @@ class UpdateLifeEventTypePosition
             action: UserActionEnum::LifeEventTypePositionUpdate,
             parameters: ['name' => $this->lifeEventType->name],
             loggable: $this->lifeEventType,
-        )->onQueue('low');
+        );
     }
 }

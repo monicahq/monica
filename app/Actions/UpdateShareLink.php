@@ -109,6 +109,6 @@ class UpdateShareLink
             vault: $this->shareLink->vault,
             parameters: ['label' => $this->label],
             loggable: $this->shareLink,
-        )->onQueue('low');
+        );
     }
 }

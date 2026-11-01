@@ -69,6 +69,6 @@ class UpdateFieldPosition
                 'name' => $this->field->sectionVersion->section->name,
             ],
             loggable: $this->field,
-        )->onQueue('low');
+        );
     }
 }

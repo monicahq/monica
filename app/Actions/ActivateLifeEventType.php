@@ -50,6 +50,6 @@ class ActivateLifeEventType
             action: UserActionEnum::LifeEventTypeActivated,
             parameters: ['name' => $this->lifeEventType->name],
             loggable: $this->lifeEventType,
-        )->onQueue('low');
+        );
     }
 }

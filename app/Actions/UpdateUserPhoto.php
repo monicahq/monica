@@ -113,6 +113,6 @@ class UpdateUserPhoto
             user: $this->user,
             action: UserActionEnum::UserPhotoUpdate,
             parameters: ['name' => $this->user->name],
-        )->onQueue('low');
+        );
     }
 }

@@ -186,6 +186,6 @@ class UpdateRelationship
                 'other' => $this->relationship->contactB->name,
             ],
             loggable: $this->relationship,
-        )->onQueue('low');
+        );
     }
 }

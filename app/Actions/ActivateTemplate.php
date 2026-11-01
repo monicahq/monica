@@ -50,6 +50,6 @@ class ActivateTemplate
             action: UserActionEnum::TemplateActivated,
             parameters: ['name' => $this->template->name],
             loggable: $this->template,
-        )->onQueue('low');
+        );
     }
 }

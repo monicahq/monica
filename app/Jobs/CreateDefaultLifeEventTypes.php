@@ -313,6 +313,6 @@ class CreateDefaultLifeEventTypes implements ShouldQueue
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::LifeEventTypesSeeded,
-        )->onQueue('low');
+        );
     }
 }

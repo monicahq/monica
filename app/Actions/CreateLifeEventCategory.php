@@ -57,6 +57,6 @@ class CreateLifeEventCategory
             action: UserActionEnum::LifeEventCategoryCreation,
             parameters: ['name' => $this->lifeEventCategory->name],
             loggable: $this->lifeEventCategory,
-        )->onQueue('low');
+        );
     }
 }

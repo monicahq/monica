@@ -50,6 +50,6 @@ class ActivateRelationshipCategory
             action: UserActionEnum::RelationshipCategoryActivated,
             parameters: ['name' => $this->relationshipCategory->name],
             loggable: $this->relationshipCategory,
-        )->onQueue('low');
+        );
     }
 }

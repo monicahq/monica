@@ -287,6 +287,6 @@ class UndoContactMerge
                 'other' => $this->absorbed->name,
             ],
             loggable: $this->kept,
-        )->onQueue('low');
+        );
     }
 }

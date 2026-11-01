@@ -142,6 +142,6 @@ class CreateTemplate
             action: UserActionEnum::TemplateCreation,
             parameters: ['name' => $this->template->name],
             loggable: $this->template,
-        )->onQueue('low');
+        );
     }
 }

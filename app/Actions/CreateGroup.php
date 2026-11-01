@@ -55,7 +55,7 @@ class CreateGroup
             vault: $this->vault,
             parameters: ['name' => $group->name],
             loggable: $group,
-        )->onQueue('low');
+        );
 
         return $group;
     }

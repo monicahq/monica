@@ -174,6 +174,6 @@ class DuplicateTemplate
                 'name' => $this->copy->name,
             ],
             loggable: $this->copy,
-        )->onQueue('low');
+        );
     }
 }

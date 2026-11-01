@@ -54,7 +54,7 @@ class RestoreLifeEvent
                 'name' => $this->contact->name,
             ],
             loggable: $this->lifeEvent,
-        )->onQueue('low');
+        );
     }
 
     private function validate(): void

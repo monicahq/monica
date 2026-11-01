@@ -51,6 +51,6 @@ class FavouriteContact
             vault: $this->contact->vault,
             parameters: ['name' => $this->contact->name],
             loggable: $this->contact,
-        )->onQueue('low');
+        );
     }
 }

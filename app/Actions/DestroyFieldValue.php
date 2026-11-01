@@ -84,6 +84,6 @@ class DestroyFieldValue
             vault: $this->fieldValue->vault,
             parameters: ['label' => $this->label, 'name' => $this->fieldValue->valuable->name],
             loggable: $this->fieldValue,
-        )->onQueue('low');
+        );
     }
 }

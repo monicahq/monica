@@ -87,6 +87,6 @@ class UpdatePreferences
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::UserPreferencesUpdate,
-        )->onQueue('low');
+        );
     }
 }

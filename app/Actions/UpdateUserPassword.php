@@ -47,7 +47,7 @@ class UpdateUserPassword
             action: $this->wasSetForTheFirstTime
                 ? UserActionEnum::UserPasswordSet
                 : UserActionEnum::UserPasswordUpdate,
-        )->onQueue('low');
+        );
     }
 
     private function notify(): void

@@ -46,6 +46,6 @@ class DestroyGroupMembership
                 'group' => $this->membership->group->name,
             ],
             loggable: $this->membership,
-        )->onQueue('low');
+        );
     }
 }

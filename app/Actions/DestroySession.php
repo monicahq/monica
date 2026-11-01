@@ -74,6 +74,6 @@ class DestroySession
             user: $this->user,
             action: UserActionEnum::SessionRemoved,
             parameters: ['device' => $this->device],
-        )->onQueue('low');
+        );
     }
 }

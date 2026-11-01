@@ -127,6 +127,6 @@ class CreateLifeEventType
             action: UserActionEnum::LifeEventTypeCreation,
             parameters: ['name' => $this->lifeEventType->name],
             loggable: $this->lifeEventType,
-        )->onQueue('low');
+        );
     }
 }

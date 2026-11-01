@@ -116,6 +116,6 @@ class CreateFile
             vault: $this->vault,
             parameters: ['name' => $this->file->original_name],
             loggable: $this->file,
-        )->onQueue('low');
+        );
     }
 }

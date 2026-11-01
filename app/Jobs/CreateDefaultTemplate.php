@@ -321,6 +321,6 @@ class CreateDefaultTemplate implements ShouldQueue
             action: UserActionEnum::DefaultTemplateSeeded,
             parameters: ['name' => $this->template->name],
             loggable: $this->template,
-        )->onQueue('low')->afterCommit();
+        )->afterCommit();
     }
 }

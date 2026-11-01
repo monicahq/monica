@@ -81,6 +81,6 @@ class UpdateVault
             parameters: ['name' => $this->vault->name],
             loggable: $this->vault,
             changes: $this->changes,
-        )->onQueue('low');
+        );
     }
 }

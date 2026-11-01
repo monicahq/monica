@@ -113,6 +113,6 @@ class CreateAccount
             account: $this->account,
             user: $this->user,
             action: UserActionEnum::AccountCreation,
-        )->onQueue('low');
+        );
     }
 }

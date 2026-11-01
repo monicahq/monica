@@ -155,6 +155,6 @@ class CreateContactReminder
             vault: $this->contact->vault,
             parameters: ['label' => $this->wording, 'name' => $this->contact->name],
             loggable: $this->reminder,
-        )->onQueue('low');
+        );
     }
 }

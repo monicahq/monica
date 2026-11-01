@@ -94,6 +94,6 @@ class CreateAccountExport
             action: UserActionEnum::AccountExportRequested,
             parameters: ['count' => count($this->coveredVaultIds)],
             loggable: $this->export,
-        )->onQueue('low');
+        );
     }
 }

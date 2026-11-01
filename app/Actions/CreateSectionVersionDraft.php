@@ -96,6 +96,6 @@ class CreateSectionVersionDraft
                 'version' => $this->draft->version_number,
             ],
             loggable: $this->draft->section,
-        )->onQueue('low');
+        );
     }
 }

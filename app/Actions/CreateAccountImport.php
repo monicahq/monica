@@ -74,6 +74,6 @@ class CreateAccountImport
             user: $this->user,
             action: UserActionEnum::AccountImportStarted,
             loggable: $this->import,
-        )->onQueue('low');
+        );
     }
 }

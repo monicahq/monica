@@ -166,6 +166,6 @@ class CreateRelationship
                 'other' => $this->sideB->name,
             ],
             loggable: $this->relationship,
-        )->onQueue('low');
+        );
     }
 }

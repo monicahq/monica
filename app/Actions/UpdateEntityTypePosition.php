@@ -66,6 +66,6 @@ class UpdateEntityTypePosition
             action: UserActionEnum::EntityTypePositionUpdate,
             parameters: ['name' => $this->entityType->name_plural],
             loggable: $this->entityType,
-        )->onQueue('low');
+        );
     }
 }

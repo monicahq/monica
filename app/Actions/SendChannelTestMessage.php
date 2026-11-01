@@ -77,6 +77,6 @@ class SendChannelTestMessage
             action: UserActionEnum::NotificationChannelTested,
             parameters: ['name' => __($this->channel->channel->label()), 'sent' => $sent],
             loggable: $this->channel,
-        )->onQueue('low');
+        );
     }
 }

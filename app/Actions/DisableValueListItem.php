@@ -50,6 +50,6 @@ class DisableValueListItem
             action: UserActionEnum::ValueListItemDisabled,
             parameters: ['label' => $this->item->label, 'name' => $this->item->valueList->name],
             loggable: $this->item,
-        )->onQueue('low');
+        );
     }
 }

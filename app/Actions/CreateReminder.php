@@ -160,6 +160,6 @@ class CreateReminder
             vault: $this->fieldValue->vault,
             parameters: ['label' => $this->fieldValue->field->label, 'name' => $this->fieldValue->valuable->name],
             loggable: $this->reminder,
-        )->onQueue('low');
+        );
     }
 }
