@@ -11,24 +11,19 @@ use App\Models\NotificationChannel;
 use App\Models\User;
 use App\Notifications\Concerns\BuildsMessagesForAnyChannel;
 use App\Notifications\Messages\MailMessage;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Override;
 
-class NotificationDigest extends Notification implements CarriesOnAccountChannel, HasEmailType, ShouldQueue
+class NotificationDigest extends Notification implements CarriesOnAccountChannel, HasEmailType
 {
     use BuildsMessagesForAnyChannel;
-    use Queueable;
 
     /** @param  list<array{title: string, body: string}>  $lines */
     public function __construct(
         public readonly string $heading,
         public readonly array $lines,
         public readonly NotificationChannel $channel,
-    ) {
-        $this->onQueue('high');
-    }
+    ) {}
 
     /**
      * The channel this one goes out on, named the way Laravel names it. A

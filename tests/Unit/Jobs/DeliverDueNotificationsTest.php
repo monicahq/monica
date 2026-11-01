@@ -17,9 +17,11 @@ use App\Models\User;
 use App\Notifications\ReminderDue;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Exceptions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
+use RuntimeException;
 use Tests\TestCase;
 
 class DeliverDueNotificationsTest extends TestCase
@@ -181,6 +183,23 @@ class DeliverDueNotificationsTest extends TestCase
         new DeliverDueNotifications()->handle();
 
         $this->assertDatabaseCount('notifications', 0);
+    }
+
+    #[Test]
+    public function a_deadline_that_fails_does_not_stop_the_next_one(): void
+    {
+        Exceptions::fake();
+        NotificationFacade::fake();
+        $failing = $this->dueOccurrence();
+        $next = $this->dueOccurrence();
+        ReminderOccurrence::saving(fn (ReminderOccurrence $occurrence) => $occurrence->is($failing) && $occurrence->isDirty('notifications_created_at')
+            ? throw new RuntimeException('Lost the connection.')
+            : null);
+
+        new DeliverDueNotifications()->handle();
+
+        Exceptions::assertReported(RuntimeException::class);
+        $this->assertNotNull($next->refresh()->notifications_created_at);
     }
 
     private function dueOccurrence(bool $due = true, bool $justNow = false): ReminderOccurrence

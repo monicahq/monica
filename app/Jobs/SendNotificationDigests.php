@@ -14,6 +14,7 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 /**
  * Send each account that asked for one its daily summary, at the hour it chose. It runs every hour
@@ -43,7 +44,14 @@ class SendNotificationDigests implements ShouldBeUnique, ShouldQueue
                         continue;
                     }
 
-                    $count = new SendNotificationDigest(account: $preference->account)->execute();
+                    try {
+                        $count = new SendNotificationDigest(account: $preference->account)->execute();
+                    } catch (Throwable $e) {
+                        report($e);
+
+                        continue;
+                    }
+
                     $folded += $count;
                     $sent += $count > 0 ? 1 : 0;
                 }

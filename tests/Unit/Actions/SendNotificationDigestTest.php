@@ -15,8 +15,11 @@ use App\Models\NotificationPreference;
 use App\Models\User;
 use App\Notifications\NotificationDigest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use PHPUnit\Framework\Attributes\Test;
+use RuntimeException;
+use Tests\Fixtures\Notifications\RefusingChannel;
 use Tests\TestCase;
 
 class SendNotificationDigestTest extends TestCase
@@ -166,6 +169,23 @@ class SendNotificationDigestTest extends TestCase
         new SendNotificationDigest(account: $account)->execute();
 
         $this->assertNotNull($waiting->notifiable->refresh()->notified_at);
+    }
+
+    #[Test]
+    public function a_summary_the_channel_refuses_leaves_the_notifications_waiting(): void
+    {
+        $this->app->make(ChannelManager::class)->extend('mail', fn (): RefusingChannel => new RefusingChannel);
+        [$account, $user] = $this->account();
+        $waiting = Notification::factory()->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
+
+        $this->assertThrows(
+            fn () => new SendNotificationDigest(account: $account)->execute(),
+            RuntimeException::class,
+        );
+
+        $this->assertDatabaseHas('notifications', ['id' => $waiting->id, 'digest_id' => null, 'sent_at' => null]);
+        $this->assertNull($waiting->notifiable->refresh()->notified_at);
+        $this->assertSame(0, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
     }
 
     /** @return array{0: Account, 1: User} */

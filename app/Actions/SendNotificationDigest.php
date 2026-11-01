@@ -12,6 +12,7 @@ use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Notifications\NotificationDigest;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Fold everything an account has waiting into one message per channel.
@@ -19,7 +20,8 @@ use Illuminate\Support\Collection;
  * One summary carrying every channel could not record what happened to each of
  * them, and a channel that refused it would take the others down with it. So
  * each channel gets its own summary row, folding the notifications that were
- * waiting on that channel and nothing else.
+ * waiting on that channel and nothing else. The summary goes out before its
+ * writes are kept, so a channel that refuses it leaves the notifications waiting.
  */
 class SendNotificationDigest
 {
@@ -44,18 +46,20 @@ class SendNotificationDigest
                 continue;
             }
 
-            $digest = $this->write($user, $channel, $waiting);
+            DB::transaction(function () use ($user, $channel, $waiting): void {
+                $digest = $this->write($user, $channel, $waiting);
 
-            Notification::query()
-                ->whereIn('id', $waiting->pluck('id'))
-                ->update(['digest_id' => $digest->id, 'sent_at' => now(), 'updated_at' => now()]);
+                Notification::query()
+                    ->whereIn('id', $waiting->pluck('id'))
+                    ->update(['digest_id' => $digest->id, 'sent_at' => now(), 'updated_at' => now()]);
 
-            $this->hand($user, $channel, $digest);
+                ReminderOccurrence::query()
+                    ->whereIn('id', $waiting->where('notifiable_type', ReminderOccurrence::class)->pluck('notifiable_id'))
+                    ->whereNull('notified_at')
+                    ->update(['notified_at' => now()]);
 
-            ReminderOccurrence::query()
-                ->whereIn('id', $waiting->where('notifiable_type', ReminderOccurrence::class)->pluck('notifiable_id'))
-                ->whereNull('notified_at')
-                ->update(['notified_at' => now()]);
+                $this->hand($user, $channel, $digest);
+            });
 
             $folded += $waiting->count();
         }
@@ -125,7 +129,7 @@ class SendNotificationDigest
         /** @var list<array{title: string, body: string}> $lines */
         $lines = $digest->payload['lines'] ?? [];
 
-        $user->notify(new NotificationDigest(
+        $user->notifyNow(new NotificationDigest(
             heading: $digest->title,
             lines: $lines,
             channel: $channel,

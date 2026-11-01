@@ -12,9 +12,13 @@ use App\Models\NotificationPreference;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Notifications\ChannelManager;
+use Illuminate\Support\Facades\Exceptions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
+use RuntimeException;
+use Tests\Fixtures\Notifications\RefusingChannel;
 use Tests\TestCase;
 
 class SendNotificationDigestsTest extends TestCase
@@ -98,6 +102,22 @@ class SendNotificationDigestsTest extends TestCase
         new SendNotificationDigests()->handle();
 
         $this->assertSame(0, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
+    }
+
+    #[Test]
+    public function an_account_whose_summary_is_refused_does_not_stop_the_next_one(): void
+    {
+        Exceptions::fake();
+        CarbonImmutable::setTestNow('2027-05-12 17:00:00');
+        $this->app->make(ChannelManager::class)->extend('mail', fn (): RefusingChannel => new RefusingChannel);
+        $refused = $this->accountWaiting();
+        Notification::factory()->email()->create(['account_id' => $refused->id, 'user_id' => $refused->user->id]);
+        $next = $this->accountWaiting();
+
+        new SendNotificationDigests()->handle();
+
+        Exceptions::assertReported(RuntimeException::class);
+        $this->assertDatabaseHas('notifications', ['account_id' => $next->id, 'type' => NotificationTypeEnum::Digest->value]);
     }
 
     #[Test]

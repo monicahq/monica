@@ -13,6 +13,7 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 /**
  * The sweep that makes a deadline reach somebody, every five minutes. Deadlines that have arrived
@@ -43,7 +44,11 @@ class DeliverDueNotifications implements ShouldBeUnique, ShouldQueue
             ->with('reminder.remindable', 'account.user')
             ->chunkById(200, function ($occurrences) use (&$made): void {
                 foreach ($occurrences as $occurrence) {
-                    $made += new NotifyReminderOccurrence(occurrence: $occurrence)->execute();
+                    try {
+                        $made += new NotifyReminderOccurrence(occurrence: $occurrence)->execute();
+                    } catch (Throwable $e) {
+                        report($e);
+                    }
                 }
             });
 
