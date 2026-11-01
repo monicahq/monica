@@ -59,7 +59,7 @@ class PasswordResetLinkControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_to_wait_when_a_link_was_just_sent(): void
+    public function it_says_the_same_thing_when_a_link_was_just_sent(): void
     {
         Notification::fake();
 
@@ -68,12 +68,19 @@ class PasswordResetLinkControllerTest extends TestCase
         $this->from(route('auth.password.new'))
             ->post(route('auth.password.create'), ['email' => 'michael.scott@dundermifflin.com']);
 
-        $response = $this->from(route('auth.password.new'))
+        $throttledResponse = $this->from(route('auth.password.new'))
             ->post(route('auth.password.create'), ['email' => 'michael.scott@dundermifflin.com']);
 
-        $response->assertRedirect(route('auth.password.new'));
-        $response->assertSessionHasErrors(['email' => __('passwords.throttled')]);
-        $response->assertSessionHasInput('email', 'michael.scott@dundermifflin.com');
+        $throttledResponse->assertRedirect(route('auth.password.new'));
+        $throttledResponse->assertSessionHasNoErrors();
+        $throttledResponse->assertSessionMissing('_old_input');
+        $throttledStatus = session('status');
+
+        $this->from(route('auth.password.new'))
+            ->post(route('auth.password.create'), ['email' => 'toby.flenderson@dundermifflin.com']);
+
+        $this->assertNotNull($throttledStatus);
+        $this->assertSame(session('status'), $throttledStatus);
     }
 
     #[Test]
