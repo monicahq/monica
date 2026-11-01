@@ -142,6 +142,18 @@ class File extends Model
     }
 
     /**
+     * How a browser is told to treat the bytes. Only a raster image is shown in
+     * place: anything else, SVG included, can carry script that would run on
+     * the application's own origin, so it is handed over as a download.
+     */
+    public function contentDisposition(): string
+    {
+        return in_array($this->mime_type, ['image/png', 'image/jpeg', 'image/gif', 'image/webp'], true)
+            ? 'inline'
+            : 'attachment';
+    }
+
+    /**
      * The disk the file was written to, read from the row rather than from the
      * configuration: an instance that changed disk has to go on resolving what
      * it wrote before.

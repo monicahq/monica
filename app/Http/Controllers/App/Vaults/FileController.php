@@ -24,6 +24,7 @@ class FileController extends Controller
         return $disk->response($file->path, name: $file->original_name, headers: [
             'Content-Type' => $file->mime_type,
             'Cache-Control' => 'private, max-age=31536000, immutable',
-        ]);
+            'X-Content-Type-Options' => 'nosniff',
+        ], disposition: $file->contentDisposition());
     }
 }
