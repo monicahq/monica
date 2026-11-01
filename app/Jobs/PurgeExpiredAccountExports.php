@@ -6,6 +6,7 @@ namespace App\Jobs;
 
 use App\Enums\AccountExportStatusEnum;
 use App\Models\AccountExport;
+use App\Notifications\AccountExportFailed;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Storage;
@@ -47,6 +48,10 @@ class PurgeExpiredAccountExports implements ShouldQueue
 
                 $export->status = AccountExportStatusEnum::Failed;
                 $export->save();
+
+                $export->user->notify(new AccountExportFailed(
+                    url: route('settings.accountImports.index'),
+                ));
             });
     }
 

@@ -10,6 +10,7 @@ use App\Jobs\ReadAccountImport;
 use App\Models\AccountImport;
 use App\Models\AccountImportItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Mockery;
@@ -129,6 +130,19 @@ class ReadAccountImportTest extends TestCase
 
         $this->assertSame(AccountImportStatusEnum::Read, $import->refresh()->status);
         $this->assertModelExists($item);
+    }
+
+    #[Test]
+    public function it_puts_a_copy_back_on_the_queue_while_another_copy_holds_the_import(): void
+    {
+        $import = AccountImport::factory()->create();
+        $job = new ReadAccountImport(import: $import)->withFakeQueueInteractions();
+        $middleware = $job->middleware()[0];
+        Cache::lock($middleware->getLockKey($job), 60)->get();
+
+        $middleware->handle($job, fn () => $this->fail('The copy ran while another copy held the import.'));
+
+        $job->assertReleased(delay: 60);
     }
 
     private function importOf(string $contents): AccountImport

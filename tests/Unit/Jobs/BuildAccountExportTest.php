@@ -12,6 +12,7 @@ use App\Models\Vault;
 use App\Notifications\AccountExportFailed;
 use App\Notifications\AccountExportReady;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
@@ -56,6 +57,19 @@ class BuildAccountExportTest extends TestCase
 
         Storage::disk('local')->assertMissing($export->path);
         Notification::assertNothingSent();
+    }
+
+    #[Test]
+    public function it_puts_a_copy_back_on_the_queue_while_another_copy_holds_the_export(): void
+    {
+        $export = AccountExport::factory()->create();
+        $job = new BuildAccountExport(export: $export)->withFakeQueueInteractions();
+        $middleware = $job->middleware()[0];
+        Cache::lock($middleware->getLockKey($job), 60)->get();
+
+        $middleware->handle($job, fn () => $this->fail('The copy ran while another copy held the export.'));
+
+        $job->assertReleased(delay: 60);
     }
 
     #[Test]

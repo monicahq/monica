@@ -26,7 +26,7 @@ use Throwable;
 /**
  * Read an uploaded file into the items of its import, on a queue because a file of 512 MB takes far
  * longer than a request may. A file this instance cannot read is refused in the language of the
- * person who uploaded it, and a copy the queue starts while the reading runs is dropped.
+ * person who uploaded it, and a copy the queue starts while the reading runs waits for it to end.
  */
 class ReadAccountImport implements ShouldQueue, SourceFormatVisitor
 {
@@ -54,7 +54,7 @@ class ReadAccountImport implements ShouldQueue, SourceFormatVisitor
     public function middleware(): array
     {
         return [
-            new WithoutOverlapping((string) $this->import->id)->dontRelease()->expireAfter($this->timeout + 60),
+            new WithoutOverlapping((string) $this->import->id)->releaseAfter(60)->expireAfter($this->timeout + 60),
         ];
     }
 

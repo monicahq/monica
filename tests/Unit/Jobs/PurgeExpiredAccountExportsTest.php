@@ -8,8 +8,10 @@ use App\Enums\AccountExportStatusEnum;
 use App\Jobs\PurgeExpiredAccountExports;
 use App\Models\AccountExport;
 use App\Models\User;
+use App\Notifications\AccountExportFailed;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Mockery;
 use PHPUnit\Framework\Attributes\Test;
@@ -66,11 +68,13 @@ class PurgeExpiredAccountExportsTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_up_on_an_export_still_being_prepared_after_a_day(): void
+    public function it_gives_up_on_an_export_still_being_prepared_after_a_day_and_tells_the_account_holder(): void
     {
         Storage::fake('local');
+        Notification::fake();
 
-        $stuck = AccountExport::factory()->create(['status' => AccountExportStatusEnum::Preparing, 'created_at' => now()->subHours(25)]);
+        $michael = User::factory()->create();
+        $stuck = AccountExport::factory()->create(['user_id' => $michael->id, 'status' => AccountExportStatusEnum::Preparing, 'created_at' => now()->subHours(25)]);
         $running = AccountExport::factory()->create(['status' => AccountExportStatusEnum::Preparing]);
         Storage::disk('local')->put("{$stuck->path}.partial", '{}');
 
@@ -79,6 +83,8 @@ class PurgeExpiredAccountExportsTest extends TestCase
         $this->assertSame(AccountExportStatusEnum::Failed, $stuck->refresh()->status);
         $this->assertSame(AccountExportStatusEnum::Preparing, $running->refresh()->status);
         Storage::disk('local')->assertMissing($stuck->directory());
+        Notification::assertSentTo($michael, AccountExportFailed::class, fn (AccountExportFailed $notification): bool => $notification->url === route('settings.accountImports.index'));
+        Notification::assertSentTimes(AccountExportFailed::class, 1);
     }
 
     #[Test]

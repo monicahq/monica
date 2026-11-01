@@ -22,7 +22,7 @@ use Throwable;
 
 /**
  * Write the file of an export and tell the account holder whether it can be downloaded. It runs on a
- * queue for as long as the photos take, and a copy the queue starts while it runs is dropped. An
+ * queue for as long as the photos take, and a copy the queue starts while it runs waits for it to end. An
  * earlier export keeps its file until its own seven days are over, when the daily purge removes it.
  */
 class BuildAccountExport implements ShouldQueue
@@ -51,7 +51,7 @@ class BuildAccountExport implements ShouldQueue
     public function middleware(): array
     {
         return [
-            new WithoutOverlapping((string) $this->export->id)->dontRelease()->expireAfter($this->timeout + 60),
+            new WithoutOverlapping((string) $this->export->id)->releaseAfter(60)->expireAfter($this->timeout + 60),
         ];
     }
 
