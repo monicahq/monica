@@ -172,4 +172,26 @@ class ConsumeMagicLinkTest extends TestCase
 
         $this->assertNull($link->refresh()->used_at);
     }
+
+    #[Test]
+    public function it_refuses_a_link_another_request_burned_after_it_was_checked(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $link = $this->linkFor($user);
+
+        MagicLink::retrieved(function (MagicLink $retrieved): void {
+            MagicLink::query()->whereKey($retrieved->id)->update(['used_at' => now()]);
+        });
+
+        try {
+            new ConsumeMagicLink(token: self::TOKEN)->execute();
+            $this->fail('The link was spent twice.');
+        } catch (ModelNotFoundException) {
+        }
+
+        $this->assertNull($user->refresh()->last_login_at);
+        Queue::assertNotPushed(CheckLastLogin::class);
+    }
 }

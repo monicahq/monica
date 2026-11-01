@@ -70,6 +70,7 @@ use Override;
  * @property string|null $two_factor_secret
  * @property CarbonImmutable|null $two_factor_confirmed_at
  * @property array<int, string>|null $two_factor_recovery_codes
+ * @property int|null $two_factor_last_timestep
  * @property CarbonImmutable|null $last_saved_at
  * @property CarbonImmutable|null $welcomed_at
  * @property CarbonImmutable $created_at

@@ -39,6 +39,7 @@ return new class extends Migration
             $table->text('two_factor_secret')->nullable()->comment('encrypted TOTP secret, null until the user enrols in two factor authentication');
             $table->timestamp('two_factor_confirmed_at')->nullable()->comment('when the user finished enrolling in two factor authentication, null while it is not in use');
             $table->text('two_factor_recovery_codes')->nullable()->comment('encrypted list of single use recovery codes for two factor authentication');
+            $table->unsignedBigInteger('two_factor_last_timestep')->nullable()->comment('time step of the last authenticator code accepted, so the same code cannot be used twice');
             $table->datetime('last_saved_at')->nullable()->comment('when the user last saved their own profile, shown on that screen');
             $table->datetime('welcomed_at')->nullable()->comment('when the user pressed Let me in on the welcome screen, null until then');
             $table->rememberToken()->comment('remember token');

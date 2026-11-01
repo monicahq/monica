@@ -58,8 +58,14 @@ class ConsumeMagicLink
 
     private function burn(): void
     {
-        $this->magicLink->used_at = now();
-        $this->magicLink->save();
+        $burned = MagicLink::query()
+            ->whereKey($this->magicLink->id)
+            ->whereNull('used_at')
+            ->update(['used_at' => now()]);
+
+        if ($burned !== 1) {
+            throw new ModelNotFoundException('Magic link not found');
+        }
     }
 
     private function stamp(): void

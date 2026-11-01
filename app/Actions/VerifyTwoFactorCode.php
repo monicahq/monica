@@ -6,6 +6,7 @@ namespace App\Actions;
 
 use App\Helpers\TextSanitizer;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use PragmaRX\Google2FA\Google2FA;
@@ -73,20 +74,41 @@ class VerifyTwoFactorCode
             return false;
         }
 
-        return new Google2FA()->verifyKey($this->user->two_factor_secret, $this->code);
+        return DB::transaction(function (): bool {
+            $user = User::query()->lockForUpdate()->findOrFail($this->user->id);
+
+            $timestep = new Google2FA()->verifyKeyNewer(
+                $user->two_factor_secret,
+                $this->code,
+                $user->two_factor_last_timestep ?? 0,
+            );
+
+            if ($timestep === false) {
+                return false;
+            }
+
+            $user->two_factor_last_timestep = $timestep;
+            $user->save();
+
+            return true;
+        });
     }
 
     private function verifyRecoveryCode(): bool
     {
-        $codes = $this->user->two_factor_recovery_codes;
+        return DB::transaction(function (): bool {
+            $user = User::query()->lockForUpdate()->findOrFail($this->user->id);
 
-        if (! is_array($codes) || ! in_array($this->code, $codes, true)) {
-            return false;
-        }
+            $codes = $user->two_factor_recovery_codes;
 
-        $this->user->two_factor_recovery_codes = array_values(array_diff($codes, [$this->code]));
-        $this->user->save();
+            if (! is_array($codes) || ! in_array($this->code, $codes, true)) {
+                return false;
+            }
 
-        return true;
+            $user->two_factor_recovery_codes = array_values(array_diff($codes, [$this->code]));
+            $user->save();
+
+            return true;
+        });
     }
 }

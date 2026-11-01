@@ -149,4 +149,37 @@ class VerifyTwoFactorCodeTest extends TestCase
 
         $this->assertFalse($verified);
     }
+
+    #[Test]
+    public function it_refuses_the_same_authenticator_code_the_second_time(): void
+    {
+        $google2fa = new Google2FA;
+        $secret = $google2fa->generateSecretKey();
+        $user = User::factory()->twoFactor($secret)->create();
+        $code = $google2fa->getCurrentOtp($secret);
+
+        new VerifyTwoFactorCode(user: $user, code: $code)->execute();
+
+        $verified = new VerifyTwoFactorCode(
+            user: $user,
+            code: $code,
+        )->execute();
+
+        $this->assertFalse($verified);
+    }
+
+    #[Test]
+    public function it_spends_a_recovery_code_once_when_two_requests_read_it_before_either_writes(): void
+    {
+        $user = User::factory()->twoFactor()->create();
+        $firstRequestUser = User::query()->findOrFail($user->id);
+        $secondRequestUser = User::query()->findOrFail($user->id);
+
+        $first = new VerifyTwoFactorCode(user: $firstRequestUser, code: 'scranton-1')->execute();
+        $second = new VerifyTwoFactorCode(user: $secondRequestUser, code: 'scranton-1')->execute();
+
+        $this->assertTrue($first);
+        $this->assertFalse($second);
+        $this->assertEquals(['scranton-2'], $user->refresh()->two_factor_recovery_codes);
+    }
 }
