@@ -38,6 +38,9 @@ class DetectDuplicateContacts implements ShouldBeUnique, ShouldQueue
 
     private const int VALUE_SCORE = 95;
 
+    /** A value held by more contacts than this, such as a switchboard number, says nothing about who is a duplicate. */
+    private const int MOST_CONTACTS_SHARING_A_VALUE = 20;
+
     public function __construct(private readonly Contact|Vault|null $subject = null) {}
 
     public function uniqueId(): string
@@ -284,6 +287,10 @@ class DetectDuplicateContacts implements ShouldBeUnique, ShouldQueue
                 continue;
             }
 
+            if (count($ids) > self::MOST_CONTACTS_SHARING_A_VALUE) {
+                continue;
+            }
+
             if ($around instanceof Contact && ! in_array($around->id, $ids, true)) {
                 continue;
             }
@@ -396,11 +403,6 @@ class DetectDuplicateContacts implements ShouldBeUnique, ShouldQueue
     /** @param array<string, array<string, mixed>> $found */
     private function forgetWhatNoLongerMatches(array $found): void
     {
-        $keeping = array_map(
-            fn (array $pair): array => [$pair['contact_id'], $pair['other_contact_id']],
-            array_values($found),
-        );
-
         $stale = ContactDuplicateCandidate::query()
             ->standing()
             ->where('vault_id', $this->vaultId())
@@ -412,11 +414,7 @@ class DetectDuplicateContacts implements ShouldBeUnique, ShouldQueue
                 }),
             )
             ->get()
-            ->reject(fn (ContactDuplicateCandidate $candidate): bool => in_array(
-                [$candidate->contact_id, $candidate->other_contact_id],
-                $keeping,
-                true,
-            ));
+            ->reject(fn (ContactDuplicateCandidate $candidate): bool => isset($found["{$candidate->contact_id}:{$candidate->other_contact_id}"]));
 
         ContactDuplicateCandidate::query()->whereIn('id', $stale->modelKeys())->delete();
     }

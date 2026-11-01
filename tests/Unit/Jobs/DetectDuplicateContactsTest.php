@@ -196,6 +196,33 @@ class DetectDuplicateContactsTest extends TestCase
     }
 
     #[Test]
+    public function it_ignores_a_value_shared_by_more_contacts_than_a_duplicate_would_be(): void
+    {
+        $vault = Vault::factory()->create();
+        $email = $this->identifyingField($vault);
+        $phone = $this->identifyingField($vault);
+        $jim = $this->contactIn($vault, 'Jim', 'Halpert');
+        $jimmy = $this->contactIn($vault, 'Jimmy', 'H');
+
+        $this->valueFor($jim, $email, 'jim@dundermifflin.com');
+        $this->valueFor($jimmy, $email, 'jim@dundermifflin.com');
+        $this->valueFor($jim, $phone, '570-555-0100');
+        $this->valueFor($jimmy, $phone, '570-555-0100');
+
+        foreach (['Scott', 'Schrute', 'Beesly', 'Bernard', 'Martin', 'Malone', 'Hudson', 'Kapoor', 'Howard', 'Vance', 'Palmer', 'Bratton', 'Flenderson', 'Martinez', 'Philbin', 'Levinson', 'Flax', 'Hannon', 'Lewis'] as $lastName) {
+            $this->valueFor($this->contactIn($vault, null, $lastName), $phone, '570-555-0100');
+        }
+
+        new DetectDuplicateContacts(subject: $vault)->handle();
+
+        $candidate = ContactDuplicateCandidate::query()->sole();
+
+        $this->assertEquals(min($jim->id, $jimmy->id), $candidate->contact_id);
+        $this->assertEquals(max($jim->id, $jimmy->id), $candidate->other_contact_id);
+        $this->assertEquals(['jim@dundermifflin.com'], array_column($candidate->reasons, 'value'));
+    }
+
+    #[Test]
     public function it_never_proposes_a_contact_as_its_own_duplicate(): void
     {
         $vault = Vault::factory()->create();
