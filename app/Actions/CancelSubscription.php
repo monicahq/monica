@@ -12,7 +12,8 @@ use Laravel\Cashier\Subscription;
 
 /**
  * Stop a subscription renewing. Access stays until the end of the period already paid for and never
- * a day less, which is why Stripe is asked to end it at the next billing date rather than at once.
+ * a day less, which is why Stripe is asked to end it at the next billing date rather than at once. A
+ * move to a longer subscription still waiting for that date is dropped with it.
  */
 class CancelSubscription
 {
@@ -52,6 +53,8 @@ class CancelSubscription
 
     private function cancel(): void
     {
+        new ReleaseSubscriptionSchedule(subscription: $this->subscription)->execute();
+
         $this->subscription->cancel();
     }
 

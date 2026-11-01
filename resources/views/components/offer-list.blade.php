@@ -50,7 +50,7 @@
                 @if ($offer['upgrade'])
                   <x-modal.form
                     :title="__('Switch to :plan?', ['plan' => __($offer['kind']->label())])"
-                    :description="__('Nothing is charged today. The subscription becomes this one at once, and the new price is billed at the renewal already planned, on the same date as before.')"
+                    :description="__('Nothing is charged today. The subscription becomes this one at its next renewal, billed at the new price on the same date as before.')"
                     :confirm="__('Switch')"
                     method="put"
                     :action="route('settings.subscription.update', ['price' => $offer['price_id']])"

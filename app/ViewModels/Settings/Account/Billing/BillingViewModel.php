@@ -289,6 +289,20 @@ class BillingViewModel
             ];
         }
 
+        $scheduled = $this->account()->scheduledOfferKind();
+
+        if ($this->isSubscribed() && $scheduled !== null && $this->renewsAt() !== null) {
+            return [
+                'badge' => __('Active'),
+                'tone' => 'success',
+                'title' => $this->subscriptionLabel(),
+                'line' => __('Full access. :plan from :date, the day its price is first billed.', [
+                    'plan' => __($scheduled->label()),
+                    'date' => $this->renewsAt()->isoFormat('LL'),
+                ]),
+            ];
+        }
+
         if ($this->isSubscribed()) {
             return [
                 'badge' => __('Active'),

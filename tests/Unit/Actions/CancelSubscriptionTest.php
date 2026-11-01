@@ -61,6 +61,20 @@ class CancelSubscriptionTest extends TestCase
     }
 
     #[Test]
+    public function it_lets_go_of_a_waiting_move_up_before_asking_stripe_to_stop_the_renewal(): void
+    {
+        $michael = User::factory()->create();
+        $this->subscribeAccount($michael->account)->forceFill(['scheduled_stripe_price' => 'price_yearly'])->save();
+        $this->stripe->respondTo('GET subscriptions/*', $this->stripeSubscription(schedule: 'sub_sched_dundermifflin'));
+
+        $subscription = new CancelSubscription(user: $michael)->execute();
+
+        $paths = array_column($this->stripe->requests('POST *'), 'path');
+        $this->assertSame(['subscription_schedules/sub_sched_dundermifflin/release', 'subscriptions/sub_dundermifflin'], $paths);
+        $this->assertNull($subscription->fresh()->scheduled_stripe_price);
+    }
+
+    #[Test]
     public function it_refuses_an_account_with_no_subscription(): void
     {
         $this->expectException(AccountHasNoSubscription::class);

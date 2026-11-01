@@ -25,6 +25,7 @@ $billing = [
         'has_full_access' => true,
         'access_kind' => 'subscription',
         'renews_at' => 1759752000,
+        'scheduled_offer' => null,
         'ends_at' => null,
         'purchased_at' => 1725710400,
         'order' => [
@@ -103,6 +104,7 @@ $billingFields = [
     ['name' => 'data.attributes.has_full_access', 'type' => 'boolean', 'description' => 'Whether every ceiling but storage is lifted, however the account came to hold that: bought once, subscribed, or opened by us.'],
     ['name' => 'data.attributes.access_kind', 'type' => 'string', 'description' => 'How full access is held: lifetime, subscription or granted, and null on the free plan. On a self hosted instance it is always null, because nothing is sold there.'],
     ['name' => 'data.attributes.renews_at', 'type' => 'timestamp', 'description' => 'When the subscription next bills, as a count of seconds since 1970. Null when nothing renews, which includes a subscription already on its way out.'],
+    ['name' => 'data.attributes.scheduled_offer', 'type' => 'string', 'description' => 'The plan the subscription moves to at its next renewal, yearly after a move up, and null when no move is waiting. The move happens at renews_at, which is also when its price is first billed.'],
     ['name' => 'data.attributes.ends_at', 'type' => 'timestamp', 'description' => 'When a cancelled subscription stops, as a count of seconds. Null while it renews, and until that moment the cancellation can still be taken back.'],
     ['name' => 'data.attributes.purchased_at', 'type' => 'timestamp', 'description' => 'When the one time purchase was ordered, as a count of seconds, null when it never was.'],
     ['name' => 'data.attributes.order', 'type' => 'object', 'description' => 'The one time purchase, null when nothing was ever ordered. A checkout nobody paid is not one, and an order that stopped holding stays here so that the end of access can be read.'],
@@ -281,9 +283,10 @@ return [
             'label' => 'Move up',
             'method' => 'PUT',
             'path' => '/billing/subscription',
-            'description' => 'Change the running subscription to a longer one, monthly to yearly, in place.',
+            'description' => 'Change the running subscription to a longer one, monthly to yearly, at its next renewal.',
             'body' => [
-                'Nothing is charged on the day of the change. The longer price is billed at the renewal that was already planned, and that date does not move.',
+                'Nothing is charged on the day of the change and nothing changes until the renewal that was already planned. From that date, which does not move, the subscription is the longer one and bills its price. Until then the billing object carries the move in scheduled_offer.',
+                'Cancelling the subscription before that date drops the move, and taking the cancellation back does not bring it back.',
                 'There is one subscription throughout: no second one is opened, and access never gaps. Only a longer subscription is accepted, so a yearly subscriber cannot move back to monthly here, and lifetime access is bought through a checkout rather than swapped into.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
@@ -296,7 +299,7 @@ return [
                     'example' => 'price_1QdundieYearly',
                 ],
             ],
-            'returns' => 'The billing object as it now stands. 422 when there is no subscription, when it is already ending, or when the price is not a longer subscription. 402 when the bank asks for the payment to be confirmed, with a payment_url to open in a browser: the subscription has already moved and stays past due until the payment is confirmed there.',
+            'returns' => 'The billing object as it now stands, with scheduled_offer set. 422 when there is no subscription, when it is already ending, when a move is already waiting, or when the price is not a longer subscription.',
             'response' => ['data' => $billing],
         ],
         [

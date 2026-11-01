@@ -11,24 +11,20 @@ use App\Exceptions\SubscriptionCannotBeChanged;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class SubscriptionController extends Controller
 {
     public function update(Request $request, string $price): RedirectResponse
     {
         try {
-            $subscription = new UpgradeSubscription(user: $request->user(), priceId: $price)->execute();
+            new UpgradeSubscription(user: $request->user(), priceId: $price)->execute();
         } catch (AccountHasNoSubscription|SubscriptionCannotBeChanged $e) {
             return redirect()->route('settings.billing.index')->withErrors(['subscription' => $e->getMessage()]);
-        } catch (IncompletePayment $e) {
-            return redirect()->route('cashier.payment', [$e->payment->asStripePaymentIntent()->id, 'redirect' => route('settings.billing.index')]);
         }
 
         return redirect()->route('settings.billing.index')
-            ->with('status', __('The subscription moved up.'))
-            ->with('status_description', __('Nothing was charged today. The new price is billed at the renewal that was already planned, and the date has not moved.'))
-            ->with('subscription', $subscription->stripe_price);
+            ->with('status', __('The subscription moves up at its next renewal.'))
+            ->with('status_description', __('Nothing was charged today. The new price is billed from the renewal that was already planned, and the date has not moved.'));
     }
 
     public function destroy(Request $request): RedirectResponse

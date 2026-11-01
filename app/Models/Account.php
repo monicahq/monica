@@ -473,7 +473,8 @@ class Account extends Model
      * Get the offers the account may still take up, out of Stripe's catalogue:
      * none on a self hosted instance, none once lifetime access is held, and
      * while a subscription runs only what sits above it, meaning lifetime access
-     * and the subscriptions longer than the current one.
+     * and the subscriptions longer than the current one, or than the one it
+     * already moves to at its next renewal.
      *
      * @return array<int, array{price_id: string, kind: OfferKindEnum, amount: int, currency: string, prices: array<string, int>}>
      */
@@ -489,7 +490,9 @@ class Account extends Model
 
         $subscription = $this->subscription();
         $subscribed = $subscription?->valid() === true;
-        $current = $subscribed && ! $subscription->onGracePeriod() ? StripeCatalogue::kindOfSubscription($subscription) : null;
+        $current = $subscribed && ! $subscription->onGracePeriod()
+            ? $this->scheduledOfferKind() ?? StripeCatalogue::kindOfSubscription($subscription)
+            : null;
 
         return array_values(array_filter(StripeCatalogue::offers(), function (array $offer) use ($subscribed, $current): bool {
             if (! $subscribed) {
@@ -539,6 +542,33 @@ class Account extends Model
         }
 
         return StripeCatalogue::kindOfSubscription($subscription);
+    }
+
+    /**
+     * Get which offer the running subscription moves to at its next renewal, null
+     * when no move is waiting or the subscription is ending.
+     */
+    public function scheduledOfferKind(): ?OfferKindEnum
+    {
+        $subscription = $this->subscription();
+
+        if ($subscription === null) {
+            return null;
+        }
+
+        if (! $subscription->valid()) {
+            return null;
+        }
+
+        if ($subscription->onGracePeriod()) {
+            return null;
+        }
+
+        if ($subscription->scheduled_stripe_price === null) {
+            return null;
+        }
+
+        return StripeCatalogue::kindOf($subscription->scheduled_stripe_price);
     }
 
     /**

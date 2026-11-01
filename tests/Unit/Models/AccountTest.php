@@ -295,6 +295,32 @@ class AccountTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_a_subscriber_already_moving_to_yearly_lifetime_access_alone(): void
+    {
+        $this->fakeStripe();
+
+        $account = Account::factory()->create();
+        $this->subscribeAccount($account, 'price_monthly')->forceFill(['scheduled_stripe_price' => 'price_yearly'])->save();
+
+        $this->assertSame(['price_lifetime'], array_column($account->availableOffers(), 'price_id'));
+        $this->assertSame(OfferKindEnum::Yearly, $account->scheduledOfferKind());
+        $this->assertSame(OfferKindEnum::Monthly, $account->subscriptionOfferKind());
+    }
+
+    #[Test]
+    public function it_names_no_waiting_move_on_a_subscription_that_is_ending(): void
+    {
+        $this->fakeStripe();
+
+        $account = Account::factory()->create();
+        $this->subscribeAccount($account, 'price_monthly', 'active', now()->addWeek())
+            ->forceFill(['scheduled_stripe_price' => 'price_yearly'])
+            ->save();
+
+        $this->assertNull($account->scheduledOfferKind());
+    }
+
+    #[Test]
     public function it_offers_a_yearly_subscriber_lifetime_access_alone(): void
     {
         $this->fakeStripe();

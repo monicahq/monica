@@ -149,6 +149,8 @@ class SettleOrder
             return;
         }
 
+        new ReleaseSubscriptionSchedule(subscription: $subscription)->execute();
+
         $subscription->cancel();
     }
 

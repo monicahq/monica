@@ -50,7 +50,7 @@ Everything else Cashier handles is left to it: `customer.subscription.updated` k
 
 ## Cancel, resume, move up
 
-**Decision**: `cancel()` at period end and `resume()` inside the grace period, both Cashier's. Moving up is `noProrate()->swap($price)`, which sends `proration_behavior=none` and leaves the billing cycle anchor alone: the subscription bills the yearly price on the date already planned and nothing today, which is FR-021 as clarified.
+**Decision**: `cancel()` at period end and `resume()` inside the grace period, both Cashier's. Moving up is a Stripe subscription schedule made from the running subscription: a first phase keeps the monthly price until the period already paid for ends, a second phase bills the yearly price from that date, and the schedule then lets go of the subscription. Nothing is charged today and the renewal date does not move, which is FR-021 as clarified. `swap()` cannot do it: Stripe resets the billing cycle anchor to now whenever the interval changes, and invoices the yearly price on the spot. A schedule refuses `cancel()`, so cancelling releases it first and drops a move still waiting.
 
 **Alternative**: `swapAndInvoice()` with prorations, which is what 022 first shipped; rejected by the clarification session.
 

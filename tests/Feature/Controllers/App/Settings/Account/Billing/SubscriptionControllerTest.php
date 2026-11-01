@@ -27,43 +27,18 @@ class SubscriptionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_moves_a_subscription_up_and_says_nothing_was_charged(): void
+    public function it_moves_a_subscription_up_at_the_next_renewal_and_says_nothing_was_charged(): void
     {
         $michael = User::factory()->create();
         $subscription = $this->subscribeAccount($michael->account, 'price_monthly');
-        $this->stripe->respondTo('POST subscriptions/*', $this->stripeSubscription('price_yearly'));
 
         $response = $this->actingAs($michael)
             ->put(route('settings.subscription.update', ['price' => 'price_yearly']));
 
         $response->assertRedirect(route('settings.billing.index'));
-        $response->assertSessionHas('status', 'The subscription moved up.');
-        $response->assertSessionHas('status_description', 'Nothing was charged today. The new price is billed at the renewal that was already planned, and the date has not moved.');
-        $this->assertSame('price_yearly', $subscription->fresh()->stripe_price);
-    }
-
-    #[Test]
-    public function it_sends_a_payment_that_needs_confirming_to_the_confirmation_page(): void
-    {
-        $michael = User::factory()->create();
-        $this->subscribeAccount($michael->account, 'price_monthly');
-        $this->stripe->respondTo('subscriptions/*', [
-            ...$this->stripeSubscription('price_yearly', 'past_due'),
-            'latest_invoice' => [
-                'id' => 'in_dundermifflin',
-                'object' => 'invoice',
-                'payments' => [
-                    'object' => 'list',
-                    'data' => [['object' => 'invoice_payment', 'payment' => ['type' => 'payment_intent', 'payment_intent' => 'pi_dundermifflin']]],
-                ],
-            ],
-        ]);
-        $this->stripe->respondTo('payment_intents/*', ['id' => 'pi_dundermifflin', 'object' => 'payment_intent', 'status' => 'requires_action']);
-
-        $response = $this->actingAs($michael)
-            ->put(route('settings.subscription.update', ['price' => 'price_yearly']));
-
-        $response->assertRedirect(route('cashier.payment', ['pi_dundermifflin', 'redirect' => route('settings.billing.index')]));
+        $response->assertSessionHas('status', 'The subscription moves up at its next renewal.');
+        $response->assertSessionHas('status_description', 'Nothing was charged today. The new price is billed from the renewal that was already planned, and the date has not moved.');
+        $this->assertSame('price_yearly', $subscription->fresh()->scheduled_stripe_price);
     }
 
     #[Test]

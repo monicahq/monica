@@ -238,6 +238,26 @@ class SettleOrderTest extends TestCase
     }
 
     #[Test]
+    public function it_lets_go_of_a_waiting_move_up_before_stopping_the_subscription(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        $account = Account::factory()->create(['stripe_id' => 'cus_dundermifflin']);
+        $subscription = $this->subscribeAccount($account);
+        $subscription->forceFill(['scheduled_stripe_price' => 'price_yearly'])->save();
+        StripeOrder::factory()->create(['account_id' => $account->id, 'stripe_id' => 'cs_test_scranton']);
+        $this->stripe->respondTo('checkout/sessions*', $this->stripeCheckoutSession(id: 'cs_test_scranton', paymentStatus: 'paid'));
+        $this->stripe->respondTo('GET subscriptions/*', $this->stripeSubscription(schedule: 'sub_sched_dundermifflin'));
+
+        new SettleOrder(account: $account, sessionId: 'cs_test_scranton')->execute();
+
+        $this->assertTrue($this->stripe->sent('POST subscription_schedules/sub_sched_dundermifflin/release'));
+        $this->assertNull($subscription->fresh()->scheduled_stripe_price);
+        $this->assertNotNull($subscription->fresh()->ends_at);
+    }
+
+    #[Test]
     public function it_tells_nobody_when_there_is_nobody_on_the_account(): void
     {
         Queue::fake();

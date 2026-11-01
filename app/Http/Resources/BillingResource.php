@@ -27,6 +27,7 @@ class BillingResource extends JsonResource
                 'has_full_access' => $this->hasFullAccess(),
                 'access_kind' => $this->accessKind()?->value,
                 'renews_at' => $this->nextBillingDate()?->timestamp,
+                'scheduled_offer' => $this->scheduledOfferKind()?->value,
                 'ends_at' => $subscription?->onGracePeriod() === true ? $subscription->ends_at?->timestamp : null,
                 'purchased_at' => $order?->created_at->timestamp,
                 'order' => $order === null ? null : [

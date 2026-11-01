@@ -33,17 +33,21 @@ class UpgradeSubscriptionTest extends TestCase
     }
 
     #[Test]
-    public function it_moves_the_running_subscription_up_in_place(): void
+    public function it_schedules_the_move_up_for_the_next_renewal(): void
     {
         $michael = User::factory()->create();
         $subscription = $this->subscribeAccount($michael->account, 'price_monthly');
-        $this->stripe->respondTo('POST subscriptions/*', $this->stripeSubscription('price_yearly'));
 
         $moved = new UpgradeSubscription(user: $michael, priceId: 'price_yearly')->execute();
 
         $this->assertTrue($moved->is($subscription));
-        $this->assertSame('price_yearly', $subscription->fresh()->stripe_price);
+        $this->assertDatabaseHas('subscriptions', [
+            'id' => $subscription->id,
+            'stripe_price' => 'price_monthly',
+            'scheduled_stripe_price' => 'price_yearly',
+        ]);
         $this->assertSame(1, $michael->account->subscriptions()->count());
+        $this->assertSame('sub_dundermifflin', $this->stripe->lastParams('POST subscription_schedules')['from_subscription']);
 
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::SubscriptionUpgraded
             && $job->isAbout($subscription));
@@ -54,13 +58,38 @@ class UpgradeSubscriptionTest extends TestCase
     {
         $michael = User::factory()->create();
         $this->subscribeAccount($michael->account, 'price_monthly');
-        $this->stripe->respondTo('POST subscriptions/*', $this->stripeSubscription('price_yearly'));
 
         new UpgradeSubscription(user: $michael, priceId: 'price_yearly')->execute();
 
-        $params = $this->stripe->lastParams('POST subscriptions/*');
+        $params = $this->stripe->lastParams('POST subscription_schedules/sub_sched_dundermifflin');
+        [$current, $yearly] = $params['phases'];
+
+        $this->assertFalse($this->stripe->sent('POST subscriptions/*'));
+        $this->assertSame('release', $params['end_behavior']);
         $this->assertSame('none', $params['proration_behavior']);
-        $this->assertArrayNotHasKey('billing_cycle_anchor', $params);
+        $this->assertSame('price_monthly', $current['items'][0]['price']);
+        $this->assertSame($this->stripePeriodEnd()->getTimestamp(), $current['end_date']);
+        $this->assertSame('price_yearly', $yearly['items'][0]['price']);
+        $this->assertSame('phase_start', $yearly['billing_cycle_anchor']);
+        $this->assertSame('none', $yearly['proration_behavior']);
+        $this->assertArrayNotHasKey('start_date', $yearly);
+    }
+
+    #[Test]
+    public function it_refuses_a_second_move_while_one_is_waiting(): void
+    {
+        $this->expectException(SubscriptionCannotBeChanged::class);
+
+        $michael = User::factory()->create();
+        $this->subscribeAccount($michael->account, 'price_monthly')
+            ->forceFill(['scheduled_stripe_price' => 'price_yearly'])
+            ->save();
+
+        try {
+            new UpgradeSubscription(user: $michael, priceId: 'price_yearly')->execute();
+        } finally {
+            $this->assertFalse($this->stripe->sent('subscription_schedules*'));
+        }
     }
 
     #[Test]
@@ -135,12 +164,29 @@ class UpgradeSubscriptionTest extends TestCase
 
         $michael = User::factory()->create();
         $subscription = $this->subscribeAccount($michael->account, 'price_monthly');
-        $this->stripe->failOn('subscriptions/*');
+        $this->stripe->failOn('POST subscription_schedules');
 
         try {
             new UpgradeSubscription(user: $michael, priceId: 'price_yearly')->execute();
         } finally {
-            $this->assertSame('price_monthly', $subscription->fresh()->stripe_price);
+            $this->assertNull($subscription->fresh()->scheduled_stripe_price);
+        }
+    }
+
+    #[Test]
+    public function it_lets_go_of_the_schedule_when_stripe_refuses_the_phases(): void
+    {
+        $this->expectException(SubscriptionCannotBeChanged::class);
+
+        $michael = User::factory()->create();
+        $subscription = $this->subscribeAccount($michael->account, 'price_monthly');
+        $this->stripe->failOn('POST subscription_schedules/sub_sched_dundermifflin');
+
+        try {
+            new UpgradeSubscription(user: $michael, priceId: 'price_yearly')->execute();
+        } finally {
+            $this->assertTrue($this->stripe->sent('POST subscription_schedules/sub_sched_dundermifflin/release'));
+            $this->assertNull($subscription->fresh()->scheduled_stripe_price);
         }
     }
 }

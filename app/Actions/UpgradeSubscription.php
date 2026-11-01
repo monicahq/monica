@@ -10,16 +10,14 @@ use App\Exceptions\SubscriptionCannotBeChanged;
 use App\Helpers\StripeCatalogue;
 use App\Jobs\LogUserAction;
 use App\Models\User;
+use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Subscription;
 use Stripe\Exception\ApiErrorException;
 
 /**
- * Move a running subscription up to a longer one, monthly to yearly, by changing the price on the
- * subscription Stripe already holds.
- *
- * Nothing is charged on the day of the change and the billing cycle is left where it is, so the
- * longer price is billed at the renewal already planned. A checkout would have opened a second
- * subscription beside the first, which is why this goes through the API instead.
+ * Move a running subscription up to a longer one, monthly to yearly, at its next renewal, through a
+ * Stripe subscription schedule. Swapping the price at once would restart the billing cycle and charge
+ * the yearly price today, which is why nothing is changed until the period already paid for ends.
  */
 class UpgradeSubscription
 {
@@ -33,7 +31,7 @@ class UpgradeSubscription
     public function execute(): Subscription
     {
         $this->validate();
-        $this->swap();
+        $this->schedule();
         $this->log();
 
         return $this->subscription;
@@ -55,6 +53,10 @@ class UpgradeSubscription
             throw new AccountHasNoSubscription(__('The subscription is already ending.'));
         }
 
+        if ($subscription->scheduled_stripe_price !== null) {
+            throw new SubscriptionCannotBeChanged(__('The subscription already moves up at its next renewal.'));
+        }
+
         $kind = StripeCatalogue::kindOf($this->priceId);
 
         if ($kind === null || ! $kind->renews()) {
@@ -70,13 +72,51 @@ class UpgradeSubscription
         $this->subscription = $subscription;
     }
 
-    private function swap(): void
+    private function schedule(): void
     {
+        $schedules = Cashier::stripe()->subscriptionSchedules;
+
         try {
-            $this->subscription->noProrate()->swap($this->priceId);
+            $schedule = $schedules->create(['from_subscription' => $this->subscription->stripe_id]);
         } catch (ApiErrorException $exception) {
             throw new SubscriptionCannotBeChanged(__('Stripe refused the change, so nothing was changed.'), 0, $exception);
         }
+
+        $currentPhase = $schedule->phases[0];
+        $currentItem = $currentPhase->items[0];
+
+        try {
+            $schedules->update($schedule->id, [
+                'end_behavior' => 'release',
+                'proration_behavior' => 'none',
+                'phases' => [
+                    [
+                        'items' => [[
+                            'price' => is_string($currentItem->price) ? $currentItem->price : $currentItem->price->id,
+                            'quantity' => $currentItem->quantity ?? 1,
+                        ]],
+                        'start_date' => $currentPhase->start_date,
+                        'end_date' => $currentPhase->end_date,
+                        'automatic_tax' => ['enabled' => Cashier::$calculatesTaxes],
+                        'proration_behavior' => 'none',
+                    ],
+                    [
+                        'items' => [['price' => $this->priceId, 'quantity' => 1]],
+                        'duration' => ['interval' => 'year', 'interval_count' => 1],
+                        'billing_cycle_anchor' => 'phase_start',
+                        'automatic_tax' => ['enabled' => Cashier::$calculatesTaxes],
+                        'proration_behavior' => 'none',
+                    ],
+                ],
+            ]);
+        } catch (ApiErrorException $exception) {
+            // A schedule left attached would refuse the next attempt and every cancellation.
+            rescue(fn () => $schedules->release($schedule->id));
+
+            throw new SubscriptionCannotBeChanged(__('Stripe refused the change, so nothing was changed.'), 0, $exception);
+        }
+
+        $this->subscription->forceFill(['scheduled_stripe_price' => $this->priceId])->save();
     }
 
     private function log(): void

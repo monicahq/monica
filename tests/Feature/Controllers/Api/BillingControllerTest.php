@@ -25,6 +25,7 @@ class BillingControllerTest extends TestCase
                 'has_full_access',
                 'access_kind',
                 'renews_at',
+                'scheduled_offer',
                 'ends_at',
                 'purchased_at',
                 'order',

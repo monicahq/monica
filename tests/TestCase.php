@@ -136,6 +136,7 @@ abstract class TestCase extends BaseTestCase
         ]);
         $client->respondTo('invoice_payments*', $this->stripeInvoicePayments('in_dundermifflin'));
         $client->respondTo('subscriptions*', $this->stripeSubscription());
+        $client->respondTo('subscription_schedules*', $this->stripeSubscriptionSchedule());
         $client->respondTo('subscription_items*', [
             'id' => 'si_dundermifflin',
             'object' => 'subscription_item',
@@ -259,7 +260,7 @@ abstract class TestCase extends BaseTestCase
         return CarbonImmutable::today()->addMonth()->setTime(12, 0);
     }
 
-    protected function stripeSubscription(string $priceId = 'price_monthly', string $status = 'active'): array
+    protected function stripeSubscription(string $priceId = 'price_monthly', string $status = 'active', ?string $schedule = null): array
     {
         return [
             'id' => 'sub_dundermifflin',
@@ -268,6 +269,7 @@ abstract class TestCase extends BaseTestCase
             'customer' => 'cus_dundermifflin',
             'cancel_at_period_end' => false,
             'latest_invoice' => null,
+            'schedule' => $schedule,
             'items' => [
                 'object' => 'list',
                 'has_more' => false,
@@ -284,6 +286,28 @@ abstract class TestCase extends BaseTestCase
                     ],
                 ]],
             ],
+        ];
+    }
+
+    /**
+     * A subscription schedule as Stripe answers it once made from the running subscription: one phase
+     * covering the period already paid for.
+     *
+     * @return array<string, mixed>
+     */
+    protected function stripeSubscriptionSchedule(string $priceId = 'price_monthly'): array
+    {
+        return [
+            'id' => 'sub_sched_dundermifflin',
+            'object' => 'subscription_schedule',
+            'status' => 'active',
+            'subscription' => 'sub_dundermifflin',
+            'end_behavior' => 'release',
+            'phases' => [[
+                'start_date' => $this->stripePeriodEnd()->subMonth()->getTimestamp(),
+                'end_date' => $this->stripePeriodEnd()->getTimestamp(),
+                'items' => [['price' => $priceId, 'quantity' => 1]],
+            ]],
         ];
     }
 

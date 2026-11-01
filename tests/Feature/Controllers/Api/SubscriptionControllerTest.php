@@ -28,11 +28,10 @@ class SubscriptionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_moves_the_subscription_up_and_answers_the_record(): void
+    public function it_moves_the_subscription_up_at_the_next_renewal_and_answers_the_record(): void
     {
         $michael = User::factory()->create();
-        $subscription = $this->subscribeAccount($michael->account, 'price_monthly');
-        $this->stripe->respondTo('POST subscriptions/*', $this->stripeSubscription('price_yearly'));
+        $this->subscribeAccount($michael->account, 'price_monthly');
         Sanctum::actingAs($michael);
 
         $response = $this->json('PUT', route('api.v1.billing.subscription.update'), ['price_id' => 'price_yearly']);
@@ -40,8 +39,7 @@ class SubscriptionControllerTest extends TestCase
         $response->assertOk();
         $response->assertJsonPath('data.type', 'billing');
         $response->assertJsonPath('data.attributes.access_kind', 'subscription');
-        $this->assertSame('price_yearly', $subscription->fresh()->stripe_price);
-        $this->assertSame('none', $this->stripe->lastParams('POST subscriptions/*')['proration_behavior']);
+        $response->assertJsonPath('data.attributes.scheduled_offer', 'yearly');
     }
 
     #[Test]
@@ -66,31 +64,6 @@ class SubscriptionControllerTest extends TestCase
         $this->json('PUT', route('api.v1.billing.subscription.update'), ['price_id' => 'price_monthly'])
             ->assertUnprocessable()
             ->assertJsonValidationErrors('price_id');
-    }
-
-    #[Test]
-    public function it_hands_back_where_to_confirm_the_payment_when_it_needs_confirming(): void
-    {
-        $michael = User::factory()->create();
-        $this->subscribeAccount($michael->account, 'price_monthly');
-        $this->stripe->respondTo('subscriptions/*', [
-            ...$this->stripeSubscription('price_yearly', 'past_due'),
-            'latest_invoice' => [
-                'id' => 'in_dundermifflin',
-                'object' => 'invoice',
-                'payments' => [
-                    'object' => 'list',
-                    'data' => [['object' => 'invoice_payment', 'payment' => ['type' => 'payment_intent', 'payment_intent' => 'pi_dundermifflin']]],
-                ],
-            ],
-        ]);
-        $this->stripe->respondTo('payment_intents/*', ['id' => 'pi_dundermifflin', 'object' => 'payment_intent', 'status' => 'requires_action']);
-        Sanctum::actingAs($michael);
-
-        $this->json('PUT', route('api.v1.billing.subscription.update'), ['price_id' => 'price_yearly'])
-            ->assertStatus(402)
-            ->assertJsonPath('message', 'The payment needs confirming before the subscription can move up.')
-            ->assertJsonPath('payment_url', route('cashier.payment', ['pi_dundermifflin']));
     }
 
     #[Test]

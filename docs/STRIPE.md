@@ -150,7 +150,7 @@ the events to enable and what each one does:
 | `checkout.session.async_payment_succeeded` | the same, for a buyer who paid with a delayed method such as a SEPA debit or a bank transfer, whose session completed unpaid and is paid days later |
 | `invoice.paid` | the payment is written down, so a screen can show what was charged. It opens nothing |
 | `customer.subscription.created` | the subscription is recorded and the owner is told access is open |
-| `customer.subscription.updated` | keeps the local subscription in step: its state, its price, its end date. This is how a card going past due arrives, and how a change made in the dashboard reaches the product |
+| `customer.subscription.updated` | keeps the local subscription in step: its state, its price, its end date. This is how a card going past due arrives, how a change made in the dashboard reaches the product, and how a move to yearly that was waiting for the renewal is seen to have happened |
 | `customer.subscription.deleted` | access ends, and the owner is told whether it was cancelled or whether Stripe gave up on the payments |
 | `charge.refunded` | a refund of the whole amount withdraws access, and the order stays, marked refunded |
 | `charge.refund.updated` | a refund that then fails or is called off puts access back, since the money never left |
