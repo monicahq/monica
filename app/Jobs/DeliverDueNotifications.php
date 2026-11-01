@@ -9,6 +9,7 @@ use App\Actions\NotifyReminderOccurrence;
 use App\Enums\NotificationDeliveryModeEnum;
 use App\Models\Notification;
 use App\Models\ReminderOccurrence;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -18,9 +19,12 @@ use Illuminate\Support\Facades\Log;
  * become notifications first, so that quiet hours are read against the instant a deadline was
  * really due, and only then is everything quiet hours allow out handed to its channel.
  */
-class DeliverDueNotifications implements ShouldQueue
+class DeliverDueNotifications implements ShouldBeUnique, ShouldQueue
 {
     use Queueable;
+
+    /** How long the lock may outlive a worker that died holding it. Short, since no reminder goes out while it is held. */
+    public int $uniqueFor = 900;
 
     public function handle(): void
     {

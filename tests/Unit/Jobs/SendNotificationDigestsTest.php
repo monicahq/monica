@@ -13,6 +13,7 @@ use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -30,6 +31,17 @@ class SendNotificationDigestsTest extends TestCase
         new SendNotificationDigests()->handle();
 
         $this->assertSame(1, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
+    }
+
+    #[Test]
+    public function it_queues_no_second_run_while_the_first_is_waiting_or_running(): void
+    {
+        Queue::fake();
+
+        SendNotificationDigests::dispatch();
+        SendNotificationDigests::dispatch();
+
+        Queue::assertPushedTimes(SendNotificationDigests::class, 1);
     }
 
     #[Test]

@@ -18,6 +18,7 @@ use App\Notifications\ReminderDue;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -62,6 +63,17 @@ class DeliverDueNotificationsTest extends TestCase
 
         $this->assertSame(2, Notification::query()->where('notifiable_id', $occurrence->id)->count());
         NotificationFacade::assertSentTimes(ReminderDue::class, 1);
+    }
+
+    #[Test]
+    public function it_queues_no_second_sweep_while_the_first_is_waiting_or_running(): void
+    {
+        Queue::fake();
+
+        DeliverDueNotifications::dispatch();
+        DeliverDueNotifications::dispatch();
+
+        Queue::assertPushedTimes(DeliverDueNotifications::class, 1);
     }
 
     #[Test]

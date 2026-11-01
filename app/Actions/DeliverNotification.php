@@ -26,6 +26,9 @@ use Vonage\Client\Exception\ServerException as VonageServerException;
  * exist will refuse the next two attempts exactly as it refused this one, so
  * the notification is abandoned at once and the count against the channel goes
  * up either way.
+ *
+ * The row is claimed before it is handed over, so two sweeps that load it at
+ * once send it once. A refusal gives the claim back.
  */
 class DeliverNotification
 {
@@ -53,9 +56,14 @@ class DeliverNotification
             return false;
         }
 
+        if (! $this->claim()) {
+            return false;
+        }
+
         try {
             $this->hand();
         } catch (Throwable $e) {
+            $this->notification->sent_at = null;
             $this->stumble($e);
 
             return false;
@@ -72,6 +80,25 @@ class DeliverNotification
             && $this->notification->failed_at === null
             && $this->notification->digest_id === null
             && ! $this->notification->held_until->isFuture();
+    }
+
+    private function claim(): bool
+    {
+        $claimedAt = now();
+
+        $claimed = Notification::query()
+            ->whereKey($this->notification->id)
+            ->whereNull('sent_at')
+            ->whereNull('failed_at')
+            ->whereNull('digest_id')
+            ->update(['sent_at' => $claimedAt]) === 1;
+
+        if ($claimed) {
+            $this->notification->sent_at = $claimedAt;
+            $this->notification->syncOriginalAttribute('sent_at');
+        }
+
+        return $claimed;
     }
 
     private function isStillWarranted(): bool

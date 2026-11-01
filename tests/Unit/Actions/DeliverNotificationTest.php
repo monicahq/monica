@@ -205,6 +205,18 @@ class DeliverNotificationTest extends TestCase
     }
 
     #[Test]
+    public function it_sends_nothing_when_another_sweep_claimed_it_first(): void
+    {
+        NotificationFacade::fake();
+        $notification = $this->notification()->email()->create();
+        Notification::query()->whereKey($notification->id)->update(['sent_at' => now()]);
+
+        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+
+        NotificationFacade::assertNothingSent();
+    }
+
+    #[Test]
     public function it_never_reopens_a_notification_already_abandoned(): void
     {
         NotificationFacade::fake();
@@ -320,6 +332,7 @@ class DeliverNotificationTest extends TestCase
         $notification->refresh();
 
         $this->assertNull($notification->failed_at);
+        $this->assertNull($notification->sent_at);
         $this->assertSame(1, $notification->attempts);
     }
 
@@ -347,6 +360,7 @@ class DeliverNotificationTest extends TestCase
         $notification->refresh();
 
         $this->assertNotNull($notification->failed_at);
+        $this->assertNull($notification->sent_at);
         $this->assertSame('token_revoked', $notification->failure_reason);
     }
 

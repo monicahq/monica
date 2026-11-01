@@ -10,6 +10,7 @@ use App\Enums\NotificationTypeEnum;
 use App\Models\Notification;
 use App\Models\NotificationPreference;
 use Carbon\CarbonImmutable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -20,9 +21,12 @@ use Illuminate\Support\Facades\Log;
  * day is sent by the first run of the next one, and only by that run, so whatever arrives later waits
  * for the next chosen time.
  */
-class SendNotificationDigests implements ShouldQueue
+class SendNotificationDigests implements ShouldBeUnique, ShouldQueue
 {
     use Queueable;
+
+    /** How long the lock may outlive a worker that died holding it. */
+    public int $uniqueFor = 3600;
 
     public function handle(): void
     {
