@@ -369,8 +369,28 @@ class SetFieldValueTest extends TestCase
             yearIsUnknown: true,
         )->execute();
 
-        $this->assertEquals('1900-03-15', $value->value_date->format('Y-m-d'));
+        $this->assertEquals(FieldValue::PLACEHOLDER_YEAR.'-03-15', $value->value_date->format('Y-m-d'));
         $this->assertTrue($value->year_is_unknown);
+    }
+
+    #[Test]
+    public function it_keeps_the_twenty_ninth_of_february_when_nobody_knows_the_year(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = Field::factory()->recurringDate()->create(['account_id' => $user->account_id]);
+
+        $value = new SetFieldValue(
+            user: $user,
+            valuable: $contact,
+            field: $field,
+            value: '1980-02-29',
+            yearIsUnknown: true,
+        )->execute();
+
+        $this->assertEquals('02-29', $value->value_date->format('m-d'));
     }
 
     #[Test]

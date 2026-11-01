@@ -145,7 +145,15 @@ class ReminderSchedule
 
         $year = ($from ?? self::today($reminder))->year;
 
-        return $date->setDate($year, $date->month, min($date->day, CarbonImmutable::create($year, $date->month, 1)->daysInMonth));
+        if (! $reminder->cadence->recurs()) {
+            return $date->setDate($year, $date->month, min($date->day, CarbonImmutable::create($year, $date->month, 1)->daysInMonth));
+        }
+
+        while (! checkdate($date->month, $date->day, $year)) {
+            $year--;
+        }
+
+        return $date->setDate($year, $date->month, $date->day);
     }
 
     private static function today(Reminder $reminder): CarbonImmutable

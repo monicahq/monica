@@ -114,9 +114,10 @@ class FieldValue extends Model
      * The year a date that comes round again is stored under when nobody knows
      * the real one. A birthday whose year is unknown is a normal case rather
      * than an error, and the column still has to hold a date, so it holds this
-     * one. It is never rendered and never used to compute an age.
+     * one. It is never rendered and never used to compute an age. It is a leap
+     * year, so the twenty-ninth of February survives being stored.
      */
-    public const int PLACEHOLDER_YEAR = 1900;
+    public const int PLACEHOLDER_YEAR = 1904;
 
     /**
      * The parts an address is written in, in the order a card carries them in

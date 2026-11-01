@@ -95,6 +95,44 @@ class ReminderScheduleTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_the_twenty_ninth_of_february_in_a_leap_year_when_nobody_knows_the_year(): void
+    {
+        $value = FieldValue::factory()->recurringDateWithoutAYear()->create([
+            'value_date' => FieldValue::PLACEHOLDER_YEAR.'-02-29',
+        ]);
+        $reminder = Reminder::factory()->for($value, 'fieldValue')->create([
+            'account_id' => $value->account_id,
+            'vault_id' => $value->vault_id,
+            'field_id' => $value->field_id,
+            'remindable_id' => $value->valuable_id,
+            'cadence' => ReminderCadenceEnum::Yearly,
+        ]);
+
+        $this->assertEquals('2027-02-28', $this->next($reminder, '2026-03-01'));
+        $this->assertEquals('2028-02-29', $this->next($reminder, '2027-03-01'));
+        $this->assertEquals('2028-02-29', $this->next($reminder, '2028-01-01'));
+        $this->assertEquals(['2028-02-29 08:00'], $this->between($reminder, '2027-03-01', '2028-12-31'));
+    }
+
+    #[Test]
+    public function it_fires_once_this_year_on_the_twenty_ninth_of_february_when_nobody_knows_the_year(): void
+    {
+        $value = FieldValue::factory()->recurringDateWithoutAYear()->create([
+            'value_date' => FieldValue::PLACEHOLDER_YEAR.'-02-29',
+        ]);
+        $reminder = Reminder::factory()->for($value, 'fieldValue')->create([
+            'account_id' => $value->account_id,
+            'vault_id' => $value->vault_id,
+            'field_id' => $value->field_id,
+            'remindable_id' => $value->valuable_id,
+            'cadence' => ReminderCadenceEnum::Once,
+        ]);
+
+        $this->assertEquals('2027-02-28', $this->next($reminder, '2027-01-01'));
+        $this->assertEquals('2028-02-29', $this->next($reminder, '2028-01-01'));
+    }
+
+    #[Test]
     public function it_says_a_rule_that_fires_once_has_a_day_ahead_of_it_until_that_day_has_gone(): void
     {
         $reminder = $this->ruleOn('2026-12-25', ReminderCadenceEnum::Once);
