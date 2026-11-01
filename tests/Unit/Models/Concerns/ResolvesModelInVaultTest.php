@@ -7,7 +7,9 @@ namespace Tests\Unit\Models\Concerns;
 use App\Models\Entity;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -46,6 +48,22 @@ class ResolvesModelInVaultTest extends TestCase
         $this->actingAs($user);
 
         $this->assertTrue($entity->is(new Entity()->resolveRouteBinding($entity->uuid, 'uuid')));
+    }
+
+    #[Test]
+    public function it_never_puts_a_value_that_does_not_read_as_a_uuid_to_the_uuid_column(): void
+    {
+        $user = User::factory()->create();
+        $this->entityOf($user);
+        $queries = [];
+        DB::listen(function (QueryExecuted $query) use (&$queries): void {
+            $queries[] = $query->sql;
+        });
+
+        $this->actingAs($user);
+
+        $this->assertNull(new Entity()->resolveRouteBinding('dwight-schrute'));
+        $this->assertSame([], array_filter($queries, fn (string $sql): bool => str_contains($sql, 'uuid')));
     }
 
     #[Test]

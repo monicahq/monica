@@ -39,7 +39,6 @@ runs:
         commit=$(git log --pretty="%H" -n1)
         version=$(git describe --abbrev=0 --tags 2>/dev/null || echo '0.0.0' | sed 's/^v//')
         release=$(git log --pretty="%h" -n1 $commit)
-        echo "commit=$commit" >> $GITHUB_OUTPUT
         echo "version=$version" >> $GITHUB_OUTPUT
         echo "release=$release" >> $GITHUB_OUTPUT
 

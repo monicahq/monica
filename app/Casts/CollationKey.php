@@ -12,6 +12,8 @@ use Override;
 /**
  * Keep raw collation key bytes intact. PostgreSQL stores them as bytea, which it reads as a stream and
  * only accepts as a stream, so the bytes are converted at the boundary and the model always sees a string.
+ * Writing the bytes a row was read with hands back the stream it was read as: Eloquent tells two streams
+ * apart by identity, and a fresh one would count as a change on every save.
  *
  * @implements CastsAttributes<string, string>
  */
@@ -35,6 +37,12 @@ class CollationKey implements CastsAttributes
     {
         if (! is_string($value)) {
             return $value;
+        }
+
+        $original = $model->getRawOriginal($key);
+
+        if (is_resource($original) && $this->get($model, $key, $original, $attributes) === $value) {
+            return $original;
         }
 
         return self::bindable($value, $model->getConnection());

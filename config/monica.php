@@ -3,6 +3,25 @@
 declare(strict_types=1);
 use Laravel\Socialite\SocialiteServiceProvider;
 use SocialiteProviders\Microsoft\Provider as MicrosoftProvider;
+use Illuminate\Support\Str;
+
+if (! function_exists('readVersion'))
+{
+    function readVersion(string $file, string $gitCommand, ?string $default = null): ?string
+    {
+        $content = null;
+        if (is_file($file)) {
+            $content = file_get_contents($file);
+        } elseif (is_dir(base_path('.git'))) {
+            $command = Str::of($gitCommand)
+                ->start('git ')
+                ->replaceStart('git', 'git --git-dir "'.base_path('.git').'"');
+            $content = trim(exec("$command 2>".(substr(php_uname(), 0, 7) === 'Windows' ? 'NUL' : '/dev/null')));
+        }
+
+        return trim($content ?? $default);
+    }
+}
 
 return [
 
@@ -224,7 +243,7 @@ return [
     |
     */
 
-    'version' => env('MONICA_VERSION', '3.0.0'),
+    'version' => env('MONICA_VERSION', readVersion(__DIR__.'/.version', 'git describe --abbrev=0 --tags', '0.0.0')),
 
     'instance' => env('MONICA_INSTANCE', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
 

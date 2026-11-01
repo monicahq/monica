@@ -81,6 +81,3 @@ jobs:
 
       - name: Setup JS environment
         uses: ./.github/actions/js
-
-      - name: Install JS dependencies
-        run: bun install --frozen-lockfile

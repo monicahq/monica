@@ -55,4 +55,40 @@ class CollationKeyTest extends TestCase
         $this->assertIsResource($written);
         $this->assertSame("\x29\xa0", stream_get_contents($written));
     }
+
+    #[Test]
+    public function it_keeps_the_stream_a_row_was_read_with_when_the_bytes_are_unchanged_on_postgres(): void
+    {
+        $stream = fopen('php://memory', 'r+');
+        fwrite($stream, "\x29\xa0");
+
+        $contact = new Contact;
+        $contact->setConnection('pgsql');
+        $contact->setRawAttributes(['sort_key' => $stream], true);
+
+        $contact->sort_key = "\x29\xa0";
+
+        $this->assertSame($stream, $contact->getAttributes()['sort_key']);
+        $this->assertFalse($contact->isDirty('sort_key'));
+    }
+
+    #[Test]
+    public function it_writes_a_new_stream_when_the_bytes_change_on_postgres(): void
+    {
+        $stream = fopen('php://memory', 'r+');
+        fwrite($stream, "\x29\xa0");
+
+        $contact = new Contact;
+        $contact->setConnection('pgsql');
+        $contact->setRawAttributes(['sort_key' => $stream], true);
+
+        $contact->sort_key = "\x29\xa1";
+
+        $written = $contact->getAttributes()['sort_key'];
+
+        $this->assertIsResource($written);
+        $this->assertNotSame($stream, $written);
+        $this->assertSame("\x29\xa1", stream_get_contents($written));
+        $this->assertTrue($contact->isDirty('sort_key'));
+    }
 }
