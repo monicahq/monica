@@ -36,10 +36,11 @@ class ConfirmPasswordTest extends TestCase
     }
 
     #[Test]
-    public function it_says_so_when_the_account_holds_neither_credential(): void
+    public function it_offers_a_link_by_email_when_the_account_holds_neither_credential(): void
     {
         $this->blade('<x-modal.confirm-password />')
-            ->assertSee('This account holds neither a password nor a passkey', escape: false)
+            ->assertSee('Send me a link to confirm', escape: false)
+            ->assertSee('action="'.route('auth.passwordConfirmationLink.create').'"', escape: false)
             ->assertDontSee('Your password', escape: false)
             ->assertDontSee('Use a passkey', escape: false);
     }

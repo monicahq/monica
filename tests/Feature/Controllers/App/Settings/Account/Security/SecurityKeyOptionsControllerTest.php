@@ -41,14 +41,14 @@ class SecurityKeyOptionsControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_nothing_of_an_account_without_a_password(): void
+    public function it_asks_an_account_without_a_password_to_confirm_too(): void
     {
         URL::forceScheme('https');
 
         $response = $this->actingAs(User::factory()->create(['password' => null]))
-            ->getJson(route('settings.securityKeyOptions.show'));
+            ->get(route('settings.securityKeyOptions.show'));
 
-        $response->assertOk();
+        $response->assertRedirect(route('auth.confirmPassword.new'));
     }
 
     #[Test]

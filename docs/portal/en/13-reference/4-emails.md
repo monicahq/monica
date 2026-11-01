@@ -3,7 +3,7 @@ id: reference.emails
 title: Emails Monica sends
 slug: emails
 section: reference
-last_updated: 2026-09-29
+last_updated: 2026-11-01
 ---
 
 # Emails Monica sends
@@ -19,6 +19,7 @@ Each one is listed in **Emails sent** once sent, in your settings under **Logs**
 | Confirm your email address | You sign up, or change your email address | @doc(start.create-account) |
 | Your sign-in link for Monica | You ask for a sign in link | @doc(signin.magic-link) |
 | Choose a new password for Monica | You ask for a link to choose a new password | @doc(signin.forgot-password) |
+| Confirm it is you on Monica | You ask for a link to confirm a change to your security settings | @doc(security.password) |
 | Failed sign-in attempt on your Monica account | Somebody types your address and a wrong password | @doc(security.suspicious-activity) |
 | You signed in to Monica without a password | Somebody signs in with a link sent to you | @doc(security.suspicious-activity) |
 | You signed in to Monica with a passkey | Somebody signs in with a passkey | @doc(security.suspicious-activity) |

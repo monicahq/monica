@@ -55,6 +55,16 @@ class RegistrationPasskeyControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_lets_the_new_person_make_their_first_passkey_without_confirming(): void
+    {
+        Queue::fake();
+
+        $this->post(route('auth.registerPasskey.create'), $this->payload());
+
+        $this->getJson(route('passkey.registration-options'))->assertOk();
+    }
+
+    #[Test]
     public function it_remembers_the_browser_of_the_new_person(): void
     {
         Queue::fake();

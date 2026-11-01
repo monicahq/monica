@@ -24,13 +24,13 @@
         </div>
 
         <div class="ml-auto flex shrink-0 flex-wrap items-center gap-2.5">
-          <form x-data="{ asksForConfirmation: @js($viewModel->credentials()->offersPassword()) }" @submit.prevent="register()">
+          <form @submit.prevent="register()">
             <x-button
               size="small"
               type="button"
               x-show="supported"
               x-bind:disabled="busy"
-              @click.prevent="asksForConfirmation ? $dispatch('confirm-password', { form: $el.form }) : register()"
+              @click.prevent="$dispatch('confirm-password', { form: $el.form })"
             >{{ __('Add a passkey') }}</x-button>
           </form>
         </div>

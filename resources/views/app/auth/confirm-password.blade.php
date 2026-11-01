@@ -13,17 +13,7 @@
         <p class="text-sm text-pretty text-body">{{ __('This setting controls your way back in. Prove it’s you first, and we’ll leave you alone for a while after.') }}</p>
       </div>
 
-      @if ($viewModel->offersNothing())
-        <x-box padding="p-4" class="rounded-lg">
-          <div class="space-y-3">
-            <x-notice tone="warning" icon="lock">{{ __('This account holds neither a password nor a passkey, so there is nothing to confirm with.') }}</x-notice>
-
-            <p class="text-sm text-pretty text-body">{{ __('Ask for a link to choose a password, sign in with it, and this change is yours to make again.') }}</p>
-
-            <x-button :href="route('auth.password.new')" data-turbo="true" class="w-full">{{ __('Choose a new password') }}</x-button>
-          </div>
-        </x-box>
-      @endif
+      <x-status :message="session('status')" />
 
       @if ($viewModel->offersPassword())
         <x-form method="post" :action="route('auth.confirmPassword.create')">
@@ -81,6 +71,16 @@
           </div>
         </x-box>
       @endif
+
+      <x-form method="post" :action="route('auth.passwordConfirmationLink.create')">
+        <x-box padding="p-4" class="rounded-lg">
+          <div class="space-y-3">
+            <p class="text-sm text-pretty text-body">{{ __('Confirm with a link sent to your email address.') }}</p>
+
+            <x-button.secondary class="w-full">{{ __('Send me a link to confirm') }}</x-button.secondary>
+          </div>
+        </x-box>
+      </x-form>
 
       <x-auth-footnote :href="route('settings.security.index')" :label="__('Back to your security settings')"></x-auth-footnote>
     </div>

@@ -109,15 +109,15 @@ class ConfirmPasswordControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_explains_when_the_account_holds_neither_credential(): void
+    public function it_offers_a_link_by_email_when_the_account_holds_neither_credential(): void
     {
         $user = User::factory()->create(['password' => null]);
 
         $response = $this->actingAs($user)->get(route('auth.confirmPassword.new'));
 
         $response->assertStatus(200);
-        $response->assertSee('This account holds neither a password nor a passkey, so there is nothing to confirm with.');
-        $response->assertSee(route('auth.password.new'));
+        $response->assertSee('Send me a link to confirm');
+        $response->assertSee(route('auth.passwordConfirmationLink.create'));
         $response->assertDontSee('Your password');
     }
 

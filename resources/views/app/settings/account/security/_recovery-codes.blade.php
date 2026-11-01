@@ -6,7 +6,7 @@
   icon="key"
 >
   <x-slot:end>
-    <div x-data="{ confirming: false, asksForConfirmation: @js($viewModel->credentials()->offersPassword()) }">
+    <div x-data="{ confirming: false }">
       <x-button.secondary size="small" type="button" x-show="! confirming" @click="confirming = true">{{ __('Get new codes') }}</x-button.secondary>
 
       <div x-cloak x-show="confirming" class="flex flex-wrap items-center justify-end gap-2.5">
@@ -15,7 +15,7 @@
         <x-button.secondary size="small" type="button" @click="confirming = false">{{ __('Keep them') }}</x-button.secondary>
 
         <x-form method="post" :action="route('settings.recoveryCodes.create')">
-          <x-button.danger size="small" type="submit" @click.prevent="asksForConfirmation ? $dispatch('confirm-password', { form: $el.form }) : $el.form.requestSubmit()">{{ __('Get new codes') }}</x-button.danger>
+          <x-button.danger size="small" type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Get new codes') }}</x-button.danger>
         </x-form>
       </div>
     </div>

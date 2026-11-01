@@ -2,7 +2,6 @@
 {{--
   @var array{id: int, name: string, addedAt: string, lastUsedAt: ?string} $securityKey
   @var string $warning
-  @var bool $asksForConfirmation
 --}}
 <x-row
   :title="$securityKey['name']"
@@ -13,7 +12,7 @@
   icon-class="bg-success-tint text-success"
 >
   <x-slot:end>
-    <div x-data="{ renaming: false, confirming: false, asksForConfirmation: @js($asksForConfirmation) }" class="flex flex-wrap items-center justify-end gap-2.5">
+    <div x-data="{ renaming: false, confirming: false }" class="flex flex-wrap items-center justify-end gap-2.5">
       <x-button.secondary
         size="small"
         type="button"
@@ -40,7 +39,7 @@
 
         <x-button.secondary size="small" type="button" @click="renaming = false">{{ __('Cancel') }}</x-button.secondary>
 
-        <x-button size="small" type="submit" @click.prevent="asksForConfirmation ? $dispatch('confirm-password', { form: $el.form }) : $el.form.requestSubmit()">{{ __('Save') }}</x-button>
+        <x-button size="small" type="submit" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Save') }}</x-button>
       </x-form>
 
       <x-button.secondary
@@ -57,7 +56,7 @@
         <x-button.secondary size="small" type="button" x-ref="keep" @click="confirming = false; $nextTick(() => $refs.remove.focus())">{{ __('Keep it') }}</x-button.secondary>
 
         <x-form method="delete" :action="route('settings.securityKeys.destroy', $securityKey['id'])">
-          <x-button.danger size="small" type="submit" aria-describedby="security-key-warning-{{ $securityKey['id'] }}" @click.prevent="asksForConfirmation ? $dispatch('confirm-password', { form: $el.form }) : $el.form.requestSubmit()">{{ __('Remove') }}</x-button.danger>
+          <x-button.danger size="small" type="submit" aria-describedby="security-key-warning-{{ $securityKey['id'] }}" @click.prevent="$dispatch('confirm-password', { form: $el.form })">{{ __('Remove') }}</x-button.danger>
         </x-form>
       </div>
     </div>

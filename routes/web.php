@@ -143,7 +143,6 @@ use App\Http\Controllers\App\Vaults\VaultLifeEventController;
 use App\Http\Controllers\App\Vaults\VaultReminderController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
 use App\Http\Controllers\App\WelcomeController;
-use App\Http\Middleware\EnsurePasswordIsConfirmedWhenThereIsOne;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -625,8 +624,9 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     /*
      * Everything that decides how somebody signs in, or hands out access outliving the session.
-     * Reading the screen above costs nothing; changing any of it costs a password or a passkey,
-     * which `password.confirm` reads from the session and the screen it names writes there.
+     * Reading the screen above costs nothing; changing any of it costs a password, a passkey or a
+     * link sent by email, which `password.confirm` reads from the session and the screen it names
+     * writes there.
      */
     Route::middleware(['password.confirm:auth.confirmPassword.new'])->group(function (): void {
         Route::post('settings/account/security/password', [PasswordController::class, 'create'])->name('settings.password.create');
@@ -662,9 +662,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         Route::delete('settings/account/security/sessions/{session}', [SessionController::class, 'destroy'])->whereAlphaNumeric('session')->name('settings.sessions.destroy');
 
         Route::delete('settings/account/security/assistants/{client}', [ConnectedAssistantController::class, 'destroy'])->whereUuid('client')->name('settings.connectedAssistants.destroy');
-    });
 
-    Route::middleware([EnsurePasswordIsConfirmedWhenThereIsOne::class])->group(function (): void {
         Route::post('settings/account/security/recovery-codes', [RecoveryCodeController::class, 'create'])->name('settings.recoveryCodes.create');
         Route::get('settings/account/security/security-keys/options', [SecurityKeyOptionsController::class, 'show'])->name('settings.securityKeyOptions.show');
         Route::post('settings/account/security/security-keys', [SecurityKeyController::class, 'create'])->name('settings.securityKeys.create');

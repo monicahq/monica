@@ -23,13 +23,13 @@
         icon="key"
       >
         <x-slot:end>
-          <form x-data="{ asksForConfirmation: @js($viewModel->credentials()->offersPassword()) }" @submit.prevent="register()">
+          <form @submit.prevent="register()">
             <x-button
               size="small"
               type="button"
               x-show="supported"
               x-bind:disabled="busy"
-              @click.prevent="asksForConfirmation ? $dispatch('confirm-password', { form: $el.form }) : register()"
+              @click.prevent="$dispatch('confirm-password', { form: $el.form })"
             >{{ __('Add a security key') }}</x-button>
           </form>
         </x-slot:end>
@@ -61,7 +61,6 @@
     @include('app.settings.account.security._security-key-row', [
       'securityKey' => $securityKey,
       'warning' => $viewModel->securityKeyRemovalWarning(),
-      'asksForConfirmation' => $viewModel->credentials()->offersPassword(),
     ])
   @endforeach
 </div>

@@ -125,38 +125,16 @@ class SecurityControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_removes_a_passkey_of_an_account_with_no_password_without_asking(): void
+    public function it_asks_an_account_with_no_password_to_confirm_before_removing_a_passkey(): void
     {
         $user = User::factory()->create(['password' => null]);
         $passkey = Passkey::factory()->create(['user_id' => $user->id]);
 
         $response = $this->actingAs($user)->delete(route('passkey.destroy', $passkey));
 
-        $response->assertRedirect(route('settings.security.index'));
+        $response->assertRedirect(route('auth.confirmPassword.new'));
 
-        $this->assertModelMissing($passkey);
-    }
-
-    #[Test]
-    public function it_asks_for_the_password_before_adding_a_passkey(): void
-    {
-        URL::forceScheme('https');
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertSee('asksForConfirmation: true', escape: false);
-    }
-
-    #[Test]
-    public function it_adds_a_passkey_to_an_account_with_no_password_without_asking(): void
-    {
-        URL::forceScheme('https');
-        $user = User::factory()->create(['password' => null]);
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertSee('asksForConfirmation: false', escape: false);
+        $this->assertModelExists($passkey);
     }
 
     #[Test]

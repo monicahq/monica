@@ -3,12 +3,12 @@ id: security.password
 title: Change, set or remove your password
 slug: your-password
 section: your-account-and-security
-last_updated: 2026-09-29
+last_updated: 2026-11-01
 ---
 
 # Change, set or remove your password
 
-Open your settings and choose **Security and access**. The **Password** section shows what applies to your account: a form to change it, a form to set one, or a way to remove it. Each change asks you to confirm it is you first, and after that Monica leaves you alone for three hours by default.
+Open your settings and choose **Security and access**. The **Password** section shows what applies to your account: a form to change it, a form to set one, or a way to remove it. Each change asks you to confirm it is you first, with your password, a passkey or a link Monica emails you, and after that Monica leaves you alone for three hours by default.
 
 Choose one you use nowhere else. A long password is better than a complicated one.
 

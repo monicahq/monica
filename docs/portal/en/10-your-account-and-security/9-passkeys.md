@@ -3,7 +3,7 @@ id: security.passkeys
 title: Add and remove passkeys
 slug: passkeys
 section: your-account-and-security
-last_updated: 2026-09-29
+last_updated: 2026-11-01
 ---
 
 # Add and remove passkeys
@@ -20,7 +20,7 @@ Open your settings and choose **Security and access**.
 :::
 
 :::step title="Add it"
-Under **Passkeys**, choose **Add a passkey**. If your account has a password, Monica asks you to confirm it is you first.
+Under **Passkeys**, choose **Add a passkey**. Monica asks you to confirm it is you first.
 :::
 
 :::step title="Confirm on your device"

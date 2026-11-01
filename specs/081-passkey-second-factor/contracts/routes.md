@@ -6,17 +6,17 @@ Every JSON shape is the one `@laravel/passkeys` sends and expects, reached throu
 
 | Method and URL | Controller | Name | Extra middleware |
 | --- | --- | --- | --- |
-| GET `settings/account/security/security-keys/options` | `SecurityKeyOptionsController@show` | `settings.securityKeyOptions.show` | `EnsurePasswordIsConfirmedWhenThereIsOne`, as passkey management |
-| POST `settings/account/security/security-keys` | `SecurityKeyController@create` | `settings.securityKeys.create` | `EnsurePasswordIsConfirmedWhenThereIsOne`, as passkey management |
-| PUT `settings/account/security/security-keys/{securityKey}` | `SecurityKeyController@update` | `settings.securityKeys.update` | `EnsurePasswordIsConfirmedWhenThereIsOne`, as passkey management |
-| DELETE `settings/account/security/security-keys/{securityKey}` | `SecurityKeyController@destroy` | `settings.securityKeys.destroy` | `EnsurePasswordIsConfirmedWhenThereIsOne`, as passkey management |
+| GET `settings/account/security/security-keys/options` | `SecurityKeyOptionsController@show` | `settings.securityKeyOptions.show` | `password.confirm`, as passkey management |
+| POST `settings/account/security/security-keys` | `SecurityKeyController@create` | `settings.securityKeys.create` | `password.confirm`, as passkey management |
+| PUT `settings/account/security/security-keys/{securityKey}` | `SecurityKeyController@update` | `settings.securityKeys.update` | `password.confirm`, as passkey management |
+| DELETE `settings/account/security/security-keys/{securityKey}` | `SecurityKeyController@destroy` | `settings.securityKeys.destroy` | `password.confirm`, as passkey management |
 
 - **options**: `200 {"options": PublicKeyCredentialCreationOptionsJSON}`; the options are kept in the session under `securityKey.registrationOptions`. `404` on an insecure connection.
 - **create**: body `{"name": string, "credential": RegistrationResponseJSON}`. `201 {"id", "name", "redirect"}`, where `redirect` is the recovery codes screen when this key turned two-factor authentication on, the security screen otherwise. `422 {"message"}` for a credential already added or a response that does not verify.
 - **update**: form field `name`, required, string, max 255. Redirect to the security screen with a status.
 - **destroy**: redirect to the security screen with a status naming whether two-factor authentication is still on.
 - `{securityKey}` belonging to somebody else: `404`, from the binding.
-- POST `settings/account/security/recovery-codes` (existing) moves into the same group, so an account without a password, which a key can now protect, can still get new codes.
+- POST `settings/account/security/recovery-codes` (existing) moves into the same group. Amended 2026-11-01: the group asks every account to confirm, and an account without a password confirms with a passkey or a link sent by email.
 
 ## Challenge (`routes/auth.php`, guest)
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\App\Auth\LocaleController;
 use App\Http\Controllers\App\Auth\LoginController;
 use App\Http\Controllers\App\Auth\MagicLinkController;
 use App\Http\Controllers\App\Auth\NewPasswordController;
+use App\Http\Controllers\App\Auth\PasswordConfirmationLinkController;
 use App\Http\Controllers\App\Auth\PasswordConfirmationStatusController;
 use App\Http\Controllers\App\Auth\PasswordResetLinkController;
 use App\Http\Controllers\App\Auth\RegistrationController;
@@ -97,13 +98,21 @@ Route::middleware(['auth'])->group(function (): void {
 
     /*
      * The screen a sensitive action is sent to when the session holds no recent confirmation. It
-     * takes the password, and the passkey package's own endpoints take a passkey, both of them
-     * writing the one session fact `password.confirm` reads.
+     * takes the password, the passkey package's own endpoints take a passkey, and the link sent by
+     * email works for every account, all of them writing the one session fact `password.confirm`
+     * reads. The link confirms only a session signed in as the person it was sent to.
      */
     Route::get('confirm-password', [ConfirmPasswordController::class, 'new'])->name('auth.confirmPassword.new');
     Route::post('confirm-password', [ConfirmPasswordController::class, 'create'])
         ->middleware('throttle:confirm-password')
         ->name('auth.confirmPassword.create');
+    Route::post('confirm-password/link', [PasswordConfirmationLinkController::class, 'create'])
+        ->middleware('throttle:6,1')
+        ->name('auth.passwordConfirmationLink.create');
+    Route::get('confirm-password/link/{id}', [PasswordConfirmationLinkController::class, 'show'])
+        ->middleware(['signed', 'throttle:6,1'])
+        ->where('id', '[0-9]+')
+        ->name('auth.passwordConfirmationLink.show');
     Route::get('confirm-password/status', [PasswordConfirmationStatusController::class, 'show'])->name('auth.passwordConfirmationStatus.show');
 
     Route::get('verify-email', [EmailVerificationController::class, 'show'])->name('auth.verification.notice');

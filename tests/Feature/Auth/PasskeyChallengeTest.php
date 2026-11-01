@@ -114,19 +114,10 @@ class PasskeyChallengeTest extends TestCase
     }
 
     #[Test]
-    public function adding_a_passkey_asks_nothing_of_an_account_with_no_password(): void
+    public function adding_a_passkey_needs_a_confirmation_from_an_account_with_no_password(): void
     {
         $user = User::factory()->create(['password' => null]);
 
-        $this->actingAs($user)->getJson(route('passkey.registration-options'))->assertOk();
-    }
-
-    #[Test]
-    public function a_fresh_account_makes_its_first_passkey_without_being_asked(): void
-    {
-        $user = User::factory()->create(['password' => null]);
-
-        $this->actingAs($user)->get(route('auth.registerPasskey.new'))->assertStatus(200);
-        $this->actingAs($user)->getJson(route('passkey.registration-options'))->assertOk();
+        $this->actingAs($user)->getJson(route('passkey.registration-options'))->assertStatus(423);
     }
 }

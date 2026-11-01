@@ -34,7 +34,6 @@ class ConfirmPasswordViewModelTest extends TestCase
 
         $this->assertTrue($viewModel->offersPassword());
         $this->assertFalse($viewModel->offersPasskey());
-        $this->assertFalse($viewModel->offersNothing());
     }
 
     #[Test]
@@ -47,7 +46,6 @@ class ConfirmPasswordViewModelTest extends TestCase
 
         $this->assertFalse($viewModel->offersPassword());
         $this->assertTrue($viewModel->offersPasskey());
-        $this->assertFalse($viewModel->offersNothing());
     }
 
     #[Test]
@@ -60,11 +58,10 @@ class ConfirmPasswordViewModelTest extends TestCase
 
         $this->assertTrue($viewModel->offersPassword());
         $this->assertTrue($viewModel->offersPasskey());
-        $this->assertFalse($viewModel->offersNothing());
     }
 
     #[Test]
-    public function it_offers_nothing_when_the_account_holds_neither(): void
+    public function it_offers_neither_credential_when_the_account_holds_neither(): void
     {
         $user = User::factory()->create(['password' => null]);
 
@@ -72,6 +69,5 @@ class ConfirmPasswordViewModelTest extends TestCase
 
         $this->assertFalse($viewModel->offersPassword());
         $this->assertFalse($viewModel->offersPasskey());
-        $this->assertTrue($viewModel->offersNothing());
     }
 }

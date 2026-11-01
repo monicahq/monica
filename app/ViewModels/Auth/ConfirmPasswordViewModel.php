@@ -23,11 +23,6 @@ class ConfirmPasswordViewModel
         return $this->user->hasPasskeys() && PasskeyAvailability::onThisInstance();
     }
 
-    public function offersNothing(): bool
-    {
-        return ! $this->offersPassword() && ! $this->offersPasskey();
-    }
-
     public function passkeysUnavailableReason(): ?string
     {
         return PasskeyAvailability::reason();

@@ -47,6 +47,9 @@ class RegistrationPasskeyController extends Controller
 
         Auth::login($user, remember: true);
 
+        // The account has no credential yet, and adding its first passkey sits behind `password.confirm`.
+        $request->session()->passwordConfirmed();
+
         return redirect()->route('auth.registerPasskey.new');
     }
 

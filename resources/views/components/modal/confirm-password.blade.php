@@ -61,9 +61,9 @@
             />
           @endif
 
-          @if (! $offersPassword && ! $offersPasskey)
-            <p class="text-sm leading-relaxed text-error">{{ __('This account holds neither a password nor a passkey, so there is nothing to confirm with.') }}</p>
-          @endif
+          <x-form method="post" :action="route('auth.passwordConfirmationLink.create')">
+            <x-button.ghost size="small">{{ __('Send me a link to confirm') }}</x-button.ghost>
+          </x-form>
 
           <p
             x-text="message"

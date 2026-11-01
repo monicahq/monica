@@ -51,11 +51,10 @@ class FlagsViewModelTest extends TestCase
         $credentials = new FlagsViewModel(user: $michael)->credentials();
 
         $this->assertTrue($credentials->offersPassword());
-        $this->assertFalse($credentials->offersNothing());
     }
 
     #[Test]
-    public function it_offers_nothing_to_an_administrator_with_neither_credential(): void
+    public function it_offers_neither_credential_to_an_administrator_who_holds_neither(): void
     {
         $jan = User::factory()->singleSignOn()->create();
 
@@ -63,6 +62,5 @@ class FlagsViewModelTest extends TestCase
 
         $this->assertFalse($credentials->offersPassword());
         $this->assertFalse($credentials->offersPasskey());
-        $this->assertTrue($credentials->offersNothing());
     }
 }
