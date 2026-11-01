@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Log;
 
 /**
  * Send each account that asked for one its daily summary, at the hour it chose. It runs every hour
- * and decides per account, because that hour is local to them.
+ * and decides per account, because that hour is local to them. A time after the last run of a local
+ * day is sent by the first run of the next one, and only by that run, so whatever arrives later waits
+ * for the next chosen time.
  */
 class SendNotificationDigests implements ShouldQueue
 {
@@ -48,23 +50,29 @@ class SendNotificationDigests implements ShouldQueue
 
     private function isDue(NotificationPreference $preference): bool
     {
-        $local = CarbonImmutable::now($preference->timezone);
-        $weekdays = $preference->digest_weekdays;
+        [$hour, $minute] = array_map(intval(...), explode(':', mb_substr((string) $preference->digest_time, 0, 5)));
 
-        if (is_array($weekdays) && $weekdays !== [] && ! in_array($local->dayOfWeek, $weekdays, false)) {
+        $local = CarbonImmutable::now($preference->timezone);
+        $slot = $local->setTime($hour, $minute);
+
+        if ($slot->greaterThan($local)) {
+            $slot = $slot->subDay();
+        }
+
+        if (! $slot->isSameDay($local) && $slot->lessThan($local->subHour())) {
             return false;
         }
 
-        [$hour, $minute] = array_map(intval(...), explode(':', mb_substr((string) $preference->digest_time, 0, 5)));
+        $weekdays = $preference->digest_weekdays;
 
-        if ($local->lessThan($local->setTime($hour, $minute))) {
+        if (is_array($weekdays) && $weekdays !== [] && ! in_array($slot->dayOfWeek, $weekdays, false)) {
             return false;
         }
 
         return ! Notification::query()
             ->where('account_id', $preference->account_id)
             ->where('type', NotificationTypeEnum::Digest->value)
-            ->where('created_at', '>=', $local->setTime($hour, $minute)->utc())
+            ->where('created_at', '>=', $slot->utc())
             ->exists();
     }
 }

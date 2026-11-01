@@ -88,11 +88,38 @@ class SendNotificationDigestsTest extends TestCase
         $this->assertSame(0, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
     }
 
-    private function accountWaiting(): Account
+    #[Test]
+    public function it_sends_a_summary_chosen_after_the_last_run_of_the_day_at_the_first_run_of_the_next(): void
+    {
+        NotificationFacade::fake();
+        $this->travelTo(CarbonImmutable::parse('2027-05-12 22:00:00'));
+        $this->accountWaiting(digestTime: '23:30');
+
+        new SendNotificationDigests()->handle();
+
+        $this->assertSame(1, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
+    }
+
+    #[Test]
+    public function it_counts_the_weekday_of_the_chosen_time_rather_than_the_day_it_is_sent(): void
+    {
+        NotificationFacade::fake();
+        $this->travelTo(CarbonImmutable::parse('2027-05-14 22:00:00'));
+        $account = $this->accountWaiting(digestTime: '23:30');
+        NotificationPreference::query()
+            ->where('account_id', $account->id)
+            ->update(['digest_weekdays' => json_encode([5])]);
+
+        new SendNotificationDigests()->handle();
+
+        $this->assertSame(1, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
+    }
+
+    private function accountWaiting(string $digestTime = '18:00'): Account
     {
         $account = Account::factory()->create();
         $user = User::factory()->create(['account_id' => $account->id]);
-        NotificationPreference::factory()->digestAt('18:00')->create([
+        NotificationPreference::factory()->digestAt($digestTime)->create([
             'account_id' => $account->id,
             'timezone' => 'Europe/Paris',
         ]);
