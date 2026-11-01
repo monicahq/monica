@@ -57,10 +57,16 @@ class BuildOpenApiDocument
                 continue;
             }
 
+            $sections = ApiDocsViewModel::offeredToEveryAccount($group['sections']);
+
+            if ($sections === []) {
+                continue;
+            }
+
             $groups[] = [
                 'name' => $group['name'],
                 'description' => $group['description'] ?? '',
-                'sections' => ApiDocsViewModel::offeredToEveryAccount($group['sections']),
+                'sections' => $sections,
             ];
         }
 

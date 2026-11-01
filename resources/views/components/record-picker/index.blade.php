@@ -20,6 +20,7 @@
 
 @php
   $listId = "{$id}-choices";
+  $queryName = "{$id}_query";
 @endphp
 
 <div
@@ -44,6 +45,7 @@
     <x-input
       type="search"
       :id="$id"
+      :name="$queryName"
       :label="$label"
       :error="$error"
       :placeholder="__('Type a name')"

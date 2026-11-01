@@ -23,6 +23,14 @@ class RecordPickerTest extends TestCase
     }
 
     #[Test]
+    public function it_never_sends_what_was_typed_under_the_name_of_the_record_chosen(): void
+    {
+        $rendered = $this->blade('<x-record-picker name="contact" id="contact" url="/choices" label="Person" />');
+
+        $this->assertSame(1, substr_count((string) $rendered, 'name="contact"'));
+    }
+
+    #[Test]
     public function it_labels_the_search_and_points_it_at_the_list_it_fills(): void
     {
         $rendered = $this->blade('<x-record-picker name="fields[7]" id="field-7" url="/choices" label="Caregiver" />');

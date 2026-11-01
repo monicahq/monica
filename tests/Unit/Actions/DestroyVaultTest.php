@@ -12,6 +12,7 @@ use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
+use App\Models\Group;
 use App\Models\ShareLink;
 use App\Models\StructureVersion;
 use App\Models\User;
@@ -164,6 +165,26 @@ class DestroyVaultTest extends TestCase
         $this->assertEquals($vault->refresh()->deleted_at, $dunder->refresh()->deleted_at);
         $this->assertEquals(0, $type->refresh()->entity_count);
         $this->assertEquals(0, $version->refresh()->record_count);
+    }
+
+    #[Test]
+    public function it_takes_the_groups_of_the_vault_with_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $branch = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Scranton branch']);
+        $elsewhere = Group::factory()->create([
+            'vault_id' => Vault::factory()->default()->create(['account_id' => $user->account_id])->id,
+            'name' => 'Stamford branch',
+        ]);
+
+        new DestroyVault(user: $user, vault: $vault)->execute();
+
+        $this->assertSoftDeleted('groups', ['id' => $branch->id, 'deleted_with_vault' => true]);
+        $this->assertEquals($vault->refresh()->deleted_at, $branch->refresh()->deleted_at);
+        $this->assertNotSoftDeleted('groups', ['id' => $elsewhere->id, 'deleted_with_vault' => false]);
     }
 
     #[Test]

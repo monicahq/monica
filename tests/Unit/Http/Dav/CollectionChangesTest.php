@@ -6,6 +6,8 @@ namespace Tests\Unit\Http\Dav;
 
 use App\Http\Dav\CollectionChanges;
 use App\Models\Contact;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -140,6 +142,85 @@ class CollectionChangesTest extends TestCase
 
         $this->assertEmpty($changes['added']);
         $this->assertEquals('0', $this->changesIn($vault)->token());
+    }
+
+    #[Test]
+    public function it_moves_the_token_when_a_group_changes_or_is_deleted(): void
+    {
+        $vault = $this->vault();
+        Contact::factory()->create($this->inVault($vault));
+
+        $this->travel(5)->seconds();
+        $group = Group::factory()->create(['vault_id' => $vault->id]);
+
+        $this->assertEquals((string) $group->updated_at->getTimestamp(), $this->changesWithGroupsIn($vault)->token());
+
+        $this->travel(5)->seconds();
+        $group->delete();
+
+        $this->assertEquals((string) $group->refresh()->deleted_at->getTimestamp(), $this->changesWithGroupsIn($vault)->token());
+        $this->assertNotEquals($this->changesWithGroupsIn($vault)->token(), $this->changesIn($vault)->token());
+    }
+
+    #[Test]
+    public function it_tells_which_group_cards_were_added_changed_or_removed(): void
+    {
+        $vault = $this->vault();
+        $changed = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Scranton branch']);
+        $stayed = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Stamford branch']);
+        $removed = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Nashua branch']);
+
+        $this->assertEqualsCanonicalizing(
+            [$changed->uuid, $stayed->uuid, $removed->uuid],
+            $this->changesWithGroupsIn($vault)->since(null)['added'],
+        );
+
+        $this->travel(5)->seconds();
+        $since = (string) now()->getTimestamp();
+
+        $changed->touch();
+        $removed->delete();
+        $added = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Utica branch']);
+
+        $changes = $this->changesWithGroupsIn($vault)->since($since);
+
+        $this->assertSame([$added->uuid], $changes['added']);
+        $this->assertSame([$changed->uuid], $changes['modified']);
+        $this->assertSame([$removed->uuid], $changes['deleted']);
+    }
+
+    #[Test]
+    public function it_tells_a_group_card_changed_when_a_current_member_leaves_the_address_book(): void
+    {
+        $vault = $this->vault();
+        $halperts = Group::factory()->create(['vault_id' => $vault->id]);
+        $party = Group::factory()->create(['vault_id' => $vault->id]);
+        $jim = Contact::factory()->create($this->inVault($vault, ['first_name' => 'Jim']));
+        GroupMember::factory()->create(['group_id' => $halperts->id, 'contact_id' => $jim->id]);
+        GroupMember::factory()->former()->create(['group_id' => $party->id, 'contact_id' => $jim->id]);
+
+        $this->travel(5)->seconds();
+        $since = (string) now()->getTimestamp();
+
+        $jim->delete();
+
+        $this->assertContains($halperts->uuid, $this->changesWithGroupsIn($vault)->since($since)['modified']);
+        $this->assertNotContains($party->uuid, $this->changesWithGroupsIn($vault)->since($since)['modified']);
+    }
+
+    #[Test]
+    public function it_tells_nothing_about_groups_to_a_collection_that_holds_none(): void
+    {
+        $vault = $this->vault();
+        Group::factory()->create(['vault_id' => $vault->id]);
+
+        $this->assertEmpty($this->changesIn($vault)->since(null)['added']);
+        $this->assertEquals('0', $this->changesIn($vault)->token());
+    }
+
+    private function changesWithGroupsIn(Vault $vault): CollectionChanges
+    {
+        return new CollectionChanges($vault, fn (Contact $contact): array => [$contact->uuid], fn (Group $group): string => $group->uuid);
     }
 
     private function vault(): Vault

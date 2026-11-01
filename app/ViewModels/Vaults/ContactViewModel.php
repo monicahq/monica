@@ -791,6 +791,22 @@ class ContactViewModel
         ));
     }
 
+    /**
+     * The groups the contact belongs to, or null while groups are not released to the account.
+     */
+    public function groups(): ?ContactGroupsBlock
+    {
+        if (! FlagState::isOn('groups', $this->user->account)) {
+            return null;
+        }
+
+        return once(fn (): ContactGroupsBlock => new ContactGroupsBlock(
+            user: $this->user,
+            vault: $this->vault,
+            contact: $this->contact,
+        ));
+    }
+
     public function deadlines(): ContactDeadlinesBlock
     {
         return once(fn (): ContactDeadlinesBlock => new ContactDeadlinesBlock(

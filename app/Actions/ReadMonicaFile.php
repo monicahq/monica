@@ -44,6 +44,10 @@ class ReadMonicaFile
 
     private const array RELATIONSHIP_KEYS = ['created_at', 'type', 'contact', 'other_contact', 'status', 'started_on', 'ended_on', 'notes'];
 
+    private const array GROUP_KEYS = [
+        'created_at', 'name', 'description', 'started_on', 'started_precision', 'ended_on', 'ended_precision', 'members',
+    ];
+
     private const array LIFE_EVENT_KEYS = [
         'created_at', 'type', 'happened_on', 'ended_on', 'date_precision', 'happened_at_time', 'duration_in_minutes',
         'timezone', 'title', 'narrative', 'location', 'latitude', 'longitude', 'is_shareable', 'narrative_is_shareable',
@@ -125,6 +129,7 @@ class ReadMonicaFile
                 '/account/vaults/-/contacts',
                 '/account/vaults/-/entities',
                 '/account/vaults/-/relationships',
+                '/account/vaults/-/groups',
                 '/account/vaults/-/life_events',
                 '/account/vaults/-/reminders',
                 '/account/vaults/-/files',
@@ -164,6 +169,7 @@ class ReadMonicaFile
             '/account/vaults/-/contacts' => $this->readAContact($entry),
             '/account/vaults/-/entities' => $this->readAnEntity($entry),
             '/account/vaults/-/relationships' => $this->readARelationship($entry),
+            '/account/vaults/-/groups' => $this->readAGroup($entry),
             '/account/vaults/-/life_events' => $this->readALifeEvent($entry),
             '/account/vaults/-/reminders' => $this->readAReminder($entry),
             '/account/vaults/-/files' => $this->readAFile($entry),
@@ -246,6 +252,13 @@ class ReadMonicaFile
     {
         $this->count('relationships');
         $this->add('relationship', $relationship['uuid'] ?? null, Arr::only($relationship, self::RELATIONSHIP_KEYS));
+    }
+
+    /** @param array<string, mixed> $group */
+    private function readAGroup(array $group): void
+    {
+        $this->count('groups');
+        $this->add('group', $group['uuid'] ?? null, Arr::only($group, self::GROUP_KEYS), name: is_string($group['name'] ?? null) ? $group['name'] : null);
     }
 
     /** @param array<string, mixed> $lifeEvent */

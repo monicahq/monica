@@ -69,6 +69,16 @@
         </x-panel>
       @endforelse
 
+      @if ($viewModel->groups() !== [])
+        <x-panel :title="__('Groups')" icon="people">
+          <ul class="flex list-none flex-wrap gap-2">
+            @foreach ($viewModel->groups() as $group)
+              <li><x-badge>{{ $group }}</x-badge></li>
+            @endforeach
+          </ul>
+        </x-panel>
+      @endif
+
       <x-notice tone="quiet" icon="info">
         {{ $viewModel->closingLine() }}
       </x-notice>

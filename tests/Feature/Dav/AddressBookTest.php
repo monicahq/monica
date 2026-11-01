@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Tests\Feature\Dav;
 
 use App\Actions\CreateDefaultValueLists;
+use App\Actions\CreateGroupMembership;
 use App\Actions\ExportContactVCard;
 use App\Enums\ContactNameKindEnum;
 use App\Enums\FieldTypeEnum;
 use App\Jobs\CreateDefaultTemplate;
 use App\Models\Contact;
 use App\Models\FieldValue;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\Log;
 use App\Models\StructureVersion;
 use App\Models\User;
@@ -18,6 +21,7 @@ use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\TestResponse;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Sabre\VObject\Reader;
 use Tests\Fixtures\Dav\Structure;
@@ -484,6 +488,29 @@ class AddressBookTest extends TestCase
     }
 
     #[Test]
+    public function a_contact_a_device_created_keeps_the_uid_the_device_gave_it_and_not_its_uuid(): void
+    {
+        $vault = $this->vault();
+        Structure::asTheDefaultOf($this->user, $vault, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Mobile'],
+        ]);
+
+        $this->dav('PUT', $this->book($vault).'dwight.vcf', body: $this->card(), contentType: 'text/vcard')
+            ->assertStatus(201);
+
+        $contact = Contact::query()->where('vault_id', $vault->id)->sole();
+        $this->assertNotSame('dwight', $contact->uuid);
+
+        $served = $this->dav('GET', $this->book($vault).'dwight.vcf');
+        $this->assertStringContainsString("UID:dwight\r\n", (string) $served->getContent());
+
+        $this->dav('PUT', $this->book($vault).'dwight-again.vcf', body: $this->card(), contentType: 'text/vcard')
+            ->assertStatus(201);
+
+        $this->assertSame(2, Contact::query()->where('vault_id', $vault->id)->count());
+    }
+
+    #[Test]
     public function a_card_naming_nobody_in_the_vault_still_makes_a_contact(): void
     {
         $vault = $this->vault();
@@ -777,5 +804,155 @@ class AddressBookTest extends TestCase
               $hrefs
             </c:addressbook-multiget>
             XML);
+    }
+
+    #[Test]
+    public function it_hands_a_group_card_naming_its_current_members(): void
+    {
+        $vault = $this->vault();
+        $group = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Halpert household']);
+        $jim = Contact::factory()->create($this->inVault($vault, ['first_name' => 'Jim']));
+        GroupMember::factory()->create(['group_id' => $group->id, 'contact_id' => $jim->id]);
+
+        $this->dav('PROPFIND', $this->book($vault), depth: '1')->assertSee($group->uuid.'.vcf', escape: false);
+
+        $fourOh = $this->dav('GET', $this->book($vault).$group->uuid.'.vcf', accept: 'text/vcard; version=4.0');
+
+        $fourOh->assertOk();
+        $this->assertStringContainsString('KIND:group', (string) $fourOh->getContent());
+        $this->assertStringContainsString('FN:Halpert household', (string) $fourOh->getContent());
+        $this->assertStringContainsString("MEMBER:urn:uuid:{$jim->uuid}", (string) $fourOh->getContent());
+
+        $threeOh = $this->dav('GET', $this->book($vault).$group->uuid.'.vcf');
+
+        $threeOh->assertOk();
+        $this->assertSame(1, substr_count((string) $threeOh->getContent(), "X-ADDRESSBOOKSERVER-MEMBER:urn:uuid:{$jim->uuid}"));
+        $this->assertSame(1, substr_count(mb_strtolower((string) $threeOh->getContent()), 'x-addressbookserver-kind:group'));
+    }
+
+    #[Test]
+    public function a_group_card_a_device_saves_makes_a_group_and_no_contact(): void
+    {
+        $vault = $this->vault();
+        $jim = Contact::factory()->create($this->inVault($vault, ['first_name' => 'Jim']));
+        $pam = Contact::factory()->create($this->inVault($vault, ['first_name' => 'Pam']));
+
+        $card = "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:halperts-from-the-phone\r\nKIND:group\r\nFN:Halpert household\r\nMEMBER:urn:uuid:{$jim->uuid}\r\nMEMBER:urn:uuid:{$pam->uuid}\r\nEND:VCARD\r\n";
+
+        $this->dav('PUT', $this->book($vault).'halperts.vcf', body: $card, contentType: 'text/vcard')
+            ->assertStatus(201);
+
+        $this->assertSame(2, Contact::query()->where('vault_id', $vault->id)->count());
+        $group = Group::query()->where('vault_id', $vault->id)->sole();
+        $this->assertSame('Halpert household', $group->name);
+        $this->assertSame('halperts.vcf', $group->dav_uri);
+        $this->assertEqualsCanonicalizing([$jim->id, $pam->id], $group->currentMembers()->pluck('contact_id')->all());
+        $this->dav('GET', $this->book($vault).'halperts.vcf')->assertOk();
+    }
+
+    #[Test]
+    public function a_group_card_in_the_apple_form_makes_a_group_too(): void
+    {
+        $vault = $this->vault();
+        $dwight = Contact::factory()->create($this->inVault($vault, ['first_name' => 'Dwight']));
+
+        $card = "BEGIN:VCARD\r\nVERSION:3.0\r\nUID:farm\r\nN:Schrute farm;;;;\r\nFN:Schrute farm\r\nX-ADDRESSBOOKSERVER-KIND:group\r\nX-ADDRESSBOOKSERVER-MEMBER:urn:uuid:{$dwight->uuid}\r\nEND:VCARD\r\n";
+
+        $this->dav('PUT', $this->book($vault).'farm.vcf', body: $card, contentType: 'text/vcard')
+            ->assertStatus(201);
+
+        $this->assertSame(1, Contact::query()->where('vault_id', $vault->id)->count());
+        $group = Group::query()->where('vault_id', $vault->id)->sole();
+        $this->assertSame([$dwight->id], $group->currentMembers()->pluck('contact_id')->all());
+    }
+
+    #[Test]
+    public function a_member_a_device_removes_from_a_group_card_leaves_the_group_that_day(): void
+    {
+        $this->travelTo('2026-10-29 10:00:00');
+        $vault = $this->vault();
+        $group = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Halpert household']);
+        $jim = Contact::factory()->create($this->inVault($vault, ['first_name' => 'Jim']));
+        $pam = Contact::factory()->create($this->inVault($vault, ['first_name' => 'Pam']));
+        GroupMember::factory()->create(['group_id' => $group->id, 'contact_id' => $jim->id]);
+        $leaving = GroupMember::factory()->create(['group_id' => $group->id, 'contact_id' => $pam->id, 'role' => 'Mother']);
+
+        $card = "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:{$group->uuid}\r\nKIND:group\r\nFN:The Halperts\r\nMEMBER:urn:uuid:{$jim->uuid}\r\nEND:VCARD\r\n";
+
+        $this->dav('PUT', $this->book($vault).$group->uuid.'.vcf', body: $card, contentType: 'text/vcard')
+            ->assertStatus(204);
+
+        $this->assertSame('The Halperts', $group->refresh()->name);
+        $this->assertSame('2026-10-29', $leaving->refresh()->left_on?->format('Y-m-d'));
+        $this->assertSame('Mother', $leaving->role);
+    }
+
+    #[Test]
+    public function it_deletes_a_group_whose_card_a_device_deletes_and_leaves_it_restorable(): void
+    {
+        $vault = $this->vault();
+        $group = Group::factory()->create(['vault_id' => $vault->id]);
+        $jim = Contact::factory()->create($this->inVault($vault));
+        GroupMember::factory()->create(['group_id' => $group->id, 'contact_id' => $jim->id]);
+
+        $this->dav('DELETE', $this->book($vault).$group->uuid.'.vcf')->assertStatus(204);
+
+        $this->assertSoftDeleted($group);
+        $this->assertNotSoftDeleted($jim);
+        $this->assertSame(1, GroupMember::query()->where('group_id', $group->id)->count());
+    }
+
+    #[Test]
+    public function it_moves_the_sync_token_when_somebody_joins_a_group(): void
+    {
+        $vault = $this->vault();
+        $group = Group::factory()->create(['vault_id' => $vault->id]);
+        $jim = Contact::factory()->create($this->inVault($vault));
+        $before = $this->syncToken($vault);
+
+        $this->travel(5)->seconds();
+        new CreateGroupMembership(user: $this->user, vault: $vault, group: $group, contact: $jim)->execute();
+
+        $this->assertNotSame($before, $this->syncToken($vault));
+    }
+
+    #[Test]
+    public function it_never_reads_categories_on_a_contact_card_as_a_membership(): void
+    {
+        $vault = $this->vault();
+        Structure::asTheDefaultOf($this->user, $vault, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Mobile'],
+        ]);
+        Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Schrute farm']);
+
+        $card = "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:dwight\r\nN:Schrute;Dwight;;;\r\nFN:Dwight Schrute\r\nCATEGORIES:Schrute farm\r\nEND:VCARD\r\n";
+
+        $this->dav('PUT', $this->book($vault).'dwight.vcf', body: $card, contentType: 'text/vcard')
+            ->assertStatus(201);
+
+        $this->assertSame(1, Contact::query()->where('vault_id', $vault->id)->count());
+        $this->assertSame(1, Group::query()->where('vault_id', $vault->id)->count());
+        $this->assertSame(0, GroupMember::query()->count());
+    }
+
+    #[Test]
+    public function it_serves_and_accepts_no_group_card_while_groups_are_off(): void
+    {
+        $vault = $this->vault();
+        $group = Group::factory()->create(['vault_id' => $vault->id]);
+        $jim = Contact::factory()->create($this->inVault($vault));
+        $this->user->account->features()->deactivate('groups');
+        Feature::flushCache();
+
+        $this->dav('PROPFIND', $this->book($vault), depth: '1')->assertDontSee($group->uuid.'.vcf', escape: false);
+        $this->dav('GET', $this->book($vault).$group->uuid.'.vcf')->assertNotFound();
+
+        $card = "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:halperts\r\nKIND:group\r\nFN:Halpert household\r\nMEMBER:urn:uuid:{$jim->uuid}\r\nEND:VCARD\r\n";
+
+        $this->dav('PUT', $this->book($vault).'halperts.vcf', body: $card, contentType: 'text/vcard')
+            ->assertStatus(403);
+
+        $this->assertSame(1, Contact::query()->where('vault_id', $vault->id)->count());
+        $this->assertSame(1, Group::query()->where('vault_id', $vault->id)->count());
     }
 }

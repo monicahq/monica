@@ -177,7 +177,7 @@ class CreateDefaultLifeEventTypes implements ShouldQueue
         $section = Section::query()->create([
             'account_id' => $this->user->account_id,
             'name' => null,
-            'name_translation_key' => $block['name'] ?? 'Fields in no group',
+            'name_translation_key' => $block['name'] ?? 'Fields in no block',
             'description' => null,
             'slug' => $this->slug($case, $block['name']),
             'icon' => null,

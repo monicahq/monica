@@ -107,6 +107,7 @@ use App\Http\Controllers\App\Vaults\ContactDuplicateDismissalController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateSearchController;
 use App\Http\Controllers\App\Vaults\ContactFavouriteController;
 use App\Http\Controllers\App\Vaults\ContactFieldRowController;
+use App\Http\Controllers\App\Vaults\ContactGroupController;
 use App\Http\Controllers\App\Vaults\ContactLifeEventCandidateController;
 use App\Http\Controllers\App\Vaults\ContactLifeEventController;
 use App\Http\Controllers\App\Vaults\ContactLifeEventFieldController;
@@ -125,6 +126,11 @@ use App\Http\Controllers\App\Vaults\EntityController;
 use App\Http\Controllers\App\Vaults\FieldChoiceController;
 use App\Http\Controllers\App\Vaults\FileController;
 use App\Http\Controllers\App\Vaults\FileVariantController;
+use App\Http\Controllers\App\Vaults\GroupController;
+use App\Http\Controllers\App\Vaults\GroupMemberCandidateController;
+use App\Http\Controllers\App\Vaults\GroupMemberController;
+use App\Http\Controllers\App\Vaults\GroupRestorationController;
+use App\Http\Controllers\App\Vaults\GroupVCardController;
 use App\Http\Controllers\App\Vaults\ReminderController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceAnswerController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceTestNotificationController;
@@ -258,6 +264,22 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('vaults/{vault}/entities/{entityType}/new', [EntityController::class, 'new'])->name('entities.new');
     Route::post('vaults/{vault}/entities/{entityType}', [EntityController::class, 'create'])->name('entities.create');
 
+    Route::get('vaults/{vault}/groups', [GroupController::class, 'index'])->middleware('flag:groups')->name('groups.index');
+    Route::get('vaults/{vault}/groups/new', [GroupController::class, 'new'])->middleware('flag:groups')->name('groups.new');
+    Route::post('vaults/{vault}/groups', [GroupController::class, 'create'])->middleware('flag:groups')->name('groups.create');
+    Route::get('vaults/{vault}/groups/{group}', [GroupController::class, 'show'])->middleware('flag:groups')->name('groups.show');
+    Route::get('vaults/{vault}/groups/{group}/edit', [GroupController::class, 'edit'])->middleware('flag:groups')->name('groups.edit');
+    Route::put('vaults/{vault}/groups/{group}', [GroupController::class, 'update'])->middleware('flag:groups')->name('groups.update');
+    Route::delete('vaults/{vault}/groups/{group}', [GroupController::class, 'destroy'])->middleware('flag:groups')->name('groups.destroy');
+    Route::get('vaults/{vault}/groups/{group}/vcard', [GroupVCardController::class, 'show'])->middleware(['flag:groups', 'flag:vcard-export'])->name('groups.vcard.show');
+    Route::put('vaults/{vault}/groups/{groupUuid}/restoration', [GroupRestorationController::class, 'update'])->middleware('flag:groups')->whereUuid('groupUuid')->name('groups.restoration.update');
+    Route::get('vaults/{vault}/groups/{group}/members/new', [GroupMemberController::class, 'new'])->middleware('flag:groups')->name('groups.members.new');
+    Route::get('vaults/{vault}/groups/{group}/members/candidates', [GroupMemberCandidateController::class, 'index'])->middleware('flag:groups')->name('groups.memberCandidates.index');
+    Route::post('vaults/{vault}/groups/{group}/members', [GroupMemberController::class, 'create'])->middleware('flag:groups')->name('groups.members.create');
+    Route::get('vaults/{vault}/groups/{group}/members/{membership}/edit', [GroupMemberController::class, 'edit'])->middleware('flag:groups')->name('groups.members.edit');
+    Route::put('vaults/{vault}/groups/{group}/members/{membership}', [GroupMemberController::class, 'update'])->middleware('flag:groups')->name('groups.members.update');
+    Route::delete('vaults/{vault}/groups/{group}/members/{membership}', [GroupMemberController::class, 'destroy'])->middleware('flag:groups')->name('groups.members.destroy');
+
     Route::get('vaults/{vault}/contacts/new', [ContactController::class, 'new'])->name('contacts.new');
     Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
 
@@ -375,6 +397,11 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::delete('vaults/{vault}/contacts/{contact}/relationships/{relationship}', [ContactRelationshipController::class, 'destroy'])
         ->name('contacts.relationships.destroy');
+
+    Route::get('vaults/{vault}/contacts/{contact}/groups/edit', [ContactGroupController::class, 'edit'])->middleware('flag:groups')->name('contacts.groups.edit');
+    Route::put('vaults/{vault}/contacts/{contact}/groups', [ContactGroupController::class, 'update'])->middleware('flag:groups')->name('contacts.groups.update');
+    Route::get('vaults/{vault}/contacts/{contact}/groups/new', [ContactGroupController::class, 'new'])->middleware('flag:groups')->name('contacts.groups.new');
+    Route::post('vaults/{vault}/contacts/{contact}/groups', [ContactGroupController::class, 'create'])->middleware('flag:groups')->name('contacts.groups.create');
 
     Route::get('vaults/{vault}/contacts/{contact}/reminders/new', [ContactReminderController::class, 'new'])->name('contacts.reminders.new');
     Route::get('vaults/{vault}/contacts/{contact}/reminder-form', [ContactReminderFormController::class, 'new'])->name('contacts.reminderForm.new');

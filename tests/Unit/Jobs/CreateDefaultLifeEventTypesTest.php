@@ -134,7 +134,7 @@ class CreateDefaultLifeEventTypesTest extends TestCase
                 $row = $assembly->values()[$index];
 
                 $this->assertSame($block['name'] !== null, $row->shows_title);
-                $this->assertSame($block['name'] ?? 'Fields in no group', $row->sectionVersion->section->name);
+                $this->assertSame($block['name'] ?? 'Fields in no block', $row->sectionVersion->section->name);
                 $this->assertEquals(
                     array_column($block['fields'], 'key'),
                     $row->sectionVersion->fields()->orderBy('position')->pluck('key')->all(),

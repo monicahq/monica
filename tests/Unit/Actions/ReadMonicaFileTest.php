@@ -22,6 +22,7 @@ use App\Jobs\SeedRelationshipTypes;
 use App\Models\AccountExport;
 use App\Models\AccountImport;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -55,7 +56,9 @@ class ReadMonicaFileTest extends TestCase
     #[Test]
     public function it_reads_every_kind_the_export_holds_into_items(): void
     {
-        $text = $this->exported([$this->dunderMifflin()]);
+        $dunderMifflin = $this->dunderMifflin();
+        Group::factory()->create(['vault_id' => $dunderMifflin->id, 'name' => 'Scranton branch']);
+        $text = $this->exported([$dunderMifflin]);
         $file = $this->decoded($text);
         $vault = $file['account']['vaults'][0];
 
@@ -69,6 +72,7 @@ class ReadMonicaFileTest extends TestCase
         $this->assertSame(count($vault['contacts']), $kinds['contact']);
         $this->assertSame(count($vault['entities']), $kinds['entity']);
         $this->assertSame(count($vault['relationships']), $kinds['relationship']);
+        $this->assertSame(1, $kinds['group']);
         $this->assertSame(count($vault['life_events']), $kinds['life_event']);
         $this->assertSame(count($vault['reminders']), $kinds['reminder']);
         $this->assertSame(count($vault['files']), $kinds['file']);

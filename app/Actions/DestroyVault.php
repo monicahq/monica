@@ -9,6 +9,7 @@ use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
+use App\Models\Group;
 use App\Models\LifeEvent;
 use App\Models\ShareLink;
 use App\Models\StructureVersion;
@@ -56,6 +57,7 @@ class DestroyVault
 
             $this->takeTheContactsWithIt();
             $this->takeTheEntitiesWithIt();
+            $this->takeTheGroupsWithIt();
             $this->revokeTheLinksOntoIt();
 
             if ($wasDefault) {
@@ -97,6 +99,16 @@ class DestroyVault
         $this->giveTheCountsBack('entity_type_id', EntityType::class, 'entity_count');
 
         Entity::query()
+            ->where('vault_id', $this->vault->id)
+            ->update([
+                'deleted_at' => $this->vault->deleted_at,
+                'deleted_with_vault' => true,
+            ]);
+    }
+
+    private function takeTheGroupsWithIt(): void
+    {
+        Group::query()
             ->where('vault_id', $this->vault->id)
             ->update([
                 'deleted_at' => $this->vault->deleted_at,

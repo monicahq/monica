@@ -30,7 +30,7 @@ class CardDavPlugin extends Plugin
     protected function convertVCard($data, $target, ?array $propertiesFilter = null)
     {
         if ($target === 'vcard3') {
-            $data = $this->withTheDisplayedNameOnly(is_resource($data) ? (string) stream_get_contents($data) : $data);
+            $data = $this->withoutTheAppleGroupForm($this->withTheDisplayedNameOnly(is_resource($data) ? (string) stream_get_contents($data) : $data));
         }
 
         $converted = parent::convertVCard($data, $target, $propertiesFilter);
@@ -199,6 +199,27 @@ class CardDavPlugin extends Plugin
         $parameter = $property->parameters()[$name] ?? null;
 
         return $parameter instanceof Parameter ? implode(',', $parameter->getParts()) : '';
+    }
+
+    /**
+     * A group card carries both forms of its kind and its members. Converting to 3.0 writes the
+     * standard form into the Apple one, so the Apple lines already there are dropped first rather
+     * than sent twice.
+     */
+    private function withoutTheAppleGroupForm(string $data): string
+    {
+        $card = Reader::read($data);
+
+        $kinds = $card instanceof VCard ? $card->select('KIND') : [];
+
+        if (! $card instanceof VCard || $kinds === [] || mb_strtolower((string) reset($kinds)) !== 'group') {
+            return $data;
+        }
+
+        $card->remove('X-ADDRESSBOOKSERVER-KIND');
+        $card->remove('X-ADDRESSBOOKSERVER-MEMBER');
+
+        return $card->serialize();
     }
 
     private function withTheDisplayedNameOnly(string $data): string

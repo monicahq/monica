@@ -6,14 +6,17 @@ namespace App\ViewModels\Shared;
 
 use App\Enums\VaultColourEnum;
 use App\Helpers\FieldValueFormatter;
+use App\Helpers\FlagState;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\GroupMember;
 use App\Models\Section;
 use App\Models\ShareLink;
 use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class SharedContactViewModel
@@ -71,6 +74,30 @@ class SharedContactViewModel
         return __('This is a page from somebody’s private records, shared with you as it stands today. There is nothing to sign in to and nothing to reply to here. If something is wrong or missing, tell :name.', [
             'name' => $maker->first_name ?? $maker->name,
         ]);
+    }
+
+    /**
+     * The names of the groups the contact is in today, when the link was set to show them. The
+     * other people in those groups are never shown.
+     *
+     * @return list<string>
+     */
+    public function groups(): array
+    {
+        if (! $this->shareLink->includes_groups || ! FlagState::isOn('groups', $this->contact->account)) {
+            return [];
+        }
+
+        return GroupMember::query()
+            ->where('contact_id', $this->contact->id)
+            ->whereNull('left_on')
+            ->whereHas('group', fn (Builder $query): Builder => $query->where('vault_id', $this->contact->vault_id))
+            ->with('group')
+            ->get()
+            ->map(fn (GroupMember $membership): string => $membership->group->name)
+            ->sort()
+            ->values()
+            ->all();
     }
 
     /** @return array<int, array{label: string, value: string}> */

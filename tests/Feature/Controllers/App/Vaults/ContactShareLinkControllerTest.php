@@ -20,6 +20,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Str;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -488,5 +489,37 @@ class ContactShareLinkControllerTest extends TestCase
     {
         return $contact->structureVersion->assembly
             ->first(fn (StructureVersionSection $row): bool => $row->sectionVersion->section->name === $name);
+    }
+
+    #[Test]
+    public function it_records_whether_a_link_shows_the_groups(): void
+    {
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+
+        $this->actingAs($user)
+            ->post(route('contacts.shareLinks.create', ['vault' => $contact->vault, 'contact' => $contact]), [
+                'label' => 'For Jan',
+                'expiry' => 'thirty_days',
+                'includes_groups' => '1',
+            ]);
+
+        $this->assertTrue(ShareLink::query()->sole()->includes_groups);
+    }
+
+    #[Test]
+    public function it_does_not_offer_the_groups_while_groups_are_off(): void
+    {
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+
+        $this->actingAs($user)->get(route('contacts.shareLinks.new', ['vault' => $contact->vault, 'contact' => $contact]))
+            ->assertSee('Their groups');
+
+        $user->account->features()->deactivate('groups');
+        Feature::flushCache();
+
+        $this->actingAs($user)->get(route('contacts.shareLinks.new', ['vault' => $contact->vault, 'contact' => $contact]))
+            ->assertDontSee('Their groups');
     }
 }

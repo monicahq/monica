@@ -16,6 +16,7 @@ use App\Models\EntityType;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\File;
+use App\Models\Group;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\LifeEventType;
@@ -130,6 +131,7 @@ class RollBackAccountImport
     {
         Reminder::withTrashed()->whereIn('id', $this->recordsOf(Reminder::class))->forceDelete();
         Relationship::withTrashed()->whereIn('id', $this->recordsOf(Relationship::class))->forceDelete();
+        Group::withTrashed()->whereIn('id', $this->recordsOf(Group::class))->forceDelete();
 
         $rows = $this->recordsOf(FieldValueRow::class);
         $this->releaseTheChoicesOf(FieldValue::query()->whereIn('field_value_row_id', $rows));

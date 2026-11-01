@@ -35,6 +35,8 @@ use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\LifeEvent;
 use App\Models\LifeEventType;
 use App\Models\Log;
@@ -163,6 +165,29 @@ class RollBackAccountImportTest extends TestCase
         $this->assertSame(0, Vault::withTrashed()->whereIn('id', $import->created_vault_ids)->count());
         $this->assertSame($before, $this->whatTheAccountHolds($pam));
         $this->assertSame(AccountImportStatusEnum::RolledBack, $import->refresh()->status);
+    }
+
+    #[Test]
+    public function it_removes_the_groups_an_import_wrote_into_a_vault_that_was_there(): void
+    {
+        $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
+        $jim = new CreateContact(user: $this->michael, vault: $scranton, firstName: 'Jim', lastName: 'Halpert')->execute();
+        $branch = Group::factory()->create(['vault_id' => $scranton->id, 'name' => 'Scranton branch']);
+        GroupMember::factory()->create(['group_id' => $branch->id, 'contact_id' => $jim->id]);
+
+        $pam = $this->accountHolder('Pam', 'Beesly');
+        $stamford = new CreateVault(user: $pam, name: 'Stamford')->execute();
+        $import = AccountImport::factory()->create(['user_id' => $pam->id]);
+        Storage::disk('local')->put($import->path, $this->exported([$scranton]));
+        new ReadMonicaFile(import: $import)->execute();
+        $import->refresh()->update(['status' => AccountImportStatusEnum::Read]);
+        new StartAccountImport(user: $pam, import: $import, vault: $stamford)->execute();
+
+        $this->assertSame(1, Group::query()->where('vault_id', $stamford->id)->count());
+
+        new RollBackAccountImport(import: $import->refresh())->execute();
+
+        $this->assertSame(0, Group::withTrashed()->where('vault_id', $stamford->id)->count());
     }
 
     #[Test]

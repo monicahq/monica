@@ -9,6 +9,8 @@ use App\Enums\VaultColourEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\ShareLink;
@@ -236,6 +238,22 @@ class SharedContactViewModelTest extends TestCase
         $link = $this->linkOnto($contact, ['excluded_section_ids' => [$this->sectionNamed($contact, 'Facts')->id]]);
 
         $this->assertSame([], $this->viewModel($link->refresh(), $contact->refresh())->headerFacts());
+    }
+
+    #[Test]
+    public function it_names_the_groups_of_the_contact_only_when_the_link_shows_them(): void
+    {
+        $contact = $this->sharedContact();
+        GroupMember::factory()->create(['contact_id' => $contact->id, 'group_id' => Group::factory()->create(['vault_id' => $contact->vault_id, 'name' => 'Scranton branch'])->id]);
+        GroupMember::factory()->former()->create(['contact_id' => $contact->id, 'group_id' => Group::factory()->create(['vault_id' => $contact->vault_id, 'name' => 'Utica branch'])->id]);
+
+        $link = $this->linkOnto($contact);
+
+        $this->assertSame([], $this->viewModel($link, $contact)->groups());
+
+        $link->update(['includes_groups' => true]);
+
+        $this->assertSame(['Scranton branch'], $this->viewModel($link, $contact)->groups());
     }
 
     private function viewModel(ShareLink $link, Contact $contact, ?string $page = null): SharedContactViewModel

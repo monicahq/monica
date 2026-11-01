@@ -14,6 +14,8 @@ use App\Models\Contact;
 use App\Models\ContactMerge;
 use App\Models\ContactNameRepresentation;
 use App\Models\FieldValue;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\RecordSnapshot;
 use App\Models\Reminder;
 use App\Models\ShareLink;
@@ -73,6 +75,7 @@ class MergeContacts
             $this->takeThePointers();
             $this->takeTheReminders();
             $this->takeTheShareLinks();
+            $this->takeTheMemberships();
             $this->setAsideWhatTheStructureDoesNotCarry();
             $this->stopBeingPartial();
 
@@ -332,6 +335,62 @@ class MergeContacts
         foreach ($links as $id) {
             $this->ledger[] = ['kind' => 'share_link_moved', 'id' => $id, 'from' => $this->absorbed->id];
         }
+    }
+
+    private function takeTheMemberships(): void
+    {
+        $theirs = $this->absorbed->groupMembers()->get();
+
+        if ($theirs->isEmpty()) {
+            return;
+        }
+
+        $mine = $this->kept->groupMembers()->whereNull('left_on')->get()->keyBy('group_id');
+
+        foreach ($theirs as $membership) {
+            $held = $membership->isCurrent() ? $mine->get($membership->group_id) : null;
+
+            if ($held instanceof GroupMember) {
+                $this->foldTheMembership($held, $membership);
+
+                continue;
+            }
+
+            $membership->contact_id = $this->kept->id;
+            $membership->save();
+
+            $this->ledger[] = ['kind' => 'membership_moved', 'id' => $membership->id, 'from' => $this->absorbed->id];
+        }
+
+        Group::query()
+            ->withTrashed()
+            ->whereKey($theirs->pluck('group_id')->unique()->all())
+            ->get()
+            ->each(fn (Group $group): bool => $group->touch());
+    }
+
+    private function foldTheMembership(GroupMember $held, GroupMember $dropped): void
+    {
+        $this->ledger[] = [
+            'kind' => 'membership_folded',
+            'id' => $held->id,
+            'dropped' => $dropped->id,
+            'joined_on' => $held->joined_on?->toDateString(),
+            'joined_precision' => $held->joined_precision->value,
+            'role' => $held->role,
+        ];
+
+        if ($dropped->joined_on !== null && ($held->joined_on === null || $dropped->joined_on->lt($held->joined_on))) {
+            $held->joined_on = $dropped->joined_on;
+            $held->joined_precision = $dropped->joined_precision;
+        }
+
+        if (blank($held->role)) {
+            $held->role = $dropped->role;
+        }
+
+        $held->save();
+        $dropped->delete();
     }
 
     private function setAsideWhatTheStructureDoesNotCarry(): void

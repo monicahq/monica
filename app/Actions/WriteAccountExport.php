@@ -12,6 +12,8 @@ use App\Models\Entity;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\LifeEventType;
@@ -266,6 +268,8 @@ class WriteAccountExport
         $this->put(',');
         $this->putList('relationships', $this->relationships($vault));
         $this->put(',');
+        $this->putList('groups', $this->groups($vault));
+        $this->put(',');
         $this->putList('life_events', $this->lifeEvents($vault));
         $this->put(',');
         $this->putList('reminders', $this->reminders($vault));
@@ -365,6 +369,37 @@ class WriteAccountExport
                 'started_on' => $relationship->started_on?->format('Y-m-d'),
                 'ended_on' => $relationship->ended_on?->format('Y-m-d'),
                 'notes' => $relationship->notes,
+            ];
+        }
+    }
+
+    /** @return Generator<int, array<string, mixed>> */
+    private function groups(Vault $vault): Generator
+    {
+        $groups = Group::query()->where('vault_id', $vault->id)->with('members')->lazyById(self::CHUNK);
+
+        foreach ($groups as $group) {
+            yield [
+                'uuid' => $group->uuid,
+                'created_at' => $group->created_at->toIso8601ZuluString(),
+                'name' => $group->name,
+                'description' => $group->description,
+                'started_on' => $group->started_on?->format('Y-m-d'),
+                'started_precision' => $group->started_precision->value,
+                'ended_on' => $group->ended_on?->format('Y-m-d'),
+                'ended_precision' => $group->ended_precision->value,
+                'members' => $group->members
+                    ->filter(fn (GroupMember $membership): bool => isset($this->contactUuids[$membership->contact_id]))
+                    ->map(fn (GroupMember $membership): array => [
+                        'contact' => $this->contactUuids[$membership->contact_id],
+                        'role' => $membership->role,
+                        'joined_on' => $membership->joined_on?->format('Y-m-d'),
+                        'joined_precision' => $membership->joined_precision->value,
+                        'left_on' => $membership->left_on?->format('Y-m-d'),
+                        'left_precision' => $membership->left_precision->value,
+                    ])
+                    ->values()
+                    ->all(),
             ];
         }
     }

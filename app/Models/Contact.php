@@ -109,6 +109,7 @@ use Override;
  * @property-read File|null $avatar
  * @property-read ContactNameRepresentation|null $displayNameRepresentation
  * @property-read Collection<int, ContactNameRepresentation> $nameRepresentations
+ * @property-read Collection<int, GroupMember> $groupMembers
  * @property-read string $name
  * @property-read string $initials
  */
@@ -455,6 +456,16 @@ class Contact extends Model
     public function nameRepresentations(): HasMany
     {
         return $this->hasMany(ContactNameRepresentation::class)->chaperone()->orderBy('position')->orderBy('id');
+    }
+
+    /**
+     * Get every group membership of the contact, current and former.
+     *
+     * @return HasMany<GroupMember, $this>
+     */
+    public function groupMembers(): HasMany
+    {
+        return $this->hasMany(GroupMember::class);
     }
 
     /**

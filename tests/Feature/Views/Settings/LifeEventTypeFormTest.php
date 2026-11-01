@@ -103,7 +103,7 @@ class LifeEventTypeFormTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.lifeEventTypes.new'));
 
         $response->assertSee('data-loose', false);
-        $response->assertSee('Not in a group');
+        $response->assertSee('Not in a block');
     }
 
     #[Test]

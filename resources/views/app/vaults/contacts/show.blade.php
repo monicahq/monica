@@ -120,6 +120,10 @@
       <div class="flex flex-col gap-5">
         @include('app.vaults.contacts._immediate-family', ['family' => $viewModel->immediateFamily()])
 
+        @if ($groups = $viewModel->groups())
+          @include('app.vaults.contacts._group-memberships', ['groups' => $groups])
+        @endif
+
         @include('app.vaults.contacts._reminders', ['deadlines' => $viewModel->deadlines()])
       </div>
     </div>

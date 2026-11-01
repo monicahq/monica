@@ -8,6 +8,7 @@ use App\Actions\ReadMonicaFourFile;
 use App\Actions\StartAccountImport;
 use App\Actions\WriteAccountExport;
 use App\Enums\AccountImportStatusEnum;
+use App\Enums\DatePrecisionEnum;
 use App\Enums\DefaultTemplateEnum;
 use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\CreateDefaultTemplate;
@@ -19,6 +20,8 @@ use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\FieldValue;
 use App\Models\File;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\LifeEvent;
 use App\Models\LifeEventType;
 use App\Models\RelationshipType;
@@ -68,7 +71,7 @@ class WriteAccountExportTest extends TestCase
         $this->assertSame(['structures', 'life_event_types', 'relationship_types', 'vaults'], array_keys($file['account']));
         $this->assertSame([$this->vault->uuid], array_column($file['account']['vaults'], 'uuid'));
         $this->assertSame(
-            ['uuid', 'name', 'description', 'colour', 'contacts', 'entities', 'relationships', 'life_events', 'reminders', 'files'],
+            ['uuid', 'name', 'description', 'colour', 'contacts', 'entities', 'relationships', 'groups', 'life_events', 'reminders', 'files'],
             array_keys($file['account']['vaults'][0]),
         );
     }
@@ -179,6 +182,74 @@ class WriteAccountExportTest extends TestCase
         $this->assertNull(collect($dwightInTheFile['values'])->firstWhere('field', 'birthday'));
         $this->assertStringNotContainsString($shareLink->token, $text);
         $this->assertStringNotContainsString($stamford->uuid, $text);
+    }
+
+    #[Test]
+    public function it_carries_every_group_with_its_members_and_their_periods(): void
+    {
+        $jim = $this->contactCalled('Jim');
+        $dwight = $this->contactCalled('Dwight');
+        $branch = Group::factory()->create([
+            'vault_id' => $this->vault->id,
+            'name' => 'Scranton branch',
+            'description' => 'Dunder Mifflin paper company',
+            'started_on' => '1998-01-01',
+            'started_precision' => DatePrecisionEnum::Year,
+        ]);
+        GroupMember::factory()->create([
+            'group_id' => $branch->id,
+            'contact_id' => $dwight->id,
+            'role' => 'Assistant to the regional manager',
+            'joined_on' => '2001-04-01',
+            'joined_precision' => DatePrecisionEnum::Month,
+        ]);
+        GroupMember::factory()->former()->create(['group_id' => $branch->id, 'contact_id' => $jim->id]);
+        GroupMember::factory()->create(['group_id' => $branch->id, 'contact_id' => $jim->id])->delete();
+        $gone = Group::factory()->create(['vault_id' => $this->vault->id, 'name' => 'Finer things club']);
+        $gone->delete();
+
+        $text = $this->exportedText();
+        $groups = $this->decoded($text)['account']['vaults'][0]['groups'];
+
+        $this->assertStringNotContainsString($gone->uuid, $text);
+        $this->assertCount(1, $groups);
+        $this->assertSame($branch->uuid, $groups[0]['uuid']);
+        $this->assertSame('Scranton branch', $groups[0]['name']);
+        $this->assertSame('Dunder Mifflin paper company', $groups[0]['description']);
+        $this->assertSame('1998-01-01', $groups[0]['started_on']);
+        $this->assertSame('year', $groups[0]['started_precision']);
+        $this->assertNull($groups[0]['ended_on']);
+        $this->assertEqualsCanonicalizing([
+            [
+                'contact' => $dwight->uuid,
+                'role' => 'Assistant to the regional manager',
+                'joined_on' => '2001-04-01',
+                'joined_precision' => 'month',
+                'left_on' => null,
+                'left_precision' => 'unknown',
+            ],
+            [
+                'contact' => $jim->uuid,
+                'role' => null,
+                'joined_on' => null,
+                'joined_precision' => 'unknown',
+                'left_on' => '2007-01-01',
+                'left_precision' => 'year',
+            ],
+        ], $groups[0]['members']);
+    }
+
+    #[Test]
+    public function it_leaves_out_the_membership_of_a_deleted_contact(): void
+    {
+        $jim = $this->contactCalled('Jim');
+        $branch = Group::factory()->create(['vault_id' => $this->vault->id, 'name' => 'Scranton branch']);
+        GroupMember::factory()->create(['group_id' => $branch->id, 'contact_id' => $jim->id]);
+        $jim->delete();
+
+        $groups = $this->decoded($this->exportedText())['account']['vaults'][0]['groups'];
+
+        $this->assertSame([], $groups[0]['members']);
     }
 
     private function exportedText(): string

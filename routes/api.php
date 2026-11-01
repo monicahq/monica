@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContactDuplicateController;
 use App\Http\Controllers\Api\ContactDuplicateDismissalController;
 use App\Http\Controllers\Api\ContactFavouriteController;
+use App\Http\Controllers\Api\ContactGroupController;
 use App\Http\Controllers\Api\ContactListColumnController;
 use App\Http\Controllers\Api\ContactMeController;
 use App\Http\Controllers\Api\ContactMergeController;
@@ -39,6 +40,9 @@ use App\Http\Controllers\Api\EntityTypeController;
 use App\Http\Controllers\Api\EntityTypePositionController;
 use App\Http\Controllers\Api\FieldController;
 use App\Http\Controllers\Api\FieldPositionController;
+use App\Http\Controllers\Api\GroupController;
+use App\Http\Controllers\Api\GroupMemberController;
+use App\Http\Controllers\Api\GroupRestorationController;
 use App\Http\Controllers\Api\LifeEventCategoryActivationController;
 use App\Http\Controllers\Api\LifeEventCategoryController;
 use App\Http\Controllers\Api\LifeEventCategoryPositionController;
@@ -295,6 +299,18 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'update'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.update');
         Route::delete('vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'destroy'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.destroy');
         Route::put('vaults/{vault}/life-events/{lifeEvent}/restoration', [LifeEventRestorationController::class, 'update'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.restoration.update');
+
+        Route::get('vaults/{vault}/groups', [GroupController::class, 'index'])->middleware('flag:groups')->name('groups');
+        Route::post('vaults/{vault}/groups', [GroupController::class, 'create'])->middleware('flag:groups')->name('groups.create');
+        Route::get('vaults/{vault}/groups/{group}', [GroupController::class, 'show'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.show');
+        Route::put('vaults/{vault}/groups/{group}', [GroupController::class, 'update'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.update');
+        Route::delete('vaults/{vault}/groups/{group}', [GroupController::class, 'destroy'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.destroy');
+        Route::put('vaults/{vault}/groups/{group}/restoration', [GroupRestorationController::class, 'update'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.restoration.update');
+        Route::get('vaults/{vault}/groups/{group}/members', [GroupMemberController::class, 'index'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.members');
+        Route::post('vaults/{vault}/groups/{group}/members', [GroupMemberController::class, 'create'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.members.create');
+        Route::put('vaults/{vault}/groups/{group}/members/{membership}', [GroupMemberController::class, 'update'])->middleware('flag:groups')->where(['group' => '[0-9a-fA-F-]{36}', 'membership' => '[0-9a-fA-F-]{36}'])->name('groups.members.update');
+        Route::delete('vaults/{vault}/groups/{group}/members/{membership}', [GroupMemberController::class, 'destroy'])->middleware('flag:groups')->where(['group' => '[0-9a-fA-F-]{36}', 'membership' => '[0-9a-fA-F-]{36}'])->name('groups.members.destroy');
+        Route::get('vaults/{vault}/contacts/{contact}/groups', [ContactGroupController::class, 'index'])->middleware('flag:groups')->name('contacts.groups');
 
         Route::get('exports', [AccountExportController::class, 'index'])->name('accountExports');
         Route::get('exports/{accountExport}', [AccountExportController::class, 'show'])->where('accountExport', '[0-9a-fA-F-]{36}')->name('accountExports.show');

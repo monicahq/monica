@@ -353,6 +353,7 @@ class AccountImportViewModel
             'pet', 'pets' => __('Pets'),
             'activity', 'activities' => __('Activities'),
             'relationship', 'relationships' => __('Relationships'),
+            'group', 'groups' => __('Groups'),
             'file', 'files' => __('Photos and documents'),
             'photos' => __('Photos'),
             'documents' => __('Documents'),

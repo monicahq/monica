@@ -48,7 +48,7 @@ class WriteAccountImportItem implements SourceFormatVisitor
 
     private const array KINDS_KEEPING_THEIR_CREATION_DATE = [
         'file', 'contact', 'entity', 'reminder', 'life_event', 'call', 'conversation',
-        'pet', 'activity', 'relationship', 'journal_entry',
+        'pet', 'activity', 'relationship', 'group', 'journal_entry',
     ];
 
     private ?Model $record = null;

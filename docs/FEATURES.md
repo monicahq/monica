@@ -117,3 +117,18 @@ A chronological list of every feature and improvement shipped during development
 * API: Added an endpoint listing the categories held in a vault, and a categories filter on the list of contacts.
 * API: Returned the categories a contact holds with every contact.
 * MCP: Let the contact list tool narrow the people of a vault to some categories.
+* Vaults/groups: Let somebody gather contacts into groups such as households and teams, behind a flag until groups are released.
+* Vaults/groups: Recorded when each member joined and left a group, with their role.
+* Vaults/contacts: Listed the groups somebody belongs to on their page.
+* Vaults/contacts: Put joining and leaving a group on the contact's timeline.
+* Vaults/contacts/share-links: Let a share link show the names of the contact's groups.
+* Vaults/contacts/merge: Moved and folded group memberships when two contacts are merged.
+* CardDAV: Synced groups with phones as group cards, both ways.
+* API: Added the group endpoints and the matching MCP tools.
+* Settings/account/transfer: Carried groups and their members through an account export and import.
+* Settings/account/life-event-types: Called a set of fields a block, so a group always means a group of people.
+* Vaults/contacts: Let somebody tick the groups a contact is in from their page, joining and leaving today.
+* Vaults/contacts: Let somebody create a group from a contact's page with that contact already in it.
+* Vaults/groups: Exported a group and its current members as one vCard file.
+* Vaults/groups: Moved deleting a group to the screen that edits it.
+* Vaults/groups: Addressed a group by a readable slug built from its name, the way contacts are, with its uuid still answering.

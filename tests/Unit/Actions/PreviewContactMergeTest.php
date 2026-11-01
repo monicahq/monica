@@ -13,6 +13,8 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\File;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
@@ -249,6 +251,44 @@ class PreviewContactMergeTest extends TestCase
         DB::disableQueryLog();
 
         $this->assertSame(array_values(array_unique($queries)), $queries);
+    }
+
+    #[Test]
+    public function it_reports_a_group_both_contacts_are_current_members_of_as_a_fold(): void
+    {
+        $user = User::factory()->create();
+        $jim = Contact::factory()->create(['account_id' => $user->account_id]);
+        $james = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $jim->vault_id]);
+        $branch = Group::factory()->create(['vault_id' => $jim->vault_id, 'name' => 'Scranton branch']);
+        $committee = Group::factory()->create(['vault_id' => $jim->vault_id, 'name' => 'Party planning committee']);
+        GroupMember::factory()->create(['group_id' => $branch->id, 'contact_id' => $jim->id]);
+        GroupMember::factory()->create(['group_id' => $branch->id, 'contact_id' => $james->id]);
+        GroupMember::factory()->create(['group_id' => $committee->id, 'contact_id' => $james->id]);
+        GroupMember::factory()->former()->create(['group_id' => $committee->id, 'contact_id' => $jim->id]);
+
+        $preview = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertSame([['group' => $branch->uuid, 'name' => 'Scranton branch']], $preview['folds']);
+        $this->assertContains(['kind' => 'group_membership', 'count' => 1], $preview['moves']);
+    }
+
+    #[Test]
+    public function it_changes_its_fingerprint_when_a_membership_ends(): void
+    {
+        $user = User::factory()->create();
+        $jim = Contact::factory()->create(['account_id' => $user->account_id]);
+        $james = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $jim->vault_id]);
+        $membership = GroupMember::factory()->create([
+            'group_id' => Group::factory()->create(['vault_id' => $jim->vault_id])->id,
+            'contact_id' => $james->id,
+        ]);
+        $before = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute()['fingerprint'];
+
+        $membership->update(['left_on' => '2013-05-16']);
+
+        $after = new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute()['fingerprint'];
+
+        $this->assertNotSame($before, $after);
     }
 
     #[Test]

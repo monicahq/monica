@@ -26,6 +26,7 @@ class ContactMergePreviewResource extends JsonResource
                 'moves' => $preview['moves'],
                 'collisions' => $preview['collisions'],
                 'set_aside' => $preview['set_aside'],
+                'folds' => $preview['folds'],
                 'fingerprint' => $preview['fingerprint'],
             ],
         ];

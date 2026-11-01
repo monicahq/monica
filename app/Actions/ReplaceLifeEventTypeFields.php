@@ -143,7 +143,7 @@ class ReplaceLifeEventTypeFields
         $kept = [];
 
         if ($this->needsALooseBlock()) {
-            $this->placements[''] = $loose ?? $this->placeASection(name: __('Fields in no group'), showsTitle: false);
+            $this->placements[''] = $loose ?? $this->placeASection(name: __('Fields in no block'), showsTitle: false);
             $kept[] = $this->placements['']->id;
         }
 

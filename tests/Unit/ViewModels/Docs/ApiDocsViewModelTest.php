@@ -69,7 +69,7 @@ class ApiDocsViewModelTest extends TestCase
         );
 
         $this->assertEquals(
-            ['Authentication', 'Your profile', 'API keys', 'Vaults', 'Contacts', 'Kinds of record', 'Logs', 'Emails sent', 'Health', 'Templates', 'Billing', 'Duplicates and merges', 'Notifications', 'Notification channels', 'Relationship categories', 'Relationship types', 'Life event categories', 'Life event types', 'Reminders', 'Search', 'Life events', 'Relationships', 'MCP history', 'Imports', 'Exports'],
+            ['Authentication', 'Your profile', 'API keys', 'Vaults', 'Contacts', 'Kinds of record', 'Logs', 'Emails sent', 'Health', 'Templates', 'Billing', 'Duplicates and merges', 'Notifications', 'Notification channels', 'Relationship categories', 'Relationship types', 'Life event categories', 'Life event types', 'Reminders', 'Search', 'Life events', 'Relationships', 'MCP history', 'Imports', 'Exports', 'Groups'],
             array_column($navigation['resources'], 'name'),
         );
     }
@@ -105,6 +105,17 @@ class ApiDocsViewModelTest extends TestCase
         Feature::flushCache();
 
         $this->assertNull(new ApiDocsViewModel()->section('contacts-vcard'));
+    }
+
+    #[Test]
+    public function it_leaves_out_a_resource_whose_every_endpoint_is_switched_off(): void
+    {
+        $this->assertContains('Groups', array_column(new ApiDocsViewModel()->navigation()['resources'], 'name'));
+
+        Feature::for(null)->deactivate('groups');
+        Feature::flushCache();
+
+        $this->assertNotContains('Groups', array_column(new ApiDocsViewModel()->navigation()['resources'], 'name'));
     }
 
     #[Test]

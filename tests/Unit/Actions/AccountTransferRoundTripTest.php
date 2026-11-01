@@ -15,6 +15,7 @@ use App\Actions\SetFieldValue;
 use App\Actions\StartAccountImport;
 use App\Actions\WriteAccountExport;
 use App\Enums\AccountImportStatusEnum;
+use App\Enums\DatePrecisionEnum;
 use App\Enums\DefaultTemplateEnum;
 use App\Enums\FieldTypeEnum;
 use App\Jobs\CreateDefaultLifeEventTypes;
@@ -28,6 +29,8 @@ use App\Models\ContactNameRepresentation;
 use App\Models\Entity;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\LifeEventType;
@@ -105,6 +108,35 @@ class AccountTransferRoundTripTest extends TestCase
         $this->assertSame(AccountImportStatusEnum::Completed, $import->status);
         $this->assertSame([], $import->items()->whereNotNull('reason')->pluck('reason', 'kind')->all());
         $this->assertSame($this->described($this->dunderMifflin), $this->described(Vault::query()->findOrFail($import->vault_id)));
+    }
+
+    #[Test]
+    public function it_brings_the_groups_with_their_members_and_the_periods_they_belonged(): void
+    {
+        $contacts = Contact::query()->where('vault_id', $this->dunderMifflin->id)->where('is_me', false)->orderBy('id')->take(2)->get();
+        $branch = Group::factory()->create([
+            'vault_id' => $this->dunderMifflin->id,
+            'name' => 'Scranton branch',
+            'description' => 'Dunder Mifflin paper company',
+            'started_on' => '1998-01-01',
+            'started_precision' => DatePrecisionEnum::Year,
+        ]);
+        GroupMember::factory()->create([
+            'group_id' => $branch->id,
+            'contact_id' => $contacts[0]->id,
+            'role' => 'Salesman',
+            'joined_on' => '2001-04-01',
+            'joined_precision' => DatePrecisionEnum::Month,
+        ]);
+        GroupMember::factory()->former()->create(['group_id' => $branch->id, 'contact_id' => $contacts[1]->id]);
+        GroupMember::factory()->create(['group_id' => $branch->id, 'contact_id' => $contacts[1]->id]);
+
+        $import = $this->importedByPam();
+
+        $this->assertSame(AccountImportStatusEnum::Completed, $import->status);
+        $this->assertSame([], $import->items()->whereNotNull('reason')->pluck('reason', 'kind')->all());
+        $this->assertSame($this->described($this->dunderMifflin), $this->described(Vault::query()->findOrFail($import->vault_id)));
+        $this->assertSame(3, GroupMember::query()->whereHas('group', fn ($query) => $query->where('vault_id', $import->vault_id))->count());
     }
 
     private function importedByPam(): AccountImport
@@ -206,6 +238,33 @@ class AccountTransferRoundTripTest extends TestCase
                     $lifeEvent->participants->map(fn (LifeEventParticipant $participant): string => $this->nameOf($participant->participant))->sort()->values()->all(),
                     $this->valuesOf($lifeEvent),
                     $lifeEvent->structureVersion->inputFields()->pluck('key')->sort()->values()->all(),
+                ])
+                ->sort()
+                ->values()
+                ->all(),
+            'groups' => Group::query()
+                ->where('vault_id', $vault->id)
+                ->with('members.contact')
+                ->get()
+                ->map(fn (Group $group): array => [
+                    $group->name,
+                    $group->description,
+                    $group->started_on?->format('Y-m-d'),
+                    $group->started_precision->value,
+                    $group->ended_on?->format('Y-m-d'),
+                    $group->ended_precision->value,
+                    $group->members
+                        ->map(fn (GroupMember $membership): array => [
+                            $this->nameOf($membership->contact),
+                            $membership->role,
+                            $membership->joined_on?->format('Y-m-d'),
+                            $membership->joined_precision->value,
+                            $membership->left_on?->format('Y-m-d'),
+                            $membership->left_precision->value,
+                        ])
+                        ->sort()
+                        ->values()
+                        ->all(),
                 ])
                 ->sort()
                 ->values()

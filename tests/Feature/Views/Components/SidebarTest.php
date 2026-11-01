@@ -13,6 +13,7 @@ use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -37,6 +38,23 @@ class SidebarTest extends TestCase
         $rendered->assertSee('Dashboard');
         $rendered->assertSee('People');
         $rendered->assertSee('Vault settings');
+    }
+
+    #[Test]
+    public function the_vault_column_leaves_out_the_groups_while_they_are_off_for_the_account(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $user->account->features()->deactivate('groups');
+        Feature::flushCache();
+
+        $rendered = $this->actingAs($user)->blade(
+            '<x-vault.sidebar :user="$user" :vault="$vault" current="dashboard" />',
+            ['user' => $user, 'vault' => $vault],
+        );
+
+        $rendered->assertDontSee('Groups');
+        $rendered->assertDontSee(route('groups.index', $vault), escape: false);
     }
 
     #[Test]

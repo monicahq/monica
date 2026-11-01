@@ -67,7 +67,7 @@ abstract class TestCase extends BaseTestCase
         setlocale(LC_CTYPE, 'C');
 
         // The capabilities that ship withdrawn are on for the suite. A test of a gate switches its flag off.
-        foreach (['carddav', 'file-upload', 'sms-notifications', 'vcard-export'] as $flag) {
+        foreach (['carddav', 'file-upload', 'groups', 'sms-notifications', 'vcard-export'] as $flag) {
             Feature::define($flag, true);
         }
     }

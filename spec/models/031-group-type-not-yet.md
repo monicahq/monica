@@ -1,9 +1,11 @@
 # 031. GroupType
 
-**Status:** to create
+**Status:** not built, dropped
 **Spec:** 8.2, 5.4
 
 ## What it is
+
+**Dropped (2026-10-29, specs/085-groups).** No table is created. A group has no kind: it carries a name, a description and its own dates, and nothing else describes what sort of group it is. A vCard group card cannot carry a kind either, so a group made on a phone would have needed one invented for it. What follows is the design that was set aside, kept for its reasoning.
 
 The kind of a group: household, family unit, couple, social circle, team.
 

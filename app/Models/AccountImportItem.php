@@ -90,7 +90,7 @@ class AccountImportItem extends Model
     public const array SUMMARY_KINDS_WRITTEN_AS_ITEMS = [
         'vaults', 'templates', 'life_event_types', 'relationship_types', 'files', 'photos', 'documents',
         'contacts', 'entities', 'life_events', 'calls', 'conversations', 'pets', 'activities',
-        'reminders', 'relationships', 'journal_entries', 'day_ratings',
+        'reminders', 'relationships', 'groups', 'journal_entries', 'day_ratings',
     ];
 
     /**
@@ -117,6 +117,7 @@ class AccountImportItem extends Model
         'related_values' => 4,
         'reminder' => 5,
         'relationship' => 5,
+        'group' => 5,
         'journal_entry' => 6,
         'me' => 7,
         'archive' => 8,

@@ -13,6 +13,8 @@ use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderSourceEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
+use App\Exceptions\ContactIsAlreadyInTheGroup;
+use App\Exceptions\MembershipEndsBeforeItStarts;
 use App\Exceptions\NotEnoughStorageLeft;
 use App\Exceptions\ValueListItemIsStopped;
 use App\Helpers\StructureFileReader;
@@ -62,6 +64,7 @@ trait WritesMonicaItems
             'related_values' => $this->writeTheRelatedValues(),
             'reminder' => $this->writeAMonicaReminder(),
             'relationship' => $this->writeAMonicaRelationship(),
+            'group' => $this->writeAMonicaGroup(),
             'me' => null,
             'archive' => $this->archive(),
             default => $this->leaveOut(AccountImportReasonEnum::RefusedWhileWriting),
@@ -543,6 +546,66 @@ trait WritesMonicaItems
         ])->saveQuietly();
 
         $this->record = $relationship;
+    }
+
+    private function writeAMonicaGroup(): void
+    {
+        $name = $this->shortText($this->payload('name'));
+
+        if ($name === null) {
+            $this->leaveOut(AccountImportReasonEnum::RefusedWhileWriting);
+
+            return;
+        }
+
+        $group = new CreateGroup(
+            user: $this->user,
+            vault: $this->vault(),
+            name: $name,
+            description: $this->text($this->payload('description')),
+            startedOn: $this->exportedDate($this->payload('started_on')),
+            startedPrecision: DatePrecisionEnum::tryFrom((string) $this->payload('started_precision')) ?? DatePrecisionEnum::Unknown,
+            endedOn: $this->exportedDate($this->payload('ended_on')),
+            endedPrecision: DatePrecisionEnum::tryFrom((string) $this->payload('ended_precision')) ?? DatePrecisionEnum::Unknown,
+        )->execute();
+
+        foreach ((array) $this->payload('members', []) as $member) {
+            $member = is_array($member) ? $member : [];
+            $contact = $this->contactOf($member['contact'] ?? null);
+
+            if (! $contact instanceof Contact) {
+                $this->valuesNotWritten++;
+
+                continue;
+            }
+
+            try {
+                new CreateGroupMembership(
+                    user: $this->user,
+                    vault: $this->vault(),
+                    group: $group,
+                    contact: $contact,
+                    role: $this->shortText($member['role'] ?? null),
+                    joinedOn: $this->exportedDate($member['joined_on'] ?? null),
+                    joinedPrecision: DatePrecisionEnum::tryFrom((string) ($member['joined_precision'] ?? '')) ?? DatePrecisionEnum::Unknown,
+                    leftOn: $this->exportedDate($member['left_on'] ?? null),
+                    leftPrecision: DatePrecisionEnum::tryFrom((string) ($member['left_precision'] ?? '')) ?? DatePrecisionEnum::Unknown,
+                )->execute();
+            } catch (ContactIsAlreadyInTheGroup|MembershipEndsBeforeItStarts) {
+                $this->valuesNotWritten++;
+            }
+        }
+
+        $this->record = $group;
+
+        if ($this->valuesNotWritten > 0) {
+            $this->reason = AccountImportReasonEnum::PartlyWritten;
+        }
+    }
+
+    private function exportedDate(mixed $date): ?CarbonImmutable
+    {
+        return is_string($date) && $date !== '' ? CarbonImmutable::parse($date) : null;
     }
 
     /** @param array<mixed> $values */

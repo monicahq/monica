@@ -121,6 +121,17 @@
           </span>
         </x-option-row>
 
+        @if ($viewModel->offersGroups())
+          <x-option-row
+            id="includes_groups"
+            name="includes_groups"
+            :checked="old('includes_groups', $viewModel->includesGroups() ? '1' : null) === '1'"
+            :hint="__('The names of the groups they are in today. The other people in those groups are never shown.')"
+          >
+            {{ __('Their groups') }}
+          </x-option-row>
+        @endif
+
         <x-caption tone="muted" class="block mt-4">{{ __('Hides whatever you tick') }}</x-caption>
 
         <ul class="mt-2 flex list-none flex-col gap-1.5">

@@ -14,9 +14,14 @@
   $sections = [
     ['key' => 'dashboard', 'label' => __('Dashboard'), 'icon' => 'heart', 'url' => route('vaults.show', $vault), 'badge' => null],
     ['key' => 'contacts', 'label' => __('People'), 'icon' => 'people', 'url' => route('contacts.index', $vault), 'badge' => $vault->contact_count > 0 ? (string) $vault->contact_count : null],
+    ['key' => 'groups', 'label' => __('Groups'), 'icon' => 'family', 'url' => route('groups.index', $vault), 'badge' => null],
     ['key' => 'reminders', 'label' => __('Reminders'), 'icon' => 'reminder', 'url' => route('reminders.index', $vault), 'badge' => $reminderCount > 0 ? (string) $reminderCount : null],
     ['key' => 'vault-settings', 'label' => __('Vault settings'), 'icon' => 'vault', 'url' => route('vaults.settings.index', $vault), 'badge' => null],
   ];
+
+  if (! \App\Helpers\FlagState::isOn('groups', $user->account)) {
+    $sections = array_values(array_filter($sections, fn (array $section): bool => $section['key'] !== 'groups'));
+  }
 @endphp
 
 <aside

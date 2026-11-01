@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\ContactNameKindEnum;
+use App\Enums\DatePrecisionEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\ContactMergeCannotBeUndone;
@@ -14,6 +15,8 @@ use App\Models\ContactMerge;
 use App\Models\ContactNameRepresentation;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\Reminder;
 use App\Models\ShareLink;
 use App\Models\User;
@@ -99,6 +102,8 @@ class UndoContactMerge
             'reminder_moved' => $this->giveTheReminderBack($entry),
             'reminder_deactivated' => $this->wakeTheReminderUp($entry),
             'share_link_moved' => $this->giveTheShareLinkBack($entry),
+            'membership_moved' => $this->giveTheMembershipBack($entry),
+            'membership_folded' => $this->unfoldTheMembership($entry),
             'avatar_replaced' => $this->putTheOldAvatarBack($entry),
             'name_representation_moved' => $this->giveTheNameBack($entry),
             'display_name_replaced' => $this->showTheOldNameAgain($entry),
@@ -216,6 +221,45 @@ class UndoContactMerge
     private function giveTheShareLinkBack(array $entry): void
     {
         ShareLink::query()->whereKey($entry['id'])->update(['shareable_id' => $this->absorbed->id]);
+    }
+
+    /** @param array<string, mixed> $entry */
+    private function giveTheMembershipBack(array $entry): void
+    {
+        $membership = GroupMember::query()->find($entry['id']);
+
+        if ($membership === null) {
+            return;
+        }
+
+        $membership->contact_id = $this->absorbed->id;
+        $membership->save();
+
+        $this->touchTheGroup($membership->group_id);
+    }
+
+    /** @param array<string, mixed> $entry */
+    private function unfoldTheMembership(array $entry): void
+    {
+        GroupMember::query()->onlyTrashed()->whereKey($entry['dropped'])->first()?->restore();
+
+        $held = GroupMember::query()->find($entry['id']);
+
+        if ($held === null) {
+            return;
+        }
+
+        $held->joined_on = $entry['joined_on'];
+        $held->joined_precision = DatePrecisionEnum::from($entry['joined_precision']);
+        $held->role = $entry['role'];
+        $held->save();
+
+        $this->touchTheGroup($held->group_id);
+    }
+
+    private function touchTheGroup(int $groupId): void
+    {
+        Group::query()->withTrashed()->find($groupId)?->touch();
     }
 
     /** @param array<string, mixed> $entry */

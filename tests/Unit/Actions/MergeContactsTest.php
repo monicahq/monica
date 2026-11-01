@@ -7,6 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\MergeContacts;
 use App\Actions\PreviewContactMerge;
 use App\Enums\ContactNameKindEnum;
+use App\Enums\DatePrecisionEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\SnapshotReasonEnum;
 use App\Enums\UserActionEnum;
@@ -20,6 +21,8 @@ use App\Models\ContactNameRepresentation;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\RecordSnapshot;
 use App\Models\Reminder;
 use App\Models\SectionVersion;
@@ -447,6 +450,110 @@ class MergeContactsTest extends TestCase
         new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
 
         $this->assertDatabaseHas('record_snapshots', ['id' => $theirs->id, 'snapshotable_id' => $james->id]);
+    }
+
+    #[Test]
+    public function it_moves_the_memberships_of_the_absorbed_contact_to_the_survivor(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $group = Group::factory()->create(['vault_id' => $jim->vault_id, 'name' => 'Scranton branch', 'updated_at' => '2007-01-01 00:00:00']);
+        $membership = GroupMember::factory()->former()->create(['group_id' => $group->id, 'contact_id' => $james->id]);
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertDatabaseHas('group_members', ['id' => $membership->id, 'contact_id' => $jim->id, 'deleted_at' => null]);
+        $this->assertContains(['kind' => 'membership_moved', 'id' => $membership->id, 'from' => $james->id], $merge->ledger);
+        $this->assertTrue($group->fresh()->updated_at->isAfter('2007-01-01'));
+    }
+
+    #[Test]
+    public function it_folds_two_current_memberships_of_one_group_into_one(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $group = Group::factory()->create(['vault_id' => $jim->vault_id, 'name' => 'Scranton branch', 'updated_at' => '2007-01-01 00:00:00']);
+        $mine = GroupMember::factory()->create([
+            'group_id' => $group->id,
+            'contact_id' => $jim->id,
+            'role' => 'Salesman',
+            'joined_on' => '2005-03-24',
+            'joined_precision' => DatePrecisionEnum::Day,
+        ]);
+        $theirs = GroupMember::factory()->create([
+            'group_id' => $group->id,
+            'contact_id' => $james->id,
+            'role' => 'Assistant to the regional manager',
+            'joined_on' => '2001-01-01',
+            'joined_precision' => DatePrecisionEnum::Year,
+        ]);
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $mine->refresh();
+        $this->assertEquals('2001-01-01', $mine->joined_on->format('Y-m-d'));
+        $this->assertEquals(DatePrecisionEnum::Year, $mine->joined_precision);
+        $this->assertEquals('Salesman', $mine->role);
+        $this->assertSoftDeleted($theirs);
+        $this->assertContains([
+            'kind' => 'membership_folded',
+            'id' => $mine->id,
+            'dropped' => $theirs->id,
+            'joined_on' => '2005-03-24',
+            'joined_precision' => 'day',
+            'role' => 'Salesman',
+        ], $merge->ledger);
+        $this->assertTrue($group->fresh()->updated_at->isAfter('2007-01-01'));
+    }
+
+    #[Test]
+    public function it_takes_the_role_and_the_known_join_date_of_the_absorbed_membership_when_the_survivor_has_none(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $group = Group::factory()->create(['vault_id' => $jim->vault_id, 'name' => 'Party planning committee']);
+        $mine = GroupMember::factory()->create(['group_id' => $group->id, 'contact_id' => $jim->id, 'role' => null]);
+        GroupMember::factory()->create([
+            'group_id' => $group->id,
+            'contact_id' => $james->id,
+            'role' => 'Member',
+            'joined_on' => '2006-05-01',
+            'joined_precision' => DatePrecisionEnum::Month,
+        ]);
+
+        new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $mine->refresh();
+        $this->assertEquals('2006-05-01', $mine->joined_on->format('Y-m-d'));
+        $this->assertEquals(DatePrecisionEnum::Month, $mine->joined_precision);
+        $this->assertEquals('Member', $mine->role);
+    }
+
+    #[Test]
+    public function it_keeps_the_survivors_known_join_date_over_an_unknown_one(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $group = Group::factory()->create(['vault_id' => $jim->vault_id, 'name' => 'Halpert household']);
+        $mine = GroupMember::factory()->create([
+            'group_id' => $group->id,
+            'contact_id' => $jim->id,
+            'joined_on' => '2009-10-17',
+            'joined_precision' => DatePrecisionEnum::Day,
+        ]);
+        GroupMember::factory()->create(['group_id' => $group->id, 'contact_id' => $james->id]);
+
+        new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertEquals('2009-10-17', $mine->fresh()->joined_on->format('Y-m-d'));
     }
 
     /** @return array{0: Contact, 1: Contact} */

@@ -453,7 +453,7 @@ class LifeEventTypeFormViewModel
         return [
             'reference' => '',
             'placementId' => null,
-            'name' => __('Not in a group'),
+            'name' => __('Not in a block'),
             'isGroup' => false,
             'fields' => $fields,
         ];

@@ -31,6 +31,8 @@ use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -1426,6 +1428,9 @@ class ApiDocsReturnFieldsTest extends TestCase
             'contacts-merge-show' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
                 [$kept, $absorbed] = $this->twoContactsToMergeIn($vault);
+                $household = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Halpert household']);
+                GroupMember::factory()->create(['group_id' => $household->id, 'contact_id' => $kept->id]);
+                GroupMember::factory()->create(['group_id' => $household->id, 'contact_id' => $absorbed->id]);
 
                 return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$kept->uuid}/merge/{$absorbed->uuid}");
             }),
@@ -1611,6 +1616,86 @@ class ApiDocsReturnFieldsTest extends TestCase
                 $relationship = $this->aRelationship($user);
 
                 return $this->json('DELETE', "/api/v1/vaults/{$relationship->vault->uuid}/contacts/{$relationship->contactA->uuid}/relationships/{$relationship->uuid}");
+            }),
+
+            'groups-index' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$group->vault->uuid}/groups");
+            }),
+
+            'groups-show' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}");
+            }),
+
+            'groups-create' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('POST', "/api/v1/vaults/{$vault->uuid}/groups", [
+                    'name' => 'Party planning committee',
+                    'started_on' => '2005-01-01',
+                    'started_precision' => 'year',
+                ]);
+            }),
+
+            'groups-update' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+
+                return $this->json('PUT', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}", [
+                    'description' => 'Plans every party of the Scranton branch.',
+                ]);
+            }),
+
+            'groups-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}");
+            }),
+
+            'groups-restoration-update' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+                $group->delete();
+
+                return $this->json('PUT', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/restoration");
+            }),
+
+            'group-members-index' => $this->asSomebody(function (User $user): TestResponse {
+                $membership = $this->aGroupMembership($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$membership->group->vault->uuid}/groups/{$membership->group->uuid}/members");
+            }),
+
+            'group-members-create' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+                $angela = Contact::factory()->create(['vault_id' => $group->vault_id, 'account_id' => $user->account_id]);
+
+                return $this->json('POST', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/members", [
+                    'contact' => $angela->uuid,
+                    'role' => 'Chair',
+                ]);
+            }),
+
+            'group-members-update' => $this->asSomebody(function (User $user): TestResponse {
+                $membership = $this->aGroupMembership($user);
+
+                return $this->json('PUT', "/api/v1/vaults/{$membership->group->vault->uuid}/groups/{$membership->group->uuid}/members/{$membership->uuid}", [
+                    'left_on' => '2013-05-16',
+                    'left_precision' => 'day',
+                ]);
+            }),
+
+            'group-members-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $membership = $this->aGroupMembership($user);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$membership->group->vault->uuid}/groups/{$membership->group->uuid}/members/{$membership->uuid}");
+            }),
+
+            'contact-groups-index' => $this->asSomebody(function (User $user): TestResponse {
+                $membership = $this->aGroupMembership($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$membership->group->vault->uuid}/contacts/{$membership->contact->uuid}/groups");
             }),
 
             'account-imports-show' => $this->asSomebody(function (User $user): TestResponse {
@@ -1908,6 +1993,18 @@ class ApiDocsReturnFieldsTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
         return Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+    }
+
+    private function aGroup(User $user): Group
+    {
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        return Group::factory()->create(['vault_id' => $vault->id]);
+    }
+
+    private function aGroupMembership(User $user): GroupMember
+    {
+        return GroupMember::factory()->create(['group_id' => $this->aGroup($user)->id, 'role' => 'Chair']);
     }
 
     /** @param  callable(User): TestResponse  $call */

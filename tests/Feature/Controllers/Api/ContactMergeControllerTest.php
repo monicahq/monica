@@ -55,6 +55,7 @@ class ContactMergeControllerTest extends TestCase
                 'moves',
                 'collisions',
                 'set_aside',
+                'folds',
                 'fingerprint',
             ],
         ],

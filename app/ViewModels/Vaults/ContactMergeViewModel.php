@@ -150,9 +150,16 @@ class ContactMergeViewModel
             'field_value_row' => trans_choice(':count entry comes over|:count entries come over', $move['count']),
             'reminder' => trans_choice(':count reminder comes over|:count reminders come over', $move['count']),
             'share_link' => trans_choice(':count shared link keeps working|:count shared links keep working', $move['count']),
+            'group_membership' => trans_choice(':count group membership comes over|:count group memberships come over', $move['count']),
             'relation_pointer' => trans_choice(':count other record points here instead|:count other records point here instead', $move['count']),
             default => '',
         };
+    }
+
+    /** @param array{group: string, name: string} $fold */
+    public function foldedLine(array $fold): string
+    {
+        return __('Both are in :group, so their two memberships become one.', ['group' => $fold['name']]);
     }
 
     public function confirmUrl(): string

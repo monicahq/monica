@@ -10,6 +10,7 @@ use App\Models\Contact;
 use App\Models\ContactNameRepresentation;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
+use App\Models\GroupMember;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -33,6 +34,9 @@ class PreviewContactMerge
     /** @var Collection<int, FieldValueRow>|null */
     private ?Collection $rows = null;
 
+    /** @var Collection<int, GroupMember>|null */
+    private ?Collection $memberships = null;
+
     /** @var array<int, Collection<int, ContactNameRepresentation>> */
     private array $nameRepresentations = [];
 
@@ -50,6 +54,7 @@ class PreviewContactMerge
      *     moves: list<array{kind: string, count: int}>,
      *     collisions: list<array{kind: string, field_key: string, row: int}>,
      *     set_aside: list<array{field_key: string, label: string, reason: string}>,
+     *     folds: list<array{group: string, name: string}>,
      *     fingerprint: string,
      * }
      */
@@ -64,6 +69,7 @@ class PreviewContactMerge
             'moves' => $this->moves(),
             'collisions' => $this->collisions(),
             'set_aside' => $this->setAside(),
+            'folds' => $this->folds(),
             'fingerprint' => $this->fingerprint(),
         ];
     }
@@ -166,6 +172,7 @@ class PreviewContactMerge
             ['kind' => 'field_value_row', 'count' => $this->rows($this->absorbed)->count()],
             ['kind' => 'reminder', 'count' => $this->absorbed->reminders()->count()],
             ['kind' => 'share_link', 'count' => $this->absorbed->shareLinks()->count()],
+            ['kind' => 'group_membership', 'count' => $this->memberships($this->absorbed)->count() - count($this->folds())],
             ['kind' => 'relation_pointer', 'count' => FieldValue::query()
                 ->where('related_contact_id', $this->absorbed->id)
                 ->count()],
@@ -209,6 +216,25 @@ class PreviewContactMerge
             ->all();
     }
 
+    /** @return list<array{group: string, name: string}> */
+    private function folds(): array
+    {
+        return once(function (): array {
+            $mine = $this->memberships($this->kept)
+                ->filter(fn (GroupMember $membership): bool => $membership->isCurrent())
+                ->keyBy('group_id');
+
+            return $this->memberships($this->absorbed)
+                ->filter(fn (GroupMember $membership): bool => $membership->isCurrent() && $mine->has($membership->group_id))
+                ->map(fn (GroupMember $membership): array => [
+                    'group' => $membership->group->uuid,
+                    'name' => $membership->group->name,
+                ])
+                ->values()
+                ->all();
+        });
+    }
+
     private function fingerprint(): string
     {
         $parts = [];
@@ -222,6 +248,10 @@ class PreviewContactMerge
 
             foreach ($this->attachedValues($contact)->sortBy('id') as $value) {
                 $parts[] = "{$value->id}={$this->reads($value)}";
+            }
+
+            foreach ($this->memberships($contact) as $membership) {
+                $parts[] = "{$membership->uuid}={$membership->group_id}:{$membership->left_on?->toDateString()}";
             }
         }
 
@@ -274,6 +304,18 @@ class PreviewContactMerge
             ->whereIn('valuable_id', [$this->kept->id, $this->absorbed->id])
             ->with('field')
             ->get();
+    }
+
+    /** @return Collection<int, GroupMember> */
+    private function memberships(Contact $contact): Collection
+    {
+        $this->memberships ??= GroupMember::query()
+            ->whereIn('contact_id', [$this->kept->id, $this->absorbed->id])
+            ->with(['group' => fn ($query) => $query->withTrashed()])
+            ->orderBy('id')
+            ->get();
+
+        return $this->memberships->where('contact_id', $contact->id)->values();
     }
 
     /** @return Collection<int, ContactNameRepresentation> */

@@ -126,7 +126,7 @@
         <x-button.secondary type="button" size="small" @click="addBlock($el)">
           <x-icon name="layers" :size="15" :stroke-width="1.6" />
 
-          {{ __('Add a group') }}
+          {{ __('Add a block') }}
         </x-button.secondary>
       </x-slot:actions>
 

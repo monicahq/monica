@@ -6,6 +6,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\MergeContacts;
 use App\Actions\UndoContactMerge;
+use App\Enums\DatePrecisionEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\ContactMergeCannotBeUndone;
@@ -16,6 +17,8 @@ use App\Models\ContactNameRepresentation;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\Reminder;
 use App\Models\SectionVersion;
 use App\Models\ShareLink;
@@ -24,6 +27,7 @@ use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -304,6 +308,53 @@ class UndoContactMergeTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UndoContactMerge(user: $user, merge: $stranger)->execute();
+    }
+
+    #[Test]
+    public function it_gives_a_moved_membership_back(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $group = Group::factory()->create(['vault_id' => $jim->vault_id, 'name' => 'Scranton branch']);
+        $membership = GroupMember::factory()->create(['group_id' => $group->id, 'contact_id' => $james->id]);
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+        $group->updated_at = CarbonImmutable::parse('2007-01-01');
+        $group->saveQuietly();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertDatabaseHas('group_members', ['id' => $membership->id, 'contact_id' => $james->id]);
+        $this->assertTrue($group->fresh()->updated_at->isAfter('2007-01-01'));
+    }
+
+    #[Test]
+    public function it_splits_a_folded_membership_back_into_two(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $group = Group::factory()->create(['vault_id' => $jim->vault_id, 'name' => 'Party planning committee']);
+        $mine = GroupMember::factory()->create(['group_id' => $group->id, 'contact_id' => $jim->id, 'role' => null]);
+        $theirs = GroupMember::factory()->create([
+            'group_id' => $group->id,
+            'contact_id' => $james->id,
+            'role' => 'Member',
+            'joined_on' => '2006-05-01',
+            'joined_precision' => DatePrecisionEnum::Month,
+        ]);
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $mine->refresh();
+        $this->assertNull($mine->joined_on);
+        $this->assertEquals(DatePrecisionEnum::Unknown, $mine->joined_precision);
+        $this->assertNull($mine->role);
+        $this->assertNotSoftDeleted($theirs);
+        $this->assertDatabaseHas('group_members', ['id' => $theirs->id, 'contact_id' => $james->id, 'role' => 'Member']);
     }
 
     /** @return array{0: Contact, 1: Contact} */

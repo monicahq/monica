@@ -9,6 +9,7 @@ use App\Actions\RevokeShareLink;
 use App\Actions\UpdateShareLink;
 use App\Enums\ShareLinkExpiryEnum;
 use App\Exceptions\ShareLinkIsRevoked;
+use App\Helpers\FlagState;
 use App\Helpers\PageSize;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
@@ -65,6 +66,7 @@ class ContactShareLinkController extends Controller
             recipientHint: $validated['recipient_hint'] ?? null,
             password: $validated['password'] ?? null,
             expiresAt: $this->expiresAt($request, null),
+            includesGroups: FlagState::isOn('groups', $request->user()->account) && $request->boolean('includes_groups'),
             includesSensitiveFields: $request->boolean('includes_sensitive_fields'),
             excludedSectionIds: $this->excludedSectionIds($request, $contact),
         )->execute();
@@ -132,7 +134,7 @@ class ContactShareLinkController extends Controller
                 includesLifeEventNarrative: $shareLink->includes_life_event_narrative,
                 includesDayNarrative: $shareLink->includes_day_narrative,
                 includesRelationships: $shareLink->includes_relationships,
-                includesGroups: $shareLink->includes_groups,
+                includesGroups: FlagState::isOn('groups', $request->user()->account) ? $request->boolean('includes_groups') : $shareLink->includes_groups,
                 includesSensitiveFields: $request->boolean('includes_sensitive_fields'),
                 excludedSectionIds: $this->excludedSectionIds($request, $contact),
                 excludedLifeEventIds: $shareLink->excluded_life_event_ids,
@@ -185,6 +187,7 @@ class ContactShareLinkController extends Controller
             'password' => ['nullable', 'string', 'min:8', 'max:255'],
             'removes_password' => ['nullable', 'boolean'],
             'includes_sensitive_fields' => ['nullable', 'boolean'],
+            'includes_groups' => ['nullable', 'boolean'],
             'sections' => ['nullable', 'array'],
             'sections.*' => ['integer'],
         ];

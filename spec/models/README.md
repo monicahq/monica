@@ -48,9 +48,9 @@ most of it: a vault lists what is coming and what has gone out, and a rule has a
 The preferences are the part still without one. Each file says how far it is built and what it is
 waiting on.
 
-Models 026, 031 to 033, 036 to 039 and 050 to 054 have no table and no model at all: relationships,
-groups, the journal, webhooks, modules and search are the whole of what is still to be
-started.
+Models 026, 036 to 039 and 050 to 054 have no table and no model at all: relationships, the
+journal, webhooks, modules and search are the whole of what is still to be started. Groups, 032 and
+033, are being built in specs/085-groups, and 031 was dropped.
 
 ### The compartments and the files
 
@@ -102,7 +102,7 @@ Model 056, [Structure](056-structure-done.md), is the container models 012 to 01
 
 | # | Model | Spec |
 |---|---|---|
-| 031 | [GroupType](031-group-type-not-yet.md) | 8.2 |
+| 031 | [GroupType](031-group-type-not-yet.md), dropped: a group has no kind | 8.2 |
 | 032 | [Group](032-group-not-yet.md) | 8.2 |
 | 033 | [GroupMember](033-group-member-not-yet.md) | 8.2 |
 | 034 | [ContactMerge](034-contact-merge-done.md) | 8.3, 15 |

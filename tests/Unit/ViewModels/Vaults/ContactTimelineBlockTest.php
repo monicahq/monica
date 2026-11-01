@@ -6,9 +6,12 @@ namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Actions\CreateLifeEvent;
 use App\Enums\DateFormatEnum;
+use App\Enums\DatePrecisionEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\VaultColourEnum;
 use App\Models\Contact;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\Section;
@@ -18,6 +21,7 @@ use App\ViewModels\Vaults\ContactTimelineBlock;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -276,6 +280,85 @@ class ContactTimelineBlockTest extends TestCase
     }
 
     /** @return array{0: User, 1: Vault, 2: Contact} */
+    #[Test]
+    public function it_places_joining_and_leaving_a_group_among_the_life_events(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+        $this->lifeEventWith($jim, '2026-07-03', 'Moved to a house near the office');
+        $this->lifeEventWith($jim, '2025-05-21', 'Engagement at the gas station');
+        $branch = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Stamford branch']);
+        GroupMember::factory()->create([
+            'group_id' => $branch->id,
+            'contact_id' => $jim->id,
+            'role' => 'Salesman',
+            'joined_on' => '2025-09-01',
+            'joined_precision' => DatePrecisionEnum::Day,
+            'left_on' => '2026-01-15',
+            'left_precision' => DatePrecisionEnum::Month,
+        ]);
+
+        $years = $this->block($user, $vault, $jim)->years();
+
+        $this->assertEquals(['Moved to a house near the office', 'Left Stamford branch'], array_column($years[0]['entries'], 'title'));
+        $this->assertEquals(['Joined Stamford branch', 'Engagement at the gas station'], array_column($years[1]['entries'], 'title'));
+        $this->assertEquals('January 2026', $years[0]['entries'][1]['date']);
+        $this->assertEquals(['Salesman'], $years[1]['entries'][0]['details']);
+        $this->assertEquals('2 entries', $years[1]['countLabel']);
+    }
+
+    #[Test]
+    public function it_puts_each_join_on_the_one_page_whose_dates_hold_it(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+        $this->lifeEventWith($jim, '2026-07-03', 'Moved to a house near the office');
+        $this->lifeEventWith($jim, '2020-05-21', 'Booze cruise');
+        GroupMember::factory()->create([
+            'group_id' => Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Scranton branch'])->id,
+            'contact_id' => $jim->id,
+            'joined_on' => '2001-03-01',
+            'joined_precision' => DatePrecisionEnum::Year,
+        ]);
+
+        $first = new ContactTimelineBlock(user: $user, vault: $vault, contact: $jim, page: 1, perPage: 1);
+        $second = new ContactTimelineBlock(user: $user, vault: $vault, contact: $jim, page: 2, perPage: 1);
+
+        $this->assertEquals(['Moved to a house near the office'], array_column($first->years()[0]['entries'], 'title'));
+        $this->assertEquals(['Booze cruise', 'Joined Scranton branch'], collect($second->years())->flatMap(fn (array $year): array => array_column($year['entries'], 'title'))->all());
+    }
+
+    #[Test]
+    public function it_leaves_group_entries_out_while_groups_are_off(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+        GroupMember::factory()->create([
+            'group_id' => Group::factory()->create(['vault_id' => $vault->id])->id,
+            'contact_id' => $jim->id,
+            'joined_on' => '2001-03-01',
+            'joined_precision' => DatePrecisionEnum::Year,
+        ]);
+        $user->account->features()->deactivate('groups');
+        Feature::flushCache();
+
+        $this->assertTrue($this->block($user, $vault, $jim)->holdsNothing());
+    }
+
+    #[Test]
+    public function it_shows_a_join_on_an_otherwise_empty_timeline(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+        GroupMember::factory()->create([
+            'group_id' => Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Scranton branch'])->id,
+            'contact_id' => $jim->id,
+            'joined_on' => '2001-03-01',
+            'joined_precision' => DatePrecisionEnum::Year,
+        ]);
+
+        $block = $this->block($user, $vault, $jim);
+
+        $this->assertFalse($block->holdsNothing());
+        $this->assertEquals('2001', $block->years()[0]['entries'][0]['date']);
+    }
+
     private function jim(): array
     {
         $user = User::factory()->create();

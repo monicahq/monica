@@ -266,6 +266,21 @@ class McpDocsViewModel
                 ['name' => 'delete-life-event', 'description' => 'Takes a life event off every timeline. It can be restored.'],
                 ['name' => 'restore-life-event', 'description' => 'Puts a deleted life event back.'],
             ]],
+            ['name' => 'Groups, reading', 'changesData' => false, 'tools' => [
+                ['name' => 'list-groups', 'description' => 'Lists the groups of a vault, such as households and teams, with how many people are in each today.'],
+                ['name' => 'get-group', 'description' => 'Returns one group: its name, its description, its dates and how many people are in it today.'],
+                ['name' => 'list-group-members', 'description' => 'Lists the people of a group, those in it today first, each with their role and dates.'],
+                ['name' => 'list-contact-groups', 'description' => 'Lists the groups a contact belongs to or belonged to, with their role and dates in each.'],
+            ]],
+            ['name' => 'Groups, changing', 'changesData' => true, 'tools' => [
+                ['name' => 'create-group', 'description' => 'Creates a group of contacts in a vault, such as a household or a team. It starts with nobody in it.'],
+                ['name' => 'update-group', 'description' => 'Changes the name, the description or the dates of a group. What you leave out keeps its value.'],
+                ['name' => 'delete-group', 'description' => 'Deletes a group. The people in it stay, and it can be restored with its memberships.'],
+                ['name' => 'restore-group', 'description' => 'Puts a deleted group back, with every membership it held.'],
+                ['name' => 'add-group-member', 'description' => 'Puts a contact in a group, with an optional role and the dates they joined and left.'],
+                ['name' => 'update-group-member', 'description' => 'Changes the role or the dates of a membership. Giving a leave date is how somebody leaves.'],
+                ['name' => 'remove-group-member', 'description' => 'Deletes a membership recorded by mistake. Somebody who really left gets a leave date instead.'],
+            ]],
             ['name' => 'Templates', 'changesData' => false, 'tools' => [
                 ['name' => 'list-templates', 'description' => 'Lists the templates of your account.'],
                 ['name' => 'get-template', 'description' => 'Returns one template: its name, what it describes, whether it is active and which version is published.'],

@@ -1,4 +1,4 @@
-{{-- The timeline of a contact: the life events they took part in, newest first, by year. --}}
+{{-- The timeline of a contact: their life events and group joins and departures, newest first, by year. --}}
 {{--
   @var \App\ViewModels\Vaults\ContactTimelineBlock $timeline
   @var \App\ViewModels\Vaults\LifeEventFormBlock $form
@@ -31,7 +31,24 @@
               </span>
             </span>
 
-            @if ($entry['isEditing'])
+            @if ($entry['kind'] === 'membership')
+              <div class="group -ml-2.5 flex min-w-0 items-start gap-2 rounded-lg border border-transparent px-2.5 pt-1.5 pb-2 transition-colors motion-reduce:transition-none focus-within:border-hairline focus-within:bg-card hover:border-hairline hover:bg-card">
+                <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+                  <p class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-base">
+                    <span class="font-medium text-ink">{{ $entry['title'] }}</span>
+                    <span class="text-sm text-muted">· {{ $entry['date'] }}</span>
+                  </p>
+
+                  @if ($entry['details'] !== [])
+                    <p class="text-sm text-pretty text-muted">{{ implode(' · ', $entry['details']) }}</p>
+                  @endif
+                </div>
+
+                <div class="flex shrink-0 transition-opacity motion-reduce:transition-none opacity-0 group-focus-within:opacity-100 group-hover:opacity-100 pointer-coarse:opacity-100">
+                  <x-button.ghost :href="$entry['editUrl']" data-turbo="true" size="small" aria-label="{{ __('Edit :name', ['name' => $entry['title']]) }}">{{ __('Edit') }}</x-button.ghost>
+                </div>
+              </div>
+            @elseif ($entry['isEditing'])
               <div class="min-w-0">
                 @include('app.vaults.contacts._life-event-panel', ['form' => $form])
               </div>

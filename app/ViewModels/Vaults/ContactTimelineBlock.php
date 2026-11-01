@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Enums\DateFormatEnum;
+use App\Enums\DatePrecisionEnum;
 use App\Enums\VaultColourEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\FieldValueFormatter;
+use App\Helpers\FlagState;
 use App\Models\Contact;
 use App\Models\FieldValue;
+use App\Models\GroupMember;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\Section;
@@ -18,6 +21,7 @@ use App\Models\Vault;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\Paginator;
 
 class ContactTimelineBlock
@@ -45,15 +49,25 @@ class ContactTimelineBlock
         return $this->isReadOnly;
     }
 
-    /** @return array<int, array{year: int, countLabel: string, showsHeading: bool, entries: array<int, array{id: int, icon: string, tint: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string, deleteLine: string}>}> */
+    /** @return array<int, array{year: int, countLabel: string, showsHeading: bool, entries: array<int, array{kind: string, id: int|string, icon: string, tint: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string|null, deleteLine: string|null}>}> */
     public function years(): array
     {
         return once(function (): array {
             $continuedYear = $this->yearThePreviousPageEndedIn();
-            $years = [];
+            $dated = [];
 
             foreach ($this->paginator()->items() as $lifeEvent) {
-                $year = $lifeEvent->happened_on->year;
+                $dated[] = ['date' => $lifeEvent->happened_on, 'entry' => $this->entry($lifeEvent)];
+            }
+
+            $dated = [...$dated, ...$this->membershipEntries()];
+
+            usort($dated, fn (array $a, array $b): int => $b['date']->toDateString() <=> $a['date']->toDateString());
+
+            $years = [];
+
+            foreach ($dated as $item) {
+                $year = $item['date']->year;
 
                 $years[$year] ??= [
                     'year' => $year,
@@ -62,7 +76,7 @@ class ContactTimelineBlock
                     'entries' => [],
                 ];
 
-                $years[$year]['entries'][] = $this->entry($lifeEvent);
+                $years[$year]['entries'][] = $item['entry'];
             }
 
             return array_values($years);
@@ -71,7 +85,7 @@ class ContactTimelineBlock
 
     public function holdsNothing(): bool
     {
-        return $this->page === 1 && $this->paginator()->isEmpty();
+        return $this->page === 1 && $this->paginator()->isEmpty() && $this->membershipEntries() === [];
     }
 
     /**
@@ -134,7 +148,11 @@ class ContactTimelineBlock
 
     private function countIn(int $year): int
     {
-        return $this->query()
+        $memberships = $this->showsMemberships() ? $this->memberships()
+            ->filter(fn (GroupMember $membership): bool => $membership->joined_on?->year === $year || $membership->left_on?->year === $year)
+            ->sum(fn (GroupMember $membership): int => (int) ($membership->joined_on?->year === $year) + (int) ($membership->left_on?->year === $year)) : 0;
+
+        return $memberships + $this->query()
             ->where('happened_on', '>=', CarbonImmutable::create($year)->toDateString())
             ->where('happened_on', '<', CarbonImmutable::create($year + 1)->toDateString())
             ->count();
@@ -158,7 +176,7 @@ class ContactTimelineBlock
             ?->happened_on->year;
     }
 
-    /** @return array{id: int, icon: string, tint: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string, deleteLine: string} */
+    /** @return array{kind: string, id: int, icon: string, tint: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string, deleteLine: string} */
     private function entry(LifeEvent $lifeEvent): array
     {
         $icon = $lifeEvent->lifeEventType->icon;
@@ -176,6 +194,7 @@ class ContactTimelineBlock
             ->all();
 
         return [
+            'kind' => 'lifeEvent',
             'id' => $lifeEvent->id,
             'icon' => in_array($icon, Section::ICONS, true) ? $icon : Section::DEFAULT_ICON,
             'tint' => VaultColourEnum::tintFor($lifeEvent->lifeEventType->colour),
@@ -240,6 +259,100 @@ class ContactTimelineBlock
         }
 
         return $details;
+    }
+
+    private function showsMemberships(): bool
+    {
+        return FlagState::isOn('groups', $this->user->account);
+    }
+
+    /**
+     * Every membership of the contact with a known date, in a group that still exists.
+     *
+     * @return Collection<int, GroupMember>
+     */
+    private function memberships(): Collection
+    {
+        return once(fn (): Collection => GroupMember::query()
+            ->where('contact_id', $this->contact->id)
+            ->where(fn (Builder $query): Builder => $query->whereNotNull('joined_on')->orWhereNotNull('left_on'))
+            ->whereHas('group', fn (Builder $query): Builder => $query->where('vault_id', $this->vault->id))
+            ->with('group')
+            ->get());
+    }
+
+    /**
+     * The joins and departures that fall between the dates this page of life events covers. The
+     * first page reaches up to today and the last page takes everything older, so every entry is on
+     * exactly one page.
+     *
+     * @return list<array{date: CarbonImmutable, entry: array<string, mixed>}>
+     */
+    private function membershipEntries(): array
+    {
+        return once(function (): array {
+            if (! $this->showsMemberships()) {
+                return [];
+            }
+
+            $items = $this->paginator()->items();
+            $from = $this->paginator()->hasMorePages() && $items !== [] ? end($items)->happened_on->toDateString() : null;
+            $until = $this->page === 1 ? null : $this->dateThePreviousPageEndedOn();
+            $period = new GroupPeriod($this->user);
+            $entries = [];
+
+            foreach ($this->memberships() as $membership) {
+                foreach (['joined' => $membership->joined_on, 'left' => $membership->left_on] as $moment => $date) {
+                    if ($date === null) {
+                        continue;
+                    }
+
+                    if ($from !== null && $date->toDateString() < $from) {
+                        continue;
+                    }
+
+                    if ($until !== null && $date->toDateString() >= $until) {
+                        continue;
+                    }
+
+                    $precision = $moment === 'joined' ? $membership->joined_precision : $membership->left_precision;
+
+                    $entries[] = ['date' => $date, 'entry' => [
+                        'kind' => 'membership',
+                        'id' => "membership-{$membership->id}-{$moment}",
+                        'icon' => 'people',
+                        'tint' => VaultColourEnum::tintFor(null),
+                        'title' => $moment === 'joined'
+                            ? __('Joined :group', ['group' => $membership->group->name])
+                            : __('Left :group', ['group' => $membership->group->name]),
+                        'date' => $precision === DatePrecisionEnum::Day
+                            ? $this->write($date, $this->withoutTheYear($this->dateFormat()))
+                            : (string) $period->date($date, $precision),
+                        'details' => $membership->role === null ? [] : [$membership->role],
+                        'narrative' => null,
+                        'with' => [],
+                        'isJustAdded' => false,
+                        'isEditing' => false,
+                        'isEdited' => false,
+                        'editUrl' => route('groups.members.edit', ['vault' => $this->vault, 'group' => $membership->group, 'membership' => $membership]),
+                        'destroyUrl' => null,
+                        'deleteLine' => null,
+                    ]];
+                }
+            }
+
+            return $entries;
+        });
+    }
+
+    private function dateThePreviousPageEndedOn(): ?string
+    {
+        return $this->query()
+            ->orderByDesc('happened_on')
+            ->orderByDesc('id')
+            ->skip(($this->page - 1) * $this->perPage - 1)
+            ->first()
+            ?->happened_on->toDateString();
     }
 
     private function write(CarbonInterface $date, string $format): string

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Enums\ShareLinkExpiryEnum;
+use App\Helpers\FlagState;
 use App\Models\Contact;
 use App\Models\ShareLink;
 use App\Models\StructureVersionPage;
@@ -151,6 +152,20 @@ class ShareLinkFormViewModel
     public function includesSensitiveFields(): bool
     {
         return $this->shareLink !== null && $this->shareLink->includes_sensitive_fields;
+    }
+
+    /**
+     * Whether the form offers to show the groups the contact belongs to, which it does only once
+     * groups are released to the account.
+     */
+    public function offersGroups(): bool
+    {
+        return FlagState::isOn('groups', $this->user->account);
+    }
+
+    public function includesGroups(): bool
+    {
+        return $this->shareLink !== null && $this->shareLink->includes_groups;
     }
 
     public function isProtectedByAPassword(): bool

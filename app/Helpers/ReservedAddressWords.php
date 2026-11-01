@@ -40,4 +40,14 @@ class ReservedAddressWords
             ...ContactGroupingEnum::values(),
         ];
     }
+
+    /**
+     * The words a group may not be addressed by. `groups/new` is declared before `groups/{group}`.
+     *
+     * @return list<string>
+     */
+    public static function forGroup(): array
+    {
+        return ['new'];
+    }
 }

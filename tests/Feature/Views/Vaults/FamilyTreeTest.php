@@ -159,6 +159,7 @@ class FamilyTreeTest extends TestCase
         Queue::fake();
         $this->user->account->features()->active('marketplace');
         $this->user->account->features()->active('vcard-export');
+        $this->user->account->features()->active('groups');
 
         $this->parentage($this->judy, $this->personIn('Ross', 'Geller'));
 

@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Enums\ApiKeyScopeEnum;
+use App\Http\Resources\GroupMembershipResource;
 use App\Http\Resources\LifeEventResource;
 use App\Models\Contact;
 use App\Models\EmailSent;
 use App\Models\EntityType;
 use App\Models\Field;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -132,6 +135,47 @@ trait MirrorsAnApiCapability
         }
 
         return $this->found($lifeEvent);
+    }
+
+    protected function group(Vault $vault, string $address, bool $withTrashed = false): Group
+    {
+        if (! Str::isUuid($address)) {
+            throw $this->doesNotExist(__('That group does not exist.'));
+        }
+
+        $group = Group::query()
+            ->where('vault_id', $vault->id)
+            ->where('uuid', $address)
+            ->when($withTrashed, fn (Builder $query): Builder => $query->withTrashed())
+            ->with('vault')
+            ->withCount('currentMembers')
+            ->first();
+
+        if ($group === null) {
+            throw $this->doesNotExist(__('That group does not exist.'));
+        }
+
+        return $this->found($group);
+    }
+
+    protected function groupMembership(Group $group, string $address): GroupMember
+    {
+        if (! Str::isUuid($address)) {
+            throw $this->doesNotExist(__('That membership does not exist.'));
+        }
+
+        $membership = GroupMember::query()
+            ->where('group_id', $group->id)
+            ->where('uuid', $address)
+            ->whereHas('contact')
+            ->with(GroupMembershipResource::RELATIONS)
+            ->first();
+
+        if ($membership === null) {
+            throw $this->doesNotExist(__('That membership does not exist.'));
+        }
+
+        return $this->found($membership);
     }
 
     protected function template(Request $request, string $address): Template

@@ -55,6 +55,8 @@ class ApiDocsViewModel
             ];
         }, $files);
 
+        $this->groups = array_values(array_filter($this->groups, fn (array $group): bool => $group['sections'] !== []));
+
         return $this->groups;
     }
 

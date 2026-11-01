@@ -6,9 +6,12 @@ namespace Tests\Unit\Http\Dav;
 
 use App\Http\Dav\AddressBookBackend;
 use App\Models\Contact;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
@@ -185,5 +188,68 @@ class AddressBookBackendTest extends TestCase
 
         $this->assertNotEquals($plain, $reaching);
         $this->assertEquals($contact->uuid.'.vcf', new AddressBookBackend($user)->getCards($vault->id)[0]['uri']);
+    }
+
+    #[Test]
+    public function it_lists_a_group_card_beside_the_people(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $group = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Halpert household']);
+        GroupMember::factory()->create(['group_id' => $group->id, 'contact_id' => $jim->id]);
+
+        $rows = new AddressBookBackend($user)->getCards($vault->id);
+        $card = new AddressBookBackend($user)->getCard($vault->id, $group->uuid.'.vcf');
+
+        $this->assertEqualsCanonicalizing([$jim->uuid.'.vcf', $group->uuid.'.vcf'], array_column($rows, 'uri'));
+        $this->assertStringContainsString('KIND:group', $card['carddata']);
+        $this->assertStringContainsString("MEMBER:urn:uuid:{$jim->uuid}", $card['carddata']);
+    }
+
+    #[Test]
+    public function it_finds_a_group_card_under_the_name_a_device_chose_and_not_under_its_uuid(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $group = Group::factory()->create(['vault_id' => $vault->id, 'dav_uri' => 'halperts.vcf']);
+
+        $backend = new AddressBookBackend($user);
+
+        $this->assertIsArray($backend->getCard($vault->id, 'halperts.vcf'));
+        $this->assertFalse($backend->getCard($vault->id, $group->uuid.'.vcf'));
+        $this->assertSame(['halperts.vcf'], array_column($backend->getMultipleCards($vault->id, ['halperts.vcf']), 'uri'));
+    }
+
+    #[Test]
+    public function it_gives_a_group_card_a_new_version_when_a_member_leaves_the_address_book(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $pam = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $group = Group::factory()->create(['vault_id' => $vault->id]);
+        GroupMember::factory()->create(['group_id' => $group->id, 'contact_id' => $pam->id]);
+
+        $before = new AddressBookBackend($user)->getCard($vault->id, $group->uuid.'.vcf')['etag'];
+
+        $pam->update(['is_archived' => true]);
+
+        $this->assertNotEquals($before, new AddressBookBackend($user)->getCard($vault->id, $group->uuid.'.vcf')['etag']);
+    }
+
+    #[Test]
+    public function it_holds_no_group_card_while_groups_are_off_for_the_account(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $group = Group::factory()->create(['vault_id' => $vault->id]);
+        $user->account->features()->deactivate('groups');
+        Feature::flushCache();
+
+        $backend = new AddressBookBackend($user);
+
+        $this->assertSame([], $backend->getCards($vault->id));
+        $this->assertFalse($backend->getCard($vault->id, $group->uuid.'.vcf'));
+        $this->assertSame([], $backend->getChangesForAddressBook($vault->id, '', 1)['added']);
     }
 }

@@ -1387,6 +1387,7 @@ class ContactControllerTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $user->account->features()->active('marketplace');
         $user->account->features()->active('vcard-export');
+        $user->account->features()->active('groups');
 
         $few = $this->contactOnAVersionOf($user, $vault, sections: 1, choiceFields: 1);
         $many = $this->contactOnAVersionOf($user, $vault, sections: 1, choiceFields: 7);
@@ -1407,6 +1408,7 @@ class ContactControllerTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $user->account->features()->active('marketplace');
         $user->account->features()->active('vcard-export');
+        $user->account->features()->active('groups');
 
         $small = $this->contactOnAVersionOf($user, $vault, sections: 2);
         $large = $this->contactOnAVersionOf($user, $vault, sections: 8);

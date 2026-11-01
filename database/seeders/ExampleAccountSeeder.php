@@ -10,6 +10,8 @@ use App\Actions\CreateAccount;
 use App\Actions\CreateContact;
 use App\Actions\CreateContactReminder;
 use App\Actions\CreateFieldValueRow;
+use App\Actions\CreateGroup;
+use App\Actions\CreateGroupMembership;
 use App\Actions\CreateLifeEvent;
 use App\Actions\CreateRelationship;
 use App\Actions\CreateRelationshipType;
@@ -20,6 +22,7 @@ use App\Actions\SetFieldValue;
 use App\Actions\UpdateRelationship;
 use App\Enums\AddressLabelEnum;
 use App\Enums\ContactCategoryEnum;
+use App\Enums\DatePrecisionEnum;
 use App\Enums\DefaultFieldEnum;
 use App\Enums\EmailLabelEnum;
 use App\Enums\FieldTypeEnum;
@@ -81,6 +84,7 @@ class ExampleAccountSeeder extends Seeder
         $this->createContacts();
         $this->createRelationships();
         $this->createLifeEvents();
+        $this->createGroups();
         $this->createContactReminders();
         $this->grantAdministratorAccess();
         $this->activateFlags();
@@ -214,6 +218,36 @@ class ExampleAccountSeeder extends Seeder
                 location: $event['location'],
                 participants: $people,
             )->execute();
+        }
+    }
+
+    private function createGroups(): void
+    {
+        foreach (new ExampleGroups()->all() as $example) {
+            $group = new CreateGroup(
+                user: $this->user,
+                vault: $this->vault,
+                name: $example['name'],
+                description: $example['description'],
+                startedOn: $example['started'] === null ? null : CarbonImmutable::parse($example['started']),
+                startedPrecision: $example['started'] === null ? DatePrecisionEnum::Unknown : DatePrecisionEnum::Day,
+                endedOn: $example['ended'] === null ? null : CarbonImmutable::parse($example['ended']),
+                endedPrecision: $example['ended'] === null ? DatePrecisionEnum::Unknown : DatePrecisionEnum::Day,
+            )->execute();
+
+            foreach ($example['members'] as $member) {
+                new CreateGroupMembership(
+                    user: $this->user,
+                    vault: $this->vault,
+                    group: $group,
+                    contact: $this->contacts[$member['name']],
+                    role: $member['role'],
+                    joinedOn: $member['joined'] === null ? null : CarbonImmutable::parse($member['joined']),
+                    joinedPrecision: $member['joined'] === null ? DatePrecisionEnum::Unknown : DatePrecisionEnum::Day,
+                    leftOn: $member['left'] === null ? null : CarbonImmutable::parse($member['left']),
+                    leftPrecision: $member['left'] === null ? DatePrecisionEnum::Unknown : DatePrecisionEnum::Day,
+                )->execute();
+            }
         }
     }
 

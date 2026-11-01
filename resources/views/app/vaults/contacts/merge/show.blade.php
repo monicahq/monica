@@ -98,12 +98,18 @@
       </x-panel>
     @endforeach
 
-    @if ($preview['moves'] !== [])
+    @if ($preview['moves'] !== [] || $preview['folds'] !== [])
       <x-panel :title="__('What comes over')" icon="file" :flush="true">
         <ul class="grid gap-0">
           @foreach ($preview['moves'] as $move)
             <li class="border-b border-hairline px-4.5 py-3 text-sm text-ink last:border-b-0">
               {{ $viewModel->movedLine($move) }}
+            </li>
+          @endforeach
+
+          @foreach ($preview['folds'] as $fold)
+            <li class="border-b border-hairline px-4.5 py-3 text-sm text-ink last:border-b-0">
+              {{ $viewModel->foldedLine($fold) }}
             </li>
           @endforeach
         </ul>

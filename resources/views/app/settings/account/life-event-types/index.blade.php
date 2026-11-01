@@ -21,7 +21,7 @@
       <x-slot:actions>
         <x-modal.form
           :title="__('Add a category')"
-          :description="__('A group the life event types are listed under. It decides nothing else about them.')"
+          :description="__('A heading the life event types are listed under. It decides nothing else about them.')"
           :confirm="__('Add the category')"
           :action="route('settings.lifeEventCategories.create')"
           :open="$newCategoryErrors->has('name')"

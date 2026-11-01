@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Docs;
 
+use App\Helpers\FlagState;
 use Carbon\CarbonImmutable;
 
 class CarddavDocsViewModel
@@ -96,6 +97,8 @@ class CarddavDocsViewModel
         'Check the device for downloaded or exported copies. Revoking a key stops future access; it does not remotely erase data already copied to the device.',
     ];
 
+    public const string DAVX5_GROUPS = 'In the DAVx5 account settings, set **Contact group method** to **Groups are separate vCards**. Monica syncs a group only as its own card; a group stored as a category on each contact is not read.';
+
     public function instanceAddress(): string
     {
         return rtrim((string) config('app.url'), '/');
@@ -108,7 +111,7 @@ class CarddavDocsViewModel
 
     public function lastUpdated(): CarbonImmutable
     {
-        return CarbonImmutable::parse('2026-09-28');
+        return CarbonImmutable::parse('2026-10-29');
     }
 
     public function editUrl(): string
@@ -151,6 +154,7 @@ class CarddavDocsViewModel
                     'Open **DAVx5**, add an account, and choose login with a **URL and user name**.',
                     'Use the server address as the base URL, your Monica email as the username, and your API key as the password.',
                     'Finish creating the account, grant the permissions needed for contacts and calendar sync, then enable the vault address books you want in DAVx5. Start a sync and select those address books in your contacts app.',
+                    ...(FlagState::isOn('groups', null) ? [self::DAVX5_GROUPS] : []),
                 ],
                 'calendar' => 'In the same DAVx5 account, enable the vault’s dates calendar and, if wanted, its reminders task list. DAVx5 syncs the data to your apps; showing reminder tasks also requires a compatible task app.',
                 'sources' => ['DAVx5 setup and sync' => 'https://manual.davx5.com/introduction.html'],

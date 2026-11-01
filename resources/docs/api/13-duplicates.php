@@ -84,10 +84,14 @@ $previewFields = [
     ['name' => 'data.attributes.conflicts[].other_value', 'type' => 'string', 'description' => 'What the other one holds.'],
     ['name' => 'data.attributes.moves', 'type' => 'array', 'description' => 'How much of each kind of thing would come over. A kind with nothing to move is left out.'],
     ['name' => 'data.attributes.moves[]', 'type' => 'object', 'description' => 'One kind of thing.'],
-    ['name' => 'data.attributes.moves[].kind', 'type' => 'string', 'description' => 'One of name_representation, field_value, field_value_row, reminder, share_link or relation_pointer.'],
+    ['name' => 'data.attributes.moves[].kind', 'type' => 'string', 'description' => 'One of name_representation, field_value, field_value_row, reminder, share_link, group_membership or relation_pointer.'],
     ['name' => 'data.attributes.moves[].count', 'type' => 'integer', 'description' => 'How many of them.'],
     ['name' => 'data.attributes.collisions', 'type' => 'array', 'description' => 'Repeater entries the merge would place identically twice. Each one has to be decided too. Empty when there are none.'],
     ['name' => 'data.attributes.set_aside', 'type' => 'array', 'description' => 'Answers with no matching question on the surviving structure. They are kept out of the way rather than thrown away. Empty when there are none.'],
+    ['name' => 'data.attributes.folds', 'type' => 'array', 'description' => 'Groups both contacts are current members of. The two memberships become one, from the earlier join date, with the surviving contact\'s role unless it has none. Empty when there are none.'],
+    ['name' => 'data.attributes.folds[]', 'type' => 'object', 'description' => 'One group whose two memberships become one.'],
+    ['name' => 'data.attributes.folds[].group', 'type' => 'string', 'description' => 'The identifier of the group.'],
+    ['name' => 'data.attributes.folds[].name', 'type' => 'string', 'description' => 'What the group is called.'],
     ['name' => 'data.attributes.fingerprint', 'type' => 'string', 'description' => 'What the preview was built on. Hand it back when you merge and the merge is refused if either contact changed in between.'],
 ];
 
@@ -132,6 +136,9 @@ $preview = [
         ],
         'collisions' => [],
         'set_aside' => [],
+        'folds' => [
+            ['group' => '0199a2b4-7c1d-7e3f-9a40-5b6c7d8e9f01', 'name' => 'Halpert household'],
+        ],
         'fingerprint' => '5f2c9d1b7a34e806c5f19d2b48a7361ce0947fb52d8a1c6e3947b0d85f2a1c63',
     ],
 ];
