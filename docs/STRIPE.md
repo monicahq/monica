@@ -147,6 +147,7 @@ the events to enable and what each one does:
 | Event | What happens |
 | --- | --- |
 | `checkout.session.completed` | the order behind a one time purchase is settled and full access opens, which is what covers a buyer who never comes back to the product |
+| `checkout.session.async_payment_succeeded` | the same, for a buyer who paid with a delayed method such as a SEPA debit or a bank transfer, whose session completed unpaid and is paid days later |
 | `invoice.paid` | the payment is written down, so a screen can show what was charged. It opens nothing |
 | `customer.subscription.created` | the subscription is recorded and the owner is told access is open |
 | `customer.subscription.updated` | keeps the local subscription in step: its state, its price, its end date. This is how a card going past due arrives, and how a change made in the dashboard reaches the product |

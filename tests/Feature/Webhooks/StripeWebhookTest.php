@@ -116,7 +116,7 @@ class StripeWebhookTest extends TestCase
 
         foreach (glob(app_path('Listeners/HandleStripe*.php')) as $listener) {
             preg_match_all(
-                "/'(customer|invoice|charge|payment_method)\.[a-z_.]+'/",
+                "/'(checkout|customer|invoice|charge|payment_method)\.[a-z_.]+'/",
                 (string) file_get_contents($listener),
                 $matches,
             );

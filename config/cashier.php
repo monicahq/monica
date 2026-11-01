@@ -63,6 +63,7 @@ return [
         'events' => [
             ...WebhookCommand::DEFAULT_EVENTS,
             'checkout.session.completed',
+            'checkout.session.async_payment_succeeded',
             'invoice.paid',
             'charge.refunded',
             'charge.refund.updated',

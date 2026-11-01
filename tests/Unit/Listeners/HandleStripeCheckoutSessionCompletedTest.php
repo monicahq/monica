@@ -48,6 +48,22 @@ class HandleStripeCheckoutSessionCompletedTest extends TestCase
     }
 
     #[Test]
+    public function it_settles_the_order_when_a_delayed_payment_succeeds(): void
+    {
+        $oscar = User::factory()->create();
+        $account = $oscar->account;
+        $account->forceFill(['stripe_id' => 'cus_dundermifflin'])->save();
+        $order = StripeOrder::factory()->create(['account_id' => $account->id, 'stripe_id' => 'cs_test_scranton']);
+
+        new HandleStripeCheckoutSessionCompleted()->handle(new WebhookReceived($this->event(paymentStatus: 'unpaid')));
+        new HandleStripeCheckoutSessionCompleted()->handle(new WebhookReceived($this->event(type: 'checkout.session.async_payment_succeeded')));
+
+        $this->assertDatabaseHas('stripe_orders', ['id' => $order->id, 'stripe_status' => StripeOrder::PAID]);
+        $this->assertTrue($account->fresh()->hasFullAccess());
+        Notification::assertSentToTimes($oscar, AccessUnlocked::class, 1);
+    }
+
+    #[Test]
     public function it_opens_access_once_when_stripe_repeats_itself(): void
     {
         $michael = User::factory()->create();
@@ -120,11 +136,14 @@ class HandleStripeCheckoutSessionCompletedTest extends TestCase
     }
 
     /** @return array<string, mixed> */
-    private function event(string $paymentStatus = 'paid', string $customer = 'cus_dundermifflin'): array
-    {
+    private function event(
+        string $paymentStatus = 'paid',
+        string $customer = 'cus_dundermifflin',
+        string $type = 'checkout.session.completed',
+    ): array {
         return [
             'id' => 'evt_dundermifflin',
-            'type' => 'checkout.session.completed',
+            'type' => $type,
             'data' => ['object' => $this->stripeCheckoutSession(
                 id: 'cs_test_scranton',
                 paymentStatus: $paymentStatus,
