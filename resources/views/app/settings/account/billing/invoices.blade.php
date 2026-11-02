@@ -23,7 +23,7 @@
           <span class="text-base font-semibold text-ink">{{ $payment->total() }}</span>
 
           @if ($payment->hosted_invoice_url !== null)
-            <x-link :href="route('settings.invoices.show', ['payment' => $payment->stripe_id])" data-turbo="false" data-no-instant class="ml-auto text-sm">
+            <x-link :href="route('settings.invoices.show', ['payment' => $payment->stripe_id])" data-turbo="false" data-no-instant class="ml-auto text-sm" target="_blank" rel="noopener noreferrer">
               {{ $payment->invoice_number !== null ? __('Invoice :number', ['number' => $payment->invoice_number]) : __('Invoice') }}
             </x-link>
           @else

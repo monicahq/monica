@@ -10,6 +10,7 @@ use App\Exceptions\SubscriptionCannotBeChanged;
 use App\Helpers\StripeCatalogue;
 use App\Jobs\LogUserAction;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Subscription;
 use Stripe\Exception\ApiErrorException;
@@ -79,6 +80,12 @@ class UpgradeSubscription
         try {
             $schedule = $schedules->create(['from_subscription' => $this->subscription->stripe_id]);
         } catch (ApiErrorException $exception) {
+            Log::error("[UpgradeSubscription] Stripe refused the change: " . $exception->getMessage(), [
+                'accountId' => $this->user->account->id,
+                'stripeId' => $this->subscription->stripe_id,
+                'priceId' => $this->priceId,
+                'exception' => $exception,
+            ]);
             throw new SubscriptionCannotBeChanged(__('Stripe refused the change, so nothing was changed.'), 0, $exception);
         }
 
@@ -113,6 +120,12 @@ class UpgradeSubscription
             // A schedule left attached would refuse the next attempt and every cancellation.
             rescue(fn () => $schedules->release($schedule->id));
 
+            Log::error("[UpgradeSubscription] Failed to update schedule, released schedule: " . $exception->getMessage(), [
+                'accountId' => $this->user->account->id,
+                'stripeId' => $this->subscription->stripe_id,
+                'priceId' => $this->priceId,
+                'exception' => $exception,
+            ]);
             throw new SubscriptionCannotBeChanged(__('Stripe refused the change, so nothing was changed.'), 0, $exception);
         }
 

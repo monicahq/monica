@@ -413,7 +413,6 @@ class BillingViewModelTest extends TestCase
     #[Test]
     public function it_sums_up_a_subscription_moving_to_yearly_with_the_day_it_does(): void
     {
-        $this->travelTo(CarbonImmutable::parse('2026-11-01 09:00:00'));
         $michael = User::factory()->create();
         $this->subscribeAccount($michael->account, priceId: 'price_monthly')->forceFill(['scheduled_stripe_price' => 'price_yearly'])->save();
         $this->app->setLocale('en');
@@ -422,7 +421,7 @@ class BillingViewModelTest extends TestCase
 
         $this->assertSame('Active', $summary['badge']);
         $this->assertSame('Monthly subscription', $summary['title']);
-        $this->assertSame('Full access. Yearly subscription from December 1, 2026, the day its price is first billed.', $summary['line']);
+        $this->assertSame("Full access. Yearly subscription from {$this->stripePeriodEnd()->isoFormat('LL')}, the day its price is first billed.", $summary['line']);
     }
 
     #[Test]
