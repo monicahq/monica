@@ -21,7 +21,7 @@ Each pair says why it was suggested, for example **their names are alike** or **
 
 The contact that stands for you is never suggested.
 
-Monica looks in the background, at three moments: shortly after you add a contact, every night across the whole vault, and whenever you ask it to. The nightly search is also the one that notices a template that has just gained an identifying field.
+Monica looks in the background, at three moments: shortly after you add a contact, every night across the whole vault, and whenever you ask it to. The nightly search is also the one that notices a template that has just gained an identifying field. While an import is writing into a vault, Monica waits, and searches that vault once when the import ends.
 
 ## Open the list
 
@@ -39,7 +39,7 @@ When there is no pair to review, the screen says **Nothing looks doubled**.
 
 ## Look again now
 
-To search without waiting for the night, choose **Look for duplicates**. Monica says **Looking for duplicates.** The search runs in the background, so come back to the screen in a moment to see what it found.
+To search without waiting for the night, choose **Look for duplicates**. Monica says **Looking for duplicates.** The search runs in the background, so come back to the screen in a moment to see what it found. During an import into the vault, Monica says **The search waits for the import.** instead, and searches on its own once the import has finished.
 
 ## Decide on a pair
 

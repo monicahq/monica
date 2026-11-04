@@ -8,10 +8,12 @@ use App\Enums\AccountImportOutcomeEnum;
 use App\Enums\AccountImportReasonEnum;
 use App\Enums\AccountImportSourceEnum;
 use App\Enums\AccountImportStatusEnum;
+use App\Jobs\DetectDuplicateContacts;
 use App\Jobs\RollBackAccountImportBatch;
 use App\Jobs\WriteAccountImportBatch;
 use App\Models\AccountImport;
 use App\Models\AccountImportItem;
+use App\Models\Vault;
 use App\Notifications\AccountImportEnded;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
@@ -158,6 +160,23 @@ class WriteAccountImportBatchTest extends TestCase
 
         $this->assertSame(AccountImportStatusEnum::Completed, $import->refresh()->status);
         $this->assertSame([], Storage::disk('local')->allFiles($import->directory()));
+    }
+
+    #[Test]
+    public function it_looks_for_duplicates_once_in_the_vault_it_wrote_into_when_it_completes(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        Storage::fake('local');
+        $import = $this->writingImportOf(0);
+        $scranton = Vault::factory()->create(['account_id' => $import->account_id]);
+        $import->update(['vault_id' => $scranton->id]);
+
+        new WriteAccountImportBatch(import: $import)->handle();
+
+        $this->assertSame(AccountImportStatusEnum::Completed, $import->refresh()->status);
+        Queue::assertPushed(DetectDuplicateContacts::class, 1);
+        Queue::assertPushedOn('low', DetectDuplicateContacts::class, fn (DetectDuplicateContacts $job): bool => $job->uniqueId() === $scranton->getMorphClass().':'.$scranton->id);
     }
 
     #[Test]

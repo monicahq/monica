@@ -24,6 +24,7 @@ use App\Enums\FieldTypeEnum;
 use App\Enums\ValueListEnum;
 use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\CreateDefaultTemplate;
+use App\Jobs\DetectDuplicateContacts;
 use App\Jobs\SeedLifeEventCategories;
 use App\Jobs\SeedRelationshipTypes;
 use App\Models\Account;
@@ -55,6 +56,7 @@ use App\Notifications\AccountImportEnded;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -312,6 +314,30 @@ class RollBackAccountImportTest extends TestCase
         new RollBackAccountImport(import: $import->refresh())->execute();
 
         Notification::assertNothingSent();
+    }
+
+    #[Test]
+    public function it_looks_for_duplicates_in_a_vault_that_was_there_once_the_import_is_rolled_back(): void
+    {
+        $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
+        $import = $this->imported(vault: $scranton);
+        Queue::fake();
+
+        new RollBackAccountImport(import: $import)->execute();
+
+        Queue::assertPushed(DetectDuplicateContacts::class, 1);
+        Queue::assertPushedOn('low', DetectDuplicateContacts::class, fn (DetectDuplicateContacts $job): bool => $job->uniqueId() === $scranton->getMorphClass().':'.$scranton->id);
+    }
+
+    #[Test]
+    public function it_looks_for_no_duplicate_in_the_vault_it_created_and_removed(): void
+    {
+        $import = $this->imported(vault: null);
+        Queue::fake();
+
+        new RollBackAccountImport(import: $import)->execute();
+
+        Queue::assertNotPushed(DetectDuplicateContacts::class);
     }
 
     private function accountHolder(string $firstName, string $lastName): User

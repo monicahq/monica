@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
+use App\Enums\AccountImportStatusEnum;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\ValueListEnum;
 use App\Models\Account;
+use App\Models\AccountImport;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
@@ -243,6 +245,47 @@ class VaultTest extends TestCase
         $vault = Vault::factory()->create();
 
         $this->assertSame([], $vault->categoriesHeldByContacts(ContactGroupingEnum::Everyone));
+    }
+
+    #[Test]
+    public function it_is_being_imported_into_while_an_import_writes_into_it_or_rolls_it_back(): void
+    {
+        $scranton = Vault::factory()->create(['name' => 'Scranton']);
+        $chosen = AccountImport::factory()->create(['account_id' => $scranton->account_id, 'vault_id' => $scranton->id]);
+
+        foreach ([AccountImportStatusEnum::Writing, AccountImportStatusEnum::RollingBack] as $status) {
+            $chosen->update(['status' => $status]);
+
+            $this->assertTrue($scranton->isBeingImportedInto());
+        }
+
+        $chosen->update(['status' => AccountImportStatusEnum::Completed]);
+        AccountImport::factory()->create(['account_id' => $scranton->account_id, 'status' => AccountImportStatusEnum::Writing, 'created_vault_ids' => [$scranton->id]]);
+
+        $this->assertTrue($scranton->isBeingImportedInto());
+    }
+
+    #[Test]
+    public function it_is_not_being_imported_into_before_an_import_writes_or_once_it_has_ended(): void
+    {
+        $scranton = Vault::factory()->create(['name' => 'Scranton']);
+        $import = AccountImport::factory()->create(['account_id' => $scranton->account_id, 'vault_id' => $scranton->id]);
+
+        foreach ([AccountImportStatusEnum::Read, AccountImportStatusEnum::Completed, AccountImportStatusEnum::RolledBack, AccountImportStatusEnum::RollbackFailed] as $status) {
+            $import->update(['status' => $status]);
+
+            $this->assertFalse($scranton->isBeingImportedInto());
+        }
+    }
+
+    #[Test]
+    public function it_is_not_being_imported_into_while_an_import_writes_into_another_vault_of_the_account(): void
+    {
+        $scranton = Vault::factory()->create(['name' => 'Scranton']);
+        $stamford = Vault::factory()->create(['name' => 'Stamford', 'account_id' => $scranton->account_id]);
+        AccountImport::factory()->create(['account_id' => $scranton->account_id, 'status' => AccountImportStatusEnum::Writing, 'vault_id' => $scranton->id]);
+
+        $this->assertFalse($stamford->isBeingImportedInto());
     }
 
     private function categoryOf(ValueList $list, string $label, int $position): ValueListItem

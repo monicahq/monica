@@ -6,6 +6,7 @@ namespace App\Actions;
 
 use App\Enums\AccountImportOutcomeEnum;
 use App\Enums\AccountImportStatusEnum;
+use App\Jobs\DetectDuplicateContacts;
 use App\Models\Account;
 use App\Models\AccountImport;
 use App\Models\AccountImportItem;
@@ -105,6 +106,10 @@ class RollBackAccountImport
             rolledBack: true,
             url: route('settings.accountImports.show', $this->import),
         ));
+
+        foreach (Vault::query()->whereKey($this->import->vaultIds())->get() as $vault) {
+            DetectDuplicateContacts::dispatch($vault)->onQueue('low');
+        }
     }
 
     private function removeWhatWentIntoMe(): void

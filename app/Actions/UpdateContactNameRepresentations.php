@@ -293,6 +293,10 @@ class UpdateContactNameRepresentations
 
     private function lookForDuplicates(): void
     {
+        if ($this->contact->vault->isBeingImportedInto()) {
+            return;
+        }
+
         DetectDuplicateContacts::dispatch($this->contact)->onQueue('low')->afterCommit();
     }
 

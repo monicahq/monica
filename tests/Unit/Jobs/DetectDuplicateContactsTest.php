@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Jobs;
 
+use App\Enums\AccountImportStatusEnum;
 use App\Enums\FieldTypeEnum;
 use App\Jobs\DetectDuplicateContacts;
+use App\Models\AccountImport;
 use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\ContactNameRepresentation;
@@ -416,6 +418,42 @@ class DetectDuplicateContactsTest extends TestCase
             new DetectDuplicateContacts($vault)->uniqueId(),
             new DetectDuplicateContacts()->uniqueId(),
         );
+    }
+
+    #[Test]
+    public function it_leaves_the_pairs_of_a_vault_an_import_is_writing_into_as_they_are(): void
+    {
+        $vault = Vault::factory()->create();
+        $jim = $this->contactIn($vault, 'Jim', 'Halpert');
+        $jimmy = $this->contactIn($vault, 'Jimmy', 'Halpert');
+        new DetectDuplicateContacts(subject: $vault)->handle();
+        $jimmy->displayNameRepresentation->update(['given_name' => 'Dwight', 'family_name' => 'Schrute']);
+        $michael = $this->contactIn($vault, 'Michael', 'Scott');
+        $this->contactIn($vault, 'Micheal', 'Scott');
+        AccountImport::factory()->create(['account_id' => $vault->account_id, 'status' => AccountImportStatusEnum::Writing, 'vault_id' => $vault->id]);
+
+        new DetectDuplicateContacts(subject: $vault)->handle();
+        new DetectDuplicateContacts(subject: $michael)->handle();
+
+        $this->assertDatabaseCount('contact_duplicate_candidates', 1);
+        $this->assertDatabaseHas('contact_duplicate_candidates', [
+            'contact_id' => min($jim->id, $jimmy->id),
+            'other_contact_id' => max($jim->id, $jimmy->id),
+        ]);
+    }
+
+    #[Test]
+    public function it_ends_quietly_when_the_contact_it_was_given_is_gone(): void
+    {
+        $vault = Vault::factory()->create();
+        $jim = $this->contactIn($vault, 'Jim', 'Halpert');
+        $this->contactIn($vault, 'Jimmy', 'Halpert');
+        $search = new DetectDuplicateContacts(subject: $jim);
+        $jim->forceDelete();
+
+        dispatch($search);
+
+        $this->assertDatabaseCount('contact_duplicate_candidates', 0);
     }
 
     private function contactIn(Vault $vault, ?string $first, string $last): Contact

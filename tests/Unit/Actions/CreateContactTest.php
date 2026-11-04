@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateContact;
+use App\Enums\AccountImportStatusEnum;
 use App\Enums\ContactNameKindEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\VaultAlreadyHasAMeContact;
 use App\Exceptions\VaultHasNoContactDefault;
+use App\Jobs\DetectDuplicateContacts;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
+use App\Models\AccountImport;
 use App\Models\Contact;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -495,6 +498,35 @@ class CreateContactTest extends TestCase
         $contact = new CreateContact(user: $user, vault: $vault, structureVersion: $version, firstName: 'Pam')->execute();
 
         $this->assertInstanceOf(Contact::class, $contact);
+    }
+
+    #[Test]
+    public function it_looks_for_no_duplicate_while_an_import_writes_into_the_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $scranton = Vault::factory()->create(['account_id' => $user->account_id]);
+        AccountImport::factory()->create(['user_id' => $user->id, 'status' => AccountImportStatusEnum::Writing, 'vault_id' => $scranton->id]);
+
+        new CreateContact(user: $user, vault: $scranton, structureVersion: $this->publishedContactVersion($user->account), firstName: 'Dwight', lastName: 'Schrute')->execute();
+
+        Queue::assertNotPushed(DetectDuplicateContacts::class);
+    }
+
+    #[Test]
+    public function it_looks_for_duplicates_while_an_import_writes_into_another_vault_of_the_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $scranton = Vault::factory()->create(['account_id' => $user->account_id]);
+        $stamford = Vault::factory()->create(['account_id' => $user->account_id]);
+        AccountImport::factory()->create(['user_id' => $user->id, 'status' => AccountImportStatusEnum::Writing, 'vault_id' => $stamford->id]);
+
+        $dwight = new CreateContact(user: $user, vault: $scranton, structureVersion: $this->publishedContactVersion($user->account), firstName: 'Dwight', lastName: 'Schrute')->execute();
+
+        Queue::assertPushedOn('low', DetectDuplicateContacts::class, fn (DetectDuplicateContacts $job): bool => $job->uniqueId() === $dwight->getMorphClass().':'.$dwight->id);
     }
 
     private function publishedContactVersion(Account $account): StructureVersion

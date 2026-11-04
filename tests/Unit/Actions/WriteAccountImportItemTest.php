@@ -445,7 +445,7 @@ class WriteAccountImportItemTest extends TestCase
         $this->assertSame('1978-10-01', $this->birthdayOf($pamsJim));
 
         foreach ([$pamsDwight, $pamsJim] as $contact) {
-            Queue::assertPushedOn('low', DetectDuplicateContacts::class, fn (DetectDuplicateContacts $job): bool => $job->uniqueId() === $contact->getMorphClass().':'.$contact->id);
+            Queue::assertNotPushed(DetectDuplicateContacts::class, fn (DetectDuplicateContacts $job): bool => $job->uniqueId() === $contact->getMorphClass().':'.$contact->id);
         }
     }
 

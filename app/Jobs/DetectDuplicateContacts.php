@@ -31,6 +31,9 @@ class DetectDuplicateContacts implements ShouldBeUnique, ShouldQueue
     /** How long the lock on a subject may outlive a worker that died holding it. */
     public int $uniqueFor = 3600;
 
+    /** A rollback may remove the contact or the vault before the search reaches a worker. */
+    public bool $deleteWhenMissingModels = true;
+
     /** How alike two folded given names have to be, as a percentage. The block already matches the family name. */
     private const int NAME_THRESHOLD = 60;
 
@@ -57,6 +60,12 @@ class DetectDuplicateContacts implements ShouldBeUnique, ShouldQueue
         if ($this->subject === null) {
             $this->everywhere();
 
+            return;
+        }
+
+        $vault = $this->subject instanceof Vault ? $this->subject : $this->subject->vault;
+
+        if ($vault->isBeingImportedInto()) {
             return;
         }
 

@@ -207,6 +207,10 @@ class CreateContact
 
     private function lookForDuplicates(): void
     {
+        if ($this->vault->isBeingImportedInto()) {
+            return;
+        }
+
         DetectDuplicateContacts::dispatch($this->contact)->onQueue('low')->afterCommit();
     }
 

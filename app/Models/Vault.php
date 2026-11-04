@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\AccountImportStatusEnum;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VaultColourEnum;
@@ -336,5 +337,19 @@ class Vault extends Model
             ->map(fn (ValueListItem $item): array => ['item' => $item, 'contacts' => (int) $counts->get($item->id)])
             ->values()
             ->all();
+    }
+
+    /**
+     * Whether an import is writing into the vault or rolling back what it wrote. The search for
+     * duplicates waits for it, since the vault is only partly written until the import ends. An
+     * account runs one import at a time, so this reads one row at most.
+     */
+    public function isBeingImportedInto(): bool
+    {
+        return AccountImport::query()
+            ->where('account_id', $this->account_id)
+            ->whereIn('status', [AccountImportStatusEnum::Writing, AccountImportStatusEnum::RollingBack])
+            ->get()
+            ->contains(fn (AccountImport $import): bool => in_array($this->id, $import->vaultIds(), true));
     }
 }

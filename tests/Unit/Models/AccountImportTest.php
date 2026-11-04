@@ -7,6 +7,7 @@ namespace Tests\Unit\Models;
 use App\Enums\AccountImportOutcomeEnum;
 use App\Models\AccountImport;
 use App\Models\AccountImportItem;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -44,5 +45,41 @@ class AccountImportTest extends TestCase
         AccountImportItem::factory()->count(3)->create(['account_import_id' => $import->id, 'kind' => 'contact']);
 
         $this->assertFalse($import->holdsSeveralVaults());
+    }
+
+    #[Test]
+    public function it_names_the_vault_chosen_for_a_file_of_one_vault(): void
+    {
+        $scranton = Vault::factory()->create(['name' => 'Scranton']);
+        $import = AccountImport::factory()->create(['vault_id' => $scranton->id]);
+
+        $this->assertSame([$scranton->id], $import->vaultIds());
+    }
+
+    #[Test]
+    public function it_names_a_new_vault_chosen_for_a_file_of_one_vault_once(): void
+    {
+        $scranton = Vault::factory()->create(['name' => 'Scranton']);
+        $import = AccountImport::factory()->create(['vault_id' => $scranton->id, 'created_vault_ids' => [$scranton->id]]);
+
+        $this->assertSame([$scranton->id], $import->vaultIds());
+    }
+
+    #[Test]
+    public function it_names_every_vault_created_for_a_file_of_several(): void
+    {
+        $scranton = Vault::factory()->create(['name' => 'Scranton']);
+        $stamford = Vault::factory()->create(['name' => 'Stamford']);
+        $import = AccountImport::factory()->create(['created_vault_ids' => [$scranton->id, $stamford->id]]);
+
+        $this->assertSame([$scranton->id, $stamford->id], $import->vaultIds());
+    }
+
+    #[Test]
+    public function it_names_no_vault_before_one_is_chosen(): void
+    {
+        $import = AccountImport::factory()->create();
+
+        $this->assertSame([], $import->vaultIds());
     }
 }

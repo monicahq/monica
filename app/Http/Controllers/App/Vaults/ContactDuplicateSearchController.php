@@ -13,6 +13,13 @@ class ContactDuplicateSearchController extends Controller
 {
     public function create(Vault $vault): RedirectResponse
     {
+        if ($vault->isBeingImportedInto()) {
+            return redirect()
+                ->route('vaults.duplicates.index', $vault)
+                ->with('status', __('The search waits for the import.'))
+                ->with('status_description', __('An import is writing into this vault. Monica looks for duplicates on its own once the import has finished.'));
+        }
+
         DetectDuplicateContacts::dispatch($vault)->onQueue('low');
 
         return redirect()

@@ -7,6 +7,7 @@ namespace App\Jobs;
 use App\Actions\RollBackAccountImport;
 use App\Enums\AccountImportStatusEnum;
 use App\Models\AccountImport;
+use App\Models\Vault;
 use DateTimeInterface;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -76,5 +77,9 @@ class RollBackAccountImportBatch implements ShouldQueue
         }
 
         Storage::disk($this->import->disk)->deleteDirectory($this->import->directory());
+
+        foreach (Vault::query()->whereKey($this->import->vaultIds())->get() as $vault) {
+            DetectDuplicateContacts::dispatch($vault)->onQueue('low');
+        }
     }
 }

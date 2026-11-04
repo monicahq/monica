@@ -198,4 +198,16 @@ class AccountImport extends Model
     {
         return $this->items()->where('kind', 'vault')->count() > 1;
     }
+
+    /**
+     * Get every vault the import writes into: the vault chosen for a file of one vault, and each
+     * vault it created. A new vault chosen for a file of one vault is in both columns and is named
+     * once.
+     *
+     * @return list<int>
+     */
+    public function vaultIds(): array
+    {
+        return array_values(array_unique(array_filter([$this->vault_id, ...$this->created_vault_ids])));
+    }
 }

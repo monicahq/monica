@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\UpdateContactNameRepresentations;
+use App\Enums\AccountImportStatusEnum;
 use App\Enums\ContactNameKindEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\DetectDuplicateContacts;
 use App\Jobs\LogUserAction;
+use App\Models\AccountImport;
 use App\Models\Contact;
 use App\Models\ContactNameRepresentation;
 use App\Models\User;
@@ -240,6 +242,28 @@ class UpdateContactNameRepresentationsTest extends TestCase
         )->execute();
 
         $this->assertSame(ContactNameKindEnum::Phonetic, $contact->nameRepresentations()->get()->last()->kind);
+    }
+
+    #[Test]
+    public function it_looks_for_no_duplicate_while_an_import_writes_into_the_vault(): void
+    {
+        Queue::fake();
+
+        [$user, $contact] = $this->contactNamed('Halpert', 'Jim');
+        AccountImport::factory()->create(['user_id' => $user->id, 'status' => AccountImportStatusEnum::Writing, 'vault_id' => $contact->vault_id]);
+
+        new UpdateContactNameRepresentations(
+            user: $user,
+            contact: $contact,
+            nameRepresentations: [
+                ['kind' => 'written', 'language' => 'en', 'formatted_name' => 'Jim Halpert', 'given_name' => 'Jim', 'family_name' => 'Halpert'],
+            ],
+            display: 0,
+            nickname: null,
+            maidenName: null,
+        )->execute();
+
+        Queue::assertNotPushed(DetectDuplicateContacts::class);
     }
 
     /** @return array{0: User, 1: Contact} */

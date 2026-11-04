@@ -11,6 +11,7 @@ use App\Enums\LogSourceEnum;
 use App\Enums\UserActionEnum;
 use App\Models\AccountImport;
 use App\Models\AccountImportItem;
+use App\Models\Vault;
 use App\Notifications\AccountImportEnded;
 use DateTimeInterface;
 use Illuminate\Contracts\Cache\Lock;
@@ -214,5 +215,9 @@ class WriteAccountImportBatch implements ShouldQueue
             rolledBack: false,
             url: route('settings.accountImports.show', $this->import),
         ));
+
+        foreach (Vault::query()->whereKey($this->import->vaultIds())->get() as $vault) {
+            DetectDuplicateContacts::dispatch($vault)->onQueue('low');
+        }
     }
 }

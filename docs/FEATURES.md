@@ -132,3 +132,4 @@ A chronological list of every feature and improvement shipped during development
 * Vaults/groups: Exported a group and its current members as one vCard file.
 * Vaults/groups: Moved deleting a group to the screen that edits it.
 * Vaults/groups: Addressed a group by a readable slug built from its name, the way contacts are, with its uuid still answering.
+* Vaults/duplicates: Paused the search for duplicates in a vault while an import writes into it, and searched that vault once when the import ends.

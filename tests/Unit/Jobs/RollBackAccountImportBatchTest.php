@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Jobs;
 
 use App\Enums\AccountImportStatusEnum;
+use App\Jobs\DetectDuplicateContacts;
 use App\Jobs\RollBackAccountImportBatch;
 use App\Jobs\WriteAccountImportBatch;
 use App\Models\AccountImport;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
@@ -70,6 +73,18 @@ class RollBackAccountImportBatchTest extends TestCase
         $import->refresh();
         $this->assertSame(AccountImportStatusEnum::RollbackFailed, $import->status);
         $this->assertNotNull($import->ended_at);
+    }
+
+    #[Test]
+    public function it_looks_for_duplicates_in_the_vault_left_behind_once_its_rollback_kept_failing(): void
+    {
+        Queue::fake();
+        $scranton = Vault::factory()->create();
+        $import = AccountImport::factory()->create(['account_id' => $scranton->account_id, 'status' => AccountImportStatusEnum::RollingBack, 'vault_id' => $scranton->id]);
+
+        new RollBackAccountImportBatch(import: $import)->failed(new RuntimeException('The database went away.'));
+
+        Queue::assertPushedOn('low', DetectDuplicateContacts::class, fn (DetectDuplicateContacts $job): bool => $job->uniqueId() === $scranton->getMorphClass().':'.$scranton->id);
     }
 
     #[Test]

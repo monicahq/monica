@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\UpdateContactName;
+use App\Enums\AccountImportStatusEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\UserActionEnum;
+use App\Jobs\DetectDuplicateContacts;
 use App\Jobs\LogUserAction;
+use App\Models\AccountImport;
 use App\Models\Contact;
 use App\Models\ContactNameRepresentation;
 use App\Models\User;
@@ -285,5 +288,20 @@ class UpdateContactNameTest extends TestCase
         new UpdateContactName(user: $user, contact: $contact, firstName: 'Robert', lastName: 'Lipton')->execute();
 
         $this->assertDatabaseHas('contact_name_representations', ['id' => $displayed->id, 'formatted_name' => null, 'family_name' => 'Lipton']);
+    }
+
+    #[Test]
+    public function it_looks_for_no_duplicate_while_an_import_writes_into_the_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
+        AccountImport::factory()->create(['user_id' => $user->id, 'status' => AccountImportStatusEnum::Writing, 'vault_id' => $vault->id]);
+
+        new UpdateContactName(user: $user, contact: $contact, firstName: 'Pam', lastName: 'Halpert')->execute();
+
+        Queue::assertNotPushed(DetectDuplicateContacts::class);
     }
 }
