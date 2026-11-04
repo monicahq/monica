@@ -1388,6 +1388,7 @@ class ContactControllerTest extends TestCase
         $user->account->features()->active('marketplace');
         $user->account->features()->active('vcard-export');
         $user->account->features()->active('groups');
+        $user->account->hasFullAccess();
 
         $few = $this->contactOnAVersionOf($user, $vault, sections: 1, choiceFields: 1);
         $many = $this->contactOnAVersionOf($user, $vault, sections: 1, choiceFields: 7);
@@ -1409,6 +1410,7 @@ class ContactControllerTest extends TestCase
         $user->account->features()->active('marketplace');
         $user->account->features()->active('vcard-export');
         $user->account->features()->active('groups');
+        $user->account->hasFullAccess();
 
         $small = $this->contactOnAVersionOf($user, $vault, sections: 2);
         $large = $this->contactOnAVersionOf($user, $vault, sections: 8);

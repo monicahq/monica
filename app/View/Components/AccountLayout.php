@@ -10,9 +10,13 @@ use Override;
 
 class AccountLayout extends Component
 {
+    public bool $offersFullAccess;
+
     public function __construct(
         public ?string $title = null,
-    ) {}
+    ) {
+        $this->offersFullAccess = auth()->user()?->isOfferedFullAccess() ?? false;
+    }
 
     #[Override]
     public function render(): View

@@ -34,6 +34,7 @@ class UserResource extends JsonResource
                 'contact_list_sort' => $this->contact_list_sort,
                 'contact_list_direction' => $this->contact_list_direction,
                 'welcomed_at' => $this->welcomed_at?->timestamp,
+                'full_access_offer_dismissed_at' => $this->full_access_offer_dismissed_at?->timestamp,
                 'created_at' => $this->created_at->timestamp,
                 'updated_at' => $this->updated_at?->timestamp,
             ],

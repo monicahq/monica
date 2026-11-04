@@ -598,6 +598,7 @@ class ApiDocsReturnFieldsTest extends TestCase
             ])),
 
             'me-welcome-update' => $this->asSomebody(fn (User $user): TestResponse => $this->json('PUT', '/api/v1/me/welcome')),
+            'me-full-access-offer-update' => $this->asSomebody(fn (User $user): TestResponse => $this->json('PUT', '/api/v1/me/full-access-offer')),
 
             'api-keys-index' => $this->asSomebody(function (User $user): TestResponse {
                 $user->createToken('Dundie awards bot');

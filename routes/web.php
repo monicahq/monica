@@ -15,6 +15,7 @@ use App\Http\Controllers\App\Docs\McpDocsMarkdownController;
 use App\Http\Controllers\App\Docs\OpenApiDocumentController;
 use App\Http\Controllers\App\Docs\PortalDocsController;
 use App\Http\Controllers\App\Docs\PortalDocsMarkdownController;
+use App\Http\Controllers\App\FullAccessOfferController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\Marketplace\MarketplaceController;
 use App\Http\Controllers\App\NotFoundController;
@@ -235,6 +236,7 @@ Route::post('telegram/webhook', [TelegramWebhookController::class, 'handleWebhoo
 Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->group(function (): void {
     Route::get('welcome', [WelcomeController::class, 'index'])->name('welcome.index');
     Route::put('welcome', [WelcomeController::class, 'update'])->name('welcome.update');
+    Route::put('full-access-offer', [FullAccessOfferController::class, 'update'])->name('fullAccessOffer.update');
 
     Route::get('vaults', [VaultController::class, 'index'])->name('vaults.index');
     Route::get('vaults/new', [VaultController::class, 'new'])->name('vaults.new');

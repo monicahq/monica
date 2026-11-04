@@ -42,6 +42,7 @@ return new class extends Migration
             $table->unsignedBigInteger('two_factor_last_timestep')->nullable()->comment('time step of the last authenticator code accepted, so the same code cannot be used twice');
             $table->datetime('last_saved_at')->nullable()->comment('when the user last saved their own profile, shown on that screen');
             $table->datetime('welcomed_at')->nullable()->comment('when the user pressed Let me in on the welcome screen, null until then');
+            $table->datetime('full_access_offer_dismissed_at')->nullable()->comment('when the user hid the banner offering full access, null until then');
             $table->rememberToken()->comment('remember token');
             $table->timestamps();
             $table->softDeletes();

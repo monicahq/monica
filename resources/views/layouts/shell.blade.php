@@ -96,6 +96,10 @@
             'pb-14 sm:pb-18' => ! isset($footer) && ! $wide,
           ])
         >
+          @if ($offersFullAccess)
+            <x-full-access-offer />
+          @endif
+
           {{ $slot }}
         </div>
 

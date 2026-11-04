@@ -286,4 +286,52 @@ class UserTest extends TestCase
 
         $atTheCeiling->authorize('create', Vault::class);
     }
+
+    #[Test]
+    public function it_offers_full_access_to_a_metered_account_without_it(): void
+    {
+        $user = $this->assignUserToAccount(user: User::factory()->create(), account: Account::factory()->create());
+
+        $this->assertTrue($user->isOfferedFullAccess());
+    }
+
+    #[Test]
+    public function it_does_not_offer_full_access_once_the_user_hid_the_banner(): void
+    {
+        $user = User::factory()->create(['full_access_offer_dismissed_at' => now()]);
+
+        $this->assertFalse($user->isOfferedFullAccess());
+    }
+
+    #[Test]
+    public function it_does_not_offer_full_access_on_a_self_hosted_instance(): void
+    {
+        config(['monica.self_hosted' => true]);
+
+        $user = $this->assignUserToAccount(user: User::factory()->create(), account: Account::factory()->create());
+
+        $this->assertFalse($user->isOfferedFullAccess());
+    }
+
+    #[Test]
+    public function it_does_not_offer_full_access_to_an_account_that_holds_it(): void
+    {
+        $user = $this->assignUserToAccount(user: User::factory()->create(), account: Account::factory()->withGrantedAccess()->create());
+
+        $this->assertFalse($user->isOfferedFullAccess());
+    }
+
+    #[Test]
+    public function it_keeps_the_banner_hidden_after_the_account_loses_full_access(): void
+    {
+        $account = Account::factory()->withGrantedAccess()->create();
+        $user = $this->assignUserToAccount(
+            user: User::factory()->create(['full_access_offer_dismissed_at' => now()]),
+            account: $account,
+        );
+
+        $account->update(['access_granted_at' => null]);
+
+        $this->assertFalse($user->refresh()->isOfferedFullAccess());
+    }
 }

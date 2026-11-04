@@ -35,6 +35,10 @@
     @endisset
 
     <main class="mx-auto max-w-240 space-y-8 px-4 pb-22 sm:px-6 {{ isset($breadcrumb) ? 'pt-7.5' : 'pt-14' }}">
+      @if ($offersFullAccess)
+        <x-full-access-offer />
+      @endif
+
       {{ $slot }}
     </main>
 

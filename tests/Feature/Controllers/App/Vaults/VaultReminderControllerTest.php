@@ -141,6 +141,7 @@ class VaultReminderControllerTest extends TestCase
         $this->deadline($this->ruleAbout($user, $vault), 2);
         $user->account->features()->active('marketplace');
         $user->account->features()->active('groups');
+        $user->account->hasFullAccess();
 
         DB::enableQueryLog();
         $this->actingAs($user)->get(route('reminders.index', $vault));
@@ -168,6 +169,7 @@ class VaultReminderControllerTest extends TestCase
         $this->sent($this->ruleAbout($user, $vault), -2);
         $user->account->features()->active('marketplace');
         $user->account->features()->active('groups');
+        $user->account->hasFullAccess();
 
         DB::enableQueryLog();
         $this->actingAs($user)->get(route('reminders.sent', $vault));

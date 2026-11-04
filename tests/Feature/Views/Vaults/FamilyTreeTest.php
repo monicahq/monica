@@ -160,6 +160,7 @@ class FamilyTreeTest extends TestCase
         $this->user->account->features()->active('marketplace');
         $this->user->account->features()->active('vcard-export');
         $this->user->account->features()->active('groups');
+        $this->user->account->hasFullAccess();
 
         $this->parentage($this->judy, $this->personIn('Ross', 'Geller'));
 

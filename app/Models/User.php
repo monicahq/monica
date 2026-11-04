@@ -73,6 +73,7 @@ use Override;
  * @property int|null $two_factor_last_timestep
  * @property CarbonImmutable|null $last_saved_at
  * @property CarbonImmutable|null $welcomed_at
+ * @property CarbonImmutable|null $full_access_offer_dismissed_at
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
@@ -165,6 +166,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             'two_factor_recovery_codes' => 'encrypted:array',
             'last_saved_at' => 'datetime',
             'welcomed_at' => 'datetime',
+            'full_access_offer_dismissed_at' => 'datetime',
         ];
     }
 
@@ -291,6 +293,24 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     public function hasPasskeys(): bool
     {
         return $this->passkeys()->exists();
+    }
+
+    /**
+     * Get whether the user is shown the banner offering full access: the
+     * account is metered, holds no full access, and the user never hid it.
+     * The dismissal is read first, since it costs no query.
+     */
+    public function isOfferedFullAccess(): bool
+    {
+        if ($this->full_access_offer_dismissed_at !== null) {
+            return false;
+        }
+
+        if (! $this->account->isMetered()) {
+            return false;
+        }
+
+        return ! $this->account->hasFullAccess();
     }
 
     /**

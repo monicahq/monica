@@ -132,4 +132,6 @@ A chronological list of every feature and improvement shipped during development
 * Vaults/groups: Exported a group and its current members as one vCard file.
 * Vaults/groups: Moved deleting a group to the screen that edits it.
 * Vaults/groups: Addressed a group by a readable slug built from its name, the way contacts are, with its uuid still answering.
+* App-wide: Offered full access to a free account in a banner at the top of the screens, which its reader can hide for good.
+* API: Added an endpoint that hides the offer of full access, and said on the user whether and when it was hidden.
 * Vaults/duplicates: Paused the search for duplicates in a vault while an import writes into it, and searched that vault once when the import ends.

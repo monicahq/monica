@@ -31,6 +31,7 @@ $user = [
         'contact_list_sort' => 'last-spoke',
         'contact_list_direction' => 'desc',
         'welcomed_at' => 1756252860,
+        'full_access_offer_dismissed_at' => null,
         'created_at' => 1756252800,
         'updated_at' => 1756339200,
     ],
@@ -54,6 +55,7 @@ $userAttributes = [
     ['name' => 'contact_list_sort', 'type' => 'string', 'description' => 'What the contact list was last ordered by: one of name, nickname, last-spoke or added, or null until they have opened the list.'],
     ['name' => 'contact_list_direction', 'type' => 'string', 'description' => 'Which way round that order ran: asc or desc, or null until they have opened the list.'],
     ['name' => 'welcomed_at', 'type' => 'timestamp', 'description' => 'When the user dismissed the welcome screen, as a count of seconds, or null if they have not.'],
+    ['name' => 'full_access_offer_dismissed_at', 'type' => 'timestamp', 'description' => 'When the user hid the banner offering full access, as a count of seconds, or null if they have not.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the account was opened, as a count of seconds since 1970 rather than a written date.'],
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When the profile last changed, as a count of seconds, or null if it has not changed since it was opened.'],
 ];
@@ -162,6 +164,22 @@ return [
             'body' => [
                 'A new account is sent to a welcome screen the first time it reaches the web application. An application that shows its own welcome calls this so the web one does not greet the same person twice.',
                 'Dismissing it twice keeps the first moment, because that is when it was read. The screen itself stays open to anybody who asks for it, so there is nothing to undo.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'returns' => 'The updated user object.',
+            'response' => ['data' => $user],
+        ],
+        [
+            'id' => 'me-full-access-offer-update',
+            'returnFields' => ApiDocsFields::one('user', 'person the token acts as', $userAttributes),
+            'title' => 'Hide the offer of full access',
+            'label' => 'Hide the offer of full access',
+            'method' => 'PUT',
+            'path' => '/me/full-access-offer',
+            'description' => 'Record that the user the token belongs to no longer wants the banner offering full access.',
+            'body' => [
+                'A free account sees a banner offering full access at the top of the web application. An application that lets its reader hide it calls this, so the banner is gone on every device.',
+                'Hiding it twice keeps the first moment. Nothing brings the banner back, not even a later change of access.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'returns' => 'The updated user object.',
