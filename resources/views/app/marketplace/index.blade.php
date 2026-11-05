@@ -1,6 +1,9 @@
 {{-- The front of the marketplace: everything published, and the ways of narrowing it down. --}}
 {{-- @var \App\ViewModels\Marketplace\MarketplaceViewModel $viewModel --}}
-<x-marketplace-layout :title="__('Marketplace')">
+<x-marketplace-layout
+  :title="__('Marketplace')"
+  :description="__('Discover templates and sections built by the community. Everything you install becomes your own private, editable copy.')"
+>
   <header class="flex flex-col gap-2.5">
     <h1 class="text-page-title text-ink">{{ __('Marketplace') }}</h1>
 

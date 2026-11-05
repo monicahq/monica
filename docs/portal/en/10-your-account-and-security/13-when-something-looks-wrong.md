@@ -1,6 +1,7 @@
 ---
 id: security.suspicious-activity
 title: An email says somebody signed in
+description: Find the subject of a security email from Monica, learn what it means, and see what to do if the sign in was not you.
 slug: when-something-looks-wrong
 section: your-account-and-security
 last_updated: 2026-10-29

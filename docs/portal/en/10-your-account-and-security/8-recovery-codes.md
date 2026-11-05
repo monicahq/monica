@@ -1,6 +1,7 @@
 ---
 id: security.recovery-codes
 title: Keep and renew your recovery codes
+description: Save the eight recovery codes that get you in without your phone, use one when you need it, and get a fresh set.
 slug: recovery-codes
 section: your-account-and-security
 last_updated: 2026-09-29

@@ -1,6 +1,7 @@
 ---
 id: sharing.create-link
 title: Share a contact with a link
+description: Make a private read only link to one contact that shows only what you choose, can expire and can be stopped at any time.
 slug: share-a-contact
 section: sharing-export-and-sync
 last_updated: 2026-09-29

@@ -1,6 +1,7 @@
 ---
 id: integrations.overview
 title: Connect Monica to other tools
+description: Choose between phone sync, the API and an AI assistant to let other software reach your records.
 slug: connect-other-tools
 section: sharing-export-and-sync
 last_updated: 2026-09-29

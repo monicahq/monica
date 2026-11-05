@@ -74,8 +74,9 @@ the rule.
 - `app/Actions`: one class per user action, holding the business logic. Controllers stay thin and delegate here. Most of the app lives in this folder.
 - `app/Models`: Eloquent models.
 - `app/Http/Controllers`: everything under `App` (the logged in app), grouped by domain (`Vaults`, `Settings`, `Marketplace`, `Admin`, `Auth`), plus the base `Controller.php`.
-- `app/Http/Middleware`: route middleware. Six classes, four of them aliased in
-  `bootstrap/app.php`: `active`, `administrator`, `magic.link` and `sso`. `SetLocale` is appended to the web
+- `app/Http/Middleware`: route middleware. Fourteen classes, eight of them aliased in
+  `bootstrap/app.php`: `active`, `administrator`, `flag`, `magic.link`, `portal.timing`,
+  `registration`, `searchable` and `sso`. `SetLocale` is appended to the web
   group and `SetApiLocale` prepended to the api group instead. An account carries no role: a record
   is reached when its account matches, which `resolveRouteBinding()` enforces, and when the vault in
   the URL matches, which the controller enforces with `abort_unless(..., 404)`. The one capacity is
@@ -246,16 +247,6 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 # Deployment
 
 - Laravel can be deployed using [Laravel Cloud](https://cloud.laravel.com/), which is the fastest way to deploy and scale production Laravel applications.
-
-=== tests rules ===
-
-# Test Enforcement
-
-- Add or update tests for behavior and logic changes when a test provides meaningful regression coverage.
-- Pure copy, styling, and layout-only changes do not require new or updated tests.
-- When test coverage applies, run the affected tests and ensure they pass.
-- Test the changed behavior and its important failure modes, but do not add tests beyond them.
-- Read the `testing-best-practices` skill before writing tests.
 
 === laravel/core rules ===
 

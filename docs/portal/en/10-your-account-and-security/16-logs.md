@@ -1,6 +1,7 @@
 ---
 id: account.logs
 title: Read your activity and the emails sent to you
+description: Check what was done in your account and whether the emails Monica sent you were delivered, bounced or marked as spam.
 slug: logs
 section: your-account-and-security
 last_updated: 2026-09-29

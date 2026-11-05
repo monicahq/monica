@@ -1,6 +1,7 @@
 ---
 id: relationships.add
 title: Link two people
+description: Record how two people are connected so each page shows the other, even when you do not know the other person’s name yet.
 slug: link-two-people
 section: relationships-and-life-events
 last_updated: 2026-09-29

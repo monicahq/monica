@@ -1,6 +1,7 @@
 ---
 id: reminders.introduction
 title: Reminders and notifications
+description: Find the pages on setting reminders, answering them, how they reach you and the channels you can switch on.
 slug: reminders-and-notifications
 section: reminders-and-notifications
 last_updated: 2026-09-29

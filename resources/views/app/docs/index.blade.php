@@ -3,7 +3,10 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
-    @include('partials.meta', ['title' => __('Documentation')])
+    @include('partials.meta', [
+      'title' => __('Documentation'),
+      'description' => __('Learn how Monica works, and connect it to your scripts, your assistant and your devices.'),
+    ])
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>

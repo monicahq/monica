@@ -1,6 +1,7 @@
 ---
 id: customise.value-lists
 title: Change the choices a list offers
+description: Add, rename or retire the choices a field offers, such as contact categories and phone labels.
 slug: value-lists
 section: templates-and-customisation
 last_updated: 2026-09-29

@@ -1,6 +1,7 @@
 ---
 id: account.profile
 title: Change your name, email address and photo
+description: Update the name on your account, upload a profile photo, and change the email address you sign in with and confirm it.
 slug: your-profile
 section: your-account-and-security
 last_updated: 2026-09-29

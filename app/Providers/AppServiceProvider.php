@@ -39,6 +39,11 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Cashier\Cashier;
+use Laravel\Head\Enums\OgType;
+use Laravel\Head\Enums\RobotsRule;
+use Laravel\Head\ErrorPages;
+use Laravel\Head\Facades\Head;
+use Laravel\Head\HeadBuilder;
 use Laravel\Mcp\Server\Registrar;
 use Laravel\Nightwatch\Facades\Nightwatch;
 use Laravel\Nightwatch\Records\Command;
@@ -146,8 +151,26 @@ class AppServiceProvider extends ServiceProvider
         $this->configureFlags();
         $this->configureQueues();
         $this->configureAssets();
+        $this->configureHead();
         $this->configureNightwatch();
         $this->refuseDeactivatedUsers();
+    }
+
+    /**
+     * Every page asks search engines to stay away unless it says otherwise, which only the public
+     * pages do, through the `searchable` middleware. An error page stays away even under them.
+     */
+    private function configureHead(): void
+    {
+        Head::defaults(function (HeadBuilder $head): void {
+            $head->title(config('app.name'), exact: true)
+                ->robots(RobotsRule::NoIndex)
+                ->og(type: OgType::Website, siteName: config('app.name'));
+        });
+
+        Head::errors(function (ErrorPages $errors): void {
+            $errors->defaults(robots: RobotsRule::NoIndex);
+        });
     }
 
     /**

@@ -1,7 +1,8 @@
-{{-- The charset, the viewport, the csrf token and the Turbo settings every layout opens its <head> with. --}}
+{{-- What every layout opens its <head> with: charset, csrf token, title, robots, previews and icons. --}}
 {{--
   @var string|null $title
   @var string|null $description
+  @var bool|null $error
 --}}
 
 <meta charset="utf-8" />
@@ -13,11 +14,22 @@
 
 <meta name="turbo-cache-control" content="no-cache" />
 
-<title>{{ $title ?? config('app.name') }}</title>
+@php
+  if (isset($title)) {
+      \Laravel\Head\Facades\Head::title($title, exact: true);
+  }
 
-@if (! empty($description))
-  <meta name="description" content="{{ $description }}" />
-@endif
+  if (! empty($description)) {
+      \Laravel\Head\Facades\Head::description($description);
+  }
+
+  if (request()->attributes->get('searchable') && empty($error)) {
+      // The request's own scheme: a self hosted instance served over http has no https address.
+      \Laravel\Head\Facades\Head::canonical(forceHttps: false);
+  }
+@endphp
+
+@head
 
 <link rel="icon" type="image/png" href="{{ asset('images/favicon/favicon-96x96.png') }}" sizes="96x96" />
 <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon/favicon.svg') }}" />

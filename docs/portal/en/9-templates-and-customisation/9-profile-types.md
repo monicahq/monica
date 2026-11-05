@@ -1,6 +1,7 @@
 ---
 id: customise.profile-types
 title: Create a kind of profile
+description: Create a kind of profile for things that are not people, such as plants or companies, next to the built in Animals.
 slug: profile-types
 section: templates-and-customisation
 last_updated: 2026-09-29

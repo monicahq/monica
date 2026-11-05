@@ -1,6 +1,7 @@
 ---
 id: security.api-keys
 title: Create an API key
+description: Create a key that lets a script, an AI assistant or your phone’s address book act as you, and learn why Monica shows it only once.
 slug: api-keys
 section: your-account-and-security
 last_updated: 2026-09-29

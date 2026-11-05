@@ -1,6 +1,7 @@
 ---
 id: signin.magic-link
 title: Sign in with a link sent by email
+description: Get a one time link by email that signs you in without a password, and learn how long it lasts and why it works only once.
 slug: sign-in-with-a-link
 section: your-account-and-security
 last_updated: 2026-09-29

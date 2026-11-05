@@ -1,6 +1,7 @@
 ---
 id: notifications.inbox
 title: Read notifications in the app
+description: Open the bell to read everything Monica told you in the app, catch up on missed reminders and mark them as read.
 slug: in-app-notifications
 section: reminders-and-notifications
 last_updated: 2026-09-29

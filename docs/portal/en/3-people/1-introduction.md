@@ -1,6 +1,7 @@
 ---
 id: contacts.introduction
 title: People
+description: Find the pages on adding people, editing what you know about them, searching a vault, adding photos and recording pets.
 slug: people
 section: people
 last_updated: 2026-09-29

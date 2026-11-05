@@ -1,6 +1,7 @@
 ---
 id: reminders.create
 title: Set a reminder
+description: Ask Monica to tell you about a person on a day and time you choose, once or on a repeating schedule.
 slug: set-a-reminder
 section: reminders-and-notifications
 last_updated: 2026-09-29

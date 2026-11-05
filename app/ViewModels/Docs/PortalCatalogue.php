@@ -28,7 +28,7 @@ class PortalCatalogue
         return array_map(basename(...), $directories);
     }
 
-    /** @return array{id: string, title: string, slug: string, section: string, last_updated: ?string}|null */
+    /** @return array{id: string, title: string, description: string, slug: string, section: string, last_updated: ?string}|null */
     public static function frontmatter(string $contents): ?array
     {
         if (! preg_match('/^---\n(.*?)\n---\n/s', $contents, $matches)) {
@@ -46,7 +46,7 @@ class PortalCatalogue
             $values[trim($key)] = trim(trim($value), '"');
         }
 
-        foreach (['id', 'title', 'slug', 'section'] as $key) {
+        foreach (['id', 'title', 'description', 'slug', 'section'] as $key) {
             if (($values[$key] ?? '') === '') {
                 return null;
             }
@@ -55,6 +55,7 @@ class PortalCatalogue
         return [
             'id' => $values['id'],
             'title' => $values['title'],
+            'description' => $values['description'],
             'slug' => $values['slug'],
             'section' => $values['section'],
             'last_updated' => ($values['last_updated'] ?? '') === '' ? null : $values['last_updated'],
@@ -98,6 +99,7 @@ class PortalCatalogue
             $pages[] = new PortalPage(
                 id: $frontmatter['id'],
                 title: $frontmatter['title'],
+                description: $frontmatter['description'],
                 slug: $frontmatter['slug'],
                 section: $frontmatter['section'],
                 locale: $this->locale,

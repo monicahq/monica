@@ -1,6 +1,7 @@
 ---
 id: duplicates.merge
 title: Merge two contacts
+description: Merge two records of one person into one, choose what to keep where they disagree, and undo the merge if needed.
 slug: merge-two-contacts
 section: keeping-records-tidy
 last_updated: 2026-09-29

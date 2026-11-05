@@ -135,3 +135,7 @@ A chronological list of every feature and improvement shipped during development
 * App-wide: Offered full access to a free account in a banner at the top of the screens, which its reader can hide for good.
 * API: Added an endpoint that hides the offer of full access, and said on the user whether and when it was hidden.
 * Vaults/duplicates: Paused the search for duplicates in a vault while an import writes into it, and searched that vault once when the import ends.
+* Everywhere: Asked search engines to leave out every page except the documentation, the guide and the marketplace.
+* Shared links: Asked search engines not to index a private link or its password form, nor follow the links on them.
+* Docs: Gave every documentation, guide and marketplace page a description, a canonical address and link preview tags.
+* Instance: Added `MONICA_SEARCH_ENGINE_INDEXING` to keep every page of an instance out of search engines.

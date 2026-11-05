@@ -1,6 +1,7 @@
 ---
 id: reference.glossary
 title: Words Monica uses
+description: Look up what each word Monica uses means, from account and administrator to template and vault.
 slug: glossary
 section: reference
 last_updated: 2026-09-29

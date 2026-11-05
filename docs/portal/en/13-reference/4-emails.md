@@ -1,6 +1,7 @@
 ---
 id: reference.emails
 title: Emails Monica sends
+description: Find every email Monica can send you by its subject, when it is sent, and which page explains what to do about it.
 slug: emails
 section: reference
 last_updated: 2026-11-01

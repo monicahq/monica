@@ -14,7 +14,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
-    @include('partials.meta', ['title' => CarddavDocsViewModel::TITLE])
+    @include('partials.meta', ['title' => CarddavDocsViewModel::TITLE, 'description' => CarddavDocsViewModel::LEAD])
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
 

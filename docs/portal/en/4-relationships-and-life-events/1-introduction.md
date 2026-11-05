@@ -1,6 +1,7 @@
 ---
 id: relationships.introduction
 title: Relationships and life events
+description: Find the pages on linking people to each other and on recording what happened to them on a shared timeline.
 slug: relationships-and-life-events
 section: relationships-and-life-events
 last_updated: 2026-09-29

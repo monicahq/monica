@@ -1,6 +1,7 @@
 ---
 id: reminders.how-they-work
 title: How reminders reach you
+description: Learn when a reminder is sent, why it keeps its own time zone, and what can hold it back.
 slug: how-reminders-reach-you
 section: reminders-and-notifications
 last_updated: 2026-09-29

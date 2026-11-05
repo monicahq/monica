@@ -1,6 +1,7 @@
 ---
 id: marketplace.overview
 title: The template marketplace
+description: Browse the public catalogue of templates and sections people built, and see what you cannot do with it yet.
 slug: marketplace
 section: templates-and-customisation
 last_updated: 2026-09-29

@@ -1,6 +1,7 @@
 ---
 id: security.assistants
 title: Disconnect an assistant
+description: See which AI assistants you approved to act as you, and cut off the ones you no longer use.
 slug: connected-assistants
 section: your-account-and-security
 last_updated: 2026-09-29

@@ -1,6 +1,7 @@
 ---
 id: templates.versions
 title: Why templates have versions
+description: Learn why publishing a new template version leaves your contacts as they are, and how they catch up when you choose.
 slug: why-templates-have-versions
 section: templates-and-customisation
 last_updated: 2026-09-29

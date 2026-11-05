@@ -1,6 +1,7 @@
 ---
 id: concepts.privacy
 title: What Monica keeps and who can see it
+description: See what Monica stores about you and your contacts, what administrators can and cannot see, and what leaves your account.
 slug: privacy
 section: your-account-and-security
 last_updated: 2026-09-29

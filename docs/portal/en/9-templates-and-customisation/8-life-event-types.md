@@ -1,6 +1,7 @@
 ---
 id: customise.life-event-types
 title: Add your own life event types
+description: Add the life event types you need, such as a Thanksgiving dinner, with an icon, a colour and a category.
 slug: life-event-types
 section: templates-and-customisation
 last_updated: 2026-09-29

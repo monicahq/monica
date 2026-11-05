@@ -1,6 +1,7 @@
 ---
 id: reference.limits
 title: Limits and defaults
+description: Look up every number Monica works with, such as password length, link lifetimes and storage, and who can change each one.
 slug: limits
 section: reference
 last_updated: 2026-09-29

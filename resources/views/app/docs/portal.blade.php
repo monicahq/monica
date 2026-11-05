@@ -18,7 +18,10 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', $viewModel->locale()) }}">
   <head>
-    @include('partials.meta', ['title' => $page->title])
+    @include('partials.meta', [
+      'title' => $page->title,
+      'description' => $page->description,
+    ])
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>

@@ -11,7 +11,7 @@
   'line' => null,
 ])
 
-<x-guest-layout :title="$title">
+<x-guest-layout :title="$title" :error="true">
   <div class="min-h-screen dark:bg-[#142433]">
     <div class="mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-between gap-10 px-4 py-6 sm:px-8 sm:py-8">
       <header>

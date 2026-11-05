@@ -1,6 +1,7 @@
 ---
 id: profiles.add
 title: Keep a record of a pet or anything else
+description: Record a pet or anything else that is not a person as a profile, and see how it differs from a contact.
 slug: keep-a-record-of-a-pet
 section: people
 last_updated: 2026-09-29

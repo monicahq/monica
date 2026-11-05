@@ -1,6 +1,7 @@
 ---
 id: security.two-factor
 title: Turn on two factor authentication
+description: Add a six digit code from an authenticator app to your sign in, so a stolen password alone cannot open your account.
 slug: two-factor-authentication
 section: your-account-and-security
 last_updated: 2026-09-29

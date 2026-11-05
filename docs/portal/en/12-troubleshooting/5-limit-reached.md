@@ -1,6 +1,7 @@
 ---
 id: troubleshoot.limit-reached
 title: I hit a limit
+description: Find the limit Monica names when it refuses to add a vault, a contact or a file, and see what you can do about it.
 slug: limit-reached
 section: troubleshooting
 last_updated: 2026-09-29

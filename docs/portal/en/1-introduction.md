@@ -1,6 +1,7 @@
 ---
 id: portal.introduction
 title: Welcome to the Monica guide
+description: Learn what Monica is, what it holds, and where to start whether you use monicahq.com or an instance of your own.
 slug: introduction
 section: portal
 last_updated: 2026-09-29

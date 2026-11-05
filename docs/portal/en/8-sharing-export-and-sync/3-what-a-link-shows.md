@@ -1,6 +1,7 @@
 ---
 id: sharing.what-a-link-shows
 title: What a sharing link shows
+description: See exactly what a person holding a sharing link can read about a contact and what they never see.
 slug: what-a-link-shows
 section: sharing-export-and-sync
 last_updated: 2026-09-29

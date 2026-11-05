@@ -1,6 +1,7 @@
 ---
 id: templates.change
 title: Change a template
+description: Add, move, rename or remove pages, sections and fields in a draft, then publish the result as a new version.
 slug: change-a-template
 section: templates-and-customisation
 last_updated: 2026-09-29

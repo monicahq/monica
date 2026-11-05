@@ -1,6 +1,7 @@
 ---
 id: start.create-account
 title: Create your account
+description: Sign up with a passkey or a password, confirm your email address, and open the first vault Monica prepares for you.
 slug: create-your-account
 section: start-here
 last_updated: 2026-09-29

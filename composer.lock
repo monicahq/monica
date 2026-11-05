@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d99e639a5dbf206f59f941edd838241e",
+    "content-hash": "f96f8b4b0380d12e5f1d405d7de1d77a",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2238,6 +2238,77 @@
                 "source": "https://github.com/laravel/framework"
             },
             "time": "2026-10-06T13:52:37+00:00"
+        },
+        {
+            "name": "laravel/head",
+            "version": "v0.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/head.git",
+                "reference": "09e88a09c0ca08533be94863a4d3e95016b6d88f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/head/zipball/09e88a09c0ca08533be94863a4d3e95016b6d88f",
+                "reference": "09e88a09c0ca08533be94863a4d3e95016b6d88f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^13.17.0",
+                "illuminate/routing": "^13.17.0",
+                "illuminate/support": "^13.17.0",
+                "illuminate/view": "^13.17.0",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "inertiajs/inertia-laravel": "^3.1",
+                "laravel/pint": "^1.28.0",
+                "livewire/livewire": "^4.3",
+                "orchestra/testbench": "^11.0",
+                "pestphp/pest": "^4.0",
+                "phpstan/phpstan": "^2.0",
+                "rector/rector": "^2.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Head": "Laravel\\Head\\Facades\\Head"
+                    },
+                    "providers": [
+                        "Laravel\\Head\\HeadServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Head\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "First-party head management for Laravel applications",
+            "homepage": "https://github.com/laravel/head",
+            "keywords": [
+                "head",
+                "laravel",
+                "metadata",
+                "seo",
+                "tags"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/head/issues",
+                "source": "https://github.com/laravel/head"
+            },
+            "time": "2026-08-26T18:54:37+00:00"
         },
         {
             "name": "laravel/mcp",

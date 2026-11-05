@@ -1,6 +1,7 @@
 ---
 id: reference.field-types
 title: Field types
+description: See every kind of field a template can hold, from short text to emails and phone numbers, and what each one stores.
 slug: field-types
 section: reference
 last_updated: 2026-09-29

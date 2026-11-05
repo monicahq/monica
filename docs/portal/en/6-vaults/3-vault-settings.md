@@ -1,6 +1,7 @@
 ---
 id: vaults.settings
 title: Change a vault’s name, colour and default template
+description: Rename a vault, change its colour and description, and choose the template that new contacts in it start from.
 slug: vault-settings
 section: vaults
 last_updated: 2026-09-29

@@ -1,6 +1,7 @@
 ---
 id: reminders.answer
 title: Answer a reminder
+description: Tell Monica whether you remembered or forgot when a reminder’s day comes, and find what is overdue or coming up.
 slug: answer-a-reminder
 section: reminders-and-notifications
 last_updated: 2026-09-29

@@ -1,6 +1,7 @@
 ---
 id: vaults.introduction
 title: Vaults
+description: Learn what a vault holds, when a second one helps, and why you should choose the vault before adding somebody.
 slug: vaults
 section: vaults
 last_updated: 2026-09-29

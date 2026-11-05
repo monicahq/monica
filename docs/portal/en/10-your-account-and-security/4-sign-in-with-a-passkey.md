@@ -1,6 +1,7 @@
 ---
 id: signin.passkey
 title: Sign in with a passkey
+description: Sign in with your fingerprint, face or device lock instead of a password, and see what to try when the passkey prompt fails.
 slug: sign-in-with-a-passkey
 section: your-account-and-security
 last_updated: 2026-09-29

@@ -1,6 +1,7 @@
 ---
 id: notifications.channels
 title: Choose how you are notified
+description: Switch the in-app, email, Telegram and text message channels on or off, and send a test to see what arrives.
 slug: notification-channels
 section: reminders-and-notifications
 last_updated: 2026-10-25

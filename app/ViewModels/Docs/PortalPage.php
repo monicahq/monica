@@ -9,6 +9,7 @@ class PortalPage
     public function __construct(
         public readonly string $id,
         public readonly string $title,
+        public readonly string $description,
         public readonly string $slug,
         public readonly string $section,
         public readonly string $locale,

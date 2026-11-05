@@ -1,6 +1,7 @@
 ---
 id: concepts.model
 title: How Monica is organised
+description: Understand how accounts, vaults, contacts, profiles and templates fit together and what belongs to what in Monica.
 slug: how-monica-is-organised
 section: start-here
 last_updated: 2026-09-29

@@ -16,10 +16,10 @@ class PortalCatalogueTest extends TestCase
     #[Test]
     public function it_reads_the_frontmatter_of_a_page(): void
     {
-        $contents = "---\nid: office.tour\ntitle: \"Tour: the office\"\nslug: tour\nsection: office\n---\n\n# Tour: the office\n";
+        $contents = "---\nid: office.tour\ntitle: \"Tour: the office\"\ndescription: Michael shows the camera crew around.\nslug: tour\nsection: office\n---\n\n# Tour: the office\n";
 
         $this->assertSame(
-            ['id' => 'office.tour', 'title' => 'Tour: the office', 'slug' => 'tour', 'section' => 'office', 'last_updated' => null],
+            ['id' => 'office.tour', 'title' => 'Tour: the office', 'description' => 'Michael shows the camera crew around.', 'slug' => 'tour', 'section' => 'office', 'last_updated' => null],
             PortalCatalogue::frontmatter($contents),
         );
     }
@@ -27,15 +27,16 @@ class PortalCatalogueTest extends TestCase
     #[Test]
     public function it_reads_the_date_a_page_was_last_updated(): void
     {
-        $contents = "---\nid: office.tour\ntitle: Tour\nslug: tour\nsection: office\nlast_updated: 2026-09-29\n---\n\n# Tour\n";
+        $contents = "---\nid: office.tour\ntitle: Tour\ndescription: The tour.\nslug: tour\nsection: office\nlast_updated: 2026-09-29\n---\n\n# Tour\n";
 
         $this->assertSame('2026-09-29', PortalCatalogue::frontmatter($contents)['last_updated']);
     }
 
     #[Test]
-    public function it_refuses_frontmatter_missing_one_of_its_four_keys(): void
+    public function it_refuses_frontmatter_missing_one_of_its_five_keys(): void
     {
         $this->assertNull(PortalCatalogue::frontmatter("---\nid: office.tour\ntitle: Tour\nslug: tour\n---\n"));
+        $this->assertNull(PortalCatalogue::frontmatter("---\nid: office.tour\ntitle: Tour\nslug: tour\nsection: office\n---\n"));
         $this->assertNull(PortalCatalogue::frontmatter("# No frontmatter\n"));
     }
 

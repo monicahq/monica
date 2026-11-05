@@ -1,6 +1,7 @@
 ---
 id: troubleshoot.reminder-not-received
 title: A reminder did not arrive
+description: Work through the checks in order, from the reminder’s date and time zone to your channels, to find why it did not arrive.
 slug: reminder-not-received
 section: troubleshooting
 last_updated: 2026-09-29

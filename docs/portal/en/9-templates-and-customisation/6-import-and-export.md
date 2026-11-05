@@ -1,6 +1,7 @@
 ---
 id: templates.import-export
 title: Share a template as a file
+description: Export a template or one section as a file and import it into another account or instance.
 slug: import-and-export
 section: templates-and-customisation
 last_updated: 2026-09-29

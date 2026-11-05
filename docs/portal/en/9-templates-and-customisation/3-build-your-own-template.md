@@ -1,6 +1,7 @@
 ---
 id: templates.build-your-own
 title: Build your own contact template
+description: Copy Basic contact, add a How we met section, publish your template and add a friend with it, step by step.
 slug: build-your-own-template
 section: templates-and-customisation
 last_updated: 2026-09-29

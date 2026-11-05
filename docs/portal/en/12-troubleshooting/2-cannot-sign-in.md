@@ -1,6 +1,7 @@
 ---
 id: troubleshoot.cannot-sign-in
 title: I cannot sign in
+description: Match the message Monica shows when sign in fails to its cause, and follow the steps to get back into your account.
 slug: cannot-sign-in
 section: troubleshooting
 last_updated: 2026-09-29

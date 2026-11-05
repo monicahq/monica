@@ -1,6 +1,7 @@
 ---
 id: export.vcard
 title: Export a contact as a vCard
+description: Download one contact as a .vcf file that any address book can import, to hand it over once.
 slug: export-a-vcard
 section: sharing-export-and-sync
 last_updated: 2026-09-29

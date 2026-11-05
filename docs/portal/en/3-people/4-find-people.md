@@ -1,6 +1,7 @@
 ---
 id: contacts.list
 title: Find people in a vault
+description: Search the people in a vault by name or nickname, filter the list, sort it and choose which columns it shows.
 slug: find-people
 section: people
 last_updated: 2026-09-29

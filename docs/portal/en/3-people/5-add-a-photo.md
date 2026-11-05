@@ -1,6 +1,7 @@
 ---
 id: contacts.photo
 title: Add a photo to a contact
+description: Upload a JPEG, PNG or WebP photo to a contact so you recognise them in the list of people and on their page.
 slug: add-a-photo
 section: people
 last_updated: 2026-09-29

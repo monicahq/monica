@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
-    @include('partials.meta', ['title' => $section->title.' · '.__('API reference')])
+    @include('partials.meta', ['title' => $section->title.' · '.__('API reference'), 'description' => $section->description])
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>

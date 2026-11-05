@@ -1,6 +1,7 @@
 ---
 id: customise.relationship-types
 title: Add your own relationship types
+description: Add relationship types of your own, such as Godparent, and file them under a category.
 slug: relationship-types
 section: templates-and-customisation
 last_updated: 2026-09-29

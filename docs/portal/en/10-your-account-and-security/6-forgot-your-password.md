@@ -1,6 +1,7 @@
 ---
 id: signin.forgot-password
 title: Choose a new password when you forgot it
+description: Ask for an email link that lets you choose a new password, and learn how long the link lasts and what Monica does next.
 slug: forgot-your-password
 section: your-account-and-security
 last_updated: 2026-09-29

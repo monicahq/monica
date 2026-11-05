@@ -1,6 +1,7 @@
 ---
 id: security.passkeys
 title: Add and remove passkeys
+description: Add a passkey to your account, give it a name you recognise, and remove it when you no longer use that device.
 slug: passkeys
 section: your-account-and-security
 last_updated: 2026-11-01

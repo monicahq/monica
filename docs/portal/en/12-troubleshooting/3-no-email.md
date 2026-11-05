@@ -1,6 +1,7 @@
 ---
 id: troubleshoot.no-email
 title: I am not receiving emails
+description: Check your spam folder, your address and the Emails sent log to find out why a sign in, password or reminder email did not arrive.
 slug: no-email
 section: troubleshooting
 last_updated: 2026-09-29

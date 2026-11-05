@@ -1,6 +1,7 @@
 ---
 id: contacts.add
 title: Add a person
+description: Write somebody down in a vault as a full contact or a partial one, so you have a page to keep what you know about them.
 slug: add-a-person
 section: people
 last_updated: 2026-09-29

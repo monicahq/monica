@@ -1,6 +1,7 @@
 ---
 id: start.introduction
 title: Start here
+description: Follow three pages in order to go from no account to a first contact with a yearly birthday reminder.
 slug: start-here
 section: start-here
 last_updated: 2026-09-29

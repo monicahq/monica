@@ -1,6 +1,7 @@
 ---
 id: vaults.create
 title: Create a vault
+description: Start a new vault for another part of your life, such as work, and see what the free plan allows.
 slug: create-a-vault
 section: vaults
 last_updated: 2026-09-29

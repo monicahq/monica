@@ -1,6 +1,7 @@
 ---
 id: troubleshoot.introduction
 title: Troubleshooting
+description: Find a problem in your own words, such as a lost phone or a missing email, and go to the page that sorts it out.
 slug: troubleshooting
 section: troubleshooting
 last_updated: 2026-09-29

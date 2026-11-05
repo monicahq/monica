@@ -1,6 +1,7 @@
 ---
 id: contacts.edit
 title: Change what you know about somebody
+description: Edit one section of a contact’s page at a time, add a second phone number or correct a name, and learn how the tabs are arranged.
 slug: change-what-you-know
 section: people
 last_updated: 2026-09-29

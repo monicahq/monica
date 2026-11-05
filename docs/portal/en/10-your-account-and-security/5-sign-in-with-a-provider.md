@@ -1,6 +1,7 @@
 ---
 id: signin.provider
 title: Sign in with GitHub, Google, Microsoft or Facebook
+description: Use a GitHub, Google, Microsoft or Facebook account to sign in, and connect one to an account you already have.
 slug: sign-in-with-a-provider
 section: your-account-and-security
 last_updated: 2026-09-29

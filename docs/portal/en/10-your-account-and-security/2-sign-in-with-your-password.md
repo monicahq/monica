@@ -1,6 +1,7 @@
 ---
 id: signin.password
 title: Sign in with your password
+description: Sign in with your email address and password, choose whether to stay signed in, and understand what Monica says when it refuses.
 slug: sign-in-with-your-password
 section: your-account-and-security
 last_updated: 2026-09-29

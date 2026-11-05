@@ -1,6 +1,7 @@
 ---
 id: templates.introduction
 title: Templates and customisation
+description: Find the pages on shaping Monica to what you want to remember, from templates to relationship and life event types.
 slug: templates-and-customisation
 section: templates-and-customisation
 last_updated: 2026-09-29

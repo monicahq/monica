@@ -1,6 +1,7 @@
 ---
 id: relationships.edit
 title: Change or end a relationship
+description: Record when a relationship started or ended, pick another type or remove it, and keep the history of what it was.
 slug: change-or-end
 section: relationships-and-life-events
 last_updated: 2026-09-29

@@ -1,6 +1,7 @@
 ---
 id: life-events.timeline
 title: How the timeline works
+description: Learn why one life event appears on the page of everybody who took part, and in what order the timeline shows entries.
 slug: the-timeline
 section: relationships-and-life-events
 last_updated: 2026-09-29

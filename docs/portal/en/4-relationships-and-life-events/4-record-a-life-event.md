@@ -1,6 +1,7 @@
 ---
 id: life-events.record
 title: Record something that happened
+description: Add something that happened on a date, such as a wedding or a move, and list who took part so it shows on each page.
 slug: record-a-life-event
 section: relationships-and-life-events
 last_updated: 2026-09-29

@@ -1,9 +1,12 @@
 {{-- The shell of the catalogue. --}}
-{{-- @var string|null $title --}}
+{{--
+  @var string|null $title
+  @var string|null $description
+--}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
-    @include('partials.meta', ['title' => $title ?? null])
+    @include('partials.meta', ['title' => $title ?? null, 'description' => $description ?? null])
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>

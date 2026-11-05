@@ -1,6 +1,7 @@
 ---
 id: account.preferences
 title: Choose your language, formats and time zone
+description: Set the language, time and date formats, number separators and time zone Monica uses for you on every device.
 slug: preferences
 section: your-account-and-security
 last_updated: 2026-09-29

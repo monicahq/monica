@@ -1,6 +1,7 @@
 ---
 id: duplicates.introduction
 title: Keeping records tidy
+description: Find the pages on spotting people recorded twice and merging them, inside one vault and only when you decide.
 slug: keeping-records-tidy
 section: keeping-records-tidy
 last_updated: 2026-09-29

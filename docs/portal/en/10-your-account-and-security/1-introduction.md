@@ -1,6 +1,7 @@
 ---
 id: account.introduction
 title: Your account and security
+description: Find the pages on signing in, protecting your account with extra steps, and managing your profile, preferences and logs.
 slug: your-account-and-security
 section: your-account-and-security
 last_updated: 2026-09-29

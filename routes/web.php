@@ -154,6 +154,7 @@ use Laravel\Nightwatch\Http\Middleware\Sample;
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::get('docs', [DocsController::class, 'index'])
+    ->middleware(['searchable'])
     ->name('docs.index');
 
 Route::get('llms.txt', [LlmsTextController::class, 'index'])
@@ -166,7 +167,7 @@ Route::get('sitemap.xml', [SitemapController::class, 'index'])
     ->name('sitemap.index');
 
 Route::get('docs/mcp', [McpDocsController::class, 'index'])
-    ->middleware(['flag:mcp-server'])
+    ->middleware(['flag:mcp-server', 'searchable'])
     ->name('docs.mcp.index');
 
 Route::get('docs/mcp.md', [McpDocsMarkdownController::class, 'index'])
@@ -174,7 +175,7 @@ Route::get('docs/mcp.md', [McpDocsMarkdownController::class, 'index'])
     ->name('docs.mcp.markdown.index');
 
 Route::get('docs/carddav', [CarddavDocsController::class, 'index'])
-    ->middleware(['flag:carddav'])
+    ->middleware(['flag:carddav', 'searchable'])
     ->name('docs.carddav.index');
 
 Route::get('docs/carddav.md', [CarddavDocsMarkdownController::class, 'index'])
@@ -182,6 +183,7 @@ Route::get('docs/carddav.md', [CarddavDocsMarkdownController::class, 'index'])
     ->name('docs.carddav.markdown.index');
 
 Route::get('docs/api', [ApiDocsController::class, 'index'])
+    ->middleware(['searchable'])
     ->name('docs.api.index');
 
 Route::get('docs/api.md', [ApiDocsMarkdownController::class, 'index'])
@@ -195,6 +197,7 @@ Route::get('docs/api/{section}.md', [ApiDocsMarkdownController::class, 'show'])
     ->name('docs.api.markdown.show');
 
 Route::get('docs/api/{section}', [ApiDocsController::class, 'show'])
+    ->middleware(['searchable'])
     ->where('section', '[a-z0-9\-]+')
     ->name('docs.api.show');
 
@@ -210,7 +213,7 @@ Route::get('docs/{locale}/{section}/{slug}.md', [PortalDocsMarkdownController::c
     ->where(['locale' => '[a-z]{2}(_[A-Z]{2})?', 'section' => '[a-z0-9\-]+', 'slug' => '[a-z0-9\-]+'])
     ->name('docs.portal.markdown.show');
 
-Route::middleware(['portal.timing'])->group(function (): void {
+Route::middleware(['portal.timing', 'searchable'])->group(function (): void {
     Route::get('docs/{locale}', [PortalDocsController::class, 'index'])
         ->where('locale', '[a-z]{2}(_[A-Z]{2})?')
         ->name('docs.portal.index');
@@ -224,7 +227,7 @@ Route::middleware(['portal.timing'])->group(function (): void {
  * The marketplace is still being built, so a flag holds it back. A visitor sees it exactly when it is
  * on for every account.
  */
-Route::middleware(['flag:marketplace'])->group(function (): void {
+Route::middleware(['flag:marketplace', 'searchable'])->group(function (): void {
     Route::get('marketplace', [MarketplaceController::class, 'index'])
         ->name('marketplace.index');
 });
@@ -232,11 +235,13 @@ Route::middleware(['flag:marketplace'])->group(function (): void {
 Route::get('s/{token}/{page?}', [SharedContactController::class, 'show'])
     ->middleware(['throttle:60,1'])
     ->where('token', '[A-Za-z0-9]{64}')
+    ->withHead(robots: 'noindex, nofollow')
     ->name('share.show');
 
 Route::post('s/{token}', [SharedContactPasswordController::class, 'create'])
     ->middleware(['throttle:20,1'])
     ->where('token', '[A-Za-z0-9]{64}')
+    ->withHead(robots: 'noindex, nofollow')
     ->name('share.password.create');
 
 Route::post('telegram/webhook', [TelegramWebhookController::class, 'handleWebhook'])->name('telegram.webhook');

@@ -1,6 +1,7 @@
 ---
 id: start.first-contact
 title: Record your first person
+description: Add somebody to your Personal vault, fill in a birthday and an email address, link them to another person and get a yearly reminder.
 slug: record-your-first-person
 section: start-here
 last_updated: 2026-09-29

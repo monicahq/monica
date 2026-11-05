@@ -1,6 +1,7 @@
 ---
 id: sharing.introduction
 title: Sharing, export and sync
+description: Compare sharing links, vCard files and sync, three ways to take contacts out of Monica, and pick the one you need.
 slug: sharing-export-and-sync
 section: sharing-export-and-sync
 last_updated: 2026-09-29

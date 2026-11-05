@@ -1,6 +1,7 @@
 ---
 id: reference.introduction
 title: Reference
+description: Look up the words Monica uses, the kinds of field, the emails it sends and every limit and default in one place.
 slug: reference
 section: reference
 last_updated: 2026-09-29

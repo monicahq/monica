@@ -30,6 +30,7 @@
         "intervention/image": "^4.0",
         "laravel/cashier": "^16.8",
         "laravel/framework": "^13.8",
+        "laravel/head": "^0.2.2",
         "laravel/mcp": "^1.0",
         "laravel/nightwatch": "^1.30",
         "laravel/passkeys": "^0",

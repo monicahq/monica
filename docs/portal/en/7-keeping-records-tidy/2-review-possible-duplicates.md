@@ -1,6 +1,7 @@
 ---
 id: duplicates.review
 title: Review possible duplicates
+description: See which contacts Monica suggests might be the same person, why it suggested them, and mark the pairs that are not.
 slug: review-possible-duplicates
 section: keeping-records-tidy
 last_updated: 2026-09-29

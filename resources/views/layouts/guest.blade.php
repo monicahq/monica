@@ -1,9 +1,12 @@
 {{-- The shell of every screen a visitor sees before they sign in. --}}
-{{-- @var string|null $title --}}
+{{--
+  @var string|null $title
+  @var bool $error
+--}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
-    @include('partials.meta', ['title' => $title ?? null])
+    @include('partials.meta', ['title' => $title ?? null, 'error' => $error ?? false])
 
     <meta name="turbo-prefetch" content="false" />
 

@@ -1,6 +1,7 @@
 ---
 id: vaults.delete
 title: Delete a vault
+description: Learn what deleting a vault removes along with it, what to check first, and the steps to delete it for good.
 slug: delete-a-vault
 section: vaults
 last_updated: 2026-09-29

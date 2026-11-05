@@ -76,6 +76,7 @@ class PortalDocsViewModelTest extends TestCase
         $page = new PortalPage(
             id: 'office.tour',
             title: 'Tour',
+            description: 'Michael shows the camera crew around the Scranton branch.',
             slug: 'tour',
             section: 'office',
             locale: 'en',

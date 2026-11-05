@@ -1,6 +1,7 @@
 ---
 id: security.password
 title: Change, set or remove your password
+description: Change your password when you know it, set one if your account has none, or remove it and rely on other ways to sign in.
 slug: your-password
 section: your-account-and-security
 last_updated: 2026-11-01

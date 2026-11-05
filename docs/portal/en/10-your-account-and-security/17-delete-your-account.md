@@ -1,6 +1,7 @@
 ---
 id: account.delete
 title: Delete your account
+description: Learn what deleting your account removes for good, what to keep first, and the steps to delete it.
 slug: delete-your-account
 section: your-account-and-security
 last_updated: 2026-09-29
