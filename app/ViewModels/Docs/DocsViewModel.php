@@ -105,6 +105,66 @@ class DocsViewModel
         return implode("\n", $lines)."\n";
     }
 
+    public function sitemap(): string
+    {
+        $lastUpdatedByAddress = [
+            route('docs.index') => null,
+            route('docs.api.index') => null,
+        ];
+
+        foreach (new ApiDocsViewModel()->sections() as $section) {
+            $lastUpdatedByAddress[route('docs.api.show', ['section' => $section->id])] = null;
+        }
+
+        foreach (PortalCatalogue::locales() as $locale) {
+            foreach (new PortalCatalogue($locale)->pages() as $page) {
+                $lastUpdatedByAddress[$page->url()] = $page->lastUpdated;
+            }
+        }
+
+        if ($this->mcpIsOn()) {
+            $lastUpdatedByAddress[route('docs.mcp.index')] = null;
+        }
+
+        if ($this->carddavIsOn()) {
+            $lastUpdatedByAddress[route('docs.carddav.index')] = null;
+        }
+
+        if (FlagState::isOn('marketplace', $this->account)) {
+            $lastUpdatedByAddress[route('marketplace.index')] = null;
+        }
+
+        $lines = [
+            '<?xml version="1.0" encoding="UTF-8"?>',
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        ];
+
+        foreach ($lastUpdatedByAddress as $address => $lastUpdated) {
+            $lastModified = $lastUpdated === null ? '' : '<lastmod>'.e($lastUpdated).'</lastmod>';
+            $lines[] = '  <url><loc>'.e($address)."</loc>{$lastModified}</url>";
+        }
+
+        $lines[] = '</urlset>';
+
+        return implode("\n", $lines)."\n";
+    }
+
+    /**
+     * Nothing is disallowed even when indexing is off: a crawler refused a page never reads the
+     * noindex it carries.
+     */
+    public function robotsText(): string
+    {
+        $lines = ['User-agent: *', 'Disallow:'];
+
+        if (config('monica.search_engine_indexing')) {
+            $lines[] = '';
+            $lines[] = 'Sitemap: '.route('sitemap.index');
+        }
+
+        return implode("\n", $lines)."\n";
+    }
+
     public function registrationIsEnabled(): bool
     {
         return (bool) config('monica.registration_enabled');

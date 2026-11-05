@@ -53,7 +53,11 @@
     </main>
 
     <footer class="flex flex-wrap items-center justify-between gap-4 px-6 pb-6 sm:px-20">
-      <p class="text-xs text-body">© {{ config('app.name') }} {{ now()->format('Y') }}</p>
+      <div class="flex items-center gap-4 text-xs text-body">
+        <p>© {{ config('app.name') }} {{ now()->format('Y') }}</p>
+
+        <a href="{{ route('docs.index') }}" class="focus-ring rounded-sm hover:text-ink">{{ __('Docs') }}</a>
+      </div>
 
       <div class="flex items-center gap-2">
         {{ $footer ?? '' }}

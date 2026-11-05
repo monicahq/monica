@@ -1,12 +1,11 @@
 <?php
 
 declare(strict_types=1);
+use Illuminate\Support\Str;
 use Laravel\Socialite\SocialiteServiceProvider;
 use SocialiteProviders\Microsoft\Provider as MicrosoftProvider;
-use Illuminate\Support\Str;
 
-if (! function_exists('readVersion'))
-{
+if (! function_exists('readVersion')) {
     function readVersion(string $file, string $gitCommand, ?string $default = null): ?string
     {
         $content = null;
@@ -63,6 +62,18 @@ return [
     |
     */
     'registration_enabled' => (bool) env('MONICA_REGISTRATION_ENABLED', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Search engine indexing
+    |--------------------------------------------------------------------------
+    |
+    | Whether search engines may list the pages anybody can read: the documentation, the guide and
+    | the marketplace. Switching it off asks them to leave out every page of the instance. Every
+    | other page, a private link included, is left out whatever this says.
+    |
+    */
+    'search_engine_indexing' => (bool) env('MONICA_SEARCH_ENGINE_INDEXING', true),
 
     /*
     |--------------------------------------------------------------------------

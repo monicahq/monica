@@ -15,6 +15,8 @@ use App\Http\Controllers\App\Docs\McpDocsMarkdownController;
 use App\Http\Controllers\App\Docs\OpenApiDocumentController;
 use App\Http\Controllers\App\Docs\PortalDocsController;
 use App\Http\Controllers\App\Docs\PortalDocsMarkdownController;
+use App\Http\Controllers\App\Docs\RobotsTextController;
+use App\Http\Controllers\App\Docs\SitemapController;
 use App\Http\Controllers\App\FullAccessOfferController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\Marketplace\MarketplaceController;
@@ -156,6 +158,12 @@ Route::get('docs', [DocsController::class, 'index'])
 
 Route::get('llms.txt', [LlmsTextController::class, 'index'])
     ->name('llmsText.index');
+
+Route::get('robots.txt', [RobotsTextController::class, 'index'])
+    ->name('robotsText.index');
+
+Route::get('sitemap.xml', [SitemapController::class, 'index'])
+    ->name('sitemap.index');
 
 Route::get('docs/mcp', [McpDocsController::class, 'index'])
     ->middleware(['flag:mcp-server'])
