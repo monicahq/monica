@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Console\Commands;
 
+use App\Models\Contact;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Passport\Passport;
+use Laravel\Scout\EngineManager;
+use Laravel\Scout\Engines\MeilisearchEngine;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -58,6 +61,34 @@ class SetupApplicationCommandTest extends TestCase
         $this->artisan('monica:setup', ['--force' => true, '--deploy' => true])
             ->expectsOutputToContain('Bringing the database up to date')
             ->doesntExpectOutputToContain('Clearing the application cache')
+            ->assertSuccessful();
+    }
+
+    #[Test]
+    public function it_sends_the_search_engine_the_settings_its_indexes_lost(): void
+    {
+        $this->useSearchEngine();
+
+        /** @var MeilisearchEngine $engine */
+        $engine = resolve(EngineManager::class)->engine('meilisearch');
+        $index = $engine->index((new Contact)->searchableAs());
+        $index->resetFilterableAttributes();
+        $this->waitForSearchEngine();
+
+        $this->artisan('monica:setup', ['--force' => true, '--deploy' => true])
+            ->expectsOutputToContain('Sending the search engine the settings of its indexes')
+            ->assertSuccessful();
+
+        $this->waitForSearchEngine();
+
+        $this->assertContains('vault_id', $index->getFilterableAttributes());
+    }
+
+    #[Test]
+    public function it_sends_no_settings_to_an_engine_that_keeps_none(): void
+    {
+        $this->artisan('monica:setup', ['--force' => true, '--deploy' => true])
+            ->doesntExpectOutputToContain('Sending the search engine the settings of its indexes')
             ->assertSuccessful();
     }
 

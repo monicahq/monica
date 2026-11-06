@@ -10,6 +10,8 @@ use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Passport\Passport;
+use Laravel\Scout\Contracts\UpdatesIndexSettings;
+use Laravel\Scout\EngineManager;
 
 #[Signature(<<<'EOF'
 monica:setup
@@ -38,6 +40,7 @@ class SetupApplicationCommand extends Command
 
         if ($this->runs('deploy')) {
             $this->migrate();
+            $this->syncSearchIndexSettings();
         }
 
         return self::SUCCESS;
@@ -125,6 +128,20 @@ class SetupApplicationCommand extends Command
     private function migrate(): void
     {
         $this->artisan('Bringing the database up to date', 'migrate', ['--force' => true]);
+    }
+
+    /**
+     * An engine creates an index without any settings the first time a record reaches it, and such an
+     * index cannot filter by vault, so every deploy sends the settings again. Scout reports an engine
+     * that does not answer without failing, so a search outage never stops a deploy.
+     */
+    private function syncSearchIndexSettings(): void
+    {
+        if (! resolve(EngineManager::class)->engine() instanceof UpdatesIndexSettings) {
+            return;
+        }
+
+        $this->artisan('Sending the search engine the settings of its indexes', 'scout:sync-index-settings');
     }
 
     private function cacheStoreAnswers(): bool
