@@ -6,26 +6,26 @@ metadata:
   author: laravel
 ---
 
-# Laravel Best Practices
+# Laravel best practices
 
 Best practices for Laravel, organized as an index of rule files. Each rule file teaches what to do and why. For exact API syntax, verify with `search-docs`.
 
-## Consistency First
+## Consistency first
 
-Before applying any rule, check what the application already does. Laravel offers multiple valid approaches, and the best choice is the one the codebase already uses, even if another pattern would be theoretically better. Inconsistency is worse than a suboptimal pattern.
+Before applying any rule, check what the application already does. Laravel offers several valid approaches. The best choice is the one the codebase already uses, even if another pattern would be better in theory. Inconsistency is worse than a suboptimal pattern.
 
-Check sibling files, related controllers, models, or tests for established patterns. If one exists, follow it. Don't introduce a second way. These rules are defaults for when no pattern exists yet, not overrides.
+Check sibling files and related controllers, models, or tests for established patterns. If one exists, follow it. Don't introduce a second way. These rules are defaults for when no pattern exists yet, not overrides.
 
-## How to Apply
+## How to apply
 
 1. Check the changed files, nearby code, project configuration, and relevant tests for established patterns. Deviate only for a correctness or security defect, and call the deviation out.
 2. Map every affected concern to the rule index below. Read each mapped rule file before editing. Skip unrelated rule files.
 3. Make the smallest coherent change. Keep the application's architecture and naming instead of introducing a second pattern for the same job.
-4. Verify version-sensitive Laravel APIs for the installed version with `search-docs`, or inspect the installed framework when it is unavailable.
+4. Verify version-sensitive Laravel APIs for the installed version with `search-docs`, or inspect the installed framework when `search-docs` is unavailable.
 5. Run the narrowest relevant tests first, then the project's formatting and static-analysis checks when the change warrants them.
 6. Re-read the diff against every mapped rule before finishing.
 
-## Rule Index
+## Rule index
 
 Cross-cutting changes often need more than one rule file.
 
@@ -52,7 +52,7 @@ Cross-cutting changes often need more than one rule file.
 | Naming, helpers, file boundaries, PHP style | [`rules/style.md`](rules/style.md) |
 | Actions, services, dependencies, application structure | [`rules/architecture.md`](rules/architecture.md) |
 
-## Decision Rules
+## Decision rules
 
 - Prefer framework features and existing application abstractions over new helpers or dependencies.
 - Avoid speculative abstractions. Extract code when it creates a clear domain boundary, removes meaningful duplication, or makes behavior independently testable.

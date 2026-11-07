@@ -1,11 +1,16 @@
 ---
 name: speckit-companion-living-move
-description: Move a living spec between central and colocated storage — file, tiers, and registry together (opt-in, reversible)
+description: Move a living spec between central and colocated storage — file, tiers,
+  and registry together (opt-in, reversible)
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: companion:commands/speckit.companion.living-move.md
+  source: extension:companion
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion Living Move Skill
 
 # Relocate a Living Spec
 

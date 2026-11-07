@@ -5,7 +5,7 @@ inputs:
   node-version:
     description: 'Node.js version to setup'
     required: false
-    default: '24'
+    default: '26'
 
 outputs:
   commit:

@@ -1,8 +1,8 @@
-# Database Performance Best Practices
+# Database performance best practices
 
-## Eager Load Relationships Before Iterating
+## Eager load relationships before iterating
 
-When a relationship will be accessed for many models, eager load it with `with()` to avoid running one initial query plus one relationship query per model, commonly called an N+1 query pattern. Lazy loading is reasonable when the relationship may not be needed or only one model is involved.
+When code accesses a relationship on many models, eager load the relationship with `with()`. Eager loading avoids the N+1 query pattern: one initial query plus one relationship query per model. Lazy loading is reasonable when the code may not need the relationship or when only one model is involved.
 
 Lazy-loaded version:
 
@@ -22,7 +22,7 @@ foreach ($posts as $post) {
 }
 ```
 
-Constrain eager loads when large columns are unnecessary. Include the related model's primary key and every column Eloquent needs to match the relationship. In this example, `users.id` and `posts.user_id` match posts to users, while selecting `posts.id` preserves each related model's primary key:
+Constrain an eager load when the code does not need the large columns. Include the related model's primary key and every column Eloquent needs to match the relationship. In this example, `users.id` and `posts.user_id` match posts to users, and selecting `posts.id` keeps each related model's primary key:
 
 ```php
 $users = User::with(['posts' => function ($query) {
@@ -33,9 +33,9 @@ $users = User::with(['posts' => function ($query) {
 }])->get();
 ```
 
-## Prevent Lazy Loading in Development
+## Prevent lazy loading in development
 
-Enable this in `AppServiceProvider::boot()` to catch N+1 issues during development.
+Enable lazy-loading prevention in `AppServiceProvider::boot()` to catch N+1 queries during development.
 
 ```php
 public function boot(): void
@@ -44,11 +44,11 @@ public function boot(): void
 }
 ```
 
-By default, accessing an unloaded relationship then throws a `LazyLoadingViolationException`. Applications can customize violation handling with `handleLazyLoadingViolationUsing()`.
+With prevention enabled, accessing an unloaded relationship throws a `LazyLoadingViolationException` by default. To customize violation handling, use `handleLazyLoadingViolationUsing()`.
 
-## Select Only Needed Columns
+## Select only the columns you need
 
-Select only the columns the operation needs when omitting large text, binary, or JSON columns provides a meaningful benefit.
+When omitting large text, binary, or JSON columns gives a meaningful benefit, select only the columns the operation needs.
 
 All columns:
 
@@ -64,11 +64,11 @@ $posts = Post::select('id', 'title', 'user_id', 'created_at')
     ->get();
 ```
 
-When limiting selected columns, retain every key Eloquent needs for matching. A `belongsTo` relationship needs its foreign key on the parent query and the owner's key on the related query. A `hasMany` relationship needs the parent's local key and the related model's foreign key.
+When you limit the selected columns, keep every key Eloquent needs for matching. A `belongsTo` relationship needs its foreign key on the parent query and the owner's key on the related query. A `hasMany` relationship needs the parent's local key and the related model's foreign key.
 
-## Process Large Data Sets Incrementally
+## Process large data sets incrementally
 
-Use chunking or lazy iteration when loading an entire result set would exceed the application's practical memory budget.
+When loading the entire result set would exceed the application's practical memory budget, use chunking or lazy iteration.
 
 Loads the complete result set:
 
@@ -89,7 +89,7 @@ User::where('subscribed', true)->chunk(200, function ($users) {
 });
 ```
 
-Use `chunkById()` when updates can change which rows match the query. Standard `chunk()` uses offset pagination, whose result positions can shift as rows change:
+Use `chunkById()` when updates can change which rows match the query. Standard `chunk()` uses offset pagination, so result positions can shift as rows change:
 
 ```php
 User::where('active', false)->chunkById(200, function ($users) {
@@ -97,11 +97,11 @@ User::where('active', false)->chunkById(200, function ($users) {
 });
 ```
 
-For read-only, attribute-only iteration, `cursor()` hydrates models individually from one query, although some database drivers still buffer raw results. Use `lazy()` when relationships must be eager loaded in chunks, and use `lazyById()` or `chunkById()` when updates can affect query membership. See the collection rules for detailed tradeoffs.
+For read-only iteration that uses only model attributes, `cursor()` runs one query and hydrates one model at a time. Some database drivers still buffer the raw results. Use `lazy()` when you need to eager load relationships in chunks. Use `lazyById()` or `chunkById()` when updates can change which rows match the query. See the collection rules for detailed tradeoffs.
 
-## Add Indexes for Measured Query Patterns
+## Add indexes for measured query patterns
 
-Design indexes around frequent, performance-sensitive query patterns. A column's presence in `WHERE`, `ORDER BY`, `JOIN`, or `GROUP BY` does not by itself justify an index; selectivity, write cost, existing indexes, and the database query plan all matter.
+Design indexes around frequent, performance-sensitive query patterns. A column's presence in `WHERE`, `ORDER BY`, `JOIN`, or `GROUP BY` does not by itself justify an index. Selectivity, write cost, existing indexes, and the database query plan all matter.
 
 Schema without an application-specific query index:
 
@@ -126,11 +126,11 @@ Schema::create('orders', function (Blueprint $table) {
 });
 ```
 
-Confirm composite index column order and effectiveness with production-like data and the database's query-plan tools. Also check whether the database already created an index to support a foreign key before adding another one.
+Use production-like data and the database's query-plan tools to confirm the column order of a composite index and whether the index helps. Before you add an index for a foreign key, check whether the database already created one.
 
-## Count Relationships Without Loading Them
+## Count relationships without loading them
 
-Use `withCount()` when only relationship counts are needed; loading and hydrating every related model wastes memory.
+Use `withCount()` when you need only the relationship counts. Loading and hydrating every related model wastes memory.
 
 Loads related models:
 
@@ -161,9 +161,9 @@ $posts = Post::withCount([
 ])->get();
 ```
 
-## Keep Queries Out of Blade Templates
+## Keep queries out of Blade templates
 
-Prepare data before rendering a Blade template, such as in a controller, query service, or view composer. This keeps query behavior visible and testable.
+Prepare data before rendering a Blade template, for example in a controller, a query service, or a view composer. Queries outside the template stay visible and testable.
 
 Query in the template:
 

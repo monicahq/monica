@@ -6,26 +6,26 @@ metadata:
   author: laravel
 ---
 
-# Tailwind CSS Development
+# Tailwind CSS development
 
 ## Documentation
 
 Use `search-docs` for detailed Tailwind CSS v4 patterns and documentation.
 
-## Basic Usage
+## Basic usage
 
-- Use Tailwind CSS classes to style HTML. Check and follow existing Tailwind conventions in the project before introducing new patterns.
-- Offer to extract repeated patterns into components that match the project's conventions (e.g., Blade, JSX, Vue).
+- Use Tailwind CSS classes to style HTML. Before introducing new patterns, check and follow the project's existing Tailwind conventions.
+- Offer to extract repeated patterns into components that match the project's conventions, such as Blade, JSX, or Vue components.
 - Consider class placement, order, priority, and defaults. Remove redundant classes, add classes to parent or child elements carefully to reduce repetition, and group elements logically.
 
-## Tailwind CSS v4 Specifics
+## Tailwind CSS v4 specifics
 
 - Always use Tailwind CSS v4 and avoid deprecated utilities.
 - `corePlugins` is not supported in Tailwind v4.
 
-### CSS-First Configuration
+### CSS-first configuration
 
-In Tailwind v4, configuration is CSS-first using the `@theme` directive — no separate `tailwind.config.js` file is needed:
+In Tailwind v4, you configure Tailwind in CSS with the `@theme` directive. You don't need a separate `tailwind.config.js` file:
 
 <!-- CSS-First Config -->
 ```css
@@ -34,7 +34,7 @@ In Tailwind v4, configuration is CSS-first using the `@theme` directive — no s
 }
 ```
 
-### Import Syntax
+### Import syntax
 
 In Tailwind v4, import Tailwind with a regular CSS `@import` statement instead of the `@tailwind` directives used in v3:
 
@@ -46,7 +46,7 @@ In Tailwind v4, import Tailwind with a regular CSS `@import` statement instead o
 + @import "tailwindcss";
 ```
 
-### Replaced Utilities
+### Replaced utilities
 
 Tailwind v4 removed deprecated utilities. Use the replacements shown below. For opacity, drop the `*-opacity-*` class and append the value as a modifier on the existing color: `bg-blue-500 bg-opacity-50` becomes `bg-blue-500/50`, `text-white text-opacity-75` becomes `text-white/75`.
 
@@ -76,7 +76,7 @@ Use `gap` utilities instead of margins for spacing between siblings:
 </div>
 ```
 
-## Dark Mode
+## Dark mode
 
 If existing pages and components support dark mode, new pages and components must support it the same way, typically using the `dark:` variant:
 
@@ -87,10 +87,10 @@ If existing pages and components support dark mode, new pages and components mus
 </div>
 ```
 
-## Common Pitfalls
+## Common pitfalls
 
-- Using deprecated v3 utilities (bg-opacity-*, flex-shrink-*, etc.)
+- Using deprecated v3 utilities, such as `bg-opacity-*` and `flex-shrink-*`
 - Using `@tailwind` directives instead of `@import "tailwindcss"`
-- Trying to use `tailwind.config.js` instead of CSS `@theme` directive
+- Using `tailwind.config.js` instead of the CSS `@theme` directive
 - Using margins for spacing between siblings instead of gap utilities
 - Forgetting to add dark mode variants when the project uses dark mode

@@ -4,8 +4,12 @@ description: Companion plan — implementation plan with research & design artif
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: companion:commands/speckit.companion.plan.md
+  source: extension:companion
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion Plan Skill
 
 ## User Input
 

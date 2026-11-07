@@ -1,11 +1,17 @@
 ---
 name: speckit-companion-living-validate
-description: Check the shape of living specs and a feature spec's deltas — a requirement with no scenario, a scenario missing WHEN or THEN, a duplicate heading, a delta pointing at nothing (opt-in, read-only, never halts)
+description: Check the shape of living specs and a feature spec's deltas — a requirement
+  with no scenario, a scenario missing WHEN or THEN, a duplicate heading, a delta
+  pointing at nothing (opt-in, read-only, never halts)
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: companion:commands/speckit.companion.living-validate.md
+  source: extension:companion
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion Living Validate Skill
 
 # Spec Shape
 

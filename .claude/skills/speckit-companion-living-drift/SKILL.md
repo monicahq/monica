@@ -1,11 +1,16 @@
 ---
 name: speckit-companion-living-drift
-description: Report living-spec drift — per capability, the source files changed since the spec was last committed (opt-in, never halts)
+description: Report living-spec drift — per capability, the source files changed since
+  the spec was last committed (opt-in, never halts)
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: companion:commands/speckit.companion.living-drift.md
+  source: extension:companion
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion Living Drift Skill
 
 # Spec Drift
 

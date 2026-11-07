@@ -1,11 +1,16 @@
 ---
 name: speckit-companion-classify
-description: Classify the change size (simple | normal | oversized) so the Companion workflow can right-size the pipeline
+description: Classify the change size (simple | normal | oversized) so the Companion
+  workflow can right-size the pipeline
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: companion:commands/speckit.companion.classify.md
+  source: extension:companion
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion Classify Skill
 
 # Classify Change Size
 

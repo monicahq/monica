@@ -1,6 +1,6 @@
-# Collection Best Practices
+# Collection best practices
 
-## Use Higher-Order Messages for Simple Operations
+## Use higher-order messages for simple operations
 
 Explicit closure:
 
@@ -16,11 +16,11 @@ Concise equivalent:
 $users->each->markAsVip();
 ```
 
-Higher-order messages are available for supported collection methods such as `each`, `map`, `filter`, and `sum`. Use an explicit closure when arguments or nontrivial logic would be clearer.
+Higher-order messages work with supported collection methods such as `each`, `map`, `filter`, and `sum`. Use an explicit closure when arguments or nontrivial logic would be clearer.
 
-## Choose Between `cursor()` and `lazy()`
+## Choose between `cursor()` and `lazy()`
 
-`cursor()` executes one query and hydrates models individually, but it cannot eager load relationships. The database driver's result buffering can still consume substantial memory for very large results. Use it for low-memory, attribute-only iteration when one long-running query is acceptable.
+`cursor()` executes one query and hydrates one model at a time, but it cannot eager load relationships. The database driver's result buffering can still use a lot of memory for very large results. Use it for low-memory, attribute-only iteration when one long-running query is acceptable.
 
 `lazy()` executes multiple chunked queries and returns a flat `LazyCollection`. It supports eager loading relationships for each chunk and avoids holding one database cursor open for the entire iteration.
 
@@ -40,11 +40,11 @@ User::cursor()->each(function (User $user) {
 });
 ```
 
-## Use `lazyById()` When Updating Records While Iterating
+## Use `lazyById()` when updating records while iterating
 
-`lazy()` uses offset pagination, so updates to columns that affect the query can shift rows and cause records to be skipped or processed twice. `lazyById()` paginates by a monotonic key and is safer when updating other columns during iteration. Do not change the pagination key itself while iterating.
+`lazy()` uses offset pagination, so updating a column that affects the query can shift rows and make the iteration skip records or process them twice. `lazyById()` paginates by a monotonic key and is safer when you update other columns during iteration. Do not change the pagination key itself while iterating.
 
-## Use `toQuery()` for Bulk Operations on Collections
+## Use `toQuery()` for bulk operations on collections
 
 Use `toQuery()` to build a query from the models in an Eloquent collection instead of manually constructing a `whereIn` clause.
 
@@ -60,9 +60,9 @@ Collection query:
 $users->toQuery()->update(['active' => false]);
 ```
 
-`toQuery()` requires a non-empty Eloquent collection whose models are of the same type. Like other bulk Eloquent updates, it does not dispatch per-model update events, so use it only when those events are not required.
+`toQuery()` requires a non-empty Eloquent collection whose models are of the same type. Like other bulk Eloquent updates, it does not dispatch per-model update events, so use it only when you don't need those events.
 
-## Use `#[CollectedBy]` for Custom Collection Classes
+## Use `#[CollectedBy]` for custom collection classes
 
 The `#[CollectedBy]` attribute declares the custom collection class without requiring a `newCollection()` override.
 

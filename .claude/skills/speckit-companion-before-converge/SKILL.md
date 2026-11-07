@@ -1,11 +1,16 @@
 ---
 name: speckit-companion-before-converge
-description: Capture converge start (currentStep=converge, status unchanged) into .spec-context.json for the Companion GUI
+description: Capture converge start (currentStep=converge, status unchanged) into
+  .spec-context.json for the Companion GUI
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: companion:commands/speckit.companion.before-converge.md
+  source: extension:companion
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion Before Converge Skill
 
 # Capture Converge Start
 

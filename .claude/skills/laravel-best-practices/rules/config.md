@@ -1,8 +1,8 @@
-# Configuration Best Practices
+# Configuration best practices
 
-## Read Environment Variables in Configuration Files
+## Read environment variables in configuration files
 
-Call `env()` only from configuration files. After configuration is cached, Laravel does not load the application's `.env` file, so application code should read configuration values through `config()`.
+Call `env()` only from configuration files. After you cache the configuration, Laravel does not load the application's `.env` file, so read configuration values in application code through `config()`.
 
 Incorrect:
 
@@ -22,9 +22,9 @@ return [
 $key = config('services.key');
 ```
 
-## Protect Production Secrets
+## Protect production secrets
 
-Do not commit plaintext production secrets. Laravel can encrypt an environment file so its encrypted form can be stored safely, while deployment platforms can supply secrets through their native secret stores.
+Do not commit plaintext production secrets. Laravel can encrypt an environment file so you can store the encrypted file safely. Deployment platforms can also supply secrets through their native secret stores.
 
 Incorrect:
 
@@ -43,7 +43,7 @@ php artisan env:decrypt --env=production
 
 For hosted deployments, consider the platform's native secret store, such as AWS Secrets Manager or Vault, and inject secrets at runtime.
 
-## Use `App::environment()` for Environment Checks
+## Use `App::environment()` for environment checks
 
 Incorrect:
 
@@ -65,7 +65,7 @@ if (App::environment('production')) {
 }
 ```
 
-## Name Repeated Domain Values
+## Name repeated domain values
 
 Use an enum or class constant when a domain value is repeated or represents a constrained set. A one-off string literal does not always need a named constant.
 

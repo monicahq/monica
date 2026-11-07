@@ -1,6 +1,6 @@
-# Routing and Controller Best Practices
+# Routing and controller best practices
 
-## Use Implicit Route Model Binding
+## Use implicit route model binding
 
 Let Laravel resolve models from route parameters when the default lookup and missing-model behavior fit the endpoint.
 
@@ -24,9 +24,9 @@ public function show(Post $post): View
 }
 ```
 
-## Scope Nested Bindings
+## Scope nested bindings
 
-Use scoped bindings when a nested resource must belong to its parent. This constrains model resolution; it does not replace authorization.
+Use scoped bindings when a nested resource must belong to its parent. Scoped bindings constrain model resolution. They do not replace authorization.
 
 ```php
 Route::get('/users/{user}/posts/{post}', function (User $user, Post $post) {
@@ -34,7 +34,7 @@ Route::get('/users/{user}/posts/{post}', function (User $user, Post $post) {
 })->scopeBindings();
 ```
 
-## Use Resource Routes for Resourceful Actions
+## Use resource routes for resourceful actions
 
 Use `Route::resource()` or `Route::apiResource()` when the endpoint follows Laravel's resource-controller actions. Define explicit routes when the behavior does not fit that vocabulary.
 
@@ -45,11 +45,11 @@ Route::resource('posts', PostController::class);
 Route::apiResource('posts', ApiPostController::class);
 ```
 
-`apiResource()` omits the HTML-oriented `create` and `edit` routes. It does not itself add an `/api` prefix; that prefix comes from the application's API route configuration.
+`apiResource()` omits the HTML-oriented `create` and `edit` routes. It does not add an `/api` prefix. That prefix comes from the application's API route configuration.
 
-## Organize Controllers Around Resources
+## Organize controllers around resources
 
-As a general default, organize each controller around one resource and use Laravel's standard resource actions: `index`, `show`, `create`, `store`, `edit`, `update`, and `destroy`. This keeps routes predictable and prevents controllers from accumulating unrelated behavior.
+By default, organize each controller around one resource and use Laravel's standard resource actions: `index`, `show`, `create`, `store`, `edit`, `update`, and `destroy`. This convention keeps routes predictable and prevents controllers from accumulating unrelated behavior.
 
 When a controller needs a custom action such as `publish`, `approve`, or `archive`, first consider whether that behavior represents a separate resource. A focused resource controller gives the behavior its own authorization, validation, and middleware boundary.
 
@@ -90,9 +90,9 @@ class PublishedPodcastController extends Controller
 
 Treat a custom verb as a design signal, not proof that another controller is required. Use query parameters for simple filtering, and keep an explicit action route when modeling the operation as a resource would obscure the domain or conflict with established project conventions.
 
-## Keep Controllers Focused on HTTP Concerns
+## Keep controllers focused on HTTP concerns
 
-Controllers should coordinate HTTP input, authorization, validation, an application operation, and the response. Extract substantial or reusable business logic, but do not introduce an action or service merely to satisfy an arbitrary line limit.
+Controllers should coordinate HTTP input, authorization, validation, an application operation, and the response. Extract substantial or reusable business logic, but do not introduce an action or service only to satisfy an arbitrary line limit.
 
 ```php
 public function store(StorePostRequest $request, CreatePostAction $create): RedirectResponse
@@ -103,4 +103,4 @@ public function store(StorePostRequest $request, CreatePostAction $create): Redi
 }
 ```
 
-A form request can perform validation and authorization before the controller runs. Do not repeat its rules in the controller. Keep simple, endpoint-specific validation inline when extraction would not improve reuse or clarity; see the validation rules for detailed guidance.
+A form request can perform validation and authorization before the controller runs. Do not repeat its rules in the controller. Keep simple, endpoint-specific validation inline when extraction would not improve reuse or clarity. See the validation rules for details.

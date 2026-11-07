@@ -1,11 +1,16 @@
 ---
 name: speckit-companion-after-converge
-description: Capture converge finish (currentStep=converge, status unchanged) into .spec-context.json for the Companion GUI
+description: Capture converge finish (currentStep=converge, status unchanged) into
+  .spec-context.json for the Companion GUI
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: companion:commands/speckit.companion.after-converge.md
+  source: extension:companion
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion After Converge Skill
 
 # Capture Converge Finish
 

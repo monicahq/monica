@@ -1,8 +1,8 @@
-# Architecture Best Practices
+# Architecture best practices
 
-## Extract Focused Business Operations
+## Extract focused business operations
 
-Extract a discrete business operation into an action class when doing so makes the operation easier to reuse or test. An action class has no special meaning to Laravel; follow the project's naming and invocation conventions.
+Extract a discrete business operation into an action class when doing so makes the operation easier to reuse or test. An action class has no special meaning to Laravel. Follow the project's naming and invocation conventions.
 
 ```php
 class CreateOrderAction
@@ -19,9 +19,9 @@ class CreateOrderAction
 }
 ```
 
-## Inject Required Dependencies
+## Inject required dependencies
 
-Prefer constructor injection for dependencies required throughout an object's lifetime. Method injection is appropriate for dependencies needed by one controller action, listener, job handler, or other container-invoked method. Avoid `app()` and `resolve()` when normal injection can make a dependency explicit.
+Prefer constructor injection for dependencies required throughout an object's lifetime. Use method injection for a dependency that one controller action, listener, job handler, or other container-invoked method needs. Avoid `app()` and `resolve()` when normal injection can make a dependency explicit.
 
 Hidden dependency:
 
@@ -49,7 +49,7 @@ class OrderController extends Controller
 }
 ```
 
-## Depend on Contracts at Boundaries
+## Depend on contracts at boundaries
 
 Depend on contracts at system boundaries, such as payment gateways, notification channels, and external services, when testability or interchangeable implementations justify the abstraction.
 
@@ -82,7 +82,7 @@ Bind in a service provider:
 $this->app->bind(PaymentGateway::class, StripeGateway::class);
 ```
 
-## Specify a Deterministic Sort Order
+## Specify a deterministic sort order
 
 Without an explicit `ORDER BY`, row order is undefined. Choose an order that matches the feature, and add a unique tie-breaker when stable pagination matters.
 
@@ -101,9 +101,9 @@ $posts = Post::query()
     ->paginate();
 ```
 
-## Use Atomic Locks for Race Conditions
+## Use atomic locks for race conditions
 
-Use a lock when concurrent execution must be serialized. `Cache::lock()` provides an atomic lock when the configured cache store supports locks. `lockForUpdate()` locks selected database rows and must run inside a database transaction. These mechanisms solve different coordination problems. Set the lease (`10` below) longer than the callback can ever run: once it expires, another process can acquire the lock while the first is still working.
+Use a lock when concurrent processes must run one at a time. `Cache::lock()` provides an atomic lock when the configured cache store supports locks. `lockForUpdate()` locks selected database rows and must run inside a database transaction. These mechanisms solve different coordination problems. Set the lease (`10` below) longer than the callback can ever run. Once the lease expires, another process can acquire the lock while the first process is still working.
 
 ```php
 Cache::lock('order-processing-'.$order->id, 10)->block(5, function () use ($order) {
@@ -118,7 +118,7 @@ DB::transaction(function () use ($id) {
 });
 ```
 
-## Use `mb_*` String Functions
+## Use `mb_*` string functions
 
 When no Laravel helper exists, prefer multibyte-aware functions such as `mb_strlen()` and `mb_strtolower()` for UTF-8 text. For example, `strlen()` counts bytes, while `strtolower()` is not multibyte-aware.
 
@@ -140,9 +140,9 @@ Str::length('José');       // 4
 Str::lower('MÜNCHEN');     // 'münchen'
 ```
 
-## Use `defer()` for Post-Response Work
+## Use `defer()` for post-response work
 
-For lightweight work that does not need retries or crash durability, consider `defer()` instead of dispatching a job. During an HTTP request, the callback normally runs after the response has been sent but remains in the same PHP process.
+For lightweight work that does not need retries or crash durability, consider `defer()` instead of dispatching a job. During an HTTP request, the callback normally runs after Laravel sends the response, but it still runs in the same PHP process.
 
 Queued and durable:
 
@@ -158,7 +158,7 @@ defer(fn () => PageView::create(['page_id' => $page->id, 'user_id' => auth()->id
 
 Use a queued job when the work needs retries, queue controls, or durability across process failures.
 
-## Use `Context` for Request-Scoped Data
+## Use `Context` for request-scoped data
 
 The `Context` facade makes contextual data available across the current execution lifecycle without manually passing arguments through every layer.
 
@@ -170,9 +170,9 @@ Context::add('tenant_id', $request->header('X-Tenant-ID'));
 $tenantId = Context::get('tenant_id');
 ```
 
-Visible context is added to log context, and both visible and hidden context are captured and restored for queued jobs. Use `Context::addHidden()` for data that should propagate to queued jobs without appearing in logs. Do not place secrets in context unless that propagation is intended.
+Laravel adds visible context to log context. It also captures both visible and hidden context and restores them for queued jobs. Use `Context::addHidden()` for data that should propagate to queued jobs without appearing in logs. Do not place secrets in context unless you intend that propagation.
 
-## Use `Concurrency::run()` for Parallel Execution
+## Use `Concurrency::run()` for parallel execution
 
 Run independent operations concurrently through Laravel's configured concurrency driver.
 
@@ -185,9 +185,9 @@ use Illuminate\Support\Facades\Concurrency;
 ]);
 ```
 
-With a process-based driver, each closure runs in a separate PHP process that boots the application. Use concurrency when independent database queries, HTTP client calls, or computations benefit enough to offset process and serialization overhead. The `sync` driver executes closures sequentially and is useful primarily during testing.
+With a process-based driver, each closure runs in a separate PHP process that boots the application. Use concurrency when independent database queries, HTTP client calls, or computations benefit enough to offset process and serialization overhead. The `sync` driver runs closures sequentially and is mainly useful during testing.
 
-## Follow Framework Conventions
+## Follow framework conventions
 
 Follow Laravel conventions unless the domain or an existing schema requires an override.
 

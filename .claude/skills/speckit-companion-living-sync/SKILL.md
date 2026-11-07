@@ -1,11 +1,17 @@
 ---
 name: speckit-companion-living-sync
-description: Sync living specs from your current changes — group working-tree changes (uncommitted included) by capability and update every affected spec in one pass (opt-in, update-not-regenerate, never halts)
+description: Sync living specs from your current changes — group working-tree changes
+  (uncommitted included) by capability and update every affected spec in one pass
+  (opt-in, update-not-regenerate, never halts)
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: companion:commands/speckit.companion.living-sync.md
+  source: extension:companion
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion Living Sync Skill
 
 # Sync Living Specs
 

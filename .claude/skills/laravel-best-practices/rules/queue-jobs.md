@@ -1,6 +1,6 @@
-# Queue and Job Best Practices
+# Queue and job best practices
 
-## Keep Reservation Time Longer Than Execution Time
+## Keep reservation time longer than execution time
 
 For queue drivers that use Laravel's `retry_after` setting, configure it to exceed the longest worker or job timeout by a safety margin. When a reservation expires, another worker can reserve the same job while the first process is still running. Keep the worker's `--timeout` several seconds shorter than `retry_after`.
 
@@ -12,9 +12,9 @@ public $timeout = 120;
 'retry_after' => 150,
 ```
 
-Amazon Simple Queue Service uses its visibility timeout instead of Laravel's `retry_after`; configure that timeout at the queue level. Because workers can also stop after side effects but before acknowledging a job, make important jobs idempotent even with correct timeout settings.
+Amazon Simple Queue Service uses its visibility timeout instead of Laravel's `retry_after`. Configure that timeout at the queue level. Because workers can also stop after side effects but before acknowledging a job, make important jobs idempotent even with correct timeout settings.
 
-## Back Off Transient Failures
+## Back off transient failures
 
 Use progressively longer delays when a dependency needs time to recover. Do not retry permanent validation or business-rule failures.
 
@@ -29,9 +29,9 @@ class SyncWithStripe implements ShouldQueue
 
 Rate-limiting and exception-throttling middleware can release jobs back to the queue. Released attempts may still count toward the maximum attempt limit, so configure `$tries` or `retryUntil()` to allow the intended retry window.
 
-## Use Unique Jobs for Dispatch Deduplication
+## Use unique jobs for dispatch deduplication
 
-Implement `ShouldBeUnique` when only one queued instance of a logical job should exist. Uniqueness uses a cache lock and is not a substitute for idempotent processing or a database constraint.
+Implement `ShouldBeUnique` when only one queued instance of a logical job should exist. Uniqueness uses a cache lock. It does not replace idempotent processing or a database constraint.
 
 ```php
 class GenerateInvoice implements ShouldQueue, ShouldBeUnique
@@ -47,7 +47,7 @@ class GenerateInvoice implements ShouldQueue, ShouldBeUnique
 
 All dispatching processes must use a shared cache that supports locks. Unique-job constraints do not apply to jobs within batches.
 
-Use `ShouldBeUniqueUntilProcessing` only when the lock should be released immediately before processing begins, allowing another instance to be dispatched while the first is running:
+Use `ShouldBeUniqueUntilProcessing` only when the lock should release immediately before processing begins. Another instance can then be dispatched while the first is running:
 
 ```php
 class UpdateSearchIndex implements ShouldQueue, ShouldBeUniqueUntilProcessing
@@ -56,11 +56,11 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeUniqueUntilProcessing
 }
 ```
 
-## Handle Terminal Failure When Needed
+## Handle terminal failure when needed
 
 Implement `failed()` when the application must update state, alert an operator, or record domain-specific context after all attempts are exhausted. Logging every failure in each job may duplicate the queue system's failure reporting.
 
-Laravel invokes `failed()` on a new job instance, so mutations made to the job during `handle()` are not available there.
+Laravel invokes `failed()` on a new job instance, so changes made to the job during `handle()` are not available in `failed()`.
 
 ```php
 public function failed(?Throwable $exception): void
@@ -74,7 +74,7 @@ public function failed(?Throwable $exception): void
 }
 ```
 
-## Rate Limit External Calls
+## Rate limit external calls
 
 Use queue middleware such as `RateLimited` when jobs share a third-party API quota. Define the named limiter and choose release delays and attempt limits together.
 
@@ -85,9 +85,9 @@ public function middleware(): array
 }
 ```
 
-## Batch Jobs for Group Coordination
+## Batch jobs for group coordination
 
-Use `Bus::batch()` to monitor a group of jobs and run callbacks when the batch completes or encounters failures. A batch is not a database transaction: completed jobs are not rolled back when another job fails. By default, one failed job cancels the batch; call `allowFailures()` only when partial failure is acceptable.
+Use `Bus::batch()` to monitor a group of jobs and run callbacks when the batch completes or encounters failures. A batch is not a database transaction. Laravel does not roll back completed jobs when another job fails. By default, one failed job cancels the batch. Call `allowFailures()` only when partial failure is acceptable.
 
 ```php
 Bus::batch([
@@ -101,9 +101,9 @@ Bus::batch([
     ->dispatch();
 ```
 
-## Configure Time-Based Retry Limits Deliberately
+## Configure time-based retry limits deliberately
 
-Use `retryUntil()` as the time-based alternative to a maximum attempt count. Laravel may attempt the job any number of times until this deadline, subject to other failure conditions such as maximum exceptions. The method takes precedence over attempt-based limits, so setting `$tries = 0` is not required.
+Use `retryUntil()` as the time-based alternative to a maximum attempt count. Laravel may attempt the job any number of times until this deadline, subject to other failure conditions such as maximum exceptions. `retryUntil()` takes precedence over attempt-based limits, so you do not need to set `$tries = 0`.
 
 ```php
 public function retryUntil(): DateTimeInterface
@@ -112,6 +112,6 @@ public function retryUntil(): DateTimeInterface
 }
 ```
 
-## Use Horizon for Redis Queue Operations
+## Use Horizon for Redis queue operations
 
 Laravel Horizon provides monitoring, balancing, metrics, and supervisor configuration for Redis queues. It does not support non-Redis queue drivers.

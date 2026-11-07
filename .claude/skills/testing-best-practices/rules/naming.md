@@ -1,22 +1,23 @@
-# Naming and Structure
+# Naming and structure
 
-## File Layout
+## File layout
 
 - Name each test file `{ClassName}Test.php`.
 - Place each test file at the same relative path as the class under test. The class `app/Actions/DeleteTeam.php` gets the test `tests/Unit/Actions/DeleteTeamTest.php`.
 - Follow the project's convention for fixture files. If none exists, put fixtures in `tests/Fixtures/` and load them by path.
 - Move large literal values out of the test body and into fixture files.
 
-## Test Class and Methods
+## Test class and methods
 
-- Extend the base `TestCase` of the project in each test class.
+- Extend the base `TestCase` of the project in each feature test class.
+- Extend `PHPUnit\Framework\TestCase` in each unit test class, as the stub of `php artisan make:test --unit` does. A unit test covers logic that does not use the framework, so it does not boot the application.
 - Give each test method the prefix `test_`, or add the `#[Test]` attribute to the method. Use the convention of the other files in the same directory.
 
-## Naming Tests
+## Naming tests
 
 The name of a test method is a specification. Separate the words with underscores. State the user-visible result and the condition that causes it.
 
-- Name the behavior, and not the method under test. The file name already gives the class.
+- Name the behavior, not the method under test. The file name already gives the class.
 - Give the exact status code in the name of a test for an API error.
 - Do not write `given`, `when`, or `then` in the name.
 
@@ -32,6 +33,6 @@ Do not write `test_store()`, `test_it_works()`, or `test_validation()`, because 
 
 ## Grouping
 
-Write one test class for each class under test. Write a separate test class if one file covers separate actions in a lifecycle, such as `StoreOrderControllerTest` and `UpdateOrderControllerTest`.
+Write one test class for each class under test. If one file covers separate actions in a lifecycle, write a separate test class for each action, such as `StoreOrderControllerTest` and `UpdateOrderControllerTest`.
 
 Use the `#[Group]` attribute to mark the tests that a run must select or must skip. Do not use a group to give structure to a file, because a class gives the structure.

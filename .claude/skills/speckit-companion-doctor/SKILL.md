@@ -1,11 +1,18 @@
 ---
 name: speckit-companion-doctor
-description: Report on a spec's run health — unfinished steps, unjournaled tasks, step bleed, drift you can judge, a step that closed having verified nothing, a step that closed without the file it promised, and why completion did not land (read-only, retroactive, never halts)
+description: Report on a spec's run health — unfinished steps, unjournaled tasks,
+  step bleed, drift you can judge, a step that closed having verified nothing, a step
+  that closed without the file it promised, and why completion did not land (read-only,
+  retroactive, never halts)
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: companion:commands/speckit.companion.doctor.md
+  source: extension:companion
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion Doctor Skill
 
 # Pipeline Doctor
 

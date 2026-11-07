@@ -1,8 +1,8 @@
-# Error Handling Best Practices
+# Error handling best practices
 
-## Choose Where to Report and Render Exceptions
+## Choose where to report and render exceptions
 
-Laravel supports exception-specific methods and centralized handler callbacks. Follow the pattern already established by the project.
+Laravel supports exception-specific methods and centralized handler callbacks. Follow the pattern the project already uses.
 
 Exception methods keep behavior beside the exception definition:
 
@@ -36,7 +36,7 @@ Centralized callbacks in `bootstrap/app.php` keep the application's exception po
 
 An exception's `report()` method suppresses Laravel's default reporting unless it returns `false`. A report callback allows default reporting unless it returns `false` or is chained with `stop()`. Use `ShouldntReport` or `dontReport()` when the handler should not report an exception at all. By contrast, returning `false` from a `render()` method or render callback defers to Laravel's default rendering.
 
-## Mark Exceptions the Handler Should Not Report
+## Mark exceptions the handler should not report
 
 Implementing `ShouldntReport` prevents Laravel's exception handler from reporting that exception type and keeps the policy visible on the class. It does not prevent application code from logging the exception explicitly.
 
@@ -44,17 +44,17 @@ Implementing `ShouldntReport` prevents Laravel's exception handler from reportin
 class PodcastProcessingException extends Exception implements ShouldntReport {}
 ```
 
-## Throttle High-Volume Exception Reports
+## Throttle high-volume exception reports
 
 A failing integration can flood logs or error tracking. Configure `throttle()` with a `Lottery` or `Limit` result to sample or rate-limit matching exception reports. Choose keys deliberately when separate exception classes, tenants, or integrations need independent limits.
 
-## Prevent Duplicate Reports of One Exception Instance
+## Prevent duplicate reports of one exception instance
 
 Enable `dontReportDuplicates()` when the same exception object may pass through multiple `report($exception)` calls. It deduplicates by object identity, not by exception class or message.
 
-## Define JSON Rendering for API Routes
+## Define JSON rendering for API routes
 
-Laravel normally uses request content negotiation to decide whether to render an exception as JSON. If the application's API contract requires JSON regardless of the `Accept` header, define that policy explicitly for the relevant routes.
+By default, Laravel uses request content negotiation to decide whether to render an exception as JSON. If the application's API contract requires JSON regardless of the `Accept` header, define that policy explicitly for the relevant routes.
 
 ```php
 $exceptions->shouldRenderJsonWhen(function (Request $request, Throwable $e) {
@@ -62,7 +62,7 @@ $exceptions->shouldRenderJsonWhen(function (Request $request, Throwable $e) {
 });
 ```
 
-## Add Context to Exception Classes
+## Add context to exception classes
 
 Attach structured data to an exception through `context()`. Laravel merges that data into the exception's log context when the handler reports it.
 

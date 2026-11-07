@@ -1,11 +1,16 @@
 ---
 name: speckit-companion-living-coverage
-description: Report living-spec requirement→test coverage — per requirement, whether its coverage tier maps a test (opt-in, read-only, never halts)
+description: Report living-spec requirement→test coverage — per requirement, whether
+  its coverage tier maps a test (opt-in, read-only, never halts)
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: companion:commands/speckit.companion.living-coverage.md
+  source: extension:companion
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion Living Coverage Skill
 
 # Spec Coverage
 
