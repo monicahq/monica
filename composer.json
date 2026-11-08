@@ -53,7 +53,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.4",
-        "brianium/paratest": "7.26.0",
+        "brianium/paratest": "^7.26",
         "fakerphp/faker": "^1.23",
         "http-interop/http-factory-guzzle": "^1.2",
         "larastan/larastan": "^3.9.2",

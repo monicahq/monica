@@ -28,7 +28,7 @@
     },
     "optionalDependencies": {
         "@laravel/multiplex": "^0.4.5",
-        "@rollup/rollup-linux-x64-gnu": "4.9.5",
+        "@rollup/rollup-linux-x64-gnu": "^4.68.0",
         "@tailwindcss/oxide-linux-x64-gnu": "^4.3.5",
         "lightningcss-linux-x64-gnu": "^1.33.0"
     }

@@ -9,8 +9,8 @@ use App\Exceptions\AccountAlreadyOwnsTheProduct;
 use App\Exceptions\ProviderUnreachable;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -28,13 +28,14 @@ class CheckoutController extends Controller
         } catch (AccountAlreadyOwnsTheProduct $e) {
             return back()->withErrors(['offer' => __('That plan is not one this account can take up.')]);
         } catch (ProviderUnreachable $e) {
-            Log::error("CheckoutController: Provider unreachable: " . $e->getMessage(), [
+            Log::error('CheckoutController: Provider unreachable: '.$e->getMessage(), [
                 'accountId' => $account->id,
                 'stripeId' => $account->stripe_id,
                 'priceId' => $price,
                 'currency' => $currency,
                 'exception' => $e,
             ]);
+
             return back()->withErrors(['offer' => __('We could not reach Stripe just now. Nothing was charged. Please try again in a moment.')]);
         }
 

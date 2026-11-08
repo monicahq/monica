@@ -80,7 +80,7 @@ class UpgradeSubscription
         try {
             $schedule = $schedules->create(['from_subscription' => $this->subscription->stripe_id]);
         } catch (ApiErrorException $exception) {
-            Log::error("[UpgradeSubscription] Stripe refused the change: " . $exception->getMessage(), [
+            Log::error('[UpgradeSubscription] Stripe refused the change: '.$exception->getMessage(), [
                 'accountId' => $this->user->account->id,
                 'stripeId' => $this->subscription->stripe_id,
                 'priceId' => $this->priceId,
@@ -120,7 +120,7 @@ class UpgradeSubscription
             // A schedule left attached would refuse the next attempt and every cancellation.
             rescue(fn () => $schedules->release($schedule->id));
 
-            Log::error("[UpgradeSubscription] Failed to update schedule, released schedule: " . $exception->getMessage(), [
+            Log::error('[UpgradeSubscription] Failed to update schedule, released schedule: '.$exception->getMessage(), [
                 'accountId' => $this->user->account->id,
                 'stripeId' => $this->subscription->stripe_id,
                 'priceId' => $this->priceId,

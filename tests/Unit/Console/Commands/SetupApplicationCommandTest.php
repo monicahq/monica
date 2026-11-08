@@ -10,6 +10,7 @@ use Laravel\Passport\Passport;
 use Laravel\Scout\EngineManager;
 use Laravel\Scout\Engines\MeilisearchEngine;
 use Override;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -132,6 +133,7 @@ class SetupApplicationCommandTest extends TestCase
     }
 
     #[Test]
+    #[RunInSeparateProcess]
     public function it_refuses_to_run_in_production_without_being_forced(): void
     {
         $this->app->detectEnvironment(fn (): string => 'production');
