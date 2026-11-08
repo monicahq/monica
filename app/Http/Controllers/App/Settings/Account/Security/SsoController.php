@@ -28,7 +28,10 @@ class SsoController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         try {
-            new DisconnectProviderFromUser(user: $request->user())->execute();
+            new DisconnectProviderFromUser(
+                user: $request->user(),
+                provider: SsoProviderEnum::from((string) $request->route()->parameter('provider')),
+            )->execute();
         } catch (ValidationException $exception) {
             return redirect()->route('settings.security.index')
                 ->withErrors(['provider' => $exception->getMessage()]);

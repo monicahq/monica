@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Settings\Account\Security;
 
 use App\Enums\SsoProviderEnum;
+use App\Models\ProviderConnection;
 use App\Models\SecurityKey;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Security\SecurityViewModel;
@@ -252,75 +253,63 @@ class SecurityViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_names_the_provider_that_signs_the_user_in(): void
+    public function it_lists_every_provider_the_instance_offers_whether_or_not_it_is_connected(): void
     {
         $this->offer('github');
+        $this->offer('google');
 
-        $user = User::factory()->create(['sso_provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']);
+        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
 
-        $connected = new SecurityViewModel(user: $user)->connectedProvider();
+        $providers = new SecurityViewModel(user: $user)->providers();
 
-        $this->assertEquals('GitHub', $connected['name']);
-        $this->assertTrue($connected['available']);
+        $this->assertEquals(['GitHub', 'Google'], array_column($providers, 'name'));
+        $this->assertEquals([true, false], array_column($providers, 'connected'));
+        $this->assertEquals(route('settings.sso.redirect', ['provider' => 'google']), $providers[1]['connectUrl']);
+        $this->assertEquals(route('settings.sso.destroy', ['provider' => 'github']), $providers[0]['disconnectUrl']);
     }
 
     #[Test]
-    public function it_keeps_naming_a_provider_the_instance_has_stopped_offering(): void
+    public function it_keeps_listing_a_connected_provider_the_instance_has_stopped_offering(): void
     {
         config(['monica.sso_installed' => []]);
 
-        $user = User::factory()->create(['sso_provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']);
+        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
 
-        $connected = new SecurityViewModel(user: $user)->connectedProvider();
+        $providers = new SecurityViewModel(user: $user)->providers();
 
-        $this->assertEquals('GitHub', $connected['name']);
-        $this->assertFalse($connected['available']);
+        $this->assertCount(1, $providers);
+        $this->assertEquals('GitHub', $providers[0]['name']);
+        $this->assertTrue($providers[0]['connected']);
+        $this->assertFalse($providers[0]['available']);
     }
 
     #[Test]
-    public function it_names_no_provider_when_none_is_connected(): void
+    public function it_lists_no_provider_when_the_instance_offers_none_and_none_is_connected(): void
     {
-        $this->assertNull(new SecurityViewModel(user: User::factory()->create())->connectedProvider());
-    }
+        config(['monica.sso_installed' => []]);
 
-    #[Test]
-    public function it_offers_what_the_user_could_connect(): void
-    {
-        $this->offer('github');
-
-        $offered = new SecurityViewModel(user: User::factory()->create())->providersToConnect();
-
-        $this->assertCount(1, $offered);
-        $this->assertEquals('GitHub', $offered[0]['name']);
-        $this->assertEquals(route('settings.sso.redirect', ['provider' => 'github']), $offered[0]['url']);
-    }
-
-    #[Test]
-    public function it_offers_nothing_more_once_one_is_connected(): void
-    {
-        $this->offer('github');
-
-        $user = User::factory()->create(['sso_provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']);
-
-        $this->assertEquals([], new SecurityViewModel(user: $user)->providersToConnect());
+        $this->assertEquals([], new SecurityViewModel(user: User::factory()->create())->providers());
     }
 
     #[Test]
     public function it_allows_disconnecting_only_while_something_else_signs_the_user_in(): void
     {
-        $withPassword = User::factory()->create(['sso_provider' => SsoProviderEnum::GitHub, 'sso_id' => '1']);
-        $withNothingElse = User::factory()->singleSignOn()->create();
-        $withNoProvider = User::factory()->create();
+        $this->offer('github');
+        $this->offer('google');
 
-        $this->assertTrue(new SecurityViewModel(user: $withPassword)->canDisconnectTheProvider());
-        $this->assertFalse(new SecurityViewModel(user: $withNothingElse)->canDisconnectTheProvider());
-        $this->assertFalse(new SecurityViewModel(user: $withNoProvider)->canDisconnectTheProvider());
+        $withPassword = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '1']))->create();
+        $withNothingElse = User::factory()->singleSignOn()->create();
+        $withAnotherProvider = User::factory()->singleSignOn()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '2']))->create();
+
+        $this->assertEquals([true, false], array_column(new SecurityViewModel(user: $withPassword)->providers(), 'canDisconnect'));
+        $this->assertEquals([false, false], array_column(new SecurityViewModel(user: $withNothingElse)->providers(), 'canDisconnect'));
+        $this->assertEquals([true, true], array_column(new SecurityViewModel(user: $withAnotherProvider)->providers(), 'canDisconnect'));
     }
 
     #[Test]
     public function it_lets_a_connected_user_remove_their_password(): void
     {
-        $user = User::factory()->create(['sso_provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']);
+        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
 
         $this->assertTrue(new SecurityViewModel(user: $user)->canRemoveThePassword());
     }

@@ -9,6 +9,7 @@ use App\Enums\SsoProviderEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Passkey;
+use App\Models\ProviderConnection;
 use App\Models\User;
 use App\Notifications\SignInProviderDisconnected;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,18 +29,11 @@ class DisconnectProviderFromUserTest extends TestCase
         Queue::fake();
         Notification::fake();
 
-        $user = User::factory()->create([
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
-        ]);
+        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
 
-        new DisconnectProviderFromUser(user: $user)->execute();
+        new DisconnectProviderFromUser(user: $user, provider: SsoProviderEnum::GitHub)->execute();
 
-        $this->assertDatabaseHas('users', [
-            'id' => $user->id,
-            'sso_provider' => null,
-            'sso_id' => null,
-        ]);
+        $this->assertDatabaseMissing('provider_connections', ['user_id' => $user->id]);
         $this->assertNotNull($user->refresh()->password);
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserSsoDisconnected);
         Notification::assertSentTo($user, SignInProviderDisconnected::class);
@@ -54,9 +48,29 @@ class DisconnectProviderFromUserTest extends TestCase
         $user = User::factory()->singleSignOn()->create();
         Passkey::factory()->create(['user_id' => $user->id]);
 
-        new DisconnectProviderFromUser(user: $user->refresh())->execute();
+        new DisconnectProviderFromUser(user: $user->refresh(), provider: SsoProviderEnum::Google)->execute();
 
-        $this->assertNull($user->refresh()->sso_provider);
+        $this->assertDatabaseMissing('provider_connections', ['user_id' => $user->id]);
+    }
+
+    #[Test]
+    public function it_disconnects_one_provider_while_another_one_signs_the_user_in(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        config([
+            'monica.sso_installed' => SsoProviderEnum::values(),
+            'services.github.client_id' => 'dunder-mifflin-scranton',
+            'services.github.client_secret' => 'that-is-what-she-said',
+            'services.github.redirect' => 'https://monica.test/sso/github/callback',
+        ]);
+
+        $user = User::factory()->singleSignOn()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
+
+        new DisconnectProviderFromUser(user: $user, provider: SsoProviderEnum::Google)->execute();
+
+        $this->assertDatabaseMissing('provider_connections', ['user_id' => $user->id, 'provider' => 'google']);
+        $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'provider' => 'github']);
     }
 
     #[Test]
@@ -69,7 +83,7 @@ class DisconnectProviderFromUserTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        new DisconnectProviderFromUser(user: $user)->execute();
+        new DisconnectProviderFromUser(user: $user, provider: SsoProviderEnum::Google)->execute();
     }
 
     #[Test]
@@ -81,11 +95,11 @@ class DisconnectProviderFromUserTest extends TestCase
         $user = User::factory()->singleSignOn()->create();
 
         try {
-            new DisconnectProviderFromUser(user: $user)->execute();
+            new DisconnectProviderFromUser(user: $user, provider: SsoProviderEnum::Google)->execute();
         } catch (ValidationException) {
         }
 
-        $this->assertEquals(SsoProviderEnum::Google, $user->refresh()->sso_provider);
+        $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'provider' => 'google']);
         Notification::assertNothingSent();
     }
 
@@ -96,6 +110,6 @@ class DisconnectProviderFromUserTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        new DisconnectProviderFromUser(user: User::factory()->create())->execute();
+        new DisconnectProviderFromUser(user: User::factory()->create(), provider: SsoProviderEnum::GitHub)->execute();
     }
 }

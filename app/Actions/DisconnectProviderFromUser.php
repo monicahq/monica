@@ -4,42 +4,62 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\SsoProviderEnum;
 use App\Enums\UserActionEnum;
+use App\Helpers\SsoProviderAvailability;
 use App\Jobs\LogUserAction;
+use App\Models\ProviderConnection;
 use App\Models\User;
 use App\Notifications\SignInProviderDisconnected;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Disconnect the provider a user signs in through, which is refused while it is
+ * Disconnect one provider a user signs in through, which is refused while it is
  * the only thing that still signs them in.
  */
 class DisconnectProviderFromUser
 {
+    private ProviderConnection $connection;
+
     public function __construct(
         private readonly User $user,
+        private readonly SsoProviderEnum $provider,
     ) {}
 
     public function execute(): User
     {
         $this->validate();
-        $provider = $this->user->sso_provider;
         $this->disconnect();
         $this->log();
-        $this->notify($provider?->brandName() ?? '');
+        $this->notify();
 
         return $this->user;
     }
 
     private function validate(): void
     {
-        if ($this->user->sso_provider === null) {
+        $connection = $this->user->providerConnections()
+            ->where('provider', $this->provider)
+            ->first();
+
+        if ($connection === null) {
             throw ValidationException::withMessages([
                 'provider' => __('Your account signs in through no provider.'),
             ]);
         }
 
+        $this->connection = $connection;
+
         if ($this->user->password !== null || $this->user->hasPasskeys()) {
+            return;
+        }
+
+        $anotherProviderSignsIn = $this->user->providerConnections()
+            ->whereKeyNot($this->connection->id)
+            ->get()
+            ->contains(fn (ProviderConnection $other): bool => SsoProviderAvailability::isAvailable($other->provider));
+
+        if ($anotherProviderSignsIn) {
             return;
         }
 
@@ -50,9 +70,7 @@ class DisconnectProviderFromUser
 
     private function disconnect(): void
     {
-        $this->user->sso_provider = null;
-        $this->user->sso_id = null;
-        $this->user->save();
+        $this->connection->delete();
     }
 
     private function log(): void
@@ -64,8 +82,8 @@ class DisconnectProviderFromUser
         );
     }
 
-    private function notify(string $provider): void
+    private function notify(): void
     {
-        $this->user->notify(new SignInProviderDisconnected(provider: $provider));
+        $this->user->notify(new SignInProviderDisconnected(provider: $this->provider->brandName()));
     }
 }

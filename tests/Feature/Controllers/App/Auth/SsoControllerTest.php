@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Auth;
 
 use App\Enums\SsoProviderEnum;
+use App\Models\ProviderConnection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
@@ -38,10 +39,7 @@ class SsoControllerTest extends TestCase
         Notification::fake();
         $this->offer('github');
 
-        $user = User::factory()->create([
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
-        ]);
+        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
         $this->mockUser('github');
 
         $this->get(route('auth.sso.callback', ['provider' => 'github']))
@@ -57,10 +55,7 @@ class SsoControllerTest extends TestCase
         Notification::fake();
         $this->offer('github');
 
-        User::factory()->create([
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
-        ]);
+        User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
         $this->mockUser('github');
 
         $this->get(route('auth.sso.callback', ['provider' => 'github']))
@@ -81,9 +76,8 @@ class SsoControllerTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'email' => 'michael.scott@dundermifflin.com',
-            'sso_provider' => 'github',
-            'sso_id' => '108120124',
         ]);
+        $this->assertDatabaseHas('provider_connections', ['provider' => 'github', 'sso_id' => '108120124']);
         $this->assertAuthenticated();
     }
 
@@ -107,10 +101,7 @@ class SsoControllerTest extends TestCase
         Notification::fake();
         $this->offer('github');
 
-        User::factory()->twoFactor()->create([
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
-        ]);
+        User::factory()->twoFactor()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
         $this->mockUser('github');
 
         $this->get(route('auth.sso.callback', ['provider' => 'github']))
@@ -129,10 +120,7 @@ class SsoControllerTest extends TestCase
         Notification::fake();
         $this->offer('github');
 
-        User::factory()->twoFactor()->create([
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
-        ]);
+        User::factory()->twoFactor()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
         $this->mockUser('github');
 
         $this->get(route('auth.sso.callback', ['provider' => 'github']))
@@ -213,7 +201,7 @@ class SsoControllerTest extends TestCase
         $user = User::query()->firstOrFail();
 
         $this->assertNull($user->password);
-        $this->assertEquals('108120124', $user->sso_id);
+        $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'sso_id' => '108120124']);
         $this->assertEmpty(array_intersect(
             ['access_token', 'refresh_token', 'token'],
             array_keys($user->getAttributes()),

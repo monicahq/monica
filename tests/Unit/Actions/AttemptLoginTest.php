@@ -9,6 +9,7 @@ use App\Enums\SsoProviderEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
+use App\Models\ProviderConnection;
 use App\Models\User;
 use App\Notifications\LoginFailed;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -462,10 +463,8 @@ class AttemptLoginTest extends TestCase
     {
         Queue::fake();
 
-        $user = User::factory()->create([
+        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create([
             'email' => 'michael.scott@dundermifflin.com',
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
         ]);
 
         $signedIn = new AttemptLogin(

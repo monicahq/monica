@@ -8,6 +8,7 @@ use App\Enums\NameOrderEnum;
 use App\Enums\SsoProviderEnum;
 use App\Models\Account;
 use App\Models\Passkey;
+use App\Models\ProviderConnection;
 use App\Models\SecurityKey;
 use App\Models\User;
 use App\Models\Vault;
@@ -89,17 +90,6 @@ class UserTest extends TestCase
 
         $this->assertTrue($withSso->usesSingleSignOn());
         $this->assertFalse($withPassword->usesSingleSignOn());
-    }
-
-    #[Test]
-    public function it_knows_which_provider_it_signs_in_with(): void
-    {
-        $withSso = User::factory()->singleSignOn()->create();
-        $withPassword = User::factory()->create();
-
-        $this->assertTrue($withSso->signsInWith(SsoProviderEnum::Google));
-        $this->assertFalse($withSso->signsInWith(SsoProviderEnum::GitHub));
-        $this->assertFalse($withPassword->signsInWith(SsoProviderEnum::Google));
     }
 
     #[Test]
@@ -209,10 +199,7 @@ class UserTest extends TestCase
     #[Test]
     public function it_does_not_call_a_password_holder_passwordless_once_they_connect_a_provider(): void
     {
-        $user = User::factory()->create([
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
-        ]);
+        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
 
         $this->assertNotNull($user->password);
         $this->assertTrue($user->usesSingleSignOn());

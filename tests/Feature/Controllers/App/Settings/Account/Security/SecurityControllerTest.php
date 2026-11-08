@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Security;
 
+use App\Enums\SsoProviderEnum;
 use App\Models\Passkey;
+use App\Models\ProviderConnection;
 use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -289,5 +291,28 @@ class SecurityControllerTest extends TestCase
             'payload' => '',
             'last_activity' => now()->getTimestamp(),
         ]);
+    }
+
+    #[Test]
+    public function it_still_offers_the_other_providers_once_one_is_connected(): void
+    {
+        config(['monica.sso_installed' => SsoProviderEnum::values()]);
+
+        foreach (['github', 'google'] as $provider) {
+            config([
+                "services.{$provider}.client_id" => 'dunder-mifflin-scranton',
+                "services.{$provider}.client_secret" => 'that-is-what-she-said',
+                "services.{$provider}.redirect" => "https://monica.test/sso/{$provider}/callback",
+            ]);
+        }
+
+        $user = User::factory()->has(ProviderConnection::factory())->create();
+
+        $response = $this->actingAs($user)->get(route('settings.security.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Signs you in.', escape: false);
+        $response->assertSee(route('settings.sso.destroy', ['provider' => 'google']), escape: false);
+        $response->assertSee(route('settings.sso.redirect', ['provider' => 'github']), escape: false);
     }
 }

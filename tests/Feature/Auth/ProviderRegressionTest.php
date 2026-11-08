@@ -6,6 +6,7 @@ namespace Tests\Feature\Auth;
 
 use App\Enums\SsoProviderEnum;
 use App\Models\MagicLink;
+use App\Models\ProviderConnection;
 use App\Models\User;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -77,10 +78,8 @@ class ProviderRegressionTest extends TestCase
     {
         Queue::fake();
 
-        User::factory()->create([
+        User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::Google, 'sso_id' => '108120124']))->create([
             'email' => 'michael.scott@dundermifflin.com',
-            'sso_provider' => SsoProviderEnum::Google,
-            'sso_id' => '108120124',
         ]);
 
         $response = $this->post(route('auth.login.create'), [

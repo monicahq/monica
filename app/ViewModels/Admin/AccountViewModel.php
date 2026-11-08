@@ -6,6 +6,7 @@ namespace App\ViewModels\Admin;
 
 use App\Helpers\StorageSize;
 use App\Models\Account;
+use App\Models\ProviderConnection;
 use App\Models\StripeOrder;
 use App\Models\User;
 use Carbon\CarbonImmutable;
@@ -130,7 +131,11 @@ class AccountViewModel
             return __('With a password');
         }
 
-        return __('Single sign-on through :provider', ['provider' => $this->user()->sso_provider?->brandName()]);
+        $providers = $this->user()->providerConnections
+            ->map(fn (ProviderConnection $connection): string => $connection->provider->brandName())
+            ->implode(', ');
+
+        return __('Single sign-on through :provider', ['provider' => $providers]);
     }
 
     public function twoFactorLine(): string

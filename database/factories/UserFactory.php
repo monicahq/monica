@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\NameOrderEnum;
-use App\Enums\SsoProviderEnum;
 use App\Enums\TimeFormatEnum;
 use App\Models\Account;
+use App\Models\ProviderConnection;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -64,9 +64,7 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes): array => [
             'password' => null,
             'password_changed_at' => null,
-            'sso_provider' => SsoProviderEnum::Google,
-            'sso_id' => (string) fake()->randomNumber(8),
-        ]);
+        ])->has(ProviderConnection::factory());
     }
 
     public function familyNameFirst(): static

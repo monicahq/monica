@@ -21,8 +21,6 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable()->comment('when the email address was verified');
             $table->string('password')->nullable()->comment('hashed password, null when the user signed up through SSO or a passkey');
             $table->datetime('password_changed_at')->nullable()->comment('when the user last changed or set their password, null while they have none');
-            $table->string('sso_provider')->nullable()->comment('SSO provider the user signs in with');
-            $table->string('sso_id')->nullable()->comment('identifier the SSO provider gives this person and promises not to reuse');
             $table->boolean('is_active')->default(true)->comment('whether the user can sign in, so an account can be suspended without being deleted');
             $table->string('locale', 12)->nullable()->comment('language of the interface, falls back to the language of the application');
             $table->string('timezone', 64)->default('UTC')->comment('IANA time zone every date is rendered in, and the one a new reminder rule is frozen with');
@@ -46,8 +44,6 @@ return new class extends Migration
             $table->rememberToken()->comment('remember token');
             $table->timestamps();
             $table->softDeletes();
-
-            $table->unique(['sso_provider', 'sso_id']);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table): void {

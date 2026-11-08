@@ -64,8 +64,7 @@ class CreateUserTest extends TestCase
 
         $this->assertNull($user->password);
         $this->assertNull($user->password_changed_at);
-        $this->assertEquals(SsoProviderEnum::Google, $user->sso_provider);
-        $this->assertEquals('108120124', $user->sso_id);
+        $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'provider' => 'google', 'sso_id' => '108120124']);
         $this->assertTrue($user->usesSingleSignOn());
         $this->assertNull($user->email_verified_at);
     }

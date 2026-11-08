@@ -11,6 +11,7 @@ use App\Helpers\FlagState;
 use App\Helpers\PasskeyAvailability;
 use App\Helpers\PasswordRequirements;
 use App\Helpers\SsoProviderAvailability;
+use App\Models\ProviderConnection;
 use App\Models\SecurityKey;
 use App\Models\User;
 use App\ViewModels\Auth\ConfirmPasswordViewModel;
@@ -223,46 +224,58 @@ class SecurityViewModel
     }
 
     /**
-     * Get the provider signing this user in, or null when none does.
+     * Get every provider this instance offers, with the ones the user connected,
+     * and a connected one the instance no longer offers so it can be said so.
      *
-     * @return array{name: string, available: bool}|null
+     * @return list<array{name: string, connected: bool, available: bool, canDisconnect: bool, connectUrl: string, disconnectUrl: string}>
      */
-    public function connectedProvider(): ?array
+    public function providers(): array
     {
-        $provider = $this->user->sso_provider;
+        $connected = $this->user->providerConnections
+            ->map(fn (ProviderConnection $connection): SsoProviderEnum => $connection->provider)
+            ->all();
 
-        if ($provider === null) {
-            return null;
-        }
+        $providers = array_filter(
+            SsoProviderEnum::cases(),
+            fn (SsoProviderEnum $provider): bool => in_array($provider, $connected, true) || SsoProviderAvailability::isAvailable($provider),
+        );
 
-        return [
+        return array_values(array_map(fn (SsoProviderEnum $provider): array => [
             'name' => $provider->brandName(),
+            'connected' => in_array($provider, $connected, true),
             'available' => SsoProviderAvailability::isAvailable($provider),
-        ];
+            'canDisconnect' => $this->canDisconnect($provider, $connected),
+            'connectUrl' => route('settings.sso.redirect', ['provider' => $provider->value]),
+            'disconnectUrl' => route('settings.sso.destroy', ['provider' => $provider->value]),
+        ], $providers));
     }
 
     /**
-     * Get the providers this user could connect, which is none once one is
-     * connected, since a user signs in through at most one.
+     * Whether the provider is connected and something else still signs the user in once it is gone.
      *
-     * @return list<array{name: string, url: string}>
+     * @param  list<SsoProviderEnum>  $connected
      */
-    public function providersToConnect(): array
+    private function canDisconnect(SsoProviderEnum $provider, array $connected): bool
     {
-        if ($this->user->sso_provider !== null) {
-            return [];
+        if (! in_array($provider, $connected, true)) {
+            return false;
         }
 
-        return array_map(fn (SsoProviderEnum $provider): array => [
-            'name' => $provider->brandName(),
-            'url' => route('settings.sso.redirect', ['provider' => $provider->value]),
-        ], SsoProviderAvailability::onThisInstance());
-    }
+        if ($this->user->password !== null || $this->user->hasPasskeys()) {
+            return true;
+        }
 
-    public function canDisconnectTheProvider(): bool
-    {
-        return $this->user->sso_provider !== null
-            && ($this->user->password !== null || $this->user->hasPasskeys());
+        foreach ($connected as $other) {
+            if ($other === $provider) {
+                continue;
+            }
+
+            if (SsoProviderAvailability::isAvailable($other)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function credentials(): ConfirmPasswordViewModel

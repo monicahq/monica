@@ -8,6 +8,7 @@ use App\Actions\ConnectProviderToUser;
 use App\Enums\SsoProviderEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\ProviderConnection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -33,11 +34,7 @@ class ConnectProviderToUserTest extends TestCase
         )->execute();
 
         $this->assertInstanceOf(User::class, $connected);
-        $this->assertDatabaseHas('users', [
-            'id' => $user->id,
-            'sso_provider' => 'github',
-            'sso_id' => '108120124',
-        ]);
+        $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'provider' => 'github', 'sso_id' => '108120124']);
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::UserSsoConnected);
     }
 
@@ -64,10 +61,7 @@ class ConnectProviderToUserTest extends TestCase
     {
         Queue::fake();
 
-        User::factory()->create([
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
-        ]);
+        User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
         $user = User::factory()->create();
 
         $this->expectException(ValidationException::class);
@@ -84,10 +78,7 @@ class ConnectProviderToUserTest extends TestCase
     {
         Queue::fake();
 
-        $owner = User::factory()->create([
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
-        ]);
+        $owner = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
         $user = User::factory()->create();
 
         try {
@@ -99,25 +90,39 @@ class ConnectProviderToUserTest extends TestCase
         } catch (ValidationException) {
         }
 
-        $this->assertNull($user->refresh()->sso_provider);
-        $this->assertEquals('108120124', $owner->refresh()->sso_id);
+        $this->assertDatabaseMissing('provider_connections', ['user_id' => $user->id]);
+        $this->assertDatabaseHas('provider_connections', ['user_id' => $owner->id, 'sso_id' => '108120124']);
     }
 
     #[Test]
-    public function it_refuses_a_user_who_already_signs_in_through_a_provider(): void
+    public function it_connects_a_second_provider(): void
     {
         Queue::fake();
 
-        $user = User::factory()->create([
-            'sso_provider' => SsoProviderEnum::Google,
-            'sso_id' => '900',
-        ]);
+        $user = User::factory()->singleSignOn()->create();
+
+        new ConnectProviderToUser(
+            user: $user,
+            provider: SsoProviderEnum::GitHub,
+            ssoId: '108120124',
+        )->execute();
+
+        $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'provider' => 'google']);
+        $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'provider' => 'github', 'sso_id' => '108120124']);
+    }
+
+    #[Test]
+    public function it_refuses_a_provider_the_user_already_connected(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->singleSignOn()->create();
 
         $this->expectException(ValidationException::class);
 
         new ConnectProviderToUser(
             user: $user,
-            provider: SsoProviderEnum::GitHub,
+            provider: SsoProviderEnum::Google,
             ssoId: '108120124',
         )->execute();
     }

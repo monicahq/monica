@@ -54,11 +54,18 @@ class CreateUser
             'email' => $this->email,
             'password' => $this->password === null ? null : Hash::make($this->password),
             'password_changed_at' => $this->password === null ? null : now(),
-            'sso_provider' => $this->ssoProvider,
-            'sso_id' => $this->ssoId,
             'is_active' => true,
             'locale' => $this->locale,
             'timezone' => $this->timezone ?? config('app.timezone'),
+        ]);
+
+        if ($this->ssoProvider === null || $this->ssoId === null) {
+            return;
+        }
+
+        $this->user->providerConnections()->create([
+            'provider' => $this->ssoProvider,
+            'sso_id' => $this->ssoId,
         ]);
     }
 }

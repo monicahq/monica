@@ -11,6 +11,7 @@ use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
 use App\Models\User;
 use App\Notifications\NewLoginDetected;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\AbstractUser as ProviderUser;
 
@@ -45,8 +46,9 @@ class SignInWithProvider
     private function resolve(): void
     {
         $connected = User::query()
-            ->where('sso_provider', $this->provider)
-            ->where('sso_id', $this->identifier())
+            ->whereHas('providerConnections', fn (Builder $query) => $query
+                ->where('provider', $this->provider)
+                ->where('sso_id', $this->identifier()))
             ->first();
 
         if ($connected !== null) {

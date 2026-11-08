@@ -10,6 +10,7 @@ use App\Enums\SsoProviderEnum;
 use App\Jobs\CheckLastLogin;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
+use App\Models\ProviderConnection;
 use App\Models\User;
 use App\Notifications\NewLoginDetected;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,10 +32,8 @@ class SignInWithProviderTest extends TestCase
         Notification::fake();
 
         $account = Account::factory()->create();
-        $user = User::factory()->create([
+        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create([
             'account_id' => $account->id,
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
         ]);
 
         $signedIn = new SignInWithProvider(
@@ -60,10 +59,7 @@ class SignInWithProviderTest extends TestCase
         Queue::fake();
         Notification::fake();
 
-        User::factory()->twoFactor()->create([
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
-        ]);
+        User::factory()->twoFactor()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
 
         new SignInWithProvider(
             provider: SsoProviderEnum::GitHub,
@@ -79,10 +75,8 @@ class SignInWithProviderTest extends TestCase
         Queue::fake();
         Notification::fake();
 
-        $user = User::factory()->create([
+        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create([
             'email' => 'michael.scott@dundermifflin.com',
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
         ]);
 
         $signedIn = new SignInWithProvider(
@@ -110,10 +104,9 @@ class SignInWithProviderTest extends TestCase
             'email' => 'michael.scott@dundermifflin.com',
             'first_name' => 'Michael',
             'last_name' => 'Scott',
-            'sso_provider' => 'github',
-            'sso_id' => '108120124',
             'password' => null,
         ]);
+        $this->assertDatabaseHas('provider_connections', ['user_id' => $signedIn->id, 'provider' => 'github', 'sso_id' => '108120124']);
         $this->assertNull($signedIn->email_verified_at);
         Queue::assertPushedOn('low', LogUserAction::class);
     }
@@ -177,8 +170,7 @@ class SignInWithProviderTest extends TestCase
         } catch (ValidationException) {
         }
 
-        $this->assertNull($existing->refresh()->sso_provider);
-        $this->assertNull($existing->sso_id);
+        $this->assertDatabaseMissing('provider_connections', ['user_id' => $existing->id]);
         $this->assertEquals(1, User::query()->count());
     }
 
@@ -187,10 +179,8 @@ class SignInWithProviderTest extends TestCase
     {
         Queue::fake();
 
-        User::factory()->create([
+        User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create([
             'is_active' => false,
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
         ]);
 
         $this->expectException(ValidationException::class);
@@ -207,14 +197,8 @@ class SignInWithProviderTest extends TestCase
         Queue::fake();
         Notification::fake();
 
-        $onGitHub = User::factory()->create([
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
-        ]);
-        $onGoogle = User::factory()->create([
-            'sso_provider' => SsoProviderEnum::Google,
-            'sso_id' => '108120124',
-        ]);
+        $onGitHub = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
+        $onGoogle = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::Google, 'sso_id' => '108120124']))->create();
 
         $signedIn = new SignInWithProvider(
             provider: SsoProviderEnum::Google,
@@ -252,10 +236,7 @@ class SignInWithProviderTest extends TestCase
         Notification::fake();
         config()->set('monica.registration_enabled', false);
 
-        $user = User::factory()->create([
-            'sso_provider' => SsoProviderEnum::GitHub,
-            'sso_id' => '108120124',
-        ]);
+        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
 
         $signedIn = new SignInWithProvider(
             provider: SsoProviderEnum::GitHub,

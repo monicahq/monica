@@ -9,7 +9,6 @@ use App\Contracts\CarriesOnAccountChannel;
 use App\Enums\DateFormatEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\NumberFormatEnum;
-use App\Enums\SsoProviderEnum;
 use App\Enums\TimeFormatEnum;
 use App\Notifications\PasswordResetRequested;
 use Carbon\CarbonImmutable;
@@ -52,8 +51,6 @@ use Override;
  * @property CarbonImmutable|null $email_verified_at
  * @property string|null $password
  * @property CarbonImmutable|null $password_changed_at
- * @property SsoProviderEnum|null $sso_provider
- * @property string|null $sso_id
  * @property bool $is_active
  * @property string|null $locale
  * @property string $timezone
@@ -89,8 +86,6 @@ use Override;
     'email_verified_at',
     'password',
     'password_changed_at',
-    'sso_provider',
-    'sso_id',
     'is_active',
     'locale',
     'timezone',
@@ -156,7 +151,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             'name_order' => NameOrderEnum::class,
             'number_format' => NumberFormatEnum::class,
             'uses_readable_addresses' => 'boolean',
-            'sso_provider' => SsoProviderEnum::class,
             'last_login_at' => 'datetime',
             'is_active' => 'boolean',
             'password' => 'hashed',
@@ -244,6 +238,16 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
+     * Get the outside providers that sign the user in.
+     *
+     * @return HasMany<ProviderConnection, $this>
+     */
+    public function providerConnections(): HasMany
+    {
+        return $this->hasMany(ProviderConnection::class);
+    }
+
+    /**
      * Get the name the user is called by, in the order they asked their name to
      * read in. The interface language cannot decide that order: somebody
      * reading Monica in English may still want their family name first.
@@ -264,15 +268,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      */
     public function usesSingleSignOn(): bool
     {
-        return $this->sso_provider !== null;
-    }
-
-    /**
-     * Get whether the user signs in through the given provider.
-     */
-    public function signsInWith(SsoProviderEnum $provider): bool
-    {
-        return $this->sso_provider === $provider;
+        return $this->providerConnections()->exists();
     }
 
     /**

@@ -656,8 +656,9 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
             ->middleware(['sso', 'throttle:6,1'])
             ->whereIn('provider', SsoProviderEnum::values())
             ->name('settings.sso.redirect');
-        Route::delete('settings/account/security/sso', [SsoController::class, 'destroy'])
+        Route::delete('settings/account/security/sso/{provider}', [SsoController::class, 'destroy'])
             ->middleware('throttle:6,1')
+            ->whereIn('provider', SsoProviderEnum::values())
             ->name('settings.sso.destroy');
     });
 

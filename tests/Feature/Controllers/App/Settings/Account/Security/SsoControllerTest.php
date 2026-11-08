@@ -7,6 +7,7 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Security;
 use App\Enums\SsoProviderEnum;
 use App\Http\Controllers\App\Auth\SsoController as AuthSsoController;
 use App\Models\Passkey;
+use App\Models\ProviderConnection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
@@ -49,11 +50,7 @@ class SsoControllerTest extends TestCase
             ->assertRedirect(route('settings.security.index'))
             ->assertSessionHas('status');
 
-        $this->assertDatabaseHas('users', [
-            'id' => $user->id,
-            'sso_provider' => 'github',
-            'sso_id' => '108120124',
-        ]);
+        $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'provider' => 'github', 'sso_id' => '108120124']);
         $this->assertNotNull($user->refresh()->password);
     }
 
@@ -64,7 +61,7 @@ class SsoControllerTest extends TestCase
         $this->offer('github');
         $this->mockUser('github');
 
-        User::factory()->create(['sso_provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']);
+        User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
         $user = User::factory()->create();
 
         $this->actingAs($user)
@@ -73,7 +70,7 @@ class SsoControllerTest extends TestCase
             ->assertRedirect(route('settings.security.index'))
             ->assertSessionHasErrors('provider');
 
-        $this->assertNull($user->refresh()->sso_provider);
+        $this->assertDatabaseMissing('provider_connections', ['user_id' => $user->id]);
     }
 
     #[Test]
@@ -82,16 +79,15 @@ class SsoControllerTest extends TestCase
         Queue::fake();
         Notification::fake();
 
-        $user = User::factory()->create(['sso_provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']);
+        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
 
         $this->withConfirmedPassword()
             ->actingAs($user)
-            ->delete(route('settings.sso.destroy'))
+            ->delete(route('settings.sso.destroy', ['provider' => 'github']))
             ->assertRedirect(route('settings.security.index'))
             ->assertSessionHas('status');
 
-        $this->assertNull($user->refresh()->sso_provider);
-        $this->assertNull($user->sso_id);
+        $this->assertDatabaseMissing('provider_connections', ['user_id' => $user->id]);
     }
 
     #[Test]
@@ -104,11 +100,11 @@ class SsoControllerTest extends TestCase
 
         $this->withConfirmedPassword()
             ->actingAs($user)
-            ->delete(route('settings.sso.destroy'))
+            ->delete(route('settings.sso.destroy', ['provider' => 'google']))
             ->assertRedirect(route('settings.security.index'))
             ->assertSessionHasErrors('provider');
 
-        $this->assertEquals(SsoProviderEnum::Google, $user->refresh()->sso_provider);
+        $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'provider' => 'google']);
     }
 
     #[Test]
@@ -122,10 +118,10 @@ class SsoControllerTest extends TestCase
 
         $this->withConfirmedPassword()
             ->actingAs($user->refresh())
-            ->delete(route('settings.sso.destroy'))
+            ->delete(route('settings.sso.destroy', ['provider' => 'google']))
             ->assertRedirect(route('settings.security.index'));
 
-        $this->assertNull($user->refresh()->sso_provider);
+        $this->assertDatabaseMissing('provider_connections', ['user_id' => $user->id]);
     }
 
     #[Test]
@@ -144,13 +140,13 @@ class SsoControllerTest extends TestCase
         Queue::fake();
         Notification::fake();
 
-        $user = User::factory()->create(['sso_provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']);
+        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
 
         $this->actingAs($user)
-            ->delete(route('settings.sso.destroy'))
+            ->delete(route('settings.sso.destroy', ['provider' => 'github']))
             ->assertRedirect(route('auth.confirmPassword.new'));
 
-        $this->assertEquals(SsoProviderEnum::GitHub, $user->refresh()->sso_provider);
+        $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'provider' => 'github']);
     }
 
     #[Test]

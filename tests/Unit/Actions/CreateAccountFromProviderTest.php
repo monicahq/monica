@@ -33,9 +33,8 @@ class CreateAccountFromProviderTest extends TestCase
             'first_name' => 'Michael',
             'last_name' => 'Scott',
             'email' => 'michael.scott@dundermifflin.com',
-            'sso_provider' => 'github',
-            'sso_id' => '108120124',
         ]);
+        $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'provider' => 'github', 'sso_id' => '108120124']);
         $this->assertDatabaseHas('accounts', ['id' => $user->account_id]);
     }
 
