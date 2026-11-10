@@ -25,6 +25,7 @@ than like a component:
 | `x-delete-section` | A red panel that deletes the screen's own record, what goes with it, and the button |
 | `x-actions-menu` + `x-actions-menu.item` | The button that unfolds the rest of what may be done here, the menu it unfolds, and one line of it |
 | `x-copy-button` | The button that puts a value on the clipboard and says whether it got there |
+| `x-help` | A question mark opening a short explanation and the way to its guide; when to add one is in the [help-bubbles skill](../skills/help-bubbles/SKILL.md) |
 | `x-code-value` | A value meant to be copied exactly, in a fixed-width face |
 | `x-caption` | The small word in capitals that names what sits under it |
 | `x-timestamp` | A moment, machine readable in the markup and spelled out on hover |

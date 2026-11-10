@@ -10,7 +10,7 @@
 >
   <x-page-header :title="__('Preferences')" />
 
-  <x-page-section :title="__('Language and formats')" :description="__('Each one saves as soon as you pick it. There is nothing to press.')">
+  <x-page-section :title="__('Language and formats')">
     <x-panel :flush="true">
       <x-row :title="__('Language')" :description="__('The language the application is shown in.')" icon="info">
         <x-slot:end>

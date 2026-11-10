@@ -10,30 +10,34 @@
     :offers-passkey="$viewModel->credentials()->offersPasskey()"
   />
 
-  <x-page-header :title="__('Security and access')" :description="__('How you sign in to your account, and what else may act as you.')" />
+  <x-page-header :title="__('Security and access')" />
 
-  <x-page-section :title="__('Password')" :description="__('Choose one you use nowhere else. A long password is better than a complicated one.')">
+  <x-page-section :title="__('Password')">
     @include('app.settings.account.security._change-password', ['viewModel' => $viewModel])
 
     @include('app.settings.account.security._remove-password', ['viewModel' => $viewModel])
   </x-page-section>
 
-  <x-page-section :title="__('Outside providers')" :description="__('Sign in with an account you already have elsewhere. Connecting one adds a way in and takes none away.')">
+  <x-page-section :title="__('Outside providers')" :description="__('Sign in with an account you already have elsewhere.')">
     <x-panel :flush="true">
       @include('app.settings.account.security._sso', ['viewModel' => $viewModel])
     </x-panel>
   </x-page-section>
 
   <x-page-section :title="__('Passkeys')" :description="__('A passkey is kept on your device and is unlocked by your fingerprint, your face or your device PIN. Nothing is typed, so nothing can be phished.')">
-    <x-notice tone="quiet">{{ __('Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.') }}</x-notice>
-
     <x-panel :flush="true">
       @include('app.settings.account.security._passkeys', ['viewModel' => $viewModel])
     </x-panel>
   </x-page-section>
 
   <x-page-section :title="__('Two-factor authentication')" :description="__('A password can be guessed, reused or stolen. A code that changes every thirty seconds, on a phone you hold, cannot be taken from a distance.')">
-    <x-notice tone="quiet">{{ __('Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.') }}</x-notice>
+    <x-slot:help>
+      <x-help
+        :label="__('Help about two-factor authentication')"
+        :title="__('An app, a key, or both?')"
+        guide="security.two-factor#use-a-security-key-instead-of-a-code"
+      >{{ __('The app gives you a code to type, and a security key is something you touch instead, such as a USB key or the fingerprint reader of this device. Either one turns this on, and you can keep both. The recovery codes get you in if you lose them.') }}</x-help>
+    </x-slot:help>
 
     <x-panel :flush="true">
       @if ($viewModel->usesAuthenticatorApp())
@@ -68,8 +72,32 @@
     </x-panel>
   </x-page-section>
 
+  @if ($viewModel->davIsOn())
+    <x-page-section :title="__('Contacts and calendar applications')" :description="__('Add this address to the contacts or calendar application of a phone or a computer, with your email address and one of your API keys as the password. Your account password will not work.')">
+      <x-slot:help>
+        <x-help
+          :label="__('Help about contacts and calendar applications')"
+          :title="__('What does this address sync?')"
+          guide="integrations.overview#your-phone-and-computer-carddav-and-caldav"
+        >{{ __('Each vault appears as an address book, and contacts sync in both directions. Each vault also offers a calendar of its recurring dates, such as birthdays, which is read only.') }}</x-help>
+      </x-slot:help>
+
+      <x-panel :flush="true">
+        @include('app.settings.account.security._dav-address', ['viewModel' => $viewModel])
+      </x-panel>
+    </x-page-section>
+  @endif
+
   @if ($viewModel->mcpIsOn() || $viewModel->assistantsNotice() !== null)
     <x-page-section :title="__('Connected assistants')" :description="__('An assistant you connected through OAuth acts as you on the MCP server, without a key of its own.')">
+      <x-slot:help>
+        <x-help
+          :label="__('Help about connected assistants')"
+          :title="__('What is a connected assistant?')"
+          guide="integrations.overview#an-ai-assistant-mcp"
+        >{{ __('An AI assistant, such as Claude or ChatGPT, that you allowed to look people up, add them and change your templates in a conversation. It does so in your name, with exactly your access, until you disconnect it here.') }}</x-help>
+      </x-slot:help>
+
       @if ($viewModel->assistantsNotice() !== null)
         <x-notice tone="quiet">{{ $viewModel->assistantsNotice() }}</x-notice>
       @endif

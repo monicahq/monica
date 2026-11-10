@@ -4,7 +4,7 @@ title: Choose how you are notified
 description: Switch the in-app, email, Telegram and text message channels on or off, and send a test to see what arrives.
 slug: notification-channels
 section: reminders-and-notifications
-last_updated: 2026-10-25
+last_updated: 2026-10-29
 ---
 
 # Choose how you are notified
@@ -31,6 +31,10 @@ Each channel carries the reminders that fall due, and the daily summary if you a
 Use the switch next to the channel’s name. Monica saves the change straight away.
 
 When a channel is the only one still working, a note under it says so, because switching it off means nothing reaches you at all. You can still switch it off: Monica keeps recording your reminders, and you see them when you open the app.
+
+## What switching off email does not stop
+
+The Email channel carries only reminders and the daily summary. Emails about your account always go to the address you sign in with, whatever this screen says: sign in links, password changes, security warnings, and the email saying Monica switched a channel off.
 
 ## Check that a channel works
 

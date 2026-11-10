@@ -4,14 +4,14 @@ title: Turn on two factor authentication
 description: Add a six digit code from an authenticator app to your sign in, so a stolen password alone cannot open your account.
 slug: two-factor-authentication
 section: your-account-and-security
-last_updated: 2026-09-29
+last_updated: 2026-10-27
 ---
 
 # Turn on two factor authentication
 
 A password can be guessed, reused or stolen. With two factor authentication on, Monica also asks for a six digit code from an app on your phone, a code that changes every thirty seconds and cannot be taken from a distance. Anybody who learns your password still cannot sign in without your phone.
 
-You need an authenticator app on your phone. Any app works.
+You need an authenticator app on your phone, and any app works. A security key does the same job without a code, as explained below.
 
 ## Turn it on
 
@@ -42,6 +42,18 @@ After your password, a sign in link or an outside service, Monica shows **One mo
 Monica does not ask for a code after a passkey, because a passkey already proves both that you hold the device and that you can unlock it.
 
 If you lost your phone, type one of your recovery codes in the same field instead. Each works once.
+
+## Use a security key instead of a code
+
+A security key is something you touch rather than a code you type: a small USB or NFC key, or the fingerprint reader or screen lock of your computer or phone. It is a second step after your password, exactly like the app, and you can use one, the other, or both.
+
+On **Security and access**, under **Two-factor authentication**, next to **Security keys**, choose **Add a security key**, then follow what your browser asks. The first key you add turns two factor authentication on and gives you recovery codes, the same way the app does.
+
+When you sign in, **One more step** offers **Use a security key or passkey**. Touch your key, or unlock your device, when your browser asks.
+
+If you remove your last key and no app is paired, two factor authentication turns off and your recovery codes stop working.
+
+A security key only adds a step after your password. A passkey replaces the password and signs you in on its own: @doc(security.passkeys) explains it.
 
 ## Turn it off
 

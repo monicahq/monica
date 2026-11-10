@@ -40,10 +40,10 @@ class RelationshipTypeFormViewModel
         return $this->relationshipType->name;
     }
 
-    public function description(): string
+    public function description(): ?string
     {
         if ($this->relationshipType === null) {
-            return __('Name the link, say whether both people are described with the same word, and write the words themselves.');
+            return null;
         }
 
         if ($this->relationshipType->is_system) {

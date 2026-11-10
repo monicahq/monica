@@ -5,7 +5,7 @@
   :user="$viewModel->user()"
   current="logs"
 >
-  <x-page-header :title="__('Logs')" :description="__('What has been done in this account, and every email it has sent.')" />
+  <x-page-header :title="__('Logs')" />
 
   <x-page-section :title="__('Activity')" :description="__('Every action that touched this account, newest first, with where it came from.')">
     <x-list-panel

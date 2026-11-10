@@ -139,3 +139,18 @@ A chronological list of every feature and improvement shipped during development
 * Shared links: Asked search engines not to index a private link or its password form, nor follow the links on them.
 * Docs: Gave every documentation, guide and marketplace page a description, a canonical address and link preview tags.
 * Instance: Added `MONICA_SEARCH_ENGINE_INDEXING` to keep every page of an instance out of search engines.
+* UI: Added help bubbles, a question mark that opens a short explanation of a setting and a button to its full guide in the help centre.
+* Settings/account/profile: Added a help bubble beside the email address explaining what the address is used for and how a new one is confirmed.
+* Settings/account/security: Rebuilt the help bubble on the API key form with a title and a link to the API keys guide.
+* Help bubbles: Opened the guide at the section of the help page that answers the question, when there is one.
+* Settings/account/security: Added a help bubble to two-factor authentication explaining the app, security keys and recovery codes.
+* Settings/account/security: Added a help bubble to connected assistants explaining what an assistant is and what it can do.
+* Help: Explained in the two-factor guide how to use a security key instead of a code.
+* Settings/account/security: Shortened the password and outside provider sections, and removed the repeated notice that a passkey skips the two-factor code.
+* Settings/account/security: Moved the address for contacts and calendar applications out of the API keys panel into its own section, with a help bubble saying what it syncs.
+* Settings/account/preferences: Added a help bubble to the time zone explaining that reminders keep the time zone they were created with.
+* Settings/account/notifications: Added a help bubble to the email channel saying sign in links and security emails still arrive when it is off.
+* Settings/account/entity-types: Added a help bubble explaining what a kind of record is.
+* Settings/account/templates: Added a help bubble explaining what the choice of what a template describes decides.
+* Settings/account/relationship-types: Added help bubbles on when the direction of a type is fixed, and on why a type you add never feeds the family tree.
+* Settings: Removed the descriptions under several page titles that repeated what the screen already says.

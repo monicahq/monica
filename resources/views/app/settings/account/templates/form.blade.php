@@ -79,6 +79,14 @@
 
       @unless ($viewModel->isEdit())
         <x-page-section :title="__('What it describes')" :description="__('Fixed now and not changeable later. Every record made with it would otherwise show something else.')">
+          <x-slot:help>
+            <x-help
+              :label="__('Help about what a template describes')"
+              :title="__('What does this choice decide?')"
+              guide="templates.change#what-a-template-describes"
+            >{{ __('Where the template is offered. A template for contacts appears only when somebody adds a contact, and one for animals only when somebody adds an animal. If you pick the wrong one, create another template and delete this one while nothing uses it.') }}</x-help>
+          </x-slot:help>
+
           <x-panel :flush="true">
             <fieldset>
               <legend class="sr-only">{{ __('What it describes') }}</legend>

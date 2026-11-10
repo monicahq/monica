@@ -52,7 +52,16 @@
     </div>
 
     <x-notice tone="quiet">
-      {{ __('A few supplied types are used by the family tree and by romantic history. You can rename them, and what they mean stays the same. The categories that came with your account cannot be renamed or deleted. The ones you add are yours to change.') }}
+      <div class="flex items-start gap-2">
+        <p>{{ __('A few supplied types are used by the family tree and by romantic history. You can rename them, and what they mean stays the same. The categories that came with your account cannot be renamed or deleted. The ones you add are yours to change.') }}</p>
+
+        <x-help
+          :label="__('Help about the family tree and romantic history')"
+          :title="__('Can a type I add feed the family tree?')"
+          guide="customise.relationship-types#family-tree-and-romantic-history"
+          align="right"
+        >{{ __('No. The family tree and romantic history read only the supplied types they were built for, whatever you rename them to. A type you add describes how two people are connected, and the application does nothing else with it.') }}</x-help>
+      </div>
     </x-notice>
   </div>
 </x-settings.page>

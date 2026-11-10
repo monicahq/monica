@@ -3,6 +3,7 @@
   @var string|null $title
   @var string|null $description
   @var string|null $icon
+  @var \Illuminate\View\ComponentSlot|null $help
   @var \Illuminate\View\ComponentSlot|null $aside
   @var \Illuminate\View\ComponentSlot|null $actions
 --}}
@@ -22,6 +23,10 @@
 
         {{ $title }}
       </h2>
+
+      @isset($help)
+        <span class="-ml-1.5 flex shrink-0 self-center">{{ $help }}</span>
+      @endisset
 
       @isset($description)
         <p class="text-sm text-pretty text-muted">{{ $description }}</p>

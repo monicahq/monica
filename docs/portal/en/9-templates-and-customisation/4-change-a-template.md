@@ -4,7 +4,7 @@ title: Change a template
 description: Add, move, rename or remove pages, sections and fields in a draft, then publish the result as a new version.
 slug: change-a-template
 section: templates-and-customisation
-last_updated: 2026-09-29
+last_updated: 2026-10-29
 ---
 
 # Change a template
@@ -71,6 +71,12 @@ When a template has several pages, every page must hold at least one section bef
 :::
 
 Publishing changes no contact. To move contacts onto the new version, see @doc(templates.apply-new-version). To have new contacts start from it, choose it as the default template in @doc(vaults.settings, "the vault settings").
+
+## What a template describes
+
+When you create a template, **What it describes** says whether it is for contacts or for one kind of record you created, such as **Animals**. It decides where the template is offered: a template for contacts appears only when somebody adds a contact, and a template for animals only when somebody adds an animal.
+
+This choice cannot be changed later, because every record made with the template would then show fields meant for something else. If you picked the wrong one, create another template, and delete this one while nothing uses it.
 
 ## Rename a template or delete it
 

@@ -288,6 +288,23 @@ class PortalCatalogueTest extends TestCase
         $this->assertSame([], $unused);
     }
 
+    #[Test]
+    public function it_finds_a_page_for_the_reader_in_english_when_their_language_has_no_portal(): void
+    {
+        app()->setLocale('fr_FR');
+
+        $page = PortalCatalogue::pageForReader('account.profile');
+
+        $this->assertSame('en', $page?->locale);
+        $this->assertSame('account.profile', $page->id);
+    }
+
+    #[Test]
+    public function it_finds_no_page_for_the_reader_under_an_unknown_id(): void
+    {
+        $this->assertNull(PortalCatalogue::pageForReader('dunder.mifflin'));
+    }
+
     /** @return array<string, string> */
     private function files(): array
     {

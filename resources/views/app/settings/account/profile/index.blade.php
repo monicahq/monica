@@ -10,7 +10,7 @@
     :offers-passkey="$viewModel->credentials()->offersPasskey()"
   />
 
-  <x-page-header :title="__('Profile')" :description="__('Your name, the address you sign in with, and your photo.')" />
+  <x-page-header :title="__('Profile')" />
 
   <x-page-section :title="__('Profile photo')">
     <x-panel>
@@ -118,6 +118,14 @@
   </x-page-section>
 
   <x-page-section :title="__('Email address')">
+    <x-slot:help>
+      <x-help
+        :label="__('Help about the email address')"
+        :title="__('What does this address do?')"
+        guide="account.profile#your-email-address"
+      >{{ __('Sign in links, password resets and security warnings all go to this address. We ask for your password or a passkey before changing it, and the new address only starts working once you confirm it from its inbox.') }}</x-help>
+    </x-slot:help>
+
     <x-form method="put" :action="route('settings.email.update')">
       <x-panel>
         <x-input

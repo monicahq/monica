@@ -1,6 +1,14 @@
 {{-- Where somebody is, which decides how every time on the screen reads. --}}
 {{-- @var \App\ViewModels\Settings\Account\Preferences\TimezonePanel $timezone --}}
-<x-page-section :title="__('Time zone')" :description="__('Search for the city you are in, or the country, and pick it from the list.')">
+<x-page-section :title="__('Time zone')">
+  <x-slot:help>
+    <x-help
+      :label="__('Help about the time zone')"
+      :title="__('Does this move my reminders?')"
+      guide="account.preferences#time-zone"
+    >{{ __('No. Your time zone decides how dates and times are written for you. Each reminder keeps the time zone it was created with, so a birthday set for 9:00 in New York still arrives at 9:00 New York time after you move to London.') }}</x-help>
+  </x-slot:help>
+
   <x-panel id="timezone-panel" :flush="true">
     <x-form
       method="put"

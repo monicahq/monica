@@ -142,6 +142,12 @@ class PortalCatalogue
         return null;
     }
 
+    public static function pageForReader(string $id): ?PortalPage
+    {
+        return new self(locale: app()->getLocale())->page($id)
+            ?? new self(locale: 'en')->page($id);
+    }
+
     public function page(string $id): ?PortalPage
     {
         foreach ($this->pages() as $page) {

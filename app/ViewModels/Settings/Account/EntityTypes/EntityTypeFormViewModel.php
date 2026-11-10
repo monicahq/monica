@@ -28,10 +28,10 @@ class EntityTypeFormViewModel
         return __('Edit :name', ['name' => $this->entityType->name_singular]);
     }
 
-    public function description(): string
+    public function description(): ?string
     {
         if ($this->entityType === null) {
-            return __('Name the thing you want to keep track of, decide how it looks, and it appears in every vault in this account.');
+            return null;
         }
 
         return __('Renaming a type changes it everywhere. The slug stays as it is, so the links that already went out keep working.');

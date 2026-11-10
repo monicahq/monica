@@ -19,7 +19,9 @@
       @endif
     </div>
 
-    <p class="max-w-reading text-base text-pretty text-body">{{ $viewModel->description() }}</p>
+    @if ($viewModel->description() !== null)
+      <p class="max-w-reading text-base text-pretty text-body">{{ $viewModel->description() }}</p>
+    @endif
   </header>
 
   <div
@@ -71,6 +73,16 @@
       </x-page-section>
 
       <x-page-section :title="__('How it reads')">
+        @if ($viewModel->directionIsEditable())
+          <x-slot:help>
+            <x-help
+              :label="__('Help about how a relationship type reads')"
+              :title="__('Can I change this later?')"
+              guide="customise.relationship-types#change-or-reorder-types"
+            >{{ __('Only until a relationship uses this type. After that the words can still change, but not the direction, so relationships already written keep reading the way they were written.') }}</x-help>
+          </x-slot:help>
+        @endif
+
         <x-panel>
           <div class="flex flex-col gap-4.5">
             @if ($viewModel->directionIsEditable())

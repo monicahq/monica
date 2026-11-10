@@ -11,8 +11,6 @@
   >
     <x-panel>
       <div class="flex flex-col gap-4.5">
-        <p class="text-sm text-pretty text-muted">{{ __('You stay signed in here, and your new password is what you type the next time.') }}</p>
-
         <div class="grid gap-4 sm:grid-cols-3">
           <x-input
             type="password"

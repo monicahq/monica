@@ -33,6 +33,15 @@
           x-on:change="$el.form.requestSubmit()"
         />
       </label>
+
+      @if ($channel['channel'] === 'email')
+        <x-help
+          :label="__('Help about the email channel')"
+          :title="__('Will I still get sign in links?')"
+          guide="notifications.channels#what-switching-off-email-does-not-stop"
+          align="right"
+        >{{ __('Yes. Switching this off stops reminders and the daily summary by email. Sign in links, password changes and security warnings always go to your address.') }}</x-help>
+      @endif
     </x-form>
   </x-slot:action>
 

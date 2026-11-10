@@ -168,18 +168,6 @@ class SecurityControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_a_passkey_skips_the_two_factor_code_where_passkeys_and_two_factor_are(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $sentence = 'Signing in with a passkey does not ask for the two-factor code, since the passkey already needs this device and your fingerprint, your face or your device PIN.';
-
-        $response->assertSeeInOrder(['Passkeys', $sentence, 'Two-factor authentication', $sentence, 'API keys'], escape: false);
-    }
-
-    #[Test]
     public function it_moves_focus_through_the_removal_of_a_passkey_and_ties_the_warning_to_the_button(): void
     {
         URL::forceScheme('https');

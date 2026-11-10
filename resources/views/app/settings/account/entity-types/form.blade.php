@@ -36,6 +36,14 @@
   >
     <x-form id="entity-type-form" :method="$viewModel->method()" :action="$viewModel->action()" class="flex flex-col gap-8">
       <x-page-section :title="__('Names')" :description="__('One name for a single record, one for the list. The singular goes in buttons and headers, the plural in list titles.')">
+        <x-slot:help>
+          <x-help
+            :label="__('Help about kinds of record')"
+            :title="__('What is a kind of record?')"
+            guide="customise.profile-types"
+          >{{ __('Something you keep track of that is not a person, such as pets, plants or companies. Once it is active, it appears in every vault of this account, with its own list of records.') }}</x-help>
+        </x-slot:help>
+
         <x-panel>
           <div class="flex flex-col gap-4.5">
             <div class="grid gap-4 sm:grid-cols-2">

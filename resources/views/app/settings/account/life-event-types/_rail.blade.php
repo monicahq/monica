@@ -47,6 +47,4 @@
       </a>
     @endforeach
   </x-panel>
-
-  <p class="px-0.5 text-xs text-pretty text-muted">{{ __('A category only organises the list, the pickers and the journal filters. It never changes what a type does.') }}</p>
 </nav>

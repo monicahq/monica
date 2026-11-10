@@ -43,7 +43,7 @@ A key never expires on its own. The list shows when each key was created and las
 
 ## Use it on your phone
 
-The same panel shows **Address for a contacts or calendar application**. In the contacts app of your phone or computer, use that address, your email address, and an API key as the password. Your account password does not work there. [CardDAV and CalDAV](/docs/carddav) walks through each device.
+The **Contacts and calendar applications** section, under the keys, shows the address. In the contacts app of your phone or computer, use that address, your email address, and an API key as the password. Your account password does not work there. [CardDAV and CalDAV](/docs/carddav) walks through each device.
 
 For scripts, the [API reference](/docs/api) explains how to send the key.
 
