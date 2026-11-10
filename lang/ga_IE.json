@@ -3859,6 +3859,7 @@
     "Your :app password was removed": "Baineadh do phasfhocal :app",
     "Your API key is ready.": "Tá do eochair API réidh.",
     "Your Telegram conversation will be forgotten.": "Déanfar dearmad ar do chomhrá Telegram.",
+    "Your account": "Do chuntas",
     "Your account :email was just signed in to from an address we have not seen before.": "Síníodh isteach i do chuntas :email anois ó sheoladh nach bhfaca muid roimhe.",
     "Your account already signs in through :provider. Disconnect it first.": "Síníonn do chuntas isteach trí :provider cheana. Dínasc é ar dtús.",
     "Your account can now be signed in to with a password, as well as with any passkey you hold.": "Is féidir síniú isteach i do chuntas anois le pasfhocal, chomh maith le haon phaseochair atá agat.",

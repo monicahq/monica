@@ -23,4 +23,14 @@ class AccountLayoutTest extends TestCase
             ->assertOk()
             ->assertSee('Subscribe now to lift the limits of the free plan!', escape: false);
     }
+
+    #[Test]
+    public function the_name_of_the_application_in_the_bar_leads_to_the_vaults(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->blade('<x-account-layout>Anything</x-account-layout>')
+            ->assertSee('href="'.route('vaults.index').'"', escape: false);
+    }
 }

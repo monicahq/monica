@@ -3859,6 +3859,7 @@
     "Your :app password was removed": ":app parolanız kaldırıldı",
     "Your API key is ready.": "API anahtarınız hazır.",
     "Your Telegram conversation will be forgotten.": "Telegram sohbetiniz unutulacak.",
+    "Your account": "Hesabınız",
     "Your account :email was just signed in to from an address we have not seen before.": ":email hesabınıza az önce daha önce görmediğimiz bir adresten girildi.",
     "Your account already signs in through :provider. Disconnect it first.": "Hesabınız zaten :provider üzerinden oturum açıyor. Önce bağlantısını kesin.",
     "Your account can now be signed in to with a password, as well as with any passkey you hold.": "Hesabınıza artık bir parolayla da, elinizdeki herhangi bir geçiş anahtarıyla da giriş yapılabilir.",

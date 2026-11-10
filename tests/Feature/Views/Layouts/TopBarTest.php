@@ -39,7 +39,7 @@ class TopBarTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_who_is_signed_in_to_the_foot_of_the_navigation_column(): void
+    public function the_bar_of_a_screen_inside_the_shell_never_shows_the_email_address_of_whoever_is_signed_in(): void
     {
         $user = User::factory()->create();
 
@@ -111,33 +111,15 @@ class TopBarTest extends TestCase
     }
 
     #[Test]
-    public function the_bar_of_a_screen_with_a_navigation_column_leaves_the_account_settings_to_it(): void
+    public function both_bars_carry_the_account_menu(): void
     {
         $user = User::factory()->create();
 
-        $this->actingAs($user)
-            ->blade('<x-shell>Anything</x-shell>')
-            ->assertDontSee('Account settings');
-
-        $this->actingAs($user)
-            ->blade('<x-account-layout>Anything</x-account-layout>')
-            ->assertSee('Account settings');
-    }
-
-    #[Test]
-    public function the_way_out_sits_in_the_bar_only_where_no_navigation_column_carries_it(): void
-    {
-        $user = User::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);
-
-        $this->actingAs($user)
-            ->blade('<x-account-layout>Anything</x-account-layout>')
-            ->assertSee(route('auth.login.destroy'), escape: false)
-            ->assertSee('Sign out');
-
-        $this->actingAs($user)
-            ->blade('<x-shell>Anything</x-shell>')
-            ->assertDontSee(route('auth.login.destroy'), escape: false)
-            ->assertDontSee('Sign out');
+        foreach (['<x-account-layout>Anything</x-account-layout>', '<x-shell>Anything</x-shell>'] as $template) {
+            $this->actingAs($user)
+                ->blade($template)
+                ->assertSee('aria-label="Your account"', escape: false);
+        }
     }
 
     #[Test]

@@ -33,7 +33,13 @@
     default => 'border-transparent bg-action-primary text-action-primary-text hover:bg-action-primary-hover',
   };
 
-  $classes = [$base, $fill, $size === 'small' ? 'h-8 px-3 text-sm' : 'h-9 px-3.75 text-base'];
+  $dimensions = match ($size) {
+    'small' => 'h-8 px-3 text-sm',
+    'top-bar' => 'h-8 w-8 px-0 text-sm topbar-labels:w-auto topbar-labels:px-3',
+    default => 'h-9 px-3.75 text-base',
+  };
+
+  $classes = [$base, $fill, $dimensions];
 @endphp
 
 @isset($href)

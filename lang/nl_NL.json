@@ -3859,6 +3859,7 @@
     "Your :app password was removed": "Je :app-wachtwoord is verwijderd",
     "Your API key is ready.": "Je API-sleutel is klaar.",
     "Your Telegram conversation will be forgotten.": "Je Telegram-gesprek wordt vergeten.",
+    "Your account": "Je account",
     "Your account :email was just signed in to from an address we have not seen before.": "Er is zojuist aangemeld op je account :email vanaf een adres dat we niet eerder hebben gezien.",
     "Your account already signs in through :provider. Disconnect it first.": "Je account meldt zich al aan via :provider. Koppel het eerst los.",
     "Your account can now be signed in to with a password, as well as with any passkey you hold.": "Je account kan nu met een wachtwoord worden aangemeld, net als met elke passkey die je hebt.",

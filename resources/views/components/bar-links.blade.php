@@ -1,35 +1,49 @@
-{{-- The places in the top bar that take you out of the vault: docs, marketplace, settings. --}}
+{{-- The right side of the top bar: the places outside the vault, then what is yours. --}}
 {{-- @var bool $settings --}}
 @props([
   'settings' => true,
 ])
 
-<div class="flex items-center gap-1">
-  @foreach (array_filter([
+@php
+  $places = array_filter([
     ['label' => __('Docs'), 'icon' => 'journal', 'href' => route('docs.index')],
     \App\Helpers\FlagState::isOn('marketplace', auth()->user()?->account)
-      ? ['label' => __('Marketplace'), 'icon' => 'gift', 'href' => route('marketplace.index')]
+      ? ['label' => __('Marketplace'), 'icon' => 'shop', 'href' => route('marketplace.index')]
       : null,
     $settings
       ? ['label' => __('Account settings'), 'icon' => 'settings', 'href' => route('settings.index')]
       : null,
-    auth()->user()?->isAdministrator()
-      ? ['label' => __('Admin space'), 'icon' => 'lock', 'href' => route('admin.overview.index')]
-      : null,
-  ]) as $link)
-    <a
-      href="{{ $link['href'] }}"
-      data-turbo="true"
-      aria-label="{{ $link['label'] }}"
-      class="flex h-9 items-center gap-1.75 rounded-md px-2.75 text-sm text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
-    >
-      <x-icon :name="$link['icon']" :size="18" :stroke-width="1.5" />
+  ]);
+@endphp
 
-      <span class="hidden topbar-labels:inline">{{ $link['label'] }}</span>
-    </a>
+<div class="flex shrink-0 items-center gap-0.5">
+  @foreach ($places as $place)
+    <x-button.ghost :href="$place['href']" size="top-bar" :aria-label="$place['label']">
+      <x-slot:icon>
+        <x-icon :name="$place['icon']" :size="16" :stroke-width="1.4" />
+      </x-slot:icon>
+
+      <span class="hidden topbar-labels:inline">{{ $place['label'] }}</span>
+    </x-button.ghost>
   @endforeach
+
+  @if (auth()->user()?->isAdministrator())
+    <x-button.secondary :href="route('admin.overview.index')" size="top-bar" :aria-label="__('Admin space')" class="ml-1.5">
+      <x-slot:icon>
+        <x-icon name="shield" :size="16" :stroke-width="1.4" />
+      </x-slot:icon>
+
+      <span class="hidden topbar-labels:inline">{{ __('Admin space') }}</span>
+    </x-button.secondary>
+  @endif
+
+  <span aria-hidden="true" class="mx-1.5 h-5 w-px bg-hairline-strong max-sm:hidden"></span>
 
   <x-notification-bar />
 
-  <span aria-hidden="true" class="ml-1.5 h-5.5 w-px bg-hairline-strong"></span>
+  <x-theme-toggle />
+
+  @auth
+    <x-account-menu :user="auth()->user()" />
+  @endauth
 </div>

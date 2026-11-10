@@ -3859,6 +3859,7 @@
     "Your :app password was removed": "Mật khẩu :app của bạn đã bị bỏ",
     "Your API key is ready.": "Khóa API của bạn đã xong.",
     "Your Telegram conversation will be forgotten.": "Cuộc trò chuyện Telegram của bạn sẽ bị quên.",
+    "Your account": "Tài khoản của bạn",
     "Your account :email was just signed in to from an address we have not seen before.": "Tài khoản :email của bạn vừa được đăng nhập từ một địa chỉ chúng tôi chưa từng thấy.",
     "Your account already signs in through :provider. Disconnect it first.": "Tài khoản của bạn đã đăng nhập qua :provider. Hãy ngắt kết nối trước.",
     "Your account can now be signed in to with a password, as well as with any passkey you hold.": "Giờ tài khoản của bạn đăng nhập được bằng mật khẩu, cũng như bằng bất kỳ khóa truy cập nào bạn giữ.",

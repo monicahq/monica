@@ -960,8 +960,7 @@ class ContactControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
             ->assertStatus(200)
-            ->assertSee('x-data="{ open: false }"', escape: false)
-            ->assertSee('@click="open = ! open"', escape: false)
+            ->assertSee('aria-label="More actions for Michael Scott"', escape: false)
             ->assertSee('aria-haspopup="menu"', escape: false)
             ->assertSee('role="menu"', escape: false)
             ->assertSee('role="menuitem"', escape: false)

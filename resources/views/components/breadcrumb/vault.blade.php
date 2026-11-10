@@ -44,7 +44,7 @@
       <div
         x-cloak
         x-show="open"
-        x-anchor.bottom-start.offset.6="$refs.trigger"
+        x-anchor.fixed.bottom-start.offset.6="$refs.trigger"
         x-transition:enter="transition ease-out duration-(--duration-standard)"
         x-transition:enter-start="opacity-0"
         x-transition:leave="transition ease-out duration-(--duration-fast)"

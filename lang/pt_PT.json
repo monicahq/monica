@@ -3859,6 +3859,7 @@
     "Your :app password was removed": "A sua palavra-passe :app foi removida",
     "Your API key is ready.": "A sua chave API está pronta.",
     "Your Telegram conversation will be forgotten.": "A sua conversa no Telegram será esquecida.",
+    "Your account": "A sua conta",
     "Your account :email was just signed in to from an address we have not seen before.": "Acabou de ser iniciada sessão na sua conta :email a partir de um endereço que nunca vimos.",
     "Your account already signs in through :provider. Disconnect it first.": "A sua conta já inicia sessão através do :provider. Desligue-o primeiro.",
     "Your account can now be signed in to with a password, as well as with any passkey you hold.": "A sua conta pode agora iniciar sessão com uma palavra-passe, tal como com qualquer chave de acesso que tenha.",

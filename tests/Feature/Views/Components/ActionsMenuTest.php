@@ -28,7 +28,7 @@ class ActionsMenuTest extends TestCase
         $rendered->assertSee('x-data="{ menuOpen: false }"', escape: false);
         $rendered->assertSee('@click="menuOpen = ! menuOpen"', escape: false);
         $rendered->assertSee('@click.outside="menuOpen = false"', escape: false);
-        $rendered->assertSee('@keydown.escape.window="menuOpen = false"', escape: false);
+        $rendered->assertSee('@keydown.escape.window="if (menuOpen) { menuOpen = false; $refs.menuTrigger.focus() }"', escape: false);
     }
 
     #[Test]

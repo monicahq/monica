@@ -3859,6 +3859,7 @@
     "Your :app password was removed": "Ditt :app-lösenord togs bort",
     "Your API key is ready.": "Din API-nyckel är klar.",
     "Your Telegram conversation will be forgotten.": "Ditt Telegram-samtal glöms bort.",
+    "Your account": "Ditt konto",
     "Your account :email was just signed in to from an address we have not seen before.": "Någon loggade just in på ditt konto :email från en adress vi inte sett tidigare.",
     "Your account already signs in through :provider. Disconnect it first.": "Ditt konto loggar redan in via :provider. Koppla bort det först.",
     "Your account can now be signed in to with a password, as well as with any passkey you hold.": "Ditt konto går nu att logga in på med ett lösenord, utöver med vilken passnyckel du än har.",

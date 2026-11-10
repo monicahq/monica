@@ -4,9 +4,11 @@
   'user',
 ])
 
-<x-actions-menu variant="ghost" :label="__('Account')">
+<x-actions-menu variant="ghost" :label="__('Your account')">
   <x-slot:glyph>
-    <x-avatar :user="$user" :size="26" />
+    <x-avatar id="shell-avatar" :user="$user" :size="28" />
+
+    <x-icon name="chevron-down" :size="14" :stroke-width="1.4" class="-ml-1 text-muted max-sm:hidden" />
   </x-slot:glyph>
 
   <x-actions-menu.item :href="route('settings.index')" data-turbo="true">

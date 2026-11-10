@@ -60,4 +60,23 @@ class IconTest extends TestCase
             ['swatch'],
         ];
     }
+
+    #[Test]
+    #[DataProvider('provideTheMarksTheTopBarAsksFor')]
+    public function it_draws_a_glyph_of_its_own_for_every_place_the_top_bar_leads_to(string $name): void
+    {
+        $this->assertNotSame(
+            (string) $this->blade('<x-icon name="profile" />'),
+            (string) $this->blade('<x-icon :name="$name" />', ['name' => $name]),
+        );
+    }
+
+    /** @return array<int, array<int, string>> */
+    public static function provideTheMarksTheTopBarAsksFor(): array
+    {
+        return [
+            ['shop'],
+            ['shield'],
+        ];
+    }
 }

@@ -3859,6 +3859,7 @@
     "Your :app password was removed": "Jūsų :app slaptažodis pašalintas",
     "Your API key is ready.": "Jūsų API raktas paruoštas.",
     "Your Telegram conversation will be forgotten.": "Jūsų Telegram pokalbis bus pamirštas.",
+    "Your account": "Jūsų paskyra",
     "Your account :email was just signed in to from an address we have not seen before.": "Prie jūsų paskyros :email ką tik buvo prisijungta iš adreso, kurio anksčiau nematėme.",
     "Your account already signs in through :provider. Disconnect it first.": "Jūsų paskyra jau prisijungia per :provider. Pirmiausia jį atjunkite.",
     "Your account can now be signed in to with a password, as well as with any passkey you hold.": "Prie jūsų paskyros dabar galima prisijungti su slaptažodžiu, taip pat su bet kuriuo jūsų prieigos raktu.",

@@ -3859,6 +3859,7 @@
     "Your :app password was removed": "A(z) :app jelszavadat eltávolítottuk",
     "Your API key is ready.": "Az API-kulcsod elkészült.",
     "Your Telegram conversation will be forgotten.": "A Telegram-beszélgetést elfelejtjük.",
+    "Your account": "A fiókod",
     "Your account :email was just signed in to from an address we have not seen before.": "A(z) :email fiókodba az imént bejelentkeztek egy olyan címről, amelyet még nem láttunk.",
     "Your account already signs in through :provider. Disconnect it first.": "A fiókja már a(z) :provider szolgáltatáson keresztül jelentkezik be. Először válassza le.",
     "Your account can now be signed in to with a password, as well as with any passkey you hold.": "A fiókodba mostantól jelszóval is be lehet jelentkezni, ahogy bármelyik azonosítókulcsoddal is.",

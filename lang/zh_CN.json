@@ -3859,6 +3859,7 @@
     "Your :app password was removed": "已删除你的 :app 密码",
     "Your API key is ready.": "你的 API 密钥已就绪。",
     "Your Telegram conversation will be forgotten.": "你的 Telegram 对话将被遗忘。",
+    "Your account": "你的账户",
     "Your account :email was just signed in to from an address we have not seen before.": "你的账户 :email 刚刚从一个我们此前未见过的地址登录。",
     "Your account already signs in through :provider. Disconnect it first.": "你的账户已通过 :provider 登录。请先断开。",
     "Your account can now be signed in to with a password, as well as with any passkey you hold.": "除你持有的通行密钥外，现在也可以用密码登录你的账户。",

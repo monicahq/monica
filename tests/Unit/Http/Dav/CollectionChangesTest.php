@@ -123,6 +123,8 @@ class CollectionChangesTest extends TestCase
     #[Test]
     public function it_hands_back_a_change_that_shares_the_second_of_the_token(): void
     {
+        $this->freezeSecond();
+
         $vault = $this->vault();
         $contact = Contact::factory()->create($this->inVault($vault));
 

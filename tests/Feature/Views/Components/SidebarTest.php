@@ -205,7 +205,7 @@ class SidebarTest extends TestCase
     }
 
     #[Test]
-    public function both_columns_carry_who_is_signed_in_and_the_way_out(): void
+    public function neither_column_carries_the_account_or_the_theme_which_the_bar_holds(): void
     {
         $user = User::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -216,29 +216,11 @@ class SidebarTest extends TestCase
         ] as [$template, $data]) {
             $rendered = $this->actingAs($user)->blade($template, $data);
 
-            $rendered->assertSee('Pam Beesly');
-            $rendered->assertSee('id="shell-avatar"', escape: false);
-            $rendered->assertSee('aria-haspopup="menu"', escape: false);
-            $rendered->assertSee(route('settings.index'), escape: false);
-            $rendered->assertSee('Account settings');
-            $rendered->assertSee('Sign out');
+            $rendered->assertDontSee('Pam Beesly');
+            $rendered->assertDontSee('Sign out');
+            $rendered->assertDontSee(route('auth.login.destroy'), escape: false);
+            $rendered->assertDontSee('Switch between the light and dark theme');
         }
-    }
-
-    #[Test]
-    public function the_way_into_the_settings_and_the_way_out_are_kept_behind_the_name(): void
-    {
-        $user = User::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $rendered = $this->actingAs($user)->blade(
-            '<x-vault.sidebar :user="$user" :vault="$vault" />',
-            ['user' => $user, 'vault' => $vault],
-        );
-
-        $rendered->assertSee('role="menu"', escape: false);
-        $rendered->assertSee('x-show="open"', escape: false);
-        $rendered->assertSee(route('auth.login.destroy'), escape: false);
     }
 
     #[Test]

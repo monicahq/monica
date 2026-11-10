@@ -3859,6 +3859,7 @@
     "Your :app password was removed": ":app 비밀번호를 없앴습니다",
     "Your API key is ready.": "API 키가 준비되었습니다.",
     "Your Telegram conversation will be forgotten.": "Telegram 대화는 잊힙니다.",
+    "Your account": "내 계정",
     "Your account :email was just signed in to from an address we have not seen before.": "방금 처음 보는 주소에서 :email 계정에 로그인했습니다.",
     "Your account already signs in through :provider. Disconnect it first.": "회원님의 계정은 이미 :provider 로 로그인합니다. 먼저 연결을 해제하세요.",
     "Your account can now be signed in to with a password, as well as with any passkey you hold.": "이제 가지고 계신 패스키뿐 아니라 비밀번호로도 계정에 로그인할 수 있습니다.",

@@ -22,7 +22,8 @@ class AccountMenuTest extends TestCase
 
         $rendered->assertSee('PB');
         $rendered->assertSee('aria-haspopup="menu"', escape: false);
-        $rendered->assertSee('aria-label="Account"', escape: false);
+        $rendered->assertSee('aria-label="Your account"', escape: false);
+        $rendered->assertSee('id="shell-avatar"', escape: false);
         $rendered->assertSee('role="menu"', escape: false);
     }
 

@@ -39,7 +39,7 @@
         x-bind:class="navOpen && 'max-lg:overflow-hidden'"
         @class(['relative min-w-0 overflow-y-auto print:overflow-visible', 'flex flex-col' => isset($footer)])
       >
-        <header class="flex h-14 shrink-0 items-center gap-3.5 border-b border-topbar-hairline bg-topbar px-4 sm:px-6 print:hidden">
+        <header class="flex h-14 shrink-0 items-center gap-2 sm:gap-3.5 border-b border-topbar-hairline bg-topbar px-4 sm:px-6 print:hidden">
           <button
             type="button"
             @click="navOpen = true"
@@ -52,10 +52,12 @@
           </button>
 
           @isset($breadcrumb)
-            {{ $breadcrumb }}
+            <div class="-m-1 min-w-0 overflow-hidden p-1">
+              {{ $breadcrumb }}
+            </div>
           @endisset
 
-          <div class="ml-auto flex min-w-0 items-center gap-2.5">
+          <div class="ml-auto flex shrink-0 items-center gap-1 sm:gap-2.5">
             @if ($searchVault !== null)
               <form method="get" action="{{ route('search.index', $searchVault) }}" role="search" class="hidden md:block">
                 <label for="shell-search" class="sr-only">{{ __('Search this vault') }}</label>

@@ -36,6 +36,18 @@ class BarLinksTest extends TestCase
     }
 
     #[Test]
+    public function it_carries_the_notifications_the_theme_and_the_account_menu(): void
+    {
+        $user = User::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);
+
+        $this->actingAs($user)
+            ->blade('<x-bar-links :settings="false" />')
+            ->assertSee('aria-controls="notification-bar-panel"', escape: false)
+            ->assertSee('Switch between the light and dark theme')
+            ->assertSee('aria-label="Your account"', escape: false);
+    }
+
+    #[Test]
     public function it_offers_the_docs_the_marketplace_and_the_account_settings(): void
     {
         $this->blade('<x-bar-links />')

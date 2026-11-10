@@ -3859,6 +3859,7 @@
     "Your :app password was removed": "Naalis ang password mo sa :app",
     "Your API key is ready.": "Handa na ang API key mo.",
     "Your Telegram conversation will be forgotten.": "Kakalimutan ang iyong usapan sa Telegram.",
+    "Your account": "Ang account mo",
     "Your account :email was just signed in to from an address we have not seen before.": "Kalalagpas lamang na pinag-sign in-an ang account mong :email mula sa address na hindi pa namin nakita.",
     "Your account already signs in through :provider. Disconnect it first.": "Nag-si-sign in na ang iyong account sa pamamagitan ng :provider. I-disconnect muna ito.",
     "Your account can now be signed in to with a password, as well as with any passkey you hold.": "Mapagsi-sign in-an na ang account mo sa password, gayundin sa anumang passkey na hawak mo.",

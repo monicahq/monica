@@ -4,21 +4,22 @@
   $unread = $viewModel?->unreadCount() ?? 0;
 @endphp
 
-<div x-data="{ open: false, confirming: false, loaded: false }" @keydown.escape.window="open = false; confirming = false" class="relative">
+<div x-data="{ open: false, confirming: false, loaded: false }" @keydown.escape.window="if (open) { open = false; confirming = false; $refs.trigger.focus() }" class="relative">
   <button
     type="button"
+    x-ref="trigger"
     @click="open = ! open; confirming = false; if (open && ! loaded) { loaded = true; $ajax('{{ route('notifications.index') }}', { target: 'notification-list', focus: false }) }"
     @click.outside="open = false; confirming = false"
     ::aria-expanded="open ? 'true' : 'false'"
     aria-haspopup="dialog"
     aria-controls="notification-bar-panel"
     aria-label="{{ trans_choice('Notifications, :count unread|Notifications, :count unread', $unread) }}"
-    class="relative flex h-9 cursor-pointer items-center gap-1.75 rounded-md px-2.75 text-sm text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
+    class="relative flex size-8 cursor-pointer items-center justify-center rounded-md text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
   >
-    <x-icon name="bell" :size="18" :stroke-width="1.5" />
+    <x-icon name="bell" :size="16" :stroke-width="1.4" />
 
     @if ($unread > 0)
-      <span aria-hidden="true" class="absolute top-1 right-1.5 flex size-4 items-center justify-center rounded-full bg-danger text-[10px] leading-none font-semibold text-white">
+      <span aria-hidden="true" class="absolute top-0.75 right-0.5 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-primary px-0.75 text-[10px] leading-none font-semibold text-on-primary ring-2 ring-page">
         {{ $unread > 9 ? '9+' : $unread }}
       </span>
     @endif
@@ -34,7 +35,7 @@
     role="dialog"
     aria-modal="false"
     aria-labelledby="notification-bar-heading"
-    class="absolute right-0 z-20 mt-1 w-88 max-w-[calc(100vw-2rem)] overflow-hidden rounded-lg border border-hairline bg-canvas shadow-pop"
+    class="absolute right-0 z-20 mt-1 w-88 max-w-[calc(100vw-2rem)] overflow-hidden max-sm:fixed max-sm:inset-x-4 max-sm:top-14 max-sm:w-auto max-sm:max-w-none rounded-lg border border-hairline bg-canvas shadow-pop"
   >
     <div class="flex items-center gap-2.5 border-b border-hairline px-3 py-2.5">
       <h2 id="notification-bar-heading" class="text-sm font-semibold text-ink">{{ __('Notifications') }}</h2>

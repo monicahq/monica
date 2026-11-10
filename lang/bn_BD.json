@@ -3859,6 +3859,7 @@
     "Your :app password was removed": "আপনার :app পাসওয়ার্ড সরানো হয়েছে",
     "Your API key is ready.": "আপনার API কী তৈরি।",
     "Your Telegram conversation will be forgotten.": "আপনার Telegram কথোপকথন ভুলে যাওয়া হবে।",
+    "Your account": "আপনার অ্যাকাউন্ট",
     "Your account :email was just signed in to from an address we have not seen before.": "আপনার অ্যাকাউন্ট :email-এ এমন একটি ঠিকানা থেকে এইমাত্র সাইন-ইন হয়েছে, যা আমরা আগে দেখিনি।",
     "Your account already signs in through :provider. Disconnect it first.": "আপনার অ্যাকাউন্ট ইতিমধ্যে :provider দিয়ে সাইন ইন করে। আগে সেটি বিচ্ছিন্ন করুন।",
     "Your account can now be signed in to with a password, as well as with any passkey you hold.": "আপনার অ্যাকাউন্টে এখন পাসওয়ার্ড দিয়ে, আর আপনার যেকোনো পাসকি দিয়েও সাইন-ইন করা যায়।",

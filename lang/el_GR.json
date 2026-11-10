@@ -3859,6 +3859,7 @@
     "Your :app password was removed": "Ο κωδικός σας στο :app αφαιρέθηκε",
     "Your API key is ready.": "Το κλειδί API σας είναι έτοιμο.",
     "Your Telegram conversation will be forgotten.": "Η συνομιλία σας στο Telegram θα ξεχαστεί.",
+    "Your account": "Ο λογαριασμός σας",
     "Your account :email was just signed in to from an address we have not seen before.": "Στον λογαριασμό σας :email έγινε μόλις σύνδεση από διεύθυνση που δεν έχουμε δει πριν.",
     "Your account already signs in through :provider. Disconnect it first.": "Ο λογαριασμός σας συνδέεται ήδη μέσω του παρόχου :provider. Αποσυνδέστε τον πρώτα.",
     "Your account can now be signed in to with a password, as well as with any passkey you hold.": "Στον λογαριασμό σας μπορείτε τώρα να συνδεθείτε με κωδικό, όπως και με οποιοδήποτε κλειδί πρόσβασης κρατάτε.",

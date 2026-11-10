@@ -13,16 +13,10 @@
 
   <body class="bg-page font-sans text-body antialiased">
     <header class="sticky print:hidden top-0 z-5 flex h-14 items-center gap-2.5 border-b border-topbar-hairline bg-topbar/85 px-4 backdrop-blur-sm sm:px-6">
-      <x-logo :size="26" />
+<x-product-link :size="28" />
 
-      <span class="truncate text-sm font-semibold tracking-tight text-ink">{{ config('app.name') }}</span>
-
-      <div class="ml-auto flex items-center gap-2.5">
+      <div class="ml-auto">
         <x-bar-links :settings="false" />
-
-        <x-theme-toggle />
-
-        <x-account-menu :user="auth()->user()" />
       </div>
     </header>
 

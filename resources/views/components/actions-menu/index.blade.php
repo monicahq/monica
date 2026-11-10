@@ -35,7 +35,7 @@
     x-ref="menuTrigger"
     @click="menuOpen = ! menuOpen"
     @click.outside="menuOpen = false"
-    @keydown.escape.window="menuOpen = false"
+    @keydown.escape.window="if (menuOpen) { menuOpen = false; $refs.menuTrigger.focus() }"
     ::aria-expanded="menuOpen ? 'true' : 'false'"
     aria-haspopup="menu"
     :aria-label="$text === null ? $label : null"
