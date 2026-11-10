@@ -85,7 +85,7 @@ use Override;
  * @property CarbonImmutable|null $deleted_at
  * @property-read Account $account
  * @property-read Vault $vault
- * @property-read Contact|Entity $remindable
+ * @property-read Contact|Entity|Group $remindable
  * @property-read Field|null $field
  * @property-read FieldValue|null $fieldValue
  * @property-read User|null $createdBy
@@ -192,8 +192,8 @@ class Reminder extends Model
     }
 
     /**
-     * Get the record the rule is about, which is a contact today and may be an
-     * entity once entities have screens.
+     * Get the record the rule is about: a contact, a group, or an entity once
+     * entities have screens.
      *
      * @return MorphTo<Model, $this>
      */

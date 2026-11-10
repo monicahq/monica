@@ -57,16 +57,17 @@ class GroupControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_a_group_with_its_members(): void
+    public function it_shows_the_overview_of_a_group(): void
     {
         [$user, $vault] = $this->vaultOfSomebody();
         $group = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Schrute farm']);
-        $mose = GroupMember::factory()->create(['group_id' => $group->id, 'role' => 'Cousin']);
+        GroupMember::factory()->create(['group_id' => $group->id, 'role' => 'Cousin']);
 
         $this->actingAs($user)->get(route('groups.show', ['vault' => $vault, 'group' => $group]))
             ->assertOk()
             ->assertSee('Schrute farm')
-            ->assertSee($mose->contact->name)
+            ->assertSee('Shared history')
+            ->assertSee(route('groups.members.index', ['vault' => $vault, 'group' => $group]))
             ->assertDontSee('Delete this group');
     }
 

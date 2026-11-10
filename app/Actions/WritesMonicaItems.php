@@ -16,6 +16,7 @@ use App\Enums\VersionStatusEnum;
 use App\Exceptions\ContactIsAlreadyInTheGroup;
 use App\Exceptions\MembershipEndsBeforeItStarts;
 use App\Exceptions\NotEnoughStorageLeft;
+use App\Exceptions\ReminderIsNotValid;
 use App\Exceptions\ValueListItemIsStopped;
 use App\Helpers\StructureFileReader;
 use App\Helpers\StructureWriter;
@@ -29,6 +30,8 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\File;
+use App\Models\Group;
+use App\Models\GroupFile;
 use App\Models\LifeEvent;
 use App\Models\LifeEventType;
 use App\Models\RelationshipCategory;
@@ -507,9 +510,9 @@ trait WritesMonicaItems
             return;
         }
 
-        $this->record = new CreateContactReminder(
+        $this->record = new CreateManualReminder(
             user: $this->user,
-            contact: $record,
+            record: $record,
             name: $this->shortText($this->payload('name')) ?? __('Reminder'),
             startsOn: $this->nextOccurrence($startsOn, $cadence, $interval)->format('Y-m-d'),
             cadence: $cadence,
@@ -596,10 +599,89 @@ trait WritesMonicaItems
             }
         }
 
+        $this->writeWhatTheGroupHolds($group);
+
         $this->record = $group;
 
         if ($this->valuesNotWritten > 0) {
             $this->reason = AccountImportReasonEnum::PartlyWritten;
+        }
+    }
+
+    /**
+     * The notes, files, activities and reminders an exported group carried. They travel inside the
+     * group because the group is written after the life events and alongside the reminders.
+     */
+    private function writeWhatTheGroupHolds(Group $group): void
+    {
+        foreach ((array) $this->payload('notes', []) as $note) {
+            $body = is_array($note) ? $this->text($note['body'] ?? null) : null;
+
+            if ($body === null) {
+                $this->valuesNotWritten++;
+
+                continue;
+            }
+
+            $written = new CreateGroupNote(user: $this->user, vault: $this->vault(), group: $group, body: $body)->execute();
+            $createdAt = $note['created_at'] ?? null;
+
+            if (is_string($createdAt) && $createdAt !== '') {
+                $written->forceFill(['created_at' => CarbonImmutable::parse($createdAt)])->saveQuietly();
+            }
+        }
+
+        foreach ((array) $this->payload('files', []) as $uuid) {
+            $file = $this->fileOf($uuid);
+
+            if (! $file instanceof File) {
+                $this->valuesNotWritten++;
+
+                continue;
+            }
+
+            $attachment = GroupFile::query()->firstOrCreate(
+                ['group_id' => $group->id, 'file_id' => $file->id],
+                ['account_id' => $this->user->account_id, 'added_by_user_id' => $this->user->id],
+            );
+
+            if ($attachment->wasRecentlyCreated) {
+                new AttachFile(user: $this->user, file: $file)->execute();
+            }
+        }
+
+        $lifeEventIds = collect((array) $this->payload('life_events', []))
+            ->map(fn (mixed $uuid): Contact|Entity|LifeEvent|null => $this->recordOf($uuid))
+            ->filter(fn (mixed $record): bool => $record instanceof LifeEvent)
+            ->map(fn (LifeEvent $lifeEvent): int => $lifeEvent->id)
+            ->all();
+
+        LifeEvent::query()->whereIn('id', $lifeEventIds)->update(['group_id' => $group->id]);
+
+        foreach ((array) $this->payload('reminders', []) as $reminder) {
+            $reminder = is_array($reminder) ? $reminder : [];
+            $cadence = ReminderCadenceEnum::tryFrom((string) ($reminder['cadence'] ?? '')) ?? ReminderCadenceEnum::Once;
+            $interval = max(1, min(Reminder::MAXIMUM_INTERVAL, (int) ($reminder['frequency_interval'] ?? 1)));
+            $startsOn = CarbonImmutable::parse((string) ($reminder['starts_on'] ?? 'now'))->startOfDay();
+
+            if ($cadence === ReminderCadenceEnum::Once && $startsOn->isBefore(today())) {
+                continue;
+            }
+
+            try {
+                new CreateManualReminder(
+                    user: $this->user,
+                    record: $group,
+                    name: $this->shortText($reminder['name'] ?? null) ?? __('Reminder'),
+                    startsOn: $this->nextOccurrence($startsOn, $cadence, $interval)->format('Y-m-d'),
+                    cadence: $cadence,
+                    timeOfDay: $this->text($reminder['time_of_day'] ?? null) ?? Reminder::DEFAULT_TIME,
+                    frequencyInterval: $interval,
+                    timezone: $this->text($reminder['timezone'] ?? null),
+                )->execute();
+            } catch (ReminderIsNotValid) {
+                $this->valuesNotWritten++;
+            }
         }
     }
 

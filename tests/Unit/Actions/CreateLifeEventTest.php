@@ -11,6 +11,7 @@ use App\Enums\UserActionEnum;
 use App\Exceptions\LifeEventTypeIsNotAvailable;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\LifeEvent;
 use App\Models\StructureVersionSection;
 use App\Models\User;
@@ -278,6 +279,76 @@ class CreateLifeEventTest extends TestCase
             contact: $this->contactOn($vault, 'Michael'),
             lifeEventType: $lifeEventType,
             happenedOn: CarbonImmutable::parse('2026-03-01'),
+        )->execute();
+    }
+
+    #[Test]
+    public function it_records_the_group_the_life_event_belongs_to(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $group = Group::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'name' => 'Party planning committee']);
+        $angela = $this->contactOn($vault, 'Angela');
+        $phyllis = $this->contactOn($vault, 'Phyllis');
+
+        $lifeEvent = new CreateLifeEvent(
+            user: $user,
+            vault: $vault,
+            contact: $angela,
+            lifeEventType: $this->lifeEventTypeAsking($user, 'Party'),
+            happenedOn: CarbonImmutable::parse('2026-10-31'),
+            title: 'Halloween party',
+            participants: [$phyllis],
+            createdFrom: LifeEventSourceEnum::Group,
+            group: $group,
+        )->execute();
+
+        $this->assertDatabaseHas('life_events', [
+            'id' => $lifeEvent->id,
+            'group_id' => $group->id,
+            'created_from' => 'group',
+            'participant_count' => 2,
+        ]);
+    }
+
+    #[Test]
+    public function it_leaves_the_group_empty_when_none_is_given(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $lifeEvent = new CreateLifeEvent(
+            user: $user,
+            vault: $vault,
+            contact: $this->contactOn($vault, 'Kevin'),
+            lifeEventType: $this->lifeEventTypeAsking($user, 'Chili'),
+            happenedOn: CarbonImmutable::parse('2026-10-31'),
+        )->execute();
+
+        $this->assertNull($lifeEvent->group_id);
+    }
+
+    #[Test]
+    public function it_refuses_a_group_of_another_vault(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $otherVault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $group = Group::factory()->create(['account_id' => $user->account_id, 'vault_id' => $otherVault->id]);
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new CreateLifeEvent(
+            user: $user,
+            vault: $vault,
+            contact: $this->contactOn($vault, 'Oscar'),
+            lifeEventType: $this->lifeEventTypeAsking($user, 'Party'),
+            happenedOn: CarbonImmutable::parse('2026-10-31'),
+            group: $group,
         )->execute();
     }
 

@@ -13,6 +13,7 @@ use App\Enums\ReminderOccurrenceCategoryEnum;
 use App\Enums\ReminderSourceEnum;
 use App\Helpers\AvailableLocales;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use Carbon\CarbonImmutable;
@@ -174,9 +175,9 @@ class ReminderRow
     public function editUrl(): ?string
     {
         $rule = $this->occurrence->reminder;
-        $contact = $this->contact();
+        $record = $this->record();
 
-        if ($rule === null || $rule->deleted_at !== null || $contact === null) {
+        if ($rule === null || $rule->deleted_at !== null || $record === null) {
             return null;
         }
 
@@ -184,19 +185,27 @@ class ReminderRow
             return null;
         }
 
-        return route('contacts.reminders.edit', ['vault' => $this->occurrence->vault, 'contact' => $contact, 'reminder' => $rule]);
+        if ($record instanceof Group) {
+            return route('groups.reminders.edit', ['vault' => $this->occurrence->vault, 'group' => $record, 'reminder' => $rule]);
+        }
+
+        return route('contacts.reminders.edit', ['vault' => $this->occurrence->vault, 'contact' => $record, 'reminder' => $rule]);
     }
 
     public function deleteUrl(): ?string
     {
         $rule = $this->occurrence->reminder;
-        $contact = $this->contact();
+        $record = $this->record();
 
-        if ($rule === null || $rule->deleted_at !== null || $contact === null) {
+        if ($rule === null || $rule->deleted_at !== null || $record === null) {
             return null;
         }
 
-        return route('contacts.reminders.destroy', ['vault' => $this->occurrence->vault, 'contact' => $contact, 'reminder' => $rule]);
+        if ($record instanceof Group) {
+            return route('groups.reminders.destroy', ['vault' => $this->occurrence->vault, 'group' => $record, 'reminder' => $rule]);
+        }
+
+        return route('contacts.reminders.destroy', ['vault' => $this->occurrence->vault, 'contact' => $record, 'reminder' => $rule]);
     }
 
     public function answerUrl(): ?string
@@ -258,29 +267,43 @@ class ReminderRow
         return $this->occurrence->reminder->timezone ?? $this->user->timezone;
     }
 
-    public function contactName(): ?string
+    /**
+     * The name of whoever or whatever the reminder is about: a contact or a group.
+     */
+    public function recordName(): ?string
     {
-        return $this->contact()?->name;
+        return $this->record()?->name;
+    }
+
+    private function record(): Contact|Group|null
+    {
+        return once(function (): Contact|Group|null {
+            $record = $this->occurrence->reminder?->remindable;
+
+            return $record instanceof Contact || $record instanceof Group ? $record : null;
+        });
     }
 
     private function contact(): ?Contact
     {
-        return once(function (): ?Contact {
-            $record = $this->occurrence->reminder?->remindable;
+        $record = $this->record();
 
-            return $record instanceof Contact ? $record : null;
-        });
+        return $record instanceof Contact ? $record : null;
     }
 
-    public function contactUrl(): ?string
+    public function recordUrl(): ?string
     {
-        $contact = $this->contact();
+        $record = $this->record();
 
-        if ($contact === null) {
+        if ($record instanceof Group) {
+            return route('groups.show', ['vault' => $this->occurrence->vault, 'group' => $record]);
+        }
+
+        if ($record === null) {
             return null;
         }
 
-        return route('contacts.show', ['vault' => $this->occurrence->vault, 'contact' => $contact]);
+        return route('contacts.show', ['vault' => $this->occurrence->vault, 'contact' => $record]);
     }
 
     public function avatarUrl(): ?string

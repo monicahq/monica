@@ -155,3 +155,17 @@ A chronological list of every feature and improvement shipped during development
 * Settings/account/relationship-types: Added help bubbles on when the direction of a type is fixed, and on why a type you add never feeds the family tree.
 * Settings: Removed the descriptions under several page titles that repeated what the screen already says.
 * Top bar: Replaced the full access offer with a strip showing the free plan’s people and vault usage, each meter warning near its limit, with a way to upgrade or hide it for good.
+* Vaults/groups: Split a group's page into an overview, a members tab and a files tab.
+* Vaults/groups: Let somebody record an activity on a group, with the members who were there, so it lands on each of their pages.
+* Vaults/groups: Let somebody keep notes about a group, shown in the group's shared history and on nobody's own page.
+* Vaults/groups: Let somebody set reminders about a group, stopped when the group is deleted and brought back when it is restored.
+* Vaults/groups: Let somebody keep files with a group, counted against the account's storage.
+* Vaults/groups: Showed how many of a group's activities each member came to.
+* Vaults/contacts: Named the group an activity was recorded on, on the timeline of each person who was there.
+* Settings/transfer: Carried a group's notes, files, activities and reminders through the account export and import.
+* API: Added endpoints to read and write the notes of a group.
+* API: Added endpoints to list a group's activities and record one with the people who were there.
+* API: Added endpoints for the reminders about a group, their dates and their answers.
+* API: Added endpoints to list, upload, download and remove the files kept with a group.
+* API: Named the group a life event or a reminder belongs to in what the API answers.
+* MCP: Added tools for the notes, activities, reminders and files of a group.

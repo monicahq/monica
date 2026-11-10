@@ -20,6 +20,7 @@ $reminder = [
         'source' => 'manual',
         'starts_on' => '2026-10-14',
         'field' => null,
+        'group' => null,
         'cadence' => 'monthly',
         'interval' => 1,
         'time' => '09:00',
@@ -40,6 +41,7 @@ $occurrence = [
     'attributes' => [
         'reminder' => $reminderId,
         'name' => 'Ask how the art school application went',
+        'group' => null,
         'date' => '2026-09-14',
         'scheduled_for' => 1789390800,
         'category' => null,
@@ -72,6 +74,7 @@ $reminderAttributes = [
     ['name' => 'source', 'type' => 'string', 'description' => 'Where its date comes from: manual when somebody wrote the reminder with a date of its own, field_value when it reads a date on the contact, such as a birthday.'],
     ['name' => 'starts_on', 'type' => 'string', 'description' => 'The first date of a manual reminder, written as a year, a month and a day. Null for a reminder that reads a date on the contact.'],
     ['name' => 'field', 'type' => 'object', 'description' => 'The date on the contact the reminder reads, as an object holding key, how the field is named in an import or an export, and label, what it is called on the contact. Null for a manual reminder.'],
+    ['name' => 'group', 'type' => 'object', 'description' => 'The group the reminder is about, as an object holding id and name. Always null here, since these reminders are about a contact. A reminder about a group is read from the group reminders endpoints.'],
     ['name' => 'cadence', 'type' => 'string', 'description' => 'How often it comes back: once, weekly, monthly or yearly.'],
     ['name' => 'interval', 'type' => 'integer', 'description' => 'How many of those between two dates. Every 3 months is monthly with an interval of 3.'],
     ['name' => 'time', 'type' => 'string', 'description' => 'The local hour it is told at, on the day itself.'],
@@ -85,6 +88,7 @@ $reminderAttributes = [
 $occurrenceAttributes = [
     ['name' => 'reminder', 'type' => 'uuid', 'description' => 'The reminder this date belongs to.'],
     ['name' => 'name', 'type' => 'string', 'description' => 'What the reminder says.'],
+    ['name' => 'group', 'type' => 'object', 'description' => 'The group the reminder is about, as an object holding id and name. Always null here, since these dates belong to reminders about a contact.'],
     ['name' => 'date', 'type' => 'string', 'description' => 'The day it falls on, written as a year, a month and a day, in the reminder\'s time zone.'],
     ['name' => 'scheduled_for', 'type' => 'timestamp', 'description' => 'The instant it is told at, as a count of seconds since 1970.'],
     ['name' => 'category', 'type' => 'string', 'description' => 'Where it stands while it waits for an answer, read against today in your time zone: upcoming before its day, today on its day, overdue from the day after. Null once it is answered or cancelled.'],

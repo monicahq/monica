@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use App\Enums\ReminderOccurrenceCategoryEnum;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\ReminderOccurrence;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class ReminderOccurrenceResource extends JsonResource
     public function toArray(Request $request): array
     {
         $rule = $this->reminder;
-        $contact = $rule?->remindable;
+        $record = $rule?->remindable;
 
         return [
             'type' => 'reminder_occurrence',
@@ -28,6 +29,10 @@ class ReminderOccurrenceResource extends JsonResource
             'attributes' => [
                 'reminder' => $rule?->uuid,
                 'name' => $rule?->name,
+                'group' => $record instanceof Group ? [
+                    'id' => $record->uuid,
+                    'name' => $record->name,
+                ] : null,
                 'date' => $this->local_date->format('Y-m-d'),
                 'scheduled_for' => $this->scheduled_for->timestamp,
                 'category' => $this->resource->isActive()
@@ -38,9 +43,12 @@ class ReminderOccurrenceResource extends JsonResource
                 'cancelled_reason' => $this->cancelled_reason?->value,
             ],
             'links' => [
-                'reminder' => $rule !== null && $rule->deleted_at === null && $contact instanceof Contact
-                    ? route('api.v1.contacts.reminders.show', [$this->vault, $contact, $rule])
-                    : null,
+                'reminder' => match (true) {
+                    $rule === null, $rule->deleted_at !== null => null,
+                    $record instanceof Contact => route('api.v1.contacts.reminders.show', [$this->vault, $record, $rule]),
+                    $record instanceof Group => route('api.v1.groups.reminders.show', [$this->vault, $record->uuid, $rule]),
+                    default => null,
+                },
             ],
         ];
     }

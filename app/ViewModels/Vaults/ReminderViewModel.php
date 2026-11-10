@@ -12,6 +12,7 @@ use App\Enums\ReminderSourceEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\NextReminderDeadlines;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\StructureVersionSection;
@@ -68,6 +69,22 @@ class ReminderViewModel
             'avatarUrl' => $contact->avatar === null
                 ? null
                 : route('files.variants.show', ['vault' => $this->vault, 'file' => $contact->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]),
+        ];
+    }
+
+    /** @return array{name: string, url: string, indexUrl: string}|null */
+    public function group(): ?array
+    {
+        $group = $this->reminder->remindable;
+
+        if (! $group instanceof Group) {
+            return null;
+        }
+
+        return [
+            'name' => $group->name,
+            'url' => route('groups.show', ['vault' => $this->vault, 'group' => $group]),
+            'indexUrl' => route('groups.index', $this->vault),
         ];
     }
 
@@ -136,13 +153,17 @@ class ReminderViewModel
 
     public function editUrl(): ?string
     {
-        $contact = $this->reminder->remindable;
+        $record = $this->reminder->remindable;
 
-        if ($this->reminder->source !== ReminderSourceEnum::Manual || ! $contact instanceof Contact) {
+        if ($this->reminder->source === ReminderSourceEnum::Manual && $record instanceof Group) {
+            return route('groups.reminders.edit', ['vault' => $this->vault, 'group' => $record, 'reminder' => $this->reminder]);
+        }
+
+        if ($this->reminder->source !== ReminderSourceEnum::Manual || ! $record instanceof Contact) {
             return null;
         }
 
-        return route('contacts.reminders.edit', ['vault' => $this->vault, 'contact' => $contact, 'reminder' => $this->reminder]);
+        return route('contacts.reminders.edit', ['vault' => $this->vault, 'contact' => $record, 'reminder' => $this->reminder]);
     }
 
     public function editDateUrl(): ?string

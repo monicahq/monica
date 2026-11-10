@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\CreateContactReminder as CreateContactReminderAction;
+use App\Actions\CreateManualReminder;
 use App\Enums\ReminderCadenceEnum;
 use App\Exceptions\ReminderIsNotValid;
 use App\Http\Resources\ReminderResource;
@@ -40,9 +40,9 @@ class CreateContactReminder extends Tool
         $contact = $this->contact($this->vault($request, $validated['vault']), $validated['contact']);
 
         try {
-            $reminder = new CreateContactReminderAction(
+            $reminder = new CreateManualReminder(
                 user: $this->user($request),
-                contact: $contact,
+                record: $contact,
                 name: $validated['name'],
                 startsOn: $validated['starts_on'],
                 cadence: ReminderCadenceEnum::from($validated['cadence']),

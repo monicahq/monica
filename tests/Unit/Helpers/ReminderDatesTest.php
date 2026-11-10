@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Helpers;
 
+use App\Models\Vault;
+use App\Models\Group;
 use App\Enums\ReminderCadenceEnum;
-use App\Helpers\ContactReminderDates;
+use App\Helpers\ReminderDates;
 use App\Models\Contact;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
@@ -14,7 +16,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class ContactReminderDatesTest extends TestCase
+class ReminderDatesTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -33,7 +35,7 @@ class ContactReminderDatesTest extends TestCase
         $this->assertSame([$overdue->id], $this->ids($user, $chandler, 'overdue'));
         $this->assertSame([$today->id], $this->ids($user, $chandler, 'today'));
         $this->assertSame([$remembered->id], $this->ids($user, $chandler, 'history'));
-        $this->assertSame(['2026-10-26'], ContactReminderDates::page(user: $user, contact: $chandler, category: 'upcoming', perPage: 100, page: 1)->getCollection()
+        $this->assertSame(['2026-10-26'], ReminderDates::page(user: $user, record: $chandler, category: 'upcoming', perPage: 100, page: 1)->getCollection()
             ->map(fn (ReminderOccurrence $date): string => $date->local_date->toDateString())
             ->all());
         $this->assertSame([$today->id, $overdue->id, $remembered->id], $this->ids($user, $chandler, null));
@@ -50,7 +52,7 @@ class ContactReminderDatesTest extends TestCase
 
         $tulsa->delete();
 
-        $history = ContactReminderDates::page(user: $user, contact: $chandler, category: 'history', perPage: 100, page: 1)->getCollection();
+        $history = ReminderDates::page(user: $user, record: $chandler, category: 'history', perPage: 100, page: 1)->getCollection();
 
         $this->assertSame([$forgotten->id], $history->pluck('id')->all());
         $this->assertSame('Ask about Tulsa', $history->first()->reminder->name);
@@ -70,15 +72,30 @@ class ContactReminderDatesTest extends TestCase
         $this->assertSame([], $this->ids($user, $chandler, 'overdue'));
     }
 
-    /** @return list<int|null> */
-    private function ids(User $user, Contact $contact, ?string $category): array
+    #[Test]
+    public function it_lists_the_dates_of_a_group_and_not_those_of_another(): void
     {
-        return ContactReminderDates::page(user: $user, contact: $contact, category: $category, perPage: 100, page: 1)->getCollection()->pluck('id')->all();
+        $this->travelTo('2026-09-26 08:00:00');
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $committee = Group::factory()->create(['vault_id' => $vault->id]);
+        $finerThings = Group::factory()->create(['vault_id' => $vault->id]);
+
+        $party = $this->date($this->rule($committee, 'Book the conference room', '2026-10-01', ReminderCadenceEnum::Once), '2026-09-20');
+        $this->date($this->rule($finerThings, 'Buy the cheese', '2026-10-01', ReminderCadenceEnum::Once), '2026-09-21');
+
+        $this->assertSame([$party->id], $this->ids($user, $committee, null));
     }
 
-    private function rule(Contact $contact, string $name, string $startsOn, ReminderCadenceEnum $cadence): Reminder
+    /** @return list<int|null> */
+    private function ids(User $user, Contact|Group $record, ?string $category): array
     {
-        return Reminder::factory()->manual($contact, $startsOn)->create([
+        return ReminderDates::page(user: $user, record: $record, category: $category, perPage: 100, page: 1)->getCollection()->pluck('id')->all();
+    }
+
+    private function rule(Contact|Group $record, string $name, string $startsOn, ReminderCadenceEnum $cadence): Reminder
+    {
+        return Reminder::factory()->manual($record, $startsOn)->create([
             'name' => $name,
             'cadence' => $cadence,
             'timezone' => 'UTC',

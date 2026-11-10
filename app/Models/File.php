@@ -22,7 +22,7 @@ use Override;
  * Class File
  *
  * An uploaded file: a photo, a document, a scan. Files are attached to records
- * through fields and to life events, and to nothing else.
+ * through fields, to life events and to groups, and to nothing else.
  *
  * It is a model of its own rather than a path written into whatever points at
  * it, for three reasons. The product has to know at any moment which files are

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
+use App\Actions\AddGroupFile;
 use App\Actions\AddSectionToStructureVersion;
 use App\Actions\CreateDefaultValueLists;
 use App\Actions\CreateLifeEvent;
+use App\Actions\CreateManualReminder;
 use App\Actions\CreateStructureVersionDraft;
 use App\Actions\PublishStructureVersion;
 use App\Actions\ReadMonicaFile;
@@ -18,6 +20,7 @@ use App\Enums\AccountImportStatusEnum;
 use App\Enums\DatePrecisionEnum;
 use App\Enums\DefaultTemplateEnum;
 use App\Enums\FieldTypeEnum;
+use App\Enums\ReminderCadenceEnum;
 use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\SeedLifeEventCategories;
@@ -30,7 +33,9 @@ use App\Models\Entity;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\Group;
+use App\Models\GroupFile;
 use App\Models\GroupMember;
+use App\Models\GroupNote;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\LifeEventType;
@@ -43,6 +48,7 @@ use App\Models\ValueListItem;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
@@ -137,6 +143,46 @@ class AccountTransferRoundTripTest extends TestCase
         $this->assertSame([], $import->items()->whereNotNull('reason')->pluck('reason', 'kind')->all());
         $this->assertSame($this->described($this->dunderMifflin), $this->described(Vault::query()->findOrFail($import->vault_id)));
         $this->assertSame(3, GroupMember::query()->whereHas('group', fn ($query) => $query->where('vault_id', $import->vault_id))->count());
+    }
+
+    #[Test]
+    public function it_brings_what_a_group_holds_with_it(): void
+    {
+        CarbonImmutable::setTestNow('2027-05-01 06:00:00');
+        $contact = Contact::query()->where('vault_id', $this->dunderMifflin->id)->where('is_me', false)->orderBy('id')->firstOrFail();
+        $committee = Group::factory()->create(['vault_id' => $this->dunderMifflin->id, 'name' => 'Party planning committee']);
+        GroupMember::factory()->create(['group_id' => $committee->id, 'contact_id' => $contact->id]);
+        GroupNote::factory()->create(['group_id' => $committee->id, 'body' => 'Angela keeps the budget.', 'created_at' => '2026-11-02 10:00:00']);
+        $party = new CreateLifeEvent(
+            user: $this->michael,
+            vault: $this->dunderMifflin,
+            contact: $contact,
+            lifeEventType: $this->lifeEventTypeAsking($this->michael, 'Party'),
+            happenedOn: CarbonImmutable::parse('2026-10-31'),
+            title: 'Halloween party',
+            group: $committee,
+        )->execute();
+        new CreateManualReminder(
+            user: $this->michael,
+            record: $committee,
+            name: 'Plan the Christmas party',
+            startsOn: '2027-05-20',
+            cadence: ReminderCadenceEnum::Yearly,
+            timeOfDay: '09:00',
+        )->execute();
+        new AddGroupFile(user: $this->michael, vault: $this->dunderMifflin, group: $committee, upload: UploadedFile::fake()->createWithContent('budget.pdf', 'Party budget: 400 dollars'))->execute();
+
+        $import = $this->importedByPam();
+
+        $this->assertSame(AccountImportStatusEnum::Completed, $import->status);
+        $this->assertSame([], $import->items()->whereNotNull('reason')->pluck('reason', 'kind')->all());
+        $copy = Group::query()->where('vault_id', $import->vault_id)->where('name', 'Party planning committee')->firstOrFail();
+        $this->assertSame(['Angela keeps the budget.'], $copy->notes()->pluck('body')->all());
+        $this->assertSame('2026-11-02', $copy->notes()->firstOrFail()->created_at->toDateString());
+        $this->assertSame(['Halloween party'], $copy->lifeEvents()->pluck('title')->all());
+        $this->assertSame(['Plan the Christmas party'], $copy->reminders()->pluck('name')->all());
+        $this->assertSame(['budget.pdf'], $copy->files()->with('file')->get()->map(fn (GroupFile $attachment): string => $attachment->file->original_name)->all());
+        $this->assertNotSame($party->id, $copy->lifeEvents()->firstOrFail()->id);
     }
 
     private function importedByPam(): AccountImport

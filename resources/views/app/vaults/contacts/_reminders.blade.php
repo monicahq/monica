@@ -94,7 +94,7 @@
                 </div>
               </div>
 
-              @include('app.vaults.contacts.reminders._menu', ['row' => $row])
+              @include('app.vaults.reminders._menu', ['row' => $row])
             </div>
 
             @if ($row->canRemember() || $row->canForget())

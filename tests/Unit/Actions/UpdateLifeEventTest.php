@@ -13,6 +13,7 @@ use App\Exceptions\FieldIsRequired;
 use App\Exceptions\LifeEventTypeIsNotAvailable;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\LifeEvent;
 use App\Models\LifeEventType;
 use App\Models\User;
@@ -228,6 +229,22 @@ class UpdateLifeEventTest extends TestCase
         $this->expectException(LifeEventTypeIsNotAvailable::class);
 
         $this->update($user, $vault, $jim, $lifeEvent, $fax, '2026-07-03');
+    }
+
+    #[Test]
+    public function it_keeps_the_group_the_life_event_was_recorded_on(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $jim] = $this->office();
+        $call = $this->lifeEventTypeAsking($user, 'Call');
+        $lifeEvent = $this->record($user, $vault, $jim, $call);
+        $group = Group::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+        $lifeEvent->update(['group_id' => $group->id]);
+
+        $this->update($user, $vault, $jim, $lifeEvent, $call, '2026-08-30');
+
+        $this->assertEquals($group->id, $lifeEvent->refresh()->group_id);
     }
 
     /** @return array{0: User, 1: Vault, 2: Contact, 3: Contact, 4: Contact} */

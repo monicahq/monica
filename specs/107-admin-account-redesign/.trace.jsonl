@@ -1,0 +1,8 @@
+{"at":"2026-11-09T22:56:54.645Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/107-admin-account-redesign","files":[".spec-context.json"],"bytes":337,"in_bytes":124,"ms":148}
+{"at":"2026-11-09T22:56:54.796Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/107-admin-account-redesign","files":[".spec-context.json"],"bytes":487,"in_bytes":102,"ms":69}
+{"at":"2026-11-09T22:57:23.913Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/107-admin-account-redesign","files":[".spec-context.json"],"bytes":628,"in_bytes":95,"ms":95}
+{"at":"2026-11-09T22:59:11.239Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/107-admin-account-redesign","files":[".spec-context.json"],"bytes":775,"in_bytes":97,"ms":101}
+{"at":"2026-11-09T22:59:34.419Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/107-admin-account-redesign","files":[".spec-context.json"],"bytes":922,"in_bytes":95,"ms":94}
+{"at":"2026-11-09T22:59:59.182Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/107-admin-account-redesign","files":[".spec-context.json"],"bytes":1082,"in_bytes":109,"ms":95}
+{"at":"2026-11-09T23:02:01.030Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/107-admin-account-redesign","files":[".spec-context.json"],"bytes":1230,"in_bytes":104,"ms":100}
+{"at":"2026-11-09T23:16:41.516Z","tool":"write-context","op":"tasks-sync","ok":true,"reason":null,"spec":"specs/107-admin-account-redesign","files":[".spec-context.json"],"bytes":4230,"in_bytes":145,"ms":75}

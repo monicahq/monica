@@ -50,7 +50,7 @@ You MUST create a numbered file in `resources/docs/api`, or add sections to an e
     'response' => [/* body as a PHP array */], // omit for 204 responses
     'exampleBody' => [/* request body */], // overrides the body built from the params' examples
     'statusCodes' => [/* ['status' => 422, 'name' => …, 'when' => …, 'body' => …] */],
-    'flag' => 'shared-albums',             // documented only while the flag is on for every account
+    'flag' => 'shared-albums',             // documented only while the flag is on for every account; a list needs every flag on
 ]
 ```
 

@@ -1,15 +1,12 @@
-{{-- Writes a reminder about a contact that carries its own date, or changes one already written. --}}
-{{-- @var \App\ViewModels\Vaults\ContactReminderForm $viewModel --}}
+{{-- Writes a reminder with its own date about a contact or a group, or changes one already written. --}}
+{{-- @var \App\ViewModels\Vaults\ReminderForm $viewModel --}}
 <x-shell :title="$viewModel->title()">
   <x-slot:breadcrumb>
-    <x-breadcrumb.vault :vault="$viewModel->vault()" :items="[['label' => __('People'), 'url' => route('contacts.index', $viewModel->vault())],
-        ['label' => $viewModel->contact()->name, 'url' => $viewModel->contactUrl()],
-        ['label' => __('Reminders'), 'url' => $viewModel->remindersUrl()],
-        ['label' => $viewModel->title()],]" />
+    <x-breadcrumb.vault :vault="$viewModel->vault()" :items="$viewModel->breadcrumb()" />
   </x-slot:breadcrumb>
 
   <x-slot:sidebar>
-    <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" current="contacts" />
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" :current="$viewModel->sidebarEntry()" />
   </x-slot:sidebar>
 
   <x-page-header

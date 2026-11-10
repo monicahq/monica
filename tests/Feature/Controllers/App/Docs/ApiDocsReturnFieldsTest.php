@@ -13,6 +13,7 @@ use App\Enums\AccountImportSourceEnum;
 use App\Enums\AccountImportStatusEnum;
 use App\Enums\ContactListColumnSourceEnum;
 use App\Enums\FieldTypeEnum;
+use App\Enums\LifeEventSourceEnum;
 use App\Enums\NotificationChannelEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
@@ -32,7 +33,9 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\Group;
+use App\Models\GroupFile;
 use App\Models\GroupMember;
+use App\Models\GroupNote;
 use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -1693,6 +1696,161 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('DELETE', "/api/v1/vaults/{$membership->group->vault->uuid}/groups/{$membership->group->uuid}/members/{$membership->uuid}");
             }),
 
+            'group-life-events-index' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+                $contact = Contact::factory()->create(['vault_id' => $group->vault_id, 'account_id' => $user->account_id]);
+                $type = $this->lifeEventTypeWithAField($user)->refresh();
+
+                new CreateLifeEvent(
+                    user: $user,
+                    vault: $group->vault,
+                    contact: $contact,
+                    lifeEventType: $type,
+                    happenedOn: CarbonImmutable::parse('2026-10-09'),
+                    values: [$type->structure->publishedVersion->inputFields()->firstOrFail()->id => 'Party budget'],
+                    createdFrom: LifeEventSourceEnum::Group,
+                    group: $group,
+                )->execute();
+
+                return $this->json('GET', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/life-events");
+            }),
+
+            'group-life-events-create' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+                $contact = Contact::factory()->create(['vault_id' => $group->vault_id, 'account_id' => $user->account_id]);
+                $type = $this->lifeEventTypeWithAField($user)->refresh();
+                $agenda = $type->structure->publishedVersion->inputFields()->firstOrFail();
+
+                return $this->json('POST', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/life-events", [
+                    'life_event_type' => $type->uuid,
+                    'happened_on' => '2026-10-09',
+                    'participants' => [$contact->uuid],
+                    'fields' => [$agenda->id => 'Party budget'],
+                ]);
+            }),
+
+            'group-notes-index' => $this->asSomebody(function (User $user): TestResponse {
+                $note = $this->aGroupNote($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$note->group->vault->uuid}/groups/{$note->group->uuid}/notes");
+            }),
+
+            'group-notes-show' => $this->asSomebody(function (User $user): TestResponse {
+                $note = $this->aGroupNote($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$note->group->vault->uuid}/groups/{$note->group->uuid}/notes/{$note->uuid}");
+            }),
+
+            'group-notes-create' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+
+                return $this->json('POST', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/notes", [
+                    'body' => 'Angela keeps the budget in the blue binder.',
+                ]);
+            }),
+
+            'group-notes-update' => $this->asSomebody(function (User $user): TestResponse {
+                $note = $this->aGroupNote($user);
+
+                return $this->json('PUT', "/api/v1/vaults/{$note->group->vault->uuid}/groups/{$note->group->uuid}/notes/{$note->uuid}", [
+                    'body' => 'Phyllis keeps the budget now.',
+                ]);
+            }),
+
+            'group-notes-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $note = $this->aGroupNote($user);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$note->group->vault->uuid}/groups/{$note->group->uuid}/notes/{$note->uuid}");
+            }),
+
+            'group-reminders-index' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+                Reminder::factory()->manual($group, now()->addWeek()->toDateString())->create();
+
+                return $this->json('GET', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/reminders");
+            }),
+
+            'group-reminders-show' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+                $reminder = Reminder::factory()->manual($group, now()->addWeek()->toDateString())->create();
+
+                return $this->json('GET', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/reminders/{$reminder->uuid}");
+            }),
+
+            'group-reminders-create' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+
+                return $this->json('POST', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/reminders", [
+                    'name' => 'Book the conference room for the birthday party',
+                    'starts_on' => now()->addWeek()->toDateString(),
+                    'cadence' => 'monthly',
+                    'time' => '09:00',
+                ]);
+            }),
+
+            'group-reminders-update' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+                $reminder = Reminder::factory()->manual($group, now()->addWeek()->toDateString())->create();
+
+                return $this->json('PUT', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/reminders/{$reminder->uuid}", [
+                    'name' => 'Book the conference room for the birthday party',
+                    'cadence' => 'yearly',
+                    'time' => '10:00',
+                ]);
+            }),
+
+            'group-reminders-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+                $reminder = Reminder::factory()->manual($group, now()->addWeek()->toDateString())->create();
+
+                return $this->json('DELETE', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/reminders/{$reminder->uuid}");
+            }),
+
+            'group-reminder-occurrences-index' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+                $reminder = Reminder::factory()->manual($group, now()->addWeek()->toDateString())->create();
+                ReminderOccurrence::factory()->past()->remembered()->create(['reminder_id' => $reminder->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/reminder-occurrences?category=history");
+            }),
+
+            'group-reminder-occurrences-answer-update' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+                $reminder = Reminder::factory()->manual($group, now()->addWeek()->toDateString())->create();
+                $occurrence = ReminderOccurrence::factory()->past()->create(['reminder_id' => $reminder->id]);
+
+                return $this->json('PUT', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/reminder-occurrences/{$occurrence->uuid}/answer", [
+                    'answer' => 'remembered',
+                ]);
+            }),
+
+            'group-files-index' => $this->asSomebody(function (User $user): TestResponse {
+                $attachment = $this->aGroupFile($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$attachment->group->vault->uuid}/groups/{$attachment->group->uuid}/files");
+            }),
+
+            'group-files-show' => $this->asSomebody(function (User $user): TestResponse {
+                $attachment = $this->aGroupFile($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$attachment->group->vault->uuid}/groups/{$attachment->group->uuid}/files/{$attachment->uuid}");
+            }),
+
+            'group-files-create' => $this->asSomebody(function (User $user): TestResponse {
+                Storage::fake('local');
+                $group = $this->aGroup($user);
+
+                return $this->json('POST', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/files", [
+                    'file' => UploadedFile::fake()->createWithContent('office-picnic-schedule.txt', 'Games at noon.'),
+                ]);
+            }),
+
+            'group-files-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $attachment = $this->aGroupFile($user);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$attachment->group->vault->uuid}/groups/{$attachment->group->uuid}/files/{$attachment->uuid}");
+            }),
+
             'contact-groups-index' => $this->asSomebody(function (User $user): TestResponse {
                 $membership = $this->aGroupMembership($user);
 
@@ -2001,6 +2159,16 @@ class ApiDocsReturnFieldsTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
         return Group::factory()->create(['vault_id' => $vault->id]);
+    }
+
+    private function aGroupNote(User $user): GroupNote
+    {
+        return GroupNote::factory()->create(['group_id' => $this->aGroup($user)->id]);
+    }
+
+    private function aGroupFile(User $user): GroupFile
+    {
+        return GroupFile::factory()->create(['group_id' => $this->aGroup($user)->id]);
     }
 
     private function aGroupMembership(User $user): GroupMember

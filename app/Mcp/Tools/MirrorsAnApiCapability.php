@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Enums\ApiKeyScopeEnum;
+use App\Http\Resources\GroupFileResource;
 use App\Http\Resources\GroupMembershipResource;
+use App\Http\Resources\GroupNoteResource;
 use App\Http\Resources\LifeEventResource;
 use App\Models\Contact;
 use App\Models\EmailSent;
 use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\Group;
+use App\Models\GroupFile;
 use App\Models\GroupMember;
+use App\Models\GroupNote;
 use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -178,6 +182,44 @@ trait MirrorsAnApiCapability
         return $this->found($membership);
     }
 
+    protected function groupNote(Group $group, string $address): GroupNote
+    {
+        if (! Str::isUuid($address)) {
+            throw $this->doesNotExist(__('That note does not exist.'));
+        }
+
+        $note = GroupNote::query()
+            ->where('group_id', $group->id)
+            ->where('uuid', $address)
+            ->with(GroupNoteResource::RELATIONS)
+            ->first();
+
+        if ($note === null) {
+            throw $this->doesNotExist(__('That note does not exist.'));
+        }
+
+        return $this->found($note);
+    }
+
+    protected function groupFile(Group $group, string $address): GroupFile
+    {
+        if (! Str::isUuid($address)) {
+            throw $this->doesNotExist(__('That file does not exist.'));
+        }
+
+        $attachment = GroupFile::query()
+            ->where('group_id', $group->id)
+            ->where('uuid', $address)
+            ->with(GroupFileResource::RELATIONS)
+            ->first();
+
+        if ($attachment === null) {
+            throw $this->doesNotExist(__('That file does not exist.'));
+        }
+
+        return $this->found($attachment);
+    }
+
     protected function template(Request $request, string $address): Template
     {
         $template = Str::isUuid($address) ? $this->user($request)->account->templates()->where('uuid', $address)->first() : null;
@@ -338,6 +380,43 @@ trait MirrorsAnApiCapability
         }
 
         return $this->found($reminder);
+    }
+
+    protected function groupReminder(Group $group, string $uuid): Reminder
+    {
+        if (! Str::isUuid($uuid)) {
+            throw $this->doesNotExist(__('That reminder does not exist.'));
+        }
+
+        $reminder = $group->reminders()
+            ->where('uuid', $uuid)
+            ->with(['vault', 'field', 'fieldValue', 'remindable'])
+            ->first();
+
+        if ($reminder === null) {
+            throw $this->doesNotExist(__('That reminder does not exist.'));
+        }
+
+        return $this->found($reminder);
+    }
+
+    protected function groupReminderOccurrence(Group $group, string $uuid): ReminderOccurrence
+    {
+        if (! Str::isUuid($uuid)) {
+            throw $this->doesNotExist(__('That reminder date does not exist.'));
+        }
+
+        $occurrence = ReminderOccurrence::query()
+            ->where('account_id', $group->account_id)
+            ->where('uuid', $uuid)
+            ->whereIn('reminder_id', $group->reminders()->select('id'))
+            ->first();
+
+        if ($occurrence === null) {
+            throw $this->doesNotExist(__('That reminder date does not exist.'));
+        }
+
+        return $this->found($occurrence);
     }
 
     protected function relationship(Contact $contact, string $uuid): Relationship

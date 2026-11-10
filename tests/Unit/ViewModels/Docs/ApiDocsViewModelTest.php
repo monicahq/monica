@@ -69,7 +69,7 @@ class ApiDocsViewModelTest extends TestCase
         );
 
         $this->assertEquals(
-            ['Authentication', 'Your profile', 'API keys', 'Vaults', 'Contacts', 'Kinds of record', 'Logs', 'Emails sent', 'Health', 'Templates', 'Billing', 'Duplicates and merges', 'Notifications', 'Notification channels', 'Relationship categories', 'Relationship types', 'Life event categories', 'Life event types', 'Reminders', 'Search', 'Life events', 'Relationships', 'MCP history', 'Imports', 'Exports', 'Groups'],
+            ['Authentication', 'Your profile', 'API keys', 'Vaults', 'Contacts', 'Kinds of record', 'Logs', 'Emails sent', 'Health', 'Templates', 'Billing', 'Duplicates and merges', 'Notifications', 'Notification channels', 'Relationship categories', 'Relationship types', 'Life event categories', 'Life event types', 'Reminders', 'Search', 'Life events', 'Relationships', 'MCP history', 'Imports', 'Exports', 'Groups', 'Group notes', 'Group activities', 'Group reminders', 'Group files'],
             array_column($navigation['resources'], 'name'),
         );
     }
@@ -116,6 +116,18 @@ class ApiDocsViewModelTest extends TestCase
         Feature::flushCache();
 
         $this->assertNotContains('Groups', array_column(new ApiDocsViewModel()->navigation()['resources'], 'name'));
+    }
+
+    #[Test]
+    public function it_leaves_out_a_section_while_any_of_its_flags_is_off(): void
+    {
+        $this->assertNotNull(new ApiDocsViewModel()->section('group-files-index'));
+
+        Feature::for(null)->deactivate('file-upload');
+        Feature::flushCache();
+
+        $this->assertNull(new ApiDocsViewModel()->section('group-files-index'));
+        $this->assertNotNull(new ApiDocsViewModel()->section('group-notes-index'));
     }
 
     #[Test]

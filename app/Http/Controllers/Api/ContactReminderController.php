@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
-use App\Actions\CreateContactReminder;
+use App\Actions\CreateManualReminder;
 use App\Actions\DestroyReminder;
 use App\Actions\UpdateReminder;
 use App\Enums\ReminderCadenceEnum;
@@ -60,9 +60,9 @@ class ContactReminderController extends Controller
         ]);
 
         try {
-            $reminder = new CreateContactReminder(
+            $reminder = new CreateManualReminder(
                 user: $request->user(),
-                contact: $contact,
+                record: $contact,
                 name: $validated['name'],
                 startsOn: $validated['starts_on'],
                 cadence: ReminderCadenceEnum::from($validated['cadence']),

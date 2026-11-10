@@ -741,7 +741,7 @@ last two exist only when the instance configured them.
   sent ahead of the day; reminders created automatically from a date field (birthday); sending a test by
   email. Excludes channels.
 - **Links:** related `reminders.how-they-work`, `notifications.channels`.
-- **Evidence:** `ContactReminderController`, `CreateContactReminder`, `ReminderOccurrenceTestNotificationController`;
+- **Evidence:** `ContactReminderController`, `CreateManualReminder`, `ReminderOccurrenceTestNotificationController`;
   `ContactReminderControllerTest`.
 - **Examples and assets:** a yearly reminder for Phoebe's birthday.
 - **Acceptance:** states the time zone is fixed when the reminder is created.

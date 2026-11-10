@@ -113,12 +113,12 @@ class ContactDeadlinesBlock
         return route('contacts.reminderForm.new', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
-    public function form(): ContactReminderForm
+    public function form(): ReminderForm
     {
-        return once(fn (): ContactReminderForm => new ContactReminderForm(
+        return once(fn (): ReminderForm => new ReminderForm(
             user: $this->user,
             vault: $this->vault,
-            contact: $this->contact,
+            record: $this->contact,
         ));
     }
 

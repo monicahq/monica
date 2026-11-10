@@ -11,6 +11,7 @@ use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\Field;
+use App\Models\Group;
 use App\Models\Reminder;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,7 +27,7 @@ class ReactivateReminders
 
     public function __construct(
         private readonly User $user,
-        private readonly Contact|Entity|Field|Reminder $subject,
+        private readonly Contact|Entity|Field|Group|Reminder $subject,
         private readonly ReminderInactiveReasonEnum $reason,
     ) {}
 

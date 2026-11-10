@@ -36,14 +36,14 @@
               </span>
 
               <span class="flex min-w-45 flex-1 flex-col">
-                @if ($row->contactName() === null)
+                @if ($row->recordName() === null)
                   <span class="text-base font-semibold text-muted">{{ __('A deleted contact') }}</span>
                 @else
                   <a
-                    href="{{ $row->contactUrl() }}"
+                    href="{{ $row->recordUrl() }}"
                     data-turbo="true"
                     class="self-start rounded-xs text-base font-semibold text-ink no-underline transition-colors duration-(--duration-fast) hover:text-link focus-ring"
-                  >{{ $row->contactName() }}</a>
+                  >{{ $row->recordName() }}</a>
                 @endif
 
                 <span class="text-sm text-pretty text-body">{{ $row->text() }}</span>

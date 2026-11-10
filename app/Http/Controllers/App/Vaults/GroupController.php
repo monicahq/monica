@@ -13,8 +13,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Models\Vault;
 use App\ViewModels\Vaults\GroupFormViewModel;
+use App\ViewModels\Vaults\GroupOverviewViewModel;
 use App\ViewModels\Vaults\GroupsViewModel;
-use App\ViewModels\Vaults\GroupViewModel;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -63,12 +63,15 @@ class GroupController extends Controller
 
     public function show(Request $request, Vault $vault, Group $group): View
     {
+        $justAdded = $request->session()->get('lifeEventJustAdded');
+
         return view('app.vaults.groups.show', [
-            'viewModel' => new GroupViewModel(
+            'viewModel' => new GroupOverviewViewModel(
                 user: $request->user(),
                 vault: $vault,
                 group: $group,
-                size: PageSize::from($request, GroupViewModel::PER_PAGE),
+                page: max(1, $request->integer('page', 1)),
+                justAddedLifeEventId: is_int($justAdded) ? $justAdded : null,
             ),
         ]);
     }

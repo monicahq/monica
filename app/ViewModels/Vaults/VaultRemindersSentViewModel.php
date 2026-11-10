@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Models\Contact;
+use App\Models\Entity;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class VaultRemindersSentViewModel
 {
@@ -114,7 +117,7 @@ class VaultRemindersSentViewModel
 
         $rules = Reminder::withTrashed()
             ->whereIn('id', collect($page->items())->pluck('reminder_id')->unique())
-            ->with(['remindable.avatar', 'field'])
+            ->with(['remindable' => fn (MorphTo $record): MorphTo => $record->morphWith([Contact::class => ['avatar'], Entity::class => ['avatar']]), 'field'])
             ->get()
             ->keyBy('id');
 

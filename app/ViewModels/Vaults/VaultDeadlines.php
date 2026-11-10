@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Helpers\NextReminderDeadlines;
+use App\Models\Contact;
+use App\Models\Entity;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Collection;
 
 /**
@@ -33,7 +36,7 @@ class VaultDeadlines
 
         $waiting = ReminderOccurrence::query()
             ->awaitingAnswerInVault(vault: $this->vault, untilDay: $today)
-            ->with(['reminder.remindable.avatar', 'reminder.field'])
+            ->with(['reminder.remindable' => fn (MorphTo $record): MorphTo => $record->morphWith([Contact::class => ['avatar'], Entity::class => ['avatar']]), 'reminder.field'])
             ->get()
             ->each(fn (ReminderOccurrence $occurrence): ReminderOccurrence => $occurrence->setRelation('vault', $this->vault));
 
@@ -41,7 +44,7 @@ class VaultDeadlines
             ->where('vault_id', $this->vault->id)
             ->where('account_id', $this->vault->account_id)
             ->active()
-            ->with(['remindable.avatar', 'field', 'fieldValue'])
+            ->with(['remindable' => fn (MorphTo $record): MorphTo => $record->morphWith([Contact::class => ['avatar'], Entity::class => ['avatar']]), 'field', 'fieldValue'])
             ->get()
             ->each(fn (Reminder $rule): Reminder => $rule->setRelation('vault', $this->vault));
 
@@ -62,7 +65,7 @@ class VaultDeadlines
 
         $waiting = ReminderOccurrence::query()
             ->awaitingAnswerInVault(vault: $this->vault, untilDay: $today)
-            ->with(['vault', 'reminder.remindable.avatar', 'reminder.field'])
+            ->with(['vault', 'reminder.remindable' => fn (MorphTo $record): MorphTo => $record->morphWith([Contact::class => ['avatar'], Entity::class => ['avatar']]), 'reminder.field'])
             ->get();
 
         $generated = ReminderOccurrence::query()
@@ -74,7 +77,7 @@ class VaultDeadlines
             ->whereHas('reminder', function (Builder $rule): void {
                 $rule->where('is_active', true);
             })
-            ->with(['vault', 'reminder.vault', 'reminder.remindable.avatar', 'reminder.field', 'reminder.fieldValue'])
+            ->with(['vault', 'reminder.vault', 'reminder.remindable' => fn (MorphTo $record): MorphTo => $record->morphWith([Contact::class => ['avatar'], Entity::class => ['avatar']]), 'reminder.field', 'reminder.fieldValue'])
             ->orderBy('local_date')
             ->orderBy('scheduled_for')
             ->get()
@@ -89,7 +92,7 @@ class VaultDeadlines
             ->active()
             ->where('generate_from', '<=', $lastDay->addDays(2)->subDays($window))
             ->whereNotIn('id', $generated->pluck('reminder_id')->all())
-            ->with(['vault', 'remindable.avatar', 'field', 'fieldValue'])
+            ->with(['vault', 'remindable' => fn (MorphTo $record): MorphTo => $record->morphWith([Contact::class => ['avatar'], Entity::class => ['avatar']]), 'field', 'fieldValue'])
             ->get();
 
         $computed = NextReminderDeadlines::for($behind, $today)

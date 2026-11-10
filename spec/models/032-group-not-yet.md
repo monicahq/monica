@@ -34,11 +34,12 @@ deleted_with_vault          boolean                         whether the deletion
 - `belongsTo` [Account](001-account-in-progress.md), [Vault](007-vault-in-progress.md)
 - `hasMany` [GroupMember](033-group-member-not-yet.md)
 - `belongsToMany` [Contact](019-contact-done.md) through [GroupMember](033-group-member-not-yet.md)
+- `hasMany` GroupNote, GroupFile and the [LifeEvent](036-life-event-not-yet.md)s recorded on its page; `morphMany` [Reminder](040-reminder-done.md) (specs/109-group-page)
 
 ## Rules
 
 - A group is never created or suggested automatically from a relationship (8.2).
-- A group has its own name and its own timeline, distinct from the timelines of its members.
+- A group has its own name and its own timeline, distinct from the timelines of its members. That timeline holds the life events recorded on the group page and the notes written about it (specs/109-group-page).
 - Every member is a contact in the same vault.
 - A contact belongs to as many groups as it needs. Two households is the case the specification names.
 - A group has no kind. Its name says what it is, and [GroupType](031-group-type-not-yet.md) was dropped (specs/085-groups).

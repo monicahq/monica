@@ -19,6 +19,17 @@ class GroupMemberControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
+    public function it_shows_the_members_tab(): void
+    {
+        [$user, $vault, $group] = $this->scrantonBranch();
+        $dwight = GroupMember::factory()->create(['group_id' => $group->id]);
+
+        $this->actingAs($user)->get(route('groups.members.index', ['vault' => $vault, 'group' => $group]))
+            ->assertOk()
+            ->assertSee($dwight->contact->name);
+    }
+
+    #[Test]
     public function it_shows_the_form_with_a_labelled_picker(): void
     {
         [$user, $vault, $group] = $this->scrantonBranch();

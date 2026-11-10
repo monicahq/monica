@@ -46,6 +46,7 @@ class ReadMonicaFile
 
     private const array GROUP_KEYS = [
         'created_at', 'name', 'description', 'started_on', 'started_precision', 'ended_on', 'ended_precision', 'members',
+        'notes', 'files', 'life_events', 'reminders',
     ];
 
     private const array LIFE_EVENT_KEYS = [

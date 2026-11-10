@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\ContactReminderDates;
+use App\Helpers\ReminderDates;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReminderOccurrenceResource;
 use App\Models\Contact;
@@ -20,7 +20,7 @@ class ContactReminderOccurrenceController extends Controller
         $contact = $this->contact($this->vault($request, $vault), $contact);
 
         $validated = $request->validate([
-            'category' => ['nullable', 'string', Rule::in(ContactReminderDates::categories())],
+            'category' => ['nullable', 'string', Rule::in(ReminderDates::categories())],
         ]);
 
         $perPage = max(1, min(
@@ -28,9 +28,9 @@ class ContactReminderOccurrenceController extends Controller
             (int) config('monica.api_maximum_items_per_page'),
         ));
 
-        $paginated = ContactReminderDates::page(
+        $paginated = ReminderDates::page(
             user: $request->user(),
-            contact: $contact,
+            record: $contact,
             category: $validated['category'] ?? null,
             perPage: $perPage,
             page: max(1, (int) $request->query('page', '1')),

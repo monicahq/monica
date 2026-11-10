@@ -34,7 +34,7 @@
         <span class="flex items-center gap-1.5">
           <x-icon name="link" :size="15" :stroke-width="1.5" />
           {{ __('Follows') }}
-          <a href="{{ $row->contactUrl() }}" data-turbo="true" class="text-body decoration-hairline-strong">{{ $row->sourceLabel() }}</a>
+          <a href="{{ $row->recordUrl() }}" data-turbo="true" class="text-body decoration-hairline-strong">{{ $row->sourceLabel() }}</a>
         </span>
       @endif
     </div>
@@ -44,7 +44,7 @@
     <div class="flex items-center gap-2">
       @include('app.vaults.reminders._answers', ['row' => $row])
 
-      @include('app.vaults.contacts.reminders._menu', ['row' => $row])
+      @include('app.vaults.reminders._menu', ['row' => $row])
     </div>
   @endif
 </div>

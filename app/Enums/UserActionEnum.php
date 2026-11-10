@@ -124,6 +124,11 @@ enum UserActionEnum: string implements Translatable
     case GroupMembershipEnd = 'group_membership_ended';
     case GroupMembershipDeletion = 'group_membership_deleted';
     case GroupExported = 'group_exported';
+    case GroupNoteCreation = 'group_note_created';
+    case GroupNoteUpdate = 'group_note_updated';
+    case GroupNoteDeletion = 'group_note_deleted';
+    case GroupFileAddition = 'group_file_added';
+    case GroupFileRemoval = 'group_file_removed';
     case DefaultTemplateSeeded = 'default_template_seeded';
     case TemplateCreation = 'template_created';
     case TemplateUpdate = 'template_updated';
@@ -341,6 +346,11 @@ enum UserActionEnum: string implements Translatable
             self::GroupMembershipEnd => 'Recorded that :name left the group :group',
             self::GroupMembershipDeletion => 'Removed the membership of :name from the group :group',
             self::GroupExported => 'Exported the group :name and its members as cards',
+            self::GroupNoteCreation => 'Wrote a note on the group :name',
+            self::GroupNoteUpdate => 'Changed a note on the group :name',
+            self::GroupNoteDeletion => 'Deleted a note on the group :name',
+            self::GroupFileAddition => 'Added the file :file to the group :name',
+            self::GroupFileRemoval => 'Removed the file :file from the group :name',
             self::DefaultTemplateSeeded => 'Set up the template :name the account starts with',
             self::TemplateCreation => 'Created the template :name',
             self::TemplateUpdate => 'Updated the template :name',

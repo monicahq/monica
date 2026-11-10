@@ -9,6 +9,7 @@ use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderSourceEnum;
 use App\Models\Contact;
 use App\Models\FieldValue;
+use App\Models\Group;
 use App\Models\Reminder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
@@ -44,15 +45,15 @@ class ReminderFactory extends Factory
         ];
     }
 
-    public function manual(Contact $contact, string $startsOn): static
+    public function manual(Contact|Group $record, string $startsOn): static
     {
         return $this->state(fn (array $attributes): array => [
             'field_value_id' => null,
             'field_id' => null,
-            'account_id' => $contact->account_id,
-            'vault_id' => $contact->vault_id,
-            'remindable_type' => Contact::class,
-            'remindable_id' => $contact->id,
+            'account_id' => $record->account_id,
+            'vault_id' => $record->vault_id,
+            'remindable_type' => $record->getMorphClass(),
+            'remindable_id' => $record->id,
             'name' => 'Call about the flat on Bedford Street',
             'source' => ReminderSourceEnum::Manual,
             'starts_on' => $startsOn,

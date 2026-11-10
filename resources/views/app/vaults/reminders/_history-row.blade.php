@@ -11,8 +11,8 @@
     <span class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
       <span>{{ $row->answeredLine() }}</span>
 
-      @if ($row->contactName() !== null)
-        <a href="{{ $row->contactUrl() }}" data-turbo="true" class="text-body no-underline hover:text-link">{{ $row->contactName() }}</a>
+      @if ($row->recordName() !== null)
+        <a href="{{ $row->recordUrl() }}" data-turbo="true" class="text-body no-underline hover:text-link">{{ $row->recordName() }}</a>
       @else
         <span>{{ __('A deleted contact') }}</span>
       @endif

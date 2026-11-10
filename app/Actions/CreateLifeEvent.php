@@ -10,6 +10,7 @@ use App\Enums\UserActionEnum;
 use App\Exceptions\LifeEventTypeIsNotAvailable;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\LifeEventType;
@@ -23,7 +24,8 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Record something that happened, from the page of one of the people who were there, from the vault
- * dashboard, or from outside through the API or MCP, and put it on the timeline of every one of them.
+ * dashboard, from a group's page, or from outside through the API or MCP, and put it on the timeline of
+ * every one of them. Recorded from a group's page, it also belongs to that group's history.
  */
 class CreateLifeEvent
 {
@@ -48,6 +50,7 @@ class CreateLifeEvent
         private readonly array $participants = [],
         private readonly array $values = [],
         private readonly LifeEventSourceEnum $createdFrom = LifeEventSourceEnum::Contact,
+        private readonly ?Group $group = null,
     ) {}
 
     public function execute(): LifeEvent
@@ -104,6 +107,10 @@ class CreateLifeEvent
             }
         }
 
+        if ($this->group instanceof Group && ($this->group->account_id !== $this->user->account_id || $this->group->vault_id !== $this->vault->id)) {
+            throw new ModelNotFoundException('This group is in another vault.');
+        }
+
         if ($this->lifeEventType->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This life event type is in another account.');
         }
@@ -128,6 +135,7 @@ class CreateLifeEvent
             'vault_id' => $this->vault->id,
             'life_event_type_id' => $this->lifeEventType->id,
             'structure_version_id' => $this->version->id,
+            'group_id' => $this->group?->id,
             'happened_on' => $this->happenedOn->toDateString(),
             'date_precision' => DatePrecisionEnum::Day,
             'title' => $this->title,

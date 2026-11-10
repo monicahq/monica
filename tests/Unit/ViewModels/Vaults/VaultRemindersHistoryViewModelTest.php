@@ -49,7 +49,7 @@ class VaultRemindersHistoryViewModelTest extends TestCase
         $rows = new VaultRemindersHistoryViewModel(user: $user, vault: $vault)->rows();
 
         $this->assertSame('Birthday of Angela', $rows[0]->text());
-        $this->assertSame($rule->remindable->name, $rows[0]->contactName());
+        $this->assertSame($rule->remindable->name, $rows[0]->recordName());
     }
 
     #[Test]

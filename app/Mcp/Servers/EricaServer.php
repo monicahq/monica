@@ -6,12 +6,16 @@ namespace App\Mcp\Servers;
 
 use App\Mcp\Tools\AddGroupMember;
 use App\Mcp\Tools\AddTemplateSection;
+use App\Mcp\Tools\AnswerGroupReminderOccurrence;
 use App\Mcp\Tools\AnswerReminderOccurrence;
 use App\Mcp\Tools\CreateContact;
 use App\Mcp\Tools\CreateContactRelationship;
 use App\Mcp\Tools\CreateContactReminder;
 use App\Mcp\Tools\CreateEntityType;
 use App\Mcp\Tools\CreateGroup;
+use App\Mcp\Tools\CreateGroupLifeEvent;
+use App\Mcp\Tools\CreateGroupNote;
+use App\Mcp\Tools\CreateGroupReminder;
 use App\Mcp\Tools\CreateLifeEvent;
 use App\Mcp\Tools\CreateLifeEventCategory;
 use App\Mcp\Tools\CreateLifeEventType;
@@ -24,6 +28,8 @@ use App\Mcp\Tools\DeleteContactRelationship;
 use App\Mcp\Tools\DeleteContactReminder;
 use App\Mcp\Tools\DeleteEntityType;
 use App\Mcp\Tools\DeleteGroup;
+use App\Mcp\Tools\DeleteGroupNote;
+use App\Mcp\Tools\DeleteGroupReminder;
 use App\Mcp\Tools\DeleteLifeEvent;
 use App\Mcp\Tools\DeleteLifeEventCategory;
 use App\Mcp\Tools\DeleteLifeEventType;
@@ -39,6 +45,8 @@ use App\Mcp\Tools\GetContactReminder;
 use App\Mcp\Tools\GetEmailSent;
 use App\Mcp\Tools\GetEntityType;
 use App\Mcp\Tools\GetGroup;
+use App\Mcp\Tools\GetGroupNote;
+use App\Mcp\Tools\GetGroupReminder;
 use App\Mcp\Tools\GetLifeEvent;
 use App\Mcp\Tools\GetLifeEventCategory;
 use App\Mcp\Tools\GetLifeEventType;
@@ -57,7 +65,12 @@ use App\Mcp\Tools\ListContactReminders;
 use App\Mcp\Tools\ListContacts;
 use App\Mcp\Tools\ListEmailsSent;
 use App\Mcp\Tools\ListEntityTypes;
+use App\Mcp\Tools\ListGroupFiles;
+use App\Mcp\Tools\ListGroupLifeEvents;
 use App\Mcp\Tools\ListGroupMembers;
+use App\Mcp\Tools\ListGroupNotes;
+use App\Mcp\Tools\ListGroupReminderOccurrences;
+use App\Mcp\Tools\ListGroupReminders;
 use App\Mcp\Tools\ListGroups;
 use App\Mcp\Tools\ListLifeEventCategories;
 use App\Mcp\Tools\ListLifeEventCategoryTypes;
@@ -71,6 +84,7 @@ use App\Mcp\Tools\ListTemplates;
 use App\Mcp\Tools\ListTemplateVersions;
 use App\Mcp\Tools\ListVaults;
 use App\Mcp\Tools\PublishTemplateVersion;
+use App\Mcp\Tools\RemoveGroupFile;
 use App\Mcp\Tools\RemoveGroupMember;
 use App\Mcp\Tools\RemoveTemplateSection;
 use App\Mcp\Tools\ReplaceLifeEventTypeFields;
@@ -99,6 +113,8 @@ use App\Mcp\Tools\UpdateContactReminder;
 use App\Mcp\Tools\UpdateEntityType;
 use App\Mcp\Tools\UpdateGroup;
 use App\Mcp\Tools\UpdateGroupMember;
+use App\Mcp\Tools\UpdateGroupNote;
+use App\Mcp\Tools\UpdateGroupReminder;
 use App\Mcp\Tools\UpdateLifeEvent;
 use App\Mcp\Tools\UpdateLifeEventCategory;
 use App\Mcp\Tools\UpdateLifeEventType;
@@ -238,6 +254,13 @@ class EricaServer extends Server
         DeleteContactReminder::class,
         ListContactReminderOccurrences::class,
         AnswerReminderOccurrence::class,
+        ListGroupReminders::class,
+        GetGroupReminder::class,
+        CreateGroupReminder::class,
+        UpdateGroupReminder::class,
+        DeleteGroupReminder::class,
+        ListGroupReminderOccurrences::class,
+        AnswerGroupReminderOccurrence::class,
         ListContactRelationships::class,
         GetContactRelationship::class,
         CreateContactRelationship::class,
@@ -259,6 +282,15 @@ class EricaServer extends Server
         AddGroupMember::class,
         UpdateGroupMember::class,
         RemoveGroupMember::class,
+        ListGroupFiles::class,
+        RemoveGroupFile::class,
+        ListGroupNotes::class,
+        GetGroupNote::class,
+        CreateGroupNote::class,
+        UpdateGroupNote::class,
+        DeleteGroupNote::class,
+        ListGroupLifeEvents::class,
+        CreateGroupLifeEvent::class,
         ListContactGroups::class,
         CreateTemplate::class,
         UpdateTemplate::class,

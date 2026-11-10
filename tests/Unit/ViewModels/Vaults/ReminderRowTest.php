@@ -45,8 +45,8 @@ class ReminderRowTest extends TestCase
         $this->assertSame('2027', $row->year());
         $this->assertSame('Every year', $row->cadence());
         $this->assertSame('calendar-repeat', $row->cadenceIcon());
-        $this->assertSame($contact->name, $row->contactName());
-        $this->assertSame(route('contacts.show', ['vault' => $vault, 'contact' => $contact]), $row->contactUrl());
+        $this->assertSame($contact->name, $row->recordName());
+        $this->assertSame(route('contacts.show', ['vault' => $vault, 'contact' => $contact]), $row->recordUrl());
         $this->assertNull($row->avatarUrl());
         $this->assertFalse($row->isLate());
     }

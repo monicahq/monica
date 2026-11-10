@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\RestoreGroup;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\Reminder;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -38,6 +40,22 @@ class RestoreGroupTest extends TestCase
         $this->assertCount(2, $group->fresh()->currentMembers);
 
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::GroupRestoration);
+    }
+
+    #[Test]
+    public function it_brings_back_the_reminders_its_deletion_stopped(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $group = Group::factory()->create(['vault_id' => $vault->id]);
+        $reminder = Reminder::factory()->manual($group, '2027-12-01')->inactive(ReminderInactiveReasonEnum::RecordDeleted)->create();
+        $group->delete();
+
+        new RestoreGroup(user: $user, vault: $vault, group: $group)->execute();
+
+        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'is_active' => true, 'inactive_reason' => null]);
     }
 
     #[Test]

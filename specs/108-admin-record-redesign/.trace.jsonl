@@ -1,0 +1,8 @@
+{"at":"2026-11-09T23:38:25.740Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/108-admin-record-redesign","files":[".spec-context.json"],"bytes":336,"in_bytes":123,"ms":93}
+{"at":"2026-11-09T23:38:25.873Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/108-admin-record-redesign","files":[".spec-context.json"],"bytes":486,"in_bytes":101,"ms":62}
+{"at":"2026-11-09T23:38:48.151Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/108-admin-record-redesign","files":[".spec-context.json"],"bytes":627,"in_bytes":94,"ms":97}
+{"at":"2026-11-09T23:40:27.939Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/108-admin-record-redesign","files":[".spec-context.json"],"bytes":774,"in_bytes":96,"ms":98}
+{"at":"2026-11-09T23:40:49.013Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/108-admin-record-redesign","files":[".spec-context.json"],"bytes":921,"in_bytes":94,"ms":100}
+{"at":"2026-11-09T23:41:08.470Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/108-admin-record-redesign","files":[".spec-context.json"],"bytes":1081,"in_bytes":108,"ms":84}
+{"at":"2026-11-09T23:41:33.427Z","tool":"write-context","op":"lifecycle","ok":true,"reason":null,"spec":"specs/108-admin-record-redesign","files":[".spec-context.json"],"bytes":1229,"in_bytes":103,"ms":99}
+{"at":"2026-11-09T23:54:53.668Z","tool":"write-context","op":"tasks-sync","ok":true,"reason":null,"spec":"specs/108-admin-record-redesign","files":[".spec-context.json"],"bytes":3179,"in_bytes":143,"ms":97}

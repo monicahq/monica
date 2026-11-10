@@ -281,7 +281,8 @@ class ReminderOccurrence extends Model
      * world moves in between. A deadline somebody answered in the meantime needs
      * no notification, and one on a contact archived in the meantime must not
      * arrive either: archiving is how somebody says they no longer want to hear
-     * about a record.
+     * about a record. A group cannot be archived; a deleted one has stopped
+     * its rules already.
      */
     public function isStillWarranted(): bool
     {
@@ -302,6 +303,10 @@ class ReminderOccurrence extends Model
 
         if ($record === null) {
             return false;
+        }
+
+        if ($record instanceof Group) {
+            return true;
         }
 
         return $record->is_archived !== true;

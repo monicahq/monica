@@ -33,22 +33,22 @@
 
     <span class="flex min-w-0 flex-col gap-1.5">
       <span class="flex min-w-0 items-center gap-2">
-        @if ($row->contactName() === null)
+        @if ($row->recordName() === null)
           <span class="text-base font-semibold text-muted">{{ __('A deleted contact') }}</span>
         @elseif ($isLink)
-          <x-contact-avatar :name="$row->contactName()" :url="$row->avatarUrl()" :size="24" />
+          <x-contact-avatar :name="$row->recordName()" :url="$row->avatarUrl()" :size="24" />
 
-          <span class="truncate text-base font-semibold text-ink">{{ $row->contactName() }}</span>
+          <span class="truncate text-base font-semibold text-ink">{{ $row->recordName() }}</span>
 
           <x-icon name="chevron-right" :size="14" :stroke-width="1.6" class="shrink-0 text-muted" />
         @else
-          <x-contact-avatar :name="$row->contactName()" :url="$row->avatarUrl()" :size="24" />
+          <x-contact-avatar :name="$row->recordName()" :url="$row->avatarUrl()" :size="24" />
 
           <a
-            href="{{ $row->contactUrl() }}"
+            href="{{ $row->recordUrl() }}"
             data-turbo="true"
             class="truncate text-base font-semibold text-ink no-underline transition-colors duration-(--duration-fast) ease-out hover:text-link"
-          >{{ $row->contactName() }}</a>
+          >{{ $row->recordName() }}</a>
         @endif
       </span>
 

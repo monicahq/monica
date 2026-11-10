@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Helpers\ContactReminderDates;
+use App\Helpers\ReminderDates;
 use App\Http\Resources\ReminderOccurrenceResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
@@ -28,7 +28,7 @@ class ListContactReminderOccurrences extends Tool
         $validated = $request->validate([
             'vault' => ['required', 'string'],
             'contact' => ['required', 'string'],
-            'category' => ['nullable', 'string', Rule::in(ContactReminderDates::categories())],
+            'category' => ['nullable', 'string', Rule::in(ReminderDates::categories())],
             'page' => ['nullable', 'integer'],
             'per_page' => ['nullable', 'integer'],
         ]);
@@ -39,9 +39,9 @@ class ListContactReminderOccurrences extends Tool
         ));
 
         $contact = $this->contact($this->vault($request, $validated['vault']), $validated['contact']);
-        $dates = ContactReminderDates::page(
+        $dates = ReminderDates::page(
             user: $this->user($request),
-            contact: $contact,
+            record: $contact,
             category: $validated['category'] ?? null,
             perPage: $perPage,
             page: max(1, (int) ($validated['page'] ?? 1)),

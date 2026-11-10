@@ -88,6 +88,13 @@
 
                       <p class="text-sm text-muted">{!! __('With :names', ['names' => $names]) !!}</p>
                     @endif
+
+                    @if (($entry['group'] ?? null) !== null)
+                      <p class="text-sm text-muted">
+                        {{ __('Recorded on the group') }}
+                        <a href="{{ $entry['group']['url'] }}" data-turbo="true" class="rounded-xs font-medium focus-ring text-link underline decoration-hairline-strong underline-offset-2 hover:decoration-ink">{{ $entry['group']['name'] }}</a>
+                      </p>
+                    @endif
                   </div>
 
                   <div class="flex shrink-0 gap-0.5 transition-opacity motion-reduce:transition-none opacity-0 group-focus-within:opacity-100 group-hover:opacity-100 pointer-coarse:opacity-100">

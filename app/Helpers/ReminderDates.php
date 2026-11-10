@@ -6,13 +6,14 @@ namespace App\Helpers;
 
 use App\Enums\ReminderOccurrenceCategoryEnum;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class ContactReminderDates
+class ReminderDates
 {
     public const string History = 'history';
 
@@ -23,14 +24,14 @@ class ContactReminderDates
     }
 
     /** @return LengthAwarePaginator<int, ReminderOccurrence> */
-    public static function page(User $user, Contact $contact, ?string $category, int $perPage, int $page): LengthAwarePaginator
+    public static function page(User $user, Contact|Group $record, ?string $category, int $perPage, int $page): LengthAwarePaginator
     {
         $today = CarbonImmutable::now($user->timezone)->startOfDay();
 
         $rules = Reminder::withTrashed()
-            ->where('account_id', $contact->account_id)
-            ->where('remindable_type', $contact->getMorphClass())
-            ->where('remindable_id', $contact->id)
+            ->where('account_id', $record->account_id)
+            ->where('remindable_type', $record->getMorphClass())
+            ->where('remindable_id', $record->id)
             ->with(['vault', 'field', 'fieldValue', 'remindable'])
             ->get();
 

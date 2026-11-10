@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ReminderSourceEnum;
 use App\Helpers\StructureFile;
 use App\Models\AccountExport;
 use App\Models\Contact;
@@ -13,7 +14,9 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\Group;
+use App\Models\GroupFile;
 use App\Models\GroupMember;
+use App\Models\GroupNote;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\LifeEventType;
@@ -376,7 +379,10 @@ class WriteAccountExport
     /** @return Generator<int, array<string, mixed>> */
     private function groups(Vault $vault): Generator
     {
-        $groups = Group::query()->where('vault_id', $vault->id)->with('members')->lazyById(self::CHUNK);
+        $groups = Group::query()
+            ->where('vault_id', $vault->id)
+            ->with(['members', 'notes', 'files.file', 'lifeEvents:id,group_id', 'reminders' => fn ($query) => $query->where('source', ReminderSourceEnum::Manual)])
+            ->lazyById(self::CHUNK);
 
         foreach ($groups as $group) {
             yield [
@@ -397,6 +403,35 @@ class WriteAccountExport
                         'joined_precision' => $membership->joined_precision->value,
                         'left_on' => $membership->left_on?->format('Y-m-d'),
                         'left_precision' => $membership->left_precision->value,
+                    ])
+                    ->values()
+                    ->all(),
+                'notes' => $group->notes
+                    ->map(fn (GroupNote $note): array => [
+                        'created_at' => $note->created_at->toIso8601ZuluString(),
+                        'body' => $note->body,
+                    ])
+                    ->values()
+                    ->all(),
+                'files' => $group->files
+                    ->map(fn (GroupFile $attachment): ?string => $this->fileReference($attachment->file))
+                    ->filter()
+                    ->values()
+                    ->all(),
+                'life_events' => $group->lifeEvents
+                    ->map(fn (LifeEvent $lifeEvent): ?string => $this->lifeEventUuids[$lifeEvent->id] ?? null)
+                    ->filter()
+                    ->values()
+                    ->all(),
+                'reminders' => $group->reminders
+                    ->map(fn (Reminder $reminder): array => [
+                        'name' => $reminder->name,
+                        'starts_on' => $reminder->starts_on?->format('Y-m-d'),
+                        'cadence' => $reminder->cadence->value,
+                        'frequency_interval' => $reminder->frequency_interval,
+                        'time_of_day' => $reminder->time_of_day,
+                        'timezone' => $reminder->timezone,
+                        'is_active' => $reminder->is_active,
                     ])
                     ->values()
                     ->all(),

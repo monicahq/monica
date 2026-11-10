@@ -18,8 +18,8 @@ class ApiDocsViewModel
     }
 
     /**
-     * The sections a visitor may read: one naming a flag is described only while the flag is on for
-     * every account, since the reference is public.
+     * The sections a visitor may read: one naming a flag, or several, is described only while every
+     * flag it names is on for every account, since the reference is public.
      *
      * @param  list<array<string, mixed>>  $sections
      * @return list<array<string, mixed>>
@@ -28,7 +28,8 @@ class ApiDocsViewModel
     {
         return array_values(array_filter(
             $sections,
-            fn (array $section): bool => ! isset($section['flag']) || FlagState::isOn($section['flag'], null),
+            fn (array $section): bool => collect((array) ($section['flag'] ?? []))
+                ->every(fn (string $flag): bool => FlagState::isOn($flag, null)),
         ));
     }
 

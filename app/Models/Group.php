@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Override;
 
@@ -28,6 +29,10 @@ use Override;
  * A set of contacts that exists apart from their relationships: a household, a couple, a family, a
  * team, a circle of friends. It is one of the fixed concepts, so it has no kind, no template and no
  * field of its own, only a name, a description and the dates it existed between.
+ *
+ * What is recorded about the group itself lives beside it: the life events recorded on its page,
+ * its notes, its reminders and its files. Together they are its history, kept apart from the
+ * timelines of its members except where somebody took part in a life event.
  *
  * Who is in it is recorded by memberships, one per period somebody belonged, so a person who left
  * and came back holds two. A deleted contact's memberships stay in place and are hidden with them.
@@ -59,6 +64,10 @@ use Override;
  * @property-read Vault $vault
  * @property-read Collection<int, GroupMember> $members
  * @property-read Collection<int, GroupMember> $currentMembers
+ * @property-read Collection<int, GroupNote> $notes
+ * @property-read Collection<int, GroupFile> $files
+ * @property-read Collection<int, LifeEvent> $lifeEvents
+ * @property-read Collection<int, Reminder> $reminders
  */
 #[RouteKey('slug')]
 #[Fillable([
@@ -160,6 +169,46 @@ class Group extends Model
         return $this->hasMany(GroupMember::class)
             ->whereNull('left_on')
             ->whereHas('contact');
+    }
+
+    /**
+     * Get the notes written about the group.
+     *
+     * @return HasMany<GroupNote, $this>
+     */
+    public function notes(): HasMany
+    {
+        return $this->hasMany(GroupNote::class);
+    }
+
+    /**
+     * Get the files kept with the group.
+     *
+     * @return HasMany<GroupFile, $this>
+     */
+    public function files(): HasMany
+    {
+        return $this->hasMany(GroupFile::class);
+    }
+
+    /**
+     * Get the life events recorded on the group's page.
+     *
+     * @return HasMany<LifeEvent, $this>
+     */
+    public function lifeEvents(): HasMany
+    {
+        return $this->hasMany(LifeEvent::class);
+    }
+
+    /**
+     * Get the reminders written about the group.
+     *
+     * @return MorphMany<Reminder, $this>
+     */
+    public function reminders(): MorphMany
+    {
+        return $this->morphMany(Reminder::class, 'remindable');
     }
 
     /**

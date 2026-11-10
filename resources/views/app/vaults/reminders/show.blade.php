@@ -2,18 +2,24 @@
 {{-- @var \App\ViewModels\Vaults\ReminderViewModel $viewModel --}}
 @php
   $contact = $viewModel->contact();
+  $group = $viewModel->group();
   $problem = $viewModel->problem();
   $awaiting = $viewModel->awaiting();
   $history = $viewModel->history();
   $historyRows = $viewModel->historyRows();
   $deliveryLog = $viewModel->deliveryLog();
-  $crumbs = $contact === null
-    ? [['label' => __('Reminders'), 'url' => $viewModel->remindersUrl()]]
-    : [
+  $crumbs = match (true) {
+    $group !== null => [
+      ['label' => __('Groups'), 'url' => $group['indexUrl']],
+      ['label' => $group['name'], 'url' => $group['url']],
+    ],
+    $contact === null => [['label' => __('Reminders'), 'url' => $viewModel->remindersUrl()]],
+    default => [
         ['label' => __('People'), 'url' => route('contacts.index', $viewModel->vault())],
         ['label' => $contact['name'], 'url' => $contact['url']],
         ['label' => __('Reminders'), 'url' => $viewModel->contactRemindersUrl()],
-      ];
+      ],
+  };
   $badges = [
     'overdue' => ['tone' => 'danger', 'label' => __('Overdue')],
     'today' => ['tone' => 'warning', 'label' => __('Today')],
@@ -26,7 +32,7 @@
   </x-slot:breadcrumb>
 
   <x-slot:sidebar>
-    <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" :current="$contact === null ? 'reminders' : 'contacts'" />
+    <x-vault.sidebar :user="$viewModel->user()" :vault="$viewModel->vault()" :current="$group !== null ? 'groups' : ($contact === null ? 'reminders' : 'contacts')" />
   </x-slot:sidebar>
 
   <div class="flex flex-col gap-8">
@@ -35,6 +41,14 @@
         <h1 class="text-page-title text-pretty text-ink">{{ $viewModel->title() }}</h1>
 
         <div class="flex flex-col gap-2 text-sm text-body">
+          @if ($group !== null)
+            <span class="flex items-center gap-2">
+              <span class="text-muted" aria-hidden="true"><x-icon name="people" :size="16" /></span>
+
+              <a href="{{ $group['url'] }}" data-turbo="true" class="rounded-xs font-medium focus-ring text-ink underline decoration-hairline-strong underline-offset-2 hover:decoration-ink">{{ $group['name'] }}</a>
+            </span>
+          @endif
+
           @if ($contact !== null)
             <span class="flex items-center gap-2">
               <x-contact-avatar :name="$contact['name']" :url="$contact['avatarUrl']" :size="20" />

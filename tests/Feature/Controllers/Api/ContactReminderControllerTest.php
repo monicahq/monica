@@ -27,6 +27,7 @@ class ContactReminderControllerTest extends TestCase
             'source',
             'starts_on',
             'field',
+            'group',
             'cadence',
             'interval',
             'time',

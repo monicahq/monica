@@ -43,12 +43,16 @@ use Override;
  * Participation is the only thing that puts a life event on a contact's timeline. Naming somebody in
  * the narrative does not.
  *
+ * A life event recorded on a group page belongs to that group as well, which is what puts it in the
+ * group's shared history. Its participants are still the people who were there.
+ *
  * @property int $id
  * @property string $uuid
  * @property int $account_id
  * @property int $vault_id
  * @property int $life_event_type_id
  * @property int $structure_version_id
+ * @property int|null $group_id
  * @property CarbonImmutable $happened_on
  * @property CarbonImmutable|null $ended_on
  * @property DatePrecisionEnum $date_precision
@@ -73,6 +77,7 @@ use Override;
  * @property-read Vault $vault
  * @property-read LifeEventType $lifeEventType
  * @property-read StructureVersion $structureVersion
+ * @property-read Group|null $group
  * @property-read User|null $createdBy
  * @property-read Collection<int, LifeEventParticipant> $participants
  * @property-read Collection<int, FieldValue> $fieldValues
@@ -84,6 +89,7 @@ use Override;
     'vault_id',
     'life_event_type_id',
     'structure_version_id',
+    'group_id',
     'happened_on',
     'ended_on',
     'date_precision',
@@ -153,6 +159,17 @@ class LifeEvent extends Model
     public function vault(): BelongsTo
     {
         return $this->belongsTo(Vault::class);
+    }
+
+    /**
+     * Get the group it was recorded on, when it was recorded on one. Only the group page sets it, and
+     * a later edit never changes it.
+     *
+     * @return BelongsTo<Group, $this>
+     */
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(Group::class)->withTrashed();
     }
 
     /**

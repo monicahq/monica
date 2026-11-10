@@ -23,6 +23,7 @@ class LifeEventResource extends JsonResource
     public const array RELATIONS = [
         'vault',
         'lifeEventType',
+        'group',
         'participants.participant',
         'fieldValues.field',
         'fieldValues.valueListItem',
@@ -54,6 +55,10 @@ class LifeEventResource extends JsonResource
                 'life_event_type' => [
                     'id' => $this->lifeEventType->uuid,
                     'name' => $this->lifeEventType->name,
+                ],
+                'group' => $this->group === null || $this->group->trashed() ? null : [
+                    'id' => $this->group->uuid,
+                    'name' => $this->group->name,
                 ],
                 'happened_on' => $this->happened_on->format('Y-m-d'),
                 'duration_in_minutes' => $this->duration_in_minutes,

@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use App\Helpers\ReminderSchedule;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\Reminder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,7 +19,7 @@ class ReminderResource extends JsonResource
     #[Override]
     public function toArray(Request $request): array
     {
-        $contact = $this->remindable;
+        $record = $this->remindable;
         $next = $this->is_active ? ReminderSchedule::nextDate($this->resource) : null;
 
         return [
@@ -32,6 +33,10 @@ class ReminderResource extends JsonResource
                     'key' => $this->field->key,
                     'label' => $this->field->label,
                 ],
+                'group' => $record instanceof Group ? [
+                    'id' => $record->uuid,
+                    'name' => $record->name,
+                ] : null,
                 'cadence' => $this->cadence->value,
                 'interval' => $this->frequency_interval,
                 'time' => mb_substr($this->time_of_day, 0, 5),
@@ -42,9 +47,11 @@ class ReminderResource extends JsonResource
                 'created_at' => $this->created_at->timestamp,
             ],
             'links' => [
-                'self' => $contact instanceof Contact
-                    ? route('api.v1.contacts.reminders.show', [$this->vault, $contact, $this->resource])
-                    : null,
+                'self' => match (true) {
+                    $record instanceof Contact => route('api.v1.contacts.reminders.show', [$this->vault, $record, $this->resource]),
+                    $record instanceof Group => route('api.v1.groups.reminders.show', [$this->vault, $record->uuid, $this->resource]),
+                    default => null,
+                },
             ],
         ];
     }

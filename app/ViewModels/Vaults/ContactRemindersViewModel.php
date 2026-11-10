@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Enums\ReminderOccurrenceCategoryEnum;
-use App\Helpers\ContactReminderDates;
 use App\Helpers\NextReminderDeadlines;
+use App\Helpers\ReminderDates;
 use App\Models\Contact;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
@@ -86,7 +86,7 @@ class ContactRemindersViewModel
 
     public function nextPageUrl(): ?string
     {
-        if ($this->filter() !== ContactReminderDates::History) {
+        if ($this->filter() !== ReminderDates::History) {
             return null;
         }
 
@@ -97,7 +97,7 @@ class ContactRemindersViewModel
         return route('contacts.reminders.index', [
             'vault' => $this->vault,
             'contact' => $this->contact,
-            'filter' => ContactReminderDates::History,
+            'filter' => ReminderDates::History,
             'page' => $this->page() + 1,
         ]);
     }
@@ -122,7 +122,7 @@ class ContactRemindersViewModel
             'label' => $labels[$key],
             'count' => match ($key) {
                 self::FilterAll => count($rows['overdue']) + count($rows['today']) + count($rows['upcoming']),
-                ContactReminderDates::History => $this->historyCount(),
+                ReminderDates::History => $this->historyCount(),
                 default => count($rows[$key]),
             },
             'url' => route('contacts.reminders.index', array_filter([
@@ -220,7 +220,7 @@ class ContactRemindersViewModel
             $rows['upcoming'][] = $this->rowFor($occurrence);
         }
 
-        if ($this->filter() === ContactReminderDates::History) {
+        if ($this->filter() === ReminderDates::History) {
             $rows['history'] = array_map($this->rowFor(...), $this->history()->items());
         }
 
@@ -230,10 +230,10 @@ class ContactRemindersViewModel
     /** @return LengthAwarePaginator<int, ReminderOccurrence> */
     private function history(): LengthAwarePaginator
     {
-        return $this->history ??= ContactReminderDates::page(
+        return $this->history ??= ReminderDates::page(
             $this->user,
             $this->contact,
-            ContactReminderDates::History,
+            ReminderDates::History,
             self::PER_PAGE,
             $this->page(),
         );
@@ -241,7 +241,7 @@ class ContactRemindersViewModel
 
     private function historyCount(): int
     {
-        if ($this->filter() === ContactReminderDates::History) {
+        if ($this->filter() === ReminderDates::History) {
             return $this->history()->total();
         }
 

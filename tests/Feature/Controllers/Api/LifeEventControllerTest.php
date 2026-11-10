@@ -10,6 +10,7 @@ use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
+use App\Models\Group;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\LifeEventType;
@@ -35,6 +36,7 @@ class LifeEventControllerTest extends TestCase
             'name',
             'title',
             'life_event_type' => ['id', 'name'],
+            'group',
             'happened_on',
             'duration_in_minutes',
             'narrative',
@@ -357,6 +359,22 @@ class LifeEventControllerTest extends TestCase
         $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/life-events/{$lifeEvent->uuid}")->assertNoContent();
 
         $this->assertSoftDeleted($lifeEvent);
+    }
+
+    #[Test]
+    public function it_reports_no_group_once_the_group_is_deleted(): void
+    {
+        [$user, $vault, $jim] = $this->office();
+        $group = Group::factory()->create(['vault_id' => $vault->id]);
+        $lifeEvent = $this->lifeEventOn($vault, '2026-03-01', [$jim], 'Basketball game');
+        $lifeEvent->update(['group_id' => $group->id]);
+        $group->delete();
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/life-events/{$lifeEvent->uuid}")
+            ->assertOk()
+            ->assertJsonPath('data.attributes.group', null);
     }
 
     /** @return array{0: User, 1: Vault, 2: Contact, 3: Contact} */

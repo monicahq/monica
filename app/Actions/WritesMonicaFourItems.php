@@ -378,9 +378,9 @@ trait WritesMonicaFourItems
         if ($days > 0) {
             $weeks = max(1, min(Reminder::MAXIMUM_INTERVAL, (int) round($days / 7)));
 
-            $this->record = new CreateContactReminder(
+            $this->record = new CreateManualReminder(
                 user: $this->user,
-                contact: $contact,
+                record: $contact,
                 name: __('Stay in touch with :name', ['name' => $contact->name]),
                 startsOn: now()->addWeeks($weeks)->format('Y-m-d'),
                 cadence: ReminderCadenceEnum::Weekly,
@@ -418,9 +418,9 @@ trait WritesMonicaFourItems
                 timeOfDay: Reminder::DEFAULT_TIME,
                 name: $this->shortText($reminder['title'] ?? null),
             )->execute()
-            : new CreateContactReminder(
+            : new CreateManualReminder(
                 user: $this->user,
-                contact: $contact,
+                record: $contact,
                 name: $this->shortText($reminder['title'] ?? null) ?? __('Reminder'),
                 startsOn: $this->nextOccurrence($initial, $cadence, $interval)->format('Y-m-d'),
                 cadence: $cadence,

@@ -49,7 +49,7 @@ class ContactTimelineBlock
         return $this->isReadOnly;
     }
 
-    /** @return array<int, array{year: int, countLabel: string, showsHeading: bool, entries: array<int, array{kind: string, id: int|string, icon: string, tint: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string|null, deleteLine: string|null}>}> */
+    /** @return array<int, array{year: int, countLabel: string, showsHeading: bool, entries: array<int, array{kind: string, id: int|string, icon: string, tint: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, group: array{name: string, url: string}|null, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string|null, deleteLine: string|null}>}> */
     public function years(): array
     {
         return once(function (): array {
@@ -123,6 +123,7 @@ class ContactTimelineBlock
         return once(fn (): Paginator => $this->query()
             ->with([
                 'lifeEventType',
+                'group',
                 'participants.participant',
                 'fieldValues' => fn ($query) => $query
                     ->attached()
@@ -176,7 +177,7 @@ class ContactTimelineBlock
             ?->happened_on->year;
     }
 
-    /** @return array{kind: string, id: int, icon: string, tint: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string, deleteLine: string} */
+    /** @return array{kind: string, id: int, icon: string, tint: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, group: array{name: string, url: string}|null, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string, deleteLine: string} */
     private function entry(LifeEvent $lifeEvent): array
     {
         $icon = $lifeEvent->lifeEventType->icon;
@@ -203,12 +204,33 @@ class ContactTimelineBlock
             'details' => $this->detailsOf($lifeEvent),
             'narrative' => $lifeEvent->narrative,
             'with' => $others,
+            'group' => $this->groupOf($lifeEvent),
             'isJustAdded' => $lifeEvent->id === $this->justAddedId,
             'isEditing' => $lifeEvent->id === $this->editingId,
             'isEdited' => $lifeEvent->id === $this->editedId && $lifeEvent->id !== $this->editingId,
             'editUrl' => route('contacts.lifeEvents.edit', ['vault' => $this->vault, 'contact' => $this->contact, 'lifeEvent' => $lifeEvent]),
             'destroyUrl' => route('contacts.lifeEvents.destroy', ['vault' => $this->vault, 'contact' => $this->contact, 'lifeEvent' => $lifeEvent]),
             'deleteLine' => __('It is removed from the timeline of :names. The people stay.', ['names' => $this->namesOf($lifeEvent)]),
+        ];
+    }
+
+    /**
+     * The group the life event was recorded on, while that group is still there and groups are
+     * offered to the account.
+     *
+     * @return array{name: string, url: string}|null
+     */
+    private function groupOf(LifeEvent $lifeEvent): ?array
+    {
+        $group = $lifeEvent->group;
+
+        if ($group === null || $group->trashed() || ! FlagState::isOn('groups', $this->user->account)) {
+            return null;
+        }
+
+        return [
+            'name' => $group->name,
+            'url' => route('groups.show', ['vault' => $this->vault, 'group' => $group]),
         ];
     }
 
@@ -331,6 +353,7 @@ class ContactTimelineBlock
                         'details' => $membership->role === null ? [] : [$membership->role],
                         'narrative' => null,
                         'with' => [],
+                        'group' => null,
                         'isJustAdded' => false,
                         'isEditing' => false,
                         'isEdited' => false,

@@ -8,11 +8,11 @@ use App\Actions\ActivateFlag;
 use App\Actions\ArchiveContact;
 use App\Actions\CreateAccount;
 use App\Actions\CreateContact;
-use App\Actions\CreateContactReminder;
 use App\Actions\CreateFieldValueRow;
 use App\Actions\CreateGroup;
 use App\Actions\CreateGroupMembership;
 use App\Actions\CreateLifeEvent;
+use App\Actions\CreateManualReminder;
 use App\Actions\CreateRelationship;
 use App\Actions\CreateRelationshipType;
 use App\Actions\CreateReminder;
@@ -270,9 +270,9 @@ class ExampleAccountSeeder extends Seeder
         $foosball = $this->writtenReminder($chandler, 'Return the foosball table', $today->subDays(45), ReminderCadenceEnum::Once);
         $this->answer($foosball, $today->subDays(45), ReminderAnswerEnum::Remembered);
 
-        new CreateContactReminder(
+        new CreateManualReminder(
             user: $this->user,
-            contact: $chandler,
+            record: $chandler,
             name: 'Ask about Tulsa',
             startsOn: $today->addWeeks(5)->toDateString(),
             cadence: ReminderCadenceEnum::Once,
@@ -286,9 +286,9 @@ class ExampleAccountSeeder extends Seeder
      */
     private function writtenReminder(Contact $contact, string $name, CarbonImmutable $firstDate, ReminderCadenceEnum $cadence): Reminder
     {
-        $reminder = new CreateContactReminder(
+        $reminder = new CreateManualReminder(
             user: $this->user,
-            contact: $contact,
+            record: $contact,
             name: $name,
             startsOn: CarbonImmutable::now($this->user->timezone)->addDay()->toDateString(),
             cadence: $cadence,

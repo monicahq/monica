@@ -125,6 +125,31 @@ class ContactTimelineBlockTest extends TestCase
     }
 
     #[Test]
+    public function it_names_the_group_a_life_event_was_recorded_on(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+        $group = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Party planning committee']);
+        $this->lifeEventWith($jim, '2026-06-01', 'Halloween party')->update(['group_id' => $group->id]);
+        $this->lifeEventWith($jim, '2026-05-01', 'Fun run');
+
+        $entries = $this->block($user, $vault, $jim)->years()[0]['entries'];
+
+        $this->assertEquals(['name' => 'Party planning committee', 'url' => route('groups.show', ['vault' => $vault, 'group' => $group])], $entries[0]['group']);
+        $this->assertNull($entries[1]['group']);
+    }
+
+    #[Test]
+    public function it_stops_naming_a_group_once_it_is_deleted(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+        $group = Group::factory()->create(['vault_id' => $vault->id]);
+        $this->lifeEventWith($jim, '2026-06-01', 'Halloween party')->update(['group_id' => $group->id]);
+        $group->delete();
+
+        $this->assertNull($this->block($user, $vault, $jim)->years()[0]['entries'][0]['group']);
+    }
+
+    #[Test]
     public function it_marks_a_life_event_with_the_glyph_and_colour_of_its_type(): void
     {
         [$user, $vault, $jim] = $this->jim();

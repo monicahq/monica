@@ -10,12 +10,14 @@ use App\Actions\UpdateGroupMembership;
 use App\Enums\DatePrecisionEnum;
 use App\Exceptions\ContactIsAlreadyInTheGroup;
 use App\Exceptions\MembershipEndsBeforeItStarts;
+use App\Helpers\PageSize;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\Vault;
 use App\ViewModels\Vaults\GroupMemberFormViewModel;
+use App\ViewModels\Vaults\GroupViewModel;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,6 +26,18 @@ use Illuminate\View\View;
 
 class GroupMemberController extends Controller
 {
+    public function index(Request $request, Vault $vault, Group $group): View
+    {
+        return view('app.vaults.groups.members', [
+            'viewModel' => new GroupViewModel(
+                user: $request->user(),
+                vault: $vault,
+                group: $group,
+                size: PageSize::from($request, GroupViewModel::PER_PAGE),
+            ),
+        ]);
+    }
+
     public function new(Request $request, Vault $vault, Group $group): View
     {
         return view('app.vaults.groups.member-form', [

@@ -14,6 +14,7 @@ use App\Helpers\TextSanitizer;
 use App\Helpers\TimezoneCatalogue;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\Reminder;
 use App\Models\User;
 use Carbon\CarbonImmutable;
@@ -21,10 +22,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Write a reminder about a contact that carries its own date, rather than one read from a date on
- * their page.
+ * Write a reminder that carries its own date, rather than one read from a date on a page, about a
+ * contact or about a group as a whole.
  */
-class CreateContactReminder
+class CreateManualReminder
 {
     private Reminder $reminder;
 
@@ -32,7 +33,7 @@ class CreateContactReminder
 
     public function __construct(
         private readonly User $user,
-        private readonly Contact $contact,
+        private readonly Contact|Group $record,
         private readonly string $name,
         private readonly string $startsOn,
         private readonly ReminderCadenceEnum $cadence,
@@ -63,11 +64,11 @@ class CreateContactReminder
 
     private function validate(): void
     {
-        if ($this->contact->account_id !== $this->user->account_id) {
-            throw new ModelNotFoundException('This contact is in another account.');
+        if ($this->record->account_id !== $this->user->account_id) {
+            throw new ModelNotFoundException('This record is in another account.');
         }
 
-        if ($this->contact->is_archived) {
+        if ($this->record instanceof Contact && $this->record->is_archived) {
             throw new ReminderIsNotValid(__('This contact is archived, so a reminder about them would never be sent.'));
         }
 
@@ -118,10 +119,10 @@ class CreateContactReminder
     private function create(): void
     {
         $this->reminder = Reminder::query()->create([
-            'account_id' => $this->contact->account_id,
-            'vault_id' => $this->contact->vault_id,
-            'remindable_type' => $this->contact->getMorphClass(),
-            'remindable_id' => $this->contact->id,
+            'account_id' => $this->record->account_id,
+            'vault_id' => $this->record->vault_id,
+            'remindable_type' => $this->record->getMorphClass(),
+            'remindable_id' => $this->record->id,
             'field_id' => null,
             'field_value_id' => null,
             'name' => $this->wording,
@@ -152,8 +153,8 @@ class CreateContactReminder
             account: $this->user->account,
             user: $this->user,
             action: UserActionEnum::ReminderCreation,
-            vault: $this->contact->vault,
-            parameters: ['label' => $this->wording, 'name' => $this->contact->name],
+            vault: $this->record->vault,
+            parameters: ['label' => $this->wording, 'name' => $this->record->name],
             loggable: $this->reminder,
         );
     }

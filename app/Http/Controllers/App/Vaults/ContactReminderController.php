@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\App\Vaults;
 
-use App\Actions\CreateContactReminder;
+use App\Actions\CreateManualReminder;
 use App\Actions\DestroyReminder;
 use App\Actions\UpdateReminder;
 use App\Enums\ReminderCadenceEnum;
@@ -14,8 +14,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\Reminder;
 use App\Models\Vault;
-use App\ViewModels\Vaults\ContactReminderForm;
 use App\ViewModels\Vaults\ContactRemindersViewModel;
+use App\ViewModels\Vaults\ReminderForm;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -38,8 +38,8 @@ class ContactReminderController extends Controller
 
     public function new(Request $request, Vault $vault, Contact $contact): View
     {
-        return view('app.vaults.contacts.reminders.form', [
-            'viewModel' => new ContactReminderForm(user: $request->user(), vault: $vault, contact: $contact),
+        return view('app.vaults.reminders.form', [
+            'viewModel' => new ReminderForm(user: $request->user(), vault: $vault, record: $contact),
         ]);
     }
 
@@ -51,9 +51,9 @@ class ContactReminderController extends Controller
         ], $this->messages());
 
         try {
-            new CreateContactReminder(
+            new CreateManualReminder(
                 user: $request->user(),
-                contact: $contact,
+                record: $contact,
                 name: $validated['name'],
                 startsOn: $validated['starts_on'],
                 cadence: ReminderCadenceEnum::from($validated['cadence']),
@@ -80,8 +80,8 @@ class ContactReminderController extends Controller
             return redirect()->route('reminders.show', ['vault' => $vault, 'reminder' => $reminder]);
         }
 
-        return view('app.vaults.contacts.reminders.form', [
-            'viewModel' => new ContactReminderForm(user: $request->user(), vault: $vault, contact: $contact, reminder: $reminder),
+        return view('app.vaults.reminders.form', [
+            'viewModel' => new ReminderForm(user: $request->user(), vault: $vault, record: $contact, reminder: $reminder),
         ]);
     }
 

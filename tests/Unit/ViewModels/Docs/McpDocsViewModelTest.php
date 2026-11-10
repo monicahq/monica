@@ -65,7 +65,7 @@ class McpDocsViewModelTest extends TestCase
     #[Test]
     public function it_counts_the_tools_it_lists(): void
     {
-        $this->assertStringStartsWith('MCP currently exposes 103 tools.', new McpDocsViewModel()->toolsSummary()[0]);
+        $this->assertStringStartsWith('MCP currently exposes 119 tools.', new McpDocsViewModel()->toolsSummary()[0]);
     }
 
     #[Test]

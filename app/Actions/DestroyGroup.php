@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Group;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 /**
- * Delete a group. Its members are left as they are, and its memberships come back with it if it is restored.
+ * Delete a group. Its members are left as they are, its reminders stop, and its memberships, its history
+ * and its reminders come back with it if it is restored.
  */
 class DestroyGroup
 {
@@ -32,7 +35,15 @@ class DestroyGroup
             throw new ModelNotFoundException('This group is in another vault.');
         }
 
-        $this->group->delete();
+        DB::transaction(function (): void {
+            $this->group->delete();
+
+            new DeactivateReminders(
+                user: $this->user,
+                subject: $this->group,
+                reason: ReminderInactiveReasonEnum::RecordDeleted,
+            )->execute();
+        });
 
         LogUserAction::dispatch(
             account: $this->user->account,
