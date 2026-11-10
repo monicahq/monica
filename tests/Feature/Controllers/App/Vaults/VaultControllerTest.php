@@ -637,7 +637,7 @@ class VaultControllerTest extends TestCase
     {
         config(['monica.free_vault_limit' => 1]);
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['full_access_offer_dismissed_at' => now()]);
         Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
 
         $this->actingAs($user)->get(route('vaults.index'))
@@ -654,7 +654,7 @@ class VaultControllerTest extends TestCase
     {
         config(['monica.free_vault_limit' => 5]);
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['full_access_offer_dismissed_at' => now()]);
         Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
 
         $this->actingAs($user)->get(route('vaults.index'))

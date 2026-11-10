@@ -1,6 +1,7 @@
 {{-- The shell of the screens that stand outside any one vault. --}}
 {{--
   @var string|null $title
+  @var \App\ViewModels\FullAccessOfferViewModel|null $fullAccessOffer
   @var \Illuminate\View\ComponentSlot|null $breadcrumb
 --}}
 <!DOCTYPE html>
@@ -20,6 +21,10 @@
       </div>
     </header>
 
+    @if ($fullAccessOffer !== null)
+      <x-full-access-offer :viewModel="$fullAccessOffer" />
+    @endif
+
     @isset($breadcrumb)
       <div class="border-b border-hairline bg-canvas">
         <div class="mx-auto max-w-240 px-4 py-2.5 sm:px-6">
@@ -29,10 +34,6 @@
     @endisset
 
     <main class="mx-auto max-w-240 space-y-8 px-4 pb-22 sm:px-6 {{ isset($breadcrumb) ? 'pt-7.5' : 'pt-14' }}">
-      @if ($offersFullAccess)
-        <x-full-access-offer />
-      @endif
-
       {{ $slot }}
     </main>
 

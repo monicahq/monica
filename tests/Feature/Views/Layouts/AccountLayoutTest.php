@@ -21,7 +21,7 @@ class AccountLayoutTest extends TestCase
         $this->actingAs($user)
             ->get(route('vaults.index'))
             ->assertOk()
-            ->assertSee('Subscribe now to lift the limits of the free plan!', escape: false);
+            ->assertSee('aria-label="Free plan usage"', escape: false);
     }
 
     #[Test]

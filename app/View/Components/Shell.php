@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\View\Components;
 
 use App\Models\Vault;
+use App\ViewModels\FullAccessOfferViewModel;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Component;
 use Illuminate\View\View;
@@ -16,7 +17,7 @@ class Shell extends Component
     public ?Vault $searchVault = null;
 
     /** Billing and the screens reached from it already make the offer, so the banner stays off there. */
-    public bool $offersFullAccess = false;
+    public ?FullAccessOfferViewModel $fullAccessOffer = null;
 
     public function __construct(
         public ?string $title = null,
@@ -28,8 +29,14 @@ class Shell extends Component
             $this->searchVault = $vault;
         }
 
-        if (! Route::is('settings.billing*', 'settings.checkout*', 'settings.subscription*', 'settings.invoices.*')) {
-            $this->offersFullAccess = auth()->user()?->isOfferedFullAccess() ?? false;
+        if (Route::is('settings.billing*', 'settings.checkout*', 'settings.subscription*', 'settings.invoices.*')) {
+            return;
+        }
+
+        $user = auth()->user();
+
+        if ($user?->isOfferedFullAccess()) {
+            $this->fullAccessOffer = new FullAccessOfferViewModel(user: $user);
         }
     }
 

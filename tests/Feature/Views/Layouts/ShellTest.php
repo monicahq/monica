@@ -23,7 +23,7 @@ class ShellTest extends TestCase
         $this->actingAs($user)
             ->get(route('vaults.show', $vault))
             ->assertOk()
-            ->assertSee('Subscribe now to lift the limits of the free plan!', escape: false);
+            ->assertSee('aria-label="Free plan usage"', escape: false);
     }
 
     #[Test]
@@ -34,11 +34,11 @@ class ShellTest extends TestCase
         $this->actingAs($user)
             ->get(route('settings.billing.index'))
             ->assertOk()
-            ->assertDontSee('Subscribe now to lift the limits of the free plan!', escape: false);
+            ->assertDontSee('aria-label="Free plan usage"', escape: false);
 
         $this->actingAs($user)
             ->get(route('settings.invoices.index'))
             ->assertOk()
-            ->assertDontSee('Subscribe now to lift the limits of the free plan!', escape: false);
+            ->assertDontSee('aria-label="Free plan usage"', escape: false);
     }
 }

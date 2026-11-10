@@ -154,3 +154,4 @@ A chronological list of every feature and improvement shipped during development
 * Settings/account/templates: Added a help bubble explaining what the choice of what a template describes decides.
 * Settings/account/relationship-types: Added help bubbles on when the direction of a type is fixed, and on why a type you add never feeds the family tree.
 * Settings: Removed the descriptions under several page titles that repeated what the screen already says.
+* Top bar: Replaced the full access offer with a strip showing the free plan’s people and vault usage, each meter warning near its limit, with a way to upgrade or hide it for good.

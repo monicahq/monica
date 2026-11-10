@@ -3,6 +3,7 @@
   @var string|null $title
   @var bool $wide
   @var \App\Models\Vault|null $searchVault
+  @var \App\ViewModels\FullAccessOfferViewModel|null $fullAccessOffer
   @var \Illuminate\View\ComponentSlot $sidebar
   @var \Illuminate\View\ComponentSlot|null $breadcrumb
   @var \Illuminate\View\ComponentSlot|null $actions
@@ -88,6 +89,10 @@
           </div>
         </header>
 
+        @if ($fullAccessOffer !== null)
+          <x-full-access-offer :viewModel="$fullAccessOffer" />
+        @endif
+
         <div
           @class([
             'w-full px-4 pt-6 sm:px-6 sm:pt-7 print:max-w-none print:p-0',
@@ -98,10 +103,6 @@
             'pb-14 sm:pb-18' => ! isset($footer) && ! $wide,
           ])
         >
-          @if ($offersFullAccess)
-            <x-full-access-offer />
-          @endif
-
           {{ $slot }}
         </div>
 
