@@ -6,14 +6,15 @@ namespace App\Http\Controllers\App\Admin;
 
 use App\Http\Controllers\Controller;
 use App\ViewModels\Admin\OverviewViewModel;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class OverviewController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
         return view('app.admin.overview.index', [
-            'viewModel' => new OverviewViewModel,
+            'viewModel' => new OverviewViewModel(user: $request->user()),
         ]);
     }
 }

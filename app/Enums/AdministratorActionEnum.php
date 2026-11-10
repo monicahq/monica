@@ -41,10 +41,45 @@ enum AdministratorActionEnum: string implements Translatable
             self::InstanceSettingUpdated => 'Changed the instance setting :name',
             self::InstanceSettingReverted => 'Put the instance setting :name back to what the deployment supplies',
             self::TelegramWebhookRegistered => 'Registered the Telegram bot at :url',
-            self::FlagActivated => 'Activated the flag :flag for :name',
-            self::FlagDeactivated => 'Deactivated the flag :flag for :name',
-            self::FlagActivatedForEveryAccount => 'Activated the flag :flag for every account',
-            self::FlagDeactivatedForEveryAccount => 'Deactivated the flag :flag for every account',
+            self::FlagActivated => 'Switched on :flag for :name',
+            self::FlagDeactivated => 'Switched off :flag for :name',
+            self::FlagActivatedForEveryAccount => 'Switched on :flag for every account',
+            self::FlagDeactivatedForEveryAccount => 'Switched off :flag for every account',
+        };
+    }
+
+    public function icon(): string
+    {
+        return match ($this) {
+            self::MarketplaceVersionApproved, self::MarketplaceVersionRejected => 'tasks',
+            self::UserDeactivated, self::UserReactivated => 'profile',
+            self::AccountStorageLimitUpdated => 'layers',
+            self::LifetimeAccessGranted, self::LifetimeAccessWithdrawn => 'star',
+            self::AdministratorAccessGranted, self::AdministratorAccessWithdrawn => 'key',
+            self::InstanceSettingUpdated, self::InstanceSettingReverted, self::TelegramWebhookRegistered => 'settings',
+            self::FlagActivated, self::FlagDeactivated, self::FlagActivatedForEveryAccount, self::FlagDeactivatedForEveryAccount => 'tag',
+        };
+    }
+
+    public function namesTheAccountHolder(): bool
+    {
+        return match ($this) {
+            self::UserDeactivated,
+            self::UserReactivated,
+            self::AccountStorageLimitUpdated,
+            self::LifetimeAccessGranted,
+            self::LifetimeAccessWithdrawn,
+            self::AdministratorAccessGranted,
+            self::AdministratorAccessWithdrawn,
+            self::FlagActivated,
+            self::FlagDeactivated => true,
+            self::MarketplaceVersionApproved,
+            self::MarketplaceVersionRejected,
+            self::InstanceSettingUpdated,
+            self::InstanceSettingReverted,
+            self::TelegramWebhookRegistered,
+            self::FlagActivatedForEveryAccount,
+            self::FlagDeactivatedForEveryAccount => false,
         };
     }
 

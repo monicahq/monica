@@ -1,10 +1,14 @@
 {{-- Who is signed in, and the menu their picture opens: their settings and the way out. --}}
-{{-- @var \App\Models\User $user --}}
+{{--
+  @var \App\Models\User $user
+  @var string $variant
+--}}
 @props([
   'user',
+  'variant' => 'ghost',
 ])
 
-<x-actions-menu variant="ghost" :label="__('Your account')">
+<x-actions-menu :variant="$variant" :label="__('Your account')">
   <x-slot:glyph>
     <x-avatar id="shell-avatar" :user="$user" :size="28" />
 

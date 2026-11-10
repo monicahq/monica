@@ -33,6 +33,28 @@ class AdministratorLogControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Deactivated Todd Packer', escape: false);
         $response->assertSee('Michael Scott', escape: false);
+        $response->assertSee('Write once', escape: false);
+        $response->assertSee('Today', escape: false);
+    }
+
+    #[Test]
+    public function it_links_the_person_an_entry_names_to_their_account(): void
+    {
+        $michael = $this->administrator();
+        $pam = User::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);
+
+        AdministratorLog::factory()->create([
+            'user_id' => $michael->id,
+            'action' => AdministratorActionEnum::FlagActivated->value,
+            'parameters' => ['flag' => 'groups', 'name' => 'Pam Beesly'],
+            'account_id' => $pam->account_id,
+        ]);
+
+        $response = $this->actingAs($michael)->get(route('admin.logs.index'));
+
+        $url = route('admin.accounts.show', ['account' => $pam->account_id]);
+
+        $response->assertSee("href=\"{$url}\"", escape: false);
     }
 
     #[Test]
@@ -79,7 +101,7 @@ class AdministratorLogControllerTest extends TestCase
 
         $response = $this->actingAs($michael)->get(route('admin.logs.index', ['account' => $account->id]));
 
-        $response->assertSee('Granted lifetime access to the account of Dwight Schrute', escape: false);
+        $response->assertSeeText('Granted lifetime access to the account of Dwight Schrute');
         $response->assertDontSee('Deactivated Todd Packer', escape: false);
     }
 
@@ -109,11 +131,11 @@ class AdministratorLogControllerTest extends TestCase
 
         $response = $this->actingAs($michael)->get(route('admin.logs.index', ['account' => $todd->account_id]));
 
-        $response->assertSee('Deactivated Todd Packer', escape: false);
-        $response->assertSee('Reactivated Todd Packer', escape: false);
-        $response->assertSee('Changed the storage limit of the account of Todd Packer', escape: false);
-        $response->assertSee('Granted lifetime access to the account of Todd Packer', escape: false);
-        $response->assertSee('Withdrew lifetime access from the account of Todd Packer', escape: false);
+        $response->assertSeeText('Deactivated Todd Packer');
+        $response->assertSeeText('Reactivated Todd Packer');
+        $response->assertSeeText('Changed the storage limit of the account of Todd Packer');
+        $response->assertSeeText('Granted lifetime access to the account of Todd Packer');
+        $response->assertSeeText('Withdrew lifetime access from the account of Todd Packer');
         $response->assertSee('Michael Scott', escape: false);
     }
 

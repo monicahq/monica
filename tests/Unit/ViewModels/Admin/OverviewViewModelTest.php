@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Admin;
 
 use App\Enums\EmailDeliveryStatusEnum;
+use App\Enums\TimeFormatEnum;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\EmailSent;
@@ -36,7 +37,7 @@ class OverviewViewModelTest extends TestCase
         ]);
         Account::factory()->create();
 
-        $viewModel = new OverviewViewModel;
+        $viewModel = new OverviewViewModel(user: $this->viewer());
 
         $this->assertEquals(2, $viewModel->accountCount());
         $this->assertEquals(1, $viewModel->userCount());
@@ -50,7 +51,7 @@ class OverviewViewModelTest extends TestCase
         Account::factory()->create(['storage_used_in_bytes' => 3 * 1024 * 1024]);
         Account::factory()->create(['storage_used_in_bytes' => 2 * 1024 * 1024]);
 
-        $viewModel = new OverviewViewModel;
+        $viewModel = new OverviewViewModel(user: $this->viewer());
 
         $this->assertEquals(5 * 1024 * 1024, $viewModel->storageUsedInBytes());
         $this->assertEquals('5 MB', $viewModel->storageUsed());
@@ -64,7 +65,7 @@ class OverviewViewModelTest extends TestCase
         User::factory()->create(['last_login_at' => now()->subDays(30)]);
         User::factory()->create(['last_login_at' => null]);
 
-        $this->assertEquals(2, new OverviewViewModel()->signedInRecently());
+        $this->assertEquals(2, new OverviewViewModel(user: $this->viewer())->signedInRecently());
     }
 
     #[Test]
@@ -74,7 +75,7 @@ class OverviewViewModelTest extends TestCase
         Account::factory()->create(['created_at' => now()->subDays(29)]);
         Account::factory()->create(['created_at' => now()->subDays(60)]);
 
-        $this->assertEquals(2, new OverviewViewModel()->accountsCreatedRecently());
+        $this->assertEquals(2, new OverviewViewModel(user: $this->viewer())->accountsCreatedRecently());
     }
 
     #[Test]
@@ -84,13 +85,13 @@ class OverviewViewModelTest extends TestCase
         MarketplaceListingVersion::factory()->approved()->create();
         MarketplaceListingVersion::factory()->withdrawn()->create();
 
-        $this->assertEquals(2, new OverviewViewModel()->awaitingModeration());
+        $this->assertEquals(2, new OverviewViewModel(user: $this->viewer())->awaitingModeration());
     }
 
     #[Test]
     public function it_reads_as_an_empty_instance_rather_than_as_an_error(): void
     {
-        $viewModel = new OverviewViewModel;
+        $viewModel = new OverviewViewModel(user: $this->viewer());
 
         $this->assertTrue($viewModel->isEmpty());
         $this->assertEquals(0, $viewModel->accountCount());
@@ -111,7 +112,7 @@ class OverviewViewModelTest extends TestCase
         EmailSent::factory()->complained()->create();
         EmailSent::factory()->count(3)->create();
 
-        $viewModel = new OverviewViewModel;
+        $viewModel = new OverviewViewModel(user: $this->viewer());
 
         $this->assertSame([
             EmailDeliveryStatusEnum::Delivered->value => 2,
@@ -128,7 +129,7 @@ class OverviewViewModelTest extends TestCase
     {
         EmailSent::factory()->delivered()->create();
 
-        $counts = new OverviewViewModel()->emailsSentByStatus();
+        $counts = new OverviewViewModel(user: $this->viewer())->emailsSentByStatus();
 
         $this->assertCount(count(EmailDeliveryStatusEnum::cases()), $counts);
 
@@ -150,7 +151,7 @@ class OverviewViewModelTest extends TestCase
             ->countBy(fn (EmailSent $emailSent): string => $emailSent->delivery_status->value)
             ->all();
 
-        $counted = array_filter(new OverviewViewModel()->emailsSentByStatus());
+        $counted = array_filter(new OverviewViewModel(user: $this->viewer())->emailsSentByStatus());
 
         ksort($fromTheRows);
         ksort($counted);
@@ -161,7 +162,7 @@ class OverviewViewModelTest extends TestCase
     #[Test]
     public function it_counts_no_email_on_an_instance_that_has_sent_none(): void
     {
-        $viewModel = new OverviewViewModel;
+        $viewModel = new OverviewViewModel(user: $this->viewer());
 
         $this->assertSame(0, $viewModel->emailsSentCount());
         $this->assertSame([0, 0, 0, 0], array_values($viewModel->emailsSentByStatus()));
@@ -172,6 +173,71 @@ class OverviewViewModelTest extends TestCase
     {
         Account::factory()->create();
 
-        $this->assertFalse(new OverviewViewModel()->isEmpty());
+        $this->assertFalse(new OverviewViewModel(user: $this->viewer())->isEmpty());
+    }
+
+    #[Test]
+    public function it_says_when_it_counted_in_the_clock_of_whoever_is_looking(): void
+    {
+        $this->travelTo(now()->setDate(2026, 11, 9)->setTime(19, 32, 0));
+        $michael = new User()->forceFill(['timezone' => 'America/New_York', 'time_format' => TimeFormatEnum::TwelveHour]);
+
+        $this->assertSame('2:32 PM', new OverviewViewModel(user: $michael)->countedAt());
+    }
+
+    #[Test]
+    public function it_says_the_queue_is_empty_rather_than_counting_nothing(): void
+    {
+        $this->assertSame('Nothing in the moderation queue right now.', new OverviewViewModel(user: $this->viewer())->moderationSentence());
+    }
+
+    #[Test]
+    public function it_says_how_many_submissions_are_waiting(): void
+    {
+        MarketplaceListingVersion::factory()->count(2)->create();
+
+        $this->assertSame('2 marketplace submissions are waiting for a decision.', new OverviewViewModel(user: $this->viewer())->moderationSentence());
+    }
+
+    #[Test]
+    public function it_names_the_period_each_recent_figure_covers(): void
+    {
+        $viewModel = new OverviewViewModel(user: $this->viewer());
+
+        $this->assertSame('signed in, last 7 days', $viewModel->signedInLabel());
+        $this->assertSame('signed up, last 30 days', $viewModel->newAccountsLabel());
+    }
+
+    #[Test]
+    public function it_shares_the_emails_out_by_where_they_got_to(): void
+    {
+        EmailSent::factory()->count(6)->delivered()->create();
+        EmailSent::factory()->count(2)->bounced()->create();
+        EmailSent::factory()->complained()->create();
+        EmailSent::factory()->create();
+
+        $viewModel = new OverviewViewModel(user: $this->viewer());
+
+        $this->assertSame([
+            EmailDeliveryStatusEnum::Delivered->value => 60.0,
+            EmailDeliveryStatusEnum::Bounced->value => 20.0,
+            EmailDeliveryStatusEnum::Complained->value => 10.0,
+            EmailDeliveryStatusEnum::Sent->value => 10.0,
+        ], $viewModel->emailShares());
+        $this->assertSame('10 emails sent: 6 delivered, 2 bounced, 1 marked as spam, 1 on its way.', $viewModel->emailSummary());
+    }
+
+    #[Test]
+    public function it_shares_nothing_out_on_an_instance_that_has_sent_no_email(): void
+    {
+        $viewModel = new OverviewViewModel(user: $this->viewer());
+
+        $this->assertSame([0.0, 0.0, 0.0, 0.0], array_values($viewModel->emailShares()));
+        $this->assertSame('No email sent yet.', $viewModel->emailSummary());
+    }
+
+    private function viewer(): User
+    {
+        return new User()->forceFill(['timezone' => 'UTC', 'time_format' => TimeFormatEnum::TwentyFourHour]);
     }
 }

@@ -15,6 +15,7 @@
     'danger' => 'border-error-edge bg-error-tint text-error',
     'info' => 'border-hairline bg-canvas text-body',
     'accent' => 'border-transparent bg-primary text-on-primary',
+    'signal' => 'border-transparent bg-admin-signal text-admin-bar',
     default => 'border-transparent bg-hover text-body',
   };
 @endphp

@@ -25,33 +25,25 @@ class AccountViewModel
         return $this->user()->name ?? __('Account :id', ['id' => $this->account->id]);
     }
 
-    /**
-     * What the account is, in as many short words as apply.
-     *
-     * @return list<array{label: string, tone: string}>
-     */
+    /** @return list<array{label: string, tone: string, icon: string|null}> */
     public function badges(): array
     {
         $badges = [];
 
-        if ($this->isSelfHosted()) {
-            $badges[] = ['label' => __('Self-hosted'), 'tone' => 'neutral'];
+        if ($this->isTheViewer()) {
+            $badges[] = ['label' => __('Your own account'), 'tone' => 'warning', 'icon' => 'key'];
         }
 
-        if ($this->holdsAccessForGood()) {
-            $badges[] = ['label' => __('Lifetime access'), 'tone' => 'success'];
-        }
-
-        $state = match (true) {
-            ! $this->hasUser() => __('Nobody on this account'),
-            $this->userWasDeleted() => __('Person deleted'),
-            ! $this->user()->is_active => __('Deactivated'),
-            default => null,
+        $badges[] = match (true) {
+            ! $this->hasUser() => ['label' => __('Nobody on this account'), 'tone' => 'danger', 'icon' => null],
+            $this->userWasDeleted() => ['label' => __('Person deleted'), 'tone' => 'danger', 'icon' => null],
+            ! $this->user()->is_active => ['label' => __('Deactivated'), 'tone' => 'danger', 'icon' => null],
+            default => ['label' => __('Can sign in'), 'tone' => 'success', 'icon' => null],
         };
 
-        if ($state !== null) {
-            $badges[] = ['label' => $state, 'tone' => 'danger'];
-        }
+        $badges[] = $this->isSelfHosted()
+            ? ['label' => __('Self-hosted'), 'tone' => 'neutral', 'icon' => null]
+            : ['label' => $this->accessKindLabel(), 'tone' => 'neutral', 'icon' => null];
 
         return $badges;
     }
@@ -120,9 +112,13 @@ class AccountViewModel
         return $this->user()->email ?? '';
     }
 
-    public function emailIsConfirmedLine(): string
+    public function userEmailLine(): string
     {
-        return $this->user()?->hasVerifiedEmail() === true ? __('Yes') : __('No');
+        if ($this->user()?->hasVerifiedEmail() !== true) {
+            return __(':address · not confirmed', ['address' => $this->userEmail()]);
+        }
+
+        return __(':address · confirmed', ['address' => $this->userEmail()]);
     }
 
     public function signInLine(): string
@@ -141,11 +137,6 @@ class AccountViewModel
     public function twoFactorLine(): string
     {
         return $this->user()?->usesTwoFactorAuthentication() === true ? __('On') : __('Off');
-    }
-
-    public function canSignInLine(): string
-    {
-        return $this->user()?->is_active === true ? __('Yes') : __('No, deactivated');
     }
 
     public function lastSignedInLine(): string
@@ -246,7 +237,7 @@ class AccountViewModel
 
     /**
      * Whether the account holds full access that does not renew, which is what
-     * the badge and the withdrawal button read.
+     * the withdrawal button reads.
      */
     public function holdsAccessForGood(): bool
     {
@@ -405,6 +396,35 @@ class AccountViewModel
         }
 
         return StorageSize::readable($limit);
+    }
+
+    public function storageSharePercent(): ?int
+    {
+        $limit = $this->account->storageLimitInBytes();
+
+        if ($limit === null) {
+            return null;
+        }
+
+        if ($limit === 0) {
+            return 100;
+        }
+
+        return min(100, (int) round($this->account->storage_used_in_bytes / $limit * 100));
+    }
+
+    public function storageShareLine(): string
+    {
+        return __(':percent% of the storage limit used', ['percent' => $this->storageSharePercent() ?? 0]);
+    }
+
+    public function accessForGoodLine(): string
+    {
+        if (! $this->holdsAccessForGood()) {
+            return __('No. The account follows its plan.');
+        }
+
+        return $this->accessForGoodLabel();
     }
 
     public function isOverStorageLimit(): bool

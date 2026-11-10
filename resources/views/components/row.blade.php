@@ -6,6 +6,7 @@
   @var string|null $meta
   @var string|null $metaSub
   @var string|null $href
+  @var bool $stack  true puts the far end under the text below the xs breakpoint
   @var \Illuminate\View\ComponentSlot|null $leading
   @var \Illuminate\View\ComponentSlot|null $end
 --}}
@@ -16,17 +17,21 @@
   'meta' => null,
   'metaSub' => null,
   'href' => null,
+  'stack' => false,
 ])
 
 @php
   $tag = $href ? 'a' : 'div';
+  $arrangement = $stack ? 'flex-col items-start xs:flex-row xs:items-center' : 'items-center';
+  $endPlacement = $stack ? 'xs:ml-auto' : 'ml-auto';
 @endphp
 
 <{{ $tag }}
   @if ($href) href="{{ $href }}" data-turbo="true" @endif
   {{
     $attributes->class([
-      'flex w-full items-center gap-3 border-b border-hairline px-4 py-3.5 text-left font-sans no-underline',
+      'flex w-full gap-3 border-b border-hairline px-4 py-3.5 text-left font-sans no-underline',
+      $arrangement,
       'transition-colors duration-(--duration-fast) ease-out last:border-b-0',
       'cursor-pointer hover:bg-hover focus-ring-inset' => (bool) $href,
     ])
@@ -59,7 +64,7 @@
   @endphp
 
   @if ($meta || $metaSub || $hasEnd)
-    <div class="ml-auto flex shrink-0 items-center gap-2.5">
+    <div class="{{ $endPlacement }} flex shrink-0 items-center gap-2.5">
       @if ($meta || $metaSub)
         <div class="text-right">
           @if ($meta)

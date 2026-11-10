@@ -18,19 +18,19 @@
   $base = 'inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border '
     .'font-sans font-medium whitespace-nowrap no-underline '
     .'transition duration-(--duration-fast) ease-out '
-    .'focus-ring '
     .'disabled:pointer-events-none disabled:cursor-default disabled:opacity-50 disabled:shadow-none '
-    .'aria-disabled:pointer-events-none aria-disabled:cursor-default aria-disabled:opacity-50 aria-disabled:shadow-none';
+    .'aria-disabled:pointer-events-none aria-disabled:cursor-default aria-disabled:opacity-50 aria-disabled:shadow-none aria-disabled:focus-visible:opacity-100';
 
   $danger = $tone === 'danger';
 
   $fill = match ($variant) {
     'secondary', 'bar' => 'border-hairline-strong bg-canvas shadow-control '
       .'hover:bg-hover hover:border-muted-soft focus-visible:border-focus '
-      .($danger ? 'text-error' : 'text-ink'),
-    'ghost' => 'border-transparent hover:bg-hover '.($danger ? 'text-error' : 'text-body hover:text-ink'),
-    'danger' => 'border-transparent bg-error text-error-text hover:bg-error-hover',
-    default => 'border-transparent bg-action-primary text-action-primary-text hover:bg-action-primary-hover',
+      .'focus-ring '.($danger ? 'text-error' : 'text-ink'),
+    'ghost' => 'border-transparent hover:bg-hover focus-ring '.($danger ? 'text-error' : 'text-body hover:text-ink'),
+    'inverted' => 'border-transparent text-on-admin-bar-muted hover:bg-on-admin-bar/10 hover:text-on-admin-bar focus-ring-on-admin-bar',
+    'danger' => 'border-transparent bg-error text-error-text hover:bg-error-hover focus-ring',
+    default => 'border-transparent bg-action-primary text-action-primary-text hover:bg-action-primary-hover focus-ring',
   };
 
   $dimensions = match ($size) {

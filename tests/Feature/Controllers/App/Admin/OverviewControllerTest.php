@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Admin;
 
-use App\Models\Account;
 use App\Models\Administrator;
 use App\Models\EmailSent;
-use App\Models\MarketplaceListingVersion;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -29,38 +27,20 @@ class OverviewControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_what_period_every_figure_covers(): void
-    {
-        $michael = $this->administrator();
-        Account::factory()->count(2)->create(['storage_used_in_bytes' => 1024 * 1024]);
-
-        $response = $this->actingAs($michael)->get(route('admin.overview.index'));
-
-        $response->assertSee('all time', escape: false);
-        $response->assertSee('last 7 days', escape: false);
-        $response->assertSee('last 30 days', escape: false);
-        $response->assertSee('right now', escape: false);
-        $response->assertSee('2 MB', escape: false);
-    }
-
-    #[Test]
     public function it_leads_to_the_moderation_queue_in_one_step(): void
-    {
-        $michael = $this->administrator();
-        MarketplaceListingVersion::factory()->create();
-
-        $response = $this->actingAs($michael)->get(route('admin.overview.index'));
-
-        $response->assertSee('1 marketplace submission is waiting for a decision.', escape: false);
-        $response->assertSee(route('admin.moderation.index'), escape: false);
-    }
-
-    #[Test]
-    public function it_says_nothing_about_a_queue_that_is_empty(): void
     {
         $response = $this->actingAs($this->administrator())->get(route('admin.overview.index'));
 
-        $response->assertDontSee('waiting for a decision', escape: false);
+        $response->assertSeeInOrder(['href="'.route('admin.moderation.index').'"', 'Open moderation'], escape: false);
+    }
+
+    #[Test]
+    public function it_offers_to_count_again(): void
+    {
+        $response = $this->actingAs($this->administrator())->get(route('admin.overview.index'));
+
+        $response->assertSee('Counted at', escape: false);
+        $response->assertSeeInOrder(['href="'.route('admin.overview.index').'"', 'Count again'], escape: false);
     }
 
     #[Test]

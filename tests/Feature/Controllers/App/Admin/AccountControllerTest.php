@@ -68,7 +68,36 @@ class AccountControllerTest extends TestCase
         $response->assertSee('dwight.schrute@dundermifflin.com', escape: false);
         $response->assertSee('accounts@schrutefarms.com', escape: false);
         $response->assertSee('5 MB of 10 GB', escape: false);
-        $response->assertSee('Lifetime access', escape: false);
+        $response->assertSeeInOrder(['aria-label="Breadcrumb"', 'href="'.route('admin.accounts.index').'"', 'Dwight Schrute'], escape: false);
+        $response->assertSee('See the record for this account', escape: false);
+    }
+
+    #[Test]
+    public function it_keeps_the_deactivation_of_your_own_account_on_screen_but_refused_with_its_reason(): void
+    {
+        $michael = $this->administrator();
+
+        $response = $this->actingAs($michael)->get(route('admin.accounts.show', ['account' => $michael->account_id]));
+
+        $response->assertSeeInOrder([
+            'id="deactivation-refusal"',
+            'You cannot deactivate yourself.',
+            'aria-disabled="true"',
+            'aria-describedby="deactivation-refusal"',
+            'Deactivate account',
+        ], escape: false);
+    }
+
+    #[Test]
+    public function it_offers_to_deactivate_somebody_else(): void
+    {
+        $dwight = User::factory()->create();
+
+        $response = $this->actingAs($this->administrator())->get(route('admin.accounts.show', ['account' => $dwight->account_id]));
+
+        $response->assertSee('Deactivate account', escape: false);
+        $response->assertSee($this->deactivateUrl($dwight), escape: false);
+        $response->assertDontSee('aria-describedby="deactivation-refusal"', escape: false);
     }
 
     #[Test]
@@ -128,6 +157,11 @@ class AccountControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('1 to 10 of 21', escape: false);
+    }
+
+    private function deactivateUrl(User $user): string
+    {
+        return route('admin.accounts.activation.destroy', ['account' => $user->account_id]);
     }
 
     private function administrator(): User

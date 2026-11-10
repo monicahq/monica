@@ -16,6 +16,7 @@ class AdministratorLogController extends Controller
     {
         return view('app.admin.logs.index', [
             'viewModel' => new AdministratorLogsViewModel(
+                viewer: $request->user(),
                 administratorId: $request->integer('administrator') ?: null,
                 accountId: $request->integer('account') ?: null,
                 size: PageSize::from($request, AdministratorLogsViewModel::PER_PAGE),

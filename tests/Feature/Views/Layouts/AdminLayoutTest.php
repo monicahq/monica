@@ -7,6 +7,7 @@ namespace Tests\Feature\Views\Layouts;
 use App\Models\Administrator;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -20,7 +21,32 @@ class AdminLayoutTest extends TestCase
         $this->actingAs($this->administrator())
             ->blade('<x-admin-layout>Anything</x-admin-layout>')
             ->assertSee('Admin space')
-            ->assertSee('You are looking at the instance, not at your own account.');
+            ->assertSee('Instance')
+            ->assertSee('You are looking at the instance, not at your own account.')
+            ->assertSee('Anything you change here applies to every account on it.');
+    }
+
+    #[Test]
+    public function it_marks_the_one_section_you_are_in(): void
+    {
+        $response = $this->actingAs($this->administrator())->get(route('admin.accounts.index'));
+
+        $response->assertSee('aria-label="Admin sections"', escape: false);
+        $response->assertSeeInOrder(['href="'.route('admin.accounts.index').'"', 'aria-current="page"'], escape: false);
+        $this->assertSame(1, substr_count($response->getContent(), 'aria-current="page"'));
+    }
+
+    #[Test]
+    public function it_marks_the_section_a_page_inside_it_belongs_to(): void
+    {
+        $michael = $this->administrator();
+
+        $response = $this->actingAs($michael)->get(route('admin.accounts.show', $michael->account_id));
+
+        $sections = Str::betweenFirst($response->getContent(), 'aria-label="Admin sections"', '</nav>');
+
+        $this->assertStringContainsString('aria-current="true"', $sections);
+        $this->assertStringNotContainsString('aria-current="page"', $sections);
     }
 
     #[Test]

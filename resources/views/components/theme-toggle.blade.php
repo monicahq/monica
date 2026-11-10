@@ -6,8 +6,8 @@
 
 @php
   $colours = $tone === 'inverted'
-    ? 'text-on-primary/70 hover:bg-on-primary/10 hover:text-on-primary'
-    : 'text-muted hover:bg-hover hover:text-ink';
+    ? 'text-on-admin-bar-muted hover:bg-on-admin-bar/10 hover:text-on-admin-bar focus-ring-on-admin-bar'
+    : 'text-muted hover:bg-hover hover:text-ink focus-ring';
 @endphp
 
 <button
@@ -22,8 +22,6 @@
       $colours,
       "after:absolute after:-inset-1.5",
       'transition duration-(--duration-fast) ease-out',
-      '',
-      'focus-ring',
     ])
   }}
 >

@@ -48,7 +48,7 @@
         <h2 @isset($titleId) id="{{ $titleId }}" @endisset class="text-card-title {{ $danger ? 'text-error' : 'text-ink' }}">{{ $title }}</h2>
 
         @if ($subtitle)
-          <p class="mt-0.5 text-xs text-muted">{{ $subtitle }}</p>
+          <p class="mt-0.5 text-xs {{ $danger ? 'text-body' : 'text-muted' }}">{{ $subtitle }}</p>
         @endif
       </div>
 

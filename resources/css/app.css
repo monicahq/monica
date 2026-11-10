@@ -111,6 +111,11 @@
     --color-topbar: var(--topbar);
     --color-topbar-hairline: var(--topbar-hairline);
 
+    --color-admin-bar: var(--admin-bar);
+    --color-on-admin-bar: var(--on-admin-bar);
+    --color-on-admin-bar-muted: var(--on-admin-bar-muted);
+    --color-admin-signal: var(--admin-signal);
+
     --color-action-primary: var(--action-primary);
     --color-action-primary-hover: var(--action-primary-hover);
     --color-action-primary-text: var(--action-primary-text);
@@ -256,6 +261,11 @@
     --topbar: #ffffff;
     --topbar-hairline: #e4e4e7;
 
+    --admin-bar: #18181b;
+    --on-admin-bar: #fafafa;
+    --on-admin-bar-muted: #a1a1aa;
+    --admin-signal: #fbbf24;
+
     --duration-fast: 150ms;
     --duration-standard: 170ms;
     --duration-slow: 220ms;
@@ -360,6 +370,14 @@
 
 @utility focus-ring-inset {
     @apply focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring/45 focus-visible:outline-none;
+}
+
+@utility focus-ring-on-admin-bar {
+    @apply focus-visible:ring-[3px] focus-visible:ring-on-admin-bar/40 focus-visible:outline-none;
+}
+
+@utility focus-ring-on-admin-bar-inset {
+    @apply focus-visible:inset-ring-2 focus-visible:inset-ring-on-admin-bar/40 focus-visible:outline-none;
 }
 
 @utility focus-ring-field {

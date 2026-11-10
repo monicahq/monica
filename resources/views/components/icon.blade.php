@@ -44,6 +44,7 @@
     'lock' => '<rect x="3.4" y="7" width="9.2" height="6.6" rx="1.5"></rect><path d="M5.6 7V5.2a2.4 2.4 0 0 1 4.8 0V7"></path>',
     'device' => '<rect x="5" y="2.2" width="6" height="11.6" rx="1.5"></rect><line x1="7.2" y1="11.6" x2="8.8" y2="11.6"></line>',
     'info' => '<circle cx="8" cy="8" r="5.6"></circle><line x1="8" y1="7.2" x2="8" y2="11"></line><circle cx="8" cy="5" r="0.5" fill="currentColor" stroke="none"></circle>',
+    'warning' => '<path d="M8 2.4 14 13H2z"></path><line x1="8" y1="6.6" x2="8" y2="9.4"></line><circle cx="8" cy="11.2" r="0.5" fill="currentColor" stroke="none"></circle>',
     'check' => '<path d="M3.2 8.4 6.3 11.5 12.8 4.8"></path>',
     'check-circle' => '<circle cx="8" cy="8" r="5.6"></circle><path d="m5.4 8.2 1.9 1.9 3.4-3.9"></path>',
     'close' => '<line x1="4" y1="4" x2="12" y2="12"></line><line x1="12" y1="4" x2="4" y2="12"></line>',

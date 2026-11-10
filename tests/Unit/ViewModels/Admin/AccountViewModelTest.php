@@ -87,7 +87,32 @@ class AccountViewModelTest extends TestCase
 
         $labels = array_column(new AccountViewModel(account: $account)->badges(), 'label');
 
-        $this->assertSame(['Self-hosted', 'Lifetime access', 'Nobody on this account'], $labels);
+        $this->assertSame(['Nobody on this account', 'Self-hosted'], $labels);
+    }
+
+    #[Test]
+    public function it_badges_the_viewers_own_account_first_and_names_the_plan_it_holds(): void
+    {
+        $michael = User::factory()->create();
+        StripeOrder::factory()->settled()->create(['account_id' => $michael->account_id]);
+
+        $badges = new AccountViewModel(account: $michael->account, viewer: $michael)->badges();
+
+        $this->assertSame([
+            ['label' => 'Your own account', 'tone' => 'warning', 'icon' => 'key'],
+            ['label' => 'Can sign in', 'tone' => 'success', 'icon' => null],
+            ['label' => 'Lifetime access', 'tone' => 'neutral', 'icon' => null],
+        ], $badges);
+    }
+
+    #[Test]
+    public function it_says_beside_the_address_whether_it_was_confirmed(): void
+    {
+        $pam = User::factory()->create(['email' => 'pam.beesly@dundermifflin.com', 'email_verified_at' => now()]);
+        $ryan = User::factory()->create(['email' => 'ryan.howard@dundermifflin.com', 'email_verified_at' => null]);
+
+        $this->assertSame('pam.beesly@dundermifflin.com · confirmed', new AccountViewModel(account: $pam->account)->userEmailLine());
+        $this->assertSame('ryan.howard@dundermifflin.com · not confirmed', new AccountViewModel(account: $ryan->account)->userEmailLine());
     }
 
     #[Test]
@@ -97,7 +122,10 @@ class AccountViewModelTest extends TestCase
 
         $badges = new AccountViewModel(account: $user->account)->badges();
 
-        $this->assertSame([['label' => 'Deactivated', 'tone' => 'danger']], $badges);
+        $this->assertSame([
+            ['label' => 'Deactivated', 'tone' => 'danger', 'icon' => null],
+            ['label' => 'Free plan', 'tone' => 'neutral', 'icon' => null],
+        ], $badges);
     }
 
     #[Test]
@@ -109,7 +137,7 @@ class AccountViewModelTest extends TestCase
 
         $labels = array_column(new AccountViewModel(account: $account)->badges(), 'label');
 
-        $this->assertSame(['Person deleted'], $labels);
+        $this->assertSame(['Person deleted', 'Free plan'], $labels);
     }
 
     #[Test]
@@ -161,7 +189,6 @@ class AccountViewModelTest extends TestCase
 
         $this->assertSame('With a password', $viewModel->signInLine());
         $this->assertSame('Off', $viewModel->twoFactorLine());
-        $this->assertSame('Yes', $viewModel->canSignInLine());
         $this->assertSame('Never', $viewModel->lastSignedInLine());
     }
 
@@ -453,5 +480,27 @@ class AccountViewModelTest extends TestCase
         $viewModel = new AccountViewModel(account: Account::factory()->create());
 
         $this->assertSame([], $viewModel->flags());
+    }
+
+    #[Test]
+    public function it_measures_how_much_of_the_storage_limit_is_used(): void
+    {
+        $partly = Account::factory()->create(['storage_used_in_bytes' => 40 * 1024 * 1024, 'storage_limit_in_bytes' => 100 * 1024 * 1024]);
+        $over = Account::factory()->create(['storage_used_in_bytes' => 300 * 1024 * 1024, 'storage_limit_in_bytes' => 100 * 1024 * 1024]);
+        $unlimited = Account::factory()->create(['storage_used_in_bytes' => 40 * 1024 * 1024, 'storage_limit_in_bytes' => null]);
+
+        $this->assertSame(40, new AccountViewModel(account: $partly)->storageSharePercent());
+        $this->assertSame('40% of the storage limit used', new AccountViewModel(account: $partly)->storageShareLine());
+        $this->assertSame(100, new AccountViewModel(account: $over)->storageSharePercent());
+        $this->assertNull(new AccountViewModel(account: $unlimited)->storageSharePercent());
+    }
+
+    #[Test]
+    public function it_says_the_account_follows_its_plan_when_it_holds_no_lifetime_access(): void
+    {
+        $account = Account::factory()->create();
+
+        $this->assertSame('No. The account follows its plan.', new AccountViewModel(account: $account)->accessForGoodLine());
+
     }
 }
