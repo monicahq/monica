@@ -78,14 +78,14 @@
       </ul>
     @endif
 
-    <form method="get" action="{{ $paginator->path() }}" @if ($target) x-target.push="{{ $target }}" @endif class="flex items-end gap-2">
+    <form method="get" action="{{ $paginator->path() }}" @if ($target) x-target.push="{{ $target }}" @endif class="flex items-center gap-2">
       @foreach (request()->except(['page', 'size']) as $name => $value)
         @if (is_scalar($value))
           <input type="hidden" name="{{ $name }}" value="{{ $value }}">
         @endif
       @endforeach
 
-      <x-select :id="$pageSizeId" name="size" :label="__('Rows per page')" size="small" x-on:change="$el.form.requestSubmit()">
+      <x-select :id="$pageSizeId" name="size" :label="__('Rows per page')" size="small" inline x-on:change="$el.form.requestSubmit()">
         @foreach (\App\Helpers\PageSize::CHOICES as $choice)
           <option value="{{ $choice }}" @selected($size === $choice)>{{ $choice }}</option>
         @endforeach

@@ -8,6 +8,7 @@
   @var string|array<int, string>|null $error
   @var bool $required
   @var string $size
+  @var bool $inline
 --}}
 @props([
   'id' => null,
@@ -18,6 +19,7 @@
   'error' => null,
   'required' => false,
   'size' => 'default',
+  'inline' => false,
 ])
 
 @php
@@ -33,12 +35,12 @@
     .'aria-[invalid=true]:border-error aria-[invalid=true]:ring-[3px] aria-[invalid=true]:ring-error/20';
 @endphp
 
-<div class="flex flex-col gap-1.5 {{ $attributes->get('class') }}">
+<div class="flex {{ $inline ? 'items-center gap-2' : 'flex-col gap-1.5' }} {{ $attributes->get('class') }}">
   @if ($label)
-    <x-label :for="$id" :value="$label" :optional="$optional" />
+    <x-label :for="$id" :value="$label" :optional="$optional" :class="$inline ? 'whitespace-nowrap' : null" />
   @endif
 
-  <div class="relative">
+  <div @class(['relative', 'min-w-0 flex-1' => $inline])>
     <select
       id="{{ $id }}"
       name="{{ $name ?? $id }}"

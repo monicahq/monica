@@ -101,14 +101,15 @@
           <p class="mt-0.5 text-xs text-muted">{{ $viewModel->resultsDescription() }}</p>
         </div>
 
-        <div class="ml-auto flex flex-wrap items-end gap-2.5">
+        <div class="ml-auto flex flex-wrap items-center gap-2.5">
           <x-select
             id="locale"
             name="locale"
             form="marketplace-filters"
             size="small"
             :label="__('Language')"
-            class="w-40"
+            inline
+            class="w-56"
           >
             <option value="">{{ __('Any language') }}</option>
 
@@ -123,7 +124,8 @@
             form="marketplace-filters"
             size="small"
             :label="__('Sort')"
-            class="w-44"
+            inline
+            class="w-56"
           >
             @foreach ($viewModel->sorts() as $option)
               <option value="{{ $option['value'] }}" @selected($option['value'] === $viewModel->sort())>{{ $option['label'] }}</option>
