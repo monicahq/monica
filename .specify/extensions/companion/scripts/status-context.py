@@ -44,6 +44,7 @@ STEP_COMMAND = {
     "plan": "speckit.plan",
     "tasks": "speckit.tasks",
     "implement": "speckit.implement",
+    "converge": "speckit.converge",
 }
 
 # Companion family — mirrors STEP_COMMAND's keys. Status reports and resume
@@ -54,6 +55,7 @@ COMPANION_STEP_COMMAND = {
     "plan": "speckit.companion.plan",
     "tasks": "speckit.companion.tasks",
     "implement": "speckit.companion.implement",
+    "converge": "speckit.converge",
 }
 
 def _is_companion(ctx: dict) -> bool:
@@ -201,8 +203,16 @@ def resolve(feature_dir: Path) -> dict:
     in_implement = current_step == "converge" or (current_step == "implement" and converge_ran)
     converge_open = in_implement and status not in CROSS_STEP_TERMINAL
 
-    # Terminal: implemented / completed / archived.
-    if status in TERMINAL_STATUSES and not converge_open:
+    # Implemented with every task checked is not finished: a converge pass completes it.
+    if status == "implemented" and _next_unchecked_task(feature_dir) is None:
+        resolution["nextStep"] = "converge"
+        resolution["nextCommand"] = _step_command("converge", companion)
+        resolution["nextActionLabel"] = "Converge"
+        return resolution
+
+    # Terminal: completed / archived.
+    open_at_implemented = status == "implemented" and _next_unchecked_task(feature_dir) is not None
+    if status in TERMINAL_STATUSES and not converge_open and not open_at_implemented:
         resolution["complete"] = True
         resolution["nextActionLabel"] = "Pipeline complete"
         return resolution
@@ -245,10 +255,32 @@ def resolve(feature_dir: Path) -> dict:
     return resolution
 
 
-def _print_summary(res: dict) -> None:
+#: Stand-ins for a console that cannot print the summary's arrow and dash (a legacy Windows code page).
+_ASCII_FALLBACK = str.maketrans({"→": "->", "—": "-"})
+
+
+def _console_safe() -> None:
+    """Never fail on a console that cannot encode a character: swap the arrow and dash, replace the rest."""
+    global print
+    encoding = getattr(sys.stdout, "encoding", None) or "utf-8"
+    try:
+        "→—".encode(encoding)
+        return
+    except (UnicodeEncodeError, LookupError):
+        pass
+    try:
+        sys.stdout.reconfigure(errors="replace")
+    except (AttributeError, ValueError):
+        pass
+    plain_print = print
+    print = lambda *args, **kwargs: plain_print(*(str(a).translate(_ASCII_FALLBACK) for a in args), **kwargs)  # noqa: E731
+
+
+def _print_summary(res: dict, plain: bool = False) -> None:
     if res.get("empty"):
         print("Nothing to summarize (no spec files or recorded state found).")
-        print(f"RESOLUTION: {json.dumps(res, ensure_ascii=False)}")
+        if not plain:
+            print(f"RESOLUTION: {json.dumps(res, ensure_ascii=True)}")
         return
 
     print(f"Spec: {res['specName']}   (source: {res['source']})")
@@ -270,7 +302,8 @@ def _print_summary(res: dict) -> None:
         nxt = res.get("nextCommand") or "—"
         print(f"Next: {res['nextActionLabel']}  →  {nxt}")
 
-    print(f"RESOLUTION: {json.dumps(res, ensure_ascii=False)}")
+    if not plain:
+        print(f"RESOLUTION: {json.dumps(res, ensure_ascii=True)}")
 
 
 def main() -> int:
@@ -278,7 +311,10 @@ def main() -> int:
         description="Resolve a feature's pipeline position and next action."
     )
     parser.add_argument("--feature-dir", default=None)
+    parser.add_argument("--plain", action="store_true",
+                        help="only the lines a person reads: no RESOLUTION line, and a missing spec said on stdout")
     args = parser.parse_args()
+    _console_safe()
 
     root = wc._repo_root()
     feature_dir = wc.resolve_feature_dir(root, args.feature_dir)
@@ -289,13 +325,17 @@ def main() -> int:
             ".specify/feature.json, git branch prefix). Skipping status.",
             file=sys.stderr,
         )
+        if args.plain:
+            print("No active spec found.")
         return 0  # best-effort: never fail the host command
 
     try:
         res = resolve(feature_dir)
-        _print_summary(res)
+        _print_summary(res, plain=args.plain)
     except Exception as exc:  # noqa: BLE001 - best-effort, swallow + report
         print(f"[companion] Warning: skipped status resolution: {exc}", file=sys.stderr)
+        if args.plain:
+            print(f"Could not read the run record: {exc}")
         return 0
 
     return 0

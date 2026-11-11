@@ -46,8 +46,9 @@ def areas(ctx: dict) -> list:
 
 
 def spec_file(feature_dir: Path) -> str:
-    found = sorted(feature_dir.glob("*.spec.md")) or sorted(feature_dir.glob("spec.md"))
-    return str(found[0]) if found else f"{feature_dir}/<short-name>.spec.md"
+    from spec_context import feature_spec_path
+
+    return str(feature_spec_path(feature_dir))
 
 
 def checkin_line(feature_dir: Path, label: str) -> str:

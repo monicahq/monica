@@ -1,11 +1,11 @@
 {
   "integration": "speckit",
-  "version": "1.3.2",
+  "version": "1.4.1.dev0",
   "installed_at": "2026-08-20T20:48:11.929788+00:00",
   "files": {
     ".specify/scripts/bash/check-prerequisites.sh": "e127735bbc5ac42181e2a3c773a2d639979f865f18e74a1a977cdf53392a0a7d",
     ".specify/scripts/bash/common.sh": "53cb1c23e349db4586c272436ce35c6e2f36a9c0b5351a85e0b216d9887a26b7",
-    ".specify/scripts/bash/create-new-feature.sh": "972f03ed8ca5ee17b7baad6d56d821d46269d77abc337496beafb0fe85a725f2",
+    ".specify/scripts/bash/create-new-feature.sh": "1e422acb000ab106b63ba1f9f9258bbcdc5b5c93f4e9f88588c0e671ad61b872",
     ".specify/scripts/bash/resolve-template.sh": "829e227096abc8bf0889889ec9f792f503ca5d395b7836a8a7eb739ee75214e7",
     ".specify/scripts/bash/setup-plan.sh": "d378ec66ba20d2da01c71dad8935062c1c27f0bba890be9a6d3dda52ea056a4e",
     ".specify/scripts/bash/setup-tasks.sh": "4a33dd1e6c32ddc7d570f4b538572c54069192573eed0ec654d9fb826e31a4fe",

@@ -2,55 +2,10 @@
 description: "Capture the current spec-kit step into .spec-context.json for the Companion GUI"
 ---
 
-# Capture Spec Context
+# Capture Specify Finish
 
-Record the active feature's current pipeline step into `.spec-context.json` so the
-SpecKit Companion GUI re-renders with the correct step and status. This command
-runs as the `after_specify` lifecycle hook — **state-writing only**; the spec
-directory and files are created by the core `speckit.specify` workflow.
-
-## Prerequisites
-
-- Verify Python is available by running `python3 --version`.
-- If `python3` is not available, warn the user and skip the capture:
-  `[companion] Warning: python3 not detected; skipped .spec-context.json capture`.
-  Do not fail the host command.
-
-## Execution
-
-Run the writer script from the repository root, twice.
-
-First the start, only if the `before_specify` hook had you read the clock when this step began. Pass exactly the time it printed:
+Run this from the repository root to record that specify finished; if `python3` is missing, say the step was not recorded and carry on.
 
 ```bash
-python3 .specify/extensions/companion/scripts/write-context.py --step specify --status specifying --kind start --by extension --at <the time you read>
+python3 .specify/extensions/companion/scripts/write-context.py --hook finish --step specify
 ```
-
-Skip that call when you read no time. A start the GUI already recorded makes it a no-op.
-
-Then the finish, every time:
-
-```bash
-python3 .specify/extensions/companion/scripts/write-context.py --step specify --status specified --kind complete --by extension
-```
-
-The script resolves the active feature directory on its own, in this order:
-`--feature-dir` → `SPECIFY_FEATURE_DIRECTORY` env → `SPECIFY_FEATURE` env →
-`.specify/feature.json` → current git branch prefix.
-
-If you already know the feature directory (e.g. the one `speckit.specify` just
-created), pass `--feature-dir specs/<NNN>-<slug>` on both calls so resolution is unambiguous.
-
-## Graceful Degradation
-
-The script is best-effort and never fails the host command:
-- If `python3` is missing, skip with the warning above.
-- If the active feature directory cannot be resolved, the script prints a warning
-  to stderr and exits 0 without writing.
-
-## Output
-
-On success the script prints the path it updated and the values written, e.g.:
-`[companion] Updated specs/<NNN>-<slug>/.spec-context.json (currentStep=specify, status=specified, by=extension)`.
-The write is atomic (temp file + rename) and appends to the canonical `history[]` without
-rewriting existing entries.

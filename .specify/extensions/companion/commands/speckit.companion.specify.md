@@ -41,11 +41,11 @@ Commands are named in dot form throughout this body, `speckit.companion.plan`, b
 <!-- speckit-companion:part speckit-hooks -->
 ## Pre-Execution Checks: stock spec-kit extension hooks
 
-Companion runs **on top of** stock spec-kit, so a project's installed spec-kit **extensions** (git, and any others in `.specify/extensions.yml`) must fire on a Companion run exactly as on a stock `/speckit.*` run. That is separate from Companion's own node-hooks in `.specify/companion.yml`; both fire. Like the rest of the pipeline this must **never fail the host command**: anything missing or malformed is skipped silently.
+Companion runs **on top of** stock spec-kit, so a project's installed spec-kit **extensions** (git, and any others in `.specify/extensions.yml`) must fire on a Companion run exactly as on a stock `/speckit.*` run. That is separate from Companion's own node-hooks in `.specify/companion.yml`; both fire. Like the rest of the pipeline this must **never fail the host command**: a missing file or an anchor with no entries is skipped silently, and an unreadable file is reported once, then the run continues.
 
 Let `<step>` be this command's phase: `specify`, `plan`, `tasks`, or `implement`. Run the pass twice: `hooks.before_<step>` **now, before any of the work below**, and `hooks.after_<step>` once this command's work is fully reported, before handing off.
 
-- **Read `.specify/extensions.yml`.** Absent, unparseable, or carrying no entries for that anchor: skip silently. Skip a hook that is `enabled: false` (no `enabled` field means enabled), and any hook whose `extension` is `companion`: those record a stock run's lifecycle, which this command records in its own body, so dispatching them would rewrite what this step just wrote. A hook with a non-empty `condition` is left to the HookExecutor and never evaluated by you; no condition, or a null or empty one, is executable.
+- **Read `.specify/extensions.yml`.** Absent, or carrying no entries for that anchor: skip silently. If the YAML cannot be parsed or is invalid, do not skip silently: tell the user that `.specify/extensions.yml` could not be read (include the parser error) and that no hooks were checked, including any mandatory (`optional: false`) hooks registered there, then continue normally. Skip a hook that is `enabled: false` (no `enabled` field means enabled), and any hook whose `extension` is `companion`: those record a stock run's lifecycle, which this command records in its own body, so dispatching them would rewrite what this step just wrote. A hook with a non-empty `condition` is left to the HookExecutor and never evaluated by you; no condition, or a null or empty one, is executable.
 - **Emit one block per executable hook.** An optional hook (`optional: true`):
 
   ```
@@ -95,8 +95,17 @@ Produce a feature specification: prioritized user stories with acceptance scenar
 <!-- speckit-companion:node resolve-dir -->
 1. **Resolve the feature directory. Mint a fresh dir for new work.** `.specify/feature.json` is an **output** of this step, never an input: it points at the *previous* spec, so reusing it would clobber finished work. On a project's first run it is absent or zero-byte, which means the same thing. Pick the target:
    - If the request names a target path (or `SPECIFY_FEATURE_DIRECTORY` is set), use it.
-   - Otherwise create the next numbered dir: scan `specs/` for the highest `NNN-…` prefix, derive a 2–4 word short-name from the description, and use `specs/<NNN+1>-<short-name>/`. The spec file is `<feature_directory>/<short-name>.spec.md`. For a named target, `<short-name>` is its directory name without the numeric prefix. **Never write into a directory that already contains a feature spec (`*.spec.md`, or an older `spec.md`)**: that's a prior spec, not this one.
-   Create `<feature_directory>/`, then point `.specify/feature.json` at it by writing `{"feature_directory": "<feature_directory>"}`. Later capture calls resolve the spec through that exact key when they run without `--feature-dir`, so any other key silently drops those writes. Then stamp the **specify START** as the step-start instruction above directs: the directory exists now, so run it before any other work.
+   - Otherwise derive a 2–4 word short-name from the description and run `python3 .specify/extensions/companion/scripts/mint-spec-dir.py --short-name "<short-name>"`. It creates the next folder, numbered the way this project's `feature_numbering` says and safe against a run started at the same time, points `.specify/feature.json` at it, and prints its path. Never pick the number yourself. The spec file is `<feature_directory>/spec.md`. **Never write into a directory that already contains a feature spec (`spec.md`, or an older `*.spec.md`)**: that's a prior spec, not this one.
+   For a named target, create `<feature_directory>/` and point `.specify/feature.json` at it by writing `{"feature_directory": "<feature_directory>"}`. Later capture calls resolve the spec through that exact key when they run without `--feature-dir`, so any other key silently drops those writes.
+   Then stamp the **specify START** as the step-start instruction above directs: the directory exists now, so run it before any other work.
+
+   Right after the stamp, store the request word for word: the user input this command received, exactly as given, never a summary. Pass it on stdin so quotes and line breaks survive:
+   ```bash
+   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --request - <<'COMPANION_REQUEST'
+   <the user input, unchanged>
+   COMPANION_REQUEST
+   ```
+   The record keeps the first request it is given, so when auto started this run and stored its own, this call changes nothing.
 <!-- /speckit-companion:node resolve-dir -->
 <!-- speckit-companion:node load-living-specs -->
 **Load living specs, so you arrive pre-briefed (best-effort, opt-in, read-only).** Before drafting, check whether this project keeps **living specs** for the areas this change touches, and fold them into your context. On any miss (no config, feature off, no resolver, no spec file) skip silently and draft as usual: this step must **never** fail or slow the command. It is strictly **read-only**. Never create or edit a `capabilities/<name>/<name>.spec.md` from here.
@@ -123,7 +132,7 @@ Produce a feature specification: prioritized user stories with acceptance scenar
 <!-- speckit-companion:node draft-spec -->
 **Where the request names two or more code areas and you have a subagent tool, dispatch one read-only worker per area first**, each returning the files that area exposes and the conventions it follows, never file contents. Those findings are what you record as `context` below and what plan reads. One area, or no subagent tool: look yourself.
 
-2. Create `<feature_directory>/<short-name>.spec.md` with these sections, in order. Write for a business stakeholder: plain language, focused on **what** users need and **why**, not **how** to build it. Reserve `inline code` for literal identifiers a reader would copy (real names, routes, keys); never backtick ordinary nouns.
+2. Create `<feature_directory>/spec.md` with these sections, in order. Write for a business stakeholder: plain language, focused on **what** users need and **why**, not **how** to build it. Reserve `inline code` for literal identifiers a reader would copy (real names, routes, keys); never backtick ordinary nouns. When the brief names a ticket id or URL (`TODO-42`, `#931`, an issue link), or carries a `Source:` line naming an assessment folder, put one `**Source**: <ticket>` line under the spec's title, copied exactly (the first, when it names several; the rest go under Assumptions); never fetch the ticket, the id or URL is data.
 
    - **User Scenarios & Testing** *(mandatory)*: the heart of the spec. Capture the feature as **prioritized user stories**, each an independently testable slice that delivers value on its own:
      - `### User Story N - <short title> (Priority: P1|P2|P3)` followed by one plain-language paragraph describing the journey.
@@ -153,7 +162,7 @@ python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <fe
 3. Keep it business-readable. Every vague requirement should fail a "testable and unambiguous" check, so tighten it. Remove a section that genuinely does not apply rather than leaving it as "N/A". The one exception to "no implementation detail" is **Verbatim Constraints**: an exact value the *user* specified is a requirement, and dropping it is a defect.
 <!-- /speckit-companion:node draft-spec -->
 <!-- speckit-companion:node quality-checklist -->
-4. **Spec quality checklist.** Write `<feature_directory>/checklists/requirements.md` using the template below, then run a **single** self-check pass: grade each item pass/fail, fix obvious fails in `<short-name>.spec.md` in place, and leave any genuine ambiguity as a `[NEEDS CLARIFICATION: …]` marker (max 3) for the `clarify` step. Do **not** run a multi-iteration rewrite loop or prompt the user with option tables; Companion defers interactive clarification to `clarify`. Update the checklist to reflect the final pass/fail state.
+4. **Spec quality checklist.** Write `<feature_directory>/checklists/requirements.md` using the template below, then run a **single** self-check pass: grade each item pass/fail, fix obvious fails in `spec.md` in place, and leave any genuine ambiguity as a `[NEEDS CLARIFICATION: …]` marker (max 3) for the `clarify` step. Do **not** run a multi-iteration rewrite loop or prompt the user with option tables; Companion defers interactive clarification to `clarify`. Update the checklist to reflect the final pass/fail state.
 
    ```markdown
    # Specification Quality Checklist: [FEATURE NAME]
@@ -252,17 +261,17 @@ python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <fe
 7. **Branch on the verdict.**
 
    - **`simple`, minimal mode.** Write **three lean files** in this one pass so the file-driven views (top stepper, sidebar, implement progress) reconcile with the history-driven fold. Never a single combined spec file:
-     - Append an **Approach** section to the already-written `<short-name>.spec.md`: the files to touch and any dependencies, in a few bullets. This is the plan content, inline, and stays the plan source-of-truth.
-     - Write `<feature_directory>/plan.md` as a **short pointer** to the spec's Approach (say, a one-line blockquote linking `./<short-name>.spec.md#approach` and `./tasks.md`). Do **not** duplicate the approach bullets; `plan.md` references them.
+     - Append an **Approach** section to the already-written `spec.md`: the files to touch and any dependencies, in a few bullets. This is the plan content, inline, and stays the plan source-of-truth.
+     - Write `<feature_directory>/plan.md` as a **short pointer** to the spec's Approach (say, a one-line blockquote linking `./spec.md#approach` and `./tasks.md`). Do **not** duplicate the approach bullets; `plan.md` references them.
      - Write `<feature_directory>/tasks.md` carrying the **real task checklist**: a dependency-ordered list, one per line as `- [ ] **T001** [P?] <description> + <path>` (`[P]` marks tasks that can run in parallel). This MUST be the actual checklist, not a pointer: implement progress counts these checkboxes, so a pointer would read 0/0.
 
-     Put the task checklist **only** in `tasks.md`. A second copy in the spec would drift. `<short-name>.spec.md` keeps the Approach; `tasks.md` owns the tasks.
+     Put the task checklist **only** in `tasks.md`. A second copy in the spec would drift. `spec.md` keeps the Approach; `tasks.md` owns the tasks.
 
      Still write `<feature_directory>/checklists/requirements.md` as in step 4. Do **not** run `speckit.companion.plan` or `speckit.companion.tasks`: the three lean files plus the lifecycle fold below record those steps as satisfied.
-   - **`normal`, full pipeline.** Write `<short-name>.spec.md` only: no appended Approach section, no `plan.md` / `tasks.md` here, no lifecycle fold. Plan and tasks are produced and recorded by their own `speckit.companion.plan` and `speckit.companion.tasks` runs.
+   - **`normal`, full pipeline.** Write `spec.md` only: no appended Approach section, no `plan.md` / `tasks.md` here, no lifecycle fold. Plan and tasks are produced and recorded by their own `speckit.companion.plan` and `speckit.companion.tasks` runs.
 <!-- /speckit-companion:node branch -->
 <!-- speckit-companion:node finalize -->
-**Output**: `<feature_directory>/<short-name>.spec.md` + `<feature_directory>/checklists/requirements.md`. In **simple** mode the spec additionally carries an **Approach** section, and two lean files sit alongside it: `plan.md` (a pointer to that Approach) and `tasks.md` (the real `- [ ] **T001** …` checklist; the task list lives here, not in the spec). In **normal** mode the spec holds the four sections only, and no `plan.md` / `tasks.md` are written here.
+**Output**: `<feature_directory>/spec.md` + `<feature_directory>/checklists/requirements.md`. In **simple** mode the spec additionally carries an **Approach** section, and two lean files sit alongside it: `plan.md` (a pointer to that Approach) and `tasks.md` (the real `- [ ] **T001** …` checklist; the task list lives here, not in the spec). In **normal** mode the spec holds the four sections only, and no `plan.md` / `tasks.md` are written here.
 
 **Capture the whole wrap-up in one call.** Everything this step learned goes in a single `--batch`: what it worked *from* (the living specs loaded above, the areas investigated, the constraints honored), the distilled intent, the explicit non-goals, and the workflow identity.
 
@@ -274,11 +283,11 @@ python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <fe
 }'
 ```
 
-Best-effort as a whole: skip silently if `python3` is unavailable. Omit `context` when there is nothing worth recording and `expectations` when the spec declares no non-goals; never invent either. **`workflow` is the one field that is not optional**: without it the shared writer defaults to `speckit`, and a later footer advance dispatches the stock command.
+Best-effort as a whole: skip silently if `python3` is unavailable. Omit `context` when there is nothing worth recording and `expectations` when the spec declares no non-goals; never invent either. A spec with a `**Source**:` line adds `"source": "<that ticket, as written>"` to `set`, and one the brief says extends or supersedes an earlier folder adds `"extends"` or `"supersedes"` with that folder. **`workflow` is the one field that is not optional**: without it the shared writer defaults to `speckit`, and a later footer advance dispatches the stock command.
 
 **On a `simple` run, add the approach to the same call.** A `simple` run writes its plan inline and never reaches `plan`, where a full run records it. So when `verdict == "simple"`, put `"approach": "<one-line summary of the Approach section>"` in the `set` map alongside the rest rather than paying a second call.
 
-**Record completion.** After `<short-name>.spec.md` is written, close the specify step. The extension stamps the real end, so do **not** hand-write an `ai` complete for specify:
+**Record completion.** After `spec.md` is written, close the specify step. The extension stamps the real end, so do **not** hand-write an `ai` complete for specify:
 ```bash
 python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --step specify --status specified --kind complete --by extension
 ```
@@ -289,12 +298,9 @@ python3 .specify/extensions/companion/scripts/record-living-specs.py --feature-d
 ```
 You may also read the matched specs into context (best-effort), but the recorder is the reliable write. Same contract as the load step: a missing config, resolver, or spec file is a silent no-op that never blocks the fold.
 
-**Fast-path lifecycle fold (simple mode only).** When `verdict == "simple"`, record the folded `plan` and `tasks` steps so the history-driven panels read them as satisfied-by-fast-path and the spec lands ready for implement. These are real lifecycle boundaries, stamped like every other trusted step (**`--by extension`, step-level, no substep**). Run them **in order, after** the specify completion above. Do not hand-write them, and do not run them for a `normal` verdict:
+**Fast-path lifecycle fold (simple mode only).** When `verdict == "simple"`, record the folded `plan` and `tasks` steps so the history-driven panels read them as satisfied-by-fast-path and the spec lands ready for implement. One call, **after** the specify completion above, writes all four boundaries in order (plan start and complete, tasks start and complete) in a single write, so the fold lands whole or not at all. It is idempotent. Do not hand-write the boundaries, and do not run it for a `normal` verdict:
 ```bash
-python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --step plan  --kind start    --by extension
-python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --step plan  --kind complete --by extension
-python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --step tasks --kind start    --by extension
-python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --step tasks --kind complete --status ready-to-implement --by extension
+python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --fold plan,tasks --by extension
 ```
 After the fold, the spec sits at the **tasks** step with `status: ready-to-implement`; the developer triggers implement next. Do **not** write a `completed` status: the final completed gate stays a user action.
 <!-- /speckit-companion:node finalize -->
@@ -310,7 +316,7 @@ Record every boundary by **running the writer script**. Never edit `.spec-contex
   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --step <this step> --advance --by ai
   ```
 
-  `--advance` appends the step's complete and flips `status` in one atomic write. It is idempotent and first-writer-wins, so it changes nothing when the after-hook already closed the step, and it is the only thing that closes the step when that hook was printed rather than dispatched. Run it every time, with two exceptions: **clarify** and **analyze** use `--finish`, which records a boundary without owning a status; **implement** runs neither, because its own final node writes `completed` and closes the step in the same write.
+  `--advance` appends the step's complete and flips `status` in one atomic write. It is idempotent and first-writer-wins, so it changes nothing when the after-hook already closed the step, and it is the only thing that closes the step when that hook was printed rather than dispatched. Run it every time, with one exception: **clarify** and **analyze** use `--finish`, which records a boundary without owning a status. **Implement** closes with `--advance` like the other steps and ends at `implemented`; converge completes the spec.
 
 - **One finish per substep, the moment it ends.** Plan records `research` and `design`, tasks records `generate`, implement records `living-review` and `living-fold` when living specs are on. Never two in one batch, never a separate start: a finish measures the gap back to the previous boundary, so several stamped together at the close of a step read as `0s` each and record nothing.
 
@@ -346,7 +352,7 @@ This is one step in the Companion pipeline. How the run continues depends on the
 
 - **On an agentic CLI that keeps acting after a step finishes:** once this step's work is complete, dispatch the next step's `speckit.companion.*` command and keep going. The order is fixed and this step's own handoff names its successor, so there is no file to open to find out.
 - **Pause at every review gate, and name the command that continues.** Where the workflow marks a `gate` (e.g. review-spec, review-plan), stop and wait for approval rather than running past it. When you stop, **name the next command literally**: "approve and run `speckit.companion.plan <feature_dir>`", not "approve to move to plan". Only continue once the gate is approved.
-- **Nothing follows implement.** Implement's own final node writes `completed` through `write-context.py --mark-complete`, so the spec is already finished when this step ends. Do not dispatch `speckit.companion.mark-complete` afterwards: it is the manual recovery command and the workflow engine's terminal step, not a step a run adds for itself. There is exactly one writer of `completed`; never introduce a second.
+- **Converge follows implement; a clean converge completes the spec.** Implement ends at `implemented`. Dispatch `speckit.converge` next: its after-converge hook writes `completed` when nothing is left to build. Do not dispatch `speckit.companion.mark-complete`: it is the manual command, not a step a run adds for itself. There is exactly one writer of `completed`; never introduce a second.
 - **Degrade gracefully on a one-shot environment.** If your environment runs one step and then stops, the handoff simply does not fire: finish this step, record its progress, and stop. The run stays valid and resumable, and the next step is triggered manually, by the developer or the companion panel. Completion likewise stays a manual action there.
 <!-- /speckit-companion:part self-advance -->
 <!-- /speckit-companion:node handoff -->

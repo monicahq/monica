@@ -4,7 +4,7 @@ workflow:
   name: "SpecKit Companion"
   version: "1.0.0"
   author: "alfredoperez"
-  description: "Companion SDD pipeline: specify → (route by size) → plan → tasks → implement → mark-complete, with review gates."
+  description: "Companion SDD pipeline: specify → (route by size) → plan → tasks → implement → converge, with review gates."
 
 requires:
   # Floor is the engine surface this workflow rides: `specify workflow run`/`resume`
@@ -134,10 +134,9 @@ steps:
         input:
           args: "{{ inputs.spec }}"
 
-  # Terminal Companion step — writes status: completed (the command does it, not
-  # the AI). The stock speckit workflow has no equivalent and force-closes without it.
-  - id: mark-complete
-    command: speckit.companion.mark-complete
+  # Terminal step — stock converge; its after-converge hook completes a clean spec.
+  - id: converge
+    command: speckit.converge
     integration: "{{ inputs.integration }}"
     input:
       args: "{{ inputs.spec }}"

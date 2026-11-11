@@ -44,6 +44,7 @@ OPS = (
     "tasks-sync",
     "materialize",
     "mark-complete",
+    "converge-finish",
     "fold-living-spec",
     "drift-compute",
     "dispatch-checkin",
@@ -95,6 +96,26 @@ MAX_BYTES = 256 * 1024
 IGNORE_NAME = ".gitignore"
 
 
+def _already_ignored(path: Path) -> bool:
+    """True when an existing git rule (root .gitignore, exclude file) covers path.
+
+    Unknown counts as not ignored: no git, not a repo, or a slow git all fall
+    back to writing the sibling, which is always safe.
+    """
+    import subprocess
+
+    try:
+        return subprocess.run(
+            ["git", "check-ignore", "-q", str(path.resolve())],
+            cwd=str(path.parent),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=2,
+        ).returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        return False
+
+
 def _ensure_ignored(feature_dir: Path) -> None:
     """Make the trace self-ignoring.
 
@@ -105,6 +126,8 @@ def _ensure_ignored(feature_dir: Path) -> None:
     """
     ignore = Path(feature_dir) / IGNORE_NAME
     try:
+        if not ignore.is_file() and _already_ignored(Path(feature_dir) / TRACE_NAME):
+            return
         if ignore.is_file():
             if any(line.strip() == TRACE_NAME for line in ignore.read_text(encoding="utf-8").splitlines()):
                 return

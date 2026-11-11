@@ -1,5 +1,5 @@
 ---
-description: "Companion implement — execute tasks.md in dependency order, then mark complete"
+description: "Companion implement — execute tasks.md in dependency order, then converge"
 ---
 
 ## User Input
@@ -41,11 +41,11 @@ Commands are named in dot form throughout this body, `speckit.companion.plan`, b
 <!-- speckit-companion:part speckit-hooks -->
 ## Pre-Execution Checks: stock spec-kit extension hooks
 
-Companion runs **on top of** stock spec-kit, so a project's installed spec-kit **extensions** (git, and any others in `.specify/extensions.yml`) must fire on a Companion run exactly as on a stock `/speckit.*` run. That is separate from Companion's own node-hooks in `.specify/companion.yml`; both fire. Like the rest of the pipeline this must **never fail the host command**: anything missing or malformed is skipped silently.
+Companion runs **on top of** stock spec-kit, so a project's installed spec-kit **extensions** (git, and any others in `.specify/extensions.yml`) must fire on a Companion run exactly as on a stock `/speckit.*` run. That is separate from Companion's own node-hooks in `.specify/companion.yml`; both fire. Like the rest of the pipeline this must **never fail the host command**: a missing file or an anchor with no entries is skipped silently, and an unreadable file is reported once, then the run continues.
 
 Let `<step>` be this command's phase: `specify`, `plan`, `tasks`, or `implement`. Run the pass twice: `hooks.before_<step>` **now, before any of the work below**, and `hooks.after_<step>` once this command's work is fully reported, before handing off.
 
-- **Read `.specify/extensions.yml`.** Absent, unparseable, or carrying no entries for that anchor: skip silently. Skip a hook that is `enabled: false` (no `enabled` field means enabled), and any hook whose `extension` is `companion`: those record a stock run's lifecycle, which this command records in its own body, so dispatching them would rewrite what this step just wrote. A hook with a non-empty `condition` is left to the HookExecutor and never evaluated by you; no condition, or a null or empty one, is executable.
+- **Read `.specify/extensions.yml`.** Absent, or carrying no entries for that anchor: skip silently. If the YAML cannot be parsed or is invalid, do not skip silently: tell the user that `.specify/extensions.yml` could not be read (include the parser error) and that no hooks were checked, including any mandatory (`optional: false`) hooks registered there, then continue normally. Skip a hook that is `enabled: false` (no `enabled` field means enabled), and any hook whose `extension` is `companion`: those record a stock run's lifecycle, which this command records in its own body, so dispatching them would rewrite what this step just wrote. A hook with a non-empty `condition` is left to the HookExecutor and never evaluated by you; no condition, or a null or empty one, is executable.
 - **Emit one block per executable hook.** An optional hook (`optional: true`):
 
   ```
@@ -90,10 +90,10 @@ For `specify`, branch creation is normally one of these `before_specify` hooks (
 
 ## Outline
 
-Execute `tasks.md` phase by phase in dependency order. Each phase is laid out as ordered **waves** split by `⟶ Wait …` join lines: a dependency map where tasks within a wave are independent and a `⟶ Wait` marks where the next tasks depend on what came before. Setup and polish are built inline, wave by wave, stopping at each `⟶ Wait` line until the wave above is done; Foundational waves of four or more tasks go to workers through `dispatch-briefs.py --waves`, and smaller ones stay inline; each user-story phase goes to its own worker wherever a subagent tool exists, and inline is the fallback for a host that cannot dispatch. Each task's finish is logged as it completes; then mark the spec complete.
+Execute `tasks.md` phase by phase in dependency order. Each phase is laid out as ordered **waves** split by `⟶ Wait …` join lines: a dependency map where tasks within a wave are independent and a `⟶ Wait` marks where the next tasks depend on what came before. Setup and polish are built inline, wave by wave, stopping at each `⟶ Wait` line until the wave above is done; Foundational waves of four or more tasks go to workers through `dispatch-briefs.py --waves`, and smaller ones stay inline; each user-story phase goes to its own worker wherever a subagent tool exists, and inline is the fallback for a host that cannot dispatch. Each task's finish is logged as it completes; implement then ends at `implemented` and `converge` completes the spec.
 <!-- speckit-companion:phase execute -->
 <!-- speckit-companion:node implement-exec -->
-1. Read `.specify/feature.json` for the feature directory. Load `<feature_directory>/tasks.md`, `plan.md`, and the feature spec (`<short-name>.spec.md`, or `spec.md` in a project written before this), plus `data-model.md` and `contracts/` if present. The step's start is already stamped, above.
+1. Read `.specify/feature.json` for the feature directory. Load `<feature_directory>/tasks.md`, `plan.md`, and the feature spec (`spec.md`, or `<short-name>.spec.md` in a project written before this), plus `data-model.md` and `contracts/` if present. The step's start is already stamped, above.
 
 2. Work `tasks.md` **phase by phase, in dependency order**: **Setup**, then **Foundational** (which blocks every story), then each **user-story** phase in priority order (P1 first), then **Polish**. `tasks.md` lays each phase out as ordered **waves** separated by `**⟶ Wait …**` join lines. The waves are a **dependency map**: tasks inside one wave are independent of each other, so any order is safe, and a `⟶ Wait` line marks where the next tasks depend on everything above it. **Execute wave by wave, in order, and stop at each `⟶ Wait` line until the wave above is done.** Halt on a failed task and report the cause.
 
@@ -140,7 +140,7 @@ Execute `tasks.md` phase by phase in dependency order. Each phase is laid out as
      "verified":   [{"what": "<check>", "command": "<cmd>", "result": "<outcome>", "warnings": ["<seen-and-dismissed>"]}],
      "decisions":  [{"decision": "<implementation choice>", "why": "<why>", "rejected": "<alternative>"}],
      "concerns":   [{"note": "<friction, residual risk, or a `// simplified:` ceiling you left in the code>", "step": "implement"}],
-     "coverage":   [{"req": "FR-001", "tests": "<path.test.ts::case,other.test.ts>"}],
+     "coverage":   [{"req": "FR-001", "tests": "<path.test.ts::case,other.test.ts>"}, {"req": "FR-004", "assumes": "<what it relies on without a test>"}],
      "step_summary": {"summary": "<what shipped in one line>"},
      "last_action": "<final breadcrumb, e.g. all tasks done, 18/18 tests pass>"
    }'
@@ -150,19 +150,34 @@ Execute `tasks.md` phase by phase in dependency order. Each phase is laid out as
 
    Record a check that can be run with `--verify-run "<what>::<command>"`: it runs the command and keeps the exit code, rather than taking your word for it. Every suite, build, lint and script goes that way. `--verified` stays for what genuinely cannot be run — a manual pass, a judgement — and reads in the viewer as your account rather than as evidence, which is what it is. Never write a `--verified` describing a command you ran: that is the case `--verify-run` exists for, and a typed result is indistinguishable from an imagined one. If a check could not be run at all, record that as a `--concern` naming what was skipped and why, and do **not** record a `--verified` for it.
 
-   One `--verify-run` per runnable check and one `--verified` per judgement (a manual pass, a warning you saw and judged benign), one `--coverage-req … --tests …` per requirement a test covers, one `--decision` per genuine implementation choice. Record `--concern` only for real friction; on a clean run record none.
+   One `--verify-run` per runnable check and one `--verified` per judgement (a manual pass, a warning you saw and judged benign), one `--coverage-req … --tests …` per requirement a test covers, one `--assumes <req> "<what>"` per requirement the code relies on something no test checks (a library, the clock, the database), one `--decision` per genuine implementation choice. Record `--concern` only for real friction; on a clean run record none.
 
+8. **Set the review depth from the risk tier**, once validation ends:
+   ```bash
+   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --risk
+   ```
+   It prints the tier the changed files call for. If you know something the files do not show, raise it with `--risk-raise <normal|high> "<reason>"`; it never goes down. Review the work before it is committed at that depth: low is your own careful read of the diff, normal is one independent review, high is two independent reviewers.
+   When the work becomes a pull request, put the receipts in its body, unedited, so a reviewer sees what was run and what was only claimed:
+   ```bash
+   python3 .specify/extensions/companion/scripts/receipts.py --feature-dir <feature_directory>
+   ```
+
+9. **Run the mutation check, only when the project turned it on.** If `.specify/companion.yml` sets `mutation: { enabled: true }`, run the project's mutation tool on the files this change touched (Stryker for JavaScript and TypeScript with the JSON reporter, mutmut for Python, then `mutmut export-cicd-stats`), and hand the report to the writer:
+   ```bash
+   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --mutation-report <reports/mutation/mutation.json or mutants/mutmut-cicd-stats.json>
+   ```
+   It records the caught count and marks weak each requirement whose tests caught no planted bug. Without the setting, skip this step.
 <!-- /speckit-companion:node record-verified -->
 <!-- /speckit-companion:phase execute -->
 <!-- speckit-companion:phase wrap-up -->
 <!-- speckit-companion:node complete -->
-8. **Mark the spec complete.** Once every task in `tasks.md` is checked off and the work validates, finish the lifecycle so the spec lands at `completed` instead of stopping at `implemented`.
+10. **Close implement at `implemented`.** Once every task in `tasks.md` is checked off and the work validates, close the step. Implement ends at `implemented`; the next step, `converge`, is what completes the spec when it finds nothing left to build.
 
-   **"Validates" means the project's own checks ran and passed.** A spec MUST NOT be marked complete over a failing suite the run introduced: fix it, or leave the spec at `implemented` and say why. Where the checks genuinely could not be run, record that as a concern before completing, so the state reads "finished, unverified" instead of implying "finished, verified". Run from the repository root; the feature directory resolves on its own:
+   **"Validates" means the project's own checks ran and passed.** A spec MUST NOT be marked complete over a failing suite the run introduced: fix it, or leave the work open and say why. Where the checks genuinely could not be run, record that as a concern before closing, so the state reads "finished, unverified" instead of implying "finished, verified". Run from the repository root; the feature directory resolves on its own:
    ```bash
-   python3 .specify/extensions/companion/scripts/write-context.py --mark-complete --by ai --set workflow=companion
+   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --step implement --advance --by ai --set workflow=companion
    ```
-   The `--set` pins which workflow finished the spec in the same write, so a mid-run join keeps Companion dispatch. This is the only sanctioned writer of `completed`: it closes the implement step and promotes an `implemented` spec, or an `implementing` one whose tasks are all checked, straight to `completed`, keeping `currentStep` at `implement`. Best-effort and idempotent: if `python3` is unavailable, warn and skip without failing the host command, and a spec already `completed` is left untouched. Running it when the spec-kit workflow engine already called the same path is harmless.
+   The `--set` pins which workflow ran the spec in the same write, so a mid-run join keeps Companion dispatch. This closes the implement step and leaves the spec at `implemented`; it never writes `completed`. Best-effort and idempotent: if `python3` is unavailable, warn and skip without failing the host command.
 
    - **Account for every loaded capability first: a delta or an explicit skip, never silence.** Before folding, read `livingSpecs.loaded` in this feature's `.spec-context.json`. An absent key or an empty list means nothing was loaded and there is nothing to account for; skip to the fold. Go through **every** name in that list, and give each exactly one of two outcomes. For a loaded capability whose *behavior* this feature actually changed, append a delta block to this feature's `spec.md` capturing the real new or changed requirement, marked with that capability's name so the fold routes it to the right spec:
      ```markdown
@@ -187,7 +202,7 @@ Execute `tasks.md` phase by phase in dependency order. Each phase is laid out as
 
    - **Have the deltas reviewed before they fold.** A living spec is context every later run loads, so what folds into it is read by someone other than its author. Run `python3 .specify/extensions/companion/scripts/dispatch-briefs.py --feature-dir <feature_directory> --living` and do exactly what it prints.
 
-   - **Fold living-spec deltas (opt-in, best-effort).** After the completion write, fold the deltas you just authored into the durable living spec, OpenSpec's "archive" step:
+   - **Fold living-spec deltas (opt-in, best-effort).** After the close, fold the deltas you just authored into the durable living spec, OpenSpec's "archive" step:
      ```bash
      python3 .specify/extensions/companion/scripts/write-context.py --fold-living-spec --by ai
      ```
@@ -205,7 +220,7 @@ Record every boundary by **running the writer script**. Never edit `.spec-contex
   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --step <this step> --advance --by ai
   ```
 
-  `--advance` appends the step's complete and flips `status` in one atomic write. It is idempotent and first-writer-wins, so it changes nothing when the after-hook already closed the step, and it is the only thing that closes the step when that hook was printed rather than dispatched. Run it every time, with two exceptions: **clarify** and **analyze** use `--finish`, which records a boundary without owning a status; **implement** runs neither, because its own final node writes `completed` and closes the step in the same write.
+  `--advance` appends the step's complete and flips `status` in one atomic write. It is idempotent and first-writer-wins, so it changes nothing when the after-hook already closed the step, and it is the only thing that closes the step when that hook was printed rather than dispatched. Run it every time, with one exception: **clarify** and **analyze** use `--finish`, which records a boundary without owning a status. **Implement** closes with `--advance` like the other steps and ends at `implemented`; converge completes the spec.
 
 - **One finish per substep, the moment it ends.** Plan records `research` and `design`, tasks records `generate`, implement records `living-review` and `living-fold` when living specs are on. Never two in one batch, never a separate start: a finish measures the gap back to the previous boundary, so several stamped together at the close of a step read as `0s` each and record nothing.
 
@@ -232,6 +247,8 @@ Record every boundary by **running the writer script**. Never edit `.spec-contex
 - **Never write the next step's start.** The next command owns it. Writing it here renders a phantom "Generating <next>…".
 <!-- /speckit-companion:part timing -->
 
+**The next step is `converge`.** Dispatch `speckit.converge <feature_dir>`.
+
 <!-- speckit-companion:part self-advance -->
 ## Self-advance: hand off to the next step
 
@@ -239,7 +256,7 @@ This is one step in the Companion pipeline. How the run continues depends on the
 
 - **On an agentic CLI that keeps acting after a step finishes:** once this step's work is complete, dispatch the next step's `speckit.companion.*` command and keep going. The order is fixed and this step's own handoff names its successor, so there is no file to open to find out.
 - **Pause at every review gate, and name the command that continues.** Where the workflow marks a `gate` (e.g. review-spec, review-plan), stop and wait for approval rather than running past it. When you stop, **name the next command literally**: "approve and run `speckit.companion.plan <feature_dir>`", not "approve to move to plan". Only continue once the gate is approved.
-- **Nothing follows implement.** Implement's own final node writes `completed` through `write-context.py --mark-complete`, so the spec is already finished when this step ends. Do not dispatch `speckit.companion.mark-complete` afterwards: it is the manual recovery command and the workflow engine's terminal step, not a step a run adds for itself. There is exactly one writer of `completed`; never introduce a second.
+- **Converge follows implement; a clean converge completes the spec.** Implement ends at `implemented`. Dispatch `speckit.converge` next: its after-converge hook writes `completed` when nothing is left to build. Do not dispatch `speckit.companion.mark-complete`: it is the manual command, not a step a run adds for itself. There is exactly one writer of `completed`; never introduce a second.
 - **Degrade gracefully on a one-shot environment.** If your environment runs one step and then stops, the handoff simply does not fire: finish this step, record its progress, and stop. The run stays valid and resumable, and the next step is triggered manually, by the developer or the companion panel. Completion likewise stays a manual action there.
 <!-- /speckit-companion:part self-advance -->
 <!-- /speckit-companion:node handoff -->

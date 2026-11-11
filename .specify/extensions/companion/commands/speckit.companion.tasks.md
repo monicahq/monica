@@ -41,11 +41,11 @@ Commands are named in dot form throughout this body, `speckit.companion.plan`, b
 <!-- speckit-companion:part speckit-hooks -->
 ## Pre-Execution Checks: stock spec-kit extension hooks
 
-Companion runs **on top of** stock spec-kit, so a project's installed spec-kit **extensions** (git, and any others in `.specify/extensions.yml`) must fire on a Companion run exactly as on a stock `/speckit.*` run. That is separate from Companion's own node-hooks in `.specify/companion.yml`; both fire. Like the rest of the pipeline this must **never fail the host command**: anything missing or malformed is skipped silently.
+Companion runs **on top of** stock spec-kit, so a project's installed spec-kit **extensions** (git, and any others in `.specify/extensions.yml`) must fire on a Companion run exactly as on a stock `/speckit.*` run. That is separate from Companion's own node-hooks in `.specify/companion.yml`; both fire. Like the rest of the pipeline this must **never fail the host command**: a missing file or an anchor with no entries is skipped silently, and an unreadable file is reported once, then the run continues.
 
 Let `<step>` be this command's phase: `specify`, `plan`, `tasks`, or `implement`. Run the pass twice: `hooks.before_<step>` **now, before any of the work below**, and `hooks.after_<step>` once this command's work is fully reported, before handing off.
 
-- **Read `.specify/extensions.yml`.** Absent, unparseable, or carrying no entries for that anchor: skip silently. Skip a hook that is `enabled: false` (no `enabled` field means enabled), and any hook whose `extension` is `companion`: those record a stock run's lifecycle, which this command records in its own body, so dispatching them would rewrite what this step just wrote. A hook with a non-empty `condition` is left to the HookExecutor and never evaluated by you; no condition, or a null or empty one, is executable.
+- **Read `.specify/extensions.yml`.** Absent, or carrying no entries for that anchor: skip silently. If the YAML cannot be parsed or is invalid, do not skip silently: tell the user that `.specify/extensions.yml` could not be read (include the parser error) and that no hooks were checked, including any mandatory (`optional: false`) hooks registered there, then continue normally. Skip a hook that is `enabled: false` (no `enabled` field means enabled), and any hook whose `extension` is `companion`: those record a stock run's lifecycle, which this command records in its own body, so dispatching them would rewrite what this step just wrote. A hook with a non-empty `condition` is left to the HookExecutor and never evaluated by you; no condition, or a null or empty one, is executable.
 - **Emit one block per executable hook.** An optional hook (`optional: true`):
 
   ```
@@ -108,7 +108,7 @@ This budget governs the step that follows. Where it would produce something the 
 <!-- /speckit-companion:phase gather -->
 <!-- speckit-companion:phase author -->
 <!-- speckit-companion:node tasks-doc -->
-1. Read `.specify/feature.json` for the feature directory. The step's start is already stamped, above. Load `plan.md` and the feature spec (`<short-name>.spec.md`, or `spec.md` in a project written before this), both required, plus `data-model.md`, `contracts/`, and `research.md` if present.
+1. Read `.specify/feature.json` for the feature directory. The step's start is already stamped, above. Load `plan.md` and the feature spec (`spec.md`, or `<short-name>.spec.md` in a project written before this), both required, plus `data-model.md`, `contracts/`, and `research.md` if present.
 
 2. Create `<feature_directory>/tasks.md` organized **by user story**, so each story can be implemented, tested, and delivered as an independent increment. Use the line format `- [ ] **T###** [P?] [US#] Description · exact/file/path`:
    - `[P]` marks a task that is **independent** of the others in its wave: a different file with no incomplete dependency, so it can be built in any order or in parallel.
@@ -159,7 +159,7 @@ Record every boundary by **running the writer script**. Never edit `.spec-contex
   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --step <this step> --advance --by ai
   ```
 
-  `--advance` appends the step's complete and flips `status` in one atomic write. It is idempotent and first-writer-wins, so it changes nothing when the after-hook already closed the step, and it is the only thing that closes the step when that hook was printed rather than dispatched. Run it every time, with two exceptions: **clarify** and **analyze** use `--finish`, which records a boundary without owning a status; **implement** runs neither, because its own final node writes `completed` and closes the step in the same write.
+  `--advance` appends the step's complete and flips `status` in one atomic write. It is idempotent and first-writer-wins, so it changes nothing when the after-hook already closed the step, and it is the only thing that closes the step when that hook was printed rather than dispatched. Run it every time, with one exception: **clarify** and **analyze** use `--finish`, which records a boundary without owning a status. **Implement** closes with `--advance` like the other steps and ends at `implemented`; converge completes the spec.
 
 - **One finish per substep, the moment it ends.** Plan records `research` and `design`, tasks records `generate`, implement records `living-review` and `living-fold` when living specs are on. Never two in one batch, never a separate start: a finish measures the gap back to the previous boundary, so several stamped together at the close of a step read as `0s` each and record nothing.
 
@@ -195,7 +195,7 @@ This is one step in the Companion pipeline. How the run continues depends on the
 
 - **On an agentic CLI that keeps acting after a step finishes:** once this step's work is complete, dispatch the next step's `speckit.companion.*` command and keep going. The order is fixed and this step's own handoff names its successor, so there is no file to open to find out.
 - **Pause at every review gate, and name the command that continues.** Where the workflow marks a `gate` (e.g. review-spec, review-plan), stop and wait for approval rather than running past it. When you stop, **name the next command literally**: "approve and run `speckit.companion.plan <feature_dir>`", not "approve to move to plan". Only continue once the gate is approved.
-- **Nothing follows implement.** Implement's own final node writes `completed` through `write-context.py --mark-complete`, so the spec is already finished when this step ends. Do not dispatch `speckit.companion.mark-complete` afterwards: it is the manual recovery command and the workflow engine's terminal step, not a step a run adds for itself. There is exactly one writer of `completed`; never introduce a second.
+- **Converge follows implement; a clean converge completes the spec.** Implement ends at `implemented`. Dispatch `speckit.converge` next: its after-converge hook writes `completed` when nothing is left to build. Do not dispatch `speckit.companion.mark-complete`: it is the manual command, not a step a run adds for itself. There is exactly one writer of `completed`; never introduce a second.
 - **Degrade gracefully on a one-shot environment.** If your environment runs one step and then stops, the handoff simply does not fire: finish this step, record its progress, and stop. The run stays valid and resumable, and the next step is triggered manually, by the developer or the companion panel. Completion likewise stays a manual action there.
 <!-- /speckit-companion:part self-advance -->
 

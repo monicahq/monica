@@ -29,9 +29,12 @@ from doctor import (  # noqa: E402
     run_window,
 )
 from spec_context import (  # noqa: E402
+    BUILT_TEMPLATES_REL,
     STEP_COMPLETED_STATUS,
+    STEP_TEMPLATES,
     STEP_ORDER,
     _entry_kind,
+    feature_spec_path,
     _is_per_task,
     _is_step_level,
 )
@@ -433,8 +436,8 @@ def check_completion(feature_dir: Path, ctx: dict, report=None) -> tuple:
         return settled([Finding(
             "completion", "note",
             "Every task is checked but completion was never attempted",
-            f"the spec sits at `{status}`; nothing tried to mark it complete, so this is "
-            f"a step that did not run rather than a write that failed",
+            f"the spec sits at `{status}`; a clean converge completes the spec, so run converge. "
+            f"Nothing tried to mark it complete: a step that did not run, not a write that failed",
             verdict,
         )])
 
@@ -667,6 +670,8 @@ def _artifact_exists(feature_dir, name: str) -> bool:
     """True when the declared file is on disk; a `<short-name>` placeholder matches whatever name the run chose."""
     if "<" in name:
         return any(Path(feature_dir).glob(re.sub(r"<[^>]+>", "*", name)))
+    if name == "spec.md":
+        return feature_spec_path(Path(feature_dir)).is_file()
     return (Path(feature_dir) / name).exists()
 
 def check_artifact(feature_dir: Path, ctx: dict, manifest_path=None) -> tuple:
@@ -744,6 +749,145 @@ _TOP_LEVEL_WAVE = re.compile(r"^##\s+Wave\s+\d+", re.MULTILINE)
 _WAVE_HEAD = re.compile(r"^\*\*Wave\s+\d+", re.MULTILINE)
 _JOIN_LINE = re.compile(r"⟶\s*Wait")
 _CHECKPOINT = re.compile(r"^\*\*Checkpoint\*\*", re.MULTILINE)
+
+
+def check_built(feature_dir: Path, ctx: dict | None = None, root: Path | None = None) -> tuple:
+    """Is there a team template (override or preset) the last pipeline build has not caught up with?"""
+    root = Path(root) if root is not None else feature_dir.parent.parent
+    templates = root / ".specify" / "templates"
+    presets = root / ".specify" / "presets"
+    findings = []
+    seen = False
+    for name in STEP_TEMPLATES.values():
+        core = templates / name
+        core_text = core.read_text(encoding="utf-8") if core.is_file() else None
+        sources = [p for p in [templates / "overrides" / name, *presets.glob(f"*/templates/{name}")]
+                   if p.is_file() and p.read_text(encoding="utf-8") != core_text]
+        if not sources:
+            continue
+        seen = True
+        copy = root / BUILT_TEMPLATES_REL / name
+        if not copy.is_file():
+            findings.append(Finding(
+                "built", "warning", f"Companion runs ignore this project's {name}",
+                f"An override or preset changes {name}, but {BUILT_TEMPLATES_REL}/{name} does not "
+                f"exist yet. Rebuild the pipeline so Companion follows it.",
+                {"template": name}))
+        elif copy.stat().st_mtime < max(p.stat().st_mtime for p in sources):
+            findings.append(Finding(
+                "built", "warning", f"Companion's copy of {name} is out of date",
+                f"{name} changed after {BUILT_TEMPLATES_REL}/{name} was built. Rebuild the pipeline.",
+                {"template": name}))
+    if not seen:
+        return CheckStatus("built", "not-applicable", "no override or preset changes a template"), []
+    return CheckStatus("built", "ran"), findings
+
+
+def _agent_layouts(manifest: dict) -> list:
+    """(folder, layout, Companion's specify entry) for each surface an agent has, from the stock files spec-kit installed."""
+    files = manifest.get("files")
+    found = []
+    for rel in (files if isinstance(files, (dict, list)) else []):
+        path = Path(str(rel).replace("\\", "/"))
+        if path.parent.name in ("speckit-specify", "speckit.specify") and path.name == "SKILL.md":
+            folder = path.parent.parent
+            found.append((folder.as_posix(), "skills", (folder / "speckit-companion-specify" / "SKILL.md").as_posix()))
+        elif path.name.startswith(("speckit.specify.", "speckit-specify.")):
+            sep = path.name[len("speckit")]
+            entry = path.name.replace(f"speckit{sep}specify", f"speckit{sep}companion{sep}specify", 1)
+            found.append((path.parent.as_posix(), "commands", (path.parent / entry).as_posix()))
+    return found
+
+
+def _installed_agents(root: Path) -> list | None:
+    """The agents spec-kit records as installed; None when integration.json names none."""
+    try:
+        record = json.loads((root / ".specify" / "integration.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if not isinstance(record, dict):
+        return None
+    if isinstance(record.get("installed_integrations"), list):
+        return [str(a) for a in record["installed_integrations"]]
+    named = record.get("integration") or record.get("default_integration")
+    return [str(named)] if named else None
+
+
+#: The check is about the project, not a spec, so a run over many specs reports it once.
+_AGENTS_REPORTED: set = set()
+_NUMBERS_REPORTED: set = set()
+#: A sequential prefix: a few digits, then a dash. Eight or more digits is a date or timestamp.
+_SEQ_PREFIX = re.compile(r"^(\d{1,7})-")
+
+
+def check_numbering(feature_dir: Path) -> tuple:
+    """Do two feature folders share a sequential number? Reported once per specs folder per run."""
+    specs = Path(feature_dir).resolve().parent
+    if specs in _NUMBERS_REPORTED:
+        return CheckStatus("numbering", "skipped", "reported with the first spec of this run"), []
+    by_number: dict = {}
+    for child in sorted(specs.iterdir()) if specs.is_dir() else []:
+        match = _SEQ_PREFIX.match(child.name)
+        if child.is_dir() and match:
+            by_number.setdefault(int(match.group(1)), []).append(child.name)
+    _NUMBERS_REPORTED.add(specs)
+    shared = {n: names for n, names in sorted(by_number.items()) if len(names) > 1}
+    if not by_number:
+        return CheckStatus("numbering", "not-applicable", "no sequentially numbered spec folders"), []
+    return CheckStatus("numbering", "ran"), [
+        Finding("numbering", "warning", f"{len(names)} spec folders share the number {names[0].split('-')[0]}",
+                f"{', '.join(names)} start with the same number, usually because two runs started together. "
+                f"Renumber all but one so links and commands name a single spec.",
+                {"number": n, "folders": names})
+        for n, names in shared.items()
+    ]
+
+
+def check_agents(root: Path) -> tuple:
+    """Is Companion installed for every agent the project set up, and can a headless dispatch find the CLI?"""
+    import shutil
+    root = Path(root).resolve()
+    if root in _AGENTS_REPORTED:
+        return CheckStatus("agents", "skipped", "reported with the first spec of this run"), []
+    manifests = sorted((root / ".specify" / "integrations").glob("*.manifest.json"))
+    installed = _installed_agents(root)
+    if installed is not None:
+        # A manifest an uninstalled agent left behind is not an agent this project uses.
+        manifests = [m for m in manifests if m.name.split(".")[0] in installed]
+    if not manifests:
+        return CheckStatus("agents", "not-applicable", "no Spec Kit integration recorded"), []
+    _AGENTS_REPORTED.add(root)
+    findings = []
+    layouts = []
+    companion_installed = (root / ".specify" / "extensions" / "companion").is_dir()
+    for path in manifests:
+        try:
+            manifest = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            findings.append(Finding("agents", "warning", f"Could not read {path.name}",
+                                    f"{path.relative_to(root)} did not parse ({exc}); that agent was not checked."))
+            continue
+        agent = str(manifest.get("integration") or path.name.split(".")[0])
+        surfaces = _agent_layouts(manifest)
+        if not surfaces:
+            findings.append(Finding("agents", "note", f"No specify command found for {agent}",
+                                    f"{path.relative_to(root)} lists no speckit specify entry, so its layout is unknown."))
+            continue
+        for folder, kind, companion_entry in surfaces:
+            layouts.append(f"{agent}: {kind} in {folder}")
+            if companion_installed and not (root / companion_entry).exists():
+                findings.append(Finding(
+                    "agents", "warning", f"Companion is not installed for {agent} in {folder}",
+                    f"Spec Kit set up {agent} in {folder}, but {companion_entry} is missing: Spec Kit registers an "
+                    f"extension's commands for the active integration only. Run `specify integration use {agent}`, "
+                    f"then add Companion again.", {"agent": agent, "folder": folder}))
+    if layouts:
+        findings.append(Finding("agents", "note", "Agent layout", "; ".join(layouts), {"layouts": layouts}))
+    if shutil.which("specify") is None:
+        findings.append(Finding(
+            "agents", "note", "The specify CLI is not on this shell's PATH",
+            "Headless dispatch and Spec Kit's hooks call `specify`; if they fail, install it or add it to their PATH."))
+    return CheckStatus("agents", "ran"), findings
 
 
 def check_template(feature_dir: Path) -> tuple:

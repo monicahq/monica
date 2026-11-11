@@ -1,5 +1,5 @@
 ---
-description: "Companion auto — run the whole pipeline hands-off (specify → plan → tasks → implement → mark-complete), no pauses"
+description: "Companion auto — run the whole pipeline hands-off (specify → plan → tasks → implement → converge), no pauses"
 ---
 
 ## User Input
@@ -40,13 +40,22 @@ Commands are named in dot form throughout this body, `speckit.companion.plan`, b
 
 ## Outline
 
-Run the **entire** Companion pipeline end-to-end and unattended. Walk every step in order, specify → plan → tasks → implement → mark-complete, dispatching the same per-step `speckit.companion.*` commands, never pausing for approval in between, and finish the spec at `status: completed`.
+Run the **entire** Companion pipeline end-to-end and unattended. Walk every step in order, specify → plan → tasks → implement → converge, dispatching the same per-step `speckit.companion.*` commands, never pausing for approval in between, and finish the spec at `status: completed`.
 <!-- speckit-companion:phase gather -->
 <!-- speckit-companion:node resolve-dir -->
 1. **Resolve the feature directory — mint a fresh dir for new work.** Auto is a fresh-spec entry point, exactly like specify. `.specify/feature.json` is an **output**, not an input to reuse: it points at the *previous* spec (frequently already completed), so reusing it would clobber finished work. Pick the target:
    - If the request explicitly names a target path (or `SPECIFY_FEATURE_DIRECTORY` is set), use it.
-   - Otherwise create the next numbered dir: scan `specs/` for the highest `NNN-…` prefix, derive a 2–4 word short-name from the description, and use `specs/<NNN+1>-<short-name>/`. The spec file is `<feature_directory>/<short-name>.spec.md` (for a named target, `<short-name>` is its directory name without the numeric prefix). **Never write into a directory that already contains a feature spec (`*.spec.md`, or an older `spec.md`)** — that's a stale pointer to a prior spec, not this feature.
-   Create `<feature_directory>/`, then point `.specify/feature.json` at it by writing `{"feature_directory": "<feature_directory>"}` — that exact key is what the later capture calls resolve the spec through when they run without `--feature-dir`, so any other key silently drops those writes. Then stamp the **specify START** as the step-start instruction above directs — the directory now exists, so this is the moment it says to run it, before any other work.
+   - Otherwise derive a 2–4 word short-name from the description and run `python3 .specify/extensions/companion/scripts/mint-spec-dir.py --short-name "<short-name>"`. It creates the next folder, numbered the way this project's `feature_numbering` says and safe against a run started at the same time, points `.specify/feature.json` at it, and prints its path. Never pick the number yourself. The spec file is `<feature_directory>/spec.md`. **Never write into a directory that already contains a feature spec (`spec.md`, or an older `*.spec.md`)** — that's a stale pointer to a prior spec, not this feature.
+   For a named target, create `<feature_directory>/` and point `.specify/feature.json` at it by writing `{"feature_directory": "<feature_directory>"}` — that exact key is what the later capture calls resolve the spec through when they run without `--feature-dir`, so any other key silently drops those writes.
+   Then stamp the **specify START** as the step-start instruction above directs — the directory now exists, so this is the moment it says to run it, before any other work.
+
+   Right after the stamp, store the request word for word: the user input this command received, exactly as given, never a summary. Pass it on stdin so quotes and line breaks survive:
+   ```bash
+   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --request - <<'COMPANION_REQUEST'
+   <the user input, unchanged>
+   COMPANION_REQUEST
+   ```
+   The record keeps the first request it is given, so the description you hand specify later never replaces it.
 <!-- /speckit-companion:node resolve-dir -->
 <!-- /speckit-companion:phase gather -->
 <!-- speckit-companion:phase orchestrate -->
@@ -70,11 +79,12 @@ Run the full Companion pipeline by **invoking each per-step command for real**, 
    - `speckit.companion.plan` — runs the real plan command: the slim plan **plus** `research.md`, `data-model.md`, and `contracts/` (right-sized by the recorded size).
    - `speckit.companion.tasks` — runs the real tasks command: the wave-structured, dependency-ordered task list.
    - `speckit.companion.implement` — runs the real implement command: executes the tasks and journals each finish.
+   - `speckit.converge` — the stock converge command: it checks the build against the spec and either completes the spec or appends the unbuilt work as new tasks.
    If your host has no way to invoke another command mid-session, fall back to following each command's body faithfully (read it and do exactly what it specifies — same artifacts, same sizing, same structure); never substitute a quicker improvised version.
 
 3. **Do not pause at review gates.** Where the manual flow would stop and wait for a person at a `gate` (review-spec, review-plan, …), auto instead **records the checkpoint and continues**. Background hooks still fire and review/PR hooks still run — only the human pause is skipped. This is the one behavioral difference from a manual run.
 
-4. **End at `completed`.** Implement's own final node writes it, through `write-context.py --mark-complete`, which refuses unless the spec is already `implemented`. So the run ends when implement ends — do not dispatch `speckit.companion.mark-complete` as a fifth step. There is exactly one writer of `completed`; never introduce a second.
+4. **End when converge completes the spec.** After converge, read `<feature_directory>/.spec-context.json`. If `status` is `completed`, the run is done. If converge appended tasks and the status is still `implemented`, dispatch implement and then converge again. Stop after three converge passes, record one concern naming the open tasks, and end at `implemented`. Do not dispatch `speckit.companion.mark-complete`. There is exactly one writer of `completed`: the after-converge hook; never introduce a second.
 
 5. **Degrade gracefully on a one-shot environment.** Auto needs an agent that keeps acting after each step finishes. If your environment runs one command and then stops (a plain / one-shot terminal), you cannot chain the steps yourself: run the first step, record its progress, and stop. The run stays valid and resumable — the remaining steps are triggered the normal one-step-at-a-time way (by the developer or the companion panel). No error; auto simply behaves like the manual flow there.
 <!-- /speckit-companion:node orchestrate -->
@@ -92,7 +102,7 @@ Record every boundary by **running the writer script**. Never edit `.spec-contex
   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --step <this step> --advance --by ai
   ```
 
-  `--advance` appends the step's complete and flips `status` in one atomic write. It is idempotent and first-writer-wins, so it changes nothing when the after-hook already closed the step, and it is the only thing that closes the step when that hook was printed rather than dispatched. Run it every time, with two exceptions: **clarify** and **analyze** use `--finish`, which records a boundary without owning a status; **implement** runs neither, because its own final node writes `completed` and closes the step in the same write.
+  `--advance` appends the step's complete and flips `status` in one atomic write. It is idempotent and first-writer-wins, so it changes nothing when the after-hook already closed the step, and it is the only thing that closes the step when that hook was printed rather than dispatched. Run it every time, with one exception: **clarify** and **analyze** use `--finish`, which records a boundary without owning a status. **Implement** closes with `--advance` like the other steps and ends at `implemented`; converge completes the spec.
 
 - **One finish per substep, the moment it ends.** Plan records `research` and `design`, tasks records `generate`, implement records `living-review` and `living-fold` when living specs are on. Never two in one batch, never a separate start: a finish measures the gap back to the previous boundary, so several stamped together at the close of a step read as `0s` each and record nothing.
 

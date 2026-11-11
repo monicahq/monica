@@ -18,6 +18,23 @@ import sys
 from pathlib import Path
 
 
+#: Where the pipeline build leaves resolved templates; the shipped doctor reads it too.
+BUILT_TEMPLATES_REL = os.path.join(".specify", "companion", "built")
+STEP_TEMPLATES = {
+    "specify": "spec-template.md",
+    "plan": "plan-template.md",
+    "tasks": "tasks-template.md",
+}
+
+
+def core_template_text(project_root, name: str):
+    """The stock template in `.specify/templates`, or None when the project has none."""
+    path = Path(project_root) / ".specify" / "templates" / name
+    try:
+        return path.read_text(encoding="utf-8") if path.is_file() else None
+    except (OSError, ValueError):
+        return None
+
 # Canonical vocab (mirrors src/core/types/specContext.ts). Kept here only to
 # reject the legacy terminal step and to avoid regressing an advanced spec.
 CANONICAL_STEPS = {"specify", "clarify", "plan", "tasks", "analyze", "implement", "converge"}
@@ -106,16 +123,33 @@ def _now_iso() -> str:
 
 
 def _repo_root() -> Path:
+    """The project root, found the way spec-kit finds it: SPECIFY_INIT_DIR when it holds
+    `.specify/`, then the nearest `.specify/` above the working directory, then git."""
+    init_dir = os.environ.get("SPECIFY_INIT_DIR")
+    if init_dir:
+        if not (Path(init_dir) / ".specify").is_dir():
+            # Strict like spec-kit: falling back could write into another project.
+            print(f"[companion] SPECIFY_INIT_DIR={init_dir} is not a Spec Kit project (no .specify/); nothing recorded.",
+                  file=sys.stderr)
+        return Path(init_dir).resolve()
+    git_top = None
     try:
         out = subprocess.run(
             ["git", "rev-parse", "--show-toplevel"],
             capture_output=True, text=True, check=True,
         ).stdout.strip()
         if out:
-            return Path(out)
+            git_top = Path(out).resolve()
     except (subprocess.CalledProcessError, FileNotFoundError):
         pass
-    return Path.cwd()
+    here = Path.cwd().resolve()
+    for folder in (here, *here.parents):
+        if (folder / ".specify").is_dir():
+            return folder
+        # Inside a repository the walk stops at its top, so a `.specify/` in the home folder is never the project.
+        if folder == git_top:
+            break
+    return git_top or Path.cwd()
 
 
 def _repo_root_for(path: Path) -> Path:
@@ -212,6 +246,9 @@ def feature_dir_from_tasks_file(root: Path, tasks_file: str) -> Path:
     return p.parent
 
 
+_LABEL_NOTED: set[Path] = set()
+
+
 def resolve_feature_dir(root: Path, explicit: str | None) -> Path | None:
     """spec-kit resolution precedence, most-specific first."""
     specs_dir = root / "specs"
@@ -221,20 +258,17 @@ def resolve_feature_dir(root: Path, explicit: str | None) -> Path | None:
         p = Path(explicit)
         return p if p.is_absolute() else root / p
 
+    # A SPECIFY_INIT_DIR that is not a Spec Kit project names nothing to record against.
+    if os.environ.get("SPECIFY_INIT_DIR") and not (root / ".specify").is_dir():
+        return None
+
     # 2. SPECIFY_FEATURE_DIRECTORY env (a path)
     env_dir = os.environ.get("SPECIFY_FEATURE_DIRECTORY")
     if env_dir:
         p = Path(env_dir)
         return p if p.is_absolute() else root / p
 
-    # 3. SPECIFY_FEATURE env (a feature name)
-    env_feature = os.environ.get("SPECIFY_FEATURE")
-    if env_feature:
-        hit = _match_by_prefix(specs_dir, env_feature)
-        if hit:
-            return hit
-
-    # 4. .specify/feature.json -> feature directory. Accept both the canonical
+    # 3. .specify/feature.json -> feature directory. Accept both the canonical
     #    `feature_directory` key and stock spec-kit's `FEATURE_DIR` (the upstream
     #    create-new-feature.sh shape) so a pointer written either way resolves —
     #    otherwise a bare call (e.g. --mark-complete with no --feature-dir) fails
@@ -269,8 +303,19 @@ def resolve_feature_dir(root: Path, explicit: str | None) -> Path | None:
                     f"{feature_json} has no recognised key — expected "
                     f"'feature_directory' (or stock spec-kit's 'FEATURE_DIR'), "
                     f"found {sorted(data) if isinstance(data, dict) else type(data).__name__}.")
-        except (json.JSONDecodeError, OSError) as exc:
+        except (ValueError, OSError) as exc:
             _pointer_complaint(f"{feature_json} could not be read ({exc}).")
+
+    # 4. SPECIFY_FEATURE env (a feature name), below the pointer as spec-kit ranks it
+    env_feature = os.environ.get("SPECIFY_FEATURE")
+    if env_feature:
+        hit = _match_by_prefix(specs_dir, env_feature)
+        if hit:
+            if hit not in _LABEL_NOTED:
+                _LABEL_NOTED.add(hit)
+                print(f"[companion] Using SPECIFY_FEATURE={env_feature} to pick {hit.name}: no .specify/feature.json pointer.",
+                      file=sys.stderr)
+            return hit
 
     # 5. git current branch -> numeric-prefix match
     branch = _git_branch(root)
@@ -398,10 +443,24 @@ def _lock_path(target: Path) -> Path:
     Mirrored by `specContextLockPath` in the extension's `specContextWriter.ts`;
     `tests/integration/crossProcessContextLock.spec.ts` pins the two together.
     """
+    return _lock_root() / f"{_path_key(target)}.lock"
+
+
+def pending_start_path(project_root: Path) -> Path:
+    """Where a stock specify start waits for its folder, keyed by project so two never share one."""
+    owner = os.getuid() if hasattr(os, "getuid") else os.environ.get("USERNAME", "")
+    return _lock_root() / f"{_path_key(project_root)}-{owner}.specify-start"
+
+
+def _path_key(path: Path) -> str:
     import hashlib
+
+    return hashlib.sha256(str(Path(path).resolve()).encode("utf-8")).hexdigest()[:32]
+
+
+def _lock_root() -> Path:
     import tempfile
 
-    key = hashlib.sha256(str(target.resolve()).encode("utf-8")).hexdigest()[:32]
     # `/tmp` on posix, not the temporary directory this process happens to have.
     # Both halves read the same environment variable, so they agree whenever
     # their environments do — and silently stop sharing a lock when they do not,
@@ -420,7 +479,7 @@ def _lock_path(target: Path) -> Path:
         root.chmod(0o1777)
     except OSError:
         pass
-    return root / f"{key}.lock"
+    return root
 
 
 def _warn_no_lock(target: Path, reason: object) -> None:
@@ -637,9 +696,49 @@ def read_ctx(target: Path) -> dict:
             ctx = json.loads(target.read_text(encoding="utf-8"))
             if isinstance(ctx, dict):
                 return ctx
-        except (json.JSONDecodeError, OSError):
+        except (OSError, ValueError):
             pass
     return {}
+
+
+def _keep_if_damaged(target: Path) -> None:
+    """Before a publish replaces a record that is not a JSON object, copy it aside once."""
+    try:
+        raw = target.read_bytes()
+    except OSError:
+        return
+    if not raw.strip():
+        return
+    try:
+        if isinstance(json.loads(raw.decode("utf-8")), dict):
+            return
+    except ValueError:
+        pass
+    for kept in target.parent.glob(".spec-context.damaged-*.json"):
+        try:
+            if kept.read_bytes() == raw:
+                return
+        except OSError:
+            continue
+    stamp = datetime.datetime.now().strftime("%Y%m%dT%H%M%S%f")
+    copy = target.with_name(f".spec-context.damaged-{stamp}.json")
+    try:
+        copy.write_bytes(raw)
+    except OSError as exc:
+        print(f"[companion] Warning: {target} is damaged and could not be copied aside ({exc}).", file=sys.stderr)
+        return
+    print(
+        f"[companion] Warning: {target} could not be read as a record. Kept it as {copy.name} "
+        f"and started a fresh one.",
+        file=sys.stderr,
+    )
+
+
+def status_moves_back(ctx: dict, step: str, status: str) -> bool:
+    """True when a write for the step already current would set an earlier status."""
+    cur = ctx.get("status")
+    return (ctx.get("currentStep") == step and cur in STATUS_ORDER and status in STATUS_ORDER
+            and STATUS_ORDER.index(status) < STATUS_ORDER.index(cur))
 
 
 def _entry_key(e) -> tuple:
@@ -670,7 +769,7 @@ def _guard_append_only(target: Path, ctx: dict) -> None:
         if not target.is_file():
             return
         on_disk = json.loads(target.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
+    except (OSError, ValueError):
         return
     existing = on_disk.get("history") if isinstance(on_disk, dict) else None
     if existing is not None and not isinstance(existing, list):
@@ -712,6 +811,7 @@ def atomic_write(target: Path, ctx: dict) -> None:
     again), so releasing here would open the middle of the sequence the lock
     exists to close. The hold ends when the writer process exits.
     """
+    _keep_if_damaged(target)
     _guard_append_only(target, ctx)
     try:
         import companion_config as cc

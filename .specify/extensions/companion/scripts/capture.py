@@ -12,12 +12,14 @@ from __future__ import annotations
 
 import json
 import sys
+from datetime import datetime
 import re
 from pathlib import Path
 
 from spec_context import (
     CANONICAL_STEPS,
     _git_branch,
+    _now_iso,
     _repo_root_for,
     atomic_write,
     fill_required,
@@ -42,7 +44,10 @@ def _coerce_value(raw: str):
     return raw
 
 
-PROTECTED_SET_KEYS = frozenset({"history", "transitions", "status", "currentStep"})
+# `request` is write-once, so only `set_request` may write it.
+PROTECTED_SET_KEYS = frozenset({"history", "transitions", "status", "currentStep", "request"})
+# Kept exactly as written: a ticket named "42" or "none" is still that ticket.
+TEXT_SET_KEYS = frozenset({"source", "extends", "supersedes"})
 
 
 def set_fields(feature_dir: Path, pairs: list[str]) -> Path | None:
@@ -65,7 +70,7 @@ def set_fields(feature_dir: Path, pairs: list[str]) -> Path | None:
         if key in PROTECTED_SET_KEYS:
             print(f"[companion] Refusing --set '{key}' — lifecycle keys are managed by the capture/mark-complete writers.", file=sys.stderr)
             continue
-        ctx[key] = _coerce_value(raw.strip())
+        ctx[key] = raw.strip() if key in TEXT_SET_KEYS else _coerce_value(raw.strip())
     atomic_write(target, ctx)
     return target
 
@@ -276,7 +281,41 @@ def _coerce_entry(raw: str, identity_key: str) -> dict | None:
     return {identity_key: text}
 
 
-def run_verification(what: str, command: str, timeout: int = 900) -> dict:
+def _code_at(path: Path) -> dict:
+    """The short commit and a snapshot tree of the working files of the repo holding `path`.
+
+    The snapshot goes through a copy of the index, so the user's staging is never touched;
+    gitignored files stay out. Any failure leaves the field out rather than failing the check."""
+    import os
+    import shutil
+    import subprocess
+    import tempfile
+
+    def git(*args, env=None):
+        return subprocess.run(["git", "-C", str(path), *args], capture_output=True, text=True,
+                              check=True, timeout=20, env=env).stdout.strip()
+
+    found: dict = {}
+    try:
+        found["commit"] = git("rev-parse", "--short", "HEAD")
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        index = Path(git("rev-parse", "--git-path", "index"))
+        index = index if index.is_absolute() else Path(path) / index
+        with tempfile.TemporaryDirectory() as tmp:
+            scratch = Path(tmp) / "index"
+            if index.is_file():
+                shutil.copyfile(index, scratch)
+            env = {**os.environ, "GIT_INDEX_FILE": str(scratch), "GIT_OPTIONAL_LOCKS": "0"}
+            git("add", "-A", env=env)
+            found["tree"] = git("write-tree", env=env)
+    except Exception:  # noqa: BLE001
+        pass
+    return found
+
+
+def run_verification(what: str, command: str, timeout: int = 900, at: Path | None = None) -> dict:
     """Run a command and record what actually happened, rather than what anyone says did.
 
     This is the whole difference between a receipt and a claim. Everything in `verified[]`
@@ -290,6 +329,8 @@ def run_verification(what: str, command: str, timeout: int = 900) -> dict:
     import subprocess
     import time
 
+    # Before the command, so a file changed while a long check runs makes it stale rather than current.
+    code_at = _code_at(at) if at is not None else {}
     started = time.monotonic()
     try:
         proc = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=timeout)
@@ -313,6 +354,7 @@ def run_verification(what: str, command: str, timeout: int = 900) -> dict:
     # a run that could not prove its work should say so where the reader looks.
     if code != 0:
         entry["warnings"] = [f"exited {code}"]
+    entry.update(code_at)
     return entry
 
 
@@ -324,7 +366,7 @@ def append_verification_runs(feature_dir: Path, specs: list[str]) -> tuple[Path 
         if not sep or not command.strip():
             skipped.append(spec)
             continue
-        entries.append(json.dumps(run_verification(what.strip(), command.strip())))
+        entries.append(json.dumps(run_verification(what.strip(), command.strip(), at=feature_dir)))
     target = append_capture_entries(feature_dir, "verified", "what", entries, replace=True) if entries else None
     return target, skipped
 
@@ -441,6 +483,97 @@ def append_capture_entries(
     return target
 
 
+def _filled(value) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
+def _readable_time(value) -> bool:
+    if not _filled(value) or "T" not in value:
+        return False
+    try:
+        datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return True
+
+
+def _answer(entry: dict) -> dict:
+    """What an earlier answer keeps of the decision it was."""
+    return {k: entry[k] for k in ("decision", "why", "rejected", "by", "at") if k in entry}
+
+
+def append_decisions(feature_dir: Path, raws: list[str]) -> Path | None:
+    """Decisions, each stamped with who answered and when.
+
+    An entry whose `id` is already stored with a different answer takes its place,
+    and the stored answer moves to the end of its `earlier` list, so a reopened
+    decision keeps every answer it had. Entries without an `id` de-dup on their
+    text, as they always have."""
+    entries = [e for e in (_coerce_entry(r, "decision") for r in raws) if e]
+    if not entries:
+        return None
+    target = feature_dir / ".spec-context.json"
+    branch = _git_branch(_repo_root_for(feature_dir)) or "main"
+    ctx = read_ctx(target)
+    fill_required(ctx, feature_dir, branch)
+    prior = ctx.get("decisions")
+    merged = list(prior) if isinstance(prior, list) else []
+    now = _now_iso()
+    changed = False
+    for entry in entries:
+        entry.pop("earlier", None)
+        if not _filled(entry.get("by")):
+            entry["by"] = "agent"
+        if not _readable_time(entry.get("at")):
+            entry["at"] = now
+        answer = entry["decision"].strip()
+        ident = entry.get("id")
+        stored_at = next(
+            (i for i, item in enumerate(merged)
+             if _filled(ident) and isinstance(item, dict) and item.get("id") == ident),
+            None,
+        )
+        if stored_at is not None:
+            stored = merged[stored_at]
+            if str(stored.get("decision", "")).strip() == answer:
+                continue
+            earlier = stored.get("earlier")
+            earlier = [e for e in earlier if isinstance(e, dict)] if isinstance(earlier, list) else []
+            entry["earlier"] = earlier + [_answer(stored)]
+            merged[stored_at] = entry
+            changed = True
+            continue
+        if not _filled(ident) and any(_entry_identity(item, "decision") == answer for item in merged):
+            continue
+        merged.append(entry)
+        changed = True
+    if not changed:
+        return target
+    ctx["decisions"] = merged
+    atomic_write(target, ctx)
+    return target
+
+
+def set_request(feature_dir: Path, text: str) -> tuple[Path | None, bool]:
+    """Store the request the run started from, word for word, once.
+
+    Only outer blank space is trimmed. A stored request is never replaced, so the
+    first entry point to record it wins and later steps cannot paraphrase it.
+    Returns the record and whether this call wrote it; a blank request is (None, False)."""
+    request = text.strip()
+    if not request:
+        return None, False
+    target = feature_dir / ".spec-context.json"
+    branch = _git_branch(_repo_root_for(feature_dir)) or "main"
+    ctx = read_ctx(target)
+    if _filled(ctx.get("request")):
+        return target, False
+    fill_required(ctx, feature_dir, branch)
+    ctx["request"] = request
+    atomic_write(target, ctx)
+    return target, True
+
+
 def append_string_list(feature_dir: Path, field: str, values: list[str]) -> Path | None:
     """De-duped additive append of plain strings onto ctx[field] (expectations)."""
     cleaned = [v.strip() for v in values if v and v.strip()]
@@ -472,11 +605,12 @@ def _as_name_list(value) -> list | None:
 
 def upsert_coverage(
     feature_dir: Path, req: str, tasks: list[str] | None, tests: list[str] | None,
-    title: str | None = None,
+    title: str | None = None, assumes: str | None = None,
 ) -> Path | None:
     """Upsert ctx["coverage"][req] non-destructively (clone of _upsert_task_summary):
     only a supplied value replaces its slot, so the tasks-complete write (title +
-    tasks) and the implement-close write (tests) compose without erasing each other."""
+    tasks), the implement-close write (tests) and an assumption (what the
+    requirement relies on without a test) compose without erasing each other."""
     req = req.strip()
     if not req:
         return None
@@ -486,7 +620,8 @@ def upsert_coverage(
     tasks = _as_name_list(tasks)
     tests = _as_name_list(tests)
     title = title.strip() if title else None
-    if not tasks and not tests and not title:
+    assumes = assumes.strip() if isinstance(assumes, str) else None
+    if not tasks and not tests and not title and not assumes:
         # Nothing to record — writing {} would fake a coverage entry.
         return None
     target = feature_dir / ".spec-context.json"
@@ -503,7 +638,11 @@ def upsert_coverage(
     if tasks:
         entry["tasks"] = tasks
     if tests:
+        if tests != entry.get("tests"):
+            entry.pop("weak", None)
         entry["tests"] = tests
+    if assumes:
+        entry["assumes"] = assumes
     coverage[req] = entry
     ctx["coverage"] = coverage
     atomic_write(target, ctx)
@@ -553,6 +692,271 @@ def _parsed_classification(raw: str) -> dict:
             "--classification requires a JSON object with a verdict of simple|normal|oversized."
         )
     return obj
+
+
+RISK_TIERS = ("low", "normal", "high")
+RISK_HIGH_DEFAULT = ("**/migrations/**", "**/*.sql", "**/auth*/**", "**/auth*.*", ".github/workflows/**")
+RISK_LOW_DEFAULT = ("**/*.md", "docs/**", "**/__tests__/**", "**/tests/**", "**/*.test.*", "**/*.spec.*")
+RISK_MANY_FILES = 20
+
+
+def _changed_files(root: Path) -> list[str] | None:
+    """Files the change touches: the merge base with the default branch against the working tree,
+    plus untracked files, outside the spec folders. None when git cannot say."""
+    import subprocess
+
+    def git(*args):
+        return subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True,
+                              check=True, timeout=20).stdout
+
+    bases = ["origin/main", "main", "origin/master", "master"]
+    try:
+        bases.insert(0, git("symbolic-ref", "--short", "refs/remotes/origin/HEAD").strip())
+    except Exception:  # noqa: BLE001
+        pass
+    for base in bases:
+        try:
+            mb = git("merge-base", base, "HEAD").strip()
+        except Exception:  # noqa: BLE001
+            continue
+        if not mb:
+            continue
+        try:
+            scope = ["--", ":(top)", ":(top,exclude)specs", ":(top,exclude).specify"]
+            names = git("diff", "--name-only", "--no-renames", "-z", mb, *scope).split("\0")
+            names += git("ls-files", "-z", "--others", "--exclude-standard", *scope).split("\0")
+        except Exception:  # noqa: BLE001
+            return None
+        return sorted({n for n in names if n})
+    return None
+
+
+def _risk_globs(root: Path) -> tuple[list[str], list[str]]:
+    high, low = list(RISK_HIGH_DEFAULT), list(RISK_LOW_DEFAULT)
+    try:
+        import companion_config
+        cfg, _warnings = companion_config.load_config(str(root / companion_config.CONFIG_REL))
+        risk = cfg.get("risk") if isinstance(cfg, dict) else None
+        if isinstance(risk, dict):
+            high += [g for g in risk.get("high") or [] if isinstance(g, str)]
+            low += [g for g in risk.get("low") or [] if isinstance(g, str)]
+    except Exception:  # noqa: BLE001
+        pass
+    return high, low
+
+
+_GLOB_MATCHES = None
+
+
+def _glob_matcher():
+    """The resolver's `**`-aware matcher, loaded once and compared case-insensitively."""
+    global _GLOB_MATCHES
+    if _GLOB_MATCHES is None:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("resolve_spec_paths", Path(__file__).with_name("resolve-spec-paths.py"))
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        _GLOB_MATCHES = lambda pattern, path: module._glob_matches(pattern.lower(), path.lower())  # noqa: E731
+    return _GLOB_MATCHES
+
+
+def compute_risk(feature_dir: Path) -> tuple[str, list[str]]:
+    """The tier the change's files call for, and why."""
+    root = _repo_root_for(feature_dir)
+    files = _changed_files(root)
+    if files is None:
+        return "normal", ["the change could not be read"]
+    if not files:
+        return "normal", ["no changes against the base branch"]
+    high, low = _risk_globs(root)
+    try:
+        matches = _glob_matcher()
+    except Exception:  # noqa: BLE001
+        return "normal", ["the risk rules could not be loaded"]
+    risky = [f for f in files if any(matches(g, f) for g in high)]
+    if risky:
+        shown = ", ".join(risky[:3]) + (f" and {len(risky) - 3} more" if len(risky) > 3 else "")
+        return "high", [f"touches {shown}"]
+    if len(files) > RISK_MANY_FILES:
+        return "high", [f"{len(files)} files changed"]
+    if all(any(matches(g, f) for g in low) for f in files):
+        return "low", ["only docs and tests changed"]
+    return "normal", [f"{len(files)} file{'s' if len(files) != 1 else ''} changed"]
+
+
+def _tier_rank(tier) -> int:
+    return RISK_TIERS.index(tier) if tier in RISK_TIERS else -1
+
+
+def set_risk(feature_dir: Path) -> tuple[Path, dict]:
+    """Compute and store the tier; a standing raise above the computed tier is kept."""
+    computed, reasons = compute_risk(feature_dir)
+    target = feature_dir / ".spec-context.json"
+    branch = _git_branch(_repo_root_for(feature_dir)) or "main"
+    ctx = read_ctx(target)
+    fill_required(ctx, feature_dir, branch)
+    prior = ctx.get("risk") if isinstance(ctx.get("risk"), dict) else {}
+    risk = {"tier": computed, "computed": computed, "reasons": reasons}
+    raised = prior.get("raised")
+    if isinstance(raised, dict) and _tier_rank(raised.get("tier")) >= 0:
+        risk["raised"] = raised
+        if _tier_rank(raised["tier"]) > _tier_rank(computed):
+            risk["tier"] = raised["tier"]
+    ctx["risk"] = risk
+    atomic_write(target, ctx)
+    return target, risk
+
+
+def raise_risk(feature_dir: Path, tier: str, reason: str, by: str = "ai") -> tuple[Path | None, str]:
+    """Raise the tier with a reason. Returns (target, "") on success, or (None, why it was refused)."""
+    tier, reason = (tier or "").strip().lower(), (reason or "").strip()
+    if tier not in RISK_TIERS:
+        return None, f"'{tier}' is not a tier (low, normal, high)"
+    if not reason:
+        return None, "a raise needs a reason"
+    target = feature_dir / ".spec-context.json"
+    branch = _git_branch(_repo_root_for(feature_dir)) or "main"
+    ctx = read_ctx(target)
+    risk = ctx.get("risk") if isinstance(ctx.get("risk"), dict) else None
+    if risk is None or _tier_rank(risk.get("tier")) < 0:
+        computed, reasons = compute_risk(feature_dir)
+        risk = {"tier": computed, "computed": computed, "reasons": reasons}
+    if _tier_rank(tier) <= _tier_rank(risk.get("tier")):
+        return None, f"the tier is already {risk.get('tier')}; it can only be raised"
+    fill_required(ctx, feature_dir, branch)
+    risk = {**risk, "tier": tier, "raised": {"tier": tier, "reason": reason, "by": by, "at": _now_iso()}}
+    ctx["risk"] = risk
+    atomic_write(target, ctx)
+    return target, ""
+
+
+MUTANT_CAUGHT = ("Killed", "Timeout")
+MUTANT_UNCOUNTED = ("Ignored", "CompileError", "RuntimeError", "Pending")
+
+
+def _read_mutation_report(path: Path) -> dict:
+    """Killed and total counts, the tool, and for Stryker which test files faced a mutant and
+    which killed one. Raises ValueError for anything it cannot read as a report."""
+    try:
+        doc = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, ValueError, RecursionError) as exc:
+        raise ValueError(f"cannot read {path}: {exc}") from exc
+    try:
+        report = _parse_mutation_report(doc)
+    except (TypeError, AttributeError, KeyError, OverflowError) as exc:
+        raise ValueError(f"{path} has an unexpected shape: {exc}") from exc
+    if report is None:
+        raise ValueError(f"{path} is neither a Stryker report nor a mutmut summary")
+    if report["total"] <= 0:
+        raise ValueError(f"{path} holds no mutants")
+    return report
+
+
+def _parse_mutation_report(doc) -> dict | None:
+    if not isinstance(doc, dict):
+        return None
+    if isinstance(doc.get("files"), dict) and isinstance(doc.get("schemaVersion"), str):
+        test_file_of = {}
+        for file, entry in (doc.get("testFiles") or {}).items():
+            for test in (entry or {}).get("tests") or []:
+                if isinstance(test, dict) and "id" in test:
+                    test_file_of[str(test["id"])] = file
+        killed = total = 0
+        killers: set = set()
+        ran: set = set()
+        for entry in doc["files"].values():
+            for mutant in (entry or {}).get("mutants") or []:
+                status = mutant.get("status") if isinstance(mutant, dict) else None
+                if status in MUTANT_UNCOUNTED or not isinstance(status, str):
+                    continue
+                total += 1
+                faced = [str(t) for t in list(mutant.get("coveredBy") or []) + list(mutant.get("killedBy") or [])]
+                ran.update(test_file_of[t] for t in faced if t in test_file_of)
+                if status in MUTANT_CAUGHT:
+                    killed += 1
+                    killers.update(test_file_of[str(t)] for t in mutant.get("killedBy") or [] if str(t) in test_file_of)
+        return {"tool": "stryker", "killed": killed, "total": total, "killers": killers, "ran": ran,
+                "root": doc.get("projectRoot") if isinstance(doc.get("projectRoot"), str) else None}
+    if "killed" in doc and ("total" in doc or "survived" in doc):
+        killed = int(doc.get("killed") or 0) + int(doc.get("timeout") or 0)
+        outcomes = ("survived", "no_tests", "suspicious", "segfault")
+        if doc.get("total"):
+            total = int(doc["total"]) - int(doc.get("skipped") or 0)
+        else:
+            total = killed + sum(int(doc.get(k) or 0) for k in outcomes)
+        return {"tool": "mutmut", "killed": killed, "total": total, "killers": set(), "ran": set(), "root": None}
+    return None
+
+
+def _rel(path: str, root: str | None = None) -> str:
+    path = path.strip().replace("\\", "/")
+    if root:
+        prefix = root.replace("\\", "/").rstrip("/") + "/"
+        if path.startswith(prefix):
+            path = path[len(prefix):]
+    while path.startswith("./"):
+        path = path[2:]
+    return path
+
+
+def _test_file(ref: str) -> str:
+    return _rel(ref.split("::", 1)[0])
+
+
+def _same_file(ref: str, key: str) -> bool:
+    """A coverage ref (repo-relative) and a report key (relative to where the tool ran) name one file."""
+    return ref == key or ref.endswith("/" + key) or key.endswith("/" + ref)
+
+
+def apply_mutation_report(feature_dir: Path, path: Path) -> tuple[Path, dict]:
+    """Record the mutation check and mark weak each requirement whose test files faced the
+    mutants and caught none. Only requirements this report judged have their marks replaced."""
+    report = _read_mutation_report(path)
+    target = feature_dir / ".spec-context.json"
+    branch = _git_branch(_repo_root_for(feature_dir)) or "main"
+    ctx = read_ctx(target)
+    fill_required(ctx, feature_dir, branch)
+    coverage = ctx.get("coverage") if isinstance(ctx.get("coverage"), dict) else {}
+    ran = {_rel(f, report["root"]) for f in report["ran"]}
+    killers = {_rel(f, report["root"]) for f in report["killers"]}
+    weak, judged_any = [], False
+    for req, entry in coverage.items():
+        if not isinstance(entry, dict):
+            continue
+        files = {_test_file(t) for t in _as_name_list(entry.get("tests")) or []}
+        faced = {k for k in ran if any(_same_file(f, k) for f in files)}
+        if not faced:
+            continue
+        judged_any = True
+        entry.pop("weak", None)
+        if not (faced & killers):
+            entry["weak"] = True
+            weak.append(req)
+    ctx["coverage"] = coverage
+    row = {
+        "what": "Mutation check",
+        "command": report["tool"],
+        "source": "derived",
+        "result": f"{report['killed']} of {report['total']} caught",
+    }
+    warnings = []
+    if weak:
+        warnings.append(f"weak: {', '.join(sorted(weak))}")
+    if report["tool"] == "stryker" and not judged_any:
+        warnings.append("no requirement's tests matched the report, so none was judged")
+    if warnings:
+        row["warnings"] = warnings
+    verified, placed = [], False
+    for v in ctx.get("verified") or []:
+        if (v.get("what") if isinstance(v, dict) else v) == "Mutation check":
+            if not placed:
+                verified.append(row)
+                placed = True
+            continue
+        verified.append(v)
+    ctx["verified"] = verified if placed else verified + [row]
+    atomic_write(target, ctx)
+    return target, {**report, "weak": sorted(weak)}
 
 
 def set_classification(feature_dir: Path, raw: str) -> Path:
@@ -634,8 +1038,10 @@ def apply_batch(feature_dir: Path, raw: str, step: str) -> tuple:
             target = result
             landed.append(label)
 
+    decisions = doc.get("decisions")
+    if decisions:
+        note(append_decisions(feature_dir, _as_raw(decisions)), f"{len(decisions)} decisions")
     for field, key, identity in (
-        ("decisions", "decisions", "decision"),
         ("verified", "verified", "what"),
         ("concerns", "concerns", "note"),
     ):
@@ -650,7 +1056,7 @@ def apply_batch(feature_dir: Path, raw: str, step: str) -> tuple:
                  f"{len(items)} {field}")
     for item in doc.get("coverage") or []:
         note(upsert_coverage(feature_dir, item["req"], item.get("tasks"),
-                             item.get("tests"), item.get("title")),
+                             item.get("tests"), item.get("title"), item.get("assumes")),
              f"coverage {item['req']}")
     summary = doc.get("step_summary")
     if summary:
@@ -669,6 +1075,7 @@ def apply_batch(feature_dir: Path, raw: str, step: str) -> tuple:
     # many times the file is opened to land it.
     pairs = doc.get("set")
     if isinstance(pairs, dict) and pairs:
-        note(set_fields(feature_dir, [f"{k}={v}" for k, v in pairs.items()]),
+        note(set_fields(feature_dir, [f"{k}={v}" for k, v in pairs.items()
+                                      if k not in TEXT_SET_KEYS or isinstance(v, str)]),
              f"{len(pairs)} field(s)")
     return target, landed
