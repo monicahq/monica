@@ -36,6 +36,7 @@ class CountedPhraseTest extends TestCase
         'pl_PL' => 3,
         'pt_BR' => 2,
         'pt_PT' => 2,
+        'ru_RU' => 3,
         'si_LK' => 1,
         'sv_SE' => 2,
         'ta_IN' => 2,

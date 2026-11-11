@@ -93,6 +93,37 @@ class LocaleCollationTest extends TestCase
     }
 
     #[Test]
+    public function it_folds_the_russian_yo_into_ye_for_search(): void
+    {
+        $this->assertSame('елкин', LocaleCollation::foldForSearch('Ёлкин', 'ru_RU'));
+    }
+
+    #[Test]
+    public function it_keeps_the_russian_short_i_because_russian_calls_it_another_letter(): void
+    {
+        $this->assertSame('йорк', LocaleCollation::foldForSearch('Йорк', 'ru_RU'));
+    }
+
+    #[Test]
+    public function it_gives_the_russian_short_i_a_heading_of_its_own(): void
+    {
+        $this->assertSame('Й', LocaleCollation::headingLetter('Йорк', 'ru_RU'));
+    }
+
+    #[Test]
+    public function it_sorts_names_in_russian_alphabetical_order(): void
+    {
+        $this->app->setLocale('ru_RU');
+
+        $sorted = LocaleCollation::sortByCollator(
+            collect(['Яна', 'Жанна', 'Ёлкин', 'Евгений', 'Анна', 'Иван', 'Йорк']),
+            fn (string $name): string => $name,
+        );
+
+        $this->assertSame(['Анна', 'Евгений', 'Ёлкин', 'Жанна', 'Иван', 'Йорк', 'Яна'], $sorted->all());
+    }
+
+    #[Test]
     public function it_gives_the_same_heading_to_an_accented_and_an_unaccented_name(): void
     {
         $this->assertSame(

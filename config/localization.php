@@ -266,6 +266,13 @@ return [
                 ],
             ],
         ],
+        'ru_RU' => [
+            'label' => 'Русский',
+            'region' => 'Россия',
+            'date_format' => 'd.m.Y',
+            'number_format' => 'space_comma',
+            'flag' => 'linear-gradient(to bottom, #fff 0 33%, #0039a6 33% 66%, #d52b1e 66%)',
+        ],
         'si_LK' => [
             'label' => 'සිංහල',
             'region' => 'ශ්‍රී ලංකාව',
@@ -384,6 +391,7 @@ return [
         'nl' => 'nl_NL',
         'pl' => 'pl_PL',
         'pt' => 'pt_PT',
+        'ru' => 'ru_RU',
         'si' => 'si_LK',
         'sv' => 'sv_SE',
         'ta' => 'ta_IN',
