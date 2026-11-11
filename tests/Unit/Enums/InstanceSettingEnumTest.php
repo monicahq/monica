@@ -60,9 +60,39 @@ class InstanceSettingEnumTest extends TestCase
 
             $this->assertStringContainsString(
                 "'{$setting->environmentVariable()}'",
-                file_get_contents($file),
+                file_get_contents($file).file_get_contents(config_path('oidc.php')),
                 "{$setting->value} names {$setting->environmentVariable()}, which ".basename($file).' never reads.'
             );
+        }
+    }
+
+    #[Test]
+    public function it_lets_an_administrator_supply_every_provider_carried_by_openid_connect(): void
+    {
+        $settings = [
+            [InstanceSettingEnum::EntraTenant, 'services.entra.tenant', 'ENTRA_TENANT', InstanceSettingKindEnum::Text],
+            [InstanceSettingEnum::KeycloakServerUrl, 'services.keycloak.server_url', 'KEYCLOAK_SERVER_URL', InstanceSettingKindEnum::Url],
+            [InstanceSettingEnum::KeycloakRealm, 'services.keycloak.realm', 'KEYCLOAK_REALM', InstanceSettingKindEnum::Text],
+            [InstanceSettingEnum::KeycloakClientId, 'services.keycloak.client_id', 'KEYCLOAK_CLIENT_ID', InstanceSettingKindEnum::Text],
+            [InstanceSettingEnum::KeycloakClientSecret, 'services.keycloak.client_secret', 'KEYCLOAK_CLIENT_SECRET', InstanceSettingKindEnum::Secret],
+            [InstanceSettingEnum::Auth0Domain, 'services.auth0.domain', 'AUTH0_DOMAIN', InstanceSettingKindEnum::Text],
+            [InstanceSettingEnum::Auth0ClientId, 'services.auth0.client_id', 'AUTH0_CLIENT_ID', InstanceSettingKindEnum::Text],
+            [InstanceSettingEnum::Auth0ClientSecret, 'services.auth0.client_secret', 'AUTH0_CLIENT_SECRET', InstanceSettingKindEnum::Secret],
+            [InstanceSettingEnum::OktaDomain, 'services.okta.domain', 'OKTA_DOMAIN', InstanceSettingKindEnum::Text],
+            [InstanceSettingEnum::OktaAuthServer, 'services.okta.auth_server', 'OKTA_AUTH_SERVER', InstanceSettingKindEnum::Text],
+            [InstanceSettingEnum::OktaClientId, 'services.okta.client_id', 'OKTA_CLIENT_ID', InstanceSettingKindEnum::Text],
+            [InstanceSettingEnum::OktaClientSecret, 'services.okta.client_secret', 'OKTA_CLIENT_SECRET', InstanceSettingKindEnum::Secret],
+            [InstanceSettingEnum::OpenIdConnectBaseUrl, 'services.openidconnect.base_url', 'OIDC_BASE_URL', InstanceSettingKindEnum::Url],
+            [InstanceSettingEnum::OpenIdConnectName, 'services.openidconnect.name', 'OIDC_NAME', InstanceSettingKindEnum::Text],
+            [InstanceSettingEnum::OpenIdConnectClientId, 'services.openidconnect.client_id', 'OIDC_CLIENT_ID', InstanceSettingKindEnum::Text],
+            [InstanceSettingEnum::OpenIdConnectClientSecret, 'services.openidconnect.client_secret', 'OIDC_CLIENT_SECRET', InstanceSettingKindEnum::Secret],
+        ];
+
+        foreach ($settings as [$setting, $configKey, $environmentVariable, $kind]) {
+            $this->assertEquals($configKey, $setting->configKey());
+            $this->assertEquals($environmentVariable, $setting->environmentVariable());
+            $this->assertEquals($kind, $setting->kind());
+            $this->assertEquals(InstanceSettingGroupEnum::SingleSignOn, $setting->group());
         }
     }
 

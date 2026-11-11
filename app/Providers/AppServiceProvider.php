@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Actions\VerifyPasskey;
-use App\Enums\SsoProviderEnum;
 use App\Helpers\FlagState;
 use App\Helpers\InstanceSettings;
 use App\Helpers\LocaleCollation;
@@ -68,7 +67,6 @@ use Laravel\Scout\Scout;
 use Monicahq\Cloudflare\Facades\CloudflareProxies;
 use Monicahq\Cloudflare\LaravelCloudflare;
 use Override;
-use SocialiteProviders\Manager\SocialiteWasCalled;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -102,27 +100,6 @@ class AppServiceProvider extends ServiceProvider
         config()->set('auth.guards.web.remember', (int) config('monica.remember_duration_days') * 24 * 60);
     }
 
-    /**
-     * Register the driver of every provider that needs a package of its own.
-     * Which packages are there is read from configuration rather than tested
-     * here, so a test reaches either state, and a package that is absent is
-     * never named.
-     */
-    private function configureSingleSignOn(): void
-    {
-        foreach (SsoProviderEnum::cases() as $provider) {
-            $driver = $provider->driverClass();
-
-            if ($driver === null || ! in_array($provider->value, config('monica.sso_installed', []), true)) {
-                continue;
-            }
-
-            Event::listen(function (SocialiteWasCalled $event) use ($provider, $driver): void {
-                $event->extendSocialite($provider->value, $driver);
-            });
-        }
-    }
-
     private function configurePasskeys(): void
     {
         Passkeys::usePasskeyModel(Passkey::class);
@@ -145,7 +122,6 @@ class AppServiceProvider extends ServiceProvider
         $this->configureCollation();
         $this->configureDefaultsProduction();
         $this->configureBilling();
-        $this->configureSingleSignOn();
         $this->configurePassport();
         $this->configureSearch();
         $this->configureFlags();

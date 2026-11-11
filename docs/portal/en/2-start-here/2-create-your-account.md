@@ -100,7 +100,7 @@ Right after you sign up, Monica prepares your templates and lists in the backgro
 
 ## Sign up with another service
 
-If the sign in screen offers **Continue with** GitHub, Google, Microsoft or Facebook, you can use that account instead of the form. The first time, Monica creates your account from the name and email address the service shares, then asks you to confirm the address as above. These buttons appear only when the instance offers them.
+If the sign in screen offers **Continue with** GitHub, Google, Microsoft, Facebook or another service, you can use that account instead of the form. The first time, Monica creates your account from the name and email address the service shares, then asks you to confirm the address as above. These buttons appear only when the instance offers them.
 
 ## Next step
 

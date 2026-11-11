@@ -132,15 +132,4 @@ jobs:
       # therefore has to be allowed to create databases, which is why the
       # postgres step above grants CREATEDB.
       - name: Run tests
-        if: matrix.connection != 'sqlite'
         run: php artisan test --parallel
-
-      # A provider whose driver needs a package of its own ships that package as
-      # a suggestion, so the application has to boot, render and pass its suite
-      # without it. Overriding monica.sso_installed proves the availability
-      # logic; only removing the package proves this.
-      - name: Run tests without the suggested provider packages
-        if: matrix.connection == 'sqlite'
-        run: |
-          composer remove --dev socialiteproviders/microsoft --no-interaction --no-progress
-          php artisan test --parallel

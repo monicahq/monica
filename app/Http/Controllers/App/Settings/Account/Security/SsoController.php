@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
+use Throwable;
 
 class SsoController extends Controller
 {
@@ -20,9 +21,16 @@ class SsoController extends Controller
     {
         $provider = SsoProviderEnum::from((string) $request->route()->parameter('provider'));
 
+        try {
+            $response = Socialite::driver($provider->value)->redirect();
+        } catch (Throwable) {
+            return redirect()->route('settings.security.index')
+                ->withErrors(['provider' => __('That did not work. Try again, or sign in another way.')]);
+        }
+
         $request->session()->put(AuthSsoController::CONNECT_INTENT, true);
 
-        return Socialite::driver($provider->value)->redirect();
+        return $response;
     }
 
     public function destroy(Request $request): RedirectResponse

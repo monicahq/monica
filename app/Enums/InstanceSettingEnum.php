@@ -36,10 +36,26 @@ enum InstanceSettingEnum: string implements Translatable
     case GithubClientSecret = 'github_client_secret';
     case GoogleClientId = 'google_client_id';
     case GoogleClientSecret = 'google_client_secret';
-    case MicrosoftClientId = 'microsoft_client_id';
-    case MicrosoftClientSecret = 'microsoft_client_secret';
+    case EntraClientId = 'entra_client_id';
+    case EntraClientSecret = 'entra_client_secret';
     case FacebookClientId = 'facebook_client_id';
     case FacebookClientSecret = 'facebook_client_secret';
+    case EntraTenant = 'entra_tenant';
+    case KeycloakServerUrl = 'keycloak_server_url';
+    case KeycloakRealm = 'keycloak_realm';
+    case KeycloakClientId = 'keycloak_client_id';
+    case KeycloakClientSecret = 'keycloak_client_secret';
+    case Auth0Domain = 'auth0_domain';
+    case Auth0ClientId = 'auth0_client_id';
+    case Auth0ClientSecret = 'auth0_client_secret';
+    case OktaDomain = 'okta_domain';
+    case OktaAuthServer = 'okta_auth_server';
+    case OktaClientId = 'okta_client_id';
+    case OktaClientSecret = 'okta_client_secret';
+    case OpenIdConnectBaseUrl = 'openid_connect_base_url';
+    case OpenIdConnectName = 'openid_connect_name';
+    case OpenIdConnectClientId = 'openid_connect_client_id';
+    case OpenIdConnectClientSecret = 'openid_connect_client_secret';
 
     case MailMailer = 'mail_mailer';
     case MailScheme = 'mail_scheme';
@@ -71,10 +87,26 @@ enum InstanceSettingEnum: string implements Translatable
             self::GithubClientSecret => 'services.github.client_secret',
             self::GoogleClientId => 'services.google.client_id',
             self::GoogleClientSecret => 'services.google.client_secret',
-            self::MicrosoftClientId => 'services.microsoft.client_id',
-            self::MicrosoftClientSecret => 'services.microsoft.client_secret',
+            self::EntraClientId => 'services.entra.client_id',
+            self::EntraClientSecret => 'services.entra.client_secret',
             self::FacebookClientId => 'services.facebook.client_id',
             self::FacebookClientSecret => 'services.facebook.client_secret',
+            self::EntraTenant => 'services.entra.tenant',
+            self::KeycloakServerUrl => 'services.keycloak.server_url',
+            self::KeycloakRealm => 'services.keycloak.realm',
+            self::KeycloakClientId => 'services.keycloak.client_id',
+            self::KeycloakClientSecret => 'services.keycloak.client_secret',
+            self::Auth0Domain => 'services.auth0.domain',
+            self::Auth0ClientId => 'services.auth0.client_id',
+            self::Auth0ClientSecret => 'services.auth0.client_secret',
+            self::OktaDomain => 'services.okta.domain',
+            self::OktaAuthServer => 'services.okta.auth_server',
+            self::OktaClientId => 'services.okta.client_id',
+            self::OktaClientSecret => 'services.okta.client_secret',
+            self::OpenIdConnectBaseUrl => 'services.openidconnect.base_url',
+            self::OpenIdConnectName => 'services.openidconnect.name',
+            self::OpenIdConnectClientId => 'services.openidconnect.client_id',
+            self::OpenIdConnectClientSecret => 'services.openidconnect.client_secret',
             self::MailMailer => 'mail.default',
             self::MailScheme => 'mail.mailers.smtp.scheme',
             self::MailHost => 'mail.mailers.smtp.host',
@@ -112,10 +144,26 @@ enum InstanceSettingEnum: string implements Translatable
             self::GithubClientSecret => 'GITHUB_CLIENT_SECRET',
             self::GoogleClientId => 'GOOGLE_CLIENT_ID',
             self::GoogleClientSecret => 'GOOGLE_CLIENT_SECRET',
-            self::MicrosoftClientId => 'MICROSOFT_CLIENT_ID',
-            self::MicrosoftClientSecret => 'MICROSOFT_CLIENT_SECRET',
+            self::EntraClientId => 'ENTRA_CLIENT_ID',
+            self::EntraClientSecret => 'ENTRA_CLIENT_SECRET',
             self::FacebookClientId => 'FACEBOOK_CLIENT_ID',
             self::FacebookClientSecret => 'FACEBOOK_CLIENT_SECRET',
+            self::EntraTenant => 'ENTRA_TENANT',
+            self::KeycloakServerUrl => 'KEYCLOAK_SERVER_URL',
+            self::KeycloakRealm => 'KEYCLOAK_REALM',
+            self::KeycloakClientId => 'KEYCLOAK_CLIENT_ID',
+            self::KeycloakClientSecret => 'KEYCLOAK_CLIENT_SECRET',
+            self::Auth0Domain => 'AUTH0_DOMAIN',
+            self::Auth0ClientId => 'AUTH0_CLIENT_ID',
+            self::Auth0ClientSecret => 'AUTH0_CLIENT_SECRET',
+            self::OktaDomain => 'OKTA_DOMAIN',
+            self::OktaAuthServer => 'OKTA_AUTH_SERVER',
+            self::OktaClientId => 'OKTA_CLIENT_ID',
+            self::OktaClientSecret => 'OKTA_CLIENT_SECRET',
+            self::OpenIdConnectBaseUrl => 'OIDC_BASE_URL',
+            self::OpenIdConnectName => 'OIDC_NAME',
+            self::OpenIdConnectClientId => 'OIDC_CLIENT_ID',
+            self::OpenIdConnectClientSecret => 'OIDC_CLIENT_SECRET',
             self::MailMailer => 'MAIL_MAILER',
             self::MailScheme => 'MAIL_SCHEME',
             self::MailHost => 'MAIL_HOST',
@@ -149,8 +197,13 @@ enum InstanceSettingEnum: string implements Translatable
             self::MagicLinkDurationMinutes, self::RegistrationEnabled => InstanceSettingGroupEnum::SigningIn,
 
             self::GithubClientId, self::GithubClientSecret, self::GoogleClientId,
-            self::GoogleClientSecret, self::MicrosoftClientId, self::MicrosoftClientSecret,
-            self::FacebookClientId, self::FacebookClientSecret => InstanceSettingGroupEnum::SingleSignOn,
+            self::GoogleClientSecret, self::EntraClientId, self::EntraClientSecret,
+            self::FacebookClientId, self::FacebookClientSecret, self::EntraTenant,
+            self::KeycloakServerUrl, self::KeycloakRealm, self::KeycloakClientId, self::KeycloakClientSecret,
+            self::Auth0Domain, self::Auth0ClientId, self::Auth0ClientSecret,
+            self::OktaDomain, self::OktaAuthServer, self::OktaClientId, self::OktaClientSecret,
+            self::OpenIdConnectBaseUrl, self::OpenIdConnectName, self::OpenIdConnectClientId,
+            self::OpenIdConnectClientSecret => InstanceSettingGroupEnum::SingleSignOn,
 
             self::ReminderGenerationWindowInDays, self::NotificationMaximumAttempts,
             self::NotificationRetentionMonths,
@@ -169,17 +222,22 @@ enum InstanceSettingEnum: string implements Translatable
         return match ($this) {
             self::MagicLinkEnabled, self::RegistrationEnabled, self::SelfHosted => InstanceSettingKindEnum::Boolean,
 
-            self::TelegramBotUrl => InstanceSettingKindEnum::Url,
+            self::TelegramBotUrl, self::KeycloakServerUrl,
+            self::OpenIdConnectBaseUrl => InstanceSettingKindEnum::Url,
 
             self::MailPassword, self::ResendApiKey, self::ResendWebhookSecret, self::VonageSecret,
             self::TelegramBotToken, self::TelegramBotWebhookSecret, self::GithubClientSecret,
-            self::GoogleClientSecret, self::MicrosoftClientSecret,
-            self::FacebookClientSecret => InstanceSettingKindEnum::Secret,
+            self::GoogleClientSecret, self::EntraClientSecret,
+            self::FacebookClientSecret, self::KeycloakClientSecret, self::Auth0ClientSecret,
+            self::OktaClientSecret, self::OpenIdConnectClientSecret => InstanceSettingKindEnum::Secret,
 
             self::MailMailer, self::MailScheme, self::MailHost, self::MailUsername,
             self::MailFromAddress, self::MailFromName, self::VonageKey, self::VonageSmsFrom,
             self::CashierCurrency, self::GithubClientId, self::GoogleClientId,
-            self::MicrosoftClientId, self::FacebookClientId => InstanceSettingKindEnum::Text,
+            self::EntraClientId, self::FacebookClientId, self::EntraTenant,
+            self::KeycloakRealm, self::KeycloakClientId, self::Auth0Domain, self::Auth0ClientId,
+            self::OktaDomain, self::OktaAuthServer, self::OktaClientId, self::OpenIdConnectName,
+            self::OpenIdConnectClientId => InstanceSettingKindEnum::Text,
 
             default => InstanceSettingKindEnum::Integer,
         };
@@ -215,8 +273,17 @@ enum InstanceSettingEnum: string implements Translatable
 
             self::GithubClientId, self::GithubClientSecret => self::signInProviderIsInstalled('github'),
             self::GoogleClientId, self::GoogleClientSecret => self::signInProviderIsInstalled('google'),
-            self::MicrosoftClientId, self::MicrosoftClientSecret => self::signInProviderIsInstalled('microsoft'),
+            self::EntraClientId, self::EntraClientSecret,
+            self::EntraTenant => self::signInProviderIsInstalled('entra'),
+            self::KeycloakServerUrl, self::KeycloakRealm, self::KeycloakClientId,
+            self::KeycloakClientSecret => self::signInProviderIsInstalled('keycloak'),
+            self::Auth0Domain, self::Auth0ClientId,
+            self::Auth0ClientSecret => self::signInProviderIsInstalled('auth0'),
+            self::OktaDomain, self::OktaAuthServer, self::OktaClientId,
+            self::OktaClientSecret => self::signInProviderIsInstalled('okta'),
             self::FacebookClientId, self::FacebookClientSecret => self::signInProviderIsInstalled('facebook'),
+            self::OpenIdConnectBaseUrl, self::OpenIdConnectName, self::OpenIdConnectClientId,
+            self::OpenIdConnectClientSecret => self::signInProviderIsInstalled('openidconnect'),
 
             default => true,
         };
@@ -285,10 +352,26 @@ enum InstanceSettingEnum: string implements Translatable
             self::GithubClientSecret => 'The secret this instance proves itself to GitHub with.',
             self::GoogleClientId => 'The identifier Google knows this instance by.',
             self::GoogleClientSecret => 'The secret this instance proves itself to Google with.',
-            self::MicrosoftClientId => 'The identifier Microsoft knows this instance by.',
-            self::MicrosoftClientSecret => 'The secret this instance proves itself to Microsoft with.',
+            self::EntraClientId => 'The identifier Microsoft knows this instance by.',
+            self::EntraClientSecret => 'The secret this instance proves itself to Microsoft with.',
             self::FacebookClientId => 'The identifier Facebook knows this instance by.',
             self::FacebookClientSecret => 'The secret this instance proves itself to Facebook with.',
+            self::EntraTenant => 'The Microsoft tenant whose accounts may sign in.',
+            self::KeycloakServerUrl => 'The address of the Keycloak server.',
+            self::KeycloakRealm => 'The Keycloak realm people sign in to.',
+            self::KeycloakClientId => 'The identifier Keycloak knows this instance by.',
+            self::KeycloakClientSecret => 'The secret this instance proves itself to Keycloak with.',
+            self::Auth0Domain => 'The domain of the Auth0 tenant.',
+            self::Auth0ClientId => 'The identifier Auth0 knows this instance by.',
+            self::Auth0ClientSecret => 'The secret this instance proves itself to Auth0 with.',
+            self::OktaDomain => 'The domain of the Okta organisation.',
+            self::OktaAuthServer => 'The Okta authorization server, when it is not the default one.',
+            self::OktaClientId => 'The identifier Okta knows this instance by.',
+            self::OktaClientSecret => 'The secret this instance proves itself to Okta with.',
+            self::OpenIdConnectBaseUrl => 'The address of the OpenID Connect provider people sign in through.',
+            self::OpenIdConnectName => 'The name the OpenID Connect provider is offered under.',
+            self::OpenIdConnectClientId => 'The identifier the OpenID Connect provider knows this instance by.',
+            self::OpenIdConnectClientSecret => 'The secret this instance proves itself to the OpenID Connect provider with.',
             self::MailMailer => 'Which transport carries the email this instance sends.',
             self::MailScheme => 'Which scheme the mail transport connects with, such as smtps.',
             self::MailHost => 'The host the mail transport connects to.',

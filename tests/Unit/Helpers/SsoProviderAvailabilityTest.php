@@ -6,6 +6,7 @@ namespace Tests\Unit\Helpers;
 
 use App\Enums\SsoProviderEnum;
 use App\Helpers\SsoProviderAvailability;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -26,9 +27,9 @@ class SsoProviderAvailabilityTest extends TestCase
     public function it_refuses_a_provider_whose_package_is_absent(): void
     {
         $this->install(['github', 'google', 'facebook']);
-        $this->configure('microsoft');
+        $this->configure('entra');
 
-        $this->assertFalse(SsoProviderAvailability::isAvailable(SsoProviderEnum::Microsoft));
+        $this->assertFalse(SsoProviderAvailability::isAvailable(SsoProviderEnum::Entra));
         $this->assertEquals([], SsoProviderAvailability::onThisInstance());
         $this->assertFalse(SsoProviderAvailability::anyOnThisInstance());
     }
@@ -78,6 +79,49 @@ class SsoProviderAvailabilityTest extends TestCase
             [SsoProviderEnum::GitHub, SsoProviderEnum::Google, SsoProviderEnum::Facebook],
             SsoProviderAvailability::onThisInstance(),
         );
+    }
+
+    #[Test]
+    public function it_offers_the_generic_provider_only_once_its_address_is_supplied(): void
+    {
+        $this->install(['openidconnect']);
+        $this->configure('openidconnect');
+        config(['services.openidconnect.base_url' => null]);
+
+        $this->assertFalse(SsoProviderAvailability::isAvailable(SsoProviderEnum::OpenIdConnect));
+
+        config(['services.openidconnect.base_url' => 'https://id.dundermifflin.com']);
+
+        $this->assertTrue(SsoProviderAvailability::isAvailable(SsoProviderEnum::OpenIdConnect));
+    }
+
+    #[Test]
+    #[DataProvider('settingsThatLocateAProvider')]
+    public function it_offers_a_named_provider_only_once_everything_locating_it_is_supplied(SsoProviderEnum $provider, string $setting): void
+    {
+        $this->install([$provider->value]);
+        $this->configure($provider->value);
+
+        foreach ($provider->requiredSettings() as $required) {
+            config(["services.{$provider->value}.{$required}" => 'dundermifflin']);
+        }
+
+        $this->assertTrue(SsoProviderAvailability::isAvailable($provider));
+
+        config(["services.{$provider->value}.{$setting}" => null]);
+
+        $this->assertFalse(SsoProviderAvailability::isAvailable($provider));
+    }
+
+    /** @return array<string, array{SsoProviderEnum, string}> */
+    public static function settingsThatLocateAProvider(): array
+    {
+        return [
+            'Keycloak without its server' => [SsoProviderEnum::Keycloak, 'server_url'],
+            'Keycloak without its realm' => [SsoProviderEnum::Keycloak, 'realm'],
+            'Auth0 without its domain' => [SsoProviderEnum::Auth0, 'domain'],
+            'Okta without its domain' => [SsoProviderEnum::Okta, 'domain'],
+        ];
     }
 
     /** @param  list<string>  $providers */

@@ -44,16 +44,18 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI', '/sso/google/callback'),
     ],
 
-    'microsoft' => [
-        'client_id' => env('MICROSOFT_CLIENT_ID'),
-        'client_secret' => env('MICROSOFT_CLIENT_SECRET'),
-        'redirect' => env('MICROSOFT_REDIRECT_URI', '/sso/microsoft/callback'),
-    ],
-
     'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
         'redirect' => env('FACEBOOK_REDIRECT_URI', '/sso/facebook/callback'),
+    ],
+
+    'openidconnect' => [
+        'name' => env('OIDC_NAME'),
+        'base_url' => env('OIDC_BASE_URL'),
+        'client_id' => env('OIDC_CLIENT_ID'),
+        'client_secret' => env('OIDC_CLIENT_SECRET'),
+        'redirect' => env('OIDC_REDIRECT_URI', '/sso/openidconnect/callback'),
     ],
 
     'slack' => [

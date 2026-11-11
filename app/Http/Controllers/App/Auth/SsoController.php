@@ -30,7 +30,11 @@ class SsoController extends Controller
     {
         $request->session()->forget(self::CONNECT_INTENT);
 
-        return Socialite::driver($this->provider($request)->value)->redirect();
+        try {
+            return Socialite::driver($this->provider($request)->value)->redirect();
+        } catch (Throwable) {
+            return $this->refuse(false, __('That did not work. Try again, or sign in another way.'));
+        }
     }
 
     public function callback(Request $request): RedirectResponse

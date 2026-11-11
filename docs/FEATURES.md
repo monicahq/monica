@@ -169,3 +169,8 @@ A chronological list of every feature and improvement shipped during development
 * API: Added endpoints to list, upload, download and remove the files kept with a group.
 * API: Named the group a life event or a reminder belongs to in what the API answers.
 * MCP: Added tools for the notes, activities, reminders and files of a group.
+* Auth: Let an instance offer any OpenID Connect provider as a way to sign in, under a name its operator chooses.
+* Auth: Let an instance offer Keycloak, Auth0 and Okta as ways to sign in.
+* Auth: Carried Microsoft sign in through OpenID Connect, and let an operator restrict it to one organisation.
+* Auth: Sent somebody back with an explanation when a provider cannot be reached, instead of an error page.
+* Admin/configuration: Added the settings of the new sign in providers to the instance settings.

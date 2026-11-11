@@ -8,8 +8,12 @@ enum SsoProviderEnum: string
 {
     case GitHub = 'github';
     case Google = 'google';
-    case Microsoft = 'microsoft';
+    case Entra = 'entra';
     case Facebook = 'facebook';
+    case Keycloak = 'keycloak';
+    case Auth0 = 'auth0';
+    case Okta = 'okta';
+    case OpenIdConnect = 'openidconnect';
 
     /**
      * Get the provider's name as its own company writes it. It is a proper noun,
@@ -21,16 +25,27 @@ enum SsoProviderEnum: string
         return match ($this) {
             self::GitHub => 'GitHub',
             self::Google => 'Google',
-            self::Microsoft => 'Microsoft',
+            self::Entra => 'Microsoft',
             self::Facebook => 'Facebook',
+            self::Keycloak => 'Keycloak',
+            self::Auth0 => 'Auth0',
+            self::Okta => 'Okta',
+            self::OpenIdConnect => (string) (config('services.openidconnect.name') ?: 'OpenID Connect'),
         };
     }
 
-    public function driverClass(): ?string
+    /**
+     * Get the keys of `services.{value}` that must be filled before the provider is offered.
+     *
+     * @return list<string>
+     */
+    public function requiredSettings(): array
     {
         return match ($this) {
-            self::Microsoft => 'SocialiteProviders\Microsoft\Provider',
-            default => null,
+            self::Keycloak => ['client_id', 'client_secret', 'redirect', 'server_url', 'realm'],
+            self::Auth0, self::Okta => ['client_id', 'client_secret', 'redirect', 'domain'],
+            self::OpenIdConnect => ['client_id', 'client_secret', 'redirect', 'base_url'],
+            default => ['client_id', 'client_secret', 'redirect'],
         };
     }
 

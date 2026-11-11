@@ -40,10 +40,12 @@ class SsoProviderAvailability
 
     private static function isConfigured(SsoProviderEnum $provider): bool
     {
-        $credentials = config("services.{$provider->value}", []);
+        foreach ($provider->requiredSettings() as $setting) {
+            if (blank(config("services.{$provider->value}.{$setting}"))) {
+                return false;
+            }
+        }
 
-        return filled($credentials['client_id'] ?? null)
-            && filled($credentials['client_secret'] ?? null)
-            && filled($credentials['redirect'] ?? null);
+        return true;
     }
 }

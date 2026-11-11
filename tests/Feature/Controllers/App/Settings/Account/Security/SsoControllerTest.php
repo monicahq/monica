@@ -36,6 +36,21 @@ class SsoControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_returns_to_the_security_settings_when_the_provider_cannot_be_reached(): void
+    {
+        $this->offer('github');
+
+        Socialite::shouldReceive('driver->redirect')->andThrow(new \RuntimeException('unreachable'));
+
+        $this->withConfirmedPassword()
+            ->actingAs(User::factory()->create())
+            ->get(route('settings.sso.redirect', ['provider' => 'github']))
+            ->assertRedirect(route('settings.security.index'))
+            ->assertSessionHasErrors(['provider' => 'That did not work. Try again, or sign in another way.'])
+            ->assertSessionMissing(AuthSsoController::CONNECT_INTENT);
+    }
+
+    #[Test]
     public function it_connects_the_provider_when_the_visitor_comes_back(): void
     {
         Queue::fake();

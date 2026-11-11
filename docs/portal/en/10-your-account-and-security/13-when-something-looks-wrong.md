@@ -25,7 +25,7 @@ A passkey signed in. If it was not you, remove the passkeys you do not recognise
 
 ## You signed in to Monica with Google
 
-The name of the service varies: GitHub, Google, Microsoft or Facebook. If it was not you, secure your account on that service, then disconnect it from Monica, as @doc(signin.provider) shows.
+The name of the service varies: GitHub, Google, Microsoft, Facebook, or another service your Monica offers. If it was not you, secure your account on that service, then disconnect it from Monica, as @doc(signin.provider) shows.
 
 ## A sign-in from a new place on your Monica account
 

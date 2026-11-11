@@ -11,12 +11,12 @@ use Tests\TestCase;
 class SsoProviderEnumTest extends TestCase
 {
     #[Test]
-    public function it_is_backed_by_the_driver_name_socialite_knows(): void
+    public function it_lists_its_values_in_the_order_the_screens_offer_them(): void
     {
-        $this->assertEquals('github', SsoProviderEnum::GitHub->value);
-        $this->assertEquals('google', SsoProviderEnum::Google->value);
-        $this->assertEquals('microsoft', SsoProviderEnum::Microsoft->value);
-        $this->assertEquals('facebook', SsoProviderEnum::Facebook->value);
+        $this->assertEquals(
+            ['github', 'google', 'entra', 'facebook', 'keycloak', 'auth0', 'okta', 'openidconnect'],
+            SsoProviderEnum::values(),
+        );
     }
 
     #[Test]
@@ -24,22 +24,41 @@ class SsoProviderEnumTest extends TestCase
     {
         $this->assertEquals('GitHub', SsoProviderEnum::GitHub->brandName());
         $this->assertEquals('Google', SsoProviderEnum::Google->brandName());
-        $this->assertEquals('Microsoft', SsoProviderEnum::Microsoft->brandName());
+        $this->assertEquals('Microsoft', SsoProviderEnum::Entra->brandName());
         $this->assertEquals('Facebook', SsoProviderEnum::Facebook->brandName());
+        $this->assertEquals('Keycloak', SsoProviderEnum::Keycloak->brandName());
+        $this->assertEquals('Auth0', SsoProviderEnum::Auth0->brandName());
+        $this->assertEquals('Okta', SsoProviderEnum::Okta->brandName());
     }
 
     #[Test]
-    public function it_names_a_driver_class_only_for_the_provider_that_needs_a_package(): void
+    public function it_names_the_generic_provider_the_way_the_operator_did(): void
     {
-        $this->assertNull(SsoProviderEnum::GitHub->driverClass());
-        $this->assertNull(SsoProviderEnum::Google->driverClass());
-        $this->assertNull(SsoProviderEnum::Facebook->driverClass());
-        $this->assertEquals('SocialiteProviders\Microsoft\Provider', SsoProviderEnum::Microsoft->driverClass());
+        config(['services.openidconnect.name' => 'Dunder Mifflin Identity']);
+
+        $this->assertEquals('Dunder Mifflin Identity', SsoProviderEnum::OpenIdConnect->brandName());
     }
 
     #[Test]
-    public function it_lists_its_values(): void
+    public function it_names_the_generic_provider_after_its_protocol_when_the_operator_gave_no_name(): void
     {
-        $this->assertEquals(['github', 'google', 'microsoft', 'facebook'], SsoProviderEnum::values());
+        config(['services.openidconnect.name' => null]);
+
+        $this->assertEquals('OpenID Connect', SsoProviderEnum::OpenIdConnect->brandName());
+    }
+
+    #[Test]
+    public function it_requires_three_credentials_of_every_provider_and_whatever_locates_its_own(): void
+    {
+        $credentials = ['client_id', 'client_secret', 'redirect'];
+
+        $this->assertEquals($credentials, SsoProviderEnum::GitHub->requiredSettings());
+        $this->assertEquals($credentials, SsoProviderEnum::Google->requiredSettings());
+        $this->assertEquals($credentials, SsoProviderEnum::Entra->requiredSettings());
+        $this->assertEquals($credentials, SsoProviderEnum::Facebook->requiredSettings());
+        $this->assertEquals([...$credentials, 'server_url', 'realm'], SsoProviderEnum::Keycloak->requiredSettings());
+        $this->assertEquals([...$credentials, 'domain'], SsoProviderEnum::Auth0->requiredSettings());
+        $this->assertEquals([...$credentials, 'domain'], SsoProviderEnum::Okta->requiredSettings());
+        $this->assertEquals([...$credentials, 'base_url'], SsoProviderEnum::OpenIdConnect->requiredSettings());
     }
 }

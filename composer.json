@@ -48,6 +48,7 @@
         "pragmarx/google2fa-laravel": "^3.0",
         "resend/resend-laravel": "^1.4",
         "sentry/sentry-laravel": "^4.27",
+        "socialiteproviders/openidconnect": "^1.0",
         "spatie/laravel-login-link": "^1.6",
         "stevebauman/purify": "^6.3"
     },
@@ -70,7 +71,6 @@
         "monicahq/laradb": "^1.1",
         "nunomaduro/collision": "^8.6",
         "phpunit/phpunit": "^13.4.3",
-        "socialiteproviders/microsoft": "^4.10",
         "typesense/typesense-php": "^6.0"
     },
     "suggest": {
@@ -78,7 +78,6 @@
         "algolia/algoliasearch-client-php": "Required to search with Algolia. Search needs one typo tolerant engine: Algolia, Meilisearch or Typesense.",
         "laravel/vonage-notification-channel": "Required to send notifications by text message. Without it the channel is listed and reports itself unavailable.",
         "meilisearch/meilisearch-php": "Required to search with Meilisearch, together with http-interop/http-factory-guzzle. Search needs one typo tolerant engine: Algolia, Meilisearch or Typesense.",
-        "socialiteproviders/microsoft": "Required to offer Microsoft as a way to sign in. GitHub, Google and Facebook need nothing beyond laravel/socialite.",
         "typesense/typesense-php": "Required to search with Typesense. Search needs one typo tolerant engine: Algolia, Meilisearch or Typesense."
     },
     "autoload": {

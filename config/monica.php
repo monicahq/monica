@@ -1,9 +1,9 @@
 <?php
 
 declare(strict_types=1);
+use App\Enums\SsoProviderEnum;
 use Illuminate\Support\Str;
 use Laravel\Socialite\SocialiteServiceProvider;
-use SocialiteProviders\Microsoft\Provider as MicrosoftProvider;
 
 if (! function_exists('readVersion')) {
     function readVersion(string $file, string $gitCommand, ?string $default = null): ?string
@@ -81,21 +81,14 @@ return [
     |--------------------------------------------------------------------------
     |
     | Which providers this instance could offer, meaning the ones whose driver is
-    | actually installed. Socialite ships GitHub, Google and Facebook; Microsoft
-    | needs a package of its own. A provider is only offered once its credentials
-    | are in config/services.php as well, which SsoProviderAvailability decides.
-    | The presence of a package is read here rather than where it is used, so a
-    | test can reach either state by overriding this key.
+    | installed: every one the product knows, once Socialite is there. A provider
+    | is only offered once its settings are supplied as well, which
+    | SsoProviderAvailability decides. The presence of a package is read here
+    | rather than where it is used, so a test can reach either state by
+    | overriding this key.
     |
     */
-    'sso_installed' => class_exists(SocialiteServiceProvider::class)
-        ? array_values(array_filter([
-            'github',
-            'google',
-            'facebook',
-            class_exists(MicrosoftProvider::class) ? 'microsoft' : null,
-        ]))
-        : [],
+    'sso_installed' => class_exists(SocialiteServiceProvider::class) ? SsoProviderEnum::values() : [],
 
     /*
     |--------------------------------------------------------------------------

@@ -160,22 +160,51 @@ class SsoControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_sends_the_visitor_back_with_an_explanation_when_the_provider_cannot_be_reached(): void
+    {
+        $this->offer('openidconnect');
+        config(['services.openidconnect.base_url' => 'https://id.dundermifflin.com']);
+
+        Socialite::shouldReceive('driver->redirect')->andThrow(new \RuntimeException('unreachable'));
+
+        $this->get(route('auth.sso.redirect', ['provider' => 'openidconnect']))
+            ->assertRedirect(route('auth.login.new'))
+            ->assertSessionHasErrors(['email' => 'That did not work. Try again, or sign in another way.']);
+    }
+
+    #[Test]
+    public function it_creates_an_account_through_the_generic_provider(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        $this->offer('openidconnect');
+        config(['services.openidconnect.base_url' => 'https://id.dundermifflin.com']);
+
+        $this->mockUser('openidconnect');
+
+        $this->get(route('auth.sso.callback', ['provider' => 'openidconnect']))
+            ->assertRedirect(route('home.index'));
+
+        $this->assertDatabaseHas('provider_connections', ['provider' => 'openidconnect', 'sso_id' => '108120124']);
+    }
+
+    #[Test]
     public function it_is_not_found_when_the_instance_configured_no_provider(): void
     {
-        config(['monica.sso_installed' => ['github', 'google', 'facebook', 'microsoft']]);
+        config(['monica.sso_installed' => ['github', 'google', 'facebook', 'entra']]);
 
         $this->get(route('auth.sso.redirect', ['provider' => 'github']))->assertNotFound();
         $this->get(route('auth.sso.callback', ['provider' => 'github']))->assertNotFound();
     }
 
     #[Test]
-    public function it_is_not_found_when_the_configured_provider_has_no_package(): void
+    public function it_is_not_found_when_the_configured_provider_has_no_driver_installed(): void
     {
-        $this->credentials('microsoft');
+        $this->credentials('entra');
         config(['monica.sso_installed' => ['github', 'google', 'facebook']]);
 
-        $this->get(route('auth.sso.redirect', ['provider' => 'microsoft']))->assertNotFound();
-        $this->get(route('auth.sso.callback', ['provider' => 'microsoft']))->assertNotFound();
+        $this->get(route('auth.sso.redirect', ['provider' => 'entra']))->assertNotFound();
+        $this->get(route('auth.sso.callback', ['provider' => 'entra']))->assertNotFound();
     }
 
     #[Test]
